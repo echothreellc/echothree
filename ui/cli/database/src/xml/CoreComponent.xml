@@ -1622,15 +1622,36 @@
                         </index>
                     </indexes>
                 </table>
+                <table namePlural="EntityGeoPointDefaults" nameSingular="EntityGeoPointDefault" columnPrefix="engeopntdef">
+                    <columns>
+                        <column name="EntityGeoPointDefaultId" type="EID" nullAllowed="false" />
+                        <column name="EntityAttributeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityAttributes" destinationColumn="EntityAttributeId" />
+                        <column name="Latitude" type="Degree" nullAllowed="false" />
+                        <column name="Longitude" type="Degree" nullAllowed="false" />
+                        <column name="Elevation" type="Long" nullAllowed="true" />
+                        <column name="Altitude" type="Long" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="EntityGeoPointDefaultId" />
+                        </index>
+                        <index type="Multiple" name="Index1">
+                            <indexColumn name="EntityAttributeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
                 <table namePlural="EntityGeoPointAttributes" nameSingular="EntityGeoPointAttribute" columnPrefix="engeopnta">
                     <columns>
                         <column name="EntityGeoPointAttributeId" type="EID" nullAllowed="false" />
                         <column name="EntityAttributeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityAttributes" destinationColumn="EntityAttributeId" />
                         <column name="EntityInstanceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityInstances" destinationColumn="EntityInstanceId" />
-                        <column name="Latitude" type="Degree" nullAllowed="false" />                        
-                        <column name="Longitude" type="Degree" nullAllowed="false" />                        
-                        <column name="Elevation" type="Long" nullAllowed="true" />                        
-                        <column name="Altitude" type="Long" nullAllowed="true" />                        
+                        <column name="Latitude" type="Degree" nullAllowed="false" />
+                        <column name="Longitude" type="Degree" nullAllowed="false" />
+                        <column name="Elevation" type="Long" nullAllowed="true" />
+                        <column name="Altitude" type="Long" nullAllowed="true" />
                         <column name="FromTime" type="Time" nullAllowed="false" />
                         <column name="ThruTime" type="Time" nullAllowed="false" />
                     </columns>

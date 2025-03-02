@@ -32,6 +32,8 @@ import com.echothree.model.control.core.common.exception.DuplicateEntityBooleanD
 import com.echothree.model.control.core.common.exception.DuplicateEntityClobAttributeException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityDateAttributeException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityDateDefaultException;
+import com.echothree.model.control.core.common.exception.DuplicateEntityGeoPointAttributeException;
+import com.echothree.model.control.core.common.exception.DuplicateEntityGeoPointDefaultException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityIntegerAttributeException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityIntegerDefaultException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityListItemAttributeException;
@@ -59,6 +61,7 @@ import com.echothree.model.control.core.common.exception.UnknownEntityAttributeN
 import com.echothree.model.control.core.common.exception.UnknownEntityAttributeTypeNameException;
 import com.echothree.model.control.core.common.exception.UnknownEntityBooleanDefaultException;
 import com.echothree.model.control.core.common.exception.UnknownEntityDateDefaultException;
+import com.echothree.model.control.core.common.exception.UnknownEntityGeoPointDefaultException;
 import com.echothree.model.control.core.common.exception.UnknownEntityIntegerDefaultException;
 import com.echothree.model.control.core.common.exception.UnknownEntityListItemDefaultException;
 import com.echothree.model.control.core.common.exception.UnknownEntityListItemNameException;
@@ -84,6 +87,7 @@ import com.echothree.model.control.core.server.database.EntityInstancePKsByStrin
 import com.echothree.model.control.core.server.database.EntityInstancePKsByTimeEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesMissingBooleanEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesMissingDateEntityAttributeQuery;
+import com.echothree.model.control.core.server.database.EntityInstancesMissingGeoPointEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesMissingIntegerEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesMissingLongEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesMissingStringEntityAttributeQuery;
@@ -107,6 +111,8 @@ import com.echothree.model.data.core.server.entity.EntityBooleanDefault;
 import com.echothree.model.data.core.server.entity.EntityClobAttribute;
 import com.echothree.model.data.core.server.entity.EntityDateAttribute;
 import com.echothree.model.data.core.server.entity.EntityDateDefault;
+import com.echothree.model.data.core.server.entity.EntityGeoPointAttribute;
+import com.echothree.model.data.core.server.entity.EntityGeoPointDefault;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityIntegerAttribute;
 import com.echothree.model.data.core.server.entity.EntityIntegerDefault;
@@ -1418,7 +1424,7 @@ public class EntityAttributeLogic
         if(eea == null || !eea.hasExecutionErrors()) {
             var coreControl = Session.getModelController(CoreControl.class);
 
-            var entityTimeDefault = coreControl.getEntityTimeDefaultForUptime(entityAttribute);
+            var entityTimeDefault = coreControl.getEntityTimeDefaultForUpdate(entityAttribute);
 
             if(entityTimeDefault == null) {
                 handleExecutionError(UnknownEntityTimeDefaultException.class, eea, ExecutionErrors.UnknownEntityTimeDefault.name(),
@@ -1450,6 +1456,75 @@ public class EntityAttributeLogic
         }
 
         return entityTimeAttribute;
+    }
+
+    public EntityGeoPointDefault createEntityGeoPointDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
+            final Integer latitude, final Integer longitude, final Long elevation, final Long altitude, final boolean addMissingAttributes, BasePK createdBy) {
+        EntityGeoPointDefault entityGeoPointDefault = null;
+
+        checkEntityType(eea, entityAttribute, EntityAttributeTypes.GEOPOINT);
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var coreControl = Session.getModelController(CoreControl.class);
+
+            entityGeoPointDefault = coreControl.getEntityGeoPointDefault(entityAttribute);
+
+            if(entityGeoPointDefault == null) {
+                coreControl.createEntityGeoPointDefault(entityAttribute, latitude, longitude, elevation, altitude, createdBy);
+
+                if(addMissingAttributes) {
+                    new EntityInstancesMissingGeoPointEntityAttributeQuery().execute(entityAttribute).forEach(entityInstanceResult ->
+                            coreControl.createEntityGeoPointAttribute(entityAttribute.getPrimaryKey(),
+                                    entityInstanceResult.getEntityInstance(), latitude, longitude, elevation, altitude, createdBy));
+                }
+            } else {
+                handleExecutionError(DuplicateEntityGeoPointDefaultException.class, eea, ExecutionErrors.DuplicateEntityGeoPointDefault.name(),
+                        entityAttribute.getLastDetail().getEntityAttributeName());
+            }
+        }
+
+        return entityGeoPointDefault;
+    }
+
+    public void deleteEntityGeoPointDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
+            final BasePK deletedBy) {
+        checkEntityType(eea, entityAttribute, EntityAttributeTypes.GEOPOINT);
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var coreControl = Session.getModelController(CoreControl.class);
+
+            var entityGeoPointDefault = coreControl.getEntityGeoPointDefaultForUpdate(entityAttribute);
+
+            if(entityGeoPointDefault == null) {
+                handleExecutionError(UnknownEntityGeoPointDefaultException.class, eea, ExecutionErrors.UnknownEntityGeoPointDefault.name(),
+                        entityAttribute.getLastDetail().getEntityAttributeName());
+            } else {
+                coreControl.deleteEntityGeoPointDefault(entityGeoPointDefault, deletedBy);
+            }
+        }
+    }
+
+    public EntityGeoPointAttribute createEntityGeoPointAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
+            final EntityInstance entityInstance, final Integer latitude, final Integer longitude, final Long elevation, final Long altitude, final BasePK createdBy) {
+        EntityGeoPointAttribute entityGeoPointAttribute = null;
+
+        checkEntityType(eea, entityAttribute, entityInstance);
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var coreControl = Session.getModelController(CoreControl.class);
+
+            entityGeoPointAttribute = coreControl.getEntityGeoPointAttribute(entityAttribute, entityInstance);
+
+            if(entityGeoPointAttribute == null) {
+                coreControl.createEntityGeoPointAttribute(entityAttribute, entityInstance, latitude, longitude, elevation, altitude, createdBy);
+            } else {
+                handleExecutionError(DuplicateEntityGeoPointAttributeException.class, eea, ExecutionErrors.DuplicateEntityGeoPointAttribute.name(),
+                        EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
+                        entityAttribute.getLastDetail().getEntityAttributeName());
+            }
+        }
+
+        return entityGeoPointAttribute;
     }
 
     public EntityListItemDefault createEntityListItemDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,

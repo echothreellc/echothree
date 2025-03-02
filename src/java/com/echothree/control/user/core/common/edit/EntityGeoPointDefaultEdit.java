@@ -14,13 +14,29 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.core.server.graphql;
+package com.echothree.control.user.core.common.edit;
 
-import graphql.annotations.annotationTypes.GraphQLUnion;
+import com.echothree.util.common.form.BaseEdit;
 
-@GraphQLUnion(possibleTypes = {EntityBooleanDefaultObject.class, EntityDateDefaultObject.class, EntityGeoPointDefaultObject.class,
-        EntityIntegerDefaultObject.class, EntityLongDefaultObject.class, EntityListItemDefaultObject.class, EntityStringDefaultObject.class,
-        EntityTimeDefaultObject.class})
-public interface DefaultInterface {
+public interface EntityGeoPointDefaultEdit
+        extends BaseEdit {
 
+    String getLatitude();
+    void setLatitude(String latitude);
+
+    String getLongitude();
+    void setLongitude(String longitude);
+
+    String getElevation();
+    void setElevation(String elevation);
+
+    String getElevationUnitOfMeasureTypeName();
+    void setElevationUnitOfMeasureTypeName(String elevationUnitOfMeasureTypeName);
+
+    String getAltitude();
+    void setAltitude(String altitude);
+
+    String getAltitudeUnitOfMeasureTypeName();
+    void setAltitudeUnitOfMeasureTypeName(String altitudeUnitOfMeasureTypeName);
+    
 }

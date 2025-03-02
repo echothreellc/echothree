@@ -92,6 +92,7 @@ import com.echothree.model.control.core.common.transfer.EntityDateAttributeTrans
 import com.echothree.model.control.core.common.transfer.EntityDateDefaultTransfer;
 import com.echothree.model.control.core.common.transfer.EntityEntityAttributeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityGeoPointAttributeTransfer;
+import com.echothree.model.control.core.common.transfer.EntityGeoPointDefaultTransfer;
 import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.common.transfer.EntityIntegerAttributeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityIntegerDefaultTransfer;
@@ -241,6 +242,7 @@ import com.echothree.model.data.core.server.entity.EntityDateDefault;
 import com.echothree.model.data.core.server.entity.EntityEncryptionKey;
 import com.echothree.model.data.core.server.entity.EntityEntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityGeoPointAttribute;
+import com.echothree.model.data.core.server.entity.EntityGeoPointDefault;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityIntegerAttribute;
 import com.echothree.model.data.core.server.entity.EntityIntegerDefault;
@@ -368,6 +370,7 @@ import com.echothree.model.data.core.server.factory.EntityDateDefaultFactory;
 import com.echothree.model.data.core.server.factory.EntityEncryptionKeyFactory;
 import com.echothree.model.data.core.server.factory.EntityEntityAttributeFactory;
 import com.echothree.model.data.core.server.factory.EntityGeoPointAttributeFactory;
+import com.echothree.model.data.core.server.factory.EntityGeoPointDefaultFactory;
 import com.echothree.model.data.core.server.factory.EntityInstanceFactory;
 import com.echothree.model.data.core.server.factory.EntityIntegerAttributeFactory;
 import com.echothree.model.data.core.server.factory.EntityIntegerDefaultFactory;
@@ -484,6 +487,7 @@ import com.echothree.model.data.core.server.value.EntityDateAttributeValue;
 import com.echothree.model.data.core.server.value.EntityDateDefaultValue;
 import com.echothree.model.data.core.server.value.EntityEntityAttributeValue;
 import com.echothree.model.data.core.server.value.EntityGeoPointAttributeValue;
+import com.echothree.model.data.core.server.value.EntityGeoPointDefaultValue;
 import com.echothree.model.data.core.server.value.EntityIntegerAttributeValue;
 import com.echothree.model.data.core.server.value.EntityIntegerDefaultValue;
 import com.echothree.model.data.core.server.value.EntityIntegerRangeDescriptionValue;
@@ -2361,6 +2365,15 @@ public class CoreControl
 
                     if(entityDateDefault != null) {
                         createEntityDateAttribute(entityAttribute, entityInstance, entityDateDefault.getDateAttribute(), createdBy);
+                    }
+                }
+                case GEOPOINT -> {
+                    var entityGeoPointDefault = getEntityGeoPointDefault(entityAttribute);
+
+                    if(entityGeoPointDefault != null) {
+                        createEntityGeoPointAttribute(entityAttribute, entityInstance, entityGeoPointDefault.getLatitude(),
+                                entityGeoPointDefault.getLongitude(), entityGeoPointDefault.getElevation(),
+                                entityGeoPointDefault.getAltitude(), createdBy);
                     }
                 }
                 case INTEGER -> {
@@ -5692,7 +5705,10 @@ public class CoreControl
                 deleteEntityStringDefaultByEntityAttribute(entityAttribute, deletedBy);
                 deleteEntityStringAttributesByEntityAttribute(entityAttribute, deletedBy);
             }
-            case GEOPOINT -> deleteEntityGeoPointAttributesByEntityAttribute(entityAttribute, deletedBy);
+            case GEOPOINT -> {
+                deleteEntityGeoPointDefaultByEntityAttribute(entityAttribute, deletedBy);
+                deleteEntityGeoPointAttributesByEntityAttribute(entityAttribute, deletedBy);
+            }
             case BLOB -> {
                 deleteEntityAttributeBlobByEntityAttribute(entityAttribute, deletedBy);
                 deleteEntityBlobAttributesByEntityAttribute(entityAttribute, deletedBy);
@@ -5708,7 +5724,7 @@ public class CoreControl
             }
             case LISTITEM, MULTIPLELISTITEM -> {
                 deleteEntityAttributeListItemByEntityAttribute(entityAttribute, deletedBy);
-                deleteEntityListItemsByEntityAttribute(entityAttribute, deletedBy);
+                deleteEntityListItemsByEntityAttribute(entityAttribute, deletedBy); // Default deletion handled here
             }
             case ENTITY, COLLECTION -> {
                 deleteEntityAttributeEntityTypesByEntityAttribute(entityAttribute, deletedBy);
@@ -13117,18 +13133,156 @@ public class CoreControl
     public void deleteEntityStringAttributesByEntityInstance(EntityInstance entityInstance, BasePK deletedBy) {
         deleteEntityStringAttributes(getEntityStringAttributesByEntityInstanceForUpdate(entityInstance), deletedBy);
     }
-    
+
     // --------------------------------------------------------------------------------
-    //   Entity Long Attributes
+    //   Entity Geo Point Defaults
     // --------------------------------------------------------------------------------
-    
+
+    public EntityGeoPointDefault createEntityGeoPointDefault(EntityAttribute entityAttribute, Integer latitude,
+            Integer longitude, Long elevation, Long altitude, BasePK createdBy) {
+        var entityGeoPointDefault = EntityGeoPointDefaultFactory.getInstance().create(entityAttribute,
+                latitude, longitude, elevation, altitude, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+        sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityGeoPointDefault.getPrimaryKey(), EventTypes.CREATE, createdBy);
+
+        return entityGeoPointDefault;
+    }
+
+    public long countEntityGeoPointDefaultHistory(EntityAttribute entityAttribute) {
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM entitygeopointdefaults
+                    WHERE engeopntdef_thrutime = ?
+                    """, entityAttribute);
+    }
+
+    private static final Map<EntityPermission, String> getEntityGeoPointDefaultHistoryQueries;
+
+    static {
+        getEntityGeoPointDefaultHistoryQueries = Map.of(
+                EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM entitygeopointdefaults
+                WHERE engeopntdef_ena_entityattributeid = ?
+                ORDER BY engeopntdef_thrutime
+                _LIMIT_
+                """);
+    }
+
+    public List<EntityGeoPointDefault> getEntityGeoPointDefaultHistory(EntityAttribute entityAttribute) {
+        return EntityGeoPointDefaultFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityGeoPointDefaultHistoryQueries,
+                entityAttribute);
+    }
+
+    private EntityGeoPointDefault getEntityGeoPointDefault(EntityAttribute entityAttribute, EntityPermission entityPermission) {
+        EntityGeoPointDefault entityGeoPointDefault;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM entitygeopointdefaults " +
+                        "WHERE engeopntdef_ena_entityattributeid = ? AND engeopntdef_thrutime = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM entitygeopointdefaults " +
+                        "WHERE engeopntdef_ena_entityattributeid = ? AND engeopntdef_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+
+            var ps = EntityGeoPointDefaultFactory.getInstance().prepareStatement(query);
+
+            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
+            ps.setLong(2, Session.MAX_TIME);
+
+            entityGeoPointDefault = EntityGeoPointDefaultFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return entityGeoPointDefault;
+    }
+
+    public EntityGeoPointDefault getEntityGeoPointDefault(EntityAttribute entityAttribute) {
+        return getEntityGeoPointDefault(entityAttribute, EntityPermission.READ_ONLY);
+    }
+
+    public EntityGeoPointDefault getEntityGeoPointDefaultForUpdate(EntityAttribute entityAttribute) {
+        return getEntityGeoPointDefault(entityAttribute, EntityPermission.READ_WRITE);
+    }
+
+    public EntityGeoPointDefaultValue getEntityGeoPointDefaultValueForUpdate(EntityGeoPointDefault entityGeoPointDefault) {
+        return entityGeoPointDefault == null? null: entityGeoPointDefault.getEntityGeoPointDefaultValue().clone();
+    }
+
+    public EntityGeoPointDefaultValue getEntityGeoPointDefaultValueForUpdate(EntityAttribute entityAttribute) {
+        return getEntityGeoPointDefaultValueForUpdate(getEntityGeoPointDefaultForUpdate(entityAttribute));
+    }
+
+    public EntityGeoPointDefaultTransfer getEntityGeoPointDefaultTransfer(UserVisit userVisit, EntityGeoPointDefault entityGeoPointDefault) {
+        return getCoreTransferCaches(userVisit).getEntityGeoPointDefaultTransferCache().getEntityGeoPointDefaultTransfer(entityGeoPointDefault);
+    }
+
+    public void updateEntityGeoPointDefaultFromValue(EntityGeoPointDefaultValue entityGeoPointDefaultValue, BasePK updatedBy) {
+        if(entityGeoPointDefaultValue.hasBeenModified()) {
+            var entityGeoPointDefault = EntityGeoPointDefaultFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityGeoPointDefaultValue);
+            var entityAttribute = entityGeoPointDefault.getEntityAttribute();
+
+            if(entityAttribute.getLastDetail().getTrackRevisions()) {
+                entityGeoPointDefault.setThruTime(session.START_TIME_LONG);
+                entityGeoPointDefault.store();
+            } else {
+                entityGeoPointDefault.remove();
+            }
+
+            entityGeoPointDefault = EntityGeoPointDefaultFactory.getInstance().create(entityAttribute,
+                    entityGeoPointDefaultValue.getLatitude(), entityGeoPointDefaultValue.getLongitude(),
+                    entityGeoPointDefaultValue.getElevation(), entityGeoPointDefaultValue.getAltitude(),
+                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+            sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityGeoPointDefault.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+        }
+    }
+
+    public void deleteEntityGeoPointDefault(EntityGeoPointDefault entityGeoPointDefault, BasePK deletedBy) {
+        var entityAttribute = entityGeoPointDefault.getEntityAttribute();
+
+        if(entityAttribute.getLastDetail().getTrackRevisions()) {
+            entityGeoPointDefault.setThruTime(session.START_TIME_LONG);
+        } else {
+            entityGeoPointDefault.remove();
+        }
+
+        sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityGeoPointDefault.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+    }
+
+    public void deleteEntityGeoPointDefaultByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
+        var entityGeoPointDefault = getEntityGeoPointDefaultForUpdate(entityAttribute);
+
+        if(entityGeoPointDefault != null) {
+            deleteEntityGeoPointDefault(entityGeoPointDefault, deletedBy);
+        }
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Entity Geo Point Attributes
+    // --------------------------------------------------------------------------------
+
     public EntityGeoPointAttribute createEntityGeoPointAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Integer latitude, Integer longitude, Long elevation, Long altitude, BasePK createdBy) {
-        var entityGeoPointAttribute = EntityGeoPointAttributeFactory.getInstance().create(entityAttribute, entityInstance, latitude,
-                longitude, elevation, altitude, session.START_TIME_LONG, Session.MAX_TIME_LONG);
-        
-        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
-        
+        return createEntityGeoPointAttribute(entityAttribute.getPrimaryKey(), entityInstance, latitude, longitude,
+                elevation, altitude, createdBy);
+    }
+
+    public EntityGeoPointAttribute createEntityGeoPointAttribute(EntityAttributePK entityAttribute, EntityInstance entityInstance,
+            Integer latitude, Integer longitude, Long elevation, Long altitude, BasePK createdBy) {
+        var entityGeoPointAttribute = EntityGeoPointAttributeFactory.getInstance().create(entityAttribute,
+                entityInstance.getPrimaryKey(), latitude, longitude, elevation, altitude, session.START_TIME_LONG,
+                Session.MAX_TIME_LONG);
+
+        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute, EventTypes.CREATE, createdBy);
+
         return entityGeoPointAttribute;
     }
 
@@ -13375,16 +13529,16 @@ public class CoreControl
         return getEntityTimeDefault(entityAttribute, EntityPermission.READ_ONLY);
     }
 
-    public EntityTimeDefault getEntityTimeDefaultForUptime(EntityAttribute entityAttribute) {
+    public EntityTimeDefault getEntityTimeDefaultForUpdate(EntityAttribute entityAttribute) {
         return getEntityTimeDefault(entityAttribute, EntityPermission.READ_WRITE);
     }
 
-    public EntityTimeDefaultValue getEntityTimeDefaultValueForUptime(EntityTimeDefault entityTimeDefault) {
+    public EntityTimeDefaultValue getEntityTimeDefaultValueForUpdate(EntityTimeDefault entityTimeDefault) {
         return entityTimeDefault == null? null: entityTimeDefault.getEntityTimeDefaultValue().clone();
     }
 
-    public EntityTimeDefaultValue getEntityTimeDefaultValueForUptime(EntityAttribute entityAttribute) {
-        return getEntityTimeDefaultValueForUptime(getEntityTimeDefaultForUptime(entityAttribute));
+    public EntityTimeDefaultValue getEntityTimeDefaultValueForUpdate(EntityAttribute entityAttribute) {
+        return getEntityTimeDefaultValueForUpdate(getEntityTimeDefaultForUpdate(entityAttribute));
     }
 
     public EntityTimeDefaultTransfer getEntityTimeDefaultTransfer(UserVisit userVisit, EntityTimeDefault entityTimeDefault) {
@@ -13424,7 +13578,7 @@ public class CoreControl
     }
 
     public void deleteEntityTimeDefaultByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
-        var entityTimeDefault = getEntityTimeDefaultForUptime(entityAttribute);
+        var entityTimeDefault = getEntityTimeDefaultForUpdate(entityAttribute);
 
         if(entityTimeDefault != null) {
             deleteEntityTimeDefault(entityTimeDefault, deletedBy);

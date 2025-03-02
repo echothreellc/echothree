@@ -67,7 +67,7 @@ public class CreateEntityStringDefaultCommand
 
         if(!hasExecutionErrors()) {
             var stringAttribute = String.valueOf(form.getStringAttribute());
-            var addMissingAttributes = Boolean.valueOf(form.getAddMissingAttributes());
+            var addMissingAttributes = Boolean.parseBoolean(form.getAddMissingAttributes());
 
             EntityAttributeLogic.getInstance().createEntityStringDefault(this, entityAttribute, language,
                     stringAttribute, addMissingAttributes, getPartyPK());

@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.core.server.command;
 
-import com.echothree.control.user.core.common.form.CreateEntityDateDefaultForm;
+import com.echothree.control.user.core.common.form.DeleteEntityGeoPointDefaultForm;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -28,8 +28,8 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 
-public class CreateEntityDateDefaultCommand
-        extends BaseSimpleCommand<CreateEntityDateDefaultForm> {
+public class DeleteEntityGeoPointDefaultCommand
+        extends BaseSimpleCommand<DeleteEntityGeoPointDefaultForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -45,14 +45,12 @@ public class CreateEntityDateDefaultCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, false, null, null),
-                new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("DateAttribute", FieldType.DATE, true, null, null),
-                new FieldDefinition("AddMissingAttributes", FieldType.BOOLEAN, true, null, null)
+                new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null)
                 );
     }
 
-    /** Creates a new instance of CreateEntityDateDefaultCommand */
-    public CreateEntityDateDefaultCommand(UserVisitPK userVisitPK, CreateEntityDateDefaultForm form) {
+    /** Creates a new instance of CreateEntityGeoPointDefaultCommand */
+    public DeleteEntityGeoPointDefaultCommand(UserVisitPK userVisitPK, DeleteEntityGeoPointDefaultForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
@@ -61,11 +59,7 @@ public class CreateEntityDateDefaultCommand
         var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByUniversalSpec(this, form);
 
         if(!hasExecutionErrors()) {
-            var dateAttribute = Integer.valueOf(form.getDateAttribute());
-            var addMissingAttributes = Boolean.parseBoolean(form.getAddMissingAttributes());
-
-            EntityAttributeLogic.getInstance().createEntityDateDefault(this, entityAttribute,
-                    dateAttribute, addMissingAttributes, getPartyPK());
+            EntityAttributeLogic.getInstance().deleteEntityGeoPointDefault(this, entityAttribute, getPartyPK());
         }
 
         return null;

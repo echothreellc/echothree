@@ -1569,26 +1569,45 @@ public class CoreBean
     public CommandResult deleteEntityStringAttribute(UserVisitPK userVisitPK, DeleteEntityStringAttributeForm form) {
         return new DeleteEntityStringAttributeCommand(userVisitPK, form).run();
     }
-    
+
+    // --------------------------------------------------------------------------------
+    //   Entity Geo Point Defaults
+    // --------------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createEntityGeoPointDefault(UserVisitPK userVisitPK, CreateEntityGeoPointDefaultForm form) {
+        return new CreateEntityGeoPointDefaultCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult editEntityGeoPointDefault(UserVisitPK userVisitPK, EditEntityGeoPointDefaultForm form) {
+        return new EditEntityGeoPointDefaultCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult deleteEntityGeoPointDefault(UserVisitPK userVisitPK, DeleteEntityGeoPointDefaultForm form) {
+        return new DeleteEntityGeoPointDefaultCommand(userVisitPK, form).run();
+    }
+
     // --------------------------------------------------------------------------------
     //   Entity Geo Point Attributes
     // --------------------------------------------------------------------------------
-    
+
     @Override
     public CommandResult createEntityGeoPointAttribute(UserVisitPK userVisitPK, CreateEntityGeoPointAttributeForm form) {
         return new CreateEntityGeoPointAttributeCommand(userVisitPK, form).run();
     }
-    
+
     @Override
     public CommandResult editEntityGeoPointAttribute(UserVisitPK userVisitPK, EditEntityGeoPointAttributeForm form) {
         return new EditEntityGeoPointAttributeCommand(userVisitPK, form).run();
     }
-    
+
     @Override
     public CommandResult deleteEntityGeoPointAttribute(UserVisitPK userVisitPK, DeleteEntityGeoPointAttributeForm form) {
         return new DeleteEntityGeoPointAttributeCommand(userVisitPK, form).run();
     }
-    
+
     // --------------------------------------------------------------------------------
     //   Entity Blob Attributes
     // --------------------------------------------------------------------------------

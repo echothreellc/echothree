@@ -62,7 +62,7 @@ public class CreateEntityTimeDefaultCommand
 
         if(!hasExecutionErrors()) {
             var timeAttribute = Long.valueOf(form.getTimeAttribute());
-            var addMissingAttributes = Boolean.valueOf(form.getAddMissingAttributes());
+            var addMissingAttributes = Boolean.parseBoolean(form.getAddMissingAttributes());
 
             EntityAttributeLogic.getInstance().createEntityTimeDefault(this, entityAttribute,
                     timeAttribute, addMissingAttributes, getPartyPK());

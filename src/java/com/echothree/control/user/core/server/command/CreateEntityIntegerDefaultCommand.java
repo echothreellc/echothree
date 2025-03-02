@@ -62,7 +62,7 @@ public class CreateEntityIntegerDefaultCommand
 
         if(!hasExecutionErrors()) {
             var integerAttribute = Integer.valueOf(form.getIntegerAttribute());
-            var addMissingAttributes = Boolean.valueOf(form.getAddMissingAttributes());
+            var addMissingAttributes = Boolean.parseBoolean(form.getAddMissingAttributes());
 
             EntityAttributeLogic.getInstance().createEntityIntegerDefault(this, entityAttribute,
                     integerAttribute, addMissingAttributes, getPartyPK());

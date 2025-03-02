@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.core.server.command;
 
-import com.echothree.control.user.core.common.form.CreateEntityGeoPointAttributeForm;
+import com.echothree.control.user.core.common.form.CreateEntityGeoPointDefaultForm;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
@@ -35,19 +35,19 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class CreateEntityGeoPointAttributeCommand
-        extends BaseSimpleCommand<CreateEntityGeoPointAttributeForm> {
+public class CreateEntityGeoPointDefaultCommand
+        extends BaseSimpleCommand<CreateEntityGeoPointDefaultForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), null)
         ));
 
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
@@ -57,42 +57,40 @@ public class CreateEntityGeoPointAttributeCommand
                 new FieldDefinition("Elevation", FieldType.UNSIGNED_LONG, false, null, null),
                 new FieldDefinition("ElevationUnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Altitude", FieldType.UNSIGNED_LONG, false, null, null),
-                new FieldDefinition("AltitudeUnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null)
-                ));
+                new FieldDefinition("AltitudeUnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("AddMissingAttributes", FieldType.BOOLEAN, true, null, null)
+        );
     }
-    
-    /** Creates a new instance of CreateEntityGeoPointAttributeCommand */
-    public CreateEntityGeoPointAttributeCommand(UserVisitPK userVisitPK, CreateEntityGeoPointAttributeForm form) {
+
+    /** Creates a new instance of CreateEntityGeoPointDefaultCommand */
+    public CreateEntityGeoPointDefaultCommand(UserVisitPK userVisitPK, CreateEntityGeoPointDefaultForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
+        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByUniversalSpec(this, form);
 
         if(!hasExecutionErrors()) {
-            var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttribute(this, entityInstance, form, form,
-                    EntityAttributeTypes.GEOPOINT);
+            var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
+            var elevation = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_ELEVATION,
+                    form.getElevation(), form.getElevationUnitOfMeasureTypeName(),
+                    null, ExecutionErrors.MissingRequiredElevation.name(), null, ExecutionErrors.MissingRequiredElevationUnitOfMeasureTypeName.name(),
+                    null, ExecutionErrors.UnknownElevationUnitOfMeasureTypeName.name());
 
             if(!hasExecutionErrors()) {
-                var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
-                var elevation = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_ELEVATION,
-                        form.getElevation(), form.getElevationUnitOfMeasureTypeName(),
-                        null, ExecutionErrors.MissingRequiredElevation.name(), null, ExecutionErrors.MissingRequiredElevationUnitOfMeasureTypeName.name(),
-                        null, ExecutionErrors.UnknownElevationUnitOfMeasureTypeName.name());
+                var altitude = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_ALTITUDE,
+                        form.getAltitude(), form.getAltitudeUnitOfMeasureTypeName(),
+                        null, ExecutionErrors.MissingRequiredAltitude.name(), null, ExecutionErrors.MissingRequiredAltitudeUnitOfMeasureTypeName.name(),
+                        null, ExecutionErrors.UnknownAltitudeUnitOfMeasureTypeName.name());
 
                 if(!hasExecutionErrors()) {
-                    var altitude = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_ALTITUDE,
-                            form.getAltitude(), form.getAltitudeUnitOfMeasureTypeName(),
-                            null, ExecutionErrors.MissingRequiredAltitude.name(), null, ExecutionErrors.MissingRequiredAltitudeUnitOfMeasureTypeName.name(),
-                            null, ExecutionErrors.UnknownAltitudeUnitOfMeasureTypeName.name());
+                    var latitude = Integer.valueOf(form.getLatitude());
+                    var longitude = Integer.valueOf(form.getLongitude());
+                    var addMissingAttributes = Boolean.parseBoolean(form.getAddMissingAttributes());
 
-                    if(!hasExecutionErrors()) {
-                        var latitude = Integer.valueOf(form.getLatitude());
-                        var longitude = Integer.valueOf(form.getLongitude());
-
-                        EntityAttributeLogic.getInstance().createEntityGeoPointAttribute(this, entityAttribute, entityInstance, latitude, longitude, elevation, altitude, getPartyPK());
-                    }
+                    EntityAttributeLogic.getInstance().createEntityGeoPointDefault(this, entityAttribute, latitude,
+                            longitude, elevation, altitude, addMissingAttributes, getPartyPK());
                 }
             }
         }

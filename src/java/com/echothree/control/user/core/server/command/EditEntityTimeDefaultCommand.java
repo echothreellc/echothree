@@ -88,7 +88,7 @@ public class EditEntityTimeDefaultCommand
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 entityTimeDefault = coreControl.getEntityTimeDefault(entityAttribute);
             } else { // EditMode.UPDATE
-                entityTimeDefault = coreControl.getEntityTimeDefaultForUptime(entityAttribute);
+                entityTimeDefault = coreControl.getEntityTimeDefaultForUpdate(entityAttribute);
             }
 
             if(entityTimeDefault == null) {
@@ -119,7 +119,7 @@ public class EditEntityTimeDefaultCommand
     @Override
     public void doUpdate(EntityTimeDefault entityTimeDefault) {
         var coreControl = getCoreControl();
-        var entityTimeDefaultValue = coreControl.getEntityTimeDefaultValueForUptime(entityTimeDefault);
+        var entityTimeDefaultValue = coreControl.getEntityTimeDefaultValueForUpdate(entityTimeDefault);
 
         entityTimeDefaultValue.setTimeAttribute(Long.valueOf(edit.getTimeAttribute()));
 
