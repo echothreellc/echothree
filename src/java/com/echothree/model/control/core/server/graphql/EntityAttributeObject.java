@@ -490,6 +490,11 @@ public class EntityAttributeObject
 
                 defaultInterface = entityDateDefault == null ? null : new EntityDateDefaultObject(entityDateDefault);
             }
+            case GEOPOINT -> {
+                var entityGeoPointDefault = coreControl.getEntityGeoPointDefault(entityAttribute);
+
+                defaultInterface = entityGeoPointDefault == null ? null : new EntityGeoPointDefaultObject(entityGeoPointDefault);
+            }
             case INTEGER -> {
                 var entityIntegerDefault = coreControl.getEntityIntegerDefault(entityAttribute);
 
