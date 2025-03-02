@@ -178,6 +178,9 @@
             <entityType entityTypeName="EntityStringAttribute" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity String Attribute" />
             </entityType>
+            <entityType entityTypeName="EntityGeoPointDefault" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Geo Point Default" />
+            </entityType>
             <entityType entityTypeName="EntityGeoPointAttribute" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Geo Point Attribute" />
             </entityType>

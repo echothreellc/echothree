@@ -80,6 +80,15 @@ public class EntityAttributeHandler
             commandForm.set(getAttrsMap(attrs));
 
             coreService.createEntityBooleanDefault(initialDataParser.getUserVisit(), commandForm);
+        } if(localName.equals("entityGeoPointDefault")) {
+            var commandForm = CoreFormFactory.getCreateEntityGeoPointDefaultForm();
+
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+            commandForm.setEntityAttributeName(entityAttributeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            coreService.createEntityGeoPointDefault(initialDataParser.getUserVisit(), commandForm);
         } if(localName.equals("entityIntegerDefault")) {
             var commandForm = CoreFormFactory.getCreateEntityIntegerDefaultForm();
 

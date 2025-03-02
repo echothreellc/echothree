@@ -62,7 +62,7 @@ public class CreateEntityBooleanDefaultCommand
 
         if(!hasExecutionErrors()) {
             var booleanAttribute = Boolean.valueOf(form.getBooleanAttribute());
-            var addMissingAttributes = Boolean.valueOf(form.getAddMissingAttributes());
+            var addMissingAttributes = Boolean.parseBoolean(form.getAddMissingAttributes());
 
             EntityAttributeLogic.getInstance().createEntityBooleanDefault(this, entityAttribute,
                     booleanAttribute, addMissingAttributes, getPartyPK());
