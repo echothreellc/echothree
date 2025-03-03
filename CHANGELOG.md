@@ -1,5 +1,19 @@
 # Changelog
 
+## 2025-03-02-01
+
+* Use a BINARY Columns for UUIDs [1349](https://gitlab.echothree.com/echothree/echothree/-/issues/1349)
+* Add Default Value for Date Attributes [1457](https://gitlab.echothree.com/echothree/echothree/-/issues/1457)
+* Add Default Value for Time Attributes [1462](https://gitlab.echothree.com/echothree/echothree/-/issues/1462)
+* Add Default Value for Geo Point Attributes [1465](https://gitlab.echothree.com/echothree/echothree/-/issues/1465)
+* Apache Avro 1.12.0 Upgrade [1515](https://gitlab.echothree.com/echothree/echothree/-/issues/1515)
+* jOOQ 3.20.0 Upgrade [1516](https://gitlab.echothree.com/echothree/echothree/-/issues/1516)
+* Add Migration of Text UUIDs to Binary UUIDs [1517](https://gitlab.echothree.com/echothree/echothree/-/issues/1517)
+* Switch to containers/jdk-build-tools for Builds [1518](https://gitlab.echothree.com/echothree/echothree/-/issues/1518)
+* Remove Apache Avro and Caffeine from gitlab-ci.yml [1519](https://gitlab.echothree.com/echothree/echothree/-/issues/1519)
+* Caffeine 3.2.0 Upgrade [1520](https://gitlab.echothree.com/echothree/echothree/-/issues/1520)
+* Gson 2.12.1 Upgrade [1521](https://gitlab.echothree.com/echothree/echothree/-/issues/1521)
+
 ## 2025-02-16-01
 
 * Add Transaction Type Object and Queries [1506](https://gitlab.echothree.com/echothree/echothree/-/issues/1506)
