@@ -89,6 +89,7 @@ import com.echothree.model.control.core.server.database.EntityInstancesMissingBo
 import com.echothree.model.control.core.server.database.EntityInstancesMissingDateEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesMissingGeoPointEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesMissingIntegerEntityAttributeQuery;
+import com.echothree.model.control.core.server.database.EntityInstancesMissingListItemEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesMissingLongEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesMissingStringEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesMissingTimeEntityAttributeQuery;
@@ -1528,7 +1529,7 @@ public class EntityAttributeLogic
     }
 
     public EntityListItemDefault createEntityListItemDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final EntityListItem entityListItem, final BasePK createdBy) {
+            final EntityListItem entityListItem, final boolean addMissingAttributes, final BasePK createdBy) {
         EntityListItemDefault entityListItemDefault = null;
 
         checkEntityType(eea, entityAttribute, EntityAttributeTypes.LISTITEM);
@@ -1540,6 +1541,12 @@ public class EntityAttributeLogic
 
             if(entityListItemDefault == null) {
                 coreControl.createEntityListItemDefault(entityAttribute, entityListItem, createdBy);
+
+                if(addMissingAttributes) {
+                    new EntityInstancesMissingListItemEntityAttributeQuery().execute(entityAttribute).forEach(entityInstanceResult ->
+                            coreControl.createEntityListItemAttribute(entityAttribute.getPrimaryKey(),
+                                    entityInstanceResult.getEntityInstance(), entityListItem, createdBy));
+                }
             } else {
                 handleExecutionError(DuplicateEntityListItemDefaultException.class, eea, ExecutionErrors.DuplicateEntityListItemDefault.name(),
                         entityAttribute.getLastDetail().getEntityAttributeName());
