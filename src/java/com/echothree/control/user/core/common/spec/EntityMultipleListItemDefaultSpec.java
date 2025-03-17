@@ -14,14 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.core.common.form;
+package com.echothree.control.user.core.common.spec;
 
 import com.echothree.control.user.core.common.edit.EntityListItemAttributeEdit;
-import com.echothree.control.user.core.common.spec.EntityMultipleListItemAttributeUniversalSpec;
 
-public interface CreateEntityMultipleListItemAttributeForm
-        extends EntityMultipleListItemAttributeUniversalSpec, EntityListItemAttributeEdit {
+public interface EntityMultipleListItemDefaultSpec
+        extends EntityListItemDefaultSpec, EntityListItemAttributeEdit {
     
-    // Nothing additional beyond EntityMultipleListItemAttributeUniversalSpec, EntityListItemAttributeEdit
+    // Nothing additional beyond EntityListItemDefaultSpec, EntityListItemAttributeEdit
     
 }

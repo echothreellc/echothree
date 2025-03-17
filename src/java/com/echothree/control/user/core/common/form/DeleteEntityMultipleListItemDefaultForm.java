@@ -16,12 +16,11 @@
 
 package com.echothree.control.user.core.common.form;
 
-import com.echothree.control.user.core.common.edit.EntityListItemAttributeEdit;
-import com.echothree.control.user.core.common.spec.EntityMultipleListItemAttributeUniversalSpec;
+import com.echothree.control.user.core.common.spec.EntityMultipleListItemDefaultSpec;
 
-public interface CreateEntityMultipleListItemAttributeForm
-        extends EntityMultipleListItemAttributeUniversalSpec, EntityListItemAttributeEdit {
+public interface DeleteEntityMultipleListItemDefaultForm
+        extends EntityMultipleListItemDefaultSpec {
     
-    // Nothing additional beyond EntityMultipleListItemAttributeUniversalSpec, EntityListItemAttributeEdit
+    // Nothing additional beyond EntityMultipleListItemDefaultSpec
     
 }

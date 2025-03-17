@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.core.common.form;
 
-import com.echothree.control.user.core.common.edit.EntityListItemAttributeEdit;
-import com.echothree.control.user.core.common.spec.EntityMultipleListItemAttributeUniversalSpec;
+import com.echothree.control.user.core.common.spec.EntityMultipleListItemDefaultSpec;
 
-public interface CreateEntityMultipleListItemAttributeForm
-        extends EntityMultipleListItemAttributeUniversalSpec, EntityListItemAttributeEdit {
-    
-    // Nothing additional beyond EntityMultipleListItemAttributeUniversalSpec, EntityListItemAttributeEdit
+public interface CreateEntityMultipleListItemDefaultForm
+        extends EntityMultipleListItemDefaultSpec {
+
+    String getAddMissingAttributes();
+    void setAddMissingAttributes(String addMissingAttributes);
     
 }
