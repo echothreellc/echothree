@@ -63,6 +63,7 @@ public class EntityAttributeTransfer
     private EntityTimeAttributeTransfer entityTimeAttribute;
     private EntityListItemDefaultTransfer entityListItemDefault;
     private EntityListItemAttributeTransfer entityListItemAttribute;
+    private ListWrapper<EntityMultipleListItemDefaultTransfer> entityMultipleListItemDefaults;
     private ListWrapper<EntityMultipleListItemAttributeTransfer> entityMultipleListItemAttributes;
 
     private Long entityListItemsCount;
@@ -671,6 +672,22 @@ public class EntityAttributeTransfer
      */
     public void setEntityListItemAttribute(EntityListItemAttributeTransfer entityListItemAttribute) {
         this.entityListItemAttribute = entityListItemAttribute;
+    }
+
+    /**
+     * Returns the entityMultipleListItemDefaults.
+     * @return the entityMultipleListItemDefaults
+     */
+    public ListWrapper<EntityMultipleListItemDefaultTransfer> getEntityMultipleListItemDefaults() {
+        return entityMultipleListItemDefaults;
+    }
+
+    /**
+     * Sets the entityMultipleListItemDefaults.
+     * @param entityMultipleListItemDefaults the entityMultipleListItemDefaults to set
+     */
+    public void setEntityMultipleListItemDefaults(ListWrapper<EntityMultipleListItemDefaultTransfer> entityMultipleListItemDefaults) {
+        this.entityMultipleListItemDefaults = entityMultipleListItemDefaults;
     }
 
     /**

@@ -16,10 +16,8 @@
 
 package com.echothree.control.user.core.server.command;
 
-import com.echothree.control.user.core.common.form.CreateEntityListItemDefaultForm;
-import com.echothree.model.control.core.common.EntityAttributeTypes;
+import com.echothree.control.user.core.common.form.CreateEntityMultipleListItemDefaultForm;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
-import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
@@ -30,12 +28,12 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 
-public class CreateEntityListItemDefaultCommand
-        extends BaseSimpleCommand<CreateEntityListItemDefaultForm> {
-    
+public class CreateEntityMultipleListItemDefaultCommand
+        extends BaseSimpleCommand<CreateEntityMultipleListItemDefaultForm> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -53,9 +51,9 @@ public class CreateEntityListItemDefaultCommand
                 new FieldDefinition("AddMissingAttributes", FieldType.BOOLEAN, true, null, null)
         );
     }
-    
+
     /** Creates a new instance of CreateEntityListItemDefaultCommand */
-    public CreateEntityListItemDefaultCommand(UserVisitPK userVisitPK, CreateEntityListItemDefaultForm form) {
+    public CreateEntityMultipleListItemDefaultCommand(UserVisitPK userVisitPK, CreateEntityMultipleListItemDefaultForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
@@ -69,7 +67,7 @@ public class CreateEntityListItemDefaultCommand
             if(!hasExecutionErrors()) {
                 var addMissingAttributes = Boolean.parseBoolean(form.getAddMissingAttributes());
 
-                EntityAttributeLogic.getInstance().createEntityListItemDefault(this, entityAttribute,
+                EntityAttributeLogic.getInstance().createEntityMultipleListItemDefault(this, entityAttribute,
                         entityListItem, addMissingAttributes, getPartyPK());
             }
         }

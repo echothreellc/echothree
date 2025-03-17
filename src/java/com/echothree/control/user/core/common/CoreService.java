@@ -752,15 +752,23 @@ public interface CoreService
     CommandResult editEntityLongAttribute(UserVisitPK userVisitPK, EditEntityLongAttributeForm form);
     
     CommandResult deleteEntityLongAttribute(UserVisitPK userVisitPK, DeleteEntityLongAttributeForm form);
-    
+
+    // --------------------------------------------------------------------------------
+    //   Entity Multiple List Item Defaults
+    // --------------------------------------------------------------------------------
+
+    CommandResult createEntityMultipleListItemDefault(UserVisitPK userVisitPK, CreateEntityMultipleListItemDefaultForm form);
+
+    CommandResult deleteEntityMultipleListItemDefault(UserVisitPK userVisitPK, DeleteEntityMultipleListItemDefaultForm form);
+
     // --------------------------------------------------------------------------------
     //   Entity Multiple List Item Attributes
     // --------------------------------------------------------------------------------
-    
+
     CommandResult createEntityMultipleListItemAttribute(UserVisitPK userVisitPK, CreateEntityMultipleListItemAttributeForm form);
-    
+
     CommandResult deleteEntityMultipleListItemAttribute(UserVisitPK userVisitPK, DeleteEntityMultipleListItemAttributeForm form);
-    
+
     // --------------------------------------------------------------------------------
     //   Entity Name Attributes
     // --------------------------------------------------------------------------------

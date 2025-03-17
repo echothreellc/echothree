@@ -205,6 +205,9 @@
             <entityType entityTypeName="EntityListItemAttribute" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity List Item Attribute" />
             </entityType>
+            <entityType entityTypeName="EntityMultipleListItemDefault" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Multiple List Item Default" />
+            </entityType>
             <entityType entityTypeName="EntityMultipleListItemAttribute" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Multiple List Item Attribute" />
             </entityType>

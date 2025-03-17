@@ -313,6 +313,12 @@ public class EntityAttributeTransferCache
                         }
                     }
                     case MULTIPLELISTITEM -> {
+                        if(includeDefault) {
+                            var entityMultipleListItemDefaults = coreControl.getEntityMultipleListItemDefaults(entityAttribute);
+
+                            entityAttributeTransfer.setEntityMultipleListItemDefaults(new ListWrapper<>(coreControl.getEntityMultipleListItemDefaultTransfers(userVisit, entityMultipleListItemDefaults)));
+                        }
+
                         if(includeValue && entityInstance != null) {
                             entityAttributeTransfer.setEntityMultipleListItemAttributes(new ListWrapper<>(coreControl.getEntityMultipleListItemAttributeTransfers(userVisit, entityAttribute, entityInstance)));
                         }
