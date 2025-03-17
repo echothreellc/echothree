@@ -14,15 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.core.common.form;
+package com.echothree.control.user.core.common.spec;
 
 import com.echothree.control.user.core.common.edit.EntityListItemAttributeEdit;
-import com.echothree.control.user.core.common.spec.EntityListItemDefaultSpec;
 
-public interface CreateEntityListItemDefaultForm
+public interface EntityMultipleListItemDefaultSpec
         extends EntityListItemDefaultSpec, EntityListItemAttributeEdit {
-
-    String getAddMissingAttributes();
-    void setAddMissingAttributes(String addMissingAttributes);
+    
+    // Nothing additional beyond EntityListItemDefaultSpec, EntityListItemAttributeEdit
     
 }

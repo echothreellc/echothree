@@ -1974,6 +1974,33 @@
                         </index>
                     </indexes>
                 </table>
+                <table namePlural="EntityMultipleListItemDefaults" nameSingular="EntityMultipleListItemDefault" columnPrefix="emlidef">
+                    <columns>
+                        <column name="EntityMultipleListItemDefaultId" type="EID" nullAllowed="false" />
+                        <column name="EntityAttributeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityAttributes" destinationColumn="EntityAttributeId" />
+                        <column name="EntityListItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityListItems" destinationColumn="EntityListItemId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="EntityMultipleListItemDefaultId" />
+                        </index>
+                        <index type="Multiple" name="Index1">
+                            <indexColumn name="EntityAttributeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="EntityListItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="EntityAttributeId" />
+                            <indexColumn name="EntityListItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
                 <table namePlural="EntityMultipleListItemAttributes" nameSingular="EntityMultipleListItemAttribute" columnPrefix="emlia">
                     <columns>
                         <column name="EntityMultipleListItemAttributeId" type="EID" nullAllowed="false" />
@@ -2001,6 +2028,11 @@
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index4">
+                            <indexColumn name="EntityListItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index5">
+                            <indexColumn name="EntityInstanceId" />
                             <indexColumn name="EntityListItemId" />
                             <indexColumn name="ThruTime" />
                         </index>

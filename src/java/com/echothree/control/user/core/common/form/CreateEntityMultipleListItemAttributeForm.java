@@ -22,6 +22,6 @@ import com.echothree.control.user.core.common.spec.EntityMultipleListItemAttribu
 public interface CreateEntityMultipleListItemAttributeForm
         extends EntityMultipleListItemAttributeUniversalSpec, EntityListItemAttributeEdit {
     
-    // Nothing additional beyond EntityMultipleListItemAttributeSpec, EntityListItemAttributeEdit
+    // Nothing additional beyond EntityMultipleListItemAttributeUniversalSpec, EntityListItemAttributeEdit
     
 }
