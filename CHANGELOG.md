@@ -1,5 +1,10 @@
 # Changelog
 
+## 2025-03-16-01
+
+* Add Default Value for Multiple List Item Attributes [1466](https://gitlab.echothree.com/echothree/echothree/-/issues/1466)
+* jOOQ 3.20.1 Upgrade [1522](https://gitlab.echothree.com/echothree/echothree/-/issues/1522)
+
 ## 2025-03-02-01
 
 * Use a BINARY Columns for UUIDs [1349](https://gitlab.echothree.com/echothree/echothree/-/issues/1349)
