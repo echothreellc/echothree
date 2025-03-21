@@ -42,16 +42,16 @@ public class DeleteGlAccountCategoryCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.GlAccountCategory.name(), SecurityRoles.Delete.name())
-                        )))
-                )));
+                ))
+        ));
         
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("GlAccountCategoryName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+        );
     }
     
     /** Creates a new instance of DeleteGlAccountCategoryCommand */

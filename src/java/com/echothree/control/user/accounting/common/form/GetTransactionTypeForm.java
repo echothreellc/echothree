@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.accounting.common.form;
 
-import com.echothree.control.user.accounting.common.spec.TransactionTypeSpec;
+import com.echothree.control.user.accounting.common.spec.TransactionTypeUniversalSpec;
 
 public interface GetTransactionTypeForm
-        extends TransactionTypeSpec {
+        extends TransactionTypeUniversalSpec {
     
-    // Nothing additional beyond TransactionTypeSpec
+    // Nothing additional beyond TransactionTypeUniversalSpec
     
 }

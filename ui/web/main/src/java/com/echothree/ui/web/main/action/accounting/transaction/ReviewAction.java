@@ -63,6 +63,7 @@ public class ReviewAction
         Set<String> commandFormOptions = new HashSet<>();
         commandFormOptions.add(AccountingOptions.TransactionIncludeTransactionGlEntries);
         commandFormOptions.add(AccountingOptions.TransactionIncludeTransactionEntityRoles);
+        commandFormOptions.add(AccountingOptions.TransactionIncludeTransactionTimes);
         commandFormOptions.add(CoreOptions.EntityInstanceIncludeNames);
         commandFormOptions.add(PartyOptions.PartyIncludeDescription);
         commandForm.setOptions(commandFormOptions);

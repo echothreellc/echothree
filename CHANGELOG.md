@@ -1,5 +1,47 @@
 # Changelog
 
+## 2025-03-16-01
+
+* Add Default Value for Multiple List Item Attributes [1466](https://gitlab.echothree.com/echothree/echothree/-/issues/1466)
+* jOOQ 3.20.1 Upgrade [1522](https://gitlab.echothree.com/echothree/echothree/-/issues/1522)
+
+## 2025-03-02-01
+
+* Use a BINARY Columns for UUIDs [1349](https://gitlab.echothree.com/echothree/echothree/-/issues/1349)
+* Add Default Value for Date Attributes [1457](https://gitlab.echothree.com/echothree/echothree/-/issues/1457)
+* Add Default Value for Time Attributes [1462](https://gitlab.echothree.com/echothree/echothree/-/issues/1462)
+* Add Default Value for Geo Point Attributes [1465](https://gitlab.echothree.com/echothree/echothree/-/issues/1465)
+* Apache Avro 1.12.0 Upgrade [1515](https://gitlab.echothree.com/echothree/echothree/-/issues/1515)
+* jOOQ 3.20.0 Upgrade [1516](https://gitlab.echothree.com/echothree/echothree/-/issues/1516)
+* Add Migration of Text UUIDs to Binary UUIDs [1517](https://gitlab.echothree.com/echothree/echothree/-/issues/1517)
+* Switch to containers/jdk-build-tools for Builds [1518](https://gitlab.echothree.com/echothree/echothree/-/issues/1518)
+* Remove Apache Avro and Caffeine from gitlab-ci.yml [1519](https://gitlab.echothree.com/echothree/echothree/-/issues/1519)
+* Caffeine 3.2.0 Upgrade [1520](https://gitlab.echothree.com/echothree/echothree/-/issues/1520)
+* Gson 2.12.1 Upgrade [1521](https://gitlab.echothree.com/echothree/echothree/-/issues/1521)
+
+## 2025-02-16-01
+
+* Add Transaction Type Object and Queries [1506](https://gitlab.echothree.com/echothree/echothree/-/issues/1506)
+* Add Transaction Gl Account Category Object and Queries [1507](https://gitlab.echothree.com/echothree/echothree/-/issues/1507)
+* Add Transaction Entity Role Type Object and Queries [1508](https://gitlab.echothree.com/echothree/echothree/-/issues/1508)
+* Add Transaction Object and Queries [1509](https://gitlab.echothree.com/echothree/echothree/-/issues/1509)
+* TransactionDetail's GroupPartyId Column Should Not Be Null [1513](https://gitlab.echothree.com/echothree/echothree/-/issues/1513)
+* Allow GetTransactions UC to Return All Transactions [1514](https://gitlab.echothree.com/echothree/echothree/-/issues/1514)
+
+## 2025-02-02-01
+
+* Separate Debit and Credit Values in Transactions [1493](https://gitlab.echothree.com/echothree/echothree/-/issues/1493)
+* Add Workflow for Transactions [1494](https://gitlab.echothree.com/echothree/echothree/-/issues/1494)
+* Validate Transaction Balances Before Posting [1497](https://gitlab.echothree.com/echothree/echothree/-/issues/1497)
+* Refactor Posted Time Into Transaction Time Types and Transaction Times [1498](https://gitlab.echothree.com/echothree/echothree/-/issues/1498)
+* Convert GetTransactionGroups UC to Use BasePaginatedMultipleEntitiesCommand [1499](https://gitlab.echothree.com/echothree/echothree/-/issues/1499)
+* Convert GetTransactionGroup UC to Use BaseSingleEntityCommand [1500](https://gitlab.echothree.com/echothree/echothree/-/issues/1500)
+* Convert GetTransactions UC to Use BasePaginatedMultipleEntitiesCommand [1501](https://gitlab.echothree.com/echothree/echothree/-/issues/1501)
+* Convert GetTransaction UC to Use BaseSingleEntityCommand [1502](https://gitlab.echothree.com/echothree/echothree/-/issues/1502)
+* Convert GetTransactionTypes UC to Use BasePaginatedMultipleEntitiesCommand [1503](https://gitlab.echothree.com/echothree/echothree/-/issues/1503)
+* Convert GetTransactionType UC to Use BaseSingleEntityCommand [1504](https://gitlab.echothree.com/echothree/echothree/-/issues/1504)
+* Add Transaction Group Object and Queries [1505](https://gitlab.echothree.com/echothree/echothree/-/issues/1505)
+
 ## 2025-01-19-01
 
 * Add Default Value for Integer Attributes [1458](https://gitlab.echothree.com/echothree/echothree/-/issues/1458)

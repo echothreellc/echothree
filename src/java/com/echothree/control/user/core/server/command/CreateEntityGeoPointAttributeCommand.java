@@ -68,76 +68,33 @@ public class CreateEntityGeoPointAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        var parameterCount = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
 
-        if(parameterCount == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
+        if(!hasExecutionErrors()) {
+            var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttribute(this, entityInstance, form, form,
+                    EntityAttributeTypes.GEOPOINT);
 
             if(!hasExecutionErrors()) {
-                var entityAttributeName = form.getEntityAttributeName();
-                var entityAttributeUuid = form.getEntityAttributeUuid();
-                
-                parameterCount = (entityAttributeName == null ? 0 : 1) + (entityAttributeUuid == null ? 0 : 1);
-                
-                if(parameterCount == 1) {
-                    var entityAttribute = entityAttributeName == null ?
-                            EntityAttributeLogic.getInstance().getEntityAttributeByUuid(this, entityAttributeUuid) :
-                            EntityAttributeLogic.getInstance().getEntityAttributeByName(this, entityInstance.getEntityType(), entityAttributeName);
+                var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
+                var elevation = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_ELEVATION,
+                        form.getElevation(), form.getElevationUnitOfMeasureTypeName(),
+                        null, ExecutionErrors.MissingRequiredElevation.name(), null, ExecutionErrors.MissingRequiredElevationUnitOfMeasureTypeName.name(),
+                        null, ExecutionErrors.UnknownElevationUnitOfMeasureTypeName.name());
+
+                if(!hasExecutionErrors()) {
+                    var altitude = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_ALTITUDE,
+                            form.getAltitude(), form.getAltitudeUnitOfMeasureTypeName(),
+                            null, ExecutionErrors.MissingRequiredAltitude.name(), null, ExecutionErrors.MissingRequiredAltitudeUnitOfMeasureTypeName.name(),
+                            null, ExecutionErrors.UnknownAltitudeUnitOfMeasureTypeName.name());
 
                     if(!hasExecutionErrors()) {
-                        var entityAttributeTypeName = entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
+                        var latitude = Integer.valueOf(form.getLatitude());
+                        var longitude = Integer.valueOf(form.getLongitude());
 
-                        if(EntityAttributeTypes.GEOPOINT.name().equals(entityAttributeTypeName)) {
-                            if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                                var coreControl = getCoreControl();
-                                var entityGeoPointAttribute = coreControl.getEntityGeoPointAttribute(entityAttribute, entityInstance);
-
-                                if(entityGeoPointAttribute == null) {
-                                    var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
-                                    var elevation = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_ELEVATION,
-                                            form.getElevation(), form.getElevationUnitOfMeasureTypeName(),
-                                            null, ExecutionErrors.MissingRequiredElevation.name(), null, ExecutionErrors.MissingRequiredElevationUnitOfMeasureTypeName.name(),
-                                            null, ExecutionErrors.UnknownElevationUnitOfMeasureTypeName.name());
-
-                                    if(!hasExecutionErrors()) {
-                                        var altitude = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_ALTITUDE,
-                                                form.getAltitude(), form.getAltitudeUnitOfMeasureTypeName(),
-                                                null, ExecutionErrors.MissingRequiredAltitude.name(), null, ExecutionErrors.MissingRequiredAltitudeUnitOfMeasureTypeName.name(),
-                                                null, ExecutionErrors.UnknownAltitudeUnitOfMeasureTypeName.name());
-
-                                        if(!hasExecutionErrors()) {
-                                            var latitude = Integer.valueOf(form.getLatitude());
-                                            var longitude = Integer.valueOf(form.getLongitude());
-
-                                            coreControl.createEntityGeoPointAttribute(entityAttribute, entityInstance, latitude, longitude, elevation, altitude, getPartyPK());
-                                        }
-                                    }
-                                } else {
-                                    addExecutionError(ExecutionErrors.DuplicateEntityGeoPointAttribute.name(),
-                                            EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
-                                            entityAttribute.getLastDetail().getEntityAttributeName());
-                                }
-                            } else {
-                                var expectedEntityTypeDetail = entityAttribute.getLastDetail().getEntityType().getLastDetail();
-                                var suppliedEntityTypeDetail = entityInstance.getEntityType().getLastDetail();
-                                
-                                addExecutionError(ExecutionErrors.MismatchedEntityType.name(),
-                                        expectedEntityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                                        expectedEntityTypeDetail.getEntityTypeName(),
-                                        suppliedEntityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                                        suppliedEntityTypeDetail.getEntityTypeName());
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.MismatchedEntityAttributeType.name(),
-                                    EntityAttributeTypes.GEOPOINT.name(), entityAttributeTypeName);
-                        }
+                        EntityAttributeLogic.getInstance().createEntityGeoPointAttribute(this, entityAttribute, entityInstance, latitude, longitude, elevation, altitude, getPartyPK());
                     }
-                } else {
-                    addExecutionError(ExecutionErrors.InvalidParameterCount.name());
                 }
             }
-        } else {
-            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
 
         return null;

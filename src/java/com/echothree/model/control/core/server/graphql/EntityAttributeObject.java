@@ -485,6 +485,16 @@ public class EntityAttributeObject
 
                 defaultInterface = entityBooleanDefault == null ? null : new EntityBooleanDefaultObject(entityBooleanDefault);
             }
+            case DATE -> {
+                var entityDateDefault = coreControl.getEntityDateDefault(entityAttribute);
+
+                defaultInterface = entityDateDefault == null ? null : new EntityDateDefaultObject(entityDateDefault);
+            }
+            case GEOPOINT -> {
+                var entityGeoPointDefault = coreControl.getEntityGeoPointDefault(entityAttribute);
+
+                defaultInterface = entityGeoPointDefault == null ? null : new EntityGeoPointDefaultObject(entityGeoPointDefault);
+            }
             case INTEGER -> {
                 var entityIntegerDefault = coreControl.getEntityIntegerDefault(entityAttribute);
 
@@ -506,6 +516,11 @@ public class EntityAttributeObject
                         userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
 
                 defaultInterface = entityStringDefault == null ? null : new EntityStringDefaultObject(entityStringDefault);
+            }
+            case TIME -> {
+                var entityTimeDefault = coreControl.getEntityTimeDefault(entityAttribute);
+
+                defaultInterface = entityTimeDefault == null ? null : new EntityTimeDefaultObject(entityTimeDefault);
             }
             default -> {} // Leave defaultInterface null
         }

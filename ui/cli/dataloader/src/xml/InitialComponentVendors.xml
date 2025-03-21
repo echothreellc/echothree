@@ -160,8 +160,14 @@
             <entityType entityTypeName="EntityBooleanAttribute" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Boolean Attribute" />
             </entityType>
+            <entityType entityTypeName="EntityDateDefault" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Date Default" />
+            </entityType>
             <entityType entityTypeName="EntityDateAttribute" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Date Attribute" />
+            </entityType>
+            <entityType entityTypeName="EntityTimeDefault" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Time Default" />
             </entityType>
             <entityType entityTypeName="EntityTimeAttribute" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Time Attribute" />
@@ -171,6 +177,9 @@
             </entityType>
             <entityType entityTypeName="EntityStringAttribute" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity String Attribute" />
+            </entityType>
+            <entityType entityTypeName="EntityGeoPointDefault" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Geo Point Default" />
             </entityType>
             <entityType entityTypeName="EntityGeoPointAttribute" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Geo Point Attribute" />
@@ -195,6 +204,9 @@
             </entityType>
             <entityType entityTypeName="EntityListItemAttribute" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity List Item Attribute" />
+            </entityType>
+            <entityType entityTypeName="EntityMultipleListItemDefault" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Multiple List Item Default" />
             </entityType>
             <entityType entityTypeName="EntityMultipleListItemAttribute" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Multiple List Item Attribute" />
@@ -1642,6 +1654,12 @@
             <entityType entityTypeName="TimeZoneDescription" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Time Zone Description" />
             </entityType>
+            <entityType entityTypeName="TransactionTimeType" keepAllHistory="false" isExtensible="true" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Transaction Time Type" />
+            </entityType>
+            <entityType entityTypeName="TransactionTimeTypeDescription" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Transaction Time Type Description" />
+            </entityType>
             <entityType entityTypeName="TransactionType" keepAllHistory="false" isExtensible="true" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Transaction Type" />
             </entityType>
@@ -1668,6 +1686,9 @@
             </entityType>
             <entityType entityTypeName="Transaction" keepAllHistory="false" isExtensible="true" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Transaction" />
+            </entityType>
+            <entityType entityTypeName="TransactionTime" keepAllHistory="false" isExtensible="true" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Transaction Time" />
             </entityType>
             <entityType entityTypeName="TransactionGlEntry" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Transaction Gl Account Entry" />

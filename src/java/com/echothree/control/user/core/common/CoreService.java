@@ -752,15 +752,23 @@ public interface CoreService
     CommandResult editEntityLongAttribute(UserVisitPK userVisitPK, EditEntityLongAttributeForm form);
     
     CommandResult deleteEntityLongAttribute(UserVisitPK userVisitPK, DeleteEntityLongAttributeForm form);
-    
+
+    // --------------------------------------------------------------------------------
+    //   Entity Multiple List Item Defaults
+    // --------------------------------------------------------------------------------
+
+    CommandResult createEntityMultipleListItemDefault(UserVisitPK userVisitPK, CreateEntityMultipleListItemDefaultForm form);
+
+    CommandResult deleteEntityMultipleListItemDefault(UserVisitPK userVisitPK, DeleteEntityMultipleListItemDefaultForm form);
+
     // --------------------------------------------------------------------------------
     //   Entity Multiple List Item Attributes
     // --------------------------------------------------------------------------------
-    
+
     CommandResult createEntityMultipleListItemAttribute(UserVisitPK userVisitPK, CreateEntityMultipleListItemAttributeForm form);
-    
+
     CommandResult deleteEntityMultipleListItemAttribute(UserVisitPK userVisitPK, DeleteEntityMultipleListItemAttributeForm form);
-    
+
     // --------------------------------------------------------------------------------
     //   Entity Name Attributes
     // --------------------------------------------------------------------------------
@@ -790,17 +798,27 @@ public interface CoreService
     CommandResult editEntityStringAttribute(UserVisitPK userVisitPK, EditEntityStringAttributeForm form);
     
     CommandResult deleteEntityStringAttribute(UserVisitPK userVisitPK, DeleteEntityStringAttributeForm form);
-    
+
+    // --------------------------------------------------------------------------------
+    //   Entity Geo Point Defaults
+    // --------------------------------------------------------------------------------
+
+    CommandResult createEntityGeoPointDefault(UserVisitPK userVisitPK, CreateEntityGeoPointDefaultForm form);
+
+    CommandResult editEntityGeoPointDefault(UserVisitPK userVisitPK, EditEntityGeoPointDefaultForm form);
+
+    CommandResult deleteEntityGeoPointDefault(UserVisitPK userVisitPK, DeleteEntityGeoPointDefaultForm form);
+
     // --------------------------------------------------------------------------------
     //   Entity Geo Point Attributes
     // --------------------------------------------------------------------------------
-    
+
     CommandResult createEntityGeoPointAttribute(UserVisitPK userVisitPK, CreateEntityGeoPointAttributeForm form);
-    
+
     CommandResult editEntityGeoPointAttribute(UserVisitPK userVisitPK, EditEntityGeoPointAttributeForm form);
-    
+
     CommandResult deleteEntityGeoPointAttribute(UserVisitPK userVisitPK, DeleteEntityGeoPointAttributeForm form);
-    
+
     // --------------------------------------------------------------------------------
     //   Entity Blob Attributes
     // --------------------------------------------------------------------------------
@@ -824,7 +842,17 @@ public interface CoreService
     CommandResult getEntityClobAttribute(UserVisitPK userVisitPK, GetEntityClobAttributeForm form);
 
     CommandResult deleteEntityClobAttribute(UserVisitPK userVisitPK, DeleteEntityClobAttributeForm form);
-    
+
+    // --------------------------------------------------------------------------------
+    //   Entity Time Defaults
+    // --------------------------------------------------------------------------------
+
+    CommandResult createEntityTimeDefault(UserVisitPK userVisitPK, CreateEntityTimeDefaultForm form);
+
+    CommandResult editEntityTimeDefault(UserVisitPK userVisitPK, EditEntityTimeDefaultForm form);
+
+    CommandResult deleteEntityTimeDefault(UserVisitPK userVisitPK, DeleteEntityTimeDefaultForm form);
+
     // --------------------------------------------------------------------------------
     //   Entity Time Attributes
     // --------------------------------------------------------------------------------
@@ -834,6 +862,16 @@ public interface CoreService
     CommandResult editEntityTimeAttribute(UserVisitPK userVisitPK, EditEntityTimeAttributeForm form);
 
     CommandResult deleteEntityTimeAttribute(UserVisitPK userVisitPK, DeleteEntityTimeAttributeForm form);
+
+    // --------------------------------------------------------------------------------
+    //   Entity Date Defaults
+    // --------------------------------------------------------------------------------
+
+    CommandResult createEntityDateDefault(UserVisitPK userVisitPK, CreateEntityDateDefaultForm form);
+
+    CommandResult editEntityDateDefault(UserVisitPK userVisitPK, EditEntityDateDefaultForm form);
+
+    CommandResult deleteEntityDateDefault(UserVisitPK userVisitPK, DeleteEntityDateDefaultForm form);
 
     // --------------------------------------------------------------------------------
     //   Entity Date Attributes

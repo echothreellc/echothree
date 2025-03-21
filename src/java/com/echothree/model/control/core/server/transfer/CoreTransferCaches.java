@@ -63,6 +63,7 @@ public class CoreTransferCaches
     protected EntityBooleanDefaultTransferCache entityBooleanDefaultTransferCache;
     protected EntityBooleanAttributeTransferCache entityBooleanAttributeTransferCache;
     protected EntityClobAttributeTransferCache entityClobAttributeTransferCache;
+    protected EntityDateDefaultTransferCache entityDateDefaultTransferCache;
     protected EntityDateAttributeTransferCache entityDateAttributeTransferCache;
     protected EntityIntegerDefaultTransferCache entityIntegerDefaultTransferCache;
     protected EntityIntegerAttributeTransferCache entityIntegerAttributeTransferCache;
@@ -70,11 +71,14 @@ public class CoreTransferCaches
     protected EntityListItemAttributeTransferCache entityListItemAttributeTransferCache;
     protected EntityLongDefaultTransferCache entityLongDefaultTransferCache;
     protected EntityLongAttributeTransferCache entityLongAttributeTransferCache;
+    protected EntityMultipleListItemDefaultTransferCache entityMultipleListItemDefaultTransferCache;
     protected EntityMultipleListItemAttributeTransferCache entityMultipleListItemAttributeTransferCache;
     protected EntityNameAttributeTransferCache entityNameAttributeTransferCache;
+    protected EntityGeoPointDefaultTransferCache entityGeoPointDefaultTransferCache;
     protected EntityGeoPointAttributeTransferCache entityGeoPointAttributeTransferCache;
     protected EntityStringDefaultTransferCache entityStringDefaultTransferCache;
     protected EntityStringAttributeTransferCache entityStringAttributeTransferCache;
+    protected EntityTimeDefaultTransferCache entityTimeDefaultTransferCache;
     protected EntityTimeAttributeTransferCache entityTimeAttributeTransferCache;
     protected EntityAttributeEntityTypeTransferCache entityAttributeEntityTypeTransferCache;
     protected EntityEntityAttributeTransferCache entityEntityAttributeTransferCache;
@@ -404,11 +408,18 @@ public class CoreTransferCaches
         
         return entityClobAttributeTransferCache;
     }
-    
+
+    public EntityDateDefaultTransferCache getEntityDateDefaultTransferCache() {
+        if(entityDateDefaultTransferCache == null)
+            entityDateDefaultTransferCache = new EntityDateDefaultTransferCache(userVisit);
+
+        return entityDateDefaultTransferCache;
+    }
+
     public EntityDateAttributeTransferCache getEntityDateAttributeTransferCache() {
         if(entityDateAttributeTransferCache == null)
             entityDateAttributeTransferCache = new EntityDateAttributeTransferCache(userVisit);
-        
+
         return entityDateAttributeTransferCache;
     }
 
@@ -453,25 +464,39 @@ public class CoreTransferCaches
         
         return entityLongAttributeTransferCache;
     }
-    
+
+    public EntityMultipleListItemDefaultTransferCache getEntityMultipleListItemDefaultTransferCache() {
+        if(entityMultipleListItemDefaultTransferCache == null)
+            entityMultipleListItemDefaultTransferCache = new EntityMultipleListItemDefaultTransferCache(userVisit);
+
+        return entityMultipleListItemDefaultTransferCache;
+    }
+
     public EntityMultipleListItemAttributeTransferCache getEntityMultipleListItemAttributeTransferCache() {
         if(entityMultipleListItemAttributeTransferCache == null)
             entityMultipleListItemAttributeTransferCache = new EntityMultipleListItemAttributeTransferCache(userVisit);
-        
+
         return entityMultipleListItemAttributeTransferCache;
     }
-    
+
     public EntityNameAttributeTransferCache getEntityNameAttributeTransferCache() {
         if(entityNameAttributeTransferCache == null)
             entityNameAttributeTransferCache = new EntityNameAttributeTransferCache(userVisit);
         
         return entityNameAttributeTransferCache;
     }
-    
+
+    public EntityGeoPointDefaultTransferCache getEntityGeoPointDefaultTransferCache() {
+        if(entityGeoPointDefaultTransferCache == null)
+            entityGeoPointDefaultTransferCache = new EntityGeoPointDefaultTransferCache(userVisit);
+
+        return entityGeoPointDefaultTransferCache;
+    }
+
     public EntityGeoPointAttributeTransferCache getEntityGeoPointAttributeTransferCache() {
         if(entityGeoPointAttributeTransferCache == null)
             entityGeoPointAttributeTransferCache = new EntityGeoPointAttributeTransferCache(userVisit);
-        
+
         return entityGeoPointAttributeTransferCache;
     }
 
@@ -489,13 +514,20 @@ public class CoreTransferCaches
         return entityStringAttributeTransferCache;
     }
 
+    public EntityTimeDefaultTransferCache getEntityTimeDefaultTransferCache() {
+        if(entityTimeDefaultTransferCache == null)
+            entityTimeDefaultTransferCache = new EntityTimeDefaultTransferCache(userVisit);
+
+        return entityTimeDefaultTransferCache;
+    }
+
     public EntityTimeAttributeTransferCache getEntityTimeAttributeTransferCache() {
         if(entityTimeAttributeTransferCache == null)
             entityTimeAttributeTransferCache = new EntityTimeAttributeTransferCache(userVisit);
-        
+
         return entityTimeAttributeTransferCache;
     }
-    
+
     public EntityAttributeEntityTypeTransferCache getEntityAttributeEntityTypeTransferCache() {
         if(entityAttributeEntityTypeTransferCache == null)
             entityAttributeEntityTypeTransferCache = new EntityAttributeEntityTypeTransferCache(userVisit);

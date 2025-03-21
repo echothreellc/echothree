@@ -631,7 +631,7 @@
                         <column name="EntityInstanceId" type="EID" nullAllowed="false" />
                         <column name="EntityTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityTypes" destinationColumn="EntityTypeId" />
                         <column name="EntityUniqueId" type="Long" nullAllowed="false" />
-                        <column name="Uuid" type="Uuid" nullAllowed="true" />
+                        <column name="Uuid" type="UUID" nullAllowed="true" />
                     </columns>
                     <indexes>
                         <index type="PrimaryKey">
@@ -1470,12 +1470,30 @@
                         </index>
                     </indexes>
                 </table>
+                <table namePlural="EntityDateDefaults" nameSingular="EntityDateDefault" columnPrefix="enddef">
+                    <columns>
+                        <column name="EntityDateDefaultId" type="EID" nullAllowed="false" />
+                        <column name="EntityAttributeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityAttributes" destinationColumn="EntityAttributeId" />
+                        <column name="DateAttribute" type="Date" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="EntityDateDefaultId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="EntityAttributeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
                 <table namePlural="EntityDateAttributes" nameSingular="EntityDateAttribute" columnPrefix="enda">
                     <columns>
                         <column name="EntityDateAttributeId" type="EID" nullAllowed="false" />
                         <column name="EntityAttributeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityAttributes" destinationColumn="EntityAttributeId" />
                         <column name="EntityInstanceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityInstances" destinationColumn="EntityInstanceId" />
-                        <column name="DateAttribute" type="Date" nullAllowed="false" />                        
+                        <column name="DateAttribute" type="Date" nullAllowed="false" />
                         <column name="FromTime" type="Time" nullAllowed="false" />
                         <column name="ThruTime" type="Time" nullAllowed="false" />
                     </columns>
@@ -1498,12 +1516,30 @@
                         </index>
                     </indexes>
                 </table>
+                <table namePlural="EntityTimeDefaults" nameSingular="EntityTimeDefault" columnPrefix="entdef">
+                    <columns>
+                        <column name="EntityTimeAttributeId" type="EID" nullAllowed="false" />
+                        <column name="EntityAttributeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityAttributes" destinationColumn="EntityAttributeId" />
+                        <column name="TimeAttribute" type="Time" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="EntityTimeAttributeId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="EntityAttributeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
                 <table namePlural="EntityTimeAttributes" nameSingular="EntityTimeAttribute" columnPrefix="enta">
                     <columns>
                         <column name="EntityTimeAttributeId" type="EID" nullAllowed="false" />
                         <column name="EntityAttributeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityAttributes" destinationColumn="EntityAttributeId" />
                         <column name="EntityInstanceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityInstances" destinationColumn="EntityInstanceId" />
-                        <column name="TimeAttribute" type="Time" nullAllowed="false" />                        
+                        <column name="TimeAttribute" type="Time" nullAllowed="false" />
                         <column name="FromTime" type="Time" nullAllowed="false" />
                         <column name="ThruTime" type="Time" nullAllowed="false" />
                     </columns>
@@ -1586,15 +1622,36 @@
                         </index>
                     </indexes>
                 </table>
+                <table namePlural="EntityGeoPointDefaults" nameSingular="EntityGeoPointDefault" columnPrefix="engeopntdef">
+                    <columns>
+                        <column name="EntityGeoPointDefaultId" type="EID" nullAllowed="false" />
+                        <column name="EntityAttributeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityAttributes" destinationColumn="EntityAttributeId" />
+                        <column name="Latitude" type="Degree" nullAllowed="false" />
+                        <column name="Longitude" type="Degree" nullAllowed="false" />
+                        <column name="Elevation" type="Long" nullAllowed="true" />
+                        <column name="Altitude" type="Long" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="EntityGeoPointDefaultId" />
+                        </index>
+                        <index type="Multiple" name="Index1">
+                            <indexColumn name="EntityAttributeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
                 <table namePlural="EntityGeoPointAttributes" nameSingular="EntityGeoPointAttribute" columnPrefix="engeopnta">
                     <columns>
                         <column name="EntityGeoPointAttributeId" type="EID" nullAllowed="false" />
                         <column name="EntityAttributeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityAttributes" destinationColumn="EntityAttributeId" />
                         <column name="EntityInstanceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityInstances" destinationColumn="EntityInstanceId" />
-                        <column name="Latitude" type="Degree" nullAllowed="false" />                        
-                        <column name="Longitude" type="Degree" nullAllowed="false" />                        
-                        <column name="Elevation" type="Long" nullAllowed="true" />                        
-                        <column name="Altitude" type="Long" nullAllowed="true" />                        
+                        <column name="Latitude" type="Degree" nullAllowed="false" />
+                        <column name="Longitude" type="Degree" nullAllowed="false" />
+                        <column name="Elevation" type="Long" nullAllowed="true" />
+                        <column name="Altitude" type="Long" nullAllowed="true" />
                         <column name="FromTime" type="Time" nullAllowed="false" />
                         <column name="ThruTime" type="Time" nullAllowed="false" />
                     </columns>
@@ -1917,6 +1974,33 @@
                         </index>
                     </indexes>
                 </table>
+                <table namePlural="EntityMultipleListItemDefaults" nameSingular="EntityMultipleListItemDefault" columnPrefix="emlidef">
+                    <columns>
+                        <column name="EntityMultipleListItemDefaultId" type="EID" nullAllowed="false" />
+                        <column name="EntityAttributeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityAttributes" destinationColumn="EntityAttributeId" />
+                        <column name="EntityListItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityListItems" destinationColumn="EntityListItemId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="EntityMultipleListItemDefaultId" />
+                        </index>
+                        <index type="Multiple" name="Index1">
+                            <indexColumn name="EntityAttributeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="EntityListItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="EntityAttributeId" />
+                            <indexColumn name="EntityListItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
                 <table namePlural="EntityMultipleListItemAttributes" nameSingular="EntityMultipleListItemAttribute" columnPrefix="emlia">
                     <columns>
                         <column name="EntityMultipleListItemAttributeId" type="EID" nullAllowed="false" />
@@ -1944,6 +2028,11 @@
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index4">
+                            <indexColumn name="EntityListItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index5">
+                            <indexColumn name="EntityInstanceId" />
                             <indexColumn name="EntityListItemId" />
                             <indexColumn name="ThruTime" />
                         </index>

@@ -28,6 +28,7 @@ import com.echothree.ui.cli.dataloader.util.data.handler.accounting.GlAccountsHa
 import com.echothree.ui.cli.dataloader.util.data.handler.accounting.GlResourceTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.accounting.ItemAccountingCategoriesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.accounting.SymbolPositionsHandler;
+import com.echothree.ui.cli.dataloader.util.data.handler.accounting.TransactionTimeTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.accounting.TransactionTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.associate.AssociateProgramsHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.batch.BatchTypesHandler;
@@ -459,6 +460,8 @@ public class InitialDataHandler
             initialDataParser.pushHandler(new ItemPurchasingCategoriesHandler(initialDataParser, this));
         } else if(localName.equals("glAccounts")) {
             initialDataParser.pushHandler(new GlAccountsHandler(initialDataParser, this));
+        } else if(localName.equals("transactionTimeTypes")) {
+            initialDataParser.pushHandler(new TransactionTimeTypesHandler(initialDataParser, this));
         } else if(localName.equals("transactionTypes")) {
             initialDataParser.pushHandler(new TransactionTypesHandler(initialDataParser, this));
         } else if(localName.equals("termTypes")) {

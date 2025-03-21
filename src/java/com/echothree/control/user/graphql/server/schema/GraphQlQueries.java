@@ -33,6 +33,16 @@ import com.echothree.control.user.accounting.server.command.GetItemAccountingCat
 import com.echothree.control.user.accounting.server.command.GetItemAccountingCategoryCommand;
 import com.echothree.control.user.accounting.server.command.GetSymbolPositionCommand;
 import com.echothree.control.user.accounting.server.command.GetSymbolPositionsCommand;
+import com.echothree.control.user.accounting.server.command.GetTransactionCommand;
+import com.echothree.control.user.accounting.server.command.GetTransactionEntityRoleTypeCommand;
+import com.echothree.control.user.accounting.server.command.GetTransactionEntityRoleTypesCommand;
+import com.echothree.control.user.accounting.server.command.GetTransactionGlAccountCategoriesCommand;
+import com.echothree.control.user.accounting.server.command.GetTransactionGlAccountCategoryCommand;
+import com.echothree.control.user.accounting.server.command.GetTransactionGroupCommand;
+import com.echothree.control.user.accounting.server.command.GetTransactionGroupsCommand;
+import com.echothree.control.user.accounting.server.command.GetTransactionTypeCommand;
+import com.echothree.control.user.accounting.server.command.GetTransactionTypesCommand;
+import com.echothree.control.user.accounting.server.command.GetTransactionsCommand;
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
 import com.echothree.control.user.cancellationpolicy.server.command.GetCancellationKindCommand;
 import com.echothree.control.user.cancellationpolicy.server.command.GetCancellationKindsCommand;
@@ -397,6 +407,7 @@ import com.echothree.control.user.workflow.server.command.GetWorkflowStepTypeCom
 import com.echothree.control.user.workflow.server.command.GetWorkflowStepTypesCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowStepsCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowsCommand;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
 import com.echothree.model.control.accounting.server.graphql.GlAccountCategoryObject;
 import com.echothree.model.control.accounting.server.graphql.GlAccountClassObject;
@@ -405,6 +416,11 @@ import com.echothree.model.control.accounting.server.graphql.GlAccountTypeObject
 import com.echothree.model.control.accounting.server.graphql.GlResourceTypeObject;
 import com.echothree.model.control.accounting.server.graphql.ItemAccountingCategoryObject;
 import com.echothree.model.control.accounting.server.graphql.SymbolPositionObject;
+import com.echothree.model.control.accounting.server.graphql.TransactionEntityRoleTypeObject;
+import com.echothree.model.control.accounting.server.graphql.TransactionGlAccountCategoryObject;
+import com.echothree.model.control.accounting.server.graphql.TransactionGroupObject;
+import com.echothree.model.control.accounting.server.graphql.TransactionObject;
+import com.echothree.model.control.accounting.server.graphql.TransactionTypeObject;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationKindObject;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicyObject;
@@ -621,6 +637,11 @@ import com.echothree.model.data.accounting.common.GlAccountTypeConstants;
 import com.echothree.model.data.accounting.common.GlResourceTypeConstants;
 import com.echothree.model.data.accounting.common.ItemAccountingCategoryConstants;
 import com.echothree.model.data.accounting.common.SymbolPositionConstants;
+import com.echothree.model.data.accounting.common.TransactionConstants;
+import com.echothree.model.data.accounting.common.TransactionEntityRoleTypeConstants;
+import com.echothree.model.data.accounting.common.TransactionGlAccountCategoryConstants;
+import com.echothree.model.data.accounting.common.TransactionGroupConstants;
+import com.echothree.model.data.accounting.common.TransactionTypeConstants;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
 import com.echothree.model.data.accounting.server.entity.GlAccountCategory;
@@ -629,6 +650,11 @@ import com.echothree.model.data.accounting.server.entity.GlAccountType;
 import com.echothree.model.data.accounting.server.entity.GlResourceType;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
 import com.echothree.model.data.accounting.server.entity.SymbolPosition;
+import com.echothree.model.data.accounting.server.entity.Transaction;
+import com.echothree.model.data.accounting.server.entity.TransactionEntityRoleType;
+import com.echothree.model.data.accounting.server.entity.TransactionGlAccountCategory;
+import com.echothree.model.data.accounting.server.entity.TransactionGroup;
+import com.echothree.model.data.accounting.server.entity.TransactionType;
 import com.echothree.model.data.cancellationpolicy.common.CancellationKindConstants;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
@@ -998,7 +1024,6 @@ public interface GraphQlQueries {
             commandForm.setSearchKindName(searchKindName);
 
             var totalEntities = command.getTotalEntitiesForGraphQl();
-
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -1057,7 +1082,6 @@ public interface GraphQlQueries {
             commandForm.setSearchKindName(searchKindName);
 
             var totalEntities = command.getTotalEntitiesForGraphQl();
-
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -1365,7 +1389,6 @@ public interface GraphQlQueries {
             var commandForm = WorkflowUtil.getHome().getGetWorkflowsForm();
             var command = new GetWorkflowsCommand(getUserVisitPK(env), commandForm);
             var totalEntities = command.getTotalEntitiesForGraphQl();
-
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -1428,7 +1451,6 @@ public interface GraphQlQueries {
             commandForm.setEntityTypeName(entityTypeName);
 
             var totalEntities = command.getTotalEntitiesForGraphQl();
-
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -1517,7 +1539,6 @@ public interface GraphQlQueries {
             commandForm.setWorkflowName(workflowName);
 
             var totalEntities = command.getTotalEntitiesForGraphQl();
-
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -1576,7 +1597,6 @@ public interface GraphQlQueries {
             commandForm.setWorkflowName(workflowName);
 
             var totalEntities = command.getTotalEntitiesForGraphQl();
-
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -1639,7 +1659,6 @@ public interface GraphQlQueries {
             commandForm.setWorkflowStepName(workflowStepName);
 
             var totalEntities = command.getTotalEntitiesForGraphQl();
-
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -1706,7 +1725,6 @@ public interface GraphQlQueries {
             commandForm.setWorkflowDestinationName(workflowDestinationName);
 
             var totalEntities = command.getTotalEntitiesForGraphQl();
-
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -1771,7 +1789,6 @@ public interface GraphQlQueries {
             commandForm.setWorkflowDestinationName(workflowDestinationName);
 
             var totalEntities = command.getTotalEntitiesForGraphQl();
-
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -1840,7 +1857,6 @@ public interface GraphQlQueries {
             commandForm.setPartyTypeName(partyTypeName);
 
             var totalEntities = command.getTotalEntitiesForGraphQl();
-
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -1958,7 +1974,6 @@ public interface GraphQlQueries {
             commandForm.setWorkflowName(workflowName);
 
             var totalEntities = command.getTotalEntitiesForGraphQl();
-
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -2021,7 +2036,6 @@ public interface GraphQlQueries {
             commandForm.setWorkflowEntranceName(workflowEntranceName);
 
             var totalEntities = command.getTotalEntitiesForGraphQl();
-
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -2082,7 +2096,6 @@ public interface GraphQlQueries {
             commandForm.setWorkflowEntranceName(workflowEntranceName);
 
             var totalEntities = command.getTotalEntitiesForGraphQl();
-
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -2147,7 +2160,6 @@ public interface GraphQlQueries {
             commandForm.setPartyTypeName(partyTypeName);
 
             var totalEntities = command.getTotalEntitiesForGraphQl();
-
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -2254,8 +2266,8 @@ public interface GraphQlQueries {
         try {
             var commandForm = WorkflowUtil.getHome().getGetWorkflowStepTypesForm();
             var command = new GetWorkflowStepTypesCommand(getUserVisitPK(env), commandForm);
-            var totalEntities = command.getTotalEntitiesForGraphQl();
 
+            var totalEntities = command.getTotalEntitiesForGraphQl();
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -2360,8 +2372,8 @@ public interface GraphQlQueries {
         try {
             var commandForm = SequenceUtil.getHome().getGetSequenceTypesForm();
             var command = new GetSequenceTypesCommand(getUserVisitPK(env), commandForm);
-            var totalEntities = command.getTotalEntitiesForGraphQl();
 
+            var totalEntities = command.getTotalEntitiesForGraphQl();
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -2411,8 +2423,8 @@ public interface GraphQlQueries {
         try {
             var commandForm = SequenceUtil.getHome().getGetSequenceChecksumTypesForm();
             var command = new GetSequenceChecksumTypesCommand(getUserVisitPK(env), commandForm);
-            var totalEntities = command.getTotalEntitiesForGraphQl();
 
+            var totalEntities = command.getTotalEntitiesForGraphQl();
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -2462,8 +2474,8 @@ public interface GraphQlQueries {
         try {
             var commandForm = SequenceUtil.getHome().getGetSequenceEncoderTypesForm();
             var command = new GetSequenceEncoderTypesCommand(getUserVisitPK(env), commandForm);
-            var totalEntities = command.getTotalEntitiesForGraphQl();
 
+            var totalEntities = command.getTotalEntitiesForGraphQl();
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -2515,8 +2527,8 @@ public interface GraphQlQueries {
         try {
             var commandForm = SelectorUtil.getHome().getGetSelectorKindsForm();
             var command = new GetSelectorKindsCommand(getUserVisitPK(env), commandForm);
-            var totalEntities = command.getTotalEntitiesForGraphQl();
 
+            var totalEntities = command.getTotalEntitiesForGraphQl();
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -2678,8 +2690,8 @@ public interface GraphQlQueries {
         try {
             var commandForm = FilterUtil.getHome().getGetFilterKindsForm();
             var command = new GetFilterKindsCommand(getUserVisitPK(env), commandForm);
-            var totalEntities = command.getTotalEntitiesForGraphQl();
 
+            var totalEntities = command.getTotalEntitiesForGraphQl();
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -3283,8 +3295,8 @@ public interface GraphQlQueries {
         try {
             var commandForm = OfferUtil.getHome().getGetOffersForm();
             var command = new GetOffersCommand(getUserVisitPK(env), commandForm);
-            var totalEntities = command.getTotalEntitiesForGraphQl();
 
+            var totalEntities = command.getTotalEntitiesForGraphQl();
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -3448,8 +3460,8 @@ public interface GraphQlQueries {
         try {
             var commandForm = OfferUtil.getHome().getGetUsesForm();
             var command = new GetUsesCommand(getUserVisitPK(env), commandForm);
-            var totalEntities = command.getTotalEntitiesForGraphQl();
 
+            var totalEntities = command.getTotalEntitiesForGraphQl();
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -3597,8 +3609,8 @@ public interface GraphQlQueries {
         try {
             var commandForm = OfferUtil.getHome().getGetUseTypesForm();
             var command = new GetUseTypesCommand(getUserVisitPK(env), commandForm);
-            var totalEntities = command.getTotalEntitiesForGraphQl();
 
+            var totalEntities = command.getTotalEntitiesForGraphQl();
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -4034,8 +4046,8 @@ public interface GraphQlQueries {
         try {
             var commandForm = CoreUtil.getHome().getGetAppearancesForm();
             var command = new GetAppearancesCommand(getUserVisitPK(env), commandForm);
-            var totalEntities = command.getTotalEntitiesForGraphQl();
 
+            var totalEntities = command.getTotalEntitiesForGraphQl();
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -4100,7 +4112,6 @@ public interface GraphQlQueries {
             commandForm.setUuid(id);
 
             var totalEntities = command.getTotalEntitiesForGraphQl();
-
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -4169,7 +4180,6 @@ public interface GraphQlQueries {
             commandForm.setUuid(id);
 
             var totalEntities = command.getTotalEntitiesForGraphQl();
-
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -4222,8 +4232,8 @@ public interface GraphQlQueries {
         try {
             var commandForm = CoreUtil.getHome().getGetEntityAttributeGroupsForm();
             var command = new GetEntityAttributeGroupsCommand(getUserVisitPK(env), commandForm);
-            var totalEntities = command.getTotalEntitiesForGraphQl();
 
+            var totalEntities = command.getTotalEntitiesForGraphQl();
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -4290,7 +4300,6 @@ public interface GraphQlQueries {
             commandForm.setUuid(id);
 
             var totalEntities = command.getTotalEntitiesForGraphQl();
-
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -4357,7 +4366,6 @@ public interface GraphQlQueries {
             commandForm.setEntityAttributeGroupName(entityAttributeGroupName);
 
             var totalEntities = command.getTotalEntitiesForGraphQl();
-
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -4416,7 +4424,6 @@ public interface GraphQlQueries {
             commandForm.setEntityTypeName(entityTypeName);
 
             var totalEntities = command.getTotalEntitiesForGraphQl();
-
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -4475,7 +4482,6 @@ public interface GraphQlQueries {
             commandForm.setComponentVendorName(componentVendorName);
 
             var totalEntities = command.getTotalEntitiesForGraphQl();
-
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -4527,8 +4533,8 @@ public interface GraphQlQueries {
         try {
             var commandForm = CoreUtil.getHome().getGetComponentVendorsForm();
             var command = new GetComponentVendorsCommand(getUserVisitPK(env), commandForm);
-            var totalEntities = command.getTotalEntitiesForGraphQl();
 
+            var totalEntities = command.getTotalEntitiesForGraphQl();
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -4739,8 +4745,8 @@ public interface GraphQlQueries {
         try {
             var commandForm = ContentUtil.getHome().getGetContentPageLayoutsForm();
             var command = new GetContentPageLayoutsCommand(getUserVisitPK(env), commandForm);
-            var totalEntities = command.getTotalEntitiesForGraphQl();
 
+            var totalEntities = command.getTotalEntitiesForGraphQl();
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -4857,8 +4863,8 @@ public interface GraphQlQueries {
         try {
             var commandForm = ContentUtil.getHome().getGetContentPageAreaTypesForm();
             var command = new GetContentPageAreaTypesCommand(getUserVisitPK(env), commandForm);
-            var totalEntities = command.getTotalEntitiesForGraphQl();
 
+            var totalEntities = command.getTotalEntitiesForGraphQl();
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -4908,8 +4914,8 @@ public interface GraphQlQueries {
         try {
             var commandForm = ContentUtil.getHome().getGetContentWebAddressesForm();
             var command = new GetContentWebAddressesCommand(getUserVisitPK(env), commandForm);
-            var totalEntities = command.getTotalEntitiesForGraphQl();
 
+            var totalEntities = command.getTotalEntitiesForGraphQl();
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -4959,8 +4965,8 @@ public interface GraphQlQueries {
         try {
             var commandForm = ContentUtil.getHome().getGetContentCollectionsForm();
             var command = new GetContentCollectionsCommand(getUserVisitPK(env), commandForm);
-            var totalEntities = command.getTotalEntitiesForGraphQl();
 
+            var totalEntities = command.getTotalEntitiesForGraphQl();
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -5251,7 +5257,6 @@ public interface GraphQlQueries {
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
 
             var totalEntities = command.getTotalEntitiesForGraphQl();
-
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -5334,7 +5339,6 @@ public interface GraphQlQueries {
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
 
             var totalEntities = command.getTotalEntitiesForGraphQl();
-
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -5413,7 +5417,6 @@ public interface GraphQlQueries {
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
 
             var totalEntities = command.getTotalEntitiesForGraphQl();
-
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -5500,7 +5503,6 @@ public interface GraphQlQueries {
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
 
             var totalEntities = command.getTotalEntitiesForGraphQl();
-
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -5642,12 +5644,11 @@ public interface GraphQlQueries {
 
         try {
             var commandForm = CoreUtil.getHome().getGetMimeTypesForm();
+            var command = new GetMimeTypesCommand(getUserVisitPK(env), commandForm);
 
             commandForm.setMimeTypeUsageTypeName(mimeTypeUsageTypeName);
 
-            var command = new GetMimeTypesCommand(getUserVisitPK(env), commandForm);
             var totalEntities = command.getTotalEntitiesForGraphQl();
-
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -5697,8 +5698,8 @@ public interface GraphQlQueries {
         try {
             var commandForm = QueueUtil.getHome().getGetQueueTypesForm();
             var command = new GetQueueTypesCommand(getUserVisitPK(env), commandForm);
-            var totalEntities = command.getTotalEntitiesForGraphQl();
 
+            var totalEntities = command.getTotalEntitiesForGraphQl();
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -5947,8 +5948,8 @@ public interface GraphQlQueries {
         try {
             var commandForm = CoreUtil.getHome().getGetEntityAttributeTypesForm();
             var command = new GetEntityAttributeTypesCommand(getUserVisitPK(env), commandForm);
-            var totalEntities = command.getTotalEntitiesForGraphQl();
 
+            var totalEntities = command.getTotalEntitiesForGraphQl();
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -6342,8 +6343,8 @@ public interface GraphQlQueries {
         try {
             var commandForm = CoreUtil.getHome().getGetColorsForm();
             var command = new GetColorsCommand(getUserVisitPK(env), commandForm);
-            var totalEntities = command.getTotalEntitiesForGraphQl();
 
+            var totalEntities = command.getTotalEntitiesForGraphQl();
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -6395,8 +6396,8 @@ public interface GraphQlQueries {
         try {
             var commandForm = CoreUtil.getHome().getGetFontStylesForm();
             var command = new GetFontStylesCommand(getUserVisitPK(env), commandForm);
-            var totalEntities = command.getTotalEntitiesForGraphQl();
 
+            var totalEntities = command.getTotalEntitiesForGraphQl();
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -6448,8 +6449,8 @@ public interface GraphQlQueries {
         try {
             var commandForm = CoreUtil.getHome().getGetFontWeightsForm();
             var command = new GetFontWeightsCommand(getUserVisitPK(env), commandForm);
-            var totalEntities = command.getTotalEntitiesForGraphQl();
 
+            var totalEntities = command.getTotalEntitiesForGraphQl();
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -6501,8 +6502,8 @@ public interface GraphQlQueries {
         try {
             var commandForm = CoreUtil.getHome().getGetTextDecorationsForm();
             var command = new GetTextDecorationsCommand(getUserVisitPK(env), commandForm);
-            var totalEntities = command.getTotalEntitiesForGraphQl();
 
+            var totalEntities = command.getTotalEntitiesForGraphQl();
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -6554,8 +6555,8 @@ public interface GraphQlQueries {
         try {
             var commandForm = CoreUtil.getHome().getGetTextTransformationsForm();
             var command = new GetTextTransformationsCommand(getUserVisitPK(env), commandForm);
-            var totalEntities = command.getTotalEntitiesForGraphQl();
 
+            var totalEntities = command.getTotalEntitiesForGraphQl();
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -6748,8 +6749,8 @@ public interface GraphQlQueries {
         try {
             var commandForm = AccountingUtil.getHome().getGetSymbolPositionsForm();
             var command = new GetSymbolPositionsCommand(getUserVisitPK(env), commandForm);
-            var totalEntities = command.getTotalEntitiesForGraphQl();
 
+            var totalEntities = command.getTotalEntitiesForGraphQl();
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -6801,8 +6802,8 @@ public interface GraphQlQueries {
         try {
             var commandForm = AccountingUtil.getHome().getGetCurrenciesForm();
             var command = new GetCurrenciesCommand(getUserVisitPK(env), commandForm);
-            var totalEntities = command.getTotalEntitiesForGraphQl();
 
+            var totalEntities = command.getTotalEntitiesForGraphQl();
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -8808,8 +8809,8 @@ public interface GraphQlQueries {
         try {
             var commandForm = AccountingUtil.getHome().getGetItemAccountingCategoriesForm();
             var command = new GetItemAccountingCategoriesCommand(getUserVisitPK(env), commandForm);
-            var totalEntities = command.getTotalEntitiesForGraphQl();
 
+            var totalEntities = command.getTotalEntitiesForGraphQl();
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -8866,7 +8867,6 @@ public interface GraphQlQueries {
             commandForm.setGlAccountCategoryName(glAccountCategoryName);
 
             var totalEntities = command.getTotalEntitiesForGraphQl();
-
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -8918,8 +8918,8 @@ public interface GraphQlQueries {
         try {
             var commandForm = AccountingUtil.getHome().getGetGlAccountTypesForm();
             var command = new GetGlAccountTypesCommand(getUserVisitPK(env), commandForm);
-            var totalEntities = command.getTotalEntitiesForGraphQl();
 
+            var totalEntities = command.getTotalEntitiesForGraphQl();
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -8971,8 +8971,8 @@ public interface GraphQlQueries {
         try {
             var commandForm = AccountingUtil.getHome().getGetGlAccountClassesForm();
             var command = new GetGlAccountClassesCommand(getUserVisitPK(env), commandForm);
-            var totalEntities = command.getTotalEntitiesForGraphQl();
 
+            var totalEntities = command.getTotalEntitiesForGraphQl();
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -9024,8 +9024,8 @@ public interface GraphQlQueries {
         try {
             var commandForm = AccountingUtil.getHome().getGetGlAccountCategoriesForm();
             var command = new GetGlAccountCategoriesCommand(getUserVisitPK(env), commandForm);
-            var totalEntities = command.getTotalEntitiesForGraphQl();
 
+            var totalEntities = command.getTotalEntitiesForGraphQl();
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -9077,8 +9077,8 @@ public interface GraphQlQueries {
         try {
             var commandForm = AccountingUtil.getHome().getGetGlResourceTypesForm();
             var command = new GetGlResourceTypesCommand(getUserVisitPK(env), commandForm);
-            var totalEntities = command.getTotalEntitiesForGraphQl();
 
+            var totalEntities = command.getTotalEntitiesForGraphQl();
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -9920,7 +9920,6 @@ public interface GraphQlQueries {
             commandForm.setParentSecurityRoleGroupName(parentSecurityRoleGroupName);
 
             var totalEntities = command.getTotalEntitiesForGraphQl();
-
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -9979,7 +9978,6 @@ public interface GraphQlQueries {
             commandForm.setSecurityRoleGroupName(securityRoleGroupName);
 
             var totalEntities = command.getTotalEntitiesForGraphQl();
-
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
             } else {
@@ -10443,6 +10441,280 @@ public interface GraphQlQueries {
                     var shippingMethods = entities.stream().map(ShippingMethodObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, shippingMethods);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("transactionType")
+    static TransactionTypeObject transactionType(final DataFetchingEnvironment env,
+            @GraphQLName("transactionTypeName") final String transactionTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        TransactionType transactionType;
+
+        try {
+            var commandForm = AccountingUtil.getHome().getGetTransactionTypeForm();
+
+            commandForm.setTransactionTypeName(transactionTypeName);
+            commandForm.setUuid(id);
+
+            transactionType = new GetTransactionTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return transactionType == null ? null : new TransactionTypeObject(transactionType);
+    }
+
+    @GraphQLField
+    @GraphQLName("transactionTypes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<TransactionTypeObject> transactionTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<TransactionTypeObject> data;
+
+        try {
+            var accountingControl = Session.getModelController(AccountingControl.class);
+            var totalCount = accountingControl.countTransactionTypes();
+
+            try(var objectLimiter = new ObjectLimiter(env, TransactionTypeConstants.COMPONENT_VENDOR_NAME, TransactionTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = AccountingUtil.getHome().getGetTransactionTypesForm();
+                var entities = new GetTransactionTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var transactionTypes = entities.stream().map(TransactionTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, transactionTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("transactionGlAccountCategory")
+    static TransactionGlAccountCategoryObject transactionGlAccountCategory(final DataFetchingEnvironment env,
+            @GraphQLName("transactionTypeName") final String transactionTypeName,
+            @GraphQLName("transactionGlAccountCategoryName") final String transactionGlAccountCategoryName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        TransactionGlAccountCategory transactionGlAccountCategory;
+
+        try {
+            var commandForm = AccountingUtil.getHome().getGetTransactionGlAccountCategoryForm();
+
+            commandForm.setTransactionTypeName(transactionTypeName);
+            commandForm.setTransactionGlAccountCategoryName(transactionGlAccountCategoryName);
+            commandForm.setUuid(id);
+
+            transactionGlAccountCategory = new GetTransactionGlAccountCategoryCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return transactionGlAccountCategory == null ? null : new TransactionGlAccountCategoryObject(transactionGlAccountCategory);
+    }
+
+    @GraphQLField
+    @GraphQLName("transactionGlAccountCategories")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<TransactionGlAccountCategoryObject> transactionGlAccountCategories(final DataFetchingEnvironment env,
+            @GraphQLName("transactionTypeName") final String transactionTypeName) {
+        CountingPaginatedData<TransactionGlAccountCategoryObject> data;
+
+        try {
+            var commandForm = AccountingUtil.getHome().getGetTransactionGlAccountCategoriesForm();
+            var command = new GetTransactionGlAccountCategoriesCommand(getUserVisitPK(env), commandForm);
+
+            commandForm.setTransactionTypeName(transactionTypeName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, TransactionGlAccountCategoryConstants.COMPONENT_VENDOR_NAME, TransactionGlAccountCategoryConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var transactionGlAccountCategories = entities.stream()
+                            .map(TransactionGlAccountCategoryObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, transactionGlAccountCategories);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("transactionEntityRoleType")
+    static TransactionEntityRoleTypeObject transactionEntityRoleType(final DataFetchingEnvironment env,
+            @GraphQLName("transactionTypeName") final String transactionTypeName,
+            @GraphQLName("transactionEntityRoleTypeName") final String transactionEntityRoleTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        TransactionEntityRoleType transactionEntityRoleType;
+
+        try {
+            var commandForm = AccountingUtil.getHome().getGetTransactionEntityRoleTypeForm();
+
+            commandForm.setTransactionTypeName(transactionTypeName);
+            commandForm.setTransactionEntityRoleTypeName(transactionEntityRoleTypeName);
+            commandForm.setUuid(id);
+
+            transactionEntityRoleType = new GetTransactionEntityRoleTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return transactionEntityRoleType == null ? null : new TransactionEntityRoleTypeObject(transactionEntityRoleType);
+    }
+
+    @GraphQLField
+    @GraphQLName("transactionEntityRoleTypes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<TransactionEntityRoleTypeObject> transactionEntityRoleTypes(final DataFetchingEnvironment env,
+            @GraphQLName("transactionTypeName") final String transactionTypeName) {
+        CountingPaginatedData<TransactionEntityRoleTypeObject> data;
+
+        try {
+            var commandForm = AccountingUtil.getHome().getGetTransactionEntityRoleTypesForm();
+            var command = new GetTransactionEntityRoleTypesCommand(getUserVisitPK(env), commandForm);
+
+            commandForm.setTransactionTypeName(transactionTypeName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, TransactionEntityRoleTypeConstants.COMPONENT_VENDOR_NAME, TransactionEntityRoleTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var transactionEntityRoleTypes = entities.stream()
+                            .map(TransactionEntityRoleTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, transactionEntityRoleTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("transactionGroup")
+    static TransactionGroupObject transactionGroup(final DataFetchingEnvironment env,
+            @GraphQLName("transactionGroupName") final String transactionGroupName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        TransactionGroup transactionGroup;
+
+        try {
+            var commandForm = AccountingUtil.getHome().getGetTransactionGroupForm();
+
+            commandForm.setTransactionGroupName(transactionGroupName);
+            commandForm.setUuid(id);
+
+            transactionGroup = new GetTransactionGroupCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return transactionGroup == null ? null : new TransactionGroupObject(transactionGroup);
+    }
+
+    @GraphQLField
+    @GraphQLName("transactionGroups")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<TransactionGroupObject> transactionGroups(final DataFetchingEnvironment env) {
+        CountingPaginatedData<TransactionGroupObject> data;
+
+        try {
+            var accountingControl = Session.getModelController(AccountingControl.class);
+            var totalCount = accountingControl.countTransactionGroups();
+
+            try(var objectLimiter = new ObjectLimiter(env, TransactionGroupConstants.COMPONENT_VENDOR_NAME, TransactionGroupConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = AccountingUtil.getHome().getGetTransactionGroupsForm();
+                var entities = new GetTransactionGroupsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var transactionGroups = entities.stream().map(TransactionGroupObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, transactionGroups);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("transaction")
+    static TransactionObject transaction(final DataFetchingEnvironment env,
+            @GraphQLName("transactionName") final String transactionName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        Transaction transaction;
+
+        try {
+            var commandForm = AccountingUtil.getHome().getGetTransactionForm();
+
+            commandForm.setTransactionName(transactionName);
+            commandForm.setUuid(id);
+
+            transaction = new GetTransactionCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return transaction == null ? null : new TransactionObject(transaction);
+    }
+
+    @GraphQLField
+    @GraphQLName("transactions")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<TransactionObject> transactions(final DataFetchingEnvironment env,
+            @GraphQLName("transactionGroupName") final String transactionGroupName) {
+        CountingPaginatedData<TransactionObject> data;
+
+        try {
+            var commandForm = AccountingUtil.getHome().getGetTransactionsForm();
+            var command = new GetTransactionsCommand(getUserVisitPK(env), commandForm);
+
+            commandForm.setTransactionGroupName(transactionGroupName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, TransactionConstants.COMPONENT_VENDOR_NAME, TransactionConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var transactions = entities.stream()
+                            .map(TransactionObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, transactions);
                 }
             }
         } catch (NamingException ex) {

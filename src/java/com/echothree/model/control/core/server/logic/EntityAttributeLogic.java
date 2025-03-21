@@ -31,6 +31,9 @@ import com.echothree.model.control.core.common.exception.DuplicateEntityBooleanA
 import com.echothree.model.control.core.common.exception.DuplicateEntityBooleanDefaultException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityClobAttributeException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityDateAttributeException;
+import com.echothree.model.control.core.common.exception.DuplicateEntityDateDefaultException;
+import com.echothree.model.control.core.common.exception.DuplicateEntityGeoPointAttributeException;
+import com.echothree.model.control.core.common.exception.DuplicateEntityGeoPointDefaultException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityIntegerAttributeException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityIntegerDefaultException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityListItemAttributeException;
@@ -39,10 +42,12 @@ import com.echothree.model.control.core.common.exception.DuplicateEntityListItem
 import com.echothree.model.control.core.common.exception.DuplicateEntityLongAttributeException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityLongDefaultException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityMultipleListItemAttributeException;
+import com.echothree.model.control.core.common.exception.DuplicateEntityMultipleListItemDefaultException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityNameAttributeException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityStringAttributeException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityStringDefaultException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityTimeAttributeException;
+import com.echothree.model.control.core.common.exception.DuplicateEntityTimeDefaultException;
 import com.echothree.model.control.core.common.exception.DuplicateWorkflowUsageInEntityAttributeException;
 import com.echothree.model.control.core.common.exception.EntityTypeIsNotExtensibleException;
 import com.echothree.model.control.core.common.exception.InvalidEntityAttributeTypeException;
@@ -56,11 +61,15 @@ import com.echothree.model.control.core.common.exception.UnknownEntityAttributeG
 import com.echothree.model.control.core.common.exception.UnknownEntityAttributeNameException;
 import com.echothree.model.control.core.common.exception.UnknownEntityAttributeTypeNameException;
 import com.echothree.model.control.core.common.exception.UnknownEntityBooleanDefaultException;
+import com.echothree.model.control.core.common.exception.UnknownEntityDateDefaultException;
+import com.echothree.model.control.core.common.exception.UnknownEntityGeoPointDefaultException;
 import com.echothree.model.control.core.common.exception.UnknownEntityIntegerDefaultException;
 import com.echothree.model.control.core.common.exception.UnknownEntityListItemDefaultException;
 import com.echothree.model.control.core.common.exception.UnknownEntityListItemNameException;
 import com.echothree.model.control.core.common.exception.UnknownEntityLongDefaultException;
+import com.echothree.model.control.core.common.exception.UnknownEntityMultipleListItemDefaultException;
 import com.echothree.model.control.core.common.exception.UnknownEntityStringDefaultException;
+import com.echothree.model.control.core.common.exception.UnknownEntityTimeDefaultException;
 import com.echothree.model.control.core.common.exception.UpperRangeExceededException;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.database.EntityInstancePKResult;
@@ -79,9 +88,14 @@ import com.echothree.model.control.core.server.database.EntityInstancePKsByNameE
 import com.echothree.model.control.core.server.database.EntityInstancePKsByStringEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancePKsByTimeEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesMissingBooleanEntityAttributeQuery;
+import com.echothree.model.control.core.server.database.EntityInstancesMissingDateEntityAttributeQuery;
+import com.echothree.model.control.core.server.database.EntityInstancesMissingGeoPointEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesMissingIntegerEntityAttributeQuery;
+import com.echothree.model.control.core.server.database.EntityInstancesMissingListItemEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesMissingLongEntityAttributeQuery;
+import com.echothree.model.control.core.server.database.EntityInstancesMissingMultipleListItemEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesMissingStringEntityAttributeQuery;
+import com.echothree.model.control.core.server.database.EntityInstancesMissingTimeEntityAttributeQuery;
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.queue.common.QueueTypes;
 import com.echothree.model.control.queue.server.control.QueueControl;
@@ -100,6 +114,9 @@ import com.echothree.model.data.core.server.entity.EntityBooleanAttribute;
 import com.echothree.model.data.core.server.entity.EntityBooleanDefault;
 import com.echothree.model.data.core.server.entity.EntityClobAttribute;
 import com.echothree.model.data.core.server.entity.EntityDateAttribute;
+import com.echothree.model.data.core.server.entity.EntityDateDefault;
+import com.echothree.model.data.core.server.entity.EntityGeoPointAttribute;
+import com.echothree.model.data.core.server.entity.EntityGeoPointDefault;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityIntegerAttribute;
 import com.echothree.model.data.core.server.entity.EntityIntegerDefault;
@@ -109,10 +126,12 @@ import com.echothree.model.data.core.server.entity.EntityListItemDefault;
 import com.echothree.model.data.core.server.entity.EntityLongAttribute;
 import com.echothree.model.data.core.server.entity.EntityLongDefault;
 import com.echothree.model.data.core.server.entity.EntityMultipleListItemAttribute;
+import com.echothree.model.data.core.server.entity.EntityMultipleListItemDefault;
 import com.echothree.model.data.core.server.entity.EntityNameAttribute;
 import com.echothree.model.data.core.server.entity.EntityStringAttribute;
 import com.echothree.model.data.core.server.entity.EntityStringDefault;
 import com.echothree.model.data.core.server.entity.EntityTimeAttribute;
+import com.echothree.model.data.core.server.entity.EntityTimeDefault;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.core.server.value.EntityAttributeDetailValue;
@@ -1069,7 +1088,7 @@ public class EntityAttributeLogic
     }
 
     public EntityLongDefault createEntityLongDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final Long longAttribute, final boolean addMissingAttributes,  BasePK createdBy) {
+            final Long longAttribute, final boolean addMissingAttributes, BasePK createdBy) {
         EntityLongDefault entityLongDefault = null;
 
         checkEntityType(eea, entityAttribute, EntityAttributeTypes.LONG);
@@ -1306,6 +1325,52 @@ public class EntityAttributeLogic
         return entityNameAttribute;
     }
 
+    public EntityDateDefault createEntityDateDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
+            final Integer dateAttribute, final boolean addMissingAttributes, BasePK createdBy) {
+        EntityDateDefault entityDateDefault = null;
+
+        checkEntityType(eea, entityAttribute, EntityAttributeTypes.DATE);
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var coreControl = Session.getModelController(CoreControl.class);
+
+            entityDateDefault = coreControl.getEntityDateDefault(entityAttribute);
+
+            if(entityDateDefault == null) {
+                coreControl.createEntityDateDefault(entityAttribute, dateAttribute, createdBy);
+
+                if(addMissingAttributes) {
+                    new EntityInstancesMissingDateEntityAttributeQuery().execute(entityAttribute).forEach(entityInstanceResult ->
+                            coreControl.createEntityDateAttribute(entityAttribute.getPrimaryKey(),
+                                    entityInstanceResult.getEntityInstance(), dateAttribute, createdBy));
+                }
+            } else {
+                handleExecutionError(DuplicateEntityDateDefaultException.class, eea, ExecutionErrors.DuplicateEntityDateDefault.name(),
+                        entityAttribute.getLastDetail().getEntityAttributeName());
+            }
+        }
+
+        return entityDateDefault;
+    }
+
+    public void deleteEntityDateDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
+            final BasePK deletedBy) {
+        checkEntityType(eea, entityAttribute, EntityAttributeTypes.DATE);
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var coreControl = Session.getModelController(CoreControl.class);
+
+            var entityDateDefault = coreControl.getEntityDateDefaultForUpdate(entityAttribute);
+
+            if(entityDateDefault == null) {
+                handleExecutionError(UnknownEntityDateDefaultException.class, eea, ExecutionErrors.UnknownEntityDateDefault.name(),
+                        entityAttribute.getLastDetail().getEntityAttributeName());
+            } else {
+                coreControl.deleteEntityDateDefault(entityDateDefault, deletedBy);
+            }
+        }
+    }
+
     public EntityDateAttribute createEntityDateAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
             final EntityInstance entityInstance, final Integer dateAttribute, final BasePK createdBy) {
         EntityDateAttribute entityDateAttribute = null;
@@ -1327,6 +1392,52 @@ public class EntityAttributeLogic
         }
 
         return entityDateAttribute;
+    }
+
+    public EntityTimeDefault createEntityTimeDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
+            final Long timeAttribute, final boolean addMissingAttributes, BasePK createdBy) {
+        EntityTimeDefault entityTimeDefault = null;
+
+        checkEntityType(eea, entityAttribute, EntityAttributeTypes.TIME);
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var coreControl = Session.getModelController(CoreControl.class);
+
+            entityTimeDefault = coreControl.getEntityTimeDefault(entityAttribute);
+
+            if(entityTimeDefault == null) {
+                coreControl.createEntityTimeDefault(entityAttribute, timeAttribute, createdBy);
+
+                if(addMissingAttributes) {
+                    new EntityInstancesMissingTimeEntityAttributeQuery().execute(entityAttribute).forEach(entityInstanceResult ->
+                            coreControl.createEntityTimeAttribute(entityAttribute.getPrimaryKey(),
+                                    entityInstanceResult.getEntityInstance(), timeAttribute, createdBy));
+                }
+            } else {
+                handleExecutionError(DuplicateEntityTimeDefaultException.class, eea, ExecutionErrors.DuplicateEntityTimeDefault.name(),
+                        entityAttribute.getLastDetail().getEntityAttributeName());
+            }
+        }
+
+        return entityTimeDefault;
+    }
+
+    public void deleteEntityTimeDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
+            final BasePK deletedBy) {
+        checkEntityType(eea, entityAttribute, EntityAttributeTypes.TIME);
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var coreControl = Session.getModelController(CoreControl.class);
+
+            var entityTimeDefault = coreControl.getEntityTimeDefaultForUpdate(entityAttribute);
+
+            if(entityTimeDefault == null) {
+                handleExecutionError(UnknownEntityTimeDefaultException.class, eea, ExecutionErrors.UnknownEntityTimeDefault.name(),
+                        entityAttribute.getLastDetail().getEntityAttributeName());
+            } else {
+                coreControl.deleteEntityTimeDefault(entityTimeDefault, deletedBy);
+            }
+        }
     }
 
     public EntityTimeAttribute createEntityTimeAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
@@ -1352,8 +1463,77 @@ public class EntityAttributeLogic
         return entityTimeAttribute;
     }
 
+    public EntityGeoPointDefault createEntityGeoPointDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
+            final Integer latitude, final Integer longitude, final Long elevation, final Long altitude, final boolean addMissingAttributes, BasePK createdBy) {
+        EntityGeoPointDefault entityGeoPointDefault = null;
+
+        checkEntityType(eea, entityAttribute, EntityAttributeTypes.GEOPOINT);
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var coreControl = Session.getModelController(CoreControl.class);
+
+            entityGeoPointDefault = coreControl.getEntityGeoPointDefault(entityAttribute);
+
+            if(entityGeoPointDefault == null) {
+                coreControl.createEntityGeoPointDefault(entityAttribute, latitude, longitude, elevation, altitude, createdBy);
+
+                if(addMissingAttributes) {
+                    new EntityInstancesMissingGeoPointEntityAttributeQuery().execute(entityAttribute).forEach(entityInstanceResult ->
+                            coreControl.createEntityGeoPointAttribute(entityAttribute.getPrimaryKey(),
+                                    entityInstanceResult.getEntityInstance(), latitude, longitude, elevation, altitude, createdBy));
+                }
+            } else {
+                handleExecutionError(DuplicateEntityGeoPointDefaultException.class, eea, ExecutionErrors.DuplicateEntityGeoPointDefault.name(),
+                        entityAttribute.getLastDetail().getEntityAttributeName());
+            }
+        }
+
+        return entityGeoPointDefault;
+    }
+
+    public void deleteEntityGeoPointDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
+            final BasePK deletedBy) {
+        checkEntityType(eea, entityAttribute, EntityAttributeTypes.GEOPOINT);
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var coreControl = Session.getModelController(CoreControl.class);
+
+            var entityGeoPointDefault = coreControl.getEntityGeoPointDefaultForUpdate(entityAttribute);
+
+            if(entityGeoPointDefault == null) {
+                handleExecutionError(UnknownEntityGeoPointDefaultException.class, eea, ExecutionErrors.UnknownEntityGeoPointDefault.name(),
+                        entityAttribute.getLastDetail().getEntityAttributeName());
+            } else {
+                coreControl.deleteEntityGeoPointDefault(entityGeoPointDefault, deletedBy);
+            }
+        }
+    }
+
+    public EntityGeoPointAttribute createEntityGeoPointAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
+            final EntityInstance entityInstance, final Integer latitude, final Integer longitude, final Long elevation, final Long altitude, final BasePK createdBy) {
+        EntityGeoPointAttribute entityGeoPointAttribute = null;
+
+        checkEntityType(eea, entityAttribute, entityInstance);
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var coreControl = Session.getModelController(CoreControl.class);
+
+            entityGeoPointAttribute = coreControl.getEntityGeoPointAttribute(entityAttribute, entityInstance);
+
+            if(entityGeoPointAttribute == null) {
+                coreControl.createEntityGeoPointAttribute(entityAttribute, entityInstance, latitude, longitude, elevation, altitude, createdBy);
+            } else {
+                handleExecutionError(DuplicateEntityGeoPointAttributeException.class, eea, ExecutionErrors.DuplicateEntityGeoPointAttribute.name(),
+                        EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
+                        entityAttribute.getLastDetail().getEntityAttributeName());
+            }
+        }
+
+        return entityGeoPointAttribute;
+    }
+
     public EntityListItemDefault createEntityListItemDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final EntityListItem entityListItem, final BasePK createdBy) {
+            final EntityListItem entityListItem, final boolean addMissingAttributes, final BasePK createdBy) {
         EntityListItemDefault entityListItemDefault = null;
 
         checkEntityType(eea, entityAttribute, EntityAttributeTypes.LISTITEM);
@@ -1365,6 +1545,12 @@ public class EntityAttributeLogic
 
             if(entityListItemDefault == null) {
                 coreControl.createEntityListItemDefault(entityAttribute, entityListItem, createdBy);
+
+                if(addMissingAttributes) {
+                    new EntityInstancesMissingListItemEntityAttributeQuery().execute(entityAttribute).forEach(entityInstanceResult ->
+                            coreControl.createEntityListItemAttribute(entityAttribute.getPrimaryKey(),
+                                    entityInstanceResult.getEntityInstance(), entityListItem, createdBy));
+                }
             } else {
                 handleExecutionError(DuplicateEntityListItemDefaultException.class, eea, ExecutionErrors.DuplicateEntityListItemDefault.name(),
                         entityAttribute.getLastDetail().getEntityAttributeName());
@@ -1414,7 +1600,53 @@ public class EntityAttributeLogic
         
         return entityListItemAttribute;
     }
-    
+
+    public EntityMultipleListItemDefault createEntityMultipleListItemDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
+            final EntityListItem entityListItem, final boolean addMissingAttributes, final BasePK createdBy) {
+        EntityMultipleListItemDefault entityListItemDefault = null;
+
+        checkEntityType(eea, entityAttribute, EntityAttributeTypes.MULTIPLELISTITEM);
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var coreControl = Session.getModelController(CoreControl.class);
+
+            entityListItemDefault = coreControl.getEntityMultipleListItemDefault(entityAttribute, entityListItem);
+
+            if(entityListItemDefault == null) {
+                coreControl.createEntityMultipleListItemDefault(entityAttribute, entityListItem, createdBy);
+
+                if(addMissingAttributes) {
+                    new EntityInstancesMissingMultipleListItemEntityAttributeQuery().execute(entityAttribute, entityListItem).forEach(entityInstanceResult ->
+                            coreControl.createEntityMultipleListItemAttribute(entityAttribute.getPrimaryKey(),
+                                    entityInstanceResult.getEntityInstance(), entityListItem, createdBy));
+                }
+            } else {
+                handleExecutionError(DuplicateEntityMultipleListItemDefaultException.class, eea, ExecutionErrors.DuplicateEntityMultipleListItemDefault.name(),
+                        entityAttribute.getLastDetail().getEntityAttributeName(), entityListItem.getLastDetail().getEntityListItemName());
+            }
+        }
+
+        return entityListItemDefault;
+    }
+
+    public void deleteEntityMultipleListItemDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
+            final EntityListItem entityListItem, final BasePK deletedBy) {
+        checkEntityType(eea, entityAttribute, EntityAttributeTypes.MULTIPLELISTITEM);
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var coreControl = Session.getModelController(CoreControl.class);
+
+            var entityListItemDefault = coreControl.getEntityMultipleListItemDefaultForUpdate(entityAttribute, entityListItem);
+
+            if(entityListItemDefault == null) {
+                handleExecutionError(UnknownEntityMultipleListItemDefaultException.class, eea, ExecutionErrors.UnknownEntityMultipleListItemDefault.name(),
+                        entityAttribute.getLastDetail().getEntityAttributeName(), entityListItem.getLastDetail().getEntityListItemName());
+            } else {
+                coreControl.deleteEntityMultipleListItemDefault(entityListItemDefault, deletedBy);
+            }
+        }
+    }
+
     public EntityMultipleListItemAttribute createEntityMultipleListItemAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
         final EntityInstance entityInstance, final EntityListItem entityListItem, final BasePK createdBy) {
         EntityMultipleListItemAttribute entityMultipleListItemAttribute = null;

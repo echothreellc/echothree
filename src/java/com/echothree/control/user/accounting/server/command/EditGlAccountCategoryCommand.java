@@ -49,24 +49,24 @@ public class EditGlAccountCategoryCommand
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                    new SecurityRoleDefinition(SecurityRoleGroups.GlAccountCategory.name(), SecurityRoles.Edit.name())
-                    )))
-                )));
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.GlAccountCategory.name(), SecurityRoles.Edit.name())
+                ))
+        ));
         
-        SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("GlAccountCategoryName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+        );
         
-        EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("GlAccountCategoryName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ParentGlAccountCategoryName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                ));
+        );
     }
     
     /** Creates a new instance of EditGlAccountCategoryCommand */

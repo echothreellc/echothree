@@ -21,7 +21,8 @@ import com.echothree.control.user.core.common.spec.EntityListItemDefaultSpec;
 
 public interface CreateEntityListItemDefaultForm
         extends EntityListItemDefaultSpec, EntityListItemAttributeEdit {
-    
-    // Nothing additional beyond EntityListItemDefaultSpec, EntityListItemAttributeEdit
+
+    String getAddMissingAttributes();
+    void setAddMissingAttributes(String addMissingAttributes);
     
 }

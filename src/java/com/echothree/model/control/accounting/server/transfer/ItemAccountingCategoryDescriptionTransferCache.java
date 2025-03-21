@@ -20,13 +20,16 @@ import com.echothree.model.control.accounting.common.transfer.ItemAccountingCate
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategoryDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class ItemAccountingCategoryDescriptionTransferCache
         extends BaseAccountingDescriptionTransferCache<ItemAccountingCategoryDescription, ItemAccountingCategoryDescriptionTransfer> {
-    
+
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+
     /** Creates a new instance of ItemAccountingCategoryDescriptionTransferCache */
-    public ItemAccountingCategoryDescriptionTransferCache(UserVisit userVisit, AccountingControl accountingControl) {
-        super(userVisit, accountingControl);
+    public ItemAccountingCategoryDescriptionTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
     
     @Override

@@ -1498,21 +1498,35 @@ public class CoreBean
     public CommandResult deleteEntityLongAttribute(UserVisitPK userVisitPK, DeleteEntityLongAttributeForm form) {
         return new DeleteEntityLongAttributeCommand(userVisitPK, form).run();
     }
-    
+
+    // --------------------------------------------------------------------------------
+    //   Entity Multiple List Item Defaults
+    // --------------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createEntityMultipleListItemDefault(UserVisitPK userVisitPK, CreateEntityMultipleListItemDefaultForm form) {
+        return new CreateEntityMultipleListItemDefaultCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult deleteEntityMultipleListItemDefault(UserVisitPK userVisitPK, DeleteEntityMultipleListItemDefaultForm form) {
+        return new DeleteEntityMultipleListItemDefaultCommand(userVisitPK, form).run();
+    }
+
     // --------------------------------------------------------------------------------
     //   Entity Multiple List Item Attributes
     // --------------------------------------------------------------------------------
-    
+
     @Override
     public CommandResult createEntityMultipleListItemAttribute(UserVisitPK userVisitPK, CreateEntityMultipleListItemAttributeForm form) {
         return new CreateEntityMultipleListItemAttributeCommand(userVisitPK, form).run();
     }
-    
+
     @Override
     public CommandResult deleteEntityMultipleListItemAttribute(UserVisitPK userVisitPK, DeleteEntityMultipleListItemAttributeForm form) {
         return new DeleteEntityMultipleListItemAttributeCommand(userVisitPK, form).run();
     }
-    
+
     // --------------------------------------------------------------------------------
     //   Entity Name Attributes
     // --------------------------------------------------------------------------------
@@ -1569,26 +1583,45 @@ public class CoreBean
     public CommandResult deleteEntityStringAttribute(UserVisitPK userVisitPK, DeleteEntityStringAttributeForm form) {
         return new DeleteEntityStringAttributeCommand(userVisitPK, form).run();
     }
-    
+
+    // --------------------------------------------------------------------------------
+    //   Entity Geo Point Defaults
+    // --------------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createEntityGeoPointDefault(UserVisitPK userVisitPK, CreateEntityGeoPointDefaultForm form) {
+        return new CreateEntityGeoPointDefaultCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult editEntityGeoPointDefault(UserVisitPK userVisitPK, EditEntityGeoPointDefaultForm form) {
+        return new EditEntityGeoPointDefaultCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult deleteEntityGeoPointDefault(UserVisitPK userVisitPK, DeleteEntityGeoPointDefaultForm form) {
+        return new DeleteEntityGeoPointDefaultCommand(userVisitPK, form).run();
+    }
+
     // --------------------------------------------------------------------------------
     //   Entity Geo Point Attributes
     // --------------------------------------------------------------------------------
-    
+
     @Override
     public CommandResult createEntityGeoPointAttribute(UserVisitPK userVisitPK, CreateEntityGeoPointAttributeForm form) {
         return new CreateEntityGeoPointAttributeCommand(userVisitPK, form).run();
     }
-    
+
     @Override
     public CommandResult editEntityGeoPointAttribute(UserVisitPK userVisitPK, EditEntityGeoPointAttributeForm form) {
         return new EditEntityGeoPointAttributeCommand(userVisitPK, form).run();
     }
-    
+
     @Override
     public CommandResult deleteEntityGeoPointAttribute(UserVisitPK userVisitPK, DeleteEntityGeoPointAttributeForm form) {
         return new DeleteEntityGeoPointAttributeCommand(userVisitPK, form).run();
     }
-    
+
     // --------------------------------------------------------------------------------
     //   Entity Blob Attributes
     // --------------------------------------------------------------------------------
@@ -1636,7 +1669,26 @@ public class CoreBean
     public CommandResult deleteEntityClobAttribute(UserVisitPK userVisitPK, DeleteEntityClobAttributeForm form) {
         return new DeleteEntityClobAttributeCommand(userVisitPK, form).run();
     }
-    
+
+    // --------------------------------------------------------------------------------
+    //   Entity Time Defaults
+    // --------------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createEntityTimeDefault(UserVisitPK userVisitPK, CreateEntityTimeDefaultForm form) {
+        return new CreateEntityTimeDefaultCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult editEntityTimeDefault(UserVisitPK userVisitPK, EditEntityTimeDefaultForm form) {
+        return new EditEntityTimeDefaultCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult deleteEntityTimeDefault(UserVisitPK userVisitPK, DeleteEntityTimeDefaultForm form) {
+        return new DeleteEntityTimeDefaultCommand(userVisitPK, form).run();
+    }
+
     // --------------------------------------------------------------------------------
     //   Entity Time Attributes
     // --------------------------------------------------------------------------------
@@ -1654,6 +1706,25 @@ public class CoreBean
     @Override
     public CommandResult deleteEntityTimeAttribute(UserVisitPK userVisitPK, DeleteEntityTimeAttributeForm form) {
         return new DeleteEntityTimeAttributeCommand(userVisitPK, form).run();
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Entity Date Defaults
+    // --------------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createEntityDateDefault(UserVisitPK userVisitPK, CreateEntityDateDefaultForm form) {
+        return new CreateEntityDateDefaultCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult editEntityDateDefault(UserVisitPK userVisitPK, EditEntityDateDefaultForm form) {
+        return new EditEntityDateDefaultCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult deleteEntityDateDefault(UserVisitPK userVisitPK, DeleteEntityDateDefaultForm form) {
+        return new DeleteEntityDateDefaultCommand(userVisitPK, form).run();
     }
 
     // --------------------------------------------------------------------------------

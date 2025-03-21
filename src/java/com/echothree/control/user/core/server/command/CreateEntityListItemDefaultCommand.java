@@ -49,7 +49,8 @@ public class CreateEntityListItemDefaultCommand
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityListItemName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("EntityListItemUuid", FieldType.UUID, false, null, null)
+                new FieldDefinition("EntityListItemUuid", FieldType.UUID, false, null, null),
+                new FieldDefinition("AddMissingAttributes", FieldType.BOOLEAN, true, null, null)
         );
     }
     
@@ -66,8 +67,10 @@ public class CreateEntityListItemDefaultCommand
             var entityListItem = EntityAttributeLogic.getInstance().getEntityListItem(this, entityAttribute, form);
 
             if(!hasExecutionErrors()) {
+                var addMissingAttributes = Boolean.parseBoolean(form.getAddMissingAttributes());
+
                 EntityAttributeLogic.getInstance().createEntityListItemDefault(this, entityAttribute,
-                        entityListItem, getPartyPK());
+                        entityListItem, addMissingAttributes, getPartyPK());
             }
         }
 

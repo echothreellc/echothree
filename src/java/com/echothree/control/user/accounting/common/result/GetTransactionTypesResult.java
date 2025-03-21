@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetTransactionTypesResult
         extends BaseResult {
-    
+
+    Long getTransactionTypeCount();
+    void setTransactionTypeCount(Long transactionTypeCount);
+
     List<TransactionTypeTransfer> getTransactionTypes();
     void setTransactionTypes(List<TransactionTypeTransfer> transactionTypes);
     

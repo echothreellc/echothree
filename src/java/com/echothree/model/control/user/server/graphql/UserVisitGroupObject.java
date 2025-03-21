@@ -75,7 +75,7 @@ public class UserVisitGroupObject
     }
 
     @GraphQLField
-    @GraphQLDescription("user visit groups")
+    @GraphQLDescription("user visits")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<UserVisitObject> getUserVisits(final DataFetchingEnvironment env) {

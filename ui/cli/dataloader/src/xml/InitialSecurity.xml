@@ -262,12 +262,6 @@
                 <securityRoleDescription languageIsoName="en" description="Term List" />
             </securityRole>
         </securityRoleGroup>
-        <securityRoleGroup securityRoleGroupName="TransactionGroup" parentSecurityRoleGroupName="AccountingComponent" isDefault="false" sortOrder="1">
-            <securityRoleGroupDescription languageIsoName="en" description="Transaction Group" />
-            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Transaction Group List" />
-            </securityRole>
-        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="Currency" parentSecurityRoleGroupName="AccountingComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Currency" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
@@ -4966,6 +4960,30 @@
                 <securityRoleDescription languageIsoName="en" description="Chain Action Description" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="TransactionTimeType" parentSecurityRoleGroupName="AccountingComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Transaction Time Type" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Transaction Time Type Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Transaction Time Type Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Transaction Time Type Delete" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Transaction Time Type List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Transaction Time Type Review" />
+            </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Transaction Time Type Choices" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Transaction Time Type Description" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="TransactionType" parentSecurityRoleGroupName="AccountingComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Transaction Type" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
@@ -5028,6 +5046,30 @@
             <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Transaction Gl Account Category Description" />
             </securityRole>
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="TransactionGroup" parentSecurityRoleGroupName="AccountingComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Transaction Group" />
+            <securityRole securityRoleName="List" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Transaction Group List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Transaction Group Review" />
+            </securityRole>
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="TransactionGroupStatus" parentSecurityRoleGroupName="AccountingComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Transaction Group Status" />
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="Transaction" parentSecurityRoleGroupName="AccountingComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Transaction" />
+            <securityRole securityRoleName="List" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Transaction List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Transaction Review" />
+            </securityRole>
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="TransactionStatus" parentSecurityRoleGroupName="AccountingComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Transaction Status" />
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="PeriodComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Period Component" />
@@ -7861,8 +7903,6 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="ItemTaxClassification" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Tax" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Term" securityRoleName="List" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="TransactionType" securityRoleName="List" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="TransactionGroup" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Currency" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Currency" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Currency" securityRoleName="Review" />
@@ -9135,6 +9175,13 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="ChainAction" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ChainAction" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ChainAction" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="TransactionTimeType" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="TransactionTimeType" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="TransactionTimeType" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="TransactionTimeType" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="TransactionTimeType" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="TransactionTimeType" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="TransactionTimeType" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="TransactionType" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="TransactionType" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="TransactionType" securityRoleName="Delete" />
@@ -9153,6 +9200,10 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="TransactionGlAccountCategory" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="TransactionGlAccountCategory" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="TransactionGlAccountCategory" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="TransactionGroup" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="TransactionGroup" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Transaction" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Transaction" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PeriodKind" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PeriodKind" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PeriodKind" securityRoleName="Delete" />

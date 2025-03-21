@@ -22,10 +22,13 @@ import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
+import com.echothree.util.server.persistence.Session;
 
 public class CurrencyTransferCache
         extends BaseAccountingTransferCache<Currency, CurrencyTransfer> {
-    
+
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+
     TransferProperties transferProperties;
     boolean filterCurrencyIsoName;
     boolean filterSymbol;
@@ -48,8 +51,8 @@ public class CurrencyTransferCache
     boolean filterDescription;
     
     /** Creates a new instance of CurrencyTransferCache */
-    public CurrencyTransferCache(UserVisit userVisit, AccountingControl accountingControl) {
-        super(userVisit, accountingControl);
+    public CurrencyTransferCache(UserVisit userVisit) {
+        super(userVisit);
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {

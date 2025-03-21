@@ -62,7 +62,7 @@ public class CreateEntityLongDefaultCommand
 
         if(!hasExecutionErrors()) {
             var longAttribute = Long.valueOf(form.getLongAttribute());
-            var addMissingAttributes = Boolean.valueOf(form.getAddMissingAttributes());
+            var addMissingAttributes = Boolean.parseBoolean(form.getAddMissingAttributes());
 
             EntityAttributeLogic.getInstance().createEntityLongDefault(this, entityAttribute,
                     longAttribute, addMissingAttributes, getPartyPK());

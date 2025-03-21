@@ -20,13 +20,16 @@ import com.echothree.model.control.accounting.common.transfer.SymbolPositionTran
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.data.accounting.server.entity.SymbolPosition;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class SymbolPositionTransferCache
         extends BaseAccountingTransferCache<SymbolPosition, SymbolPositionTransfer> {
-    
+
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+
     /** Creates a new instance of SymbolPositionTransferCache */
-    public SymbolPositionTransferCache(UserVisit userVisit, AccountingControl accountingControl) {
-        super(userVisit, accountingControl);
+    public SymbolPositionTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         setIncludeEntityInstance(true);
     }

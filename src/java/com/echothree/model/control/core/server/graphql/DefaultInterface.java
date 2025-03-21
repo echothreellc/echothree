@@ -18,8 +18,9 @@ package com.echothree.model.control.core.server.graphql;
 
 import graphql.annotations.annotationTypes.GraphQLUnion;
 
-@GraphQLUnion(possibleTypes = {EntityBooleanDefaultObject.class, EntityIntegerDefaultObject.class, EntityLongDefaultObject.class,
-        EntityListItemDefaultObject.class, EntityStringDefaultObject.class})
+@GraphQLUnion(possibleTypes = {EntityBooleanDefaultObject.class, EntityDateDefaultObject.class, EntityGeoPointDefaultObject.class,
+        EntityIntegerDefaultObject.class, EntityLongDefaultObject.class, EntityListItemDefaultObject.class, EntityStringDefaultObject.class,
+        EntityTimeDefaultObject.class})
 public interface DefaultInterface {
 
 }

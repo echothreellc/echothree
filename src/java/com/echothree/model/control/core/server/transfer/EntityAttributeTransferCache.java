@@ -280,6 +280,12 @@ public class EntityAttributeTransferCache
                         }
                     }
                     case DATE -> {
+                        if(includeDefault) {
+                            var entityDateDefault = coreControl.getEntityDateDefault(entityAttribute);
+
+                            entityAttributeTransfer.setEntityDateDefault(entityDateDefault == null ? null : coreControl.getEntityDateDefaultTransfer(userVisit, entityDateDefault));
+                        }
+
                         if(includeValue && entityInstance != null) {
                             var entityDateAttribute = coreControl.getEntityDateAttribute(entityAttribute, entityInstance);
 
@@ -307,6 +313,12 @@ public class EntityAttributeTransferCache
                         }
                     }
                     case MULTIPLELISTITEM -> {
+                        if(includeDefault) {
+                            var entityMultipleListItemDefaults = coreControl.getEntityMultipleListItemDefaults(entityAttribute);
+
+                            entityAttributeTransfer.setEntityMultipleListItemDefaults(new ListWrapper<>(coreControl.getEntityMultipleListItemDefaultTransfers(userVisit, entityMultipleListItemDefaults)));
+                        }
+
                         if(includeValue && entityInstance != null) {
                             entityAttributeTransfer.setEntityMultipleListItemAttributes(new ListWrapper<>(coreControl.getEntityMultipleListItemAttributeTransfers(userVisit, entityAttribute, entityInstance)));
                         }
