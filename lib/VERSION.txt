@@ -1,5 +1,5 @@
 Apache Ivy 2.5.2
-Bootstrap 4.5.3
+Bootstrap 4.6.2
 cross-revalidator 1.0a
 displaytag 1.2
 Jakarta POI 3.2 (used by displaytag)
