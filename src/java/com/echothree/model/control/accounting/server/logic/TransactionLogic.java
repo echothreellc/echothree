@@ -199,7 +199,7 @@ public class TransactionLogic
         var credit = originalCredit == null ? null : getAmount(glAccount, originalCurrency, originalCredit);
 
         return accountingControl.createTransactionGlEntry(transaction, getTransactionGlEntrySequence(accountingControl, transaction),
-                null, groupParty, transactionGlAccountCategory, glAccount, originalCurrency, originalDebit,
+                groupParty, transactionGlAccountCategory, glAccount, originalCurrency, originalDebit,
                 originalCredit, debit, credit, createdBy);
     }
     

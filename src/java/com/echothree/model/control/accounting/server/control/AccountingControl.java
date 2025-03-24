@@ -5358,11 +5358,11 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     
     public TransactionGlEntry createTransactionGlEntry(Transaction transaction, Integer transactionGlEntrySequence,
-            TransactionGlEntry parentTransactionGlEntry, Party groupParty, TransactionGlAccountCategory transactionGlAccountCategory,
-            GlAccount glAccount, Currency originalCurrency, Long originalDebit, Long originalCredit, Long debit, Long credit,
+            Party groupParty, TransactionGlAccountCategory transactionGlAccountCategory, GlAccount glAccount,
+            Currency originalCurrency, Long originalDebit, Long originalCredit, Long debit, Long credit,
             BasePK createdBy) {
         var transactionGlEntry = TransactionGlEntryFactory.getInstance().create(transaction, transactionGlEntrySequence,
-                parentTransactionGlEntry, groupParty, transactionGlAccountCategory, glAccount, originalCurrency, originalDebit,
+                groupParty, transactionGlAccountCategory, glAccount, originalCurrency, originalDebit,
                 originalCredit, debit, credit, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(transaction.getPrimaryKey(), EventTypes.MODIFY, transactionGlEntry.getPrimaryKey(), EventTypes.CREATE, createdBy);
