@@ -42,8 +42,6 @@ public class TransactionGlEntryTransferCache
         if(transactionGlEntryTransfer == null) {
             var transactionTransfer = accountingControl.getTransactionTransfer(userVisit, transactionGlEntry.getTransaction());
             var transactionGlEntrySequence = transactionGlEntry.getTransactionGlEntrySequence();
-            var parentTransactionGlEntry = transactionGlEntry.getParentTransactionGlEntry();
-            var parentTransactionGlEntryTransfer = parentTransactionGlEntry == null ? null : accountingControl.getTransactionGlEntryTransfer(userVisit, parentTransactionGlEntry);
             var groupPartyTransfer = partyControl.getPartyTransfer(userVisit, transactionGlEntry.getGroupParty());
             var transactionGlAccountCategory = transactionGlEntry.getTransactionGlAccountCategory();
             var transactionGlAccountCategoryTransfer = transactionGlAccountCategory == null ? null : accountingControl.getTransactionGlAccountCategoryTransfer(userVisit, transactionGlEntry.getTransactionGlAccountCategory());
@@ -62,9 +60,9 @@ public class TransactionGlEntryTransferCache
             var credit = unformattedCredit == null ? null : AmountUtils.getInstance().formatAmount(glAccountCurrency, unformattedCredit);
 
             transactionGlEntryTransfer = new TransactionGlEntryTransfer(transactionTransfer, transactionGlEntrySequence,
-                    parentTransactionGlEntryTransfer, groupPartyTransfer, transactionGlAccountCategoryTransfer, glAccountTransfer,
-                    originalCurrencyTransfer, unformattedOriginalDebit, originalDebit, unformattedOriginalCredit, originalCredit,
-                    unformattedDebit, debit, unformattedCredit, credit);
+                    groupPartyTransfer, transactionGlAccountCategoryTransfer, glAccountTransfer, originalCurrencyTransfer,
+                    unformattedOriginalDebit, originalDebit, unformattedOriginalCredit, originalCredit, unformattedDebit,
+                    debit, unformattedCredit, credit);
 
             put(transactionGlEntry, transactionGlEntryTransfer);
         }
