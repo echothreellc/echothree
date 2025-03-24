@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.accounting.server.control;
 
+import com.echothree.model.control.accounting.common.TransactionTimeTypes;
 import com.echothree.model.control.accounting.common.choice.CurrencyChoicesBean;
 import com.echothree.model.control.accounting.common.choice.GlAccountCategoryChoicesBean;
 import com.echothree.model.control.accounting.common.choice.GlAccountChoicesBean;
@@ -5368,7 +5369,23 @@ public class AccountingControl
         
         return transactionGlEntry;
     }
-    
+
+    public long countTransactionGlEntryByTransaction(Transaction transaction) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM transactionglentries
+                        WHERE trxglent_trx_transactionid = ? AND trxglent_thrutime = ?
+                        """, transaction, Session.MAX_TIME_LONG);
+    }
+
+    public long countTransactionGlEntryByGlAccount(GlAccount glAccount) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM transactionglentries
+                        WHERE trxgla_gla_glaccountid = ? AND trxglent_thrutime = ?
+                        """, glAccount, Session.MAX_TIME_LONG);
+    }
+
     public List<TransactionGlEntry> getTransactionGlEntriesByTransaction(Transaction transaction) {
         List<TransactionGlEntry> transactionGlEntries;
         
@@ -5377,7 +5394,8 @@ public class AccountingControl
                     "SELECT _ALL_ " +
                     "FROM transactionglentries " +
                     "WHERE trxglent_trx_transactionid = ? AND trxglent_thrutime = ? " +
-                    "ORDER BY trxglent_transactionglentrysequence");
+                    "ORDER BY trxglent_transactionglentrysequence " +
+                    "_LIMIT_");
             
             ps.setLong(1, transaction.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -5395,16 +5413,21 @@ public class AccountingControl
         List<TransactionGlEntry> transactionGlEntries;
         
         try {
-            var ps = TransactionGlEntryFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM transactionglentries, transactionglaccounts " +
-                    "WHERE trxgla_gla_glaccountid = ? AND trxglent_thrutime = ? " +
-                    "AND trxglent_trxgla_transactionglaccountid = trxgla_transactionglaccountid");
-            // TODO: Sort by transaction's entity instance's entity times's created time
-            
+            var ps = TransactionGlEntryFactory.getInstance().prepareStatement("""
+                    SELECT _ALL_
+                    FROM transactionglentries
+                    JOIN transactiontimes ON trxglent_trx_transactionid = txntim_trx_transactionid AND txntim_thrutime
+                    JOIN transactiontimetypes ON txntim_txntimtyp_transactiontimetypeid = txntimtyp_transactiontimetypeid
+                    JOIN transactiontimetypedetails ON txntimtyp_lastdetailid = txntimtypdt_transactiontimetypedetailid
+                    WHERE trxglent_gla_glaccountid = ? AND trxglent_thrutime = ? AND txntimtypdt_transactiontimetypename = ?
+                    ORDER BY txntim_time
+                    _LIMIT_
+                    """);
+
             ps.setLong(1, glAccount.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
-            
+            ps.setString(3, TransactionTimeTypes.TRANSACTION_TIME.name());
+
             transactionGlEntries = TransactionGlEntryFactory.getInstance().getEntitiesFromQuery(session,
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
