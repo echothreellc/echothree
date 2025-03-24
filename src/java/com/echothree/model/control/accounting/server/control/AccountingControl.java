@@ -5368,7 +5368,23 @@ public class AccountingControl
         
         return transactionGlEntry;
     }
-    
+
+    public long countTransactionGlEntryByTransaction(Transaction transaction) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM transactionglentries
+                        WHERE trxglent_trx_transactionid = ? AND trxglent_thrutime = ?
+                        """, transaction, Session.MAX_TIME_LONG);
+    }
+
+    public long countTransactionGlEntryByGlAccount(GlAccount glAccount) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM transactionglentries
+                        WHERE trxgla_gla_glaccountid = ? AND trxglent_thrutime = ?
+                        """, glAccount, Session.MAX_TIME_LONG);
+    }
+
     public List<TransactionGlEntry> getTransactionGlEntriesByTransaction(Transaction transaction) {
         List<TransactionGlEntry> transactionGlEntries;
         
@@ -5377,7 +5393,8 @@ public class AccountingControl
                     "SELECT _ALL_ " +
                     "FROM transactionglentries " +
                     "WHERE trxglent_trx_transactionid = ? AND trxglent_thrutime = ? " +
-                    "ORDER BY trxglent_transactionglentrysequence");
+                    "ORDER BY trxglent_transactionglentrysequence " +
+                    "_LIMIT_");
             
             ps.setLong(1, transaction.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
