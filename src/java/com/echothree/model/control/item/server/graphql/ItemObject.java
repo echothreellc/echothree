@@ -270,7 +270,7 @@ public class ItemObject
     //| itm_stylpth_stylepathid             | bigint      | YES  |     | NULL    |       |
 
     @GraphQLField
-    @GraphQLDescription("itemPrices")
+    @GraphQLDescription("item prices")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<ItemPriceObject> getItemPrices(final DataFetchingEnvironment env) {
