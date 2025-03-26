@@ -40,6 +40,8 @@ import com.echothree.control.user.accounting.server.command.GetTransactionGlAcco
 import com.echothree.control.user.accounting.server.command.GetTransactionGlAccountCategoryCommand;
 import com.echothree.control.user.accounting.server.command.GetTransactionGroupCommand;
 import com.echothree.control.user.accounting.server.command.GetTransactionGroupsCommand;
+import com.echothree.control.user.accounting.server.command.GetTransactionTimeTypeCommand;
+import com.echothree.control.user.accounting.server.command.GetTransactionTimeTypesCommand;
 import com.echothree.control.user.accounting.server.command.GetTransactionTypeCommand;
 import com.echothree.control.user.accounting.server.command.GetTransactionTypesCommand;
 import com.echothree.control.user.accounting.server.command.GetTransactionsCommand;
@@ -408,6 +410,7 @@ import com.echothree.control.user.workflow.server.command.GetWorkflowStepTypesCo
 import com.echothree.control.user.workflow.server.command.GetWorkflowStepsCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowsCommand;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.model.control.accounting.server.control.TransactionTimeControl;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
 import com.echothree.model.control.accounting.server.graphql.GlAccountCategoryObject;
 import com.echothree.model.control.accounting.server.graphql.GlAccountClassObject;
@@ -420,6 +423,7 @@ import com.echothree.model.control.accounting.server.graphql.TransactionEntityRo
 import com.echothree.model.control.accounting.server.graphql.TransactionGlAccountCategoryObject;
 import com.echothree.model.control.accounting.server.graphql.TransactionGroupObject;
 import com.echothree.model.control.accounting.server.graphql.TransactionObject;
+import com.echothree.model.control.accounting.server.graphql.TransactionTimeTypeObject;
 import com.echothree.model.control.accounting.server.graphql.TransactionTypeObject;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationKindObject;
@@ -641,6 +645,7 @@ import com.echothree.model.data.accounting.common.TransactionConstants;
 import com.echothree.model.data.accounting.common.TransactionEntityRoleTypeConstants;
 import com.echothree.model.data.accounting.common.TransactionGlAccountCategoryConstants;
 import com.echothree.model.data.accounting.common.TransactionGroupConstants;
+import com.echothree.model.data.accounting.common.TransactionTimeTypeConstants;
 import com.echothree.model.data.accounting.common.TransactionTypeConstants;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
@@ -654,6 +659,7 @@ import com.echothree.model.data.accounting.server.entity.Transaction;
 import com.echothree.model.data.accounting.server.entity.TransactionEntityRoleType;
 import com.echothree.model.data.accounting.server.entity.TransactionGlAccountCategory;
 import com.echothree.model.data.accounting.server.entity.TransactionGroup;
+import com.echothree.model.data.accounting.server.entity.TransactionTimeType;
 import com.echothree.model.data.accounting.server.entity.TransactionType;
 import com.echothree.model.data.cancellationpolicy.common.CancellationKindConstants;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
@@ -10441,6 +10447,57 @@ public interface GraphQlQueries {
                     var shippingMethods = entities.stream().map(ShippingMethodObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, shippingMethods);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("transactionTimeType")
+    static TransactionTimeTypeObject transactionTimeType(final DataFetchingEnvironment env,
+            @GraphQLName("transactionTimeTypeName") final String transactionTimeTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        TransactionTimeType transactionTimeType;
+
+        try {
+            var commandForm = AccountingUtil.getHome().getGetTransactionTimeTypeForm();
+
+            commandForm.setTransactionTimeTypeName(transactionTimeTypeName);
+            commandForm.setUuid(id);
+
+            transactionTimeType = new GetTransactionTimeTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return transactionTimeType == null ? null : new TransactionTimeTypeObject(transactionTimeType);
+    }
+
+    @GraphQLField
+    @GraphQLName("transactionTimeTypes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<TransactionTimeTypeObject> transactionTimeTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<TransactionTimeTypeObject> data;
+
+        try {
+            var transactionTimeControl = Session.getModelController(TransactionTimeControl.class);
+            var totalCount = transactionTimeControl.countTransactionTimeTypes();
+
+            try(var objectLimiter = new ObjectLimiter(env, TransactionTimeTypeConstants.COMPONENT_VENDOR_NAME, TransactionTimeTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = AccountingUtil.getHome().getGetTransactionTimeTypesForm();
+                var entities = new GetTransactionTimeTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var transactionTimeTypes = entities.stream().map(TransactionTimeTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, transactionTimeTypes);
                 }
             }
         } catch (NamingException ex) {

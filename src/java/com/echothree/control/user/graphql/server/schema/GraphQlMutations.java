@@ -19,8 +19,10 @@ package com.echothree.control.user.graphql.server.schema;
 import com.echothree.control.user.accounting.common.AccountingUtil;
 import com.echothree.control.user.accounting.common.result.CreateGlAccountResult;
 import com.echothree.control.user.accounting.common.result.CreateItemAccountingCategoryResult;
+import com.echothree.control.user.accounting.common.result.CreateTransactionTimeTypeResult;
 import com.echothree.control.user.accounting.common.result.EditGlAccountResult;
 import com.echothree.control.user.accounting.common.result.EditItemAccountingCategoryResult;
+import com.echothree.control.user.accounting.common.result.EditTransactionTimeTypeResult;
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.control.user.campaign.common.CampaignUtil;
 import com.echothree.control.user.content.common.ContentUtil;
@@ -13860,4 +13862,111 @@ public interface GraphQlMutations {
         return mutationResultObject;
     }
 
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject createTransactionTimeType(final DataFetchingEnvironment env,
+            @GraphQLName("transactionTimeTypeName") @GraphQLNonNull final String transactionTimeTypeName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = AccountingUtil.getHome().getCreateTransactionTimeTypeForm();
+
+            commandForm.setTransactionTimeTypeName(transactionTimeTypeName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = AccountingUtil.getHome().createTransactionTimeType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateTransactionTimeTypeResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteTransactionTimeType(final DataFetchingEnvironment env,
+            @GraphQLName("transactionTimeTypeName") @GraphQLNonNull final String transactionTimeTypeName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = AccountingUtil.getHome().getDeleteTransactionTimeTypeForm();
+
+            commandForm.setTransactionTimeTypeName(transactionTimeTypeName);
+
+            var commandResult = AccountingUtil.getHome().deleteTransactionTimeType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject editTransactionTimeType(final DataFetchingEnvironment env,
+            @GraphQLName("originalTransactionTimeTypeName") final String originalTransactionTimeTypeName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("transactionTimeTypeName") final String transactionTimeTypeName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = AccountingUtil.getHome().getTransactionTimeTypeUniversalSpec();
+
+            spec.setTransactionTimeTypeName(originalTransactionTimeTypeName);
+            spec.setUuid(id);
+
+            var commandForm = AccountingUtil.getHome().getEditTransactionTimeTypeForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = AccountingUtil.getHome().editTransactionTimeType(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditTransactionTimeTypeResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getTransactionTimeType().getEntityInstance());
+
+                if(arguments.containsKey("transactionTimeTypeName"))
+                    edit.setTransactionTimeTypeName(transactionTimeTypeName);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = AccountingUtil.getHome().editTransactionTimeType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+    
 }
