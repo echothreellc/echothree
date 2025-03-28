@@ -39,6 +39,8 @@ import com.echothree.control.user.accounting.server.command.GetTransactionGlAcco
 import com.echothree.control.user.accounting.server.command.GetTransactionGlAccountCategoryCommand;
 import com.echothree.control.user.accounting.server.command.GetTransactionGroupCommand;
 import com.echothree.control.user.accounting.server.command.GetTransactionGroupsCommand;
+import com.echothree.control.user.accounting.server.command.GetTransactionTimeTypeCommand;
+import com.echothree.control.user.accounting.server.command.GetTransactionTimeTypesCommand;
 import com.echothree.control.user.accounting.server.command.GetTransactionTypeCommand;
 import com.echothree.control.user.accounting.server.command.GetTransactionTypesCommand;
 import com.echothree.control.user.accounting.server.command.GetTransactionsCommand;
@@ -109,6 +111,14 @@ public interface AccountingSecurityUtils {
 
     static boolean getHasGlResourceTypesAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGlResourceTypesCommand.class);
+    }
+
+    static boolean getHasTransactionTimeTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetTransactionTimeTypeCommand.class);
+    }
+
+    static boolean getHasTransactionTimeTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetTransactionTimeTypesCommand.class);
     }
 
     static boolean getHasTransactionTypeAccess(final DataFetchingEnvironment env) {
