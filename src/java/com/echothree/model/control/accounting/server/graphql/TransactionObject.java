@@ -18,6 +18,7 @@ package com.echothree.model.control.accounting.server.graphql;
 
 import com.echothree.model.control.accounting.common.workflow.TransactionStatusConstants;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.model.control.accounting.server.control.TransactionTimeControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
@@ -27,6 +28,7 @@ import com.echothree.model.control.party.server.graphql.PartyObject;
 import com.echothree.model.control.party.server.graphql.PartySecurityUtils;
 import com.echothree.model.control.workflow.server.graphql.WorkflowEntityStatusObject;
 import com.echothree.model.data.accounting.common.TransactionGlEntryConstants;
+import com.echothree.model.data.accounting.common.TransactionTimeConstants;
 import com.echothree.model.data.accounting.server.entity.Transaction;
 import com.echothree.model.data.accounting.server.entity.TransactionDetail;
 import com.echothree.util.server.persistence.Session;
@@ -100,18 +102,18 @@ public class TransactionObject
     }
 
     @GraphQLField
-    @GraphQLDescription("transaction GL entries")
+    @GraphQLDescription("transaction times")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public CountingPaginatedData<TransactionGlEntryObject> getTransactionGlEntries(final DataFetchingEnvironment env) {
-//        if(AccountingSecurityUtils.getHasTransactionGlEntriesAccess(env)) {
-            var accountingControl = Session.getModelController(AccountingControl.class);
-            var totalCount = accountingControl.countTransactionGlEntryByTransaction(transaction);
-
-            try(var objectLimiter = new ObjectLimiter(env, TransactionGlEntryConstants.COMPONENT_VENDOR_NAME, TransactionGlEntryConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var entities = accountingControl.getTransactionGlEntriesByTransaction(transaction);
-                var objects = entities.stream().map(TransactionGlEntryObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
-
+    public CountingPaginatedData<TransactionTimeObject> getTransactionTimes(final DataFetchingEnvironment env) {
+//        if(AccountingSecurityUtils.getHasTransactionTimesAccess(env)) {
+            var transactionTimeControl = Session.getModelController(TransactionTimeControl.class);
+            var totalCount = transactionTimeControl.countTransactionTimesByTransaction(transaction);
+    
+            try(var objectLimiter = new ObjectLimiter(env, TransactionTimeConstants.COMPONENT_VENDOR_NAME, TransactionTimeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = transactionTimeControl.getTransactionTimesByTransaction(transaction);
+                var objects = entities.stream().map(TransactionTimeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+    
                 return new CountedObjects<>(objectLimiter, objects);
             }
 //        } else {
@@ -119,6 +121,24 @@ public class TransactionObject
 //        }
     }
 
-
-
+    @GraphQLField
+    @GraphQLDescription("transaction GL entries")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<TransactionGlEntryObject> getTransactionGlEntries(final DataFetchingEnvironment env) {
+//        if(AccountingSecurityUtils.getHasTransactionGlEntriesAccess(env)) {
+            var accountingControl = Session.getModelController(AccountingControl.class);
+            var totalCount = accountingControl.countTransactionGlEntryByTransaction(transaction);
+    
+            try(var objectLimiter = new ObjectLimiter(env, TransactionGlEntryConstants.COMPONENT_VENDOR_NAME, TransactionGlEntryConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = accountingControl.getTransactionGlEntriesByTransaction(transaction);
+                var objects = entities.stream().map(TransactionGlEntryObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+    
+                return new CountedObjects<>(objectLimiter, objects);
+            }
+//        } else {
+//            return Connections.emptyConnection();
+//        }
+    }
+    
 }
