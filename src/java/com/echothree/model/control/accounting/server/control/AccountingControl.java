@@ -5468,7 +5468,15 @@ public class AccountingControl
         
         return transactionEntityRole;
     }
-    
+
+    public long countTransactionEntityRolesByTransaction(final Transaction transaction) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM transactionentityroles
+                        WHERE trxer_trx_transactionid = ? AND trxer_thrutime = ?
+                        """, transaction, Session.MAX_TIME_LONG);
+    }
+
     public TransactionEntityRole getTransactionEntityRole(Transaction transaction, TransactionEntityRoleType transactionEntityRoleType) {
         TransactionEntityRole transactionEntityRole;
         
