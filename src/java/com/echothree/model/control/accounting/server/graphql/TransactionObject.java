@@ -27,6 +27,7 @@ import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.party.server.graphql.PartyObject;
 import com.echothree.model.control.party.server.graphql.PartySecurityUtils;
 import com.echothree.model.control.workflow.server.graphql.WorkflowEntityStatusObject;
+import com.echothree.model.data.accounting.common.TransactionEntityRoleConstants;
 import com.echothree.model.data.accounting.common.TransactionGlEntryConstants;
 import com.echothree.model.data.accounting.common.TransactionTimeConstants;
 import com.echothree.model.data.accounting.server.entity.Transaction;
@@ -140,5 +141,25 @@ public class TransactionObject
 //            return Connections.emptyConnection();
 //        }
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("transaction entity roles")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<TransactionEntityRoleObject> getTransactionEntityRoles(final DataFetchingEnvironment env) {
+//        if(AccountingSecurityUtils.getHasTransactionEntityRolesAccess(env)) {
+            var accountingControl = Session.getModelController(AccountingControl.class);
+            var totalCount = accountingControl.countTransactionEntityRolesByTransaction(transaction);
+
+            try(var objectLimiter = new ObjectLimiter(env, TransactionEntityRoleConstants.COMPONENT_VENDOR_NAME, TransactionEntityRoleConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = accountingControl.getTransactionEntityRolesByTransaction(transaction);
+                var objects = entities.stream().map(TransactionEntityRoleObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, objects);
+            }
+//        } else {
+//            return Connections.emptyConnection();
+//        }
+    }
+
 }

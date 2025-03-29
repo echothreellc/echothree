@@ -16,47 +16,50 @@
 
 package com.echothree.model.control.accounting.server.graphql;
 
+import com.echothree.model.control.core.server.graphql.CoreSecurityUtils;
+import com.echothree.model.control.core.server.graphql.EntityInstanceObject;
 import com.echothree.model.control.graphql.server.graphql.BaseObject;
-import com.echothree.model.control.graphql.server.graphql.TimeObject;
-import com.echothree.model.data.accounting.server.entity.TransactionTime;
+import com.echothree.model.data.accounting.server.entity.TransactionEntityRole;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 
-@GraphQLDescription("transaction time object")
-@GraphQLName("TransactionTime")
-public class TransactionTimeObject
+@GraphQLDescription("transaction entity role object")
+@GraphQLName("TransactionEntityRole")
+public class TransactionEntityRoleObject
         extends BaseObject {
 
-    private final TransactionTime transactionTime; // Always Present
+    private final TransactionEntityRole transactionEntityRole; // Always Present
 
-    public TransactionTimeObject(TransactionTime transactionTime) {
-        this.transactionTime = transactionTime;
+    public TransactionEntityRoleObject(TransactionEntityRole transactionEntityRole) {
+        this.transactionEntityRole = transactionEntityRole;
     }
 
     @GraphQLField
     @GraphQLDescription("transaction")
     public TransactionObject getTransaction(final DataFetchingEnvironment env) {
         return AccountingSecurityUtils.getHasTransactionAccess(env) ?
-                new TransactionObject(transactionTime.getTransaction()) :
+                new TransactionObject(transactionEntityRole.getTransaction()) :
                 null;
     }
 
     @GraphQLField
     @GraphQLDescription("transaction time type")
-    public TransactionTimeTypeObject getTransactionTimeType(final DataFetchingEnvironment env) {
-        return AccountingSecurityUtils.getHasTransactionTimeTypeAccess(env) ?
-                new TransactionTimeTypeObject(transactionTime.getTransactionTimeType()) :
+    public TransactionEntityRoleTypeObject getTransactionEntityRoleType(final DataFetchingEnvironment env) {
+        var transactionEntityRoleType = transactionEntityRole.getTransactionEntityRoleType();
+
+        return AccountingSecurityUtils.getHasTransactionEntityRoleTypeAccess(env) ?
+                new TransactionEntityRoleTypeObject(transactionEntityRoleType) :
                 null;
     }
 
     @GraphQLField
-    @GraphQLDescription("time")
-    @GraphQLNonNull
-    public TimeObject getTime() {
-        return new TimeObject(transactionTime.getTime());
+    @GraphQLDescription("entity instance")
+    public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
+        return CoreSecurityUtils.getHasEntityInstanceAccess(env) ?
+                new EntityInstanceObject(transactionEntityRole.getEntityInstance()) :
+                null;
     }
 
 }
