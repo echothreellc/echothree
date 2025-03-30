@@ -1,5 +1,15 @@
 # Changelog
 
+## 2025-03-30-01
+
+* Add Transaction GL Entry Object and Queries [1510](https://gitlab.echothree.com/echothree/echothree/-/issues/1510)
+* Add Transaction Entity Role Object and Queries [1511](https://gitlab.echothree.com/echothree/echothree/-/issues/1511)
+* Guava 33.4.5-jre Upgrade [1524](https://gitlab.echothree.com/echothree/echothree/-/issues/1524)
+* Bootstrap 4.6.2 Upgrade [1525](https://gitlab.echothree.com/echothree/echothree/-/issues/1525)
+* Add Transaction Time Type Object and Queries [1526](https://gitlab.echothree.com/echothree/echothree/-/issues/1526)
+* Add Transaction Time Object and Queries [1527](https://gitlab.echothree.com/echothree/echothree/-/issues/1527)
+* Remove Parent Transaction GL Entry from Transaction GL Entry [1528](https://gitlab.echothree.com/echothree/echothree/-/issues/1528)
+
 ## 2025-03-16-01
 
 * Add Default Value for Multiple List Item Attributes [1466](https://gitlab.echothree.com/echothree/echothree/-/issues/1466)
