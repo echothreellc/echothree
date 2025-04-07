@@ -101,7 +101,7 @@ public class GetEntityTypesCommand
             var userVisit = getUserVisit();
 
             if(componentVendor != null) {
-                result.setComponentVendor(coreControl.getComponentVendorTransfer(userVisit, componentVendor));
+                result.setComponentVendor(getComponentVendorControl().getComponentVendorTransfer(userVisit, componentVendor));
 
                 if(session.hasLimit(EntityTypeFactory.class)) {
                     result.setEntityTypeCount(coreControl.countEntityTypesByComponentVendor(componentVendor));

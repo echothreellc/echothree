@@ -90,7 +90,7 @@ public class EditEntityLongRangeDescriptionCommand
         var coreControl = getCoreControl();
         EntityLongRangeDescription entityLongRangeDescription = null;
         var componentVendorName = spec.getComponentVendorName();
-        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
             var entityTypeName = spec.getEntityTypeName();

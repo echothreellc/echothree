@@ -75,9 +75,9 @@ public class GetEntityMessagesCommand
                     addExecutionError(ExecutionErrors.UnknownEntityRef.name(), entityRef);
                 }
             } else {
-                var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+                var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
                 
-                result.setComponentVendor(coreControl.getComponentVendorTransfer(userVisit, componentVendor));
+                result.setComponentVendor(getComponentVendorControl().getComponentVendorTransfer(userVisit, componentVendor));
                 
                 if(componentVendor != null) {
                     var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);

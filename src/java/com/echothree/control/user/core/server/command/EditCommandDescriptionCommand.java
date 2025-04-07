@@ -74,7 +74,7 @@ public class EditCommandDescriptionCommand
         var coreControl = getCoreControl();
         CommandDescription commandDescription = null;
         var componentVendorName = spec.getComponentVendorName();
-        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
             var commandName = spec.getCommandName();

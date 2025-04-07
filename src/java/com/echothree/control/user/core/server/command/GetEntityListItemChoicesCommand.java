@@ -76,7 +76,7 @@ public class GetEntityListItemChoicesCommand
             EntityType entityType = null;
             
             if(entityRef == null) {
-                var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+                var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
                 
                 if(componentVendor != null) {
                     entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);

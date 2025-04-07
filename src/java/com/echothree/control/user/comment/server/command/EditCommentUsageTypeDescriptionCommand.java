@@ -65,7 +65,7 @@ public class EditCommentUsageTypeDescriptionCommand
         var coreControl = getCoreControl();
         var result = CommentResultFactory.getEditCommentUsageTypeDescriptionResult();
         var componentVendorName = spec.getComponentVendorName();
-        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var entityTypeName = spec.getEntityTypeName();

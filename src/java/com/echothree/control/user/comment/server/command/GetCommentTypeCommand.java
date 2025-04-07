@@ -54,14 +54,14 @@ public class GetCommentTypeCommand
         var result = CommentResultFactory.getGetCommentTypeResult();
         var coreControl = getCoreControl();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var userVisit = getUserVisit();
             var entityTypeName = form.getEntityTypeName();
             var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
-            result.setComponentVendor(coreControl.getComponentVendorTransfer(userVisit, componentVendor));
+            result.setComponentVendor(getComponentVendorControl().getComponentVendorTransfer(userVisit, componentVendor));
             
             if(entityType != null) {
                 var commentControl = Session.getModelController(CommentControl.class);
