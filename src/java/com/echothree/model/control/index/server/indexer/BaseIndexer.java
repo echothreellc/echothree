@@ -17,6 +17,7 @@
 package com.echothree.model.control.index.server.indexer;
 
 import com.echothree.model.control.core.common.EntityAttributeTypes;
+import com.echothree.model.control.core.server.control.ComponentVendorControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.common.IndexFields;
@@ -64,6 +65,7 @@ public abstract class BaseIndexer<BE extends BaseEntity>
         implements Closeable {
     
     protected CoreControl coreControl = Session.getModelController(CoreControl.class);
+    protected ComponentVendorControl componentVendorControl = Session.getModelController(ComponentVendorControl.class);
     protected IndexControl indexControl = Session.getModelController(IndexControl.class);
     protected TagControl tagControl = Session.getModelController(TagControl.class);
     protected WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);

@@ -70,7 +70,7 @@ public class GetBatchTypeEntityTypesCommand
                 }
             } else {
                 var coreControl = getCoreControl();
-                var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+                var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
 
                 if(componentVendor != null) {
                     var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);

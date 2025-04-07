@@ -63,13 +63,12 @@ public class CreateComponentVendorCommand
     protected BaseResult execute() {
         var result = CoreResultFactory.getCreateComponentVendorResult();
         var componentVendorName = form.getComponentVendorName();
-        var coreControl = getCoreControl();
-        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
         
         if(componentVendor == null) {
             var description = form.getDescription();
 
-            componentVendor = coreControl.createComponentVendor(componentVendorName, description, getPartyPK());
+            componentVendor = getComponentVendorControl().createComponentVendor(componentVendorName, description, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.DuplicateComponentVendorName.name(), componentVendorName);
         }

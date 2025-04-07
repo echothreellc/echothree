@@ -21,6 +21,7 @@ import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.server.control.ComponentVendorControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.control.party.server.logic.PartyLogic;
@@ -51,8 +52,9 @@ public class ChainInstanceStatusLogic {
         
         if(contactList != null) {
             var coreControl = Session.getModelController(CoreControl.class);
+            var componentVendorControl = Session.getModelController(ComponentVendorControl.class);
             var chainType = chainInstance.getLastDetail().getChain().getLastDetail().getChainType();
-            var partyEntityType = coreControl.getEntityTypeByName(coreControl.getComponentVendorByName(ComponentVendors.ECHO_THREE.name()), EntityTypes.Party.name());
+            var partyEntityType = coreControl.getEntityTypeByName(componentVendorControl.getComponentVendorByName(ComponentVendors.ECHO_THREE.name()), EntityTypes.Party.name());
             
             for(var chainEntityRoleType: chainControl.getChainEntityRoleTypes(chainType)) {
                 if(chainEntityRoleType.getLastDetail().getEntityType().equals(partyEntityType)) {

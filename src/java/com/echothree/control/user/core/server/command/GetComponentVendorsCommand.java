@@ -61,12 +61,12 @@ public class GetComponentVendorsCommand
 
     @Override
     protected Long getTotalEntities() {
-        return getCoreControl().countComponentVendors();
+        return getComponentVendorControl().countComponentVendors();
     }
 
     @Override
     protected Collection<ComponentVendor> getEntities() {
-        return getCoreControl().getComponentVendors();
+        return getComponentVendorControl().getComponentVendors();
     }
 
     @Override
@@ -74,7 +74,7 @@ public class GetComponentVendorsCommand
         var result = CoreResultFactory.getGetComponentVendorsResult();
 
         if(entities != null) {
-            result.setComponentVendors(getCoreControl().getComponentVendorTransfers(getUserVisit(), entities));
+            result.setComponentVendors(getComponentVendorControl().getComponentVendorTransfers(getUserVisit(), entities));
         }
 
         return result;

@@ -53,7 +53,7 @@ public class GetCommandsCommand
         if(componentVendorName == null) {
             result.setCommands(coreControl.getCommandTransfers(getUserVisit()));
         } else {
-            var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+            var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
             
             if(componentVendor != null) {
                 result.setCommands(coreControl.getCommandTransfersByComponentVendor(getUserVisit(), componentVendor));

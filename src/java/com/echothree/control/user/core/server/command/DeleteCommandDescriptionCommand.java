@@ -51,7 +51,7 @@ public class DeleteCommandDescriptionCommand
     protected BaseResult execute() {
         var coreControl = getCoreControl();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var commandName = form.getCommandName();

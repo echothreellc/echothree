@@ -54,7 +54,7 @@ public class GetMessageDescriptionsCommand
         var coreControl = getCoreControl();
         var result = MessageResultFactory.getGetMessageDescriptionsResult();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var entityTypeName = form.getEntityTypeName();

@@ -50,7 +50,7 @@ public class GetCommandCommand
         var coreControl = getCoreControl();
         var result = CoreResultFactory.getGetCommandResult();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var commandName = form.getCommandName();

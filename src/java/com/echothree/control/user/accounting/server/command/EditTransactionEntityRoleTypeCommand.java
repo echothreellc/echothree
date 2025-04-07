@@ -128,7 +128,7 @@ public class EditTransactionEntityRoleTypeCommand
                     if(duplicateTransactionEntityRoleType == null || transactionEntityRoleType.equals(duplicateTransactionEntityRoleType)) {
                         var coreControl = getCoreControl();
                         var componentVendorName = edit.getComponentVendorName();
-                        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+                        var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
 
                         if(componentVendor != null) {
                             var entityTypeName = edit.getEntityTypeName();

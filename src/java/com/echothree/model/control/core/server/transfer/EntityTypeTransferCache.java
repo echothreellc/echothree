@@ -20,6 +20,7 @@ import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
+import com.echothree.model.control.core.server.control.ComponentVendorControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.message.server.control.MessageControl;
@@ -38,6 +39,7 @@ public class EntityTypeTransferCache
         extends BaseCoreTransferCache<EntityType, EntityTypeTransfer> {
 
     CoreControl coreControl = Session.getModelController(CoreControl.class);
+    ComponentVendorControl componentVendorControl = Session.getModelController(ComponentVendorControl.class);
     CommentControl commentControl;
     IndexControl indexControl;
     MessageControl messageControl;
@@ -127,7 +129,7 @@ public class EntityTypeTransferCache
             put(entityType, entityTypeTransfer);
             
             if(!filterComponentVendor) {
-                entityTypeTransfer.setComponentVendor(coreControl.getComponentVendorTransfer(userVisit, entityTypeDetail.getComponentVendor()));
+                entityTypeTransfer.setComponentVendor(componentVendorControl.getComponentVendorTransfer(userVisit, entityTypeDetail.getComponentVendor()));
             }
             
             if(!filterEntityTypeName) {
