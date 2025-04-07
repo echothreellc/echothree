@@ -19,6 +19,7 @@ package com.echothree.util.server.persistence;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.server.control.ComponentVendorControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.control.ForumControl;
@@ -190,7 +191,8 @@ public class EntityDescriptionUtils {
 
                     description = location == null ? null : warehouseControl.getBestLocationDescription(location, getLanguage(userVisit));
                 } else if(entityTypeName.equals(EntityTypes.ComponentVendor.name())) {
-                    var componentVendor = coreControl.getComponentVendorByEntityInstance(entityInstance);
+                    var componentVendorControl = Session.getModelController(ComponentVendorControl.class);
+                    var componentVendor = componentVendorControl.getComponentVendorByEntityInstance(entityInstance);
 
                     description = componentVendor == null ? null : componentVendor.getLastDetail().getDescription();
                 } else if(entityTypeName.equals(EntityTypes.EntityType.name())) {

@@ -59,10 +59,10 @@ public class GetEntityMessageCommand
         
         if(entityInstance != null) {
             var componentVendorName = form.getComponentVendorName();
-            var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+            var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
             var userVisit = getUserVisit();
             
-            result.setComponentVendor(coreControl.getComponentVendorTransfer(userVisit, componentVendor));
+            result.setComponentVendor(getComponentVendorControl().getComponentVendorTransfer(userVisit, componentVendor));
             
             if(componentVendor != null) {
                 var entityTypeName = form.getEntityTypeName();

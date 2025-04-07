@@ -55,7 +55,7 @@ public class GetCommentUsageTypeCommand
         var result = CommentResultFactory.getGetCommentUsageTypeResult();
         var coreControl = getCoreControl();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
             var userVisit = getUserVisit();

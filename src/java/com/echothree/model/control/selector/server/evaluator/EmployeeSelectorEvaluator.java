@@ -179,7 +179,7 @@ public class EmployeeSelectorEvaluator
             log.info(">>> EmployeeSelectorEvaluator.evaluate");
         
         long remainingTime = maximumTime;
-        var componentVendor = coreControl.getComponentVendorByName(ComponentVendors.ECHO_THREE.name());
+        var componentVendor = componentVendorControl.getComponentVendorByName(ComponentVendors.ECHO_THREE.name());
         
         if(componentVendor != null) {
             var entityType = coreControl.getEntityTypeByName(componentVendor, EntityTypes.Party.name());

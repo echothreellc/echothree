@@ -66,7 +66,7 @@ public class EditRatingTypeListItemCommand
         var coreControl = getCoreControl();
         var result = RatingResultFactory.getEditRatingTypeListItemResult();
         var componentVendorName = spec.getComponentVendorName();
-        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var entityTypeName = spec.getEntityTypeName();

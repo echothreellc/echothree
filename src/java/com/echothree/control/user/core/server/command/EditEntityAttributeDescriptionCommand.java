@@ -89,7 +89,7 @@ public class EditEntityAttributeDescriptionCommand
         var coreControl = getCoreControl();
         EntityAttributeDescription entityAttributeDescription = null;
         var componentVendorName = spec.getComponentVendorName();
-        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
             var entityTypeName = spec.getEntityTypeName();

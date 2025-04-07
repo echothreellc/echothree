@@ -167,7 +167,7 @@ public class EditChainEntityRoleTypeCommand
         } else {
             var coreControl = getCoreControl();
             var componentVendorName = edit.getComponentVendorName();
-            var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+            var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
 
             if(componentVendor != null) {
                 var entityTypeName = edit.getEntityTypeName();

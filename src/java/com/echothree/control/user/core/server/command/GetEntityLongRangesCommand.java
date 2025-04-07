@@ -69,7 +69,7 @@ public class GetEntityLongRangesCommand
     protected Collection<EntityLongRange> getEntities() {
         var coreControl = getCoreControl();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
         Collection<EntityLongRange> entityLongRanges = null;
 
         if(componentVendor != null) {

@@ -20,6 +20,7 @@ import com.echothree.control.user.party.common.spec.PartySpec;
 import com.echothree.model.control.core.common.CommandMessageTypes;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.core.server.control.ComponentVendorControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
@@ -535,7 +536,7 @@ public abstract class BaseCommand
 
                     // TODO: Check PartyTypeAuditPolicy to see if the command should be logged
                     if(logCommand) {
-                        var componentVendor = getCoreControl().getComponentVendorByName(getComponentVendorName());
+                        var componentVendor = getComponentVendorControl().getComponentVendorByName(getComponentVendorName());
 
                         if(componentVendor != null) {
                             getCommandName();
@@ -548,14 +549,14 @@ public abstract class BaseCommand
                                 }
                             }
 
-                            var command = coreControl.getCommandByName(componentVendor, commandName);
+                            var command = getCoreControl().getCommandByName(componentVendor, commandName);
 
                             if(command == null) {
-                                command = coreControl.createCommand(componentVendor, commandName, 1, party == null ? null : party.getPrimaryKey());
+                                command = getCoreControl().createCommand(componentVendor, commandName, 1, party == null ? null : party.getPrimaryKey());
                             }
 
                             if(command != null) {
-                                var userVisitStatus = userControl.getUserVisitStatusForUpdate(userVisit);
+                                var userVisitStatus = getUserControl().getUserVisitStatusForUpdate(userVisit);
 
                                 if(userVisitStatus != null) {
                                     Integer userVisitCommandSequence = userVisitStatus.getUserVisitCommandSequence() + 1;
@@ -634,17 +635,26 @@ public abstract class BaseCommand
     // --------------------------------------------------------------------------------
     //   Event Utilities
     // --------------------------------------------------------------------------------
-    
+
     private CoreControl coreControl = null;
-    
+    private ComponentVendorControl componentVendorControl = null;
+
     protected CoreControl getCoreControl() {
         if(coreControl == null) {
             coreControl = Session.getModelController(CoreControl.class);
         }
-        
+
         return coreControl;
     }
-    
+
+    protected ComponentVendorControl getComponentVendorControl() {
+        if(componentVendorControl == null) {
+            componentVendorControl = Session.getModelController(ComponentVendorControl.class);
+        }
+
+        return componentVendorControl;
+    }
+
     protected EntityInstance getEntityInstanceByBasePK(BasePK pk) {
         return getCoreControl().getEntityInstanceByBasePK(pk);
     }
