@@ -54,9 +54,7 @@ public class BaseKey
         if(this == other)
             return true;
         
-        if(other instanceof BaseKey) {
-            var that = (BaseKey)other;
-
+        if(other instanceof BaseKey that) {
             var thatEncoded = that.getKey().getEncoded();
             var thatIv = that.getIv();
 
