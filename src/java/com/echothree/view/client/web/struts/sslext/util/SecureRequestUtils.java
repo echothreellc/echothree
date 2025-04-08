@@ -296,11 +296,10 @@ public class SecureRequestUtils {
             var aValues = new String[1];
             if(value == null) {
                 aValues[0] = "";
-            } else if(value instanceof List) { // Work around for Weblogic 6.1sp1
-                var aList = (List)value;
+            } else if(value instanceof List aList) { // Work around for Weblogic 6.1sp1
                 aValues = (String[])aList.toArray(new String[aList.size()]);
-            } else if(value instanceof String) {  // Single value from Struts tags
-                aValues[0] = (String)value;
+            } else if(value instanceof String aString) {  // Single value from Struts tags
+                aValues[0] = aString;
             } else { // String array, the standard returned from request.getParameterMap()
                 aValues = (String[])value;  // This is the standard
             }

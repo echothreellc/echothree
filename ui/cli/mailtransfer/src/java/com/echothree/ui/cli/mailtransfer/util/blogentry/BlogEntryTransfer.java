@@ -415,8 +415,7 @@ public class BlogEntryTransfer {
             collectedParts.addCapturedMessagePart(html);
 
             log.info(indent + "text/plain");
-        } else if(content instanceof MimeMultipart) {
-            var mimeMultipartContent = (MimeMultipart)content;
+        } else if(content instanceof MimeMultipart mimeMultipartContent) {
             var mimeType = new MimeType(mimeMultipartContent.getContentType());
             var subType = mimeType.getSubType();
             var mimeTypeName = mimeType.getPrimaryType() + "/" + subType;
@@ -460,8 +459,7 @@ public class BlogEntryTransfer {
                     log.error(indent + "unknown subType: " + subType);
                     break;
             }
-        } else if(content instanceof MimeBodyPart) {
-            var mimeBodyPart = (MimeBodyPart)content;
+        } else if(content instanceof MimeBodyPart mimeBodyPart) {
             var mimeType = new MimeType(mimeBodyPart.getContentType());
 
             var primaryType = mimeType.getPrimaryType();
