@@ -21,10 +21,10 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -60,16 +60,15 @@ public class DeleteEntityTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
         var componentVendorName = form.getComponentVendorName();
         var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var entityTypeName = form.getEntityTypeName();
-            var entityType = coreControl.getEntityTypeByNameForUpdate(componentVendor, entityTypeName);
+            var entityType = getEntityTypeControl().getEntityTypeByNameForUpdate(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                coreControl.deleteEntityType(entityType, getPartyPK());
+                getEntityTypeControl().deleteEntityType(entityType, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), componentVendorName, entityTypeName);
             }

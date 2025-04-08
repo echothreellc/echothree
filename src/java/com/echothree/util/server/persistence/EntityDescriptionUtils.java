@@ -21,6 +21,7 @@ import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.server.control.ComponentVendorControl;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.item.common.ItemConstants;
@@ -196,9 +197,10 @@ public class EntityDescriptionUtils {
 
                     description = componentVendor == null ? null : componentVendor.getLastDetail().getDescription();
                 } else if(entityTypeName.equals(EntityTypes.EntityType.name())) {
-                    var entityType = coreControl.getEntityTypeByEntityInstance(entityInstance);
+                    var entityTypeControl = Session.getModelController(EntityTypeControl.class);
+                    var entityType = entityTypeControl.getEntityTypeByEntityInstance(entityInstance);
 
-                    description = entityType == null ? null : coreControl.getBestEntityTypeDescription(entityType, getLanguage(userVisit));
+                    description = entityType == null ? null : entityTypeControl.getBestEntityTypeDescription(entityType, getLanguage(userVisit));
                 }
             }
         }

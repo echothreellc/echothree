@@ -285,7 +285,7 @@ public class OfferItemSelectorEvaluator
         var componentVendor = componentVendorControl.getComponentVendorByName(ComponentVendors.ECHO_THREE.name());
         
         if(componentVendor != null) {
-            var entityType = coreControl.getEntityTypeByName(componentVendor, EntityTypes.Item.name());
+            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, EntityTypes.Item.name());
             
             if(entityType != null) {
                 var offerItemSelectors = offerControl.getDistinctOfferItemSelectors();

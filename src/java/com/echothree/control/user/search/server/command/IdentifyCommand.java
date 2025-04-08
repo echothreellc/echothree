@@ -23,7 +23,6 @@ import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.transfer.ComponentVendorTransfer;
 import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.customer.server.search.CustomerSearchEvaluator;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
@@ -264,8 +263,7 @@ public class IdentifyCommand
     private void checkEntityTypes(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.EntityType.name(), SecurityRoles.Search.name())) {
-            var coreControl = Session.getModelController(CoreControl.class);
-            var entityTypes = coreControl.getEntityTypesByName(target);
+            var entityTypes = getEntityTypeControl().getEntityTypesByName(target);
 
             entityTypes.stream().map((entityType) -> getCoreControl().getEntityInstanceByBasePK(entityType.getPrimaryKey())).map((entityInstance) -> EntityNamesUtils.getInstance().getEntityNames(entityInstance)).forEach((entityInstanceAndNames) -> {
                 entityInstances.add(fillInEntityInstance(entityInstanceAndNames));

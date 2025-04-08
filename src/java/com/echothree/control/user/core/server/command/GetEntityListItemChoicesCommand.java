@@ -79,7 +79,7 @@ public class GetEntityListItemChoicesCommand
                 var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
                 
                 if(componentVendor != null) {
-                    entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+                    entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
                     
                     if(entityType == null) {
                         addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), componentVendorName, entityTypeName);

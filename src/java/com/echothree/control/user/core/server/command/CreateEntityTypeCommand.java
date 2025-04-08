@@ -71,7 +71,6 @@ public class CreateEntityTypeCommand
     @Override
     protected BaseResult execute() {
         var result = CoreResultFactory.getCreateEntityTypeResult();
-        var coreControl = getCoreControl();
         var componentVendorName = form.getComponentVendorName();
         var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
         EntityType entityType = null;
@@ -79,7 +78,7 @@ public class CreateEntityTypeCommand
         if(componentVendor != null) {
             var entityTypeName = form.getEntityTypeName();
 
-            entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
 
             if(entityType == null) {
                 var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
@@ -95,11 +94,11 @@ public class CreateEntityTypeCommand
                     var sortOrder = Integer.valueOf(form.getSortOrder());
                     var description = form.getDescription();
 
-                    entityType = coreControl.createEntityType(componentVendor, entityTypeName, keepAllHistory, lockTimeout,
+                    entityType = getEntityTypeControl().createEntityType(componentVendor, entityTypeName, keepAllHistory, lockTimeout,
                             isExtensible, sortOrder, partyPK);
 
                     if(description != null) {
-                        coreControl.createEntityTypeDescription(entityType, getPreferredLanguage(), description, partyPK);
+                        getEntityTypeControl().createEntityTypeDescription(entityType, getPreferredLanguage(), description, partyPK);
                     }
                 }
             } else {

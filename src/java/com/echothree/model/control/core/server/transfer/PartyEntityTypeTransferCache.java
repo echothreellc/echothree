@@ -17,7 +17,7 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.PartyEntityTypeTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.core.server.entity.PartyEntityType;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -26,7 +26,7 @@ import com.echothree.util.server.persistence.Session;
 public class PartyEntityTypeTransferCache
         extends BaseCoreTransferCache<PartyEntityType, PartyEntityTypeTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of PartyEntityTypeTransferCache */
@@ -39,7 +39,7 @@ public class PartyEntityTypeTransferCache
         
         if(partyEntityTypeTransfer == null) {
             var party = partyControl.getPartyTransfer(userVisit, partyEntityType.getParty());
-            var entityType = coreControl.getEntityTypeTransfer(userVisit, partyEntityType.getEntityType());
+            var entityType = entityTypeControl.getEntityTypeTransfer(userVisit, partyEntityType.getEntityType());
             var confirmDelete = partyEntityType.getConfirmDelete();
             
             partyEntityTypeTransfer = new PartyEntityTypeTransfer(party, entityType, confirmDelete);
