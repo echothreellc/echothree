@@ -19,7 +19,6 @@ package com.echothree.util.common.persistence;
 import java.io.Serializable;
 
 public class BasePK
-        extends Object
         implements Serializable {
     
     private final String componentVendorName;
@@ -48,9 +47,7 @@ public class BasePK
 
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof BasePK) {
-            var that = (BasePK)obj;
-            
+        if(obj instanceof BasePK that) {
             return componentVendorName.equals(that.componentVendorName)
                     && entityTypeName.equals(that.entityTypeName)
                     &&  entityId.equals(that.entityId);

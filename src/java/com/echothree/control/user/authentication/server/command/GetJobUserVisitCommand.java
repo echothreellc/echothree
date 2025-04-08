@@ -19,11 +19,11 @@ package com.echothree.control.user.authentication.server.command;
 import com.echothree.control.user.authentication.common.form.GetJobUserVisitForm;
 import com.echothree.control.user.authentication.common.result.AuthenticationResultFactory;
 import com.echothree.model.control.job.server.control.JobControl;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
@@ -75,9 +75,7 @@ public class GetJobUserVisitCommand
         } catch(PersistenceDatabaseException pde) {
             var cause = pde.getCause();
 
-            if(cause instanceof SQLException) {
-                var se = (SQLException)cause;
-
+            if(cause instanceof SQLException se) {
                 if(se.getSQLState().equals(SQL_STATE_BASE_TABLE_OR_VIEW_NOT_FOUND)) {
                     getLog().info("Ignoring \"" + se.getMessage() + "\"");
 

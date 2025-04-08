@@ -41,9 +41,7 @@ public class PersistenceUtils {
         var result = false;
         var cause = pde.getCause();
 
-        if(cause instanceof SQLException) {
-            var se = (SQLException)cause;
-
+        if(cause instanceof SQLException se) {
             if(se.getSQLState().equals(SqlState_IntegrityConstraintViolation)) {
                 result = true;
             }
