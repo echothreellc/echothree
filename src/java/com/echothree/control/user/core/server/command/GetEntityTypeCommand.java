@@ -74,7 +74,7 @@ public class GetEntityTypeCommand
         var result = CoreResultFactory.getGetEntityTypeResult();
 
         if(entityType != null) {
-            result.setEntityType(getCoreControl().getEntityTypeTransfer(getUserVisit(), entityType));
+            result.setEntityType(getEntityTypeControl().getEntityTypeTransfer(getUserVisit(), entityType));
         }
 
         return result;

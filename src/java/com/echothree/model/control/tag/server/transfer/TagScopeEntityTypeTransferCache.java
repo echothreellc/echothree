@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.tag.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.tag.common.transfer.TagScopeEntityTypeTransfer;
 import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.data.tag.server.entity.TagScopeEntityType;
@@ -26,7 +26,7 @@ import com.echothree.util.server.persistence.Session;
 public class TagScopeEntityTypeTransferCache
         extends BaseTagTransferCache<TagScopeEntityType, TagScopeEntityTypeTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
     TagControl tagControl = Session.getModelController(TagControl.class);
 
     /** Creates a new instance of TagScopeEntityTypeTransferCache */
@@ -39,7 +39,7 @@ public class TagScopeEntityTypeTransferCache
         
         if(tagScopeEntityTypeTransfer == null) {
             var tagScope = tagControl.getTagScopeTransfer(userVisit, tagScopeEntityType.getTagScope());
-            var entityType = coreControl.getEntityTypeTransfer(userVisit, tagScopeEntityType.getEntityType());
+            var entityType = entityTypeControl.getEntityTypeTransfer(userVisit, tagScopeEntityType.getEntityType());
             
             tagScopeEntityTypeTransfer = new TagScopeEntityTypeTransfer(tagScope, entityType);
             put(tagScopeEntityType, tagScopeEntityTypeTransfer);

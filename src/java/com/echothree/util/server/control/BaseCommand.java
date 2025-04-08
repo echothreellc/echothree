@@ -22,6 +22,7 @@ import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.control.ComponentVendorControl;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.user.server.control.UserControl;
@@ -638,6 +639,7 @@ public abstract class BaseCommand
 
     private CoreControl coreControl = null;
     private ComponentVendorControl componentVendorControl = null;
+    private EntityTypeControl entityTypeControl = null;
 
     protected CoreControl getCoreControl() {
         if(coreControl == null) {
@@ -653,6 +655,14 @@ public abstract class BaseCommand
         }
 
         return componentVendorControl;
+    }
+
+    protected EntityTypeControl getEntityTypeControl() {
+        if(entityTypeControl == null) {
+            entityTypeControl = Session.getModelController(EntityTypeControl.class);
+        }
+
+        return entityTypeControl;
     }
 
     protected EntityInstance getEntityInstanceByBasePK(BasePK pk) {

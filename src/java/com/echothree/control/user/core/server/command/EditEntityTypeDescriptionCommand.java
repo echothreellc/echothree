@@ -29,10 +29,10 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.core.server.entity.EntityTypeDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -85,14 +85,13 @@ public class EditEntityTypeDescriptionCommand
 
     @Override
     public EntityTypeDescription getEntity(EditEntityTypeDescriptionResult result) {
-        var coreControl = getCoreControl();
         EntityTypeDescription entityTypeDescription = null;
         var componentVendorName = spec.getComponentVendorName();
         var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
             var entityTypeName = spec.getEntityTypeName();
-            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
 
             if(entityType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
@@ -101,9 +100,9 @@ public class EditEntityTypeDescriptionCommand
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                        entityTypeDescription = coreControl.getEntityTypeDescription(entityType, language);
+                        entityTypeDescription = getEntityTypeControl().getEntityTypeDescription(entityType, language);
                     } else { // EditMode.UPDATE
-                        entityTypeDescription = coreControl.getEntityTypeDescriptionForUpdate(entityType, language);
+                        entityTypeDescription = getEntityTypeControl().getEntityTypeDescriptionForUpdate(entityType, language);
                     }
 
                     if(entityTypeDescription == null) {
@@ -129,9 +128,7 @@ public class EditEntityTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditEntityTypeDescriptionResult result, EntityTypeDescription entityTypeDescription) {
-        var coreControl = getCoreControl();
-
-        result.setEntityTypeDescription(coreControl.getEntityTypeDescriptionTransfer(getUserVisit(), entityTypeDescription));
+        result.setEntityTypeDescription(getEntityTypeControl().getEntityTypeDescriptionTransfer(getUserVisit(), entityTypeDescription));
     }
 
     @Override
@@ -141,11 +138,10 @@ public class EditEntityTypeDescriptionCommand
 
     @Override
     public void doUpdate(EntityTypeDescription entityTypeDescription) {
-        var coreControl = getCoreControl();
-        var entityTypeDescriptionValue = coreControl.getEntityTypeDescriptionValue(entityTypeDescription);
+        var entityTypeDescriptionValue = getEntityTypeControl().getEntityTypeDescriptionValue(entityTypeDescription);
         entityTypeDescriptionValue.setDescription(edit.getDescription());
 
-        coreControl.updateEntityTypeDescriptionFromValue(entityTypeDescriptionValue, getPartyPK());
+        getEntityTypeControl().updateEntityTypeDescriptionFromValue(entityTypeDescriptionValue, getPartyPK());
     }
     
     

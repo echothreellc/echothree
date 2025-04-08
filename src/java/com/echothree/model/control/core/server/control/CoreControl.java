@@ -69,7 +69,6 @@ import com.echothree.model.control.core.common.transfer.CommandMessageTranslatio
 import com.echothree.model.control.core.common.transfer.CommandMessageTypeDescriptionTransfer;
 import com.echothree.model.control.core.common.transfer.CommandMessageTypeTransfer;
 import com.echothree.model.control.core.common.transfer.CommandTransfer;
-import com.echothree.model.control.core.common.transfer.ComponentVendorTransfer;
 import com.echothree.model.control.core.common.transfer.EditorDescriptionTransfer;
 import com.echothree.model.control.core.common.transfer.EditorTransfer;
 import com.echothree.model.control.core.common.transfer.EntityAliasTransfer;
@@ -114,8 +113,6 @@ import com.echothree.model.control.core.common.transfer.EntityStringDefaultTrans
 import com.echothree.model.control.core.common.transfer.EntityTimeAttributeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityTimeDefaultTransfer;
 import com.echothree.model.control.core.common.transfer.EntityTimeTransfer;
-import com.echothree.model.control.core.common.transfer.EntityTypeDescriptionTransfer;
-import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityVisitTransfer;
 import com.echothree.model.control.core.common.transfer.EventGroupTransfer;
 import com.echothree.model.control.core.common.transfer.EventTransfer;
@@ -171,7 +168,6 @@ import com.echothree.model.data.core.common.pk.AppearancePK;
 import com.echothree.model.data.core.common.pk.ApplicationPK;
 import com.echothree.model.data.core.common.pk.CacheEntryPK;
 import com.echothree.model.data.core.common.pk.ColorPK;
-import com.echothree.model.data.core.common.pk.ComponentVendorPK;
 import com.echothree.model.data.core.common.pk.EntityAliasTypePK;
 import com.echothree.model.data.core.common.pk.EntityAttributeGroupPK;
 import com.echothree.model.data.core.common.pk.EntityAttributePK;
@@ -180,7 +176,6 @@ import com.echothree.model.data.core.common.pk.EntityInstancePK;
 import com.echothree.model.data.core.common.pk.EntityIntegerRangePK;
 import com.echothree.model.data.core.common.pk.EntityListItemPK;
 import com.echothree.model.data.core.common.pk.EntityLongRangePK;
-import com.echothree.model.data.core.common.pk.EntityTypePK;
 import com.echothree.model.data.core.common.pk.FontStylePK;
 import com.echothree.model.data.core.common.pk.FontWeightPK;
 import com.echothree.model.data.core.common.pk.MimeTypePK;
@@ -266,7 +261,6 @@ import com.echothree.model.data.core.server.entity.EntityTime;
 import com.echothree.model.data.core.server.entity.EntityTimeAttribute;
 import com.echothree.model.data.core.server.entity.EntityTimeDefault;
 import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.core.server.entity.EntityTypeDescription;
 import com.echothree.model.data.core.server.entity.EntityVisit;
 import com.echothree.model.data.core.server.entity.Event;
 import com.echothree.model.data.core.server.entity.EventGroup;
@@ -334,8 +328,6 @@ import com.echothree.model.data.core.server.factory.CommandMessageTypeFactory;
 import com.echothree.model.data.core.server.factory.ComponentDetailFactory;
 import com.echothree.model.data.core.server.factory.ComponentFactory;
 import com.echothree.model.data.core.server.factory.ComponentStageFactory;
-import com.echothree.model.data.core.server.factory.ComponentVendorDetailFactory;
-import com.echothree.model.data.core.server.factory.ComponentVendorFactory;
 import com.echothree.model.data.core.server.factory.ComponentVersionFactory;
 import com.echothree.model.data.core.server.factory.EditorDescriptionFactory;
 import com.echothree.model.data.core.server.factory.EditorDetailFactory;
@@ -397,9 +389,6 @@ import com.echothree.model.data.core.server.factory.EntityStringDefaultFactory;
 import com.echothree.model.data.core.server.factory.EntityTimeAttributeFactory;
 import com.echothree.model.data.core.server.factory.EntityTimeDefaultFactory;
 import com.echothree.model.data.core.server.factory.EntityTimeFactory;
-import com.echothree.model.data.core.server.factory.EntityTypeDescriptionFactory;
-import com.echothree.model.data.core.server.factory.EntityTypeDetailFactory;
-import com.echothree.model.data.core.server.factory.EntityTypeFactory;
 import com.echothree.model.data.core.server.factory.EntityVisitFactory;
 import com.echothree.model.data.core.server.factory.EventFactory;
 import com.echothree.model.data.core.server.factory.EventGroupDetailFactory;
@@ -463,7 +452,6 @@ import com.echothree.model.data.core.server.value.CommandMessageDetailValue;
 import com.echothree.model.data.core.server.value.CommandMessageTranslationValue;
 import com.echothree.model.data.core.server.value.CommandMessageTypeDescriptionValue;
 import com.echothree.model.data.core.server.value.CommandMessageTypeDetailValue;
-import com.echothree.model.data.core.server.value.ComponentVendorDetailValue;
 import com.echothree.model.data.core.server.value.EditorDescriptionValue;
 import com.echothree.model.data.core.server.value.EditorDetailValue;
 import com.echothree.model.data.core.server.value.EntityAliasTypeDescriptionValue;
@@ -508,8 +496,6 @@ import com.echothree.model.data.core.server.value.EntityStringAttributeValue;
 import com.echothree.model.data.core.server.value.EntityStringDefaultValue;
 import com.echothree.model.data.core.server.value.EntityTimeAttributeValue;
 import com.echothree.model.data.core.server.value.EntityTimeDefaultValue;
-import com.echothree.model.data.core.server.value.EntityTypeDescriptionValue;
-import com.echothree.model.data.core.server.value.EntityTypeDetailValue;
 import com.echothree.model.data.core.server.value.EventGroupDetailValue;
 import com.echothree.model.data.core.server.value.FontStyleDescriptionValue;
 import com.echothree.model.data.core.server.value.FontStyleDetailValue;
@@ -568,480 +554,6 @@ public class CoreControl
     /** Creates a new instance of CoreControl */
     public CoreControl() {
         super();
-    }
-    
-    // --------------------------------------------------------------------------------
-    //   Entity Types
-    // --------------------------------------------------------------------------------
-    
-    public EntityType createEntityType(ComponentVendor componentVendor, String entityTypeName, Boolean keepAllHistory,
-            Long lockTimeout, Boolean isExtensible, Integer sortOrder, BasePK createdBy) {
-        var entityType = EntityTypeFactory.getInstance().create();
-        var entityTypeDetail = EntityTypeDetailFactory.getInstance().create(entityType, componentVendor,
-                entityTypeName, keepAllHistory, lockTimeout, isExtensible, sortOrder, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
-        
-        // Convert to R/W
-        entityType = EntityTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, entityType.getPrimaryKey());
-        entityType.setActiveDetail(entityTypeDetail);
-        entityType.setLastDetail(entityTypeDetail);
-        entityType.store();
-        
-        sendEvent(entityType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
-        
-        return entityType;
-    }
-
-    /** Assume that the entityInstance passed to this function is a ECHO_THREE.EntityType */
-    public EntityType getEntityTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        var pk = new EntityTypePK(entityInstance.getEntityUniqueId());
-
-        return EntityTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
-    }
-
-    public EntityType getEntityTypeByEntityInstance(EntityInstance entityInstance) {
-        return getEntityTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
-    }
-
-    public EntityType getEntityTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
-        return getEntityTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
-    }
-    
-    public long countEntityTypes() {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM entitytypes, entitytypedetails " +
-                "WHERE ent_activedetailid = entdt_entitytypedetailid");
-    }
-
-    public long countEntityTypesByComponentVendor(ComponentVendor componentVendor) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM entitytypes, entitytypedetails " +
-                "WHERE ent_activedetailid = entdt_entitytypedetailid AND entdt_cvnd_componentvendorid = ?",
-                componentVendor);
-    }
-
-    public EntityType getEntityTypeByName(ComponentVendor componentVendor, String entityTypeName, EntityPermission entityPermission) {
-        EntityType entityType;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitytypes, entitytypedetails " +
-                        "WHERE ent_activedetailid = entdt_entitytypedetailid " +
-                        "AND entdt_cvnd_componentvendorid = ? AND entdt_entitytypename = ?";
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitytypes, entitytypedetails " +
-                        "WHERE ent_activedetailid = entdt_entitytypedetailid " +
-                        "AND entdt_cvnd_componentvendorid = ? AND entdt_entitytypename = ? " +
-                        "FOR UPDATE";
-            }
-
-            var ps = EntityTypeFactory.getInstance().prepareStatement(query);
-            
-            ps.setLong(1, componentVendor.getPrimaryKey().getEntityId());
-            ps.setString(2, entityTypeName);
-            
-            entityType = EntityTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityType;
-    }
-    
-    public EntityType getEntityTypeByName(ComponentVendor componentVendor, String entityTypeName) {
-        return getEntityTypeByName(componentVendor, entityTypeName, EntityPermission.READ_ONLY);
-    }
-    
-    public EntityType getEntityTypeByNameForUpdate(ComponentVendor componentVendor, String entityTypeName) {
-        return getEntityTypeByName(componentVendor, entityTypeName, EntityPermission.READ_WRITE);
-    }
-    
-    public EntityTypeDetailValue getEntityTypeDetailValueForUpdate(EntityType entityType) {
-        return entityType == null? null: entityType.getLastDetailForUpdate().getEntityTypeDetailValue().clone();
-    }
-    
-    public EntityTypeDetailValue getEntityTypeDetailValueByNameForUpdate(ComponentVendor componentVendor, String entityTypeName) {
-        return getEntityTypeDetailValueForUpdate(getEntityTypeByNameForUpdate(componentVendor, entityTypeName));
-    }
-    
-    private final Map<ComponentVendor, Map<String, EntityType>> entityTypeCache = new HashMap<>();
-    
-    public EntityType getEntityTypeByNameFromCache(ComponentVendor componentVendor, String entityTypeName) {
-        var cacheByComponentVendor = entityTypeCache.computeIfAbsent(componentVendor, k -> new HashMap<>());
-
-        var entityType = cacheByComponentVendor.get(entityTypeName);
-        
-        if(entityType == null) {
-            entityType = getEntityTypeByName(componentVendor, entityTypeName);
-            
-            if(entityType != null) {
-                cacheByComponentVendor.put(entityTypeName, entityType);
-            }
-        }
-        
-        return entityType;
-    }
-
-    private List<EntityType> getEntityTypesByComponentVendor(ComponentVendor componentVendor, EntityPermission entityPermission) {
-        List<EntityType> entityTypes;
-
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ "
-                        + "FROM entitytypes, entitytypedetails "
-                        + "WHERE ent_activedetailid = entdt_entitytypedetailid "
-                        + "AND entdt_cvnd_componentvendorid = ? "
-                        + "ORDER BY entdt_sortorder, entdt_entitytypename "
-                        + "_LIMIT_";
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ "
-                        + "FROM entitytypes, entitytypedetails "
-                        + "WHERE ent_activedetailid = entdt_entitytypedetailid "
-                        + "AND entdt_cvnd_componentvendorid = ? "
-                        + "FOR UPDATE";
-            }
-
-            var ps = EntityTypeFactory.getInstance().prepareStatement(query);
-
-            ps.setLong(1, componentVendor.getPrimaryKey().getEntityId());
-
-            entityTypes = EntityTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityTypes;
-    }
-
-    public List<EntityType> getEntityTypesByComponentVendor(ComponentVendor componentVendor) {
-        return getEntityTypesByComponentVendor(componentVendor, EntityPermission.READ_ONLY);
-    }
-
-    public List<EntityType> getEntityTypesByComponentVendorForUpdate(ComponentVendor componentVendor) {
-        return getEntityTypesByComponentVendor(componentVendor, EntityPermission.READ_WRITE);
-    }
-
-    private List<EntityType> getEntityTypesByName(String entityTypeName, EntityPermission entityPermission) {
-        List<EntityType> entityTypes;
-
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ "
-                        + "FROM entitytypes, entitytypedetails "
-                        + "WHERE ent_activedetailid = entdt_entitytypedetailid "
-                        + "AND entdt_entitytypename = ? "
-                        + "ORDER BY entdt_sortorder, entdt_entitytypename "
-                        + "_LIMIT_";
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ "
-                        + "FROM entitytypes, entitytypedetails "
-                        + "WHERE ent_activedetailid = entdt_entitytypedetailid "
-                        + "AND entdt_entitytypename = ? "
-                        + "FOR UPDATE";
-            }
-
-            var ps = EntityTypeFactory.getInstance().prepareStatement(query);
-
-            ps.setString(1, entityTypeName);
-
-            entityTypes = EntityTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityTypes;
-    }
-
-    public List<EntityType> getEntityTypesByName(String entityTypeName) {
-        return getEntityTypesByName(entityTypeName, EntityPermission.READ_ONLY);
-    }
-
-    public List<EntityType> getEntityTypesByNameForUpdate(String entityTypeName) {
-        return getEntityTypesByName(entityTypeName, EntityPermission.READ_WRITE);
-    }
-
-    public List<EntityType> getEntityTypes() {
-        var ps = EntityTypeFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ "
-                + "FROM entitytypes, entitytypedetails "
-                + "WHERE ent_activedetailid = entdt_entitytypedetailid "
-                + "ORDER BY entdt_sortorder, entdt_entitytypename "
-                + "_LIMIT_");
-
-        return EntityTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
-    }
-    
-    public EntityTypeTransfer getEntityTypeTransfer(UserVisit userVisit, EntityType entityType) {
-        return getCoreTransferCaches(userVisit).getEntityTypeTransferCache().getEntityTypeTransfer(entityType);
-    }
-    
-    public List<EntityTypeTransfer> getEntityTypeTransfers(UserVisit userVisit, Collection<EntityType> entityTypes) {
-        List<EntityTypeTransfer> entityTypeTransfers = new ArrayList<>(entityTypes.size());
-        var entityTypeTransferCache = getCoreTransferCaches(userVisit).getEntityTypeTransferCache();
-        
-        entityTypes.forEach((entityType) ->
-                entityTypeTransfers.add(entityTypeTransferCache.getEntityTypeTransfer(entityType))
-        );
-        
-        return entityTypeTransfers;
-    }
-    
-    public List<EntityTypeTransfer> getEntityTypeTransfers(UserVisit userVisit) {
-        return getEntityTypeTransfers(userVisit, getEntityTypes());
-    }
-    
-    public List<EntityTypeTransfer> getEntityTypeTransfersByComponentVendor(UserVisit userVisit, ComponentVendor componentVendor) {
-        return getEntityTypeTransfers(userVisit, getEntityTypesByComponentVendor(componentVendor));
-    }
-    
-    public void updateEntityTypeFromValue(EntityTypeDetailValue entityTypeDetailValue, BasePK updatedBy) {
-        if(entityTypeDetailValue.hasBeenModified()) {
-            var entityType = EntityTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
-                     entityTypeDetailValue.getEntityTypePK());
-            var entityTypeDetail = entityType.getActiveDetailForUpdate();
-            
-            entityTypeDetail.setThruTime(session.START_TIME_LONG);
-            entityTypeDetail.store();
-
-            var entityTypePK = entityTypeDetail.getEntityTypePK();
-            var componentVendorPK = entityTypeDetail.getComponentVendorPK(); // Not updated
-            var entityTypeName = entityTypeDetailValue.getEntityTypeName();
-            var keepAllHistory = entityTypeDetailValue.getKeepAllHistory();
-            var lockTimeout = entityTypeDetailValue.getLockTimeout();
-            var isExtensible = entityTypeDetailValue.getIsExtensible();
-            var sortOrder = entityTypeDetailValue.getSortOrder();
-            
-            entityTypeDetail = EntityTypeDetailFactory.getInstance().create(entityTypePK, componentVendorPK, entityTypeName,
-                    keepAllHistory, lockTimeout, isExtensible, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
-            
-            entityType.setActiveDetail(entityTypeDetail);
-            entityType.setLastDetail(entityTypeDetail);
-            
-            sendEvent(entityTypePK, EventTypes.MODIFY, null, null, updatedBy);
-        }
-    }
-
-    public EntityType getEntityTypeByPK(EntityTypePK entityTypePK) {
-        return EntityTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, entityTypePK);
-    }
-
-    public void deleteEntityType(EntityType entityType, BasePK deletedBy) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
-        var batchControl = Session.getModelController(BatchControl.class);
-        var commentControl = Session.getModelController(CommentControl.class);
-        var indexControl = Session.getModelController(IndexControl.class);
-        var messageControl = Session.getModelController(MessageControl.class);
-        var ratingControl = Session.getModelController(RatingControl.class);
-        var tagControl = Session.getModelController(TagControl.class);
-        var workflowControl = Session.getModelController(WorkflowControl.class);
-
-        deleteEntityInstancesByEntityTypeWithNullDeletedTime(entityType, deletedBy);
-        deleteEntityTypeDescriptionsByEntityType(entityType, deletedBy);
-        deleteEntityAliasTypesByEntityType(entityType, deletedBy);
-        deleteEntityAttributesByEntityType(entityType, deletedBy);
-        deleteEntityAttributeEntityTypesByAllowedEntityType(entityType, deletedBy);
-        accountingControl.deleteTransactionEntityRoleTypesByEntityType(entityType, deletedBy);
-        batchControl.deleteBatchTypeEntityTypesByEntityType(entityType, deletedBy);
-        commentControl.deleteCommentTypesByEntityType(entityType, deletedBy);
-        indexControl.deleteIndexTypesByEntityType(entityType, deletedBy);
-        messageControl.deleteMessageTypesByEntityType(entityType, deletedBy);
-        ratingControl.deleteRatingTypesByEntityType(entityType, deletedBy);
-        tagControl.deleteTagScopeEntityTypesByEntityType(entityType, deletedBy);
-        workflowControl.deleteWorkflowEntityTypesByEntityType(entityType, deletedBy);
-
-        var entityTypeDetail = entityType.getLastDetailForUpdate();
-        entityTypeDetail.setThruTime(session.START_TIME_LONG);
-        entityType.setActiveDetail(null);
-        entityType.store();
-        
-        sendEvent(entityType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
-    }
-    
-    public void deleteEntityTypesByComponentVendor(ComponentVendor componentVendor, BasePK deletedBy) {
-        var entityTypes = getEntityTypesByComponentVendorForUpdate(componentVendor);
-        
-        entityTypes.forEach((entityType) -> 
-                deleteEntityType(entityType, deletedBy)
-        );
-    }
-    
-    // --------------------------------------------------------------------------------
-    //   Entity Type Descriptions
-    // --------------------------------------------------------------------------------
-    
-    public EntityTypeDescription createEntityTypeDescription(EntityType entityType, Language language, String description,
-            BasePK createdBy) {
-        var entityTypeDescription = EntityTypeDescriptionFactory.getInstance().create(entityType,
-                language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
-        
-        sendEvent(entityType.getPrimaryKey(), EventTypes.MODIFY, entityTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
-        
-        return entityTypeDescription;
-    }
-    
-    private EntityTypeDescription getEntityTypeDescription(EntityType entityType, Language language,
-            EntityPermission entityPermission) {
-        EntityTypeDescription entityTypeDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitytypedescriptions " +
-                        "WHERE entd_ent_entitytypeid = ? AND entd_lang_languageid = ? AND entd_thrutime = ?";
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitytypedescriptions " +
-                        "WHERE entd_ent_entitytypeid = ? AND entd_lang_languageid = ? AND entd_thrutime = ? " +
-                        "FOR UPDATE";
-            }
-
-            var ps = EntityTypeDescriptionFactory.getInstance().prepareStatement(query);
-            
-            ps.setLong(1, entityType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            entityTypeDescription = EntityTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityTypeDescription;
-    }
-    
-    public EntityTypeDescription getEntityTypeDescription(EntityType entityType, Language language) {
-        return getEntityTypeDescription(entityType, language, EntityPermission.READ_ONLY);
-    }
-    
-    public EntityTypeDescription getEntityTypeDescriptionForUpdate(EntityType entityType, Language language) {
-        return getEntityTypeDescription(entityType, language, EntityPermission.READ_WRITE);
-    }
-    
-    public EntityTypeDescriptionValue getEntityTypeDescriptionValue(EntityTypeDescription entityTypeDescription) {
-        return entityTypeDescription == null? null: entityTypeDescription.getEntityTypeDescriptionValue().clone();
-    }
-    
-    public EntityTypeDescriptionValue getEntityTypeDescriptionValueForUpdate(EntityType entityType, Language language) {
-        return getEntityTypeDescriptionValue(getEntityTypeDescriptionForUpdate(entityType, language));
-    }
-    
-    private List<EntityTypeDescription> getEntityTypeDescriptionsByEntityType(EntityType entityType,
-            EntityPermission entityPermission) {
-        List<EntityTypeDescription> entityTypeDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitytypedescriptions, languages " +
-                        "WHERE entd_ent_entitytypeid = ? AND entd_thrutime = ? AND entd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitytypedescriptions " +
-                        "WHERE entd_ent_entitytypeid = ? AND entd_thrutime = ? " +
-                        "FOR UPDATE";
-            }
-
-            var ps = EntityTypeDescriptionFactory.getInstance().prepareStatement(query);
-            
-            ps.setLong(1, entityType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityTypeDescriptions = EntityTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityTypeDescriptions;
-    }
-    
-    public List<EntityTypeDescription> getEntityTypeDescriptionsByEntityType(EntityType entityType) {
-        return getEntityTypeDescriptionsByEntityType(entityType, EntityPermission.READ_ONLY);
-    }
-    
-    public List<EntityTypeDescription> getEntityTypeDescriptionsByEntityTypeForUpdate(EntityType entityType) {
-        return getEntityTypeDescriptionsByEntityType(entityType, EntityPermission.READ_WRITE);
-    }
-    
-    public String getBestEntityTypeDescription(EntityType entityType, Language language) {
-        String description;
-        var entityTypeDescription = getEntityTypeDescription(entityType, language);
-        
-        if(entityTypeDescription == null && !language.getIsDefault()) {
-            entityTypeDescription = getEntityTypeDescription(entityType, getPartyControl().getDefaultLanguage());
-        }
-        
-        if(entityTypeDescription == null) {
-            description = entityType.getLastDetail().getEntityTypeName();
-        } else {
-            description = entityTypeDescription.getDescription();
-        }
-        
-        return description;
-    }
-    
-    public EntityTypeDescriptionTransfer getEntityTypeDescriptionTransfer(UserVisit userVisit, EntityTypeDescription entityTypeDescription) {
-        return getCoreTransferCaches(userVisit).getEntityTypeDescriptionTransferCache().getEntityTypeDescriptionTransfer(entityTypeDescription);
-    }
-    
-    public List<EntityTypeDescriptionTransfer> getEntityTypeDescriptionTransfersByEntityType(UserVisit userVisit,
-            EntityType entityType) {
-        var entityTypeDescriptions = getEntityTypeDescriptionsByEntityType(entityType);
-        List<EntityTypeDescriptionTransfer> entityTypeDescriptionTransfers = new ArrayList<>(entityTypeDescriptions.size());
-        var entityTypeDescriptionTransferCache = getCoreTransferCaches(userVisit).getEntityTypeDescriptionTransferCache();
-        
-        entityTypeDescriptions.forEach((entityTypeDescription) ->
-                entityTypeDescriptionTransfers.add(entityTypeDescriptionTransferCache.getEntityTypeDescriptionTransfer(entityTypeDescription))
-        );
-        
-        return entityTypeDescriptionTransfers;
-    }
-    
-    public void updateEntityTypeDescriptionFromValue(EntityTypeDescriptionValue entityTypeDescriptionValue, BasePK updatedBy) {
-        if(entityTypeDescriptionValue.hasBeenModified()) {
-            var entityTypeDescription = EntityTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
-                     entityTypeDescriptionValue.getPrimaryKey());
-            
-            entityTypeDescription.setThruTime(session.START_TIME_LONG);
-            entityTypeDescription.store();
-
-            var entityType = entityTypeDescription.getEntityType();
-            var language = entityTypeDescription.getLanguage();
-            var description = entityTypeDescriptionValue.getDescription();
-            
-            entityTypeDescription = EntityTypeDescriptionFactory.getInstance().create(entityType, language,
-                    description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
-            
-            sendEvent(entityType.getPrimaryKey(), EventTypes.MODIFY, entityTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
-        }
-    }
-    
-    public void deleteEntityTypeDescription(EntityTypeDescription entityTypeDescription, BasePK deletedBy) {
-        entityTypeDescription.setThruTime(session.START_TIME_LONG);
-        
-        sendEvent(entityTypeDescription.getEntityTypePK(), EventTypes.MODIFY, entityTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
-    }
-    
-    public void deleteEntityTypeDescriptionsByEntityType(EntityType entityType, BasePK deletedBy) {
-        var entityTypeDescriptions = getEntityTypeDescriptionsByEntityTypeForUpdate(entityType);
-        
-        entityTypeDescriptions.forEach((entityTypeDescription) -> 
-                deleteEntityTypeDescription(entityTypeDescription, deletedBy)
-        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2452,8 +1964,9 @@ public class CoreControl
             }
             
             if(componentVendor != null) {
+                var entityTypeControl = Session.getModelController(EntityTypeControl.class);
                 var entityTypeName = pk.getEntityTypeName();
-                var entityType = getEntityTypeByNameFromCache(componentVendor, entityTypeName);
+                var entityType = entityTypeControl.getEntityTypeByNameFromCache(componentVendor, entityTypeName);
                 
                 if(CoreDebugFlags.LogEntityInstanceResolution) {
                     getLog().info("--- entityType = " + entityType);
@@ -2521,8 +2034,9 @@ public class CoreControl
                 var componentVendor = componentVendorControl.getComponentVendorByNameFromCache(componentVendorName);
                 
                 if(componentVendor != null) {
+                    var entityTypeControl = Session.getModelController(EntityTypeControl.class);
                     var entityTypeName = entityRefParts[1];
-                    var entityType = getEntityTypeByNameFromCache(componentVendor, entityTypeName);
+                    var entityType = entityTypeControl.getEntityTypeByNameFromCache(componentVendor, entityTypeName);
                     
                     if(entityType != null) {
                         var entityUniqueId = Long.valueOf(entityRefParts[2]);

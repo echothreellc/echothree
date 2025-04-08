@@ -23,10 +23,10 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -63,14 +63,13 @@ public class GetEntityTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
         var result = CoreResultFactory.getGetEntityTypeDescriptionResult();
         var componentVendorName = form.getComponentVendorName();
         var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
             var entityTypeName = form.getEntityTypeName();
-            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
 
             if(entityType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
@@ -78,10 +77,10 @@ public class GetEntityTypeDescriptionCommand
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    var entityTypeDescription = coreControl.getEntityTypeDescription(entityType, language);
+                    var entityTypeDescription = getEntityTypeControl().getEntityTypeDescription(entityType, language);
 
                     if(entityTypeDescription != null) {
-                        result.setEntityTypeDescription(coreControl.getEntityTypeDescriptionTransfer(getUserVisit(), entityTypeDescription));
+                        result.setEntityTypeDescription(getEntityTypeControl().getEntityTypeDescriptionTransfer(getUserVisit(), entityTypeDescription));
                     } else {
                         addExecutionError(ExecutionErrors.UnknownEntityTypeDescription.name(), componentVendorName, entityTypeName, languageIsoName);
                     }

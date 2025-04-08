@@ -21,10 +21,10 @@ import com.echothree.control.user.message.common.result.MessageResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.message.server.control.MessageControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -53,14 +53,13 @@ public class GetMessageCommand
     @Override
     protected BaseResult execute() {
         var result = MessageResultFactory.getGetMessageResult();
-        var coreControl = getCoreControl();
         var componentVendorName = form.getComponentVendorName();
         var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var userVisit = getUserVisit();
             var entityTypeName = form.getEntityTypeName();
-            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
             
             result.setComponentVendor(getComponentVendorControl().getComponentVendorTransfer(userVisit, componentVendor));
             
@@ -69,7 +68,7 @@ public class GetMessageCommand
                 var messageTypeName = form.getMessageTypeName();
                 var messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
                 
-                result.setEntityType(coreControl.getEntityTypeTransfer(userVisit, entityType));
+                result.setEntityType(getEntityTypeControl().getEntityTypeTransfer(userVisit, entityType));
                 
                 if(messageType != null) {
                     var messageName = form.getMessageName();

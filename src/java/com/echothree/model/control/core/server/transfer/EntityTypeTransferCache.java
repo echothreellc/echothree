@@ -22,6 +22,7 @@ import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.model.control.core.server.control.ComponentVendorControl;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.message.server.control.MessageControl;
 import com.echothree.model.control.rating.server.control.RatingControl;
@@ -41,6 +42,7 @@ public class EntityTypeTransferCache
     CoreControl coreControl = Session.getModelController(CoreControl.class);
     ComponentVendorControl componentVendorControl = Session.getModelController(ComponentVendorControl.class);
     CommentControl commentControl;
+    EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
     IndexControl indexControl;
     MessageControl messageControl;
     RatingControl ratingControl;
@@ -157,7 +159,7 @@ public class EntityTypeTransferCache
             }
 
             if(!filterDescription) {
-                entityTypeTransfer.setDescription(coreControl.getBestEntityTypeDescription(entityType, getLanguage()));
+                entityTypeTransfer.setDescription(entityTypeControl.getBestEntityTypeDescription(entityType, getLanguage()));
             }
             
             if(!filterEntityInstance) {

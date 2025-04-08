@@ -71,7 +71,7 @@ public class CreateEntityAttributeDescriptionCommand
         
         if(componentVendor != null) {
             var entityTypeName = form.getEntityTypeName();
-            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
                 var entityAttributeName = form.getEntityAttributeName();

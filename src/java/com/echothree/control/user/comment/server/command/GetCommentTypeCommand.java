@@ -21,10 +21,10 @@ import com.echothree.control.user.comment.common.result.CommentResultFactory;
 import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -52,14 +52,13 @@ public class GetCommentTypeCommand
     @Override
     protected BaseResult execute() {
         var result = CommentResultFactory.getGetCommentTypeResult();
-        var coreControl = getCoreControl();
         var componentVendorName = form.getComponentVendorName();
         var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var userVisit = getUserVisit();
             var entityTypeName = form.getEntityTypeName();
-            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
             
             result.setComponentVendor(getComponentVendorControl().getComponentVendorTransfer(userVisit, componentVendor));
             
@@ -68,7 +67,7 @@ public class GetCommentTypeCommand
                 var commentTypeName = form.getCommentTypeName();
                 var commentType = commentControl.getCommentTypeByName(entityType, commentTypeName);
                 
-                result.setEntityType(coreControl.getEntityTypeTransfer(userVisit, entityType));
+                result.setEntityType(getEntityTypeControl().getEntityTypeTransfer(userVisit, entityType));
                 
                 if(commentType != null) {
                     result.setCommentType(commentControl.getCommentTypeTransfer(userVisit, commentType));

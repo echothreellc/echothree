@@ -76,7 +76,7 @@ public class GetPartyEntityTypeCommand
 
             if(componentVendor != null) {
                 var entityTypeName = form.getEntityTypeName();
-                var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+                var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
 
                 if(entityType != null) {
                     var partyEntityType = coreControl.getPartyEntityType(party, entityType);

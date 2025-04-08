@@ -20,10 +20,10 @@ import com.echothree.control.user.batch.common.form.GetBatchTypeEntityTypeForm;
 import com.echothree.control.user.batch.common.result.BatchResultFactory;
 import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -56,13 +56,12 @@ public class GetBatchTypeEntityTypeCommand
         var batchType = batchControl.getBatchTypeByName(batchTypeName);
         
         if(batchType != null) {
-            var coreControl = getCoreControl();
             var componentVendorName = form.getComponentVendorName();
             var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
 
             if(componentVendor != null) {
                 var entityTypeName = form.getEntityTypeName();
-                var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+                var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
 
                 if(entityType != null) {
                     var batchTypeEntityType = batchControl.getBatchTypeEntityType(batchType, entityType);

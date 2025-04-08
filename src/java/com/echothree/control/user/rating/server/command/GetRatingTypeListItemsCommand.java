@@ -57,7 +57,7 @@ public class GetRatingTypeListItemsCommand
         if(componentVendor != null) {
             var userVisit = getUserVisit();
             var entityTypeName = form.getEntityTypeName();
-            var entityType = getCoreControl().getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
             
             result.setComponentVendor(getComponentVendorControl().getComponentVendorTransfer(userVisit, componentVendor));
             
@@ -66,7 +66,7 @@ public class GetRatingTypeListItemsCommand
                 var ratingTypeName = form.getRatingTypeName();
                 var ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
                 
-                result.setEntityType(getCoreControl().getEntityTypeTransfer(userVisit, entityType));
+                result.setEntityType(getEntityTypeControl().getEntityTypeTransfer(userVisit, entityType));
                 
                 if(ratingType != null) {
                     result.setRatingType(ratingControl.getRatingTypeTransfer(userVisit, ratingType));

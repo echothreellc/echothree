@@ -22,10 +22,10 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -68,13 +68,12 @@ public class DeleteTagScopeEntityTypeCommand
         var tagScope = tagControl.getTagScopeByName(tagScopeName);
         
         if(tagScope != null) {
-            var coreControl = getCoreControl();
             var componentVendorName = form.getComponentVendorName();
             var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
             
             if(componentVendor != null) {
                 var entityTypeName = form.getEntityTypeName();
-                var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+                var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
                 
                 if(entityType != null) {
                     var tagScopeEntityType = tagControl.getTagScopeEntityTypeForUpdate(tagScope, entityType);

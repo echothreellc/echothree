@@ -98,7 +98,7 @@ public class EditPartyEntityTypeCommand
 
             if(componentVendor != null) {
                 var entityTypeName = spec.getEntityTypeName();
-                var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+                var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
 
                 if(entityType != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

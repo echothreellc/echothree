@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.rating.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.rating.common.transfer.RatingTypeTransfer;
 import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
@@ -27,7 +27,7 @@ import com.echothree.util.server.persistence.Session;
 public class RatingTypeTransferCache
         extends BaseRatingTransferCache<RatingType, RatingTypeTransfer> {
     
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     
     /** Creates a new instance of RatingTypeTransferCache */
@@ -42,7 +42,7 @@ public class RatingTypeTransferCache
         
         if(ratingTypeTransfer == null) {
             var ratingTypeDetail = ratingType.getLastDetail();
-            var entityTypeTransfer = coreControl.getEntityTypeTransfer(userVisit, ratingTypeDetail.getEntityType());
+            var entityTypeTransfer = entityTypeControl.getEntityTypeTransfer(userVisit, ratingTypeDetail.getEntityType());
             var ratingTypeName = ratingTypeDetail.getRatingTypeName();
             var ratingSequence = ratingTypeDetail.getRatingSequence();
             var ratingSequenceTransfer = ratingSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, ratingSequence);

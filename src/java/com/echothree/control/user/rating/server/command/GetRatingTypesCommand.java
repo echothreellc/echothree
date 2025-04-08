@@ -56,14 +56,14 @@ public class GetRatingTypesCommand
         if(componentVendor != null) {
             var userVisit = getUserVisit();
             var entityTypeName = form.getEntityTypeName();
-            var entityType = getCoreControl().getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
             
             result.setComponentVendor(getComponentVendorControl().getComponentVendorTransfer(userVisit, componentVendor));
             
             if(entityType != null) {
                 var ratingControl = Session.getModelController(RatingControl.class);
                 
-                result.setEntityType(getCoreControl().getEntityTypeTransfer(userVisit, entityType));
+                result.setEntityType(getEntityTypeControl().getEntityTypeTransfer(userVisit, entityType));
                 result.setRatingTypes(ratingControl.getRatingTypeTransfers(userVisit, entityType));
             } else {
                 addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), entityTypeName);

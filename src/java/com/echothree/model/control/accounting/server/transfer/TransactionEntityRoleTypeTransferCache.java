@@ -18,7 +18,7 @@ package com.echothree.model.control.accounting.server.transfer;
 
 import com.echothree.model.control.accounting.common.transfer.TransactionEntityRoleTypeTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.data.accounting.server.entity.TransactionEntityRoleType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -27,7 +27,7 @@ public class TransactionEntityRoleTypeTransferCache
         extends BaseAccountingTransferCache<TransactionEntityRoleType, TransactionEntityRoleTypeTransfer> {
 
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
     
     /** Creates a new instance of TransactionEntityRoleTypeTransferCache */
     public TransactionEntityRoleTypeTransferCache(UserVisit userVisit) {
@@ -44,7 +44,7 @@ public class TransactionEntityRoleTypeTransferCache
             var transactionEntityRoleTypeDetail = transactionEntityRoleType.getLastDetail();
             var transactionType = accountingControl.getTransactionTypeTransfer(userVisit, transactionEntityRoleTypeDetail.getTransactionType());
             var transactionEntityRoleTypeName = transactionEntityRoleTypeDetail.getTransactionEntityRoleTypeName();
-            var entityType = coreControl.getEntityTypeTransfer(userVisit, transactionEntityRoleTypeDetail.getEntityType());
+            var entityType = entityTypeControl.getEntityTypeTransfer(userVisit, transactionEntityRoleTypeDetail.getEntityType());
             var sortOrder = transactionEntityRoleTypeDetail.getSortOrder();
             var description = accountingControl.getBestTransactionEntityRoleTypeDescription(transactionEntityRoleType, getLanguage());
             

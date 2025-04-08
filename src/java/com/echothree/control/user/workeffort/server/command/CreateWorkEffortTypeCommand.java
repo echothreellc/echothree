@@ -26,10 +26,10 @@ import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -70,13 +70,12 @@ public class CreateWorkEffortTypeCommand
         var workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
         
         if(workEffortType == null) {
-            var coreControl = getCoreControl();
             var componentVendorName = form.getComponentVendorName();
             var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
 
             if(componentVendor != null) {
                 var entityTypeName = form.getEntityTypeName();
-                var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+                var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
 
                 if(entityType != null) {
                     var workEffortSequenceName = form.getWorkEffortSequenceName();

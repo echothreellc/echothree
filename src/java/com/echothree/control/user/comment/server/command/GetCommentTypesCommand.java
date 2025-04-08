@@ -50,21 +50,20 @@ public class GetCommentTypesCommand
     @Override
     protected BaseResult execute() {
         var result = CommentResultFactory.getGetCommentTypesResult();
-        var coreControl = getCoreControl();
         var componentVendorName = form.getComponentVendorName();
         var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var userVisit = getUserVisit();
             var entityTypeName = form.getEntityTypeName();
-            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
             
             result.setComponentVendor(getComponentVendorControl().getComponentVendorTransfer(userVisit, componentVendor));
             
             if(entityType != null) {
                 var commentControl = Session.getModelController(CommentControl.class);
                 
-                result.setEntityType(coreControl.getEntityTypeTransfer(userVisit, entityType));
+                result.setEntityType(getEntityTypeControl().getEntityTypeTransfer(userVisit, entityType));
                 result.setCommentTypes(commentControl.getCommentTypeTransfers(userVisit, entityType));
             } else {
                 addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), entityTypeName);

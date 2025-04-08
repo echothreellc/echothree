@@ -20,6 +20,7 @@ import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
@@ -31,6 +32,7 @@ public class EntityInstanceTransferCache
         extends BaseCoreTransferCache<EntityInstance, EntityInstanceTransfer> {
 
     CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
 
     boolean includeEntityAppearance;
     boolean includeEntityVisit;
@@ -75,7 +77,7 @@ public class EntityInstanceTransferCache
         var entityInstanceTransfer = get(entityInstance);
         
         if(entityInstanceTransfer == null) {
-            var entityTypeTransfer = filterEntityType ? null : coreControl.getEntityTypeTransfer(userVisit, entityInstance.getEntityType());
+            var entityTypeTransfer = filterEntityType ? null : entityTypeControl.getEntityTypeTransfer(userVisit, entityInstance.getEntityType());
             var entityUniqueId = filterEntityUniqueId ? null : entityInstance.getEntityUniqueId();
             String uuid = null;
             var componentVendorTransfer = entityTypeTransfer == null ? null : entityTypeTransfer.getComponentVendor();

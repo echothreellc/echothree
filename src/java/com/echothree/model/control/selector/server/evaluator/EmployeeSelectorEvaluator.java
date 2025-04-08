@@ -182,7 +182,7 @@ public class EmployeeSelectorEvaluator
         var componentVendor = componentVendorControl.getComponentVendorByName(ComponentVendors.ECHO_THREE.name());
         
         if(componentVendor != null) {
-            var entityType = coreControl.getEntityTypeByName(componentVendor, EntityTypes.Party.name());
+            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, EntityTypes.Party.name());
             
             if(entityType != null) {
                 var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.EMPLOYEE.name());

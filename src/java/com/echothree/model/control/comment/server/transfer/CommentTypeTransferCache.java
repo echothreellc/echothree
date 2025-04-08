@@ -19,6 +19,7 @@ package com.echothree.model.control.comment.server.transfer;
 import com.echothree.model.control.comment.common.transfer.CommentTypeTransfer;
 import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.comment.server.entity.CommentType;
@@ -29,6 +30,7 @@ public class CommentTypeTransferCache
         extends BaseCommentTransferCache<CommentType, CommentTypeTransfer> {
     
     CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
@@ -44,7 +46,7 @@ public class CommentTypeTransferCache
         
         if(commentTypeTransfer == null) {
             var commentTypeDetail = commentType.getLastDetail();
-            var entityTypeTransfer = coreControl.getEntityTypeTransfer(userVisit, commentTypeDetail.getEntityType());
+            var entityTypeTransfer = entityTypeControl.getEntityTypeTransfer(userVisit, commentTypeDetail.getEntityType());
             var commentTypeName = commentTypeDetail.getCommentTypeName();
             var commentSequence = commentTypeDetail.getCommentSequence();
             var commentSequenceTransfer = commentSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, commentSequence);

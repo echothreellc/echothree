@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.core.server.indexer;
 
+import com.echothree.model.control.core.server.analyzer.EntityTypeAnalyzer;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
-import com.echothree.model.control.core.server.analyzer.EntityTypeAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -47,13 +47,13 @@ public class EntityTypeIndexer
     
     @Override
     protected EntityType getEntity(final EntityInstance entityInstance) {
-        return coreControl.getEntityTypeByEntityInstance(entityInstance);
+        return entityTypeControl.getEntityTypeByEntityInstance(entityInstance);
     }
     
     @Override
     protected Document convertToDocument(final EntityInstance entityInstance, final EntityType entityType) {
         var entityTypeDetail = entityType.getLastDetail();
-        var description = coreControl.getBestEntityTypeDescription(entityType, language);
+        var description = entityTypeControl.getBestEntityTypeDescription(entityType, language);
 
         var document = newDocumentWithEntityInstanceFields(entityInstance, entityType.getPrimaryKey());
 

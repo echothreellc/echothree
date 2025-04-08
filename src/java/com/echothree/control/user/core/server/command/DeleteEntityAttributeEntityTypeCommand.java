@@ -69,7 +69,7 @@ public class DeleteEntityAttributeEntityTypeCommand
 
         if(componentVendor != null) {
             var entityTypeName = form.getEntityTypeName();
-            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
 
             if(entityType != null) {
                 var entityAttributeName = form.getEntityAttributeName();
@@ -81,7 +81,7 @@ public class DeleteEntityAttributeEntityTypeCommand
 
                     if(allowedComponentVendor != null) {
                         var allowedEntityTypeName = form.getAllowedEntityTypeName();
-                        var allowedEntityType = coreControl.getEntityTypeByName(allowedComponentVendor, allowedEntityTypeName);
+                        var allowedEntityType = getEntityTypeControl().getEntityTypeByName(allowedComponentVendor, allowedEntityTypeName);
 
                         if(allowedEntityType != null) {
                             var entityAttributeEntityType = coreControl.getEntityAttributeEntityTypeForUpdate(entityAttribute, allowedEntityType);

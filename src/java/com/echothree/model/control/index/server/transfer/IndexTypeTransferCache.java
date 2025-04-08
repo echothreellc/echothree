@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.index.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.index.common.IndexOptions;
 import com.echothree.model.control.index.common.transfer.IndexTypeTransfer;
 import com.echothree.model.control.index.server.control.IndexControl;
@@ -27,7 +27,7 @@ import com.echothree.util.server.persistence.Session;
 public class IndexTypeTransferCache
         extends BaseIndexTransferCache<IndexType, IndexTypeTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
 
     /** Creates a new instance of IndexTypeTransferCache */
     public IndexTypeTransferCache(UserVisit userVisit, IndexControl indexControl) {
@@ -48,7 +48,7 @@ public class IndexTypeTransferCache
             var indexTypeDetail = indexType.getLastDetail();
             var indexTypeName = indexTypeDetail.getIndexTypeName();
             var entityType = indexTypeDetail.getEntityType();
-            var entityTypeTransfer = entityType == null ? null : coreControl.getEntityTypeTransfer(userVisit, entityType);
+            var entityTypeTransfer = entityType == null ? null : entityTypeControl.getEntityTypeTransfer(userVisit, entityType);
             var isDefault = indexTypeDetail.getIsDefault();
             var sortOrder = indexTypeDetail.getSortOrder();
             var description = indexControl.getBestIndexTypeDescription(indexType, getLanguage());

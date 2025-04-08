@@ -80,9 +80,9 @@ public class GetEntityMessagesCommand
                 result.setComponentVendor(getComponentVendorControl().getComponentVendorTransfer(userVisit, componentVendor));
                 
                 if(componentVendor != null) {
-                    var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+                    var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
                     
-                    result.setEntityType(coreControl.getEntityTypeTransfer(userVisit, entityType));
+                    result.setEntityType(getEntityTypeControl().getEntityTypeTransfer(userVisit, entityType));
                     
                     if(entityType != null) {
                         var messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
