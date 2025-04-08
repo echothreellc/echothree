@@ -30,10 +30,10 @@ import com.echothree.model.data.chain.server.entity.ChainEntityRoleType;
 import com.echothree.model.data.chain.server.entity.ChainType;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -165,14 +165,13 @@ public class EditChainEntityRoleTypeCommand
         if(duplicateChainEntityRoleType != null && !chainEntityRoleType.equals(duplicateChainEntityRoleType)) {
             addExecutionError(ExecutionErrors.DuplicateChainEntityRoleTypeName.name(), chainTypeDetail.getChainTypeName(), chainEntityRoleTypeName);
         } else {
-            var coreControl = getCoreControl();
             var componentVendorName = edit.getComponentVendorName();
             var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
 
             if(componentVendor != null) {
                 var entityTypeName = edit.getEntityTypeName();
                 
-                entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+                entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
 
                 if(entityType == null) {
                     addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), componentVendorName, entityTypeName);

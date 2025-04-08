@@ -19,6 +19,7 @@ package com.echothree.model.control.selector.server.evaluator;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.control.ComponentVendorControl;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.selector.common.SelectorBooleanTypes;
 import com.echothree.model.control.selector.common.SelectorNodeTypes;
 import com.echothree.model.control.selector.server.control.SelectorControl;
@@ -37,6 +38,7 @@ public class BaseSelectorEvaluator {
     protected BasePK evaluatedBy;
     protected CoreControl coreControl = Session.getModelController(CoreControl.class);
     protected ComponentVendorControl componentVendorControl = Session.getModelController(ComponentVendorControl.class);
+    protected EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
     protected SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
     protected WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     protected Log log;

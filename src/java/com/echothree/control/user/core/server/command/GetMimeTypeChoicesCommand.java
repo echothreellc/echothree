@@ -180,7 +180,7 @@ public class GetMimeTypeChoicesCommand
                     var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
 
                     if(componentVendor != null) {
-                        var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+                        var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
 
                         if(entityType != null) {
                             var commentType = commentControl.getCommentTypeByName(entityType, commentTypeName);

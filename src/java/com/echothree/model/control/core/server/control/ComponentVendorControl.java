@@ -217,9 +217,9 @@ public class ComponentVendorControl
     }
 
     public void deleteComponentVendor(ComponentVendor componentVendor, BasePK deletedBy) {
-        var coreControl = Session.getModelController(CoreControl.class);
+        var entityTypeControl = Session.getModelController(EntityTypeControl.class);
 
-        coreControl.deleteEntityTypesByComponentVendor(componentVendor, deletedBy);
+        entityTypeControl.deleteEntityTypesByComponentVendor(componentVendor, deletedBy);
 
         var componentVendorDetail = componentVendor.getLastDetailForUpdate();
         componentVendorDetail.setThruTime(session.START_TIME_LONG);

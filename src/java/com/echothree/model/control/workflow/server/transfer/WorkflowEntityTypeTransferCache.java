@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.workflow.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityTypeTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -25,7 +25,9 @@ import com.echothree.util.server.persistence.Session;
 
 public class WorkflowEntityTypeTransferCache
         extends BaseWorkflowTransferCache<WorkflowEntityType, WorkflowEntityTypeTransfer> {
-    
+
+    EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
+
     /** Creates a new instance of WorkflowEntityTypeTransferCache */
     public WorkflowEntityTypeTransferCache(UserVisit userVisit, WorkflowControl workflowControl) {
         super(userVisit, workflowControl);
@@ -35,9 +37,8 @@ public class WorkflowEntityTypeTransferCache
         var workflowEntityTypeTransfer = get(workflowEntityType);
         
         if(workflowEntityTypeTransfer == null) {
-            var coreControl = Session.getModelController(CoreControl.class);
             var workflow = workflowControl.getWorkflowTransfer(userVisit, workflowEntityType.getWorkflow());
-            var entityType = coreControl.getEntityTypeTransfer(userVisit, workflowEntityType.getEntityType());
+            var entityType = entityTypeControl.getEntityTypeTransfer(userVisit, workflowEntityType.getEntityType());
             
             workflowEntityTypeTransfer = new WorkflowEntityTypeTransfer(workflow, entityType);
             put(workflowEntityType, workflowEntityTypeTransfer);

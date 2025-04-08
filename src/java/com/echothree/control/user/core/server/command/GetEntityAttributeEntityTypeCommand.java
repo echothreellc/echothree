@@ -71,7 +71,7 @@ public class GetEntityAttributeEntityTypeCommand
 
         if(componentVendor != null) {
             var entityTypeName = form.getEntityTypeName();
-            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
 
             if(entityType != null) {
                 var entityAttributeName = form.getEntityAttributeName();
@@ -83,7 +83,7 @@ public class GetEntityAttributeEntityTypeCommand
 
                     if(allowedComponentVendor != null) {
                         var allowedEntityTypeName = form.getAllowedEntityTypeName();
-                        var allowedEntityType = coreControl.getEntityTypeByName(allowedComponentVendor, allowedEntityTypeName);
+                        var allowedEntityType = getEntityTypeControl().getEntityTypeByName(allowedComponentVendor, allowedEntityTypeName);
 
                         if(allowedEntityType != null) {
                             var entityAttributeEntityType = coreControl.getEntityAttributeEntityType(entityAttribute, allowedEntityType);
