@@ -17,6 +17,7 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.SetDefaultAppearanceForm;
+import com.echothree.model.control.core.server.control.AppearanceControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -29,6 +30,7 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -59,13 +61,13 @@ public class SetDefaultAppearanceCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var appearanceControl = Session.getModelController(AppearanceControl.class);
         var appearanceName = form.getAppearanceName();
-        var appearanceDetailValue = coreControl.getAppearanceDetailValueByNameForUpdate(appearanceName);
+        var appearanceDetailValue = appearanceControl.getAppearanceDetailValueByNameForUpdate(appearanceName);
         
         if(appearanceDetailValue != null) {
             appearanceDetailValue.setIsDefault(Boolean.TRUE);
-            coreControl.updateAppearanceFromValue(appearanceDetailValue, getPartyPK());
+            appearanceControl.updateAppearanceFromValue(appearanceDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownAppearanceName.name(), appearanceName);
         }

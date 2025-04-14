@@ -18,6 +18,7 @@ package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.transfer.AppearanceTransfer;
+import com.echothree.model.control.core.server.control.AppearanceControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -27,6 +28,7 @@ import com.echothree.util.server.persistence.Session;
 public class AppearanceTransferCache
         extends BaseCoreTransferCache<Appearance, AppearanceTransfer> {
 
+    AppearanceControl appearanceControl = Session.getModelController(AppearanceControl.class);
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     boolean includeTextDecorations;
@@ -61,18 +63,18 @@ public class AppearanceTransferCache
             var fontWeightTransfer = fontWeight == null ? null : coreControl.getFontWeightTransfer(userVisit, fontWeight);
             var isDefault = appearanceDetail.getIsDefault();
             var sortOrder = appearanceDetail.getSortOrder();
-            var description = coreControl.getBestAppearanceDescription(appearance, getLanguage());
+            var description = appearanceControl.getBestAppearanceDescription(appearance, getLanguage());
 
             appearanceTransfer = new AppearanceTransfer(appearanceName, textColorTransfer, backgroundColorTransfer, fontStyleTransfer, fontWeightTransfer,
                     isDefault, sortOrder, description);
             put(appearance, appearanceTransfer);
             
             if(includeTextDecorations) {
-                appearanceTransfer.setAppearanceTextDecorations(new ListWrapper<>(coreControl.getAppearanceTextDecorationTransfersByAppearance(userVisit, appearance)));
+                appearanceTransfer.setAppearanceTextDecorations(new ListWrapper<>(appearanceControl.getAppearanceTextDecorationTransfersByAppearance(userVisit, appearance)));
             }
             
             if(includeTextTransformations) {
-                appearanceTransfer.setAppearanceTextTransformations(new ListWrapper<>(coreControl.getAppearanceTextTransformationTransfersByAppearance(userVisit, appearance)));
+                appearanceTransfer.setAppearanceTextTransformations(new ListWrapper<>(appearanceControl.getAppearanceTextTransformationTransfersByAppearance(userVisit, appearance)));
             }
         }
 

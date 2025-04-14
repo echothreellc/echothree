@@ -18,6 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetAppearanceForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.AppearanceControl;
 import com.echothree.model.control.core.server.logic.AppearanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -31,6 +32,7 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -73,7 +75,9 @@ public class GetAppearanceCommand
         var result = CoreResultFactory.getGetAppearanceResult();
 
         if(appearance != null) {
-            result.setAppearance(getCoreControl().getAppearanceTransfer(getUserVisit(), appearance));
+            var appearanceControl = Session.getModelController(AppearanceControl.class);
+
+            result.setAppearance(appearanceControl.getAppearanceTransfer(getUserVisit(), appearance));
         }
 
         return result;
