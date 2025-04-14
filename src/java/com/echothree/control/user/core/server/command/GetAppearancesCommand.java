@@ -18,6 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetAppearancesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.AppearanceControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -29,6 +30,7 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 
@@ -61,16 +63,16 @@ public class GetAppearancesCommand
 
     @Override
     protected Long getTotalEntities() {
-        var coreControl = getCoreControl();
+        var appearanceControl = Session.getModelController(AppearanceControl.class);
 
-        return coreControl.countAppearances();
+        return appearanceControl.countAppearances();
     }
 
     @Override
     protected Collection<Appearance> getEntities() {
-        var coreControl = getCoreControl();
+        var appearanceControl = Session.getModelController(AppearanceControl.class);
 
-        return coreControl.getAppearances();
+        return appearanceControl.getAppearances();
     }
 
     @Override
@@ -78,7 +80,9 @@ public class GetAppearancesCommand
         var result = CoreResultFactory.getGetAppearancesResult();
 
         if(entities != null) {
-            result.setAppearances(getCoreControl().getAppearanceTransfers(getUserVisit(), entities));
+            var appearanceControl = Session.getModelController(AppearanceControl.class);
+
+            result.setAppearances(appearanceControl.getAppearanceTransfers(getUserVisit(), entities));
         }
 
         return result;

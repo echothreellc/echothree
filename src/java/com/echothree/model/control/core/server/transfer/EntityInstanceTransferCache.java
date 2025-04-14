@@ -19,6 +19,7 @@ package com.echothree.model.control.core.server.transfer;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
+import com.echothree.model.control.core.server.control.AppearanceControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -106,9 +107,10 @@ public class EntityInstanceTransferCache
             put(entityInstance, entityInstanceTransfer);
 
             if(includeEntityAppearance || this.includeEntityAppearance) {
-                var entityAppearance = coreControl.getEntityAppearance(entityInstance);
+                var appearanceControl = Session.getModelController(AppearanceControl.class);
+                var entityAppearance = appearanceControl.getEntityAppearance(entityInstance);
 
-                entityInstanceTransfer.setEntityAppearance(entityAppearance == null ? null : coreControl.getEntityAppearanceTransfer(userVisit, entityAppearance));
+                entityInstanceTransfer.setEntityAppearance(entityAppearance == null ? null : appearanceControl.getEntityAppearanceTransfer(userVisit, entityAppearance));
             }
 
             if(includeEntityVisit || this.includeEntityVisit) {

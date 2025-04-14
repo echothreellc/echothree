@@ -22,6 +22,7 @@ import com.echothree.control.user.core.common.form.EditAppearanceDescriptionForm
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditAppearanceDescriptionResult;
 import com.echothree.control.user.core.common.spec.AppearanceDescriptionSpec;
+import com.echothree.model.control.core.server.control.AppearanceControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -29,10 +30,10 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.core.server.entity.AppearanceDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -84,10 +85,10 @@ public class EditAppearanceDescriptionCommand
 
     @Override
     public AppearanceDescription getEntity(EditAppearanceDescriptionResult result) {
-        var coreControl = getCoreControl();
+        var appearanceControl = Session.getModelController(AppearanceControl.class);
         AppearanceDescription appearanceDescription = null;
         var appearanceName = spec.getAppearanceName();
-        var appearance = coreControl.getAppearanceByName(appearanceName);
+        var appearance = appearanceControl.getAppearanceByName(appearanceName);
 
         if(appearance != null) {
             var partyControl = Session.getModelController(PartyControl.class);
@@ -96,9 +97,9 @@ public class EditAppearanceDescriptionCommand
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    appearanceDescription = coreControl.getAppearanceDescription(appearance, language);
+                    appearanceDescription = appearanceControl.getAppearanceDescription(appearance, language);
                 } else { // EditMode.UPDATE
-                    appearanceDescription = coreControl.getAppearanceDescriptionForUpdate(appearance, language);
+                    appearanceDescription = appearanceControl.getAppearanceDescriptionForUpdate(appearance, language);
                 }
 
                 if(appearanceDescription == null) {
@@ -121,9 +122,9 @@ public class EditAppearanceDescriptionCommand
 
     @Override
     public void fillInResult(EditAppearanceDescriptionResult result, AppearanceDescription appearanceDescription) {
-        var coreControl = getCoreControl();
+        var appearanceControl = Session.getModelController(AppearanceControl.class);
 
-        result.setAppearanceDescription(coreControl.getAppearanceDescriptionTransfer(getUserVisit(), appearanceDescription));
+        result.setAppearanceDescription(appearanceControl.getAppearanceDescriptionTransfer(getUserVisit(), appearanceDescription));
     }
 
     @Override
@@ -133,11 +134,11 @@ public class EditAppearanceDescriptionCommand
 
     @Override
     public void doUpdate(AppearanceDescription appearanceDescription) {
-        var coreControl = getCoreControl();
-        var appearanceDescriptionValue = coreControl.getAppearanceDescriptionValue(appearanceDescription);
+        var appearanceControl = Session.getModelController(AppearanceControl.class);
+        var appearanceDescriptionValue = appearanceControl.getAppearanceDescriptionValue(appearanceDescription);
         appearanceDescriptionValue.setDescription(edit.getDescription());
 
-        coreControl.updateAppearanceDescriptionFromValue(appearanceDescriptionValue, getPartyPK());
+        appearanceControl.updateAppearanceDescriptionFromValue(appearanceDescriptionValue, getPartyPK());
     }
     
 }

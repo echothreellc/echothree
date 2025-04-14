@@ -26,6 +26,7 @@ import com.echothree.model.control.core.common.exception.UnknownFontStyleNameExc
 import com.echothree.model.control.core.common.exception.UnknownFontWeightNameException;
 import com.echothree.model.control.core.common.exception.UnknownTextDecorationNameException;
 import com.echothree.model.control.core.common.exception.UnknownTextTransformationNameException;
+import com.echothree.model.control.core.server.control.AppearanceControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.core.server.entity.Color;
@@ -56,8 +57,8 @@ public class AppearanceLogic
 
     public Appearance getAppearanceByName(final ExecutionErrorAccumulator eea, final String appearanceName,
             final EntityPermission entityPermission) {
-        var coreControl = Session.getModelController(CoreControl.class);
-        var appearance = coreControl.getAppearanceByName(appearanceName, entityPermission);
+        var appearanceControl = Session.getModelController(AppearanceControl.class);
+        var appearance = appearanceControl.getAppearanceByName(appearanceName, entityPermission);
 
         if(appearance == null) {
             handleExecutionError(UnknownAppearanceNameException.class, eea, ExecutionErrors.UnknownAppearanceName.name(), appearanceName);
@@ -77,7 +78,6 @@ public class AppearanceLogic
     public Appearance getAppearanceByUniversalSpec(final ExecutionErrorAccumulator eea,
             final AppearanceUniversalSpec universalSpec, final EntityPermission entityPermission) {
         Appearance appearance = null;
-        var coreControl = Session.getModelController(CoreControl.class);
         var appearanceName = universalSpec.getAppearanceName();
         var parameterCount = (appearanceName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
@@ -88,7 +88,9 @@ public class AppearanceLogic
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.Appearance.name());
 
                     if(!eea.hasExecutionErrors()) {
-                        appearance = coreControl.getAppearanceByEntityInstance(entityInstance, entityPermission);
+                        var appearanceControl = Session.getModelController(AppearanceControl.class);
+
+                        appearance = appearanceControl.getAppearanceByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
                     appearance = getAppearanceByName(eea, appearanceName, entityPermission);

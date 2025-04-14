@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.core.server.graphql;
 
+import com.echothree.model.control.core.server.control.AppearanceControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityLockControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
@@ -110,8 +111,8 @@ public class EntityInstanceObject
     @GraphQLField
     @GraphQLDescription("entity appearance")
     public EntityAppearanceObject getEntityAppearance() {
-        var coreControl = Session.getModelController(CoreControl.class);
-        var entityAppearance = coreControl.getEntityAppearance(entityInstance);
+        var appearanceControl = Session.getModelController(AppearanceControl.class);
+        var entityAppearance = appearanceControl.getEntityAppearance(entityInstance);
         
         return entityAppearance == null ? null : new EntityAppearanceObject(entityAppearance);
     }

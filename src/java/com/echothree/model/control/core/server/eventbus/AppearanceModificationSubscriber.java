@@ -17,7 +17,7 @@
 package com.echothree.model.control.core.server.eventbus;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.AppearanceControl;
 import com.echothree.model.data.core.common.AppearanceConstants;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.Event;
@@ -39,13 +39,13 @@ public class AppearanceModificationSubscriber
         if(AppearanceConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
                 && AppearanceConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
                 && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {
-            var coreControl = Session.getModelController(CoreControl.class);
-            var appearance = coreControl.getAppearanceByEntityInstance(entityInstance);
-            var entityAppearances = coreControl.getEntityAppearancesByAppearance(appearance);
+            var appearanceControl = Session.getModelController(AppearanceControl.class);
+            var appearance = appearanceControl.getAppearanceByEntityInstance(entityInstance);
+            var entityAppearances = appearanceControl.getEntityAppearancesByAppearance(appearance);
             var createdBy = PersistenceUtils.getInstance().getBasePKFromEntityInstance(event.getCreatedBy());
 
             for(var entityAppearance : entityAppearances) {
-                coreControl.sendEvent(entityAppearance.getEntityInstance(), EventTypes.TOUCH,
+                appearanceControl.sendEvent(entityAppearance.getEntityInstance(), EventTypes.TOUCH,
                         entityInstance, eventType,
                         createdBy);
             }

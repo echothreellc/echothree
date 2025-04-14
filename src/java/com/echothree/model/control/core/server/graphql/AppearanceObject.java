@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.core.server.graphql;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.AppearanceControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.user.server.control.UserControl;
@@ -97,8 +97,8 @@ public class AppearanceObject
     @GraphQLDescription("appearance text decorations")
     @GraphQLNonNull
     public List<AppearanceTextDecorationObject> getAppearanceTextDecorations() {
-        var coreControl = Session.getModelController(CoreControl.class);
-        var entities = coreControl.getAppearanceTextDecorationsByAppearance(appearance);
+        var appearanceControl = Session.getModelController(AppearanceControl.class);
+        var entities = appearanceControl.getAppearanceTextDecorationsByAppearance(appearance);
         var objects = new ArrayList<AppearanceTextDecorationObject>(entities.size());
         
         entities.forEach((entity) -> {
@@ -112,8 +112,8 @@ public class AppearanceObject
     @GraphQLDescription("appearance text transformations")
     @GraphQLNonNull
     public List<AppearanceTextTransformationObject> getAppearanceTextTransformations() {
-        var coreControl = Session.getModelController(CoreControl.class);
-        var entities = coreControl.getAppearanceTextTransformationsByAppearance(appearance);
+        var appearanceControl = Session.getModelController(AppearanceControl.class);
+        var entities = appearanceControl.getAppearanceTextTransformationsByAppearance(appearance);
         var objects = new ArrayList<AppearanceTextTransformationObject>(entities.size());
         
         entities.forEach((entity) -> {
@@ -141,10 +141,10 @@ public class AppearanceObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        var coreControl = Session.getModelController(CoreControl.class);
+        var appearanceControl = Session.getModelController(AppearanceControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return coreControl.getBestAppearanceDescription(appearance, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
+        return appearanceControl.getBestAppearanceDescription(appearance, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
 }
