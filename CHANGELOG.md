@@ -1,5 +1,13 @@
 # Changelog
 
+## 2025-04-13-01
+
+* jOOQ 3.20.3 Upgrade [1529](https://gitlab.echothree.com/echothree/echothree/-/issues/1529)
+* Move Component Vendor Functions to ComponentVendorControl [1530](https://gitlab.echothree.com/echothree/echothree/-/issues/1530)
+* Move Entity Type Functions to EntityTypeControl [1531](https://gitlab.echothree.com/echothree/echothree/-/issues/1531)
+* Correct Pattern Matching Instanceof Warnings From Error Prone [1532](https://gitlab.echothree.com/echothree/echothree/-/issues/1532)
+* Apache Lucene 10.2.0 Upgrade [1533](https://gitlab.echothree.com/echothree/echothree/-/issues/1533)
+
 ## 2025-03-30-01
 
 * Add Transaction GL Entry Object and Queries [1510](https://gitlab.echothree.com/echothree/echothree/-/issues/1510)
