@@ -18,6 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetTextTransformationsForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.TextControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -29,6 +30,7 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 
@@ -62,25 +64,25 @@ public class GetTextTransformationsCommand
 
     @Override
     protected Long getTotalEntities() {
-        var coreControl = getCoreControl();
+        var textControl = Session.getModelController(TextControl.class);
 
-        return coreControl.countTextTransformations();
+        return textControl.countTextTransformations();
     }
 
     @Override
     protected Collection<TextTransformation> getEntities() {
-        var coreControl = getCoreControl();
+        var textControl = Session.getModelController(TextControl.class);
         
-        return coreControl.getTextTransformations();
+        return textControl.getTextTransformations();
     }
     
     @Override
     protected BaseResult getResult(Collection<TextTransformation> entities) {
         var result = CoreResultFactory.getGetTextTransformationsResult();
-        var coreControl = getCoreControl();
+        var textControl = Session.getModelController(TextControl.class);
         var userVisit = getUserVisit();
         
-        result.setTextTransformations(coreControl.getTextTransformationTransfers(userVisit, entities));
+        result.setTextTransformations(textControl.getTextTransformationTransfers(userVisit, entities));
         
         return result;
     }

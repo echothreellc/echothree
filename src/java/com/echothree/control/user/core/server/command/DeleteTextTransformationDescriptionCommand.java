@@ -17,6 +17,7 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteTextTransformationDescriptionForm;
+import com.echothree.model.control.core.server.control.TextControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -62,9 +63,9 @@ public class DeleteTextTransformationDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var textControl = Session.getModelController(TextControl.class);
         var textTransformationName = form.getTextTransformationName();
-        var textTransformation = coreControl.getTextTransformationByName(textTransformationName);
+        var textTransformation = textControl.getTextTransformationByName(textTransformationName);
         
         if(textTransformation != null) {
             var partyControl = Session.getModelController(PartyControl.class);
@@ -72,10 +73,10 @@ public class DeleteTextTransformationDescriptionCommand
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                var textTransformationDescription = coreControl.getTextTransformationDescriptionForUpdate(textTransformation, language);
+                var textTransformationDescription = textControl.getTextTransformationDescriptionForUpdate(textTransformation, language);
                 
                 if(textTransformationDescription != null) {
-                    coreControl.deleteTextTransformationDescription(textTransformationDescription, getPartyPK());
+                    textControl.deleteTextTransformationDescription(textTransformationDescription, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownTextTransformationDescription.name(), textTransformationName, languageIsoName);
                 }

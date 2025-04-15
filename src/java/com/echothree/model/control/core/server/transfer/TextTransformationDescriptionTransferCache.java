@@ -17,7 +17,7 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.TextTransformationDescriptionTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.TextControl;
 import com.echothree.model.data.core.server.entity.TextTransformationDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -25,7 +25,7 @@ import com.echothree.util.server.persistence.Session;
 public class TextTransformationDescriptionTransferCache
         extends BaseCoreDescriptionTransferCache<TextTransformationDescription, TextTransformationDescriptionTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    TextControl textControl = Session.getModelController(TextControl.class);
 
     /** Creates a new instance of TextTransformationDescriptionTransferCache */
     public TextTransformationDescriptionTransferCache(UserVisit userVisit) {
@@ -36,7 +36,7 @@ public class TextTransformationDescriptionTransferCache
         var textTransformationDescriptionTransfer = get(textTransformationDescription);
         
         if(textTransformationDescriptionTransfer == null) {
-            var textTransformationTransfer = coreControl.getTextTransformationTransfer(userVisit, textTransformationDescription.getTextTransformation());
+            var textTransformationTransfer = textControl.getTextTransformationTransfer(userVisit, textTransformationDescription.getTextTransformation());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, textTransformationDescription.getLanguage());
             
             textTransformationDescriptionTransfer = new TextTransformationDescriptionTransfer(languageTransfer, textTransformationTransfer, textTransformationDescription.getDescription());

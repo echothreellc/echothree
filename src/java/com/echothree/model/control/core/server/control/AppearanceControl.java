@@ -64,7 +64,7 @@ import java.util.Objects;
 public class AppearanceControl
         extends BaseCoreControl {
 
-    /** Creates a new instance of ComponentVendorControl */
+    /** Creates a new instance of AppearanceControl */
     public AppearanceControl() {
         super();
     }

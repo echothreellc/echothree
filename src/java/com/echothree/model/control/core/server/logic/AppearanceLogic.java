@@ -24,16 +24,12 @@ import com.echothree.model.control.core.common.exception.UnknownAppearanceNameEx
 import com.echothree.model.control.core.common.exception.UnknownColorNameException;
 import com.echothree.model.control.core.common.exception.UnknownFontStyleNameException;
 import com.echothree.model.control.core.common.exception.UnknownFontWeightNameException;
-import com.echothree.model.control.core.common.exception.UnknownTextDecorationNameException;
-import com.echothree.model.control.core.common.exception.UnknownTextTransformationNameException;
 import com.echothree.model.control.core.server.control.AppearanceControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.core.server.entity.Color;
 import com.echothree.model.data.core.server.entity.FontStyle;
 import com.echothree.model.data.core.server.entity.FontWeight;
-import com.echothree.model.data.core.server.entity.TextDecoration;
-import com.echothree.model.data.core.server.entity.TextTransformation;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -145,28 +141,6 @@ public class AppearanceLogic
         }
 
         return fontWeight;
-    }
-    
-    public TextDecoration getTextDecorationByName(final ExecutionErrorAccumulator eea, final String textDecorationName) {
-        var coreControl = Session.getModelController(CoreControl.class);
-        var textDecoration = coreControl.getTextDecorationByName(textDecorationName);
-
-        if(textDecoration == null) {
-            handleExecutionError(UnknownTextDecorationNameException.class, eea, ExecutionErrors.UnknownTextDecorationName.name(), textDecorationName);
-        }
-
-        return textDecoration;
-    }
-    
-    public TextTransformation getTextTransformationByName(final ExecutionErrorAccumulator eea, final String textTransformationName) {
-        var coreControl = Session.getModelController(CoreControl.class);
-        var textTransformation = coreControl.getTextTransformationByName(textTransformationName);
-
-        if(textTransformation == null) {
-            handleExecutionError(UnknownTextTransformationNameException.class, eea, ExecutionErrors.UnknownTextTransformationName.name(), textTransformationName);
-        }
-
-        return textTransformation;
     }
     
 }
