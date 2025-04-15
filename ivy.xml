@@ -16,7 +16,7 @@
         <dependency org="com.google.guava" name="guava" rev="33.4.5-jre" conf="sources->sources" />
         <dependency org="com.graphql-java" name="graphql-java" rev="21.5" conf="sources->sources" />
         <dependency org="com.graphql-java" name="graphql-java-extended-scalars" rev="21.0" conf="sources->sources" />
-        <dependency org="com.ibm.icu" name="icu4j" rev="76.1" conf="sources->sources" />
+        <dependency org="com.ibm.icu" name="icu4j" rev="77.1" conf="sources->sources" />
         <dependency org="com.lowagie" name="itext" rev="2.0.8" conf="sources->sources" />
         <dependency org="com.rometools" name="rome" rev="1.18.0" conf="sources->sources" />
         <dependency org="com.sun.mail" name="javax.mail" rev="1.6.2" conf="sources->sources" />
@@ -108,7 +108,7 @@
         <dependency org="com.google.guava" name="guava" rev="33.4.5-jre" conf="javadoc->javadoc" />
         <dependency org="com.graphql-java" name="graphql-java" rev="21.5" conf="javadoc->javadoc" />
         <dependency org="com.graphql-java" name="graphql-java-extended-scalars" rev="21.0" conf="javadoc->javadoc" />
-        <dependency org="com.ibm.icu" name="icu4j" rev="76.1" conf="javadoc->javadoc" />
+        <dependency org="com.ibm.icu" name="icu4j" rev="77.1" conf="javadoc->javadoc" />
         <dependency org="com.lowagie" name="itext" rev="2.0.8" conf="javadoc->javadoc" />
         <dependency org="com.rometools" name="rome" rev="1.18.0" conf="javadoc->javadoc" />
         <dependency org="com.sun.mail" name="javax.mail" rev="1.6.2" conf="javadoc->javadoc" />
@@ -201,7 +201,7 @@
         <dependency org="com.google.guava" name="guava" rev="33.4.5-jre" conf="binaries->default" />
         <dependency org="com.graphql-java" name="graphql-java" rev="21.5" conf="binaries->default" />
         <dependency org="com.graphql-java" name="graphql-java-extended-scalars" rev="21.0" conf="binaries->default" />
-        <dependency org="com.ibm.icu" name="icu4j" rev="76.1" conf="binaries->default" />
+        <dependency org="com.ibm.icu" name="icu4j" rev="77.1" conf="binaries->default" />
         <dependency org="com.lowagie" name="itext" rev="2.0.8" conf="binaries->default" />
         <dependency org="com.rometools" name="rome" rev="1.18.0" conf="binaries->default" />
         <dependency org="com.sun.mail" name="javax.mail" rev="1.6.2" conf="binaries->default" />
