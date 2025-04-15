@@ -20,6 +20,7 @@ import com.echothree.control.user.core.common.form.GetAppearanceTextTransformati
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.server.control.AppearanceControl;
 import com.echothree.model.control.core.server.logic.AppearanceLogic;
+import com.echothree.model.control.core.server.logic.TextLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -69,7 +70,7 @@ public class GetAppearanceTextTransformationCommand
         
         if(!hasExecutionErrors()) {
             var textTransformationName = form.getTextTransformationName();
-            var textTransformation = AppearanceLogic.getInstance().getTextTransformationByName(this, textTransformationName);
+            var textTransformation = TextLogic.getInstance().getTextTransformationByName(this, textTransformationName);
             
             if(!hasExecutionErrors()) {
                 var appearanceControl = Session.getModelController(AppearanceControl.class);
