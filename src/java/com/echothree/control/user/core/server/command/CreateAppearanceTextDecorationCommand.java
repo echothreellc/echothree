@@ -19,6 +19,7 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.CreateAppearanceTextDecorationForm;
 import com.echothree.model.control.core.server.control.AppearanceControl;
 import com.echothree.model.control.core.server.logic.AppearanceLogic;
+import com.echothree.model.control.core.server.logic.TextLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -68,7 +69,7 @@ public class CreateAppearanceTextDecorationCommand
         
         if(!hasExecutionErrors()) {
             var textDecorationName = form.getTextDecorationName();
-            var textDecoration = AppearanceLogic.getInstance().getTextDecorationByName(this, textDecorationName);
+            var textDecoration = TextLogic.getInstance().getTextDecorationByName(this, textDecorationName);
             
             if(!hasExecutionErrors()) {
                 var appearanceControl = Session.getModelController(AppearanceControl.class);

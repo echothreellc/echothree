@@ -22,19 +22,21 @@ import com.echothree.control.user.core.common.form.EditTextTransformationForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditTextTransformationResult;
 import com.echothree.control.user.core.common.spec.TextTransformationSpec;
+import com.echothree.model.control.core.server.control.TextControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.TextTransformation;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -83,14 +85,14 @@ public class EditTextTransformationCommand
 
     @Override
     public TextTransformation getEntity(EditTextTransformationResult result) {
-        var coreControl = getCoreControl();
+        var textControl = Session.getModelController(TextControl.class);
         TextTransformation textTransformation;
         var textTransformationName = spec.getTextTransformationName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            textTransformation = coreControl.getTextTransformationByName(textTransformationName);
+            textTransformation = textControl.getTextTransformationByName(textTransformationName);
         } else { // EditMode.UPDATE
-            textTransformation = coreControl.getTextTransformationByNameForUpdate(textTransformationName);
+            textTransformation = textControl.getTextTransformationByNameForUpdate(textTransformationName);
         }
 
         if(textTransformation == null) {
@@ -107,15 +109,15 @@ public class EditTextTransformationCommand
 
     @Override
     public void fillInResult(EditTextTransformationResult result, TextTransformation textTransformation) {
-        var coreControl = getCoreControl();
+        var textControl = Session.getModelController(TextControl.class);
 
-        result.setTextTransformation(coreControl.getTextTransformationTransfer(getUserVisit(), textTransformation));
+        result.setTextTransformation(textControl.getTextTransformationTransfer(getUserVisit(), textTransformation));
     }
 
     @Override
     public void doLock(TextTransformationEdit edit, TextTransformation textTransformation) {
-        var coreControl = getCoreControl();
-        var textTransformationDescription = coreControl.getTextTransformationDescription(textTransformation, getPreferredLanguage());
+        var textControl = Session.getModelController(TextControl.class);
+        var textTransformationDescription = textControl.getTextTransformationDescription(textTransformation, getPreferredLanguage());
         var textTransformationDetail = textTransformation.getLastDetail();
 
         edit.setTextTransformationName(textTransformationDetail.getTextTransformationName());
@@ -129,9 +131,9 @@ public class EditTextTransformationCommand
 
     @Override
     public void canUpdate(TextTransformation textTransformation) {
-        var coreControl = getCoreControl();
+        var textControl = Session.getModelController(TextControl.class);
         var textTransformationName = edit.getTextTransformationName();
-        var duplicateTextTransformation = coreControl.getTextTransformationByName(textTransformationName);
+        var duplicateTextTransformation = textControl.getTextTransformationByName(textTransformationName);
 
         if(duplicateTextTransformation != null && !textTransformation.equals(duplicateTextTransformation)) {
             addExecutionError(ExecutionErrors.DuplicateTextTransformationName.name(), textTransformationName);
@@ -140,29 +142,29 @@ public class EditTextTransformationCommand
 
     @Override
     public void doUpdate(TextTransformation textTransformation) {
-        var coreControl = getCoreControl();
+        var textControl = Session.getModelController(TextControl.class);
         var partyPK = getPartyPK();
-        var textTransformationDetailValue = coreControl.getTextTransformationDetailValueForUpdate(textTransformation);
-        var textTransformationDescription = coreControl.getTextTransformationDescriptionForUpdate(textTransformation, getPreferredLanguage());
+        var textTransformationDetailValue = textControl.getTextTransformationDetailValueForUpdate(textTransformation);
+        var textTransformationDescription = textControl.getTextTransformationDescriptionForUpdate(textTransformation, getPreferredLanguage());
         var description = edit.getDescription();
 
         textTransformationDetailValue.setTextTransformationName(edit.getTextTransformationName());
         textTransformationDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         textTransformationDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        coreControl.updateTextTransformationFromValue(textTransformationDetailValue, partyPK);
+        textControl.updateTextTransformationFromValue(textTransformationDetailValue, partyPK);
 
         if(textTransformationDescription == null && description != null) {
-            coreControl.createTextTransformationDescription(textTransformation, getPreferredLanguage(), description, partyPK);
+            textControl.createTextTransformationDescription(textTransformation, getPreferredLanguage(), description, partyPK);
         } else {
             if(textTransformationDescription != null && description == null) {
-                coreControl.deleteTextTransformationDescription(textTransformationDescription, partyPK);
+                textControl.deleteTextTransformationDescription(textTransformationDescription, partyPK);
             } else {
                 if(textTransformationDescription != null && description != null) {
-                    var textTransformationDescriptionValue = coreControl.getTextTransformationDescriptionValue(textTransformationDescription);
+                    var textTransformationDescriptionValue = textControl.getTextTransformationDescriptionValue(textTransformationDescription);
 
                     textTransformationDescriptionValue.setDescription(description);
-                    coreControl.updateTextTransformationDescriptionFromValue(textTransformationDescriptionValue, partyPK);
+                    textControl.updateTextTransformationDescriptionFromValue(textTransformationDescriptionValue, partyPK);
                 }
             }
         }
