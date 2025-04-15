@@ -18,6 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetAppearanceDescriptionForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.AppearanceControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -62,10 +63,10 @@ public class GetAppearanceDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var appearanceControl = Session.getModelController(AppearanceControl.class);
         var result = CoreResultFactory.getGetAppearanceDescriptionResult();
         var appearanceName = form.getAppearanceName();
-        var appearance = coreControl.getAppearanceByName(appearanceName);
+        var appearance = appearanceControl.getAppearanceByName(appearanceName);
 
         if(appearance != null) {
             var partyControl = Session.getModelController(PartyControl.class);
@@ -73,10 +74,10 @@ public class GetAppearanceDescriptionCommand
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                var appearanceDescription = coreControl.getAppearanceDescription(appearance, language);
+                var appearanceDescription = appearanceControl.getAppearanceDescription(appearance, language);
 
                 if(appearanceDescription != null) {
-                    result.setAppearanceDescription(coreControl.getAppearanceDescriptionTransfer(getUserVisit(), appearanceDescription));
+                    result.setAppearanceDescription(appearanceControl.getAppearanceDescriptionTransfer(getUserVisit(), appearanceDescription));
                 } else {
                     addExecutionError(ExecutionErrors.UnknownAppearanceDescription.name(), appearanceName, languageIsoName);
                 }

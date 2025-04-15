@@ -17,6 +17,7 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.AppearanceTextTransformationTransfer;
+import com.echothree.model.control.core.server.control.AppearanceControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.AppearanceTextTransformation;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -25,6 +26,7 @@ import com.echothree.util.server.persistence.Session;
 public class AppearanceTextTransformationTransferCache
         extends BaseCoreTransferCache<AppearanceTextTransformation, AppearanceTextTransformationTransfer> {
 
+    AppearanceControl appearanceControl = Session.getModelController(AppearanceControl.class);
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of AppearanceTextTransformationTransferCache */
@@ -36,7 +38,7 @@ public class AppearanceTextTransformationTransferCache
         var appearanceTextTransformationTransfer = get(appearanceTextTransformation);
 
         if(appearanceTextTransformationTransfer == null) {
-            var appearance = coreControl.getAppearanceTransfer(userVisit, appearanceTextTransformation.getAppearance());
+            var appearance = appearanceControl.getAppearanceTransfer(userVisit, appearanceTextTransformation.getAppearance());
             var textTransformation = coreControl.getTextTransformationTransfer(userVisit, appearanceTextTransformation.getTextTransformation());
 
             appearanceTextTransformationTransfer = new AppearanceTextTransformationTransfer(appearance, textTransformation);

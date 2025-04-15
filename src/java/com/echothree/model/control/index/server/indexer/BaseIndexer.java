@@ -17,6 +17,7 @@
 package com.echothree.model.control.index.server.indexer;
 
 import com.echothree.model.control.core.common.EntityAttributeTypes;
+import com.echothree.model.control.core.server.control.AppearanceControl;
 import com.echothree.model.control.core.server.control.ComponentVendorControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
@@ -64,7 +65,8 @@ import org.apache.lucene.store.FSDirectory;
 public abstract class BaseIndexer<BE extends BaseEntity>
         extends BaseLogic
         implements Closeable {
-    
+
+    protected AppearanceControl appearanceControl = Session.getModelController(AppearanceControl.class);
     protected CoreControl coreControl = Session.getModelController(CoreControl.class);
     protected ComponentVendorControl componentVendorControl = Session.getModelController(ComponentVendorControl.class);
     protected EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
@@ -329,7 +331,7 @@ public abstract class BaseIndexer<BE extends BaseEntity>
     }
 
     private void indexEntityAppearance(final Document document, final EntityInstance entityInstance) {
-        var entityAppearance = coreControl.getEntityAppearance(entityInstance);
+        var entityAppearance = appearanceControl.getEntityAppearance(entityInstance);
 
         if(entityAppearance != null) {
             var entityAppearanceName = entityAppearance.getAppearance().getLastDetail().getAppearanceName();

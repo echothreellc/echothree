@@ -17,15 +17,16 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateAppearanceDescriptionForm;
+import com.echothree.model.control.core.server.control.AppearanceControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -63,9 +64,9 @@ public class CreateAppearanceDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var appearanceControl = Session.getModelController(AppearanceControl.class);
         var appearanceName = form.getAppearanceName();
-        var appearance = coreControl.getAppearanceByName(appearanceName);
+        var appearance = appearanceControl.getAppearanceByName(appearanceName);
         
         if(appearance != null) {
             var partyControl = Session.getModelController(PartyControl.class);
@@ -73,12 +74,12 @@ public class CreateAppearanceDescriptionCommand
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                var appearanceDescription = coreControl.getAppearanceDescription(appearance, language);
+                var appearanceDescription = appearanceControl.getAppearanceDescription(appearance, language);
                 
                 if(appearanceDescription == null) {
                     var description = form.getDescription();
-                    
-                    coreControl.createAppearanceDescription(appearance, language, description, getPartyPK());
+
+                    appearanceControl.createAppearanceDescription(appearance, language, description, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateAppearanceDescription.name(), appearanceName, languageIsoName);
                 }
