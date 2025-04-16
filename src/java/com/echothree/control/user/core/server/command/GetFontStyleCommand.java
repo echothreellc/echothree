@@ -21,15 +21,17 @@ import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.logic.AppearanceLogic;
+import com.echothree.model.control.core.server.control.FontControl;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.core.server.logic.FontLogic;
 import com.echothree.model.data.core.server.entity.FontStyle;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -55,7 +57,6 @@ public class GetFontStyleCommand
     
     @Override
     protected FontStyle getEntity() {
-        var coreControl = getCoreControl();
         FontStyle fontStyle = null;
         var fontStyleName = form.getFontStyleName();
         var parameterCount = (fontStyleName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
@@ -66,10 +67,12 @@ public class GetFontStyleCommand
                         ComponentVendors.ECHO_THREE.name(), EntityTypes.FontStyle.name());
 
                 if(!hasExecutionErrors()) {
-                    fontStyle = coreControl.getFontStyleByEntityInstance(entityInstance);
+                    var fontControl = Session.getModelController(FontControl.class);
+
+                    fontStyle = fontControl.getFontStyleByEntityInstance(entityInstance);
                 }
             } else {
-                fontStyle = AppearanceLogic.getInstance().getFontStyleByName(this, fontStyleName);
+                fontStyle = FontLogic.getInstance().getFontStyleByName(this, fontStyleName);
             }
 
             if(fontStyle != null) {
@@ -84,11 +87,12 @@ public class GetFontStyleCommand
     
     @Override
     protected BaseResult getResult(FontStyle fontStyle) {
-        var coreControl = getCoreControl();
         var result = CoreResultFactory.getGetFontStyleResult();
 
         if(fontStyle != null) {
-            result.setFontStyle(coreControl.getFontStyleTransfer(getUserVisit(), fontStyle));
+            var fontControl = Session.getModelController(FontControl.class);
+
+            result.setFontStyle(fontControl.getFontStyleTransfer(getUserVisit(), fontStyle));
         }
 
         return result;
