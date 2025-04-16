@@ -18,6 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateColorForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.ColorControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -71,7 +72,7 @@ public class CreateColorCommand
     @Override
     protected BaseResult execute() {
         var result = CoreResultFactory.getCreateColorResult();
-        var coreControl = getCoreControl();
+        var colorControl = Session.getModelController(ColorControl.class);
         var colorName = form.getColorName();
         
         if(colorName == null) {
@@ -81,7 +82,7 @@ public class CreateColorCommand
             colorName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         }
 
-        var color = coreControl.getColorByName(colorName);
+        var color = colorControl.getColorByName(colorName);
         
         if(color == null) {
             var partyPK = getPartyPK();
@@ -92,10 +93,10 @@ public class CreateColorCommand
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();
             
-            color = coreControl.createColor(colorName, red, green, blue, isDefault, sortOrder, partyPK);
+            color = colorControl.createColor(colorName, red, green, blue, isDefault, sortOrder, partyPK);
             
             if(description != null) {
-                coreControl.createColorDescription(color, getPreferredLanguage(), description, partyPK);
+                colorControl.createColorDescription(color, getPreferredLanguage(), description, partyPK);
             }
         } else {
             addExecutionError(ExecutionErrors.DuplicateColorName.name(), colorName);

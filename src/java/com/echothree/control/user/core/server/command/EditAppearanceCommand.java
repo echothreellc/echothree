@@ -23,6 +23,7 @@ import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditAppearanceResult;
 import com.echothree.control.user.core.common.spec.AppearanceSpec;
 import com.echothree.model.control.core.server.control.AppearanceControl;
+import com.echothree.model.control.core.server.control.ColorControl;
 import com.echothree.model.control.core.server.logic.FontLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -160,15 +161,15 @@ public class EditAppearanceCommand
         if(duplicateAppearance != null && !appearance.equals(duplicateAppearance)) {
             addExecutionError(ExecutionErrors.DuplicateAppearanceName.name(), appearanceName);
         } else {
-            var coreControl = getCoreControl();
+            var colorControl = Session.getModelController(ColorControl.class);
             var textColorName = edit.getTextColorName();
             
-            textColor = textColorName == null ? null : coreControl.getColorByName(textColorName);
+            textColor = textColorName == null ? null : colorControl.getColorByName(textColorName);
             
             if(textColorName == null || textColor != null) {
                 var backgroundColorName = edit.getBackgroundColorName();
                 
-                backgroundColor = backgroundColorName == null ? null : coreControl.getColorByName(backgroundColorName);
+                backgroundColor = backgroundColorName == null ? null : colorControl.getColorByName(backgroundColorName);
 
                 if(backgroundColorName == null || backgroundColor != null) {
                     var fontStyleName = edit.getFontStyleName();
