@@ -17,18 +17,20 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteFontStyleForm;
+import com.echothree.model.control.core.server.control.FontControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -59,12 +61,12 @@ public class DeleteFontStyleCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var fontControl = Session.getModelController(FontControl.class);
         var fontStyleName = form.getFontStyleName();
-        var fontStyle = coreControl.getFontStyleByNameForUpdate(fontStyleName);
+        var fontStyle = fontControl.getFontStyleByNameForUpdate(fontStyleName);
         
         if(fontStyle != null) {
-            coreControl.deleteFontStyle(fontStyle, getPartyPK());
+            fontControl.deleteFontStyle(fontStyle, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownFontStyleName.name(), fontStyleName);
         }

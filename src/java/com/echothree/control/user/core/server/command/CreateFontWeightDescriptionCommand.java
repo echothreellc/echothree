@@ -17,15 +17,16 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateFontWeightDescriptionForm;
+import com.echothree.model.control.core.server.control.FontControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -63,9 +64,9 @@ public class CreateFontWeightDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var fontControl = Session.getModelController(FontControl.class);
         var fontWeightName = form.getFontWeightName();
-        var fontWeight = coreControl.getFontWeightByName(fontWeightName);
+        var fontWeight = fontControl.getFontWeightByName(fontWeightName);
         
         if(fontWeight != null) {
             var partyControl = Session.getModelController(PartyControl.class);
@@ -73,12 +74,12 @@ public class CreateFontWeightDescriptionCommand
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                var fontWeightDescription = coreControl.getFontWeightDescription(fontWeight, language);
+                var fontWeightDescription = fontControl.getFontWeightDescription(fontWeight, language);
                 
                 if(fontWeightDescription == null) {
                     var description = form.getDescription();
-                    
-                    coreControl.createFontWeightDescription(fontWeight, language, description, getPartyPK());
+
+                    fontControl.createFontWeightDescription(fontWeight, language, description, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateFontWeightDescription.name(), fontWeightName, languageIsoName);
                 }

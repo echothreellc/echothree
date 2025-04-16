@@ -23,7 +23,7 @@ import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditAppearanceResult;
 import com.echothree.control.user.core.common.spec.AppearanceSpec;
 import com.echothree.model.control.core.server.control.AppearanceControl;
-import com.echothree.model.control.core.server.logic.AppearanceLogic;
+import com.echothree.model.control.core.server.logic.FontLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -173,12 +173,12 @@ public class EditAppearanceCommand
                 if(backgroundColorName == null || backgroundColor != null) {
                     var fontStyleName = edit.getFontStyleName();
                     
-                    fontStyle = fontStyleName == null ? null : AppearanceLogic.getInstance().getFontStyleByName(this, fontStyleName);
+                    fontStyle = fontStyleName == null ? null : FontLogic.getInstance().getFontStyleByName(this, fontStyleName);
                     
                     if(!hasExecutionErrors()) {
                         var fontWeightName = edit.getFontWeightName();
                         
-                        fontWeight = fontWeightName == null ? null : AppearanceLogic.getInstance().getFontWeightByName(this, fontWeightName);
+                        fontWeight = fontWeightName == null ? null : FontLogic.getInstance().getFontWeightByName(this, fontWeightName);
                     }
                 } else {
                 addExecutionError(ExecutionErrors.UnknownBackgroundColorName.name(), backgroundColorName);
