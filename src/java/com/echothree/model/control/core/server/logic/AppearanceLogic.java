@@ -105,16 +105,5 @@ public class AppearanceLogic
             final AppearanceUniversalSpec universalSpec) {
         return getAppearanceByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
     }
-
-    public Color getColorByName(final ExecutionErrorAccumulator eea, final String colorName) {
-        var coreControl = Session.getModelController(CoreControl.class);
-        var color = coreControl.getColorByName(colorName);
-
-        if(color == null) {
-            handleExecutionError(UnknownColorNameException.class, eea, ExecutionErrors.UnknownColorName.name(), colorName);
-        }
-
-        return color;
-    }
     
 }

@@ -19,6 +19,7 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.CreateAppearanceForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.server.control.AppearanceControl;
+import com.echothree.model.control.core.server.control.ColorControl;
 import com.echothree.model.control.core.server.logic.FontLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -87,13 +88,13 @@ public class CreateAppearanceCommand
         var appearance = appearanceControl.getAppearanceByName(appearanceName);
         
         if(appearance == null) {
-            var coreControl = getCoreControl();
+            var colorControl = Session.getModelController(ColorControl.class);
             var textColorName = form.getTextColorName();
-            var textColor = textColorName == null ? null : coreControl.getColorByName(textColorName);
+            var textColor = textColorName == null ? null : colorControl.getColorByName(textColorName);
             
             if(textColorName == null || textColor != null) {
                 var backgroundColorName = form.getBackgroundColorName();
-                var backgroundColor = backgroundColorName == null ? null : coreControl.getColorByName(backgroundColorName);
+                var backgroundColor = backgroundColorName == null ? null : colorControl.getColorByName(backgroundColorName);
 
                 if(backgroundColorName == null || backgroundColor != null) {
                     var fontStyleName = form.getFontStyleName();

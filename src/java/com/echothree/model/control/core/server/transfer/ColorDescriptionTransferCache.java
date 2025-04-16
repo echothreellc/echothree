@@ -17,7 +17,7 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.ColorDescriptionTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.ColorControl;
 import com.echothree.model.data.core.server.entity.ColorDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -25,7 +25,7 @@ import com.echothree.util.server.persistence.Session;
 public class ColorDescriptionTransferCache
         extends BaseCoreDescriptionTransferCache<ColorDescription, ColorDescriptionTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    ColorControl colorControl = Session.getModelController(ColorControl.class);
 
     /** Creates a new instance of ColorDescriptionTransferCache */
     public ColorDescriptionTransferCache(UserVisit userVisit) {
@@ -36,7 +36,7 @@ public class ColorDescriptionTransferCache
         var colorDescriptionTransfer = get(colorDescription);
         
         if(colorDescriptionTransfer == null) {
-            var colorTransfer = coreControl.getColorTransfer(userVisit, colorDescription.getColor());
+            var colorTransfer = colorControl.getColorTransfer(userVisit, colorDescription.getColor());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, colorDescription.getLanguage());
             
             colorDescriptionTransfer = new ColorDescriptionTransfer(languageTransfer, colorTransfer, colorDescription.getDescription());

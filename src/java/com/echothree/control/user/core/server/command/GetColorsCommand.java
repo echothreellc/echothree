@@ -18,6 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetColorsForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.ColorControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -29,6 +30,7 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 
@@ -61,25 +63,25 @@ public class GetColorsCommand
 
     @Override
     protected Long getTotalEntities() {
-        var coreControl = getCoreControl();
+        var colorControl = Session.getModelController(ColorControl.class);
 
-        return coreControl.countColors();
+        return colorControl.countColors();
     }
 
     @Override
     protected Collection<Color> getEntities() {
-        var coreControl = getCoreControl();
+        var colorControl = Session.getModelController(ColorControl.class);
         
-        return coreControl.getColors();
+        return colorControl.getColors();
     }
     
     @Override
     protected BaseResult getResult(Collection<Color> entities) {
         var result = CoreResultFactory.getGetColorsResult();
-        var coreControl = getCoreControl();
+        var colorControl = Session.getModelController(ColorControl.class);
         var userVisit = getUserVisit();
         
-        result.setColors(coreControl.getColorTransfers(userVisit, entities));
+        result.setColors(colorControl.getColorTransfers(userVisit, entities));
         
         return result;
     }
