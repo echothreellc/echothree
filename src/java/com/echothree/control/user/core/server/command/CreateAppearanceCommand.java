@@ -19,7 +19,7 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.CreateAppearanceForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.server.control.AppearanceControl;
-import com.echothree.model.control.core.server.logic.AppearanceLogic;
+import com.echothree.model.control.core.server.logic.FontLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -97,11 +97,11 @@ public class CreateAppearanceCommand
 
                 if(backgroundColorName == null || backgroundColor != null) {
                     var fontStyleName = form.getFontStyleName();
-                    var fontStyle = fontStyleName == null ? null : AppearanceLogic.getInstance().getFontStyleByName(this, fontStyleName);
+                    var fontStyle = fontStyleName == null ? null : FontLogic.getInstance().getFontStyleByName(this, fontStyleName);
                     
                     if(!hasExecutionErrors()) {
                         var fontWeightName = form.getFontWeightName();
-                        var fontWeight = fontWeightName == null ? null : AppearanceLogic.getInstance().getFontWeightByName(this, fontWeightName);
+                        var fontWeight = fontWeightName == null ? null : FontLogic.getInstance().getFontWeightByName(this, fontWeightName);
 
                         if(!hasExecutionErrors()) {
                             var partyPK = getPartyPK();

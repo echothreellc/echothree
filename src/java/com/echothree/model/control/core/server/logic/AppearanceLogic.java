@@ -22,14 +22,10 @@ import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.common.exception.UnknownAppearanceNameException;
 import com.echothree.model.control.core.common.exception.UnknownColorNameException;
-import com.echothree.model.control.core.common.exception.UnknownFontStyleNameException;
-import com.echothree.model.control.core.common.exception.UnknownFontWeightNameException;
 import com.echothree.model.control.core.server.control.AppearanceControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.core.server.entity.Color;
-import com.echothree.model.data.core.server.entity.FontStyle;
-import com.echothree.model.data.core.server.entity.FontWeight;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -119,28 +115,6 @@ public class AppearanceLogic
         }
 
         return color;
-    }
-    
-    public FontStyle getFontStyleByName(final ExecutionErrorAccumulator eea, final String fontStyleName) {
-        var coreControl = Session.getModelController(CoreControl.class);
-        var fontStyle = coreControl.getFontStyleByName(fontStyleName);
-
-        if(fontStyle == null) {
-            handleExecutionError(UnknownFontStyleNameException.class, eea, ExecutionErrors.UnknownFontStyleName.name(), fontStyleName);
-        }
-
-        return fontStyle;
-    }
-    
-    public FontWeight getFontWeightByName(final ExecutionErrorAccumulator eea, final String fontWeightName) {
-        var coreControl = Session.getModelController(CoreControl.class);
-        var fontWeight = coreControl.getFontWeightByName(fontWeightName);
-
-        if(fontWeight == null) {
-            handleExecutionError(UnknownFontWeightNameException.class, eea, ExecutionErrors.UnknownFontWeightName.name(), fontWeightName);
-        }
-
-        return fontWeight;
     }
     
 }

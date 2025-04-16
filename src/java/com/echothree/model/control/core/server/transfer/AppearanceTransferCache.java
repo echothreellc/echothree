@@ -20,6 +20,7 @@ import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.transfer.AppearanceTransfer;
 import com.echothree.model.control.core.server.control.AppearanceControl;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.FontControl;
 import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
@@ -30,6 +31,7 @@ public class AppearanceTransferCache
 
     AppearanceControl appearanceControl = Session.getModelController(AppearanceControl.class);
     CoreControl coreControl = Session.getModelController(CoreControl.class);
+    FontControl fontControl = Session.getModelController(FontControl.class);
 
     boolean includeTextDecorations;
     boolean includeTextTransformations;
@@ -58,9 +60,9 @@ public class AppearanceTransferCache
             var backgroundColor = appearanceDetail.getBackgroundColor();
             var backgroundColorTransfer = backgroundColor == null ? null : coreControl.getColorTransfer(userVisit, backgroundColor);
             var fontStyle = appearanceDetail.getFontStyle();
-            var fontStyleTransfer = fontStyle == null ? null : coreControl.getFontStyleTransfer(userVisit, fontStyle);
+            var fontStyleTransfer = fontStyle == null ? null : fontControl.getFontStyleTransfer(userVisit, fontStyle);
             var fontWeight = appearanceDetail.getFontWeight();
-            var fontWeightTransfer = fontWeight == null ? null : coreControl.getFontWeightTransfer(userVisit, fontWeight);
+            var fontWeightTransfer = fontWeight == null ? null : fontControl.getFontWeightTransfer(userVisit, fontWeight);
             var isDefault = appearanceDetail.getIsDefault();
             var sortOrder = appearanceDetail.getSortOrder();
             var description = appearanceControl.getBestAppearanceDescription(appearance, getLanguage());

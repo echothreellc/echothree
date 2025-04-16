@@ -21,15 +21,17 @@ import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.logic.AppearanceLogic;
+import com.echothree.model.control.core.server.control.FontControl;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.core.server.logic.FontLogic;
 import com.echothree.model.data.core.server.entity.FontWeight;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -55,7 +57,6 @@ public class GetFontWeightCommand
     
     @Override
     protected FontWeight getEntity() {
-        var coreControl = getCoreControl();
         FontWeight fontWeight = null;
         var fontWeightName = form.getFontWeightName();
         var parameterCount = (fontWeightName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
@@ -66,10 +67,12 @@ public class GetFontWeightCommand
                         ComponentVendors.ECHO_THREE.name(), EntityTypes.FontWeight.name());
 
                 if(!hasExecutionErrors()) {
-                    fontWeight = coreControl.getFontWeightByEntityInstance(entityInstance);
+                    var fontControl = Session.getModelController(FontControl.class);
+
+                    fontWeight = fontControl.getFontWeightByEntityInstance(entityInstance);
                 }
             } else {
-                fontWeight = AppearanceLogic.getInstance().getFontWeightByName(this, fontWeightName);
+                fontWeight = FontLogic.getInstance().getFontWeightByName(this, fontWeightName);
             }
 
             if(fontWeight != null) {
@@ -84,11 +87,11 @@ public class GetFontWeightCommand
     
     @Override
     protected BaseResult getResult(FontWeight fontWeight) {
-        var coreControl = getCoreControl();
+        var fontControl = Session.getModelController(FontControl.class);
         var result = CoreResultFactory.getGetFontWeightResult();
 
         if(fontWeight != null) {
-            result.setFontWeight(coreControl.getFontWeightTransfer(getUserVisit(), fontWeight));
+            result.setFontWeight(fontControl.getFontWeightTransfer(getUserVisit(), fontWeight));
         }
 
         return result;

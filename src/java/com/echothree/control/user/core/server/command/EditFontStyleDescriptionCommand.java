@@ -22,6 +22,7 @@ import com.echothree.control.user.core.common.form.EditFontStyleDescriptionForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditFontStyleDescriptionResult;
 import com.echothree.control.user.core.common.spec.FontStyleDescriptionSpec;
+import com.echothree.model.control.core.server.control.FontControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -29,10 +30,10 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.FontStyle;
 import com.echothree.model.data.core.server.entity.FontStyleDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -84,10 +85,10 @@ public class EditFontStyleDescriptionCommand
 
     @Override
     public FontStyleDescription getEntity(EditFontStyleDescriptionResult result) {
-        var coreControl = getCoreControl();
+        var fontControl = Session.getModelController(FontControl.class);
         FontStyleDescription fontStyleDescription = null;
         var fontStyleName = spec.getFontStyleName();
-        var fontStyle = coreControl.getFontStyleByName(fontStyleName);
+        var fontStyle = fontControl.getFontStyleByName(fontStyleName);
 
         if(fontStyle != null) {
             var partyControl = Session.getModelController(PartyControl.class);
@@ -96,9 +97,9 @@ public class EditFontStyleDescriptionCommand
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    fontStyleDescription = coreControl.getFontStyleDescription(fontStyle, language);
+                    fontStyleDescription = fontControl.getFontStyleDescription(fontStyle, language);
                 } else { // EditMode.UPDATE
-                    fontStyleDescription = coreControl.getFontStyleDescriptionForUpdate(fontStyle, language);
+                    fontStyleDescription = fontControl.getFontStyleDescriptionForUpdate(fontStyle, language);
                 }
 
                 if(fontStyleDescription == null) {
@@ -121,9 +122,9 @@ public class EditFontStyleDescriptionCommand
 
     @Override
     public void fillInResult(EditFontStyleDescriptionResult result, FontStyleDescription fontStyleDescription) {
-        var coreControl = getCoreControl();
+        var fontControl = Session.getModelController(FontControl.class);
 
-        result.setFontStyleDescription(coreControl.getFontStyleDescriptionTransfer(getUserVisit(), fontStyleDescription));
+        result.setFontStyleDescription(fontControl.getFontStyleDescriptionTransfer(getUserVisit(), fontStyleDescription));
     }
 
     @Override
@@ -133,11 +134,11 @@ public class EditFontStyleDescriptionCommand
 
     @Override
     public void doUpdate(FontStyleDescription fontStyleDescription) {
-        var coreControl = getCoreControl();
-        var fontStyleDescriptionValue = coreControl.getFontStyleDescriptionValue(fontStyleDescription);
+        var fontControl = Session.getModelController(FontControl.class);
+        var fontStyleDescriptionValue = fontControl.getFontStyleDescriptionValue(fontStyleDescription);
         fontStyleDescriptionValue.setDescription(edit.getDescription());
 
-        coreControl.updateFontStyleDescriptionFromValue(fontStyleDescriptionValue, getPartyPK());
+        fontControl.updateFontStyleDescriptionFromValue(fontStyleDescriptionValue, getPartyPK());
     }
     
 }

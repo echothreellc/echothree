@@ -18,6 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetFontWeightsForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.FontControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -29,6 +30,7 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 
@@ -61,16 +63,16 @@ public class GetFontWeightsCommand
 
     @Override
     protected Long getTotalEntities() {
-        var coreControl = getCoreControl();
+        var fontControl = Session.getModelController(FontControl.class);
 
-        return coreControl.countFontWeights();
+        return fontControl.countFontWeights();
     }
 
     @Override
     protected Collection<FontWeight> getEntities() {
-        var coreControl = getCoreControl();
+        var fontControl = Session.getModelController(FontControl.class);
         
-        return coreControl.getFontWeights();
+        return fontControl.getFontWeights();
     }
     
     @Override
@@ -78,7 +80,9 @@ public class GetFontWeightsCommand
         var result = CoreResultFactory.getGetFontWeightsResult();
 
         if(entities != null) {
-            result.setFontWeights(getCoreControl().getFontWeightTransfers(getUserVisit(), entities));
+            var fontControl = Session.getModelController(FontControl.class);
+
+            result.setFontWeights(fontControl.getFontWeightTransfers(getUserVisit(), entities));
         }
 
         return result;
