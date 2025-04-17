@@ -17,18 +17,20 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateEditorForm;
+import com.echothree.model.control.core.server.control.EditorControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -69,9 +71,9 @@ public class CreateEditorCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var editorControl = Session.getModelController(EditorControl.class);
         var editorName = form.getEditorName();
-        var editor = coreControl.getEditorByName(editorName);
+        var editor = editorControl.getEditorByName(editorName);
         
         if(editor == null) {
             var partyPK = getPartyPK();
@@ -92,11 +94,11 @@ public class CreateEditorCommand
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();
             
-            editor = coreControl.createEditor(editorName, hasDimensions, minimumHeight, minimumWidth, maximumHeight, maximumWidth, defaultHeight, defaultWidth,
+            editor = editorControl.createEditor(editorName, hasDimensions, minimumHeight, minimumWidth, maximumHeight, maximumWidth, defaultHeight, defaultWidth,
                     isDefault, sortOrder, partyPK);
             
             if(description != null) {
-                coreControl.createEditorDescription(editor, getPreferredLanguage(), description, partyPK);
+                editorControl.createEditorDescription(editor, getPreferredLanguage(), description, partyPK);
             }
         } else {
             addExecutionError(ExecutionErrors.DuplicateEditorName.name(), editorName);

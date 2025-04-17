@@ -17,15 +17,16 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateEditorDescriptionForm;
+import com.echothree.model.control.core.server.control.EditorControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -63,9 +64,9 @@ public class CreateEditorDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var editorControl = Session.getModelController(EditorControl.class);
         var editorName = form.getEditorName();
-        var editor = coreControl.getEditorByName(editorName);
+        var editor = editorControl.getEditorByName(editorName);
         
         if(editor != null) {
             var partyControl = Session.getModelController(PartyControl.class);
@@ -73,12 +74,12 @@ public class CreateEditorDescriptionCommand
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                var editorDescription = coreControl.getEditorDescription(editor, language);
+                var editorDescription = editorControl.getEditorDescription(editor, language);
                 
                 if(editorDescription == null) {
                     var description = form.getDescription();
                     
-                    coreControl.createEditorDescription(editor, language, description, getPartyPK());
+                    editorControl.createEditorDescription(editor, language, description, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateEditorDescription.name(), editorName, languageIsoName);
                 }

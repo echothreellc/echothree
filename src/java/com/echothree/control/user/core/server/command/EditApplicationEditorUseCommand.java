@@ -22,6 +22,7 @@ import com.echothree.control.user.core.common.form.EditApplicationEditorUseForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditApplicationEditorUseResult;
 import com.echothree.control.user.core.common.spec.ApplicationEditorUseSpec;
+import com.echothree.model.control.core.server.control.EditorControl;
 import com.echothree.model.control.core.server.logic.ApplicationLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -30,14 +31,15 @@ import com.echothree.model.data.core.server.entity.Application;
 import com.echothree.model.data.core.server.entity.ApplicationEditor;
 import com.echothree.model.data.core.server.entity.ApplicationEditorUse;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -160,8 +162,9 @@ public class EditApplicationEditorUseCommand
         if(duplicateApplicationEditorUse != null && !applicationEditorUse.equals(duplicateApplicationEditorUse)) {
             addExecutionError(ExecutionErrors.DuplicateApplicationEditorUseName.name(), applicationEditorUseName);
         } else {
+            var editorControl = Session.getModelController(EditorControl.class);
             var defaultEditorName = edit.getDefaultEditorName();
-            var editor = defaultEditorName == null ? null : coreControl.getEditorByName(defaultEditorName);
+            var editor = defaultEditorName == null ? null : editorControl.getEditorByName(defaultEditorName);
 
             if(defaultEditorName == null || editor != null) {
                 applicationEditor = editor == null ? null : ApplicationLogic.getInstance().getApplicationEditor(this, application, editor);

@@ -22,6 +22,7 @@ import com.echothree.control.user.core.common.form.EditEditorDescriptionForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditEditorDescriptionResult;
 import com.echothree.control.user.core.common.spec.EditorDescriptionSpec;
+import com.echothree.model.control.core.server.control.EditorControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -29,10 +30,10 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.Editor;
 import com.echothree.model.data.core.server.entity.EditorDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -84,10 +85,10 @@ public class EditEditorDescriptionCommand
 
     @Override
     public EditorDescription getEntity(EditEditorDescriptionResult result) {
-        var coreControl = getCoreControl();
+        var editorControl = Session.getModelController(EditorControl.class);
         EditorDescription editorDescription = null;
         var editorName = spec.getEditorName();
-        var editor = coreControl.getEditorByName(editorName);
+        var editor = editorControl.getEditorByName(editorName);
 
         if(editor != null) {
             var partyControl = Session.getModelController(PartyControl.class);
@@ -96,9 +97,9 @@ public class EditEditorDescriptionCommand
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    editorDescription = coreControl.getEditorDescription(editor, language);
+                    editorDescription = editorControl.getEditorDescription(editor, language);
                 } else { // EditMode.UPDATE
-                    editorDescription = coreControl.getEditorDescriptionForUpdate(editor, language);
+                    editorDescription = editorControl.getEditorDescriptionForUpdate(editor, language);
                 }
 
                 if(editorDescription == null) {
@@ -121,9 +122,9 @@ public class EditEditorDescriptionCommand
 
     @Override
     public void fillInResult(EditEditorDescriptionResult result, EditorDescription editorDescription) {
-        var coreControl = getCoreControl();
+        var editorControl = Session.getModelController(EditorControl.class);
 
-        result.setEditorDescription(coreControl.getEditorDescriptionTransfer(getUserVisit(), editorDescription));
+        result.setEditorDescription(editorControl.getEditorDescriptionTransfer(getUserVisit(), editorDescription));
     }
 
     @Override
@@ -133,11 +134,12 @@ public class EditEditorDescriptionCommand
 
     @Override
     public void doUpdate(EditorDescription editorDescription) {
-        var coreControl = getCoreControl();
-        var editorDescriptionValue = coreControl.getEditorDescriptionValue(editorDescription);
+        var editorControl = Session.getModelController(EditorControl.class);
+        var editorDescriptionValue = editorControl.getEditorDescriptionValue(editorDescription);
+
         editorDescriptionValue.setDescription(edit.getDescription());
 
-        coreControl.updateEditorDescriptionFromValue(editorDescriptionValue, getPartyPK());
+        editorControl.updateEditorDescriptionFromValue(editorDescriptionValue, getPartyPK());
     }
     
 }

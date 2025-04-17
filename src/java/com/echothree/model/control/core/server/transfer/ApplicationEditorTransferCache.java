@@ -18,6 +18,7 @@ package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.ApplicationEditorTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EditorControl;
 import com.echothree.model.data.core.server.entity.ApplicationEditor;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -26,6 +27,7 @@ public class ApplicationEditorTransferCache
         extends BaseCoreTransferCache<ApplicationEditor, ApplicationEditorTransfer> {
 
     CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EditorControl editorControl = Session.getModelController(EditorControl.class);
 
     /** Creates a new instance of ApplicationEditorTransferCache */
     public ApplicationEditorTransferCache(UserVisit userVisit) {
@@ -40,7 +42,7 @@ public class ApplicationEditorTransferCache
         if(applicationEditorTransfer == null) {
             var applicationEditorDetail = applicationEditor.getLastDetail();
             var application = coreControl.getApplicationTransfer(userVisit, applicationEditorDetail.getApplication());
-            var editor = coreControl.getEditorTransfer(userVisit, applicationEditorDetail.getEditor());
+            var editor = editorControl.getEditorTransfer(userVisit, applicationEditorDetail.getEditor());
             var isDefault = applicationEditorDetail.getIsDefault();
             var sortOrder = applicationEditorDetail.getSortOrder();
 

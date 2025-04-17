@@ -23,6 +23,7 @@ import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditPartyApplicationEditorUseResult;
 import com.echothree.control.user.core.common.spec.PartyApplicationEditorUseSpec;
 import com.echothree.model.control.core.server.logic.ApplicationLogic;
+import com.echothree.model.control.core.server.logic.EditorLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -31,10 +32,10 @@ import com.echothree.model.data.core.server.entity.Application;
 import com.echothree.model.data.core.server.entity.ApplicationEditor;
 import com.echothree.model.data.core.server.entity.PartyApplicationEditorUse;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -152,7 +153,7 @@ public class EditPartyApplicationEditorUseCommand
     @Override
     public void canUpdate(PartyApplicationEditorUse partyApplicationEditorUse) {
         var editorName = edit.getEditorName();
-        var editor = editorName == null ? null : ApplicationLogic.getInstance().getEditorByName(this, editorName);
+        var editor = editorName == null ? null : EditorLogic.getInstance().getEditorByName(this, editorName);
 
         if(!hasExecutionErrors()) {
             applicationEditor = editor == null ? null : ApplicationLogic.getInstance().getApplicationEditor(this, application, editor);
