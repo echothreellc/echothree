@@ -19,7 +19,7 @@ package com.echothree.model.control.core.server.transfer;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.transfer.AppearanceTransfer;
 import com.echothree.model.control.core.server.control.AppearanceControl;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.ColorControl;
 import com.echothree.model.control.core.server.control.FontControl;
 import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -30,7 +30,7 @@ public class AppearanceTransferCache
         extends BaseCoreTransferCache<Appearance, AppearanceTransfer> {
 
     AppearanceControl appearanceControl = Session.getModelController(AppearanceControl.class);
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    ColorControl colorControl = Session.getModelController(ColorControl.class);
     FontControl fontControl = Session.getModelController(FontControl.class);
 
     boolean includeTextDecorations;
@@ -56,9 +56,9 @@ public class AppearanceTransferCache
             var appearanceDetail = appearance.getLastDetail();
             var appearanceName = appearanceDetail.getAppearanceName();
             var textColor = appearanceDetail.getTextColor();
-            var textColorTransfer = textColor == null ? null : coreControl.getColorTransfer(userVisit, textColor);
+            var textColorTransfer = textColor == null ? null : colorControl.getColorTransfer(userVisit, textColor);
             var backgroundColor = appearanceDetail.getBackgroundColor();
-            var backgroundColorTransfer = backgroundColor == null ? null : coreControl.getColorTransfer(userVisit, backgroundColor);
+            var backgroundColorTransfer = backgroundColor == null ? null : colorControl.getColorTransfer(userVisit, backgroundColor);
             var fontStyle = appearanceDetail.getFontStyle();
             var fontStyleTransfer = fontStyle == null ? null : fontControl.getFontStyleTransfer(userVisit, fontStyle);
             var fontWeight = appearanceDetail.getFontWeight();

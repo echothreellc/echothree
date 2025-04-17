@@ -18,15 +18,16 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetColorDescriptionForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.ColorControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -62,10 +63,10 @@ public class GetColorDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var colorControl = Session.getModelController(ColorControl.class);
         var result = CoreResultFactory.getGetColorDescriptionResult();
         var colorName = form.getColorName();
-        var color = coreControl.getColorByName(colorName);
+        var color = colorControl.getColorByName(colorName);
 
         if(color != null) {
             var partyControl = Session.getModelController(PartyControl.class);
@@ -73,10 +74,10 @@ public class GetColorDescriptionCommand
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                var colorDescription = coreControl.getColorDescription(color, language);
+                var colorDescription = colorControl.getColorDescription(color, language);
 
                 if(colorDescription != null) {
-                    result.setColorDescription(coreControl.getColorDescriptionTransfer(getUserVisit(), colorDescription));
+                    result.setColorDescription(colorControl.getColorDescriptionTransfer(getUserVisit(), colorDescription));
                 } else {
                     addExecutionError(ExecutionErrors.UnknownColorDescription.name(), colorName, languageIsoName);
                 }
