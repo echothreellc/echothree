@@ -20,14 +20,15 @@ import com.echothree.control.user.core.common.form.GetApplicationEditorForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.logic.ApplicationLogic;
+import com.echothree.model.control.core.server.logic.EditorLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -69,7 +70,7 @@ public class GetApplicationEditorCommand
         
         if(!hasExecutionErrors()) {
             var editorName = form.getEditorName();
-            var editor = ApplicationLogic.getInstance().getEditorByName(this, editorName);
+            var editor = EditorLogic.getInstance().getEditorByName(this, editorName);
             
             if(!hasExecutionErrors()) {
                 var coreControl = getCoreControl();

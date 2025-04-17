@@ -19,7 +19,6 @@ package com.echothree.model.control.core.server.logic;
 import com.echothree.model.control.core.common.exception.UnknownApplicationEditorException;
 import com.echothree.model.control.core.common.exception.UnknownApplicationEditorUseNameException;
 import com.echothree.model.control.core.common.exception.UnknownApplicationNameException;
-import com.echothree.model.control.core.common.exception.UnknownEditorNameException;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.Application;
 import com.echothree.model.data.core.server.entity.ApplicationEditor;
@@ -54,17 +53,6 @@ public class ApplicationLogic
         }
 
         return application;
-    }
-    
-    public Editor getEditorByName(final ExecutionErrorAccumulator eea, final String editorName) {
-        var coreControl = Session.getModelController(CoreControl.class);
-        var editor = coreControl.getEditorByName(editorName);
-
-        if(editor == null) {
-            handleExecutionError(UnknownEditorNameException.class, eea, ExecutionErrors.UnknownEditorName.name(), editorName);
-        }
-
-        return editor;
     }
     
     public ApplicationEditor getApplicationEditor(final ExecutionErrorAccumulator eea, final Application application, final Editor editor) {

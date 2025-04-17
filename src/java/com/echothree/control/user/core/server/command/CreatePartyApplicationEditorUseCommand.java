@@ -18,15 +18,16 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreatePartyApplicationEditorUseForm;
 import com.echothree.model.control.core.server.logic.ApplicationLogic;
+import com.echothree.model.control.core.server.logic.EditorLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -83,7 +84,7 @@ public class CreatePartyApplicationEditorUseCommand
                     
                     if(partyApplicationEditorUse == null) {
                         var editorName = form.getEditorName();
-                        var editor = editorName == null ? null : ApplicationLogic.getInstance().getEditorByName(this, editorName);
+                        var editor = editorName == null ? null : EditorLogic.getInstance().getEditorByName(this, editorName);
                         
                         if(!hasExecutionErrors()) {
                             var applicationEditor = editor == null ? null : ApplicationLogic.getInstance().getApplicationEditor(this, application, editor);
