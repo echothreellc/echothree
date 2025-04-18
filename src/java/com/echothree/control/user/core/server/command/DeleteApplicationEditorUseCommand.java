@@ -17,19 +17,21 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteApplicationEditorUseForm;
+import com.echothree.model.control.core.server.control.ApplicationControl;
 import com.echothree.model.control.core.server.logic.ApplicationLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -63,14 +65,14 @@ public class DeleteApplicationEditorUseCommand
     protected BaseResult execute() {
         var applicationName = form.getApplicationName();
         var application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
-        
+
         if(!hasExecutionErrors()) {
-            var coreControl = getCoreControl();
+            var applicationControl = Session.getModelController(ApplicationControl.class);
             var applicationEditorUseName = form.getApplicationEditorUseName();
-            var applicationEditorUse = coreControl.getApplicationEditorUseByNameForUpdate(application, applicationEditorUseName);
+            var applicationEditorUse = applicationControl.getApplicationEditorUseByNameForUpdate(application, applicationEditorUseName);
 
             if(applicationEditorUse != null) {
-                coreControl.deleteApplicationEditorUse(applicationEditorUse, getPartyPK());
+                applicationControl.deleteApplicationEditorUse(applicationEditorUse, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownApplicationEditorUseName.name(), applicationName, applicationEditorUseName);
             }

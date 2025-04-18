@@ -17,6 +17,7 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteApplicationEditorForm;
+import com.echothree.model.control.core.server.control.ApplicationControl;
 import com.echothree.model.control.core.server.logic.ApplicationLogic;
 import com.echothree.model.control.core.server.logic.EditorLogic;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -31,6 +32,7 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -70,11 +72,11 @@ public class DeleteApplicationEditorCommand
             var editor = EditorLogic.getInstance().getEditorByName(this, editorName);
             
             if(!hasExecutionErrors()) {
-                var coreControl = getCoreControl();
-                var applicationEditor = coreControl.getApplicationEditorForUpdate(application, editor);
+                var applicationControl = Session.getModelController(ApplicationControl.class);
+                var applicationEditor = applicationControl.getApplicationEditorForUpdate(application, editor);
                 
                 if(applicationEditor != null) {
-                    coreControl.deleteApplicationEditor(applicationEditor, getPartyPK());
+                    applicationControl.deleteApplicationEditor(applicationEditor, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownApplicationEditor.name(), applicationName, editorName);
                 }

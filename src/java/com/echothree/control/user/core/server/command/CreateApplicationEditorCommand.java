@@ -17,6 +17,7 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateApplicationEditorForm;
+import com.echothree.model.control.core.server.control.ApplicationControl;
 import com.echothree.model.control.core.server.logic.ApplicationLogic;
 import com.echothree.model.control.core.server.logic.EditorLogic;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -31,6 +32,7 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -72,14 +74,14 @@ public class CreateApplicationEditorCommand
             var editor = EditorLogic.getInstance().getEditorByName(this, editorName);
             
             if(!hasExecutionErrors()) {
-                var coreControl = getCoreControl();
-                var applicationEditor = coreControl.getApplicationEditor(application, editor);
+                var applicationControl = Session.getModelController(ApplicationControl.class);
+                var applicationEditor = applicationControl.getApplicationEditor(application, editor);
                 
                 if(applicationEditor == null) {
                     var isDefault = Boolean.valueOf(form.getIsDefault());
                     var sortOrder = Integer.valueOf(form.getSortOrder());
                     
-                    coreControl.createApplicationEditor(application, editor, isDefault, sortOrder, getPartyPK());
+                    applicationControl.createApplicationEditor(application, editor, isDefault, sortOrder, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateApplicationEditor.name(), applicationName, editorName);
                 }

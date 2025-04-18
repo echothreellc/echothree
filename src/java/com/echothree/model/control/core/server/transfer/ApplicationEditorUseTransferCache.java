@@ -17,7 +17,7 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.ApplicationEditorUseTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.ApplicationControl;
 import com.echothree.model.data.core.server.entity.ApplicationEditorUse;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -25,7 +25,7 @@ import com.echothree.util.server.persistence.Session;
 public class ApplicationEditorUseTransferCache
         extends BaseCoreTransferCache<ApplicationEditorUse, ApplicationEditorUseTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    ApplicationControl applicationControl = Session.getModelController(ApplicationControl.class);
 
     /** Creates a new instance of ApplicationEditorUseTransferCache */
     public ApplicationEditorUseTransferCache(UserVisit userVisit) {
@@ -39,15 +39,15 @@ public class ApplicationEditorUseTransferCache
 
         if(applicationEditorUseTransfer == null) {
             var applicationEditorUseDetail = applicationEditorUse.getLastDetail();
-            var applicationTransfer = coreControl.getApplicationTransfer(userVisit, applicationEditorUseDetail.getApplication());
+            var applicationTransfer = applicationControl.getApplicationTransfer(userVisit, applicationEditorUseDetail.getApplication());
             var applicationEditorUseName = applicationEditorUseDetail.getApplicationEditorUseName();
             var defaultApplicationEditor = applicationEditorUseDetail.getDefaultApplicationEditor();
-            var defaultApplicationEditorTransfer = defaultApplicationEditor == null ? null : coreControl.getApplicationEditorTransfer(userVisit, defaultApplicationEditor);
+            var defaultApplicationEditorTransfer = defaultApplicationEditor == null ? null : applicationControl.getApplicationEditorTransfer(userVisit, defaultApplicationEditor);
             var defaultHeight = applicationEditorUseDetail.getDefaultHeight();
             var defaultWidth = applicationEditorUseDetail.getDefaultWidth();
             var isDefault = applicationEditorUseDetail.getIsDefault();
             var sortOrder = applicationEditorUseDetail.getSortOrder();
-            var description = coreControl.getBestApplicationEditorUseDescription(applicationEditorUse, getLanguage());
+            var description = applicationControl.getBestApplicationEditorUseDescription(applicationEditorUse, getLanguage());
 
             applicationEditorUseTransfer = new ApplicationEditorUseTransfer(applicationTransfer, applicationEditorUseName, defaultApplicationEditorTransfer,
                     defaultHeight, defaultWidth, isDefault, sortOrder, description);

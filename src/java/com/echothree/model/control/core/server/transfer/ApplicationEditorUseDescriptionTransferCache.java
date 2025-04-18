@@ -17,7 +17,7 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.ApplicationEditorUseDescriptionTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.ApplicationControl;
 import com.echothree.model.data.core.server.entity.ApplicationEditorUseDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -25,7 +25,7 @@ import com.echothree.util.server.persistence.Session;
 public class ApplicationEditorUseDescriptionTransferCache
         extends BaseCoreDescriptionTransferCache<ApplicationEditorUseDescription, ApplicationEditorUseDescriptionTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    ApplicationControl applicationControl = Session.getModelController(ApplicationControl.class);
 
     /** Creates a new instance of ApplicationEditorUseDescriptionTransferCache */
     public ApplicationEditorUseDescriptionTransferCache(UserVisit userVisit) {
@@ -36,7 +36,7 @@ public class ApplicationEditorUseDescriptionTransferCache
         var applicationEditorUseDescriptionTransfer = get(applicationEditorUseDescription);
         
         if(applicationEditorUseDescriptionTransfer == null) {
-            var applicationEditorUseTransfer = coreControl.getApplicationEditorUseTransfer(userVisit, applicationEditorUseDescription.getApplicationEditorUse());
+            var applicationEditorUseTransfer = applicationControl.getApplicationEditorUseTransfer(userVisit, applicationEditorUseDescription.getApplicationEditorUse());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, applicationEditorUseDescription.getLanguage());
             
             applicationEditorUseDescriptionTransfer = new ApplicationEditorUseDescriptionTransfer(languageTransfer, applicationEditorUseTransfer, applicationEditorUseDescription.getDescription());
