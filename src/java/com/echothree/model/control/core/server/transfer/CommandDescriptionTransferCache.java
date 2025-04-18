@@ -17,7 +17,7 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.CommandDescriptionTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.data.core.server.entity.CommandDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -25,7 +25,7 @@ import com.echothree.util.server.persistence.Session;
 public class CommandDescriptionTransferCache
         extends BaseCoreDescriptionTransferCache<CommandDescription, CommandDescriptionTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    CommandControl commandControl = Session.getModelController(CommandControl.class);
 
     /** Creates a new instance of CommandDescriptionTransferCache */
     public CommandDescriptionTransferCache(UserVisit userVisit) {
@@ -36,7 +36,7 @@ public class CommandDescriptionTransferCache
         var commandDescriptionTransfer = get(commandDescription);
         
         if(commandDescriptionTransfer == null) {
-            var commandTransfer = coreControl.getCommandTransfer(userVisit, commandDescription.getCommand());
+            var commandTransfer = commandControl.getCommandTransfer(userVisit, commandDescription.getCommand());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, commandDescription.getLanguage());
             
             commandDescriptionTransfer = new CommandDescriptionTransfer(languageTransfer, commandTransfer,

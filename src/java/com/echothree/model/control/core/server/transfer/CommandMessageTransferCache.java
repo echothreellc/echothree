@@ -19,7 +19,7 @@ package com.echothree.model.control.core.server.transfer;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.transfer.CommandMessageTransfer;
 import com.echothree.model.control.core.common.transfer.CommandMessageTranslationTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.data.core.server.entity.CommandMessage;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.MapWrapper;
@@ -28,7 +28,7 @@ import com.echothree.util.server.persistence.Session;
 public class CommandMessageTransferCache
         extends BaseCoreTransferCache<CommandMessage, CommandMessageTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    CommandControl commandControl = Session.getModelController(CommandControl.class);
 
     boolean includeTranslations;
     
@@ -49,16 +49,16 @@ public class CommandMessageTransferCache
         
         if(commandMessageTransfer == null) {
             var commandMessageDetail = commandMessage.getLastDetail();
-            var commandMessageType = coreControl.getCommandMessageTypeTransfer(userVisit, commandMessageDetail.getCommandMessageType());
+            var commandMessageType = commandControl.getCommandMessageTypeTransfer(userVisit, commandMessageDetail.getCommandMessageType());
             var commandMessageKey = commandMessageDetail.getCommandMessageKey();
-            var commandMessageTranslation = coreControl.getBestCommandMessageTranslation(commandMessage, getLanguage());
+            var commandMessageTranslation = commandControl.getBestCommandMessageTranslation(commandMessage, getLanguage());
             var translation = commandMessageTranslation == null ? null : commandMessageTranslation.getTranslation();
     
             commandMessageTransfer = new CommandMessageTransfer(commandMessageType, commandMessageKey, translation);
             put(commandMessage, commandMessageTransfer);
             
             if(includeTranslations) {
-                var commandMessageTranslationTransfers = coreControl.getCommandMessageTranslationTransfersByCommandMessage(userVisit, commandMessage);
+                var commandMessageTranslationTransfers = commandControl.getCommandMessageTranslationTransfersByCommandMessage(userVisit, commandMessage);
                 var commandMessageTranslations = new MapWrapper<CommandMessageTranslationTransfer>();
 
                 commandMessageTranslationTransfers.forEach((commandMessageTranslationTransfer) -> {

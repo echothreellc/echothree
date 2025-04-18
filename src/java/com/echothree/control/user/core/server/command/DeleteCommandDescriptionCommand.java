@@ -17,12 +17,13 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteCommandDescriptionForm;
+import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -49,13 +50,13 @@ public class DeleteCommandDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var commandControl = Session.getModelController(CommandControl.class);
         var componentVendorName = form.getComponentVendorName();
         var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var commandName = form.getCommandName();
-            var command = coreControl.getCommandByName(componentVendor, commandName);
+            var command = commandControl.getCommandByName(componentVendor, commandName);
             
             if(command != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
@@ -63,10 +64,10 @@ public class DeleteCommandDescriptionCommand
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    var commandDescription = coreControl.getCommandDescriptionForUpdate(command, language);
+                    var commandDescription = commandControl.getCommandDescriptionForUpdate(command, language);
                     
                     if(commandDescription != null) {
-                        coreControl.deleteCommandDescription(commandDescription, getPartyPK());
+                        commandControl.deleteCommandDescription(commandDescription, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.UnknownCommandDescription.name());
                     }

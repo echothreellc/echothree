@@ -17,15 +17,16 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateCommandMessageTranslationForm;
+import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -64,13 +65,13 @@ public class CreateCommandMessageTranslationCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var commandControl = Session.getModelController(CommandControl.class);
         var commandMessageTypeName = form.getCommandMessageTypeName();
-        var commandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);
+        var commandMessageType = commandControl.getCommandMessageTypeByName(commandMessageTypeName);
 
         if(commandMessageType != null) {
             var commandMessageKey = form.getCommandMessageKey();
-            var commandMessage = coreControl.getCommandMessageByKey(commandMessageType, commandMessageKey);
+            var commandMessage = commandControl.getCommandMessageByKey(commandMessageType, commandMessageKey);
 
             if(commandMessage != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
@@ -78,12 +79,12 @@ public class CreateCommandMessageTranslationCommand
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    var commandMessageTranslation = coreControl.getCommandMessageTranslation(commandMessage, language);
+                    var commandMessageTranslation = commandControl.getCommandMessageTranslation(commandMessage, language);
 
                     if(commandMessageTranslation == null) {
                         var translation = form.getTranslation();
 
-                        coreControl.createCommandMessageTranslation(commandMessage, language, translation, getPartyPK());
+                        commandControl.createCommandMessageTranslation(commandMessage, language, translation, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.DuplicateCommandMessageTranslation.name(), commandMessageTypeName, commandMessageKey, languageIsoName);
                     }

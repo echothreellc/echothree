@@ -17,12 +17,14 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteCommandForm;
+import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -46,16 +48,16 @@ public class DeleteCommandCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var commandControl = Session.getModelController(CommandControl.class);
         var componentVendorName = form.getComponentVendorName();
         var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var commandName = form.getCommandName();
-            var command = coreControl.getCommandByNameForUpdate(componentVendor, commandName);
+            var command = commandControl.getCommandByNameForUpdate(componentVendor, commandName);
             
             if(command != null) {
-                coreControl.deleteCommand(command, getPartyPK());
+                commandControl.deleteCommand(command, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownCommandName.name(), commandName);
             }

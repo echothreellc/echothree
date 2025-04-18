@@ -17,18 +17,20 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteCommandMessageForm;
+import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -60,16 +62,16 @@ public class DeleteCommandMessageCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var commandControl = Session.getModelController(CommandControl.class);
         var commandMessageTypeName = form.getCommandMessageTypeName();
-        var commandMessageType = coreControl.getCommandMessageTypeByNameForUpdate(commandMessageTypeName);
+        var commandMessageType = commandControl.getCommandMessageTypeByNameForUpdate(commandMessageTypeName);
         
         if(commandMessageType != null) {
             var commandMessageKey = form.getCommandMessageKey();
-            var commandMessage = coreControl.getCommandMessageByKeyForUpdate(commandMessageType, commandMessageKey);
+            var commandMessage = commandControl.getCommandMessageByKeyForUpdate(commandMessageType, commandMessageKey);
 
             if(commandMessage != null) {
-                coreControl.deleteCommandMessage(commandMessage, getPartyPK());
+                commandControl.deleteCommandMessage(commandMessage, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownCommandMessageKey.name(), commandMessageTypeName, commandMessageKey);
             }

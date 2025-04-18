@@ -17,7 +17,7 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.CommandMessageTranslationTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.core.server.entity.CommandMessageTranslation;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -26,7 +26,7 @@ import com.echothree.util.server.persistence.Session;
 public class CommandMessageTranslationTransferCache
         extends BaseCoreTransferCache<CommandMessageTranslation, CommandMessageTranslationTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    CommandControl commandControl = Session.getModelController(CommandControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of CommandMessageTranslationTransferCache */
@@ -38,7 +38,7 @@ public class CommandMessageTranslationTransferCache
         var commandMessageTranslationTransfer = get(commandMessageTranslation);
         
         if(commandMessageTranslationTransfer == null) {
-            var commandMessage = coreControl.getCommandMessageTransfer(userVisit, commandMessageTranslation.getCommandMessage());
+            var commandMessage = commandControl.getCommandMessageTransfer(userVisit, commandMessageTranslation.getCommandMessage());
             var language = partyControl.getLanguageTransfer(userVisit, commandMessageTranslation.getLanguage());
             var translation = commandMessageTranslation.getTranslation();
             
