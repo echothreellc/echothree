@@ -22,20 +22,22 @@ import com.echothree.control.user.core.common.form.EditCommandMessageForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditCommandMessageResult;
 import com.echothree.control.user.core.common.spec.CommandMessageSpec;
+import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.CommandMessage;
 import com.echothree.model.data.core.server.entity.CommandMessageType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -84,23 +86,23 @@ public class EditCommandMessageCommand
 
     @Override
     public CommandMessage getEntity(EditCommandMessageResult result) {
-        var coreControl = getCoreControl();
+        var commandControl = Session.getModelController(CommandControl.class);
         CommandMessage commandMessage = null;
         var commandMessageTypeName = spec.getCommandMessageTypeName();
 
-        commandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);
+        commandMessageType = commandControl.getCommandMessageTypeByName(commandMessageTypeName);
 
         if(commandMessageType != null) {
             var commandMessageKey = spec.getCommandMessageKey();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                commandMessage = coreControl.getCommandMessageByKey(commandMessageType, commandMessageKey);
+                commandMessage = commandControl.getCommandMessageByKey(commandMessageType, commandMessageKey);
             } else { // EditMode.UPDATE
-                commandMessage = coreControl.getCommandMessageByKeyForUpdate(commandMessageType, commandMessageKey);
+                commandMessage = commandControl.getCommandMessageByKeyForUpdate(commandMessageType, commandMessageKey);
             }
 
             if(commandMessage != null) {
-                result.setCommandMessage(coreControl.getCommandMessageTransfer(getUserVisit(), commandMessage));
+                result.setCommandMessage(commandControl.getCommandMessageTransfer(getUserVisit(), commandMessage));
             } else {
                 addExecutionError(ExecutionErrors.UnknownCommandMessageKey.name(), commandMessageTypeName, commandMessageKey);
             }
@@ -118,15 +120,15 @@ public class EditCommandMessageCommand
 
     @Override
     public void fillInResult(EditCommandMessageResult result, CommandMessage commandMessage) {
-        var coreControl = getCoreControl();
+        var commandControl = Session.getModelController(CommandControl.class);
 
-        result.setCommandMessage(coreControl.getCommandMessageTransfer(getUserVisit(), commandMessage));
+        result.setCommandMessage(commandControl.getCommandMessageTransfer(getUserVisit(), commandMessage));
     }
 
     @Override
     public void doLock(CommandMessageEdit edit, CommandMessage commandMessage) {
-        var coreControl = getCoreControl();
-        var commandMessageTranslation = coreControl.getCommandMessageTranslation(commandMessage, getPreferredLanguage());
+        var commandControl = Session.getModelController(CommandControl.class);
+        var commandMessageTranslation = commandControl.getCommandMessageTranslation(commandMessage, getPreferredLanguage());
         var commandMessageDetail = commandMessage.getLastDetail();
 
         edit.setCommandMessageKey(commandMessageDetail.getCommandMessageKey());
@@ -138,9 +140,9 @@ public class EditCommandMessageCommand
 
     @Override
     public void canUpdate(CommandMessage commandMessage) {
-        var coreControl = getCoreControl();
+        var commandControl = Session.getModelController(CommandControl.class);
         var commandMessageKey = edit.getCommandMessageKey();
-        var duplicateCommandMessage = coreControl.getCommandMessageByKey(commandMessageType, commandMessageKey);
+        var duplicateCommandMessage = commandControl.getCommandMessageByKey(commandMessageType, commandMessageKey);
 
         if(duplicateCommandMessage != null && !commandMessage.equals(duplicateCommandMessage)) {
             addExecutionError(ExecutionErrors.DuplicateCommandMessageKey.name(), commandMessageType.getLastDetail().getCommandMessageTypeName(), commandMessageKey);
@@ -149,27 +151,27 @@ public class EditCommandMessageCommand
 
     @Override
     public void doUpdate(CommandMessage commandMessage) {
-        var coreControl = getCoreControl();
+        var commandControl = Session.getModelController(CommandControl.class);
         var partyPK = getPartyPK();
-        var commandMessageDetailValue = coreControl.getCommandMessageDetailValueForUpdate(commandMessage);
-        var commandMessageTranslation = coreControl.getCommandMessageTranslationForUpdate(commandMessage, getPreferredLanguage());
+        var commandMessageDetailValue = commandControl.getCommandMessageDetailValueForUpdate(commandMessage);
+        var commandMessageTranslation = commandControl.getCommandMessageTranslationForUpdate(commandMessage, getPreferredLanguage());
         var translation = edit.getTranslation();
 
         commandMessageDetailValue.setCommandMessageKey(edit.getCommandMessageKey());
 
-        coreControl.updateCommandMessageFromValue(commandMessageDetailValue, partyPK);
+        commandControl.updateCommandMessageFromValue(commandMessageDetailValue, partyPK);
 
         if(commandMessageTranslation == null && translation != null) {
-            coreControl.createCommandMessageTranslation(commandMessage, getPreferredLanguage(), translation, partyPK);
+            commandControl.createCommandMessageTranslation(commandMessage, getPreferredLanguage(), translation, partyPK);
         } else {
             if(commandMessageTranslation != null && translation == null) {
-                coreControl.deleteCommandMessageTranslation(commandMessageTranslation, partyPK);
+                commandControl.deleteCommandMessageTranslation(commandMessageTranslation, partyPK);
             } else {
                 if(commandMessageTranslation != null && translation != null) {
-                    var commandMessageTranslationValue = coreControl.getCommandMessageTranslationValue(commandMessageTranslation);
+                    var commandMessageTranslationValue = commandControl.getCommandMessageTranslationValue(commandMessageTranslation);
 
                     commandMessageTranslationValue.setTranslation(translation);
-                    coreControl.updateCommandMessageTranslationFromValue(commandMessageTranslationValue, partyPK);
+                    commandControl.updateCommandMessageTranslationFromValue(commandMessageTranslationValue, partyPK);
                 }
             }
         }
