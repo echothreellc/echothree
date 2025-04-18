@@ -20,6 +20,7 @@ import com.echothree.control.user.party.common.spec.PartySpec;
 import com.echothree.model.control.core.common.CommandMessageTypes;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.control.core.server.control.ComponentVendorControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
@@ -540,20 +541,22 @@ public abstract class BaseCommand
                         var componentVendor = getComponentVendorControl().getComponentVendorByName(getComponentVendorName());
 
                         if(componentVendor != null) {
+                            var commandControl = Session.getModelController(CommandControl.class);
+
                             getCommandName();
                             getParty(); // TODO: should only use if UserSession.IdentityVerifiedTime != null
 
                             if(ControlDebugFlags.CheckCommandNameLength) {
                                 if(commandName.length() > 80) {
-                                    getLog().error("commandName legnth > 80 characters, " + commandName);
+                                    getLog().error("commandName length > 80 characters, " + commandName);
                                     commandName = commandName.substring(0, 79);
                                 }
                             }
 
-                            var command = getCoreControl().getCommandByName(componentVendor, commandName);
+                            var command = commandControl.getCommandByName(componentVendor, commandName);
 
                             if(command == null) {
-                                command = getCoreControl().createCommand(componentVendor, commandName, 1, party == null ? null : party.getPrimaryKey());
+                                command = commandControl.createCommand(componentVendor, commandName, 1, party == null ? null : party.getPrimaryKey());
                             }
 
                             if(command != null) {

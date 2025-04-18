@@ -17,18 +17,20 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateCommandMessageTypeForm;
+import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -62,9 +64,9 @@ public class CreateCommandMessageTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var commandControl = Session.getModelController(CommandControl.class);
         var commandMessageTypeName = form.getCommandMessageTypeName();
-        var commandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);
+        var commandMessageType = commandControl.getCommandMessageTypeByName(commandMessageTypeName);
         
         if(commandMessageType == null) {
             var partyPK = getPartyPK();
@@ -72,10 +74,10 @@ public class CreateCommandMessageTypeCommand
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();
             
-            commandMessageType = coreControl.createCommandMessageType(commandMessageTypeName, isDefault, sortOrder, partyPK);
+            commandMessageType = commandControl.createCommandMessageType(commandMessageTypeName, isDefault, sortOrder, partyPK);
             
             if(description != null) {
-                coreControl.createCommandMessageTypeDescription(commandMessageType, getPreferredLanguage(), description, partyPK);
+                commandControl.createCommandMessageTypeDescription(commandMessageType, getPreferredLanguage(), description, partyPK);
             }
         } else {
             addExecutionError(ExecutionErrors.DuplicateCommandMessageTypeName.name(), commandMessageTypeName);

@@ -18,7 +18,7 @@
 package com.echothree.util.server.message;
 
 import com.echothree.model.control.core.common.exception.UnknownCommandMessageTypeNameException;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.core.server.entity.CommandMessageType;
 import com.echothree.model.data.party.server.entity.Language;
@@ -72,13 +72,13 @@ public class MessageUtils {
      * parameter placeholders.  A null string result will be returned by this
      * method if no resource bundle has been configured.
      */
-    protected void fillInMessage(CoreControl coreControl, Language language, CommandMessageType commandMessageType, Message message) {
+    protected void fillInMessage(CommandControl commandControl, Language language, CommandMessageType commandMessageType, Message message) {
         var key = message.getKey();
-        var commandMessage = coreControl.getCommandMessageByKey(commandMessageType, key);
+        var commandMessage = commandControl.getCommandMessageByKey(commandMessageType, key);
         String translation = null;
         
         if(commandMessage != null) {
-            var commandMessageTranslation = coreControl.getBestCommandMessageTranslation(commandMessage, language);
+            var commandMessageTranslation = commandControl.getBestCommandMessageTranslation(commandMessage, language);
 
             if(commandMessageTranslation != null) {
                 translation = commandMessageTranslation.getTranslation();
@@ -94,14 +94,14 @@ public class MessageUtils {
     
     public void fillInMessages(Language language, String commandMessageTypeName, Messages messages) {
         if(messages != null) {
-            var coreControl = Session.getModelController(CoreControl.class);
-            var commandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);
+            var commandControl = Session.getModelController(CommandControl.class);
+            var commandMessageType = commandControl.getCommandMessageTypeByName(commandMessageTypeName);
             
             if(commandMessageType != null) {
                 var iter = messages.get();
                 
                 while(iter.hasNext()) {
-                    fillInMessage(coreControl, language, commandMessageType, iter.next());
+                    fillInMessage(commandControl, language, commandMessageType, iter.next());
                 }
             }
         }
@@ -109,8 +109,8 @@ public class MessageUtils {
 
     // The language used in the Exceptions will always be the default Language (typically English).
     public String getExceptionMessage(String commandMessageTypeName, Message message) {
-        var coreControl = Session.getModelController(CoreControl.class);
-        var commandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);
+        var commandControl = Session.getModelController(CommandControl.class);
+        var commandMessageType = commandControl.getCommandMessageTypeByName(commandMessageTypeName);
         
         if(commandMessageType == null) {
             throw new UnknownCommandMessageTypeNameException(new Message(ExecutionErrors.UnknownCommandMessageTypeName.name(), commandMessageTypeName));
@@ -118,7 +118,7 @@ public class MessageUtils {
             var partyControl = Session.getModelController(PartyControl.class);
             var language = partyControl.getDefaultLanguage();
             
-            fillInMessage(coreControl, language, commandMessageType, message);
+            fillInMessage(commandControl, language, commandMessageType, message);
         }
 
         return message.getMessage();

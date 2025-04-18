@@ -22,19 +22,21 @@ import com.echothree.control.user.core.common.form.EditCommandMessageTypeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditCommandMessageTypeResult;
 import com.echothree.control.user.core.common.spec.CommandMessageTypeSpec;
+import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.CommandMessageType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -83,18 +85,18 @@ public class EditCommandMessageTypeCommand
 
     @Override
     public CommandMessageType getEntity(EditCommandMessageTypeResult result) {
-        var coreControl = getCoreControl();
+        var commandControl = Session.getModelController(CommandControl.class);
         CommandMessageType commandMessageType;
         var commandMessageTypeName = spec.getCommandMessageTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            commandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);
+            commandMessageType = commandControl.getCommandMessageTypeByName(commandMessageTypeName);
         } else { // EditMode.UPDATE
-            commandMessageType = coreControl.getCommandMessageTypeByNameForUpdate(commandMessageTypeName);
+            commandMessageType = commandControl.getCommandMessageTypeByNameForUpdate(commandMessageTypeName);
         }
 
         if(commandMessageType != null) {
-            result.setCommandMessageType(coreControl.getCommandMessageTypeTransfer(getUserVisit(), commandMessageType));
+            result.setCommandMessageType(commandControl.getCommandMessageTypeTransfer(getUserVisit(), commandMessageType));
         } else {
             addExecutionError(ExecutionErrors.UnknownCommandMessageTypeName.name(), commandMessageTypeName);
         }
@@ -109,15 +111,15 @@ public class EditCommandMessageTypeCommand
 
     @Override
     public void fillInResult(EditCommandMessageTypeResult result, CommandMessageType commandMessageType) {
-        var coreControl = getCoreControl();
+        var commandControl = Session.getModelController(CommandControl.class);
 
-        result.setCommandMessageType(coreControl.getCommandMessageTypeTransfer(getUserVisit(), commandMessageType));
+        result.setCommandMessageType(commandControl.getCommandMessageTypeTransfer(getUserVisit(), commandMessageType));
     }
 
     @Override
     public void doLock(CommandMessageTypeEdit edit, CommandMessageType commandMessageType) {
-        var coreControl = getCoreControl();
-        var commandMessageTypeDescription = coreControl.getCommandMessageTypeDescription(commandMessageType, getPreferredLanguage());
+        var commandControl = Session.getModelController(CommandControl.class);
+        var commandMessageTypeDescription = commandControl.getCommandMessageTypeDescription(commandMessageType, getPreferredLanguage());
         var commandMessageTypeDetail = commandMessageType.getLastDetail();
 
         edit.setCommandMessageTypeName(commandMessageTypeDetail.getCommandMessageTypeName());
@@ -131,9 +133,9 @@ public class EditCommandMessageTypeCommand
 
     @Override
     public void canUpdate(CommandMessageType commandMessageType) {
-        var coreControl = getCoreControl();
+        var commandControl = Session.getModelController(CommandControl.class);
         var commandMessageTypeName = edit.getCommandMessageTypeName();
-        var duplicateCommandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);
+        var duplicateCommandMessageType = commandControl.getCommandMessageTypeByName(commandMessageTypeName);
 
         if(duplicateCommandMessageType != null && !commandMessageType.equals(duplicateCommandMessageType)) {
             addExecutionError(ExecutionErrors.DuplicateCommandMessageTypeName.name(), commandMessageTypeName);
@@ -142,29 +144,29 @@ public class EditCommandMessageTypeCommand
 
     @Override
     public void doUpdate(CommandMessageType commandMessageType) {
-        var coreControl = getCoreControl();
+        var commandControl = Session.getModelController(CommandControl.class);
         var partyPK = getPartyPK();
-        var commandMessageTypeDetailValue = coreControl.getCommandMessageTypeDetailValueForUpdate(commandMessageType);
-        var commandMessageTypeDescription = coreControl.getCommandMessageTypeDescriptionForUpdate(commandMessageType, getPreferredLanguage());
+        var commandMessageTypeDetailValue = commandControl.getCommandMessageTypeDetailValueForUpdate(commandMessageType);
+        var commandMessageTypeDescription = commandControl.getCommandMessageTypeDescriptionForUpdate(commandMessageType, getPreferredLanguage());
         var description = edit.getDescription();
 
         commandMessageTypeDetailValue.setCommandMessageTypeName(edit.getCommandMessageTypeName());
         commandMessageTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         commandMessageTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        coreControl.updateCommandMessageTypeFromValue(commandMessageTypeDetailValue, partyPK);
+        commandControl.updateCommandMessageTypeFromValue(commandMessageTypeDetailValue, partyPK);
 
         if(commandMessageTypeDescription == null && description != null) {
-            coreControl.createCommandMessageTypeDescription(commandMessageType, getPreferredLanguage(), description, partyPK);
+            commandControl.createCommandMessageTypeDescription(commandMessageType, getPreferredLanguage(), description, partyPK);
         } else {
             if(commandMessageTypeDescription != null && description == null) {
-                coreControl.deleteCommandMessageTypeDescription(commandMessageTypeDescription, partyPK);
+                commandControl.deleteCommandMessageTypeDescription(commandMessageTypeDescription, partyPK);
             } else {
                 if(commandMessageTypeDescription != null && description != null) {
-                    var commandMessageTypeDescriptionValue = coreControl.getCommandMessageTypeDescriptionValue(commandMessageTypeDescription);
+                    var commandMessageTypeDescriptionValue = commandControl.getCommandMessageTypeDescriptionValue(commandMessageTypeDescription);
 
                     commandMessageTypeDescriptionValue.setDescription(description);
-                    coreControl.updateCommandMessageTypeDescriptionFromValue(commandMessageTypeDescriptionValue, partyPK);
+                    commandControl.updateCommandMessageTypeDescriptionFromValue(commandMessageTypeDescriptionValue, partyPK);
                 }
             }
         }

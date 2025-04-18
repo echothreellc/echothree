@@ -22,14 +22,15 @@ import com.echothree.control.user.core.common.form.EditCommandDescriptionForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditCommandDescriptionResult;
 import com.echothree.control.user.core.common.spec.CommandDescriptionSpec;
+import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.core.server.entity.Command;
 import com.echothree.model.data.core.server.entity.CommandDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -71,14 +72,14 @@ public class EditCommandDescriptionCommand
 
     @Override
     public CommandDescription getEntity(EditCommandDescriptionResult result) {
-        var coreControl = getCoreControl();
+        var commandControl = Session.getModelController(CommandControl.class);
         CommandDescription commandDescription = null;
         var componentVendorName = spec.getComponentVendorName();
         var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
             var commandName = spec.getCommandName();
-            var command = coreControl.getCommandByName(componentVendor, commandName);
+            var command = commandControl.getCommandByName(componentVendor, commandName);
 
             if(command != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
@@ -87,9 +88,9 @@ public class EditCommandDescriptionCommand
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                        commandDescription = coreControl.getCommandDescription(command, language);
+                        commandDescription = commandControl.getCommandDescription(command, language);
                     } else { // EditMode.UPDATE
-                        commandDescription = coreControl.getCommandDescriptionForUpdate(command, language);
+                        commandDescription = commandControl.getCommandDescriptionForUpdate(command, language);
                     }
 
                     if(commandDescription == null) {
@@ -115,9 +116,9 @@ public class EditCommandDescriptionCommand
 
     @Override
     public void fillInResult(EditCommandDescriptionResult result, CommandDescription commandDescription) {
-        var coreControl = getCoreControl();
+        var commandControl = Session.getModelController(CommandControl.class);
 
-        result.setCommandDescription(coreControl.getCommandDescriptionTransfer(getUserVisit(), commandDescription));
+        result.setCommandDescription(commandControl.getCommandDescriptionTransfer(getUserVisit(), commandDescription));
     }
 
     @Override
@@ -127,11 +128,11 @@ public class EditCommandDescriptionCommand
 
     @Override
     public void doUpdate(CommandDescription commandDescription) {
-        var coreControl = getCoreControl();
-        var commandDescriptionValue = coreControl.getCommandDescriptionValue(commandDescription);
+        var commandControl = Session.getModelController(CommandControl.class);
+        var commandDescriptionValue = commandControl.getCommandDescriptionValue(commandDescription);
         commandDescriptionValue.setDescription(edit.getDescription());
 
-        coreControl.updateCommandDescriptionFromValue(commandDescriptionValue, getPartyPK());
+        commandControl.updateCommandDescriptionFromValue(commandDescriptionValue, getPartyPK());
     }
     
 }
