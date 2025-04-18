@@ -18,15 +18,16 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetApplicationDescriptionForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.ApplicationControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -62,10 +63,10 @@ public class GetApplicationDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var applicationControl = Session.getModelController(ApplicationControl.class);
         var result = CoreResultFactory.getGetApplicationDescriptionResult();
         var applicationName = form.getApplicationName();
-        var application = coreControl.getApplicationByName(applicationName);
+        var application = applicationControl.getApplicationByName(applicationName);
 
         if(application != null) {
             var partyControl = Session.getModelController(PartyControl.class);
@@ -73,10 +74,10 @@ public class GetApplicationDescriptionCommand
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                var applicationDescription = coreControl.getApplicationDescription(application, language);
+                var applicationDescription = applicationControl.getApplicationDescription(application, language);
 
                 if(applicationDescription != null) {
-                    result.setApplicationDescription(coreControl.getApplicationDescriptionTransfer(getUserVisit(), applicationDescription));
+                    result.setApplicationDescription(applicationControl.getApplicationDescriptionTransfer(getUserVisit(), applicationDescription));
                 } else {
                     addExecutionError(ExecutionErrors.UnknownApplicationDescription.name(), applicationName, languageIsoName);
                 }

@@ -17,7 +17,7 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.PartyApplicationEditorUseTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.ApplicationControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.core.server.entity.PartyApplicationEditorUse;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -27,7 +27,7 @@ public class PartyApplicationEditorUseTransferCache
         extends BaseCoreTransferCache<PartyApplicationEditorUse, PartyApplicationEditorUseTransfer> {
 
     PartyControl partyControl = Session.getModelController(PartyControl.class);
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    ApplicationControl applicationControl = Session.getModelController(ApplicationControl.class);
 
     /** Creates a new instance of PartyApplicationEditorUseTransferCache */
     public PartyApplicationEditorUseTransferCache(UserVisit userVisit) {
@@ -42,9 +42,9 @@ public class PartyApplicationEditorUseTransferCache
         if(partyApplicationEditorUseTransfer == null) {
             var partyApplicationEditorUseDetail = partyApplicationEditorUse.getLastDetail();
             var partyTransfer = partyControl.getPartyTransfer(userVisit, partyApplicationEditorUseDetail.getParty());
-            var applicationEditorUseTransfer = coreControl.getApplicationEditorUseTransfer(userVisit, partyApplicationEditorUseDetail.getApplicationEditorUse());
+            var applicationEditorUseTransfer = applicationControl.getApplicationEditorUseTransfer(userVisit, partyApplicationEditorUseDetail.getApplicationEditorUse());
             var applicationEditor = partyApplicationEditorUseDetail.getApplicationEditor();
-            var applicationEditorTransfer = applicationEditor == null ? null : coreControl.getApplicationEditorTransfer(userVisit, applicationEditor);
+            var applicationEditorTransfer = applicationEditor == null ? null : applicationControl.getApplicationEditorTransfer(userVisit, applicationEditor);
             var preferredHeight = partyApplicationEditorUseDetail.getPreferredHeight();
             var preferredWidth = partyApplicationEditorUseDetail.getPreferredWidth();
 

@@ -18,18 +18,20 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetApplicationEditorUseChoicesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.ApplicationControl;
 import com.echothree.model.control.core.server.logic.ApplicationLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -66,11 +68,11 @@ public class GetApplicationEditorUseChoicesCommand
         var application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
         
         if(!hasExecutionErrors()) {
-            var coreControl = getCoreControl();
+            var applicationControl = Session.getModelController(ApplicationControl.class);
             var defaultApplicationEditorUseChoice = form.getDefaultApplicationEditorUseChoice();
             var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
-            result.setApplicationEditorUseChoices(coreControl.getApplicationEditorUseChoices(defaultApplicationEditorUseChoice, getPreferredLanguage(),
+            result.setApplicationEditorUseChoices(applicationControl.getApplicationEditorUseChoices(defaultApplicationEditorUseChoice, getPreferredLanguage(),
                     allowNullChoice, application));
         }
         

@@ -19,7 +19,7 @@ package com.echothree.model.control.core.server.logic;
 import com.echothree.model.control.core.common.exception.UnknownApplicationEditorException;
 import com.echothree.model.control.core.common.exception.UnknownApplicationEditorUseNameException;
 import com.echothree.model.control.core.common.exception.UnknownApplicationNameException;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.ApplicationControl;
 import com.echothree.model.data.core.server.entity.Application;
 import com.echothree.model.data.core.server.entity.ApplicationEditor;
 import com.echothree.model.data.core.server.entity.ApplicationEditorUse;
@@ -45,8 +45,8 @@ public class ApplicationLogic
     }
     
     public Application getApplicationByName(final ExecutionErrorAccumulator eea, final String applicationName) {
-        var coreControl = Session.getModelController(CoreControl.class);
-        var application = coreControl.getApplicationByName(applicationName);
+        var applicationControl = Session.getModelController(ApplicationControl.class);
+        var application = applicationControl.getApplicationByName(applicationName);
 
         if(application == null) {
             handleExecutionError(UnknownApplicationNameException.class, eea, ExecutionErrors.UnknownApplicationName.name(), applicationName);
@@ -56,8 +56,8 @@ public class ApplicationLogic
     }
     
     public ApplicationEditor getApplicationEditor(final ExecutionErrorAccumulator eea, final Application application, final Editor editor) {
-        var coreControl = Session.getModelController(CoreControl.class);
-        var applicationEditor = coreControl.getApplicationEditor(application, editor);
+        var applicationControl = Session.getModelController(ApplicationControl.class);
+        var applicationEditor = applicationControl.getApplicationEditor(application, editor);
         
         if(applicationEditor == null) {
             handleExecutionError(UnknownApplicationEditorException.class, eea, ExecutionErrors.UnknownApplicationEditor.name(),
@@ -69,8 +69,8 @@ public class ApplicationLogic
 
     public ApplicationEditorUse getApplicationEditorUseByName(final ExecutionErrorAccumulator eea, final Application application,
             final String applicationEditorUseName) {
-        var coreControl = Session.getModelController(CoreControl.class);
-        var applicationEditorUse = coreControl.getApplicationEditorUseByName(application, applicationEditorUseName);
+        var applicationControl = Session.getModelController(ApplicationControl.class);
+        var applicationEditorUse = applicationControl.getApplicationEditorUseByName(application, applicationEditorUseName);
 
         if(applicationEditorUse == null) {
             handleExecutionError(UnknownApplicationEditorUseNameException.class, eea, ExecutionErrors.UnknownApplicationEditorUseName.name(),
