@@ -22,6 +22,7 @@ import com.echothree.control.user.core.common.form.EditApplicationEditorUseDescr
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditApplicationEditorUseDescriptionResult;
 import com.echothree.control.user.core.common.spec.ApplicationEditorUseDescriptionSpec;
+import com.echothree.model.control.core.server.control.ApplicationControl;
 import com.echothree.model.control.core.server.logic.ApplicationLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
@@ -30,10 +31,10 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.ApplicationEditorUse;
 import com.echothree.model.data.core.server.entity.ApplicationEditorUseDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -87,13 +88,13 @@ public class EditApplicationEditorUseDescriptionCommand
     @Override
     public ApplicationEditorUseDescription getEntity(EditApplicationEditorUseDescriptionResult result) {
         ApplicationEditorUseDescription applicationEditorUseDescription = null;
-        var coreControl = getCoreControl();
+        var applicationControl = Session.getModelController(ApplicationControl.class);
         var applicationName = spec.getApplicationName();
         var application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
 
         if(!hasExecutionErrors()) {
             var applicationEditorUseName = spec.getApplicationEditorUseName();
-            var applicationEditorUse = coreControl.getApplicationEditorUseByName(application, applicationEditorUseName);
+            var applicationEditorUse = applicationControl.getApplicationEditorUseByName(application, applicationEditorUseName);
 
             if(applicationEditorUse != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
@@ -102,9 +103,9 @@ public class EditApplicationEditorUseDescriptionCommand
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                        applicationEditorUseDescription = coreControl.getApplicationEditorUseDescription(applicationEditorUse, language);
+                        applicationEditorUseDescription = applicationControl.getApplicationEditorUseDescription(applicationEditorUse, language);
                     } else { // EditMode.UPDATE
-                        applicationEditorUseDescription = coreControl.getApplicationEditorUseDescriptionForUpdate(applicationEditorUse, language);
+                        applicationEditorUseDescription = applicationControl.getApplicationEditorUseDescriptionForUpdate(applicationEditorUse, language);
                     }
 
                     if(applicationEditorUseDescription == null) {
@@ -128,9 +129,9 @@ public class EditApplicationEditorUseDescriptionCommand
 
     @Override
     public void fillInResult(EditApplicationEditorUseDescriptionResult result, ApplicationEditorUseDescription applicationEditorUseDescription) {
-        var coreControl = getCoreControl();
+        var applicationControl = Session.getModelController(ApplicationControl.class);
 
-        result.setApplicationEditorUseDescription(coreControl.getApplicationEditorUseDescriptionTransfer(getUserVisit(), applicationEditorUseDescription));
+        result.setApplicationEditorUseDescription(applicationControl.getApplicationEditorUseDescriptionTransfer(getUserVisit(), applicationEditorUseDescription));
     }
 
     @Override
@@ -140,11 +141,11 @@ public class EditApplicationEditorUseDescriptionCommand
 
     @Override
     public void doUpdate(ApplicationEditorUseDescription applicationEditorUseDescription) {
-        var coreControl = getCoreControl();
-        var applicationEditorUseDescriptionValue = coreControl.getApplicationEditorUseDescriptionValue(applicationEditorUseDescription);
+        var applicationControl = Session.getModelController(ApplicationControl.class);
+        var applicationEditorUseDescriptionValue = applicationControl.getApplicationEditorUseDescriptionValue(applicationEditorUseDescription);
         applicationEditorUseDescriptionValue.setDescription(edit.getDescription());
 
-        coreControl.updateApplicationEditorUseDescriptionFromValue(applicationEditorUseDescriptionValue, getPartyPK());
+        applicationControl.updateApplicationEditorUseDescriptionFromValue(applicationEditorUseDescriptionValue, getPartyPK());
     }
     
 }

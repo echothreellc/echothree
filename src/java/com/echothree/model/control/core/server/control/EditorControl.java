@@ -287,11 +287,11 @@ public class EditorControl
     }
 
     private void deleteEditor(Editor editor, boolean checkDefault, BasePK deletedBy) {
-        var coreControl = Session.getModelController(CoreControl.class);
+        var applicationControl = Session.getModelController(ApplicationControl.class);
         var editorDetail = editor.getLastDetailForUpdate();
 
         deleteEditorDescriptionsByEditor(editor, deletedBy);
-        coreControl.deleteApplicationEditorsByEditor(editor, deletedBy);
+        applicationControl.deleteApplicationEditorsByEditor(editor, deletedBy);
 
         editorDetail.setThruTime(session.START_TIME_LONG);
         editor.setActiveDetail(null);

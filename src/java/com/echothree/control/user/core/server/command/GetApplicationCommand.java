@@ -21,14 +21,16 @@ import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.core.server.control.ApplicationControl;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.data.core.server.entity.Application;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -58,7 +60,7 @@ public class GetApplicationCommand
         var parameterCount = (applicationName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
-            var coreControl = getCoreControl();
+            var applicationControl = Session.getModelController(ApplicationControl.class);
             Application application = null;
 
             if(applicationName == null) {
@@ -66,10 +68,10 @@ public class GetApplicationCommand
                         EntityTypes.Application.name());
                 
                 if(!hasExecutionErrors()) {
-                    application = coreControl.getApplicationByEntityInstance(entityInstance);
+                    application = applicationControl.getApplicationByEntityInstance(entityInstance);
                 }
             } else {
-                application = coreControl.getApplicationByName(applicationName);
+                application = applicationControl.getApplicationByName(applicationName);
 
                 if(application == null) {
                     addExecutionError(ExecutionErrors.UnknownApplicationName.name(), applicationName);
@@ -77,7 +79,7 @@ public class GetApplicationCommand
             }
 
             if(!hasExecutionErrors()) {
-                result.setApplication(coreControl.getApplicationTransfer(getUserVisit(), application));
+                result.setApplication(applicationControl.getApplicationTransfer(getUserVisit(), application));
                 sendEvent(application.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {

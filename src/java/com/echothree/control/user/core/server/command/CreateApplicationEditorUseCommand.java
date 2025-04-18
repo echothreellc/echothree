@@ -17,6 +17,7 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateApplicationEditorUseForm;
+import com.echothree.model.control.core.server.control.ApplicationControl;
 import com.echothree.model.control.core.server.control.EditorControl;
 import com.echothree.model.control.core.server.logic.ApplicationLogic;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -73,9 +74,9 @@ public class CreateApplicationEditorUseCommand
         var application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
         
         if(!hasExecutionErrors()) {
-            var coreControl = getCoreControl();
+            var applicationControl = Session.getModelController(ApplicationControl.class);
             var applicationEditorUseName = form.getApplicationEditorUseName();
-            var applicationEditorUse = coreControl.getApplicationEditorUseByName(application, applicationEditorUseName);
+            var applicationEditorUse = applicationControl.getApplicationEditorUseByName(application, applicationEditorUseName);
 
             if(applicationEditorUse == null) {
                 var editorControl = Session.getModelController(EditorControl.class);
@@ -95,11 +96,11 @@ public class CreateApplicationEditorUseCommand
                         var createdBy = getPartyPK();
                         var description = form.getDescription();
                         
-                        applicationEditorUse = coreControl.createApplicationEditorUse(application, applicationEditorUseName, applicationEditor, defaultHeight,
+                        applicationEditorUse = applicationControl.createApplicationEditorUse(application, applicationEditorUseName, applicationEditor, defaultHeight,
                                 defaultWidth, isDefault, sortOrder, createdBy);
                         
                         if(description != null) {
-                            coreControl.createApplicationEditorUseDescription(applicationEditorUse, getPreferredLanguage(), description, createdBy);
+                            applicationControl.createApplicationEditorUseDescription(applicationEditorUse, getPreferredLanguage(), description, createdBy);
                         }
                     }
                 } else {

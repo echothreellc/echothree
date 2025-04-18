@@ -18,6 +18,7 @@ package com.echothree.model.control.employee.server.transfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
+import com.echothree.model.control.core.server.control.ApplicationControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.employee.common.EmployeeOptions;
@@ -46,6 +47,7 @@ public class EmployeeTransferCache
         extends BaseEmployeeTransferCache<Party, EmployeeTransfer> {
 
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    ApplicationControl applicationControl = Session.getModelController(ApplicationControl.class);
     ContactControl contactControl = Session.getModelController(ContactControl.class);
     ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
     CoreControl coreControl = Session.getModelController(CoreControl.class);
@@ -183,7 +185,7 @@ public class EmployeeTransferCache
             }
             
             if(includePartyApplicationEditorUses) {
-                employeeTransfer.setPartyApplicationEditorUses(new ListWrapper<>(coreControl.getPartyApplicationEditorUseTransfersByParty(userVisit, party)));
+                employeeTransfer.setPartyApplicationEditorUses(new ListWrapper<>(applicationControl.getPartyApplicationEditorUseTransfersByParty(userVisit, party)));
             }
 
             if(includePartyRelationships || includePartyRelationshipsByFromParty || includePartyRelationshipsByToParty) {

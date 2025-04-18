@@ -18,18 +18,20 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetApplicationEditorsForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.ApplicationControl;
 import com.echothree.model.control.core.server.logic.ApplicationLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -65,11 +67,11 @@ public class GetApplicationEditorsCommand
         var application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
         
         if(!hasExecutionErrors()) {
-            var coreControl = getCoreControl();
+            var applicationControl = Session.getModelController(ApplicationControl.class);
             var userVisit = getUserVisit();
             
-            result.setApplication(coreControl.getApplicationTransfer(userVisit, application));
-            result.setApplicationEditors(coreControl.getApplicationEditorTransfersByApplication(userVisit, application));
+            result.setApplication(applicationControl.getApplicationTransfer(userVisit, application));
+            result.setApplicationEditors(applicationControl.getApplicationEditorTransfersByApplication(userVisit, application));
         }
         
         return result;

@@ -21,6 +21,7 @@ import com.echothree.model.control.cancellationpolicy.server.control.Cancellatio
 import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.core.server.control.ApplicationControl;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -2241,6 +2242,7 @@ public class PartyControl
     }
     
     public void deleteParty(Party party, BasePK deletedBy) {
+        var applicationControl = Session.getModelController(ApplicationControl.class);
         var contactListControl = Session.getModelController(ContactListControl.class);
         var documentControl = Session.getModelController(DocumentControl.class);
         var printerControl = Session.getModelController(PrinterControl.class);
@@ -2254,7 +2256,7 @@ public class PartyControl
         var partyTypeName = partyType.getPartyTypeName();
         
         // TODO: Doesn't clean up all relationships
-        getCoreControl().deletePartyApplicationEditorUsesByParty(party, deletedBy);
+        applicationControl.deletePartyApplicationEditorUsesByParty(party, deletedBy);
         contactListControl.deletePartyContactListsByParty(party, deletedBy);
         documentControl.deletePartyDocumentsByParty(party, deletedBy);
         printerControl.deletePartyPrinterGroupUsesByParty(party, deletedBy);

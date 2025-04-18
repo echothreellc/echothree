@@ -17,7 +17,7 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.ApplicationDescriptionTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.ApplicationControl;
 import com.echothree.model.data.core.server.entity.ApplicationDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -25,7 +25,7 @@ import com.echothree.util.server.persistence.Session;
 public class ApplicationDescriptionTransferCache
         extends BaseCoreDescriptionTransferCache<ApplicationDescription, ApplicationDescriptionTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    ApplicationControl applicationControl = Session.getModelController(ApplicationControl.class);
 
     /** Creates a new instance of ApplicationDescriptionTransferCache */
     public ApplicationDescriptionTransferCache(UserVisit userVisit) {
@@ -36,7 +36,7 @@ public class ApplicationDescriptionTransferCache
         var applicationDescriptionTransfer = get(applicationDescription);
         
         if(applicationDescriptionTransfer == null) {
-            var applicationTransfer = coreControl.getApplicationTransfer(userVisit, applicationDescription.getApplication());
+            var applicationTransfer = applicationControl.getApplicationTransfer(userVisit, applicationDescription.getApplication());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, applicationDescription.getLanguage());
             
             applicationDescriptionTransfer = new ApplicationDescriptionTransfer(languageTransfer, applicationTransfer, applicationDescription.getDescription());

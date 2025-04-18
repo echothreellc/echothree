@@ -17,6 +17,7 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreatePartyApplicationEditorUseForm;
+import com.echothree.model.control.core.server.control.ApplicationControl;
 import com.echothree.model.control.core.server.logic.ApplicationLogic;
 import com.echothree.model.control.core.server.logic.EditorLogic;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -32,6 +33,7 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -79,8 +81,8 @@ public class CreatePartyApplicationEditorUseCommand
                 var applicationEditorUse = ApplicationLogic.getInstance().getApplicationEditorUseByName(this, application, applicationEditorUseName);
                 
                 if(!hasExecutionErrors()) {
-                    var coreControl = getCoreControl();
-                    var partyApplicationEditorUse = coreControl.getPartyApplicationEditorUse(party, applicationEditorUse);
+                    var applicationControl = Session.getModelController(ApplicationControl.class);
+                    var partyApplicationEditorUse = applicationControl.getPartyApplicationEditorUse(party, applicationEditorUse);
                     
                     if(partyApplicationEditorUse == null) {
                         var editorName = form.getEditorName();
@@ -95,7 +97,7 @@ public class CreatePartyApplicationEditorUseCommand
                                 var strPreferredWidth = form.getPreferredWidth();
                                 var preferredWidth = strPreferredWidth == null ? null : Integer.valueOf(strPreferredWidth);
                                 
-                                coreControl.createPartyApplicationEditorUse(party, applicationEditorUse, applicationEditor, preferredHeight, preferredWidth,
+                                applicationControl.createPartyApplicationEditorUse(party, applicationEditorUse, applicationEditor, preferredHeight, preferredWidth,
                                         getPartyPK());
                             }
                         }

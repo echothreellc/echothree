@@ -22,6 +22,7 @@ import com.echothree.control.user.core.common.form.EditPartyApplicationEditorUse
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditPartyApplicationEditorUseResult;
 import com.echothree.control.user.core.common.spec.PartyApplicationEditorUseSpec;
+import com.echothree.model.control.core.server.control.ApplicationControl;
 import com.echothree.model.control.core.server.logic.ApplicationLogic;
 import com.echothree.model.control.core.server.logic.EditorLogic;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -40,6 +41,7 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -105,12 +107,12 @@ public class EditPartyApplicationEditorUseCommand
                 var applicationEditorUse = ApplicationLogic.getInstance().getApplicationEditorUseByName(this, application, applicationEditorUseName);
                 
                 if(!hasExecutionErrors()) {
-                    var coreControl = getCoreControl();
+                    var applicationControl = Session.getModelController(ApplicationControl.class);
                     
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                        partyApplicationEditorUse = coreControl.getPartyApplicationEditorUse(party, applicationEditorUse);
+                        partyApplicationEditorUse = applicationControl.getPartyApplicationEditorUse(party, applicationEditorUse);
                     } else { // EditMode.UPDATE
-                        partyApplicationEditorUse = coreControl.getPartyApplicationEditorUseForUpdate(party, applicationEditorUse);
+                        partyApplicationEditorUse = applicationControl.getPartyApplicationEditorUseForUpdate(party, applicationEditorUse);
                     }
                     
                     if(partyApplicationEditorUse == null) {
@@ -130,9 +132,9 @@ public class EditPartyApplicationEditorUseCommand
 
     @Override
     public void fillInResult(EditPartyApplicationEditorUseResult result, PartyApplicationEditorUse partyApplicationEditorUse) {
-        var coreControl = getCoreControl();
+        var applicationControl = Session.getModelController(ApplicationControl.class);
 
-        result.setPartyApplicationEditorUse(coreControl.getPartyApplicationEditorUseTransfer(getUserVisit(), partyApplicationEditorUse));
+        result.setPartyApplicationEditorUse(applicationControl.getPartyApplicationEditorUseTransfer(getUserVisit(), partyApplicationEditorUse));
     }
 
     ApplicationEditor applicationEditor;
@@ -162,9 +164,9 @@ public class EditPartyApplicationEditorUseCommand
 
     @Override
     public void doUpdate(PartyApplicationEditorUse partyApplicationEditorUse) {
-        var coreControl = getCoreControl();
+        var applicationControl = Session.getModelController(ApplicationControl.class);
         var partyPK = getPartyPK();
-        var partyApplicationEditorUseDetailValue = coreControl.getPartyApplicationEditorUseDetailValueForUpdate(partyApplicationEditorUse);
+        var partyApplicationEditorUseDetailValue = applicationControl.getPartyApplicationEditorUseDetailValueForUpdate(partyApplicationEditorUse);
         var strPreferredHeight = edit.getPreferredHeight();
         var preferredHeight = strPreferredHeight == null ? null : Integer.valueOf(strPreferredHeight);
         var strPreferredWidth = edit.getPreferredWidth();
@@ -174,7 +176,7 @@ public class EditPartyApplicationEditorUseCommand
         partyApplicationEditorUseDetailValue.setPreferredHeight(preferredHeight);
         partyApplicationEditorUseDetailValue.setPreferredWidth(preferredWidth);
         
-        coreControl.updatePartyApplicationEditorUseFromValue(partyApplicationEditorUseDetailValue, partyPK);
+        applicationControl.updatePartyApplicationEditorUseFromValue(partyApplicationEditorUseDetailValue, partyPK);
     }
     
 }

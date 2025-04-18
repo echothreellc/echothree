@@ -22,19 +22,21 @@ import com.echothree.control.user.core.common.form.EditApplicationForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditApplicationResult;
 import com.echothree.control.user.core.common.spec.ApplicationSpec;
+import com.echothree.model.control.core.server.control.ApplicationControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.Application;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -83,14 +85,14 @@ public class EditApplicationCommand
 
     @Override
     public Application getEntity(EditApplicationResult result) {
-        var coreControl = getCoreControl();
+        var applicationControl = Session.getModelController(ApplicationControl.class);
         Application application;
         var applicationName = spec.getApplicationName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            application = coreControl.getApplicationByName(applicationName);
+            application = applicationControl.getApplicationByName(applicationName);
         } else { // EditMode.UPDATE
-            application = coreControl.getApplicationByNameForUpdate(applicationName);
+            application = applicationControl.getApplicationByNameForUpdate(applicationName);
         }
 
         if(application == null) {
@@ -107,15 +109,15 @@ public class EditApplicationCommand
 
     @Override
     public void fillInResult(EditApplicationResult result, Application application) {
-        var coreControl = getCoreControl();
+        var applicationControl = Session.getModelController(ApplicationControl.class);
 
-        result.setApplication(coreControl.getApplicationTransfer(getUserVisit(), application));
+        result.setApplication(applicationControl.getApplicationTransfer(getUserVisit(), application));
     }
 
     @Override
     public void doLock(ApplicationEdit edit, Application application) {
-        var coreControl = getCoreControl();
-        var applicationDescription = coreControl.getApplicationDescription(application, getPreferredLanguage());
+        var applicationControl = Session.getModelController(ApplicationControl.class);
+        var applicationDescription = applicationControl.getApplicationDescription(application, getPreferredLanguage());
         var applicationDetail = application.getLastDetail();
 
         edit.setApplicationName(applicationDetail.getApplicationName());
@@ -129,9 +131,9 @@ public class EditApplicationCommand
 
     @Override
     public void canUpdate(Application application) {
-        var coreControl = getCoreControl();
+        var applicationControl = Session.getModelController(ApplicationControl.class);
         var applicationName = edit.getApplicationName();
-        var duplicateApplication = coreControl.getApplicationByName(applicationName);
+        var duplicateApplication = applicationControl.getApplicationByName(applicationName);
 
         if(duplicateApplication != null && !application.equals(duplicateApplication)) {
             addExecutionError(ExecutionErrors.DuplicateApplicationName.name(), applicationName);
@@ -140,29 +142,29 @@ public class EditApplicationCommand
 
     @Override
     public void doUpdate(Application application) {
-        var coreControl = getCoreControl();
+        var applicationControl = Session.getModelController(ApplicationControl.class);
         var partyPK = getPartyPK();
-        var applicationDetailValue = coreControl.getApplicationDetailValueForUpdate(application);
-        var applicationDescription = coreControl.getApplicationDescriptionForUpdate(application, getPreferredLanguage());
+        var applicationDetailValue = applicationControl.getApplicationDetailValueForUpdate(application);
+        var applicationDescription = applicationControl.getApplicationDescriptionForUpdate(application, getPreferredLanguage());
         var description = edit.getDescription();
 
         applicationDetailValue.setApplicationName(edit.getApplicationName());
         applicationDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         applicationDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        coreControl.updateApplicationFromValue(applicationDetailValue, partyPK);
+        applicationControl.updateApplicationFromValue(applicationDetailValue, partyPK);
 
         if(applicationDescription == null && description != null) {
-            coreControl.createApplicationDescription(application, getPreferredLanguage(), description, partyPK);
+            applicationControl.createApplicationDescription(application, getPreferredLanguage(), description, partyPK);
         } else {
             if(applicationDescription != null && description == null) {
-                coreControl.deleteApplicationDescription(applicationDescription, partyPK);
+                applicationControl.deleteApplicationDescription(applicationDescription, partyPK);
             } else {
                 if(applicationDescription != null && description != null) {
-                    var applicationDescriptionValue = coreControl.getApplicationDescriptionValue(applicationDescription);
+                    var applicationDescriptionValue = applicationControl.getApplicationDescriptionValue(applicationDescription);
 
                     applicationDescriptionValue.setDescription(description);
-                    coreControl.updateApplicationDescriptionFromValue(applicationDescriptionValue, partyPK);
+                    applicationControl.updateApplicationDescriptionFromValue(applicationDescriptionValue, partyPK);
                 }
             }
         }
