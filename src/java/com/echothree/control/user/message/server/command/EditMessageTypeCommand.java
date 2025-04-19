@@ -63,7 +63,7 @@ public class EditMessageTypeCommand
     protected BaseResult execute() {
         var result = MessageResultFactory.getEditMessageTypeResult();
         var componentVendorName = spec.getComponentVendorName();
-        var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var entityTypeName = spec.getEntityTypeName();

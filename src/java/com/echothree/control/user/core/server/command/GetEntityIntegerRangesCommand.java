@@ -69,7 +69,7 @@ public class GetEntityIntegerRangesCommand
     protected Collection<EntityIntegerRange> getEntities() {
         var coreControl = getCoreControl();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
         Collection<EntityIntegerRange> entityIntegerRanges = null;
 
         if(componentVendor != null) {

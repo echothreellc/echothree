@@ -69,7 +69,7 @@ public class GetBatchTypeEntityTypesCommand
                     addExecutionError(ExecutionErrors.UnknownBatchTypeName.name(), batchTypeName);
                 }
             } else {
-                var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
+                var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
 
                 if(componentVendor != null) {
                     var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);

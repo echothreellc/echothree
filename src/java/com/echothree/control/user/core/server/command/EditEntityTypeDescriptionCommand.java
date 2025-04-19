@@ -87,7 +87,7 @@ public class EditEntityTypeDescriptionCommand
     public EntityTypeDescription getEntity(EditEntityTypeDescriptionResult result) {
         EntityTypeDescription entityTypeDescription = null;
         var componentVendorName = spec.getComponentVendorName();
-        var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
             var entityTypeName = spec.getEntityTypeName();

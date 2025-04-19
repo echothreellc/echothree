@@ -78,7 +78,7 @@ public class EditCommandCommand
         Command command = null;
         var componentVendorName = spec.getComponentVendorName();
         
-        componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
+        componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
             var commandName = spec.getCommandName();

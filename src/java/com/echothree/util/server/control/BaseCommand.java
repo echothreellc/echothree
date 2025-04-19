@@ -21,7 +21,7 @@ import com.echothree.model.control.core.common.CommandMessageTypes;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.control.CommandControl;
-import com.echothree.model.control.core.server.control.ComponentVendorControl;
+import com.echothree.model.control.core.server.control.ComponentControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -538,7 +538,7 @@ public abstract class BaseCommand
 
                     // TODO: Check PartyTypeAuditPolicy to see if the command should be logged
                     if(logCommand) {
-                        var componentVendor = getComponentVendorControl().getComponentVendorByName(getComponentVendorName());
+                        var componentVendor = getComponentControl().getComponentVendorByName(getComponentVendorName());
 
                         if(componentVendor != null) {
                             var commandControl = Session.getModelController(CommandControl.class);
@@ -641,7 +641,7 @@ public abstract class BaseCommand
     // --------------------------------------------------------------------------------
 
     private CoreControl coreControl = null;
-    private ComponentVendorControl componentVendorControl = null;
+    private ComponentControl componentControl = null;
     private EntityTypeControl entityTypeControl = null;
 
     protected CoreControl getCoreControl() {
@@ -652,12 +652,12 @@ public abstract class BaseCommand
         return coreControl;
     }
 
-    protected ComponentVendorControl getComponentVendorControl() {
-        if(componentVendorControl == null) {
-            componentVendorControl = Session.getModelController(ComponentVendorControl.class);
+    protected ComponentControl getComponentControl() {
+        if(componentControl == null) {
+            componentControl = Session.getModelController(ComponentControl.class);
         }
 
-        return componentVendorControl;
+        return componentControl;
     }
 
     protected EntityTypeControl getEntityTypeControl() {
