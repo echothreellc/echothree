@@ -24,10 +24,17 @@ import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.control.search.server.control.SearchControl;
 import static com.echothree.model.control.search.server.control.SearchControl.ENI_ENTITYUNIQUEID_COLUMN_INDEX;
 import com.echothree.model.data.core.common.pk.ComponentVendorPK;
+import com.echothree.model.data.core.server.entity.Component;
+import com.echothree.model.data.core.server.entity.ComponentStage;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
+import com.echothree.model.data.core.server.entity.ComponentVersion;
 import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.data.core.server.factory.ComponentDetailFactory;
+import com.echothree.model.data.core.server.factory.ComponentFactory;
+import com.echothree.model.data.core.server.factory.ComponentStageFactory;
 import com.echothree.model.data.core.server.factory.ComponentVendorDetailFactory;
 import com.echothree.model.data.core.server.factory.ComponentVendorFactory;
+import com.echothree.model.data.core.server.factory.ComponentVersionFactory;
 import com.echothree.model.data.core.server.value.ComponentVendorDetailValue;
 import com.echothree.model.data.search.common.CachedExecutedSearchResultConstants;
 import com.echothree.model.data.search.common.SearchResultConstants;
@@ -323,6 +330,107 @@ public class ComponentControl
         }
 
         return componentVendorObjects;
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Components
+    // --------------------------------------------------------------------------------
+
+    public Component createComponent(ComponentVendor componentVendor, String componentName, String description, BasePK createdBy) {
+        var component = ComponentFactory.getInstance().create();
+        var componentDetail = ComponentDetailFactory.getInstance().create(componentVendor, component,
+                componentName, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+        // Convert to R/W
+        component = ComponentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, component.getPrimaryKey());
+        component.setActiveDetail(componentDetail);
+        component.setLastDetail(componentDetail);
+        component.store();
+
+        return component;
+    }
+
+    public Component getComponentByName(ComponentVendor componentVendor, String componentName) {
+        Component component;
+
+        try {
+            var ps = ComponentFactory.getInstance().prepareStatement(
+                    "SELECT _ALL_ " +
+                            "FROM components, componentdetails " +
+                            "WHERE cpnt_componentid = cpntd_cpnt_componentid AND cpntd_cvnd_componentvendorid = ? " +
+                            "AND cpntd_componentname = ? AND cpntd_thrutime = ?");
+
+            ps.setLong(1, componentVendor.getPrimaryKey().getEntityId());
+            ps.setString(2, componentName);
+            ps.setLong(3, Session.MAX_TIME);
+
+            component = ComponentFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return component;
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Component Stages
+    // --------------------------------------------------------------------------------
+
+    public ComponentStage createComponentStage(String componentStageName, String description, Integer relativeAge) {
+        var componentStage = ComponentStageFactory.getInstance().create(componentStageName, description, relativeAge);
+
+        return componentStage;
+    }
+
+    public ComponentStage getComponentStageByName(String componentStageName) {
+        ComponentStage componentStage;
+
+        try {
+            var ps = ComponentStageFactory.getInstance().prepareStatement(
+                    "SELECT _ALL_ " +
+                            "FROM componentstages " +
+                            "WHERE cstg_componentstagename = ?");
+
+            ps.setString(1, componentStageName);
+
+            componentStage = ComponentStageFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return componentStage;
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Component Versions
+    // --------------------------------------------------------------------------------
+
+    public ComponentVersion createComponentVersion(Component component, Integer majorRevision, Integer minorRevision,
+            ComponentStage componentStage, Integer buildNumber,
+            BasePK createdBy) {
+
+        return ComponentVersionFactory.getInstance().create(component, majorRevision, minorRevision, componentStage,
+                buildNumber, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+    }
+
+    public ComponentVersion getComponentVersion(Component component) {
+        ComponentVersion componentVersion;
+
+        try {
+            var ps = ComponentVersionFactory.getInstance().prepareStatement(
+                    "SELECT _ALL_ " +
+                            "FROM componentversions " +
+                            "WHERE cvrs_cpnt_componentid = ? AND cvrs_thrutime = ?");
+
+            ps.setLong(1, component.getPrimaryKey().getEntityId());
+            ps.setLong(2, Session.MAX_TIME);
+
+            componentVersion = ComponentVersionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return componentVersion;
     }
 
 }

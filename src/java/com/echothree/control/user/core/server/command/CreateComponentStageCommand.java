@@ -17,12 +17,14 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateComponentStageForm;
+import com.echothree.model.control.core.server.control.ComponentControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -47,15 +49,15 @@ public class CreateComponentStageCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var componentControl = Session.getModelController(ComponentControl.class);
         var componentStageName = form.getComponentStageName();
-        var componentStage = coreControl.getComponentStageByName(componentStageName);
+        var componentStage = componentControl.getComponentStageByName(componentStageName);
         
         if(componentStage == null) {
             var description = form.getDescription();
             var relativeAge = Integer.valueOf(form.getRelativeAge());
             
-            coreControl.createComponentStage(componentStageName, description, relativeAge);
+            componentControl.createComponentStage(componentStageName, description, relativeAge);
         } else {
             addExecutionError(ExecutionErrors.DuplicateComponentStageName.name(), componentStageName);
         }
