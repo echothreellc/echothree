@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.forum.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.forum.common.transfer.ForumMessagePartTypeTransfer;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.forum.server.entity.ForumMessagePartType;
@@ -25,14 +25,12 @@ import com.echothree.util.server.persistence.Session;
 
 public class ForumMessagePartTypeTransferCache
         extends BaseForumTransferCache<ForumMessagePartType, ForumMessagePartTypeTransfer> {
-    
-    CoreControl coreControl;
+
+    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
 
     /** Creates a new instance of ForumMessagePartTypeTransferCache */
     public ForumMessagePartTypeTransferCache(UserVisit userVisit, ForumControl forumControl) {
         super(userVisit, forumControl);
-        
-        coreControl = Session.getModelController(CoreControl.class);
     }
     
     public ForumMessagePartTypeTransfer getForumMessagePartTypeTransfer(ForumMessagePartType forumMessagePartType) {
@@ -41,7 +39,7 @@ public class ForumMessagePartTypeTransferCache
         if(forumMessagePartTypeTransfer == null) {
             var forumMessagePartTypeName = forumMessagePartType.getForumMessagePartTypeName();
             var mimeTypeUsageType = forumMessagePartType.getMimeTypeUsageType();
-            var mimeTypeUsageTypeTransfer = mimeTypeUsageType == null? null: coreControl.getMimeTypeUsageTypeTransfer(userVisit, mimeTypeUsageType);
+            var mimeTypeUsageTypeTransfer = mimeTypeUsageType == null? null: mimeTypeControl.getMimeTypeUsageTypeTransfer(userVisit, mimeTypeUsageType);
             var sortOrder = forumMessagePartType.getSortOrder();
             
             forumMessagePartTypeTransfer = new ForumMessagePartTypeTransfer(forumMessagePartTypeName, mimeTypeUsageTypeTransfer,

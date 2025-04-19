@@ -17,7 +17,7 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.MimeTypeFileExtensionTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.data.core.server.entity.MimeTypeFileExtension;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -25,7 +25,7 @@ import com.echothree.util.server.persistence.Session;
 public class MimeTypeFileExtensionTransferCache
         extends BaseCoreTransferCache<MimeTypeFileExtension, MimeTypeFileExtensionTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
 
     /** Creates a new instance of MimeTypeFileExtensionTransferCache */
     public MimeTypeFileExtensionTransferCache(UserVisit userVisit) {
@@ -36,7 +36,7 @@ public class MimeTypeFileExtensionTransferCache
         var mimeTypeFileExtensionTransfer = get(mimeTypeFileExtension);
         
         if(mimeTypeFileExtensionTransfer == null) {
-            var mimeType = coreControl.getMimeTypeTransfer(userVisit, mimeTypeFileExtension.getMimeType());
+            var mimeType = mimeTypeControl.getMimeTypeTransfer(userVisit, mimeTypeFileExtension.getMimeType());
             var fileExtension = mimeTypeFileExtension.getFileExtension();
             var isDefault = mimeTypeFileExtension.getIsDefault();
             

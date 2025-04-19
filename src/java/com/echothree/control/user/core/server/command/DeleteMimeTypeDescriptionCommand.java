@@ -17,12 +17,13 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteMimeTypeDescriptionForm;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -48,9 +49,9 @@ public class DeleteMimeTypeDescriptionCommand
     
    @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
-       var mimeTypeName = form.getMimeTypeName();
-       var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
+        var mimeTypeName = form.getMimeTypeName();
+        var mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
         
         if(mimeType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
@@ -58,10 +59,10 @@ public class DeleteMimeTypeDescriptionCommand
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                var mimeTypeDescription = coreControl.getMimeTypeDescriptionForUpdate(mimeType, language);
+                var mimeTypeDescription = mimeTypeControl.getMimeTypeDescriptionForUpdate(mimeType, language);
                 
                 if(mimeTypeDescription != null) {
-                    coreControl.deleteMimeTypeDescription(mimeTypeDescription, getPartyPK());
+                    mimeTypeControl.deleteMimeTypeDescription(mimeTypeDescription, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownMimeTypeDescription.name());
                 }

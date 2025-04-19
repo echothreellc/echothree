@@ -17,6 +17,7 @@
 package com.echothree.control.user.document.server.command;
 
 import com.echothree.control.user.document.common.form.CreateDocumentTypeForm;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -24,10 +25,10 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.document.server.entity.DocumentType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -86,9 +87,9 @@ public class CreateDocumentTypeCommand
                 var mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
 
                 if(mimeTypeUsageTypeName != null) {
-                    var coreControl = getCoreControl();
+                    var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
 
-                    mimeTypeUsageType = coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
+                    mimeTypeUsageType = mimeTypeControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
                 }
 
                 if(mimeTypeUsageTypeName == null || mimeTypeUsageType != null) {

@@ -17,12 +17,14 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateMimeTypeUsageTypeForm;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -47,15 +49,15 @@ public class CreateMimeTypeUsageTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
         var mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
-        var mimeTypeUsageType = coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
+        var mimeTypeUsageType = mimeTypeControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
         
         if(mimeTypeUsageType == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             
-            coreControl.createMimeTypeUsageType(mimeTypeUsageTypeName, isDefault, sortOrder);
+            mimeTypeControl.createMimeTypeUsageType(mimeTypeUsageTypeName, isDefault, sortOrder);
         } else {
             addExecutionError(ExecutionErrors.DuplicateMimeTypeUsageTypeName.name(), mimeTypeUsageTypeName);
         }

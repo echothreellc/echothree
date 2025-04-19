@@ -20,6 +20,7 @@ import com.echothree.control.user.item.common.form.CreateItemDescriptionForm;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemDescriptionLogic;
 import com.echothree.model.control.item.server.logic.ItemDescriptionLogic.ImageDimensions;
@@ -203,14 +204,14 @@ public class CreateItemDescriptionCommand
                                 addExecutionError(ExecutionErrors.InvalidMimeType.name());
                             }
                         } else {
-                            var coreControl = getCoreControl();
-                            var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+                            var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
+                            var mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
                             
                             if(mimeType != null) {
                                 var mimeTypeUsageType = itemDescriptionType.getLastDetail().getMimeTypeUsageType();
                                 
                                 if(mimeTypeUsageType != null) {
-                                    var mimeTypeUsage = coreControl.getMimeTypeUsage(mimeType, mimeTypeUsageType);
+                                    var mimeTypeUsage = mimeTypeControl.getMimeTypeUsage(mimeType, mimeTypeUsageType);
                                     
                                     if(mimeTypeUsage != null) {
                                         var entityAttributeType = mimeType.getLastDetail().getEntityAttributeType();

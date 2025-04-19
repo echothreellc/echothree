@@ -22,6 +22,7 @@ import com.echothree.control.user.item.common.form.EditItemImageTypeForm;
 import com.echothree.control.user.item.common.result.EditItemImageTypeResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.control.user.item.common.spec.ItemImageTypeUniversalSpec;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemDescriptionLogic;
 import com.echothree.model.control.item.server.logic.ItemImageTypeLogic;
@@ -136,10 +137,10 @@ public class EditItemImageTypeCommand
         var duplicateItemImageType = itemControl.getItemImageTypeByName(itemImageTypeName);
 
         if(duplicateItemImageType == null || itemImageType.equals(duplicateItemImageType)) {
-            var coreControl = getCoreControl();
+            var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
             var preferredMimeTypeName = edit.getPreferredMimeTypeName();
 
-            preferredMimeType = preferredMimeTypeName == null ? null : coreControl.getMimeTypeByName(preferredMimeTypeName);
+            preferredMimeType = preferredMimeTypeName == null ? null : mimeTypeControl.getMimeTypeByName(preferredMimeTypeName);
 
             if(preferredMimeTypeName != null && preferredMimeType == null) {
                 addExecutionError(ExecutionErrors.UnknownPreferredMimeTypeName.name(), preferredMimeTypeName);

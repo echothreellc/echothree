@@ -17,12 +17,14 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteMimeTypeForm;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -45,12 +47,12 @@ public class DeleteMimeTypeCommand
     
    @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+       var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
        var mimeTypeName = form.getMimeTypeName();
-       var mimeType = coreControl.getMimeTypeByNameForUpdate(mimeTypeName);
+       var mimeType = mimeTypeControl.getMimeTypeByNameForUpdate(mimeTypeName);
         
         if(mimeType != null) {
-            coreControl.deleteMimeType(mimeType, getPartyPK());
+            mimeTypeControl.deleteMimeType(mimeType, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownMimeTypeName.name(), mimeTypeName);
         }

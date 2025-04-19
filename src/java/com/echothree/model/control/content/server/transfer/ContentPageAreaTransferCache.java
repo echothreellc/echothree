@@ -20,7 +20,7 @@ import com.echothree.model.control.content.common.ContentOptions;
 import com.echothree.model.control.content.common.ContentProperties;
 import com.echothree.model.control.content.common.transfer.ContentPageAreaTransfer;
 import com.echothree.model.control.content.server.control.ContentControl;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.content.server.entity.ContentPageArea;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -31,8 +31,9 @@ import com.echothree.util.server.persistence.Session;
 public class ContentPageAreaTransferCache
         extends BaseContentTransferCache<ContentPageArea, ContentPageAreaTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
+    
     boolean includeBlob;
     boolean includeClob;
     boolean includeString;
@@ -82,7 +83,7 @@ public class ContentPageAreaTransferCache
             var contentPageLayoutAreaTransfer = filterContentPageLayoutArea ? null : contentControl.getContentPageLayoutAreaTransfer(userVisit, contentPageAreaDetail.getContentPageLayoutArea());
             var languageTransfer = filterLanguage ? null : partyControl.getLanguageTransfer(userVisit, contentPageAreaDetail.getLanguage());
             var mimeType = contentPageAreaDetail.getMimeType();
-            var mimeTypeTransfer = filterMimeType ? null : mimeType == null ? null : coreControl.getMimeTypeTransfer(userVisit, mimeType);
+            var mimeTypeTransfer = filterMimeType ? null : mimeType == null ? null : mimeTypeControl.getMimeTypeTransfer(userVisit, mimeType);
             ByteArray blob = null;
             String clob = null;
             String string = null;

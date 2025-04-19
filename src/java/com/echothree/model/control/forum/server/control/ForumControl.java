@@ -21,7 +21,7 @@ import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.common.choice.MimeTypeChoicesBean;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.forum.common.choice.ForumChoicesBean;
 import com.echothree.model.control.forum.common.choice.ForumGroupChoicesBean;
 import com.echothree.model.control.forum.common.choice.ForumMessageTypeChoicesBean;
@@ -1650,7 +1650,7 @@ public class ForumControl
     
     public MimeTypeChoicesBean getForumMimeTypeChoices(Forum forum, String defaultMimeTypeChoice, Language language,
             boolean allowNullChoice) {
-        var coreControl = Session.getModelController(CoreControl.class);
+        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
         var forumMimeTypes = getForumMimeTypesByForum(forum);
         var size = forumMimeTypes.size();
         var labels = new ArrayList<String>(size);
@@ -1668,7 +1668,7 @@ public class ForumControl
         
         for(var forumMimeType : forumMimeTypes) {
             var mimeType = forumMimeType.getMimeType();
-            var label = coreControl.getBestMimeTypeDescription(mimeType, language);
+            var label = mimeTypeControl.getBestMimeTypeDescription(mimeType, language);
             var value = mimeType.getLastDetail().getMimeTypeName();
             
             labels.add(label == null? value: label);

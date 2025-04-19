@@ -21,6 +21,7 @@ import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.transfer.CacheEntryTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.data.core.server.entity.CacheEntry;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
@@ -32,6 +33,7 @@ public class CacheEntryTransferCache
         extends BaseCoreTransferCache<CacheEntry, CacheEntryTransfer> {
 
     CoreControl coreControl = Session.getModelController(CoreControl.class);
+    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
 
     boolean includeBlob;
     boolean includeClob;
@@ -77,7 +79,7 @@ public class CacheEntryTransferCache
         if(cacheEntryTransfer == null) {
             var cacheEntryKey = filterCacheEntryKey ? null : cacheEntry.getCacheEntryKey();
             var mimeType = cacheEntry.getMimeType();
-            var mimeTypeTransfer = filterMimeType ? null : coreControl.getMimeTypeTransfer(userVisit, mimeType);
+            var mimeTypeTransfer = filterMimeType ? null : mimeTypeControl.getMimeTypeTransfer(userVisit, mimeType);
             var unformattedCreatedTime = cacheEntry.getCreatedTime();
             var createdTime = filterCreatedTime ? null : formatTypicalDateTime(unformattedCreatedTime);
             var unformattedValidUntilTime = cacheEntry.getValidUntilTime();

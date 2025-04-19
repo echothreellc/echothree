@@ -23,6 +23,7 @@ import com.echothree.control.user.content.common.result.ContentResultFactory;
 import com.echothree.control.user.content.common.result.EditContentPageAreaResult;
 import com.echothree.control.user.content.common.spec.ContentPageAreaSpec;
 import com.echothree.model.control.content.server.control.ContentControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -30,10 +31,10 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.content.server.entity.ContentPageArea;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -187,10 +188,10 @@ public class EditContentPageAreaCommand
     
     @Override
     public void canUpdate(ContentPageArea contentPageArea) {
-        var coreControl = getCoreControl();
+        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
         var mimeTypeName = edit.getMimeTypeName();
         
-        mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+        mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
 
         if(mimeType == null) {
             addExecutionError(ExecutionErrors.UnknownMimeTypeName.name(), mimeTypeName);

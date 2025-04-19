@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.forum.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.forum.common.transfer.ForumMimeTypeTransfer;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.forum.server.entity.ForumMimeType;
@@ -25,14 +25,12 @@ import com.echothree.util.server.persistence.Session;
 
 public class ForumMimeTypeTransferCache
         extends BaseForumTransferCache<ForumMimeType, ForumMimeTypeTransfer> {
-    
-    CoreControl coreControl;
+
+    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     
     /** Creates a new instance of ForumMimeTypeTransferCache */
     public ForumMimeTypeTransferCache(UserVisit userVisit, ForumControl forumControl) {
         super(userVisit, forumControl);
-        
-        coreControl = Session.getModelController(CoreControl.class);
     }
     
     public ForumMimeTypeTransfer getForumMimeTypeTransfer(ForumMimeType forumMimeType) {
@@ -40,7 +38,7 @@ public class ForumMimeTypeTransferCache
         
         if(forumMimeTypeTransfer == null) {
             var forum = forumControl.getForumTransfer(userVisit, forumMimeType.getForum());
-            var mimeType = coreControl.getMimeTypeTransfer(userVisit, forumMimeType.getMimeType());
+            var mimeType = mimeTypeControl.getMimeTypeTransfer(userVisit, forumMimeType.getMimeType());
             var isDefault = forumMimeType.getIsDefault();
             var sortOrder = forumMimeType.getSortOrder();
             

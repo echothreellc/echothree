@@ -18,16 +18,18 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateCacheEntryForm;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.PersistenceUtils;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -59,8 +61,9 @@ public class CreateCacheEntryCommand
         var cacheEntry = coreControl.getCacheEntryByCacheEntryKey(cacheEntryKey);
 
         if(cacheEntry == null) {
+            var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
             var mimeTypeName = form.getMimeTypeName();
-            var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+            var mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
 
             if(mimeType != null) {
                 var validForTime = UnitOfMeasureTypeLogic.getInstance().checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
