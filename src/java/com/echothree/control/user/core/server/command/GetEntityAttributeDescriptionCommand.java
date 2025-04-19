@@ -67,7 +67,7 @@ public class GetEntityAttributeDescriptionCommand
         var coreControl = getCoreControl();
         var result = CoreResultFactory.getGetEntityAttributeDescriptionResult();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
             var entityTypeName = form.getEntityTypeName();

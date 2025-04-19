@@ -85,13 +85,13 @@ public class EditComponentVendorCommand
         var componentVendorName = spec.getComponentVendorName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
+            componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
         } else { // EditMode.UPDATE
-            componentVendor = getComponentVendorControl().getComponentVendorByNameForUpdate(componentVendorName);
+            componentVendor = getComponentControl().getComponentVendorByNameForUpdate(componentVendorName);
         }
 
         if(componentVendor != null) {
-            result.setComponentVendor(getComponentVendorControl().getComponentVendorTransfer(getUserVisit(), componentVendor));
+            result.setComponentVendor(getComponentControl().getComponentVendorTransfer(getUserVisit(), componentVendor));
         } else {
             addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
         }
@@ -106,7 +106,7 @@ public class EditComponentVendorCommand
 
     @Override
     public void fillInResult(EditComponentVendorResult result, ComponentVendor componentVendor) {
-        result.setComponentVendor(getComponentVendorControl().getComponentVendorTransfer(getUserVisit(), componentVendor));
+        result.setComponentVendor(getComponentControl().getComponentVendorTransfer(getUserVisit(), componentVendor));
     }
 
     @Override
@@ -120,7 +120,7 @@ public class EditComponentVendorCommand
     @Override
     public void canUpdate(ComponentVendor componentVendor) {
         var componentVendorName = edit.getComponentVendorName();
-        var duplicateComponentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
+        var duplicateComponentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
 
         if(duplicateComponentVendor != null && !componentVendor.equals(duplicateComponentVendor)) {
             addExecutionError(ExecutionErrors.DuplicateComponentVendorName.name(), componentVendorName);
@@ -129,12 +129,12 @@ public class EditComponentVendorCommand
 
     @Override
     public void doUpdate(ComponentVendor componentVendor) {
-        var componentVendorDetailValue = getComponentVendorControl().getComponentVendorDetailValueForUpdate(componentVendor);
+        var componentVendorDetailValue = getComponentControl().getComponentVendorDetailValueForUpdate(componentVendor);
 
         componentVendorDetailValue.setComponentVendorName(edit.getComponentVendorName());
         componentVendorDetailValue.setDescription(edit.getDescription());
 
-        getComponentVendorControl().updateComponentVendorFromValue(componentVendorDetailValue, getPartyPK());
+        getComponentControl().updateComponentVendorFromValue(componentVendorDetailValue, getPartyPK());
 
     }
     

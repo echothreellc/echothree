@@ -67,7 +67,7 @@ public class GetEntityAliasTypeDescriptionCommand
         var coreControl = getCoreControl();
         var result = CoreResultFactory.getGetEntityAliasTypeDescriptionResult();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
             var entityTypeName = form.getEntityTypeName();

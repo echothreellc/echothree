@@ -55,7 +55,7 @@ public class GetCommandsCommand
         if(componentVendorName == null) {
             result.setCommands(commandControl.getCommandTransfers(getUserVisit()));
         } else {
-            var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
+            var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
             
             if(componentVendor != null) {
                 result.setCommands(commandControl.getCommandTransfersByComponentVendor(getUserVisit(), componentVendor));

@@ -52,14 +52,14 @@ public class GetCommentUsageTypesCommand
     protected BaseResult execute() {
         var result = CommentResultFactory.getGetCommentUsageTypesResult();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var userVisit = getUserVisit();
             var entityTypeName = form.getEntityTypeName();
             var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
             
-            result.setComponentVendor(getComponentVendorControl().getComponentVendorTransfer(userVisit, componentVendor));
+            result.setComponentVendor(getComponentControl().getComponentVendorTransfer(userVisit, componentVendor));
             
             if(entityType != null) {
                 var commentControl = Session.getModelController(CommentControl.class);

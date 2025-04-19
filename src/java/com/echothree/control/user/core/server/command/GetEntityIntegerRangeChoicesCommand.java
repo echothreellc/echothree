@@ -76,7 +76,7 @@ public class GetEntityIntegerRangeChoicesCommand
             EntityType entityType = null;
             
             if(entityRef == null) {
-                var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
+                var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
                 
                 if(componentVendor != null) {
                     entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);

@@ -77,7 +77,7 @@ public class GetEntityAttributeEntityTypesCommand
             var coreControl = getCoreControl();
 
             if(componentVendorName != null) {
-                var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
+                var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
 
                 if(componentVendor != null) {
                     var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
@@ -98,7 +98,7 @@ public class GetEntityAttributeEntityTypesCommand
                     addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
                 }
             } else {
-                var allowedComponentVendor = getComponentVendorControl().getComponentVendorByName(allowedComponentVendorName);
+                var allowedComponentVendor = getComponentControl().getComponentVendorByName(allowedComponentVendorName);
 
                 if(allowedComponentVendor != null) {
                     var allowedEntityType = getEntityTypeControl().getEntityTypeByName(allowedComponentVendor, allowedEntityTypeName);

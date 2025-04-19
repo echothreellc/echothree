@@ -95,7 +95,7 @@ public class EditEntityTypeCommand
         EntityType entityType = null;
         var componentVendorName = spec.getComponentVendorName();
         
-        componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
+        componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
             var entityTypeName = spec.getEntityTypeName();

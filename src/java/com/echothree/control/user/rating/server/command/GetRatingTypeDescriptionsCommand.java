@@ -52,7 +52,7 @@ public class GetRatingTypeDescriptionsCommand
     protected BaseResult execute() {
         var result = RatingResultFactory.getGetRatingTypeDescriptionsResult();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var entityTypeName = form.getEntityTypeName();

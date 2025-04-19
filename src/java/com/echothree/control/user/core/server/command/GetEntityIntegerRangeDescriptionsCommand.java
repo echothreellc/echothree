@@ -67,7 +67,7 @@ public class GetEntityIntegerRangeDescriptionsCommand
         var coreControl = getCoreControl();
         var result = CoreResultFactory.getGetEntityIntegerRangeDescriptionsResult();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var entityTypeName = form.getEntityTypeName();

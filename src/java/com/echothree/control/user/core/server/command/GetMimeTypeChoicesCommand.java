@@ -177,7 +177,7 @@ public class GetMimeTypeChoicesCommand
                         addExecutionError(ExecutionErrors.UnknownCommentName.name(), commentName);
                     }
                 } else {
-                    var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
+                    var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
 
                     if(componentVendor != null) {
                         var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);

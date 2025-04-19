@@ -17,7 +17,7 @@
 package com.echothree.model.control.core.server.eventbus;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.control.ComponentVendorControl;
+import com.echothree.model.control.core.server.control.ComponentControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.data.core.common.ComponentVendorConstants;
@@ -42,9 +42,9 @@ public class ComponentVendorModificationSubscriber
                 && ComponentVendorConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
                 && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {
             var coreControl = Session.getModelController(CoreControl.class);
-            var componentVendorControl = Session.getModelController(ComponentVendorControl.class);
+            var componentControl = Session.getModelController(ComponentControl.class);
             var entityTypeControl = Session.getModelController(EntityTypeControl.class);
-            var componentVendor = componentVendorControl.getComponentVendorByEntityInstance(entityInstance);
+            var componentVendor = componentControl.getComponentVendorByEntityInstance(entityInstance);
             var entityTypes = entityTypeControl.getEntityTypesByComponentVendor(componentVendor);
             var createdBy = PersistenceUtils.getInstance().getBasePKFromEntityInstance(event.getCreatedBy());
 

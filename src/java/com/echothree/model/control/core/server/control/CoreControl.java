@@ -139,10 +139,6 @@ import com.echothree.model.data.core.server.entity.CacheBlobEntry;
 import com.echothree.model.data.core.server.entity.CacheClobEntry;
 import com.echothree.model.data.core.server.entity.CacheEntry;
 import com.echothree.model.data.core.server.entity.CacheEntryDependency;
-import com.echothree.model.data.core.server.entity.Component;
-import com.echothree.model.data.core.server.entity.ComponentStage;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
-import com.echothree.model.data.core.server.entity.ComponentVersion;
 import com.echothree.model.data.core.server.entity.EntityAlias;
 import com.echothree.model.data.core.server.entity.EntityAliasType;
 import com.echothree.model.data.core.server.entity.EntityAliasTypeDescription;
@@ -224,10 +220,6 @@ import com.echothree.model.data.core.server.factory.CacheBlobEntryFactory;
 import com.echothree.model.data.core.server.factory.CacheClobEntryFactory;
 import com.echothree.model.data.core.server.factory.CacheEntryDependencyFactory;
 import com.echothree.model.data.core.server.factory.CacheEntryFactory;
-import com.echothree.model.data.core.server.factory.ComponentDetailFactory;
-import com.echothree.model.data.core.server.factory.ComponentFactory;
-import com.echothree.model.data.core.server.factory.ComponentStageFactory;
-import com.echothree.model.data.core.server.factory.ComponentVersionFactory;
 import com.echothree.model.data.core.server.factory.EntityAliasFactory;
 import com.echothree.model.data.core.server.factory.EntityAliasTypeDescriptionFactory;
 import com.echothree.model.data.core.server.factory.EntityAliasTypeDetailFactory;
@@ -683,9 +675,9 @@ public class CoreControl
         }
         
         if(pk != null) {
-            var componentVendorControl = Session.getModelController(ComponentVendorControl.class);
+            var componentControl = Session.getModelController(ComponentControl.class);
             var componentVendorName = pk.getComponentVendorName();
-            var componentVendor = componentVendorControl.getComponentVendorByNameFromCache(componentVendorName);
+            var componentVendor = componentControl.getComponentVendorByNameFromCache(componentVendorName);
             
             if(CoreDebugFlags.LogEntityInstanceResolution) {
                 getLog().info("--- componentVendor = " + componentVendor);
@@ -757,9 +749,9 @@ public class CoreControl
             var entityRefParts = Splitter.on('.').trimResults().omitEmptyStrings().splitToList(entityRef).toArray(new String[0]);
             
             if(entityRefParts.length == 3) {
-                var componentVendorControl = Session.getModelController(ComponentVendorControl.class);
+                var componentControl = Session.getModelController(ComponentControl.class);
                 var componentVendorName = entityRefParts[0];
-                var componentVendor = componentVendorControl.getComponentVendorByNameFromCache(componentVendorName);
+                var componentVendor = componentControl.getComponentVendorByNameFromCache(componentVendorName);
                 
                 if(componentVendor != null) {
                     var entityTypeControl = Session.getModelController(EntityTypeControl.class);
@@ -965,35 +957,6 @@ public class CoreControl
         }
         
         return description;
-    }
-    
-    // --------------------------------------------------------------------------------
-    //   Component Stages
-    // --------------------------------------------------------------------------------
-    
-    public ComponentStage createComponentStage(String componentStageName, String description, Integer relativeAge) {
-        var componentStage = ComponentStageFactory.getInstance().create(componentStageName, description, relativeAge);
-        
-        return componentStage;
-    }
-    
-    public ComponentStage getComponentStageByName(String componentStageName) {
-        ComponentStage componentStage;
-        
-        try {
-            var ps = ComponentStageFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM componentstages " +
-                    "WHERE cstg_componentstagename = ?");
-            
-            ps.setString(1, componentStageName);
-            
-            componentStage = ComponentStageFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return componentStage;
     }
     
     // --------------------------------------------------------------------------------
@@ -6397,78 +6360,6 @@ public class CoreControl
         entityLongRangeDescriptions.forEach((entityLongRangeDescription) -> 
                 deleteEntityLongRangeDescription(entityLongRangeDescription, deletedBy)
         );
-    }
-    
-    // --------------------------------------------------------------------------------
-    //   Components
-    // --------------------------------------------------------------------------------
-    
-    public Component createComponent(ComponentVendor componentVendor, String componentName, String description, BasePK createdBy) {
-        var component = ComponentFactory.getInstance().create();
-        var componentDetail = ComponentDetailFactory.getInstance().create(componentVendor, component,
-                componentName, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
-        
-        // Convert to R/W
-        component = ComponentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, component.getPrimaryKey());
-        component.setActiveDetail(componentDetail);
-        component.setLastDetail(componentDetail);
-        component.store();
-        
-        return component;
-    }
-    
-    public Component getComponentByName(ComponentVendor componentVendor, String componentName) {
-        Component component;
-        
-        try {
-            var ps = ComponentFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM components, componentdetails " +
-                    "WHERE cpnt_componentid = cpntd_cpnt_componentid AND cpntd_cvnd_componentvendorid = ? " +
-                    "AND cpntd_componentname = ? AND cpntd_thrutime = ?");
-            
-            ps.setLong(1, componentVendor.getPrimaryKey().getEntityId());
-            ps.setString(2, componentName);
-            ps.setLong(3, Session.MAX_TIME);
-            
-            component = ComponentFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return component;
-    }
-    
-    // --------------------------------------------------------------------------------
-    //   Component Versions
-    // --------------------------------------------------------------------------------
-    
-    public ComponentVersion createComponentVersion(Component component, Integer majorRevision, Integer minorRevision,
-            ComponentStage componentStage, Integer buildNumber,
-            BasePK createdBy) {
-        
-        return ComponentVersionFactory.getInstance().create(component, majorRevision, minorRevision, componentStage,
-                buildNumber, session.START_TIME_LONG, Session.MAX_TIME_LONG);
-    }
-    
-    public ComponentVersion getComponentVersion(Component component) {
-        ComponentVersion componentVersion;
-        
-        try {
-            var ps = ComponentVersionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM componentversions " +
-                    "WHERE cvrs_cpnt_componentid = ? AND cvrs_thrutime = ?");
-            
-            ps.setLong(1, component.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            componentVersion = ComponentVersionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return componentVersion;
     }
     
     // --------------------------------------------------------------------------------

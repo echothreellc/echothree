@@ -249,7 +249,7 @@ public class IdentifyCommand
     private void checkComponentVendors(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.ComponentVendor.name(), SecurityRoles.Search.name())) {
-            var componentVendor = getComponentVendorControl().getComponentVendorByName(target);
+            var componentVendor = getComponentControl().getComponentVendorByName(target);
 
             if(componentVendor != null) {
                 var entityInstance = getCoreControl().getEntityInstanceByBasePK(componentVendor.getPrimaryKey());

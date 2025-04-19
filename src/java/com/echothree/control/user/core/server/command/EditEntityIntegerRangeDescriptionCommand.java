@@ -90,7 +90,7 @@ public class EditEntityIntegerRangeDescriptionCommand
         var coreControl = getCoreControl();
         EntityIntegerRangeDescription entityIntegerRangeDescription = null;
         var componentVendorName = spec.getComponentVendorName();
-        var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
             var entityTypeName = spec.getEntityTypeName();

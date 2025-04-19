@@ -72,7 +72,7 @@ public class CreateEntityTypeCommand
     protected BaseResult execute() {
         var result = CoreResultFactory.getCreateEntityTypeResult();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
         EntityType entityType = null;
 
         if(componentVendor != null) {
