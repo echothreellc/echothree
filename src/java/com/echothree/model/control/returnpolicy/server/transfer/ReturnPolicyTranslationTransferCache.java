@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.returnpolicy.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.returnpolicy.common.transfer.ReturnPolicyTranslationTransfer;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicyTranslation;
@@ -25,8 +25,8 @@ import com.echothree.util.server.persistence.Session;
 
 public class ReturnPolicyTranslationTransferCache
         extends BaseReturnPolicyDescriptionTransferCache<ReturnPolicyTranslation, ReturnPolicyTranslationTransfer> {
-    
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
+    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     
     /** Creates a new instance of ReturnPolicyTranslationTransferCache */
     public ReturnPolicyTranslationTransferCache(UserVisit userVisit, ReturnPolicyControl returnPolicyControl) {
@@ -41,7 +41,7 @@ public class ReturnPolicyTranslationTransferCache
             var returnPolicyTransfer = returnPolicyControl.getReturnPolicyTransfer(userVisit, returnPolicyTranslation.getReturnPolicy());
             var description = returnPolicyTranslation.getDescription();
             var policyMimeType = returnPolicyTranslation.getPolicyMimeType();
-            var policyMimeTypeTransfer = policyMimeType == null? null: coreControl.getMimeTypeTransfer(userVisit, policyMimeType);
+            var policyMimeTypeTransfer = policyMimeType == null? null: mimeTypeControl.getMimeTypeTransfer(userVisit, policyMimeType);
             var policy = returnPolicyTranslation.getPolicy();
             
             returnPolicyTranslationTransfer = new ReturnPolicyTranslationTransfer(returnPolicyTransfer, languageTransfer, description,

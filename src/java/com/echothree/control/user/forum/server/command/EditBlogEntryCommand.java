@@ -22,6 +22,7 @@ import com.echothree.control.user.forum.common.form.EditBlogEntryForm;
 import com.echothree.control.user.forum.common.result.EditBlogEntryResult;
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
 import com.echothree.control.user.forum.common.spec.ForumMessageSpec;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.icon.common.IconConstants;
@@ -30,10 +31,10 @@ import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.forum.server.entity.ForumMessage;
 import com.echothree.model.data.icon.server.entity.Icon;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.DateUtils;
@@ -212,9 +213,9 @@ public class EditBlogEntryCommand
                             var feedSummaryParameterCount = (feedSummaryMimeTypeName == null ? 0 : 1) + (feedSummary == null ? 0 : 1);
 
                             if(feedSummaryParameterCount == 0 || feedSummaryParameterCount == 2) {
-                                var coreControl = getCoreControl();
+                                var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
 
-                                feedSummaryMimeType = feedSummaryMimeTypeName == null? null: coreControl.getMimeTypeByName(feedSummaryMimeTypeName);
+                                feedSummaryMimeType = feedSummaryMimeTypeName == null? null: mimeTypeControl.getMimeTypeByName(feedSummaryMimeTypeName);
 
                                 if(feedSummaryMimeTypeName == null || feedSummaryMimeType != null) {
                                     var forum = forumControl.getDefaultForumForumThread(forumMessageDetail.getForumThread()).getForum();
@@ -226,7 +227,7 @@ public class EditBlogEntryCommand
                                         var summaryParameterCount = (summaryMimeTypeName == null ? 0 : 1) + (summary == null ? 0 : 1);
 
                                         if(summaryParameterCount == 0 || summaryParameterCount == 2) {
-                                            summaryMimeType = summaryMimeTypeName == null? null: coreControl.getMimeTypeByName(summaryMimeTypeName);
+                                            summaryMimeType = summaryMimeTypeName == null? null: mimeTypeControl.getMimeTypeByName(summaryMimeTypeName);
 
                                             if(summaryMimeTypeName == null || summaryMimeType != null) {
                                                 forumMimeType = summaryMimeType == null? null: forumControl.getForumMimeType(forum, summaryMimeType);
@@ -234,7 +235,7 @@ public class EditBlogEntryCommand
                                                 if(summaryMimeType == null || forumMimeType != null) {
                                                     var contentMimeTypeName = edit.getContentMimeTypeName();
 
-                                                    contentMimeType = contentMimeTypeName == null? null: coreControl.getMimeTypeByName(contentMimeTypeName);
+                                                    contentMimeType = contentMimeTypeName == null? null: mimeTypeControl.getMimeTypeByName(contentMimeTypeName);
 
                                                     if(contentMimeType != null) {
                                                         forumMimeType = forumControl.getForumMimeType(forum, contentMimeType);

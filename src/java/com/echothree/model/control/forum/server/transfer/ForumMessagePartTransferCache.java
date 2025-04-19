@@ -17,22 +17,22 @@
 package com.echothree.model.control.forum.server.transfer;
 
 import com.echothree.model.control.core.common.MimeTypes;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.forum.common.ForumOptions;
 import com.echothree.model.control.forum.common.transfer.ForumMessagePartTransfer;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.forum.server.entity.ForumMessagePart;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.string.StringUtils;
 import com.echothree.util.common.persistence.type.ByteArray;
+import com.echothree.util.common.string.StringUtils;
 import com.echothree.util.server.persistence.Session;
 
 public class ForumMessagePartTransferCache
         extends BaseForumTransferCache<ForumMessagePart, ForumMessagePartTransfer> {
-    
-    CoreControl coreControl;
-    PartyControl partyControl;
+
+    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     boolean includeBlob;
     boolean includeClob;
     boolean includeString;
@@ -40,9 +40,6 @@ public class ForumMessagePartTransferCache
     /** Creates a new instance of ForumMessagePartTransferCache */
     public ForumMessagePartTransferCache(UserVisit userVisit, ForumControl forumControl) {
         super(userVisit, forumControl);
-        
-        coreControl = Session.getModelController(CoreControl.class);
-        partyControl = Session.getModelController(PartyControl.class);
         
         var options = session.getOptions();
         if(options != null) {
@@ -100,7 +97,7 @@ public class ForumMessagePartTransferCache
                 }
             }
 
-            var mimeTypeTransfer = mimeType == null ? null : coreControl.getMimeTypeTransfer(userVisit, mimeType);
+            var mimeTypeTransfer = mimeType == null ? null : mimeTypeControl.getMimeTypeTransfer(userVisit, mimeType);
             
             forumMessagePartTransfer = new ForumMessagePartTransfer(forumMessageTransfer, forumMessagePartTypeTransfer,
                     languageTransfer, mimeTypeTransfer, blobMessagePart, clobMessagePart, stringMessagePart);

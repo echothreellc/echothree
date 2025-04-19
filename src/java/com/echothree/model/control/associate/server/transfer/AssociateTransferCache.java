@@ -18,7 +18,7 @@ package com.echothree.model.control.associate.server.transfer;
 
 import com.echothree.model.control.associate.common.transfer.AssociateTransfer;
 import com.echothree.model.control.associate.server.control.AssociateControl;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.associate.server.entity.Associate;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -26,8 +26,8 @@ import com.echothree.util.server.persistence.Session;
 
 public class AssociateTransferCache
         extends BaseAssociateTransferCache<Associate, AssociateTransfer> {
-    
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
+    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of AssociateTransferCache */
@@ -47,7 +47,7 @@ public class AssociateTransferCache
             var associateName = associateDetail.getAssociateName();
             var party = partyControl.getPartyTransfer(userVisit, associateDetail.getParty());
             var description = associateDetail.getDescription();
-            var summaryMimeType = coreControl.getMimeTypeTransfer(userVisit, associateDetail.getSummaryMimeType());
+            var summaryMimeType = mimeTypeControl.getMimeTypeTransfer(userVisit, associateDetail.getSummaryMimeType());
             var summary = associateDetail.getSummary();
             
             associateTransfer = new AssociateTransfer(associateProgram, associateName, party, description, summaryMimeType, summary);

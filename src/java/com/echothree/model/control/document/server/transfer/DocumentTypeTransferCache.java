@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.document.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.document.common.transfer.DocumentTypeTransfer;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.data.document.server.entity.DocumentType;
@@ -25,8 +25,8 @@ import com.echothree.util.server.persistence.Session;
 
 public class DocumentTypeTransferCache
         extends BaseDocumentTransferCache<DocumentType, DocumentTypeTransfer> {
-    
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
+    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
 
     /** Creates a new instance of DocumentTypeTransferCache */
     public DocumentTypeTransferCache(UserVisit userVisit, DocumentControl documentControl) {
@@ -44,7 +44,7 @@ public class DocumentTypeTransferCache
             var parentDocumentType = documentTypeDetail.getParentDocumentType();
             var parentDocumentTypeTransfer = parentDocumentType == null ? null : documentControl.getDocumentTypeTransfer(userVisit, parentDocumentType);
             var mimeTypeUsageType = documentTypeDetail.getMimeTypeUsageType();
-            var mimeTypeUsageTypeTransfer = mimeTypeUsageType == null ? null : coreControl.getMimeTypeUsageTypeTransfer(userVisit, mimeTypeUsageType);
+            var mimeTypeUsageTypeTransfer = mimeTypeUsageType == null ? null : mimeTypeControl.getMimeTypeUsageTypeTransfer(userVisit, mimeTypeUsageType);
             var maximumPages = documentTypeDetail.getMaximumPages();
             var isDefault = documentTypeDetail.getIsDefault();
             var sortOrder = documentTypeDetail.getSortOrder();

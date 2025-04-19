@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.training.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.training.common.transfer.TrainingClassTranslationTransfer;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.TrainingClassTranslation;
@@ -25,8 +25,8 @@ import com.echothree.util.server.persistence.Session;
 
 public class TrainingClassTranslationTransferCache
         extends BaseTrainingDescriptionTransferCache<TrainingClassTranslation, TrainingClassTranslationTransfer> {
-    
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
+    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     
     /** Creates a new instance of TrainingClassTranslationTransferCache */
     public TrainingClassTranslationTransferCache(UserVisit userVisit, TrainingControl trainingControl) {
@@ -41,10 +41,10 @@ public class TrainingClassTranslationTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, trainingClassTranslation.getLanguage());
             var description = trainingClassTranslation.getDescription();
             var overviewMimeType = trainingClassTranslation.getOverviewMimeType();
-            var overviewMimeTypeTransfer = overviewMimeType == null? null: coreControl.getMimeTypeTransfer(userVisit, overviewMimeType);
+            var overviewMimeTypeTransfer = overviewMimeType == null? null: mimeTypeControl.getMimeTypeTransfer(userVisit, overviewMimeType);
             var overview = trainingClassTranslation.getOverview();
             var introductionMimeType = trainingClassTranslation.getIntroductionMimeType();
-            var introductionMimeTypeTransfer = introductionMimeType == null? null: coreControl.getMimeTypeTransfer(userVisit, introductionMimeType);
+            var introductionMimeTypeTransfer = introductionMimeType == null? null: mimeTypeControl.getMimeTypeTransfer(userVisit, introductionMimeType);
             var introduction = trainingClassTranslation.getIntroduction();
             
             trainingClassTranslationTransfer = new TrainingClassTranslationTransfer(trainingClassTransfer, languageTransfer, description,

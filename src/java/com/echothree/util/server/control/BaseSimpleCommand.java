@@ -18,11 +18,13 @@ package com.echothree.util.server.control;
 
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.MimeTypes;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.common.form.ValidationResult;
+import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
 import java.util.List;
 
@@ -86,8 +88,8 @@ public abstract class BaseSimpleCommand<F extends BaseForm>
         var preferredClobMimeTypeName = form.getPreferredClobMimeTypeName();
         
         if(preferredClobMimeTypeName != null) {
-            var coreControl = getCoreControl();
-            var preferredClobMimeType = coreControl.getMimeTypeByName(preferredClobMimeTypeName);
+            var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
+            var preferredClobMimeType = mimeTypeControl.getMimeTypeByName(preferredClobMimeTypeName);
 
             if(preferredClobMimeType == null) {
                 addExecutionError(ExecutionErrors.UnknownPreferredClobMimeTypeName.name(), preferredClobMimeTypeName);

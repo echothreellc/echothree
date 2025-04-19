@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.training.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.training.common.transfer.TrainingClassQuestionTranslationTransfer;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.TrainingClassQuestionTranslation;
@@ -25,8 +25,8 @@ import com.echothree.util.server.persistence.Session;
 
 public class TrainingClassQuestionTranslationTransferCache
         extends BaseTrainingDescriptionTransferCache<TrainingClassQuestionTranslation, TrainingClassQuestionTranslationTransfer> {
-    
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
+    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     
     /** Creates a new instance of TrainingClassQuestionTranslationTransferCache */
     public TrainingClassQuestionTranslationTransferCache(UserVisit userVisit, TrainingControl trainingControl) {
@@ -39,7 +39,7 @@ public class TrainingClassQuestionTranslationTransferCache
         if(trainingClassQuestionTranslationTransfer == null) {
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, trainingClassQuestionTranslation.getLanguage());
             var trainingClassQuestionTransfer = trainingControl.getTrainingClassQuestionTransfer(userVisit, trainingClassQuestionTranslation.getTrainingClassQuestion());
-            var questionMimeTypeTransfer = coreControl.getMimeTypeTransfer(userVisit, trainingClassQuestionTranslation.getQuestionMimeType());
+            var questionMimeTypeTransfer = mimeTypeControl.getMimeTypeTransfer(userVisit, trainingClassQuestionTranslation.getQuestionMimeType());
             var question = trainingClassQuestionTranslation.getQuestion();
             
             trainingClassQuestionTranslationTransfer = new TrainingClassQuestionTranslationTransfer(trainingClassQuestionTransfer, languageTransfer,

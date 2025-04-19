@@ -18,6 +18,7 @@ package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.CreateBlogEntryForm;
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.forum.server.logic.ForumLogic;
@@ -26,11 +27,11 @@ import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -126,8 +127,8 @@ public class CreateBlogEntryCommand
                                                 var feedSummaryParameterCount = (feedSummaryMimeTypeName == null ? 0 : 1) + (feedSummary == null ? 0 : 1);
 
                                                 if(feedSummaryParameterCount == 0 || feedSummaryParameterCount == 2) {
-                                                    var coreControl = getCoreControl();
-                                                    var feedSummaryMimeType = feedSummaryMimeTypeName == null? null: coreControl.getMimeTypeByName(feedSummaryMimeTypeName);
+                                                    var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
+                                                    var feedSummaryMimeType = feedSummaryMimeTypeName == null? null: mimeTypeControl.getMimeTypeByName(feedSummaryMimeTypeName);
 
                                                     if(feedSummaryMimeTypeName == null || feedSummaryMimeType != null) {
                                                         var forumMimeType = feedSummaryMimeType == null? null: forumControl.getForumMimeType(forum, feedSummaryMimeType);
@@ -138,14 +139,14 @@ public class CreateBlogEntryCommand
                                                             var summaryParameterCount = (summaryMimeTypeName == null ? 0 : 1) + (summary == null ? 0 : 1);
 
                                                             if(summaryParameterCount == 0 || summaryParameterCount == 2) {
-                                                                var summaryMimeType = summaryMimeTypeName == null? null: coreControl.getMimeTypeByName(summaryMimeTypeName);
+                                                                var summaryMimeType = summaryMimeTypeName == null? null: mimeTypeControl.getMimeTypeByName(summaryMimeTypeName);
 
                                                                 if(summaryMimeTypeName == null || summaryMimeType != null) {
                                                                     forumMimeType = summaryMimeType == null? null: forumControl.getForumMimeType(forum, summaryMimeType);
 
                                                                     if(summaryMimeType == null || forumMimeType != null) {
                                                                         var contentMimeTypeName = form.getContentMimeTypeName();
-                                                                        var contentMimeType = contentMimeTypeName == null? null: coreControl.getMimeTypeByName(contentMimeTypeName);
+                                                                        var contentMimeType = contentMimeTypeName == null? null: mimeTypeControl.getMimeTypeByName(contentMimeTypeName);
 
                                                                         if(contentMimeType != null) {
                                                                             forumMimeType = forumControl.getForumMimeType(forum, contentMimeType);

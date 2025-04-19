@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.tax.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.tax.common.transfer.TaxClassificationTranslationTransfer;
 import com.echothree.model.control.tax.server.control.TaxControl;
 import com.echothree.model.data.tax.server.entity.TaxClassificationTranslation;
@@ -25,8 +25,8 @@ import com.echothree.util.server.persistence.Session;
 
 public class TaxClassificationTranslationTransferCache
         extends BaseTaxDescriptionTransferCache<TaxClassificationTranslation, TaxClassificationTranslationTransfer> {
-    
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
+    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     
     /** Creates a new instance of TaxClassificationTranslationTransferCache */
     public TaxClassificationTranslationTransferCache(UserVisit userVisit, TaxControl taxControl) {
@@ -42,7 +42,7 @@ public class TaxClassificationTranslationTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, taxClassificationTranslation.getLanguage());
             var description = taxClassificationTranslation.getDescription();
             var overviewMimeType = taxClassificationTranslation.getOverviewMimeType();
-            var overviewMimeTypeTransfer = overviewMimeType == null? null: coreControl.getMimeTypeTransfer(userVisit, overviewMimeType);
+            var overviewMimeTypeTransfer = overviewMimeType == null? null: mimeTypeControl.getMimeTypeTransfer(userVisit, overviewMimeType);
             var overview = taxClassificationTranslation.getOverview();
             
             taxClassificationTranslationTransfer = new TaxClassificationTranslationTransfer(languageTransfer,

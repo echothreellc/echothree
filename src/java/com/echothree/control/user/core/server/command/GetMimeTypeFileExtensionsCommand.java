@@ -18,14 +18,14 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetMimeTypeFileExtensionsForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.data.core.server.entity.MimeTypeFileExtension;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
-import java.util.Arrays;
+import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class GetMimeTypeFileExtensionsCommand
@@ -34,8 +34,7 @@ public class GetMimeTypeFileExtensionsCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                ));
+        FORM_FIELD_DEFINITIONS = List.of();
     }
     
     /** Creates a new instance of GetMimeTypeFileExtensionsCommand */
@@ -45,17 +44,17 @@ public class GetMimeTypeFileExtensionsCommand
 
     @Override
     protected Collection<MimeTypeFileExtension> getEntities() {
-        var coreControl = getCoreControl();
+        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
 
-        return coreControl.getMimeTypeFileExtensions();
+        return mimeTypeControl.getMimeTypeFileExtensions();
     }
 
     @Override
     protected BaseResult getResult(Collection<MimeTypeFileExtension> entities) {
-        var coreControl = getCoreControl();
+        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
         var result = CoreResultFactory.getGetMimeTypeFileExtensionsResult();
 
-        result.setMimeTypeFileExtensions(coreControl.getMimeTypeFileExtensionTransfers(getUserVisit(), entities));
+        result.setMimeTypeFileExtensions(mimeTypeControl.getMimeTypeFileExtensionTransfers(getUserVisit(), entities));
 
         return result;
     }
