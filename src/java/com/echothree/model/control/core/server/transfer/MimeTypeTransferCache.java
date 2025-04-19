@@ -20,6 +20,7 @@ import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
@@ -30,6 +31,7 @@ public class MimeTypeTransferCache
         extends BaseCoreTransferCache<MimeType, MimeTypeTransfer> {
 
     CoreControl coreControl = Session.getModelController(CoreControl.class);
+    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
 
     boolean includeMimeTypeFileExtensions;
     
@@ -76,13 +78,13 @@ public class MimeTypeTransferCache
             var entityAttributeType = filterEntityAttributeType ? null : coreControl.getEntityAttributeTypeTransfer(userVisit, mimeTypeDetail.getEntityAttributeType());
             var isDefault = filterIsDefault ? null : mimeTypeDetail.getIsDefault();
             var sortOrder = filterSortOrder ? null : mimeTypeDetail.getSortOrder();
-            var description = filterDescription ? null : coreControl.getBestMimeTypeDescription(mimeType, getLanguage());
+            var description = filterDescription ? null : mimeTypeControl.getBestMimeTypeDescription(mimeType, getLanguage());
 
             mimeTypeTransfer = new MimeTypeTransfer(mimeTypeName, entityAttributeType, isDefault, sortOrder, description);
             put(mimeType, mimeTypeTransfer);
-            
+
             if(includeMimeTypeFileExtensions) {
-                mimeTypeTransfer.setMimeTypeFileExtensions(new ListWrapper<>(coreControl.getMimeTypeFileExtensionTransfersByMimeType(userVisit, mimeType)));
+                mimeTypeTransfer.setMimeTypeFileExtensions(new ListWrapper<>(mimeTypeControl.getMimeTypeFileExtensionTransfersByMimeType(userVisit, mimeType)));
             }
         }
 

@@ -19,6 +19,7 @@ package com.echothree.control.user.item.server.command;
 import com.echothree.control.user.item.common.form.CreateItemDescriptionTypeForm;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -121,13 +122,12 @@ public class CreateItemDescriptionTypeCommand
             }
             
             if(parentItemDescriptionTypeName == null || parentItemDescriptionType != null) {
+                var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
                 MimeTypeUsageType mimeTypeUsageType = null;
                 var mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
 
                 if(mimeTypeUsageTypeName != null) {
-                    var coreControl = getCoreControl();
-
-                    mimeTypeUsageType = coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
+                    mimeTypeUsageType = mimeTypeControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
                 }
 
                 if(mimeTypeUsageTypeName == null || mimeTypeUsageType != null) {
@@ -150,13 +150,12 @@ public class CreateItemDescriptionTypeCommand
                     }
                     
                     if(!hasExecutionErrors()) {
-                        var coreControl = getCoreControl();
                         var preferredMimeTypeName = form.getPreferredMimeTypeName();
-                        var preferredMimeType = preferredMimeTypeName == null ? null : coreControl.getMimeTypeByName(preferredMimeTypeName);
+                        var preferredMimeType = preferredMimeTypeName == null ? null : mimeTypeControl.getMimeTypeByName(preferredMimeTypeName);
 
                         if(preferredMimeTypeName == null || preferredMimeType != null) {
                             if(preferredMimeType != null && mimeTypeUsageType != null) {
-                                var mimeTypeUsage = coreControl.getMimeTypeUsage(preferredMimeType, mimeTypeUsageType);
+                                var mimeTypeUsage = mimeTypeControl.getMimeTypeUsage(preferredMimeType, mimeTypeUsageType);
 
                                 if(mimeTypeUsage == null) {
                                     addExecutionError(ExecutionErrors.UnknownMimeTypeUsage.name());

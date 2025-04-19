@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.forum.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.forum.common.ForumOptions;
 import com.echothree.model.control.forum.common.transfer.ForumMessageAttachmentTransfer;
 import com.echothree.model.control.forum.server.control.ForumControl;
@@ -27,8 +27,8 @@ import com.echothree.util.server.persistence.Session;
 
 public class ForumMessageAttachmentTransferCache
         extends BaseForumTransferCache<ForumMessageAttachment, ForumMessageAttachmentTransfer> {
-    
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
+    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     boolean includeBlob;
     boolean includeClob;
     boolean includeETag;
@@ -54,7 +54,7 @@ public class ForumMessageAttachmentTransferCache
             var forumMessageAttachmentDetail = forumMessageAttachment.getLastDetail();
             var forumMessage = forumControl.getForumMessageTransfer(userVisit, forumMessageAttachmentDetail.getForumMessage());
             var forumMessageAttachmentSequence = forumMessageAttachmentDetail.getForumMessageAttachmentSequence();
-            var mimeType = coreControl.getMimeTypeTransfer(userVisit, forumMessageAttachmentDetail.getMimeType());
+            var mimeType = mimeTypeControl.getMimeTypeTransfer(userVisit, forumMessageAttachmentDetail.getMimeType());
             var description = forumControl.getBestForumMessageAttachmentDescription(forumMessageAttachment, getLanguage());
             ByteArray blob = null;
             String clob = null;

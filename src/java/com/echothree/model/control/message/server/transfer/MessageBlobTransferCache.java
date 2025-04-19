@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.message.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.message.common.transfer.MessageBlobTransfer;
 import com.echothree.model.control.message.server.control.MessageControl;
 import com.echothree.model.control.party.server.control.PartyControl;
@@ -26,16 +26,13 @@ import com.echothree.util.server.persistence.Session;
 
 public class MessageBlobTransferCache
         extends BaseMessageTransferCache<MessageBlob, MessageBlobTransfer> {
-    
-    CoreControl coreControl;
-    PartyControl partyControl;
+
+    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of MessageBlobTransferCache */
     public MessageBlobTransferCache(UserVisit userVisit, MessageControl messageControl) {
         super(userVisit, messageControl);
-        
-        coreControl = Session.getModelController(CoreControl.class);
-        partyControl = Session.getModelController(PartyControl.class);
     }
     
     public MessageBlobTransfer getMessageBlobTransfer(MessageBlob messageBlob) {
@@ -44,7 +41,7 @@ public class MessageBlobTransferCache
         if(messageBlobTransfer == null) {
             var message = messageControl.getMessageTransfer(userVisit, messageBlob.getMessage());
             var language = partyControl.getLanguageTransfer(userVisit, messageBlob.getLanguage());
-            var mimeType = coreControl.getMimeTypeTransfer(userVisit, messageBlob.getMimeType());
+            var mimeType = mimeTypeControl.getMimeTypeTransfer(userVisit, messageBlob.getMimeType());
             var blob = messageBlob.getBlob();
             
             messageBlobTransfer = new MessageBlobTransfer(message, language, mimeType, blob);

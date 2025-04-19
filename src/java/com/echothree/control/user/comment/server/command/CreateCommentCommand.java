@@ -21,6 +21,7 @@ import com.echothree.control.user.comment.common.result.CommentResultFactory;
 import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
@@ -77,11 +78,11 @@ public class CreateCommentCommand
         var commentedByUsername = form.getCommentedByUsername();
         var workflowEntranceName = form.getWorkflowEntranceName();
         var workflowEntrance = commentType.getLastDetail().getWorkflowEntrance();
-        
+
         if(commentedByUsername != null) {
             var userControl = getUserControl();
             var userLogin = userControl.getUserLoginByUsername(commentedByUsername);
-            
+
             if(userLogin != null) {
                 commentedByEntityInstance = coreControl.getEntityInstanceByBasePK(userLogin.getPartyPK());
             } else {
@@ -90,31 +91,31 @@ public class CreateCommentCommand
         } else {
             commentedByEntityInstance = coreControl.getEntityInstanceByBasePK(createdBy);
         }
-        
+
         if(!hasExecutionErrors() && (workflowEntranceName != null && workflowEntrance != null)) {
             var workflowControl = Session.getModelController(WorkflowControl.class);
-            
+
             workflowEntrance = workflowControl.getWorkflowEntranceByName(workflowEntrance.getLastDetail().getWorkflow(),
                     workflowEntranceName);
-            
+
             if(workflowEntrance == null) {
                 addExecutionError(ExecutionErrors.UnknownWorkflowEntranceName.name(), workflowEntranceName);
             }
         }
-        
+
         if(!hasExecutionErrors()) {
             var description = form.getDescription();
             var commentSequence = commentType.getLastDetail().getCommentSequence();
-            
+
             if(commentSequence == null) {
                 commentSequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.COMMENT.name());
             }
-            
+
             commentName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(commentSequence);
 
             var comment = commentControl.createComment(commentName, commentType, commentedEntityInstance,
                     commentedByEntityInstance, language == null? getPreferredLanguage(): language, description, mimeType, createdBy);
-            
+
             if(blobComment != null) {
                 commentControl.createCommentBlob(comment, blobComment, createdBy);
             } else if(clobComment != null) {
@@ -122,19 +123,19 @@ public class CreateCommentCommand
             } else if(stringComment != null) {
                 commentControl.createCommentString(comment, stringComment, createdBy);
             }
-            
+
             if(workflowEntrance != null) {
                 var workflowControl = Session.getModelController(WorkflowControl.class);
                 var entityInstance = coreControl.getEntityInstanceByBasePK(comment.getPrimaryKey());
-                
+
                 // TODO: WorkEffort should be created for addEntityToWorkflow
                 workflowControl.addEntityToWorkflow(workflowEntrance, entityInstance, null, null, createdBy);
             }
         }
-        
+
         return commentName;
     }
-    
+
     @Override
     protected BaseResult execute() {
         var result = CommentResultFactory.getCreateCommentResult();
@@ -142,13 +143,13 @@ public class CreateCommentCommand
         String commentName = null;
         var entityRef = form.getEntityRef();
         var commentedEntityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
-        
+
         if(commentedEntityInstance != null) {
             var commentControl = Session.getModelController(CommentControl.class);
             var commentTypeName = form.getCommentTypeName();
             var commentType = commentControl.getCommentTypeByName(commentedEntityInstance.getEntityType(),
                     commentTypeName);
-            
+
             if(commentType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = form.getLanguageIsoName();
@@ -167,7 +168,8 @@ public class CreateCommentCommand
                             addExecutionError(ExecutionErrors.MissingStringComment.name());
                         }
                     } else {
-                        var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+                        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
+                        var mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
 
                         if(mimeType != null) {
                             var entityAttributeType = mimeType.getLastDetail().getEntityAttributeType();

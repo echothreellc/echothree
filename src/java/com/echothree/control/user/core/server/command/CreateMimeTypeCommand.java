@@ -17,12 +17,14 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateMimeTypeForm;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -49,11 +51,12 @@ public class CreateMimeTypeCommand
     
    @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+       var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
        var mimeTypeName = form.getMimeTypeName();
-       var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
-        
+       var mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
+
         if(mimeType == null) {
+            var coreControl = getCoreControl();
             var entityAttributeTypeName = form.getEntityAttributeTypeName();
             var entityAttributeType = coreControl.getEntityAttributeTypeByName(entityAttributeTypeName);
 
@@ -63,12 +66,12 @@ public class CreateMimeTypeCommand
                 var description = form.getDescription();
                 var createdBy = getPartyPK();
 
-                mimeType = coreControl.createMimeType(mimeTypeName, entityAttributeType, isDefault, sortOrder, createdBy);
+                mimeType = mimeTypeControl.createMimeType(mimeTypeName, entityAttributeType, isDefault, sortOrder, createdBy);
 
                 if(description != null) {
                     var language = getPreferredLanguage();
 
-                    coreControl.createMimeTypeDescription(mimeType, language, description, createdBy);
+                    mimeTypeControl.createMimeTypeDescription(mimeType, language, description, createdBy);
                 }
             } else {
                 addExecutionError(ExecutionErrors.UnknownEntityAttributeTypeName.name(), entityAttributeTypeName);

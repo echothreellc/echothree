@@ -19,7 +19,7 @@ package com.echothree.model.control.core.server.logic;
 import com.echothree.model.control.core.common.exception.UnknownMimeTypeNameException;
 import com.echothree.model.control.core.common.exception.UnknownMimeTypeUsageException;
 import com.echothree.model.control.core.common.exception.UnknownMimeTypeUsageTypeNameException;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.core.server.entity.MimeTypeUsage;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
@@ -44,8 +44,8 @@ public class MimeTypeLogic
     }
     
     public MimeType getMimeTypeByName(final ExecutionErrorAccumulator eea, final String mimeTypeName) {
-        var coreControl = Session.getModelController(CoreControl.class);
-        var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
+        var mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
 
         if(mimeType == null) {
             handleExecutionError(UnknownMimeTypeNameException.class, eea, ExecutionErrors.UnknownMimeTypeName.name(), mimeTypeName);
@@ -55,8 +55,8 @@ public class MimeTypeLogic
     }
     
     public MimeTypeUsageType getMimeTypeUsageTypeByName(final ExecutionErrorAccumulator eea, final String mimeTypeUsageTypeName) {
-        var coreControl = Session.getModelController(CoreControl.class);
-        var mimeTypeUsageType = coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
+        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
+        var mimeTypeUsageType = mimeTypeControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
 
         if(mimeTypeUsageType == null) {
             handleExecutionError(UnknownMimeTypeUsageTypeNameException.class, eea, ExecutionErrors.UnknownMimeTypeUsageTypeName.name(), mimeTypeUsageTypeName);
@@ -66,8 +66,8 @@ public class MimeTypeLogic
     }
     
     public MimeTypeUsage getMimeTypeUsage(final ExecutionErrorAccumulator eea, final MimeType mimeType, final MimeTypeUsageType mimeTypeUsageType) {
-        var coreControl = Session.getModelController(CoreControl.class);
-        var mimeTypeUsage = coreControl.getMimeTypeUsage(mimeType, mimeTypeUsageType);
+        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
+        var mimeTypeUsage = mimeTypeControl.getMimeTypeUsage(mimeType, mimeTypeUsageType);
 
         if(mimeTypeUsage == null) {
             handleExecutionError(UnknownMimeTypeUsageException.class, eea, ExecutionErrors.UnknownMimeTypeUsage.name(), mimeType.getLastDetail().getMimeTypeName(),
@@ -83,16 +83,16 @@ public class MimeTypeLogic
         var parameterCount = (mimeTypeName == null ? 0 : 1) + (value == null ? 0 : 1);
         
         if(parameterCount == 2) {
-            var coreControl = Session.getModelController(CoreControl.class);
+            var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
             
-            mimeType = mimeTypeName == null? null: coreControl.getMimeTypeByName(mimeTypeName);
+            mimeType = mimeTypeName == null? null: mimeTypeControl.getMimeTypeByName(mimeTypeName);
             
             if(mimeTypeName == null || mimeType != null) {
                 if(mimeTypeUsageTypeName != null) {
-                    var mimeTypeUsageType = coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
+                    var mimeTypeUsageType = mimeTypeControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
                     
                     if(mimeTypeUsageType != null) {
-                        if(coreControl.getMimeTypeUsage(mimeType, mimeTypeUsageType) == null) {
+                        if(mimeTypeControl.getMimeTypeUsage(mimeType, mimeTypeUsageType) == null) {
                             eea.addExecutionError(mimeTypeUsageError, mimeTypeName, mimeTypeUsageTypeName);
                         }
                     } else {

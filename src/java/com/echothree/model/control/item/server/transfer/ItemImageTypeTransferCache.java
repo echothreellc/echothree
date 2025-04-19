@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.item.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.item.common.transfer.ItemImageTypeTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemImageType;
@@ -25,8 +25,8 @@ import com.echothree.util.server.persistence.Session;
 
 public class ItemImageTypeTransferCache
         extends BaseItemTransferCache<ItemImageType, ItemImageTypeTransfer> {
-    
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
+    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     
     /** Creates a new instance of ItemImageTypeTransferCache */
     public ItemImageTypeTransferCache(UserVisit userVisit, ItemControl itemControl) {
@@ -43,7 +43,7 @@ public class ItemImageTypeTransferCache
             var itemImageTypeDetail = itemImageType.getLastDetail();
             var itemImageTypeName = itemImageTypeDetail.getItemImageTypeName();
             var preferredMimeType = itemImageTypeDetail.getPreferredMimeType();
-            var preferredMimeTypeTransfer = preferredMimeType == null ? null : coreControl.getMimeTypeTransfer(userVisit, preferredMimeType);
+            var preferredMimeTypeTransfer = preferredMimeType == null ? null : mimeTypeControl.getMimeTypeTransfer(userVisit, preferredMimeType);
             var quality = itemImageTypeDetail.getQuality();
             var isDefault = itemImageTypeDetail.getIsDefault();
             var sortOrder = itemImageTypeDetail.getSortOrder();

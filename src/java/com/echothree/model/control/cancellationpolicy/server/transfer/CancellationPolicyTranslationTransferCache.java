@@ -18,15 +18,15 @@ package com.echothree.model.control.cancellationpolicy.server.transfer;
 
 import com.echothree.model.control.cancellationpolicy.common.transfer.CancellationPolicyTranslationTransfer;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicyTranslation;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
 public class CancellationPolicyTranslationTransferCache
         extends BaseCancellationPolicyDescriptionTransferCache<CancellationPolicyTranslation, CancellationPolicyTranslationTransfer> {
-    
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
+    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     
     /** Creates a new instance of CancellationPolicyTranslationTransferCache */
     public CancellationPolicyTranslationTransferCache(UserVisit userVisit, CancellationPolicyControl cancellationPolicyControl) {
@@ -41,7 +41,7 @@ public class CancellationPolicyTranslationTransferCache
             var cancellationPolicyTransfer = cancellationPolicyControl.getCancellationPolicyTransfer(userVisit, cancellationPolicyTranslation.getCancellationPolicy());
             var description = cancellationPolicyTranslation.getDescription();
             var policyMimeType = cancellationPolicyTranslation.getPolicyMimeType();
-            var policyMimeTypeTransfer = policyMimeType == null? null: coreControl.getMimeTypeTransfer(userVisit, policyMimeType);
+            var policyMimeTypeTransfer = policyMimeType == null? null: mimeTypeControl.getMimeTypeTransfer(userVisit, policyMimeType);
             var policy = cancellationPolicyTranslation.getPolicy();
             
             cancellationPolicyTranslationTransfer = new CancellationPolicyTranslationTransfer(cancellationPolicyTransfer, languageTransfer, description,

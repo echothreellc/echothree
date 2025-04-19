@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.document.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.document.common.DocumentOptions;
 import com.echothree.model.control.document.common.transfer.DocumentTransfer;
 import com.echothree.model.control.document.server.control.DocumentControl;
@@ -27,8 +27,8 @@ import com.echothree.util.server.persistence.Session;
 
 public class DocumentTransferCache
         extends BaseDocumentTransferCache<Document, DocumentTransfer> {
-    
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
+    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     boolean includeBlob;
     boolean includeClob;
     boolean includeETag;
@@ -54,7 +54,7 @@ public class DocumentTransferCache
             var documentDetail = document.getLastDetail();
             var documentName = documentDetail.getDocumentName();
             var documentType = documentControl.getDocumentTypeTransfer(userVisit, documentDetail.getDocumentType());
-            var mimeType = coreControl.getMimeTypeTransfer(userVisit, documentDetail.getMimeType());
+            var mimeType = mimeTypeControl.getMimeTypeTransfer(userVisit, documentDetail.getMimeType());
             var pages = documentDetail.getPages();
             var description = documentControl.getBestDocumentDescription(document, getLanguage());
             ByteArray blob = null;

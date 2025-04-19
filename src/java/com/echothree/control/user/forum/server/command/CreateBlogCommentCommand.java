@@ -18,6 +18,7 @@ package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.CreateBlogCommentForm;
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.forum.server.logic.ForumLogic;
@@ -26,11 +27,11 @@ import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -105,9 +106,9 @@ public class CreateBlogCommentCommand
                                     }
 
                                     if(!hasExecutionErrors()) {
-                                        var coreControl = getCoreControl();
+                                        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
                                         var contentMimeTypeName = form.getContentMimeTypeName();
-                                        var contentMimeType = contentMimeTypeName == null? null: coreControl.getMimeTypeByName(contentMimeTypeName);
+                                        var contentMimeType = contentMimeTypeName == null? null: mimeTypeControl.getMimeTypeByName(contentMimeTypeName);
 
                                         if(contentMimeType != null) {
                                             var forumMimeType = forumControl.getForumMimeType(forum, contentMimeType);

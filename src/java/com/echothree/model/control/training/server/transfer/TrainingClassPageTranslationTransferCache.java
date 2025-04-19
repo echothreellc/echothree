@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.training.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.training.common.transfer.TrainingClassPageTranslationTransfer;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.TrainingClassPageTranslation;
@@ -25,8 +25,8 @@ import com.echothree.util.server.persistence.Session;
 
 public class TrainingClassPageTranslationTransferCache
         extends BaseTrainingDescriptionTransferCache<TrainingClassPageTranslation, TrainingClassPageTranslationTransfer> {
-    
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
+    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     
     /** Creates a new instance of TrainingClassPageTranslationTransferCache */
     public TrainingClassPageTranslationTransferCache(UserVisit userVisit, TrainingControl trainingControl) {
@@ -40,7 +40,7 @@ public class TrainingClassPageTranslationTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, trainingClassPageTranslation.getLanguage());
             var trainingClassPageTransfer = trainingControl.getTrainingClassPageTransfer(userVisit, trainingClassPageTranslation.getTrainingClassPage());
             var description = trainingClassPageTranslation.getDescription();
-            var pageMimeTypeTransfer = coreControl.getMimeTypeTransfer(userVisit, trainingClassPageTranslation.getPageMimeType());
+            var pageMimeTypeTransfer = mimeTypeControl.getMimeTypeTransfer(userVisit, trainingClassPageTranslation.getPageMimeType());
             var page = trainingClassPageTranslation.getPage();
             
             trainingClassPageTranslationTransfer = new TrainingClassPageTranslationTransfer(trainingClassPageTransfer, languageTransfer, description,

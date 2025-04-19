@@ -17,12 +17,14 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.SetDefaultMimeTypeForm;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -45,17 +47,17 @@ public class SetDefaultMimeTypeCommand
     
    @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
-       var mimeTypeName = form.getMimeTypeName();
-       var mimeTypeDetailValue = coreControl.getMimeTypeDetailValueByNameForUpdate(mimeTypeName);
-        
+        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
+        var mimeTypeName = form.getMimeTypeName();
+        var mimeTypeDetailValue = mimeTypeControl.getMimeTypeDetailValueByNameForUpdate(mimeTypeName);
+
         if(mimeTypeDetailValue != null) {
             mimeTypeDetailValue.setIsDefault(Boolean.TRUE);
-            coreControl.updateMimeTypeFromValue(mimeTypeDetailValue, getPartyPK());
+            mimeTypeControl.updateMimeTypeFromValue(mimeTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownMimeTypeName.name(), mimeTypeName);
         }
-        
+
         return null;
     }
     

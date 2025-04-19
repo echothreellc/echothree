@@ -17,12 +17,13 @@
 package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.DeleteForumMimeTypeForm;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -53,9 +54,9 @@ public class DeleteForumMimeTypeCommand
         var forum = forumControl.getForumByName(forumName);
         
         if(forum != null) {
-            var coreControl = getCoreControl();
+            var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
             var mimeTypeName = form.getMimeTypeName();
-            var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+            var mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
             
             if(mimeType != null) {
                 var forumMimeType = forumControl.getForumMimeTypeForUpdate(forum, mimeType);

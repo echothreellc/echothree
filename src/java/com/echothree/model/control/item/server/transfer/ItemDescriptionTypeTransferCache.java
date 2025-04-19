@@ -18,7 +18,7 @@ package com.echothree.model.control.item.server.transfer;
 
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.item.common.ItemProperties;
 import com.echothree.model.control.item.common.transfer.ItemDescriptionTypeTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
@@ -29,8 +29,8 @@ import com.echothree.util.server.persistence.Session;
 
 public class ItemDescriptionTypeTransferCache
         extends BaseItemTransferCache<ItemDescriptionType, ItemDescriptionTypeTransfer> {
-    
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
+    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     
     TransferProperties transferProperties;
     boolean filterItemDescriptionTypeName;
@@ -100,7 +100,7 @@ public class ItemDescriptionTypeTransferCache
             var parentItemDescriptionTypeTransfer = parentItemDescriptionType == null ? null : itemControl.getItemDescriptionTypeTransfer(userVisit, parentItemDescriptionType);
             var useParentIfMissing = filterUseParentIfMissing ? null : itemDescriptionTypeDetail.getUseParentIfMissing();
             var mimeTypeUsageType = filterMimeTypeUsageType ? null : itemDescriptionTypeDetail.getMimeTypeUsageType();
-            var mimeTypeUsageTypeTransfer = mimeTypeUsageType == null ? null : coreControl.getMimeTypeUsageTypeTransfer(userVisit, mimeTypeUsageType);
+            var mimeTypeUsageTypeTransfer = mimeTypeUsageType == null ? null : mimeTypeControl.getMimeTypeUsageTypeTransfer(userVisit, mimeTypeUsageType);
             var checkContentWebAddress = filterCheckContentWebAddress ? null : itemDescriptionTypeDetail.getCheckContentWebAddress();
             var includeInIndex = filterIncludeInIndex ? null : itemDescriptionTypeDetail.getIncludeInIndex();
             var indexDefault = filterIndexDefault ? null : itemDescriptionTypeDetail.getIndexDefault();
@@ -127,7 +127,7 @@ public class ItemDescriptionTypeTransferCache
                 maximumWidth = filterMaximumWidth ? null : itemImageDescriptionType.getMaximumWidth();
                 preferredHeight = filterPreferredHeight ? null : itemImageDescriptionType.getPreferredHeight();
                 preferredWidth = filterPreferredWidth ? null : itemImageDescriptionType.getPreferredWidth();
-                preferredMimeTypeTransfer = preferredMimeType == null ? null : coreControl.getMimeTypeTransfer(userVisit, preferredMimeType);
+                preferredMimeTypeTransfer = preferredMimeType == null ? null : mimeTypeControl.getMimeTypeTransfer(userVisit, preferredMimeType);
                 quality = filterQuality ? null : itemImageDescriptionType.getQuality();
                 scaleFromParent = filterScaleFromParent ? null : itemImageDescriptionType.getScaleFromParent();
             }

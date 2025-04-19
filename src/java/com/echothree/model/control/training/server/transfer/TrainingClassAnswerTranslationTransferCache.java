@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.training.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.training.common.transfer.TrainingClassAnswerTranslationTransfer;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.TrainingClassAnswerTranslation;
@@ -25,8 +25,8 @@ import com.echothree.util.server.persistence.Session;
 
 public class TrainingClassAnswerTranslationTransferCache
         extends BaseTrainingDescriptionTransferCache<TrainingClassAnswerTranslation, TrainingClassAnswerTranslationTransfer> {
-    
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
+    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     
     /** Creates a new instance of TrainingClassAnswerTranslationTransferCache */
     public TrainingClassAnswerTranslationTransferCache(UserVisit userVisit, TrainingControl trainingControl) {
@@ -39,10 +39,10 @@ public class TrainingClassAnswerTranslationTransferCache
         if(trainingClassAnswerTranslationTransfer == null) {
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, trainingClassAnswerTranslation.getLanguage());
             var trainingClassAnswerTransfer = trainingControl.getTrainingClassAnswerTransfer(userVisit, trainingClassAnswerTranslation.getTrainingClassAnswer());
-            var answerMimeTypeTransfer = coreControl.getMimeTypeTransfer(userVisit, trainingClassAnswerTranslation.getAnswerMimeType());
+            var answerMimeTypeTransfer = mimeTypeControl.getMimeTypeTransfer(userVisit, trainingClassAnswerTranslation.getAnswerMimeType());
             var answer = trainingClassAnswerTranslation.getAnswer();
             var selectedMimeType = trainingClassAnswerTranslation.getSelectedMimeType();
-            var selectedMimeTypeTransfer = selectedMimeType == null? null: coreControl.getMimeTypeTransfer(userVisit, selectedMimeType);
+            var selectedMimeTypeTransfer = selectedMimeType == null? null: mimeTypeControl.getMimeTypeTransfer(userVisit, selectedMimeType);
             var selected = trainingClassAnswerTranslation.getSelected();
             
             trainingClassAnswerTranslationTransfer = new TrainingClassAnswerTranslationTransfer(trainingClassAnswerTransfer, languageTransfer,

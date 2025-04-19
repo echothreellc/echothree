@@ -20,6 +20,7 @@ import com.echothree.model.control.comment.common.CommentOptions;
 import com.echothree.model.control.comment.common.transfer.CommentTransfer;
 import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.comment.server.entity.Comment;
@@ -29,10 +30,11 @@ import com.echothree.util.server.persistence.Session;
 
 public class CommentTransferCache
         extends BaseCommentTransferCache<Comment, CommentTransfer> {
-    
-    CoreControl coreControl;
-    PartyControl partyControl;
-    WorkflowControl workflowControl;
+
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     boolean includeBlob;
     boolean includeClob;
@@ -43,11 +45,7 @@ public class CommentTransferCache
     /** Creates a new instance of CommentTransferCache */
     public CommentTransferCache(UserVisit userVisit, CommentControl commentControl) {
         super(userVisit, commentControl);
-        
-        coreControl = Session.getModelController(CoreControl.class);
-        partyControl = Session.getModelController(PartyControl.class);
-        workflowControl = Session.getModelController(WorkflowControl.class);
-        
+
         var options = session.getOptions();
         if(options != null) {
             includeBlob = options.contains(CommentOptions.CommentIncludeBlob);
@@ -78,7 +76,7 @@ public class CommentTransferCache
             commentTransfer.setLanguage(partyControl.getLanguageTransfer(userVisit, commentDetail.getLanguage()));
             commentTransfer.setDescription(commentDetail.getDescription());
             var mimeType = commentDetail.getMimeType();
-            commentTransfer.setMimeType(mimeType == null? null: coreControl.getMimeTypeTransfer(userVisit, mimeType));
+            commentTransfer.setMimeType(mimeType == null? null: mimeTypeControl.getMimeTypeTransfer(userVisit, mimeType));
             commentTransfer.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityInstance, false, false, false, false));
             
             if(includeString) {

@@ -16,8 +16,8 @@
 
 package com.echothree.model.control.message.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.message.common.transfer.MessageTypeTransfer;
 import com.echothree.model.control.message.server.control.MessageControl;
 import com.echothree.model.data.message.server.entity.MessageType;
@@ -27,8 +27,8 @@ import com.echothree.util.server.persistence.Session;
 public class MessageTypeTransferCache
         extends BaseMessageTransferCache<MessageType, MessageTypeTransfer> {
     
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
     EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
+    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
 
     /** Creates a new instance of MessageTypeTransferCache */
     public MessageTypeTransferCache(UserVisit userVisit, MessageControl messageControl) {
@@ -45,7 +45,7 @@ public class MessageTypeTransferCache
             var entityTypeTransfer = entityTypeControl.getEntityTypeTransfer(userVisit, messageTypeDetail.getEntityType());
             var messageTypeName = messageTypeDetail.getMessageTypeName();
             var mimeTypeUsageType = messageTypeDetail.getMimeTypeUsageType();
-            var mimeTypeUsageTypeTransfer = mimeTypeUsageType == null? null: coreControl.getMimeTypeUsageTypeTransfer(userVisit, mimeTypeUsageType);
+            var mimeTypeUsageTypeTransfer = mimeTypeUsageType == null? null: mimeTypeControl.getMimeTypeUsageTypeTransfer(userVisit, mimeTypeUsageType);
             var sortOrder = messageTypeDetail.getSortOrder();
             var description = messageControl.getBestMessageTypeDescription(messageType, getLanguage());
             

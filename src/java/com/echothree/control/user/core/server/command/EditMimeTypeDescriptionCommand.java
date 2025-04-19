@@ -22,6 +22,7 @@ import com.echothree.control.user.core.common.form.EditMimeTypeDescriptionForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditMimeTypeDescriptionResult;
 import com.echothree.control.user.core.common.spec.MimeTypeDescriptionSpec;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -29,10 +30,10 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.core.server.entity.MimeTypeDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -84,10 +85,10 @@ public class EditMimeTypeDescriptionCommand
 
     @Override
     public MimeTypeDescription getEntity(EditMimeTypeDescriptionResult result) {
-        var coreControl = getCoreControl();
+        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
         MimeTypeDescription mimeTypeDescription = null;
         var mimeTypeName = spec.getMimeTypeName();
-        var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+        var mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
 
         if(mimeType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
@@ -96,9 +97,9 @@ public class EditMimeTypeDescriptionCommand
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    mimeTypeDescription = coreControl.getMimeTypeDescription(mimeType, language);
+                    mimeTypeDescription = mimeTypeControl.getMimeTypeDescription(mimeType, language);
                 } else { // EditMode.UPDATE
-                    mimeTypeDescription = coreControl.getMimeTypeDescriptionForUpdate(mimeType, language);
+                    mimeTypeDescription = mimeTypeControl.getMimeTypeDescriptionForUpdate(mimeType, language);
                 }
 
                 if(mimeTypeDescription == null) {
@@ -121,9 +122,9 @@ public class EditMimeTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditMimeTypeDescriptionResult result, MimeTypeDescription mimeTypeDescription) {
-        var coreControl = getCoreControl();
+        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
 
-        result.setMimeTypeDescription(coreControl.getMimeTypeDescriptionTransfer(getUserVisit(), mimeTypeDescription));
+        result.setMimeTypeDescription(mimeTypeControl.getMimeTypeDescriptionTransfer(getUserVisit(), mimeTypeDescription));
     }
 
     @Override
@@ -133,12 +134,12 @@ public class EditMimeTypeDescriptionCommand
 
     @Override
     public void doUpdate(MimeTypeDescription mimeTypeDescription) {
-        var coreControl = getCoreControl();
-        var mimeTypeDescriptionValue = coreControl.getMimeTypeDescriptionValue(mimeTypeDescription);
+        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
+        var mimeTypeDescriptionValue = mimeTypeControl.getMimeTypeDescriptionValue(mimeTypeDescription);
 
         mimeTypeDescriptionValue.setDescription(edit.getDescription());
 
-        coreControl.updateMimeTypeDescriptionFromValue(mimeTypeDescriptionValue, getPartyPK());
+        mimeTypeControl.updateMimeTypeDescriptionFromValue(mimeTypeDescriptionValue, getPartyPK());
     }
 
 }

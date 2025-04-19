@@ -18,15 +18,16 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetMimeTypeDescriptionForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -63,10 +64,10 @@ public class GetMimeTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
         var result = CoreResultFactory.getGetMimeTypeDescriptionResult();
         var mimeTypeName = form.getMimeTypeName();
-        var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+        var mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
         
         if(mimeType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
@@ -74,10 +75,10 @@ public class GetMimeTypeDescriptionCommand
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                var mimeTypeDescription = coreControl.getMimeTypeDescription(mimeType, language);
+                var mimeTypeDescription = mimeTypeControl.getMimeTypeDescription(mimeType, language);
                 
                 if(mimeTypeDescription != null) {
-                    result.setMimeTypeDescription(coreControl.getMimeTypeDescriptionTransfer(getUserVisit(), mimeTypeDescription));
+                    result.setMimeTypeDescription(mimeTypeControl.getMimeTypeDescriptionTransfer(getUserVisit(), mimeTypeDescription));
                 } else {
                     addExecutionError(ExecutionErrors.UnknownMimeTypeDescription.name(), mimeTypeName, languageIsoName);
                 }
