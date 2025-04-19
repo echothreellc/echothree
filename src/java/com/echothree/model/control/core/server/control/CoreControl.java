@@ -683,9 +683,9 @@ public class CoreControl
         }
         
         if(pk != null) {
-            var componentVendorControl = Session.getModelController(ComponentVendorControl.class);
+            var componentControl = Session.getModelController(ComponentControl.class);
             var componentVendorName = pk.getComponentVendorName();
-            var componentVendor = componentVendorControl.getComponentVendorByNameFromCache(componentVendorName);
+            var componentVendor = componentControl.getComponentVendorByNameFromCache(componentVendorName);
             
             if(CoreDebugFlags.LogEntityInstanceResolution) {
                 getLog().info("--- componentVendor = " + componentVendor);
@@ -757,9 +757,9 @@ public class CoreControl
             var entityRefParts = Splitter.on('.').trimResults().omitEmptyStrings().splitToList(entityRef).toArray(new String[0]);
             
             if(entityRefParts.length == 3) {
-                var componentVendorControl = Session.getModelController(ComponentVendorControl.class);
+                var componentControl = Session.getModelController(ComponentControl.class);
                 var componentVendorName = entityRefParts[0];
-                var componentVendor = componentVendorControl.getComponentVendorByNameFromCache(componentVendorName);
+                var componentVendor = componentControl.getComponentVendorByNameFromCache(componentVendorName);
                 
                 if(componentVendor != null) {
                     var entityTypeControl = Session.getModelController(EntityTypeControl.class);

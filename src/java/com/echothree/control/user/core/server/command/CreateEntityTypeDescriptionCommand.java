@@ -65,7 +65,7 @@ public class CreateEntityTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var entityTypeName = form.getEntityTypeName();

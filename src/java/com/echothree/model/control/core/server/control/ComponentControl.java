@@ -47,11 +47,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ComponentVendorControl
+public class ComponentControl
         extends BaseCoreControl {
 
-    /** Creates a new instance of ComponentVendorControl */
-    public ComponentVendorControl() {
+    /** Creates a new instance of ComponentControl */
+    public ComponentControl() {
         super();
     }
 

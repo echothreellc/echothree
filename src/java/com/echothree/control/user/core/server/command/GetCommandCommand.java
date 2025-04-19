@@ -52,7 +52,7 @@ public class GetCommandCommand
         var commandControl = Session.getModelController(CommandControl.class);
         var result = CoreResultFactory.getGetCommandResult();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = getComponentVendorControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var commandName = form.getCommandName();
