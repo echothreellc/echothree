@@ -299,7 +299,7 @@ public class OfferItemSelectorEvaluator
                         log.info("--- offers = " + offers);
                     }
 
-                    var entityInstance = coreControl.getEntityInstanceByBasePK(offerItemSelector.getPrimaryKey());
+                    var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(offerItemSelector.getPrimaryKey());
                     var entityTime = coreControl.getEntityTime(entityInstance);
                     var entityCreatedTime = entityTime.getCreatedTime();
                     var entityModifiedTime = entityTime.getModifiedTime();

@@ -19,6 +19,7 @@ package com.echothree.model.control.core.server.transfer;
 import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.transfer.CacheEntryDependencyTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.core.server.entity.CacheEntryDependency;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
@@ -28,6 +29,7 @@ public class CacheEntryDependencyTransferCache
         extends BaseCoreTransferCache<CacheEntryDependency, CacheEntryDependencyTransfer> {
 
     CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     TransferProperties transferProperties;
     boolean filterCacheEntry;
@@ -53,7 +55,7 @@ public class CacheEntryDependencyTransferCache
         
         if(cacheEntryDependencyTransfer == null) {
             var cacheEntry = filterCacheEntry ? null : coreControl.getCacheEntryTransfer(userVisit, cacheEntryDependency.getCacheEntry());
-            var entityInstance = filterEntityInstance ? null : coreControl.getEntityInstanceTransfer(userVisit, cacheEntryDependency.getEntityInstance(), false, false, false, false);
+            var entityInstance = filterEntityInstance ? null : entityInstanceControl.getEntityInstanceTransfer(userVisit, cacheEntryDependency.getEntityInstance(), false, false, false, false);
 
             cacheEntryDependencyTransfer = new CacheEntryDependencyTransfer(cacheEntry, entityInstance);
             put(cacheEntryDependency, cacheEntryDependencyTransfer);

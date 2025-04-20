@@ -18,6 +18,7 @@ package com.echothree.model.control.party.server.search;
 
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.server.analyzer.BasicAnalyzer;
 import com.echothree.model.control.party.server.analyzer.PartyAnalyzer;
@@ -520,8 +521,10 @@ public class PartySearchEvaluator
                 }
 
                 if(party != null) {
+                    var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+
                     resultSet = new EntityInstancePKHolder(1);
-                    resultSet.add(getCoreControl().getEntityInstanceByBasePK(party.getPrimaryKey()).getPrimaryKey(), null);
+                    resultSet.add(entityInstanceControl.getEntityInstanceByBasePK(party.getPrimaryKey()).getPrimaryKey(), null);
                 }
             }
         }

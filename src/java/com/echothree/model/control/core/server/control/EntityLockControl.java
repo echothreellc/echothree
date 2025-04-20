@@ -26,6 +26,7 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.BaseValue;
 import com.echothree.util.server.persistence.DslContextFactory;
+import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -52,11 +53,15 @@ public class EntityLockControl
     }
     
     public EntityLockTransfer getEntityLockTransfer(UserVisit userVisit, BasePK lockTarget) {
-        return getCoreControl().getCoreTransferCaches(userVisit).getEntityLockTransferCache().getEntityLockTransfer(lockTarget);
+        var coreControl = Session.getModelController(CoreControl.class);
+
+        return coreControl.getCoreTransferCaches(userVisit).getEntityLockTransferCache().getEntityLockTransfer(lockTarget);
     }
     
     public EntityLockTransfer getEntityLockTransferByEntityInstance(UserVisit userVisit, EntityInstance entityInstance) {
-        return getCoreControl().getCoreTransferCaches(userVisit).getEntityLockTransferCache().getEntityLockTransferByEntityInstance(entityInstance);
+        var coreControl = Session.getModelController(CoreControl.class);
+
+        return coreControl.getCoreTransferCaches(userVisit).getEntityLockTransferCache().getEntityLockTransferByEntityInstance(entityInstance);
     }
     
     private static final long defaultLockDuration = 5 * 60 * 1000; // 5 Minutes
@@ -107,11 +112,11 @@ public class EntityLockControl
      */
     public long lockEntity(final BasePK lockTarget, final BasePK lockedBy)
             throws EntityLockException {
-        var coreControl = getCoreControl();
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         long lockExpirationTime;
-        var lockTargetEntityInstance = coreControl.getEntityInstanceByBasePK(lockTarget);
+        var lockTargetEntityInstance = entityInstanceControl.getEntityInstanceByBasePK(lockTarget);
         var lockTargetEntityInstanceId = lockTargetEntityInstance.getPrimaryKey().getEntityId();
-        var lockedByEntityInstanceId = coreControl.getEntityInstanceByBasePK(lockedBy).getPrimaryKey().getEntityId();
+        var lockedByEntityInstanceId = entityInstanceControl.getEntityInstanceByBasePK(lockedBy).getPrimaryKey().getEntityId();
         
         if(CoreDebugFlags.LogEntityLocks) {
             getLog().info(">>> lockEntity(lockTarget=" + lockTarget + ", lockedBy=" + lockedBy + ")");
@@ -244,10 +249,10 @@ public class EntityLockControl
      */
     public boolean lockEntityForUpdate(final BasePK lockTarget, final BasePK lockedBy)
             throws EntityLockException {
-        var coreControl = getCoreControl();
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         boolean isLocked;
-        var lockTargetEntityInstanceId = coreControl.getEntityInstanceByBasePK(lockTarget).getPrimaryKey().getEntityId();
-        var lockedByEntityInstanceId = coreControl.getEntityInstanceByBasePK(lockedBy).getPrimaryKey().getEntityId();
+        var lockTargetEntityInstanceId = entityInstanceControl.getEntityInstanceByBasePK(lockTarget).getPrimaryKey().getEntityId();
+        var lockedByEntityInstanceId = entityInstanceControl.getEntityInstanceByBasePK(lockedBy).getPrimaryKey().getEntityId();
         
         if(CoreDebugFlags.LogEntityLocks) {
             getLog().info(">>> lockEntity(lockTarget=" + lockTarget + ", lockedBy=" + lockedBy + ")");
@@ -353,9 +358,9 @@ public class EntityLockControl
      */
     public boolean unlockEntity(final BasePK lockTarget, final BasePK lockedBy)
             throws EntityLockException {
-        var coreControl = getCoreControl();
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         boolean wasUnlocked;
-        var lockTargetEntityInstanceId = coreControl.getEntityInstanceByBasePK(lockTarget).getPrimaryKey().getEntityId();
+        var lockTargetEntityInstanceId = entityInstanceControl.getEntityInstanceByBasePK(lockTarget).getPrimaryKey().getEntityId();
         
         if(CoreDebugFlags.LogEntityLocks) {
             getLog().info(">>> lockEntity(lockTarget=" + lockTarget + ", lockedBy=" + lockedBy + ")");
@@ -376,7 +381,7 @@ public class EntityLockControl
                         throw new EntityLockException(se);
                     }
                 } else {
-                    var lockedByEntityInstanceId = coreControl.getEntityInstanceByBasePK(lockedBy).getPrimaryKey().getEntityId();
+                    var lockedByEntityInstanceId = entityInstanceControl.getEntityInstanceByBasePK(lockedBy).getPrimaryKey().getEntityId();
                     
                     if(CoreDebugFlags.LogEntityLocks) {
                         getLog().info("--- lockedByEntityInstanceId=" + lockedByEntityInstanceId);
@@ -460,9 +465,9 @@ public class EntityLockControl
      */
     public boolean isEntityLocked(final BasePK lockTarget, final BasePK lockedBy)
             throws EntityLockException {
-        var coreControl = getCoreControl();
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         boolean isLocked;
-        var lockTargetEntityInstanceId = coreControl.getEntityInstanceByBasePK(lockTarget).getPrimaryKey().getEntityId();
+        var lockTargetEntityInstanceId = entityInstanceControl.getEntityInstanceByBasePK(lockTarget).getPrimaryKey().getEntityId();
         
         if(CoreDebugFlags.LogEntityLocks) {
             getLog().info(">>> isEntityLocked(lockTarget=" + lockTarget + ", lockedBy=" + lockedBy + ")");
@@ -484,7 +489,7 @@ public class EntityLockControl
                         throw new EntityLockException(se);
                     }
                 } else {
-                    var lockedByEntityInstanceId = coreControl.getEntityInstanceByBasePK(lockedBy).getPrimaryKey().getEntityId();
+                    var lockedByEntityInstanceId = entityInstanceControl.getEntityInstanceByBasePK(lockedBy).getPrimaryKey().getEntityId();
                     if(CoreDebugFlags.LogEntityLocks) {
                         getLog().info("--- lockedByEntityInstanceId=" + lockedByEntityInstanceId);
                     }

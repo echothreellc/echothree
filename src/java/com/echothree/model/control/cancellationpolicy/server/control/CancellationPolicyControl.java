@@ -33,7 +33,7 @@ import com.echothree.model.control.cancellationpolicy.common.transfer.Cancellati
 import com.echothree.model.control.cancellationpolicy.common.transfer.PartyCancellationPolicyTransfer;
 import com.echothree.model.control.cancellationpolicy.server.transfer.CancellationPolicyTransferCaches;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.cancellationpolicy.common.pk.CancellationKindPK;
 import com.echothree.model.data.cancellationpolicy.common.pk.CancellationPolicyPK;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
@@ -277,12 +277,12 @@ public class CancellationPolicyControl
     }
 
     public void deletePartyCancellationPolicy(PartyCancellationPolicy partyCancellationPolicy, BasePK deletedBy) {
-        var coreControl = Session.getModelController(CoreControl.class);
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
         partyCancellationPolicy.setThruTime(session.START_TIME_LONG);
 
         // Performed manually, since sendEvent doesn't call it for relatedEntityInstances.
-        coreControl.deleteEntityInstanceDependencies(coreControl.getEntityInstanceByBasePK(partyCancellationPolicy.getPrimaryKey()), deletedBy);
+        entityInstanceControl.deleteEntityInstanceDependencies(entityInstanceControl.getEntityInstanceByBasePK(partyCancellationPolicy.getPrimaryKey()), deletedBy);
         
         sendEvent(partyCancellationPolicy.getPartyPK(), EventTypes.MODIFY, partyCancellationPolicy.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }

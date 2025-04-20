@@ -22,7 +22,7 @@ import com.echothree.model.control.associate.server.logic.AssociateReferralLogic
 import com.echothree.model.control.batch.server.logic.BatchLogic;
 import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
 import com.echothree.model.control.cancellationpolicy.server.logic.CancellationPolicyLogic;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.customer.common.exception.MissingDefaultCustomerTypeException;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.offer.common.exception.MissingDefaultSourceException;
@@ -393,13 +393,13 @@ public class SalesOrderLogic
                                 cancellationPolicy, returnPolicy, taxable, createdBy);
 
                         if(eea == null || !eea.hasExecutionErrors()) {
-                            var coreControl = Session.getModelController(CoreControl.class);
+                            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
                             var orderControl = Session.getModelController(OrderControl.class);
                             var orderRoleControl = Session.getModelController(OrderRoleControl.class);
                             var salesOrderControl = Session.getModelController(SalesOrderControl.class);
                             var workflowControl = Session.getModelController(WorkflowControl.class);
                             var associateReferral = AssociateReferralLogic.getInstance().getAssociateReferral(session, userVisit);
-                            var entityInstance = coreControl.getEntityInstanceByBasePK(order.getPrimaryKey());
+                            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(order.getPrimaryKey());
 
                             salesOrderControl.createSalesOrder(order, offerUse, associateReferral, createdBy);
 
@@ -494,8 +494,8 @@ public class SalesOrderLogic
             workflowControl.getWorkflowEntranceChoices(salesOrderStatusChoicesBean, defaultOrderStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS), partyPK);
         } else {
-            var coreControl = Session.getModelController(CoreControl.class);
-            var entityInstance = coreControl.getEntityInstanceByBasePK(order.getPrimaryKey());
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(order.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS, entityInstance);
 
             workflowControl.getWorkflowDestinationChoices(salesOrderStatusChoicesBean, defaultOrderStatusChoice, language, allowNullChoice, workflowEntityStatus.getWorkflowStep(), partyPK);
@@ -505,10 +505,10 @@ public class SalesOrderLogic
     }
 
     public void setSalesOrderStatus(final Session session, final ExecutionErrorAccumulator eea, final Order order, final String orderStatusChoice, final PartyPK modifiedBy) {
-        var coreControl = Session.getModelController(CoreControl.class);
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS);
-        var entityInstance = coreControl.getEntityInstanceByBasePK(order.getPrimaryKey());
+        var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(order.getPrimaryKey());
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
         var workflowDestination = orderStatusChoice == null? null: workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), orderStatusChoice);
 

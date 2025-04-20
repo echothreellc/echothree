@@ -29,6 +29,7 @@ import com.echothree.model.control.core.common.exception.InvalidParameterCountEx
 import com.echothree.model.control.core.common.exception.UnknownEntityRefException;
 import com.echothree.model.control.core.common.exception.UnknownUuidException;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -93,12 +94,13 @@ public class EntityInstanceLogic
     }
     
     public EntityInstance getEntityInstanceByEntityRef(final ExecutionErrorAccumulator eea, final String entityRef) {
-        var coreControl = Session.getModelController(CoreControl.class);
-        var entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+        var entityInstance = entityInstanceControl.getEntityInstanceByEntityRef(entityRef);
 
         if(entityInstance == null) {
             handleExecutionError(UnknownEntityRefException.class, eea, ExecutionErrors.UnknownEntityRef.name(), entityRef);
         } else {
+            var coreControl = Session.getModelController(CoreControl.class);
             var wasDeleted = checkEntityTimeForDeletion(coreControl, entityInstance);
 
             if(wasDeleted) {
@@ -116,13 +118,14 @@ public class EntityInstanceLogic
     }
     
     public EntityInstance getEntityInstanceByUuid(final ExecutionErrorAccumulator eea, final String uuid) {
-        var coreControl = Session.getModelController(CoreControl.class);
-        var entityInstance = coreControl.getEntityInstanceByUuid(uuid);
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+        var entityInstance = entityInstanceControl.getEntityInstanceByUuid(uuid);
 
         if(entityInstance == null) {
             handleExecutionError(UnknownUuidException.class, eea, ExecutionErrors.UnknownUuid.name(), uuid);
         } else {
-            var wasDeleted = checkEntityTimeForDeletion(coreControl, coreControl.getEntityInstanceByUuid(uuid));
+            var coreControl = Session.getModelController(CoreControl.class);
+            var wasDeleted = checkEntityTimeForDeletion(coreControl, entityInstanceControl.getEntityInstanceByUuid(uuid));
 
             if(wasDeleted) {
                 entityInstance = null;
@@ -220,9 +223,9 @@ public class EntityInstanceLogic
         var componentVendorName = entityInstance.getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName();
 
         if(!ComponentVendors.ECHO_THREE.name().equals(componentVendorName)) {
-            var coreControl = Session.getModelController(CoreControl.class);
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
-            coreControl.deleteEntityInstance(entityInstance, deletedBy);
+            entityInstanceControl.deleteEntityInstance(entityInstance, deletedBy);
         } else {
             handleExecutionError(InvalidComponentVendorException.class, eea, ExecutionErrors.InvalidComponentVendor.name(), componentVendorName);
         }
@@ -232,9 +235,9 @@ public class EntityInstanceLogic
         var componentVendorName = entityInstance.getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName();
 
         if(!ComponentVendors.ECHO_THREE.name().equals(componentVendorName)) {
-            var coreControl = Session.getModelController(CoreControl.class);
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
-            coreControl.removeEntityInstance(entityInstance);
+            entityInstanceControl.removeEntityInstance(entityInstance);
         } else {
             handleExecutionError(InvalidComponentVendorException.class, eea, ExecutionErrors.InvalidComponentVendor.name(), componentVendorName);
         }

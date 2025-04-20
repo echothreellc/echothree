@@ -19,6 +19,7 @@ package com.echothree.model.control.order.server.control;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.order.common.OrderRoleTypes;
 import com.echothree.model.control.order.common.OrderTypes;
 import com.echothree.model.control.order.common.transfer.OrderTransfer;
@@ -102,9 +103,10 @@ public class OrderControl
     }
 
     private Order convertEntityInstanceToOrder(final EntityInstance entityInstance, final EntityPermission entityPermission) {
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         Order order = null;
 
-        if(getCoreControl().verifyEntityInstance(entityInstance, ComponentVendors.ECHO_THREE.name(), EntityTypes.Order.name())) {
+        if(entityInstanceControl.verifyEntityInstance(entityInstance, ComponentVendors.ECHO_THREE.name(), EntityTypes.Order.name())) {
             order = OrderFactory.getInstance().getEntityFromPK(entityPermission, new OrderPK(entityInstance.getEntityUniqueId()));
         }
 

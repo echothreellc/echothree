@@ -16,13 +16,13 @@
 
 package com.echothree.model.control.employee.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.employee.common.transfer.LeaveTransfer;
+import com.echothree.model.control.employee.common.workflow.LeaveStatusConstants;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.control.employee.common.workflow.LeaveStatusConstants;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.employee.server.entity.Leave;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
@@ -33,7 +33,7 @@ import com.echothree.util.server.string.UnitOfMeasureUtils;
 public class LeaveTransferCache
         extends BaseEmployeeTransferCache<Leave, LeaveTransfer> {
     
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
@@ -70,7 +70,7 @@ public class LeaveTransferCache
             var unformattedTotalTime = leaveDetail.getTotalTime();
             var totalTime = unformattedTotalTime == null ? null : unitOfMeasureUtils.formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedTotalTime);
 
-            var entityInstance = coreControl.getEntityInstanceByBasePK(leave.getPrimaryKey());
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(leave.getPrimaryKey());
             var leaveStatus = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     LeaveStatusConstants.Workflow_LEAVE_STATUS, entityInstance);
 

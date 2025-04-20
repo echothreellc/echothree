@@ -18,9 +18,9 @@ package com.echothree.model.control.accounting.server.transfer;
 
 import com.echothree.model.control.accounting.common.AccountingOptions;
 import com.echothree.model.control.accounting.common.transfer.TransactionGroupTransfer;
-import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.accounting.common.workflow.TransactionGroupStatusConstants;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.accounting.server.entity.TransactionGroup;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -31,7 +31,7 @@ public class TransactionGroupTransferCache
         extends BaseAccountingTransferCache<TransactionGroup, TransactionGroupTransfer> {
 
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     boolean includeTransactions;
     
@@ -55,7 +55,7 @@ public class TransactionGroupTransferCache
             var transactionGroupDetail = transactionGroup.getLastDetail();
             var transactionGroupName = transactionGroupDetail.getTransactionGroupName();
 
-            var entityInstance = coreControl.getEntityInstanceByBasePK(transactionGroup.getPrimaryKey());
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(transactionGroup.getPrimaryKey());
             var transactionGroupStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     TransactionGroupStatusConstants.Workflow_TRANSACTION_GROUP_STATUS, entityInstance);
             

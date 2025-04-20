@@ -19,16 +19,16 @@ package com.echothree.model.control.sales.server.logic;
 import com.echothree.model.control.batch.common.BatchConstants;
 import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.batch.server.logic.BatchLogic;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.order.server.control.OrderBatchControl;
 import com.echothree.model.control.order.server.control.OrderControl;
+import com.echothree.model.control.sales.common.choice.SalesOrderBatchStatusChoicesBean;
 import com.echothree.model.control.sales.common.exception.CannotDeleteSalesOrderBatchInUseException;
 import com.echothree.model.control.sales.common.exception.IncorrectSalesOrderBatchAmountException;
 import com.echothree.model.control.sales.common.exception.IncorrectSalesOrderBatchCountException;
 import com.echothree.model.control.sales.common.exception.InvalidSalesOrderBatchStatusException;
 import com.echothree.model.control.sales.common.exception.InvalidSalesOrderStatusException;
 import com.echothree.model.control.sales.common.exception.UnknownSalesOrderBatchStatusChoiceException;
-import com.echothree.model.control.sales.common.choice.SalesOrderBatchStatusChoicesBean;
 import com.echothree.model.control.sales.common.workflow.SalesOrderBatchStatusConstants;
 import com.echothree.model.control.sales.common.workflow.SalesOrderStatusConstants;
 import com.echothree.model.control.sales.server.control.SalesOrderBatchControl;
@@ -149,8 +149,8 @@ public class SalesOrderBatchLogic
             workflowControl.getWorkflowEntranceChoices(salesOrderBatchStatusChoicesBean, defaultSalesOrderBatchStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(SalesOrderBatchStatusConstants.Workflow_SALES_ORDER_BATCH_STATUS), partyPK);
         } else {
-            var coreControl = Session.getModelController(CoreControl.class);
-            var entityInstance = coreControl.getEntityInstanceByBasePK(batch.getPrimaryKey());
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(batch.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(SalesOrderBatchStatusConstants.Workflow_SALES_ORDER_BATCH_STATUS,
                     entityInstance);
 
@@ -162,11 +162,11 @@ public class SalesOrderBatchLogic
     }
 
     public void setSalesOrderBatchStatus(final Session session, ExecutionErrorAccumulator eea, Batch batch, String salesOrderBatchStatusChoice, PartyPK modifiedBy) {
-        var coreControl = Session.getModelController(CoreControl.class);
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var orderControl = Session.getModelController(OrderControl.class);
         var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, SalesOrderBatchStatusConstants.Workflow_SALES_ORDER_BATCH_STATUS);
-        var entityInstance = coreControl.getEntityInstanceByBasePK(batch.getPrimaryKey());
+        var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(batch.getPrimaryKey());
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
         var workflowDestination = salesOrderBatchStatusChoice == null ? null : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), salesOrderBatchStatusChoice);
 

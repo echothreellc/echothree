@@ -20,7 +20,7 @@ import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.model.control.contactlist.common.ContactListOptions;
 import com.echothree.model.control.contactlist.common.transfer.PartyContactListTransfer;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.contactlist.server.entity.PartyContactList;
@@ -30,7 +30,7 @@ import com.echothree.util.server.persistence.Session;
 public class PartyContactListTransferCache
         extends BaseContactListTransferCache<PartyContactList, PartyContactListTransfer> {
     
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
@@ -61,7 +61,7 @@ public class PartyContactListTransferCache
             var contactListTransfer = contactListControl.getContactListTransfer(userVisit, contactList);
             var preferredContactListContactMechanismPurpose = partyContactListDetail.getPreferredContactListContactMechanismPurpose();
             var preferredContactListContactMechanismPurposeTransfer = preferredContactListContactMechanismPurpose == null ? null : contactListControl.getContactListContactMechanismPurposeTransfer(userVisit, preferredContactListContactMechanismPurpose);
-            var entityInstance = coreControl.getEntityInstanceByBasePK(partyContactList.getPrimaryKey());
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(partyContactList.getPrimaryKey());
             
             partyContactListTransfer = new PartyContactListTransfer(partyTransfer, contactListTransfer, preferredContactListContactMechanismPurposeTransfer);
             put(partyContactList, partyContactListTransfer, entityInstance);

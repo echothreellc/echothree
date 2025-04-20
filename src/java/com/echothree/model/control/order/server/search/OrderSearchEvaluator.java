@@ -18,6 +18,7 @@ package com.echothree.model.control.order.server.search;
 
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.order.server.control.OrderAliasControl;
 import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.search.server.search.BaseSearchEvaluator;
@@ -343,8 +344,10 @@ public class OrderSearchEvaluator
                 }
 
                 if(order != null) {
+                    var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+
                     resultSet = new EntityInstancePKHolder(1);
-                    resultSet.add(getCoreControl().getEntityInstanceByBasePK(order.getPrimaryKey()).getPrimaryKey(), null);
+                    resultSet.add(entityInstanceControl.getEntityInstanceByBasePK(order.getPrimaryKey()).getPrimaryKey(), null);
                 }
             }
         }

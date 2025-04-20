@@ -16,11 +16,11 @@
 
 package com.echothree.model.control.job.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.job.common.transfer.JobTransfer;
+import com.echothree.model.control.job.common.workflow.JobStatusConstants;
 import com.echothree.model.control.job.server.control.JobControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.job.common.workflow.JobStatusConstants;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.job.server.entity.Job;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -29,7 +29,7 @@ import com.echothree.util.server.persistence.Session;
 public class JobTransferCache
         extends BaseJobTransferCache<Job, JobTransfer> {
     
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
@@ -55,7 +55,7 @@ public class JobTransferCache
             var unformattedLastEndTime = jobStatus.getLastEndTime();
             var lastEndTime = formatTypicalDateTime(unformattedLastEndTime);
 
-            var entityInstance = coreControl.getEntityInstanceByBasePK(job.getPrimaryKey());
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(job.getPrimaryKey());
             var jobStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     JobStatusConstants.Workflow_JOB_STATUS, entityInstance);
 

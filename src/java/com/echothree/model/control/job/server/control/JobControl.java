@@ -17,11 +17,12 @@
 package com.echothree.model.control.job.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.job.common.choice.JobStatusChoicesBean;
 import com.echothree.model.control.job.common.transfer.JobDescriptionTransfer;
 import com.echothree.model.control.job.common.transfer.JobTransfer;
-import com.echothree.model.control.job.server.transfer.JobTransferCaches;
 import com.echothree.model.control.job.common.workflow.JobStatusConstants;
+import com.echothree.model.control.job.server.transfer.JobTransferCaches;
 import com.echothree.model.data.job.server.entity.Job;
 import com.echothree.model.data.job.server.entity.JobDescription;
 import com.echothree.model.data.job.server.entity.JobStatus;
@@ -188,7 +189,8 @@ public class JobControl
             workflowControl.getWorkflowEntranceChoices(jobStatusChoicesBean, defaultJobStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(JobStatusConstants.Workflow_JOB_STATUS), partyPK);
         } else {
-            var entityInstance = getCoreControl().getEntityInstanceByBasePK(job.getPrimaryKey());
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(job.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(JobStatusConstants.Workflow_JOB_STATUS,
                     entityInstance);
             

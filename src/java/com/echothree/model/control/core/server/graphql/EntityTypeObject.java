@@ -17,6 +17,7 @@
 package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
@@ -124,11 +125,11 @@ public class EntityTypeObject
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<EntityInstanceObject> getEntityInstances(final DataFetchingEnvironment env) {
         if(CoreSecurityUtils.getHasEntityInstancesAccess(env)) {
-            var coreControl = Session.getModelController(CoreControl.class);
-            var totalCount = coreControl.countEntityInstancesByEntityType(entityType);
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+            var totalCount = entityInstanceControl.countEntityInstancesByEntityType(entityType);
 
             try(var objectLimiter = new ObjectLimiter(env, EntityInstanceConstants.COMPONENT_VENDOR_NAME, EntityInstanceConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var entities = coreControl.getEntityInstancesByEntityType(entityType);
+                var entities = entityInstanceControl.getEntityInstancesByEntityType(entityType);
                 var entityInstances = entities.stream().map(EntityInstanceObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, entityInstances);

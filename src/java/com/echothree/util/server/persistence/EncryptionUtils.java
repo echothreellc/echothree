@@ -19,6 +19,7 @@ package com.echothree.util.server.persistence;
 import com.echothree.model.control.core.server.control.CoreControl;
 import static com.echothree.model.control.core.common.workflow.BaseEncryptionKeyStatusConstants.WorkflowStep_BASE_ENCRYPTION_KEY_STATUS_ACTIVE;
 import static com.echothree.model.control.core.common.workflow.BaseEncryptionKeyStatusConstants.Workflow_BASE_ENCRYPTION_KEY_STATUS;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.util.common.exception.PersistenceEncryptionException;
@@ -187,8 +188,9 @@ public class EncryptionUtils {
             var baseEncryptionKey = coreControl.getBaseEncryptionKeyBySha1Hash(sha1Hash);
 
             if(baseEncryptionKey != null) {
+                var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
                 var workflowControl = Session.getModelController(WorkflowControl.class);
-                var entityInstance = coreControl.getEntityInstanceByBasePK(baseEncryptionKey.getPrimaryKey());
+                var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(baseEncryptionKey.getPrimaryKey());
                 var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(Workflow_BASE_ENCRYPTION_KEY_STATUS, entityInstance);
 
                 if(!workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName().equals(WorkflowStep_BASE_ENCRYPTION_KEY_STATUS_ACTIVE)) {

@@ -20,7 +20,7 @@ import com.echothree.control.user.comment.common.form.CreateCommentForm;
 import com.echothree.control.user.comment.common.result.CommentResultFactory;
 import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
@@ -69,7 +69,7 @@ public class CreateCommentCommand
         super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
     }
     
-    protected String createComment(CoreControl coreControl, CommentControl commentControl, CommentType commentType, EntityInstance commentedEntityInstance, Language language, MimeType mimeType,
+    protected String createComment(EntityInstanceControl entityInstanceControl, CommentControl commentControl, CommentType commentType, EntityInstance commentedEntityInstance, Language language, MimeType mimeType,
             ByteArray blobComment, String clobComment, String stringComment) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
         BasePK createdBy = getPartyPK();
@@ -84,12 +84,12 @@ public class CreateCommentCommand
             var userLogin = userControl.getUserLoginByUsername(commentedByUsername);
 
             if(userLogin != null) {
-                commentedByEntityInstance = coreControl.getEntityInstanceByBasePK(userLogin.getPartyPK());
+                commentedByEntityInstance = entityInstanceControl.getEntityInstanceByBasePK(userLogin.getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownRatedByUsername.name(), commentedByUsername);
             }
         } else {
-            commentedByEntityInstance = coreControl.getEntityInstanceByBasePK(createdBy);
+            commentedByEntityInstance = entityInstanceControl.getEntityInstanceByBasePK(createdBy);
         }
 
         if(!hasExecutionErrors() && (workflowEntranceName != null && workflowEntrance != null)) {
@@ -126,7 +126,7 @@ public class CreateCommentCommand
 
             if(workflowEntrance != null) {
                 var workflowControl = Session.getModelController(WorkflowControl.class);
-                var entityInstance = coreControl.getEntityInstanceByBasePK(comment.getPrimaryKey());
+                var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(comment.getPrimaryKey());
 
                 // TODO: WorkEffort should be created for addEntityToWorkflow
                 workflowControl.addEntityToWorkflow(workflowEntrance, entityInstance, null, null, createdBy);
@@ -139,10 +139,10 @@ public class CreateCommentCommand
     @Override
     protected BaseResult execute() {
         var result = CommentResultFactory.getCreateCommentResult();
-        var coreControl = getCoreControl();
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         String commentName = null;
         var entityRef = form.getEntityRef();
-        var commentedEntityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
+        var commentedEntityInstance = entityInstanceControl.getEntityInstanceByEntityRef(entityRef);
 
         if(commentedEntityInstance != null) {
             var commentControl = Session.getModelController(CommentControl.class);
@@ -162,7 +162,7 @@ public class CreateCommentCommand
                         var commentString = form.getStringComment();
 
                         if(commentString != null) {
-                            commentName = createComment(coreControl, commentControl, commentType, commentedEntityInstance, language, null, null,
+                            commentName = createComment(entityInstanceControl, commentControl, commentType, commentedEntityInstance, language, null, null,
                                     null, commentString);
                         } else {
                             addExecutionError(ExecutionErrors.MissingStringComment.name());
@@ -179,7 +179,7 @@ public class CreateCommentCommand
                                 var blobComment = form.getBlobComment();
 
                                 if(blobComment != null) {
-                                    commentName = createComment(coreControl, commentControl, commentType, commentedEntityInstance,
+                                    commentName = createComment(entityInstanceControl, commentControl, commentType, commentedEntityInstance,
                                             language, mimeType, blobComment, null, null);
                                 } else {
                                     addExecutionError(ExecutionErrors.MissingBlobComment.name());
@@ -188,7 +188,7 @@ public class CreateCommentCommand
                                 var clobComment = form.getClobComment();
 
                                 if(clobComment != null) {
-                                    commentName = createComment(coreControl, commentControl, commentType, commentedEntityInstance,
+                                    commentName = createComment(entityInstanceControl, commentControl, commentType, commentedEntityInstance,
                                             language, mimeType, null, clobComment, null);
                                 } else {
                                     addExecutionError(ExecutionErrors.MissingClobComment.name());

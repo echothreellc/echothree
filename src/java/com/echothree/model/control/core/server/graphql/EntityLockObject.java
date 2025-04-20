@@ -17,7 +17,7 @@
 package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.model.control.core.common.transfer.EntityLockTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.graphql.server.graphql.TimeObject;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
@@ -41,8 +41,8 @@ public class EntityLockObject {
         EntityInstanceObject result = null;
 
         if(CoreSecurityUtils.getHasEntityInstanceAccess(env)) {
-            var coreControl = Session.getModelController(CoreControl.class);
-            var entityInstance = coreControl.getEntityInstanceByEntityRef(entityLockTransfer.getLockTargetEntityInstance().getEntityRef());
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+            var entityInstance = entityInstanceControl.getEntityInstanceByEntityRef(entityLockTransfer.getLockTargetEntityInstance().getEntityRef());
 
             result = new EntityInstanceObject(entityInstance);
         }
@@ -56,8 +56,8 @@ public class EntityLockObject {
         EntityInstanceObject result = null;
 
         if(CoreSecurityUtils.getHasEntityInstanceAccess(env)) {
-            var coreControl = Session.getModelController(CoreControl.class);
-            var entityInstance = coreControl.getEntityInstanceByEntityRef(entityLockTransfer.getLockedByEntityInstance().getEntityRef());
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+            var entityInstance = entityInstanceControl.getEntityInstanceByEntityRef(entityLockTransfer.getLockedByEntityInstance().getEntityRef());
 
             result = new EntityInstanceObject(entityInstance);
         }

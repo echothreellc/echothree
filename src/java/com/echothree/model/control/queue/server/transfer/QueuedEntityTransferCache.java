@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.queue.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.queue.common.transfer.QueuedEntityTransfer;
 import com.echothree.model.control.queue.server.control.QueueControl;
 import com.echothree.model.data.queue.server.entity.QueuedEntity;
@@ -26,7 +26,7 @@ import com.echothree.util.server.persistence.Session;
 public class QueuedEntityTransferCache
         extends BaseQueueTransferCache<QueuedEntity, QueuedEntityTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         
     /** Creates a new instance of QueuedEntityTransferCache */
     public QueuedEntityTransferCache(UserVisit userVisit, QueueControl queueControl) {
@@ -38,7 +38,7 @@ public class QueuedEntityTransferCache
 
         if(queuedEntityTransfer == null) {
             var queueType = queueControl.getQueueTypeTransfer(userVisit, queuedEntity.getQueueType());
-            var entityInstance = coreControl.getEntityInstanceTransfer(userVisit, queuedEntity.getEntityInstance(), true, true, true, true);
+            var entityInstance = entityInstanceControl.getEntityInstanceTransfer(userVisit, queuedEntity.getEntityInstance(), true, true, true, true);
 
             queuedEntityTransfer = new QueuedEntityTransfer(queueType, entityInstance);
             put(queuedEntity, queuedEntityTransfer);

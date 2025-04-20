@@ -18,7 +18,7 @@ package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.EntityAppearanceTransfer;
 import com.echothree.model.control.core.server.control.AppearanceControl;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.core.server.entity.EntityAppearance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -27,7 +27,7 @@ public class EntityAppearanceTransferCache
         extends BaseCoreTransferCache<EntityAppearance, EntityAppearanceTransfer> {
 
     AppearanceControl appearanceControl = Session.getModelController(AppearanceControl.class);
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of EntityAppearanceTransferCache */
     public EntityAppearanceTransferCache(UserVisit userVisit) {
@@ -38,7 +38,7 @@ public class EntityAppearanceTransferCache
         var entityAppearanceTransfer = get(entityAppearance);
         
         if(entityAppearanceTransfer == null) {
-            var entityInstance = coreControl.getEntityInstanceTransfer(userVisit, entityAppearance.getEntityInstance(), false, false, false, false);
+            var entityInstance = entityInstanceControl.getEntityInstanceTransfer(userVisit, entityAppearance.getEntityInstance(), false, false, false, false);
             var appearance = appearanceControl.getAppearanceTransfer(userVisit, entityAppearance.getAppearance());
             
             entityAppearanceTransfer = new EntityAppearanceTransfer(entityInstance, appearance);

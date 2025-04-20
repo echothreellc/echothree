@@ -18,6 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEventsForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -34,6 +35,7 @@ import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -117,16 +119,17 @@ public class GetEventsCommand
 
         if(entities != null) {
             var coreControl = getCoreControl();
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var userVisit = getUserVisit();
 
             result.setEventCount(eventCount);
 
             if(entityInstance != null) {
-                result.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityInstance, false, false, false, false));
+                result.setEntityInstance(entityInstanceControl.getEntityInstanceTransfer(userVisit, entityInstance, false, false, false, false));
             }
 
             if(createdBy != null) {
-                result.setCreatedByEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, createdBy, false, false, false, false));
+                result.setCreatedByEntityInstance(entityInstanceControl.getEntityInstanceTransfer(userVisit, createdBy, false, false, false, false));
             }
 
             result.setEvents(coreControl.getEventTransfers(userVisit, entities));

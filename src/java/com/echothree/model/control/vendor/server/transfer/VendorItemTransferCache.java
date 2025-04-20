@@ -18,15 +18,15 @@ package com.echothree.model.control.vendor.server.transfer;
 
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.comment.common.CommentConstants;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.item.common.ItemConstants;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemDescriptionLogic;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.control.vendor.common.VendorOptions;
 import com.echothree.model.control.vendor.common.transfer.VendorItemTransfer;
-import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.control.vendor.common.workflow.VendorItemStatusConstants;
+import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.server.entity.VendorItem;
@@ -37,7 +37,7 @@ public class VendorItemTransferCache
         extends BaseVendorTransferCache<VendorItem, VendorItemTransfer> {
     
     CancellationPolicyControl cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     ItemControl itemControl = Session.getModelController(ItemControl.class);
     ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
@@ -81,7 +81,7 @@ public class VendorItemTransferCache
                 description = itemDescriptionLogic.getBestStringUsingNames(null, ItemConstants.ItemDescriptionType_PURCHASE_ORDER_DESCRIPTION, item, getParty());
             }
 
-            var entityInstance = coreControl.getEntityInstanceByBasePK(vendorItem.getPrimaryKey());
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(vendorItem.getPrimaryKey());
             var vendorItemStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     VendorItemStatusConstants.Workflow_VENDOR_ITEM_STATUS, entityInstance);
 

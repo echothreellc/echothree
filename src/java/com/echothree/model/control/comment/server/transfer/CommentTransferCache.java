@@ -19,7 +19,7 @@ package com.echothree.model.control.comment.server.transfer;
 import com.echothree.model.control.comment.common.CommentOptions;
 import com.echothree.model.control.comment.common.transfer.CommentTransfer;
 import com.echothree.model.control.comment.server.control.CommentControl;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
@@ -31,7 +31,7 @@ import com.echothree.util.server.persistence.Session;
 public class CommentTransferCache
         extends BaseCommentTransferCache<Comment, CommentTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
@@ -64,20 +64,20 @@ public class CommentTransferCache
         if(commentTransfer == null) {
             var commentDetail = comment.getLastDetail();
             var commentType = commentDetail.getCommentType();
-            var entityInstance = coreControl.getEntityInstanceByBasePK(comment.getPrimaryKey());
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(comment.getPrimaryKey());
             
             commentTransfer = new CommentTransfer();
             put(comment, commentTransfer, entityInstance);
             
             commentTransfer.setCommentName(commentDetail.getCommentName());
             commentTransfer.setCommentType(commentControl.getCommentTypeTransfer(userVisit, commentType));
-            commentTransfer.setCommentedEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, commentDetail.getCommentedEntityInstance(), false, false, false, false));
-            commentTransfer.setCommentedByEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, commentDetail.getCommentedByEntityInstance(), false, false, false, false));
+            commentTransfer.setCommentedEntityInstance(entityInstanceControl.getEntityInstanceTransfer(userVisit, commentDetail.getCommentedEntityInstance(), false, false, false, false));
+            commentTransfer.setCommentedByEntityInstance(entityInstanceControl.getEntityInstanceTransfer(userVisit, commentDetail.getCommentedByEntityInstance(), false, false, false, false));
             commentTransfer.setLanguage(partyControl.getLanguageTransfer(userVisit, commentDetail.getLanguage()));
             commentTransfer.setDescription(commentDetail.getDescription());
             var mimeType = commentDetail.getMimeType();
             commentTransfer.setMimeType(mimeType == null? null: mimeTypeControl.getMimeTypeTransfer(userVisit, mimeType));
-            commentTransfer.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityInstance, false, false, false, false));
+            commentTransfer.setEntityInstance(entityInstanceControl.getEntityInstanceTransfer(userVisit, entityInstance, false, false, false, false));
             
             if(includeString) {
                 var commentString = commentControl.getCommentString(comment);

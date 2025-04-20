@@ -19,7 +19,7 @@ package com.echothree.model.control.cancellationpolicy.server.transfer;
 import com.echothree.model.control.cancellationpolicy.common.transfer.PartyCancellationPolicyTransfer;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.cancellationpolicy.server.logic.PartyCancellationPolicyLogic;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.cancellationpolicy.server.entity.PartyCancellationPolicy;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -27,8 +27,8 @@ import com.echothree.util.server.persistence.Session;
 
 public class PartyCancellationPolicyTransferCache
         extends BaseCancellationPolicyTransferCache<PartyCancellationPolicy, PartyCancellationPolicyTransfer> {
-    
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of PartyCancellationPolicyTransferCache */
@@ -43,7 +43,7 @@ public class PartyCancellationPolicyTransferCache
             var party = partyControl.getPartyTransfer(userVisit, partyCancellationPolicy.getParty());
             var cancellationPolicy = cancellationPolicyControl.getCancellationPolicyTransfer(userVisit, partyCancellationPolicy.getCancellationPolicy());
 
-            var entityInstance = coreControl.getEntityInstanceByBasePK(partyCancellationPolicy.getPrimaryKey());
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(partyCancellationPolicy.getPrimaryKey());
             var createdBy = getPartyPK();
             var partyCancellationPolicyStatusTransfer = PartyCancellationPolicyLogic.getInstance().getPartyCancellationPolicyStatusTransfer(userVisit, entityInstance, createdBy);
 

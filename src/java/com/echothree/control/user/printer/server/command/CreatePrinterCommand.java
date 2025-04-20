@@ -17,14 +17,15 @@
 package com.echothree.control.user.printer.server.command;
 
 import com.echothree.control.user.printer.common.form.CreatePrinterForm;
-import com.echothree.model.control.printer.server.control.PrinterControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.printer.common.workflow.PrinterStatusConstants;
+import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -52,10 +53,10 @@ public class CreatePrinterCommand
     
    @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var printerControl = Session.getModelController(PrinterControl.class);
-       var printerName = form.getPrinterName();
-       var printer = printerControl.getPrinterByName(printerName);
+        var printerName = form.getPrinterName();
+        var printer = printerControl.getPrinterByName(printerName);
         
         if(printer == null) {
             var printerGroupName = form.getPrinterGroupName();
@@ -75,7 +76,7 @@ public class CreatePrinterCommand
                     printerControl.createPrinterDescription(printer, language, description, createdBy);
                 }
 
-                var entityInstance = coreControl.getEntityInstanceByBasePK(printer.getPrimaryKey());
+                var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(printer.getPrimaryKey());
                 workflowControl.addEntityToWorkflowUsingNames(null, PrinterStatusConstants.Workflow_PRINTER_STATUS, PrinterStatusConstants.WorkflowEntrance_NEW_PRINTER, entityInstance, null, null,
                         createdBy);
             } else {

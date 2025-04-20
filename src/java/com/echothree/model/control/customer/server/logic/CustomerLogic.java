@@ -20,7 +20,7 @@ import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.customer.common.exception.UnknownCustomerNameException;
 import com.echothree.model.control.customer.common.exception.UnknownCustomerStatusChoiceException;
@@ -30,8 +30,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.common.exception.UnknownPartyNameException;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.party.server.logic.PartyLogic;
-import com.echothree.model.control.user.server.logic.UserKeyLogic;
-import com.echothree.model.control.user.server.logic.UserSessionLogic;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
@@ -104,10 +102,10 @@ public class CustomerLogic
     }
 
     public void setCustomerStatus(final Session session, final ExecutionErrorAccumulator eea, final Party party, final String customerStatusChoice, final PartyPK modifiedBy) {
-        var coreControl = Session.getModelController(CoreControl.class);
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, CustomerStatusConstants.Workflow_CUSTOMER_STATUS);
-        var entityInstance = coreControl.getEntityInstanceByBasePK(party.getPrimaryKey());
+        var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(party.getPrimaryKey());
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
         var workflowDestination = customerStatusChoice == null ? null : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), customerStatusChoice);
 

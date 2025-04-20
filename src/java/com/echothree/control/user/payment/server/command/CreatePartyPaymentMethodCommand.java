@@ -20,6 +20,7 @@ import com.echothree.control.user.payment.common.form.CreatePartyPaymentMethodFo
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
 import com.echothree.model.control.contact.common.ContactMechanismPurposes;
 import com.echothree.model.control.contact.server.control.ContactControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.payment.common.PaymentMethodTypes;
@@ -103,13 +104,14 @@ public class CreatePartyPaymentMethodCommand
         var paymentMethodTypePartyType = paymentMethodTypePartyTypeControl.getPaymentMethodTypePartyType(paymentMethodType, partyType);
         
         if(paymentMethodTypePartyType != null) {
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var paymentMethodTypePartyTypeDetail = paymentMethodTypePartyType.getLastDetail();
 
             if(billingPartyPaymentMethodContactMechanism != null) {
                 var contactMechanismWorkflow = paymentMethodTypePartyTypeDetail.getPartyContactMechanismWorkflow();
 
                 if(contactMechanismWorkflow != null) {
-                    var entityInstance = getCoreControl().getEntityInstanceByBasePK(billingPartyPaymentMethodContactMechanism.getPrimaryKey());
+                    var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(billingPartyPaymentMethodContactMechanism.getPrimaryKey());
 
                     if(!workflowControl.isEntityInWorkflow(contactMechanismWorkflow, entityInstance)) {
                         workflowControl.addEntityToWorkflow(contactMechanismWorkflow, entityInstance, null, null, createdBy);
@@ -120,7 +122,7 @@ public class CreatePartyPaymentMethodCommand
             var partyPaymentMethodWorkflow = paymentMethodTypePartyTypeDetail.getPartyPaymentMethodWorkflow();
             
             if(partyPaymentMethodWorkflow != null) {
-                var entityInstance = getCoreControl().getEntityInstanceByBasePK(partyPaymentMethod.getPrimaryKey());
+                var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(partyPaymentMethod.getPrimaryKey());
                 
                 workflowControl.addEntityToWorkflow(partyPaymentMethodWorkflow, entityInstance, null, null, createdBy);
             }

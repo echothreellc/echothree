@@ -22,6 +22,7 @@ import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.model.control.core.server.control.ComponentControl;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.message.server.control.MessageControl;
@@ -41,11 +42,12 @@ public class EntityTypeTransferCache
 
     CoreControl coreControl = Session.getModelController(CoreControl.class);
     ComponentControl componentControl = Session.getModelController(ComponentControl.class);
-    CommentControl commentControl;
+    CommentControl commentControl; // As-needed
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
-    IndexControl indexControl;
-    MessageControl messageControl;
-    RatingControl ratingControl;
+    IndexControl indexControl; // As-needed
+    MessageControl messageControl; // As-needed
+    RatingControl ratingControl; // As-needed
     UomControl uomControl = Session.getModelController(UomControl.class);
     UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
     UnitOfMeasureUtils unitOfMeasureUtils = UnitOfMeasureUtils.getInstance();
@@ -163,7 +165,7 @@ public class EntityTypeTransferCache
             }
             
             if(!filterEntityInstance) {
-                entityTypeTransfer.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityType, false, false, false, false));
+                entityTypeTransfer.setEntityInstance(entityInstanceControl.getEntityInstanceTransfer(userVisit, entityType, false, false, false, false));
             }
             
             setupEntityInstance(entityType, null, entityTypeTransfer);
@@ -193,11 +195,11 @@ public class EntityTypeTransferCache
             }
 
             if(includeEntityInstancesCount) {
-                entityTypeTransfer.setEntityInstancesCount(coreControl.countEntityInstancesByEntityType(entityType));
+                entityTypeTransfer.setEntityInstancesCount(entityInstanceControl.countEntityInstancesByEntityType(entityType));
             }
 
             if(includeEntityInstances) {
-                entityTypeTransfer.setEntityInstances(new ListWrapper<>(coreControl.getEntityInstanceTransfersByEntityType(userVisit, entityType, false, false, false, false)));
+                entityTypeTransfer.setEntityInstances(new ListWrapper<>(entityInstanceControl.getEntityInstanceTransfersByEntityType(userVisit, entityType, false, false, false, false)));
             }
         }
         

@@ -19,6 +19,7 @@ package com.echothree.model.control.core.server.transfer;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.transfer.EntityClobAttributeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.core.server.entity.EntityClobAttribute;
@@ -30,6 +31,7 @@ public class EntityClobAttributeTransferCache
         extends BaseCoreTransferCache<EntityClobAttribute, EntityClobAttributeTransfer> {
 
     CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
@@ -52,7 +54,7 @@ public class EntityClobAttributeTransferCache
         
         if(entityClobAttributeTransfer == null) {
             var entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityClobAttribute.getEntityAttribute(), entityInstance) : null;
-            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityClobAttribute.getEntityInstance(), false, false, false, false);
+            var entityInstanceTransfer = entityInstanceControl.getEntityInstanceTransfer(userVisit, entityClobAttribute.getEntityInstance(), false, false, false, false);
             var language = partyControl.getLanguageTransfer(userVisit, entityClobAttribute.getLanguage());
             var clobAttribute = includeClob ? entityClobAttribute.getClobAttribute() : null;
             var mimeType = mimeTypeControl.getMimeTypeTransfer(userVisit, entityClobAttribute.getMimeType());

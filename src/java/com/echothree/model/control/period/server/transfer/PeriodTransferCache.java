@@ -16,11 +16,11 @@
 
 package com.echothree.model.control.period.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.accounting.common.workflow.FiscalPeriodStatusConstants;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.period.common.PeriodConstants;
 import com.echothree.model.control.period.common.transfer.PeriodTransfer;
 import com.echothree.model.control.period.server.control.PeriodControl;
-import com.echothree.model.control.accounting.common.workflow.FiscalPeriodStatusConstants;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.period.server.entity.Period;
@@ -30,7 +30,7 @@ import com.echothree.util.server.persistence.Session;
 public class PeriodTransferCache
         extends BasePeriodTransferCache<Period, PeriodTransfer> {
     
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of PeriodTransferCache */
@@ -58,7 +58,7 @@ public class PeriodTransferCache
             var description = periodControl.getBestPeriodDescription(period, getLanguage());
             WorkflowEntityStatusTransfer status = null;
 
-            var entityInstance = coreControl.getEntityInstanceByBasePK(period.getPrimaryKey());
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(period.getPrimaryKey());
             var periodKindName = periodTypeTransfer.getPeriodKind().getPeriodKindName();
             if(periodKindName.equals(PeriodConstants.PeriodKind_FISCAL)) {
                 status = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,

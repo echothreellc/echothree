@@ -16,12 +16,12 @@
 
 package com.echothree.model.control.employee.server.logic;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.employee.common.exception.InvalidLeaveStatusException;
 import com.echothree.model.control.employee.common.exception.UnknownLeaveReasonNameException;
 import com.echothree.model.control.employee.common.exception.UnknownLeaveTypeNameException;
-import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.employee.common.workflow.LeaveStatusConstants;
+import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -88,11 +88,11 @@ public class LeaveLogic
 
     public Leave createLeave(final Session session, final Party party, final Party companyParty, final LeaveType leaveType, final LeaveReason leaveReason,
             final Long startTime, final Long endTime, final Long totalTime, final WorkflowEntrance leaveStatus, final PartyPK createdBy) {
-        var coreControl = Session.getModelController(CoreControl.class);
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var employeeControl = Session.getModelController(EmployeeControl.class);
 
         var leave = employeeControl.createLeave(party, companyParty, leaveType, leaveReason, startTime, endTime, totalTime, createdBy);
-        var entityInstance = coreControl.getEntityInstanceByBasePK(leave.getPrimaryKey());
+        var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(leave.getPrimaryKey());
 
         insertLeaveIntoWorkflow(entityInstance, leaveStatus, createdBy);
 

@@ -25,6 +25,7 @@ import com.echothree.model.control.comment.common.transfer.CommentUsageTypeDescr
 import com.echothree.model.control.comment.common.transfer.CommentUsageTypeTransfer;
 import com.echothree.model.control.comment.server.transfer.CommentTransferCaches;
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.comment.server.entity.Comment;
 import com.echothree.model.data.comment.server.entity.CommentBlob;
 import com.echothree.model.data.comment.server.entity.CommentClob;
@@ -1083,7 +1084,8 @@ public class CommentControl
             if(comment == null) {
                 workflowControl.getWorkflowEntranceChoices(commentStatusChoicesBean, defaultCommentStatusChoice, language, allowNullChoice, workflow, partyPK);
             } else {
-                var entityInstance = getCoreControl().getEntityInstanceByBasePK(comment.getPrimaryKey());
+                var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+                var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(comment.getPrimaryKey());
                 var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstance(workflow, entityInstance);
 
                 workflowControl.getWorkflowDestinationChoices(commentStatusChoicesBean, defaultCommentStatusChoice, language, allowNullChoice,

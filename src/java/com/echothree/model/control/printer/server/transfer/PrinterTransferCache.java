@@ -17,6 +17,7 @@
 package com.echothree.model.control.printer.server.transfer;
 
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.printer.common.transfer.PrinterTransfer;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.printer.common.workflow.PrinterStatusConstants;
@@ -28,7 +29,7 @@ import com.echothree.util.server.persistence.Session;
 public class PrinterTransferCache
         extends BasePrinterTransferCache<Printer, PrinterTransfer> {
     
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of PrinterTransferCache */
@@ -48,7 +49,7 @@ public class PrinterTransferCache
             var priority = printerDetail.getPriority();
             var description = printerControl.getBestPrinterDescription(printer, getLanguage());
 
-            var entityInstance = coreControl.getEntityInstanceByBasePK(printer.getPrimaryKey());
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(printer.getPrimaryKey());
             var printerStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     PrinterStatusConstants.Workflow_PRINTER_STATUS, entityInstance);
             

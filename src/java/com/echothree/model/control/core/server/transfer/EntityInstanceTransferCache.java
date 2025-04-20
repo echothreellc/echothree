@@ -21,6 +21,7 @@ import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.server.control.AppearanceControl;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -33,6 +34,7 @@ public class EntityInstanceTransferCache
         extends BaseCoreTransferCache<EntityInstance, EntityInstanceTransfer> {
 
     CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
 
     boolean includeEntityAppearance;
@@ -93,7 +95,7 @@ public class EntityInstanceTransferCache
                 uuid = entityInstance.getUuid();
                 
                 if(includeUuid && uuid == null) {
-                    entityInstance = coreControl.ensureUuidForEntityInstance(entityInstance, false);
+                    entityInstance = entityInstanceControl.ensureUuidForEntityInstance(entityInstance, false);
                     uuid = entityInstance.getUuid();
                 }
             }
@@ -116,7 +118,7 @@ public class EntityInstanceTransferCache
             if(includeEntityVisit || this.includeEntityVisit) {
                 // visitingParty could be null
                 var visitingParty = getUserControl().getPartyFromUserVisit(userVisit);
-                var visitingEntityInstance = visitingParty == null ? null : coreControl.getEntityInstanceByBasePK(visitingParty.getPrimaryKey());
+                var visitingEntityInstance = visitingParty == null ? null : entityInstanceControl.getEntityInstanceByBasePK(visitingParty.getPrimaryKey());
 
                 // visitingEntityInstance = the entityInstance parameter
                 // entityInstance = the visitedEntityInstance parameter

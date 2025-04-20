@@ -20,7 +20,7 @@ import com.echothree.control.user.workflow.common.spec.WorkflowStepUniversalSpec
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.workflow.common.exception.MissingRequiredWorkflowNameException;
 import com.echothree.model.control.workflow.common.exception.UnknownDefaultWorkflowStepException;
@@ -217,8 +217,8 @@ public class WorkflowStepLogic
     
     public Set<WorkflowEntityStatus> isEntityInWorkflowSteps(final ExecutionErrorAccumulator eea, final String workflowName, final BasePK pk,
             EntityPermission entityPermission, String... workflowStepNames) {
-        var coreControl = Session.getModelController(CoreControl.class);
-        var entityInstance = coreControl.getEntityInstanceByBasePK(pk);
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+        var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(pk);
         
         return isEntityInWorkflowSteps(eea, workflowName, entityInstance, entityPermission, workflowStepNames);
     }

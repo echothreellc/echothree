@@ -17,7 +17,7 @@
 package com.echothree.model.control.graphql.server.graphql;
 
 import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
@@ -40,9 +40,9 @@ public class MutationResultWithIdObject
     }
 
     public void setEntityInstanceFromEntityRef(final String entityRef) {
-        var coreControl = Session.getModelController(CoreControl.class);
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
-        setEntityInstance(coreControl.getEntityInstanceByEntityRef(entityRef));
+        setEntityInstance(entityInstanceControl.getEntityInstanceByEntityRef(entityRef));
     }
 
     public void setEntityInstance(final EntityInstanceTransfer entityInstanceTransfer) {
@@ -55,9 +55,9 @@ public class MutationResultWithIdObject
         String id = null;
         
         if(entityInstance != null) {
-            var coreControl = Session.getModelController(CoreControl.class);
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
-            entityInstance = coreControl.ensureUuidForEntityInstance(entityInstance, false);
+            entityInstance = entityInstanceControl.ensureUuidForEntityInstance(entityInstance, false);
             id = entityInstance.getUuid();
         }
         

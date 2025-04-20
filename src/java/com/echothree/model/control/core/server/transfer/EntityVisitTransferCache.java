@@ -18,7 +18,7 @@ package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.transfer.EntityVisitTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.core.server.entity.EntityVisit;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -26,7 +26,8 @@ import com.echothree.util.server.persistence.Session;
 public class EntityVisitTransferCache
         extends BaseCoreTransferCache<EntityVisit, EntityVisitTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+
     boolean includeEntityInstance;
     boolean includeVisitedEntityInstance;
     boolean includeVisitedTime;
@@ -53,11 +54,11 @@ public class EntityVisitTransferCache
             put(entityVisit, entityVisitTransfer);
 
             if(includeEntityInstance) {
-                entityVisitTransfer.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityVisit.getEntityInstance(), false, false, false, false));
+                entityVisitTransfer.setEntityInstance(entityInstanceControl.getEntityInstanceTransfer(userVisit, entityVisit.getEntityInstance(), false, false, false, false));
             }
 
             if(includeVisitedEntityInstance) {
-                entityVisitTransfer.setVisitedEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityVisit.getVisitedEntityInstance(), false, false, false, false));
+                entityVisitTransfer.setVisitedEntityInstance(entityInstanceControl.getEntityInstanceTransfer(userVisit, entityVisit.getVisitedEntityInstance(), false, false, false, false));
             }
 
             if(includeVisitedTime) {

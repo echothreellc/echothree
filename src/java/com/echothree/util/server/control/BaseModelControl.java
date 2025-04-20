@@ -18,6 +18,7 @@ package com.echothree.util.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -35,7 +36,6 @@ public abstract class BaseModelControl {
     protected Session session;
     protected Connection connection;
     private Log log;
-    private CoreControl coreControl;
     private PartyControl partyControl;
     private WorkflowControl workflowControl;
     
@@ -64,15 +64,7 @@ public abstract class BaseModelControl {
     // --------------------------------------------------------------------------------
     //   Utilities
     // --------------------------------------------------------------------------------
-    
-    protected CoreControl getCoreControl() {
-        if(coreControl == null) {
-            coreControl = Session.getModelController(CoreControl.class);
-        }
-        
-        return coreControl;
-    }
-    
+
     protected PartyControl getPartyControl() {
         if(partyControl == null) {
             partyControl = Session.getModelController(PartyControl.class);
@@ -85,12 +77,14 @@ public abstract class BaseModelControl {
         if(workflowControl == null) {
             workflowControl = Session.getModelController(WorkflowControl.class);
         }
-        
+
         return workflowControl;
     }
     
     protected EntityInstance getEntityInstanceByBasePK(final BasePK pk) {
-        return getCoreControl().getEntityInstanceByBasePK(pk);
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+
+        return entityInstanceControl.getEntityInstanceByBasePK(pk);
     }
     
     protected EntityInstance getEntityInstanceByBaseEntity(final BaseEntity baseEntity) {
@@ -99,17 +93,23 @@ public abstract class BaseModelControl {
 
     protected Event sendEvent(final BasePK basePK, final EventTypes eventType, final BasePK relatedBasePK,
             final EventTypes relatedEventType, final BasePK createdByBasePK) {
-        return getCoreControl().sendEvent(basePK, eventType, relatedBasePK, relatedEventType, createdByBasePK);
+        var coreControl = Session.getModelController(CoreControl.class);
+
+        return coreControl.sendEvent(basePK, eventType, relatedBasePK, relatedEventType, createdByBasePK);
     }
     
     protected Event sendEvent(final EntityInstance entityInstance, final EventTypes eventType, final BasePK relatedBasePK,
             final EventTypes relatedEventType, final BasePK createdByBasePK) {
-        return getCoreControl().sendEvent(entityInstance, eventType, relatedBasePK, relatedEventType, createdByBasePK);
+        var coreControl = Session.getModelController(CoreControl.class);
+
+        return coreControl.sendEvent(entityInstance, eventType, relatedBasePK, relatedEventType, createdByBasePK);
     }
     
     public Event sendEvent(final EntityInstance entityInstance, final EventTypes eventType, final EntityInstance relatedEntityInstance,
             final EventTypes relatedEventType, final BasePK createdByBasePK) {
-        return getCoreControl().sendEvent(entityInstance, eventType, relatedEntityInstance, relatedEventType, createdByBasePK);
+        var coreControl = Session.getModelController(CoreControl.class);
+
+        return coreControl.sendEvent(entityInstance, eventType, relatedEntityInstance, relatedEventType, createdByBasePK);
     }
     
 }

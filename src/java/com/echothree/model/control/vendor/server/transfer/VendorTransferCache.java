@@ -23,7 +23,7 @@ import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.control.item.server.control.ItemControl;
@@ -62,8 +62,8 @@ public class VendorTransferCache
     CommunicationControl communicationControl = Session.getModelController(CommunicationControl.class);
     ContactControl contactControl = Session.getModelController(ContactControl.class);
     ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
     DocumentControl documentControl = Session.getModelController(DocumentControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     ItemControl itemControl = Session.getModelController(ItemControl.class);
     InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
@@ -188,7 +188,7 @@ public class VendorTransferCache
             var partyGroup = partyControl.getPartyGroup(party);
             var partyGroupTransfer = partyGroup == null ? null : partyControl.getPartyGroupTransfer(userVisit, partyGroup);
 
-            var entityInstance = coreControl.getEntityInstanceByBasePK(party.getPrimaryKey());
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(party.getPrimaryKey());
             var vendorStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     VendorStatusConstants.Workflow_VENDOR_STATUS, entityInstance);
 

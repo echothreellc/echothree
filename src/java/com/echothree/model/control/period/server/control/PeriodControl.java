@@ -16,7 +16,10 @@
 
 package com.echothree.model.control.period.server.control;
 
+import com.echothree.model.control.accounting.common.workflow.FiscalPeriodStatusConstants;
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
+import com.echothree.model.control.period.common.choice.FiscalPeriodStatusChoicesBean;
 import com.echothree.model.control.period.common.choice.PeriodKindChoicesBean;
 import com.echothree.model.control.period.common.choice.PeriodTypeChoicesBean;
 import com.echothree.model.control.period.common.transfer.PeriodDescriptionTransfer;
@@ -25,9 +28,7 @@ import com.echothree.model.control.period.common.transfer.PeriodKindTransfer;
 import com.echothree.model.control.period.common.transfer.PeriodTransfer;
 import com.echothree.model.control.period.common.transfer.PeriodTypeDescriptionTransfer;
 import com.echothree.model.control.period.common.transfer.PeriodTypeTransfer;
-import com.echothree.model.control.period.common.choice.FiscalPeriodStatusChoicesBean;
 import com.echothree.model.control.period.server.transfer.PeriodTransferCaches;
-import com.echothree.model.control.accounting.common.workflow.FiscalPeriodStatusConstants;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.period.server.entity.Period;
@@ -1470,7 +1471,8 @@ public class PeriodControl
             workflowControl.getWorkflowEntranceChoices(fiscalPeriodStatusChoicesBean, defaultFiscalPeriodStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(FiscalPeriodStatusConstants.Workflow_FISCAL_PERIOD_STATUS), partyPK);
         } else {
-            var entityInstance = getCoreControl().getEntityInstanceByBasePK(period.getPrimaryKey());
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(period.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(FiscalPeriodStatusConstants.Workflow_FISCAL_PERIOD_STATUS,
                     entityInstance);
             

@@ -18,15 +18,15 @@ package com.echothree.model.control.associate.server.transfer;
 
 import com.echothree.model.control.associate.common.transfer.AssociateReferralTransfer;
 import com.echothree.model.control.associate.server.control.AssociateControl;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.associate.server.entity.AssociateReferral;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
 public class AssociateReferralTransferCache
         extends BaseAssociateTransferCache<AssociateReferral, AssociateReferralTransfer> {
-    
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     
     /** Creates a new instance of AssociateReferralTransferCache */
     public AssociateReferralTransferCache(UserVisit userVisit, AssociateControl associateControl) {
@@ -46,7 +46,7 @@ public class AssociateReferralTransferCache
             var associatePartyContactMechanism = associateReferralDetail.getAssociatePartyContactMechanism();
             var associatePartyContactMechanismTransfer = associatePartyContactMechanism == null ? null : associateControl.getAssociatePartyContactMechanismTransfer(userVisit, associatePartyContactMechanism);
             var targetEntityInstance = associateReferralDetail.getTargetEntityInstance();
-            var targetEntityInstanceTransfer = targetEntityInstance == null ? null : coreControl.getEntityInstanceTransfer(userVisit, targetEntityInstance, false, false, false, false);
+            var targetEntityInstanceTransfer = targetEntityInstance == null ? null : entityInstanceControl.getEntityInstanceTransfer(userVisit, targetEntityInstance, false, false, false, false);
             var unformattedAssociateReferralTime = associateReferralDetail.getAssociateReferralTime();
             var associateReferralTime = formatTypicalDateTime(unformattedAssociateReferralTime);
 

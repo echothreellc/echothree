@@ -18,6 +18,7 @@ package com.echothree.control.user.warehouse.server.command;
 
 import com.echothree.control.user.warehouse.common.form.CreateLocationForm;
 import com.echothree.control.user.warehouse.common.result.WarehouseResultFactory;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.inventory.common.workflow.InventoryLocationGroupStatusConstants;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -107,7 +108,7 @@ public class CreateLocationCommand
                                 var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
                                 
                                 if(inventoryLocationGroup != null) {
-                                    var coreControl = getCoreControl();
+                                    var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
                                     var velocity = Integer.valueOf(form.getVelocity());
                                     var workflowControl = Session.getModelController(WorkflowControl.class);
                                     var createdBy = getPartyPK();
@@ -116,7 +117,7 @@ public class CreateLocationCommand
                                     location = warehouseControl.createLocation(warehouseParty, locationName, locationType, locationUseType,
                                             velocity, inventoryLocationGroup, createdBy);
 
-                                    var entityInstance = coreControl.getEntityInstanceByBasePK(inventoryLocationGroup.getPrimaryKey());
+                                    var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(inventoryLocationGroup.getPrimaryKey());
                                     var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(InventoryLocationGroupStatusConstants.Workflow_INVENTORY_LOCATION_GROUP_STATUS, entityInstance);
                                     var workflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
                                     var workflowEntranceName = switch(workflowStepName) {
@@ -129,7 +130,7 @@ public class CreateLocationCommand
                                         default -> null;
                                     };
 
-                                    entityInstance = coreControl.getEntityInstanceByBasePK(location.getPrimaryKey());
+                                    entityInstance = entityInstanceControl.getEntityInstanceByBasePK(location.getPrimaryKey());
                                     workflowControl.addEntityToWorkflowUsingNames(null, LocationStatusConstants.Workflow_LOCATION_STATUS, workflowEntranceName, entityInstance, null, null, createdBy);
                                     
                                     if(description != null) {

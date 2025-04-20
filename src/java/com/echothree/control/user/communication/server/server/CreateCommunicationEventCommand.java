@@ -26,6 +26,7 @@ import com.echothree.model.control.contact.common.ContactMechanismPurposes;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.contact.server.logic.ContactEmailAddressLogic;
 import com.echothree.model.control.core.common.MimeTypes;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.customer.common.workflow.CustomerCreditStatusConstants;
 import com.echothree.model.control.customer.common.workflow.CustomerStatusConstants;
@@ -106,6 +107,7 @@ public class CreateCommunicationEventCommand
                     if(communicationSourceTypeName.equals(CommunicationConstants.CommunicationSourceType_EMAIL)
                             && communicationEventTypeName.equals(CommunicationConstants.CommunicationEventType_EMAIL)
                             && clobDocument == null && blobDocument != null) {
+                        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
                         String description = null;
                         String emailAddress = null;
 
@@ -219,7 +221,7 @@ public class CreateCommunicationEventCommand
                                                     customerCreditStatusWorkflowEntrance = workflowControl.getDefaultWorkflowEntrance(customerCreditStatusWorkflow);
                                                 }
 
-                                                var entityInstance = getCoreControl().getEntityInstanceByBasePK(party.getPrimaryKey());
+                                                var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(party.getPrimaryKey());
                                                 workflowControl.addEntityToWorkflow(customerStatusWorkflowEntrance, entityInstance, null, null, createdBy);
                                                 workflowControl.addEntityToWorkflow(customerCreditStatusWorkflowEntrance, entityInstance, null, null, createdBy);
                                             } else {
@@ -257,7 +259,7 @@ public class CreateCommunicationEventCommand
                             var communicationEvent = communicationControl.createCommunicationEvent(communicationEventType, communicationSource, communicationEventPurpose, null, null,
                                     partyContactMechanism, document, createdBy);
 
-                            var entityInstance = getCoreControl().getEntityInstanceByBasePK(communicationEvent.getPrimaryKey());
+                            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(communicationEvent.getPrimaryKey());
                             var workEffort = WorkEffortLogic.getInstance().createWorkEffort(preparedWorkEffort, entityInstance, createdBy);
 
                             var senderRoleType = communicationControl.getCommunicationEventRoleTypeByName(CommunicationConstants.CommunicationEventRoleType_SENDER);

@@ -18,7 +18,7 @@ package com.echothree.model.control.accounting.server.transfer;
 
 import com.echothree.model.control.accounting.common.transfer.TransactionEntityRoleTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.accounting.server.entity.TransactionEntityRole;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -27,7 +27,7 @@ public class TransactionEntityRoleTransferCache
         extends BaseAccountingTransferCache<TransactionEntityRole, TransactionEntityRoleTransfer> {
 
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     
     /** Creates a new instance of TransactionEntityRoleTransferCache */
     public TransactionEntityRoleTransferCache(UserVisit userVisit) {
@@ -41,7 +41,7 @@ public class TransactionEntityRoleTransferCache
         if(transactionEntityRoleTransfer == null) {
             var transaction = accountingControl.getTransactionTransfer(userVisit, transactionEntityRole.getTransaction());
             var transactionEntityRoleType = accountingControl.getTransactionEntityRoleTypeTransfer(userVisit, transactionEntityRole.getTransactionEntityRoleType());
-            var entityInstance = coreControl.getEntityInstanceTransfer(userVisit, transactionEntityRole.getEntityInstance(), false, false, false, false);
+            var entityInstance = entityInstanceControl.getEntityInstanceTransfer(userVisit, transactionEntityRole.getEntityInstance(), false, false, false, false);
             
             transactionEntityRoleTransfer = new TransactionEntityRoleTransfer(transaction, transactionEntityRoleType, entityInstance);
             put(transactionEntityRole, transactionEntityRoleTransfer);

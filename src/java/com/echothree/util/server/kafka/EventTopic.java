@@ -16,7 +16,7 @@
 
 package com.echothree.util.server.kafka;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.core.server.entity.Event;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.EntityInstanceUtils;
@@ -54,11 +54,11 @@ public class EventTopic {
         if(kafkaConnectionFactory != null) {
             try {
                 try(var kafkaConnection = kafkaConnectionFactory.createConnection()) {
-                    var coreControl = Session.getModelController(CoreControl.class);
+                    var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
                     var eventId = event.getPrimaryKey().getEntityId();
                     var eventTime = event.getEventTime();
                     var eventTimeSequence = event.getEventTimeSequence();
-                    var entityInstance = coreControl.ensureUuidForEntityInstance(event.getEntityInstance(), false);
+                    var entityInstance = entityInstanceControl.ensureUuidForEntityInstance(event.getEntityInstance(), false);
                     var entityRef = entityInstanceUtils.getEntityRefByEntityInstance(entityInstance);
                     var id = entityInstance.getUuid();
                     var eventTypeName = event.getEventType().getEventTypeName();

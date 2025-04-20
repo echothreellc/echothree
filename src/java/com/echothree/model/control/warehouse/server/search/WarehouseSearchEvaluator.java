@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.warehouse.server.search;
 
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.common.Indexes;
 import com.echothree.model.control.index.server.analyzer.BasicAnalyzer;
@@ -75,8 +76,10 @@ public class WarehouseSearchEvaluator
             }
             
             if(warehouse != null) {
+                var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+
                 resultSet = new EntityInstancePKHolder(1);
-                resultSet.add(getCoreControl().getEntityInstanceByBasePK(warehouse.getPartyPK()).getPrimaryKey(), null);
+                resultSet.add(entityInstanceControl.getEntityInstanceByBasePK(warehouse.getPartyPK()).getPrimaryKey(), null);
             }
         }
         

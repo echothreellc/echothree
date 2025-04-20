@@ -19,9 +19,9 @@ package com.echothree.model.control.campaign.server.logic;
 import com.echothree.model.control.campaign.common.exception.UnknownCampaignContentNameException;
 import com.echothree.model.control.campaign.common.exception.UnknownCampaignContentStatusChoiceException;
 import com.echothree.model.control.campaign.common.exception.UnknownCampaignContentValueException;
-import com.echothree.model.control.campaign.server.control.CampaignControl;
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.campaign.common.workflow.CampaignContentStatusConstants;
+import com.echothree.model.control.campaign.server.control.CampaignControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
@@ -70,11 +70,11 @@ public class CampaignContentLogic
     }
     
     public void setCampaignContentStatus(final Session session, ExecutionErrorAccumulator eea, CampaignContent campaignContent, String campaignContentStatusChoice, PartyPK modifiedBy) {
-        var coreControl = Session.getModelController(CoreControl.class);
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflowLogic = WorkflowLogic.getInstance();
         var workflow = workflowLogic.getWorkflowByName(eea, CampaignContentStatusConstants.Workflow_CAMPAIGN_CONTENT_STATUS);
-        var entityInstance = coreControl.getEntityInstanceByBasePK(campaignContent.getPrimaryKey());
+        var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignContent.getPrimaryKey());
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
         var workflowDestination = campaignContentStatusChoice == null ? null : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), campaignContentStatusChoice);
 

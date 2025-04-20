@@ -19,6 +19,7 @@ package com.echothree.model.control.batch.server.search;
 import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.search.server.search.BaseSearchEvaluator;
 import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
 import com.echothree.model.data.batch.server.entity.Batch;
@@ -157,8 +158,10 @@ public class BatchSearchEvaluator
                 }
 
                 if(batch != null) {
+                    var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+
                     resultSet = new EntityInstancePKHolder(1);
-                    resultSet.add(getCoreControl().getEntityInstanceByBasePK(batch.getPrimaryKey()).getPrimaryKey(), null);
+                    resultSet.add(entityInstanceControl.getEntityInstanceByBasePK(batch.getPrimaryKey()).getPrimaryKey(), null);
                 }
             }
         }

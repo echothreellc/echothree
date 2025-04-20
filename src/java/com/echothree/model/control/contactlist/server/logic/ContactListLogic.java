@@ -20,7 +20,7 @@ import com.echothree.model.control.contactlist.common.exception.UnknownContactLi
 import com.echothree.model.control.contactlist.common.exception.UnknownContactListNameException;
 import com.echothree.model.control.contactlist.common.workflow.PartyContactListStatusConstants;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.PartyLogic;
@@ -86,10 +86,10 @@ public class ContactListLogic
     public void addContactListToParty(final ExecutionErrorAccumulator eea, final Party party, final ContactList contactList,
             final ContactListContactMechanismPurpose preferredContactListContactMechanismPurpose, final BasePK createdBy) {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        var coreControl = Session.getModelController(CoreControl.class);
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var workflowControl = Session.getModelController(WorkflowControl.class);
         var partyContactList = contactListControl.createPartyContactList(party, contactList, preferredContactListContactMechanismPurpose, createdBy);
-        var entityInstance = coreControl.getEntityInstanceByBasePK(partyContactList.getPrimaryKey());
+        var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(partyContactList.getPrimaryKey());
         var workflowEntrance = contactList.getLastDetail().getDefaultPartyContactListStatus();
         var workflowEntranceName = workflowEntrance.getLastDetail().getWorkflowEntranceName();
         
@@ -104,9 +104,9 @@ public class ContactListLogic
     
     public void removeContactListFromParty(final ExecutionErrorAccumulator eea, final PartyContactList partyContactList, final BasePK deletedBy) {
         var contactListControl = Session.getModelController(ContactListControl.class);
-        var coreControl = Session.getModelController(CoreControl.class);
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        var entityInstance = coreControl.getEntityInstanceByBasePK(partyContactList.getPrimaryKey());
+        var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(partyContactList.getPrimaryKey());
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PartyContactListStatusConstants.Workflow_PARTY_CONTACT_LIST_STATUS, entityInstance);
         var workflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
         

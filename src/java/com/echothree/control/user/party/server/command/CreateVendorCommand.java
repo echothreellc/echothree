@@ -25,6 +25,7 @@ import com.echothree.model.control.cancellationpolicy.server.control.Cancellatio
 import com.echothree.model.control.contact.common.ContactMechanismPurposes;
 import com.echothree.model.control.contact.server.logic.ContactEmailAddressLogic;
 import com.echothree.model.control.contactlist.server.logic.ContactListLogic;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
@@ -177,7 +178,7 @@ public class CreateVendorCommand
                                                     }
 
                                                     if(preferredCurrencyIsoName == null || (preferredCurrency != null)) {
-                                                        var coreControl = getCoreControl();
+                                                        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
                                                         var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
                                                         var partyFreeOnBoardControl = Session.getModelController(PartyFreeOnBoardControl.class);
                                                         var termControl = Session.getModelController(TermControl.class);
@@ -263,7 +264,7 @@ public class CreateVendorCommand
 
                                                         ContactListLogic.getInstance().setupInitialContactLists(this, party, createdBy);
 
-                                                        var entityInstance = coreControl.getEntityInstanceByBasePK(party.getPrimaryKey());
+                                                        var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(party.getPrimaryKey());
                                                         workflowControl.addEntityToWorkflowUsingNames(null, VendorStatusConstants.Workflow_VENDOR_STATUS,
                                                                 VendorStatusConstants.WorkflowEntrance_NEW_ACTIVE, entityInstance, null, null, createdBy);
                                                     } else {
