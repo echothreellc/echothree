@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.customer.server.search;
 
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.customer.server.analyzer.CustomerAnalyzer;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.index.common.IndexFields;
@@ -107,8 +108,10 @@ public class CustomerSearchEvaluator
             }
             
             if(customer != null) {
+                var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+
                 resultSet = new EntityInstancePKHolder(1);
-                resultSet.add(getCoreControl().getEntityInstanceByBasePK(customer.getPartyPK()).getPrimaryKey(), null);
+                resultSet.add(entityInstanceControl.getEntityInstanceByBasePK(customer.getPartyPK()).getPrimaryKey(), null);
             }
         }
         

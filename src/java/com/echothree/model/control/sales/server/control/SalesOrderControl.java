@@ -17,6 +17,7 @@
 package com.echothree.model.control.sales.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.sales.common.transfer.SalesOrderResultTransfer;
 import com.echothree.model.control.sales.common.workflow.SalesOrderStatusConstants;
 import com.echothree.model.data.associate.server.entity.AssociateReferral;
@@ -264,7 +265,7 @@ public class SalesOrderControl
         var salesOrderResultTransfers = new ArrayList<SalesOrderResultTransfer>();
 
         try {
-            var coreControl = getCoreControl();
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var workflowControl = getWorkflowControl();
             var ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
@@ -280,7 +281,7 @@ public class SalesOrderControl
                     var orderPK = new OrderPK(rs.getLong(1));
                     var order = OrderFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, orderPK);
 
-                    var entityInstance = coreControl.getEntityInstanceByBasePK(orderPK);
+                    var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(orderPK);
                     var orderStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                             SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS, entityInstance);
 

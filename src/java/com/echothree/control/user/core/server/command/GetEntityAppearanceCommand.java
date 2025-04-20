@@ -19,14 +19,15 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.GetEntityAppearanceForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.server.control.AppearanceControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -62,10 +63,10 @@ public class GetEntityAppearanceCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var result = CoreResultFactory.getGetEntityAppearanceResult();
         var entityRef = form.getEntityRef();
-        var entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
+        var entityInstance = entityInstanceControl.getEntityInstanceByEntityRef(entityRef);
 
         if(entityInstance != null) {
             var appearanceControl = Session.getModelController(AppearanceControl.class);

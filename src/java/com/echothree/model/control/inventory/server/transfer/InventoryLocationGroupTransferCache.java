@@ -16,12 +16,12 @@
 
 package com.echothree.model.control.inventory.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.inventory.common.InventoryOptions;
 import com.echothree.model.control.inventory.common.transfer.InventoryLocationGroupTransfer;
+import com.echothree.model.control.inventory.common.workflow.InventoryLocationGroupStatusConstants;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
-import com.echothree.model.control.inventory.common.workflow.InventoryLocationGroupStatusConstants;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -31,7 +31,7 @@ import com.echothree.util.server.persistence.Session;
 public class InventoryLocationGroupTransferCache
         extends BaseInventoryTransferCache<InventoryLocationGroup, InventoryLocationGroupTransfer> {
     
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     boolean includeCapacities;
     boolean includeVolume;
@@ -64,7 +64,7 @@ public class InventoryLocationGroupTransferCache
             var sortOrder = inventoryLocationGroupDetail.getSortOrder();
             var description = inventoryControl.getBestInventoryLocationGroupDescription(inventoryLocationGroup, getLanguage());
 
-            var entityInstance = coreControl.getEntityInstanceByBasePK(inventoryLocationGroup.getPrimaryKey());
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(inventoryLocationGroup.getPrimaryKey());
             var inventoryLocationGroupStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     InventoryLocationGroupStatusConstants.Workflow_INVENTORY_LOCATION_GROUP_STATUS, entityInstance);
             

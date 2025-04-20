@@ -20,6 +20,7 @@ import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.batch.server.transfer.GenericBatchTransferCache;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.order.server.control.OrderBatchControl;
 import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
@@ -35,13 +36,11 @@ public class SalesOrderBatchTransferCache
         extends GenericBatchTransferCache<SalesOrderBatchTransfer> {
     
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     PaymentMethodControl paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
-    OrderControl orderControl = Session.getModelController(OrderControl.class);
     OrderBatchControl orderBatchControl = Session.getModelController(OrderBatchControl.class);
     SalesOrderBatchControl salesOrderBatchControl = Session.getModelController(SalesOrderBatchControl.class);
-    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
-    
+
     /** Creates a new instance of SalesOrderBatchTransferCache */
     public SalesOrderBatchTransferCache(UserVisit userVisit) {
         super(userVisit, (BatchControl)Session.getModelController(BatchControl.class));
@@ -64,7 +63,7 @@ public class SalesOrderBatchTransferCache
             var count = orderBatch.getCount();
             var paymentMethodTransfer = paymentMethodControl.getPaymentMethodTransfer(userVisit, salesOrderBatch.getPaymentMethod());
             var amount = AmountUtils.getInstance().formatPriceLine(currency, orderBatch.getAmount());
-            var entityInstance = coreControl.getEntityInstanceByBasePK(batch.getPrimaryKey());
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(batch.getPrimaryKey());
             
             salesOrderBatchTransfer = new SalesOrderBatchTransfer(batchTypeTransfer, batchName, currencyTransfer, paymentMethodTransfer, count, amount,
                     getBatchStatus(batch, entityInstance));

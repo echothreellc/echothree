@@ -40,6 +40,7 @@ import com.echothree.model.control.contactlist.common.transfer.PartyTypeContactL
 import com.echothree.model.control.contactlist.common.workflow.PartyContactListStatusConstants;
 import com.echothree.model.control.contactlist.server.transfer.ContactListTransferCaches;
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;
@@ -2233,7 +2234,8 @@ public class ContactListControl
             workflowControl.getWorkflowEntranceChoices(partyContactListStatusChoicesBean, defaultPartyContactListStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(PartyContactListStatusConstants.Workflow_PARTY_CONTACT_LIST_STATUS), partyPK);
         } else {
-            var entityInstance = getCoreControl().getEntityInstanceByBasePK(partyContactList.getPrimaryKey());
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(partyContactList.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PartyContactListStatusConstants.Workflow_PARTY_CONTACT_LIST_STATUS,
                     entityInstance);
 

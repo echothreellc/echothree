@@ -21,6 +21,7 @@ import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.item.common.ItemConstants;
 import com.echothree.model.control.item.common.workflow.ItemStatusConstants;
 import com.echothree.model.control.item.server.control.ItemControl;
@@ -250,7 +251,6 @@ public class CreateItemCommand
                                                                 var createdBy = getPartyPK();
 
                                                                 if(!hasExecutionErrors() && WorkflowSecurityLogic.getInstance().checkAddEntityToWorkflow(this, itemStatus, createdBy)) {
-                                                                    var coreControl = getCoreControl();
                                                                     var shippingChargeExempt = Boolean.valueOf(form.getShippingChargeExempt());
                                                                     var strShippingStartTime = form.getShippingStartTime();
                                                                     var shippingStartTime = strShippingStartTime == null ? session.START_TIME_LONG : Long.valueOf(strShippingStartTime);
@@ -278,7 +278,8 @@ public class CreateItemCommand
                                                                             returnPolicy, null, createdBy);
 
                                                                     if(!hasExecutionErrors()) {
-                                                                        var entityInstance = coreControl.getEntityInstanceByBasePK(item.getPrimaryKey());
+                                                                        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+                                                                        var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(item.getPrimaryKey());
 
                                                                         workflowControl.addEntityToWorkflow(itemStatus, entityInstance, null, null, createdBy);
                                                                     }

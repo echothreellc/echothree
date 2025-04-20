@@ -16,12 +16,12 @@
 
 package com.echothree.model.control.track.server.logic;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.track.common.exception.UnknownTrackNameException;
 import com.echothree.model.control.track.common.exception.UnknownTrackStatusChoiceException;
 import com.echothree.model.control.track.common.exception.UnknownTrackValueException;
-import com.echothree.model.control.track.server.control.TrackControl;
 import com.echothree.model.control.track.common.workflow.TrackStatusConstants;
+import com.echothree.model.control.track.server.control.TrackControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
@@ -70,10 +70,10 @@ public class TrackLogic
     }
     
     public void setTrackStatus(final Session session, ExecutionErrorAccumulator eea, Track track, String trackStatusChoice, PartyPK modifiedBy) {
-        var coreControl = Session.getModelController(CoreControl.class);
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, TrackStatusConstants.Workflow_TRACK_STATUS);
-        var entityInstance = coreControl.getEntityInstanceByBasePK(track.getPrimaryKey());
+        var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(track.getPrimaryKey());
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
         var workflowDestination = trackStatusChoice == null ? null : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), trackStatusChoice);
 

@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.period.server.logic;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.period.server.control.PeriodControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.party.common.pk.PartyPK;
@@ -51,9 +51,9 @@ public class PeriodLogic {
         }
         
         if(workflowEntrance != null) {
-            var coreControl = Session.getModelController(CoreControl.class);
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var workflowControl = Session.getModelController(WorkflowControl.class);
-            var entityInstance = coreControl.getEntityInstanceByBasePK(period.getPrimaryKey());
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(period.getPrimaryKey());
 
             workflowControl.addEntityToWorkflow(workflowEntrance, entityInstance, null, null, createdBy);
         }

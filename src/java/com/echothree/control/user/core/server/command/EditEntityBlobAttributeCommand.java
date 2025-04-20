@@ -22,16 +22,17 @@ import com.echothree.control.user.core.common.form.EditEntityBlobAttributeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.spec.EntityBlobAttributeSpec;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.logic.MimeTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.core.server.entity.EntityBlobAttribute;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -72,12 +73,13 @@ public class EditEntityBlobAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var result = CoreResultFactory.getEditEntityBlobAttributeResult();
         var entityRef = spec.getEntityRef();
-        var entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
+        var entityInstance = entityInstanceControl.getEntityInstanceByEntityRef(entityRef);
 
         if(entityInstance != null) {
+            var coreControl = getCoreControl();
             var entityAttributeName = spec.getEntityAttributeName();
             var entityAttribute = coreControl.getEntityAttributeByName(entityInstance.getEntityType(), entityAttributeName);
 

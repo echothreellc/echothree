@@ -18,6 +18,7 @@ package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.EntityGeoPointAttributeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.core.server.entity.EntityGeoPointAttribute;
@@ -31,6 +32,7 @@ public class EntityGeoPointAttributeTransferCache
         extends BaseCoreTransferCache<EntityGeoPointAttribute, EntityGeoPointAttributeTransfer> {
 
     CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
     UnitOfMeasureKind elevationUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_ELEVATION);
     UnitOfMeasureKind altitudeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_ALTITUDE);
@@ -47,7 +49,7 @@ public class EntityGeoPointAttributeTransferCache
         
         if(entityGeoPointAttributeTransfer == null) {
             var entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityGeoPointAttribute.getEntityAttribute(), entityInstance) : null;
-            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityGeoPointAttribute.getEntityInstance(), false, false, false, false);
+            var entityInstanceTransfer = entityInstanceControl.getEntityInstanceTransfer(userVisit, entityGeoPointAttribute.getEntityInstance(), false, false, false, false);
             var unformattedLatitude = entityGeoPointAttribute.getLatitude();
             var latitude = geoPointUtils.formatDegrees(unformattedLatitude);
             var unformattedLongitude = entityGeoPointAttribute.getLongitude();

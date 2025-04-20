@@ -17,6 +17,7 @@
 package com.echothree.model.control.track.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
@@ -120,7 +121,8 @@ public class TrackControl
         var trackPK = track.getPrimaryKey();
         sendEvent(trackPK, EventTypes.CREATE, null, null, createdBy);
 
-        var entityInstance = getCoreControl().getEntityInstanceByBasePK(trackPK);
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+        var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(trackPK);
         getWorkflowControl().addEntityToWorkflowUsingNames(null, TrackStatusConstants.Workflow_TRACK_STATUS,
                 TrackStatusConstants.WorkflowEntrance_NEW_ACTIVE, entityInstance, null, null, createdBy);
         
@@ -281,7 +283,8 @@ public class TrackControl
             workflowControl.getWorkflowEntranceChoices(employeeStatusChoicesBean, defaultTrackStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(TrackStatusConstants.Workflow_TRACK_STATUS), partyPK);
         } else {
-            var entityInstance = getCoreControl().getEntityInstanceByBasePK(track.getPrimaryKey());
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(track.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(TrackStatusConstants.Workflow_TRACK_STATUS,
                     entityInstance);
             

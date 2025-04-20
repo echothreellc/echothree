@@ -18,6 +18,7 @@ package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.EntityIntegerAttributeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityIntegerAttribute;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -27,6 +28,7 @@ public class EntityIntegerAttributeTransferCache
         extends BaseCoreTransferCache<EntityIntegerAttribute, EntityIntegerAttributeTransfer> {
 
     CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of EntityIntegerAttributeTransferCache */
     public EntityIntegerAttributeTransferCache(UserVisit userVisit) {
@@ -38,7 +40,7 @@ public class EntityIntegerAttributeTransferCache
         
         if(entityIntegerAttributeTransfer == null) {
             var entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityIntegerAttribute.getEntityAttribute(), entityInstance) : null;
-            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityIntegerAttribute.getEntityInstance(), false, false, false, false);
+            var entityInstanceTransfer = entityInstanceControl.getEntityInstanceTransfer(userVisit, entityIntegerAttribute.getEntityInstance(), false, false, false, false);
             var integerAttribute = entityIntegerAttribute.getIntegerAttribute();
             
             entityIntegerAttributeTransfer = new EntityIntegerAttributeTransfer(entityAttribute, entityInstanceTransfer, integerAttribute);

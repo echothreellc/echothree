@@ -21,6 +21,7 @@ import com.echothree.control.user.contact.common.result.ContactResultFactory;
 import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.common.workflow.TelephoneStatusConstants;
 import com.echothree.model.control.contact.server.control.ContactControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
@@ -116,7 +117,7 @@ public class CreateContactTelephoneCommand
                         
                         if(pattern == null || pattern.matcher(telephoneNumber).matches()) {
                             var contactControl = Session.getModelController(ContactControl.class);
-                            var coreControl = getCoreControl();
+                            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
                             var workflowControl = Session.getModelController(WorkflowControl.class);
                             BasePK createdBy = getPartyPK();
                             var telephoneExtension = form.getTelephoneExtension();
@@ -133,7 +134,7 @@ public class CreateContactTelephoneCommand
                             
                             contactControl.createPartyContactMechanism(party, contactMechanism, description, Boolean.FALSE, 1, createdBy);
 
-                            var entityInstance = coreControl.getEntityInstanceByBasePK(contactMechanism.getPrimaryKey());
+                            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(contactMechanism.getPrimaryKey());
                             workflowControl.addEntityToWorkflowUsingNames(null, TelephoneStatusConstants.Workflow_TELEPHONE_STATUS,
                                     TelephoneStatusConstants.WorkflowEntrance_NEW_TELEPHONE, entityInstance, null, null, createdBy);
                             

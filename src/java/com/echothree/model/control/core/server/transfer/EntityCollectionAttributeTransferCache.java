@@ -18,6 +18,7 @@ package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.EntityCollectionAttributeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.core.server.entity.EntityCollectionAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -27,6 +28,7 @@ public class EntityCollectionAttributeTransferCache
         extends BaseCoreTransferCache<EntityCollectionAttribute, EntityCollectionAttributeTransfer> {
 
     CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of EntityCollectionAttributeTransferCache */
     public EntityCollectionAttributeTransferCache(UserVisit userVisit) {
@@ -38,8 +40,8 @@ public class EntityCollectionAttributeTransferCache
         
         if(entityCollectionAttributeTransfer == null) {
             var entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityCollectionAttribute.getEntityAttribute(), entityInstance) : null;
-            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityCollectionAttribute.getEntityInstance(), false, false, false, false);
-            var entityInstanceAttribute = coreControl.getEntityInstanceTransfer(userVisit, entityCollectionAttribute.getEntityInstanceAttribute(), false, false, false, false);
+            var entityInstanceTransfer = entityInstanceControl.getEntityInstanceTransfer(userVisit, entityCollectionAttribute.getEntityInstance(), false, false, false, false);
+            var entityInstanceAttribute = entityInstanceControl.getEntityInstanceTransfer(userVisit, entityCollectionAttribute.getEntityInstanceAttribute(), false, false, false, false);
             
             entityCollectionAttributeTransfer = new EntityCollectionAttributeTransfer(entityAttribute, entityInstanceTransfer, entityInstanceAttribute);
             put(entityCollectionAttribute, entityCollectionAttributeTransfer);

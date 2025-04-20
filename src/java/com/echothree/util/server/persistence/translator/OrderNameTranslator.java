@@ -16,7 +16,7 @@
 
 package com.echothree.util.server.persistence.translator;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.order.common.OrderTypes;
 import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.order.server.logic.OrderLogic;
@@ -104,10 +104,10 @@ public class OrderNameTranslator
             var order = orderControl.getOrderByName(orderType, orderName);
 
             if(order != null) {
-                var coreControl = Session.getModelController(CoreControl.class);
+                var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
                 var entityNames = getNames(sequenceTypesToTargets, sequenceTypeName, order.getLastDetail());
             
-                result = entityNames == null ? null : new EntityInstanceAndNames(includeEntityInstance ? coreControl.getEntityInstanceByBasePK(order.getPrimaryKey()) : null, entityNames);
+                result = entityNames == null ? null : new EntityInstanceAndNames(includeEntityInstance ? entityInstanceControl.getEntityInstanceByBasePK(order.getPrimaryKey()) : null, entityNames);
             }
         }
         

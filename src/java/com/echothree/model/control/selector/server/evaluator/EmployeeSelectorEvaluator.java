@@ -195,7 +195,7 @@ public class EmployeeSelectorEvaluator
                         log.info("--- employeeSelector = " + employeeSelector);
                     }
 
-                    var entityInstance = coreControl.getEntityInstanceByBasePK(employeeSelector.getPrimaryKey());
+                    var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(employeeSelector.getPrimaryKey());
                     var entityTime = coreControl.getEntityTime(entityInstance);
                     var entityCreatedTime = entityTime.getCreatedTime();
                     var entityModifiedTime = entityTime.getModifiedTime();

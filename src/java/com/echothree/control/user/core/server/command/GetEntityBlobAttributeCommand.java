@@ -19,12 +19,13 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.GetEntityBlobAttributeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.content.server.logic.ContentLogic;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -52,12 +53,13 @@ public class GetEntityBlobAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var result = CoreResultFactory.getGetEntityBlobAttributeResult();
         var entityRef = form.getEntityRef();
-        var entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
+        var entityInstance = entityInstanceControl.getEntityInstanceByEntityRef(entityRef);
         
         if(entityInstance != null) {
+            var coreControl = getCoreControl();
             var entityAttributeName = form.getEntityAttributeName();
             var entityAttribute = coreControl.getEntityAttributeByName(entityInstance.getEntityType(), entityAttributeName);
             

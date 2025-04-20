@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.workflow.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.control.workflow.common.WorkflowOptions;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
@@ -47,8 +47,8 @@ public class WorkflowEntityStatusTransferCache
         var workflowEntityStatusTransfer = get(workflowEntityStatus);
 
         if(workflowEntityStatusTransfer == null) {
-            var coreControl = Session.getModelController(CoreControl.class);
-            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, workflowEntityStatus.getEntityInstance(), false, false, false, false);
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+            var entityInstanceTransfer = entityInstanceControl.getEntityInstanceTransfer(userVisit, workflowEntityStatus.getEntityInstance(), false, false, false, false);
             var workflowStepTransfer = workflowControl.getWorkflowStepTransfer(userVisit, workflowEntityStatus.getWorkflowStep());
             var workEffortScope = workflowEntityStatus.getWorkEffortScope();
             var workEffortScopeTransfer = workEffortScope == null ? null : workEffortControl.getWorkEffortScopeTransfer(userVisit, workEffortScope);

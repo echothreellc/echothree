@@ -17,12 +17,13 @@
 package com.echothree.control.user.message.server.command;
 
 import com.echothree.control.user.message.common.form.DeleteEntityMessageForm;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.message.server.control.MessageControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -51,9 +52,9 @@ public class DeleteEntityMessageCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var entityRef = form.getEntityRef();
-        var entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
+        var entityInstance = entityInstanceControl.getEntityInstanceByEntityRef(entityRef);
         
         if(entityInstance != null) {
             var componentVendorName = form.getComponentVendorName();

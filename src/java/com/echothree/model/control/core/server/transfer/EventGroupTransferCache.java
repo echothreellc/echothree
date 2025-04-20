@@ -17,8 +17,8 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.EventGroupTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.common.workflow.EventGroupStatusConstants;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.core.server.entity.EventGroup;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -27,7 +27,7 @@ import com.echothree.util.server.persistence.Session;
 public class EventGroupTransferCache
         extends BaseCoreTransferCache<EventGroup, EventGroupTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of EventGroupTransferCache */
@@ -44,7 +44,7 @@ public class EventGroupTransferCache
             var eventGroupDetail = eventGroup.getLastDetail();
             var eventGroupName = eventGroupDetail.getEventGroupName();
 
-            var entityInstance = coreControl.getEntityInstanceByBasePK(eventGroup.getPrimaryKey());
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(eventGroup.getPrimaryKey());
             var eventGroupStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     EventGroupStatusConstants.Workflow_EVENT_GROUP_STATUS, entityInstance);
             

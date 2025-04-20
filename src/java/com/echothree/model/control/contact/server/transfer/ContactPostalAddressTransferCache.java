@@ -17,11 +17,11 @@
 package com.echothree.model.control.contact.server.transfer;
 
 import com.echothree.model.control.contact.common.transfer.ContactPostalAddressTransfer;
+import com.echothree.model.control.contact.common.workflow.PostalAddressStatusConstants;
 import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.contact.common.workflow.PostalAddressStatusConstants;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.contact.server.entity.ContactPostalAddress;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -29,16 +29,13 @@ import com.echothree.util.server.persistence.Session;
 
 public class ContactPostalAddressTransferCache
         extends BaseContactTransferCache<ContactPostalAddress, ContactPostalAddressTransfer> {
-    
-    CoreControl coreControl;
-    WorkflowControl workflowControl;
+
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of ContactPostalAddressTransferCache */
     public ContactPostalAddressTransferCache(UserVisit userVisit, ContactControl contactControl) {
         super(userVisit, contactControl);
-        
-        coreControl = Session.getModelController(CoreControl.class);
-        workflowControl = Session.getModelController(WorkflowControl.class);
     }
     
     public ContactPostalAddressTransfer getContactPostalAddressTransfer(ContactPostalAddress contactPostalAddress) {
@@ -100,7 +97,7 @@ public class ContactPostalAddressTransferCache
                 }
             }
 
-            var entityInstance = coreControl.getEntityInstanceByBasePK(contactPostalAddress.getContactMechanismPK());
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(contactPostalAddress.getContactMechanismPK());
             var postalAddressStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     PostalAddressStatusConstants.Workflow_POSTAL_ADDRESS_STATUS, entityInstance);
             

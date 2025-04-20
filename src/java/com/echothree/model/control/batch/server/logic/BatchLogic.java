@@ -20,7 +20,7 @@ import com.echothree.model.control.batch.common.exception.UnknownBatchAliasTypeN
 import com.echothree.model.control.batch.common.exception.UnknownBatchTypeEntityTypeException;
 import com.echothree.model.control.batch.common.exception.UnknownBatchTypeNameException;
 import com.echothree.model.control.batch.server.control.BatchControl;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
@@ -139,8 +139,8 @@ public class BatchLogic
                     batch = batchControl.createBatch(batchType, batchName, createdBy);
 
                     if(workflowEntrance != null) {
-                        var coreControl = Session.getModelController(CoreControl.class);
-                        var entityInstance = coreControl.getEntityInstanceByBasePK(batch.getPrimaryKey());
+                        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+                        var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(batch.getPrimaryKey());
 
                         // TODO: A WorkEffort should be created for the batch entry, if it's manually entered.
                         workflowControl.addEntityToWorkflow(workflowEntrance, entityInstance, null, null, createdBy);

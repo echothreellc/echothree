@@ -19,8 +19,7 @@ package com.echothree.model.control.item.server.transfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.comment.common.CommentConstants;
-import com.echothree.model.control.comment.server.control.CommentControl;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.geo.common.GeoConstants;
 import com.echothree.model.control.geo.common.GeoOptions;
 import com.echothree.model.control.item.common.ItemConstants;
@@ -31,11 +30,9 @@ import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.model.control.item.common.transfer.RelatedItemTransfer;
 import com.echothree.model.control.item.common.workflow.ItemStatusConstants;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.rating.common.RatingConstants;
-import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.tax.server.control.TaxControl;
@@ -55,11 +52,8 @@ public class ItemTransferCache
     
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
     CancellationPolicyControl cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-    CommentControl commentControl = Session.getModelController(CommentControl.class);
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
-    OfferControl offerControl = Session.getModelController(OfferControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
-    RatingControl ratingControl = Session.getModelController(RatingControl.class);
     ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     TaxControl taxControl = Session.getModelController(TaxControl.class);
@@ -257,7 +251,7 @@ public class ItemTransferCache
             var itemDescriptionType = filterDescription ? null : itemControl.getItemDescriptionTypeByName(ItemConstants.ItemDescriptionType_DEFAULT_DESCRIPTION);
             var description = itemDescriptionType == null ? null : itemControl.getBestItemStringDescription(itemDescriptionType, item, getLanguage());
 
-            var entityInstance = coreControl.getEntityInstanceByBasePK(item.getPrimaryKey());
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(item.getPrimaryKey());
             var itemStatusTransfer = filterItemStatus ? null : workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     ItemStatusConstants.Workflow_ITEM_STATUS, entityInstance);
 

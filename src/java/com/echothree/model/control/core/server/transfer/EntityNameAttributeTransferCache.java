@@ -18,6 +18,7 @@ package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.EntityNameAttributeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityNameAttribute;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -27,6 +28,7 @@ public class EntityNameAttributeTransferCache
         extends BaseCoreTransferCache<EntityNameAttribute, EntityNameAttributeTransfer> {
 
     CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of EntityNameAttributeTransferCache */
     public EntityNameAttributeTransferCache(UserVisit userVisit) {
@@ -39,7 +41,7 @@ public class EntityNameAttributeTransferCache
         if(entityNameAttributeTransfer == null) {
             var entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityNameAttribute.getEntityAttribute(), entityInstance) : null;
             var nameAttribute = entityNameAttribute.getNameAttribute();
-            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityNameAttribute.getEntityInstance(), false, false, false, false);
+            var entityInstanceTransfer = entityInstanceControl.getEntityInstanceTransfer(userVisit, entityNameAttribute.getEntityInstance(), false, false, false, false);
             
             entityNameAttributeTransfer = new EntityNameAttributeTransfer(entityAttribute, nameAttribute, entityInstanceTransfer);
             put(entityNameAttribute, entityNameAttributeTransfer);

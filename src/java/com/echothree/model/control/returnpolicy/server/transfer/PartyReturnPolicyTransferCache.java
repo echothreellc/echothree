@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.returnpolicy.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.returnpolicy.common.transfer.PartyReturnPolicyTransfer;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
@@ -28,7 +28,7 @@ import com.echothree.util.server.persistence.Session;
 public class PartyReturnPolicyTransferCache
         extends BaseReturnPolicyTransferCache<PartyReturnPolicy, PartyReturnPolicyTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of PartyReturnPolicyTransferCache */
@@ -43,7 +43,7 @@ public class PartyReturnPolicyTransferCache
             var party = partyControl.getPartyTransfer(userVisit, partyReturnPolicy.getParty());
             var returnPolicy = returnPolicyControl.getReturnPolicyTransfer(userVisit, partyReturnPolicy.getReturnPolicy());
 
-            var entityInstance = coreControl.getEntityInstanceByBasePK(partyReturnPolicy.getPrimaryKey());
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(partyReturnPolicy.getPrimaryKey());
             var createdBy = getPartyPK();
             var partyReturnPolicyStatusTransfer = PartyReturnPolicyLogic.getInstance().getPartyReturnPolicyStatusTransfer(userVisit, entityInstance, createdBy);
 

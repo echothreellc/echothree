@@ -17,16 +17,17 @@
 package com.echothree.control.user.printer.server.command;
 
 import com.echothree.control.user.printer.common.form.CreatePrinterGroupForm;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
+import com.echothree.model.control.printer.common.workflow.PrinterGroupStatusConstants;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
-import com.echothree.model.control.printer.common.workflow.PrinterGroupStatusConstants;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -68,7 +69,7 @@ public class CreatePrinterGroupCommand
                     null, ExecutionErrors.UnknownKeepPrintedJobsTimeUnitOfMeasureTypeName.name());
 
             if(!hasExecutionErrors()) {
-                var coreControl = getCoreControl();
+                var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
                 var workflowControl = Session.getModelController(WorkflowControl.class);
                 var isDefault = Boolean.valueOf(form.getIsDefault());
                 var sortOrder = Integer.valueOf(form.getSortOrder());
@@ -83,7 +84,7 @@ public class CreatePrinterGroupCommand
                     printerControl.createPrinterGroupDescription(printerGroup, language, description, createdBy);
                 }
 
-                var entityInstance = coreControl.getEntityInstanceByBasePK(printerGroup.getPrimaryKey());
+                var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(printerGroup.getPrimaryKey());
                 workflowControl.addEntityToWorkflowUsingNames(null, PrinterGroupStatusConstants.Workflow_PRINTER_GROUP_STATUS,
                         PrinterGroupStatusConstants.WorkflowEntrance_NEW_PRINTER_GROUP, entityInstance, null, null, createdBy);
             }

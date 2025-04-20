@@ -57,6 +57,7 @@ import static com.echothree.model.control.accounting.common.workflow.Transaction
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.financial.server.control.FinancialControl;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
@@ -5069,7 +5070,8 @@ public class AccountingControl
             workflowControl.getWorkflowEntranceChoices(transactionGroupStatusChoicesBean, defaultTransactionGroupStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(Workflow_TRANSACTION_GROUP_STATUS), partyPK);
         } else {
-            var entityInstance = getCoreControl().getEntityInstanceByBasePK(transactionGroup.getPrimaryKey());
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(transactionGroup.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(Workflow_TRANSACTION_GROUP_STATUS,
                     entityInstance);
             

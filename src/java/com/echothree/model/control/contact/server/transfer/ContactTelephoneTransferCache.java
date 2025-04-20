@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.contact.server.transfer;
 
-import com.echothree.model.control.contact.common.workflow.TelephoneStatusConstants;
 import com.echothree.model.control.contact.common.transfer.ContactTelephoneTransfer;
+import com.echothree.model.control.contact.common.workflow.TelephoneStatusConstants;
 import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.contact.server.entity.ContactTelephone;
@@ -29,7 +29,7 @@ import com.echothree.util.server.persistence.Session;
 public class ContactTelephoneTransferCache
         extends BaseContactTransferCache<ContactTelephone, ContactTelephoneTransfer> {
     
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
     /** Creates a new instance of ContactTelephoneTransferCache */
@@ -47,7 +47,7 @@ public class ContactTelephoneTransferCache
             var telephoneNumber = contactTelephone.getTelephoneNumber();
             var telephoneExtension = contactTelephone.getTelephoneExtension();
 
-            var entityInstance = coreControl.getEntityInstanceByBasePK(contactTelephone.getContactMechanismPK());
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(contactTelephone.getContactMechanismPK());
             var telephoneStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     TelephoneStatusConstants.Workflow_TELEPHONE_STATUS, entityInstance);
             

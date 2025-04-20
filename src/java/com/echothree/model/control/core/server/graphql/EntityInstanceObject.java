@@ -18,6 +18,7 @@ package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.model.control.core.server.control.AppearanceControl;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.control.EntityLockControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
@@ -70,9 +71,9 @@ public class EntityInstanceObject
     @GraphQLDescription("uuid")
     @GraphQLNonNull
     public String getUuid() {
-        var coreControl = Session.getModelController(CoreControl.class);
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
-        entityInstance = coreControl.ensureUuidForEntityInstance(entityInstance, false);
+        entityInstance = entityInstanceControl.ensureUuidForEntityInstance(entityInstance, false);
 
         return entityInstance.getUuid();
     }
@@ -101,8 +102,9 @@ public class EntityInstanceObject
     @GraphQLDescription("entity visit")
     public EntityVisitObject getEntityVisit(final DataFetchingEnvironment env) {
         var coreControl = Session.getModelController(CoreControl.class);
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var userSession = BaseGraphQl.getUserSession(env);
-        var visitingEntityInstance = userSession == null ? null : coreControl.getEntityInstanceByBasePK(userSession.getPartyPK());
+        var visitingEntityInstance = userSession == null ? null : entityInstanceControl.getEntityInstanceByBasePK(userSession.getPartyPK());
         var entityVisit = visitingEntityInstance == null ? null : coreControl.getEntityVisit(visitingEntityInstance, entityInstance);
         
         return entityVisit == null ? null : new EntityVisitObject(entityVisit);

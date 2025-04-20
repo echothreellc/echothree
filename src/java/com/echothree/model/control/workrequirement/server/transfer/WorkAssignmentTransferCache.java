@@ -17,6 +17,7 @@
 package com.echothree.model.control.workrequirement.server.transfer;
 
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.workrequirement.common.workflow.WorkAssignmentStatusConstants;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
@@ -28,8 +29,8 @@ import com.echothree.util.server.persistence.Session;
 
 public class WorkAssignmentTransferCache
         extends BaseWorkRequirementTransferCache<WorkAssignment, WorkAssignmentTransfer> {
-    
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
@@ -53,7 +54,7 @@ public class WorkAssignmentTransferCache
             var unformattedEndTime = workAssignmentDetail.getEndTime();
             var endTime = formatTypicalDateTime(unformattedEndTime);
 
-            var entityInstance = coreControl.getEntityInstanceByBasePK(workAssignment.getPrimaryKey());
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(workAssignment.getPrimaryKey());
             var workAssignmentStatus = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     WorkAssignmentStatusConstants.Workflow_WORK_ASSIGNMENT_STATUS, entityInstance);
 

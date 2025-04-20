@@ -18,6 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteEntityAppearanceForm;
 import com.echothree.model.control.core.server.control.AppearanceControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -61,9 +62,9 @@ public class DeleteEntityAppearanceCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var entityRef = form.getEntityRef();
-        var entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
+        var entityInstance = entityInstanceControl.getEntityInstanceByEntityRef(entityRef);
 
         if(entityInstance != null) {
             var appearanceControl = Session.getModelController(AppearanceControl.class);

@@ -18,17 +18,18 @@ package com.echothree.model.control.item.server.search;
 
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.common.IndexTypes;
 import com.echothree.model.control.index.server.analyzer.BasicAnalyzer;
-import com.echothree.model.control.item.server.analyzer.ItemAnalyzer;
 import com.echothree.model.control.item.common.ItemConstants;
+import com.echothree.model.control.item.server.analyzer.ItemAnalyzer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemDescriptionLogic;
-import com.echothree.model.control.search.common.SearchSortOrders;
 import com.echothree.model.control.search.common.SearchSortDirections;
+import com.echothree.model.control.search.common.SearchSortOrders;
 import com.echothree.model.control.search.server.search.BaseSearchEvaluator;
 import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
 import com.echothree.model.data.core.server.factory.EntityInstanceFactory;
@@ -291,8 +292,10 @@ public class ItemSearchEvaluator
             var item = itemControl.getItemByNameThenAlias(itemNameOrAlias);
             
             if(item != null) {
+                var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+
                 resultSet = new EntityInstancePKHolder(1);
-                resultSet.add(getCoreControl().getEntityInstanceByBasePK(item.getPrimaryKey()).getPrimaryKey(), null);
+                resultSet.add(entityInstanceControl.getEntityInstanceByBasePK(item.getPrimaryKey()).getPrimaryKey(), null);
             }
         }
         

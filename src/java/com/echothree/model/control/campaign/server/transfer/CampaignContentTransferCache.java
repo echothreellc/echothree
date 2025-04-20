@@ -18,9 +18,9 @@ package com.echothree.model.control.campaign.server.transfer;
 
 import com.echothree.model.control.campaign.common.CampaignOptions;
 import com.echothree.model.control.campaign.common.transfer.CampaignContentTransfer;
-import com.echothree.model.control.campaign.server.control.CampaignControl;
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.campaign.common.workflow.CampaignContentStatusConstants;
+import com.echothree.model.control.campaign.server.control.CampaignControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.campaign.server.entity.CampaignContent;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -29,7 +29,7 @@ import com.echothree.util.server.persistence.Session;
 public class CampaignContentTransferCache
         extends BaseCampaignTransferCache<CampaignContent, CampaignContentTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of CampaignContentTransferCache */
@@ -56,7 +56,7 @@ public class CampaignContentTransferCache
             var sortOrder = campaignContentDetail.getSortOrder();
             var description = campaignControl.getBestCampaignContentDescription(campaignContent, getLanguage());
 
-            var entityInstance = coreControl.getEntityInstanceByBasePK(campaignContent.getPrimaryKey());
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignContent.getPrimaryKey());
             var campaignContentStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     CampaignContentStatusConstants.Workflow_CAMPAIGN_CONTENT_STATUS, entityInstance);
             

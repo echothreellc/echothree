@@ -17,6 +17,7 @@
 package com.echothree.model.control.employee.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.employee.common.choice.EmployeeAvailabilityChoicesBean;
 import com.echothree.model.control.employee.common.choice.EmployeeStatusChoicesBean;
 import com.echothree.model.control.employee.common.choice.EmployeeTypeChoicesBean;
@@ -2099,7 +2100,8 @@ public class EmployeeControl
             workflowControl.getWorkflowEntranceChoices(leaveStatusChoicesBean, defaultLeaveStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(LeaveStatusConstants.Workflow_LEAVE_STATUS), partyPK);
         } else {
-            var entityInstance = getCoreControl().getEntityInstanceByBasePK(leave.getPrimaryKey());
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(leave.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(LeaveStatusConstants.Workflow_LEAVE_STATUS,
                     entityInstance);
 
@@ -3934,7 +3936,8 @@ public class EmployeeControl
             workflowControl.getWorkflowEntranceChoices(employeeStatusChoicesBean, defaultEmployeeStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(EmployeeStatusConstants.Workflow_EMPLOYEE_STATUS), partyPK);
         } else {
-            var entityInstance = getCoreControl().getEntityInstanceByBasePK(employeeParty.getPrimaryKey());
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(employeeParty.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(EmployeeStatusConstants.Workflow_EMPLOYEE_STATUS,
                     entityInstance);
             
@@ -3969,7 +3972,8 @@ public class EmployeeControl
             workflowControl.getWorkflowEntranceChoices(employeeAvailabilityChoicesBean, defaultEmployeeAvailabilityChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(EmployeeAvailabilityConstants.Workflow_EMPLOYEE_AVAILABILITY), partyPK);
         } else {
-            var entityInstance = getCoreControl().getEntityInstanceByBasePK(employeeParty.getPrimaryKey());
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(employeeParty.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(EmployeeAvailabilityConstants.Workflow_EMPLOYEE_AVAILABILITY,
                     entityInstance);
             

@@ -19,6 +19,7 @@ package com.echothree.model.control.item.server.control;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.item.common.choice.HarmonizedTariffScheduleCodeChoicesBean;
 import com.echothree.model.control.item.common.choice.HarmonizedTariffScheduleCodeUnitChoicesBean;
@@ -2175,7 +2176,8 @@ public class ItemControl
             workflowControl.getWorkflowEntranceChoices(itemStatusChoicesBean, defaultItemStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(ItemStatusConstants.Workflow_ITEM_STATUS), partyPK);
         } else {
-            var entityInstance = getCoreControl().getEntityInstanceByBasePK(item.getPrimaryKey());
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(item.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(ItemStatusConstants.Workflow_ITEM_STATUS,
                     entityInstance);
             

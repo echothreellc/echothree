@@ -16,8 +16,7 @@
 
 package com.echothree.model.control.workeffort.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.sequence.server.control.SequenceControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.workeffort.common.WorkEffortOptions;
@@ -33,8 +32,7 @@ import com.echothree.util.server.persistence.Session;
 public class WorkEffortTransferCache
         extends BaseWorkEffortTransferCache<WorkEffort, WorkEffortTransfer> {
     
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
-    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
     WorkRequirementControl workRequirementControl = Session.getModelController(WorkRequirementControl.class);
     UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
@@ -58,7 +56,7 @@ public class WorkEffortTransferCache
         if(workEffortTransfer == null) {
             var workEffortDetail = workEffort.getLastDetail();
             var workEffortName = workEffortDetail.getWorkEffortName();
-            var owningEntityInstance = coreControl.getEntityInstanceTransfer(userVisit, workEffortDetail.getOwningEntityInstance(), false, false, false, false);
+            var owningEntityInstance = entityInstanceControl.getEntityInstanceTransfer(userVisit, workEffortDetail.getOwningEntityInstance(), false, false, false, false);
             var workEffortScope = workEffortControl.getWorkEffortScopeTransfer(userVisit, workEffortDetail.getWorkEffortScope());
             var unformattedScheduledTime = workEffortDetail.getScheduledTime();
             var scheduledTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedScheduledTime);

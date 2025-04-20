@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.employee.server.search;
 
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.common.Indexes;
@@ -155,8 +156,10 @@ public class EmployeeSearchEvaluator
             }
             
             if(partyEmployee != null) {
+                var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+
                 resultSet = new EntityInstancePKHolder(1);
-                resultSet.add(getCoreControl().getEntityInstanceByBasePK(partyEmployee.getPartyPK()).getPrimaryKey(), null);
+                resultSet.add(entityInstanceControl.getEntityInstanceByBasePK(partyEmployee.getPartyPK()).getPrimaryKey(), null);
             }
         }
         

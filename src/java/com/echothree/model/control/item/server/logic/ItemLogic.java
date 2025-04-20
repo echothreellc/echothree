@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.item.server.logic;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.item.common.exception.DuplicateItemNameException;
 import com.echothree.model.control.item.common.exception.UnknownItemNameException;
 import com.echothree.model.control.item.common.exception.UnknownItemNameOrAliasException;
@@ -167,10 +167,10 @@ public class ItemLogic
     }
 
     public void setItemStatus(final Session session, final ExecutionErrorAccumulator eea, final Item item, final String itemStatusChoice, final PartyPK modifiedBy) {
-        var coreControl = Session.getModelController(CoreControl.class);
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, ItemStatusConstants.Workflow_ITEM_STATUS);
-        var entityInstance = coreControl.getEntityInstanceByBasePK(item.getPrimaryKey());
+        var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(item.getPrimaryKey());
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
         var workflowDestination = itemStatusChoice == null ? null : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), itemStatusChoice);
 

@@ -22,6 +22,7 @@ import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.contact.common.ContactMechanismPurposes;
 import com.echothree.model.control.contact.server.logic.ContactEmailAddressLogic;
 import com.echothree.model.control.contactlist.server.logic.ContactListLogic;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.employee.common.workflow.EmployeeAvailabilityConstants;
 import com.echothree.model.control.employee.common.workflow.EmployeeStatusConstants;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
@@ -145,7 +146,7 @@ public class CreateEmployeeCommand
                                         var partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
                                         
                                         if(partySecurityRoleTemplate != null) {
-                                            var coreControl = getCoreControl();
+                                            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
                                             var workflowControl = Session.getModelController(WorkflowControl.class);
                                             var soundex = new Soundex();
                                             BasePK createdBy = getPartyPK();
@@ -184,7 +185,7 @@ public class CreateEmployeeCommand
 
                                             securityControl.createPartySecurityRoleTemplateUse(party, partySecurityRoleTemplate, createdBy);
 
-                                            var entityInstance = coreControl.getEntityInstanceByBasePK(party.getPrimaryKey());
+                                            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(party.getPrimaryKey());
                                             workflowControl.addEntityToWorkflowUsingNames(null, EmployeeStatusConstants.Workflow_EMPLOYEE_STATUS,
                                                     EmployeeStatusConstants.WorkflowEntrance_NEW_ACTIVE, entityInstance, null, null, createdBy);
                                             workflowControl.addEntityToWorkflowUsingNames(null, EmployeeAvailabilityConstants.Workflow_EMPLOYEE_AVAILABILITY,

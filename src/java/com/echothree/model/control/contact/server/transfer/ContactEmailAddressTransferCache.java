@@ -16,11 +16,11 @@
 
 package com.echothree.model.control.contact.server.transfer;
 
+import com.echothree.model.control.contact.common.transfer.ContactEmailAddressTransfer;
 import com.echothree.model.control.contact.common.workflow.EmailAddressStatusConstants;
 import com.echothree.model.control.contact.common.workflow.EmailAddressVerificationConstants;
-import com.echothree.model.control.contact.common.transfer.ContactEmailAddressTransfer;
 import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.contact.server.entity.ContactEmailAddress;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -28,8 +28,8 @@ import com.echothree.util.server.persistence.Session;
 
 public class ContactEmailAddressTransferCache
         extends BaseContactTransferCache<ContactEmailAddress, ContactEmailAddressTransfer> {
-    
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
     /** Creates a new instance of ContactEmailAddressTransferCache */
@@ -43,7 +43,7 @@ public class ContactEmailAddressTransferCache
         if(contactEmailAddressTransfer == null) {
             var emailAddress = contactEmailAddress.getEmailAddress();
 
-            var entityInstance = coreControl.getEntityInstanceByBasePK(contactEmailAddress.getContactMechanismPK());
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(contactEmailAddress.getContactMechanismPK());
             var emailAddressStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     EmailAddressStatusConstants.Workflow_EMAIL_ADDRESS_STATUS, entityInstance);
             var emailAddressVerificationTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,

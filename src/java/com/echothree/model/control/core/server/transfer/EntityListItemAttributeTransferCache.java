@@ -18,6 +18,7 @@ package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.EntityListItemAttributeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityListItemAttribute;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -27,6 +28,7 @@ public class EntityListItemAttributeTransferCache
         extends BaseCoreTransferCache<EntityListItemAttribute, EntityListItemAttributeTransfer> {
 
     CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of EntityListItemAttributeTransferCache */
     public EntityListItemAttributeTransferCache(UserVisit userVisit) {
@@ -38,7 +40,7 @@ public class EntityListItemAttributeTransferCache
         
         if(entityListItemAttributeTransfer == null) {
             var entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityListItemAttribute.getEntityAttribute(), entityInstance) : null;
-            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityListItemAttribute.getEntityInstance(), false, false, false, false);
+            var entityInstanceTransfer = entityInstanceControl.getEntityInstanceTransfer(userVisit, entityListItemAttribute.getEntityInstance(), false, false, false, false);
             var entityListItem = coreControl.getEntityListItemTransfer(userVisit, entityListItemAttribute.getEntityListItem(), entityInstance);
             
             entityListItemAttributeTransfer = new EntityListItemAttributeTransfer(entityAttribute, entityInstanceTransfer, entityListItem);
