@@ -18,18 +18,20 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetBaseEncryptionKeyForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.EncryptionKeyControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -60,18 +62,18 @@ public class GetBaseEncryptionKeyCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var encryptionKeyControl = Session.getModelController(EncryptionKeyControl.class);
         var result = CoreResultFactory.getGetBaseEncryptionKeyResult();
         var baseEncryptionKeyName = form.getBaseEncryptionKeyName();
-        var baseEncryptionKey = baseEncryptionKeyName == null? null: coreControl.getBaseEncryptionKeyByName(baseEncryptionKeyName);
+        var baseEncryptionKey = baseEncryptionKeyName == null? null: encryptionKeyControl.getBaseEncryptionKeyByName(baseEncryptionKeyName);
         
         if(baseEncryptionKeyName == null || baseEncryptionKey != null) {
             var userVisit = getUserVisit();
             
             if(baseEncryptionKey == null) {
-                result.setBaseEncryptionKey(coreControl.getActiveBaseEncryptionKeyTransfer(userVisit));
+                result.setBaseEncryptionKey(encryptionKeyControl.getActiveBaseEncryptionKeyTransfer(userVisit));
             } else {
-                result.setBaseEncryptionKey(coreControl.getBaseEncryptionKeyTransfer(userVisit, baseEncryptionKey));
+                result.setBaseEncryptionKey(encryptionKeyControl.getBaseEncryptionKeyTransfer(userVisit, baseEncryptionKey));
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownBaseEncryptionKeyName.name(), baseEncryptionKeyName);

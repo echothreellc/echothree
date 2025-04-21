@@ -16,17 +16,17 @@
 
 package com.echothree.util.server.persistence;
 
-import com.echothree.model.control.core.server.control.CoreControl;
 import static com.echothree.model.control.core.common.workflow.BaseEncryptionKeyStatusConstants.WorkflowStep_BASE_ENCRYPTION_KEY_STATUS_ACTIVE;
 import static com.echothree.model.control.core.common.workflow.BaseEncryptionKeyStatusConstants.Workflow_BASE_ENCRYPTION_KEY_STATUS;
+import com.echothree.model.control.core.server.control.EncryptionKeyControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.util.common.exception.PersistenceEncryptionException;
-import com.echothree.util.common.persistence.EncryptionConstants;
-import com.echothree.util.common.string.MD5Utils;
 import com.echothree.util.common.persistence.BaseKey;
 import com.echothree.util.common.persistence.BaseKeys;
+import com.echothree.util.common.persistence.EncryptionConstants;
+import com.echothree.util.common.string.MD5Utils;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.google.common.base.Charsets;
 import com.google.common.io.BaseEncoding;
@@ -132,20 +132,20 @@ public class EncryptionUtils {
     }
 
     private BaseKeys createBaseKeys(final ExecutionErrorAccumulator eea, final PartyPK createdBy) {
-        var coreControl = Session.getModelController(CoreControl.class);
+        var encryptionKeyControl = Session.getModelController(EncryptionKeyControl.class);
         var baseKey1 = generateBaseKey(cacheBaseKey1);
         var baseKey2 = generateBaseKey(cacheBaseKey2);
         var baseKey3 = xorBaseKeys(baseKey1, baseKey2);
-        var baseEncryptionKey = coreControl.createBaseEncryptionKey(eea, baseKey1, baseKey2, createdBy);
+        var baseEncryptionKey = encryptionKeyControl.createBaseEncryptionKey(eea, baseKey1, baseKey2, createdBy);
 
         return baseEncryptionKey == null? null: new BaseKeys(baseKey1, baseKey2, baseKey3, baseEncryptionKey.getBaseEncryptionKeyName());
     }
     
     public BaseKeys generateBaseKeys(final ExecutionErrorAccumulator eea, final PartyPK createdBy) {
-        var coreControl = Session.getModelController(CoreControl.class);
+        var encryptionKeyControl = Session.getModelController(EncryptionKeyControl.class);
         BaseKeys baseKeys = null;
 
-        if(coreControl.countEntityEncryptionKeys() == 0) {
+        if(encryptionKeyControl.countEntityEncryptionKeys() == 0) {
             baseKeys = createBaseKeys(eea, createdBy);
             log.info(baseKeys == null? "Base Encryption Keys Not Generated": "Base Encryption Keys Generated");
         } else {
@@ -183,9 +183,9 @@ public class EncryptionUtils {
                 }
             }
 
-            var coreControl = Session.getModelController(CoreControl.class);
+            var encryptionKeyControl = Session.getModelController(EncryptionKeyControl.class);
             var sha1Hash = Sha1Utils.getInstance().encode(baseKey1, baseKey2);
-            var baseEncryptionKey = coreControl.getBaseEncryptionKeyBySha1Hash(sha1Hash);
+            var baseEncryptionKey = encryptionKeyControl.getBaseEncryptionKeyBySha1Hash(sha1Hash);
 
             if(baseEncryptionKey != null) {
                 var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
@@ -214,7 +214,7 @@ public class EncryptionUtils {
 
     public BaseKeys changeBaseKeys(final ExecutionErrorAccumulator eea, final BaseKeys oldBaseKeys,
             final PartyPK changedBy) {
-        var coreControl = Session.getModelController(CoreControl.class);
+        var encryptionKeyControl = Session.getModelController(EncryptionKeyControl.class);
 
         validateBaseKeys(oldBaseKeys, 3);
         var newBaseKeys = createBaseKeys(eea, changedBy);
@@ -224,7 +224,7 @@ public class EncryptionUtils {
         var newCipher1 = getInitializedCipher(newBaseKeys.getKey1(), newBaseKeys.getIv1(), Cipher.ENCRYPT_MODE);
         var newCipher2 = getInitializedCipher(newBaseKeys.getKey2(), newBaseKeys.getIv2(), Cipher.ENCRYPT_MODE);
 
-        var entityEncryptionKeys = coreControl.getEntityEncryptionKeysForUpdate();
+        var entityEncryptionKeys = encryptionKeyControl.getEntityEncryptionKeysForUpdate();
 
         for(var entityEncryptionKey : entityEncryptionKeys) {
             var baseEncoding = BaseEncoding.base64();
@@ -376,13 +376,13 @@ public class EncryptionUtils {
     }
 
     private Cipher getCipher(final String entityTypeName, final String entityColumnName, final Boolean isExternal, final int cipherMode) {
-        var coreControl = Session.getModelController(CoreControl.class);
+        var encryptionKeyControl = Session.getModelController(EncryptionKeyControl.class);
         var entityEncryptionKeyName = MD5Utils.getInstance().encode(entityTypeName + '.' + (isExternal ? externalPrefix : entityColumnName));
         SecretKey secretKey;
         byte[] iv;
 
         var baseEncoding = BaseEncoding.base64();
-        var entityEncryptionKey = coreControl.getEntityEncryptionKeyByName(entityEncryptionKeyName);
+        var entityEncryptionKey = encryptionKeyControl.getEntityEncryptionKeyByName(entityEncryptionKeyName);
         var baseKeys = getBaseKeys();
 
         if(entityEncryptionKey == null) {
@@ -403,7 +403,7 @@ public class EncryptionUtils {
             var encryptedKey = encryptDataUsingBaseKeys(baseKeys, key);
             var encryptedIv = encryptDataUsingBaseKeys(baseKeys, iv);
 
-            coreControl.createEntityEncryptionKey(entityEncryptionKeyName, isExternal,
+            encryptionKeyControl.createEntityEncryptionKey(entityEncryptionKeyName, isExternal,
                     baseEncoding.encode(encryptedKey), baseEncoding.encode(encryptedIv));
         } else {
             // Key has been generated for this EntityType
