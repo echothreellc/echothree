@@ -17,15 +17,17 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.SetBaseEncryptionKeyStatusForm;
+import com.echothree.model.control.core.server.control.EncryptionKeyControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -55,14 +57,14 @@ public class SetBaseEncryptionKeyStatusCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var encryptionKeyControl = Session.getModelController(EncryptionKeyControl.class);
         var baseEncryptionKeyName = form.getBaseEncryptionKeyName();
-        var baseEncryptionKey = coreControl.getBaseEncryptionKeyByName(baseEncryptionKeyName);
+        var baseEncryptionKey = encryptionKeyControl.getBaseEncryptionKeyByName(baseEncryptionKeyName);
         
         if(baseEncryptionKey != null) {
             var BaseEncryptionKeyStatusChoice = form.getBaseEncryptionKeyStatusChoice();
-            
-            coreControl.setBaseEncryptionKeyStatus(this, baseEncryptionKey, BaseEncryptionKeyStatusChoice, getPartyPK());
+
+            encryptionKeyControl.setBaseEncryptionKeyStatus(this, baseEncryptionKey, BaseEncryptionKeyStatusChoice, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownBaseEncryptionKeyName.name(), baseEncryptionKeyName);
         }
