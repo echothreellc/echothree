@@ -18,6 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateCacheEntryForm;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
+import com.echothree.model.control.core.server.control.CacheEntryControl;
 import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
@@ -56,9 +57,9 @@ public class CreateCacheEntryCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var cacheEntryControl = Session.getModelController(CacheEntryControl.class);
         var cacheEntryKey = form.getCacheEntryKey();
-        var cacheEntry = coreControl.getCacheEntryByCacheEntryKey(cacheEntryKey);
+        var cacheEntry = cacheEntryControl.getCacheEntryByCacheEntryKey(cacheEntryKey);
 
         if(cacheEntry == null) {
             var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
@@ -80,7 +81,7 @@ public class CreateCacheEntryCommand
                             var clob = form.getClob();
 
                             if(clob != null) {
-                                coreControl.createCacheEntry(cacheEntryKey, mimeType, session.START_TIME_LONG,
+                                cacheEntryControl.createCacheEntry(cacheEntryKey, mimeType, session.START_TIME_LONG,
                                         validForTime == null ? null : session.START_TIME + validForTime, clob, null, entityRefs);
                             } else {
                                 addExecutionError(ExecutionErrors.MissingClob.name());
@@ -89,7 +90,7 @@ public class CreateCacheEntryCommand
                             var blob = form.getBlob();
 
                             if(blob != null) {
-                                coreControl.createCacheEntry(cacheEntryKey, mimeType, session.START_TIME_LONG,
+                                cacheEntryControl.createCacheEntry(cacheEntryKey, mimeType, session.START_TIME_LONG,
                                         validForTime == null ? null : session.START_TIME + validForTime, null, blob, entityRefs);
                             } else {
                                 addExecutionError(ExecutionErrors.MissingBlob.name());

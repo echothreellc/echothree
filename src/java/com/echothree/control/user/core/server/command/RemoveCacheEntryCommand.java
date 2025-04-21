@@ -17,12 +17,14 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.RemoveCacheEntryForm;
+import com.echothree.model.control.core.server.control.CacheEntryControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -45,16 +47,16 @@ public class RemoveCacheEntryCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var cacheEntryControl = Session.getModelController(CacheEntryControl.class);
         var cacheEntryKey = form.getCacheEntryKey();
         
         if(cacheEntryKey == null) {
-            coreControl.removeCacheEntries();
+            cacheEntryControl.removeCacheEntries();
         } else {
-            var cacheEntry = coreControl.getCacheEntryByCacheEntryKeyForUpdate(cacheEntryKey);
+            var cacheEntry = cacheEntryControl.getCacheEntryByCacheEntryKeyForUpdate(cacheEntryKey);
 
             if(cacheEntry != null) {
-                coreControl.removeCacheEntry(cacheEntry);
+                cacheEntryControl.removeCacheEntry(cacheEntry);
             } else {
                 addExecutionError(ExecutionErrors.UnknownCacheEntryKey.name(), cacheEntryKey);
             }
