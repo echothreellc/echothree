@@ -17,15 +17,16 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateServiceDescriptionForm;
+import com.echothree.model.control.core.server.control.ServerControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -63,9 +64,9 @@ public class CreateServiceDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var serverControl = Session.getModelController(ServerControl.class);
         var serviceName = form.getServiceName();
-        var service = coreControl.getServiceByName(serviceName);
+        var service = serverControl.getServiceByName(serviceName);
         
         if(service != null) {
             var partyControl = Session.getModelController(PartyControl.class);
@@ -73,12 +74,12 @@ public class CreateServiceDescriptionCommand
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                var serviceDescription = coreControl.getServiceDescription(service, language);
+                var serviceDescription = serverControl.getServiceDescription(service, language);
                 
                 if(serviceDescription == null) {
                     var description = form.getDescription();
                     
-                    coreControl.createServiceDescription(service, language, description, getPartyPK());
+                    serverControl.createServiceDescription(service, language, description, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateServiceDescription.name());
                 }

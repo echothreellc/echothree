@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.scale.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.ServerControl;
 import com.echothree.model.control.scale.common.transfer.ScaleTransfer;
 import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.data.scale.server.entity.Scale;
@@ -25,8 +25,8 @@ import com.echothree.util.server.persistence.Session;
 
 public class ScaleTransferCache
         extends BaseScaleTransferCache<Scale, ScaleTransfer> {
-    
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
+    ServerControl serverControl = Session.getModelController(ServerControl.class);
 
     /** Creates a new instance of ScaleTransferCache */
     public ScaleTransferCache(UserVisit userVisit, ScaleControl scaleControl) {
@@ -42,7 +42,7 @@ public class ScaleTransferCache
             var scaleDetail = scale.getLastDetail();
             var scaleName = scaleDetail.getScaleName();
             var scaleType = scaleControl.getScaleTypeTransfer(userVisit, scaleDetail.getScaleType());
-            var serverService = coreControl.getServerServiceTransfer(userVisit, scaleDetail.getServerService());
+            var serverService = serverControl.getServerServiceTransfer(userVisit, scaleDetail.getServerService());
             var isDefault = scaleDetail.getIsDefault();
             var sortOrder = scaleDetail.getSortOrder();
             var description = scaleControl.getBestScaleDescription(scale, getLanguage());

@@ -17,18 +17,20 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.SetDefaultServiceForm;
+import com.echothree.model.control.core.server.control.ServerControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -59,13 +61,13 @@ public class SetDefaultServiceCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var serverControl = Session.getModelController(ServerControl.class);
         var serviceName = form.getServiceName();
-        var serviceDetailValue = coreControl.getServiceDetailValueByNameForUpdate(serviceName);
+        var serviceDetailValue = serverControl.getServiceDetailValueByNameForUpdate(serviceName);
         
         if(serviceDetailValue != null) {
             serviceDetailValue.setIsDefault(Boolean.TRUE);
-            coreControl.updateServiceFromValue(serviceDetailValue, getPartyPK());
+            serverControl.updateServiceFromValue(serviceDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownServiceName.name(), serviceName);
         }
