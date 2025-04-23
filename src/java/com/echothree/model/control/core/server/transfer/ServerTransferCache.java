@@ -17,7 +17,7 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.ServerTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.ServerControl;
 import com.echothree.model.data.core.server.entity.Server;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -25,7 +25,7 @@ import com.echothree.util.server.persistence.Session;
 public class ServerTransferCache
         extends BaseCoreTransferCache<Server, ServerTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    ServerControl serverControl = Session.getModelController(ServerControl.class);
 
     /** Creates a new instance of ServerTransferCache */
     public ServerTransferCache(UserVisit userVisit) {
@@ -42,7 +42,7 @@ public class ServerTransferCache
             var serverName = serverDetail.getServerName();
             var isDefault = serverDetail.getIsDefault();
             var sortOrder = serverDetail.getSortOrder();
-            var description = coreControl.getBestServerDescription(server, getLanguage());
+            var description = serverControl.getBestServerDescription(server, getLanguage());
 
             serverTransfer = new ServerTransfer(serverName, isDefault, sortOrder, description);
             put(server, serverTransfer);

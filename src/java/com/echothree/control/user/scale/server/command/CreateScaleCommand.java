@@ -17,12 +17,13 @@
 package com.echothree.control.user.scale.server.command;
 
 import com.echothree.control.user.scale.common.form.CreateScaleForm;
+import com.echothree.model.control.core.server.control.ServerControl;
 import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -62,16 +63,16 @@ public class CreateScaleCommand
             var scaleType = scaleControl.getScaleTypeByName(scaleTypeName);
 
             if(scaleType != null) {
-                var coreControl = getCoreControl();
+                var serverControl = Session.getModelController(ServerControl.class);
                 var serverName = form.getServerName();
-                var server = coreControl.getServerByName(serverName);
+                var server = serverControl.getServerByName(serverName);
 
                 if(server != null) {
                     var serviceName = form.getServiceName();
-                    var service = coreControl.getServiceByName(serviceName);
+                    var service = serverControl.getServiceByName(serviceName);
 
                     if(service != null) {
-                        var serverService = coreControl.getServerService(server, service);
+                        var serverService = serverControl.getServerService(server, service);
 
                         if(serverService != null) {
                             var isDefault = Boolean.valueOf(form.getIsDefault());

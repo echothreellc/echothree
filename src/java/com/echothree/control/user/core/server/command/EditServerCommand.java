@@ -22,19 +22,21 @@ import com.echothree.control.user.core.common.form.EditServerForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditServerResult;
 import com.echothree.control.user.core.common.spec.ServerSpec;
+import com.echothree.model.control.core.server.control.ServerControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.Server;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -83,18 +85,18 @@ public class EditServerCommand
 
     @Override
     public Server getEntity(EditServerResult result) {
-        var coreControl = getCoreControl();
+        var serverControl = Session.getModelController(ServerControl.class);
         Server server;
         var serverName = spec.getServerName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            server = coreControl.getServerByName(serverName);
+            server = serverControl.getServerByName(serverName);
         } else { // EditMode.UPDATE
-            server = coreControl.getServerByNameForUpdate(serverName);
+            server = serverControl.getServerByNameForUpdate(serverName);
         }
 
         if(server != null) {
-            result.setServer(coreControl.getServerTransfer(getUserVisit(), server));
+            result.setServer(serverControl.getServerTransfer(getUserVisit(), server));
         } else {
             addExecutionError(ExecutionErrors.UnknownServerName.name(), serverName);
         }
@@ -109,15 +111,15 @@ public class EditServerCommand
 
     @Override
     public void fillInResult(EditServerResult result, Server server) {
-        var coreControl = getCoreControl();
+        var serverControl = Session.getModelController(ServerControl.class);
 
-        result.setServer(coreControl.getServerTransfer(getUserVisit(), server));
+        result.setServer(serverControl.getServerTransfer(getUserVisit(), server));
     }
 
     @Override
     public void doLock(ServerEdit edit, Server server) {
-        var coreControl = getCoreControl();
-        var serverDescription = coreControl.getServerDescription(server, getPreferredLanguage());
+        var serverControl = Session.getModelController(ServerControl.class);
+        var serverDescription = serverControl.getServerDescription(server, getPreferredLanguage());
         var serverDetail = server.getLastDetail();
 
         edit.setServerName(serverDetail.getServerName());
@@ -131,9 +133,9 @@ public class EditServerCommand
 
     @Override
     public void canUpdate(Server server) {
-        var coreControl = getCoreControl();
+        var serverControl = Session.getModelController(ServerControl.class);
         var serverName = edit.getServerName();
-        var duplicateServer = coreControl.getServerByName(serverName);
+        var duplicateServer = serverControl.getServerByName(serverName);
 
         if(duplicateServer != null && !server.equals(duplicateServer)) {
             addExecutionError(ExecutionErrors.DuplicateServerName.name(), serverName);
@@ -142,29 +144,29 @@ public class EditServerCommand
 
     @Override
     public void doUpdate(Server server) {
-        var coreControl = getCoreControl();
+        var serverControl = Session.getModelController(ServerControl.class);
         var partyPK = getPartyPK();
-        var serverDetailValue = coreControl.getServerDetailValueForUpdate(server);
-        var serverDescription = coreControl.getServerDescriptionForUpdate(server, getPreferredLanguage());
+        var serverDetailValue = serverControl.getServerDetailValueForUpdate(server);
+        var serverDescription = serverControl.getServerDescriptionForUpdate(server, getPreferredLanguage());
         var description = edit.getDescription();
 
         serverDetailValue.setServerName(edit.getServerName());
         serverDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         serverDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        coreControl.updateServerFromValue(serverDetailValue, partyPK);
+        serverControl.updateServerFromValue(serverDetailValue, partyPK);
 
         if(serverDescription == null && description != null) {
-            coreControl.createServerDescription(server, getPreferredLanguage(), description, partyPK);
+            serverControl.createServerDescription(server, getPreferredLanguage(), description, partyPK);
         } else {
             if(serverDescription != null && description == null) {
-                coreControl.deleteServerDescription(serverDescription, partyPK);
+                serverControl.deleteServerDescription(serverDescription, partyPK);
             } else {
                 if(serverDescription != null && description != null) {
-                    var serverDescriptionValue = coreControl.getServerDescriptionValue(serverDescription);
+                    var serverDescriptionValue = serverControl.getServerDescriptionValue(serverDescription);
 
                     serverDescriptionValue.setDescription(description);
-                    coreControl.updateServerDescriptionFromValue(serverDescriptionValue, partyPK);
+                    serverControl.updateServerDescriptionFromValue(serverDescriptionValue, partyPK);
                 }
             }
         }

@@ -19,6 +19,7 @@ package com.echothree.control.user.communication.server.server;
 import com.echothree.control.user.communication.common.form.CreateCommunicationSourceForm;
 import com.echothree.model.control.communication.common.CommunicationConstants;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
+import com.echothree.model.control.core.server.control.ServerControl;
 import com.echothree.model.control.selector.common.SelectorKinds;
 import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.server.control.SelectorControl;
@@ -102,9 +103,9 @@ public class CreateCommunicationSourceCommand
                 communicationSourceTypeName = communicationSourceType.getCommunicationSourceTypeName();
                 
                 if(communicationSourceTypeName.equals(CommunicationConstants.CommunicationSourceType_EMAIL)) {
-                    var coreControl = getCoreControl();
+                    var serverControl = Session.getModelController(ServerControl.class);
                     var serverName = form.getServerName();
-                    var server = coreControl.getServerByName(serverName);
+                    var server = serverControl.getServerByName(serverName);
                     
                     if(server != null) {
                         var workEffortControl = Session.getModelController(WorkEffortControl.class);

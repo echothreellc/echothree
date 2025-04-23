@@ -22,6 +22,7 @@ import com.echothree.control.user.core.common.form.EditProtocolDescriptionForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditProtocolDescriptionResult;
 import com.echothree.control.user.core.common.spec.ProtocolDescriptionSpec;
+import com.echothree.model.control.core.server.control.ServerControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -29,10 +30,10 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.Protocol;
 import com.echothree.model.data.core.server.entity.ProtocolDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -84,10 +85,10 @@ public class EditProtocolDescriptionCommand
 
     @Override
     public ProtocolDescription getEntity(EditProtocolDescriptionResult result) {
-        var coreControl = getCoreControl();
+        var serverControl = Session.getModelController(ServerControl.class);
         ProtocolDescription protocolDescription = null;
         var protocolName = spec.getProtocolName();
-        var protocol = coreControl.getProtocolByName(protocolName);
+        var protocol = serverControl.getProtocolByName(protocolName);
 
         if(protocol != null) {
             var partyControl = Session.getModelController(PartyControl.class);
@@ -96,9 +97,9 @@ public class EditProtocolDescriptionCommand
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    protocolDescription = coreControl.getProtocolDescription(protocol, language);
+                    protocolDescription = serverControl.getProtocolDescription(protocol, language);
                 } else { // EditMode.UPDATE
-                    protocolDescription = coreControl.getProtocolDescriptionForUpdate(protocol, language);
+                    protocolDescription = serverControl.getProtocolDescriptionForUpdate(protocol, language);
                 }
 
                 if(protocolDescription == null) {
@@ -121,9 +122,9 @@ public class EditProtocolDescriptionCommand
 
     @Override
     public void fillInResult(EditProtocolDescriptionResult result, ProtocolDescription protocolDescription) {
-        var coreControl = getCoreControl();
+        var serverControl = Session.getModelController(ServerControl.class);
 
-        result.setProtocolDescription(coreControl.getProtocolDescriptionTransfer(getUserVisit(), protocolDescription));
+        result.setProtocolDescription(serverControl.getProtocolDescriptionTransfer(getUserVisit(), protocolDescription));
     }
 
     @Override
@@ -133,11 +134,11 @@ public class EditProtocolDescriptionCommand
 
     @Override
     public void doUpdate(ProtocolDescription protocolDescription) {
-        var coreControl = getCoreControl();
-        var protocolDescriptionValue = coreControl.getProtocolDescriptionValue(protocolDescription);
+        var serverControl = Session.getModelController(ServerControl.class);
+        var protocolDescriptionValue = serverControl.getProtocolDescriptionValue(protocolDescription);
         protocolDescriptionValue.setDescription(edit.getDescription());
 
-        coreControl.updateProtocolDescriptionFromValue(protocolDescriptionValue, getPartyPK());
+        serverControl.updateProtocolDescriptionFromValue(protocolDescriptionValue, getPartyPK());
     }
     
 }

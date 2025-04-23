@@ -17,7 +17,7 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.ProtocolTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.ServerControl;
 import com.echothree.model.data.core.server.entity.Protocol;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -25,7 +25,7 @@ import com.echothree.util.server.persistence.Session;
 public class ProtocolTransferCache
         extends BaseCoreTransferCache<Protocol, ProtocolTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    ServerControl serverControl = Session.getModelController(ServerControl.class);
 
     /** Creates a new instance of ProtocolTransferCache */
     public ProtocolTransferCache(UserVisit userVisit) {
@@ -42,7 +42,7 @@ public class ProtocolTransferCache
             var protocolName = protocolDetail.getProtocolName();
             var isDefault = protocolDetail.getIsDefault();
             var sortOrder = protocolDetail.getSortOrder();
-            var description = coreControl.getBestProtocolDescription(protocol, getLanguage());
+            var description = serverControl.getBestProtocolDescription(protocol, getLanguage());
     
             protocolTransfer = new ProtocolTransfer(protocolName, isDefault, sortOrder, description);
             put(protocol, protocolTransfer);

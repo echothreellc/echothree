@@ -17,18 +17,20 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateServiceForm;
+import com.echothree.model.control.core.server.control.ServerControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -64,13 +66,13 @@ public class CreateServiceCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var serverControl = Session.getModelController(ServerControl.class);
         var serviceName = form.getServiceName();
-        var service = coreControl.getServiceByName(serviceName);
+        var service = serverControl.getServiceByName(serviceName);
         
         if(service == null) {
             var protocolName = form.getProtocolName();
-            var protocol = coreControl.getProtocolByName(protocolName);
+            var protocol = serverControl.getProtocolByName(protocolName);
 
             if(protocol != null) {
                 var partyPK = getPartyPK();
@@ -79,10 +81,10 @@ public class CreateServiceCommand
                 var sortOrder = Integer.valueOf(form.getSortOrder());
                 var description = form.getDescription();
 
-                service = coreControl.createService(serviceName, port, protocol, isDefault, sortOrder, partyPK);
+                service = serverControl.createService(serviceName, port, protocol, isDefault, sortOrder, partyPK);
 
                 if(description != null) {
-                    coreControl.createServiceDescription(service, getPreferredLanguage(), description, partyPK);
+                    serverControl.createServiceDescription(service, getPreferredLanguage(), description, partyPK);
                 }
             } else {
                 addExecutionError(ExecutionErrors.UnknownProtocolName.name(), protocolName);
