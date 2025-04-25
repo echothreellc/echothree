@@ -19,6 +19,7 @@ package com.echothree.model.control.core.server.eventbus;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
+import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.data.core.common.EntityTypeConstants;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.Event;
@@ -41,13 +42,14 @@ public class EntityTypeModificationSubscriber
                 && EntityTypeConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
                 && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {
             var coreControl = Session.getModelController(CoreControl.class);
+            var eventControl = Session.getModelController(EventControl.class);
             var entityTypeControl = Session.getModelController(EntityTypeControl.class);
             var entityType = entityTypeControl.getEntityTypeByEntityInstance(entityInstance);
             var entityAttributes = coreControl.getEntityAttributesByEntityType(entityType);
             var createdBy = PersistenceUtils.getInstance().getBasePKFromEntityInstance(event.getCreatedBy());
 
             for(var entityAttribute : entityAttributes) {
-                coreControl.sendEvent(entityAttribute.getPrimaryKey(), EventTypes.TOUCH,
+                eventControl.sendEvent(entityAttribute.getPrimaryKey(), EventTypes.TOUCH,
                         entityType.getPrimaryKey(), eventType,
                         createdBy);
             }
@@ -65,13 +67,14 @@ public class EntityTypeModificationSubscriber
                 && EntityTypeConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
                 && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {
             var coreControl = Session.getModelController(CoreControl.class);
+            var eventControl = Session.getModelController(EventControl.class);
             var entityTypeControl = Session.getModelController(EntityTypeControl.class);
             var entityType = entityTypeControl.getEntityTypeByEntityInstance(entityInstance);
             var entityAliasTypes = coreControl.getEntityAliasTypesByEntityType(entityType);
             var createdBy = PersistenceUtils.getInstance().getBasePKFromEntityInstance(event.getCreatedBy());
 
             for(var entityAliasType : entityAliasTypes) {
-                coreControl.sendEvent(entityAliasType.getPrimaryKey(), EventTypes.TOUCH,
+                eventControl.sendEvent(entityAliasType.getPrimaryKey(), EventTypes.TOUCH,
                         entityType.getPrimaryKey(), eventType,
                         createdBy);
             }

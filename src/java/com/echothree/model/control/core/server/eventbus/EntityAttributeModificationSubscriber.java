@@ -19,6 +19,7 @@ package com.echothree.model.control.core.server.eventbus;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.data.core.common.EntityAttributeConstants;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.Event;
@@ -41,6 +42,7 @@ public class EntityAttributeModificationSubscriber
                 && EntityAttributeConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
                 && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {
             var coreControl = Session.getModelController(CoreControl.class);
+            var eventControl = Session.getModelController(EventControl.class);
             var entityAttribute = coreControl.getEntityAttributeByEntityInstance(entityInstance);
             var entityAttributeTypeName = entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
             var entityAttributeType = EntityAttributeTypes.valueOf(entityAttributeTypeName);
@@ -52,7 +54,7 @@ public class EntityAttributeModificationSubscriber
                     var createdBy = PersistenceUtils.getInstance().getBasePKFromEntityInstance(event.getCreatedBy());
 
                     for(var entityListItem : entityListItems) {
-                        coreControl.sendEvent(entityListItem.getPrimaryKey(), EventTypes.TOUCH,
+                        eventControl.sendEvent(entityListItem.getPrimaryKey(), EventTypes.TOUCH,
                                 entityAttribute.getPrimaryKey(), eventType,
                                 createdBy);
                     }

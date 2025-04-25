@@ -20,9 +20,9 @@ import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.server.control.AppearanceControl;
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
+import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
@@ -33,9 +33,9 @@ import com.echothree.util.server.persistence.Session;
 public class EntityInstanceTransferCache
         extends BaseCoreTransferCache<EntityInstance, EntityInstanceTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
+    EventControl eventControl = Session.getModelController(EventControl.class);
 
     boolean includeEntityAppearance;
     boolean includeEntityVisit;
@@ -87,8 +87,8 @@ public class EntityInstanceTransferCache
             var componentVendorName = componentVendorTransfer == null ? null : componentVendorTransfer.getComponentVendorName();
             var entityTypeName = entityTypeTransfer == null ? null : entityTypeTransfer.getEntityTypeName();
             var entityRef = filterEntityRef || componentVendorName == null || entityTypeName == null || entityUniqueId == null ? null : componentVendorName + '.' + entityTypeName + '.' + entityUniqueId;
-            var entityTime = filterEntityTime ? null : coreControl.getEntityTime(entityInstance);
-            var entityTimeTransfer = entityTime == null ? null : coreControl.getEntityTimeTransfer(userVisit, entityTime);
+            var entityTime = filterEntityTime ? null : eventControl.getEntityTime(entityInstance);
+            var entityTimeTransfer = entityTime == null ? null : eventControl.getEntityTimeTransfer(userVisit, entityTime);
             String description = null;
             
             if(includeUuid || includeUuidIfAvailable) {
@@ -122,9 +122,9 @@ public class EntityInstanceTransferCache
 
                 // visitingEntityInstance = the entityInstance parameter
                 // entityInstance = the visitedEntityInstance parameter
-                var entityVisit = visitingEntityInstance == null ? null : coreControl.getEntityVisit(visitingEntityInstance, entityInstance);
+                var entityVisit = visitingEntityInstance == null ? null : eventControl.getEntityVisit(visitingEntityInstance, entityInstance);
 
-                entityInstanceTransfer.setEntityVisit(entityVisit == null ? null : coreControl.getEntityVisitTransfer(userVisit, entityVisit));
+                entityInstanceTransfer.setEntityVisit(entityVisit == null ? null : eventControl.getEntityVisitTransfer(userVisit, entityVisit));
             }
 
             if(includeNames || this.includeNames) {

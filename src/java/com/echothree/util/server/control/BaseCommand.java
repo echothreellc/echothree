@@ -24,6 +24,7 @@ import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.control.core.server.control.ComponentControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
+import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.user.server.control.UserControl;
@@ -692,7 +693,9 @@ public abstract class BaseCommand
         Event event = null;
         
         if(createdByBasePK != null) {
-            event = getCoreControl().sendEvent(entityInstance, eventType, relatedEntityInstance, relatedEventType,
+            var eventControl = Session.getModelController(EventControl.class);
+
+            event = eventControl.sendEvent(entityInstance, eventType, relatedEntityInstance, relatedEventType,
                 createdByBasePK);
         }
         

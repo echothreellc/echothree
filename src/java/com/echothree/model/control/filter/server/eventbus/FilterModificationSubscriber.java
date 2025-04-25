@@ -17,7 +17,7 @@
 package com.echothree.model.control.filter.server.eventbus;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.control.core.server.eventbus.BaseEventSubscriber;
 import com.echothree.model.control.core.server.eventbus.Function5Arity;
 import com.echothree.model.control.core.server.eventbus.SentEvent;
@@ -44,11 +44,11 @@ public class FilterModificationSubscriber
         if(FilterStepConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
                 && FilterStepConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
                 && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {
-            var coreControl = Session.getModelController(CoreControl.class);
+            var eventControl = Session.getModelController(EventControl.class);
             var filterControl = Session.getModelController(FilterControl.class);
             var filterStep = filterControl.getFilterStepByEntityInstance(entityInstance);
 
-            coreControl.sendEvent(filterStep.getLastDetail().getFilter().getPrimaryKey(), EventTypes.TOUCH,
+            eventControl.sendEvent(filterStep.getLastDetail().getFilter().getPrimaryKey(), EventTypes.TOUCH,
                     filterStep.getPrimaryKey(), eventType,
                     PersistenceUtils.getInstance().getBasePKFromEntityInstance(event.getCreatedBy()));
         }

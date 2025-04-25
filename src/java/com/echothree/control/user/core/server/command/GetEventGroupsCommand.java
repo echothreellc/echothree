@@ -18,10 +18,12 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEventGroupsForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -43,10 +45,10 @@ public class GetEventGroupsCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var eventControl = Session.getModelController(EventControl.class);
         var result = CoreResultFactory.getGetEventGroupsResult();
         
-        result.setEventGroups(coreControl.getEventGroupTransfers(getUserVisit()));
+        result.setEventGroups(eventControl.getEventGroupTransfers(getUserVisit()));
         
         return result;
     }

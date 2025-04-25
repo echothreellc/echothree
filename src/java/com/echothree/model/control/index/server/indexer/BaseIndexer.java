@@ -21,6 +21,7 @@ import com.echothree.model.control.core.server.control.AppearanceControl;
 import com.echothree.model.control.core.server.control.ComponentControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
+import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.common.IndexSubfields;
@@ -70,6 +71,7 @@ public abstract class BaseIndexer<BE extends BaseEntity>
     protected CoreControl coreControl = Session.getModelController(CoreControl.class);
     protected ComponentControl componentControl = Session.getModelController(ComponentControl.class);
     protected EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
+    protected EventControl eventControl = Session.getModelController(EventControl.class);
     protected IndexControl indexControl = Session.getModelController(IndexControl.class);
     protected TagControl tagControl = Session.getModelController(TagControl.class);
     protected WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
@@ -144,7 +146,7 @@ public abstract class BaseIndexer<BE extends BaseEntity>
     }
 
     private void indexEntityTimes(final Document document, final EntityInstance entityInstance) {
-        var entityTime = coreControl.getEntityTime(entityInstance);
+        var entityTime = eventControl.getEntityTime(entityInstance);
 
         if(entityTime != null) {
             var createdTime = entityTime.getCreatedTime();
@@ -527,7 +529,7 @@ public abstract class BaseIndexer<BE extends BaseEntity>
         var baseEntity = getEntity(entityInstance);
         
         if(baseEntity != null) {
-            var entityTime = coreControl.getEntityTime(entityInstance);
+            var entityTime = eventControl.getEntityTime(entityInstance);
             
             if(entityTime != null) {
                 var modifiedTime = entityTime.getModifiedTime();

@@ -16,8 +16,8 @@
 
 package com.echothree.model.control.item.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
+import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.item.common.ItemOptions;
 import com.echothree.model.control.item.common.ItemProperties;
@@ -34,8 +34,8 @@ import com.echothree.util.server.persistence.Session;
 public class ItemDescriptionTransferCache
         extends BaseItemTransferCache<ItemDescription, ItemDescriptionTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+    EventControl eventControl = Session.getModelController(EventControl.class);
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
@@ -171,7 +171,7 @@ public class ItemDescriptionTransferCache
 
                 if(entityTimeTransfer == null) {
                     var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(item.getPrimaryKey());
-                    var entityTime = coreControl.getEntityTime(entityInstance);
+                    var entityTime = eventControl.getEntityTime(entityInstance);
                     var modifiedTime = entityTime.getModifiedTime();
                     
                     maxTime = modifiedTime == null ? entityTime.getCreatedTime() : modifiedTime;

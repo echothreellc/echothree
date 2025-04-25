@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.core.server.graphql;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.user.server.control.UserControl;
@@ -52,10 +52,10 @@ public class EventTypeObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        var coreControl = Session.getModelController(CoreControl.class);
+        var eventControl = Session.getModelController(EventControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return coreControl.getBestEventTypeDescription(eventType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
+        return eventControl.getBestEventTypeDescription(eventType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
 }
