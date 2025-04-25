@@ -17,9 +17,9 @@
 package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.model.control.core.server.control.AppearanceControl;
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.control.EntityLockControl;
+import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
@@ -92,8 +92,8 @@ public class EntityInstanceObject
     @GraphQLField
     @GraphQLDescription("entity time")
     public EntityTimeObject getEntityTime() {
-        var coreControl = Session.getModelController(CoreControl.class);
-        var entityTime = coreControl.getEntityTime(entityInstance);
+        var eventControl = Session.getModelController(EventControl.class);
+        var entityTime = eventControl.getEntityTime(entityInstance);
         
         return entityTime == null ? null : new EntityTimeObject(entityTime);
     }
@@ -101,11 +101,11 @@ public class EntityInstanceObject
     @GraphQLField
     @GraphQLDescription("entity visit")
     public EntityVisitObject getEntityVisit(final DataFetchingEnvironment env) {
-        var coreControl = Session.getModelController(CoreControl.class);
+        var eventControl = Session.getModelController(EventControl.class);
         var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var userSession = BaseGraphQl.getUserSession(env);
         var visitingEntityInstance = userSession == null ? null : entityInstanceControl.getEntityInstanceByBasePK(userSession.getPartyPK());
-        var entityVisit = visitingEntityInstance == null ? null : coreControl.getEntityVisit(visitingEntityInstance, entityInstance);
+        var entityVisit = visitingEntityInstance == null ? null : eventControl.getEntityVisit(visitingEntityInstance, entityInstance);
         
         return entityVisit == null ? null : new EntityVisitObject(entityVisit);
     }
@@ -151,11 +151,11 @@ public class EntityInstanceObject
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<EventObject> getEvents(final DataFetchingEnvironment env) {
         if(CoreSecurityUtils.getHasEventsAccess(env)) {
-            var coreControl = Session.getModelController(CoreControl.class);
-            var totalCount = coreControl.countEventsByEntityInstance(getEntityInstanceByBasePK());
+            var eventControl = Session.getModelController(EventControl.class);
+            var totalCount = eventControl.countEventsByEntityInstance(getEntityInstanceByBasePK());
 
             try(var objectLimiter = new ObjectLimiter(env, EventConstants.COMPONENT_VENDOR_NAME, EventConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var entities = coreControl.getEventsByEntityInstance(getEntityInstanceByBasePK());
+                var entities = eventControl.getEventsByEntityInstance(getEntityInstanceByBasePK());
                 var events = new ArrayList<EventObject>(entities.size());
 
                 for(var entity : entities) {

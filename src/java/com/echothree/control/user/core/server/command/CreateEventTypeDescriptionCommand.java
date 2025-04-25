@@ -17,12 +17,13 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateEventTypeDescriptionForm;
+import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -49,9 +50,9 @@ public class CreateEventTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var eventControl = Session.getModelController(EventControl.class);
         var eventTypeName = form.getEventTypeName();
-        var eventType = coreControl.getEventTypeByName(eventTypeName);
+        var eventType = eventControl.getEventTypeByName(eventTypeName);
         
         if(eventType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
@@ -59,12 +60,12 @@ public class CreateEventTypeDescriptionCommand
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                var eventTypeDescription = coreControl.getEventTypeDescription(eventType, language);
+                var eventTypeDescription = eventControl.getEventTypeDescription(eventType, language);
 
                 if(eventTypeDescription == null) {
                     var description = form.getDescription();
 
-                    coreControl.createEventTypeDescription(eventType, language, description);
+                    eventControl.createEventTypeDescription(eventType, language, description);
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateEventTypeDescription.name(), eventTypeName, languageIsoName);
                 }

@@ -18,7 +18,7 @@ package com.echothree.model.control.content.server.eventbus;
 
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.control.core.server.eventbus.BaseEventSubscriber;
 import com.echothree.model.control.core.server.eventbus.Function5Arity;
 import com.echothree.model.control.core.server.eventbus.SentEvent;
@@ -51,7 +51,7 @@ public class ContentCatalogItemModificationSubscriber
         if(ContentCategoryConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
                 && ContentCategoryConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
                 && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {
-            var coreControl = Session.getModelController(CoreControl.class);
+            var eventControl = Session.getModelController(EventControl.class);
             var contentControl = Session.getModelController(ContentControl.class);
             var contentCategory = contentControl.getContentCategoryByEntityInstance(entityInstance);
             var contentCategoryItems = contentControl.getContentCategoryItemsByContentCategory(contentCategory);
@@ -59,7 +59,7 @@ public class ContentCatalogItemModificationSubscriber
             for(var contentCategoryItem : contentCategoryItems) {
                 var contentCatalogItem = contentCategoryItem.getContentCatalogItem();
 
-                coreControl.sendEvent(contentCatalogItem.getPrimaryKey(), EventTypes.TOUCH,
+                eventControl.sendEvent(contentCatalogItem.getPrimaryKey(), EventTypes.TOUCH,
                         contentCategory.getPrimaryKey(), eventType,
                         PersistenceUtils.getInstance().getBasePKFromEntityInstance(event.getCreatedBy()));
             }
@@ -76,13 +76,13 @@ public class ContentCatalogItemModificationSubscriber
         if(ContentCatalogConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
                 && ContentCatalogConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
                 && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {
-            var coreControl = Session.getModelController(CoreControl.class);
+            var eventControl = Session.getModelController(EventControl.class);
             var contentControl = Session.getModelController(ContentControl.class);
             var contentCatalog = contentControl.getContentCatalogByEntityInstance(entityInstance);
             var contentCatalogItems = contentControl.getContentCatalogItemsByContentCatalog(contentCatalog);
 
             for(var contentCatalogItem : contentCatalogItems) {
-                coreControl.sendEvent(contentCatalogItem.getPrimaryKey(), EventTypes.TOUCH,
+                eventControl.sendEvent(contentCatalogItem.getPrimaryKey(), EventTypes.TOUCH,
                         contentCatalog.getPrimaryKey(), eventType,
                         PersistenceUtils.getInstance().getBasePKFromEntityInstance(event.getCreatedBy()));
             }
@@ -99,14 +99,14 @@ public class ContentCatalogItemModificationSubscriber
         if(ItemConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
                 && ItemConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
                 && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {
-            var coreControl = Session.getModelController(CoreControl.class);
+            var eventControl = Session.getModelController(EventControl.class);
             var itemControl = Session.getModelController(ItemControl.class);
             var contentControl = Session.getModelController(ContentControl.class);
             var item = itemControl.getItemByEntityInstance(entityInstance);
             var contentCatalogItems = contentControl.getContentCatalogItemsByItem(item);
 
             for(var contentCatalogItem : contentCatalogItems) {
-                coreControl.sendEvent(contentCatalogItem.getPrimaryKey(), EventTypes.TOUCH,
+                eventControl.sendEvent(contentCatalogItem.getPrimaryKey(), EventTypes.TOUCH,
                         item.getPrimaryKey(), eventType,
                         PersistenceUtils.getInstance().getBasePKFromEntityInstance(event.getCreatedBy()));
             }
@@ -123,14 +123,14 @@ public class ContentCatalogItemModificationSubscriber
         if(InventoryConditionConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
                 && InventoryConditionConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
                 && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {
-            var coreControl = Session.getModelController(CoreControl.class);
+            var eventControl = Session.getModelController(EventControl.class);
             var inventoryControl = Session.getModelController(InventoryControl.class);
             var contentControl = Session.getModelController(ContentControl.class);
             var inventoryCondition = inventoryControl.getInventoryConditionByEntityInstance(entityInstance);
             var contentCatalogItems = contentControl.getContentCatalogItemsByInventoryCondition(inventoryCondition);
 
             for(var contentCatalogItem : contentCatalogItems) {
-                coreControl.sendEvent(contentCatalogItem.getPrimaryKey(), EventTypes.TOUCH,
+                eventControl.sendEvent(contentCatalogItem.getPrimaryKey(), EventTypes.TOUCH,
                         inventoryCondition.getPrimaryKey(), eventType,
                         PersistenceUtils.getInstance().getBasePKFromEntityInstance(event.getCreatedBy()));
             }
@@ -147,14 +147,14 @@ public class ContentCatalogItemModificationSubscriber
         if(UnitOfMeasureTypeConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
                 && UnitOfMeasureTypeConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
                 && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {
-            var coreControl = Session.getModelController(CoreControl.class);
+            var eventControl = Session.getModelController(EventControl.class);
             var uomControl = Session.getModelController(UomControl.class);
             var contentControl = Session.getModelController(ContentControl.class);
             var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByEntityInstance(entityInstance);
             var contentCatalogItems = contentControl.getContentCatalogItemsByUnitOfMeasureType(unitOfMeasureType);
 
             for(var contentCatalogItem : contentCatalogItems) {
-                coreControl.sendEvent(contentCatalogItem.getPrimaryKey(), EventTypes.TOUCH,
+                eventControl.sendEvent(contentCatalogItem.getPrimaryKey(), EventTypes.TOUCH,
                         unitOfMeasureType.getPrimaryKey(), eventType,
                         PersistenceUtils.getInstance().getBasePKFromEntityInstance(event.getCreatedBy()));
             }

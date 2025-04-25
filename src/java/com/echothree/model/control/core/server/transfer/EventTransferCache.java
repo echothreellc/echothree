@@ -18,6 +18,7 @@ package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.EventTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.data.core.server.entity.Event;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -26,6 +27,7 @@ public class EventTransferCache
         extends BaseCoreTransferCache<Event, EventTransfer> {
 
     CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EventControl eventControl = Session.getModelController(EventControl.class);
 
     /** Creates a new instance of EventTransferCache */
     public EventTransferCache(UserVisit userVisit) {
@@ -41,11 +43,11 @@ public class EventTransferCache
             var eventTime = formatTypicalDateTime(unformattedEventTime);
             var eventTimeSequence = event.getEventTimeSequence();
             var entityInstanceTransfer = entityInstanceTransferCache.getEntityInstanceTransfer(event.getEntityInstance(), false, false, false, false);
-            var eventTypeTransfer = coreControl.getEventTypeTransfer(userVisit, event.getEventType());
+            var eventTypeTransfer = eventControl.getEventTypeTransfer(userVisit, event.getEventType());
             var relatedEntityInstance = event.getRelatedEntityInstance();
             var relatedEntityInstanceTransfer = relatedEntityInstance == null ? null : entityInstanceTransferCache.getEntityInstanceTransfer(relatedEntityInstance, false, false, false, false);
             var relatedEventType = event.getRelatedEventType();
-            var relatedEventTypeTransfer = relatedEventType == null ? null : coreControl.getEventTypeTransfer(userVisit, relatedEventType);
+            var relatedEventTypeTransfer = relatedEventType == null ? null : eventControl.getEventTypeTransfer(userVisit, relatedEventType);
             var createdBy = event.getCreatedBy();
             var createdByTransfer = createdBy == null ? null : entityInstanceTransferCache.getEntityInstanceTransfer(createdBy, false, false, false, false);
 

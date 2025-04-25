@@ -17,8 +17,8 @@
 package com.echothree.util.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
+import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -93,23 +93,23 @@ public abstract class BaseModelControl {
 
     protected Event sendEvent(final BasePK basePK, final EventTypes eventType, final BasePK relatedBasePK,
             final EventTypes relatedEventType, final BasePK createdByBasePK) {
-        var coreControl = Session.getModelController(CoreControl.class);
+        var eventControl = Session.getModelController(EventControl.class);
 
-        return coreControl.sendEvent(basePK, eventType, relatedBasePK, relatedEventType, createdByBasePK);
+        return eventControl.sendEvent(basePK, eventType, relatedBasePK, relatedEventType, createdByBasePK);
     }
     
     protected Event sendEvent(final EntityInstance entityInstance, final EventTypes eventType, final BasePK relatedBasePK,
             final EventTypes relatedEventType, final BasePK createdByBasePK) {
-        var coreControl = Session.getModelController(CoreControl.class);
+        var eventControl = Session.getModelController(EventControl.class);
 
-        return coreControl.sendEvent(entityInstance, eventType, relatedBasePK, relatedEventType, createdByBasePK);
+        return eventControl.sendEvent(entityInstance, eventType, relatedBasePK, relatedEventType, createdByBasePK);
     }
     
     public Event sendEvent(final EntityInstance entityInstance, final EventTypes eventType, final EntityInstance relatedEntityInstance,
             final EventTypes relatedEventType, final BasePK createdByBasePK) {
-        var coreControl = Session.getModelController(CoreControl.class);
+        var eventControl = Session.getModelController(EventControl.class);
 
-        return coreControl.sendEvent(entityInstance, eventType, relatedEntityInstance, relatedEventType, createdByBasePK);
+        return eventControl.sendEvent(entityInstance, eventType, relatedEntityInstance, relatedEventType, createdByBasePK);
     }
     
 }

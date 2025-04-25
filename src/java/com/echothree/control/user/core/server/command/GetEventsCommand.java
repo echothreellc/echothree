@@ -19,6 +19,7 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.GetEventsForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
+import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -74,6 +75,7 @@ public class GetEventsCommand
 
     @Override
     protected Collection<Event> getEntities() {
+        var eventControl = Session.getModelController(EventControl.class);
         var entityRef = form.getEntityRef();
         var uuid = form.getUuid();
         var createdByEntityRef = form.getCreatedByEntityRef();
@@ -83,27 +85,25 @@ public class GetEventsCommand
         Collection<Event> entities = null;
 
         if(parameterCount == 1) {
-            var coreControl = getCoreControl();
-
             if(entityRef != null || uuid != null) {
                 entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, entityRef, uuid, null);
 
                 if(!hasExecutionErrors()) {
                     if(session.hasLimit(EventFactory.class)) {
-                        eventCount = coreControl.countEventsByEntityInstance(entityInstance);
+                        eventCount = eventControl.countEventsByEntityInstance(entityInstance);
                     }
 
-                    entities = coreControl.getEventsByEntityInstance(entityInstance);
+                    entities = eventControl.getEventsByEntityInstance(entityInstance);
                 }
             } else {
                 createdBy = EntityInstanceLogic.getInstance().getEntityInstance(this, createdByEntityRef, createdByUuid, null);
 
                 if(!hasExecutionErrors()) {
                     if(session.hasLimit(EventFactory.class)) {
-                        eventCount = coreControl.countEventsByCreatedBy(createdBy);
+                        eventCount = eventControl.countEventsByCreatedBy(createdBy);
                     }
 
-                    entities = coreControl.getEventsByCreatedBy(createdBy);
+                    entities = eventControl.getEventsByCreatedBy(createdBy);
                 }
             }
         } else {
@@ -118,7 +118,7 @@ public class GetEventsCommand
         var result = CoreResultFactory.getGetEventsResult();
 
         if(entities != null) {
-            var coreControl = getCoreControl();
+            var eventControl = Session.getModelController(EventControl.class);
             var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var userVisit = getUserVisit();
 
@@ -132,7 +132,7 @@ public class GetEventsCommand
                 result.setCreatedByEntityInstance(entityInstanceControl.getEntityInstanceTransfer(userVisit, createdBy, false, false, false, false));
             }
 
-            result.setEvents(coreControl.getEventTransfers(userVisit, entities));
+            result.setEvents(eventControl.getEventTransfers(userVisit, entities));
         }
 
         return result;

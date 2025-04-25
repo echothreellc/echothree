@@ -17,11 +17,11 @@
 package com.echothree.model.control.training.server.trigger;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.control.security.server.control.SecurityControl;
+import com.echothree.model.control.training.common.training.PartyTrainingClassStatusConstants;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.training.server.logic.PartyTrainingClassLogic;
-import com.echothree.model.control.training.common.training.PartyTrainingClassStatusConstants;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.trigger.BaseTrigger;
 import com.echothree.model.control.workflow.server.trigger.EntityTypeTrigger;
@@ -39,7 +39,7 @@ public class PartyTrainingClassTrigger
 
     private void expireCurrentPartyTrainingClass(final Session session, final ExecutionErrorAccumulator eea, final WorkflowEntityStatus workflowEntityStatus,
             final PartyTrainingClass partyTrainingClass, final PartyPK triggeredBy) {
-        var coreControl = Session.getModelController(CoreControl.class);
+        var eventControl = Session.getModelController(EventControl.class);
         var trainingControl = Session.getModelController(TrainingControl.class);
         var workflowControl = Session.getModelController(WorkflowControl.class);
         var partyTrainingClassDetail = partyTrainingClass.getLastDetail();
@@ -48,7 +48,7 @@ public class PartyTrainingClassTrigger
 
         workflowControl.transitionEntityInWorkflowUsingNames(null, workflowEntityStatus, PartyTrainingClassStatusConstants.WorkflowDestination_PASSED_TO_EXPIRED,
                 trainingClass.getLastDetail().getExpiredRetentionTime(), triggeredBy);
-        coreControl.sendEvent(partyTrainingClassDetail.getParty().getPrimaryKey(), EventTypes.TOUCH, partyTrainingClass.getPrimaryKey(), EventTypes.MODIFY, triggeredBy);
+        eventControl.sendEvent(partyTrainingClassDetail.getParty().getPrimaryKey(), EventTypes.TOUCH, partyTrainingClass.getPrimaryKey(), EventTypes.MODIFY, triggeredBy);
 
         // If it is required, then consider creating a new PartyTrainingClass that's assigned to them.
         if(checkTrainingRequired(party, trainingClass)) {
