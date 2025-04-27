@@ -1,5 +1,25 @@
 # Changelog
 
+## 2025-04-27-01
+
+* Move Appearance Functions to AppearanceControl [1534](https://gitlab.echothree.com/echothree/echothree/-/issues/1534)
+* Move Text Functions to TextControl [1535](https://gitlab.echothree.com/echothree/echothree/-/issues/1535)
+* ICU4J 77.1 Upgrade [1536](https://gitlab.echothree.com/echothree/echothree/-/issues/1536)
+* Move Font Functions to FontControl [1537](https://gitlab.echothree.com/echothree/echothree/-/issues/1537)
+* Move Color Functions to ColorControl [1538](https://gitlab.echothree.com/echothree/echothree/-/issues/1538)
+* Move Editor Functions to EditorControl [1539](https://gitlab.echothree.com/echothree/echothree/-/issues/1539)
+* Move Application Functions to ApplicationControl [1540](https://gitlab.echothree.com/echothree/echothree/-/issues/1540)
+* Move Command Functions to CommandControl [1541](https://gitlab.echothree.com/echothree/echothree/-/issues/1541)
+* ClassGraph 4.8.179 Upgrade [1542](https://gitlab.echothree.com/echothree/echothree/-/issues/1542)
+* Move Component Functions to ComponentControl [1543](https://gitlab.echothree.com/echothree/echothree/-/issues/1543)
+* Move Mime Type Functions to MimeTypeControl [1544](https://gitlab.echothree.com/echothree/echothree/-/issues/1544)
+* Move Entity Instance Functions to EntityInstanceControl [1545](https://gitlab.echothree.com/echothree/echothree/-/issues/1545)
+* Move Encryption Key Functions to EncryptionKeyControl [1546](https://gitlab.echothree.com/echothree/echothree/-/issues/1546)
+* Move Cache Entry Functions to CacheEntryControl [1547](https://gitlab.echothree.com/echothree/echothree/-/issues/1547)
+* Move Event Functions to EventControl [1548](https://gitlab.echothree.com/echothree/echothree/-/issues/1548)
+* Move Entity Alias Functions to EntityAliasControl [1549](https://gitlab.echothree.com/echothree/echothree/-/issues/1549)
+* Move Server Functions to ServerControl [1550](https://gitlab.echothree.com/echothree/echothree/-/issues/1550)
+
 ## 2025-04-13-01
 
 * jOOQ 3.20.3 Upgrade [1529](https://gitlab.echothree.com/echothree/echothree/-/issues/1529)
