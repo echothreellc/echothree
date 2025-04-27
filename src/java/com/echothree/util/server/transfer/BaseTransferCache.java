@@ -21,6 +21,7 @@ import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.control.core.common.transfer.EntityAliasTypeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityAttributeGroupTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityAliasControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.rating.common.transfer.RatingListWrapper;
 import com.echothree.model.control.rating.server.control.RatingControl;
@@ -215,8 +216,9 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         this.includeEntityAliasTypes = includeEntityAliasTypes;
     }
 
-    protected void setupEntityAliasTypes(CoreControl coreControl, EntityInstance entityInstance, V transfer) {
-        var entityAliasTypeTransfers = coreControl.getEntityAliasTypeTransfersByEntityType(userVisit, entityInstance.getEntityType(), entityInstance);
+    protected void setupEntityAliasTypes(EntityInstance entityInstance, V transfer) {
+        var entityAliasControl = Session.getModelController(EntityAliasControl.class);
+        var entityAliasTypeTransfers = entityAliasControl.getEntityAliasTypeTransfersByEntityType(userVisit, entityInstance.getEntityType(), entityInstance);
         var mapWrapper = new MapWrapper<EntityAliasTypeTransfer>(entityAliasTypeTransfers.size());
 
         entityAliasTypeTransfers.forEach((entityAliasTypeTransfer) -> {
@@ -242,7 +244,8 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         this.includeEntityAttributeGroups = includeEntityAttributeGroups;
     }
 
-    protected void setupEntityAttributeGroups(CoreControl coreControl, EntityInstance entityInstance, V transfer) {
+    protected void setupEntityAttributeGroups(EntityInstance entityInstance, V transfer) {
+        var coreControl = Session.getModelController(CoreControl.class);
         var entityAttributeGroupTransfers = coreControl.getEntityAttributeGroupTransfersByEntityType(userVisit, entityInstance.getEntityType(), entityInstance);
         var mapWrapper = new MapWrapper<EntityAttributeGroupTransfer>(entityAttributeGroupTransfers.size());
 
@@ -269,7 +272,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         this.includeTagScopes = includeTagScopes;
     }
 
-    protected void setupTagScopes(CoreControl coreControl, EntityInstance entityInstance, V transfer) {
+    protected void setupTagScopes(EntityInstance entityInstance, V transfer) {
         var tagControl = Session.getModelController(TagControl.class);
         var tagScopes = tagControl.getTagScopesByEntityType(entityInstance.getEntityType());
         var mapWrapper = new MapWrapper<TagScopeTransfer>(tagScopes.size());
@@ -370,7 +373,6 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     protected void setupEntityInstance(final K baseEntity, EntityInstance entityInstance, final V transfer) {
-        var coreControl = Session.getModelController(CoreControl.class);
         var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
         if(entityInstance == null) {
@@ -385,15 +387,15 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
 
             if(includeEntityAliasTypes || includeEntityAttributeGroups || includeTagScopes) {
                 if(includeEntityAliasTypes) {
-                    setupEntityAliasTypes(coreControl, entityInstance, transfer);
+                    setupEntityAliasTypes(entityInstance, transfer);
                 }
 
                 if(includeEntityAttributeGroups) {
-                    setupEntityAttributeGroups(coreControl, entityInstance, transfer);
+                    setupEntityAttributeGroups(entityInstance, transfer);
                 }
 
                 if(includeTagScopes) {
-                    setupTagScopes(coreControl, entityInstance, transfer);
+                    setupTagScopes(entityInstance, transfer);
                 }
             }
         }

@@ -335,6 +335,7 @@ public class EntityTypeControl
         var batchControl = Session.getModelController(BatchControl.class);
         var commentControl = Session.getModelController(CommentControl.class);
         var coreControl = Session.getModelController(CoreControl.class);
+        var entityAliasControl = Session.getModelController(EntityAliasControl.class);
         var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var indexControl = Session.getModelController(IndexControl.class);
         var messageControl = Session.getModelController(MessageControl.class);
@@ -344,7 +345,7 @@ public class EntityTypeControl
 
         entityInstanceControl.deleteEntityInstancesByEntityTypeWithNullDeletedTime(entityType, deletedBy);
         deleteEntityTypeDescriptionsByEntityType(entityType, deletedBy);
-        coreControl.deleteEntityAliasTypesByEntityType(entityType, deletedBy);
+        entityAliasControl.deleteEntityAliasTypesByEntityType(entityType, deletedBy);
         coreControl.deleteEntityAttributesByEntityType(entityType, deletedBy);
         coreControl.deleteEntityAttributeEntityTypesByAllowedEntityType(entityType, deletedBy);
         accountingControl.deleteTransactionEntityRoleTypesByEntityType(entityType, deletedBy);

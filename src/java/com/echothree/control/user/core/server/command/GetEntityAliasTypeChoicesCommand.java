@@ -18,6 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEntityAliasTypeChoicesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.EntityAliasControl;
 import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -30,6 +31,7 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -66,11 +68,11 @@ public class GetEntityAliasTypeChoicesCommand
         var entityType = EntityTypeLogic.getInstance().getEntityTypeByUniversalSpec(this, form);
             
         if(!hasExecutionErrors()) {
-            var coreControl = getCoreControl();
+            var entityAliasControl = Session.getModelController(EntityAliasControl.class);
             var defaultEntityAliasTypeChoice = form.getDefaultEntityAliasTypeChoice();
             var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
-            result.setEntityAliasTypeChoices(coreControl.getEntityAliasTypeChoices(defaultEntityAliasTypeChoice,
+            result.setEntityAliasTypeChoices(entityAliasControl.getEntityAliasTypeChoices(defaultEntityAliasTypeChoice,
                     getPreferredLanguage(), allowNullChoice, entityType));
         }
 

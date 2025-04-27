@@ -17,6 +17,7 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.SetDefaultEntityAliasTypeForm;
+import com.echothree.model.control.core.server.control.EntityAliasControl;
 import com.echothree.model.control.core.server.logic.EntityAliasTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -29,6 +30,7 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.List;
 
 public class SetDefaultEntityAliasTypeCommand
@@ -60,14 +62,14 @@ public class SetDefaultEntityAliasTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var entityAliasControl = Session.getModelController(EntityAliasControl.class);
         var entityAliasType = EntityAliasTypeLogic.getInstance().getEntityAliasTypeByUniversalSpec(this, form);
         
         if(!hasExecutionErrors()) {
-            var entityAliasTypeDetailValue = coreControl.getEntityAliasTypeDetailValueForUpdate(entityAliasType);
+            var entityAliasTypeDetailValue = entityAliasControl.getEntityAliasTypeDetailValueForUpdate(entityAliasType);
 
             entityAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
-            coreControl.updateEntityAliasTypeFromValue(entityAliasTypeDetailValue, getPartyPK());
+            entityAliasControl.updateEntityAliasTypeFromValue(entityAliasTypeDetailValue, getPartyPK());
         }
         
         return null;

@@ -462,6 +462,7 @@ public class EntityInstanceControl
         var appearanceControl = Session.getModelController(AppearanceControl.class);
         var chainControl = Session.getModelController(ChainControl.class);
         var coreControl = Session.getModelController(CoreControl.class);
+        var entityAliasControl = Session.getModelController(EntityAliasControl.class);
         var searchControl = Session.getModelController(SearchControl.class);
         var securityControl = Session.getModelController(SecurityControl.class);
 
@@ -487,7 +488,7 @@ public class EntityInstanceControl
         );
         chainControl.deleteChainInstances(chainInstances, deletedBy);
 
-        coreControl.deleteEntityAliasesByEntityInstance(entityInstance, deletedBy);
+        entityAliasControl.deleteEntityAliasesByEntityInstance(entityInstance, deletedBy);
         coreControl.deleteEntityAttributesByEntityInstance(entityInstance, deletedBy);
         appearanceControl.deleteEntityAppearancesByEntityInstance(entityInstance, deletedBy);
     }

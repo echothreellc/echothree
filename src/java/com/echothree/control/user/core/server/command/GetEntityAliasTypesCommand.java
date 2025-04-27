@@ -18,6 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEntityAliasTypesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.EntityAliasControl;
 import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -32,6 +33,7 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 
@@ -71,17 +73,21 @@ public class GetEntityAliasTypesCommand
 
     @Override
     protected Long getTotalEntities() {
+        var entityAliasControl = Session.getModelController(EntityAliasControl.class);
+
         return hasExecutionErrors() ?
                 null :
-                getCoreControl().countEntityAliasTypesByEntityType(entityType);
+                entityAliasControl.countEntityAliasTypesByEntityType(entityType);
     }
 
 
     @Override
     protected Collection<EntityAliasType> getEntities() {
+        var entityAliasControl = Session.getModelController(EntityAliasControl.class);
+
         return hasExecutionErrors() ?
                 null :
-                getCoreControl().getEntityAliasTypesByEntityType(entityType);
+                entityAliasControl.getEntityAliasTypesByEntityType(entityType);
     }
 
     @Override
@@ -89,9 +95,9 @@ public class GetEntityAliasTypesCommand
         var result = CoreResultFactory.getGetEntityAliasTypesResult();
 
         if(entities != null) {
-            var coreControl = getCoreControl();
+            var entityAliasControl = Session.getModelController(EntityAliasControl.class);
 
-            result.setEntityAliasTypes(coreControl.getEntityAliasTypeTransfers(getUserVisit(), entities, null));
+            result.setEntityAliasTypes(entityAliasControl.getEntityAliasTypeTransfers(getUserVisit(), entities, null));
         }
 
         return result;

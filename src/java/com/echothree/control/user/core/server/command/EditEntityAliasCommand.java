@@ -21,6 +21,7 @@ import com.echothree.control.user.core.common.edit.EntityAliasEdit;
 import com.echothree.control.user.core.common.form.EditEntityAliasForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.spec.EntityAliasSpec;
+import com.echothree.model.control.core.server.control.EntityAliasControl;
 import com.echothree.model.control.core.server.logic.EntityAliasTypeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -38,6 +39,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.PersistenceUtils;
+import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -94,16 +96,16 @@ public class EditEntityAliasCommand
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAliasType.getLastDetail().getEntityType())) {
-                            var coreControl = getCoreControl();
+                            var entityAliasControl = Session.getModelController(EntityAliasControl.class);
                             EntityAlias entityAlias = null;
                             var basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
 
                             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                                entityAlias = coreControl.getEntityAlias(entityInstance, entityAliasType);
+                                entityAlias = entityAliasControl.getEntityAlias(entityInstance, entityAliasType);
 
                                 if(entityAlias != null) {
                                     if(editMode.equals(EditMode.LOCK)) {
-                                        result.setEntityAlias(coreControl.getEntityAliasTransfer(getUserVisit(), entityAlias));
+                                        result.setEntityAlias(entityAliasControl.getEntityAliasTransfer(getUserVisit(), entityAlias));
 
                                         if(lockEntity(basePK)) {
                                             var edit = CoreEditFactory.getEntityAliasEdit();
@@ -135,11 +137,11 @@ public class EditEntityAliasCommand
                                 }
 
                                 if(!hasExecutionErrors()) {
-                                    entityAlias = coreControl.getEntityAliasForUpdate(entityInstance, entityAliasType);
+                                    entityAlias = entityAliasControl.getEntityAliasForUpdate(entityInstance, entityAliasType);
 
                                     if(entityAlias != null) {
 
-                                        var duplicateEntityAlias = coreControl.getEntityAliasByEntityAliasTypeAndAlias(entityAliasType, alias);
+                                        var duplicateEntityAlias = entityAliasControl.getEntityAliasByEntityAliasTypeAndAlias(entityAliasType, alias);
 
                                         if(duplicateEntityAlias != null && !entityAlias.equals(duplicateEntityAlias)) {
                                             addExecutionError(ExecutionErrors.DuplicateEntityAlias.name(),
@@ -148,11 +150,11 @@ public class EditEntityAliasCommand
                                         } else {
                                             if(lockEntityForUpdate(basePK)) {
                                                 try {
-                                                    var entityAliasValue = coreControl.getEntityAliasValueForUpdate(entityAlias);
+                                                    var entityAliasValue = entityAliasControl.getEntityAliasValueForUpdate(entityAlias);
 
                                                     entityAliasValue.setAlias(alias);
 
-                                                    coreControl.updateEntityAliasFromValue(entityAliasValue, getPartyPK());
+                                                    entityAliasControl.updateEntityAliasFromValue(entityAliasValue, getPartyPK());
                                                 } finally {
                                                     unlockEntity(basePK);
                                                     basePK = null;
@@ -173,7 +175,7 @@ public class EditEntityAliasCommand
                             }
 
                             if(entityAlias != null) {
-                                result.setEntityAlias(coreControl.getEntityAliasTransfer(getUserVisit(), entityAlias));
+                                result.setEntityAlias(entityAliasControl.getEntityAliasTransfer(getUserVisit(), entityAlias));
                             }
                         } else {
                             addExecutionError(ExecutionErrors.MismatchedEntityType.name());

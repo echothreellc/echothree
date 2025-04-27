@@ -17,7 +17,7 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.EntityAliasTypeDescriptionTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityAliasControl;
 import com.echothree.model.data.core.server.entity.EntityAliasTypeDescription;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -26,7 +26,7 @@ import com.echothree.util.server.persistence.Session;
 public class EntityAliasTypeDescriptionTransferCache
         extends BaseCoreDescriptionTransferCache<EntityAliasTypeDescription, EntityAliasTypeDescriptionTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityAliasControl entityAliasControl = Session.getModelController(EntityAliasControl.class);
 
     /** Creates a new instance of EntityAliasTypeDescriptionTransferCache */
     public EntityAliasTypeDescriptionTransferCache(UserVisit userVisit) {
@@ -37,7 +37,7 @@ public class EntityAliasTypeDescriptionTransferCache
         var entityAliasTypeDescriptionTransfer = get(entityAliasTypeDescription);
         
         if(entityAliasTypeDescriptionTransfer == null) {
-            var entityAliasTypeTransfer = entityInstance == null ? coreControl.getEntityAliasTypeTransfer(userVisit, entityAliasTypeDescription.getEntityAliasType(), entityInstance) : null;
+            var entityAliasTypeTransfer = entityInstance == null ? entityAliasControl.getEntityAliasTypeTransfer(userVisit, entityAliasTypeDescription.getEntityAliasType(), entityInstance) : null;
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, entityAliasTypeDescription.getLanguage());
             
             entityAliasTypeDescriptionTransfer = new EntityAliasTypeDescriptionTransfer(languageTransfer, entityAliasTypeTransfer, entityAliasTypeDescription.getDescription());

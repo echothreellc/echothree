@@ -22,6 +22,7 @@ import com.echothree.control.user.core.common.form.EditEntityAliasTypeDescriptio
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditEntityAliasTypeDescriptionResult;
 import com.echothree.control.user.core.common.spec.EntityAliasTypeDescriptionSpec;
+import com.echothree.model.control.core.server.control.EntityAliasControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -86,7 +87,6 @@ public class EditEntityAliasTypeDescriptionCommand
 
     @Override
     public EntityAliasTypeDescription getEntity(EditEntityAliasTypeDescriptionResult result) {
-        var coreControl = getCoreControl();
         EntityAliasTypeDescription entityAliasTypeDescription = null;
         var componentVendorName = spec.getComponentVendorName();
         var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
@@ -96,8 +96,9 @@ public class EditEntityAliasTypeDescriptionCommand
             var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
 
             if(entityType != null) {
+                var entityAliasControl = Session.getModelController(EntityAliasControl.class);
                 var entityAliasTypeName = spec.getEntityAliasTypeName();
-                var entityAliasType = coreControl.getEntityAliasTypeByName(entityType, entityAliasTypeName);
+                var entityAliasType = entityAliasControl.getEntityAliasTypeByName(entityType, entityAliasTypeName);
 
                 if(entityAliasType != null) {
                     var partyControl = Session.getModelController(PartyControl.class);
@@ -106,9 +107,9 @@ public class EditEntityAliasTypeDescriptionCommand
 
                     if(language != null) {
                         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                            entityAliasTypeDescription = coreControl.getEntityAliasTypeDescription(entityAliasType, language);
+                            entityAliasTypeDescription = entityAliasControl.getEntityAliasTypeDescription(entityAliasType, language);
                         } else { // EditMode.UPDATE
-                            entityAliasTypeDescription = coreControl.getEntityAliasTypeDescriptionForUpdate(entityAliasType, language);
+                            entityAliasTypeDescription = entityAliasControl.getEntityAliasTypeDescriptionForUpdate(entityAliasType, language);
                         }
 
                         if(entityAliasTypeDescription == null) {
@@ -137,9 +138,9 @@ public class EditEntityAliasTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditEntityAliasTypeDescriptionResult result, EntityAliasTypeDescription entityAliasTypeDescription) {
-        var coreControl = getCoreControl();
+        var entityAliasControl = Session.getModelController(EntityAliasControl.class);
 
-        result.setEntityAliasTypeDescription(coreControl.getEntityAliasTypeDescriptionTransfer(getUserVisit(), entityAliasTypeDescription, null));
+        result.setEntityAliasTypeDescription(entityAliasControl.getEntityAliasTypeDescriptionTransfer(getUserVisit(), entityAliasTypeDescription, null));
     }
 
     @Override
@@ -149,11 +150,11 @@ public class EditEntityAliasTypeDescriptionCommand
 
     @Override
     public void doUpdate(EntityAliasTypeDescription entityAliasTypeDescription) {
-        var coreControl = getCoreControl();
-        var entityAliasTypeDescriptionValue = coreControl.getEntityAliasTypeDescriptionValue(entityAliasTypeDescription);
+        var entityAliasControl = Session.getModelController(EntityAliasControl.class);
+        var entityAliasTypeDescriptionValue = entityAliasControl.getEntityAliasTypeDescriptionValue(entityAliasTypeDescription);
         entityAliasTypeDescriptionValue.setDescription(edit.getDescription());
 
-        coreControl.updateEntityAliasTypeDescriptionFromValue(entityAliasTypeDescriptionValue, getPartyPK());
+        entityAliasControl.updateEntityAliasTypeDescriptionFromValue(entityAliasTypeDescriptionValue, getPartyPK());
     }
     
 }
