@@ -20,6 +20,7 @@ import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.control.AppearanceControl;
 import com.echothree.model.control.core.server.control.ComponentControl;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityAliasControl;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.control.index.common.IndexConstants;
@@ -70,6 +71,7 @@ public abstract class BaseIndexer<BE extends BaseEntity>
     protected AppearanceControl appearanceControl = Session.getModelController(AppearanceControl.class);
     protected CoreControl coreControl = Session.getModelController(CoreControl.class);
     protected ComponentControl componentControl = Session.getModelController(ComponentControl.class);
+    protected EntityAliasControl entityAliasControl = Session.getModelController(EntityAliasControl.class);
     protected EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
     protected EventControl eventControl = Session.getModelController(EventControl.class);
     protected IndexControl indexControl = Session.getModelController(IndexControl.class);
@@ -105,7 +107,7 @@ public abstract class BaseIndexer<BE extends BaseEntity>
             this.language = indexDetail.getLanguage();
             this.entityType = indexDetail.getIndexType().getLastDetail().getEntityType();
             this.indexStatus = indexControl.getIndexStatusForUpdate(index);
-            this.entityAliasTypes = coreControl.getEntityAliasTypesByEntityType(entityType);
+            this.entityAliasTypes = entityAliasControl.getEntityAliasTypesByEntityType(entityType);
             this.entityAttributes = coreControl.getEntityAttributesByEntityType(entityType);
             this.tagScopes = tagControl.getTagScopesByEntityType(entityType);
 
@@ -168,7 +170,7 @@ public abstract class BaseIndexer<BE extends BaseEntity>
     }
 
     private void indexEntityAliases(final Document document, final EntityInstance entityInstance) {
-        var entityAliases = coreControl.getEntityAliasesByEntityInstance(entityInstance);
+        var entityAliases = entityAliasControl.getEntityAliasesByEntityInstance(entityInstance);
 
         for(var entityAlias : entityAliases) {
             var fieldName = entityAlias.getEntityAliasType().getLastDetail().getEntityAliasTypeName();

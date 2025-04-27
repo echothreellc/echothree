@@ -18,6 +18,7 @@ package com.echothree.model.control.core.server.eventbus;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityAliasControl;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.data.core.common.EntityTypeConstants;
@@ -66,11 +67,11 @@ public class EntityTypeModificationSubscriber
         if(EntityTypeConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
                 && EntityTypeConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
                 && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {
-            var coreControl = Session.getModelController(CoreControl.class);
+            var entityAliasControl = Session.getModelController(EntityAliasControl.class);
             var eventControl = Session.getModelController(EventControl.class);
             var entityTypeControl = Session.getModelController(EntityTypeControl.class);
             var entityType = entityTypeControl.getEntityTypeByEntityInstance(entityInstance);
-            var entityAliasTypes = coreControl.getEntityAliasTypesByEntityType(entityType);
+            var entityAliasTypes = entityAliasControl.getEntityAliasTypesByEntityType(entityType);
             var createdBy = PersistenceUtils.getInstance().getBasePKFromEntityInstance(event.getCreatedBy());
 
             for(var entityAliasType : entityAliasTypes) {

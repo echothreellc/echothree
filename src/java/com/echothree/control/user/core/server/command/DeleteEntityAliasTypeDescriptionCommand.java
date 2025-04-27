@@ -17,6 +17,7 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteEntityAliasTypeDescriptionForm;
+import com.echothree.model.control.core.server.control.EntityAliasControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -64,7 +65,6 @@ public class DeleteEntityAliasTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
         var componentVendorName = form.getComponentVendorName();
         var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
         
@@ -73,8 +73,9 @@ public class DeleteEntityAliasTypeDescriptionCommand
             var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
+                var entityAliasControl = Session.getModelController(EntityAliasControl.class);
                 var entityAliasTypeName = form.getEntityAliasTypeName();
-                var entityAliasType = coreControl.getEntityAliasTypeByName(entityType, entityAliasTypeName);
+                var entityAliasType = entityAliasControl.getEntityAliasTypeByName(entityType, entityAliasTypeName);
                 
                 if(entityAliasType != null) {
                     var partyControl = Session.getModelController(PartyControl.class);
@@ -82,10 +83,10 @@ public class DeleteEntityAliasTypeDescriptionCommand
                     var language = partyControl.getLanguageByIsoName(languageIsoName);
                     
                     if(language != null) {
-                        var entityAliasTypeDescription = coreControl.getEntityAliasTypeDescriptionForUpdate(entityAliasType, language);
+                        var entityAliasTypeDescription = entityAliasControl.getEntityAliasTypeDescriptionForUpdate(entityAliasType, language);
                         
                         if(entityAliasTypeDescription != null) {
-                            coreControl.deleteEntityAliasTypeDescription(entityAliasTypeDescription, getPartyPK());
+                            entityAliasControl.deleteEntityAliasTypeDescription(entityAliasTypeDescription, getPartyPK());
                         } else {
                             addExecutionError(ExecutionErrors.UnknownEntityAliasTypeDescription.name(), componentVendorName, entityTypeName, entityAliasTypeName,
                                     languageIsoName);
