@@ -17,7 +17,7 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.EntityAliasTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityAliasControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.core.server.entity.EntityAlias;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -26,7 +26,7 @@ import com.echothree.util.server.persistence.Session;
 public class EntityAliasTransferCache
         extends BaseCoreTransferCache<EntityAlias, EntityAliasTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityAliasControl entityAliasControl = Session.getModelController(EntityAliasControl.class);
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of EntityAliasTransferCache */
@@ -39,7 +39,7 @@ public class EntityAliasTransferCache
         
         if(entityAliasTransfer == null) {
             var entityInstance = entityAlias.getEntityInstance();
-            var entityAliasType = coreControl.getEntityAliasTypeTransfer(userVisit, entityAlias.getEntityAliasType(), entityInstance);
+            var entityAliasType = entityAliasControl.getEntityAliasTypeTransfer(userVisit, entityAlias.getEntityAliasType(), entityInstance);
             var alias = entityAlias.getAlias();
             var entityInstanceTransfer = entityInstanceControl.getEntityInstanceTransfer(userVisit, entityAlias.getEntityInstance(), false, false, false, false);
             

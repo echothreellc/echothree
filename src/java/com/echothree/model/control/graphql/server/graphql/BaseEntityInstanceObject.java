@@ -23,6 +23,7 @@ import com.echothree.control.user.core.server.command.GetEntityAttributeGroupCom
 import com.echothree.control.user.tag.common.form.TagFormFactory;
 import com.echothree.control.user.tag.server.command.GetTagScopeCommand;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityAliasControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.graphql.CoreSecurityUtils;
 import com.echothree.model.control.core.server.graphql.EntityAliasTypeObject;
@@ -130,11 +131,11 @@ public abstract class BaseEntityInstanceObject
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<EntityAliasTypeObject> getEntityAliasTypes(final DataFetchingEnvironment env) {
         if(CoreSecurityUtils.getHasEntityAliasTypesAccess(env)) {
-            var coreControl = Session.getModelController(CoreControl.class);
-            var totalCount = coreControl.countEntityAliasTypesByEntityType(getEntityInstanceByBasePK().getEntityType());
+            var entityAliasControl = Session.getModelController(EntityAliasControl.class);
+            var totalCount = entityAliasControl.countEntityAliasTypesByEntityType(getEntityInstanceByBasePK().getEntityType());
 
             try(var objectLimiter = new ObjectLimiter(env, EntityAliasTypeConstants.COMPONENT_VENDOR_NAME, EntityAliasTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var entities = coreControl.getEntityAliasTypesByEntityType(getEntityInstanceByBasePK().getEntityType());
+                var entities = entityAliasControl.getEntityAliasTypesByEntityType(getEntityInstanceByBasePK().getEntityType());
                 var entityAliasTypes = new ArrayList<EntityAliasTypeObject>(entities.size());
 
                 for(var entity : entities) {

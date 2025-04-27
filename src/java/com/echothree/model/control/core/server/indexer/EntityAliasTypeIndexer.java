@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.core.server.indexer;
 
+import com.echothree.model.control.core.server.analyzer.EntityAliasTypeAnalyzer;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
-import com.echothree.model.control.core.server.analyzer.EntityAliasTypeAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
 import com.echothree.model.data.core.server.entity.EntityAliasType;
@@ -47,14 +47,14 @@ public class EntityAliasTypeIndexer
     
     @Override
     protected EntityAliasType getEntity(final EntityInstance entityInstance) {
-        return coreControl.getEntityAliasTypeByEntityInstance(entityInstance);
+        return entityAliasControl.getEntityAliasTypeByEntityInstance(entityInstance);
     }
     
     @Override
     protected Document convertToDocument(final EntityInstance entityInstance, final EntityAliasType entityAliasType) {
         var entityAliasTypeDetail = entityAliasType.getLastDetail();
         var entityTypeDetail = entityAliasTypeDetail.getEntityType().getLastDetail();
-        var description = coreControl.getBestEntityAliasTypeDescription(entityAliasType, language);
+        var description = entityAliasControl.getBestEntityAliasTypeDescription(entityAliasType, language);
 
         var document = newDocumentWithEntityInstanceFields(entityInstance, entityAliasType.getPrimaryKey());
 

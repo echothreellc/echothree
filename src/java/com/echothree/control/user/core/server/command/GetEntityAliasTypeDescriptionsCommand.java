@@ -18,6 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEntityAliasTypeDescriptionsForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.EntityAliasControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -30,6 +31,7 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -62,7 +64,7 @@ public class GetEntityAliasTypeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var entityAliasControl = Session.getModelController(EntityAliasControl.class);
         var result = CoreResultFactory.getGetEntityAliasTypeDescriptionsResult();
         var componentVendorName = form.getComponentVendorName();
         var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
@@ -73,13 +75,13 @@ public class GetEntityAliasTypeDescriptionsCommand
             
             if(entityType != null) {
                 var entityAliasTypeName = form.getEntityAliasTypeName();
-                var entityAliasType = coreControl.getEntityAliasTypeByName(entityType, entityAliasTypeName);
+                var entityAliasType = entityAliasControl.getEntityAliasTypeByName(entityType, entityAliasTypeName);
                 
                 if(entityAliasType != null) {
                     var userVisit = getUserVisit();
                     
-                    result.setEntityAliasType(coreControl.getEntityAliasTypeTransfer(userVisit, entityAliasType, null));
-                    result.setEntityAliasTypeDescriptions(coreControl.getEntityAliasTypeDescriptionTransfersByEntityAliasType(userVisit, entityAliasType, null));
+                    result.setEntityAliasType(entityAliasControl.getEntityAliasTypeTransfer(userVisit, entityAliasType, null));
+                    result.setEntityAliasTypeDescriptions(entityAliasControl.getEntityAliasTypeDescriptionTransfersByEntityAliasType(userVisit, entityAliasType, null));
                 } else {
                     addExecutionError(ExecutionErrors.UnknownEntityAliasTypeName.name(), entityAliasTypeName);
                 }

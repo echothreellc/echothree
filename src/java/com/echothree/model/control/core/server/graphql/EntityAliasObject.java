@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.core.server.graphql;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityAliasControl;
 import com.echothree.model.control.graphql.server.graphql.HistoryInterface;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
@@ -51,13 +51,13 @@ public class EntityAliasObject
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<EntityAliasHistoryObject> getHistory(final DataFetchingEnvironment env) {
         if(true) { // TODO: Security Check
-            var coreControl = Session.getModelController(CoreControl.class);
+            var entityAliasControl = Session.getModelController(EntityAliasControl.class);
             var entityInstance = entityAlias.getEntityInstance();
             var entityAliasType = entityAlias.getEntityAliasType();
-            var totalCount = coreControl.countEntityAliasHistory(entityInstance, entityAliasType);
+            var totalCount = entityAliasControl.countEntityAliasHistory(entityInstance, entityAliasType);
 
             try(var objectLimiter = new ObjectLimiter(env, EntityAliasConstants.COMPONENT_VENDOR_NAME, EntityAliasConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var entities = coreControl.getEntityAliasHistory(entityInstance, entityAliasType);
+                var entities = entityAliasControl.getEntityAliasHistory(entityInstance, entityAliasType);
                 var entityObjects = new ArrayList<EntityAliasHistoryObject>(entities.size());
 
                 for(var entity : entities) {
