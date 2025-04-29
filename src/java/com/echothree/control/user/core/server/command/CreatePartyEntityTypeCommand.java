@@ -17,15 +17,16 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreatePartyEntityTypeForm;
+import com.echothree.model.control.core.server.control.PartyEntityTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -73,7 +74,6 @@ public class CreatePartyEntityTypeCommand
             var partyType = party.getLastDetail().getPartyType();
 
             if(partyType.getAllowUserLogins()) {
-                var coreControl = getCoreControl();
                 var componentVendorName = form.getComponentVendorName();
                 var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
 
@@ -82,12 +82,13 @@ public class CreatePartyEntityTypeCommand
                     var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
 
                     if(entityType != null) {
-                        var partyEntityType = coreControl.getPartyEntityType(party, entityType);
+                        var partyEntityTypeControl = Session.getModelController(PartyEntityTypeControl.class);
+                        var partyEntityType = partyEntityTypeControl.getPartyEntityType(party, entityType);
 
                         if(partyEntityType == null) {
                             var confirmDelete = Boolean.valueOf(form.getConfirmDelete());
 
-                            coreControl.createPartyEntityType(party, entityType, confirmDelete, getPartyPK());
+                            partyEntityTypeControl.createPartyEntityType(party, entityType, confirmDelete, getPartyPK());
                         } else {
                             addExecutionError(ExecutionErrors.DuplicatePartyEntityType.name());
                         }

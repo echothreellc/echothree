@@ -22,6 +22,7 @@ import com.echothree.control.user.core.common.form.EditPartyEntityTypeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditPartyEntityTypeResult;
 import com.echothree.control.user.core.common.spec.PartyEntityTypeSpec;
+import com.echothree.model.control.core.server.control.PartyEntityTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -29,10 +30,10 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.PartyEntityType;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -92,7 +93,6 @@ public class EditPartyEntityTypeCommand
         var party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
 
         if(party != null) {
-            var coreControl = getCoreControl();
             var componentVendorName = spec.getComponentVendorName();
             var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
 
@@ -101,10 +101,12 @@ public class EditPartyEntityTypeCommand
                 var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
 
                 if(entityType != null) {
+                    var partyEntityTypeControl = Session.getModelController(PartyEntityTypeControl.class);
+
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                        partyEntityType = coreControl.getPartyEntityType(party, entityType);
+                        partyEntityType = partyEntityTypeControl.getPartyEntityType(party, entityType);
                     } else { // EditMode.UPDATE
-                        partyEntityType = coreControl.getPartyEntityTypeForUpdate(party, entityType);
+                        partyEntityType = partyEntityTypeControl.getPartyEntityTypeForUpdate(party, entityType);
                     }
 
                     if(partyEntityType == null) {
@@ -130,9 +132,9 @@ public class EditPartyEntityTypeCommand
 
     @Override
     public void fillInResult(EditPartyEntityTypeResult result, PartyEntityType partyEntityType) {
-        var coreControl = getCoreControl();
+        var partyEntityTypeControl = Session.getModelController(PartyEntityTypeControl.class);
 
-        result.setPartyEntityType(coreControl.getPartyEntityTypeTransfer(getUserVisit(), partyEntityType));
+        result.setPartyEntityType(partyEntityTypeControl.getPartyEntityTypeTransfer(getUserVisit(), partyEntityType));
     }
 
     @Override
@@ -142,12 +144,12 @@ public class EditPartyEntityTypeCommand
 
     @Override
     public void doUpdate(PartyEntityType partyEntityType) {
-        var coreControl = getCoreControl();
-        var partyEntityTypeValue = coreControl.getPartyEntityTypeValue(partyEntityType);
+        var partyEntityTypeControl = Session.getModelController(PartyEntityTypeControl.class);
+        var partyEntityTypeValue = partyEntityTypeControl.getPartyEntityTypeValue(partyEntityType);
         
         partyEntityTypeValue.setConfirmDelete(Boolean.valueOf(edit.getConfirmDelete()));
 
-        coreControl.updatePartyEntityTypeFromValue(partyEntityTypeValue, getPartyPK());
+        partyEntityTypeControl.updatePartyEntityTypeFromValue(partyEntityTypeValue, getPartyPK());
     }
     
 }

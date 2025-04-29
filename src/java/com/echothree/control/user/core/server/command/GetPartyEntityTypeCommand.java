@@ -18,15 +18,16 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetPartyEntityTypeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.PartyEntityTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -70,7 +71,6 @@ public class GetPartyEntityTypeCommand
         var party = partyName == null? getParty(): partyControl.getPartyByName(partyName);
 
         if(party != null) {
-            var coreControl = getCoreControl();
             var componentVendorName = form.getComponentVendorName();
             var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
 
@@ -79,17 +79,18 @@ public class GetPartyEntityTypeCommand
                 var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
 
                 if(entityType != null) {
-                    var partyEntityType = coreControl.getPartyEntityType(party, entityType);
+                    var partyEntityTypeControl = Session.getModelController(PartyEntityTypeControl.class);
+                    var partyEntityType = partyEntityTypeControl.getPartyEntityType(party, entityType);
                     
                     if(partyEntityType == null) {
                         if(partyName == null) {
-                            partyEntityType = coreControl.createPartyEntityType(party, entityType, Boolean.TRUE, getPartyPK());
+                            partyEntityType = partyEntityTypeControl.createPartyEntityType(party, entityType, Boolean.TRUE, getPartyPK());
                         } else {
                             addExecutionError(ExecutionErrors.UnknownPartyEntityType.name());
                         }
                     }
                     
-                    result.setPartyEntityType(partyEntityType == null ? null : coreControl.getPartyEntityTypeTransfer(getUserVisit(), partyEntityType));
+                    result.setPartyEntityType(partyEntityType == null ? null : partyEntityTypeControl.getPartyEntityTypeTransfer(getUserVisit(), partyEntityType));
                 } else {
                     addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), componentVendorName, entityTypeName);
                 }

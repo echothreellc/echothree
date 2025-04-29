@@ -17,15 +17,16 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeletePartyEntityTypeForm;
+import com.echothree.model.control.core.server.control.PartyEntityTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -68,7 +69,6 @@ public class DeletePartyEntityTypeCommand
         var party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
 
         if(party != null) {
-            var coreControl = getCoreControl();
             var componentVendorName = form.getComponentVendorName();
             var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
 
@@ -77,10 +77,11 @@ public class DeletePartyEntityTypeCommand
                 var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
 
                 if(entityType != null) {
-                    var partyEntityType = coreControl.getPartyEntityTypeForUpdate(party, entityType);
+                    var partyEntityTypeControl = Session.getModelController(PartyEntityTypeControl.class);
+                    var partyEntityType = partyEntityTypeControl.getPartyEntityTypeForUpdate(party, entityType);
 
                     if(partyEntityType != null) {
-                        coreControl.deletePartyEntityType(partyEntityType, getPartyPK());
+                        partyEntityTypeControl.deletePartyEntityType(partyEntityType, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.UnknownPartyEntityType.name());
                     }
