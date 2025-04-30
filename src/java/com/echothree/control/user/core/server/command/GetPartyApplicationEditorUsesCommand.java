@@ -18,7 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetPartyApplicationEditorUsesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.model.control.core.server.control.ApplicationControl;
+import com.echothree.model.control.core.server.control.PartyApplicationEditorUseControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -67,9 +67,9 @@ public class GetPartyApplicationEditorUsesCommand
         var party = partyName == null ? getParty() : PartyLogic.getInstance().getPartyByName(this, partyName);
         
         if(!hasExecutionErrors()) {
-            var applicationControl = Session.getModelController(ApplicationControl.class);
+            var partyApplicationEditorUseControl = Session.getModelController(PartyApplicationEditorUseControl.class);
 
-            result.setPartyApplicationEditorUses(applicationControl.getPartyApplicationEditorUseTransfersByParty(getUserVisit(), party));
+            result.setPartyApplicationEditorUses(partyApplicationEditorUseControl.getPartyApplicationEditorUseTransfersByParty(getUserVisit(), party));
         }
         
         return result;
