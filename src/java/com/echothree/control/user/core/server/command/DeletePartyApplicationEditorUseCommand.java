@@ -17,7 +17,7 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeletePartyApplicationEditorUseForm;
-import com.echothree.model.control.core.server.control.ApplicationControl;
+import com.echothree.model.control.core.server.control.PartyApplicationEditorUseControl;
 import com.echothree.model.control.core.server.logic.ApplicationLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.PartyLogic;
@@ -77,11 +77,11 @@ public class DeletePartyApplicationEditorUseCommand
                 var applicationEditorUse = ApplicationLogic.getInstance().getApplicationEditorUseByName(this, application, applicationEditorUseName);
                 
                 if(!hasExecutionErrors()) {
-                    var applicationControl = Session.getModelController(ApplicationControl.class);
-                    var partyApplicationEditorUse = applicationControl.getPartyApplicationEditorUseForUpdate(party, applicationEditorUse);
+                    var partyApplicationEditorUseControl = Session.getModelController(PartyApplicationEditorUseControl.class);
+                    var partyApplicationEditorUse = partyApplicationEditorUseControl.getPartyApplicationEditorUseForUpdate(party, applicationEditorUse);
                     
                     if(partyApplicationEditorUse != null) {
-                        applicationControl.deletePartyApplicationEditorUse(partyApplicationEditorUse, getPartyPK());
+                        partyApplicationEditorUseControl.deletePartyApplicationEditorUse(partyApplicationEditorUse, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.UnknownPartyApplicationEditorUse.name(), partyName, applicationName, applicationEditorUseName);
                     }

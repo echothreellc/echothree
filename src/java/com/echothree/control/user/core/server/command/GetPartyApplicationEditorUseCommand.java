@@ -20,6 +20,7 @@ import com.echothree.control.user.core.common.form.GetPartyApplicationEditorUseF
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.control.ApplicationControl;
+import com.echothree.model.control.core.server.control.PartyApplicationEditorUseControl;
 import com.echothree.model.control.core.server.logic.ApplicationLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.PartyLogic;
@@ -80,17 +81,17 @@ public class GetPartyApplicationEditorUseCommand
                 var applicationEditorUse = ApplicationLogic.getInstance().getApplicationEditorUseByName(this, application, applicationEditorUseName);
                 
                 if(!hasExecutionErrors()) {
-                    var applicationControl = Session.getModelController(ApplicationControl.class);
-                    var partyApplicationEditorUse = applicationControl.getPartyApplicationEditorUse(party, applicationEditorUse);
+                    var partyApplicationEditorUseControl = Session.getModelController(PartyApplicationEditorUseControl.class);
+                    var partyApplicationEditorUse = partyApplicationEditorUseControl.getPartyApplicationEditorUse(party, applicationEditorUse);
                     var partyPK = getPartyPK();
                     
                     if(partyApplicationEditorUse == null && partyName == null) {
-                        partyApplicationEditorUse = applicationControl.createPartyApplicationEditorUse(party, applicationEditorUse, null, null, null, partyPK);
+                        partyApplicationEditorUse = partyApplicationEditorUseControl.createPartyApplicationEditorUse(party, applicationEditorUse, null, null, null, partyPK);
                     }
                     
                     if(partyApplicationEditorUse != null) {
                         var userVisit = getUserVisit();
-                        var partyApplicationEditorUseTransfer = applicationControl.getPartyApplicationEditorUseTransfer(userVisit, partyApplicationEditorUse);
+                        var partyApplicationEditorUseTransfer = partyApplicationEditorUseControl.getPartyApplicationEditorUseTransfer(userVisit, partyApplicationEditorUse);
                         
                         // Fill in a few defaults in the TO of the Party is requesting this for themselves.
                         if(partyName == null) {
@@ -99,6 +100,7 @@ public class GetPartyApplicationEditorUseCommand
                             var preferredWidth = partyApplicationEditorUseTransfer.getPreferredWidth();
                             
                             if(partyApplicationEditorUseTransfer.getApplicationEditor() == null) {
+                                var applicationControl = Session.getModelController(ApplicationControl.class);
                                 var applicationEditor = applicationEditorUseDetail.getDefaultApplicationEditor();
                                         
                                 if(applicationEditor == null) {

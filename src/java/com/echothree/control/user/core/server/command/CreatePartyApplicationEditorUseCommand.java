@@ -17,7 +17,7 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreatePartyApplicationEditorUseForm;
-import com.echothree.model.control.core.server.control.ApplicationControl;
+import com.echothree.model.control.core.server.control.PartyApplicationEditorUseControl;
 import com.echothree.model.control.core.server.logic.ApplicationLogic;
 import com.echothree.model.control.core.server.logic.EditorLogic;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -81,8 +81,8 @@ public class CreatePartyApplicationEditorUseCommand
                 var applicationEditorUse = ApplicationLogic.getInstance().getApplicationEditorUseByName(this, application, applicationEditorUseName);
                 
                 if(!hasExecutionErrors()) {
-                    var applicationControl = Session.getModelController(ApplicationControl.class);
-                    var partyApplicationEditorUse = applicationControl.getPartyApplicationEditorUse(party, applicationEditorUse);
+                    var partyApplicationEditorUseControl = Session.getModelController(PartyApplicationEditorUseControl.class);
+                    var partyApplicationEditorUse = partyApplicationEditorUseControl.getPartyApplicationEditorUse(party, applicationEditorUse);
                     
                     if(partyApplicationEditorUse == null) {
                         var editorName = form.getEditorName();
@@ -96,8 +96,8 @@ public class CreatePartyApplicationEditorUseCommand
                                 var preferredHeight = strPreferredHeight == null ? null : Integer.valueOf(strPreferredHeight);
                                 var strPreferredWidth = form.getPreferredWidth();
                                 var preferredWidth = strPreferredWidth == null ? null : Integer.valueOf(strPreferredWidth);
-                                
-                                applicationControl.createPartyApplicationEditorUse(party, applicationEditorUse, applicationEditor, preferredHeight, preferredWidth,
+
+                                partyApplicationEditorUseControl.createPartyApplicationEditorUse(party, applicationEditorUse, applicationEditor, preferredHeight, preferredWidth,
                                         getPartyPK());
                             }
                         }
