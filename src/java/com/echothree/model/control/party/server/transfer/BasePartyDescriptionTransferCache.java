@@ -20,13 +20,16 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;
+import com.echothree.util.server.persistence.Session;
 
 public abstract class BasePartyDescriptionTransferCache<K extends BaseEntity, V extends BaseTransfer>
         extends BasePartyTransferCache<K, V> {
-    
+
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+
     /** Creates a new instance of BasePartyDescriptionTransferCache */
-    protected BasePartyDescriptionTransferCache(UserVisit userVisit, PartyControl partyControl) {
-        super(userVisit, partyControl);
+    protected BasePartyDescriptionTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
     
 }

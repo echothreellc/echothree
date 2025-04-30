@@ -22,10 +22,13 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
+import com.echothree.util.server.persistence.Session;
 
 public class TimeZoneTransferCache
         extends BasePartyTransferCache<TimeZone, TimeZoneTransfer> {
-    
+
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+
     TransferProperties transferProperties;
     boolean filterJavaTimeZoneName;
     boolean filterUnixTimeZoneName;
@@ -35,8 +38,8 @@ public class TimeZoneTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of TimeZoneTransferCache */
-    public TimeZoneTransferCache(UserVisit userVisit, PartyControl partyControl) {
-        super(userVisit, partyControl);
+    public TimeZoneTransferCache(UserVisit userVisit) {
+        super(userVisit);
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
@@ -54,8 +57,9 @@ public class TimeZoneTransferCache
         
         setIncludeEntityInstance(!filterEntityInstance);
     }
-    
-    public TimeZoneTransfer getTimeZoneTransfer(TimeZone timeZone) {
+
+    @Override
+    public TimeZoneTransfer getTransfer(TimeZone timeZone) {
         var timeZoneTransfer = get(timeZone);
         
         if(timeZoneTransfer == null) {
