@@ -28,17 +28,20 @@ import com.echothree.util.server.persistence.Session;
 public class PartyTypeAuditPolicyTransferCache
         extends BasePartyTransferCache<PartyTypeAuditPolicy, PartyTypeAuditPolicyTransfer> {
 
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
+
     UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
 
     /** Creates a new instance of PartyTypeAuditPolicyTransferCache */
-    public PartyTypeAuditPolicyTransferCache(UserVisit userVisit, PartyControl partyControl) {
-        super(userVisit, partyControl);
+    public PartyTypeAuditPolicyTransferCache(UserVisit userVisit) {
+        super(userVisit);
 
         setIncludeEntityInstance(true);
     }
 
-    public PartyTypeAuditPolicyTransfer getPartyTypeAuditPolicyTransfer(PartyTypeAuditPolicy partyTypeAuditPolicy) {
+    @Override
+    public PartyTypeAuditPolicyTransfer getTransfer(PartyTypeAuditPolicy partyTypeAuditPolicy) {
         var partyTypeAuditPolicyTransfer = get(partyTypeAuditPolicy);
 
         if(partyTypeAuditPolicyTransfer == null) {

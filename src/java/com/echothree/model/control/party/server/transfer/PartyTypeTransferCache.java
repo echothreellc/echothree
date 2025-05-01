@@ -27,18 +27,18 @@ import com.echothree.util.server.persistence.Session;
 
 public class PartyTypeTransferCache
         extends BasePartyTransferCache<PartyType, PartyTypeTransfer> {
-    
-    SequenceControl sequenceControl;
+
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
+
     boolean includeAuditPolicy;
     boolean includeLockoutPolicy;
     boolean includePasswordStringPolicy;
     boolean includePartyAliasTypes;
     
     /** Creates a new instance of PartyTypeTransferCache */
-    public PartyTypeTransferCache(UserVisit userVisit, PartyControl partyControl) {
-        super(userVisit, partyControl);
-        
-        sequenceControl = Session.getModelController(SequenceControl.class);
+    public PartyTypeTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         var options = session.getOptions();
         if(options != null) {
@@ -48,14 +48,15 @@ public class PartyTypeTransferCache
             includePartyAliasTypes = options.contains(PartyOptions.PartyTypeIncludePartyAliasTypes);
         }
     }
-    
-    public PartyTypeTransfer getPartyTypeTransfer(PartyType partyType) {
+
+    @Override
+    public PartyTypeTransfer getTransfer(PartyType partyType) {
         var partyTypeTransfer = get(partyType);
         
         if(partyTypeTransfer == null) {
             var partyTypeName = partyType.getPartyTypeName();
             var parentPartyType = partyType.getParentPartyType();
-            var parentPartyTypeTransfer = parentPartyType == null? null: getPartyTypeTransfer(parentPartyType);
+            var parentPartyTypeTransfer = parentPartyType == null? null: getTransfer(parentPartyType);
             var billingAccountSequenceType = partyType.getBillingAccountSequenceType();
             var billingAccountSequenceTypeTransfer = billingAccountSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, billingAccountSequenceType);
             var allowUserLogins = partyType.getAllowUserLogins();

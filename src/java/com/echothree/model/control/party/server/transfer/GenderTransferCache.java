@@ -20,18 +20,22 @@ import com.echothree.model.control.party.common.transfer.GenderTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.Gender;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class GenderTransferCache
         extends BasePartyTransferCache<Gender, GenderTransfer> {
-    
+
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+
     /** Creates a new instance of GenderTransferCache */
-    public GenderTransferCache(UserVisit userVisit, PartyControl partyControl) {
-        super(userVisit, partyControl);
+    public GenderTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         setIncludeEntityInstance(true);
     }
-    
-    public GenderTransfer getGenderTransfer(Gender gender) {
+
+    @Override
+    public GenderTransfer getTransfer(Gender gender) {
         var genderTransfer = get(gender);
         
         if(genderTransfer == null) {

@@ -20,18 +20,22 @@ import com.echothree.model.control.party.common.transfer.BirthdayFormatTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.BirthdayFormat;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class BirthdayFormatTransferCache
         extends BasePartyTransferCache<BirthdayFormat, BirthdayFormatTransfer> {
-    
+
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+
     /** Creates a new instance of BirthdayFormatTransferCache */
-    public BirthdayFormatTransferCache(UserVisit userVisit, PartyControl partyControl) {
-        super(userVisit, partyControl);
+    public BirthdayFormatTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         setIncludeEntityInstance(true);
     }
-    
-    public BirthdayFormatTransfer getBirthdayFormatTransfer(BirthdayFormat birthdayFormat) {
+
+    @Override
+    public BirthdayFormatTransfer getTransfer(BirthdayFormat birthdayFormat) {
         var birthdayFormatTransfer = get(birthdayFormat);
         
         if(birthdayFormatTransfer == null) {

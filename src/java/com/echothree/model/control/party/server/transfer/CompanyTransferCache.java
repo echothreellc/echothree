@@ -19,7 +19,6 @@ package com.echothree.model.control.party.server.transfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.control.party.common.PartyOptions;
@@ -40,9 +39,9 @@ public class CompanyTransferCache
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
     CarrierControl carrierControl = Session.getModelController(CarrierControl.class);
     ContactControl contactControl = Session.getModelController(ContactControl.class);
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
     DocumentControl documentControl = Session.getModelController(DocumentControl.class);
     InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     PrinterControl printerControl = Session.getModelController(PrinterControl.class);
     ScaleControl scaleControl = Session.getModelController(ScaleControl.class);
     boolean includePartyContactMechanisms;
@@ -57,8 +56,8 @@ public class CompanyTransferCache
     boolean hasInvoiceLimits;
     
     /** Creates a new instance of CompanyTransferCache */
-    public CompanyTransferCache(UserVisit userVisit, PartyControl partyControl) {
-        super(userVisit, partyControl);
+    public CompanyTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         var options = session.getOptions();
         if(options != null) {
@@ -81,11 +80,12 @@ public class CompanyTransferCache
         hasInvoiceLimits = session.hasLimit(InvoiceFactory.class);
     }
     
-    public CompanyTransfer getCompanyTransfer(PartyCompany partyCompany) {
-        return getCompanyTransfer(partyCompany.getParty());
+    public CompanyTransfer getTransfer(PartyCompany partyCompany) {
+        return getTransfer(partyCompany.getParty());
     }
-    
-    public CompanyTransfer getCompanyTransfer(Party party) {
+
+    @Override
+    public CompanyTransfer getTransfer(Party party) {
         var companyTransfer = get(party);
         
         if(companyTransfer == null) {

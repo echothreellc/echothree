@@ -2723,34 +2723,6 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="PartyEntityTypes" nameSingular="PartyEntityType" columnPrefix="pent">
-                    <columns>
-                        <column name="PartyEntityTypeId" type="EID" nullAllowed="false" />
-                        <column name="PartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
-                        <column name="EntityTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityTypes" destinationColumn="EntityTypeId" />
-                        <column name="ConfirmDelete" type="Boolean" nullAllowed="false" />
-                        <column name="FromTime" type="Time" nullAllowed="false" />
-                        <column name="ThruTime" type="Time" nullAllowed="false" />
-                    </columns>
-                    <indexes>
-                        <index type="PrimaryKey">
-                            <indexColumn name="PartyEntityTypeId" />
-                        </index>
-                        <index type="Unique" name="Index1">
-                            <indexColumn name="PartyId" />
-                            <indexColumn name="EntityTypeId" />
-                            <indexColumn name="ThruTime" />
-                        </index>
-                        <index type="Multiple" name="Index2">
-                            <indexColumn name="PartyId" />
-                            <indexColumn name="ThruTime" />
-                        </index>
-                        <index type="Multiple" name="Index3">
-                            <indexColumn name="EntityTypeId" />
-                            <indexColumn name="ThruTime" />
-                        </index>
-                    </indexes>
-                </table>
                 <table namePlural="Applications" nameSingular="Application" columnPrefix="appl">
                     <columns>
                         <column name="ApplicationId" type="EID" nullAllowed="false" />

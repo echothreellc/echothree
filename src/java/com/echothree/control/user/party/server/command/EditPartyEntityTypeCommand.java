@@ -14,21 +14,21 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.core.server.command;
+package com.echothree.control.user.party.server.command;
 
-import com.echothree.control.user.core.common.edit.CoreEditFactory;
-import com.echothree.control.user.core.common.edit.PartyEntityTypeEdit;
-import com.echothree.control.user.core.common.form.EditPartyEntityTypeForm;
-import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.EditPartyEntityTypeResult;
-import com.echothree.control.user.core.common.spec.PartyEntityTypeSpec;
-import com.echothree.model.control.core.server.control.PartyEntityTypeControl;
+import com.echothree.control.user.party.common.edit.PartyEditFactory;
+import com.echothree.control.user.party.common.edit.PartyEntityTypeEdit;
+import com.echothree.control.user.party.common.form.EditPartyEntityTypeForm;
+import com.echothree.control.user.party.common.result.EditPartyEntityTypeResult;
+import com.echothree.control.user.party.common.result.PartyResultFactory;
+import com.echothree.control.user.party.common.spec.PartyEntityTypeSpec;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.control.PartyEntityTypeControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.PartyEntityType;
 import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.model.data.party.server.entity.PartyEntityType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -42,7 +42,6 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
 
 public class EditPartyEntityTypeCommand
         extends BaseAbstractEditCommand<PartyEntityTypeSpec, PartyEntityTypeEdit, EditPartyEntityTypeResult, PartyEntityType, Party> {
@@ -77,12 +76,12 @@ public class EditPartyEntityTypeCommand
     
     @Override
    public EditPartyEntityTypeResult getResult() {
-        return CoreResultFactory.getEditPartyEntityTypeResult();
+        return PartyResultFactory.getEditPartyEntityTypeResult();
     }
 
     @Override
     public PartyEntityTypeEdit getEdit() {
-        return CoreEditFactory.getPartyEntityTypeEdit();
+        return PartyEditFactory.getPartyEntityTypeEdit();
     }
 
     @Override

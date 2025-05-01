@@ -16,11 +16,11 @@
 
 package com.echothree.ui.web.main.action.humanresources.employeeentitytype;
 
-import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetPartyEntityTypeResult;
 import com.echothree.control.user.employee.common.EmployeeUtil;
 import com.echothree.control.user.employee.common.result.GetEmployeeResult;
-import com.echothree.model.control.core.common.transfer.PartyEntityTypeTransfer;
+import com.echothree.control.user.party.common.PartyUtil;
+import com.echothree.control.user.party.common.result.GetPartyEntityTypeResult;
+import com.echothree.model.control.party.common.transfer.PartyEntityTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -52,13 +52,13 @@ public abstract class BaseEmployeeEntityTypeAction<A extends ActionForm>
     public static PartyEntityTypeTransfer getPartyEntityTypeTransfer(HttpServletRequest request, String partyName, String componentVendorName,
             String entityTypeName)
             throws NamingException {
-        var commandForm = CoreUtil.getHome().getGetPartyEntityTypeForm();
+        var commandForm = PartyUtil.getHome().getGetPartyEntityTypeForm();
 
         commandForm.setPartyName(partyName);
         commandForm.setComponentVendorName(componentVendorName);
         commandForm.setEntityTypeName(entityTypeName);
 
-        var commandResult = CoreUtil.getHome().getPartyEntityType(getUserVisitPK(request), commandForm);
+        var commandResult = PartyUtil.getHome().getPartyEntityType(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
         var result = (GetPartyEntityTypeResult)executionResult.getResult();
 

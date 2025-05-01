@@ -22,10 +22,13 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
+import com.echothree.util.server.persistence.Session;
 
 public class DateTimeFormatTransferCache
         extends BasePartyTransferCache<DateTimeFormat, DateTimeFormatTransfer> {
-    
+
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+
     TransferProperties transferProperties;
     boolean filterDateTimeFormatName;
     boolean filterJavaShortDateFormat;
@@ -50,8 +53,8 @@ public class DateTimeFormatTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of DateTimeFormatTransferCache */
-    public DateTimeFormatTransferCache(UserVisit userVisit, PartyControl partyControl) {
-        super(userVisit, partyControl);
+    public DateTimeFormatTransferCache(UserVisit userVisit) {
+        super(userVisit);
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
@@ -84,8 +87,9 @@ public class DateTimeFormatTransferCache
         
         setIncludeEntityInstance(!filterEntityInstance);
     }
-    
-    public DateTimeFormatTransfer getDateTimeFormatTransfer(DateTimeFormat dateTimeFormat) {
+
+    @Override
+    public DateTimeFormatTransfer getTransfer(DateTimeFormat dateTimeFormat) {
         var dateTimeFormatTransfer = get(dateTimeFormat);
         
         if(dateTimeFormatTransfer == null) {

@@ -30,13 +30,15 @@ public class ProfileTransferCache
 
     IconControl iconControl = Session.getModelController(IconControl.class);
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
-    
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+
     /** Creates a new instance of ProfileTransferCache */
-    public ProfileTransferCache(final UserVisit userVisit, final PartyControl partyControl) {
-        super(userVisit, partyControl);
+    public ProfileTransferCache(final UserVisit userVisit) {
+        super(userVisit);
     }
-    
-    public ProfileTransfer getProfileTransfer(final Profile profile) {
+
+    @Override
+    public ProfileTransfer getTransfer(final Profile profile) {
         var profileTransfer = get(profile);
         
         if(profileTransfer == null) {

@@ -14,15 +14,15 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.core.server.control;
+package com.echothree.model.control.party.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.common.transfer.PartyEntityTypeTransfer;
+import com.echothree.model.control.party.common.transfer.PartyEntityTypeTransfer;
 import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.core.server.entity.PartyEntityType;
-import com.echothree.model.data.core.server.factory.PartyEntityTypeFactory;
-import com.echothree.model.data.core.server.value.PartyEntityTypeValue;
 import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.model.data.party.server.entity.PartyEntityType;
+import com.echothree.model.data.party.server.factory.PartyEntityTypeFactory;
+import com.echothree.model.data.party.server.value.PartyEntityTypeValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PartyEntityTypeControl
-        extends BaseCoreControl {
+        extends BasePartyControl {
 
     /** Creates a new instance of PartyEntityTypeControl */
     public PartyEntityTypeControl() {
@@ -141,13 +141,13 @@ public class PartyEntityTypeControl
     }
 
     public PartyEntityTypeTransfer getPartyEntityTypeTransfer(UserVisit userVisit, PartyEntityType partyEntityType) {
-        return getCoreTransferCaches(userVisit).getPartyEntityTypeTransferCache().getPartyEntityTypeTransfer(partyEntityType);
+        return getPartyTransferCaches(userVisit).getPartyEntityTypeTransferCache().getPartyEntityTypeTransfer(partyEntityType);
     }
 
     public List<PartyEntityTypeTransfer> getPartyEntityTypeTransfersByParty(UserVisit userVisit, Party party) {
         var partyEntityTypes = getPartyEntityTypesByParty(party);
         List<PartyEntityTypeTransfer> partyEntityTypeTransfers = new ArrayList<>(partyEntityTypes.size());
-        var partyEntityTypeTransferCache = getCoreTransferCaches(userVisit).getPartyEntityTypeTransferCache();
+        var partyEntityTypeTransferCache = getPartyTransferCaches(userVisit).getPartyEntityTypeTransferCache();
 
         partyEntityTypes.forEach((partyEntityType) ->
                 partyEntityTypeTransfers.add(partyEntityTypeTransferCache.getPartyEntityTypeTransfer(partyEntityType))

@@ -17,7 +17,6 @@
 package com.echothree.model.control.party.server.transfer;
 
 import com.echothree.model.control.party.common.transfer.BirthdayFormatDescriptionTransfer;
-import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.BirthdayFormatDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -25,11 +24,12 @@ public class BirthdayFormatDescriptionTransferCache
         extends BasePartyDescriptionTransferCache<BirthdayFormatDescription, BirthdayFormatDescriptionTransfer> {
     
     /** Creates a new instance of BirthdayFormatDescriptionTransferCache */
-    public BirthdayFormatDescriptionTransferCache(UserVisit userVisit, PartyControl partyControl) {
-        super(userVisit, partyControl);
+    public BirthdayFormatDescriptionTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
-    
-    public BirthdayFormatDescriptionTransfer getBirthdayFormatDescriptionTransfer(BirthdayFormatDescription birthdayFormatDescription) {
+
+    @Override
+    public BirthdayFormatDescriptionTransfer getTransfer(BirthdayFormatDescription birthdayFormatDescription) {
         var birthdayFormatDescriptionTransfer = get(birthdayFormatDescription);
         
         if(birthdayFormatDescriptionTransfer == null) {

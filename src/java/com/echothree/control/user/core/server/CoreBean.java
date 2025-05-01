@@ -1823,35 +1823,6 @@ public class CoreBean
     }
 
     // -------------------------------------------------------------------------
-    //   Party Entity Types
-    // -------------------------------------------------------------------------
-
-    @Override
-    public CommandResult createPartyEntityType(UserVisitPK userVisitPK, CreatePartyEntityTypeForm form) {
-        return new CreatePartyEntityTypeCommand(userVisitPK, form).run();
-    }
-
-    @Override
-    public CommandResult editPartyEntityType(UserVisitPK userVisitPK, EditPartyEntityTypeForm form) {
-        return new EditPartyEntityTypeCommand(userVisitPK, form).run();
-    }
-
-    @Override
-    public CommandResult getPartyEntityType(UserVisitPK userVisitPK, GetPartyEntityTypeForm form) {
-        return new GetPartyEntityTypeCommand(userVisitPK, form).run();
-    }
-
-    @Override
-    public CommandResult getPartyEntityTypes(UserVisitPK userVisitPK, GetPartyEntityTypesForm form) {
-        return new GetPartyEntityTypesCommand(userVisitPK, form).run();
-    }
-
-    @Override
-    public CommandResult deletePartyEntityType(UserVisitPK userVisitPK, DeletePartyEntityTypeForm form) {
-        return new DeletePartyEntityTypeCommand(userVisitPK, form).run();
-    }
-
-    // -------------------------------------------------------------------------
     //   Cache Entries
     // -------------------------------------------------------------------------
 
@@ -2654,4 +2625,5 @@ public class CoreBean
     public CommandResult validate(UserVisitPK userVisitPK, ValidateForm form) {
         return new ValidateCommand(userVisitPK, form).run();
     }
+
 }

@@ -28,17 +28,20 @@ import com.echothree.util.server.persistence.Session;
 public class PartyTypeLockoutPolicyTransferCache
         extends BasePartyTransferCache<PartyTypeLockoutPolicy, PartyTypeLockoutPolicyTransfer> {
 
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
+
     UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
 
     /** Creates a new instance of PartyTypeLockoutPolicyTransferCache */
-    public PartyTypeLockoutPolicyTransferCache(UserVisit userVisit, PartyControl partyControl) {
-        super(userVisit, partyControl);
+    public PartyTypeLockoutPolicyTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         setIncludeEntityInstance(true);
     }
 
-    public PartyTypeLockoutPolicyTransfer getPartyTypeLockoutPolicyTransfer(PartyTypeLockoutPolicy partyTypeLockoutPolicy) {
+    @Override
+    public PartyTypeLockoutPolicyTransfer getTransfer(PartyTypeLockoutPolicy partyTypeLockoutPolicy) {
         var partyTypeLockoutPolicyTransfer = get(partyTypeLockoutPolicy);
 
         if(partyTypeLockoutPolicyTransfer == null) {

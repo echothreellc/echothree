@@ -14,14 +14,16 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.core.common.edit;
+package com.echothree.control.user.party.common.result;
 
-import com.echothree.util.common.form.BaseEdit;
+import com.echothree.control.user.party.common.edit.PartyEntityTypeEdit;
+import com.echothree.model.control.party.common.transfer.PartyEntityTypeTransfer;
+import com.echothree.util.common.command.BaseEditResult;
 
-public interface PartyEntityTypeEdit
-        extends BaseEdit {
+public interface EditPartyEntityTypeResult
+        extends BaseEditResult<PartyEntityTypeEdit> {
     
-    String getConfirmDelete();
-    void setConfirmDelete(String confirmDelete);
+    PartyEntityTypeTransfer getPartyEntityType();
+    void setPartyEntityType(PartyEntityTypeTransfer partyEntityType);
     
 }

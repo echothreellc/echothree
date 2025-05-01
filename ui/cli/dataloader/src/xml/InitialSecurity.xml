@@ -7522,7 +7522,7 @@
                 <securityRoleDescription languageIsoName="en" description="Entity Appearance Review" />
             </securityRole>
         </securityRoleGroup>
-        <securityRoleGroup securityRoleGroupName="PartyEntityType" parentSecurityRoleGroupName="CoreComponent" isDefault="false" sortOrder="1">
+        <securityRoleGroup securityRoleGroupName="PartyEntityType" parentSecurityRoleGroupName="PartyComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Party Entity Type" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Party Entity Type Create" />

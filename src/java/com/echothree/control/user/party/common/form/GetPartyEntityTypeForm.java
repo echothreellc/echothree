@@ -14,13 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.core.common.spec;
+package com.echothree.control.user.party.common.form;
 
-import com.echothree.control.user.party.common.spec.PartySpec;
+import com.echothree.control.user.party.common.spec.PartyEntityTypeSpec;
 
-public interface PartyEntityTypeSpec
-        extends PartySpec, EntityTypeSpec {
+public interface GetPartyEntityTypeForm
+        extends PartyEntityTypeSpec {
     
-    // Nothing additional beyond PartySpec, EntityTypeSpec
+    // Nothing additional beyond PartyEntityTypeSpec
     
 }

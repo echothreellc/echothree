@@ -17,7 +17,6 @@
 package com.echothree.model.control.party.server.transfer;
 
 import com.echothree.model.control.party.common.transfer.PartyGroupTransfer;
-import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.PartyGroup;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -25,11 +24,12 @@ public class PartyGroupTransferCache
         extends BasePartyTransferCache<PartyGroup, PartyGroupTransfer> {
     
     /** Creates a new instance of PartyGroupTransferCache */
-    public PartyGroupTransferCache(UserVisit userVisit, PartyControl partyControl) {
-        super(userVisit, partyControl);
+    public PartyGroupTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
-    
-    public PartyGroupTransfer getPartyGroupTransfer(PartyGroup partyGroup) {
+
+    @Override
+    public PartyGroupTransfer getTransfer(PartyGroup partyGroup) {
         var partyGroupTransfer = get(partyGroup);
         
         if(partyGroupTransfer == null) {

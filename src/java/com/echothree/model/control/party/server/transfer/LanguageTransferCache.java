@@ -22,10 +22,13 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
+import com.echothree.util.server.persistence.Session;
 
 public class LanguageTransferCache
         extends BasePartyTransferCache<Language, LanguageTransfer> {
-    
+
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+
     TransferProperties transferProperties;
     boolean filterLanguageIsoName;
     boolean filterisDefault;
@@ -33,8 +36,8 @@ public class LanguageTransferCache
     boolean filterDescription;
     
     /** Creates a new instance of LanguageTransferCache */
-    public LanguageTransferCache(UserVisit userVisit, PartyControl partyControl) {
-        super(userVisit, partyControl);
+    public LanguageTransferCache(UserVisit userVisit) {
+        super(userVisit);
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
@@ -48,8 +51,9 @@ public class LanguageTransferCache
             }
         }
     }
-    
-    public LanguageTransfer getLanguageTransfer(Language language) {
+
+    @Override
+    public LanguageTransfer getTransfer(Language language) {
         var languageTransfer = get(language);
         
         if(languageTransfer == null) {

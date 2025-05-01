@@ -16,11 +16,11 @@
 
 package com.echothree.ui.web.main.framework;
 
-import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.EditPartyEntityTypeResult;
-import com.echothree.control.user.core.common.result.GetPartyEntityTypeResult;
+import com.echothree.control.user.party.common.PartyUtil;
+import com.echothree.control.user.party.common.result.EditPartyEntityTypeResult;
+import com.echothree.control.user.party.common.result.GetPartyEntityTypeResult;
 import com.echothree.model.control.core.common.ComponentVendors;
-import com.echothree.model.control.core.common.transfer.PartyEntityTypeTransfer;
+import com.echothree.model.control.party.common.transfer.PartyEntityTypeTransfer;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
 import java.util.Map;
@@ -51,12 +51,12 @@ public abstract class MainBaseDeleteAction<A extends MainBaseDeleteActionForm>
     
     protected PartyEntityTypeTransfer setupPartyEntityType(final A actionForm, final HttpServletRequest request)
             throws NamingException {
-        var commandForm = CoreUtil.getHome().getGetPartyEntityTypeForm();
+        var commandForm = PartyUtil.getHome().getGetPartyEntityTypeForm();
         
         commandForm.setComponentVendorName(getComponentVendorName());
         commandForm.setEntityTypeName(getEntityTypeName());
 
-        var commandResult = CoreUtil.getHome().getPartyEntityType(getUserVisitPK(request), commandForm);
+        var commandResult = PartyUtil.getHome().getPartyEntityType(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
         var result = (GetPartyEntityTypeResult)executionResult.getResult();
         var partyEntityType = result.getPartyEntityType();
@@ -70,8 +70,8 @@ public abstract class MainBaseDeleteAction<A extends MainBaseDeleteActionForm>
     
     protected void clearConfirmDelete(final HttpServletRequest request)
             throws NamingException {
-        var commandForm = CoreUtil.getHome().getEditPartyEntityTypeForm();
-        var spec = CoreUtil.getHome().getPartyEntityTypeSpec();
+        var commandForm = PartyUtil.getHome().getEditPartyEntityTypeForm();
+        var spec = PartyUtil.getHome().getPartyEntityTypeSpec();
 
         commandForm.setSpec(spec);
         commandForm.setEditMode(EditMode.LOCK);
@@ -79,7 +79,7 @@ public abstract class MainBaseDeleteAction<A extends MainBaseDeleteActionForm>
         spec.setComponentVendorName(getComponentVendorName());
         spec.setEntityTypeName(getEntityTypeName());
 
-        var commandResult = CoreUtil.getHome().editPartyEntityType(getUserVisitPK(request), commandForm);
+        var commandResult = PartyUtil.getHome().editPartyEntityType(getUserVisitPK(request), commandForm);
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
@@ -93,8 +93,8 @@ public abstract class MainBaseDeleteAction<A extends MainBaseDeleteActionForm>
 
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
-                    
-                    CoreUtil.getHome().editPartyEntityType(getUserVisitPK(request), commandForm);
+
+                    PartyUtil.getHome().editPartyEntityType(getUserVisitPK(request), commandForm);
                 }
             }
         }
