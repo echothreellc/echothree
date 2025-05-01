@@ -25,7 +25,6 @@ import com.echothree.model.control.communication.common.transfer.CommunicationEv
 import com.echothree.model.control.contact.common.transfer.PartyContactMechanismTransfer;
 import com.echothree.model.control.contactlist.common.transfer.PartyContactListTransfer;
 import com.echothree.model.control.core.common.transfer.PartyApplicationEditorUseTransfer;
-import com.echothree.model.control.core.common.transfer.PartyEntityTypeTransfer;
 import com.echothree.model.control.document.common.transfer.PartyDocumentTransfer;
 import com.echothree.model.control.employee.common.transfer.EmploymentTransfer;
 import com.echothree.model.control.employee.common.transfer.LeaveTransfer;

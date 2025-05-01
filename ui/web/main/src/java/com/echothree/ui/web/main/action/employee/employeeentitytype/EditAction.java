@@ -16,11 +16,11 @@
 
 package com.echothree.ui.web.main.action.employee.employeeentitytype;
 
-import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.edit.PartyEntityTypeEdit;
-import com.echothree.control.user.core.common.form.EditPartyEntityTypeForm;
-import com.echothree.control.user.core.common.result.EditPartyEntityTypeResult;
-import com.echothree.control.user.core.common.spec.PartyEntityTypeSpec;
+import com.echothree.control.user.party.common.PartyUtil;
+import com.echothree.control.user.party.common.edit.PartyEntityTypeEdit;
+import com.echothree.control.user.party.common.form.EditPartyEntityTypeForm;
+import com.echothree.control.user.party.common.result.EditPartyEntityTypeResult;
+import com.echothree.control.user.party.common.spec.PartyEntityTypeSpec;
 import com.echothree.ui.web.main.action.humanresources.employeeentitytype.BaseEmployeeEntityTypeAction;
 import com.echothree.ui.web.main.action.humanresources.employeeentitytype.EditActionForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -52,7 +52,7 @@ public class EditAction
     @Override
     protected PartyEntityTypeSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        var spec = CoreUtil.getHome().getPartyEntityTypeSpec();
+        var spec = PartyUtil.getHome().getPartyEntityTypeSpec();
 
         spec.setComponentVendorName(findParameter(request, ParameterConstants.COMPONENT_VENDOR_NAME, actionForm.getComponentVendorName()));
         spec.setEntityTypeName(findParameter(request, ParameterConstants.ENTITY_TYPE_NAME, actionForm.getEntityTypeName()));
@@ -63,8 +63,8 @@ public class EditAction
     @Override
     protected PartyEntityTypeEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        var edit = CoreUtil.getHome().getPartyEntityTypeEdit();
-        
+        var edit = PartyUtil.getHome().getPartyEntityTypeEdit();
+
         edit.setConfirmDelete(actionForm.getConfirmDelete().toString());
 
         return edit;
@@ -73,7 +73,7 @@ public class EditAction
     @Override
     protected EditPartyEntityTypeForm getForm()
             throws NamingException {
-        return CoreUtil.getHome().getEditPartyEntityTypeForm();
+        return PartyUtil.getHome().getEditPartyEntityTypeForm();
     }
 
     @Override
@@ -87,7 +87,7 @@ public class EditAction
     @Override
     protected CommandResult doEdit(HttpServletRequest request, EditPartyEntityTypeForm commandForm)
             throws Exception {
-        return CoreUtil.getHome().editPartyEntityType(getUserVisitPK(request), commandForm);
+        return PartyUtil.getHome().editPartyEntityType(getUserVisitPK(request), commandForm);
     }
 
     @Override

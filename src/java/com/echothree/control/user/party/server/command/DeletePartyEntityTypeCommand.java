@@ -14,10 +14,10 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.core.server.command;
+package com.echothree.control.user.party.server.command;
 
-import com.echothree.control.user.core.common.form.CreatePartyEntityTypeForm;
-import com.echothree.model.control.core.server.control.PartyEntityTypeControl;
+import com.echothree.control.user.party.common.form.DeletePartyEntityTypeForm;
+import com.echothree.model.control.party.server.control.PartyEntityTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -36,9 +36,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-
-public class CreatePartyEntityTypeCommand
-        extends BaseSimpleCommand<CreatePartyEntityTypeForm> {
+public class DeletePartyEntityTypeCommand
+        extends BaseSimpleCommand<DeletePartyEntityTypeForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -47,20 +46,19 @@ public class CreatePartyEntityTypeCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                        new SecurityRoleDefinition(SecurityRoleGroups.PartyEntityType.name(), SecurityRoles.Create.name())
+                        new SecurityRoleDefinition(SecurityRoleGroups.PartyEntityType.name(), SecurityRoles.Delete.name())
                         )))
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
-                new FieldDefinition("ConfirmDelete", FieldType.BOOLEAN, true, null, null)
+                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null)
                 ));
     }
     
-    /** Creates a new instance of CreatePartyEntityTypeCommand */
-    public CreatePartyEntityTypeCommand(UserVisitPK userVisitPK, CreatePartyEntityTypeForm form) {
+    /** Creates a new instance of DeletePartyEntityTypeCommand */
+    public DeletePartyEntityTypeCommand(UserVisitPK userVisitPK, DeletePartyEntityTypeForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
@@ -68,38 +66,30 @@ public class CreatePartyEntityTypeCommand
     protected BaseResult execute() {
         var partyControl = Session.getModelController(PartyControl.class);
         var partyName = form.getPartyName();
-        var party = partyControl.getPartyByName(partyName);
+        var party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
 
         if(party != null) {
-            var partyType = party.getLastDetail().getPartyType();
+            var componentVendorName = form.getComponentVendorName();
+            var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
 
-            if(partyType.getAllowUserLogins()) {
-                var componentVendorName = form.getComponentVendorName();
-                var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+            if(componentVendor != null) {
+                var entityTypeName = form.getEntityTypeName();
+                var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
 
-                if(componentVendor != null) {
-                    var entityTypeName = form.getEntityTypeName();
-                    var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
+                if(entityType != null) {
+                    var partyEntityTypeControl = Session.getModelController(PartyEntityTypeControl.class);
+                    var partyEntityType = partyEntityTypeControl.getPartyEntityTypeForUpdate(party, entityType);
 
-                    if(entityType != null) {
-                        var partyEntityTypeControl = Session.getModelController(PartyEntityTypeControl.class);
-                        var partyEntityType = partyEntityTypeControl.getPartyEntityType(party, entityType);
-
-                        if(partyEntityType == null) {
-                            var confirmDelete = Boolean.valueOf(form.getConfirmDelete());
-
-                            partyEntityTypeControl.createPartyEntityType(party, entityType, confirmDelete, getPartyPK());
-                        } else {
-                            addExecutionError(ExecutionErrors.DuplicatePartyEntityType.name());
-                        }
+                    if(partyEntityType != null) {
+                        partyEntityTypeControl.deletePartyEntityType(partyEntityType, getPartyPK());
                     } else {
-                        addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), componentVendorName, entityTypeName);
+                        addExecutionError(ExecutionErrors.UnknownPartyEntityType.name());
                     }
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
+                    addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), componentVendorName, entityTypeName);
                 }
             } else {
-                addExecutionError(ExecutionErrors.InvalidPartyType.name(), partyType.getPartyTypeName());
+                addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
