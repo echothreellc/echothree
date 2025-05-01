@@ -17,7 +17,6 @@
 package com.echothree.model.control.party.server.transfer;
 
 import com.echothree.model.control.party.common.transfer.DateTimeFormatDescriptionTransfer;
-import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.DateTimeFormatDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -25,11 +24,12 @@ public class DateTimeFormatDescriptionTransferCache
         extends BasePartyDescriptionTransferCache<DateTimeFormatDescription, DateTimeFormatDescriptionTransfer> {
     
     /** Creates a new instance of DateTimeFormatDescriptionTransferCache */
-    public DateTimeFormatDescriptionTransferCache(UserVisit userVisit, PartyControl partyControl) {
-        super(userVisit, partyControl);
+    public DateTimeFormatDescriptionTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
-    
-    public DateTimeFormatDescriptionTransfer getDateTimeFormatDescriptionTransfer(DateTimeFormatDescription dateTimeFormatDescription) {
+
+    @Override
+    public DateTimeFormatDescriptionTransfer getTransfer(DateTimeFormatDescription dateTimeFormatDescription) {
         var dateTimeFormatDescriptionTransfer = get(dateTimeFormatDescription);
         
         if(dateTimeFormatDescriptionTransfer == null) {

@@ -27,15 +27,17 @@ public class MoodTransferCache
         extends BasePartyTransferCache<Mood, MoodTransfer> {
     
     IconControl iconControl = Session.getModelController(IconControl.class);
-    
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+
     /** Creates a new instance of MoodTransferCache */
-    public MoodTransferCache(UserVisit userVisit, PartyControl partyControl) {
-        super(userVisit, partyControl);
+    public MoodTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         setIncludeEntityInstance(true);
     }
-    
-    public MoodTransfer getMoodTransfer(Mood mood) {
+
+    @Override
+    public MoodTransfer getTransfer(Mood mood) {
         var moodTransfer = get(mood);
         
         if(moodTransfer == null) {

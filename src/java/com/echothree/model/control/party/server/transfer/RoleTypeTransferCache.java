@@ -20,22 +20,26 @@ import com.echothree.model.control.party.common.transfer.RoleTypeTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.RoleType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class RoleTypeTransferCache
         extends BasePartyTransferCache<RoleType, RoleTypeTransfer> {
-    
+
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+
     /** Creates a new instance of RoleTypeTransferCache */
-    public RoleTypeTransferCache(UserVisit userVisit, PartyControl partyControl) {
-        super(userVisit, partyControl);
+    public RoleTypeTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
-    
-    public RoleTypeTransfer getRoleTypeTransfer(RoleType roleType) {
+
+    @Override
+    public RoleTypeTransfer getTransfer(RoleType roleType) {
         var roleTypeTransfer = get(roleType);
         
         if(roleTypeTransfer == null) {
             var roleTypeName = roleType.getRoleTypeName();
             var parentRoleType = roleType.getParentRoleType();
-            var parentRoleTypeTransfer = parentRoleType == null? null: getRoleTypeTransfer(parentRoleType);
+            var parentRoleTypeTransfer = parentRoleType == null? null: getTransfer(parentRoleType);
             var description = partyControl.getBestRoleTypeDescription(roleType, getLanguage());
             
             roleTypeTransfer = new RoleTypeTransfer(roleTypeName, parentRoleTypeTransfer, description);

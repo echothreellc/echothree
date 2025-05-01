@@ -47,6 +47,7 @@ public class PartyTransferCache
     ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
     DocumentControl documentControl = Session.getModelController(DocumentControl.class);
     EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     PrinterControl printerControl = Session.getModelController(PrinterControl.class);
     ScaleControl scaleControl = Session.getModelController(ScaleControl.class);
     TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
@@ -73,8 +74,8 @@ public class PartyTransferCache
     boolean includePartySkills;
     
     /** Creates a new instance of PartyTransferCache */
-    public PartyTransferCache(UserVisit userVisit, PartyControl partyControl) {
-        super(userVisit, partyControl);
+    public PartyTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         var options = session.getOptions();
         if(options != null) {
@@ -102,7 +103,8 @@ public class PartyTransferCache
         
         setIncludeEntityInstance(true);
     }
-    
+
+    @Override
     public PartyTransfer getTransfer(Party party) {
         var partyTransfer = get(party);
         

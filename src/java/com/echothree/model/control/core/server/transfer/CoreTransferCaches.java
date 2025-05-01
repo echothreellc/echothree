@@ -86,7 +86,6 @@ public class CoreTransferCaches
     protected CommandMessageTypeTransferCache commandMessageTypeTransferCache;
     protected CommandMessageTypeDescriptionTransferCache commandMessageTypeDescriptionTransferCache;
     protected BaseEncryptionKeyTransferCache baseEncryptionKeyTransferCache;
-    protected PartyEntityTypeTransferCache partyEntityTypeTransferCache;
     protected ProtocolTransferCache protocolTransferCache;
     protected ProtocolDescriptionTransferCache protocolDescriptionTransferCache;
     protected ServiceTransferCache serviceTransferCache;
@@ -568,13 +567,6 @@ public class CoreTransferCaches
             baseEncryptionKeyTransferCache = new BaseEncryptionKeyTransferCache(userVisit);
         
         return baseEncryptionKeyTransferCache;
-    }
-    
-    public PartyEntityTypeTransferCache getPartyEntityTypeTransferCache() {
-        if(partyEntityTypeTransferCache == null)
-            partyEntityTypeTransferCache = new PartyEntityTypeTransferCache(userVisit);
-        
-        return partyEntityTypeTransferCache;
     }
     
     public ProtocolTransferCache getProtocolTransferCache() {

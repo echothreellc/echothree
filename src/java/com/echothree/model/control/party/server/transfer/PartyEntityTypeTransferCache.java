@@ -14,12 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.core.server.transfer;
+package com.echothree.model.control.party.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.PartyEntityTypeTransfer;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
+import com.echothree.model.control.core.server.transfer.BaseCoreTransferCache;
+import com.echothree.model.control.party.common.transfer.PartyEntityTypeTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.core.server.entity.PartyEntityType;
+import com.echothree.model.data.party.server.entity.PartyEntityType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
