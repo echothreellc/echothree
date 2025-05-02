@@ -17,10 +17,10 @@
 package com.echothree.ui.cli.dataloader.util.zipcode;
 
 import com.echothree.util.common.collection.SmartQueue;
-import static com.google.common.base.Charsets.UTF_8;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,7 +40,7 @@ public class ProducerThread
         try {
             var zipCodeDataByState = new HashMap<String, List<ZipCodeData>>(75);
 
-            try (var in = new BufferedReader(new InputStreamReader(ProducerThread.class.getResource("/city-state-product/city-state-product.txt").openStream(), UTF_8))) {
+            try (var in = new BufferedReader(new InputStreamReader(ProducerThread.class.getResource("/city-state-product/city-state-product.txt").openStream(), StandardCharsets.UTF_8))) {
                 for(var zipCodeLine = in.readLine(); zipCodeLine != null; zipCodeLine = in.readLine()) {
                     var zipCodeData = new ZipCodeData(zipCodeLine);
                     

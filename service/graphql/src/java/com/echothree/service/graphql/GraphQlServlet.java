@@ -18,14 +18,13 @@
 package com.echothree.service.graphql;
 
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.service.graphql.internal.invoker.GraphQlQueryInvoker;
 import com.echothree.service.graphql.internal.GraphQlRequest;
 import com.echothree.service.graphql.internal.HttpRequestHandler;
-import com.echothree.service.graphql.internal.invocation.GraphQlInvocationInputFactory;
 import com.echothree.service.graphql.internal.invocation.GraphQlInvocationInput;
+import com.echothree.service.graphql.internal.invocation.GraphQlInvocationInputFactory;
+import com.echothree.service.graphql.internal.invoker.GraphQlQueryInvoker;
 import com.echothree.view.client.web.WebConstants;
 import com.echothree.view.client.web.util.HttpSessionUtils;
-import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import static com.google.common.net.HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS;
 import static com.google.common.net.HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS;
@@ -35,18 +34,19 @@ import static com.google.common.net.HttpHeaders.ACCESS_CONTROL_MAX_AGE;
 import static com.google.common.net.HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS;
 import static com.google.common.net.HttpHeaders.CONTENT_TYPE;
 import static com.google.common.net.HttpHeaders.ORIGIN;
-import static com.google.common.net.MediaType.JSON_UTF_8;
 import com.google.common.net.MediaType;
+import static com.google.common.net.MediaType.JSON_UTF_8;
 import graphql.introspection.IntrospectionQuery;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.concurrent.ExecutionException;
 import javax.naming.NamingException;
 import javax.servlet.AsyncContext;
 import javax.servlet.ServletConfig;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.concurrent.ExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -200,6 +200,6 @@ public class GraphQlServlet
         response.addHeader(ACCESS_CONTROL_ALLOW_CREDENTIALS, Boolean.TRUE.toString());
         response.setContentType(JSON_UTF_8.toString());
         response.setStatus(HttpServletResponse.SC_OK);
-        response.getOutputStream().write(result.getBytes(Charsets.UTF_8));
+        response.getOutputStream().write(result.getBytes(StandardCharsets.UTF_8));
     }
 }

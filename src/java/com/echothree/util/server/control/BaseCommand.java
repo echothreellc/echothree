@@ -60,7 +60,7 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.ThreadSession;
 import com.echothree.util.server.persistence.ThreadUtils;
-import com.google.common.base.Charsets;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Future;
 import javax.ejb.AsyncResult;
 import org.apache.commons.logging.Log;
@@ -113,7 +113,7 @@ public abstract class BaseCommand
         var nameOffset = className.lastIndexOf('.');
         
         componentVendorName = ComponentVendors.ECHO_THREE.name();
-        commandName = new String(className.getBytes(Charsets.UTF_8), nameOffset + 1, className.length() - nameOffset - 8, Charsets.UTF_8);
+        commandName = new String(className.getBytes(StandardCharsets.UTF_8), nameOffset + 1, className.length() - nameOffset - 8, StandardCharsets.UTF_8);
     }
     
     public String getComponentVendorName() {

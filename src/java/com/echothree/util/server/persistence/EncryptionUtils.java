@@ -28,8 +28,8 @@ import com.echothree.util.common.persistence.BaseKeys;
 import com.echothree.util.common.persistence.EncryptionConstants;
 import com.echothree.util.common.string.MD5Utils;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.google.common.base.Charsets;
 import com.google.common.io.BaseEncoding;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -279,7 +279,7 @@ public class EncryptionUtils {
 
         if(value != null) {
             try {
-                encryptedValue = BaseEncoding.base64().encode(getCipher(entityTypeName, entityColumnName, isExternal, Cipher.ENCRYPT_MODE).doFinal(value.getBytes(Charsets.UTF_8)));
+                encryptedValue = BaseEncoding.base64().encode(getCipher(entityTypeName, entityColumnName, isExternal, Cipher.ENCRYPT_MODE).doFinal(value.getBytes(StandardCharsets.UTF_8)));
             } catch (IllegalStateException ise) {
                 throw new PersistenceEncryptionException(ise);
             } catch (IllegalBlockSizeException ibse) {
@@ -301,7 +301,7 @@ public class EncryptionUtils {
 
         if(value != null) {
             try {
-                decryptedValue = new String(getCipher(entityTypeName, entityColumnName, isExternal, Cipher.DECRYPT_MODE).doFinal(BaseEncoding.base64().decode(value)), Charsets.UTF_8);
+                decryptedValue = new String(getCipher(entityTypeName, entityColumnName, isExternal, Cipher.DECRYPT_MODE).doFinal(BaseEncoding.base64().decode(value)), StandardCharsets.UTF_8);
             } catch (IllegalStateException ise) {
                 throw new PersistenceEncryptionException(ise);
             } catch (IllegalBlockSizeException ibse) {

@@ -16,12 +16,11 @@
 
 package com.echothree.ui.web.cms.framework;
 
-import com.echothree.ui.web.cms.framework.CmsBaseDownloadAction.StreamInfo;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.transfer.BaseWrapper;
 import com.echothree.util.common.transfer.MapWrapper;
-import com.google.common.base.Charsets;
 import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -81,7 +80,8 @@ public abstract class CmsBaseJsonAction
         jsonConfig.setJsonPropertyFilter(new CompositePropertyFilter(getPropertyFilters()));
 
         var commandResult = getCommandResult(request);
-        StreamInfo streamInfo = new ByteArrayStreamInfo("application/json;charset=UTF-8", new ByteArrayInputStream(JSONObject.fromObject(commandResult, jsonConfig).toString().getBytes(Charsets.UTF_8)));
+        StreamInfo streamInfo = new ByteArrayStreamInfo("application/json;charset=UTF-8",
+                new ByteArrayInputStream(JSONObject.fromObject(commandResult, jsonConfig).toString().getBytes(StandardCharsets.UTF_8)));
         
         return streamInfo;
     }
