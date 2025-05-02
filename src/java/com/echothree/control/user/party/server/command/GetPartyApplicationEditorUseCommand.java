@@ -14,15 +14,15 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.core.server.command;
+package com.echothree.control.user.party.server.command;
 
-import com.echothree.control.user.core.common.form.GetPartyApplicationEditorUseForm;
-import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.control.user.party.common.form.GetPartyApplicationEditorUseForm;
+import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.control.ApplicationControl;
-import com.echothree.model.control.core.server.control.PartyApplicationEditorUseControl;
 import com.echothree.model.control.core.server.logic.ApplicationLogic;
 import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.party.server.control.PartyApplicationEditorUseControl;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -68,7 +68,7 @@ public class GetPartyApplicationEditorUseCommand
     
     @Override
     protected BaseResult execute() {
-        var result = CoreResultFactory.getGetPartyApplicationEditorUseResult();
+        var result = PartyResultFactory.getGetPartyApplicationEditorUseResult();
         var partyName = form.getPartyName();
         var party = partyName == null ? getParty() : PartyLogic.getInstance().getPartyByName(this, partyName);
         

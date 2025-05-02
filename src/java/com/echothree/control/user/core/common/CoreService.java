@@ -1056,20 +1056,6 @@ public interface CoreService
     CommandResult deleteApplicationEditorUseDescription(UserVisitPK userVisitPK, DeleteApplicationEditorUseDescriptionForm form);
     
     // --------------------------------------------------------------------------------
-    //   Party Application Editor Uses
-    // --------------------------------------------------------------------------------
-    
-    CommandResult createPartyApplicationEditorUse(UserVisitPK userVisitPK, CreatePartyApplicationEditorUseForm form);
-    
-    CommandResult getPartyApplicationEditorUse(UserVisitPK userVisitPK, GetPartyApplicationEditorUseForm form);
-    
-    CommandResult getPartyApplicationEditorUses(UserVisitPK userVisitPK, GetPartyApplicationEditorUsesForm form);
-    
-    CommandResult editPartyApplicationEditorUse(UserVisitPK userVisitPK, EditPartyApplicationEditorUseForm form);
-    
-    CommandResult deletePartyApplicationEditorUse(UserVisitPK userVisitPK, DeletePartyApplicationEditorUseForm form);
-    
-    // --------------------------------------------------------------------------------
     //   Appearances
     // --------------------------------------------------------------------------------
     

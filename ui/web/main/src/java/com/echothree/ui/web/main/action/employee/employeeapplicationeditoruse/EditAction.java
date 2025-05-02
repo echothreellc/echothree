@@ -16,11 +16,11 @@
 
 package com.echothree.ui.web.main.action.employee.employeeapplicationeditoruse;
 
-import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.edit.PartyApplicationEditorUseEdit;
-import com.echothree.control.user.core.common.form.EditPartyApplicationEditorUseForm;
-import com.echothree.control.user.core.common.result.EditPartyApplicationEditorUseResult;
-import com.echothree.control.user.core.common.spec.PartyApplicationEditorUseSpec;
+import com.echothree.control.user.party.common.PartyUtil;
+import com.echothree.control.user.party.common.edit.PartyApplicationEditorUseEdit;
+import com.echothree.control.user.party.common.form.EditPartyApplicationEditorUseForm;
+import com.echothree.control.user.party.common.result.EditPartyApplicationEditorUseResult;
+import com.echothree.control.user.party.common.spec.PartyApplicationEditorUseSpec;
 import com.echothree.ui.web.main.action.humanresources.employeeapplicationeditoruse.BaseEmployeeApplicationEditorUseAction;
 import com.echothree.ui.web.main.action.humanresources.employeeapplicationeditoruse.EditActionForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -52,7 +52,7 @@ public class EditAction
     @Override
     protected PartyApplicationEditorUseSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        var spec = CoreUtil.getHome().getPartyApplicationEditorUseSpec();
+        var spec = PartyUtil.getHome().getPartyApplicationEditorUseSpec();
 
         spec.setApplicationName(findParameter(request, ParameterConstants.APPLICATION_NAME, actionForm.getApplicationName()));
         spec.setApplicationEditorUseName(findParameter(request, ParameterConstants.APPLICATION_EDITOR_USE_NAME, actionForm.getApplicationEditorUseName()));
@@ -63,7 +63,7 @@ public class EditAction
     @Override
     protected PartyApplicationEditorUseEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        var edit = CoreUtil.getHome().getPartyApplicationEditorUseEdit();
+        var edit = PartyUtil.getHome().getPartyApplicationEditorUseEdit();
 
         edit.setEditorName(actionForm.getEditorChoice());
         edit.setPreferredHeight(actionForm.getPreferredHeight());
@@ -75,7 +75,7 @@ public class EditAction
     @Override
     protected EditPartyApplicationEditorUseForm getForm()
             throws NamingException {
-        return CoreUtil.getHome().getEditPartyApplicationEditorUseForm();
+        return PartyUtil.getHome().getEditPartyApplicationEditorUseForm();
     }
 
     @Override
@@ -91,7 +91,7 @@ public class EditAction
     @Override
     protected CommandResult doEdit(HttpServletRequest request, EditPartyApplicationEditorUseForm commandForm)
             throws Exception {
-        return CoreUtil.getHome().editPartyApplicationEditorUse(getUserVisitPK(request), commandForm);
+        return PartyUtil.getHome().editPartyApplicationEditorUse(getUserVisitPK(request), commandForm);
     }
 
     @Override

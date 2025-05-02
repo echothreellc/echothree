@@ -99,7 +99,6 @@ public class CoreTransferCaches
     protected ApplicationEditorTransferCache applicationEditorTransferCache;
     protected ApplicationEditorUseTransferCache applicationEditorUseTransferCache;
     protected ApplicationEditorUseDescriptionTransferCache applicationEditorUseDescriptionTransferCache;
-    protected PartyApplicationEditorUseTransferCache partyApplicationEditorUseTransferCache;
     protected ColorTransferCache colorTransferCache;
     protected ColorDescriptionTransferCache colorDescriptionTransferCache;
     protected FontStyleTransferCache fontStyleTransferCache;
@@ -658,13 +657,6 @@ public class CoreTransferCaches
             applicationEditorUseDescriptionTransferCache = new ApplicationEditorUseDescriptionTransferCache(userVisit);
 
         return applicationEditorUseDescriptionTransferCache;
-    }
-
-    public PartyApplicationEditorUseTransferCache getPartyApplicationEditorUseTransferCache() {
-        if(partyApplicationEditorUseTransferCache == null)
-            partyApplicationEditorUseTransferCache = new PartyApplicationEditorUseTransferCache(userVisit);
-
-        return partyApplicationEditorUseTransferCache;
     }
 
     public ColorTransferCache getColorTransferCache() {
