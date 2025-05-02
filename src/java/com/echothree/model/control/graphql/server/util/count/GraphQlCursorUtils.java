@@ -19,6 +19,7 @@ package com.echothree.model.control.graphql.server.util.count;
 import com.echothree.util.server.validation.Validator;
 import com.google.common.base.Charsets;
 import com.google.common.io.BaseEncoding;
+import java.nio.charset.StandardCharsets;
 import java.util.regex.Pattern;
 
 public final class GraphQlCursorUtils {
@@ -53,7 +54,7 @@ public final class GraphQlCursorUtils {
         if(cursor != null && baseEncoding.canDecode(cursor)) {
             var byteCursor = baseEncoding.decode(cursor);
             var xoredCursor = xorBytes(byteCursor);
-            var unencodedCursor = new String(xoredCursor, Charsets.UTF_8);
+            var unencodedCursor = new String(xoredCursor, StandardCharsets.UTF_8);
             var matcher = cursorPattern.matcher(unencodedCursor);
 
             // If it fails to match against cursorPattern, offset should remain null.
@@ -75,7 +76,7 @@ public final class GraphQlCursorUtils {
 
     public String toCursor(final String componentVendorName, final String entityTypeName, final long offset) {
         var unencodedCursor = componentVendorName + '/' + entityTypeName + '/' + offset;
-        var byteCursor = unencodedCursor.getBytes(Charsets.UTF_8);
+        var byteCursor = unencodedCursor.getBytes(StandardCharsets.UTF_8);
         var xoredCursor = xorBytes(byteCursor);
 
         return baseEncoding.encode(xoredCursor);

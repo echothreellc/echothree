@@ -23,10 +23,10 @@ import com.echothree.model.control.geo.common.transfer.CountryTransfer;
 import com.echothree.model.control.item.common.ItemConstants;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.string.StringUtils;
-import static com.google.common.base.Charsets.UTF_8;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -57,7 +57,7 @@ public class HtsUnitedStatesParser
             throws IOException {
         var htsUnitedStatesCodes = new HashMap<String, HtsUnitedStatesCode>();
         
-        try (var in = new BufferedReader(new InputStreamReader(HtsUnitedStatesParser.class.getResource(codes).openStream(), UTF_8))) {
+        try (var in = new BufferedReader(new InputStreamReader(HtsUnitedStatesParser.class.getResource(codes).openStream(), StandardCharsets.UTF_8))) {
             for(var codeLine = in.readLine(); codeLine != null; codeLine = in.readLine()) {
                 var husc = new HtsUnitedStatesCode(codeLine);
                 

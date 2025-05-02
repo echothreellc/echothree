@@ -17,9 +17,9 @@
 package com.echothree.util.common.form;
 
 import com.echothree.util.common.command.ProxyInvocationHandler;
-import com.google.common.base.Charsets;
 import java.io.Serializable;
 import java.lang.reflect.Proxy;
+import java.nio.charset.StandardCharsets;
 
 public class BaseFormFactory {
     
@@ -28,7 +28,7 @@ public class BaseFormFactory {
         var baseForm = (F)Proxy.newProxyInstance(form.getClassLoader(), new Class[]{form, Serializable.class}, pih);
         var className = form.getName();
         var nameOffset = className.lastIndexOf('.');
-        var formName = new String(className.getBytes(Charsets.UTF_8), nameOffset + 1, className.length() - nameOffset - 1, Charsets.UTF_8);
+        var formName = new String(className.getBytes(StandardCharsets.UTF_8), nameOffset + 1, className.length() - nameOffset - 1, StandardCharsets.UTF_8);
 
         baseForm.setFormName(formName);
         
