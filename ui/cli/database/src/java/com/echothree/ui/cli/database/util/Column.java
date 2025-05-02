@@ -16,8 +16,8 @@
 
 package com.echothree.ui.cli.database.util;
 
-import com.google.common.base.Charsets;
 import com.google.common.base.Splitter;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
 public class Column {
@@ -415,8 +415,8 @@ public class Column {
             return null;
         else {
             var thePeriod = sequenceSource.indexOf('.');
-            var stringTable = new String(sequenceSource.getBytes(Charsets.UTF_8), 0, thePeriod, Charsets.UTF_8);
-            var stringColumn = new String(sequenceSource.getBytes(Charsets.UTF_8), thePeriod + 1, sequenceSource.length() - thePeriod - 1, Charsets.UTF_8);
+            var stringTable = new String(sequenceSource.getBytes(StandardCharsets.UTF_8), 0, thePeriod, StandardCharsets.UTF_8);
+            var stringColumn = new String(sequenceSource.getBytes(StandardCharsets.UTF_8), thePeriod + 1, sequenceSource.length() - thePeriod - 1, StandardCharsets.UTF_8);
             return table.getDatabase().getTable(stringTable).getColumn(stringColumn);
         }
     }

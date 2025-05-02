@@ -16,9 +16,9 @@
 
 package com.echothree.ui.cli.form.util;
 
-import static com.google.common.base.Charsets.UTF_8;
 import java.io.File;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -203,7 +203,7 @@ public class FormUtils {
         var classFileName = className + ".java";
 
         var f = new File(interfaceDirectory + "/" + classFileName);
-        try (var bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
+        try (var bw = Files.newBufferedWriter(f.toPath(), StandardCharsets.UTF_8)) {
             var pw = new PrintWriter(bw);
             
             writeCopyright(pw);
@@ -243,7 +243,7 @@ public class FormUtils {
         var classFileName = className + ".java";
 
         var f = new File(interfaceDirectory + "/" + classFileName);
-        try (var bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
+        try (var bw = Files.newBufferedWriter(f.toPath(), StandardCharsets.UTF_8)) {
             var pw = new PrintWriter(bw);
             
             writeCopyright(pw);
@@ -293,7 +293,7 @@ public class FormUtils {
         var classFileName = className + ".java";
 
         var f = new File(classDirectory + "/" + classFileName);
-        try (var bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
+        try (var bw = Files.newBufferedWriter(f.toPath(), StandardCharsets.UTF_8)) {
             var pw = new PrintWriter(bw);
             
             writeCopyright(pw);
@@ -324,7 +324,7 @@ public class FormUtils {
         var classFileName = className + ".java";
 
         var f = new File(classDirectory + "/" + classFileName);
-        try (var bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
+        try (var bw = Files.newBufferedWriter(f.toPath(), StandardCharsets.UTF_8)) {
             var pw = new PrintWriter(bw);
             
             writeCopyright(pw);
@@ -355,7 +355,7 @@ public class FormUtils {
         var classFileName = className + ".java";
 
         var f = new File(classDirectory + "/" + classFileName);
-        try (var bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
+        try (var bw = Files.newBufferedWriter(f.toPath(), StandardCharsets.UTF_8)) {
             var pw = new PrintWriter(bw);
             
             writeCopyright(pw);
@@ -386,7 +386,7 @@ public class FormUtils {
         var classFileName = className + ".java";
 
         var f = new File(classDirectory + "/" + classFileName);
-        try (var bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
+        try (var bw = Files.newBufferedWriter(f.toPath(), StandardCharsets.UTF_8)) {
             var pw = new PrintWriter(bw);
             
             writeCopyright(pw);

@@ -36,7 +36,6 @@ import com.echothree.util.common.transfer.Limit;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
-import com.google.common.base.Charsets;
 import com.rometools.rome.feed.synd.SyndContent;
 import com.rometools.rome.feed.synd.SyndContentImpl;
 import com.rometools.rome.feed.synd.SyndEntry;
@@ -47,6 +46,7 @@ import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedOutput;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -102,11 +102,11 @@ public class FeedAction
             feed.setFeedType("rss_2.0");
 
             var output = new SyndFeedOutput();
-            var byteArrayInputStream = new ByteArrayInputStream(output.outputString(feed).getBytes(Charsets.UTF_8));
+            var byteArrayInputStream = new ByteArrayInputStream(output.outputString(feed).getBytes(StandardCharsets.UTF_8));
 
             streamInfo = new ByteArrayStreamInfo("application/rss+xml", byteArrayInputStream, null, null);
         } else {
-            streamInfo = new ByteArrayStreamInfo("application/rss+xml", new ByteArrayInputStream("".getBytes(Charsets.UTF_8)), null, null);
+            streamInfo = new ByteArrayStreamInfo("application/rss+xml", new ByteArrayInputStream("".getBytes(StandardCharsets.UTF_8)), null, null);
         }
         
         return streamInfo;

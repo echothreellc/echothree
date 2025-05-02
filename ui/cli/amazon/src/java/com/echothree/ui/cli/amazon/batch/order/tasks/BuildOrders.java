@@ -21,7 +21,6 @@ import com.echothree.ui.cli.amazon.batch.order.content.AmazonOrderLine;
 import com.echothree.ui.cli.amazon.batch.order.content.AmazonOrderShipmentGroup;
 import com.echothree.ui.cli.amazon.batch.order.content.AmazonOrders;
 import com.echothree.util.common.string.StringUtils;
-import com.google.common.base.Charsets;
 import com.google.common.base.Splitter;
 import java.io.BufferedReader;
 import java.io.File;
@@ -29,6 +28,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -153,7 +153,7 @@ public class BuildOrders {
         long count = 0;
 
         for(var line = in.readLine(); line != null; line = in.readLine()) {
-            var fields = TabSplitter.split(new String(line.getBytes(Charsets.UTF_8), Charsets.UTF_8));
+            var fields = TabSplitter.split(new String(line.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8));
 
             count++;
 

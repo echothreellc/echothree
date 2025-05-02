@@ -27,10 +27,10 @@ import com.echothree.model.control.communication.common.CommunicationOptions;
 import com.echothree.model.control.communication.common.transfer.CommunicationSourceTransfer;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.persistence.type.ByteArray;
-import com.google.common.base.Charsets;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.SocketException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
 import javax.naming.NamingException;
@@ -156,7 +156,7 @@ public class MailTransferUtility {
                             
                             form.setCommunicationSourceName(communicationSource.getCommunicationSourceName());
                             form.setCommunicationEventTypeName(CommunicationConstants.CommunicationEventType_EMAIL);
-                            form.setBlobDocument(new ByteArray(stringBuilder.toString().getBytes(Charsets.UTF_8)));
+                            form.setBlobDocument(new ByteArray(stringBuilder.toString().getBytes(StandardCharsets.UTF_8)));
 
                             var commandResult = getCommunicationService().createCommunicationEvent(getUserVisit(), form);
                             

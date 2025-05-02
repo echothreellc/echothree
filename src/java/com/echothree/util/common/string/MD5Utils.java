@@ -16,8 +16,8 @@
 
 package com.echothree.util.common.string;
 
-import com.google.common.base.Charsets;
 import com.google.common.io.BaseEncoding;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -41,7 +41,7 @@ public class MD5Utils {
         try {
             var md5Encoder = MessageDigest.getInstance("MD5");
             
-            md5Encoder.update(string.getBytes(Charsets.UTF_8));
+            md5Encoder.update(string.getBytes(StandardCharsets.UTF_8));
             md5Hash = md5Encoder.digest();
         } catch (NoSuchAlgorithmException nsae) {
             // nothing

@@ -17,11 +17,11 @@
 package com.echothree.control.user.test.common.graphql;
 
 import com.echothree.util.common.string.GraphQlUtils;
-import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -183,7 +183,7 @@ public abstract class GraphQlTestCase {
 
             var responseEntity = closeableHttpResponse.getEntity();
             if(responseEntity != null) {
-                var text = CharStreams.toString(new InputStreamReader(responseEntity.getContent(), Charsets.UTF_8));
+                var text = CharStreams.toString(new InputStreamReader(responseEntity.getContent(), StandardCharsets.UTF_8));
 
                 body = GraphQlUtils.getInstance().toMap(text);
             }

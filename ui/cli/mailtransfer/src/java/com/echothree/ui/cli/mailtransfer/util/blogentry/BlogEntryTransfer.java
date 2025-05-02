@@ -31,7 +31,6 @@ import com.echothree.util.common.cyberneko.HtmlWriter;
 import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.common.string.StringUtils;
 import com.echothree.util.common.string.XmlUtils;
-import com.google.common.base.Charsets;
 import com.google.common.base.Splitter;
 import com.google.common.html.HtmlEscapers;
 import java.io.BufferedReader;
@@ -41,6 +40,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringReader;
 import java.net.SocketException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -614,7 +614,7 @@ public class BlogEntryTransfer {
                                     stringBuilder.append('\n');
                                 }
 
-                                var message = new ByteArray(stringBuilder.toString().getBytes(Charsets.UTF_8));
+                                var message = new ByteArray(stringBuilder.toString().getBytes(StandardCharsets.UTF_8));
 
                                 String description;
                                 String sender = null;

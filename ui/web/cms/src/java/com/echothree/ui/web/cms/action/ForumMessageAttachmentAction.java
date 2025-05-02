@@ -29,8 +29,8 @@ import com.echothree.ui.web.cms.persistence.CmsCacheBean;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
-import com.google.common.base.Charsets;
 import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -176,7 +176,7 @@ public class ForumMessageAttachmentAction
             byte bytes[] = null;
 
             if(EntityAttributeTypes.CLOB.name().equals(entityAttributeTypeName)) {
-                bytes = forumMessageAttachment.getClob().getBytes(Charsets.UTF_8);
+                bytes = forumMessageAttachment.getClob().getBytes(StandardCharsets.UTF_8);
             } else {
                 if(EntityAttributeTypes.BLOB.name().equals(entityAttributeTypeName)) {
                     bytes = forumMessageAttachment.getBlob().byteArrayValue();
