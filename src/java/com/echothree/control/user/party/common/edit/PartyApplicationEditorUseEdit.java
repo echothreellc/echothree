@@ -14,16 +14,18 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.core.common.result;
+package com.echothree.control.user.party.common.edit;
 
-import com.echothree.control.user.core.common.edit.PartyApplicationEditorUseEdit;
-import com.echothree.model.control.core.common.transfer.PartyApplicationEditorUseTransfer;
-import com.echothree.util.common.command.BaseEditResult;
+import com.echothree.control.user.core.common.spec.EditorSpec;
+import com.echothree.util.common.form.BaseEdit;
 
-public interface EditPartyApplicationEditorUseResult
-        extends BaseEditResult<PartyApplicationEditorUseEdit> {
+public interface PartyApplicationEditorUseEdit
+        extends BaseEdit, EditorSpec {
     
-    PartyApplicationEditorUseTransfer getPartyApplicationEditorUse();
-    void setPartyApplicationEditorUse(PartyApplicationEditorUseTransfer partyApplicationEditorUse);
+    String getPreferredHeight();
+    void setPreferredHeight(String preferredHeight);
+    
+    String getPreferredWidth();
+    void setPreferredWidth(String preferredWidth);
     
 }

@@ -14,18 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.core.common.edit;
+package com.echothree.control.user.party.common.form;
 
-import com.echothree.control.user.core.common.spec.EditorSpec;
-import com.echothree.util.common.form.BaseEdit;
+import com.echothree.control.user.party.common.spec.PartyApplicationEditorUseSpec;
 
-public interface PartyApplicationEditorUseEdit
-        extends BaseEdit, EditorSpec {
+public interface DeletePartyApplicationEditorUseForm
+        extends PartyApplicationEditorUseSpec {
     
-    String getPreferredHeight();
-    void setPreferredHeight(String preferredHeight);
-    
-    String getPreferredWidth();
-    void setPreferredWidth(String preferredWidth);
+    // Nothing additional beyond PartyApplicationEditorUseSpec
     
 }

@@ -25,6 +25,7 @@ import com.echothree.model.control.core.common.transfer.ApplicationEditorTransfe
 import com.echothree.model.control.core.common.transfer.ApplicationEditorUseDescriptionTransfer;
 import com.echothree.model.control.core.common.transfer.ApplicationEditorUseTransfer;
 import com.echothree.model.control.core.common.transfer.ApplicationTransfer;
+import com.echothree.model.control.party.server.control.PartyApplicationEditorUseControl;
 import com.echothree.model.data.core.common.pk.ApplicationPK;
 import com.echothree.model.data.core.server.entity.Application;
 import com.echothree.model.data.core.server.entity.ApplicationDescription;

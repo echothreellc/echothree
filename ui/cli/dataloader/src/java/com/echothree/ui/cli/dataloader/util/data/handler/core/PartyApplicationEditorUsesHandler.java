@@ -16,9 +16,9 @@
 
 package com.echothree.ui.cli.dataloader.util.data.handler.core;
 
-import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.CoreService;
-import com.echothree.control.user.core.common.form.CoreFormFactory;
+import com.echothree.control.user.party.common.PartyService;
+import com.echothree.control.user.party.common.PartyUtil;
+import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -28,7 +28,7 @@ import org.xml.sax.SAXException;
 public class PartyApplicationEditorUsesHandler
         extends BaseHandler {
     
-    CoreService coreService;
+    PartyService partyService;
     String partyName;
     
     /** Creates a new instance of PartyApplicationEditorUsesesHandler */
@@ -37,7 +37,7 @@ public class PartyApplicationEditorUsesHandler
         super(initialDataParser, parentHandler);
         
         try {
-            coreService = CoreUtil.getHome();
+            partyService = PartyUtil.getHome();
         } catch (NamingException ne) {
             throw new SAXException(ne);
         }
@@ -49,12 +49,12 @@ public class PartyApplicationEditorUsesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("partyApplicationEditorUse")) {
-            var commandForm = CoreFormFactory.getCreatePartyApplicationEditorUseForm();
+            var commandForm = PartyFormFactory.getCreatePartyApplicationEditorUseForm();
 
             commandForm.setPartyName(partyName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(coreService.createPartyApplicationEditorUse(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(partyService.createPartyApplicationEditorUse(initialDataParser.getUserVisit(), commandForm));
         }
     }
 

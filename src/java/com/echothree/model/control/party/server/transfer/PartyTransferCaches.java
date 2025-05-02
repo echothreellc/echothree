@@ -55,6 +55,7 @@ public class PartyTransferCaches
     protected PartyAliasTypeDescriptionTransferCache partyAliasTypeDescriptionTransferCache;
     protected PartyAliasTransferCache partyAliasTransferCache;
     protected PartyEntityTypeTransferCache partyEntityTypeTransferCache;
+    protected PartyApplicationEditorUseTransferCache partyApplicationEditorUseTransferCache;
 
     /** Creates a new instance of PartyTransferCaches */
     public PartyTransferCaches(UserVisit userVisit) {
@@ -269,6 +270,13 @@ public class PartyTransferCaches
             partyEntityTypeTransferCache = new PartyEntityTypeTransferCache(userVisit);
 
         return partyEntityTypeTransferCache;
+    }
+
+    public PartyApplicationEditorUseTransferCache getPartyApplicationEditorUseTransferCache() {
+        if(partyApplicationEditorUseTransferCache == null)
+            partyApplicationEditorUseTransferCache = new PartyApplicationEditorUseTransferCache(userVisit);
+
+        return partyApplicationEditorUseTransferCache;
     }
 
 }

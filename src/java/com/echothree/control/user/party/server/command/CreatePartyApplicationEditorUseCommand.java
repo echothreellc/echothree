@@ -14,10 +14,10 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.core.server.command;
+package com.echothree.control.user.party.server.command;
 
-import com.echothree.control.user.core.common.form.CreatePartyApplicationEditorUseForm;
-import com.echothree.model.control.core.server.control.PartyApplicationEditorUseControl;
+import com.echothree.control.user.party.common.form.CreatePartyApplicationEditorUseForm;
+import com.echothree.model.control.party.server.control.PartyApplicationEditorUseControl;
 import com.echothree.model.control.core.server.logic.ApplicationLogic;
 import com.echothree.model.control.core.server.logic.EditorLogic;
 import com.echothree.model.control.party.common.PartyTypes;

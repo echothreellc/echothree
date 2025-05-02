@@ -16,11 +16,11 @@
 
 package com.echothree.ui.web.main.action.humanresources.employeeapplicationeditoruse;
 
-import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetPartyApplicationEditorUseResult;
 import com.echothree.control.user.employee.common.EmployeeUtil;
 import com.echothree.control.user.employee.common.result.GetEmployeeResult;
-import com.echothree.model.control.core.common.transfer.PartyApplicationEditorUseTransfer;
+import com.echothree.control.user.party.common.PartyUtil;
+import com.echothree.control.user.party.common.result.GetPartyApplicationEditorUseResult;
+import com.echothree.model.control.party.common.transfer.PartyApplicationEditorUseTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -52,13 +52,13 @@ public abstract class BaseEmployeeApplicationEditorUseAction<A extends ActionFor
     public static PartyApplicationEditorUseTransfer getPartyApplicationEditorUseTransfer(HttpServletRequest request, String partyName, String applicationName,
             String applicationEditorUseName)
             throws NamingException {
-        var commandForm = CoreUtil.getHome().getGetPartyApplicationEditorUseForm();
+        var commandForm = PartyUtil.getHome().getGetPartyApplicationEditorUseForm();
 
         commandForm.setPartyName(partyName);
         commandForm.setApplicationName(applicationName);
         commandForm.setApplicationEditorUseName(applicationEditorUseName);
 
-        var commandResult = CoreUtil.getHome().getPartyApplicationEditorUse(getUserVisitPK(request), commandForm);
+        var commandResult = PartyUtil.getHome().getPartyApplicationEditorUse(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
         var result = (GetPartyApplicationEditorUseResult)executionResult.getResult();
 

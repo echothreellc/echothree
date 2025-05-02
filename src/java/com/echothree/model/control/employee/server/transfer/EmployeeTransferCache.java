@@ -19,7 +19,7 @@ import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
-import com.echothree.model.control.core.server.control.PartyApplicationEditorUseControl;
+import com.echothree.model.control.party.server.control.PartyApplicationEditorUseControl;
 import com.echothree.model.control.party.server.control.PartyEntityTypeControl;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.employee.common.EmployeeOptions;

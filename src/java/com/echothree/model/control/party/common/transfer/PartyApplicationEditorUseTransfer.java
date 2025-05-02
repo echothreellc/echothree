@@ -14,9 +14,10 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.core.common.transfer;
+package com.echothree.model.control.party.common.transfer;
 
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
+import com.echothree.model.control.core.common.transfer.ApplicationEditorTransfer;
+import com.echothree.model.control.core.common.transfer.ApplicationEditorUseTransfer;
 import com.echothree.util.common.transfer.BaseTransfer;
 
 public class PartyApplicationEditorUseTransfer

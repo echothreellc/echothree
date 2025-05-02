@@ -14,9 +14,9 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.core.common.spec;
+package com.echothree.control.user.party.common.spec;
 
-import com.echothree.control.user.party.common.spec.PartySpec;
+import com.echothree.control.user.core.common.spec.ApplicationEditorUseSpec;
 
 public interface PartyApplicationEditorUseSpec
         extends PartySpec, ApplicationEditorUseSpec {
