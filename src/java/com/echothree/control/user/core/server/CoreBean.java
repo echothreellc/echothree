@@ -2099,35 +2099,6 @@ public class CoreBean
     }
     
     // --------------------------------------------------------------------------------
-    //   Party Application Editor Uses
-    // --------------------------------------------------------------------------------
-    
-    @Override
-    public CommandResult createPartyApplicationEditorUse(UserVisitPK userVisitPK, CreatePartyApplicationEditorUseForm form) {
-        return new CreatePartyApplicationEditorUseCommand(userVisitPK, form).run();
-    }
-    
-    @Override
-    public CommandResult getPartyApplicationEditorUse(UserVisitPK userVisitPK, GetPartyApplicationEditorUseForm form) {
-        return new GetPartyApplicationEditorUseCommand(userVisitPK, form).run();
-    }
-    
-    @Override
-    public CommandResult getPartyApplicationEditorUses(UserVisitPK userVisitPK, GetPartyApplicationEditorUsesForm form) {
-        return new GetPartyApplicationEditorUsesCommand(userVisitPK, form).run();
-    }
-    
-    @Override
-    public CommandResult editPartyApplicationEditorUse(UserVisitPK userVisitPK, EditPartyApplicationEditorUseForm form) {
-        return new EditPartyApplicationEditorUseCommand(userVisitPK, form).run();
-    }
-    
-    @Override
-    public CommandResult deletePartyApplicationEditorUse(UserVisitPK userVisitPK, DeletePartyApplicationEditorUseForm form) {
-        return new DeletePartyApplicationEditorUseCommand(userVisitPK, form).run();
-    }
-    
-    // --------------------------------------------------------------------------------
     //   Appearances
     // --------------------------------------------------------------------------------
     

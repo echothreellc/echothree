@@ -14,17 +14,18 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.core.server.command;
+package com.echothree.control.user.party.server.command;
 
-import com.echothree.control.user.core.common.form.GetPartyApplicationEditorUsesForm;
-import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.model.control.core.server.control.PartyApplicationEditorUseControl;
+import com.echothree.control.user.party.common.form.DeletePartyApplicationEditorUseForm;
+import com.echothree.model.control.party.server.control.PartyApplicationEditorUseControl;
+import com.echothree.model.control.core.server.logic.ApplicationLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
@@ -36,8 +37,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class GetPartyApplicationEditorUsesCommand
-        extends BaseSimpleCommand<GetPartyApplicationEditorUsesForm> {
+public class DeletePartyApplicationEditorUseCommand
+        extends BaseSimpleCommand<DeletePartyApplicationEditorUseForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -46,33 +47,49 @@ public class GetPartyApplicationEditorUsesCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                        new SecurityRoleDefinition(SecurityRoleGroups.PartyApplicationEditorUse.name(), SecurityRoles.List.name())
+                        new SecurityRoleDefinition(SecurityRoleGroups.PartyApplicationEditorUse.name(), SecurityRoles.Delete.name())
                         )))
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null)
+                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("ApplicationName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("ApplicationEditorUseName", FieldType.ENTITY_NAME, true, null, null)
                 ));
     }
     
-    /** Creates a new instance of GetPartyApplicationEditorUsesCommand */
-    public GetPartyApplicationEditorUsesCommand(UserVisitPK userVisitPK, GetPartyApplicationEditorUsesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    /** Creates a new instance of DeletePartyApplicationEditorUseCommand */
+    public DeletePartyApplicationEditorUseCommand(UserVisitPK userVisitPK, DeletePartyApplicationEditorUseForm form) {
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        var result = CoreResultFactory.getGetPartyApplicationEditorUsesResult();
         var partyName = form.getPartyName();
         var party = partyName == null ? getParty() : PartyLogic.getInstance().getPartyByName(this, partyName);
         
         if(!hasExecutionErrors()) {
-            var partyApplicationEditorUseControl = Session.getModelController(PartyApplicationEditorUseControl.class);
-
-            result.setPartyApplicationEditorUses(partyApplicationEditorUseControl.getPartyApplicationEditorUseTransfersByParty(getUserVisit(), party));
+            var applicationName = form.getApplicationName();
+            var application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
+            
+            if(!hasExecutionErrors()) {
+                var applicationEditorUseName = form.getApplicationEditorUseName();
+                var applicationEditorUse = ApplicationLogic.getInstance().getApplicationEditorUseByName(this, application, applicationEditorUseName);
+                
+                if(!hasExecutionErrors()) {
+                    var partyApplicationEditorUseControl = Session.getModelController(PartyApplicationEditorUseControl.class);
+                    var partyApplicationEditorUse = partyApplicationEditorUseControl.getPartyApplicationEditorUseForUpdate(party, applicationEditorUse);
+                    
+                    if(partyApplicationEditorUse != null) {
+                        partyApplicationEditorUseControl.deletePartyApplicationEditorUse(partyApplicationEditorUse, getPartyPK());
+                    } else {
+                        addExecutionError(ExecutionErrors.UnknownPartyApplicationEditorUse.name(), partyName, applicationName, applicationEditorUseName);
+                    }
+                }
+            }
         }
         
-        return result;
+        return null;
     }
     
 }

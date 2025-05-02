@@ -1346,6 +1346,63 @@
                         </index>
                     </indexes>
                 </table>
+                <table namePlural="PartyApplicationEditorUses" nameSingular="PartyApplicationEditorUse" columnPrefix="parappledtruse">
+                    <columns>
+                        <column name="PartyApplicationEditorUseId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PartyApplicationEditorUseDetails" destinationColumn="PartyApplicationEditorUseDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PartyApplicationEditorUseDetails" destinationColumn="PartyApplicationEditorUseDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyApplicationEditorUseId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyApplicationEditorUseDetails" nameSingular="PartyApplicationEditorUseDetail" columnPrefix="parappledtrusedt">
+                    <columns>
+                        <column name="PartyApplicationEditorUseDetailId" type="EID" nullAllowed="false" />
+                        <column name="PartyApplicationEditorUseId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyApplicationEditorUses" destinationColumn="PartyApplicationEditorUseId" />
+                        <column name="PartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="ApplicationEditorUseId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ApplicationEditorUses" destinationColumn="ApplicationEditorUseId" />
+                        <column name="ApplicationEditorId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ApplicationEditors" destinationColumn="ApplicationEditorId" />
+                        <column name="PreferredHeight" type="Integer" nullAllowed="true" />
+                        <column name="PreferredWidth" type="Integer" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyApplicationEditorUseDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyApplicationEditorUseId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="ApplicationEditorUseId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="ApplicationEditorUseId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="ApplicationEditorId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
             </tables>
         </component>
     </components>

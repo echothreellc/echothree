@@ -14,14 +14,15 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.core.common.form;
+package com.echothree.control.user.party.common.result;
 
-import com.echothree.control.user.core.common.edit.PartyApplicationEditorUseEdit;
-import com.echothree.control.user.core.common.spec.PartyApplicationEditorUseSpec;
+import com.echothree.model.control.party.common.transfer.PartyApplicationEditorUseTransfer;
+import com.echothree.util.common.command.BaseResult;
 
-public interface CreatePartyApplicationEditorUseForm
-        extends PartyApplicationEditorUseSpec, PartyApplicationEditorUseEdit {
+public interface GetPartyApplicationEditorUseResult
+        extends BaseResult {
     
-    // Nothing additional beyond PartyApplicationEditorUseSpec, PartyApplicationEditorUseEdit
+    PartyApplicationEditorUseTransfer getPartyApplicationEditorUse();
+    void setPartyApplicationEditorUse(PartyApplicationEditorUseTransfer partyApplicationEditorUse);
     
 }

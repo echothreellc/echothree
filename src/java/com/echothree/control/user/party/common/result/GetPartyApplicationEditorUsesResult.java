@@ -14,9 +14,9 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.core.common.result;
+package com.echothree.control.user.party.common.result;
 
-import com.echothree.model.control.core.common.transfer.PartyApplicationEditorUseTransfer;
+import com.echothree.model.control.party.common.transfer.PartyApplicationEditorUseTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
 

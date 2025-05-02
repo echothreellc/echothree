@@ -17,8 +17,8 @@
 
 package com.echothree.view.client.web.taglib;
 
-import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetPartyApplicationEditorUseResult;
+import com.echothree.control.user.party.common.PartyUtil;
+import com.echothree.control.user.party.common.result.GetPartyApplicationEditorUseResult;
 import com.echothree.util.common.form.TransferProperties;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
@@ -101,7 +101,7 @@ public class PartyApplicationEditorUseTag
     public int doStartTag()
             throws JspException {
         try {
-            var commandForm = CoreUtil.getHome().getGetPartyApplicationEditorUseForm();
+            var commandForm = PartyUtil.getHome().getGetPartyApplicationEditorUseForm();
             
             commandForm.setPartyName(partyName);
             commandForm.setApplicationName(applicationName);
@@ -111,7 +111,7 @@ public class PartyApplicationEditorUseTag
 
             commandForm.setTransferProperties(transferProperties);
 
-            var commandResult = CoreUtil.getHome().getPartyApplicationEditorUse(getUserVisitPK(), commandForm);
+            var commandResult = PartyUtil.getHome().getPartyApplicationEditorUse(getUserVisitPK(), commandForm);
             
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
