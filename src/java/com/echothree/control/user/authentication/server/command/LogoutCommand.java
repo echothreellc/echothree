@@ -19,7 +19,9 @@ package com.echothree.control.user.authentication.server.command;
 import com.echothree.model.control.user.server.logic.UserVisitLogic;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LogoutCommand
         extends BaseSimpleCommand {
     

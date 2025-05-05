@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.authentication.server.command;
 
-import com.echothree.model.control.accounting.server.logic.TransactionLogic;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class IdleCommand
         extends BaseSimpleCommand {
     

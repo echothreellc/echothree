@@ -29,6 +29,7 @@ import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.ThreadUtils;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 
 @Stateless
 public class AuthenticationBean
@@ -123,55 +124,85 @@ public class AuthenticationBean
     // -------------------------------------------------------------------------
     //   Logins
     // -------------------------------------------------------------------------
-    
+
+    @Inject
+    GetCustomerLoginDefaultsCommand getCustomerLoginDefaultsCommand;
+
     @Override
     public CommandResult getCustomerLoginDefaults(UserVisitPK userVisitPK, GetCustomerLoginDefaultsForm form) {
-        return new GetCustomerLoginDefaultsCommand().run(userVisitPK, form);
+        return getCustomerLoginDefaultsCommand.run(userVisitPK, form);
     }
-    
+
+    @Inject
+    CustomerLoginCommand customerLoginCommand;
+
     @Override
     public CommandResult customerLogin(UserVisitPK userVisitPK, CustomerLoginForm form) {
-        return new CustomerLoginCommand().run(userVisitPK, form);
+        return customerLoginCommand.run(userVisitPK, form);
     }
-    
+
+    @Inject
+    GetEmployeeLoginDefaultsCommand getEmployeeLoginDefaultsCommand;
+
     @Override
     public CommandResult getEmployeeLoginDefaults(UserVisitPK userVisitPK, GetEmployeeLoginDefaultsForm form) {
-        return new GetEmployeeLoginDefaultsCommand().run(userVisitPK, form);
+        return getEmployeeLoginDefaultsCommand.run(userVisitPK, form);
     }
-    
+
+    @Inject
+    EmployeeLoginCommand employeeLoginCommand;
+
     @Override
     public CommandResult employeeLogin(UserVisitPK userVisitPK, EmployeeLoginForm form) {
-        return new EmployeeLoginCommand().run(userVisitPK, form);
+        return employeeLoginCommand.run(userVisitPK, form);
     }
-    
+
+    @Inject
+    GetVendorLoginDefaultsCommand getVendorLoginDefaultsCommand;
+
     @Override
     public CommandResult getVendorLoginDefaults(UserVisitPK userVisitPK, GetVendorLoginDefaultsForm form) {
-        return new GetVendorLoginDefaultsCommand().run(userVisitPK, form);
+        return getVendorLoginDefaultsCommand.run(userVisitPK, form);
     }
-    
+
+    @Inject
+    VendorLoginCommand vendorLoginCommand;
+
     @Override
     public CommandResult vendorLogin(UserVisitPK userVisitPK, VendorLoginForm form) {
-        return new VendorLoginCommand().run(userVisitPK, form);
+        return vendorLoginCommand.run(userVisitPK, form);
     }
-    
+
+    @Inject
+    SetPasswordCommand setPasswordCommand;
+
     @Override
     public CommandResult setPassword(UserVisitPK userVisitPK, SetPasswordForm form) {
-        return new SetPasswordCommand().run(userVisitPK, form);
+        return setPasswordCommand.run(userVisitPK, form);
     }
-    
+
+    @Inject
+    RecoverPasswordCommand recoverPasswordCommand;
+
     @Override
     public CommandResult recoverPassword(UserVisitPK userVisitPK, RecoverPasswordForm form) {
-        return new RecoverPasswordCommand().run(userVisitPK, form);
+        return recoverPasswordCommand.run(userVisitPK, form);
     }
+
+    @Inject
+    IdleCommand idleCommand;
     
     @Override
     public CommandResult idle(UserVisitPK userVisitPK) {
-        return new IdleCommand().run(userVisitPK);
+        return idleCommand.run(userVisitPK);
     }
-    
+
+    @Inject
+    LogoutCommand logoutCommand;
+
     @Override
     public CommandResult logout(UserVisitPK userVisitPK) {
-        return new LogoutCommand().run(userVisitPK);
+        return logoutCommand.run(userVisitPK);
     }
     
 }

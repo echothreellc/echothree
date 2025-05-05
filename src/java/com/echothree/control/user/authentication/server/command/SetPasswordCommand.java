@@ -26,16 +26,17 @@ import com.echothree.model.control.party.server.logic.PasswordStringPolicyLogic;
 import com.echothree.model.control.user.common.UserConstants;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SetPasswordCommand
         extends BaseLoginCommand<SetPasswordForm> {
     
