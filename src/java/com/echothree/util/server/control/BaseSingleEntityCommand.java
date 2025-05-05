@@ -26,7 +26,7 @@ import java.util.List;
 
 public abstract class BaseSingleEntityCommand<BE extends BaseEntity, F extends BaseForm>
         extends BaseSimpleCommand<F>
-        implements GraphQlSecurityCommand {
+        implements GraphQlSecurityCommand<F> {
     
     protected BaseSingleEntityCommand(CommandSecurityDefinition commandSecurityDefinition,
             List<FieldDefinition> formFieldDefinitions, boolean allowLimits) {
@@ -47,7 +47,10 @@ public abstract class BaseSingleEntityCommand<BE extends BaseEntity, F extends B
     }
 
     @Override
-    public SecurityResult security() {
+    public SecurityResult security(UserVisitPK userVisitPK, F form) {
+        this.form = form;
+        setUserVisitPK(userVisitPK);
+
         return super.security();
     }
 
