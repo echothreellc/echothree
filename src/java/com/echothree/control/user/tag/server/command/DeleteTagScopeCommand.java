@@ -55,8 +55,8 @@ public class DeleteTagScopeCommand
     }
     
     /** Creates a new instance of DeleteTagScopeCommand */
-    public DeleteTagScopeCommand(UserVisitPK userVisitPK, DeleteTagScopeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteTagScopeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

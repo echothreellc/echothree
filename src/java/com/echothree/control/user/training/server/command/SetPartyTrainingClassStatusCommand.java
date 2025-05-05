@@ -24,7 +24,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.PartyTrainingClass;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -57,8 +56,8 @@ public class SetPartyTrainingClassStatusCommand
     }
     
     /** Creates a new instance of SetPartyTrainingClassStatusCommand */
-    public SetPartyTrainingClassStatusCommand(UserVisitPK userVisitPK, SetPartyTrainingClassStatusForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS);
+    public SetPartyTrainingClassStatusCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS);
     }
     
     @Override

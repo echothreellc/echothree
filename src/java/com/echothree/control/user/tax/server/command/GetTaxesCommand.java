@@ -39,8 +39,8 @@ public class GetTaxesCommand
     }
     
     /** Creates a new instance of GetTaxesCommand */
-    public GetTaxesCommand(UserVisitPK userVisitPK, GetTaxesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetTaxesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

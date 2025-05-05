@@ -41,8 +41,8 @@ public class SetDefaultMimeTypeCommand
     }
 
     /** Creates a new instance of SetDefaultMimeTypeCommand */
-    public SetDefaultMimeTypeCommand(UserVisitPK userVisitPK, SetDefaultMimeTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultMimeTypeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
    @Override

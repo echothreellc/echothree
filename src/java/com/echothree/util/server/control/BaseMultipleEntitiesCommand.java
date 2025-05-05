@@ -29,18 +29,18 @@ public abstract class BaseMultipleEntitiesCommand<BE extends BaseEntity, F exten
         extends BaseSimpleCommand<F>
         implements GraphQlSecurityCommand {
     
-    protected BaseMultipleEntitiesCommand(UserVisitPK userVisitPK, F form, CommandSecurityDefinition commandSecurityDefinition,
+    protected BaseMultipleEntitiesCommand(CommandSecurityDefinition commandSecurityDefinition,
             List<FieldDefinition> formFieldDefinitions, boolean allowLimits) {
-        super(userVisitPK, form, commandSecurityDefinition, formFieldDefinitions, allowLimits);
+        super(commandSecurityDefinition, formFieldDefinitions, allowLimits);
     }
     
     protected abstract Collection<BE> getEntities();
     protected abstract BaseResult getResult(Collection<BE> entities);
 
-    public Collection<BE> getEntitiesForGraphQl() {
+    public Collection<BE> getEntitiesForGraphQl(UserVisitPK userVisitPK, F form) {
         Collection<BE> entities = null;
 
-        if(canQueryByGraphQl()) {
+        if(canQueryByGraphQl(userVisitPK, form)) {
             entities = getEntities();
         }
         

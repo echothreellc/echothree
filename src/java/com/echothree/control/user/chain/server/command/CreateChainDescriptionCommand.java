@@ -60,8 +60,8 @@ public class CreateChainDescriptionCommand
     }
     
     /** Creates a new instance of CreateChainDescriptionCommand */
-    public CreateChainDescriptionCommand(UserVisitPK userVisitPK, CreateChainDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateChainDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

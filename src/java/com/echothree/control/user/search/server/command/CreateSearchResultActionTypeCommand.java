@@ -57,8 +57,8 @@ public class CreateSearchResultActionTypeCommand
     }
     
     /** Creates a new instance of CreateSearchResultActionTypeCommand */
-    public CreateSearchResultActionTypeCommand(UserVisitPK userVisitPK, CreateSearchResultActionTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateSearchResultActionTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
 
     @Override

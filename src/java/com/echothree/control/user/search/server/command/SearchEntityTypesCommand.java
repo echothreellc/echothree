@@ -70,8 +70,8 @@ public class SearchEntityTypesCommand
     }
 
     /** Creates a new instance of SearchEntityTypesCommand */
-    public SearchEntityTypesCommand(UserVisitPK userVisitPK, SearchEntityTypesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SearchEntityTypesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

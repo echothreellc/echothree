@@ -56,8 +56,8 @@ public class GetLocationsCommand
     }
     
     /** Creates a new instance of GetLocationsCommand */
-    public GetLocationsCommand(UserVisitPK userVisitPK, GetLocationsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetLocationsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

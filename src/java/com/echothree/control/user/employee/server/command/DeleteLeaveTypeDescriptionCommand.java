@@ -57,8 +57,8 @@ public class DeleteLeaveTypeDescriptionCommand
     }
 
     /** Creates a new instance of DeleteLeaveTypeDescriptionCommand */
-    public DeleteLeaveTypeDescriptionCommand(UserVisitPK userVisitPK, DeleteLeaveTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteLeaveTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
    @Override

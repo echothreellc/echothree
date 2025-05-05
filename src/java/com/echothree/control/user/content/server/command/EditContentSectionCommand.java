@@ -73,8 +73,8 @@ public class EditContentSectionCommand
     }
     
     /** Creates a new instance of EditContentSectionCommand */
-    public EditContentSectionCommand(UserVisitPK userVisitPK, EditContentSectionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditContentSectionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

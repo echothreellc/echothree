@@ -27,8 +27,8 @@ public class CountShippingMethodResultsCommand
         extends BaseCountResultsCommand<CountShippingMethodResultsForm, CountShippingMethodResultsResult> {
     
     /** Creates a new instance of CountShippingMethodResultsCommand */
-    public CountShippingMethodResultsCommand(UserVisitPK userVisitPK, CountShippingMethodResultsForm form) {
-        super(userVisitPK, form, null);
+    public CountShippingMethodResultsCommand() {
+        super(null);
     }
     
     @Override

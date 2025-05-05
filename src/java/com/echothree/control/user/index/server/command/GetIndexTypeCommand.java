@@ -49,8 +49,8 @@ public class GetIndexTypeCommand
     }
     
     /** Creates a new instance of GetIndexTypeCommand */
-    public GetIndexTypeCommand(UserVisitPK userVisitPK, GetIndexTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetIndexTypeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

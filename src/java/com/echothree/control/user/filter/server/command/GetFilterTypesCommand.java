@@ -58,8 +58,8 @@ public class GetFilterTypesCommand
     }
     
     /** Creates a new instance of GetFilterTypesCommand */
-    public GetFilterTypesCommand(UserVisitPK userVisitPK, GetFilterTypesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetFilterTypesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     FilterKind filterKind;

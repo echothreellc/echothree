@@ -44,8 +44,8 @@ public class CreatePrinterGroupUseTypeCommand
     }
 
     /** Creates a new instance of CreatePrinterGroupUseTypeCommand */
-    public CreatePrinterGroupUseTypeCommand(UserVisitPK userVisitPK, CreatePrinterGroupUseTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreatePrinterGroupUseTypeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
    @Override

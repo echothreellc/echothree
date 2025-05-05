@@ -59,8 +59,8 @@ public class GetFilterAdjustmentCommand
     }
     
     /** Creates a new instance of GetFilterAdjustmentCommand */
-    public GetFilterAdjustmentCommand(UserVisitPK userVisitPK, GetFilterAdjustmentForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetFilterAdjustmentCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
 

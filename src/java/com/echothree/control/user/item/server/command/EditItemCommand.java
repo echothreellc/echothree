@@ -94,8 +94,8 @@ public class EditItemCommand
     }
     
     /** Creates a new instance of EditItemCommand */
-    public EditItemCommand(UserVisitPK userVisitPK, EditItemForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditItemCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

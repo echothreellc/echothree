@@ -57,8 +57,8 @@ public class CreateContentWebAddressServerCommand
     }
     
     /** Creates a new instance of CreateContentWebAddressServerCommand */
-    public CreateContentWebAddressServerCommand(UserVisitPK userVisitPK, CreateContentWebAddressServerForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateContentWebAddressServerCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

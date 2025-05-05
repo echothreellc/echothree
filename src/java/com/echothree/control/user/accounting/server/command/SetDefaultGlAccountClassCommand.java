@@ -54,8 +54,8 @@ public class SetDefaultGlAccountClassCommand
     }
     
     /** Creates a new instance of SetDefaultGlAccountClassCommand */
-    public SetDefaultGlAccountClassCommand(UserVisitPK userVisitPK, SetDefaultGlAccountClassForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultGlAccountClassCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

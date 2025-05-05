@@ -44,8 +44,8 @@ public class GetAssociatePartyContactMechanismCommand
     }
     
     /** Creates a new instance of GetAssociatePartyContactMechanismCommand */
-    public GetAssociatePartyContactMechanismCommand(UserVisitPK userVisitPK, GetAssociatePartyContactMechanismForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetAssociatePartyContactMechanismCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

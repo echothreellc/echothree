@@ -58,8 +58,8 @@ public class DeleteTrainingClassAnswerCommand
     }
     
     /** Creates a new instance of DeleteTrainingClassAnswerCommand */
-    public DeleteTrainingClassAnswerCommand(UserVisitPK userVisitPK, DeleteTrainingClassAnswerForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteTrainingClassAnswerCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

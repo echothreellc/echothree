@@ -55,8 +55,8 @@ public class SetDefaultSourceCommand
     }
     
     /** Creates a new instance of SetDefaultSourceCommand */
-    public SetDefaultSourceCommand(UserVisitPK userVisitPK, SetDefaultSourceForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultSourceCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

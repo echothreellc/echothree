@@ -55,8 +55,8 @@ public class GetChainActionTypeChoicesCommand
     }
     
     /** Creates a new instance of GetChainActionTypeChoicesCommand */
-    public GetChainActionTypeChoicesCommand(UserVisitPK userVisitPK, GetChainActionTypeChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetChainActionTypeChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -55,8 +55,8 @@ public class GetContactListGroupChoicesCommand
     }
     
     /** Creates a new instance of GetContactListGroupChoicesCommand */
-    public GetContactListGroupChoicesCommand(UserVisitPK userVisitPK, GetContactListGroupChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetContactListGroupChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

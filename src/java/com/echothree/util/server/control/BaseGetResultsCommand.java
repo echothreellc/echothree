@@ -16,7 +16,6 @@
 
 package com.echothree.util.server.control;
 
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.common.validation.FieldDefinition;
 import java.util.List;
@@ -24,9 +23,9 @@ import java.util.List;
 public abstract class BaseGetResultsCommand<F extends BaseForm>
         extends BaseSimpleCommand<F> {
     
-    protected BaseGetResultsCommand(UserVisitPK userVisitPK, F form, CommandSecurityDefinition commandSecurityDefinition,
+    protected BaseGetResultsCommand(CommandSecurityDefinition commandSecurityDefinition,
             List<FieldDefinition> formFieldDefinitions, boolean allowLimits) {
-        super(userVisitPK, form, commandSecurityDefinition, formFieldDefinitions, allowLimits);
+        super(commandSecurityDefinition, formFieldDefinitions, allowLimits);
     }
 
 }

@@ -55,8 +55,8 @@ public class EditWorkRequirementTypeDescriptionCommand
     }
     
     /** Creates a new instance of EditWorkRequirementTypeDescriptionCommand */
-    public EditWorkRequirementTypeDescriptionCommand(UserVisitPK userVisitPK, EditWorkRequirementTypeDescriptionForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditWorkRequirementTypeDescriptionCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

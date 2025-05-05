@@ -59,8 +59,8 @@ public class GetWarehouseCommand
     }
 
     /** Creates a new instance of GetWarehouseCommand */
-    public GetWarehouseCommand(UserVisitPK userVisitPK, GetWarehouseForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetWarehouseCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

@@ -53,8 +53,8 @@ public class EditCommunicationSourceDescriptionCommand
     }
     
     /** Creates a new instance of EditCommunicationSourceDescriptionCommand */
-    public EditCommunicationSourceDescriptionCommand(UserVisitPK userVisitPK, EditCommunicationSourceDescriptionForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditCommunicationSourceDescriptionCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

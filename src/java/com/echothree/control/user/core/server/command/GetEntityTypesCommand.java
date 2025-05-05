@@ -56,8 +56,8 @@ public class GetEntityTypesCommand
     }
     
     /** Creates a new instance of GetEntityTypesCommand */
-    public GetEntityTypesCommand(UserVisitPK userVisitPK, GetEntityTypesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetEntityTypesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     ComponentVendor componentVendor;

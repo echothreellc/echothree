@@ -64,8 +64,8 @@ public class GetVendorCommand
     }
 
     /** Creates a new instance of GetVendorCommand */
-    public GetVendorCommand(UserVisitPK userVisitPK, GetVendorForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetVendorCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     String vendorName;

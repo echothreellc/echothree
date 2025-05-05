@@ -69,8 +69,8 @@ public class EditLeaveReasonCommand
     }
 
     /** Creates a new instance of EditLeaveReasonCommand */
-    public EditLeaveReasonCommand(UserVisitPK userVisitPK, EditLeaveReasonForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditLeaveReasonCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

@@ -41,8 +41,8 @@ public class DeleteAssociateProgramCommand
     }
     
     /** Creates a new instance of DeleteAssociateProgramCommand */
-    public DeleteAssociateProgramCommand(UserVisitPK userVisitPK, DeleteAssociateProgramForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteAssociateProgramCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

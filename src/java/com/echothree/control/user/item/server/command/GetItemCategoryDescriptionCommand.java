@@ -58,8 +58,8 @@ public class GetItemCategoryDescriptionCommand
     }
     
     /** Creates a new instance of GetItemCategoryDescriptionCommand */
-    public GetItemCategoryDescriptionCommand(UserVisitPK userVisitPK, GetItemCategoryDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetItemCategoryDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

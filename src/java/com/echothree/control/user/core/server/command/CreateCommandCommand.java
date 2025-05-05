@@ -44,8 +44,8 @@ public class CreateCommandCommand
     }
     
     /** Creates a new instance of CreateCommandCommand */
-    public CreateCommandCommand(UserVisitPK userVisitPK, CreateCommandForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateCommandCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

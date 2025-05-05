@@ -40,8 +40,8 @@ public class EvaluateSelectorsCommand
     }
 
     /** Creates a new instance of EvaluateSelectorsCommand */
-    public EvaluateSelectorsCommand(UserVisitPK userVisitPK, EvaluateSelectorsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, null, false);
+    public EvaluateSelectorsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, null, false);
     }
     
     @Override

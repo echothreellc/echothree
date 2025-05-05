@@ -60,8 +60,8 @@ public class GetSearchResultActionTypeCommand
     }
     
     /** Creates a new instance of GetSearchResultActionTypeCommand */
-    public GetSearchResultActionTypeCommand(UserVisitPK userVisitPK, GetSearchResultActionTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetSearchResultActionTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

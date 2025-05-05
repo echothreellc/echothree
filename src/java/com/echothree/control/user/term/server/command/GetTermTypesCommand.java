@@ -40,8 +40,8 @@ public class GetTermTypesCommand
     }
     
     /** Creates a new instance of GetTermTypesCommand */
-    public GetTermTypesCommand(UserVisitPK userVisitPK, GetTermTypesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetTermTypesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

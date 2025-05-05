@@ -43,8 +43,8 @@ public class DeleteMimeTypeDescriptionCommand
     }
 
     /** Creates a new instance of DeleteMimeTypeDescriptionCommand */
-    public DeleteMimeTypeDescriptionCommand(UserVisitPK userVisitPK, DeleteMimeTypeDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteMimeTypeDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
    @Override

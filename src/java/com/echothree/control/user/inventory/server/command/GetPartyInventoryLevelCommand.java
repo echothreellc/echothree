@@ -48,8 +48,8 @@ public class GetPartyInventoryLevelCommand
     }
     
     /** Creates a new instance of GetPartyInventoryLevelCommand */
-    public GetPartyInventoryLevelCommand(UserVisitPK userVisitPK, GetPartyInventoryLevelForm form) {
-        super(userVisitPK, form, FORM_FIELD_DEFINITIONS);
+    public GetPartyInventoryLevelCommand() {
+        super(FORM_FIELD_DEFINITIONS);
     }
     
     @Override

@@ -42,8 +42,8 @@ public class GetSkillTypeDescriptionsCommand
     }
     
     /** Creates a new instance of GetSkillTypeDescriptionsCommand */
-    public GetSkillTypeDescriptionsCommand(UserVisitPK userVisitPK, GetSkillTypeDescriptionsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetSkillTypeDescriptionsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

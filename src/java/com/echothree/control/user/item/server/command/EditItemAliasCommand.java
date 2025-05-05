@@ -75,8 +75,8 @@ public class EditItemAliasCommand
     }
     
     /** Creates a new instance of EditItemAliasCommand */
-    public EditItemAliasCommand(UserVisitPK userVisitPK, EditItemAliasForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditItemAliasCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

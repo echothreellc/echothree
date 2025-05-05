@@ -42,8 +42,8 @@ public class DeleteAssociateCommand
     }
     
     /** Creates a new instance of DeleteAssociateCommand */
-    public DeleteAssociateCommand(UserVisitPK userVisitPK, DeleteAssociateForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteAssociateCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

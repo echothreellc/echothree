@@ -53,8 +53,8 @@ public class DeleteEntityGeoPointAttributeCommand
     }
     
     /** Creates a new instance of DeleteEntityGeoPointAttributeCommand */
-    public DeleteEntityGeoPointAttributeCommand(UserVisitPK userVisitPK, DeleteEntityGeoPointAttributeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteEntityGeoPointAttributeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

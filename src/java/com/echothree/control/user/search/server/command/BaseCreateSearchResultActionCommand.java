@@ -18,7 +18,6 @@ package com.echothree.control.user.search.server.command;
 
 import com.echothree.control.user.search.common.form.BaseCreateSearchResultActionForm;
 import com.echothree.model.control.search.server.logic.SearchLogic;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.control.BaseSimpleCommand;
@@ -30,9 +29,9 @@ import java.util.List;
         extends BaseSimpleCommand<F> {
     
     /** Creates a new instance of BaseCreateItemSearchResultActionCommand */
-    protected BaseCreateSearchResultActionCommand(UserVisitPK userVisitPK, F form, CommandSecurityDefinition COMMAND_SECURITY_DEFINITION,
+    protected BaseCreateSearchResultActionCommand(CommandSecurityDefinition COMMAND_SECURITY_DEFINITION,
             List<FieldDefinition> FORM_FIELD_DEFINITIONS) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     protected BaseResult execute(String searchKindName, BaseEntity baseEntity) {

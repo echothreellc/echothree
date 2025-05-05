@@ -46,8 +46,8 @@ public class DeleteSelectorNodeDescriptionCommand
     }
     
     /** Creates a new instance of DeleteSelectorNodeDescriptionCommand */
-    public DeleteSelectorNodeDescriptionCommand(UserVisitPK userVisitPK, DeleteSelectorNodeDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteSelectorNodeDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

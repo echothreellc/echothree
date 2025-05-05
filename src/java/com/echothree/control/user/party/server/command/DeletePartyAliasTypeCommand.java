@@ -56,8 +56,8 @@ public class DeletePartyAliasTypeCommand
     }
     
     /** Creates a new instance of DeletePartyAliasTypeCommand */
-    public DeletePartyAliasTypeCommand(UserVisitPK userVisitPK, DeletePartyAliasTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeletePartyAliasTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

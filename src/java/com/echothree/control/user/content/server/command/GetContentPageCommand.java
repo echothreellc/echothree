@@ -52,8 +52,8 @@ public class GetContentPageCommand
     }
     
     /** Creates a new instance of GetContentPageCommand */
-    public GetContentPageCommand(UserVisitPK userVisitPK, GetContentPageForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetContentPageCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

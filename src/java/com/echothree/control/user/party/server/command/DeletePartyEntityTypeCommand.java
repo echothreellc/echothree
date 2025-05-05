@@ -58,8 +58,8 @@ public class DeletePartyEntityTypeCommand
     }
     
     /** Creates a new instance of DeletePartyEntityTypeCommand */
-    public DeletePartyEntityTypeCommand(UserVisitPK userVisitPK, DeletePartyEntityTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeletePartyEntityTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

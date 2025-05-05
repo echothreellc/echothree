@@ -54,8 +54,8 @@ public class EditSkillTypeCommand
     }
     
     /** Creates a new instance of EditSkillTypeCommand */
-    public EditSkillTypeCommand(UserVisitPK userVisitPK, EditSkillTypeForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditSkillTypeCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

@@ -57,8 +57,8 @@ public class DeleteTextDecorationDescriptionCommand
     }
     
     /** Creates a new instance of DeleteTextDecorationDescriptionCommand */
-    public DeleteTextDecorationDescriptionCommand(UserVisitPK userVisitPK, DeleteTextDecorationDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteTextDecorationDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

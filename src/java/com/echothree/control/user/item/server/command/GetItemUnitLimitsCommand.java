@@ -42,8 +42,8 @@ public class GetItemUnitLimitsCommand
     }
     
     /** Creates a new instance of GetItemUnitLimitsCommand */
-    public GetItemUnitLimitsCommand(UserVisitPK userVisitPK, GetItemUnitLimitsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetItemUnitLimitsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

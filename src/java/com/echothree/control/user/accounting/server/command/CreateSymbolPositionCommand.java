@@ -58,8 +58,8 @@ public class CreateSymbolPositionCommand
     }
     
     /** Creates a new instance of CreateSymbolPositionCommand */
-    public CreateSymbolPositionCommand(UserVisitPK userVisitPK, CreateSymbolPositionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateSymbolPositionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

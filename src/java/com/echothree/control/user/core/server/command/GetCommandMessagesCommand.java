@@ -56,8 +56,8 @@ public class GetCommandMessagesCommand
     }
     
     /** Creates a new instance of GetCommandMessagesCommand */
-    public GetCommandMessagesCommand(UserVisitPK userVisitPK, GetCommandMessagesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetCommandMessagesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

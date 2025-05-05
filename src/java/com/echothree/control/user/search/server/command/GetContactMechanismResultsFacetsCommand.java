@@ -29,8 +29,8 @@ public class GetContactMechanismResultsFacetsCommand
         extends BaseGetResultsFacetsCommand<GetContactMechanismResultsFacetsForm, GetContactMechanismResultsFacetsResult> {
 
     /** Creates a new instance of GetContactMechanismResultsFacetsCommand */
-    public GetContactMechanismResultsFacetsCommand(UserVisitPK userVisitPK, GetContactMechanismResultsFacetsForm form) {
-        super(userVisitPK, form, null);
+    public GetContactMechanismResultsFacetsCommand() {
+        super(null);
     }
 
     @Override

@@ -55,8 +55,8 @@ public class SetDefaultTextDecorationCommand
     }
     
     /** Creates a new instance of SetDefaultTextDecorationCommand */
-    public SetDefaultTextDecorationCommand(UserVisitPK userVisitPK, SetDefaultTextDecorationForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultTextDecorationCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

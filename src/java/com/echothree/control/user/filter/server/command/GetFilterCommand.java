@@ -60,8 +60,8 @@ public class GetFilterCommand
     }
     
     /** Creates a new instance of GetFilterCommand */
-    public GetFilterCommand(UserVisitPK userVisitPK, GetFilterForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetFilterCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

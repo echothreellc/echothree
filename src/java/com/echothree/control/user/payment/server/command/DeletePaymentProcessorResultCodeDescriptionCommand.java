@@ -57,8 +57,8 @@ public class DeletePaymentProcessorResultCodeDescriptionCommand
     }
     
     /** Creates a new instance of DeletePaymentProcessorResultCodeDescriptionCommand */
-    public DeletePaymentProcessorResultCodeDescriptionCommand(UserVisitPK userVisitPK, DeletePaymentProcessorResultCodeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeletePaymentProcessorResultCodeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

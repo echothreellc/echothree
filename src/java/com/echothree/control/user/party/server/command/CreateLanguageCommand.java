@@ -43,8 +43,8 @@ public class CreateLanguageCommand
     }
     
     /** Creates a new instance of CreateLanguageCommand */
-    public CreateLanguageCommand(UserVisitPK userVisitPK, CreateLanguageForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateLanguageCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

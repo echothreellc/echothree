@@ -43,8 +43,8 @@ public class CreateMimeTypeFileExtensionCommand
     }
     
     /** Creates a new instance of CreateMimeTypeFileExtensionCommand */
-    public CreateMimeTypeFileExtensionCommand(UserVisitPK userVisitPK, CreateMimeTypeFileExtensionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateMimeTypeFileExtensionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -43,8 +43,8 @@ public class CreatePartyTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreatePartyTypeDescriptionCommand */
-    public CreatePartyTypeDescriptionCommand(UserVisitPK userVisitPK, CreatePartyTypeDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreatePartyTypeDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

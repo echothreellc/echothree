@@ -55,8 +55,8 @@ public class GetContactMechanismAliasTypeChoicesCommand
     }
     
     /** Creates a new instance of GetContactMechanismAliasTypeChoicesCommand */
-    public GetContactMechanismAliasTypeChoicesCommand(UserVisitPK userVisitPK, GetContactMechanismAliasTypeChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetContactMechanismAliasTypeChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

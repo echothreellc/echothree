@@ -58,8 +58,8 @@ public class CreateSearchSortDirectionCommand
     }
     
     /** Creates a new instance of CreateSearchSortDirectionCommand */
-    public CreateSearchSortDirectionCommand(UserVisitPK userVisitPK, CreateSearchSortDirectionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateSearchSortDirectionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

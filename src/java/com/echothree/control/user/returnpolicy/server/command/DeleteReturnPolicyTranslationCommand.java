@@ -58,8 +58,8 @@ public class DeleteReturnPolicyTranslationCommand
     }
     
     /** Creates a new instance of DeleteReturnPolicyTranslationCommand */
-    public DeleteReturnPolicyTranslationCommand(UserVisitPK userVisitPK, DeleteReturnPolicyTranslationForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteReturnPolicyTranslationCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

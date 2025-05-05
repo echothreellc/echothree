@@ -47,8 +47,8 @@ public class GetContentPageLayoutCommand
     }
     
     /** Creates a new instance of GetContentPageLayoutCommand */
-    public GetContentPageLayoutCommand(UserVisitPK userVisitPK, GetContentPageLayoutForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetContentPageLayoutCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

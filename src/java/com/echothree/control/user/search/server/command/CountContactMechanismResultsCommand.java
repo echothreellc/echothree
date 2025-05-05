@@ -27,8 +27,8 @@ public class CountContactMechanismResultsCommand
         extends BaseCountResultsCommand<CountContactMechanismResultsForm, CountContactMechanismResultsResult> {
     
     /** Creates a new instance of CountContactMechanismResultsCommand */
-    public CountContactMechanismResultsCommand(UserVisitPK userVisitPK, CountContactMechanismResultsForm form) {
-        super(userVisitPK, form, null);
+    public CountContactMechanismResultsCommand() {
+        super(null);
     }
     
     @Override

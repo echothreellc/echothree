@@ -55,8 +55,8 @@ public class DeleteTerminationTypeCommand
     }
     
     /** Creates a new instance of DeleteTerminationTypeCommand */
-    public DeleteTerminationTypeCommand(UserVisitPK userVisitPK, DeleteTerminationTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteTerminationTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

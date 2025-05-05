@@ -27,9 +27,8 @@ import com.echothree.model.data.search.server.entity.SearchKind;
 import com.echothree.model.data.search.server.entity.SearchSortDirection;
 import com.echothree.model.data.search.server.entity.SearchSortOrder;
 import com.echothree.model.data.search.server.entity.SearchType;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import java.util.List;
@@ -37,13 +36,13 @@ import java.util.List;
 public abstract class BaseSearchCommand<F extends BaseSearchForm, R extends BaseResult>
         extends BaseSimpleCommand<F> {
     
-    protected BaseSearchCommand(UserVisitPK userVisitPK, F form, CommandSecurityDefinition COMMAND_SECURITY_DEFINITION,
+    protected BaseSearchCommand(CommandSecurityDefinition COMMAND_SECURITY_DEFINITION,
             List<FieldDefinition> FORM_FIELD_DEFINITIONS, boolean allowLimits) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, allowLimits);
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, allowLimits);
     }
     
-    protected BaseSearchCommand(UserVisitPK userVisitPK, CommandSecurityDefinition COMMAND_SECURITY_DEFINITION, boolean allowLimits) {
-        super(userVisitPK, COMMAND_SECURITY_DEFINITION, allowLimits);
+    protected BaseSearchCommand(CommandSecurityDefinition COMMAND_SECURITY_DEFINITION, boolean allowLimits) {
+        super(COMMAND_SECURITY_DEFINITION, allowLimits);
     }
     
     protected PartySearchTypePreference getPartySearchTypePreference(SearchControl searchControl, SearchType searchType) {

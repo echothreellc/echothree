@@ -56,8 +56,8 @@ public class DeleteTagCommand
     }
     
     /** Creates a new instance of DeleteTagCommand */
-    public DeleteTagCommand(UserVisitPK userVisitPK, DeleteTagForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteTagCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

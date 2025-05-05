@@ -42,8 +42,8 @@ public class GetPostalAddressLinesCommand
     }
     
     /** Creates a new instance of GetPostalAddressLinesCommand */
-    public GetPostalAddressLinesCommand(UserVisitPK userVisitPK, GetPostalAddressLinesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetPostalAddressLinesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

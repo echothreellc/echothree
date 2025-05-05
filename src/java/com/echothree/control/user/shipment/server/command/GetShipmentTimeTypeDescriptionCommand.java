@@ -59,8 +59,8 @@ public class GetShipmentTimeTypeDescriptionCommand
     }
     
     /** Creates a new instance of GetShipmentTimeTypeDescriptionCommand */
-    public GetShipmentTimeTypeDescriptionCommand(UserVisitPK userVisitPK, GetShipmentTimeTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetShipmentTimeTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

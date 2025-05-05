@@ -57,8 +57,8 @@ public class GetCancellationReasonChoicesCommand
     }
     
     /** Creates a new instance of GetCancellationReasonChoicesCommand */
-    public GetCancellationReasonChoicesCommand(UserVisitPK userVisitPK, GetCancellationReasonChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetCancellationReasonChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

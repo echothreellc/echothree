@@ -56,8 +56,8 @@ public class EditForumMimeTypeCommand
     }
     
     /** Creates a new instance of EditForumMimeTypeCommand */
-    public EditForumMimeTypeCommand(UserVisitPK userVisitPK, EditForumMimeTypeForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditForumMimeTypeCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

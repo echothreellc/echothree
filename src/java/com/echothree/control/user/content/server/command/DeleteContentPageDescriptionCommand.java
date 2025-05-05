@@ -59,8 +59,8 @@ public class DeleteContentPageDescriptionCommand
     }
     
     /** Creates a new instance of DeleteContentPageDescriptionCommand */
-    public DeleteContentPageDescriptionCommand(UserVisitPK userVisitPK, DeleteContentPageDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteContentPageDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

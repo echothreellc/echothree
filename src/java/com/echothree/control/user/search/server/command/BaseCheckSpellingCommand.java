@@ -23,9 +23,8 @@ import com.echothree.model.data.search.server.entity.PartySearchTypePreference;
 import com.echothree.model.data.search.server.entity.PartySearchTypePreferenceDetail;
 import com.echothree.model.data.search.server.entity.SearchDefaultOperator;
 import com.echothree.model.data.search.server.entity.SearchType;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import java.util.List;
@@ -33,13 +32,13 @@ import java.util.List;
 public abstract class BaseCheckSpellingCommand<F extends BaseCheckSpellingForm, R extends BaseResult>
         extends BaseSimpleCommand<F> {
     
-    protected BaseCheckSpellingCommand(UserVisitPK userVisitPK, F form, CommandSecurityDefinition COMMAND_SECURITY_DEFINITION,
+    protected BaseCheckSpellingCommand(CommandSecurityDefinition COMMAND_SECURITY_DEFINITION,
             List<FieldDefinition> FORM_FIELD_DEFINITIONS, boolean allowLimits) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, allowLimits);
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, allowLimits);
     }
     
-    protected BaseCheckSpellingCommand(UserVisitPK userVisitPK, CommandSecurityDefinition COMMAND_SECURITY_DEFINITION, boolean allowLimits) {
-        super(userVisitPK, COMMAND_SECURITY_DEFINITION, allowLimits);
+    protected BaseCheckSpellingCommand(CommandSecurityDefinition COMMAND_SECURITY_DEFINITION, boolean allowLimits) {
+        super(COMMAND_SECURITY_DEFINITION, allowLimits);
     }
     
     protected PartySearchTypePreference getPartySearchTypePreference(SearchControl searchControl, SearchType searchType) {

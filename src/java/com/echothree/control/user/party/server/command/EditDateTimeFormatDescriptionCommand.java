@@ -52,8 +52,8 @@ public class EditDateTimeFormatDescriptionCommand
     }
     
     /** Creates a new instance of EditDateTimeFormatDescriptionCommand */
-    public EditDateTimeFormatDescriptionCommand(UserVisitPK userVisitPK, EditDateTimeFormatDescriptionForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditDateTimeFormatDescriptionCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

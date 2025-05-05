@@ -57,8 +57,8 @@ public class DeleteColorDescriptionCommand
     }
     
     /** Creates a new instance of DeleteColorDescriptionCommand */
-    public DeleteColorDescriptionCommand(UserVisitPK userVisitPK, DeleteColorDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteColorDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

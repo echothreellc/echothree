@@ -52,8 +52,8 @@ public class SetDefaultEntityAttributeGroupCommand
     }
     
     /** Creates a new instance of SetDefaultEntityAttributeGroupCommand */
-    public SetDefaultEntityAttributeGroupCommand(UserVisitPK userVisitPK, SetDefaultEntityAttributeGroupForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultEntityAttributeGroupCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

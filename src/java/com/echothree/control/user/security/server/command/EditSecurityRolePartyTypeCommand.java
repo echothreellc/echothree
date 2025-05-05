@@ -74,8 +74,8 @@ public class EditSecurityRolePartyTypeCommand
     }
 
     /** Creates a new instance of EditSecurityRolePartyTypeCommand */
-    public EditSecurityRolePartyTypeCommand(UserVisitPK userVisitPK, EditSecurityRolePartyTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditSecurityRolePartyTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

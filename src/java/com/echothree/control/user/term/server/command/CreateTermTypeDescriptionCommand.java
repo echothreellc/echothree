@@ -44,8 +44,8 @@ public class CreateTermTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateTermTypeDescriptionCommand */
-    public CreateTermTypeDescriptionCommand(UserVisitPK userVisitPK, CreateTermTypeDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateTermTypeDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

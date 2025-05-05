@@ -57,8 +57,8 @@ public class DeleteSequenceTypeDescriptionCommand
     }
     
     /** Creates a new instance of DeleteSequenceTypeDescriptionCommand */
-    public DeleteSequenceTypeDescriptionCommand(UserVisitPK userVisitPK, DeleteSequenceTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteSequenceTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

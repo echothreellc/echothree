@@ -58,8 +58,8 @@ public class CreateMessageCommand
     }
     
     /** Creates a new instance of CreateMessageCommand */
-    public CreateMessageCommand(UserVisitPK userVisitPK, CreateMessageForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateMessageCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     protected Message createMessage(MessageControl messageControl, MessageType messageType, String messageName,

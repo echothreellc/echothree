@@ -92,8 +92,8 @@ public class CreatePartyPaymentMethodCommand
     }
     
     /** Creates a new instance of CreatePartyPaymentMethodCommand */
-    public CreatePartyPaymentMethodCommand(UserVisitPK userVisitPK, CreatePartyPaymentMethodForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreatePartyPaymentMethodCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     private void setupWorkflows(final PaymentMethodType paymentMethodType, final PartyType partyType,

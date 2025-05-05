@@ -60,8 +60,8 @@ public class GetEntityLongRangeChoicesCommand
     }
     
     /** Creates a new instance of GetEntityLongRangeChoicesCommand */
-    public GetEntityLongRangeChoicesCommand(UserVisitPK userVisitPK, GetEntityLongRangeChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetEntityLongRangeChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

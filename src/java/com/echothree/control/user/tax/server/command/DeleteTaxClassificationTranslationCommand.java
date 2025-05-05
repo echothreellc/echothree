@@ -59,8 +59,8 @@ public class DeleteTaxClassificationTranslationCommand
     }
     
     /** Creates a new instance of DeleteTaxClassificationTranslationCommand */
-    public DeleteTaxClassificationTranslationCommand(UserVisitPK userVisitPK, DeleteTaxClassificationTranslationForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteTaxClassificationTranslationCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

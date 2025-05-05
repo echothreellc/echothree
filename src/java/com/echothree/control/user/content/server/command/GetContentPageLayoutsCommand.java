@@ -59,8 +59,8 @@ public class GetContentPageLayoutsCommand
     }
     
     /** Creates a new instance of GetContentPageLayoutsCommand */
-    public GetContentPageLayoutsCommand(UserVisitPK userVisitPK, GetContentPageLayoutsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetContentPageLayoutsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

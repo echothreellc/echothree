@@ -71,8 +71,8 @@ public class EditAllocationPriorityCommand
     }
     
     /** Creates a new instance of EditAllocationPriorityCommand */
-    public EditAllocationPriorityCommand(UserVisitPK userVisitPK, EditAllocationPriorityForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditAllocationPriorityCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

@@ -43,8 +43,8 @@ public class GetGenderCommand
     }
     
     /** Creates a new instance of GetGenderCommand */
-    public GetGenderCommand(UserVisitPK userVisitPK, GetGenderForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetGenderCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

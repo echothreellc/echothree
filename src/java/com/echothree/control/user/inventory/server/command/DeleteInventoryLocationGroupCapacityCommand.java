@@ -46,8 +46,8 @@ public class DeleteInventoryLocationGroupCapacityCommand
     }
     
     /** Creates a new instance of DeleteInventoryLocationGroupCapacityCommand */
-    public DeleteInventoryLocationGroupCapacityCommand(UserVisitPK userVisitPK, DeleteInventoryLocationGroupCapacityForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteInventoryLocationGroupCapacityCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

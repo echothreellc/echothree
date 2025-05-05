@@ -59,8 +59,8 @@ public class CreateOfferChainTypeCommand
     }
     
     /** Creates a new instance of CreateOfferChainTypeCommand */
-    public CreateOfferChainTypeCommand(UserVisitPK userVisitPK, CreateOfferChainTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateOfferChainTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

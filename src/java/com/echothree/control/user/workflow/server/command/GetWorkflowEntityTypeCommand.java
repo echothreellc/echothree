@@ -59,8 +59,8 @@ public class GetWorkflowEntityTypeCommand
     }
     
     /** Creates a new instance of GetWorkflowEntityTypeCommand */
-    public GetWorkflowEntityTypeCommand(UserVisitPK userVisitPK, GetWorkflowEntityTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetWorkflowEntityTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

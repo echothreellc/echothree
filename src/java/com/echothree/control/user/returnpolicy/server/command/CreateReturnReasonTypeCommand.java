@@ -59,8 +59,8 @@ public class CreateReturnReasonTypeCommand
     }
     
     /** Creates a new instance of CreateReturnReasonTypeCommand */
-    public CreateReturnReasonTypeCommand(UserVisitPK userVisitPK, CreateReturnReasonTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateReturnReasonTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

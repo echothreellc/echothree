@@ -63,8 +63,8 @@ public class EditAssociateProgramCommand
     }
     
     /** Creates a new instance of EditAssociateProgramCommand */
-    public EditAssociateProgramCommand(UserVisitPK userVisitPK, EditAssociateProgramForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditAssociateProgramCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

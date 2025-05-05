@@ -54,8 +54,8 @@ public class EditShipmentTypeShippingMethodCommand
     }
     
     /** Creates a new instance of EditShipmentTypeShippingMethodCommand */
-    public EditShipmentTypeShippingMethodCommand(UserVisitPK userVisitPK, EditShipmentTypeShippingMethodForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditShipmentTypeShippingMethodCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

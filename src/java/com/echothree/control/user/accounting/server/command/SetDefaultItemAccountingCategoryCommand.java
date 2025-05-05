@@ -54,8 +54,8 @@ public class SetDefaultItemAccountingCategoryCommand
     }
     
     /** Creates a new instance of SetDefaultItemAccountingCategoryCommand */
-    public SetDefaultItemAccountingCategoryCommand(UserVisitPK userVisitPK, SetDefaultItemAccountingCategoryForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultItemAccountingCategoryCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

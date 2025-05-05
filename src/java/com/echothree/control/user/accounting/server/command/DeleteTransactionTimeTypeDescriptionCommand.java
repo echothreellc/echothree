@@ -57,8 +57,8 @@ public class DeleteTransactionTimeTypeDescriptionCommand
     }
     
     /** Creates a new instance of DeleteTransactionTimeTypeDescriptionCommand */
-    public DeleteTransactionTimeTypeDescriptionCommand(UserVisitPK userVisitPK, DeleteTransactionTimeTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteTransactionTimeTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

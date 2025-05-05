@@ -55,8 +55,8 @@ public class GetBatchTypeChoicesCommand
     }
     
     /** Creates a new instance of GetBatchTypeChoicesCommand */
-    public GetBatchTypeChoicesCommand(UserVisitPK userVisitPK, GetBatchTypeChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetBatchTypeChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

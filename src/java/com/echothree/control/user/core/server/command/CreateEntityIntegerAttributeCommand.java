@@ -54,8 +54,8 @@ public class CreateEntityIntegerAttributeCommand
     }
     
     /** Creates a new instance of CreateEntityIntegerAttributeCommand */
-    public CreateEntityIntegerAttributeCommand(UserVisitPK userVisitPK, CreateEntityIntegerAttributeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateEntityIntegerAttributeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

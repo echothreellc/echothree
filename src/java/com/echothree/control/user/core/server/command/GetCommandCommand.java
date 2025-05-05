@@ -43,8 +43,8 @@ public class GetCommandCommand
     }
     
     /** Creates a new instance of GetCommandCommand */
-    public GetCommandCommand(UserVisitPK userVisitPK, GetCommandForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetCommandCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

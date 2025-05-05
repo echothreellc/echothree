@@ -42,8 +42,8 @@ public class GetPrinterGroupChoicesCommand
     }
 
     /** Creates a new instance of GetPrinterGroupChoicesCommand */
-    public GetPrinterGroupChoicesCommand(UserVisitPK userVisitPK, GetPrinterGroupChoicesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public GetPrinterGroupChoicesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
    @Override

@@ -58,8 +58,8 @@ public class GetApplicationEditorUseDescriptionsCommand
     }
     
     /** Creates a new instance of GetApplicationEditorUseDescriptionsCommand */
-    public GetApplicationEditorUseDescriptionsCommand(UserVisitPK userVisitPK, GetApplicationEditorUseDescriptionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetApplicationEditorUseDescriptionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

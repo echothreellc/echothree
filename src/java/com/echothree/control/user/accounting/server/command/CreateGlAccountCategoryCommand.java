@@ -60,8 +60,8 @@ public class CreateGlAccountCategoryCommand
     }
     
     /** Creates a new instance of CreateGlAccountCategoryCommand */
-    public CreateGlAccountCategoryCommand(UserVisitPK userVisitPK, CreateGlAccountCategoryForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateGlAccountCategoryCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

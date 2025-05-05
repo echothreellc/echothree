@@ -63,8 +63,8 @@ public class CreateTermCommand
     }
     
     /** Creates a new instance of CreateTermCommand */
-    public CreateTermCommand(UserVisitPK userVisitPK, CreateTermForm form) {
-        super(userVisitPK, form, null, null, false);
+    public CreateTermCommand() {
+        super(null, null, false);
     }
     
     @Override

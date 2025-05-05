@@ -41,8 +41,8 @@ public class GetEmployeeLoginDefaultsCommand
     }
     
     /** Creates a new instance of GetEmployeeLoginDefaultsCommand */
-    public GetEmployeeLoginDefaultsCommand(UserVisitPK userVisitPK, GetEmployeeLoginDefaultsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetEmployeeLoginDefaultsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

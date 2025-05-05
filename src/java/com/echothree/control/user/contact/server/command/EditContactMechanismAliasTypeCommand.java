@@ -70,8 +70,8 @@ public class EditContactMechanismAliasTypeCommand
     }
     
     /** Creates a new instance of EditContactMechanismAliasTypeCommand */
-    public EditContactMechanismAliasTypeCommand(UserVisitPK userVisitPK, EditContactMechanismAliasTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditContactMechanismAliasTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

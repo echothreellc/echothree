@@ -57,8 +57,8 @@ public class GetCommandMessageTypeDescriptionCommand
     }
     
     /** Creates a new instance of GetCommandMessageTypeDescriptionCommand */
-    public GetCommandMessageTypeDescriptionCommand(UserVisitPK userVisitPK, GetCommandMessageTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetCommandMessageTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

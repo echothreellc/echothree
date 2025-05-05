@@ -43,8 +43,8 @@ public class DeleteSkillTypeDescriptionCommand
     }
     
     /** Creates a new instance of DeleteSkillTypeDescriptionCommand */
-    public DeleteSkillTypeDescriptionCommand(UserVisitPK userVisitPK, DeleteSkillTypeDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteSkillTypeDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -41,8 +41,8 @@ public class DeleteMoodCommand
     }
     
     /** Creates a new instance of DeleteMoodCommand */
-    public DeleteMoodCommand(UserVisitPK userVisitPK, DeleteMoodForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteMoodCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -43,8 +43,8 @@ public class DeletePrinterDescriptionCommand
     }
 
     /** Creates a new instance of DeletePrinterDescriptionCommand */
-    public DeletePrinterDescriptionCommand(UserVisitPK userVisitPK, DeletePrinterDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeletePrinterDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
    @Override

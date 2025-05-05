@@ -42,8 +42,8 @@ public class CreateSelectorNodeTypeCommand
     }
     
     /** Creates a new instance of CreateSelectorNodeTypeCommand */
-    public CreateSelectorNodeTypeCommand(UserVisitPK userVisitPK, CreateSelectorNodeTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateSelectorNodeTypeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

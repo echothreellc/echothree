@@ -60,8 +60,8 @@ public class GetFilterStepsCommand
     }
     
     /** Creates a new instance of GetFilterStepsCommand */
-    public GetFilterStepsCommand(UserVisitPK userVisitPK, GetFilterStepsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetFilterStepsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     Filter filter;

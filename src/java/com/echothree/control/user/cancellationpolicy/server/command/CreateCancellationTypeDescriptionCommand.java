@@ -59,8 +59,8 @@ public class CreateCancellationTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateCancellationTypeDescriptionCommand */
-    public CreateCancellationTypeDescriptionCommand(UserVisitPK userVisitPK, CreateCancellationTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateCancellationTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

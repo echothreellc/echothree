@@ -60,8 +60,8 @@ public class CreateContentCategoryDescriptionCommand
     }
     
     /** Creates a new instance of CreateContentCategoryDescriptionCommand */
-    public CreateContentCategoryDescriptionCommand(UserVisitPK userVisitPK, CreateContentCategoryDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateContentCategoryDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

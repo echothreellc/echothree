@@ -55,8 +55,8 @@ public class GetEditorChoicesCommand
     }
     
     /** Creates a new instance of GetEditorChoicesCommand */
-    public GetEditorChoicesCommand(UserVisitPK userVisitPK, GetEditorChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetEditorChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -58,8 +58,8 @@ public class CreateVendorTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateVendorTypeDescriptionCommand */
-    public CreateVendorTypeDescriptionCommand(UserVisitPK userVisitPK, CreateVendorTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateVendorTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

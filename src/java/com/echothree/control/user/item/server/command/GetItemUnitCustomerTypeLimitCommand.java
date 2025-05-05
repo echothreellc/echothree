@@ -48,8 +48,8 @@ public class GetItemUnitCustomerTypeLimitCommand
     }
     
     /** Creates a new instance of GetItemUnitCustomerTypeLimitCommand */
-    public GetItemUnitCustomerTypeLimitCommand(UserVisitPK userVisitPK, GetItemUnitCustomerTypeLimitForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public GetItemUnitCustomerTypeLimitCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -58,8 +58,8 @@ public class EditPostalAddressLineElementCommand
     }
     
     /** Creates a new instance of EditPostalAddressLineElementCommand */
-    public EditPostalAddressLineElementCommand(UserVisitPK userVisitPK, EditPostalAddressLineElementForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditPostalAddressLineElementCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

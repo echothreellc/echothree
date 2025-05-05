@@ -42,8 +42,8 @@ public class SetPrinterStatusCommand
     }
     
     /** Creates a new instance of SetPrinterStatusCommand */
-    public SetPrinterStatusCommand(UserVisitPK userVisitPK, SetPrinterStatusForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SetPrinterStatusCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

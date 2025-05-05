@@ -44,8 +44,8 @@ public class CustomerLoginCommand
     }
     
     /** Creates a new instance of CustomerLoginCommand */
-    public CustomerLoginCommand(UserVisitPK userVisitPK, CustomerLoginForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS);
+    public CustomerLoginCommand() {
+        super(null, FORM_FIELD_DEFINITIONS);
     }
     
     @Override

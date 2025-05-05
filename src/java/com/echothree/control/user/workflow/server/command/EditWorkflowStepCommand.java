@@ -73,8 +73,8 @@ public class EditWorkflowStepCommand
     }
     
     /** Creates a new instance of EditWorkflowStepCommand */
-    public EditWorkflowStepCommand(UserVisitPK userVisitPK, EditWorkflowStepForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditWorkflowStepCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

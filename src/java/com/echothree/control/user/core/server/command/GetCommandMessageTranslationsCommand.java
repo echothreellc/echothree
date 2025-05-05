@@ -43,8 +43,8 @@ public class GetCommandMessageTranslationsCommand
     }
     
     /** Creates a new instance of GetCommandMessageTranslationsCommand */
-    public GetCommandMessageTranslationsCommand(UserVisitPK userVisitPK, GetCommandMessageTranslationsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetCommandMessageTranslationsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

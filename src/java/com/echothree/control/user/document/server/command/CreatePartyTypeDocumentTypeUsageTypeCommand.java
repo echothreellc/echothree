@@ -59,8 +59,8 @@ public class CreatePartyTypeDocumentTypeUsageTypeCommand
     }
     
     /** Creates a new instance of CreatePartyTypeDocumentTypeUsageTypeCommand */
-    public CreatePartyTypeDocumentTypeUsageTypeCommand(UserVisitPK userVisitPK, CreatePartyTypeDocumentTypeUsageTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreatePartyTypeDocumentTypeUsageTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

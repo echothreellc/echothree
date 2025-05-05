@@ -43,8 +43,8 @@ public class SetDefaultDepartmentCommand
     }
     
     /** Creates a new instance of SetDefaultDepartmentCommand */
-    public SetDefaultDepartmentCommand(UserVisitPK userVisitPK, SetDefaultDepartmentForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultDepartmentCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

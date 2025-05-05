@@ -74,8 +74,8 @@ public class EditChainEntityRoleTypeCommand
     }
 
     /** Creates a new instance of EditChainEntityRoleTypeCommand */
-    public EditChainEntityRoleTypeCommand(UserVisitPK userVisitPK, EditChainEntityRoleTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditChainEntityRoleTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

@@ -64,8 +64,8 @@ public class CreateContactEmailAddressCommand
     }
     
     /** Creates a new instance of CreateContactEmailAddressCommand */
-    public CreateContactEmailAddressCommand(UserVisitPK userVisitPK, CreateContactEmailAddressForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateContactEmailAddressCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
 
     @Override

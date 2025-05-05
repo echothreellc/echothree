@@ -43,8 +43,8 @@ public class DeleteShipmentTypeShippingMethodCommand
     }
     
     /** Creates a new instance of DeleteShipmentTypeShippingMethodCommand */
-    public DeleteShipmentTypeShippingMethodCommand(UserVisitPK userVisitPK, DeleteShipmentTypeShippingMethodForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteShipmentTypeShippingMethodCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

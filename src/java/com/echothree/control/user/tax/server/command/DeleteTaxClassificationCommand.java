@@ -57,8 +57,8 @@ public class DeleteTaxClassificationCommand
     }
     
     /** Creates a new instance of DeleteTaxClassificationCommand */
-    public DeleteTaxClassificationCommand(UserVisitPK userVisitPK, DeleteTaxClassificationForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteTaxClassificationCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

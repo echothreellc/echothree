@@ -56,8 +56,8 @@ public class SetDefaultOfferCommand
     }
     
     /** Creates a new instance of SetDefaultOfferCommand */
-    public SetDefaultOfferCommand(UserVisitPK userVisitPK, SetDefaultOfferForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultOfferCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

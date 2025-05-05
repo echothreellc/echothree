@@ -45,8 +45,8 @@ public class CountLeaveResultsCommand
     }
     
     /** Creates a new instance of CountLeaveResultsCommand */
-    public CountLeaveResultsCommand(UserVisitPK userVisitPK, CountLeaveResultsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION);
+    public CountLeaveResultsCommand() {
+        super(COMMAND_SECURITY_DEFINITION);
     }
     
     @Override

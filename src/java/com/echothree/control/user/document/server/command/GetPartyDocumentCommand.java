@@ -43,8 +43,8 @@ public class GetPartyDocumentCommand
     }
     
     /** Creates a new instance of GetPartyDocumentCommand */
-    public GetPartyDocumentCommand(UserVisitPK userVisitPK, GetPartyDocumentForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetPartyDocumentCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

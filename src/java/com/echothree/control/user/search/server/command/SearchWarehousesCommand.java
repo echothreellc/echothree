@@ -70,8 +70,8 @@ public class SearchWarehousesCommand
     }
 
     /** Creates a new instance of SearchWarehousesCommand */
-    public SearchWarehousesCommand(UserVisitPK userVisitPK, SearchWarehousesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SearchWarehousesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

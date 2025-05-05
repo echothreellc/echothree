@@ -39,8 +39,8 @@ public class GetVendorLoginDefaultsCommand
     }
     
     /** Creates a new instance of GetVendorLoginDefaultsCommand */
-    public GetVendorLoginDefaultsCommand(UserVisitPK userVisitPK, GetVendorLoginDefaultsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetVendorLoginDefaultsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

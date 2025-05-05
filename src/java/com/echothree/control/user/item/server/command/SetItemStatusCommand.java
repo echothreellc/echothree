@@ -54,8 +54,8 @@ public class SetItemStatusCommand
     }
     
     /** Creates a new instance of SetItemStatusCommand */
-    public SetItemStatusCommand(UserVisitPK userVisitPK, SetItemStatusForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetItemStatusCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

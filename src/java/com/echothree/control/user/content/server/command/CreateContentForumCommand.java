@@ -58,8 +58,8 @@ public class CreateContentForumCommand
     }
     
     /** Creates a new instance of CreateContentForumCommand */
-    public CreateContentForumCommand(UserVisitPK userVisitPK, CreateContentForumForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateContentForumCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

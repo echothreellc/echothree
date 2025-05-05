@@ -58,8 +58,8 @@ public class DeleteApplicationEditorCommand
     }
     
     /** Creates a new instance of DeleteApplicationEditorCommand */
-    public DeleteApplicationEditorCommand(UserVisitPK userVisitPK, DeleteApplicationEditorForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteApplicationEditorCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

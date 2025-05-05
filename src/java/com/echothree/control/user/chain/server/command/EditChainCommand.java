@@ -76,8 +76,8 @@ public class EditChainCommand
     }
 
     /** Creates a new instance of EditChainCommand */
-    public EditChainCommand(UserVisitPK userVisitPK, EditChainForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditChainCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

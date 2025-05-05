@@ -62,8 +62,8 @@ public class GetZipCodeCommand
     }
     
     /** Creates a new instance of GetZipCodeCommand */
-    public GetZipCodeCommand(UserVisitPK userVisitPK, GetZipCodeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetZipCodeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

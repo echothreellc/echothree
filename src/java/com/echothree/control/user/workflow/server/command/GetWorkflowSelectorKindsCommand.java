@@ -64,8 +64,8 @@ public class GetWorkflowSelectorKindsCommand
     }
     
     /** Creates a new instance of GetWorkflowSelectorKindsCommand */
-    public GetWorkflowSelectorKindsCommand(UserVisitPK userVisitPK, GetWorkflowSelectorKindsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetWorkflowSelectorKindsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     Workflow workflow;

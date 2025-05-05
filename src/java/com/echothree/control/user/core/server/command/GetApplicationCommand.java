@@ -49,8 +49,8 @@ public class GetApplicationCommand
     }
     
     /** Creates a new instance of GetApplicationCommand */
-    public GetApplicationCommand(UserVisitPK userVisitPK, GetApplicationForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetApplicationCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

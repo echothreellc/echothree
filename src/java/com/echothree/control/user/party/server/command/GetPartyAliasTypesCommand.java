@@ -60,8 +60,8 @@ public class GetPartyAliasTypesCommand
     }
     
     /** Creates a new instance of GetPartyAliasTypesCommand */
-    public GetPartyAliasTypesCommand(UserVisitPK userVisitPK, GetPartyAliasTypesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetPartyAliasTypesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     PartyType partyType;

@@ -67,8 +67,8 @@ public class CreateOrderTypeCommand
     }
     
     /** Creates a new instance of CreateOrderTypeCommand */
-    public CreateOrderTypeCommand(UserVisitPK userVisitPK, CreateOrderTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateOrderTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

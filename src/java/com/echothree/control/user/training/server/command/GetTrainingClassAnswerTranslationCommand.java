@@ -61,8 +61,8 @@ public class GetTrainingClassAnswerTranslationCommand
     }
     
     /** Creates a new instance of GetTrainingClassAnswerTranslationCommand */
-    public GetTrainingClassAnswerTranslationCommand(UserVisitPK userVisitPK, GetTrainingClassAnswerTranslationForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetTrainingClassAnswerTranslationCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

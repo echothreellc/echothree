@@ -54,8 +54,8 @@ public class SetDefaultFilterKindCommand
     }
     
     /** Creates a new instance of SetDefaultFilterKindCommand */
-    public SetDefaultFilterKindCommand(UserVisitPK userVisitPK, SetDefaultFilterKindForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultFilterKindCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

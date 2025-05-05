@@ -43,8 +43,8 @@ public class DeleteItemWeightCommand
     }
     
     /** Creates a new instance of DeleteItemWeightCommand */
-    public DeleteItemWeightCommand(UserVisitPK userVisitPK, DeleteItemWeightForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteItemWeightCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

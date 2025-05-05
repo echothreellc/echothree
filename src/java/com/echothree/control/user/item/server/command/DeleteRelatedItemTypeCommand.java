@@ -55,8 +55,8 @@ public class DeleteRelatedItemTypeCommand
     }
 
     /** Creates a new instance of DeleteRelatedItemTypeCommand */
-    public DeleteRelatedItemTypeCommand(UserVisitPK userVisitPK, DeleteRelatedItemTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteRelatedItemTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
 
     @Override

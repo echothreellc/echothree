@@ -68,8 +68,8 @@ public class EditGeoCodeDateTimeFormatCommand
     }
     
     /** Creates a new instance of EditGeoCodeDateTimeFormatCommand */
-    public EditGeoCodeDateTimeFormatCommand(UserVisitPK userVisitPK, EditGeoCodeDateTimeFormatForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditGeoCodeDateTimeFormatCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

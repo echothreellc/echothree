@@ -53,8 +53,8 @@ public class GetContentCollectionsCommand
     }
 
     /** Creates a new instance of GetContentCollectionsCommand */
-    public GetContentCollectionsCommand(UserVisitPK userVisitPK, GetContentCollectionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetContentCollectionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

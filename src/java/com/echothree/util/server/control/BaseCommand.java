@@ -90,12 +90,11 @@ public abstract class BaseCommand
     private boolean updateLastCommandTime = true;
     private boolean logCommand = true;
 
-    protected BaseCommand(UserVisitPK userVisitPK, CommandSecurityDefinition commandSecurityDefinition) {
+    protected BaseCommand(CommandSecurityDefinition commandSecurityDefinition) {
         if(ControlDebugFlags.LogBaseCommands) {
             getLog().info("BaseCommand()");
         }
 
-        this.userVisitPK = userVisitPK;
         this.commandSecurityDefinition = commandSecurityDefinition;
     }
 
@@ -458,10 +457,6 @@ public abstract class BaseCommand
         return null;
     }
 
-    public final Future<CommandResult> runAsync() {
-        return new AsyncResult<>(run());
-    }
-
     protected void setupSession() {
         preservedState = ThreadUtils.preserveState();
         initSession();
@@ -480,11 +475,17 @@ public abstract class BaseCommand
         preservedState = null;
     }
 
-    public final CommandResult run()
+    public Future<CommandResult> runAsync(UserVisitPK userVisitPK) {
+        return new AsyncResult<>(run(userVisitPK));
+    }
+
+    public CommandResult run(UserVisitPK userVisitPK)
             throws BaseException {
         if(ControlDebugFlags.LogBaseCommands) {
             log.info(">>> run()");
         }
+
+        this.userVisitPK = userVisitPK;
 
         setupSession();
 

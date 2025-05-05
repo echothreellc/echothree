@@ -57,8 +57,8 @@ public class DeleteGeoCodeDateTimeFormatCommand
     }
     
     /** Creates a new instance of DeleteGeoCodeDateTimeFormatCommand */
-    public DeleteGeoCodeDateTimeFormatCommand(UserVisitPK userVisitPK, DeleteGeoCodeDateTimeFormatForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteGeoCodeDateTimeFormatCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

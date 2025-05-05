@@ -94,8 +94,8 @@ public class SearchCustomersCommand
     }
 
     /** Creates a new instance of SearchCustomersCommand */
-    public SearchCustomersCommand(UserVisitPK userVisitPK, SearchCustomersForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SearchCustomersCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

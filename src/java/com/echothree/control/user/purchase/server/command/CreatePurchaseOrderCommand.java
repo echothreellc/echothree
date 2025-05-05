@@ -62,8 +62,8 @@ public class CreatePurchaseOrderCommand
     }
 
     /** Creates a new instance of CreatePurchaseOrderCommand */
-    public CreatePurchaseOrderCommand(UserVisitPK userVisitPK, CreatePurchaseOrderForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreatePurchaseOrderCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
 
     @Override

@@ -25,7 +25,6 @@ import com.echothree.model.control.party.server.logic.PartyAliasTypeLogic;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.party.server.entity.PartyAlias;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -35,6 +34,8 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class GetPartyAliasCommand
@@ -52,13 +53,18 @@ public class GetPartyAliasCommand
     }
     
     /** Creates a new instance of GetPartyAliasCommand */
-    public GetPartyAliasCommand(UserVisitPK userVisitPK, GetPartyAliasForm form) {
-        super(userVisitPK, form, new CommandSecurityDefinition(List.of(
+    public GetPartyAliasCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
+    }
+
+    @Override
+    protected CommandSecurityDefinition getCommandSecurityDefinition() {
+        return new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(PartyAliasUtil.getInstance().getSecurityRoleGroupNameBySpecs(form, form), SecurityRoles.Review.name())
-                ))
-        )), FORM_FIELD_DEFINITIONS, false);
+                )))
+        )));
     }
 
     @Override

@@ -55,8 +55,8 @@ public class DeleteLetterSourceCommand
     }
     
     /** Creates a new instance of DeleteLetterSourceCommand */
-    public DeleteLetterSourceCommand(UserVisitPK userVisitPK, DeleteLetterSourceForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteLetterSourceCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

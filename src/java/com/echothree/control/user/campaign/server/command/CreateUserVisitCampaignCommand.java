@@ -52,8 +52,8 @@ public class CreateUserVisitCampaignCommand
     }
     
     /** Creates a new instance of CreateCampaignCommand */
-    public CreateUserVisitCampaignCommand(UserVisitPK userVisitPK, CreateUserVisitCampaignForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateUserVisitCampaignCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -58,8 +58,8 @@ public class CreateCampaignContentDescriptionCommand
     }
     
     /** Creates a new instance of CreateCampaignContentDescriptionCommand */
-    public CreateCampaignContentDescriptionCommand(UserVisitPK userVisitPK, CreateCampaignContentDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateCampaignContentDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

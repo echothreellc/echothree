@@ -69,8 +69,8 @@ public class EditPrinterGroupUseTypeDescriptionCommand
     }
 
     /** Creates a new instance of EditPrinterGroupUseTypeDescriptionCommand */
-    public EditPrinterGroupUseTypeDescriptionCommand(UserVisitPK userVisitPK, EditPrinterGroupUseTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditPrinterGroupUseTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

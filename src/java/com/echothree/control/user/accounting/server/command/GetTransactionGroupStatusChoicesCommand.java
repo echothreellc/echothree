@@ -44,8 +44,8 @@ public class GetTransactionGroupStatusChoicesCommand
     }
     
     /** Creates a new instance of GetTransactionGroupStatusChoicesCommand */
-    public GetTransactionGroupStatusChoicesCommand(UserVisitPK userVisitPK, GetTransactionGroupStatusChoicesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public GetTransactionGroupStatusChoicesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

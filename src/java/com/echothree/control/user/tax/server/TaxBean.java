@@ -43,37 +43,37 @@ public class TaxBean
 
     @Override
     public CommandResult createTaxClassification(UserVisitPK userVisitPK, CreateTaxClassificationForm form) {
-        return new CreateTaxClassificationCommand(userVisitPK, form).run();
+        return new CreateTaxClassificationCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getTaxClassifications(UserVisitPK userVisitPK, GetTaxClassificationsForm form) {
-        return new GetTaxClassificationsCommand(userVisitPK, form).run();
+        return new GetTaxClassificationsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getTaxClassification(UserVisitPK userVisitPK, GetTaxClassificationForm form) {
-        return new GetTaxClassificationCommand(userVisitPK, form).run();
+        return new GetTaxClassificationCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getTaxClassificationChoices(UserVisitPK userVisitPK, GetTaxClassificationChoicesForm form) {
-        return new GetTaxClassificationChoicesCommand(userVisitPK, form).run();
+        return new GetTaxClassificationChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultTaxClassification(UserVisitPK userVisitPK, SetDefaultTaxClassificationForm form) {
-        return new SetDefaultTaxClassificationCommand(userVisitPK, form).run();
+        return new SetDefaultTaxClassificationCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editTaxClassification(UserVisitPK userVisitPK, EditTaxClassificationForm form) {
-        return new EditTaxClassificationCommand(userVisitPK, form).run();
+        return new EditTaxClassificationCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteTaxClassification(UserVisitPK userVisitPK, DeleteTaxClassificationForm form) {
-        return new DeleteTaxClassificationCommand(userVisitPK, form).run();
+        return new DeleteTaxClassificationCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -82,27 +82,27 @@ public class TaxBean
 
     @Override
     public CommandResult createTaxClassificationTranslation(UserVisitPK userVisitPK, CreateTaxClassificationTranslationForm form) {
-        return new CreateTaxClassificationTranslationCommand(userVisitPK, form).run();
+        return new CreateTaxClassificationTranslationCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getTaxClassificationTranslations(UserVisitPK userVisitPK, GetTaxClassificationTranslationsForm form) {
-        return new GetTaxClassificationTranslationsCommand(userVisitPK, form).run();
+        return new GetTaxClassificationTranslationsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getTaxClassificationTranslation(UserVisitPK userVisitPK, GetTaxClassificationTranslationForm form) {
-        return new GetTaxClassificationTranslationCommand(userVisitPK, form).run();
+        return new GetTaxClassificationTranslationCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editTaxClassificationTranslation(UserVisitPK userVisitPK, EditTaxClassificationTranslationForm form) {
-        return new EditTaxClassificationTranslationCommand(userVisitPK, form).run();
+        return new EditTaxClassificationTranslationCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteTaxClassificationTranslation(UserVisitPK userVisitPK, DeleteTaxClassificationTranslationForm form) {
-        return new DeleteTaxClassificationTranslationCommand(userVisitPK, form).run();
+        return new DeleteTaxClassificationTranslationCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -111,27 +111,27 @@ public class TaxBean
 
     @Override
     public CommandResult createItemTaxClassification(UserVisitPK userVisitPK, CreateItemTaxClassificationForm form) {
-        return new CreateItemTaxClassificationCommand(userVisitPK, form).run();
+        return new CreateItemTaxClassificationCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemTaxClassifications(UserVisitPK userVisitPK, GetItemTaxClassificationsForm form) {
-        return new GetItemTaxClassificationsCommand(userVisitPK, form).run();
+        return new GetItemTaxClassificationsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemTaxClassification(UserVisitPK userVisitPK, GetItemTaxClassificationForm form) {
-        return new GetItemTaxClassificationCommand(userVisitPK, form).run();
+        return new GetItemTaxClassificationCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editItemTaxClassification(UserVisitPK userVisitPK, EditItemTaxClassificationForm form) {
-        return new EditItemTaxClassificationCommand(userVisitPK, form).run();
+        return new EditItemTaxClassificationCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteItemTaxClassification(UserVisitPK userVisitPK, DeleteItemTaxClassificationForm form) {
-        return new DeleteItemTaxClassificationCommand(userVisitPK, form).run();
+        return new DeleteItemTaxClassificationCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -140,32 +140,32 @@ public class TaxBean
     
     @Override
     public CommandResult createTax(UserVisitPK userVisitPK, CreateTaxForm form) {
-        return new CreateTaxCommand(userVisitPK, form).run();
+        return new CreateTaxCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTaxes(UserVisitPK userVisitPK, GetTaxesForm form) {
-        return new GetTaxesCommand(userVisitPK, form).run();
+        return new GetTaxesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTax(UserVisitPK userVisitPK, GetTaxForm form) {
-        return new GetTaxCommand(userVisitPK, form).run();
+        return new GetTaxCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultTax(UserVisitPK userVisitPK, SetDefaultTaxForm form) {
-        return new SetDefaultTaxCommand(userVisitPK, form).run();
+        return new SetDefaultTaxCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editTax(UserVisitPK userVisitPK, EditTaxForm form) {
-        return new EditTaxCommand(userVisitPK, form).run();
+        return new EditTaxCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteTax(UserVisitPK userVisitPK, DeleteTaxForm form) {
-        return new DeleteTaxCommand(userVisitPK, form).run();
+        return new DeleteTaxCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -174,22 +174,22 @@ public class TaxBean
     
     @Override
     public CommandResult createTaxDescription(UserVisitPK userVisitPK, CreateTaxDescriptionForm form) {
-        return new CreateTaxDescriptionCommand(userVisitPK, form).run();
+        return new CreateTaxDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTaxDescriptions(UserVisitPK userVisitPK, GetTaxDescriptionsForm form) {
-        return new GetTaxDescriptionsCommand(userVisitPK, form).run();
+        return new GetTaxDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editTaxDescription(UserVisitPK userVisitPK, EditTaxDescriptionForm form) {
-        return new EditTaxDescriptionCommand(userVisitPK, form).run();
+        return new EditTaxDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteTaxDescription(UserVisitPK userVisitPK, DeleteTaxDescriptionForm form) {
-        return new DeleteTaxDescriptionCommand(userVisitPK, form).run();
+        return new DeleteTaxDescriptionCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -198,17 +198,17 @@ public class TaxBean
     
     @Override
     public CommandResult createGeoCodeTax(UserVisitPK userVisitPK, CreateGeoCodeTaxForm form) {
-        return new CreateGeoCodeTaxCommand(userVisitPK, form).run();
+        return new CreateGeoCodeTaxCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getGeoCodeTaxes(UserVisitPK userVisitPK, GetGeoCodeTaxesForm form) {
-        return new GetGeoCodeTaxesCommand(userVisitPK, form).run();
+        return new GetGeoCodeTaxesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteGeoCodeTax(UserVisitPK userVisitPK, DeleteGeoCodeTaxForm form) {
-        return new DeleteGeoCodeTaxCommand(userVisitPK, form).run();
+        return new DeleteGeoCodeTaxCommand().run(userVisitPK, form);
     }
     
 }

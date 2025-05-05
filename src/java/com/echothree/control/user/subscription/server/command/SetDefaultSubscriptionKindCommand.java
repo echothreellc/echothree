@@ -54,8 +54,8 @@ public class SetDefaultSubscriptionKindCommand
     }
     
     /** Creates a new instance of SetDefaultSubscriptionKindCommand */
-    public SetDefaultSubscriptionKindCommand(UserVisitPK userVisitPK, SetDefaultSubscriptionKindForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultSubscriptionKindCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

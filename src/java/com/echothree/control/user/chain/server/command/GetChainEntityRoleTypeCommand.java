@@ -59,8 +59,8 @@ public class GetChainEntityRoleTypeCommand
     }
     
     /** Creates a new instance of GetChainEntityRoleTypeCommand */
-    public GetChainEntityRoleTypeCommand(UserVisitPK userVisitPK, GetChainEntityRoleTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetChainEntityRoleTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

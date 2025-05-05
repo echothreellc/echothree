@@ -58,8 +58,8 @@ public class CreateBatchTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateBatchTypeDescriptionCommand */
-    public CreateBatchTypeDescriptionCommand(UserVisitPK userVisitPK, CreateBatchTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateBatchTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -45,8 +45,8 @@ public class CreateForumMessageTypePartTypeCommand
     }
     
     /** Creates a new instance of CreateForumMessageTypePartTypeCommand */
-    public CreateForumMessageTypePartTypeCommand(UserVisitPK userVisitPK, CreateForumMessageTypePartTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateForumMessageTypePartTypeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

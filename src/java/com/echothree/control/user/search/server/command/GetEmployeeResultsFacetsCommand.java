@@ -47,8 +47,8 @@ public class GetEmployeeResultsFacetsCommand
     }
 
     /** Creates a new instance of GetEmployeeResultsFacetsCommand */
-    public GetEmployeeResultsFacetsCommand(UserVisitPK userVisitPK, GetEmployeeResultsFacetsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION);
+    public GetEmployeeResultsFacetsCommand() {
+        super(COMMAND_SECURITY_DEFINITION);
     }
 
     @Override

@@ -25,8 +25,8 @@ public class IdleCommand
         extends BaseSimpleCommand {
     
     /** Creates a new instance of IdleCommand */
-    public IdleCommand(UserVisitPK userVisitPK) {
-        super(userVisitPK, null, false);
+    public IdleCommand() {
+        super(null, false);
         
         // This command has no possible side effects beyond updating the LastCommandTime for the UserVisit. Do not log it.
         setLogCommand(false);

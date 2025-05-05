@@ -56,8 +56,8 @@ public class DeleteChainTypeCommand
     }
     
     /** Creates a new instance of DeleteChainTypeCommand */
-    public DeleteChainTypeCommand(UserVisitPK userVisitPK, DeleteChainTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteChainTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

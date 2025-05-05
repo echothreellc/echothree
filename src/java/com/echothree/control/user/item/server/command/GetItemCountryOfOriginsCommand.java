@@ -42,8 +42,8 @@ public class GetItemCountryOfOriginsCommand
     }
     
     /** Creates a new instance of GetItemCountryOfOriginsCommand */
-    public GetItemCountryOfOriginsCommand(UserVisitPK userVisitPK, GetItemCountryOfOriginsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetItemCountryOfOriginsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

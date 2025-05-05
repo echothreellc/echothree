@@ -60,8 +60,8 @@ public class SendEventCommand
     }
 
     /** Creates a new instance of SendEventCommand */
-    public SendEventCommand(UserVisitPK userVisitPK, SendEventForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SendEventCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
 
     @Override

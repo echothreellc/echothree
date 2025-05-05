@@ -55,8 +55,8 @@ public class GetCustomerResultsCommand
     }
 
     /** Creates a new instance of GetCustomerResultsCommand */
-    public GetCustomerResultsCommand(UserVisitPK userVisitPK, GetCustomerResultsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetCustomerResultsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

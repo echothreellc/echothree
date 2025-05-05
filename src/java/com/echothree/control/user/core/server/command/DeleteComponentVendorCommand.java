@@ -53,8 +53,8 @@ public class DeleteComponentVendorCommand
     }
     
     /** Creates a new instance of DeleteComponentVendorCommand */
-    public DeleteComponentVendorCommand(UserVisitPK userVisitPK, DeleteComponentVendorForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteComponentVendorCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

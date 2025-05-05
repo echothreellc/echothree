@@ -59,8 +59,8 @@ public class CreatePaymentMethodTypePartyTypeCommand
     }
     
     /** Creates a new instance of CreatePaymentMethodTypePartyTypeCommand */
-    public CreatePaymentMethodTypePartyTypeCommand(UserVisitPK userVisitPK, CreatePaymentMethodTypePartyTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreatePaymentMethodTypePartyTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

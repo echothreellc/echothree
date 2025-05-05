@@ -45,8 +45,8 @@ public class GetMimeTypeUsagesCommand
     }
     
     /** Creates a new instance of GetMimeTypeUsagesCommand */
-    public GetMimeTypeUsagesCommand(UserVisitPK userVisitPK, GetMimeTypeUsagesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetMimeTypeUsagesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
 
     MimeType mimeType;

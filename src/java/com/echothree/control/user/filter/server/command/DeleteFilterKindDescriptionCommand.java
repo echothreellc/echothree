@@ -57,8 +57,8 @@ public class DeleteFilterKindDescriptionCommand
     }
     
     /** Creates a new instance of DeleteFilterKindDescriptionCommand */
-    public DeleteFilterKindDescriptionCommand(UserVisitPK userVisitPK, DeleteFilterKindDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteFilterKindDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

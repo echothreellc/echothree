@@ -53,8 +53,8 @@ public class GetTransactionTypesCommand
     }
 
     /** Creates a new instance of GetTransactionTypesCommand */
-    public GetTransactionTypesCommand(UserVisitPK userVisitPK, GetTransactionTypesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetTransactionTypesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

@@ -57,8 +57,8 @@ public class GetTerminationTypeCommand
     }
     
     /** Creates a new instance of GetTerminationTypeCommand */
-    public GetTerminationTypeCommand(UserVisitPK userVisitPK, GetTerminationTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetTerminationTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

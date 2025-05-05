@@ -64,8 +64,8 @@ public class GetItemCategoryCommand
     }
     
     /** Creates a new instance of GetItemCategoryCommand */
-    public GetItemCategoryCommand(UserVisitPK userVisitPK, GetItemCategoryForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetItemCategoryCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

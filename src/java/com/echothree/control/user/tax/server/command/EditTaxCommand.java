@@ -64,8 +64,8 @@ public class EditTaxCommand
     }
     
     /** Creates a new instance of EditTaxCommand */
-    public EditTaxCommand(UserVisitPK userVisitPK, EditTaxForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditTaxCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

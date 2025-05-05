@@ -47,8 +47,8 @@ public class CreateItemWeightCommand
     }
     
     /** Creates a new instance of CreateItemWeightCommand */
-    public CreateItemWeightCommand(UserVisitPK userVisitPK, CreateItemWeightForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateItemWeightCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

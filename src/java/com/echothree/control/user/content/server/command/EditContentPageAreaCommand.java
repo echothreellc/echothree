@@ -76,8 +76,8 @@ public class EditContentPageAreaCommand
     }
     
     /** Creates a new instance of EditContentPageAreaCommand */
-    public EditContentPageAreaCommand(UserVisitPK userVisitPK, EditContentPageAreaForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditContentPageAreaCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

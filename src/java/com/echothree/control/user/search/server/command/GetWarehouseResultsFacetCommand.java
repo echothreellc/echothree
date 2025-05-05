@@ -47,8 +47,8 @@ public class GetWarehouseResultsFacetCommand
     }
 
     /** Creates a new instance of GetWarehouseResultsFacetCommand */
-    public GetWarehouseResultsFacetCommand(UserVisitPK userVisitPK, GetWarehouseResultsFacetForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION);
+    public GetWarehouseResultsFacetCommand() {
+        super(COMMAND_SECURITY_DEFINITION);
     }
 
     @Override

@@ -27,8 +27,8 @@ public class CountContentCatalogResultsCommand
         extends BaseCountResultsCommand<CountContentCatalogResultsForm, CountContentCatalogResultsResult> {
     
     /** Creates a new instance of CountContentCatalogResultsCommand */
-    public CountContentCatalogResultsCommand(UserVisitPK userVisitPK, CountContentCatalogResultsForm form) {
-        super(userVisitPK, form, null);
+    public CountContentCatalogResultsCommand() {
+        super(null);
     }
     
     @Override

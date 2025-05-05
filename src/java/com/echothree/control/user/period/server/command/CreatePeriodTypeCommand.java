@@ -63,8 +63,8 @@ public class CreatePeriodTypeCommand
     }
     
     /** Creates a new instance of CreatePeriodTypeCommand */
-    public CreatePeriodTypeCommand(UserVisitPK userVisitPK, CreatePeriodTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreatePeriodTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

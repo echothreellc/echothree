@@ -53,8 +53,8 @@ public class DeleteInventoryConditionCommand
     }
     
     /** Creates a new instance of DeleteInventoryConditionCommand */
-    public DeleteInventoryConditionCommand(UserVisitPK userVisitPK, DeleteInventoryConditionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteInventoryConditionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

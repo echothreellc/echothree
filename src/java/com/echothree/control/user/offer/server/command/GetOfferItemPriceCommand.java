@@ -68,8 +68,8 @@ public class GetOfferItemPriceCommand
     }
     
     /** Creates a new instance of GetOfferItemPriceCommand */
-    public GetOfferItemPriceCommand(UserVisitPK userVisitPK, GetOfferItemPriceForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetOfferItemPriceCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

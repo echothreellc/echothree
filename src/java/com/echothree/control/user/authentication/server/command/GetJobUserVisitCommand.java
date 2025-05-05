@@ -43,8 +43,8 @@ public class GetJobUserVisitCommand
     }
     
     /** Creates a new instance of GetJobUserVisitCommand */
-    public GetJobUserVisitCommand(GetJobUserVisitForm form) {
-        super(null, form, null, FORM_FIELD_DEFINITIONS, false);
+    public GetJobUserVisitCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
 
         // Isn't really the user executing this command, don't update the last command time.
         setUpdateLastCommandTime(false);

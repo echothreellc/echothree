@@ -62,8 +62,8 @@ public class DeleteFilterAdjustmentAmountCommand
     }
     
     /** Creates a new instance of DeleteFilterAdjustmentAmountCommand */
-    public DeleteFilterAdjustmentAmountCommand(UserVisitPK userVisitPK, DeleteFilterAdjustmentAmountForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteFilterAdjustmentAmountCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

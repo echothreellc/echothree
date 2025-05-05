@@ -58,8 +58,8 @@ public class GetTagChoicesCommand
     }
     
     /** Creates a new instance of GetTagChoicesCommand */
-    public GetTagChoicesCommand(UserVisitPK userVisitPK, GetTagChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetTagChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

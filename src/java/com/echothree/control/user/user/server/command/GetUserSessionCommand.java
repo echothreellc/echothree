@@ -40,8 +40,8 @@ public class GetUserSessionCommand
     }
 
     /** Creates a new instance of GetUserSessionCommand */
-    public GetUserSessionCommand(UserVisitPK userVisitPK, GetUserSessionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetUserSessionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

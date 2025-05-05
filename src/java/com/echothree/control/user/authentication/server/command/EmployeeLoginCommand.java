@@ -52,8 +52,8 @@ public class EmployeeLoginCommand
     }
     
     /** Creates a new instance of EmployeeLoginCommand */
-    public EmployeeLoginCommand(UserVisitPK userVisitPK, EmployeeLoginForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS);
+    public EmployeeLoginCommand() {
+        super(null, FORM_FIELD_DEFINITIONS);
     }
     
     @Override

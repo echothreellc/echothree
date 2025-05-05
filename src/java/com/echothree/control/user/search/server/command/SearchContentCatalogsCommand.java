@@ -56,8 +56,8 @@ public class SearchContentCatalogsCommand
     }
 
     /** Creates a new instance of SearchContentCatalogsCommand */
-    public SearchContentCatalogsCommand(UserVisitPK userVisitPK, SearchContentCatalogsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SearchContentCatalogsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

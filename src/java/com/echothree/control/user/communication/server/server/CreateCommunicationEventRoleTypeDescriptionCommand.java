@@ -44,8 +44,8 @@ public class CreateCommunicationEventRoleTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateCommunicationEventRoleTypeDescriptionCommand */
-    public CreateCommunicationEventRoleTypeDescriptionCommand(UserVisitPK userVisitPK, CreateCommunicationEventRoleTypeDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateCommunicationEventRoleTypeDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -43,8 +43,8 @@ public class GetMoodCommand
     }
     
     /** Creates a new instance of GetMoodCommand */
-    public GetMoodCommand(UserVisitPK userVisitPK, GetMoodForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetMoodCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

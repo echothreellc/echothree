@@ -56,8 +56,8 @@ public class GetBatchTypeDescriptionsCommand
     }
     
     /** Creates a new instance of GetBatchTypeDescriptionsCommand */
-    public GetBatchTypeDescriptionsCommand(UserVisitPK userVisitPK, GetBatchTypeDescriptionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetBatchTypeDescriptionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

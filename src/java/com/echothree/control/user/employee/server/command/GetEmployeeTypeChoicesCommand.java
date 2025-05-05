@@ -55,8 +55,8 @@ public class GetEmployeeTypeChoicesCommand
     }
     
     /** Creates a new instance of GetEmployeeTypeChoicesCommand */
-    public GetEmployeeTypeChoicesCommand(UserVisitPK userVisitPK, GetEmployeeTypeChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetEmployeeTypeChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

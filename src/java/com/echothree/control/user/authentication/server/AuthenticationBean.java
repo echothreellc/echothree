@@ -50,7 +50,7 @@ public class AuthenticationBean
     
     @Override
     public CommandResult getJobUserVisit(GetJobUserVisitForm form) {
-        return new GetJobUserVisitCommand(form).run();
+        return new GetJobUserVisitCommand().run(null, form);
     }
     
     @Override
@@ -92,32 +92,32 @@ public class AuthenticationBean
     
     @Override
     public CommandResult getUserVisit(GetUserVisitForm form) {
-        return new GetUserVisitCommand(form).run();
+        return new GetUserVisitCommand().run(null, form);
     }
     
     @Override
     public void invalidateUserSession(UserVisitPK userVisitPK) {
-        new InvalidateUserSessionCommand(userVisitPK).run();
+        new InvalidateUserSessionCommand().run(userVisitPK);
     }
     
     @Override
     public void invalidateUserVisit(UserVisitPK userVisitPK) {
-        new InvalidateUserVisitCommand(userVisitPK).run();
+        new InvalidateUserVisitCommand().run(userVisitPK);
     }
     
     @Override
     public CommandResult invalidateAbandonedUserVisits(UserVisitPK userVisitPK, InvalidateAbandonedUserVisitsForm form) {
-        return new InvalidateAbandonedUserVisitsCommand(userVisitPK, form).run();
+        return new InvalidateAbandonedUserVisitsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult removeInactiveUserKeys(UserVisitPK userVisitPK, RemoveInactiveUserKeysForm form) {
-        return new RemoveInactiveUserKeysCommand(userVisitPK, form).run();
+        return new RemoveInactiveUserKeysCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult removeInvalidatedUserVisits(UserVisitPK userVisitPK) {
-        return new RemoveInvalidatedUserVisitsCommand(userVisitPK).run();
+        return new RemoveInvalidatedUserVisitsCommand().run(userVisitPK);
     }
     
     // -------------------------------------------------------------------------
@@ -126,52 +126,52 @@ public class AuthenticationBean
     
     @Override
     public CommandResult getCustomerLoginDefaults(UserVisitPK userVisitPK, GetCustomerLoginDefaultsForm form) {
-        return new GetCustomerLoginDefaultsCommand(userVisitPK, form).run();
+        return new GetCustomerLoginDefaultsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult customerLogin(UserVisitPK userVisitPK, CustomerLoginForm form) {
-        return new CustomerLoginCommand(userVisitPK, form).run();
+        return new CustomerLoginCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getEmployeeLoginDefaults(UserVisitPK userVisitPK, GetEmployeeLoginDefaultsForm form) {
-        return new GetEmployeeLoginDefaultsCommand(userVisitPK, form).run();
+        return new GetEmployeeLoginDefaultsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult employeeLogin(UserVisitPK userVisitPK, EmployeeLoginForm form) {
-        return new EmployeeLoginCommand(userVisitPK, form).run();
+        return new EmployeeLoginCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getVendorLoginDefaults(UserVisitPK userVisitPK, GetVendorLoginDefaultsForm form) {
-        return new GetVendorLoginDefaultsCommand(userVisitPK, form).run();
+        return new GetVendorLoginDefaultsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult vendorLogin(UserVisitPK userVisitPK, VendorLoginForm form) {
-        return new VendorLoginCommand(userVisitPK, form).run();
+        return new VendorLoginCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setPassword(UserVisitPK userVisitPK, SetPasswordForm form) {
-        return new SetPasswordCommand(userVisitPK, form).run();
+        return new SetPasswordCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult recoverPassword(UserVisitPK userVisitPK, RecoverPasswordForm form) {
-        return new RecoverPasswordCommand(userVisitPK, form).run();
+        return new RecoverPasswordCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult idle(UserVisitPK userVisitPK) {
-        return new IdleCommand(userVisitPK).run();
+        return new IdleCommand().run(userVisitPK);
     }
     
     @Override
     public CommandResult logout(UserVisitPK userVisitPK) {
-        return new LogoutCommand(userVisitPK).run();
+        return new LogoutCommand().run(userVisitPK);
     }
     
 }

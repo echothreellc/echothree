@@ -60,8 +60,8 @@ public class GetEntityAliasTypesCommand
     }
     
     /** Creates a new instance of GetEntityAliasTypesCommand */
-    public GetEntityAliasTypesCommand(UserVisitPK userVisitPK, GetEntityAliasTypesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetEntityAliasTypesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     EntityType entityType;

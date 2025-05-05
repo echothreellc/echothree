@@ -57,8 +57,8 @@ public class GetWishlistPriorityDescriptionsCommand
     }
     
     /** Creates a new instance of GetWishlistPriorityDescriptionsCommand */
-    public GetWishlistPriorityDescriptionsCommand(UserVisitPK userVisitPK, GetWishlistPriorityDescriptionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetWishlistPriorityDescriptionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

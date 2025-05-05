@@ -74,8 +74,8 @@ public class EditContactWebAddressCommand
     }
     
     /** Creates a new instance of EditContactWebAddressCommand */
-    public EditContactWebAddressCommand(UserVisitPK userVisitPK, EditContactWebAddressForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditContactWebAddressCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

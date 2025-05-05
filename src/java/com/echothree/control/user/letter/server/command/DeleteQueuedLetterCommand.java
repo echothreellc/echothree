@@ -58,8 +58,8 @@ public class DeleteQueuedLetterCommand
     }
     
     /** Creates a new instance of DeleteQueuedLetterCommand */
-    public DeleteQueuedLetterCommand(UserVisitPK userVisitPK, DeleteQueuedLetterForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public DeleteQueuedLetterCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

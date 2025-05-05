@@ -43,8 +43,8 @@ public class DeleteForumGroupDescriptionCommand
     }
     
     /** Creates a new instance of DeleteForumGroupDescriptionCommand */
-    public DeleteForumGroupDescriptionCommand(UserVisitPK userVisitPK, DeleteForumGroupDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteForumGroupDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

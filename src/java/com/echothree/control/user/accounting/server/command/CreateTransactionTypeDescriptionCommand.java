@@ -59,8 +59,8 @@ public class CreateTransactionTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateTransactionTypeDescriptionCommand */
-    public CreateTransactionTypeDescriptionCommand(UserVisitPK userVisitPK, CreateTransactionTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateTransactionTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

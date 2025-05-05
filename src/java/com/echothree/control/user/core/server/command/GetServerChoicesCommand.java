@@ -55,8 +55,8 @@ public class GetServerChoicesCommand
     }
     
     /** Creates a new instance of GetServerChoicesCommand */
-    public GetServerChoicesCommand(UserVisitPK userVisitPK, GetServerChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetServerChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

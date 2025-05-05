@@ -59,8 +59,8 @@ public class CreatePartyPrinterGroupUseCommand
     }
 
     /** Creates a new instance of CreatePartyPrinterGroupUseCommand */
-    public CreatePartyPrinterGroupUseCommand(UserVisitPK userVisitPK, CreatePartyPrinterGroupUseForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreatePartyPrinterGroupUseCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

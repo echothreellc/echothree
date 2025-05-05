@@ -57,8 +57,8 @@ public class GetServerDescriptionCommand
     }
     
     /** Creates a new instance of GetServerDescriptionCommand */
-    public GetServerDescriptionCommand(UserVisitPK userVisitPK, GetServerDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetServerDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

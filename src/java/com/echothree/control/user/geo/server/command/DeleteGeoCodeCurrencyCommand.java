@@ -57,8 +57,8 @@ public class DeleteGeoCodeCurrencyCommand
     }
     
     /** Creates a new instance of DeleteGeoCodeCurrencyCommand */
-    public DeleteGeoCodeCurrencyCommand(UserVisitPK userVisitPK, DeleteGeoCodeCurrencyForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteGeoCodeCurrencyCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -56,8 +56,8 @@ public class GetLeaveTypeDescriptionsCommand
     }
 
     /** Creates a new instance of GetLeaveTypeDescriptionsCommand */
-    public GetLeaveTypeDescriptionsCommand(UserVisitPK userVisitPK, GetLeaveTypeDescriptionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetLeaveTypeDescriptionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
    @Override

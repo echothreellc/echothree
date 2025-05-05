@@ -56,8 +56,8 @@ public class GetItemImageTypeDescriptionsCommand
     }
     
     /** Creates a new instance of GetItemImageTypeDescriptionsCommand */
-    public GetItemImageTypeDescriptionsCommand(UserVisitPK userVisitPK, GetItemImageTypeDescriptionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetItemImageTypeDescriptionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

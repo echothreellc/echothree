@@ -54,8 +54,8 @@ public class CreateEntityLongAttributeCommand
     }
     
     /** Creates a new instance of CreateEntityLongAttributeCommand */
-    public CreateEntityLongAttributeCommand(UserVisitPK userVisitPK, CreateEntityLongAttributeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateEntityLongAttributeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -66,8 +66,8 @@ public class CreateSalesOrderPaymentPreferenceCommand
     }
 
     /** Creates a new instance of CreateSalesOrderPaymentPreferenceCommand */
-    public CreateSalesOrderPaymentPreferenceCommand(UserVisitPK userVisitPK, CreateSalesOrderPaymentPreferenceForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateSalesOrderPaymentPreferenceCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
 
     @Override

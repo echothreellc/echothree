@@ -54,8 +54,8 @@ public class SetDefaultContactListFrequencyCommand
     }
     
     /** Creates a new instance of SetDefaultContactListFrequencyCommand */
-    public SetDefaultContactListFrequencyCommand(UserVisitPK userVisitPK, SetDefaultContactListFrequencyForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultContactListFrequencyCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

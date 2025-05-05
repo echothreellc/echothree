@@ -52,8 +52,8 @@ public class CreateEntityLongDefaultCommand
     }
 
     /** Creates a new instance of CreateEntityLongDefaultCommand */
-    public CreateEntityLongDefaultCommand(UserVisitPK userVisitPK, CreateEntityLongDefaultForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateEntityLongDefaultCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

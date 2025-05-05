@@ -60,8 +60,8 @@ public class GetDivisionCommand
     }
 
     /** Creates a new instance of GetDivisionCommand */
-    public GetDivisionCommand(UserVisitPK userVisitPK, GetDivisionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetDivisionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

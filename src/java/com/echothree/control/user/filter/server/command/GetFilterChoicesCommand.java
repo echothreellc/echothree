@@ -57,8 +57,8 @@ public class GetFilterChoicesCommand
     }
     
     /** Creates a new instance of GetFilterChoicesCommand */
-    public GetFilterChoicesCommand(UserVisitPK userVisitPK, GetFilterChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetFilterChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

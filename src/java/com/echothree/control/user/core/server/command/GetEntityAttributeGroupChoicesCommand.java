@@ -53,8 +53,8 @@ public class GetEntityAttributeGroupChoicesCommand
     }
     
     /** Creates a new instance of GetEntityAttributeGroupChoicesCommand */
-    public GetEntityAttributeGroupChoicesCommand(UserVisitPK userVisitPK, GetEntityAttributeGroupChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetEntityAttributeGroupChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

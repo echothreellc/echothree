@@ -58,8 +58,8 @@ public class DeleteSearchTypeDescriptionCommand
     }
     
     /** Creates a new instance of DeleteSearchTypeDescriptionCommand */
-    public DeleteSearchTypeDescriptionCommand(UserVisitPK userVisitPK, DeleteSearchTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteSearchTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -61,8 +61,8 @@ public class CreateWishlistLineCommand
     }
     
     /** Creates a new instance of CreateWishlistLineCommand */
-    public CreateWishlistLineCommand(UserVisitPK userVisitPK, CreateWishlistLineForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateWishlistLineCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

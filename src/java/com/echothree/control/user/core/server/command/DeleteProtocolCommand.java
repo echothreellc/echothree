@@ -55,8 +55,8 @@ public class DeleteProtocolCommand
     }
     
     /** Creates a new instance of DeleteProtocolCommand */
-    public DeleteProtocolCommand(UserVisitPK userVisitPK, DeleteProtocolForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteProtocolCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

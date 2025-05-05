@@ -43,8 +43,8 @@ public class GetPersonalTitleChoicesCommand
     }
     
     /** Creates a new instance of GetPersonalTitleChoicesCommand */
-    public GetPersonalTitleChoicesCommand(UserVisitPK userVisitPK, GetPersonalTitleChoicesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public GetPersonalTitleChoicesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -59,8 +59,8 @@ public class CreateLocationTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateLocationTypeDescriptionCommand */
-    public CreateLocationTypeDescriptionCommand(UserVisitPK userVisitPK, CreateLocationTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateLocationTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

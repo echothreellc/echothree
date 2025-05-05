@@ -57,8 +57,8 @@ public class GetTrackDescriptionCommand
     }
     
     /** Creates a new instance of GetTrackDescriptionCommand */
-    public GetTrackDescriptionCommand(UserVisitPK userVisitPK, GetTrackDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetTrackDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

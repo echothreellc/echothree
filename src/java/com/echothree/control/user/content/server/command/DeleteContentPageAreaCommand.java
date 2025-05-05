@@ -60,8 +60,8 @@ public class DeleteContentPageAreaCommand
     }
     
     /** Creates a new instance of DeleteContentPageAreaCommand */
-    public DeleteContentPageAreaCommand(UserVisitPK userVisitPK, DeleteContentPageAreaForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteContentPageAreaCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

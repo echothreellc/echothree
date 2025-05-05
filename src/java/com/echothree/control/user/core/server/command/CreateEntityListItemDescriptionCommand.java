@@ -60,8 +60,8 @@ public class CreateEntityListItemDescriptionCommand
     }
     
     /** Creates a new instance of CreateEntityListItemDescriptionCommand */
-    public CreateEntityListItemDescriptionCommand(UserVisitPK userVisitPK, CreateEntityListItemDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateEntityListItemDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -73,8 +73,8 @@ public class EditReturnTypeCommand
     }
 
     /** Creates a new instance of EditReturnTypeCommand */
-    public EditReturnTypeCommand(UserVisitPK userVisitPK, EditReturnTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditReturnTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

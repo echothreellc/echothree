@@ -53,8 +53,8 @@ public class EditUnitOfMeasureKindDescriptionCommand
     }
     
     /** Creates a new instance of EditUnitOfMeasureKindDescriptionCommand */
-    public EditUnitOfMeasureKindDescriptionCommand(UserVisitPK userVisitPK, EditUnitOfMeasureKindDescriptionForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditUnitOfMeasureKindDescriptionCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

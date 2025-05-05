@@ -88,8 +88,8 @@ public class CreateCountryCommand
     }
     
     /** Creates a new instance of CreateCountryCommand */
-    public CreateCountryCommand(UserVisitPK userVisitPK, CreateCountryForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateCountryCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
 
     @Override

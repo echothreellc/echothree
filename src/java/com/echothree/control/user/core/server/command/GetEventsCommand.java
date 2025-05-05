@@ -65,8 +65,8 @@ public class GetEventsCommand
     }
     
     /** Creates a new instance of GetEventsCommand */
-    public GetEventsCommand(UserVisitPK userVisitPK, GetEventsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetEventsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     EntityInstance entityInstance;

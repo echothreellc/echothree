@@ -44,8 +44,8 @@ public class GetEmailAddressStatusChoicesCommand
     }
 
     /** Creates a new instance of GetEmailAddressStatusChoicesCommand */
-    public GetEmailAddressStatusChoicesCommand(UserVisitPK userVisitPK, GetEmailAddressStatusChoicesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public GetEmailAddressStatusChoicesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
 
     @Override

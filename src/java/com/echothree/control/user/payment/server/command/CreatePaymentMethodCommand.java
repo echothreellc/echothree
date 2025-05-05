@@ -96,8 +96,8 @@ public class CreatePaymentMethodCommand
     }
     
     /** Creates a new instance of CreatePaymentMethodCommand */
-    public CreatePaymentMethodCommand(UserVisitPK userVisitPK, CreatePaymentMethodForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, null, false);
+    public CreatePaymentMethodCommand() {
+        super(COMMAND_SECURITY_DEFINITION, null, false);
     }
     
     @Override

@@ -71,8 +71,8 @@ public class EditEntityClobAttributeCommand
     }
     
     /** Creates a new instance of EditEntityClobAttributeCommand */
-    public EditEntityClobAttributeCommand(UserVisitPK userVisitPK, EditEntityClobAttributeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditEntityClobAttributeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override
