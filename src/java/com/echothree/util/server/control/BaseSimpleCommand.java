@@ -43,6 +43,19 @@ public abstract class BaseSimpleCommand<F extends BaseForm>
         this.allowLimits = allowLimits;
     }
 
+    protected BaseSimpleCommand(CommandSecurityDefinition commandSecurityDefinition,
+            List<FieldDefinition> formFieldDefinitions, boolean allowLimits) {
+        super(commandSecurityDefinition);
+        
+        init(form, formFieldDefinitions, allowLimits);
+    }
+    
+    protected BaseSimpleCommand(CommandSecurityDefinition commandSecurityDefinition, boolean allowLimits) {
+        super(commandSecurityDefinition);
+        
+        init(null, null, allowLimits);
+    }
+
     @Override
     protected void setupSession() {
         super.setupSession();
@@ -55,19 +68,6 @@ public abstract class BaseSimpleCommand<F extends BaseForm>
                 session.setLimits(form.getLimits());
             }
         }
-    }
-
-    protected BaseSimpleCommand(CommandSecurityDefinition commandSecurityDefinition,
-            List<FieldDefinition> formFieldDefinitions, boolean allowLimits) {
-        super(commandSecurityDefinition);
-        
-        init(form, formFieldDefinitions, allowLimits);
-    }
-    
-    protected BaseSimpleCommand(CommandSecurityDefinition commandSecurityDefinition, boolean allowLimits) {
-        super(commandSecurityDefinition);
-        
-        init(null, null, allowLimits);
     }
 
     protected F getForm() {
@@ -85,7 +85,21 @@ public abstract class BaseSimpleCommand<F extends BaseForm>
     protected ValidationResult validate(Validator validator) {
         return validator.validate(form, getFormFieldDefinitions());
     }
-    
+
+    @Override
+    protected ValidationResult validate() {
+        ValidationResult validationResult = null;
+
+        if(getFormFieldDefinitions() != null) {
+            var validator = new Validator(this);
+
+            setupValidator(validator);
+            validationResult = validate(validator);
+        }
+
+        return validationResult;
+    }
+
     protected void setupPreferredClobMimeType() {
         var preferredClobMimeTypeName = form.getPreferredClobMimeTypeName();
         
@@ -110,20 +124,6 @@ public abstract class BaseSimpleCommand<F extends BaseForm>
         }
     }
     
-    @Override
-    protected ValidationResult validate() {
-        ValidationResult validationResult = null;
-        
-        if(getFormFieldDefinitions() != null) {
-            var validator = new Validator(this);
-            
-            setupValidator(validator);
-            validationResult = validate(validator);
-        }
-        
-        return validationResult;
-    }
-
     private void initForRun(F form) {
         this.form = form;
     }
