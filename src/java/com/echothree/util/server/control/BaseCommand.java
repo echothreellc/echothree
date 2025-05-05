@@ -98,7 +98,7 @@ public abstract class BaseCommand
         this.commandSecurityDefinition = commandSecurityDefinition;
     }
 
-    protected final Log getLog() {
+    protected Log getLog() {
         if(log == null) {
             log = LogFactory.getLog(this.getClass());
         }

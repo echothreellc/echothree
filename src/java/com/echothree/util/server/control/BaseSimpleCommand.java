@@ -134,7 +134,7 @@ public abstract class BaseSimpleCommand<F extends BaseForm>
         return super.runAsync(userVisitPK);
     }
 
-    public final CommandResult run(UserVisitPK userVisitPK, F form) {
+    public CommandResult run(UserVisitPK userVisitPK, F form) {
         initForRun(form);
 
         return super.run(userVisitPK);
