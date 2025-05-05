@@ -50,8 +50,8 @@ public class DeleteEntityGeoPointDefaultCommand
     }
 
     /** Creates a new instance of CreateEntityGeoPointDefaultCommand */
-    public DeleteEntityGeoPointDefaultCommand(UserVisitPK userVisitPK, DeleteEntityGeoPointDefaultForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteEntityGeoPointDefaultCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

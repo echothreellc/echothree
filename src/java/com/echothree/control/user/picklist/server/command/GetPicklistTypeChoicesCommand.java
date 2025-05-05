@@ -55,8 +55,8 @@ public class GetPicklistTypeChoicesCommand
     }
     
     /** Creates a new instance of GetPicklistTypeChoicesCommand */
-    public GetPicklistTypeChoicesCommand(UserVisitPK userVisitPK, GetPicklistTypeChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetPicklistTypeChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

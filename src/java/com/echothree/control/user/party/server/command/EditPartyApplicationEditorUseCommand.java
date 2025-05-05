@@ -75,8 +75,8 @@ public class EditPartyApplicationEditorUseCommand
     }
     
     /** Creates a new instance of EditPartyApplicationEditorUseCommand */
-    public EditPartyApplicationEditorUseCommand(UserVisitPK userVisitPK, EditPartyApplicationEditorUseForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditPartyApplicationEditorUseCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

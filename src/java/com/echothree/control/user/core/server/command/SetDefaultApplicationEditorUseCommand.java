@@ -57,8 +57,8 @@ public class SetDefaultApplicationEditorUseCommand
     }
     
     /** Creates a new instance of SetDefaultApplicationEditorUseCommand */
-    public SetDefaultApplicationEditorUseCommand(UserVisitPK userVisitPK, SetDefaultApplicationEditorUseForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultApplicationEditorUseCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

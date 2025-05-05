@@ -60,8 +60,8 @@ public class GetDivisionsCommand
     }
     
     /** Creates a new instance of GetDivisionsCommand */
-    public GetDivisionsCommand(UserVisitPK userVisitPK, GetDivisionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetDivisionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
 

@@ -69,8 +69,8 @@ public class EditPartySecurityRoleTemplateCommand
     }
     
     /** Creates a new instance of EditPartySecurityRoleTemplateCommand */
-    public EditPartySecurityRoleTemplateCommand(UserVisitPK userVisitPK, EditPartySecurityRoleTemplateForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditPartySecurityRoleTemplateCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

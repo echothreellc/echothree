@@ -70,8 +70,8 @@ public class EditSearchSortOrderCommand
     }
 
     /** Creates a new instance of EditSearchSortOrderCommand */
-    public EditSearchSortOrderCommand(UserVisitPK userVisitPK, EditSearchSortOrderForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditSearchSortOrderCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

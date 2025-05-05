@@ -43,8 +43,8 @@ public class CreateComponentStageCommand
     }
     
     /** Creates a new instance of CreateComponentStageCommand */
-    public CreateComponentStageCommand(UserVisitPK userVisitPK, CreateComponentStageForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateComponentStageCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

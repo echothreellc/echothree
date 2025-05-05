@@ -61,8 +61,8 @@ public class GetCitiesCommand
     }
     
     /** Creates a new instance of GetCitiesCommand */
-    public GetCitiesCommand(UserVisitPK userVisitPK, GetCitiesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetCitiesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     GeoCode stateGeoCode;

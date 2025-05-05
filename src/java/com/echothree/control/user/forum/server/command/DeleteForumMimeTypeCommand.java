@@ -43,8 +43,8 @@ public class DeleteForumMimeTypeCommand
     }
     
     /** Creates a new instance of DeleteForumMimeTypeCommand */
-    public DeleteForumMimeTypeCommand(UserVisitPK userVisitPK, DeleteForumMimeTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteForumMimeTypeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

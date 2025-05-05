@@ -59,8 +59,8 @@ public class CreateWorkflowDestinationPartyTypeCommand
     }
     
     /** Creates a new instance of CreateWorkflowDestinationPartyTypeCommand */
-    public CreateWorkflowDestinationPartyTypeCommand(UserVisitPK userVisitPK, CreateWorkflowDestinationPartyTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateWorkflowDestinationPartyTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

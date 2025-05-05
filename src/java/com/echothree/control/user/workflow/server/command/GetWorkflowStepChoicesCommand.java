@@ -58,8 +58,8 @@ public class GetWorkflowStepChoicesCommand
     }
     
     /** Creates a new instance of GetWorkflowStepChoicesCommand */
-    public GetWorkflowStepChoicesCommand(UserVisitPK userVisitPK, GetWorkflowStepChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetWorkflowStepChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

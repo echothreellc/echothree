@@ -61,8 +61,8 @@ public class CreateGeoCodeAliasTypeCommand
     }
     
     /** Creates a new instance of CreateGeoCodeAliasTypeCommand */
-    public CreateGeoCodeAliasTypeCommand(UserVisitPK userVisitPK, CreateGeoCodeAliasTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateGeoCodeAliasTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

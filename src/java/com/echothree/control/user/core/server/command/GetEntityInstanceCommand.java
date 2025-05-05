@@ -58,8 +58,8 @@ public class GetEntityInstanceCommand
     }
     
     /** Creates a new instance of GetEntityInstanceCommand */
-    public GetEntityInstanceCommand(UserVisitPK userVisitPK, GetEntityInstanceForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetEntityInstanceCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

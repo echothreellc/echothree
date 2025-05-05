@@ -44,8 +44,8 @@ public class CreateScaleTypeDescriptionCommand
     }
 
     /** Creates a new instance of CreateScaleTypeDescriptionCommand */
-    public CreateScaleTypeDescriptionCommand(UserVisitPK userVisitPK, CreateScaleTypeDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateScaleTypeDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
    @Override

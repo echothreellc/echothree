@@ -56,8 +56,8 @@ public class SetDefaultOrderLineAdjustmentTypeCommand
     }
     
     /** Creates a new instance of SetDefaultOrderLineAdjustmentTypeCommand */
-    public SetDefaultOrderLineAdjustmentTypeCommand(UserVisitPK userVisitPK, SetDefaultOrderLineAdjustmentTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultOrderLineAdjustmentTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

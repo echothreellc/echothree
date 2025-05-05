@@ -192,7 +192,7 @@ public abstract class BasePartyObject
 
         commandForm.setContactMechanismPurposeName(contactMechanismPurposeName);
 
-        var contactMechanismPurpose = new GetContactMechanismPurposeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
+        var contactMechanismPurpose = new GetContactMechanismPurposeCommand().getEntityForGraphQl(getUserVisitPK(env), commandForm);
         if(contactMechanismPurpose != null) {
             var contactControl = Session.getModelController(ContactControl.class);
             var partyContactMechanismPurpose = contactControl.getDefaultPartyContactMechanismPurpose(party, contactMechanismPurpose);

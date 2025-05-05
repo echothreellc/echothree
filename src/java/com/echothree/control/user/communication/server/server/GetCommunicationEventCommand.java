@@ -43,8 +43,8 @@ public class GetCommunicationEventCommand
     }
     
     /** Creates a new instance of GetCommunicationEventCommand */
-    public GetCommunicationEventCommand(UserVisitPK userVisitPK, GetCommunicationEventForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetCommunicationEventCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

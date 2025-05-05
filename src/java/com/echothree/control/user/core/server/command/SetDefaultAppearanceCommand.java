@@ -55,8 +55,8 @@ public class SetDefaultAppearanceCommand
     }
     
     /** Creates a new instance of SetDefaultAppearanceCommand */
-    public SetDefaultAppearanceCommand(UserVisitPK userVisitPK, SetDefaultAppearanceForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultAppearanceCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

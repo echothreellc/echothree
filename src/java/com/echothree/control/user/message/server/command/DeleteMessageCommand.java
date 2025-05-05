@@ -44,8 +44,8 @@ public class DeleteMessageCommand
     }
     
     /** Creates a new instance of DeleteMessageCommand */
-    public DeleteMessageCommand(UserVisitPK userVisitPK, DeleteMessageForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteMessageCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

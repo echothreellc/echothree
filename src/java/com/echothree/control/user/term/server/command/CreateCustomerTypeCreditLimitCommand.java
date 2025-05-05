@@ -46,8 +46,8 @@ public class CreateCustomerTypeCreditLimitCommand
     }
     
     /** Creates a new instance of CreateCustomerTypeCreditLimitCommand */
-    public CreateCustomerTypeCreditLimitCommand(UserVisitPK userVisitPK, CreateCustomerTypeCreditLimitForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateCustomerTypeCreditLimitCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

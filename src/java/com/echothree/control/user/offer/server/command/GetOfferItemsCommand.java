@@ -59,8 +59,8 @@ public class GetOfferItemsCommand
     }
     
     /** Creates a new instance of GetOfferItemsCommand */
-    public GetOfferItemsCommand(UserVisitPK userVisitPK, GetOfferItemsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetOfferItemsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     private Offer offer;

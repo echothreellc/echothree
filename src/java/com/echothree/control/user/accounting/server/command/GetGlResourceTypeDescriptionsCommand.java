@@ -56,8 +56,8 @@ public class GetGlResourceTypeDescriptionsCommand
     }
     
     /** Creates a new instance of GetGlResourceTypeDescriptionsCommand */
-    public GetGlResourceTypeDescriptionsCommand(UserVisitPK userVisitPK, GetGlResourceTypeDescriptionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetGlResourceTypeDescriptionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

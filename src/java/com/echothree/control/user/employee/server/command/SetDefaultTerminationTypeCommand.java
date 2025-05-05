@@ -55,8 +55,8 @@ public class SetDefaultTerminationTypeCommand
     }
     
     /** Creates a new instance of SetDefaultTerminationTypeCommand */
-    public SetDefaultTerminationTypeCommand(UserVisitPK userVisitPK, SetDefaultTerminationTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultTerminationTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

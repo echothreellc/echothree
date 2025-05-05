@@ -56,8 +56,8 @@ public class SetDefaultChainCommand
     }
     
     /** Creates a new instance of SetDefaultChainCommand */
-    public SetDefaultChainCommand(UserVisitPK userVisitPK, SetDefaultChainForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultChainCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

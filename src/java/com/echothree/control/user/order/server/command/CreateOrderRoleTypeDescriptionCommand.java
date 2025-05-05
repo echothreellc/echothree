@@ -44,8 +44,8 @@ public class CreateOrderRoleTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateOrderRoleTypeDescriptionCommand */
-    public CreateOrderRoleTypeDescriptionCommand(UserVisitPK userVisitPK, CreateOrderRoleTypeDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateOrderRoleTypeDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -57,8 +57,8 @@ public class DeleteItemUnitOfMeasureTypeCommand
     }
     
     /** Creates a new instance of DeleteItemUnitOfMeasureTypeCommand */
-    public DeleteItemUnitOfMeasureTypeCommand(UserVisitPK userVisitPK, DeleteItemUnitOfMeasureTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteItemUnitOfMeasureTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

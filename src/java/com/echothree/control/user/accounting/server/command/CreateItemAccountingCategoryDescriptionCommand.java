@@ -58,8 +58,8 @@ public class CreateItemAccountingCategoryDescriptionCommand
     }
     
     /** Creates a new instance of CreateItemAccountingCategoryDescriptionCommand */
-    public CreateItemAccountingCategoryDescriptionCommand(UserVisitPK userVisitPK, CreateItemAccountingCategoryDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateItemAccountingCategoryDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

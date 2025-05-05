@@ -25,8 +25,8 @@ public class ClearContactMechanismResultsCommand
         extends BaseClearResultsCommand<ClearContactMechanismResultsForm> {
     
     /** Creates a new instance of ClearContactMechanismResultsCommand */
-    public ClearContactMechanismResultsCommand(UserVisitPK userVisitPK, ClearContactMechanismResultsForm form) {
-        super(userVisitPK, form, null);
+    public ClearContactMechanismResultsCommand() {
+        super(null);
     }
     
     @Override

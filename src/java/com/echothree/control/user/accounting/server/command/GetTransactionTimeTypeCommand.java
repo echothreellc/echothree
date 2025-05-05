@@ -60,8 +60,8 @@ public class GetTransactionTimeTypeCommand
     }
     
     /** Creates a new instance of GetTransactionTimeTypeCommand */
-    public GetTransactionTimeTypeCommand(UserVisitPK userVisitPK, GetTransactionTimeTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetTransactionTimeTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

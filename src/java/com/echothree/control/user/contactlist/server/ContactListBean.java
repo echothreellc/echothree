@@ -43,37 +43,37 @@ public class ContactListBean
 
     @Override
     public CommandResult createContactListType(UserVisitPK userVisitPK, CreateContactListTypeForm form) {
-        return new CreateContactListTypeCommand(userVisitPK, form).run();
+        return new CreateContactListTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContactListTypes(UserVisitPK userVisitPK, GetContactListTypesForm form) {
-        return new GetContactListTypesCommand(userVisitPK, form).run();
+        return new GetContactListTypesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContactListType(UserVisitPK userVisitPK, GetContactListTypeForm form) {
-        return new GetContactListTypeCommand(userVisitPK, form).run();
+        return new GetContactListTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContactListTypeChoices(UserVisitPK userVisitPK, GetContactListTypeChoicesForm form) {
-        return new GetContactListTypeChoicesCommand(userVisitPK, form).run();
+        return new GetContactListTypeChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultContactListType(UserVisitPK userVisitPK, SetDefaultContactListTypeForm form) {
-        return new SetDefaultContactListTypeCommand(userVisitPK, form).run();
+        return new SetDefaultContactListTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editContactListType(UserVisitPK userVisitPK, EditContactListTypeForm form) {
-        return new EditContactListTypeCommand(userVisitPK, form).run();
+        return new EditContactListTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteContactListType(UserVisitPK userVisitPK, DeleteContactListTypeForm form) {
-        return new DeleteContactListTypeCommand(userVisitPK, form).run();
+        return new DeleteContactListTypeCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -82,27 +82,27 @@ public class ContactListBean
 
     @Override
     public CommandResult createContactListTypeDescription(UserVisitPK userVisitPK, CreateContactListTypeDescriptionForm form) {
-        return new CreateContactListTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateContactListTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContactListTypeDescriptions(UserVisitPK userVisitPK, GetContactListTypeDescriptionsForm form) {
-        return new GetContactListTypeDescriptionsCommand(userVisitPK, form).run();
+        return new GetContactListTypeDescriptionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContactListTypeDescription(UserVisitPK userVisitPK, GetContactListTypeDescriptionForm form) {
-        return new GetContactListTypeDescriptionCommand(userVisitPK, form).run();
+        return new GetContactListTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editContactListTypeDescription(UserVisitPK userVisitPK, EditContactListTypeDescriptionForm form) {
-        return new EditContactListTypeDescriptionCommand(userVisitPK, form).run();
+        return new EditContactListTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteContactListTypeDescription(UserVisitPK userVisitPK, DeleteContactListTypeDescriptionForm form) {
-        return new DeleteContactListTypeDescriptionCommand(userVisitPK, form).run();
+        return new DeleteContactListTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -111,37 +111,37 @@ public class ContactListBean
 
     @Override
     public CommandResult createContactListGroup(UserVisitPK userVisitPK, CreateContactListGroupForm form) {
-        return new CreateContactListGroupCommand(userVisitPK, form).run();
+        return new CreateContactListGroupCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContactListGroups(UserVisitPK userVisitPK, GetContactListGroupsForm form) {
-        return new GetContactListGroupsCommand(userVisitPK, form).run();
+        return new GetContactListGroupsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContactListGroup(UserVisitPK userVisitPK, GetContactListGroupForm form) {
-        return new GetContactListGroupCommand(userVisitPK, form).run();
+        return new GetContactListGroupCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContactListGroupChoices(UserVisitPK userVisitPK, GetContactListGroupChoicesForm form) {
-        return new GetContactListGroupChoicesCommand(userVisitPK, form).run();
+        return new GetContactListGroupChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultContactListGroup(UserVisitPK userVisitPK, SetDefaultContactListGroupForm form) {
-        return new SetDefaultContactListGroupCommand(userVisitPK, form).run();
+        return new SetDefaultContactListGroupCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editContactListGroup(UserVisitPK userVisitPK, EditContactListGroupForm form) {
-        return new EditContactListGroupCommand(userVisitPK, form).run();
+        return new EditContactListGroupCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteContactListGroup(UserVisitPK userVisitPK, DeleteContactListGroupForm form) {
-        return new DeleteContactListGroupCommand(userVisitPK, form).run();
+        return new DeleteContactListGroupCommand().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -150,27 +150,27 @@ public class ContactListBean
 
     @Override
     public CommandResult createContactListGroupDescription(UserVisitPK userVisitPK, CreateContactListGroupDescriptionForm form) {
-        return new CreateContactListGroupDescriptionCommand(userVisitPK, form).run();
+        return new CreateContactListGroupDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContactListGroupDescriptions(UserVisitPK userVisitPK, GetContactListGroupDescriptionsForm form) {
-        return new GetContactListGroupDescriptionsCommand(userVisitPK, form).run();
+        return new GetContactListGroupDescriptionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContactListGroupDescription(UserVisitPK userVisitPK, GetContactListGroupDescriptionForm form) {
-        return new GetContactListGroupDescriptionCommand(userVisitPK, form).run();
+        return new GetContactListGroupDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editContactListGroupDescription(UserVisitPK userVisitPK, EditContactListGroupDescriptionForm form) {
-        return new EditContactListGroupDescriptionCommand(userVisitPK, form).run();
+        return new EditContactListGroupDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteContactListGroupDescription(UserVisitPK userVisitPK, DeleteContactListGroupDescriptionForm form) {
-        return new DeleteContactListGroupDescriptionCommand(userVisitPK, form).run();
+        return new DeleteContactListGroupDescriptionCommand().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -179,37 +179,37 @@ public class ContactListBean
 
     @Override
     public CommandResult createContactListFrequency(UserVisitPK userVisitPK, CreateContactListFrequencyForm form) {
-        return new CreateContactListFrequencyCommand(userVisitPK, form).run();
+        return new CreateContactListFrequencyCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContactListFrequencies(UserVisitPK userVisitPK, GetContactListFrequenciesForm form) {
-        return new GetContactListFrequenciesCommand(userVisitPK, form).run();
+        return new GetContactListFrequenciesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContactListFrequency(UserVisitPK userVisitPK, GetContactListFrequencyForm form) {
-        return new GetContactListFrequencyCommand(userVisitPK, form).run();
+        return new GetContactListFrequencyCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContactListFrequencyChoices(UserVisitPK userVisitPK, GetContactListFrequencyChoicesForm form) {
-        return new GetContactListFrequencyChoicesCommand(userVisitPK, form).run();
+        return new GetContactListFrequencyChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultContactListFrequency(UserVisitPK userVisitPK, SetDefaultContactListFrequencyForm form) {
-        return new SetDefaultContactListFrequencyCommand(userVisitPK, form).run();
+        return new SetDefaultContactListFrequencyCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editContactListFrequency(UserVisitPK userVisitPK, EditContactListFrequencyForm form) {
-        return new EditContactListFrequencyCommand(userVisitPK, form).run();
+        return new EditContactListFrequencyCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteContactListFrequency(UserVisitPK userVisitPK, DeleteContactListFrequencyForm form) {
-        return new DeleteContactListFrequencyCommand(userVisitPK, form).run();
+        return new DeleteContactListFrequencyCommand().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -218,27 +218,27 @@ public class ContactListBean
 
     @Override
     public CommandResult createContactListFrequencyDescription(UserVisitPK userVisitPK, CreateContactListFrequencyDescriptionForm form) {
-        return new CreateContactListFrequencyDescriptionCommand(userVisitPK, form).run();
+        return new CreateContactListFrequencyDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContactListFrequencyDescriptions(UserVisitPK userVisitPK, GetContactListFrequencyDescriptionsForm form) {
-        return new GetContactListFrequencyDescriptionsCommand(userVisitPK, form).run();
+        return new GetContactListFrequencyDescriptionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContactListFrequencyDescription(UserVisitPK userVisitPK, GetContactListFrequencyDescriptionForm form) {
-        return new GetContactListFrequencyDescriptionCommand(userVisitPK, form).run();
+        return new GetContactListFrequencyDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editContactListFrequencyDescription(UserVisitPK userVisitPK, EditContactListFrequencyDescriptionForm form) {
-        return new EditContactListFrequencyDescriptionCommand(userVisitPK, form).run();
+        return new EditContactListFrequencyDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteContactListFrequencyDescription(UserVisitPK userVisitPK, DeleteContactListFrequencyDescriptionForm form) {
-        return new DeleteContactListFrequencyDescriptionCommand(userVisitPK, form).run();
+        return new DeleteContactListFrequencyDescriptionCommand().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -247,37 +247,37 @@ public class ContactListBean
 
     @Override
     public CommandResult createContactList(UserVisitPK userVisitPK, CreateContactListForm form) {
-        return new CreateContactListCommand(userVisitPK, form).run();
+        return new CreateContactListCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContactLists(UserVisitPK userVisitPK, GetContactListsForm form) {
-        return new GetContactListsCommand(userVisitPK, form).run();
+        return new GetContactListsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContactList(UserVisitPK userVisitPK, GetContactListForm form) {
-        return new GetContactListCommand(userVisitPK, form).run();
+        return new GetContactListCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContactListChoices(UserVisitPK userVisitPK, GetContactListChoicesForm form) {
-        return new GetContactListChoicesCommand(userVisitPK, form).run();
+        return new GetContactListChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultContactList(UserVisitPK userVisitPK, SetDefaultContactListForm form) {
-        return new SetDefaultContactListCommand(userVisitPK, form).run();
+        return new SetDefaultContactListCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editContactList(UserVisitPK userVisitPK, EditContactListForm form) {
-        return new EditContactListCommand(userVisitPK, form).run();
+        return new EditContactListCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteContactList(UserVisitPK userVisitPK, DeleteContactListForm form) {
-        return new DeleteContactListCommand(userVisitPK, form).run();
+        return new DeleteContactListCommand().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -286,27 +286,27 @@ public class ContactListBean
 
     @Override
     public CommandResult createContactListDescription(UserVisitPK userVisitPK, CreateContactListDescriptionForm form) {
-        return new CreateContactListDescriptionCommand(userVisitPK, form).run();
+        return new CreateContactListDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContactListDescriptions(UserVisitPK userVisitPK, GetContactListDescriptionsForm form) {
-        return new GetContactListDescriptionsCommand(userVisitPK, form).run();
+        return new GetContactListDescriptionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContactListDescription(UserVisitPK userVisitPK, GetContactListDescriptionForm form) {
-        return new GetContactListDescriptionCommand(userVisitPK, form).run();
+        return new GetContactListDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editContactListDescription(UserVisitPK userVisitPK, EditContactListDescriptionForm form) {
-        return new EditContactListDescriptionCommand(userVisitPK, form).run();
+        return new EditContactListDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteContactListDescription(UserVisitPK userVisitPK, DeleteContactListDescriptionForm form) {
-        return new DeleteContactListDescriptionCommand(userVisitPK, form).run();
+        return new DeleteContactListDescriptionCommand().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -315,27 +315,27 @@ public class ContactListBean
     
     @Override
     public CommandResult createPartyTypeContactList(UserVisitPK userVisitPK, CreatePartyTypeContactListForm form) {
-        return new CreatePartyTypeContactListCommand(userVisitPK, form).run();
+        return new CreatePartyTypeContactListCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPartyTypeContactLists(UserVisitPK userVisitPK, GetPartyTypeContactListsForm form) {
-        return new GetPartyTypeContactListsCommand(userVisitPK, form).run();
+        return new GetPartyTypeContactListsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPartyTypeContactList(UserVisitPK userVisitPK, GetPartyTypeContactListForm form) {
-        return new GetPartyTypeContactListCommand(userVisitPK, form).run();
+        return new GetPartyTypeContactListCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editPartyTypeContactList(UserVisitPK userVisitPK, EditPartyTypeContactListForm form) {
-        return new EditPartyTypeContactListCommand(userVisitPK, form).run();
+        return new EditPartyTypeContactListCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deletePartyTypeContactList(UserVisitPK userVisitPK, DeletePartyTypeContactListForm form) {
-        return new DeletePartyTypeContactListCommand(userVisitPK, form).run();
+        return new DeletePartyTypeContactListCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -344,27 +344,27 @@ public class ContactListBean
     
     @Override
     public CommandResult createPartyTypeContactListGroup(UserVisitPK userVisitPK, CreatePartyTypeContactListGroupForm form) {
-        return new CreatePartyTypeContactListGroupCommand(userVisitPK, form).run();
+        return new CreatePartyTypeContactListGroupCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPartyTypeContactListGroups(UserVisitPK userVisitPK, GetPartyTypeContactListGroupsForm form) {
-        return new GetPartyTypeContactListGroupsCommand(userVisitPK, form).run();
+        return new GetPartyTypeContactListGroupsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPartyTypeContactListGroup(UserVisitPK userVisitPK, GetPartyTypeContactListGroupForm form) {
-        return new GetPartyTypeContactListGroupCommand(userVisitPK, form).run();
+        return new GetPartyTypeContactListGroupCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editPartyTypeContactListGroup(UserVisitPK userVisitPK, EditPartyTypeContactListGroupForm form) {
-        return new EditPartyTypeContactListGroupCommand(userVisitPK, form).run();
+        return new EditPartyTypeContactListGroupCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deletePartyTypeContactListGroup(UserVisitPK userVisitPK, DeletePartyTypeContactListGroupForm form) {
-        return new DeletePartyTypeContactListGroupCommand(userVisitPK, form).run();
+        return new DeletePartyTypeContactListGroupCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -373,27 +373,27 @@ public class ContactListBean
 
     @Override
     public CommandResult createCustomerTypeContactList(UserVisitPK userVisitPK, CreateCustomerTypeContactListForm form) {
-        return new CreateCustomerTypeContactListCommand(userVisitPK, form).run();
+        return new CreateCustomerTypeContactListCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getCustomerTypeContactLists(UserVisitPK userVisitPK, GetCustomerTypeContactListsForm form) {
-        return new GetCustomerTypeContactListsCommand(userVisitPK, form).run();
+        return new GetCustomerTypeContactListsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getCustomerTypeContactList(UserVisitPK userVisitPK, GetCustomerTypeContactListForm form) {
-        return new GetCustomerTypeContactListCommand(userVisitPK, form).run();
+        return new GetCustomerTypeContactListCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editCustomerTypeContactList(UserVisitPK userVisitPK, EditCustomerTypeContactListForm form) {
-        return new EditCustomerTypeContactListCommand(userVisitPK, form).run();
+        return new EditCustomerTypeContactListCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteCustomerTypeContactList(UserVisitPK userVisitPK, DeleteCustomerTypeContactListForm form) {
-        return new DeleteCustomerTypeContactListCommand(userVisitPK, form).run();
+        return new DeleteCustomerTypeContactListCommand().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -402,27 +402,27 @@ public class ContactListBean
 
     @Override
     public CommandResult createCustomerTypeContactListGroup(UserVisitPK userVisitPK, CreateCustomerTypeContactListGroupForm form) {
-        return new CreateCustomerTypeContactListGroupCommand(userVisitPK, form).run();
+        return new CreateCustomerTypeContactListGroupCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getCustomerTypeContactListGroups(UserVisitPK userVisitPK, GetCustomerTypeContactListGroupsForm form) {
-        return new GetCustomerTypeContactListGroupsCommand(userVisitPK, form).run();
+        return new GetCustomerTypeContactListGroupsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getCustomerTypeContactListGroup(UserVisitPK userVisitPK, GetCustomerTypeContactListGroupForm form) {
-        return new GetCustomerTypeContactListGroupCommand(userVisitPK, form).run();
+        return new GetCustomerTypeContactListGroupCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editCustomerTypeContactListGroup(UserVisitPK userVisitPK, EditCustomerTypeContactListGroupForm form) {
-        return new EditCustomerTypeContactListGroupCommand(userVisitPK, form).run();
+        return new EditCustomerTypeContactListGroupCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteCustomerTypeContactListGroup(UserVisitPK userVisitPK, DeleteCustomerTypeContactListGroupForm form) {
-        return new DeleteCustomerTypeContactListGroupCommand(userVisitPK, form).run();
+        return new DeleteCustomerTypeContactListGroupCommand().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -431,37 +431,37 @@ public class ContactListBean
     
     @Override
     public CommandResult createContactListContactMechanismPurpose(UserVisitPK userVisitPK, CreateContactListContactMechanismPurposeForm form) {
-        return new CreateContactListContactMechanismPurposeCommand(userVisitPK, form).run();
+        return new CreateContactListContactMechanismPurposeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getContactListContactMechanismPurposeChoices(UserVisitPK userVisitPK, GetContactListContactMechanismPurposeChoicesForm form) {
-        return new GetContactListContactMechanismPurposeChoicesCommand(userVisitPK, form).run();
+        return new GetContactListContactMechanismPurposeChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getContactListContactMechanismPurpose(UserVisitPK userVisitPK, GetContactListContactMechanismPurposeForm form) {
-        return new GetContactListContactMechanismPurposeCommand(userVisitPK, form).run();
+        return new GetContactListContactMechanismPurposeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getContactListContactMechanismPurposes(UserVisitPK userVisitPK, GetContactListContactMechanismPurposesForm form) {
-        return new GetContactListContactMechanismPurposesCommand(userVisitPK, form).run();
+        return new GetContactListContactMechanismPurposesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultContactListContactMechanismPurpose(UserVisitPK userVisitPK, SetDefaultContactListContactMechanismPurposeForm form) {
-        return new SetDefaultContactListContactMechanismPurposeCommand(userVisitPK, form).run();
+        return new SetDefaultContactListContactMechanismPurposeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editContactListContactMechanismPurpose(UserVisitPK userVisitPK, EditContactListContactMechanismPurposeForm form) {
-        return new EditContactListContactMechanismPurposeCommand(userVisitPK, form).run();
+        return new EditContactListContactMechanismPurposeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteContactListContactMechanismPurpose(UserVisitPK userVisitPK, DeleteContactListContactMechanismPurposeForm form) {
-        return new DeleteContactListContactMechanismPurposeCommand(userVisitPK, form).run();
+        return new DeleteContactListContactMechanismPurposeCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -470,37 +470,37 @@ public class ContactListBean
     
     @Override
     public CommandResult createPartyContactList(UserVisitPK userVisitPK, CreatePartyContactListForm form) {
-        return new CreatePartyContactListCommand(userVisitPK, form).run();
+        return new CreatePartyContactListCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPartyContactLists(UserVisitPK userVisitPK, GetPartyContactListsForm form) {
-        return new GetPartyContactListsCommand(userVisitPK, form).run();
+        return new GetPartyContactListsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPartyContactList(UserVisitPK userVisitPK, GetPartyContactListForm form) {
-        return new GetPartyContactListCommand(userVisitPK, form).run();
+        return new GetPartyContactListCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPartyContactListStatusChoices(UserVisitPK userVisitPK, GetPartyContactListStatusChoicesForm form) {
-        return new GetPartyContactListStatusChoicesCommand(userVisitPK, form).run();
+        return new GetPartyContactListStatusChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setPartyContactListStatus(UserVisitPK userVisitPK, SetPartyContactListStatusForm form) {
-        return new SetPartyContactListStatusCommand(userVisitPK, form).run();
+        return new SetPartyContactListStatusCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editPartyContactList(UserVisitPK userVisitPK, EditPartyContactListForm form) {
-        return new EditPartyContactListCommand(userVisitPK, form).run();
+        return new EditPartyContactListCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deletePartyContactList(UserVisitPK userVisitPK, DeletePartyContactListForm form) {
-        return new DeletePartyContactListCommand(userVisitPK, form).run();
+        return new DeletePartyContactListCommand().run(userVisitPK, form);
     }
     
 }

@@ -42,8 +42,8 @@ public class SetCommentStatusCommand
     }
     
     /** Creates a new instance of SetCommentStatusCommand */
-    public SetCommentStatusCommand(UserVisitPK userVisitPK, SetCommentStatusForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SetCommentStatusCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

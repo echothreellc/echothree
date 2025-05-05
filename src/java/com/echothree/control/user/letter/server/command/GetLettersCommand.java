@@ -58,8 +58,8 @@ public class GetLettersCommand
     }
     
     /** Creates a new instance of GetLettersCommand */
-    public GetLettersCommand(UserVisitPK userVisitPK, GetLettersForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetLettersCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

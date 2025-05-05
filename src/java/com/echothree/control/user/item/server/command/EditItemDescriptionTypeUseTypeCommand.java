@@ -71,8 +71,8 @@ public class EditItemDescriptionTypeUseTypeCommand
     }
 
     /** Creates a new instance of EditItemDescriptionTypeUseTypeCommand */
-    public EditItemDescriptionTypeUseTypeCommand(UserVisitPK userVisitPK, EditItemDescriptionTypeUseTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditItemDescriptionTypeUseTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

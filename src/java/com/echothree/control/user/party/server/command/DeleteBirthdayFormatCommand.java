@@ -55,8 +55,8 @@ public class DeleteBirthdayFormatCommand
     }
     
     /** Creates a new instance of DeleteBirthdayFormatCommand */
-    public DeleteBirthdayFormatCommand(UserVisitPK userVisitPK, DeleteBirthdayFormatForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteBirthdayFormatCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

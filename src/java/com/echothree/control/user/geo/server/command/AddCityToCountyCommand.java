@@ -61,8 +61,8 @@ public class AddCityToCountyCommand
     }
     
     /** Creates a new instance of AddCityToCountyCommand */
-    public AddCityToCountyCommand(UserVisitPK userVisitPK, AddCityToCountyForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public AddCityToCountyCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

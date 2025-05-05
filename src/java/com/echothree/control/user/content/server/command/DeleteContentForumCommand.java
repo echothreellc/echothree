@@ -57,8 +57,8 @@ public class DeleteContentForumCommand
     }
     
     /** Creates a new instance of DeleteContentForumCommand */
-    public DeleteContentForumCommand(UserVisitPK userVisitPK, DeleteContentForumForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteContentForumCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

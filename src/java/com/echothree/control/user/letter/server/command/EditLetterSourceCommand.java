@@ -78,8 +78,8 @@ public class EditLetterSourceCommand
     }
     
     /** Creates a new instance of EditLetterSourceCommand */
-    public EditLetterSourceCommand(UserVisitPK userVisitPK, EditLetterSourceForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditLetterSourceCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

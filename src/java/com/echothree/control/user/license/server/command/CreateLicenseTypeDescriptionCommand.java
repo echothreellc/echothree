@@ -58,8 +58,8 @@ public class CreateLicenseTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateLicenseTypeDescriptionCommand */
-    public CreateLicenseTypeDescriptionCommand(UserVisitPK userVisitPK, CreateLicenseTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateLicenseTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

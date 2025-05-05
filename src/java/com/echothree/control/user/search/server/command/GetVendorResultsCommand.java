@@ -57,8 +57,8 @@ public class GetVendorResultsCommand
     }
 
     /** Creates a new instance of GetVendorResultsCommand */
-    public GetVendorResultsCommand(UserVisitPK userVisitPK, GetVendorResultsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetVendorResultsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

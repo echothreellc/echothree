@@ -27,8 +27,8 @@ public class CountHarmonizedTariffScheduleCodeResultsCommand
         extends BaseCountResultsCommand<CountHarmonizedTariffScheduleCodeResultsForm, CountHarmonizedTariffScheduleCodeResultsResult> {
     
     /** Creates a new instance of CountHarmonizedTariffScheduleCodeResultsCommand */
-    public CountHarmonizedTariffScheduleCodeResultsCommand(UserVisitPK userVisitPK, CountHarmonizedTariffScheduleCodeResultsForm form) {
-        super(userVisitPK, form, null);
+    public CountHarmonizedTariffScheduleCodeResultsCommand() {
+        super(null);
     }
     
     @Override

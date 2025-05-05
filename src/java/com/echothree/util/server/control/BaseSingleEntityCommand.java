@@ -28,18 +28,18 @@ public abstract class BaseSingleEntityCommand<BE extends BaseEntity, F extends B
         extends BaseSimpleCommand<F>
         implements GraphQlSecurityCommand {
     
-    protected BaseSingleEntityCommand(UserVisitPK userVisitPK, F form, CommandSecurityDefinition commandSecurityDefinition,
+    protected BaseSingleEntityCommand(CommandSecurityDefinition commandSecurityDefinition,
             List<FieldDefinition> formFieldDefinitions, boolean allowLimits) {
-        super(userVisitPK, form, commandSecurityDefinition, formFieldDefinitions, allowLimits);
+        super(commandSecurityDefinition, formFieldDefinitions, allowLimits);
     }
     
     protected abstract BE getEntity();
     protected abstract BaseResult getResult(BE entity);
 
-    public BE getEntityForGraphQl() {
+    public BE getEntityForGraphQl(UserVisitPK userVisitPK, F form) {
         BE entity = null;
 
-        if(canQueryByGraphQl()) {
+        if(canQueryByGraphQl(userVisitPK, form)) {
             entity = getEntity();
         }
         

@@ -63,8 +63,8 @@ public class CreatePartyTypePasswordStringPolicyCommand
     }
     
     /** Creates a new instance of CreatePartyTypePasswordStringPolicyCommand */
-    public CreatePartyTypePasswordStringPolicyCommand(UserVisitPK userVisitPK, CreatePartyTypePasswordStringPolicyForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreatePartyTypePasswordStringPolicyCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

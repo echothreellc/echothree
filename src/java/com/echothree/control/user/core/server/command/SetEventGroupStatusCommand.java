@@ -42,8 +42,8 @@ public class SetEventGroupStatusCommand
     }
     
     /** Creates a new instance of SetEventGroupStatusCommand */
-    public SetEventGroupStatusCommand(UserVisitPK userVisitPK, SetEventGroupStatusForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SetEventGroupStatusCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

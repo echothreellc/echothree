@@ -59,8 +59,8 @@ public class CreateWorkEffortTypeCommand
     }
     
     /** Creates a new instance of CreateWorkEffortTypeCommand */
-    public CreateWorkEffortTypeCommand(UserVisitPK userVisitPK, CreateWorkEffortTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateWorkEffortTypeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

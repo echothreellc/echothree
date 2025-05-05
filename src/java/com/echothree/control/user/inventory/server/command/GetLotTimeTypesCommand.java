@@ -53,8 +53,8 @@ public class GetLotTimeTypesCommand
     }
     
     /** Creates a new instance of GetLotTimeTypesCommand */
-    public GetLotTimeTypesCommand(UserVisitPK userVisitPK, GetLotTimeTypesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetLotTimeTypesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

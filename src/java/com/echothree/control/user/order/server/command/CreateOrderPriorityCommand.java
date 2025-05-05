@@ -61,8 +61,8 @@ public class CreateOrderPriorityCommand
     }
     
     /** Creates a new instance of CreateOrderPriorityCommand */
-    public CreateOrderPriorityCommand(UserVisitPK userVisitPK, CreateOrderPriorityForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateOrderPriorityCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -56,8 +56,8 @@ public class GetContentPageAreaTypesCommand
     }
     
     /** Creates a new instance of GetContentPageAreaTypesCommand */
-    public GetContentPageAreaTypesCommand(UserVisitPK userVisitPK, GetContentPageAreaTypesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetContentPageAreaTypesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

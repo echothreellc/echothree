@@ -55,8 +55,8 @@ public class SetDefaultLicenseTypeCommand
     }
     
     /** Creates a new instance of SetDefaultLicenseTypeCommand */
-    public SetDefaultLicenseTypeCommand(UserVisitPK userVisitPK, SetDefaultLicenseTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultLicenseTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -43,37 +43,37 @@ public class EmployeeBean
     
     @Override
     public CommandResult createResponsibilityType(UserVisitPK userVisitPK, CreateResponsibilityTypeForm form) {
-        return new CreateResponsibilityTypeCommand(userVisitPK, form).run();
+        return new CreateResponsibilityTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getResponsibilityTypes(UserVisitPK userVisitPK, GetResponsibilityTypesForm form) {
-        return new GetResponsibilityTypesCommand(userVisitPK, form).run();
+        return new GetResponsibilityTypesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getResponsibilityType(UserVisitPK userVisitPK, GetResponsibilityTypeForm form) {
-        return new GetResponsibilityTypeCommand(userVisitPK, form).run();
+        return new GetResponsibilityTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getResponsibilityTypeChoices(UserVisitPK userVisitPK, GetResponsibilityTypeChoicesForm form) {
-        return new GetResponsibilityTypeChoicesCommand(userVisitPK, form).run();
+        return new GetResponsibilityTypeChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultResponsibilityType(UserVisitPK userVisitPK, SetDefaultResponsibilityTypeForm form) {
-        return new SetDefaultResponsibilityTypeCommand(userVisitPK, form).run();
+        return new SetDefaultResponsibilityTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editResponsibilityType(UserVisitPK userVisitPK, EditResponsibilityTypeForm form) {
-        return new EditResponsibilityTypeCommand(userVisitPK, form).run();
+        return new EditResponsibilityTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteResponsibilityType(UserVisitPK userVisitPK, DeleteResponsibilityTypeForm form) {
-        return new DeleteResponsibilityTypeCommand(userVisitPK, form).run();
+        return new DeleteResponsibilityTypeCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -82,22 +82,22 @@ public class EmployeeBean
     
     @Override
     public CommandResult createResponsibilityTypeDescription(UserVisitPK userVisitPK, CreateResponsibilityTypeDescriptionForm form) {
-        return new CreateResponsibilityTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateResponsibilityTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getResponsibilityTypeDescriptions(UserVisitPK userVisitPK, GetResponsibilityTypeDescriptionsForm form) {
-        return new GetResponsibilityTypeDescriptionsCommand(userVisitPK, form).run();
+        return new GetResponsibilityTypeDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editResponsibilityTypeDescription(UserVisitPK userVisitPK, EditResponsibilityTypeDescriptionForm form) {
-        return new EditResponsibilityTypeDescriptionCommand(userVisitPK, form).run();
+        return new EditResponsibilityTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteResponsibilityTypeDescription(UserVisitPK userVisitPK, DeleteResponsibilityTypeDescriptionForm form) {
-        return new DeleteResponsibilityTypeDescriptionCommand(userVisitPK, form).run();
+        return new DeleteResponsibilityTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -106,37 +106,37 @@ public class EmployeeBean
     
     @Override
     public CommandResult createSkillType(UserVisitPK userVisitPK, CreateSkillTypeForm form) {
-        return new CreateSkillTypeCommand(userVisitPK, form).run();
+        return new CreateSkillTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSkillTypes(UserVisitPK userVisitPK, GetSkillTypesForm form) {
-        return new GetSkillTypesCommand(userVisitPK, form).run();
+        return new GetSkillTypesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSkillType(UserVisitPK userVisitPK, GetSkillTypeForm form) {
-        return new GetSkillTypeCommand(userVisitPK, form).run();
+        return new GetSkillTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSkillTypeChoices(UserVisitPK userVisitPK, GetSkillTypeChoicesForm form) {
-        return new GetSkillTypeChoicesCommand(userVisitPK, form).run();
+        return new GetSkillTypeChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultSkillType(UserVisitPK userVisitPK, SetDefaultSkillTypeForm form) {
-        return new SetDefaultSkillTypeCommand(userVisitPK, form).run();
+        return new SetDefaultSkillTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editSkillType(UserVisitPK userVisitPK, EditSkillTypeForm form) {
-        return new EditSkillTypeCommand(userVisitPK, form).run();
+        return new EditSkillTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteSkillType(UserVisitPK userVisitPK, DeleteSkillTypeForm form) {
-        return new DeleteSkillTypeCommand(userVisitPK, form).run();
+        return new DeleteSkillTypeCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -145,22 +145,22 @@ public class EmployeeBean
     
     @Override
     public CommandResult createSkillTypeDescription(UserVisitPK userVisitPK, CreateSkillTypeDescriptionForm form) {
-        return new CreateSkillTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateSkillTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSkillTypeDescriptions(UserVisitPK userVisitPK, GetSkillTypeDescriptionsForm form) {
-        return new GetSkillTypeDescriptionsCommand(userVisitPK, form).run();
+        return new GetSkillTypeDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editSkillTypeDescription(UserVisitPK userVisitPK, EditSkillTypeDescriptionForm form) {
-        return new EditSkillTypeDescriptionCommand(userVisitPK, form).run();
+        return new EditSkillTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteSkillTypeDescription(UserVisitPK userVisitPK, DeleteSkillTypeDescriptionForm form) {
-        return new DeleteSkillTypeDescriptionCommand(userVisitPK, form).run();
+        return new DeleteSkillTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -169,37 +169,37 @@ public class EmployeeBean
 
     @Override
     public CommandResult createLeaveType(UserVisitPK userVisitPK, CreateLeaveTypeForm form) {
-        return new CreateLeaveTypeCommand(userVisitPK, form).run();
+        return new CreateLeaveTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getLeaveTypes(UserVisitPK userVisitPK, GetLeaveTypesForm form) {
-        return new GetLeaveTypesCommand(userVisitPK, form).run();
+        return new GetLeaveTypesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getLeaveType(UserVisitPK userVisitPK, GetLeaveTypeForm form) {
-        return new GetLeaveTypeCommand(userVisitPK, form).run();
+        return new GetLeaveTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getLeaveTypeChoices(UserVisitPK userVisitPK, GetLeaveTypeChoicesForm form) {
-        return new GetLeaveTypeChoicesCommand(userVisitPK, form).run();
+        return new GetLeaveTypeChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultLeaveType(UserVisitPK userVisitPK, SetDefaultLeaveTypeForm form) {
-        return new SetDefaultLeaveTypeCommand(userVisitPK, form).run();
+        return new SetDefaultLeaveTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editLeaveType(UserVisitPK userVisitPK, EditLeaveTypeForm form) {
-        return new EditLeaveTypeCommand(userVisitPK, form).run();
+        return new EditLeaveTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteLeaveType(UserVisitPK userVisitPK, DeleteLeaveTypeForm form) {
-        return new DeleteLeaveTypeCommand(userVisitPK, form).run();
+        return new DeleteLeaveTypeCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -208,27 +208,27 @@ public class EmployeeBean
 
     @Override
     public CommandResult createLeaveTypeDescription(UserVisitPK userVisitPK, CreateLeaveTypeDescriptionForm form) {
-        return new CreateLeaveTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateLeaveTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getLeaveTypeDescriptions(UserVisitPK userVisitPK, GetLeaveTypeDescriptionsForm form) {
-        return new GetLeaveTypeDescriptionsCommand(userVisitPK, form).run();
+        return new GetLeaveTypeDescriptionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getLeaveTypeDescription(UserVisitPK userVisitPK, GetLeaveTypeDescriptionForm form) {
-        return new GetLeaveTypeDescriptionCommand(userVisitPK, form).run();
+        return new GetLeaveTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editLeaveTypeDescription(UserVisitPK userVisitPK, EditLeaveTypeDescriptionForm form) {
-        return new EditLeaveTypeDescriptionCommand(userVisitPK, form).run();
+        return new EditLeaveTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteLeaveTypeDescription(UserVisitPK userVisitPK, DeleteLeaveTypeDescriptionForm form) {
-        return new DeleteLeaveTypeDescriptionCommand(userVisitPK, form).run();
+        return new DeleteLeaveTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -237,37 +237,37 @@ public class EmployeeBean
 
     @Override
     public CommandResult createLeaveReason(UserVisitPK userVisitPK, CreateLeaveReasonForm form) {
-        return new CreateLeaveReasonCommand(userVisitPK, form).run();
+        return new CreateLeaveReasonCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getLeaveReasons(UserVisitPK userVisitPK, GetLeaveReasonsForm form) {
-        return new GetLeaveReasonsCommand(userVisitPK, form).run();
+        return new GetLeaveReasonsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getLeaveReason(UserVisitPK userVisitPK, GetLeaveReasonForm form) {
-        return new GetLeaveReasonCommand(userVisitPK, form).run();
+        return new GetLeaveReasonCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getLeaveReasonChoices(UserVisitPK userVisitPK, GetLeaveReasonChoicesForm form) {
-        return new GetLeaveReasonChoicesCommand(userVisitPK, form).run();
+        return new GetLeaveReasonChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultLeaveReason(UserVisitPK userVisitPK, SetDefaultLeaveReasonForm form) {
-        return new SetDefaultLeaveReasonCommand(userVisitPK, form).run();
+        return new SetDefaultLeaveReasonCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editLeaveReason(UserVisitPK userVisitPK, EditLeaveReasonForm form) {
-        return new EditLeaveReasonCommand(userVisitPK, form).run();
+        return new EditLeaveReasonCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteLeaveReason(UserVisitPK userVisitPK, DeleteLeaveReasonForm form) {
-        return new DeleteLeaveReasonCommand(userVisitPK, form).run();
+        return new DeleteLeaveReasonCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -276,27 +276,27 @@ public class EmployeeBean
 
     @Override
     public CommandResult createLeaveReasonDescription(UserVisitPK userVisitPK, CreateLeaveReasonDescriptionForm form) {
-        return new CreateLeaveReasonDescriptionCommand(userVisitPK, form).run();
+        return new CreateLeaveReasonDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getLeaveReasonDescription(UserVisitPK userVisitPK, GetLeaveReasonDescriptionForm form) {
-        return new GetLeaveReasonDescriptionCommand(userVisitPK, form).run();
+        return new GetLeaveReasonDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getLeaveReasonDescriptions(UserVisitPK userVisitPK, GetLeaveReasonDescriptionsForm form) {
-        return new GetLeaveReasonDescriptionsCommand(userVisitPK, form).run();
+        return new GetLeaveReasonDescriptionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editLeaveReasonDescription(UserVisitPK userVisitPK, EditLeaveReasonDescriptionForm form) {
-        return new EditLeaveReasonDescriptionCommand(userVisitPK, form).run();
+        return new EditLeaveReasonDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteLeaveReasonDescription(UserVisitPK userVisitPK, DeleteLeaveReasonDescriptionForm form) {
-        return new DeleteLeaveReasonDescriptionCommand(userVisitPK, form).run();
+        return new DeleteLeaveReasonDescriptionCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -305,37 +305,37 @@ public class EmployeeBean
 
     @Override
     public CommandResult createLeave(UserVisitPK userVisitPK, CreateLeaveForm form) {
-        return new CreateLeaveCommand(userVisitPK, form).run();
+        return new CreateLeaveCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getLeaveStatusChoices(UserVisitPK userVisitPK, GetLeaveStatusChoicesForm form) {
-        return new GetLeaveStatusChoicesCommand(userVisitPK, form).run();
+        return new GetLeaveStatusChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setLeaveStatus(UserVisitPK userVisitPK, SetLeaveStatusForm form) {
-        return new SetLeaveStatusCommand(userVisitPK, form).run();
+        return new SetLeaveStatusCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getLeaves(UserVisitPK userVisitPK, GetLeavesForm form) {
-        return new GetLeavesCommand(userVisitPK, form).run();
+        return new GetLeavesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getLeave(UserVisitPK userVisitPK, GetLeaveForm form) {
-        return new GetLeaveCommand(userVisitPK, form).run();
+        return new GetLeaveCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editLeave(UserVisitPK userVisitPK, EditLeaveForm form) {
-        return new EditLeaveCommand(userVisitPK, form).run();
+        return new EditLeaveCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteLeave(UserVisitPK userVisitPK, DeleteLeaveForm form) {
-        return new DeleteLeaveCommand(userVisitPK, form).run();
+        return new DeleteLeaveCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -344,37 +344,37 @@ public class EmployeeBean
 
     @Override
     public CommandResult createTerminationReason(UserVisitPK userVisitPK, CreateTerminationReasonForm form) {
-        return new CreateTerminationReasonCommand(userVisitPK, form).run();
+        return new CreateTerminationReasonCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getTerminationReasons(UserVisitPK userVisitPK, GetTerminationReasonsForm form) {
-        return new GetTerminationReasonsCommand(userVisitPK, form).run();
+        return new GetTerminationReasonsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getTerminationReason(UserVisitPK userVisitPK, GetTerminationReasonForm form) {
-        return new GetTerminationReasonCommand(userVisitPK, form).run();
+        return new GetTerminationReasonCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getTerminationReasonChoices(UserVisitPK userVisitPK, GetTerminationReasonChoicesForm form) {
-        return new GetTerminationReasonChoicesCommand(userVisitPK, form).run();
+        return new GetTerminationReasonChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultTerminationReason(UserVisitPK userVisitPK, SetDefaultTerminationReasonForm form) {
-        return new SetDefaultTerminationReasonCommand(userVisitPK, form).run();
+        return new SetDefaultTerminationReasonCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editTerminationReason(UserVisitPK userVisitPK, EditTerminationReasonForm form) {
-        return new EditTerminationReasonCommand(userVisitPK, form).run();
+        return new EditTerminationReasonCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteTerminationReason(UserVisitPK userVisitPK, DeleteTerminationReasonForm form) {
-        return new DeleteTerminationReasonCommand(userVisitPK, form).run();
+        return new DeleteTerminationReasonCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -383,22 +383,22 @@ public class EmployeeBean
 
     @Override
     public CommandResult createTerminationReasonDescription(UserVisitPK userVisitPK, CreateTerminationReasonDescriptionForm form) {
-        return new CreateTerminationReasonDescriptionCommand(userVisitPK, form).run();
+        return new CreateTerminationReasonDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getTerminationReasonDescriptions(UserVisitPK userVisitPK, GetTerminationReasonDescriptionsForm form) {
-        return new GetTerminationReasonDescriptionsCommand(userVisitPK, form).run();
+        return new GetTerminationReasonDescriptionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editTerminationReasonDescription(UserVisitPK userVisitPK, EditTerminationReasonDescriptionForm form) {
-        return new EditTerminationReasonDescriptionCommand(userVisitPK, form).run();
+        return new EditTerminationReasonDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteTerminationReasonDescription(UserVisitPK userVisitPK, DeleteTerminationReasonDescriptionForm form) {
-        return new DeleteTerminationReasonDescriptionCommand(userVisitPK, form).run();
+        return new DeleteTerminationReasonDescriptionCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -407,37 +407,37 @@ public class EmployeeBean
     
     @Override
     public CommandResult createTerminationType(UserVisitPK userVisitPK, CreateTerminationTypeForm form) {
-        return new CreateTerminationTypeCommand(userVisitPK, form).run();
+        return new CreateTerminationTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTerminationTypes(UserVisitPK userVisitPK, GetTerminationTypesForm form) {
-        return new GetTerminationTypesCommand(userVisitPK, form).run();
+        return new GetTerminationTypesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTerminationType(UserVisitPK userVisitPK, GetTerminationTypeForm form) {
-        return new GetTerminationTypeCommand(userVisitPK, form).run();
+        return new GetTerminationTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTerminationTypeChoices(UserVisitPK userVisitPK, GetTerminationTypeChoicesForm form) {
-        return new GetTerminationTypeChoicesCommand(userVisitPK, form).run();
+        return new GetTerminationTypeChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultTerminationType(UserVisitPK userVisitPK, SetDefaultTerminationTypeForm form) {
-        return new SetDefaultTerminationTypeCommand(userVisitPK, form).run();
+        return new SetDefaultTerminationTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editTerminationType(UserVisitPK userVisitPK, EditTerminationTypeForm form) {
-        return new EditTerminationTypeCommand(userVisitPK, form).run();
+        return new EditTerminationTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteTerminationType(UserVisitPK userVisitPK, DeleteTerminationTypeForm form) {
-        return new DeleteTerminationTypeCommand(userVisitPK, form).run();
+        return new DeleteTerminationTypeCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -446,22 +446,22 @@ public class EmployeeBean
     
     @Override
     public CommandResult createTerminationTypeDescription(UserVisitPK userVisitPK, CreateTerminationTypeDescriptionForm form) {
-        return new CreateTerminationTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateTerminationTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTerminationTypeDescriptions(UserVisitPK userVisitPK, GetTerminationTypeDescriptionsForm form) {
-        return new GetTerminationTypeDescriptionsCommand(userVisitPK, form).run();
+        return new GetTerminationTypeDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editTerminationTypeDescription(UserVisitPK userVisitPK, EditTerminationTypeDescriptionForm form) {
-        return new EditTerminationTypeDescriptionCommand(userVisitPK, form).run();
+        return new EditTerminationTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteTerminationTypeDescription(UserVisitPK userVisitPK, DeleteTerminationTypeDescriptionForm form) {
-        return new DeleteTerminationTypeDescriptionCommand(userVisitPK, form).run();
+        return new DeleteTerminationTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -470,27 +470,27 @@ public class EmployeeBean
 
     @Override
     public CommandResult createEmployment(UserVisitPK userVisitPK, CreateEmploymentForm form) {
-        return new CreateEmploymentCommand(userVisitPK, form).run();
+        return new CreateEmploymentCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getEmployments(UserVisitPK userVisitPK, GetEmploymentsForm form) {
-        return new GetEmploymentsCommand(userVisitPK, form).run();
+        return new GetEmploymentsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getEmployment(UserVisitPK userVisitPK, GetEmploymentForm form) {
-        return new GetEmploymentCommand(userVisitPK, form).run();
+        return new GetEmploymentCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editEmployment(UserVisitPK userVisitPK, EditEmploymentForm form) {
-        return new EditEmploymentCommand(userVisitPK, form).run();
+        return new EditEmploymentCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteEmployment(UserVisitPK userVisitPK, DeleteEmploymentForm form) {
-        return new DeleteEmploymentCommand(userVisitPK, form).run();
+        return new DeleteEmploymentCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -499,17 +499,17 @@ public class EmployeeBean
     
     @Override
     public CommandResult createPartyResponsibility(UserVisitPK userVisitPK, CreatePartyResponsibilityForm form) {
-        return new CreatePartyResponsibilityCommand(userVisitPK, form).run();
+        return new CreatePartyResponsibilityCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPartyResponsibilities(UserVisitPK userVisitPK, GetPartyResponsibilitiesForm form) {
-        return new GetPartyResponsibilitiesCommand(userVisitPK, form).run();
+        return new GetPartyResponsibilitiesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deletePartyResponsibility(UserVisitPK userVisitPK, DeletePartyResponsibilityForm form) {
-        return new DeletePartyResponsibilityCommand(userVisitPK, form).run();
+        return new DeletePartyResponsibilityCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -518,17 +518,17 @@ public class EmployeeBean
     
     @Override
     public CommandResult createPartySkill(UserVisitPK userVisitPK, CreatePartySkillForm form) {
-        return new CreatePartySkillCommand(userVisitPK, form).run();
+        return new CreatePartySkillCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPartySkills(UserVisitPK userVisitPK, GetPartySkillsForm form) {
-        return new GetPartySkillsCommand(userVisitPK, form).run();
+        return new GetPartySkillsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deletePartySkill(UserVisitPK userVisitPK, DeletePartySkillForm form) {
-        return new DeletePartySkillCommand(userVisitPK, form).run();
+        return new DeletePartySkillCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -537,37 +537,37 @@ public class EmployeeBean
     
     @Override
     public CommandResult createEmployeeType(UserVisitPK userVisitPK, CreateEmployeeTypeForm form) {
-        return new CreateEmployeeTypeCommand(userVisitPK, form).run();
+        return new CreateEmployeeTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getEmployeeTypeChoices(UserVisitPK userVisitPK, GetEmployeeTypeChoicesForm form) {
-        return new GetEmployeeTypeChoicesCommand(userVisitPK, form).run();
+        return new GetEmployeeTypeChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getEmployeeType(UserVisitPK userVisitPK, GetEmployeeTypeForm form) {
-        return new GetEmployeeTypeCommand(userVisitPK, form).run();
+        return new GetEmployeeTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getEmployeeTypes(UserVisitPK userVisitPK, GetEmployeeTypesForm form) {
-        return new GetEmployeeTypesCommand(userVisitPK, form).run();
+        return new GetEmployeeTypesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultEmployeeType(UserVisitPK userVisitPK, SetDefaultEmployeeTypeForm form) {
-        return new SetDefaultEmployeeTypeCommand(userVisitPK, form).run();
+        return new SetDefaultEmployeeTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editEmployeeType(UserVisitPK userVisitPK, EditEmployeeTypeForm form) {
-        return new EditEmployeeTypeCommand(userVisitPK, form).run();
+        return new EditEmployeeTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteEmployeeType(UserVisitPK userVisitPK, DeleteEmployeeTypeForm form) {
-        return new DeleteEmployeeTypeCommand(userVisitPK, form).run();
+        return new DeleteEmployeeTypeCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -576,22 +576,22 @@ public class EmployeeBean
     
     @Override
     public CommandResult createEmployeeTypeDescription(UserVisitPK userVisitPK, CreateEmployeeTypeDescriptionForm form) {
-        return new CreateEmployeeTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateEmployeeTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getEmployeeTypeDescriptions(UserVisitPK userVisitPK, GetEmployeeTypeDescriptionsForm form) {
-        return new GetEmployeeTypeDescriptionsCommand(userVisitPK, form).run();
+        return new GetEmployeeTypeDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editEmployeeTypeDescription(UserVisitPK userVisitPK, EditEmployeeTypeDescriptionForm form) {
-        return new EditEmployeeTypeDescriptionCommand(userVisitPK, form).run();
+        return new EditEmployeeTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteEmployeeTypeDescription(UserVisitPK userVisitPK, DeleteEmployeeTypeDescriptionForm form) {
-        return new DeleteEmployeeTypeDescriptionCommand(userVisitPK, form).run();
+        return new DeleteEmployeeTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -600,7 +600,7 @@ public class EmployeeBean
     
     @Override
     public CommandResult getEmployee(UserVisitPK userVisitPK, GetEmployeeForm form) {
-        return new GetEmployeeCommand(userVisitPK, form).run();
+        return new GetEmployeeCommand().run(userVisitPK, form);
     }
     
 }

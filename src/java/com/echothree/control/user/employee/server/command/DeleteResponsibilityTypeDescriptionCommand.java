@@ -43,8 +43,8 @@ public class DeleteResponsibilityTypeDescriptionCommand
     }
     
     /** Creates a new instance of DeleteResponsibilityTypeDescriptionCommand */
-    public DeleteResponsibilityTypeDescriptionCommand(UserVisitPK userVisitPK, DeleteResponsibilityTypeDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteResponsibilityTypeDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

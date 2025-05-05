@@ -58,8 +58,8 @@ public class CreateSelectorDescriptionCommand
     }
     
     /** Creates a new instance of CreateSelectorDescriptionCommand */
-    public CreateSelectorDescriptionCommand(UserVisitPK userVisitPK, CreateSelectorDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateSelectorDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

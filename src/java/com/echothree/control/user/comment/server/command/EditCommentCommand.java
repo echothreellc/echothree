@@ -64,8 +64,8 @@ public class EditCommentCommand
     }
     
     /** Creates a new instance of EditCommentCommand */
-    public EditCommentCommand(UserVisitPK userVisitPK, EditCommentForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditCommentCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     protected void updateComment(CommentControl commentControl, Comment comment, Language language, String description, MimeType mimeType, BasePK updatedBy, ByteArray blob, String clob,

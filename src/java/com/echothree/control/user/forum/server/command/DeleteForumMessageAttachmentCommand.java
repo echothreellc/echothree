@@ -42,8 +42,8 @@ public class DeleteForumMessageAttachmentCommand
     }
     
     /** Creates a new instance of DeleteForumMessageAttachmentCommand */
-    public DeleteForumMessageAttachmentCommand(UserVisitPK userVisitPK, DeleteForumMessageAttachmentForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteForumMessageAttachmentCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

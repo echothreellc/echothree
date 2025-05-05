@@ -17,11 +17,10 @@
 package com.echothree.util.server.control;
 
 import com.echothree.model.control.core.server.control.EntityLockControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseSetStatusResult;
 import com.echothree.util.common.form.BaseForm;
+import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
@@ -29,8 +28,8 @@ import java.util.List;
 public abstract class BaseSetStatusCommand<F extends BaseForm, R extends BaseSetStatusResult, BE extends BaseEntity, LE extends BaseEntity>
         extends BaseSimpleCommand<F> {
     
-    protected BaseSetStatusCommand(UserVisitPK userVisitPK, F form, CommandSecurityDefinition commandSecurityDefinition, List<FieldDefinition> formFieldDefinitions) {
-        super(userVisitPK, form, commandSecurityDefinition, formFieldDefinitions, false);
+    protected BaseSetStatusCommand(CommandSecurityDefinition commandSecurityDefinition, List<FieldDefinition> formFieldDefinitions) {
+        super(commandSecurityDefinition, formFieldDefinitions, false);
     }
     
     protected abstract R getResult();

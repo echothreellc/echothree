@@ -75,8 +75,8 @@ public class CreateFilterAdjustmentAmountCommand
     }
     
     /** Creates a new instance of CreateFilterAdjustmentAmountCommand */
-    public CreateFilterAdjustmentAmountCommand(UserVisitPK userVisitPK, CreateFilterAdjustmentAmountForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, null, false);
+    public CreateFilterAdjustmentAmountCommand() {
+        super(COMMAND_SECURITY_DEFINITION, null, false);
     }
     
     @Override

@@ -45,8 +45,8 @@ public class GetWishlistPriorityChoicesCommand
     }
     
     /** Creates a new instance of GetWishlistPriorityChoicesCommand */
-    public GetWishlistPriorityChoicesCommand(UserVisitPK userVisitPK, GetWishlistPriorityChoicesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public GetWishlistPriorityChoicesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

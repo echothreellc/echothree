@@ -44,8 +44,8 @@ public class GetBatchTypeEntityTypesCommand
     }
     
     /** Creates a new instance of GetBatchTypeEntityTypesCommand */
-    public GetBatchTypeEntityTypesCommand(UserVisitPK userVisitPK, GetBatchTypeEntityTypesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetBatchTypeEntityTypesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

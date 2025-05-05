@@ -58,8 +58,8 @@ public class CreateFreeOnBoardDescriptionCommand
     }
     
     /** Creates a new instance of CreateFreeOnBoardDescriptionCommand */
-    public CreateFreeOnBoardDescriptionCommand(UserVisitPK userVisitPK, CreateFreeOnBoardDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateFreeOnBoardDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

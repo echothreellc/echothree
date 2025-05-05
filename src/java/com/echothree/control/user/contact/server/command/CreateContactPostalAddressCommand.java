@@ -118,8 +118,8 @@ public class CreateContactPostalAddressCommand
     }
     
     /** Creates a new instance of CreateContactPostalAddressCommand */
-    public CreateContactPostalAddressCommand(UserVisitPK userVisitPK, CreateContactPostalAddressForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, null, false);
+    public CreateContactPostalAddressCommand() {
+        super(COMMAND_SECURITY_DEFINITION, null, false);
     }
 
     @Override

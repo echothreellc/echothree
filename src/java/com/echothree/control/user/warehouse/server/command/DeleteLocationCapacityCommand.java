@@ -59,8 +59,8 @@ public class DeleteLocationCapacityCommand
     }
     
     /** Creates a new instance of DeleteLocationCapacityCommand */
-    public DeleteLocationCapacityCommand(UserVisitPK userVisitPK, DeleteLocationCapacityForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteLocationCapacityCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

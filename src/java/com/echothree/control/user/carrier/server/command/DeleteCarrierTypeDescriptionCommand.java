@@ -57,8 +57,8 @@ public class DeleteCarrierTypeDescriptionCommand
     }
     
     /** Creates a new instance of DeleteCarrierTypeDescriptionCommand */
-    public DeleteCarrierTypeDescriptionCommand(UserVisitPK userVisitPK, DeleteCarrierTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteCarrierTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

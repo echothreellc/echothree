@@ -47,8 +47,8 @@ public class CreatePartyTypeAuditPolicyCommand
     }
     
     /** Creates a new instance of CreatePartyTypeAuditPolicyCommand */
-    public CreatePartyTypeAuditPolicyCommand(UserVisitPK userVisitPK, CreatePartyTypeAuditPolicyForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreatePartyTypeAuditPolicyCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

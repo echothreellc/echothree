@@ -77,8 +77,8 @@ public class CreateItemDescriptionCommand
     }
     
     /** Creates a new instance of CreateItemDescriptionCommand */
-    public CreateItemDescriptionCommand(UserVisitPK userVisitPK, CreateItemDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateItemDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
 
     protected ItemDescription createItemDescription(ItemControl itemControl, ItemDescriptionType itemDescriptionType, Item item, Language language, MimeType mimeType,

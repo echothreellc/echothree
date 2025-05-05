@@ -46,8 +46,8 @@ public class CreateUnitOfMeasureTypeWeightCommand
     }
     
     /** Creates a new instance of CreateUnitOfMeasureTypeWeightCommand */
-    public CreateUnitOfMeasureTypeWeightCommand(UserVisitPK userVisitPK, CreateUnitOfMeasureTypeWeightForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateUnitOfMeasureTypeWeightCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -58,8 +58,8 @@ public class CreateUseDescriptionCommand
     }
     
     /** Creates a new instance of CreateUseDescriptionCommand */
-    public CreateUseDescriptionCommand(UserVisitPK userVisitPK, CreateUseDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateUseDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

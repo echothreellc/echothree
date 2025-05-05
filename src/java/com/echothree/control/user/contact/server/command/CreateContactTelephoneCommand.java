@@ -77,8 +77,8 @@ public class CreateContactTelephoneCommand
     }
     
     /** Creates a new instance of CreateContactTelephoneCommand */
-    public CreateContactTelephoneCommand(UserVisitPK userVisitPK, CreateContactTelephoneForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateContactTelephoneCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
 
     @Override

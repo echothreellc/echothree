@@ -58,8 +58,8 @@ public class GetPaymentProcessorResultCodeDescriptionCommand
     }
     
     /** Creates a new instance of GetPaymentProcessorResultCodeDescriptionCommand */
-    public GetPaymentProcessorResultCodeDescriptionCommand(UserVisitPK userVisitPK, GetPaymentProcessorResultCodeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetPaymentProcessorResultCodeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

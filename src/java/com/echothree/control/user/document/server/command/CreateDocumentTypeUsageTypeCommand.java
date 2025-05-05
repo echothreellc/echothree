@@ -58,8 +58,8 @@ public class CreateDocumentTypeUsageTypeCommand
     }
     
     /** Creates a new instance of CreateDocumentTypeUsageTypeCommand */
-    public CreateDocumentTypeUsageTypeCommand(UserVisitPK userVisitPK, CreateDocumentTypeUsageTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateDocumentTypeUsageTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

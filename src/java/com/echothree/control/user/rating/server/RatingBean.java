@@ -43,27 +43,27 @@ public class RatingBean
     
     @Override
     public CommandResult createRatingType(UserVisitPK userVisitPK, CreateRatingTypeForm form) {
-        return new CreateRatingTypeCommand(userVisitPK, form).run();
+        return new CreateRatingTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getRatingType(UserVisitPK userVisitPK, GetRatingTypeForm form) {
-        return new GetRatingTypeCommand(userVisitPK, form).run();
+        return new GetRatingTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getRatingTypes(UserVisitPK userVisitPK, GetRatingTypesForm form) {
-        return new GetRatingTypesCommand(userVisitPK, form).run();
+        return new GetRatingTypesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editRatingType(UserVisitPK userVisitPK, EditRatingTypeForm form) {
-        return new EditRatingTypeCommand(userVisitPK, form).run();
+        return new EditRatingTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteRatingType(UserVisitPK userVisitPK, DeleteRatingTypeForm form) {
-        return new DeleteRatingTypeCommand(userVisitPK, form).run();
+        return new DeleteRatingTypeCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -72,27 +72,27 @@ public class RatingBean
     
     @Override
     public CommandResult createRatingTypeDescription(UserVisitPK userVisitPK, CreateRatingTypeDescriptionForm form) {
-        return new CreateRatingTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateRatingTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getRatingTypeDescription(UserVisitPK userVisitPK, GetRatingTypeDescriptionForm form) {
-        return new GetRatingTypeDescriptionCommand(userVisitPK, form).run();
+        return new GetRatingTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getRatingTypeDescriptions(UserVisitPK userVisitPK, GetRatingTypeDescriptionsForm form) {
-        return new GetRatingTypeDescriptionsCommand(userVisitPK, form).run();
+        return new GetRatingTypeDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editRatingTypeDescription(UserVisitPK userVisitPK, EditRatingTypeDescriptionForm form) {
-        return new EditRatingTypeDescriptionCommand(userVisitPK, form).run();
+        return new EditRatingTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteRatingTypeDescription(UserVisitPK userVisitPK, DeleteRatingTypeDescriptionForm form) {
-        return new DeleteRatingTypeDescriptionCommand(userVisitPK, form).run();
+        return new DeleteRatingTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -101,37 +101,37 @@ public class RatingBean
     
     @Override
     public CommandResult createRatingTypeListItem(UserVisitPK userVisitPK, CreateRatingTypeListItemForm form) {
-        return new CreateRatingTypeListItemCommand(userVisitPK, form).run();
+        return new CreateRatingTypeListItemCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getRatingTypeListItem(UserVisitPK userVisitPK, GetRatingTypeListItemForm form) {
-        return new GetRatingTypeListItemCommand(userVisitPK, form).run();
+        return new GetRatingTypeListItemCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getRatingTypeListItems(UserVisitPK userVisitPK, GetRatingTypeListItemsForm form) {
-        return new GetRatingTypeListItemsCommand(userVisitPK, form).run();
+        return new GetRatingTypeListItemsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getRatingTypeListItemChoices(UserVisitPK userVisitPK, GetRatingTypeListItemChoicesForm form) {
-        return new GetRatingTypeListItemChoicesCommand(userVisitPK, form).run();
+        return new GetRatingTypeListItemChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultRatingTypeListItem(UserVisitPK userVisitPK, SetDefaultRatingTypeListItemForm form) {
-        return new SetDefaultRatingTypeListItemCommand(userVisitPK, form).run();
+        return new SetDefaultRatingTypeListItemCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editRatingTypeListItem(UserVisitPK userVisitPK, EditRatingTypeListItemForm form) {
-        return new EditRatingTypeListItemCommand(userVisitPK, form).run();
+        return new EditRatingTypeListItemCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteRatingTypeListItem(UserVisitPK userVisitPK, DeleteRatingTypeListItemForm form) {
-        return new DeleteRatingTypeListItemCommand(userVisitPK, form).run();
+        return new DeleteRatingTypeListItemCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -140,27 +140,27 @@ public class RatingBean
     
     @Override
     public CommandResult createRatingTypeListItemDescription(UserVisitPK userVisitPK, CreateRatingTypeListItemDescriptionForm form) {
-        return new CreateRatingTypeListItemDescriptionCommand(userVisitPK, form).run();
+        return new CreateRatingTypeListItemDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getRatingTypeListItemDescription(UserVisitPK userVisitPK, GetRatingTypeListItemDescriptionForm form) {
-        return new GetRatingTypeListItemDescriptionCommand(userVisitPK, form).run();
+        return new GetRatingTypeListItemDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getRatingTypeListItemDescriptions(UserVisitPK userVisitPK, GetRatingTypeListItemDescriptionsForm form) {
-        return new GetRatingTypeListItemDescriptionsCommand(userVisitPK, form).run();
+        return new GetRatingTypeListItemDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editRatingTypeListItemDescription(UserVisitPK userVisitPK, EditRatingTypeListItemDescriptionForm form) {
-        return new EditRatingTypeListItemDescriptionCommand(userVisitPK, form).run();
+        return new EditRatingTypeListItemDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteRatingTypeListItemDescription(UserVisitPK userVisitPK, DeleteRatingTypeListItemDescriptionForm form) {
-        return new DeleteRatingTypeListItemDescriptionCommand(userVisitPK, form).run();
+        return new DeleteRatingTypeListItemDescriptionCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -169,22 +169,22 @@ public class RatingBean
     
     @Override
     public CommandResult createRating(UserVisitPK userVisitPK, CreateRatingForm form) {
-        return new CreateRatingCommand(userVisitPK, form).run();
+        return new CreateRatingCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getRating(UserVisitPK userVisitPK, GetRatingForm form) {
-        return new GetRatingCommand(userVisitPK, form).run();
+        return new GetRatingCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editRating(UserVisitPK userVisitPK, EditRatingForm form) {
-        return new EditRatingCommand(userVisitPK, form).run();
+        return new EditRatingCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteRating(UserVisitPK userVisitPK, DeleteRatingForm form) {
-        return new DeleteRatingCommand(userVisitPK, form).run();
+        return new DeleteRatingCommand().run(userVisitPK, form);
     }
     
 }

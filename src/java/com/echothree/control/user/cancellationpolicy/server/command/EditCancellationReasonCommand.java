@@ -69,8 +69,8 @@ public class EditCancellationReasonCommand
     }
     
     /** Creates a new instance of EditCancellationReasonCommand */
-    public EditCancellationReasonCommand(UserVisitPK userVisitPK, EditCancellationReasonForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditCancellationReasonCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

@@ -56,8 +56,8 @@ public class GetPartyApplicationEditorUsesCommand
     }
     
     /** Creates a new instance of GetPartyApplicationEditorUsesCommand */
-    public GetPartyApplicationEditorUsesCommand(UserVisitPK userVisitPK, GetPartyApplicationEditorUsesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetPartyApplicationEditorUsesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

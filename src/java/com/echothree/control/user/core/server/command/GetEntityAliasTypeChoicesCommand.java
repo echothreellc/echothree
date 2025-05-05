@@ -58,8 +58,8 @@ public class GetEntityAliasTypeChoicesCommand
     }
     
     /** Creates a new instance of GetEntityAliasTypeChoicesCommand */
-    public GetEntityAliasTypeChoicesCommand(UserVisitPK userVisitPK, GetEntityAliasTypeChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetEntityAliasTypeChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

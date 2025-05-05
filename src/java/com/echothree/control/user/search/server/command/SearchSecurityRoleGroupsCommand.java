@@ -56,8 +56,8 @@ public class SearchSecurityRoleGroupsCommand
     }
 
     /** Creates a new instance of SearchSecurityRoleGroupsCommand */
-    public SearchSecurityRoleGroupsCommand(UserVisitPK userVisitPK, SearchSecurityRoleGroupsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SearchSecurityRoleGroupsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

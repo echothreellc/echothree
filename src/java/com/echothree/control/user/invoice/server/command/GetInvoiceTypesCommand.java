@@ -53,8 +53,8 @@ public class GetInvoiceTypesCommand
     }
     
     /** Creates a new instance of GetInvoiceTypesCommand */
-    public GetInvoiceTypesCommand(UserVisitPK userVisitPK, GetInvoiceTypesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetInvoiceTypesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

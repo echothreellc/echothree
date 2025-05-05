@@ -58,8 +58,8 @@ public class GetItemDescriptionTypesCommand
     }
     
     /** Creates a new instance of GetItemDescriptionTypesCommand */
-    public GetItemDescriptionTypesCommand(UserVisitPK userVisitPK, GetItemDescriptionTypesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetItemDescriptionTypesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     ItemDescriptionType parentItemDescriptionType;

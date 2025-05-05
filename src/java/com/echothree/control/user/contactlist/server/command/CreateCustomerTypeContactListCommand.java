@@ -58,8 +58,8 @@ public class CreateCustomerTypeContactListCommand
     }
     
     /** Creates a new instance of CreateCustomerTypeContactListCommand */
-    public CreateCustomerTypeContactListCommand(UserVisitPK userVisitPK, CreateCustomerTypeContactListForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateCustomerTypeContactListCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -55,8 +55,8 @@ public class DeletePartyDocumentCommand
     }
     
     /** Creates a new instance of DeletePartyDocumentCommand */
-    public DeletePartyDocumentCommand(UserVisitPK userVisitPK, DeletePartyDocumentForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeletePartyDocumentCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -69,8 +69,8 @@ public class EditCampaignDescriptionCommand
     }
     
     /** Creates a new instance of EditCampaignDescriptionCommand */
-    public EditCampaignDescriptionCommand(UserVisitPK userVisitPK, EditCampaignDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditCampaignDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

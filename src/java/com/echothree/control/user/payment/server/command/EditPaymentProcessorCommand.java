@@ -69,8 +69,8 @@ public class EditPaymentProcessorCommand
     }
     
     /** Creates a new instance of EditPaymentProcessorCommand */
-    public EditPaymentProcessorCommand(UserVisitPK userVisitPK, EditPaymentProcessorForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditPaymentProcessorCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

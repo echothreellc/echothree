@@ -57,8 +57,8 @@ public class EditMoodCommand
     }
     
     /** Creates a new instance of EditMoodCommand */
-    public EditMoodCommand(UserVisitPK userVisitPK, EditMoodForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditMoodCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

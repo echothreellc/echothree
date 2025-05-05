@@ -42,8 +42,8 @@ public class GetAssociateReferralCommand
     }
     
     /** Creates a new instance of GetAssociateReferralCommand */
-    public GetAssociateReferralCommand(UserVisitPK userVisitPK, GetAssociateReferralForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetAssociateReferralCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

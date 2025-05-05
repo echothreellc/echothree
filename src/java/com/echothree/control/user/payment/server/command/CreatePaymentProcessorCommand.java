@@ -61,8 +61,8 @@ public class CreatePaymentProcessorCommand
     }
     
     /** Creates a new instance of CreatePaymentProcessorCommand */
-    public CreatePaymentProcessorCommand(UserVisitPK userVisitPK, CreatePaymentProcessorForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreatePaymentProcessorCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

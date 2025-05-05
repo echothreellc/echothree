@@ -55,8 +55,8 @@ public class DeleteSearchResultActionTypeCommand
     }
     
     /** Creates a new instance of DeleteSearchResultActionTypeCommand */
-    public DeleteSearchResultActionTypeCommand(UserVisitPK userVisitPK, DeleteSearchResultActionTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteSearchResultActionTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
 
     @Override

@@ -76,8 +76,8 @@ public class EditContentCollectionCommand
     }
     
     /** Creates a new instance of EditContentCollectionCommand */
-    public EditContentCollectionCommand(UserVisitPK userVisitPK, EditContentCollectionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditContentCollectionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

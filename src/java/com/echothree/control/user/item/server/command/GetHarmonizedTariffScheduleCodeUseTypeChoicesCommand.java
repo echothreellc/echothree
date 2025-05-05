@@ -55,8 +55,8 @@ public class GetHarmonizedTariffScheduleCodeUseTypeChoicesCommand
     }
     
     /** Creates a new instance of GetHarmonizedTariffScheduleCodeUseTypeChoicesCommand */
-    public GetHarmonizedTariffScheduleCodeUseTypeChoicesCommand(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUseTypeChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetHarmonizedTariffScheduleCodeUseTypeChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

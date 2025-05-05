@@ -65,8 +65,8 @@ public class CreateColorCommand
     }
     
     /** Creates a new instance of CreateColorCommand */
-    public CreateColorCommand(UserVisitPK userVisitPK, CreateColorForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateColorCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -59,8 +59,8 @@ public class GetSearchSortDirectionChoicesCommand
     }
     
     /** Creates a new instance of GetSearchSortDirectionChoicesCommand */
-    public GetSearchSortDirectionChoicesCommand(UserVisitPK userVisitPK, GetSearchSortDirectionChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetSearchSortDirectionChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -69,8 +69,8 @@ public class EditSecurityRoleGroupDescriptionCommand
     }
     
     /** Creates a new instance of EditSecurityRoleGroupDescriptionCommand */
-    public EditSecurityRoleGroupDescriptionCommand(UserVisitPK userVisitPK, EditSecurityRoleGroupDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditSecurityRoleGroupDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

@@ -47,8 +47,8 @@ public class GetContentPageAreaTypeCommand
     }
     
     /** Creates a new instance of GetContentPageAreaTypeCommand */
-    public GetContentPageAreaTypeCommand(UserVisitPK userVisitPK, GetContentPageAreaTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetContentPageAreaTypeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

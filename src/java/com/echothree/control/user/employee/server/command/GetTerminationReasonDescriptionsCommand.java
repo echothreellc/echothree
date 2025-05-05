@@ -56,8 +56,8 @@ public class GetTerminationReasonDescriptionsCommand
     }
     
     /** Creates a new instance of GetTerminationReasonDescriptionsCommand */
-    public GetTerminationReasonDescriptionsCommand(UserVisitPK userVisitPK, GetTerminationReasonDescriptionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetTerminationReasonDescriptionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

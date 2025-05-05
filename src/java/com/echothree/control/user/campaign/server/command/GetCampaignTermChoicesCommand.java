@@ -55,8 +55,8 @@ public class GetCampaignTermChoicesCommand
     }
     
     /** Creates a new instance of GetCampaignTermChoicesCommand */
-    public GetCampaignTermChoicesCommand(UserVisitPK userVisitPK, GetCampaignTermChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetCampaignTermChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

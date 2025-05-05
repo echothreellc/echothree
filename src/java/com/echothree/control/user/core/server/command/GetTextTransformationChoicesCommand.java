@@ -55,8 +55,8 @@ public class GetTextTransformationChoicesCommand
     }
     
     /** Creates a new instance of GetTextTransformationChoicesCommand */
-    public GetTextTransformationChoicesCommand(UserVisitPK userVisitPK, GetTextTransformationChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetTextTransformationChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

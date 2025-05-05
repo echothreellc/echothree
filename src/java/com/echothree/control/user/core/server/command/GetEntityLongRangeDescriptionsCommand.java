@@ -58,8 +58,8 @@ public class GetEntityLongRangeDescriptionsCommand
     }
     
     /** Creates a new instance of GetEntityLongRangeDescriptionsCommand */
-    public GetEntityLongRangeDescriptionsCommand(UserVisitPK userVisitPK, GetEntityLongRangeDescriptionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetEntityLongRangeDescriptionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

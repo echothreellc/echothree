@@ -55,8 +55,8 @@ public class GetServiceChoicesCommand
     }
     
     /** Creates a new instance of GetServiceChoicesCommand */
-    public GetServiceChoicesCommand(UserVisitPK userVisitPK, GetServiceChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetServiceChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

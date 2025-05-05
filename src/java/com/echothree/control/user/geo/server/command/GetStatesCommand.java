@@ -60,8 +60,8 @@ public class GetStatesCommand
     }
     
     /** Creates a new instance of GetStatesCommand */
-    public GetStatesCommand(UserVisitPK userVisitPK, GetStatesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetStatesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     GeoCode countryGeoCode;

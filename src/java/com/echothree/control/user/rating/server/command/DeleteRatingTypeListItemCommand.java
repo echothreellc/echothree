@@ -44,8 +44,8 @@ public class DeleteRatingTypeListItemCommand
     }
     
     /** Creates a new instance of DeleteRatingTypeListItemCommand */
-    public DeleteRatingTypeListItemCommand(UserVisitPK userVisitPK, DeleteRatingTypeListItemForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteRatingTypeListItemCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

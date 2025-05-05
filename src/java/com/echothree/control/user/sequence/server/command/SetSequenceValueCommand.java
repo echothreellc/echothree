@@ -57,8 +57,8 @@ public class SetSequenceValueCommand
     }
     
     /** Creates a new instance of SetSequenceValueCommand */
-    public SetSequenceValueCommand(UserVisitPK userVisitPK, SetSequenceValueForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetSequenceValueCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

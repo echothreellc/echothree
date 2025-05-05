@@ -52,8 +52,8 @@ public class GetForumMessageCommand
     }
     
     /** Creates a new instance of GetForumMessageCommand */
-    public GetForumMessageCommand(UserVisitPK userVisitPK, GetForumMessageForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetForumMessageCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

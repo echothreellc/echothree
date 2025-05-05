@@ -58,8 +58,8 @@ public class CreateEmployeeTypeCommand
     }
     
     /** Creates a new instance of CreateEmployeeTypeCommand */
-    public CreateEmployeeTypeCommand(UserVisitPK userVisitPK, CreateEmployeeTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateEmployeeTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

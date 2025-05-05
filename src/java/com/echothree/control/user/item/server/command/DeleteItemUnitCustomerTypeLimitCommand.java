@@ -47,8 +47,8 @@ public class DeleteItemUnitCustomerTypeLimitCommand
     }
     
     /** Creates a new instance of DeleteItemUnitCustomerTypeLimitCommand */
-    public DeleteItemUnitCustomerTypeLimitCommand(UserVisitPK userVisitPK, DeleteItemUnitCustomerTypeLimitForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteItemUnitCustomerTypeLimitCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -60,8 +60,8 @@ public class GetUseNameElementCommand
     }
     
     /** Creates a new instance of GetUseNameElementCommand */
-    public GetUseNameElementCommand(UserVisitPK userVisitPK, GetUseNameElementForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetUseNameElementCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

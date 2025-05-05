@@ -53,8 +53,8 @@ public class GetApplicationsCommand
     }
     
     /** Creates a new instance of GetApplicationsCommand */
-    public GetApplicationsCommand(UserVisitPK userVisitPK, GetApplicationsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetApplicationsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

@@ -49,8 +49,8 @@ public class GetItemTypeCommand
     }
 
     /** Creates a new instance of GetItemTypeCommand */
-    public GetItemTypeCommand(UserVisitPK userVisitPK, GetItemTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetItemTypeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

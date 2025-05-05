@@ -61,8 +61,8 @@ public class GetTrainingClassPageCommand
     }
     
     /** Creates a new instance of GetTrainingClassPageCommand */
-    public GetTrainingClassPageCommand(UserVisitPK userVisitPK, GetTrainingClassPageForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetTrainingClassPageCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

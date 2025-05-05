@@ -58,8 +58,8 @@ public class DeleteShipmentAliasTypeDescriptionCommand
     }
     
     /** Creates a new instance of DeleteShipmentAliasTypeDescriptionCommand */
-    public DeleteShipmentAliasTypeDescriptionCommand(UserVisitPK userVisitPK, DeleteShipmentAliasTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteShipmentAliasTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

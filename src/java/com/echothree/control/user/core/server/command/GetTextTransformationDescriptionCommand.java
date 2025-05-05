@@ -57,8 +57,8 @@ public class GetTextTransformationDescriptionCommand
     }
     
     /** Creates a new instance of GetTextTransformationDescriptionCommand */
-    public GetTextTransformationDescriptionCommand(UserVisitPK userVisitPK, GetTextTransformationDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetTextTransformationDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

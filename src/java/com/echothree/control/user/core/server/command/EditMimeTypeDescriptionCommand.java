@@ -69,8 +69,8 @@ public class EditMimeTypeDescriptionCommand
     }
 
     /** Creates a new instance of EditMimeTypeDescriptionCommand */
-    public EditMimeTypeDescriptionCommand(UserVisitPK userVisitPK, EditMimeTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditMimeTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

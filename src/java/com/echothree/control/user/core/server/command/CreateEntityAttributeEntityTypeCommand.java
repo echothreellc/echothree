@@ -57,8 +57,8 @@ public class CreateEntityAttributeEntityTypeCommand
     }
     
     /** Creates a new instance of CreateEntityAttributeEntityTypeCommand */
-    public CreateEntityAttributeEntityTypeCommand(UserVisitPK userVisitPK, CreateEntityAttributeEntityTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateEntityAttributeEntityTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

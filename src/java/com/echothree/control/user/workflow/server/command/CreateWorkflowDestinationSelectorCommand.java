@@ -59,8 +59,8 @@ public class CreateWorkflowDestinationSelectorCommand
     }
     
     /** Creates a new instance of CreateWorkflowDestinationSelectorCommand */
-    public CreateWorkflowDestinationSelectorCommand(UserVisitPK userVisitPK, CreateWorkflowDestinationSelectorForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateWorkflowDestinationSelectorCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

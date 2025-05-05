@@ -44,8 +44,8 @@ public class SetRootSelectorNodeCommand
     }
     
     /** Creates a new instance of SetRootSelectorNodeCommand */
-    public SetRootSelectorNodeCommand(UserVisitPK userVisitPK, SetRootSelectorNodeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SetRootSelectorNodeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

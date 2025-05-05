@@ -52,8 +52,8 @@ public class CreateSubscriptionTypeChainCommand
     }
     
     /** Creates a new instance of CreateSubscriptionTypeChainCommand */
-    public CreateSubscriptionTypeChainCommand(UserVisitPK userVisitPK, CreateSubscriptionTypeChainForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateSubscriptionTypeChainCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

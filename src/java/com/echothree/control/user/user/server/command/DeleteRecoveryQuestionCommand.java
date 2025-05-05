@@ -39,8 +39,8 @@ public class DeleteRecoveryQuestionCommand
     }
     
     /** Creates a new instance of DeleteRecoveryQuestionCommand */
-    public DeleteRecoveryQuestionCommand(UserVisitPK userVisitPK, DeleteRecoveryQuestionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteRecoveryQuestionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

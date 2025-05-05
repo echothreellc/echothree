@@ -60,8 +60,8 @@ public class CreateLocationCapacityCommand
     }
     
     /** Creates a new instance of CreateLocationCapacityCommand */
-    public CreateLocationCapacityCommand(UserVisitPK userVisitPK, CreateLocationCapacityForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateLocationCapacityCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

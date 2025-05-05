@@ -56,8 +56,8 @@ public class GetCurrencyDescriptionsCommand
     }
     
     /** Creates a new instance of GetCurrencyDescriptionsCommand */
-    public GetCurrencyDescriptionsCommand(UserVisitPK userVisitPK, GetCurrencyDescriptionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetCurrencyDescriptionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

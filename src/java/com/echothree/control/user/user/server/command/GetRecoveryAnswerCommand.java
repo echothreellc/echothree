@@ -51,8 +51,8 @@ public class GetRecoveryAnswerCommand
     }
     
     /** Creates a new instance of GetRecoveryAnswerCommand */
-    public GetRecoveryAnswerCommand(UserVisitPK userVisitPK, GetRecoveryAnswerForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetRecoveryAnswerCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

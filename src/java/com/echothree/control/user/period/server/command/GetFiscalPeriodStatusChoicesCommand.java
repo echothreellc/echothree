@@ -57,8 +57,8 @@ public class GetFiscalPeriodStatusChoicesCommand
     }
     
     /** Creates a new instance of GetFiscalPeriodStatusChoicesCommand */
-    public GetFiscalPeriodStatusChoicesCommand(UserVisitPK userVisitPK, GetFiscalPeriodStatusChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetFiscalPeriodStatusChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

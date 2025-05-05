@@ -53,8 +53,8 @@ public class GenerateUuidCommand
     }
     
     /** Creates a new instance of GenerateUuidCommand */
-    public GenerateUuidCommand(UserVisitPK userVisitPK, GenerateUuidForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GenerateUuidCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

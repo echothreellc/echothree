@@ -55,8 +55,8 @@ public class GetFontWeightChoicesCommand
     }
     
     /** Creates a new instance of GetFontWeightChoicesCommand */
-    public GetFontWeightChoicesCommand(UserVisitPK userVisitPK, GetFontWeightChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetFontWeightChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

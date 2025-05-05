@@ -56,8 +56,8 @@ public class GetTransactionTimeTypeDescriptionsCommand
     }
     
     /** Creates a new instance of GetTransactionTimeTypeDescriptionsCommand */
-    public GetTransactionTimeTypeDescriptionsCommand(UserVisitPK userVisitPK, GetTransactionTimeTypeDescriptionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetTransactionTimeTypeDescriptionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

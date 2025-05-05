@@ -81,8 +81,8 @@ public class UpdateIndexesCommand
     }
     
     /** Creates a new instance of UpdateIndexesCommand */
-    public UpdateIndexesCommand(UserVisitPK userVisitPK, UpdateIndexesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, null, false);
+    public UpdateIndexesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, null, false);
     }
     
     private static final int QUEUED_ENTITY_COUNT = 10;

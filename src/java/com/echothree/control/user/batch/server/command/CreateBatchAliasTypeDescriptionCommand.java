@@ -59,8 +59,8 @@ public class CreateBatchAliasTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateBatchAliasTypeDescriptionCommand */
-    public CreateBatchAliasTypeDescriptionCommand(UserVisitPK userVisitPK, CreateBatchAliasTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateBatchAliasTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

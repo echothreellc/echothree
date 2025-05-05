@@ -55,8 +55,8 @@ public class SetDefaultServerCommand
     }
     
     /** Creates a new instance of SetDefaultServerCommand */
-    public SetDefaultServerCommand(UserVisitPK userVisitPK, SetDefaultServerForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultServerCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

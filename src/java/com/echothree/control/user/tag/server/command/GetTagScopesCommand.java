@@ -55,8 +55,8 @@ public class GetTagScopesCommand
     }
     
     /** Creates a new instance of GetTagScopesCommand */
-    public GetTagScopesCommand(UserVisitPK userVisitPK, GetTagScopesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetTagScopesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

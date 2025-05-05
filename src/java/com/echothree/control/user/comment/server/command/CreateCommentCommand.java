@@ -65,8 +65,8 @@ public class CreateCommentCommand
     }
     
     /** Creates a new instance of CreateCommentCommand */
-    public CreateCommentCommand(UserVisitPK userVisitPK, CreateCommentForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateCommentCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     protected String createComment(EntityInstanceControl entityInstanceControl, CommentControl commentControl, CommentType commentType, EntityInstance commentedEntityInstance, Language language, MimeType mimeType,

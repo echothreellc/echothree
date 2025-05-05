@@ -71,8 +71,8 @@ public class EditPeriodKindCommand
     }
     
     /** Creates a new instance of EditPeriodKindCommand */
-    public EditPeriodKindCommand(UserVisitPK userVisitPK, EditPeriodKindForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditPeriodKindCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

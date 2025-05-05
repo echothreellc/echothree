@@ -19,7 +19,6 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.core.server.entity.EventSubscriber;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
@@ -42,8 +41,8 @@ public class ProcessQueuedEventsCommand
     }
     
     /** Creates a new instance of ProcessQueuedEventsCommand */
-    public ProcessQueuedEventsCommand(UserVisitPK userVisitPK) {
-        super(userVisitPK, COMMAND_SECURITY_DEFINITION, false);
+    public ProcessQueuedEventsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, false);
     }
 
     @Override

@@ -50,8 +50,8 @@ public class DeleteEntityIntegerDefaultCommand
     }
 
     /** Creates a new instance of CreateEntityIntegerDefaultCommand */
-    public DeleteEntityIntegerDefaultCommand(UserVisitPK userVisitPK, DeleteEntityIntegerDefaultForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteEntityIntegerDefaultCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

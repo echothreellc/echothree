@@ -43,8 +43,8 @@ public class GetNameSuffixChoicesCommand
     }
     
     /** Creates a new instance of GetNameSuffixChoicesCommand */
-    public GetNameSuffixChoicesCommand(UserVisitPK userVisitPK, GetNameSuffixChoicesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public GetNameSuffixChoicesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

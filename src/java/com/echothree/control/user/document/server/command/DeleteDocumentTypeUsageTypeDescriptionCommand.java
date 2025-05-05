@@ -57,8 +57,8 @@ public class DeleteDocumentTypeUsageTypeDescriptionCommand
     }
     
     /** Creates a new instance of DeleteDocumentTypeUsageTypeDescriptionCommand */
-    public DeleteDocumentTypeUsageTypeDescriptionCommand(UserVisitPK userVisitPK, DeleteDocumentTypeUsageTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteDocumentTypeUsageTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

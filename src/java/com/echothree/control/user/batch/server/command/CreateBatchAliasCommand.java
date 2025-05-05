@@ -21,11 +21,10 @@ import com.echothree.control.user.batch.server.command.util.BatchAliasUtil;
 import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -51,13 +50,18 @@ public class CreateBatchAliasCommand
     }
     
     /** Creates a new instance of CreateBatchAliasCommand */
-    public CreateBatchAliasCommand(UserVisitPK userVisitPK, CreateBatchAliasForm form) {
-        super(userVisitPK, form, new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+    public CreateBatchAliasCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
+    }
+
+    @Override
+    protected CommandSecurityDefinition getCommandSecurityDefinition() {
+        return new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(BatchAliasUtil.getInstance().getSecurityRoleGroupNameByBatchTypeSpec(form), SecurityRoles.Create.name())
-                        )))
-                ))), FORM_FIELD_DEFINITIONS, false);
+                )))
+        )));
     }
 
     @Override

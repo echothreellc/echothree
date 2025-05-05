@@ -55,8 +55,8 @@ public class SetDefaultColorCommand
     }
     
     /** Creates a new instance of SetDefaultColorCommand */
-    public SetDefaultColorCommand(UserVisitPK userVisitPK, SetDefaultColorForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultColorCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

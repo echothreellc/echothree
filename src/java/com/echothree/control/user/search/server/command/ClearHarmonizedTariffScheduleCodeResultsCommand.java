@@ -25,8 +25,8 @@ public class ClearHarmonizedTariffScheduleCodeResultsCommand
         extends BaseClearResultsCommand<ClearHarmonizedTariffScheduleCodeResultsForm> {
     
     /** Creates a new instance of ClearHarmonizedTariffScheduleCodeResultsCommand */
-    public ClearHarmonizedTariffScheduleCodeResultsCommand(UserVisitPK userVisitPK, ClearHarmonizedTariffScheduleCodeResultsForm form) {
-        super(userVisitPK, form, null);
+    public ClearHarmonizedTariffScheduleCodeResultsCommand() {
+        super(null);
     }
     
     @Override

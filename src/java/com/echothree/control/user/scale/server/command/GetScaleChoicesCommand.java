@@ -42,8 +42,8 @@ public class GetScaleChoicesCommand
     }
 
     /** Creates a new instance of GetScaleChoicesCommand */
-    public GetScaleChoicesCommand(UserVisitPK userVisitPK, GetScaleChoicesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public GetScaleChoicesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
    @Override

@@ -54,8 +54,8 @@ public class GetCacheEntriesCommand
     }
 
     /** Creates a new instance of GetCacheEntriesCommand */
-    public GetCacheEntriesCommand(UserVisitPK userVisitPK, GetCacheEntriesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetCacheEntriesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

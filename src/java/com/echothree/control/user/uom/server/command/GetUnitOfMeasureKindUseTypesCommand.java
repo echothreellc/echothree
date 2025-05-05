@@ -41,8 +41,8 @@ public class GetUnitOfMeasureKindUseTypesCommand
     }
     
     /** Creates a new instance of GetUnitOfMeasureKindUseTypesCommand */
-    public GetUnitOfMeasureKindUseTypesCommand(UserVisitPK userVisitPK, GetUnitOfMeasureKindUseTypesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetUnitOfMeasureKindUseTypesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

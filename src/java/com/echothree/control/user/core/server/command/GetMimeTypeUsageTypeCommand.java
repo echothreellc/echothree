@@ -43,8 +43,8 @@ public class GetMimeTypeUsageTypeCommand
     }
     
     /** Creates a new instance of GetMimeTypeUsageTypeCommand */
-    public GetMimeTypeUsageTypeCommand(UserVisitPK userVisitPK, GetMimeTypeUsageTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetMimeTypeUsageTypeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

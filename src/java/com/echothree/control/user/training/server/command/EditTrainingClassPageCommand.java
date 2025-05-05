@@ -78,8 +78,8 @@ public class EditTrainingClassPageCommand
     }
     
     /** Creates a new instance of EditTrainingClassPageCommand */
-    public EditTrainingClassPageCommand(UserVisitPK userVisitPK, EditTrainingClassPageForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditTrainingClassPageCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

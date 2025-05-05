@@ -46,8 +46,8 @@ public class GetRatingTypeDescriptionCommand
     }
     
     /** Creates a new instance of GetRatingTypeDescriptionCommand */
-    public GetRatingTypeDescriptionCommand(UserVisitPK userVisitPK, GetRatingTypeDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public GetRatingTypeDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

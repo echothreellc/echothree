@@ -43,8 +43,8 @@ public class ClearWarehouseResultsCommand
     }
     
     /** Creates a new instance of ClearWarehouseResultsCommand */
-    public ClearWarehouseResultsCommand(UserVisitPK userVisitPK, ClearWarehouseResultsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION);
+    public ClearWarehouseResultsCommand() {
+        super(COMMAND_SECURITY_DEFINITION);
     }
     
     @Override

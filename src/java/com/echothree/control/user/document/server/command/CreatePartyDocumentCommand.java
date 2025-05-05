@@ -71,8 +71,8 @@ public class CreatePartyDocumentCommand
     }
     
     /** Creates a new instance of CreatePartyDocumentCommand */
-    public CreatePartyDocumentCommand(UserVisitPK userVisitPK, CreatePartyDocumentForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreatePartyDocumentCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
 
     private void createPartyDocument(Party party, DocumentType documentType, MimeType mimeType, ByteArray blob, String clob, CreatePartyDocumentResult result) {

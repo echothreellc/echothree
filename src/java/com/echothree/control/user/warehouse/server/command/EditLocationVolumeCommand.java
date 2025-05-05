@@ -74,8 +74,8 @@ public class EditLocationVolumeCommand
     }
     
     /** Creates a new instance of EditLocationVolumeCommand */
-    public EditLocationVolumeCommand(UserVisitPK userVisitPK, EditLocationVolumeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditLocationVolumeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

@@ -46,7 +46,7 @@ public class GraphQlBean
     @Override
     @Asynchronous
     public Future<CommandResult> executeGraphQl(UserVisitPK userVisitPK, ExecuteGraphQlForm form) {
-        return new ExecuteGraphQlCommand(userVisitPK, form).runAsync();
+        return new ExecuteGraphQlCommand().runAsync(userVisitPK, form);
     }
 
 }

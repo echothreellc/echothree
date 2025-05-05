@@ -52,8 +52,8 @@ public class CreateAssociateProgramCommand
     }
     
     /** Creates a new instance of CreateAssociateProgramCommand */
-    public CreateAssociateProgramCommand(UserVisitPK userVisitPK, CreateAssociateProgramForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateAssociateProgramCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

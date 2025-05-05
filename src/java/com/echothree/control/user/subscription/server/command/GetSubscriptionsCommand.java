@@ -45,8 +45,8 @@ public class GetSubscriptionsCommand
     }
     
     /** Creates a new instance of GetSubscriptionsCommand */
-    public GetSubscriptionsCommand(UserVisitPK userVisitPK, GetSubscriptionsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetSubscriptionsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

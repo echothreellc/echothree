@@ -42,8 +42,8 @@ public class GetEmploymentCommand
     }
     
     /** Creates a new instance of GetEmploymentCommand */
-    public GetEmploymentCommand(UserVisitPK userVisitPK, GetEmploymentForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetEmploymentCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

@@ -69,8 +69,8 @@ public class EditTextDecorationDescriptionCommand
     }
     
     /** Creates a new instance of EditTextDecorationDescriptionCommand */
-    public EditTextDecorationDescriptionCommand(UserVisitPK userVisitPK, EditTextDecorationDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditTextDecorationDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

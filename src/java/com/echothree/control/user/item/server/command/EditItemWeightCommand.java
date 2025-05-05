@@ -60,8 +60,8 @@ public class EditItemWeightCommand
     }
     
     /** Creates a new instance of EditItemWeightCommand */
-    public EditItemWeightCommand(UserVisitPK userVisitPK, EditItemWeightForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditItemWeightCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

@@ -39,8 +39,8 @@ public class DeletePersonalTitleCommand
     }
     
     /** Creates a new instance of DeletePersonalTitleCommand */
-    public DeletePersonalTitleCommand(UserVisitPK userVisitPK, DeletePersonalTitleForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeletePersonalTitleCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

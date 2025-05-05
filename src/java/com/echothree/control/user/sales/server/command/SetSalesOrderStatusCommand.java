@@ -54,8 +54,8 @@ public class SetSalesOrderStatusCommand
     }
     
     /** Creates a new instance of SetSalesOrderStatusCommand */
-    public SetSalesOrderStatusCommand(UserVisitPK userVisitPK, SetSalesOrderStatusForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetSalesOrderStatusCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -55,8 +55,8 @@ public class SetDefaultPicklistAliasTypeCommand
     }
     
     /** Creates a new instance of SetDefaultPicklistAliasTypeCommand */
-    public SetDefaultPicklistAliasTypeCommand(UserVisitPK userVisitPK, SetDefaultPicklistAliasTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultPicklistAliasTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

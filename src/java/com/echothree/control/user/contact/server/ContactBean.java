@@ -43,17 +43,17 @@ public class ContactBean
     
     @Override
     public CommandResult createContactMechanismType(UserVisitPK userVisitPK, CreateContactMechanismTypeForm form) {
-        return new CreateContactMechanismTypeCommand(userVisitPK, form).run();
+        return new CreateContactMechanismTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getContactMechanismTypes(UserVisitPK userVisitPK, GetContactMechanismTypesForm form) {
-        return new GetContactMechanismTypesCommand(userVisitPK, form).run();
+        return new GetContactMechanismTypesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getContactMechanismTypeChoices(UserVisitPK userVisitPK, GetContactMechanismTypeChoicesForm form) {
-        return new GetContactMechanismTypeChoicesCommand(userVisitPK, form).run();
+        return new GetContactMechanismTypeChoicesCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -62,7 +62,7 @@ public class ContactBean
     
     @Override
     public CommandResult createContactMechanismTypeDescription(UserVisitPK userVisitPK, CreateContactMechanismTypeDescriptionForm form) {
-        return new CreateContactMechanismTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateContactMechanismTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -71,17 +71,17 @@ public class ContactBean
     
     @Override
     public CommandResult createContactMechanismAliasType(UserVisitPK userVisitPK, CreateContactMechanismAliasTypeForm form) {
-        return new CreateContactMechanismAliasTypeCommand(userVisitPK, form).run();
+        return new CreateContactMechanismAliasTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getContactMechanismAliasTypes(UserVisitPK userVisitPK, GetContactMechanismAliasTypesForm form) {
-        return new GetContactMechanismAliasTypesCommand(userVisitPK, form).run();
+        return new GetContactMechanismAliasTypesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getContactMechanismAliasTypeChoices(UserVisitPK userVisitPK, GetContactMechanismAliasTypeChoicesForm form) {
-        return new GetContactMechanismAliasTypeChoicesCommand(userVisitPK, form).run();
+        return new GetContactMechanismAliasTypeChoicesCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -90,7 +90,7 @@ public class ContactBean
     
     @Override
     public CommandResult createContactMechanismAliasTypeDescription(UserVisitPK userVisitPK, CreateContactMechanismAliasTypeDescriptionForm form) {
-        return new CreateContactMechanismAliasTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateContactMechanismAliasTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -99,22 +99,22 @@ public class ContactBean
     
     @Override
     public CommandResult createContactMechanismPurpose(UserVisitPK userVisitPK, CreateContactMechanismPurposeForm form) {
-        return new CreateContactMechanismPurposeCommand(userVisitPK, form).run();
+        return new CreateContactMechanismPurposeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContactMechanismPurpose(UserVisitPK userVisitPK, GetContactMechanismPurposeForm form) {
-        return new GetContactMechanismPurposeCommand(userVisitPK, form).run();
+        return new GetContactMechanismPurposeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContactMechanismPurposes(UserVisitPK userVisitPK, GetContactMechanismPurposesForm form) {
-        return new GetContactMechanismPurposesCommand(userVisitPK, form).run();
+        return new GetContactMechanismPurposesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContactMechanismPurposeChoices(UserVisitPK userVisitPK, GetContactMechanismPurposeChoicesForm form) {
-        return new GetContactMechanismPurposeChoicesCommand(userVisitPK, form).run();
+        return new GetContactMechanismPurposeChoicesCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -123,7 +123,7 @@ public class ContactBean
     
     @Override
     public CommandResult createContactMechanismPurposeDescription(UserVisitPK userVisitPK, CreateContactMechanismPurposeDescriptionForm form) {
-        return new CreateContactMechanismPurposeDescriptionCommand(userVisitPK, form).run();
+        return new CreateContactMechanismPurposeDescriptionCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -132,68 +132,68 @@ public class ContactBean
     
     @Override
     public CommandResult getContactMechanismChoices(UserVisitPK userVisitPK, GetContactMechanismChoicesForm form) {
-        return new GetContactMechanismChoicesCommand(userVisitPK, form).run();
+        return new GetContactMechanismChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getEmailAddressStatusChoices(UserVisitPK userVisitPK, GetEmailAddressStatusChoicesForm form) {
-        return new GetEmailAddressStatusChoicesCommand(userVisitPK, form).run();
+        return new GetEmailAddressStatusChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setEmailAddressStatus(UserVisitPK userVisitPK, SetEmailAddressStatusForm form) {
-        return new SetEmailAddressStatusCommand(userVisitPK, form).run();
+        return new SetEmailAddressStatusCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getEmailAddressVerificationChoices(UserVisitPK userVisitPK, GetEmailAddressVerificationChoicesForm form) {
-        return new GetEmailAddressVerificationChoicesCommand(userVisitPK, form).run();
+        return new GetEmailAddressVerificationChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setEmailAddressVerification(UserVisitPK userVisitPK, SetEmailAddressVerificationForm form) {
-        return new SetEmailAddressVerificationCommand(userVisitPK, form).run();
+        return new SetEmailAddressVerificationCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPostalAddressStatusChoices(UserVisitPK userVisitPK, GetPostalAddressStatusChoicesForm form) {
-        return new GetPostalAddressStatusChoicesCommand(userVisitPK, form).run();
+        return new GetPostalAddressStatusChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setPostalAddressStatus(UserVisitPK userVisitPK, SetPostalAddressStatusForm form) {
-        return new SetPostalAddressStatusCommand(userVisitPK, form).run();
+        return new SetPostalAddressStatusCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTelephoneStatusChoices(UserVisitPK userVisitPK, GetTelephoneStatusChoicesForm form) {
-        return new GetTelephoneStatusChoicesCommand(userVisitPK, form).run();
+        return new GetTelephoneStatusChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setTelephoneStatus(UserVisitPK userVisitPK, SetTelephoneStatusForm form) {
-        return new SetTelephoneStatusCommand(userVisitPK, form).run();
+        return new SetTelephoneStatusCommand().run(userVisitPK, form);
     }
     
 
     @Override
     public CommandResult getWebAddressStatusChoices(UserVisitPK userVisitPK, GetWebAddressStatusChoicesForm form) {
-        return new GetWebAddressStatusChoicesCommand(userVisitPK, form).run();
+        return new GetWebAddressStatusChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setWebAddressStatus(UserVisitPK userVisitPK, SetWebAddressStatusForm form) {
-        return new SetWebAddressStatusCommand(userVisitPK, form).run();
+        return new SetWebAddressStatusCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getContactMechanism(UserVisitPK userVisitPK, GetContactMechanismForm form) {
-        return new GetContactMechanismCommand(userVisitPK, form).run();
+        return new GetContactMechanismCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteContactMechanism(UserVisitPK userVisitPK, DeleteContactMechanismForm form) {
-        return new DeleteContactMechanismCommand(userVisitPK, form).run();
+        return new DeleteContactMechanismCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -202,12 +202,12 @@ public class ContactBean
     
     @Override
     public CommandResult createContactMechanismAlias(UserVisitPK userVisitPK, CreateContactMechanismAliasForm form) {
-        return new CreateContactMechanismAliasCommand(userVisitPK, form).run();
+        return new CreateContactMechanismAliasCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteContactMechanismAlias(UserVisitPK userVisitPK, DeleteContactMechanismAliasForm form) {
-        return new DeleteContactMechanismAliasCommand(userVisitPK, form).run();
+        return new DeleteContactMechanismAliasCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -216,12 +216,12 @@ public class ContactBean
     
     @Override
     public CommandResult createPartyContactMechanismAlias(UserVisitPK userVisitPK, CreatePartyContactMechanismAliasForm form) {
-        return new CreatePartyContactMechanismAliasCommand(userVisitPK, form).run();
+        return new CreatePartyContactMechanismAliasCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deletePartyContactMechanismAlias(UserVisitPK userVisitPK, DeletePartyContactMechanismAliasForm form) {
-        return new DeletePartyContactMechanismAliasCommand(userVisitPK, form).run();
+        return new DeletePartyContactMechanismAliasCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -230,12 +230,12 @@ public class ContactBean
     
     @Override
     public CommandResult createContactEmailAddress(UserVisitPK userVisitPK, CreateContactEmailAddressForm form) {
-        return new CreateContactEmailAddressCommand(userVisitPK, form).run();
+        return new CreateContactEmailAddressCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editContactEmailAddress(UserVisitPK userVisitPK, EditContactEmailAddressForm form) {
-        return new EditContactEmailAddressCommand(userVisitPK, form).run();
+        return new EditContactEmailAddressCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -244,12 +244,12 @@ public class ContactBean
     
     @Override
     public CommandResult createContactPostalAddress(UserVisitPK userVisitPK, CreateContactPostalAddressForm form) {
-        return new CreateContactPostalAddressCommand(userVisitPK, form).run();
+        return new CreateContactPostalAddressCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editContactPostalAddress(UserVisitPK userVisitPK, EditContactPostalAddressForm form) {
-        return new EditContactPostalAddressCommand(userVisitPK, form).run();
+        return new EditContactPostalAddressCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -258,12 +258,12 @@ public class ContactBean
     
     @Override
     public CommandResult createContactTelephone(UserVisitPK userVisitPK, CreateContactTelephoneForm form) {
-        return new CreateContactTelephoneCommand(userVisitPK, form).run();
+        return new CreateContactTelephoneCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editContactTelephone(UserVisitPK userVisitPK, EditContactTelephoneForm form) {
-        return new EditContactTelephoneCommand(userVisitPK, form).run();
+        return new EditContactTelephoneCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -272,12 +272,12 @@ public class ContactBean
     
     @Override
     public CommandResult createContactWebAddress(UserVisitPK userVisitPK, CreateContactWebAddressForm form) {
-        return new CreateContactWebAddressCommand(userVisitPK, form).run();
+        return new CreateContactWebAddressCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editContactWebAddress(UserVisitPK userVisitPK, EditContactWebAddressForm form) {
-        return new EditContactWebAddressCommand(userVisitPK, form).run();
+        return new EditContactWebAddressCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -286,17 +286,17 @@ public class ContactBean
     
     @Override
     public CommandResult createPartyContactMechanismPurpose(UserVisitPK userVisitPK, CreatePartyContactMechanismPurposeForm form) {
-        return new CreatePartyContactMechanismPurposeCommand(userVisitPK, form).run();
+        return new CreatePartyContactMechanismPurposeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultPartyContactMechanismPurpose(UserVisitPK userVisitPK, SetDefaultPartyContactMechanismPurposeForm form) {
-        return new SetDefaultPartyContactMechanismPurposeCommand(userVisitPK, form).run();
+        return new SetDefaultPartyContactMechanismPurposeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deletePartyContactMechanismPurpose(UserVisitPK userVisitPK, DeletePartyContactMechanismPurposeForm form) {
-        return new DeletePartyContactMechanismPurposeCommand(userVisitPK, form).run();
+        return new DeletePartyContactMechanismPurposeCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -305,12 +305,12 @@ public class ContactBean
     
     @Override
     public CommandResult createPartyContactMechanismRelationship(UserVisitPK userVisitPK, CreatePartyContactMechanismRelationshipForm form) {
-        return new CreatePartyContactMechanismRelationshipCommand(userVisitPK, form).run();
+        return new CreatePartyContactMechanismRelationshipCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deletePartyContactMechanismRelationship(UserVisitPK userVisitPK, DeletePartyContactMechanismRelationshipForm form) {
-        return new DeletePartyContactMechanismRelationshipCommand(userVisitPK, form).run();
+        return new DeletePartyContactMechanismRelationshipCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -319,12 +319,12 @@ public class ContactBean
     
     @Override
     public CommandResult createPostalAddressElementType(UserVisitPK userVisitPK, CreatePostalAddressElementTypeForm form) {
-        return new CreatePostalAddressElementTypeCommand(userVisitPK, form).run();
+        return new CreatePostalAddressElementTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPostalAddressElementTypeChoices(UserVisitPK userVisitPK, GetPostalAddressElementTypeChoicesForm form) {
-        return new GetPostalAddressElementTypeChoicesCommand(userVisitPK, form).run();
+        return new GetPostalAddressElementTypeChoicesCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -333,7 +333,7 @@ public class ContactBean
     
     @Override
     public CommandResult createPostalAddressElementTypeDescription(UserVisitPK userVisitPK, CreatePostalAddressElementTypeDescriptionForm form) {
-        return new CreatePostalAddressElementTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreatePostalAddressElementTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -342,37 +342,37 @@ public class ContactBean
     
     @Override
     public CommandResult createPostalAddressFormat(UserVisitPK userVisitPK, CreatePostalAddressFormatForm form) {
-        return new CreatePostalAddressFormatCommand(userVisitPK, form).run();
+        return new CreatePostalAddressFormatCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPostalAddressFormat(UserVisitPK userVisitPK, GetPostalAddressFormatForm form) {
-        return new GetPostalAddressFormatCommand(userVisitPK, form).run();
+        return new GetPostalAddressFormatCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPostalAddressFormats(UserVisitPK userVisitPK, GetPostalAddressFormatsForm form) {
-        return new GetPostalAddressFormatsCommand(userVisitPK, form).run();
+        return new GetPostalAddressFormatsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPostalAddressFormatChoices(UserVisitPK userVisitPK, GetPostalAddressFormatChoicesForm form) {
-        return new GetPostalAddressFormatChoicesCommand(userVisitPK, form).run();
+        return new GetPostalAddressFormatChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultPostalAddressFormat(UserVisitPK userVisitPK, SetDefaultPostalAddressFormatForm form) {
-        return new SetDefaultPostalAddressFormatCommand(userVisitPK, form).run();
+        return new SetDefaultPostalAddressFormatCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editPostalAddressFormat(UserVisitPK userVisitPK, EditPostalAddressFormatForm form) {
-        return new EditPostalAddressFormatCommand(userVisitPK, form).run();
+        return new EditPostalAddressFormatCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deletePostalAddressFormat(UserVisitPK userVisitPK, DeletePostalAddressFormatForm form) {
-        return new DeletePostalAddressFormatCommand(userVisitPK, form).run();
+        return new DeletePostalAddressFormatCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -381,22 +381,22 @@ public class ContactBean
     
     @Override
     public CommandResult createPostalAddressFormatDescription(UserVisitPK userVisitPK, CreatePostalAddressFormatDescriptionForm form) {
-        return new CreatePostalAddressFormatDescriptionCommand(userVisitPK, form).run();
+        return new CreatePostalAddressFormatDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPostalAddressFormatDescriptions(UserVisitPK userVisitPK, GetPostalAddressFormatDescriptionsForm form) {
-        return new GetPostalAddressFormatDescriptionsCommand(userVisitPK, form).run();
+        return new GetPostalAddressFormatDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editPostalAddressFormatDescription(UserVisitPK userVisitPK, EditPostalAddressFormatDescriptionForm form) {
-        return new EditPostalAddressFormatDescriptionCommand(userVisitPK, form).run();
+        return new EditPostalAddressFormatDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deletePostalAddressFormatDescription(UserVisitPK userVisitPK, DeletePostalAddressFormatDescriptionForm form) {
-        return new DeletePostalAddressFormatDescriptionCommand(userVisitPK, form).run();
+        return new DeletePostalAddressFormatDescriptionCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -405,22 +405,22 @@ public class ContactBean
     
     @Override
     public CommandResult createPostalAddressLine(UserVisitPK userVisitPK, CreatePostalAddressLineForm form) {
-        return new CreatePostalAddressLineCommand(userVisitPK, form).run();
+        return new CreatePostalAddressLineCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPostalAddressLines(UserVisitPK userVisitPK, GetPostalAddressLinesForm form) {
-        return new GetPostalAddressLinesCommand(userVisitPK, form).run();
+        return new GetPostalAddressLinesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editPostalAddressLine(UserVisitPK userVisitPK, EditPostalAddressLineForm form) {
-        return new EditPostalAddressLineCommand(userVisitPK, form).run();
+        return new EditPostalAddressLineCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deletePostalAddressLine(UserVisitPK userVisitPK, DeletePostalAddressLineForm form) {
-        return new DeletePostalAddressLineCommand(userVisitPK, form).run();
+        return new DeletePostalAddressLineCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -429,22 +429,22 @@ public class ContactBean
     
     @Override
     public CommandResult createPostalAddressLineElement(UserVisitPK userVisitPK, CreatePostalAddressLineElementForm form) {
-        return new CreatePostalAddressLineElementCommand(userVisitPK, form).run();
+        return new CreatePostalAddressLineElementCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPostalAddressLineElements(UserVisitPK userVisitPK, GetPostalAddressLineElementsForm form) {
-        return new GetPostalAddressLineElementsCommand(userVisitPK, form).run();
+        return new GetPostalAddressLineElementsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editPostalAddressLineElement(UserVisitPK userVisitPK, EditPostalAddressLineElementForm form) {
-        return new EditPostalAddressLineElementCommand(userVisitPK, form).run();
+        return new EditPostalAddressLineElementCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deletePostalAddressLineElement(UserVisitPK userVisitPK, DeletePostalAddressLineElementForm form) {
-        return new DeletePostalAddressLineElementCommand(userVisitPK, form).run();
+        return new DeletePostalAddressLineElementCommand().run(userVisitPK, form);
     }
     
 }

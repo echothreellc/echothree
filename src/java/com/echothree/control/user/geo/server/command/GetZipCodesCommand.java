@@ -60,8 +60,8 @@ public class GetZipCodesCommand
     }
 
     /** Creates a new instance of GetZipCodesCommand */
-    public GetZipCodesCommand(UserVisitPK userVisitPK, GetZipCodesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetZipCodesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     GeoCode countryGeoCode;

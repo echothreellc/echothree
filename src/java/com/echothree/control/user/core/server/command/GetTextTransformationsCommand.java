@@ -53,8 +53,8 @@ public class GetTextTransformationsCommand
     }
     
     /** Creates a new instance of GetTextTransformationsCommand */
-    public GetTextTransformationsCommand(UserVisitPK userVisitPK, GetTextTransformationsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetTextTransformationsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

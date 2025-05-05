@@ -54,8 +54,8 @@ public class SetDefaultPicklistTypeCommand
     }
     
     /** Creates a new instance of SetDefaultPicklistTypeCommand */
-    public SetDefaultPicklistTypeCommand(UserVisitPK userVisitPK, SetDefaultPicklistTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultPicklistTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

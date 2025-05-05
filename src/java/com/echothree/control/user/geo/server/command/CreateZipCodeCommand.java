@@ -64,8 +64,8 @@ public class CreateZipCodeCommand
     }
     
     /** Creates a new instance of CreateZipCodeCommand */
-    public CreateZipCodeCommand(UserVisitPK userVisitPK, CreateZipCodeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateZipCodeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -43,37 +43,37 @@ public class QueueBean
     
     @Override
     public CommandResult createQueueType(UserVisitPK userVisitPK, CreateQueueTypeForm form) {
-        return new CreateQueueTypeCommand(userVisitPK, form).run();
+        return new CreateQueueTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getQueueTypeChoices(UserVisitPK userVisitPK, GetQueueTypeChoicesForm form) {
-        return new GetQueueTypeChoicesCommand(userVisitPK, form).run();
+        return new GetQueueTypeChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getQueueType(UserVisitPK userVisitPK, GetQueueTypeForm form) {
-        return new GetQueueTypeCommand(userVisitPK, form).run();
+        return new GetQueueTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getQueueTypes(UserVisitPK userVisitPK, GetQueueTypesForm form) {
-        return new GetQueueTypesCommand(userVisitPK, form).run();
+        return new GetQueueTypesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultQueueType(UserVisitPK userVisitPK, SetDefaultQueueTypeForm form) {
-        return new SetDefaultQueueTypeCommand(userVisitPK, form).run();
+        return new SetDefaultQueueTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editQueueType(UserVisitPK userVisitPK, EditQueueTypeForm form) {
-        return new EditQueueTypeCommand(userVisitPK, form).run();
+        return new EditQueueTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteQueueType(UserVisitPK userVisitPK, DeleteQueueTypeForm form) {
-        return new DeleteQueueTypeCommand(userVisitPK, form).run();
+        return new DeleteQueueTypeCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -82,27 +82,27 @@ public class QueueBean
     
     @Override
     public CommandResult createQueueTypeDescription(UserVisitPK userVisitPK, CreateQueueTypeDescriptionForm form) {
-        return new CreateQueueTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateQueueTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getQueueTypeDescription(UserVisitPK userVisitPK, GetQueueTypeDescriptionForm form) {
-        return new GetQueueTypeDescriptionCommand(userVisitPK, form).run();
+        return new GetQueueTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getQueueTypeDescriptions(UserVisitPK userVisitPK, GetQueueTypeDescriptionsForm form) {
-        return new GetQueueTypeDescriptionsCommand(userVisitPK, form).run();
+        return new GetQueueTypeDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editQueueTypeDescription(UserVisitPK userVisitPK, EditQueueTypeDescriptionForm form) {
-        return new EditQueueTypeDescriptionCommand(userVisitPK, form).run();
+        return new EditQueueTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteQueueTypeDescription(UserVisitPK userVisitPK, DeleteQueueTypeDescriptionForm form) {
-        return new DeleteQueueTypeDescriptionCommand(userVisitPK, form).run();
+        return new DeleteQueueTypeDescriptionCommand().run(userVisitPK, form);
     }
     
 }

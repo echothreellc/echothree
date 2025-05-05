@@ -59,8 +59,8 @@ public class DeletePartyCancellationPolicyCommand
     }
 
     /** Creates a new instance of DeletePartyCancellationPolicyCommand */
-    public DeletePartyCancellationPolicyCommand(UserVisitPK userVisitPK, DeletePartyCancellationPolicyForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public DeletePartyCancellationPolicyCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

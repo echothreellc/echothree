@@ -56,8 +56,8 @@ public class SetDefaultEntityListItemCommand
     }
     
     /** Creates a new instance of SetDefaultEntityListItemCommand */
-    public SetDefaultEntityListItemCommand(UserVisitPK userVisitPK, SetDefaultEntityListItemForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public SetDefaultEntityListItemCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

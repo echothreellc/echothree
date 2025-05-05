@@ -58,8 +58,8 @@ public class DeleteTransactionGlAccountCategoryDescriptionCommand
     }
     
     /** Creates a new instance of DeleteTransactionGlAccountCategoryDescriptionCommand */
-    public DeleteTransactionGlAccountCategoryDescriptionCommand(UserVisitPK userVisitPK, DeleteTransactionGlAccountCategoryDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteTransactionGlAccountCategoryDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

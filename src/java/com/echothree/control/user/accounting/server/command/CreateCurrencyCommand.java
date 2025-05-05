@@ -73,8 +73,8 @@ public class CreateCurrencyCommand
     }
     
     /** Creates a new instance of CreateCurrencyCommand */
-    public CreateCurrencyCommand(UserVisitPK userVisitPK, CreateCurrencyForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateCurrencyCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

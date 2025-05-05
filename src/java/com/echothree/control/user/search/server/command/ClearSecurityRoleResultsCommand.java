@@ -25,8 +25,8 @@ public class ClearSecurityRoleResultsCommand
         extends BaseClearResultsCommand<ClearSecurityRoleResultsForm> {
     
     /** Creates a new instance of ClearSecurityRoleResultsCommand */
-    public ClearSecurityRoleResultsCommand(UserVisitPK userVisitPK, ClearSecurityRoleResultsForm form) {
-        super(userVisitPK, form, null);
+    public ClearSecurityRoleResultsCommand() {
+        super(null);
     }
     
     @Override

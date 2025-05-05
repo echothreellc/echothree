@@ -68,8 +68,8 @@ public class EditTransactionEntityRoleTypeDescriptionCommand
     }
     
     /** Creates a new instance of EditTransactionEntityRoleTypeDescriptionCommand */
-    public EditTransactionEntityRoleTypeDescriptionCommand(UserVisitPK userVisitPK, EditTransactionEntityRoleTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditTransactionEntityRoleTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

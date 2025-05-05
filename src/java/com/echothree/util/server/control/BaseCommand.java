@@ -52,6 +52,7 @@ import com.echothree.util.common.message.Message;
 import com.echothree.util.common.message.Messages;
 import com.echothree.util.common.message.SecurityMessages;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.message.ExecutionWarningAccumulator;
 import com.echothree.util.server.message.MessageUtils;
@@ -69,37 +70,41 @@ import org.apache.commons.logging.LogFactory;
 public abstract class BaseCommand
         implements ExecutionWarningAccumulator, ExecutionErrorAccumulator, SecurityMessageAccumulator {
 
-    private Log log = null;
+    private Log log;
 
-    private UserVisitPK userVisitPK;
     private final CommandSecurityDefinition commandSecurityDefinition;
 
     private ThreadUtils.PreservedState preservedState;
     protected Session session;
 
-    private UserVisit userVisit = null;
-    private UserSession userSession = null;
-    private Party party = null;
-    private Messages executionWarnings = null;
-    private Messages executionErrors = null;
-    private Messages securityMessages = null;
-    private String componentVendorName = null;
-    private String commandName = null;
-    private UserControl userControl = null;
+    private UserVisitPK userVisitPK;
+    private UserVisit userVisit;
+    private UserSession userSession;
+    
+    private Party party;
+    
+    private Messages executionWarnings;
+    private Messages executionErrors;
+    private Messages securityMessages;
+    
+    private String componentVendorName;
+    private String commandName;
+    
+    private UserControl userControl;
+    
     private boolean checkIdentityVerifiedTime = true;
     private boolean updateLastCommandTime = true;
     private boolean logCommand = true;
 
-    protected BaseCommand(UserVisitPK userVisitPK, CommandSecurityDefinition commandSecurityDefinition) {
+    protected BaseCommand(CommandSecurityDefinition commandSecurityDefinition) {
         if(ControlDebugFlags.LogBaseCommands) {
             getLog().info("BaseCommand()");
         }
 
-        this.userVisitPK = userVisitPK;
         this.commandSecurityDefinition = commandSecurityDefinition;
     }
 
-    protected final Log getLog() {
+    protected Log getLog() {
         if(log == null) {
             log = LogFactory.getLog(this.getClass());
         }
@@ -108,7 +113,7 @@ public abstract class BaseCommand
     }
     
     private void setupNames() {
-        Class c = this.getClass();
+        Class<? extends BaseCommand> c = this.getClass();
         var className = c.getName();
         var nameOffset = className.lastIndexOf('.');
         
@@ -171,9 +176,8 @@ public abstract class BaseCommand
     
     public String getPartyTypeName() {
         var partyType = getPartyType();
-        var partyTypeName = partyType == null ? null : partyType.getPartyTypeName();
 
-        return partyTypeName;
+        return partyType == null ? null : partyType.getPartyTypeName();
     }
     
     public UserVisitPK getUserVisitPK() {
@@ -393,7 +397,7 @@ public abstract class BaseCommand
     
     @Override
     public boolean hasSecurityMessages() {
-        return securityMessages == null ? false : securityMessages.size(Messages.SECURITY_MESSAGE) != 0;
+        return securityMessages != null && securityMessages.size(Messages.SECURITY_MESSAGE) != 0;
     }
     
     protected ValidationResult validate() {
@@ -427,7 +431,7 @@ public abstract class BaseCommand
     
     @Override
     public boolean hasExecutionWarnings() {
-        return executionWarnings == null ? false : executionWarnings.size(Messages.EXECUTION_WARNING) != 0;
+        return executionWarnings != null && executionWarnings.size(Messages.EXECUTION_WARNING) != 0;
     }
     
     @Override
@@ -451,15 +455,11 @@ public abstract class BaseCommand
     
     @Override
     public boolean hasExecutionErrors() {
-        return executionErrors == null ? false : executionErrors.size(Messages.EXECUTION_ERROR) != 0;
+        return executionErrors != null && executionErrors.size(Messages.EXECUTION_ERROR) != 0;
     }
     
     protected BaseResult getBaseResultAfterErrors() {
         return null;
-    }
-
-    public final Future<CommandResult> runAsync() {
-        return new AsyncResult<>(run());
     }
 
     protected void setupSession() {
@@ -480,11 +480,17 @@ public abstract class BaseCommand
         preservedState = null;
     }
 
-    public final CommandResult run()
+    public Future<CommandResult> runAsync(UserVisitPK userVisitPK) {
+        return new AsyncResult<>(run(userVisitPK));
+    }
+
+    public CommandResult run(UserVisitPK userVisitPK)
             throws BaseException {
         if(ControlDebugFlags.LogBaseCommands) {
             log.info(">>> run()");
         }
+
+        this.userVisitPK = userVisitPK;
 
         setupSession();
 
@@ -618,7 +624,7 @@ public abstract class BaseCommand
         if(partyType != null) {
             var partyTypeName = partyType.getPartyTypeName();
 
-            // Of PartyTypes that may login, only EMPLOYEEs or UTILITYs may specify another Party, CUSTOMERs and
+            // Of PartyTypes that may login only EMPLOYEEs or UTILITYs may specify another Party. CUSTOMERs and
             // VENDORs may not.
             result = partyTypeName.equals(PartyTypes.EMPLOYEE.name())
                     || partyTypeName.equals(PartyTypes.UTILITY.name());
@@ -723,7 +729,7 @@ public abstract class BaseCommand
      * @param clazz The Class whose properties should be examined.
      * @param property The property to remove.
      */
-    protected void removeFilteredTransferProperty(Class clazz, String property) {
+    protected void removeFilteredTransferProperty(Class<? extends BaseTransfer> clazz, String property) {
         var transferProperties = session.getTransferProperties();
 
         if(transferProperties != null) {

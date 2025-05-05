@@ -75,8 +75,8 @@ public class EditTaxClassificationTranslationCommand
     }
 
     /** Creates a new instance of EditTaxClassificationTranslationCommand */
-    public EditTaxClassificationTranslationCommand(UserVisitPK userVisitPK, EditTaxClassificationTranslationForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditTaxClassificationTranslationCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

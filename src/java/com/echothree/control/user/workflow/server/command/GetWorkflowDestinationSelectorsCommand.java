@@ -61,8 +61,8 @@ public class GetWorkflowDestinationSelectorsCommand
     }
     
     /** Creates a new instance of GetWorkflowDestinationSelectorsCommand */
-    public GetWorkflowDestinationSelectorsCommand(UserVisitPK userVisitPK, GetWorkflowDestinationSelectorsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetWorkflowDestinationSelectorsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     WorkflowDestination workflowDestination;

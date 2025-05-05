@@ -68,8 +68,8 @@ public class EditReturnPolicyReasonCommand
     }
     
     /** Creates a new instance of EditReturnPolicyReasonCommand */
-    public EditReturnPolicyReasonCommand(UserVisitPK userVisitPK, EditReturnPolicyReasonForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditReturnPolicyReasonCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

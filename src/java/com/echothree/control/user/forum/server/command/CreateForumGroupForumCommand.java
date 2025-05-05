@@ -44,8 +44,8 @@ public class CreateForumGroupForumCommand
     }
     
     /** Creates a new instance of CreateForumGroupForumCommand */
-    public CreateForumGroupForumCommand(UserVisitPK userVisitPK, CreateForumGroupForumForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateForumGroupForumCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

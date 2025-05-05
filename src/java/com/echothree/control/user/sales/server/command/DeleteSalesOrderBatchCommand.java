@@ -53,8 +53,8 @@ public class DeleteSalesOrderBatchCommand
     }
     
     /** Creates a new instance of DeleteSalesOrderBatchCommand */
-    public DeleteSalesOrderBatchCommand(UserVisitPK userVisitPK, DeleteSalesOrderBatchForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public DeleteSalesOrderBatchCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

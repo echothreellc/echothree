@@ -55,8 +55,8 @@ public class GetWorkflowDestinationPartyTypesCommand
     }
     
     /** Creates a new instance of GetWorkflowDestinationPartyTypesCommand */
-    public GetWorkflowDestinationPartyTypesCommand(UserVisitPK userVisitPK, GetWorkflowDestinationPartyTypesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetWorkflowDestinationPartyTypesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     WorkflowDestination workflowDestination;

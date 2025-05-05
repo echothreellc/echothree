@@ -58,8 +58,8 @@ public class CreateContentPageAreaTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateContentPageAreaTypeDescriptionCommand */
-    public CreateContentPageAreaTypeDescriptionCommand(UserVisitPK userVisitPK, CreateContentPageAreaTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateContentPageAreaTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

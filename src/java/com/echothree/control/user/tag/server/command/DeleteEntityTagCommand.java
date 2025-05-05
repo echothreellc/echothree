@@ -60,8 +60,8 @@ public class DeleteEntityTagCommand
     }
     
     /** Creates a new instance of DeleteEntityTagCommand */
-    public DeleteEntityTagCommand(UserVisitPK userVisitPK, DeleteEntityTagForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteEntityTagCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

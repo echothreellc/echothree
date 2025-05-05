@@ -50,8 +50,8 @@ public class GetItemCommand
     }
     
     /** Creates a new instance of GetItemCommand */
-    public GetItemCommand(UserVisitPK userVisitPK, GetItemForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetItemCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

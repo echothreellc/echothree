@@ -58,8 +58,8 @@ public class DeleteEntityAliasCommand
     }
 
     /** Creates a new instance of DeleteEntityAliasCommand */
-    public DeleteEntityAliasCommand(UserVisitPK userVisitPK, DeleteEntityAliasForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteEntityAliasCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

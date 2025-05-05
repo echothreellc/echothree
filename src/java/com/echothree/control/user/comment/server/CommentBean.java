@@ -43,27 +43,27 @@ public class CommentBean
     
     @Override
     public CommandResult createCommentType(UserVisitPK userVisitPK, CreateCommentTypeForm form) {
-        return new CreateCommentTypeCommand(userVisitPK, form).run();
+        return new CreateCommentTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCommentType(UserVisitPK userVisitPK, GetCommentTypeForm form) {
-        return new GetCommentTypeCommand(userVisitPK, form).run();
+        return new GetCommentTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCommentTypes(UserVisitPK userVisitPK, GetCommentTypesForm form) {
-        return new GetCommentTypesCommand(userVisitPK, form).run();
+        return new GetCommentTypesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editCommentType(UserVisitPK userVisitPK, EditCommentTypeForm form) {
-        return new EditCommentTypeCommand(userVisitPK, form).run();
+        return new EditCommentTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCommentType(UserVisitPK userVisitPK, DeleteCommentTypeForm form) {
-        return new DeleteCommentTypeCommand(userVisitPK, form).run();
+        return new DeleteCommentTypeCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -72,22 +72,22 @@ public class CommentBean
     
     @Override
     public CommandResult createCommentTypeDescription(UserVisitPK userVisitPK, CreateCommentTypeDescriptionForm form) {
-        return new CreateCommentTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateCommentTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCommentTypeDescriptions(UserVisitPK userVisitPK, GetCommentTypeDescriptionsForm form) {
-        return new GetCommentTypeDescriptionsCommand(userVisitPK, form).run();
+        return new GetCommentTypeDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editCommentTypeDescription(UserVisitPK userVisitPK, EditCommentTypeDescriptionForm form) {
-        return new EditCommentTypeDescriptionCommand(userVisitPK, form).run();
+        return new EditCommentTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCommentTypeDescription(UserVisitPK userVisitPK, DeleteCommentTypeDescriptionForm form) {
-        return new DeleteCommentTypeDescriptionCommand(userVisitPK, form).run();
+        return new DeleteCommentTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -96,27 +96,27 @@ public class CommentBean
     
     @Override
     public CommandResult createCommentUsageType(UserVisitPK userVisitPK, CreateCommentUsageTypeForm form) {
-        return new CreateCommentUsageTypeCommand(userVisitPK, form).run();
+        return new CreateCommentUsageTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCommentUsageType(UserVisitPK userVisitPK, GetCommentUsageTypeForm form) {
-        return new GetCommentUsageTypeCommand(userVisitPK, form).run();
+        return new GetCommentUsageTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCommentUsageTypes(UserVisitPK userVisitPK, GetCommentUsageTypesForm form) {
-        return new GetCommentUsageTypesCommand(userVisitPK, form).run();
+        return new GetCommentUsageTypesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editCommentUsageType(UserVisitPK userVisitPK, EditCommentUsageTypeForm form) {
-        return new EditCommentUsageTypeCommand(userVisitPK, form).run();
+        return new EditCommentUsageTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCommentUsageType(UserVisitPK userVisitPK, DeleteCommentUsageTypeForm form) {
-        return new DeleteCommentUsageTypeCommand(userVisitPK, form).run();
+        return new DeleteCommentUsageTypeCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -125,22 +125,22 @@ public class CommentBean
     
     @Override
     public CommandResult createCommentUsageTypeDescription(UserVisitPK userVisitPK, CreateCommentUsageTypeDescriptionForm form) {
-        return new CreateCommentUsageTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateCommentUsageTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCommentUsageTypeDescriptions(UserVisitPK userVisitPK, GetCommentUsageTypeDescriptionsForm form) {
-        return new GetCommentUsageTypeDescriptionsCommand(userVisitPK, form).run();
+        return new GetCommentUsageTypeDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editCommentUsageTypeDescription(UserVisitPK userVisitPK, EditCommentUsageTypeDescriptionForm form) {
-        return new EditCommentUsageTypeDescriptionCommand(userVisitPK, form).run();
+        return new EditCommentUsageTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCommentUsageTypeDescription(UserVisitPK userVisitPK, DeleteCommentUsageTypeDescriptionForm form) {
-        return new DeleteCommentUsageTypeDescriptionCommand(userVisitPK, form).run();
+        return new DeleteCommentUsageTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -149,32 +149,32 @@ public class CommentBean
     
     @Override
     public CommandResult createComment(UserVisitPK userVisitPK, CreateCommentForm form) {
-        return new CreateCommentCommand(userVisitPK, form).run();
+        return new CreateCommentCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editComment(UserVisitPK userVisitPK, EditCommentForm form) {
-        return new EditCommentCommand(userVisitPK, form).run();
+        return new EditCommentCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCommentStatusChoices(UserVisitPK userVisitPK, GetCommentStatusChoicesForm form) {
-        return new GetCommentStatusChoicesCommand(userVisitPK, form).run();
+        return new GetCommentStatusChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setCommentStatus(UserVisitPK userVisitPK, SetCommentStatusForm form) {
-        return new SetCommentStatusCommand(userVisitPK, form).run();
+        return new SetCommentStatusCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getComment(UserVisitPK userVisitPK, GetCommentForm form) {
-        return new GetCommentCommand(userVisitPK, form).run();
+        return new GetCommentCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteComment(UserVisitPK userVisitPK, DeleteCommentForm form) {
-        return new DeleteCommentCommand(userVisitPK, form).run();
+        return new DeleteCommentCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -183,12 +183,12 @@ public class CommentBean
     
     @Override
     public CommandResult createCommentUsage(UserVisitPK userVisitPK, CreateCommentUsageForm form) {
-        return new CreateCommentUsageCommand(userVisitPK, form).run();
+        return new CreateCommentUsageCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCommentUsage(UserVisitPK userVisitPK, DeleteCommentUsageForm form) {
-        return new DeleteCommentUsageCommand(userVisitPK, form).run();
+        return new DeleteCommentUsageCommand().run(userVisitPK, form);
     }
     
 }

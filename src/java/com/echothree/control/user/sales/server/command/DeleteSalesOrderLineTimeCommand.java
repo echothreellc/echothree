@@ -41,8 +41,8 @@ public class DeleteSalesOrderLineTimeCommand
     }
     
     /** Creates a new instance of DeleteSalesOrderLineTimeCommand */
-    public DeleteSalesOrderLineTimeCommand(UserVisitPK userVisitPK, DeleteSalesOrderLineTimeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteSalesOrderLineTimeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

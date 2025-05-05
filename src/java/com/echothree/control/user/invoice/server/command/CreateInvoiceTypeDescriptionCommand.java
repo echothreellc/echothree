@@ -58,8 +58,8 @@ public class CreateInvoiceTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateInvoiceTypeDescriptionCommand */
-    public CreateInvoiceTypeDescriptionCommand(UserVisitPK userVisitPK, CreateInvoiceTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateInvoiceTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

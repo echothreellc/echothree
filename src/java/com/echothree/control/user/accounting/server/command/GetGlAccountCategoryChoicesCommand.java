@@ -55,8 +55,8 @@ public class GetGlAccountCategoryChoicesCommand
     }
     
     /** Creates a new instance of GetGlAccountCategoryChoicesCommand */
-    public GetGlAccountCategoryChoicesCommand(UserVisitPK userVisitPK, GetGlAccountCategoryChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetGlAccountCategoryChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

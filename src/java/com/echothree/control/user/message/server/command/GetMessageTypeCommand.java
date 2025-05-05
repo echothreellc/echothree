@@ -45,8 +45,8 @@ public class GetMessageTypeCommand
     }
     
     /** Creates a new instance of GetMessageTypeCommand */
-    public GetMessageTypeCommand(UserVisitPK userVisitPK, GetMessageTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetMessageTypeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

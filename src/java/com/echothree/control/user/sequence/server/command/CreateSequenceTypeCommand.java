@@ -64,8 +64,8 @@ public class CreateSequenceTypeCommand
     }
     
     /** Creates a new instance of CreateSequenceTypeCommand */
-    public CreateSequenceTypeCommand(UserVisitPK userVisitPK, CreateSequenceTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateSequenceTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

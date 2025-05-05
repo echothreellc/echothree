@@ -68,8 +68,8 @@ public class EditOfferCustomerTypeCommand
     }
     
     /** Creates a new instance of EditOfferCustomerTypeCommand */
-    public EditOfferCustomerTypeCommand(UserVisitPK userVisitPK, EditOfferCustomerTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditOfferCustomerTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

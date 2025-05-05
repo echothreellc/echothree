@@ -54,8 +54,8 @@ public class SetDefaultEmployeeTypeCommand
     }
     
     /** Creates a new instance of SetDefaultEmployeeTypeCommand */
-    public SetDefaultEmployeeTypeCommand(UserVisitPK userVisitPK, SetDefaultEmployeeTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultEmployeeTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

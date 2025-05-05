@@ -94,8 +94,8 @@ public class EditProfileCommand
     }
     
     /** Creates a new instance of EditProfileCommand */
-    public EditProfileCommand(UserVisitPK userVisitPK, EditProfileForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, null);
+    public EditProfileCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, null);
     }
     
     @Override

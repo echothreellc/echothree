@@ -55,8 +55,8 @@ public class SetDefaultInvoiceTimeTypeCommand
     }
     
     /** Creates a new instance of SetDefaultInvoiceTimeTypeCommand */
-    public SetDefaultInvoiceTimeTypeCommand(UserVisitPK userVisitPK, SetDefaultInvoiceTimeTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultInvoiceTimeTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

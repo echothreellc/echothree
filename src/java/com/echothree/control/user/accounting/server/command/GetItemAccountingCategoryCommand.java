@@ -58,8 +58,8 @@ public class GetItemAccountingCategoryCommand
     }
     
     /** Creates a new instance of GetItemAccountingCategoryCommand */
-    public GetItemAccountingCategoryCommand(UserVisitPK userVisitPK, GetItemAccountingCategoryForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetItemAccountingCategoryCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

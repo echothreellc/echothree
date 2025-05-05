@@ -58,8 +58,8 @@ public class CreateQueueTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateQueueTypeDescriptionCommand */
-    public CreateQueueTypeDescriptionCommand(UserVisitPK userVisitPK, CreateQueueTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateQueueTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

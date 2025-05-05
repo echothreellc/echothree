@@ -41,8 +41,8 @@ public class DeletePartyTypePasswordStringPolicyCommand
     }
     
     /** Creates a new instance of DeletePartyTypePasswordStringPolicyCommand */
-    public DeletePartyTypePasswordStringPolicyCommand(UserVisitPK userVisitPK, DeletePartyTypePasswordStringPolicyForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeletePartyTypePasswordStringPolicyCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -39,8 +39,8 @@ public class SetUserVisitPreferredTimeZoneCommand
     }
 
     /** Creates a new instance of SetUserVisitPreferredTimeZoneCommand */
-    public SetUserVisitPreferredTimeZoneCommand(UserVisitPK userVisitPK, SetUserVisitPreferredTimeZoneForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SetUserVisitPreferredTimeZoneCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

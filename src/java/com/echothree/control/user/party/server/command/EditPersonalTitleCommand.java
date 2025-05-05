@@ -54,8 +54,8 @@ public class EditPersonalTitleCommand
     }
     
     /** Creates a new instance of EditPersonalTitleCommand */
-    public EditPersonalTitleCommand(UserVisitPK userVisitPK, EditPersonalTitleForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditPersonalTitleCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

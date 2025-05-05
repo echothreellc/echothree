@@ -61,8 +61,8 @@ public class CreateSecurityRoleGroupCommand
     }
     
     /** Creates a new instance of CreateSecurityRoleGroupCommand */
-    public CreateSecurityRoleGroupCommand(UserVisitPK userVisitPK, CreateSecurityRoleGroupForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateSecurityRoleGroupCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

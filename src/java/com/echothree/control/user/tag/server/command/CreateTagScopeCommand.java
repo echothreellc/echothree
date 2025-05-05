@@ -62,8 +62,8 @@ public class CreateTagScopeCommand
     }
     
     /** Creates a new instance of CreateTagScopeCommand */
-    public CreateTagScopeCommand(UserVisitPK userVisitPK, CreateTagScopeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateTagScopeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

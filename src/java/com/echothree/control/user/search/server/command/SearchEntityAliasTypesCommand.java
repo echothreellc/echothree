@@ -68,8 +68,8 @@ public class SearchEntityAliasTypesCommand
     }
 
     /** Creates a new instance of SearchEntityAliasTypesCommand */
-    public SearchEntityAliasTypesCommand(UserVisitPK userVisitPK, SearchEntityAliasTypesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SearchEntityAliasTypesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

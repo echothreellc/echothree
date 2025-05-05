@@ -55,8 +55,8 @@ public class GetVendorTypeChoicesCommand
     }
     
     /** Creates a new instance of GetVendorTypeChoicesCommand */
-    public GetVendorTypeChoicesCommand(UserVisitPK userVisitPK, GetVendorTypeChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetVendorTypeChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

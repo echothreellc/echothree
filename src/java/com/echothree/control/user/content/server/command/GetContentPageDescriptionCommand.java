@@ -60,8 +60,8 @@ public class GetContentPageDescriptionCommand
     }
     
     /** Creates a new instance of GetContentPageDescriptionCommand */
-    public GetContentPageDescriptionCommand(UserVisitPK userVisitPK, GetContentPageDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetContentPageDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

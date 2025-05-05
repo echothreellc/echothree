@@ -43,37 +43,37 @@ public class AssociateBean
     
     @Override
     public CommandResult createAssociateProgram(UserVisitPK userVisitPK, CreateAssociateProgramForm form) {
-        return new CreateAssociateProgramCommand(userVisitPK, form).run();
+        return new CreateAssociateProgramCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getAssociateProgram(UserVisitPK userVisitPK, GetAssociateProgramForm form) {
-        return new GetAssociateProgramCommand(userVisitPK, form).run();
+        return new GetAssociateProgramCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getAssociatePrograms(UserVisitPK userVisitPK, GetAssociateProgramsForm form) {
-        return new GetAssociateProgramsCommand(userVisitPK, form).run();
+        return new GetAssociateProgramsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getAssociateProgramChoices(UserVisitPK userVisitPK, GetAssociateProgramChoicesForm form) {
-        return new GetAssociateProgramChoicesCommand(userVisitPK, form).run();
+        return new GetAssociateProgramChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultAssociateProgram(UserVisitPK userVisitPK, SetDefaultAssociateProgramForm form) {
-        return new SetDefaultAssociateProgramCommand(userVisitPK, form).run();
+        return new SetDefaultAssociateProgramCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editAssociateProgram(UserVisitPK userVisitPK, EditAssociateProgramForm form) {
-        return new EditAssociateProgramCommand(userVisitPK, form).run();
+        return new EditAssociateProgramCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteAssociateProgram(UserVisitPK userVisitPK, DeleteAssociateProgramForm form) {
-        return new DeleteAssociateProgramCommand(userVisitPK, form).run();
+        return new DeleteAssociateProgramCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -82,22 +82,22 @@ public class AssociateBean
     
     @Override
     public CommandResult createAssociateProgramDescription(UserVisitPK userVisitPK, CreateAssociateProgramDescriptionForm form) {
-        return new CreateAssociateProgramDescriptionCommand(userVisitPK, form).run();
+        return new CreateAssociateProgramDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getAssociateProgramDescriptions(UserVisitPK userVisitPK, GetAssociateProgramDescriptionsForm form) {
-        return new GetAssociateProgramDescriptionsCommand(userVisitPK, form).run();
+        return new GetAssociateProgramDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editAssociateProgramDescription(UserVisitPK userVisitPK, EditAssociateProgramDescriptionForm form) {
-        return new EditAssociateProgramDescriptionCommand(userVisitPK, form).run();
+        return new EditAssociateProgramDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteAssociateProgramDescription(UserVisitPK userVisitPK, DeleteAssociateProgramDescriptionForm form) {
-        return new DeleteAssociateProgramDescriptionCommand(userVisitPK, form).run();
+        return new DeleteAssociateProgramDescriptionCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -106,27 +106,27 @@ public class AssociateBean
     
     @Override
     public CommandResult createAssociate(UserVisitPK userVisitPK, CreateAssociateForm form) {
-        return new CreateAssociateCommand(userVisitPK, form).run();
+        return new CreateAssociateCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getAssociate(UserVisitPK userVisitPK, GetAssociateForm form) {
-        return new GetAssociateCommand(userVisitPK, form).run();
+        return new GetAssociateCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getAssociates(UserVisitPK userVisitPK, GetAssociatesForm form) {
-        return new GetAssociatesCommand(userVisitPK, form).run();
+        return new GetAssociatesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getAssociateChoices(UserVisitPK userVisitPK, GetAssociateChoicesForm form) {
-        return new GetAssociateChoicesCommand(userVisitPK, form).run();
+        return new GetAssociateChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteAssociate(UserVisitPK userVisitPK, DeleteAssociateForm form) {
-        return new DeleteAssociateCommand(userVisitPK, form).run();
+        return new DeleteAssociateCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -135,32 +135,32 @@ public class AssociateBean
     
     @Override
     public CommandResult createAssociatePartyContactMechanism(UserVisitPK userVisitPK, CreateAssociatePartyContactMechanismForm form) {
-        return new CreateAssociatePartyContactMechanismCommand(userVisitPK, form).run();
+        return new CreateAssociatePartyContactMechanismCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getAssociatePartyContactMechanism(UserVisitPK userVisitPK, GetAssociatePartyContactMechanismForm form) {
-        return new GetAssociatePartyContactMechanismCommand(userVisitPK, form).run();
+        return new GetAssociatePartyContactMechanismCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getAssociatePartyContactMechanisms(UserVisitPK userVisitPK, GetAssociatePartyContactMechanismsForm form) {
-        return new GetAssociatePartyContactMechanismsCommand(userVisitPK, form).run();
+        return new GetAssociatePartyContactMechanismsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getAssociatePartyContactMechanismChoices(UserVisitPK userVisitPK, GetAssociatePartyContactMechanismChoicesForm form) {
-        return new GetAssociatePartyContactMechanismChoicesCommand(userVisitPK, form).run();
+        return new GetAssociatePartyContactMechanismChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultAssociatePartyContactMechanism(UserVisitPK userVisitPK, SetDefaultAssociatePartyContactMechanismForm form) {
-        return new SetDefaultAssociatePartyContactMechanismCommand(userVisitPK, form).run();
+        return new SetDefaultAssociatePartyContactMechanismCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteAssociatePartyContactMechanism(UserVisitPK userVisitPK, DeleteAssociatePartyContactMechanismForm form) {
-        return new DeleteAssociatePartyContactMechanismCommand(userVisitPK, form).run();
+        return new DeleteAssociatePartyContactMechanismCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -169,17 +169,17 @@ public class AssociateBean
     
     @Override
     public CommandResult getAssociateReferral(UserVisitPK userVisitPK, GetAssociateReferralForm form) {
-        return new GetAssociateReferralCommand(userVisitPK, form).run();
+        return new GetAssociateReferralCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getAssociateReferrals(UserVisitPK userVisitPK, GetAssociateReferralsForm form) {
-        return new GetAssociateReferralsCommand(userVisitPK, form).run();
+        return new GetAssociateReferralsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteAssociateReferral(UserVisitPK userVisitPK, DeleteAssociateReferralForm form) {
-        return new DeleteAssociateReferralCommand(userVisitPK, form).run();
+        return new DeleteAssociateReferralCommand().run(userVisitPK, form);
     }
     
 }

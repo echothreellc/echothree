@@ -55,8 +55,8 @@ public class GetSalesOrderBatchStatusChoicesCommand
     }
     
     /** Creates a new instance of GetSalesOrderBatchStatusChoicesCommand */
-    public GetSalesOrderBatchStatusChoicesCommand(UserVisitPK userVisitPK, GetSalesOrderBatchStatusChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetSalesOrderBatchStatusChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

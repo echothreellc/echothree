@@ -59,8 +59,8 @@ public class DeleteOrderPriorityDescriptionCommand
     }
     
     /** Creates a new instance of DeleteOrderPriorityDescriptionCommand */
-    public DeleteOrderPriorityDescriptionCommand(UserVisitPK userVisitPK, DeleteOrderPriorityDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteOrderPriorityDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

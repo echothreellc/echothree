@@ -25,8 +25,8 @@ public class ClearSalesOrderResultsCommand
         extends BaseClearResultsCommand<ClearSalesOrderResultsForm> {
     
     /** Creates a new instance of ClearSalesOrderResultsCommand */
-    public ClearSalesOrderResultsCommand(UserVisitPK userVisitPK, ClearSalesOrderResultsForm form) {
-        super(userVisitPK, form, null);
+    public ClearSalesOrderResultsCommand() {
+        super(null);
     }
     
     @Override

@@ -59,8 +59,8 @@ public class CreateFilterStepDescriptionCommand
     }
     
     /** Creates a new instance of CreateFilterStepDescriptionCommand */
-    public CreateFilterStepDescriptionCommand(UserVisitPK userVisitPK, CreateFilterStepDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateFilterStepDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

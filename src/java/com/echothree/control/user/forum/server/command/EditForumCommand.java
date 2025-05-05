@@ -62,8 +62,8 @@ public class EditForumCommand
     }
     
     /** Creates a new instance of EditForumCommand */
-    public EditForumCommand(UserVisitPK userVisitPK, EditForumForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditForumCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

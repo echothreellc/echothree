@@ -64,8 +64,8 @@ public class CreateDocumentTypeCommand
     }
     
     /** Creates a new instance of CreateDocumentTypeCommand */
-    public CreateDocumentTypeCommand(UserVisitPK userVisitPK, CreateDocumentTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateDocumentTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

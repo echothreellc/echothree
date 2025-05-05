@@ -51,8 +51,8 @@ public class DeleteEntityBooleanDefaultCommand
     }
 
     /** Creates a new instance of CreateEntityBooleanDefaultCommand */
-    public DeleteEntityBooleanDefaultCommand(UserVisitPK userVisitPK, DeleteEntityBooleanDefaultForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteEntityBooleanDefaultCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

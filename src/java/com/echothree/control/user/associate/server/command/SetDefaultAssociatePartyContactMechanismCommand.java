@@ -43,8 +43,8 @@ public class SetDefaultAssociatePartyContactMechanismCommand
     }
     
     /** Creates a new instance of SetDefaultAssociatePartyContactMechanismCommand */
-    public SetDefaultAssociatePartyContactMechanismCommand(UserVisitPK userVisitPK, SetDefaultAssociatePartyContactMechanismForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultAssociatePartyContactMechanismCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -71,8 +71,8 @@ public class EditSequenceDescriptionCommand
     }
 
     /** Creates a new instance of EditSequenceDescriptionCommand */
-    public EditSequenceDescriptionCommand(UserVisitPK userVisitPK, EditSequenceDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditSequenceDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

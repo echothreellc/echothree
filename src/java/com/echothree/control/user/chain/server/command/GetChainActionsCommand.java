@@ -59,8 +59,8 @@ public class GetChainActionsCommand
     }
     
     /** Creates a new instance of GetChainActionsCommand */
-    public GetChainActionsCommand(UserVisitPK userVisitPK, GetChainActionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetChainActionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

@@ -55,8 +55,8 @@ public class SetDefaultSearchSortOrderCommand
     }
     
     /** Creates a new instance of SetDefaultSearchSortOrderCommand */
-    public SetDefaultSearchSortOrderCommand(UserVisitPK userVisitPK, SetDefaultSearchSortOrderForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultSearchSortOrderCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -42,8 +42,8 @@ public class SetDefaultForumGroupForumCommand
     }
     
     /** Creates a new instance of SetDefaultForumGroupForumCommand */
-    public SetDefaultForumGroupForumCommand(UserVisitPK userVisitPK, SetDefaultForumGroupForumForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultForumGroupForumCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

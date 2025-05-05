@@ -59,8 +59,8 @@ public class GetItemTaxClassificationsCommand
     }
     
     /** Creates a new instance of GetItemTaxClassificationsCommand */
-    public GetItemTaxClassificationsCommand(UserVisitPK userVisitPK, GetItemTaxClassificationsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetItemTaxClassificationsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

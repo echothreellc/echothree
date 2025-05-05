@@ -55,8 +55,8 @@ public class GetSequenceEncoderTypeChoicesCommand
     }
     
     /** Creates a new instance of GetSequenceEncoderTypeChoicesCommand */
-    public GetSequenceEncoderTypeChoicesCommand(UserVisitPK userVisitPK, GetSequenceEncoderTypeChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetSequenceEncoderTypeChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

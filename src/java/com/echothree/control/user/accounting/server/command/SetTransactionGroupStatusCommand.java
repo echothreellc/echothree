@@ -42,8 +42,8 @@ public class SetTransactionGroupStatusCommand
     }
     
     /** Creates a new instance of SetTransactionGroupStatusCommand */
-    public SetTransactionGroupStatusCommand(UserVisitPK userVisitPK, SetTransactionGroupStatusForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SetTransactionGroupStatusCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

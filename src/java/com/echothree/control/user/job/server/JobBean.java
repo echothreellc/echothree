@@ -43,47 +43,47 @@ public class JobBean
     
     @Override
     public CommandResult createJob(UserVisitPK userVisitPK, CreateJobForm form) {
-        return new CreateJobCommand(userVisitPK, form).run();
+        return new CreateJobCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getJob(UserVisitPK userVisitPK, GetJobForm form) {
-        return new GetJobCommand(userVisitPK, form).run();
+        return new GetJobCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getJobs(UserVisitPK userVisitPK, GetJobsForm form) {
-        return new GetJobsCommand(userVisitPK, form).run();
+        return new GetJobsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getJobStatusChoices(UserVisitPK userVisitPK, GetJobStatusChoicesForm form) {
-        return new GetJobStatusChoicesCommand(userVisitPK, form).run();
+        return new GetJobStatusChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setJobStatus(UserVisitPK userVisitPK, SetJobStatusForm form) {
-        return new SetJobStatusCommand(userVisitPK, form).run();
+        return new SetJobStatusCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editJob(UserVisitPK userVisitPK, EditJobForm form) {
-        return new EditJobCommand(userVisitPK, form).run();
+        return new EditJobCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteJob(UserVisitPK userVisitPK, DeleteJobForm form) {
-        return new DeleteJobCommand(userVisitPK, form).run();
+        return new DeleteJobCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult startJob(UserVisitPK userVisitPK, StartJobForm form) {
-        return new StartJobCommand(userVisitPK, form).run();
+        return new StartJobCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult endJob(UserVisitPK userVisitPK, EndJobForm form) {
-        return new EndJobCommand(userVisitPK, form).run();
+        return new EndJobCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -92,22 +92,22 @@ public class JobBean
     
     @Override
     public CommandResult createJobDescription(UserVisitPK userVisitPK, CreateJobDescriptionForm form) {
-        return new CreateJobDescriptionCommand(userVisitPK, form).run();
+        return new CreateJobDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getJobDescriptions(UserVisitPK userVisitPK, GetJobDescriptionsForm form) {
-        return new GetJobDescriptionsCommand(userVisitPK, form).run();
+        return new GetJobDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editJobDescription(UserVisitPK userVisitPK, EditJobDescriptionForm form) {
-        return new EditJobDescriptionCommand(userVisitPK, form).run();
+        return new EditJobDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteJobDescription(UserVisitPK userVisitPK, DeleteJobDescriptionForm form) {
-        return new DeleteJobDescriptionCommand(userVisitPK, form).run();
+        return new DeleteJobDescriptionCommand().run(userVisitPK, form);
     }
     
 }

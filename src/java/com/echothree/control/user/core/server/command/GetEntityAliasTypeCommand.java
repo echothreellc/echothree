@@ -59,8 +59,8 @@ public class GetEntityAliasTypeCommand
     }
     
     /** Creates a new instance of GetEntityAliasTypeCommand */
-    public GetEntityAliasTypeCommand(UserVisitPK userVisitPK, GetEntityAliasTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetEntityAliasTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

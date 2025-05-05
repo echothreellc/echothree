@@ -57,8 +57,8 @@ public class GetJobStatusChoicesCommand
     }
     
     /** Creates a new instance of GetJobStatusChoicesCommand */
-    public GetJobStatusChoicesCommand(UserVisitPK userVisitPK, GetJobStatusChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetJobStatusChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

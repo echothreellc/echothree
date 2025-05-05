@@ -60,8 +60,8 @@ public class CreateWishlistPriorityCommand
     }
     
     /** Creates a new instance of CreateWishlistPriorityCommand */
-    public CreateWishlistPriorityCommand(UserVisitPK userVisitPK, CreateWishlistPriorityForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateWishlistPriorityCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

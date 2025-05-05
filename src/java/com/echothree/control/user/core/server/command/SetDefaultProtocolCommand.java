@@ -55,8 +55,8 @@ public class SetDefaultProtocolCommand
     }
     
     /** Creates a new instance of SetDefaultProtocolCommand */
-    public SetDefaultProtocolCommand(UserVisitPK userVisitPK, SetDefaultProtocolForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultProtocolCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

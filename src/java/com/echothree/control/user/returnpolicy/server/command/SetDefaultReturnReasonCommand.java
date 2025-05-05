@@ -55,8 +55,8 @@ public class SetDefaultReturnReasonCommand
     }
     
     /** Creates a new instance of SetDefaultReturnReasonCommand */
-    public SetDefaultReturnReasonCommand(UserVisitPK userVisitPK, SetDefaultReturnReasonForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultReturnReasonCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

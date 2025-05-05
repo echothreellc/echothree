@@ -41,8 +41,8 @@ public class SetDefaultPrinterGroupCommand
     }
 
     /** Creates a new instance of SetDefaultPrinterGroupCommand */
-    public SetDefaultPrinterGroupCommand(UserVisitPK userVisitPK, SetDefaultPrinterGroupForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultPrinterGroupCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
    @Override

@@ -57,8 +57,8 @@ public class GetDocumentTypeCommand
     }
     
     /** Creates a new instance of GetDocumentTypeCommand */
-    public GetDocumentTypeCommand(UserVisitPK userVisitPK, GetDocumentTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetDocumentTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

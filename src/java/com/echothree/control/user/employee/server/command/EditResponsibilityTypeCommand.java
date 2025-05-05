@@ -54,8 +54,8 @@ public class EditResponsibilityTypeCommand
     }
     
     /** Creates a new instance of EditResponsibilityTypeCommand */
-    public EditResponsibilityTypeCommand(UserVisitPK userVisitPK, EditResponsibilityTypeForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditResponsibilityTypeCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

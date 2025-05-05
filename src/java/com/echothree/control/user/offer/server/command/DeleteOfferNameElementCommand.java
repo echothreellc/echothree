@@ -53,8 +53,8 @@ public class DeleteOfferNameElementCommand
     }
     
     /** Creates a new instance of DeleteOfferNameElementCommand */
-    public DeleteOfferNameElementCommand(UserVisitPK userVisitPK, DeleteOfferNameElementForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteOfferNameElementCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

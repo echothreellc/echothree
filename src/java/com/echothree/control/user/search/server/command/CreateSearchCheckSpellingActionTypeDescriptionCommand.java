@@ -58,8 +58,8 @@ public class CreateSearchCheckSpellingActionTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateSearchCheckSpellingActionTypeDescriptionCommand */
-    public CreateSearchCheckSpellingActionTypeDescriptionCommand(UserVisitPK userVisitPK, CreateSearchCheckSpellingActionTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateSearchCheckSpellingActionTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

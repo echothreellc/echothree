@@ -53,8 +53,8 @@ public class DeleteUseCommand
     }
     
     /** Creates a new instance of DeleteUseCommand */
-    public DeleteUseCommand(UserVisitPK userVisitPK, DeleteUseForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteUseCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

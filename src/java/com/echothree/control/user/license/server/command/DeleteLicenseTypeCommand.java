@@ -55,8 +55,8 @@ public class DeleteLicenseTypeCommand
     }
     
     /** Creates a new instance of DeleteLicenseTypeCommand */
-    public DeleteLicenseTypeCommand(UserVisitPK userVisitPK, DeleteLicenseTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteLicenseTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

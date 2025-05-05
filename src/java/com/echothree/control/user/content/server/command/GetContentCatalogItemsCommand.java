@@ -68,8 +68,8 @@ public class GetContentCatalogItemsCommand
     }
     
     /** Creates a new instance of GetContentCatalogItemsCommand */
-    public GetContentCatalogItemsCommand(UserVisitPK userVisitPK, GetContentCatalogItemsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetContentCatalogItemsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     private ContentCatalog contentCatalog;

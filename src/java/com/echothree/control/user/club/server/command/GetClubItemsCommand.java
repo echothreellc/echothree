@@ -42,8 +42,8 @@ public class GetClubItemsCommand
     }
     
     /** Creates a new instance of GetClubItemsCommand */
-    public GetClubItemsCommand(UserVisitPK userVisitPK, GetClubItemsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetClubItemsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

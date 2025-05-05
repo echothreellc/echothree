@@ -70,8 +70,8 @@ public class EditContactListContactMechanismPurposeCommand
     }
     
     /** Creates a new instance of EditContactListContactMechanismPurposeCommand */
-    public EditContactListContactMechanismPurposeCommand(UserVisitPK userVisitPK, EditContactListContactMechanismPurposeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditContactListContactMechanismPurposeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

@@ -73,8 +73,8 @@ public class EditOrderAliasTypeCommand
     }
 
     /** Creates a new instance of EditOrderAliasTypeCommand */
-    public EditOrderAliasTypeCommand(UserVisitPK userVisitPK, EditOrderAliasTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditOrderAliasTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

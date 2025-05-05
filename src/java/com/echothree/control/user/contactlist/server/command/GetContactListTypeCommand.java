@@ -57,8 +57,8 @@ public class GetContactListTypeCommand
     }
     
     /** Creates a new instance of GetContactListTypeCommand */
-    public GetContactListTypeCommand(UserVisitPK userVisitPK, GetContactListTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetContactListTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

@@ -55,8 +55,8 @@ public class SetDefaultSequenceCommand
     }
     
     /** Creates a new instance of SetDefaultSequenceCommand */
-    public SetDefaultSequenceCommand(UserVisitPK userVisitPK, SetDefaultSequenceForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultSequenceCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

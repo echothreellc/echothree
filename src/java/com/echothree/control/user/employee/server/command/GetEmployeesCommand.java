@@ -53,8 +53,8 @@ public class GetEmployeesCommand
     }
 
     /** Creates a new instance of GetEmployeesCommand */
-    public GetEmployeesCommand(UserVisitPK userVisitPK, GetEmployeesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetEmployeesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

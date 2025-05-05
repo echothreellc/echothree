@@ -69,8 +69,8 @@ public class EditPartyTrainingClassCommand
     }
     
     /** Creates a new instance of EditPartyTrainingClassCommand */
-    public EditPartyTrainingClassCommand(UserVisitPK userVisitPK, EditPartyTrainingClassForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditPartyTrainingClassCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

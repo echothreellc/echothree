@@ -64,8 +64,8 @@ public class CreateIndexCommand
     }
     
     /** Creates a new instance of CreateIndexCommand */
-    public CreateIndexCommand(UserVisitPK userVisitPK, CreateIndexForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateIndexCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -54,8 +54,8 @@ public class SetDefaultGlResourceTypeCommand
     }
     
     /** Creates a new instance of SetDefaultGlResourceTypeCommand */
-    public SetDefaultGlResourceTypeCommand(UserVisitPK userVisitPK, SetDefaultGlResourceTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultGlResourceTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

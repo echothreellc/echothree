@@ -56,8 +56,8 @@ public class GetAppearanceTextTransformationsCommand
     }
     
     /** Creates a new instance of GetAppearanceTextTransformationsCommand */
-    public GetAppearanceTextTransformationsCommand(UserVisitPK userVisitPK, GetAppearanceTextTransformationsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetAppearanceTextTransformationsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

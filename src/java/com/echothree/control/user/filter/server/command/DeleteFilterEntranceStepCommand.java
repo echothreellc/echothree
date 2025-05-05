@@ -56,8 +56,8 @@ public class DeleteFilterEntranceStepCommand
     }
     
     /** Creates a new instance of DeleteFilterEntranceStepCommand */
-    public DeleteFilterEntranceStepCommand(UserVisitPK userVisitPK, DeleteFilterEntranceStepForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteFilterEntranceStepCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

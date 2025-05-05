@@ -43,37 +43,37 @@ public class IndexBean
     
     @Override
     public CommandResult createIndexType(UserVisitPK userVisitPK, CreateIndexTypeForm form) {
-        return new CreateIndexTypeCommand(userVisitPK, form).run();
+        return new CreateIndexTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getIndexTypeChoices(UserVisitPK userVisitPK, GetIndexTypeChoicesForm form) {
-        return new GetIndexTypeChoicesCommand(userVisitPK, form).run();
+        return new GetIndexTypeChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getIndexType(UserVisitPK userVisitPK, GetIndexTypeForm form) {
-        return new GetIndexTypeCommand(userVisitPK, form).run();
+        return new GetIndexTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getIndexTypes(UserVisitPK userVisitPK, GetIndexTypesForm form) {
-        return new GetIndexTypesCommand(userVisitPK, form).run();
+        return new GetIndexTypesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultIndexType(UserVisitPK userVisitPK, SetDefaultIndexTypeForm form) {
-        return new SetDefaultIndexTypeCommand(userVisitPK, form).run();
+        return new SetDefaultIndexTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editIndexType(UserVisitPK userVisitPK, EditIndexTypeForm form) {
-        return new EditIndexTypeCommand(userVisitPK, form).run();
+        return new EditIndexTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteIndexType(UserVisitPK userVisitPK, DeleteIndexTypeForm form) {
-        return new DeleteIndexTypeCommand(userVisitPK, form).run();
+        return new DeleteIndexTypeCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -82,27 +82,27 @@ public class IndexBean
     
     @Override
     public CommandResult createIndexTypeDescription(UserVisitPK userVisitPK, CreateIndexTypeDescriptionForm form) {
-        return new CreateIndexTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateIndexTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getIndexTypeDescription(UserVisitPK userVisitPK, GetIndexTypeDescriptionForm form) {
-        return new GetIndexTypeDescriptionCommand(userVisitPK, form).run();
+        return new GetIndexTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getIndexTypeDescriptions(UserVisitPK userVisitPK, GetIndexTypeDescriptionsForm form) {
-        return new GetIndexTypeDescriptionsCommand(userVisitPK, form).run();
+        return new GetIndexTypeDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editIndexTypeDescription(UserVisitPK userVisitPK, EditIndexTypeDescriptionForm form) {
-        return new EditIndexTypeDescriptionCommand(userVisitPK, form).run();
+        return new EditIndexTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteIndexTypeDescription(UserVisitPK userVisitPK, DeleteIndexTypeDescriptionForm form) {
-        return new DeleteIndexTypeDescriptionCommand(userVisitPK, form).run();
+        return new DeleteIndexTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -111,37 +111,37 @@ public class IndexBean
     
     @Override
     public CommandResult createIndexField(UserVisitPK userVisitPK, CreateIndexFieldForm form) {
-        return new CreateIndexFieldCommand(userVisitPK, form).run();
+        return new CreateIndexFieldCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getIndexFieldChoices(UserVisitPK userVisitPK, GetIndexFieldChoicesForm form) {
-        return new GetIndexFieldChoicesCommand(userVisitPK, form).run();
+        return new GetIndexFieldChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getIndexField(UserVisitPK userVisitPK, GetIndexFieldForm form) {
-        return new GetIndexFieldCommand(userVisitPK, form).run();
+        return new GetIndexFieldCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getIndexFields(UserVisitPK userVisitPK, GetIndexFieldsForm form) {
-        return new GetIndexFieldsCommand(userVisitPK, form).run();
+        return new GetIndexFieldsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultIndexField(UserVisitPK userVisitPK, SetDefaultIndexFieldForm form) {
-        return new SetDefaultIndexFieldCommand(userVisitPK, form).run();
+        return new SetDefaultIndexFieldCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editIndexField(UserVisitPK userVisitPK, EditIndexFieldForm form) {
-        return new EditIndexFieldCommand(userVisitPK, form).run();
+        return new EditIndexFieldCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteIndexField(UserVisitPK userVisitPK, DeleteIndexFieldForm form) {
-        return new DeleteIndexFieldCommand(userVisitPK, form).run();
+        return new DeleteIndexFieldCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -150,27 +150,27 @@ public class IndexBean
     
     @Override
     public CommandResult createIndexFieldDescription(UserVisitPK userVisitPK, CreateIndexFieldDescriptionForm form) {
-        return new CreateIndexFieldDescriptionCommand(userVisitPK, form).run();
+        return new CreateIndexFieldDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getIndexFieldDescription(UserVisitPK userVisitPK, GetIndexFieldDescriptionForm form) {
-        return new GetIndexFieldDescriptionCommand(userVisitPK, form).run();
+        return new GetIndexFieldDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getIndexFieldDescriptions(UserVisitPK userVisitPK, GetIndexFieldDescriptionsForm form) {
-        return new GetIndexFieldDescriptionsCommand(userVisitPK, form).run();
+        return new GetIndexFieldDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editIndexFieldDescription(UserVisitPK userVisitPK, EditIndexFieldDescriptionForm form) {
-        return new EditIndexFieldDescriptionCommand(userVisitPK, form).run();
+        return new EditIndexFieldDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteIndexFieldDescription(UserVisitPK userVisitPK, DeleteIndexFieldDescriptionForm form) {
-        return new DeleteIndexFieldDescriptionCommand(userVisitPK, form).run();
+        return new DeleteIndexFieldDescriptionCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -179,37 +179,37 @@ public class IndexBean
     
     @Override
     public CommandResult createIndex(UserVisitPK userVisitPK, CreateIndexForm form) {
-        return new CreateIndexCommand(userVisitPK, form).run();
+        return new CreateIndexCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getIndexChoices(UserVisitPK userVisitPK, GetIndexChoicesForm form) {
-        return new GetIndexChoicesCommand(userVisitPK, form).run();
+        return new GetIndexChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getIndex(UserVisitPK userVisitPK, GetIndexForm form) {
-        return new GetIndexCommand(userVisitPK, form).run();
+        return new GetIndexCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getIndexes(UserVisitPK userVisitPK, GetIndexesForm form) {
-        return new GetIndexesCommand(userVisitPK, form).run();
+        return new GetIndexesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultIndex(UserVisitPK userVisitPK, SetDefaultIndexForm form) {
-        return new SetDefaultIndexCommand(userVisitPK, form).run();
+        return new SetDefaultIndexCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editIndex(UserVisitPK userVisitPK, EditIndexForm form) {
-        return new EditIndexCommand(userVisitPK, form).run();
+        return new EditIndexCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteIndex(UserVisitPK userVisitPK, DeleteIndexForm form) {
-        return new DeleteIndexCommand(userVisitPK, form).run();
+        return new DeleteIndexCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -218,27 +218,27 @@ public class IndexBean
     
     @Override
     public CommandResult createIndexDescription(UserVisitPK userVisitPK, CreateIndexDescriptionForm form) {
-        return new CreateIndexDescriptionCommand(userVisitPK, form).run();
+        return new CreateIndexDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getIndexDescription(UserVisitPK userVisitPK, GetIndexDescriptionForm form) {
-        return new GetIndexDescriptionCommand(userVisitPK, form).run();
+        return new GetIndexDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getIndexDescriptions(UserVisitPK userVisitPK, GetIndexDescriptionsForm form) {
-        return new GetIndexDescriptionsCommand(userVisitPK, form).run();
+        return new GetIndexDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editIndexDescription(UserVisitPK userVisitPK, EditIndexDescriptionForm form) {
-        return new EditIndexDescriptionCommand(userVisitPK, form).run();
+        return new EditIndexDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteIndexDescription(UserVisitPK userVisitPK, DeleteIndexDescriptionForm form) {
-        return new DeleteIndexDescriptionCommand(userVisitPK, form).run();
+        return new DeleteIndexDescriptionCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -247,12 +247,12 @@ public class IndexBean
     
     @Override
     public CommandResult updateIndexes(UserVisitPK userVisitPK, UpdateIndexesForm form) {
-        return new UpdateIndexesCommand(userVisitPK, form).run();
+        return new UpdateIndexesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult forceReindex(UserVisitPK userVisitPK, ForceReindexForm form) {
-        return new ForceReindexCommand(userVisitPK, form).run();
+        return new ForceReindexCommand().run(userVisitPK, form);
     }
     
 }

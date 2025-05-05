@@ -69,8 +69,8 @@ public class EditSearchSortDirectionDescriptionCommand
     }
     
     /** Creates a new instance of EditSearchSortDirectionDescriptionCommand */
-    public EditSearchSortDirectionDescriptionCommand(UserVisitPK userVisitPK, EditSearchSortDirectionDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditSearchSortDirectionDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

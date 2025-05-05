@@ -68,8 +68,8 @@ public class CreateSalesOrderLineCommand
     }
 
     /** Creates a new instance of CreateSalesOrderLineCommand */
-    public CreateSalesOrderLineCommand(UserVisitPK userVisitPK, CreateSalesOrderLineForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateSalesOrderLineCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
 
     @Override

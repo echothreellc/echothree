@@ -53,8 +53,8 @@ public class DeleteEntityLongAttributeCommand
     }
     
     /** Creates a new instance of DeleteEntityLongAttributeCommand */
-    public DeleteEntityLongAttributeCommand(UserVisitPK userVisitPK, DeleteEntityLongAttributeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteEntityLongAttributeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

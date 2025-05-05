@@ -51,8 +51,8 @@ public class SetJobStatusCommand
     }
     
     /** Creates a new instance of SetJobStatusCommand */
-    public SetJobStatusCommand(UserVisitPK userVisitPK, SetJobStatusForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetJobStatusCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -55,8 +55,8 @@ public class SetDefaultApplicationCommand
     }
     
     /** Creates a new instance of SetDefaultApplicationCommand */
-    public SetDefaultApplicationCommand(UserVisitPK userVisitPK, SetDefaultApplicationForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultApplicationCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

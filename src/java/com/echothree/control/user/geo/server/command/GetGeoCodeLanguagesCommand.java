@@ -58,8 +58,8 @@ public class GetGeoCodeLanguagesCommand
     }
     
     /** Creates a new instance of GetGeoCodeLanguagesCommand */
-    public GetGeoCodeLanguagesCommand(UserVisitPK userVisitPK, GetGeoCodeLanguagesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetGeoCodeLanguagesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

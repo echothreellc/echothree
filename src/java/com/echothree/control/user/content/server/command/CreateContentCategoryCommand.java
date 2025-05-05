@@ -78,8 +78,8 @@ public class CreateContentCategoryCommand
     }
     
     /** Creates a new instance of CreateContentCategoryCommand */
-    public CreateContentCategoryCommand(UserVisitPK userVisitPK, CreateContentCategoryForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateContentCategoryCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
