@@ -71,12 +71,12 @@ public abstract class BaseCommand
 
     private Log log = null;
 
-    private UserVisitPK userVisitPK;
     private final CommandSecurityDefinition commandSecurityDefinition;
 
     private ThreadUtils.PreservedState preservedState;
     protected Session session;
 
+    private UserVisitPK userVisitPK = null;
     private UserVisit userVisit = null;
     private UserSession userSession = null;
     private Party party = null;
