@@ -30,7 +30,7 @@ public class GraphQlExecutionContext {
     private final UserSession userSession;
     private final String remoteInet4Address;
     
-    private final Map<Class<? extends GraphQlSecurityCommand>, Boolean> securityCache = new HashMap<>();
+    private final Map<Class<? extends GraphQlSecurityCommand<? extends BaseForm>>, Boolean> securityCache = new HashMap<>();
 
     public GraphQlExecutionContext(UserVisitPK userVisitPK, UserVisit userVisit, UserSession userSession, String remoteInet4Address) {
         this.userVisitPK = userVisitPK;
@@ -55,11 +55,11 @@ public class GraphQlExecutionContext {
         return remoteInet4Address;
     }
 
-    public boolean hasAccess(final Class<? extends GraphQlSecurityCommand> command) {
+    public <F extends BaseForm> boolean hasAccess(final Class<? extends GraphQlSecurityCommand<F>> command) {
         return hasAccess(command, null);
     }
 
-    public boolean hasAccess(final Class<? extends GraphQlSecurityCommand> command, final BaseForm form) {
+    public <F extends BaseForm> boolean hasAccess(final Class<? extends GraphQlSecurityCommand<F>> command, final F form) {
         var canCache = form == null;
         var hasAccess = canCache ? securityCache.get(command) : null; // Bypass if it cannot be cached.
 

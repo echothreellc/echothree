@@ -17,13 +17,13 @@
 package com.echothree.model.control.customer.server.graphql;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
+import com.echothree.control.user.customer.common.form.GetCustomerForm;
 import com.echothree.control.user.customer.server.command.GetCustomerCommand;
 import com.echothree.control.user.customer.server.command.GetCustomerTypeCommand;
 import com.echothree.control.user.customer.server.command.GetCustomerTypesCommand;
 import com.echothree.control.user.customer.server.command.GetCustomersCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.util.common.form.BaseForm;
 import graphql.schema.DataFetchingEnvironment;
 import javax.naming.NamingException;
 
@@ -39,19 +39,17 @@ public interface CustomerSecurityUtils {
 
     static boolean getHasCustomerAccess(final DataFetchingEnvironment env, final Party party) {
         var partyDetail = party.getLastDetail();
-        BaseForm baseForm;
+        GetCustomerForm commandForm;
 
         // GetCustomerCommand has a security() function that needs the form to be available.
         try {
-            var commandForm = CustomerUtil.getHome().getGetCustomerForm();
-
+            commandForm = CustomerUtil.getHome().getGetCustomerForm();
             commandForm.setPartyName(partyDetail.getPartyName());
-            baseForm = commandForm;
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetCustomerCommand.class, baseForm);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetCustomerCommand.class, commandForm);
     }
 
     static boolean getHasCustomersAccess(final DataFetchingEnvironment env) {
