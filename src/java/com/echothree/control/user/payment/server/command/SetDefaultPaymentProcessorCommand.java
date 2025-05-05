@@ -54,8 +54,8 @@ public class SetDefaultPaymentProcessorCommand
     }
     
     /** Creates a new instance of SetDefaultPaymentProcessorCommand */
-    public SetDefaultPaymentProcessorCommand(UserVisitPK userVisitPK, SetDefaultPaymentProcessorForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultPaymentProcessorCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

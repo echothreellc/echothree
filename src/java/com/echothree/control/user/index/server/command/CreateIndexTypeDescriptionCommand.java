@@ -58,8 +58,8 @@ public class CreateIndexTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateIndexTypeDescriptionCommand */
-    public CreateIndexTypeDescriptionCommand(UserVisitPK userVisitPK, CreateIndexTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateIndexTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

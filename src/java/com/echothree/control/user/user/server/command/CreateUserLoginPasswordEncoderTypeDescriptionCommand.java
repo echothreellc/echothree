@@ -42,8 +42,8 @@ public class CreateUserLoginPasswordEncoderTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateUserLoginPasswordEncoderTypeDescriptionCommand */
-    public CreateUserLoginPasswordEncoderTypeDescriptionCommand(UserVisitPK userVisitPK, CreateUserLoginPasswordEncoderTypeDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateUserLoginPasswordEncoderTypeDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

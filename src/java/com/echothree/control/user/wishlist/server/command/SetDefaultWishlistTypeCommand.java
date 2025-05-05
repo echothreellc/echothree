@@ -54,8 +54,8 @@ public class SetDefaultWishlistTypeCommand
     }
     
     /** Creates a new instance of SetDefaultWishlistTypeCommand */
-    public SetDefaultWishlistTypeCommand(UserVisitPK userVisitPK, SetDefaultWishlistTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultWishlistTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

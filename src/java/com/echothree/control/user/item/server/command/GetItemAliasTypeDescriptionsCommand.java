@@ -56,8 +56,8 @@ public class GetItemAliasTypeDescriptionsCommand
     }
     
     /** Creates a new instance of GetItemAliasTypeDescriptionsCommand */
-    public GetItemAliasTypeDescriptionsCommand(UserVisitPK userVisitPK, GetItemAliasTypeDescriptionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetItemAliasTypeDescriptionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

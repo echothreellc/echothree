@@ -59,8 +59,8 @@ public class GetLetterChoicesCommand
     }
     
     /** Creates a new instance of GetLetterChoicesCommand */
-    public GetLetterChoicesCommand(UserVisitPK userVisitPK, GetLetterChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetLetterChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

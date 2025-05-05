@@ -58,8 +58,8 @@ public class GetBatchAliasTypeCommand
     }
     
     /** Creates a new instance of GetBatchAliasTypeCommand */
-    public GetBatchAliasTypeCommand(UserVisitPK userVisitPK, GetBatchAliasTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetBatchAliasTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

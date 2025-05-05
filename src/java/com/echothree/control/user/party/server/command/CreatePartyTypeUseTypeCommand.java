@@ -43,8 +43,8 @@ public class CreatePartyTypeUseTypeCommand
     }
     
     /** Creates a new instance of CreatePartyTypeUseTypeCommand */
-    public CreatePartyTypeUseTypeCommand(UserVisitPK userVisitPK, CreatePartyTypeUseTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreatePartyTypeUseTypeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

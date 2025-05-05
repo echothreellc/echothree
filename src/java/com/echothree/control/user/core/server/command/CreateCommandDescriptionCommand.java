@@ -45,8 +45,8 @@ public class CreateCommandDescriptionCommand
     }
     
     /** Creates a new instance of CreateCommandDescriptionCommand */
-    public CreateCommandDescriptionCommand(UserVisitPK userVisitPK, CreateCommandDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateCommandDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -71,8 +71,8 @@ public class EditFreeOnBoardCommand
     }
     
     /** Creates a new instance of EditFreeOnBoardCommand */
-    public EditFreeOnBoardCommand(UserVisitPK userVisitPK, EditFreeOnBoardForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditFreeOnBoardCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

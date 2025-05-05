@@ -42,8 +42,8 @@ public class GetNameSuffixesCommand
     }
     
     /** Creates a new instance of GetNameSuffixesCommand */
-    public GetNameSuffixesCommand(UserVisitPK userVisitPK, GetNameSuffixesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetNameSuffixesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

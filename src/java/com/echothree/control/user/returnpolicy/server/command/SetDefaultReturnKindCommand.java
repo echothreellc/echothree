@@ -54,8 +54,8 @@ public class SetDefaultReturnKindCommand
     }
     
     /** Creates a new instance of SetDefaultReturnKindCommand */
-    public SetDefaultReturnKindCommand(UserVisitPK userVisitPK, SetDefaultReturnKindForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultReturnKindCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

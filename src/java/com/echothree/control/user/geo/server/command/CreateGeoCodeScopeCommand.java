@@ -59,8 +59,8 @@ public class CreateGeoCodeScopeCommand
     }
     
     /** Creates a new instance of CreateGeoCodeScopeCommand */
-    public CreateGeoCodeScopeCommand(UserVisitPK userVisitPK, CreateGeoCodeScopeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateGeoCodeScopeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

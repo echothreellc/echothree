@@ -74,8 +74,8 @@ public class EditEntityGeoPointAttributeCommand
     }
     
     /** Creates a new instance of EditEntityGeoPointAttributeCommand */
-    public EditEntityGeoPointAttributeCommand(UserVisitPK userVisitPK, EditEntityGeoPointAttributeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditEntityGeoPointAttributeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

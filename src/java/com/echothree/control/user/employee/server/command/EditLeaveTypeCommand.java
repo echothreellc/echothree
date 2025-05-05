@@ -69,8 +69,8 @@ public class EditLeaveTypeCommand
     }
 
     /** Creates a new instance of EditLeaveTypeCommand */
-    public EditLeaveTypeCommand(UserVisitPK userVisitPK, EditLeaveTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditLeaveTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

@@ -43,37 +43,37 @@ public class SalesBean
     
     @Override
     public CommandResult createSalesOrderBatch(UserVisitPK userVisitPK, CreateSalesOrderBatchForm form) {
-        return new CreateSalesOrderBatchCommand(userVisitPK, form).run();
+        return new CreateSalesOrderBatchCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSalesOrderBatch(UserVisitPK userVisitPK, GetSalesOrderBatchForm form) {
-        return new GetSalesOrderBatchCommand(userVisitPK, form).run();
+        return new GetSalesOrderBatchCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getSalesOrderBatches(UserVisitPK userVisitPK, GetSalesOrderBatchesForm form) {
-        return new GetSalesOrderBatchesCommand(userVisitPK, form).run();
+        return new GetSalesOrderBatchesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSalesOrderBatchStatusChoices(UserVisitPK userVisitPK, GetSalesOrderBatchStatusChoicesForm form) {
-        return new GetSalesOrderBatchStatusChoicesCommand(userVisitPK, form).run();
+        return new GetSalesOrderBatchStatusChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setSalesOrderBatchStatus(UserVisitPK userVisitPK, SetSalesOrderBatchStatusForm form) {
-        return new SetSalesOrderBatchStatusCommand(userVisitPK, form).run();
+        return new SetSalesOrderBatchStatusCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editSalesOrderBatch(UserVisitPK userVisitPK, EditSalesOrderBatchForm form) {
-        return new EditSalesOrderBatchCommand(userVisitPK, form).run();
+        return new EditSalesOrderBatchCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteSalesOrderBatch(UserVisitPK userVisitPK, DeleteSalesOrderBatchForm form) {
-        return new DeleteSalesOrderBatchCommand(userVisitPK, form).run();
+        return new DeleteSalesOrderBatchCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -82,17 +82,17 @@ public class SalesBean
     
     @Override
     public CommandResult createSalesOrder(UserVisitPK userVisitPK, CreateSalesOrderForm form) {
-        return new CreateSalesOrderCommand(userVisitPK, form).run();
+        return new CreateSalesOrderCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSalesOrderStatusChoices(UserVisitPK userVisitPK, GetSalesOrderStatusChoicesForm form) {
-        return new GetSalesOrderStatusChoicesCommand(userVisitPK, form).run();
+        return new GetSalesOrderStatusChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setSalesOrderStatus(UserVisitPK userVisitPK, SetSalesOrderStatusForm form) {
-        return new SetSalesOrderStatusCommand(userVisitPK, form).run();
+        return new SetSalesOrderStatusCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -101,7 +101,7 @@ public class SalesBean
     
     @Override
     public CommandResult createSalesOrderPaymentPreference(UserVisitPK userVisitPK, CreateSalesOrderPaymentPreferenceForm form) {
-        return new CreateSalesOrderPaymentPreferenceCommand(userVisitPK, form).run();
+        return new CreateSalesOrderPaymentPreferenceCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -110,27 +110,27 @@ public class SalesBean
     
     @Override
     public CommandResult createSalesOrderTime(UserVisitPK userVisitPK, CreateSalesOrderTimeForm form) {
-        return new CreateSalesOrderTimeCommand(userVisitPK, form).run();
+        return new CreateSalesOrderTimeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSalesOrderTime(UserVisitPK userVisitPK, GetSalesOrderTimeForm form) {
-        return new GetSalesOrderTimeCommand(userVisitPK, form).run();
+        return new GetSalesOrderTimeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getSalesOrderTimes(UserVisitPK userVisitPK, GetSalesOrderTimesForm form) {
-        return new GetSalesOrderTimesCommand(userVisitPK, form).run();
+        return new GetSalesOrderTimesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editSalesOrderTime(UserVisitPK userVisitPK, EditSalesOrderTimeForm form) {
-        return new EditSalesOrderTimeCommand(userVisitPK, form).run();
+        return new EditSalesOrderTimeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteSalesOrderTime(UserVisitPK userVisitPK, DeleteSalesOrderTimeForm form) {
-        return new DeleteSalesOrderTimeCommand(userVisitPK, form).run();
+        return new DeleteSalesOrderTimeCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -139,7 +139,7 @@ public class SalesBean
 
     @Override
     public CommandResult createSalesOrderLine(UserVisitPK userVisitPK, CreateSalesOrderLineForm form) {
-        return new CreateSalesOrderLineCommand(userVisitPK, form).run();
+        return new CreateSalesOrderLineCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -148,7 +148,7 @@ public class SalesBean
 
     @Override
     public CommandResult editSalesOrderShipmentGroup(UserVisitPK userVisitPK, EditSalesOrderShipmentGroupForm form) {
-        return new EditSalesOrderShipmentGroupCommand(userVisitPK, form).run();
+        return new EditSalesOrderShipmentGroupCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -157,27 +157,27 @@ public class SalesBean
     
     @Override
     public CommandResult createSalesOrderLineTime(UserVisitPK userVisitPK, CreateSalesOrderLineTimeForm form) {
-        return new CreateSalesOrderLineTimeCommand(userVisitPK, form).run();
+        return new CreateSalesOrderLineTimeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSalesOrderLineTime(UserVisitPK userVisitPK, GetSalesOrderLineTimeForm form) {
-        return new GetSalesOrderLineTimeCommand(userVisitPK, form).run();
+        return new GetSalesOrderLineTimeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getSalesOrderLineTimes(UserVisitPK userVisitPK, GetSalesOrderLineTimesForm form) {
-        return new GetSalesOrderLineTimesCommand(userVisitPK, form).run();
+        return new GetSalesOrderLineTimesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editSalesOrderLineTime(UserVisitPK userVisitPK, EditSalesOrderLineTimeForm form) {
-        return new EditSalesOrderLineTimeCommand(userVisitPK, form).run();
+        return new EditSalesOrderLineTimeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteSalesOrderLineTime(UserVisitPK userVisitPK, DeleteSalesOrderLineTimeForm form) {
-        return new DeleteSalesOrderLineTimeCommand(userVisitPK, form).run();
+        return new DeleteSalesOrderLineTimeCommand().run(userVisitPK, form);
     }
 
 }

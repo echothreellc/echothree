@@ -43,8 +43,8 @@ public class ClearEntityAliasTypeResultsCommand
     }
 
     /** Creates a new instance of ClearEntityAliasTypeResultsCommand */
-    public ClearEntityAliasTypeResultsCommand(UserVisitPK userVisitPK, ClearEntityAliasTypeResultsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION);
+    public ClearEntityAliasTypeResultsCommand() {
+        super(COMMAND_SECURITY_DEFINITION);
     }
     
     @Override

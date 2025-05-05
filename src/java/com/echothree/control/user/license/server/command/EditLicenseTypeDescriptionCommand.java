@@ -69,8 +69,8 @@ public class EditLicenseTypeDescriptionCommand
     }
     
     /** Creates a new instance of EditLicenseTypeDescriptionCommand */
-    public EditLicenseTypeDescriptionCommand(UserVisitPK userVisitPK, EditLicenseTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditLicenseTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

@@ -43,8 +43,8 @@ public class DeleteDepartmentCommand
     }
     
     /** Creates a new instance of DeleteDepartmentCommand */
-    public DeleteDepartmentCommand(UserVisitPK userVisitPK, DeleteDepartmentForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteDepartmentCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

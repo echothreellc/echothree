@@ -63,8 +63,8 @@ public class GetTrackCommand
     }
     
     /** Creates a new instance of GetTrackCommand */
-    public GetTrackCommand(UserVisitPK userVisitPK, GetTrackForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetTrackCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

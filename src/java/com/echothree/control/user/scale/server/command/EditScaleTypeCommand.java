@@ -69,8 +69,8 @@ public class EditScaleTypeCommand
     }
 
     /** Creates a new instance of EditScaleTypeCommand */
-    public EditScaleTypeCommand(UserVisitPK userVisitPK, EditScaleTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditScaleTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

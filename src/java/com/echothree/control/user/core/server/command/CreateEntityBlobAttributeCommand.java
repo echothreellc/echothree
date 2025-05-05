@@ -59,8 +59,8 @@ public class CreateEntityBlobAttributeCommand
     }
     
     /** Creates a new instance of CreateEntityBlobAttributeCommand */
-    public CreateEntityBlobAttributeCommand(UserVisitPK userVisitPK, CreateEntityBlobAttributeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateEntityBlobAttributeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

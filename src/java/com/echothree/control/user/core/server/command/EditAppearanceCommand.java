@@ -78,8 +78,8 @@ public class EditAppearanceCommand
     }
     
     /** Creates a new instance of EditAppearanceCommand */
-    public EditAppearanceCommand(UserVisitPK userVisitPK, EditAppearanceForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditAppearanceCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

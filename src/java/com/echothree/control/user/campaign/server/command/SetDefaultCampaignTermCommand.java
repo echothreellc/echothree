@@ -55,8 +55,8 @@ public class SetDefaultCampaignTermCommand
     }
     
     /** Creates a new instance of SetDefaultCampaignTermCommand */
-    public SetDefaultCampaignTermCommand(UserVisitPK userVisitPK, SetDefaultCampaignTermForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultCampaignTermCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

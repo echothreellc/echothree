@@ -73,8 +73,8 @@ public class EditPrinterGroupCommand
     }
 
     /** Creates a new instance of EditPrinterGroupCommand */
-    public EditPrinterGroupCommand(UserVisitPK userVisitPK, EditPrinterGroupForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditPrinterGroupCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

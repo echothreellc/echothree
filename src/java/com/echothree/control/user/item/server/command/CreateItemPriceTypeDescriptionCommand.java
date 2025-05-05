@@ -58,8 +58,8 @@ public class CreateItemPriceTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateItemPriceTypeDescriptionCommand */
-    public CreateItemPriceTypeDescriptionCommand(UserVisitPK userVisitPK, CreateItemPriceTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateItemPriceTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

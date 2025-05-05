@@ -71,8 +71,8 @@ public class EditInventoryConditionCommand
     }
     
     /** Creates a new instance of EditInventoryConditionCommand */
-    public EditInventoryConditionCommand(UserVisitPK userVisitPK, EditInventoryConditionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditInventoryConditionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

@@ -58,8 +58,8 @@ public class GetGeoCodeAliasTypeCommand
     }
     
     /** Creates a new instance of GetGeoCodeAliasTypeCommand */
-    public GetGeoCodeAliasTypeCommand(UserVisitPK userVisitPK, GetGeoCodeAliasTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetGeoCodeAliasTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

@@ -58,8 +58,8 @@ public class DeleteContactMechanismCommand
     }
     
     /** Creates a new instance of DeleteContactMechanismCommand */
-    public DeleteContactMechanismCommand(UserVisitPK userVisitPK, DeleteContactMechanismForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteContactMechanismCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -58,8 +58,8 @@ public class SetDefaultContactListContactMechanismPurposeCommand
     }
     
     /** Creates a new instance of SetDefaultContactListContactMechanismPurposeCommand */
-    public SetDefaultContactListContactMechanismPurposeCommand(UserVisitPK userVisitPK, SetDefaultContactListContactMechanismPurposeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultContactListContactMechanismPurposeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

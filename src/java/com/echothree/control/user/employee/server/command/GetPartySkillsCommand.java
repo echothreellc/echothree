@@ -44,8 +44,8 @@ public class GetPartySkillsCommand
     }
     
     /** Creates a new instance of GetPartySkillsCommand */
-    public GetPartySkillsCommand(UserVisitPK userVisitPK, GetPartySkillsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetPartySkillsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

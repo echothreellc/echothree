@@ -60,8 +60,8 @@ public class GetEntityIntegerRangeDescriptionCommand
     }
     
     /** Creates a new instance of GetEntityIntegerRangeDescriptionCommand */
-    public GetEntityIntegerRangeDescriptionCommand(UserVisitPK userVisitPK, GetEntityIntegerRangeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetEntityIntegerRangeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

@@ -53,8 +53,8 @@ public class GetSearchUseTypesCommand
     }
 
     /** Creates a new instance of GetSearchUseTypesCommand */
-    public GetSearchUseTypesCommand(UserVisitPK userVisitPK, GetSearchUseTypesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetSearchUseTypesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

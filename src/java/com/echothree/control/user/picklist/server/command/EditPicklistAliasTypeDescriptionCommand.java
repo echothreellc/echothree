@@ -70,8 +70,8 @@ public class EditPicklistAliasTypeDescriptionCommand
     }
 
     /** Creates a new instance of EditPicklistAliasTypeDescriptionCommand */
-    public EditPicklistAliasTypeDescriptionCommand(UserVisitPK userVisitPK, EditPicklistAliasTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditPicklistAliasTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

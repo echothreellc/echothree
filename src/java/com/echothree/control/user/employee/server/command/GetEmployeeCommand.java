@@ -64,8 +64,8 @@ public class GetEmployeeCommand
     }
 
     /** Creates a new instance of GetEmployeeCommand */
-    public GetEmployeeCommand(UserVisitPK userVisitPK, GetEmployeeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetEmployeeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     String employeeName;

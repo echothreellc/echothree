@@ -57,8 +57,8 @@ public class GetLeavesCommand
     }
 
     /** Creates a new instance of GetLeavesCommand */
-    public GetLeavesCommand(UserVisitPK userVisitPK, GetLeavesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetLeavesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

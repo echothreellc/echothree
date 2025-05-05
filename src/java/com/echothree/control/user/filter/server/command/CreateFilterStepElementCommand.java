@@ -64,8 +64,8 @@ public class CreateFilterStepElementCommand
     }
     
     /** Creates a new instance of CreateFilterStepElementCommand */
-    public CreateFilterStepElementCommand(UserVisitPK userVisitPK, CreateFilterStepElementForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateFilterStepElementCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

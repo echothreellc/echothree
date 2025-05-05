@@ -44,8 +44,8 @@ public class SetDefaultPartyContactMechanismPurposeCommand
     }
     
     /** Creates a new instance of SetDefaultPartyContactMechanismPurposeCommand */
-    public SetDefaultPartyContactMechanismPurposeCommand(UserVisitPK userVisitPK, SetDefaultPartyContactMechanismPurposeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultPartyContactMechanismPurposeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -25,8 +25,8 @@ public class ClearUseResultsCommand
         extends BaseClearResultsCommand<ClearUseResultsForm> {
     
     /** Creates a new instance of ClearUseResultsCommand */
-    public ClearUseResultsCommand(UserVisitPK userVisitPK, ClearUseResultsForm form) {
-        super(userVisitPK, form, null);
+    public ClearUseResultsCommand() {
+        super(null);
     }
     
     @Override

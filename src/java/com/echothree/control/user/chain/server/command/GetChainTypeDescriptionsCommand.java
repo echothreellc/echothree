@@ -57,8 +57,8 @@ public class GetChainTypeDescriptionsCommand
     }
     
     /** Creates a new instance of GetChainTypeDescriptionsCommand */
-    public GetChainTypeDescriptionsCommand(UserVisitPK userVisitPK, GetChainTypeDescriptionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetChainTypeDescriptionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

@@ -54,8 +54,8 @@ public class SetDefaultInventoryConditionCommand
     }
     
     /** Creates a new instance of SetDefaultInventoryConditionCommand */
-    public SetDefaultInventoryConditionCommand(UserVisitPK userVisitPK, SetDefaultInventoryConditionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultInventoryConditionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

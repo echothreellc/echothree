@@ -55,8 +55,8 @@ public class DeleteServiceCommand
     }
     
     /** Creates a new instance of DeleteServiceCommand */
-    public DeleteServiceCommand(UserVisitPK userVisitPK, DeleteServiceForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteServiceCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

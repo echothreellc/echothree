@@ -64,8 +64,8 @@ public class EditClubCommand
     }
     
     /** Creates a new instance of EditClubCommand */
-    public EditClubCommand(UserVisitPK userVisitPK, EditClubForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditClubCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

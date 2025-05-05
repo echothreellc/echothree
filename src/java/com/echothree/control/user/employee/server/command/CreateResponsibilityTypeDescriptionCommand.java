@@ -44,8 +44,8 @@ public class CreateResponsibilityTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateResponsibilityTypeDescriptionCommand */
-    public CreateResponsibilityTypeDescriptionCommand(UserVisitPK userVisitPK, CreateResponsibilityTypeDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateResponsibilityTypeDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

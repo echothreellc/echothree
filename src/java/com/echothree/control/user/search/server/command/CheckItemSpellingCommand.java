@@ -46,8 +46,8 @@ public class CheckItemSpellingCommand
     }
 
     /** Creates a new instance of CheckItemSpellingCommand */
-    public CheckItemSpellingCommand(UserVisitPK userVisitPK, CheckItemSpellingForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CheckItemSpellingCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

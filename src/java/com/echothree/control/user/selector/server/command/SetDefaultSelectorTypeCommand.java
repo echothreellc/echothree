@@ -55,8 +55,8 @@ public class SetDefaultSelectorTypeCommand
     }
     
     /** Creates a new instance of SetDefaultSelectorTypeCommand */
-    public SetDefaultSelectorTypeCommand(UserVisitPK userVisitPK, SetDefaultSelectorTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultSelectorTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -70,8 +70,8 @@ public class EditItemUnitOfMeasureTypeCommand
     }
     
     /** Creates a new instance of EditItemUnitOfMeasureTypeCommand */
-    public EditItemUnitOfMeasureTypeCommand(UserVisitPK userVisitPK, EditItemUnitOfMeasureTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditItemUnitOfMeasureTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

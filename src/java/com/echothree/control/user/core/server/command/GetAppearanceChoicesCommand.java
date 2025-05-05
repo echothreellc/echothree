@@ -55,8 +55,8 @@ public class GetAppearanceChoicesCommand
     }
     
     /** Creates a new instance of GetAppearanceChoicesCommand */
-    public GetAppearanceChoicesCommand(UserVisitPK userVisitPK, GetAppearanceChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetAppearanceChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

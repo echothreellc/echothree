@@ -61,8 +61,8 @@ public class CreateChainActionSetCommand
     }
     
     /** Creates a new instance of CreateChainActionSetCommand */
-    public CreateChainActionSetCommand(UserVisitPK userVisitPK, CreateChainActionSetForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateChainActionSetCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

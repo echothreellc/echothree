@@ -40,8 +40,8 @@ public class GetPreferredCurrencyCommand
     }
 
     /** Creates a new instance of GetPreferredCurrencyCommand */
-    public GetPreferredCurrencyCommand(UserVisitPK userVisitPK, GetPreferredCurrencyForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetPreferredCurrencyCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

@@ -43,8 +43,8 @@ public class SetDefaultInventoryLocationGroupCommand
     }
     
     /** Creates a new instance of SetDefaultInventoryLocationGroupCommand */
-    public SetDefaultInventoryLocationGroupCommand(UserVisitPK userVisitPK, SetDefaultInventoryLocationGroupForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultInventoryLocationGroupCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

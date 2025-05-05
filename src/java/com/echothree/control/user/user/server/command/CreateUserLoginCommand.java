@@ -73,8 +73,8 @@ public class CreateUserLoginCommand
     }
     
     /** Creates a new instance of CreateUserLoginCommand */
-    public CreateUserLoginCommand(UserVisitPK userVisitPK, CreateUserLoginForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS);
+    public CreateUserLoginCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS);
     }
     
     @Override

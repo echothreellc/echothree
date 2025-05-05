@@ -62,8 +62,8 @@ public class CreateEntityIntegerRangeCommand
     }
     
     /** Creates a new instance of CreateEntityIntegerRangeCommand */
-    public CreateEntityIntegerRangeCommand(UserVisitPK userVisitPK, CreateEntityIntegerRangeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateEntityIntegerRangeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

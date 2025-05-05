@@ -42,8 +42,8 @@ public class CreateRecoveryQuestionCommand
     }
     
     /** Creates a new instance of CreateRecoveryQuestionCommand */
-    public CreateRecoveryQuestionCommand(UserVisitPK userVisitPK, CreateRecoveryQuestionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateRecoveryQuestionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -61,8 +61,8 @@ public class CreateItemCategoryCommand
     }
     
     /** Creates a new instance of CreateItemCategoryCommand */
-    public CreateItemCategoryCommand(UserVisitPK userVisitPK, CreateItemCategoryForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateItemCategoryCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

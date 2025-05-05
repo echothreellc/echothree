@@ -58,8 +58,8 @@ public class GetPartyTypeCommand
     }
     
     /** Creates a new instance of GetPartyTypeCommand */
-    public GetPartyTypeCommand(UserVisitPK userVisitPK, GetPartyTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetPartyTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

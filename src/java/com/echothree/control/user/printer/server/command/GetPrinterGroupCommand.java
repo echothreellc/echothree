@@ -56,8 +56,8 @@ public class GetPrinterGroupCommand
     }
     
     /** Creates a new instance of GetPrinterGroupCommand */
-    public GetPrinterGroupCommand(UserVisitPK userVisitPK, GetPrinterGroupForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetPrinterGroupCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -45,8 +45,8 @@ public class AddEmployeeToDepartmentCommand
     }
     
     /** Creates a new instance of AddEmployeeToDepartmentCommand */
-    public AddEmployeeToDepartmentCommand(UserVisitPK userVisitPK, AddEmployeeToDepartmentForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public AddEmployeeToDepartmentCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

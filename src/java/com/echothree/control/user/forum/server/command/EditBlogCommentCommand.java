@@ -63,8 +63,8 @@ public class EditBlogCommentCommand
     }
     
     /** Creates a new instance of EditBlogCommentCommand */
-    public EditBlogCommentCommand(UserVisitPK userVisitPK, EditBlogCommentForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditBlogCommentCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

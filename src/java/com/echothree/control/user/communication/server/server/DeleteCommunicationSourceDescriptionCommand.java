@@ -43,8 +43,8 @@ public class DeleteCommunicationSourceDescriptionCommand
     }
     
     /** Creates a new instance of DeleteCommunicationSourceDescriptionCommand */
-    public DeleteCommunicationSourceDescriptionCommand(UserVisitPK userVisitPK, DeleteCommunicationSourceDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteCommunicationSourceDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

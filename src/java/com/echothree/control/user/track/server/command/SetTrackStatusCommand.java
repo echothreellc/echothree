@@ -57,8 +57,8 @@ public class SetTrackStatusCommand
     }
     
     /** Creates a new instance of SetTrackStatusCommand */
-    public SetTrackStatusCommand(UserVisitPK userVisitPK, SetTrackStatusForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetTrackStatusCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

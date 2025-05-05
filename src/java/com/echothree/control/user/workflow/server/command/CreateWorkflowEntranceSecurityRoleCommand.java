@@ -60,8 +60,8 @@ public class CreateWorkflowEntranceSecurityRoleCommand
     }
     
     /** Creates a new instance of CreateWorkflowEntranceSecurityRoleCommand */
-    public CreateWorkflowEntranceSecurityRoleCommand(UserVisitPK userVisitPK, CreateWorkflowEntranceSecurityRoleForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateWorkflowEntranceSecurityRoleCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

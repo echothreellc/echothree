@@ -55,8 +55,8 @@ public class GetLotAliasTypeChoicesCommand
     }
     
     /** Creates a new instance of GetLotAliasTypeChoicesCommand */
-    public GetLotAliasTypeChoicesCommand(UserVisitPK userVisitPK, GetLotAliasTypeChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetLotAliasTypeChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -46,8 +46,8 @@ public class CountCustomerResultsCommand
     }
     
     /** Creates a new instance of CountCustomerResultsCommand */
-    public CountCustomerResultsCommand(UserVisitPK userVisitPK, CountCustomerResultsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION);
+    public CountCustomerResultsCommand() {
+        super(COMMAND_SECURITY_DEFINITION);
     }
     
     @Override

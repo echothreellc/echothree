@@ -55,8 +55,8 @@ public class SetDefaultCampaignContentCommand
     }
     
     /** Creates a new instance of SetDefaultCampaignContentCommand */
-    public SetDefaultCampaignContentCommand(UserVisitPK userVisitPK, SetDefaultCampaignContentForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultCampaignContentCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

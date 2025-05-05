@@ -55,8 +55,8 @@ public class GetItemAliasChecksumTypeChoicesCommand
     }
     
     /** Creates a new instance of GetItemAliasChecksumTypeChoicesCommand */
-    public GetItemAliasChecksumTypeChoicesCommand(UserVisitPK userVisitPK, GetItemAliasChecksumTypeChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetItemAliasChecksumTypeChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

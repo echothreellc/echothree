@@ -55,8 +55,8 @@ public class DeletePaymentMethodCommand
     }
     
     /** Creates a new instance of DeletePaymentMethodCommand */
-    public DeletePaymentMethodCommand(UserVisitPK userVisitPK, DeletePaymentMethodForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeletePaymentMethodCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

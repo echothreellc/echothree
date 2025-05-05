@@ -55,8 +55,8 @@ public class DeleteAppearanceCommand
     }
     
     /** Creates a new instance of DeleteAppearanceCommand */
-    public DeleteAppearanceCommand(UserVisitPK userVisitPK, DeleteAppearanceForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteAppearanceCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

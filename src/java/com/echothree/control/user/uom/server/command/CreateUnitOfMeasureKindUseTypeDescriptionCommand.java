@@ -44,8 +44,8 @@ public class CreateUnitOfMeasureKindUseTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateUnitOfMeasureKindUseTypeDescriptionCommand */
-    public CreateUnitOfMeasureKindUseTypeDescriptionCommand(UserVisitPK userVisitPK, CreateUnitOfMeasureKindUseTypeDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateUnitOfMeasureKindUseTypeDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

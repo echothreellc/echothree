@@ -57,8 +57,8 @@ public class DeleteEntityClobAttributeCommand
     }
     
     /** Creates a new instance of DeleteEntityClobAttributeCommand */
-    public DeleteEntityClobAttributeCommand(UserVisitPK userVisitPK, DeleteEntityClobAttributeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteEntityClobAttributeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

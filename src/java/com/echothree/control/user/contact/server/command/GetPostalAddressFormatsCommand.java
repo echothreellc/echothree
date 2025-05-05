@@ -39,8 +39,8 @@ public class GetPostalAddressFormatsCommand
     }
     
     /** Creates a new instance of GetPostalAddressFormatsCommand */
-    public GetPostalAddressFormatsCommand(UserVisitPK userVisitPK, GetPostalAddressFormatsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetPostalAddressFormatsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

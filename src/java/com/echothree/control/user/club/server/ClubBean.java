@@ -43,27 +43,27 @@ public class ClubBean
     
     @Override
     public CommandResult createClub(UserVisitPK userVisitPK, CreateClubForm form) {
-        return new CreateClubCommand(userVisitPK, form).run();
+        return new CreateClubCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getClubs(UserVisitPK userVisitPK, GetClubsForm form) {
-        return new GetClubsCommand(userVisitPK, form).run();
+        return new GetClubsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getClub(UserVisitPK userVisitPK, GetClubForm form) {
-        return new GetClubCommand(userVisitPK, form).run();
+        return new GetClubCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultClub(UserVisitPK userVisitPK, SetDefaultClubForm form) {
-        return new SetDefaultClubCommand(userVisitPK, form).run();
+        return new SetDefaultClubCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteClub(UserVisitPK userVisitPK, DeleteClubForm form) {
-        return new DeleteClubCommand(userVisitPK, form).run();
+        return new DeleteClubCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -72,22 +72,22 @@ public class ClubBean
     
     @Override
     public CommandResult createClubDescription(UserVisitPK userVisitPK, CreateClubDescriptionForm form) {
-        return new CreateClubDescriptionCommand(userVisitPK, form).run();
+        return new CreateClubDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getClubDescriptions(UserVisitPK userVisitPK, GetClubDescriptionsForm form) {
-        return new GetClubDescriptionsCommand(userVisitPK, form).run();
+        return new GetClubDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editClubDescription(UserVisitPK userVisitPK, EditClubDescriptionForm form) {
-        return new EditClubDescriptionCommand(userVisitPK, form).run();
+        return new EditClubDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteClubDescription(UserVisitPK userVisitPK, DeleteClubDescriptionForm form) {
-        return new DeleteClubDescriptionCommand(userVisitPK, form).run();
+        return new DeleteClubDescriptionCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -96,12 +96,12 @@ public class ClubBean
     
     @Override
     public CommandResult createClubItemType(UserVisitPK userVisitPK, CreateClubItemTypeForm form) {
-        return new CreateClubItemTypeCommand(userVisitPK, form).run();
+        return new CreateClubItemTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getClubItemTypeChoices(UserVisitPK userVisitPK, GetClubItemTypeChoicesForm form) {
-        return new GetClubItemTypeChoicesCommand(userVisitPK, form).run();
+        return new GetClubItemTypeChoicesCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -110,7 +110,7 @@ public class ClubBean
     
     @Override
     public CommandResult createClubItemTypeDescription(UserVisitPK userVisitPK, CreateClubItemTypeDescriptionForm form) {
-        return new CreateClubItemTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateClubItemTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -119,22 +119,22 @@ public class ClubBean
     
     @Override
     public CommandResult createClubItem(UserVisitPK userVisitPK, CreateClubItemForm form) {
-        return new CreateClubItemCommand(userVisitPK, form).run();
+        return new CreateClubItemCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getClubItems(UserVisitPK userVisitPK, GetClubItemsForm form) {
-        return new GetClubItemsCommand(userVisitPK, form).run();
+        return new GetClubItemsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editClub(UserVisitPK userVisitPK, EditClubForm form) {
-        return new EditClubCommand(userVisitPK, form).run();
+        return new EditClubCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteClubItem(UserVisitPK userVisitPK, DeleteClubItemForm form) {
-        return new DeleteClubItemCommand(userVisitPK, form).run();
+        return new DeleteClubItemCommand().run(userVisitPK, form);
     }
     
 }

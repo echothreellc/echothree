@@ -58,8 +58,8 @@ public class CreateWorkflowEntranceStepCommand
     }
     
     /** Creates a new instance of CreateWorkflowEntranceStepCommand */
-    public CreateWorkflowEntranceStepCommand(UserVisitPK userVisitPK, CreateWorkflowEntranceStepForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateWorkflowEntranceStepCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

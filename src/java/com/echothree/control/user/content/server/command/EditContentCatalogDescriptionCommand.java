@@ -70,8 +70,8 @@ public class EditContentCatalogDescriptionCommand
     }
     
     /** Creates a new instance of EditContentCatalogDescriptionCommand */
-    public EditContentCatalogDescriptionCommand(UserVisitPK userVisitPK, EditContentCatalogDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditContentCatalogDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

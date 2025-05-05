@@ -41,8 +41,8 @@ public abstract class BaseCountResultsCommand<F extends BaseCountResultsForm, R 
     }
 
     /** Creates a new instance of BaseCountResultsCommand */
-    protected BaseCountResultsCommand(UserVisitPK userVisitPK, F form, CommandSecurityDefinition COMMAND_SECURITY_DEFINITION) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    protected BaseCountResultsCommand(CommandSecurityDefinition COMMAND_SECURITY_DEFINITION) {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     protected BaseResult execute(String searchKindName, BaseCountResultsResult result) {

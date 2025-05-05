@@ -44,8 +44,8 @@ public class CreateCommunicationSourceDescriptionCommand
     }
     
     /** Creates a new instance of CreateCommunicationSourceDescriptionCommand */
-    public CreateCommunicationSourceDescriptionCommand(UserVisitPK userVisitPK, CreateCommunicationSourceDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateCommunicationSourceDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -56,8 +56,8 @@ public class GetItemPurchasingCategoryDescriptionsCommand
     }
     
     /** Creates a new instance of GetItemPurchasingCategoryDescriptionsCommand */
-    public GetItemPurchasingCategoryDescriptionsCommand(UserVisitPK userVisitPK, GetItemPurchasingCategoryDescriptionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetItemPurchasingCategoryDescriptionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

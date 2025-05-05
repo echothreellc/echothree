@@ -43,8 +43,8 @@ public class DeletePartySkillCommand
     }
     
     /** Creates a new instance of DeletePartySkillCommand */
-    public DeletePartySkillCommand(UserVisitPK userVisitPK, DeletePartySkillForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeletePartySkillCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -29,9 +29,9 @@ public abstract class BasePaginatedMultipleEntitiesCommand<BE extends BaseEntity
         extends BaseSimpleCommand<F>
         implements GraphQlSecurityCommand {
 
-    protected BasePaginatedMultipleEntitiesCommand(UserVisitPK userVisitPK, F form, CommandSecurityDefinition commandSecurityDefinition,
+    protected BasePaginatedMultipleEntitiesCommand(CommandSecurityDefinition commandSecurityDefinition,
             List<FieldDefinition> formFieldDefinitions, boolean allowLimits) {
-        super(userVisitPK, form, commandSecurityDefinition, formFieldDefinitions, allowLimits);
+        super(commandSecurityDefinition, formFieldDefinitions, allowLimits);
     }
 
     private boolean formHandled = false;
@@ -41,10 +41,10 @@ public abstract class BasePaginatedMultipleEntitiesCommand<BE extends BaseEntity
     protected abstract Collection<BE> getEntities();
     protected abstract BaseResult getResult(Collection<BE> entities);
 
-    public Long getTotalEntitiesForGraphQl() {
+    public Long getTotalEntitiesForGraphQl(UserVisitPK userVisitPK, F form) {
         Long totalEntities = null;
 
-        if(formHandled || canQueryByGraphQl()) { // formHandled == true avoids call to canQueryByGraphQl()
+        if(formHandled || canQueryByGraphQl(userVisitPK, form)) { // formHandled == true avoids call to canQueryByGraphQl()
             if(!formHandled) {
                 handleForm();
                 formHandled = true;
@@ -55,10 +55,10 @@ public abstract class BasePaginatedMultipleEntitiesCommand<BE extends BaseEntity
         return totalEntities;
     }
 
-    public Collection<BE> getEntitiesForGraphQl() {
+    public Collection<BE> getEntitiesForGraphQl(UserVisitPK userVisitPK, F form) {
         Collection<BE> entities = null;
 
-        if(formHandled || canQueryByGraphQl()) { // formHandled == true avoids call to canQueryByGraphQl()
+        if(formHandled || canQueryByGraphQl(userVisitPK, form)) { // formHandled == true avoids call to canQueryByGraphQl()
             if(!formHandled) {
                 handleForm();
                 formHandled = true;

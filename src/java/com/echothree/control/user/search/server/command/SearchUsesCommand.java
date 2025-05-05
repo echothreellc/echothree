@@ -56,8 +56,8 @@ public class SearchUsesCommand
     }
 
     /** Creates a new instance of SearchUsesCommand */
-    public SearchUsesCommand(UserVisitPK userVisitPK, SearchUsesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SearchUsesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

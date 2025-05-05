@@ -45,8 +45,8 @@ public class GetMessageDescriptionsCommand
     }
     
     /** Creates a new instance of GetMessageDescriptionsCommand */
-    public GetMessageDescriptionsCommand(UserVisitPK userVisitPK, GetMessageDescriptionsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetMessageDescriptionsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

@@ -18,7 +18,6 @@ package com.echothree.control.user.order.server.command;
 
 import com.echothree.control.user.order.common.edit.OrderAliasEdit;
 import com.echothree.control.user.order.common.edit.OrderEditFactory;
-import com.echothree.control.user.order.common.form.EditOrderAliasForm;
 import com.echothree.control.user.order.common.result.EditOrderAliasResult;
 import com.echothree.control.user.order.common.result.OrderResultFactory;
 import com.echothree.control.user.order.common.spec.OrderAliasSpec;
@@ -30,7 +29,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.order.server.entity.OrderAlias;
 import com.echothree.model.data.order.server.entity.OrderAliasType;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -63,15 +61,20 @@ public class EditOrderAliasCommand
     }
     
     /** Creates a new instance of EditOrderAliasCommand */
-    public EditOrderAliasCommand(UserVisitPK userVisitPK, EditOrderAliasForm form) {
-        super(userVisitPK, form, new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+    public EditOrderAliasCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
+
+    @Override
+    protected CommandSecurityDefinition getCommandSecurityDefinition() {
+        return new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                        new SecurityRoleDefinition(OrderAliasUtil.getInstance().getSecurityRoleGroupNameByOrderTypeSpec(form == null ? null : form.getSpec()), SecurityRoles.Edit.name())
-                        )))
-                ))), SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+                        new SecurityRoleDefinition(OrderAliasUtil.getInstance().getSecurityRoleGroupNameByOrderTypeSpec(spec), SecurityRoles.Edit.name())
+                )))
+        )));
     }
-    
+
     @Override
     public EditOrderAliasResult getResult() {
         return OrderResultFactory.getEditOrderAliasResult();

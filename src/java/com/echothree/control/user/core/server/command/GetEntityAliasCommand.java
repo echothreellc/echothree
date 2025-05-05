@@ -60,8 +60,8 @@ public class GetEntityAliasCommand
     }
 
     /** Creates a new instance of DeleteEntityAliasCommand */
-    public GetEntityAliasCommand(UserVisitPK userVisitPK, GetEntityAliasForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetEntityAliasCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
 
     @Override

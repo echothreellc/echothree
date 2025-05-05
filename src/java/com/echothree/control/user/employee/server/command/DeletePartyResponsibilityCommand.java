@@ -43,8 +43,8 @@ public class DeletePartyResponsibilityCommand
     }
     
     /** Creates a new instance of DeletePartyResponsibilityCommand */
-    public DeletePartyResponsibilityCommand(UserVisitPK userVisitPK, DeletePartyResponsibilityForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeletePartyResponsibilityCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

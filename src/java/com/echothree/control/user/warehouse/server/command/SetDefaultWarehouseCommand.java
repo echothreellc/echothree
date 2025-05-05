@@ -55,8 +55,8 @@ public class SetDefaultWarehouseCommand
     }
     
     /** Creates a new instance of SetDefaultWarehouseCommand */
-    public SetDefaultWarehouseCommand(UserVisitPK userVisitPK, SetDefaultWarehouseForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultWarehouseCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

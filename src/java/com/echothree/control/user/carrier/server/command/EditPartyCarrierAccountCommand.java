@@ -69,8 +69,8 @@ public class EditPartyCarrierAccountCommand
     }
     
     /** Creates a new instance of EditPartyCarrierAccountCommand */
-    public EditPartyCarrierAccountCommand(UserVisitPK userVisitPK, EditPartyCarrierAccountForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditPartyCarrierAccountCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

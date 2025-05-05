@@ -51,8 +51,8 @@ public class GetFontWeightCommand
     }
     
     /** Creates a new instance of GetFontWeightCommand */
-    public GetFontWeightCommand(UserVisitPK userVisitPK, GetFontWeightForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetFontWeightCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

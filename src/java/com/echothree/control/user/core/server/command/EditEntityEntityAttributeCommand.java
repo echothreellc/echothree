@@ -65,8 +65,8 @@ public class EditEntityEntityAttributeCommand
     }
     
     /** Creates a new instance of EditEntityEntityAttributeCommand */
-    public EditEntityEntityAttributeCommand(UserVisitPK userVisitPK, EditEntityEntityAttributeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditEntityEntityAttributeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

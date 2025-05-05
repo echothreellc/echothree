@@ -54,8 +54,8 @@ public class SetDefaultLetterSourceCommand
     }
     
     /** Creates a new instance of SetDefaultLetterSourceCommand */
-    public SetDefaultLetterSourceCommand(UserVisitPK userVisitPK, SetDefaultLetterSourceForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultLetterSourceCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

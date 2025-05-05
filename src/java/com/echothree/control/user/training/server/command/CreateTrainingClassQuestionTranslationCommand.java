@@ -63,8 +63,8 @@ public class CreateTrainingClassQuestionTranslationCommand
     }
     
     /** Creates a new instance of CreateTrainingClassQuestionTranslationCommand */
-    public CreateTrainingClassQuestionTranslationCommand(UserVisitPK userVisitPK, CreateTrainingClassQuestionTranslationForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateTrainingClassQuestionTranslationCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

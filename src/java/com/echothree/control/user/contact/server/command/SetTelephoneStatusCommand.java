@@ -42,8 +42,8 @@ public class SetTelephoneStatusCommand
     }
 
     /** Creates a new instance of SetTelephoneStatusCommand */
-    public SetTelephoneStatusCommand(UserVisitPK userVisitPK, SetTelephoneStatusForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SetTelephoneStatusCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
 
     @Override

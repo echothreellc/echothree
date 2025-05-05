@@ -60,8 +60,8 @@ public class CreateOrderAliasTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateOrderAliasTypeDescriptionCommand */
-    public CreateOrderAliasTypeDescriptionCommand(UserVisitPK userVisitPK, CreateOrderAliasTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateOrderAliasTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

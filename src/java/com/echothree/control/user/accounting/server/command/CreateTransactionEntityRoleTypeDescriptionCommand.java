@@ -59,8 +59,8 @@ public class CreateTransactionEntityRoleTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateTransactionEntityRoleTypeDescriptionCommand */
-    public CreateTransactionEntityRoleTypeDescriptionCommand(UserVisitPK userVisitPK, CreateTransactionEntityRoleTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateTransactionEntityRoleTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

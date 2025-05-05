@@ -69,8 +69,8 @@ public class EditTagScopeDescriptionCommand
     }
 
     /** Creates a new instance of EditTagScopeDescriptionCommand */
-    public EditTagScopeDescriptionCommand(UserVisitPK userVisitPK, EditTagScopeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditTagScopeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

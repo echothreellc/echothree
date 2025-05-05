@@ -60,8 +60,8 @@ public class CreateDateTimeFormatCommand
     }
     
     /** Creates a new instance of CreateDateTimeFormatCommand */
-    public CreateDateTimeFormatCommand(UserVisitPK userVisitPK, CreateDateTimeFormatForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateDateTimeFormatCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -56,8 +56,8 @@ public class SetDefaultPartyTypeDocumentTypeUsageTypeCommand
     }
     
     /** Creates a new instance of SetDefaultPartyTypeDocumentTypeUsageTypeCommand */
-    public SetDefaultPartyTypeDocumentTypeUsageTypeCommand(UserVisitPK userVisitPK, SetDefaultPartyTypeDocumentTypeUsageTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultPartyTypeDocumentTypeUsageTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

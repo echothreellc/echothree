@@ -77,8 +77,8 @@ public class EditTrainingClassPageTranslationCommand
     }
 
     /** Creates a new instance of EditTrainingClassPageTranslationCommand */
-    public EditTrainingClassPageTranslationCommand(UserVisitPK userVisitPK, EditTrainingClassPageTranslationForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditTrainingClassPageTranslationCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

@@ -62,8 +62,8 @@ public class CreateReturnTypeShippingMethodCommand
     }
     
     /** Creates a new instance of CreateReturnTypeShippingMethodCommand */
-    public CreateReturnTypeShippingMethodCommand(UserVisitPK userVisitPK, CreateReturnTypeShippingMethodForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateReturnTypeShippingMethodCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

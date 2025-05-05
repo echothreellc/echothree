@@ -61,8 +61,8 @@ public class DeleteWorkflowDestinationSecurityRoleCommand
     }
     
     /** Creates a new instance of DeleteWorkflowDestinationSecurityRoleCommand */
-    public DeleteWorkflowDestinationSecurityRoleCommand(UserVisitPK userVisitPK, DeleteWorkflowDestinationSecurityRoleForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteWorkflowDestinationSecurityRoleCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -56,8 +56,8 @@ public class EditCommandMessageTranslationCommand
     }
     
     /** Creates a new instance of EditCommandMessageTranslationCommand */
-    public EditCommandMessageTranslationCommand(UserVisitPK userVisitPK, EditCommandMessageTranslationForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditCommandMessageTranslationCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

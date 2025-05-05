@@ -43,22 +43,22 @@ public class TermBean
     
     @Override
     public CommandResult createTermType(UserVisitPK userVisitPK, CreateTermTypeForm form) {
-        return new CreateTermTypeCommand(userVisitPK, form).run();
+        return new CreateTermTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTermTypes(UserVisitPK userVisitPK, GetTermTypesForm form) {
-        return new GetTermTypesCommand(userVisitPK, form).run();
+        return new GetTermTypesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTermType(UserVisitPK userVisitPK, GetTermTypeForm form) {
-        return new GetTermTypeCommand(userVisitPK, form).run();
+        return new GetTermTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTermTypeChoices(UserVisitPK userVisitPK, GetTermTypeChoicesForm form) {
-        return new GetTermTypeChoicesCommand(userVisitPK, form).run();
+        return new GetTermTypeChoicesCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -67,7 +67,7 @@ public class TermBean
     
     @Override
     public CommandResult createTermTypeDescription(UserVisitPK userVisitPK, CreateTermTypeDescriptionForm form) {
-        return new CreateTermTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateTermTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -76,32 +76,32 @@ public class TermBean
     
     @Override
     public CommandResult createTerm(UserVisitPK userVisitPK, CreateTermForm form) {
-        return new CreateTermCommand(userVisitPK, form).run();
+        return new CreateTermCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTerms(UserVisitPK userVisitPK, GetTermsForm form) {
-        return new GetTermsCommand(userVisitPK, form).run();
+        return new GetTermsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTerm(UserVisitPK userVisitPK, GetTermForm form) {
-        return new GetTermCommand(userVisitPK, form).run();
+        return new GetTermCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTermChoices(UserVisitPK userVisitPK, GetTermChoicesForm form) {
-        return new GetTermChoicesCommand(userVisitPK, form).run();
+        return new GetTermChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultTerm(UserVisitPK userVisitPK, SetDefaultTermForm form) {
-        return new SetDefaultTermCommand(userVisitPK, form).run();
+        return new SetDefaultTermCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteTerm(UserVisitPK userVisitPK, DeleteTermForm form) {
-        return new DeleteTermCommand(userVisitPK, form).run();
+        return new DeleteTermCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -110,22 +110,22 @@ public class TermBean
     
     @Override
     public CommandResult createTermDescription(UserVisitPK userVisitPK, CreateTermDescriptionForm form) {
-        return new CreateTermDescriptionCommand(userVisitPK, form).run();
+        return new CreateTermDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTermDescriptions(UserVisitPK userVisitPK, GetTermDescriptionsForm form) {
-        return new GetTermDescriptionsCommand(userVisitPK, form).run();
+        return new GetTermDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editTermDescription(UserVisitPK userVisitPK, EditTermDescriptionForm form) {
-        return new EditTermDescriptionCommand(userVisitPK, form).run();
+        return new EditTermDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteTermDescription(UserVisitPK userVisitPK, DeleteTermDescriptionForm form) {
-        return new DeleteTermDescriptionCommand(userVisitPK, form).run();
+        return new DeleteTermDescriptionCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -134,22 +134,22 @@ public class TermBean
     
     @Override
     public CommandResult createCustomerTypeCreditLimit(UserVisitPK userVisitPK, CreateCustomerTypeCreditLimitForm form) {
-        return new CreateCustomerTypeCreditLimitCommand(userVisitPK, form).run();
+        return new CreateCustomerTypeCreditLimitCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editCustomerTypeCreditLimit(UserVisitPK userVisitPK, EditCustomerTypeCreditLimitForm form) {
-        return new EditCustomerTypeCreditLimitCommand(userVisitPK, form).run();
+        return new EditCustomerTypeCreditLimitCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCustomerTypeCreditLimits(UserVisitPK userVisitPK, GetCustomerTypeCreditLimitsForm form) {
-        return new GetCustomerTypeCreditLimitsCommand(userVisitPK, form).run();
+        return new GetCustomerTypeCreditLimitsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCustomerTypeCreditLimit(UserVisitPK userVisitPK, DeleteCustomerTypeCreditLimitForm form) {
-        return new DeleteCustomerTypeCreditLimitCommand(userVisitPK, form).run();
+        return new DeleteCustomerTypeCreditLimitCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -158,22 +158,22 @@ public class TermBean
     
     @Override
     public CommandResult createPartyCreditLimit(UserVisitPK userVisitPK, CreatePartyCreditLimitForm form) {
-        return new CreatePartyCreditLimitCommand(userVisitPK, form).run();
+        return new CreatePartyCreditLimitCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editPartyCreditLimit(UserVisitPK userVisitPK, EditPartyCreditLimitForm form) {
-        return new EditPartyCreditLimitCommand(userVisitPK, form).run();
+        return new EditPartyCreditLimitCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPartyCreditLimits(UserVisitPK userVisitPK, GetPartyCreditLimitsForm form) {
-        return new GetPartyCreditLimitsCommand(userVisitPK, form).run();
+        return new GetPartyCreditLimitsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deletePartyCreditLimit(UserVisitPK userVisitPK, DeletePartyCreditLimitForm form) {
-        return new DeletePartyCreditLimitCommand(userVisitPK, form).run();
+        return new DeletePartyCreditLimitCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -182,7 +182,7 @@ public class TermBean
     
     @Override
     public CommandResult editPartyTerm(UserVisitPK userVisitPK, EditPartyTermForm form) {
-        return new EditPartyTermCommand(userVisitPK, form).run();
+        return new EditPartyTermCommand().run(userVisitPK, form);
     }
     
 }

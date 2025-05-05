@@ -69,8 +69,8 @@ public class EditSubscriptionKindCommand
     }
 
     /** Creates a new instance of EditSubscriptionKindCommand */
-    public EditSubscriptionKindCommand(UserVisitPK userVisitPK, EditSubscriptionKindForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditSubscriptionKindCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

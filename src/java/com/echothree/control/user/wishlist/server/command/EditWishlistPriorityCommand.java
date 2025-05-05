@@ -72,8 +72,8 @@ public class EditWishlistPriorityCommand
     }
     
     /** Creates a new instance of EditWishlistPriorityCommand */
-    public EditWishlistPriorityCommand(UserVisitPK userVisitPK, EditWishlistPriorityForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditWishlistPriorityCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

@@ -70,8 +70,8 @@ public class EditWarehouseTypeCommand
     }
 
     /** Creates a new instance of EditWarehouseTypeCommand */
-    public EditWarehouseTypeCommand(UserVisitPK userVisitPK, EditWarehouseTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditWarehouseTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

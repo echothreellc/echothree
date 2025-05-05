@@ -52,8 +52,8 @@ public class EditRecoveryQuestionDescriptionCommand
     }
     
     /** Creates a new instance of EditRecoveryQuestionDescriptionCommand */
-    public EditRecoveryQuestionDescriptionCommand(UserVisitPK userVisitPK, EditRecoveryQuestionDescriptionForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditRecoveryQuestionDescriptionCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

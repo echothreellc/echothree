@@ -63,8 +63,8 @@ public class GetPartyCommand
     }
 
     /** Creates a new instance of GetPartyCommand */
-    public GetPartyCommand(UserVisitPK userVisitPK, GetPartyForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetPartyCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     String partyName;

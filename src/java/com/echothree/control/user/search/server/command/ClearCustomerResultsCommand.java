@@ -44,8 +44,8 @@ public class ClearCustomerResultsCommand
     }
     
     /** Creates a new instance of ClearCustomerResultsCommand */
-    public ClearCustomerResultsCommand(UserVisitPK userVisitPK, ClearCustomerResultsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION);
+    public ClearCustomerResultsCommand() {
+        super(COMMAND_SECURITY_DEFINITION);
     }
     
     @Override

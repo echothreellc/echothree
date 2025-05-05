@@ -134,8 +134,8 @@ public class CreateCustomerWithLoginCommand
     }
     
     /** Creates a new instance of CreateCustomerWithLoginCommand */
-    public CreateCustomerWithLoginCommand(UserVisitPK userVisitPK, CreateCustomerWithLoginForm form) {
-        super(userVisitPK, form, null, null, false);
+    public CreateCustomerWithLoginCommand() {
+        super(null, null, false);
     }
     
     @Override

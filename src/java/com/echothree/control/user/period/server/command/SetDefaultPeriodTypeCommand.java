@@ -55,8 +55,8 @@ public class SetDefaultPeriodTypeCommand
     }
     
     /** Creates a new instance of SetDefaultPeriodTypeCommand */
-    public SetDefaultPeriodTypeCommand(UserVisitPK userVisitPK, SetDefaultPeriodTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultPeriodTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

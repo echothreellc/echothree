@@ -79,8 +79,8 @@ public class CreateProfileCommand
     }
     
     /** Creates a new instance of CreateProfileCommand */
-    public CreateProfileCommand(UserVisitPK userVisitPK, CreateProfileForm form) {
-        super(userVisitPK, form, null, null, false);
+    public CreateProfileCommand() {
+        super(null, null, false);
     }
     
     @Override

@@ -65,8 +65,8 @@ public class GetTrainingClassSectionsCommand
     }
     
     /** Creates a new instance of GetTrainingClassSectionsCommand */
-    public GetTrainingClassSectionsCommand(UserVisitPK userVisitPK, GetTrainingClassSectionsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetTrainingClassSectionsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

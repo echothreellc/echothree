@@ -58,8 +58,8 @@ public class GetRoleTypeCommand
     }
     
     /** Creates a new instance of GetRoleTypeCommand */
-    public GetRoleTypeCommand(UserVisitPK userVisitPK, GetRoleTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetRoleTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

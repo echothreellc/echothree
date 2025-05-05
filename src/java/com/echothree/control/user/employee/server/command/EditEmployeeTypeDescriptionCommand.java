@@ -67,8 +67,8 @@ public class EditEmployeeTypeDescriptionCommand
     }
     
     /** Creates a new instance of EditEmployeeTypeDescriptionCommand */
-    public EditEmployeeTypeDescriptionCommand(UserVisitPK userVisitPK, EditEmployeeTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditEmployeeTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

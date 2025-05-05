@@ -55,8 +55,8 @@ public class GetSearchCheckSpellingActionTypeChoicesCommand
     }
     
     /** Creates a new instance of GetSearchCheckSpellingActionTypeChoicesCommand */
-    public GetSearchCheckSpellingActionTypeChoicesCommand(UserVisitPK userVisitPK, GetSearchCheckSpellingActionTypeChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetSearchCheckSpellingActionTypeChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

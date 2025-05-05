@@ -56,8 +56,8 @@ public class GetBaseEncryptionKeyCommand
     }
     
     /** Creates a new instance of GetBaseEncryptionKeyCommand */
-    public GetBaseEncryptionKeyCommand(UserVisitPK userVisitPK, GetBaseEncryptionKeyForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetBaseEncryptionKeyCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

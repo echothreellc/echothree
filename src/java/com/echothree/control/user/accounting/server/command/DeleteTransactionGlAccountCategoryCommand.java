@@ -56,8 +56,8 @@ public class DeleteTransactionGlAccountCategoryCommand
     }
     
     /** Creates a new instance of DeleteTransactionGlAccountCategoryCommand */
-    public DeleteTransactionGlAccountCategoryCommand(UserVisitPK userVisitPK, DeleteTransactionGlAccountCategoryForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteTransactionGlAccountCategoryCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

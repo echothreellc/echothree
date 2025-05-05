@@ -43,37 +43,37 @@ public class ShipmentBean
 
     @Override
     public CommandResult createFreeOnBoard(UserVisitPK userVisitPK, CreateFreeOnBoardForm form) {
-        return new CreateFreeOnBoardCommand(userVisitPK, form).run();
+        return new CreateFreeOnBoardCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getFreeOnBoards(UserVisitPK userVisitPK, GetFreeOnBoardsForm form) {
-        return new GetFreeOnBoardsCommand(userVisitPK, form).run();
+        return new GetFreeOnBoardsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getFreeOnBoard(UserVisitPK userVisitPK, GetFreeOnBoardForm form) {
-        return new GetFreeOnBoardCommand(userVisitPK, form).run();
+        return new GetFreeOnBoardCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getFreeOnBoardChoices(UserVisitPK userVisitPK, GetFreeOnBoardChoicesForm form) {
-        return new GetFreeOnBoardChoicesCommand(userVisitPK, form).run();
+        return new GetFreeOnBoardChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultFreeOnBoard(UserVisitPK userVisitPK, SetDefaultFreeOnBoardForm form) {
-        return new SetDefaultFreeOnBoardCommand(userVisitPK, form).run();
+        return new SetDefaultFreeOnBoardCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editFreeOnBoard(UserVisitPK userVisitPK, EditFreeOnBoardForm form) {
-        return new EditFreeOnBoardCommand(userVisitPK, form).run();
+        return new EditFreeOnBoardCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteFreeOnBoard(UserVisitPK userVisitPK, DeleteFreeOnBoardForm form) {
-        return new DeleteFreeOnBoardCommand(userVisitPK, form).run();
+        return new DeleteFreeOnBoardCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -82,22 +82,22 @@ public class ShipmentBean
 
     @Override
     public CommandResult createFreeOnBoardDescription(UserVisitPK userVisitPK, CreateFreeOnBoardDescriptionForm form) {
-        return new CreateFreeOnBoardDescriptionCommand(userVisitPK, form).run();
+        return new CreateFreeOnBoardDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getFreeOnBoardDescriptions(UserVisitPK userVisitPK, GetFreeOnBoardDescriptionsForm form) {
-        return new GetFreeOnBoardDescriptionsCommand(userVisitPK, form).run();
+        return new GetFreeOnBoardDescriptionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editFreeOnBoardDescription(UserVisitPK userVisitPK, EditFreeOnBoardDescriptionForm form) {
-        return new EditFreeOnBoardDescriptionCommand(userVisitPK, form).run();
+        return new EditFreeOnBoardDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteFreeOnBoardDescription(UserVisitPK userVisitPK, DeleteFreeOnBoardDescriptionForm form) {
-        return new DeleteFreeOnBoardDescriptionCommand(userVisitPK, form).run();
+        return new DeleteFreeOnBoardDescriptionCommand().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -106,37 +106,37 @@ public class ShipmentBean
 
     @Override
     public CommandResult createShipmentType(UserVisitPK userVisitPK, CreateShipmentTypeForm form) {
-        return new CreateShipmentTypeCommand(userVisitPK, form).run();
+        return new CreateShipmentTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getShipmentTypeChoices(UserVisitPK userVisitPK, GetShipmentTypeChoicesForm form) {
-        return new GetShipmentTypeChoicesCommand(userVisitPK, form).run();
+        return new GetShipmentTypeChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getShipmentType(UserVisitPK userVisitPK, GetShipmentTypeForm form) {
-        return new GetShipmentTypeCommand(userVisitPK, form).run();
+        return new GetShipmentTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getShipmentTypes(UserVisitPK userVisitPK, GetShipmentTypesForm form) {
-        return new GetShipmentTypesCommand(userVisitPK, form).run();
+        return new GetShipmentTypesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultShipmentType(UserVisitPK userVisitPK, SetDefaultShipmentTypeForm form) {
-        return new SetDefaultShipmentTypeCommand(userVisitPK, form).run();
+        return new SetDefaultShipmentTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editShipmentType(UserVisitPK userVisitPK, EditShipmentTypeForm form) {
-        return new EditShipmentTypeCommand(userVisitPK, form).run();
+        return new EditShipmentTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteShipmentType(UserVisitPK userVisitPK, DeleteShipmentTypeForm form) {
-        return new DeleteShipmentTypeCommand(userVisitPK, form).run();
+        return new DeleteShipmentTypeCommand().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -145,27 +145,27 @@ public class ShipmentBean
 
     @Override
     public CommandResult createShipmentTypeDescription(UserVisitPK userVisitPK, CreateShipmentTypeDescriptionForm form) {
-        return new CreateShipmentTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateShipmentTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getShipmentTypeDescription(UserVisitPK userVisitPK, GetShipmentTypeDescriptionForm form) {
-        return new GetShipmentTypeDescriptionCommand(userVisitPK, form).run();
+        return new GetShipmentTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getShipmentTypeDescriptions(UserVisitPK userVisitPK, GetShipmentTypeDescriptionsForm form) {
-        return new GetShipmentTypeDescriptionsCommand(userVisitPK, form).run();
+        return new GetShipmentTypeDescriptionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editShipmentTypeDescription(UserVisitPK userVisitPK, EditShipmentTypeDescriptionForm form) {
-        return new EditShipmentTypeDescriptionCommand(userVisitPK, form).run();
+        return new EditShipmentTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteShipmentTypeDescription(UserVisitPK userVisitPK, DeleteShipmentTypeDescriptionForm form) {
-        return new DeleteShipmentTypeDescriptionCommand(userVisitPK, form).run();
+        return new DeleteShipmentTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -174,37 +174,37 @@ public class ShipmentBean
 
     @Override
     public CommandResult createShipmentTimeType(UserVisitPK userVisitPK, CreateShipmentTimeTypeForm form) {
-        return new CreateShipmentTimeTypeCommand(userVisitPK, form).run();
+        return new CreateShipmentTimeTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getShipmentTimeTypeChoices(UserVisitPK userVisitPK, GetShipmentTimeTypeChoicesForm form) {
-        return new GetShipmentTimeTypeChoicesCommand(userVisitPK, form).run();
+        return new GetShipmentTimeTypeChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getShipmentTimeType(UserVisitPK userVisitPK, GetShipmentTimeTypeForm form) {
-        return new GetShipmentTimeTypeCommand(userVisitPK, form).run();
+        return new GetShipmentTimeTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getShipmentTimeTypes(UserVisitPK userVisitPK, GetShipmentTimeTypesForm form) {
-        return new GetShipmentTimeTypesCommand(userVisitPK, form).run();
+        return new GetShipmentTimeTypesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultShipmentTimeType(UserVisitPK userVisitPK, SetDefaultShipmentTimeTypeForm form) {
-        return new SetDefaultShipmentTimeTypeCommand(userVisitPK, form).run();
+        return new SetDefaultShipmentTimeTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editShipmentTimeType(UserVisitPK userVisitPK, EditShipmentTimeTypeForm form) {
-        return new EditShipmentTimeTypeCommand(userVisitPK, form).run();
+        return new EditShipmentTimeTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteShipmentTimeType(UserVisitPK userVisitPK, DeleteShipmentTimeTypeForm form) {
-        return new DeleteShipmentTimeTypeCommand(userVisitPK, form).run();
+        return new DeleteShipmentTimeTypeCommand().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -213,27 +213,27 @@ public class ShipmentBean
 
     @Override
     public CommandResult createShipmentTimeTypeDescription(UserVisitPK userVisitPK, CreateShipmentTimeTypeDescriptionForm form) {
-        return new CreateShipmentTimeTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateShipmentTimeTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getShipmentTimeTypeDescription(UserVisitPK userVisitPK, GetShipmentTimeTypeDescriptionForm form) {
-        return new GetShipmentTimeTypeDescriptionCommand(userVisitPK, form).run();
+        return new GetShipmentTimeTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getShipmentTimeTypeDescriptions(UserVisitPK userVisitPK, GetShipmentTimeTypeDescriptionsForm form) {
-        return new GetShipmentTimeTypeDescriptionsCommand(userVisitPK, form).run();
+        return new GetShipmentTimeTypeDescriptionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editShipmentTimeTypeDescription(UserVisitPK userVisitPK, EditShipmentTimeTypeDescriptionForm form) {
-        return new EditShipmentTimeTypeDescriptionCommand(userVisitPK, form).run();
+        return new EditShipmentTimeTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteShipmentTimeTypeDescription(UserVisitPK userVisitPK, DeleteShipmentTimeTypeDescriptionForm form) {
-        return new DeleteShipmentTimeTypeDescriptionCommand(userVisitPK, form).run();
+        return new DeleteShipmentTimeTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -242,27 +242,27 @@ public class ShipmentBean
     
     @Override
     public CommandResult createShipmentTypeShippingMethod(UserVisitPK userVisitPK, CreateShipmentTypeShippingMethodForm form) {
-        return new CreateShipmentTypeShippingMethodCommand(userVisitPK, form).run();
+        return new CreateShipmentTypeShippingMethodCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getShipmentTypeShippingMethods(UserVisitPK userVisitPK, GetShipmentTypeShippingMethodsForm form) {
-        return new GetShipmentTypeShippingMethodsCommand(userVisitPK, form).run();
+        return new GetShipmentTypeShippingMethodsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultShipmentTypeShippingMethod(UserVisitPK userVisitPK, SetDefaultShipmentTypeShippingMethodForm form) {
-        return new SetDefaultShipmentTypeShippingMethodCommand(userVisitPK, form).run();
+        return new SetDefaultShipmentTypeShippingMethodCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editShipmentTypeShippingMethod(UserVisitPK userVisitPK, EditShipmentTypeShippingMethodForm form) {
-        return new EditShipmentTypeShippingMethodCommand(userVisitPK, form).run();
+        return new EditShipmentTypeShippingMethodCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteShipmentTypeShippingMethod(UserVisitPK userVisitPK, DeleteShipmentTypeShippingMethodForm form) {
-        return new DeleteShipmentTypeShippingMethodCommand(userVisitPK, form).run();
+        return new DeleteShipmentTypeShippingMethodCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -271,37 +271,37 @@ public class ShipmentBean
 
     @Override
     public CommandResult createShipmentAliasType(UserVisitPK userVisitPK, CreateShipmentAliasTypeForm form) {
-        return new CreateShipmentAliasTypeCommand(userVisitPK, form).run();
+        return new CreateShipmentAliasTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getShipmentAliasTypeChoices(UserVisitPK userVisitPK, GetShipmentAliasTypeChoicesForm form) {
-        return new GetShipmentAliasTypeChoicesCommand(userVisitPK, form).run();
+        return new GetShipmentAliasTypeChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getShipmentAliasType(UserVisitPK userVisitPK, GetShipmentAliasTypeForm form) {
-        return new GetShipmentAliasTypeCommand(userVisitPK, form).run();
+        return new GetShipmentAliasTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getShipmentAliasTypes(UserVisitPK userVisitPK, GetShipmentAliasTypesForm form) {
-        return new GetShipmentAliasTypesCommand(userVisitPK, form).run();
+        return new GetShipmentAliasTypesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultShipmentAliasType(UserVisitPK userVisitPK, SetDefaultShipmentAliasTypeForm form) {
-        return new SetDefaultShipmentAliasTypeCommand(userVisitPK, form).run();
+        return new SetDefaultShipmentAliasTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editShipmentAliasType(UserVisitPK userVisitPK, EditShipmentAliasTypeForm form) {
-        return new EditShipmentAliasTypeCommand(userVisitPK, form).run();
+        return new EditShipmentAliasTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteShipmentAliasType(UserVisitPK userVisitPK, DeleteShipmentAliasTypeForm form) {
-        return new DeleteShipmentAliasTypeCommand(userVisitPK, form).run();
+        return new DeleteShipmentAliasTypeCommand().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -310,27 +310,27 @@ public class ShipmentBean
 
     @Override
     public CommandResult createShipmentAliasTypeDescription(UserVisitPK userVisitPK, CreateShipmentAliasTypeDescriptionForm form) {
-        return new CreateShipmentAliasTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateShipmentAliasTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getShipmentAliasTypeDescription(UserVisitPK userVisitPK, GetShipmentAliasTypeDescriptionForm form) {
-        return new GetShipmentAliasTypeDescriptionCommand(userVisitPK, form).run();
+        return new GetShipmentAliasTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getShipmentAliasTypeDescriptions(UserVisitPK userVisitPK, GetShipmentAliasTypeDescriptionsForm form) {
-        return new GetShipmentAliasTypeDescriptionsCommand(userVisitPK, form).run();
+        return new GetShipmentAliasTypeDescriptionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editShipmentAliasTypeDescription(UserVisitPK userVisitPK, EditShipmentAliasTypeDescriptionForm form) {
-        return new EditShipmentAliasTypeDescriptionCommand(userVisitPK, form).run();
+        return new EditShipmentAliasTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteShipmentAliasTypeDescription(UserVisitPK userVisitPK, DeleteShipmentAliasTypeDescriptionForm form) {
-        return new DeleteShipmentAliasTypeDescriptionCommand(userVisitPK, form).run();
+        return new DeleteShipmentAliasTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -339,27 +339,27 @@ public class ShipmentBean
 
     @Override
     public CommandResult createShipmentAlias(UserVisitPK userVisitPK, CreateShipmentAliasForm form) {
-        return new CreateShipmentAliasCommand(userVisitPK, form).run();
+        return new CreateShipmentAliasCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getShipmentAlias(UserVisitPK userVisitPK, GetShipmentAliasForm form) {
-        return new GetShipmentAliasCommand(userVisitPK, form).run();
+        return new GetShipmentAliasCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getShipmentAliases(UserVisitPK userVisitPK, GetShipmentAliasesForm form) {
-        return new GetShipmentAliasesCommand(userVisitPK, form).run();
+        return new GetShipmentAliasesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editShipmentAlias(UserVisitPK userVisitPK, EditShipmentAliasForm form) {
-        return new EditShipmentAliasCommand(userVisitPK, form).run();
+        return new EditShipmentAliasCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteShipmentAlias(UserVisitPK userVisitPK, DeleteShipmentAliasForm form) {
-        return new DeleteShipmentAliasCommand(userVisitPK, form).run();
+        return new DeleteShipmentAliasCommand().run(userVisitPK, form);
     }
 
 }

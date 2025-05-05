@@ -47,8 +47,8 @@ public class CreateItemUnitLimitCommand
     }
     
     /** Creates a new instance of CreateItemUnitLimitCommand */
-    public CreateItemUnitLimitCommand(UserVisitPK userVisitPK, CreateItemUnitLimitForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateItemUnitLimitCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

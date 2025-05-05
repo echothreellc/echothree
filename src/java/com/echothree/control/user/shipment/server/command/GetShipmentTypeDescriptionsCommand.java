@@ -56,8 +56,8 @@ public class GetShipmentTypeDescriptionsCommand
     }
     
     /** Creates a new instance of GetShipmentTypeDescriptionsCommand */
-    public GetShipmentTypeDescriptionsCommand(UserVisitPK userVisitPK, GetShipmentTypeDescriptionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetShipmentTypeDescriptionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

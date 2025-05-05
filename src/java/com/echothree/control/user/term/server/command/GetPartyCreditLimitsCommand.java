@@ -43,8 +43,8 @@ public class GetPartyCreditLimitsCommand
     }
     
     /** Creates a new instance of GetPartyCreditLimitsCommand */
-    public GetPartyCreditLimitsCommand(UserVisitPK userVisitPK, GetPartyCreditLimitsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetPartyCreditLimitsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

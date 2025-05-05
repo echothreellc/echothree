@@ -55,8 +55,8 @@ public class SetDefaultWorkflowStepCommand
     }
     
     /** Creates a new instance of SetDefaultWorkflowStepCommand */
-    public SetDefaultWorkflowStepCommand(UserVisitPK userVisitPK, SetDefaultWorkflowStepForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultWorkflowStepCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

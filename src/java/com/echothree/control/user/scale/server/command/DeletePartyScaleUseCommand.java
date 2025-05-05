@@ -58,8 +58,8 @@ public class DeletePartyScaleUseCommand
     }
 
     /** Creates a new instance of DeletePartyScaleUseCommand */
-    public DeletePartyScaleUseCommand(UserVisitPK userVisitPK, DeletePartyScaleUseForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeletePartyScaleUseCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

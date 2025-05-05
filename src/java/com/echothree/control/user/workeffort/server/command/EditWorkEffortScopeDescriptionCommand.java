@@ -54,8 +54,8 @@ public class EditWorkEffortScopeDescriptionCommand
     }
     
     /** Creates a new instance of EditWorkEffortScopeDescriptionCommand */
-    public EditWorkEffortScopeDescriptionCommand(UserVisitPK userVisitPK, EditWorkEffortScopeDescriptionForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditWorkEffortScopeDescriptionCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

@@ -56,8 +56,8 @@ public class DeleteLocationVolumeCommand
     }
     
     /** Creates a new instance of DeleteLocationVolumeCommand */
-    public DeleteLocationVolumeCommand(UserVisitPK userVisitPK, DeleteLocationVolumeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteLocationVolumeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

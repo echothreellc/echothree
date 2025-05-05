@@ -56,8 +56,8 @@ public class GetShipmentAliasTypesCommand
     }
 
     /** Creates a new instance of GetShipmentAliasTypesCommand */
-    public GetShipmentAliasTypesCommand(UserVisitPK userVisitPK, GetShipmentAliasTypesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetShipmentAliasTypesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

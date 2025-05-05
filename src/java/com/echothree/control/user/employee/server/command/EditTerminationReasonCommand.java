@@ -68,8 +68,8 @@ public class EditTerminationReasonCommand
     }
     
     /** Creates a new instance of EditTerminationReasonCommand */
-    public EditTerminationReasonCommand(UserVisitPK userVisitPK, EditTerminationReasonForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditTerminationReasonCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

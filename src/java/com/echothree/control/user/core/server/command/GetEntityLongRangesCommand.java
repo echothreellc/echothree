@@ -59,8 +59,8 @@ public class GetEntityLongRangesCommand
     }
     
     /** Creates a new instance of GetEntityLongRangesCommand */
-    public GetEntityLongRangesCommand(UserVisitPK userVisitPK, GetEntityLongRangesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetEntityLongRangesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     EntityAttribute entityAttribute;

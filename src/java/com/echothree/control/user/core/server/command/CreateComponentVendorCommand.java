@@ -55,8 +55,8 @@ public class CreateComponentVendorCommand
     }
     
     /** Creates a new instance of CreateComponentVendorCommand */
-    public CreateComponentVendorCommand(UserVisitPK userVisitPK, CreateComponentVendorForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateComponentVendorCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

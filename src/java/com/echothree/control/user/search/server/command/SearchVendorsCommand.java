@@ -76,8 +76,8 @@ public class SearchVendorsCommand
     }
 
     /** Creates a new instance of SearchVendorsCommand */
-    public SearchVendorsCommand(UserVisitPK userVisitPK, SearchVendorsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SearchVendorsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

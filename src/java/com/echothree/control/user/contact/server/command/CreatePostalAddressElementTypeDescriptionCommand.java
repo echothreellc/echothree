@@ -44,8 +44,8 @@ public class CreatePostalAddressElementTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreatePostalAddressElementTypeDescriptionCommand */
-    public CreatePostalAddressElementTypeDescriptionCommand(UserVisitPK userVisitPK, CreatePostalAddressElementTypeDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreatePostalAddressElementTypeDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

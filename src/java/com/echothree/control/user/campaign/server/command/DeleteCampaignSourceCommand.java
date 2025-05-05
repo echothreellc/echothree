@@ -55,8 +55,8 @@ public class DeleteCampaignSourceCommand
     }
     
     /** Creates a new instance of DeleteCampaignSourceCommand */
-    public DeleteCampaignSourceCommand(UserVisitPK userVisitPK, DeleteCampaignSourceForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteCampaignSourceCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

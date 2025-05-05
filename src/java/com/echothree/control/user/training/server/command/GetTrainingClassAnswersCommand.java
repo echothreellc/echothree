@@ -58,8 +58,8 @@ public class GetTrainingClassAnswersCommand
     }
     
     /** Creates a new instance of GetTrainingClassAnswersCommand */
-    public GetTrainingClassAnswersCommand(UserVisitPK userVisitPK, GetTrainingClassAnswersForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetTrainingClassAnswersCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

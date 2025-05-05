@@ -56,8 +56,8 @@ public class GetCacheEntryDependenciesCommand
     }
     
     /** Creates a new instance of GetCacheEntryDependenciesCommand */
-    public GetCacheEntryDependenciesCommand(UserVisitPK userVisitPK, GetCacheEntryDependenciesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetCacheEntryDependenciesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

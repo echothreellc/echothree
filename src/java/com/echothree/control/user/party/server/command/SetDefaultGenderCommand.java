@@ -41,8 +41,8 @@ public class SetDefaultGenderCommand
     }
     
     /** Creates a new instance of SetDefaultGenderCommand */
-    public SetDefaultGenderCommand(UserVisitPK userVisitPK, SetDefaultGenderForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultGenderCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

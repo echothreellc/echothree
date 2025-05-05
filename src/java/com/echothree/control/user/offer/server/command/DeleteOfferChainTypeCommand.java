@@ -58,8 +58,8 @@ public class DeleteOfferChainTypeCommand
     }
     
     /** Creates a new instance of DeleteOfferChainTypeCommand */
-    public DeleteOfferChainTypeCommand(UserVisitPK userVisitPK, DeleteOfferChainTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteOfferChainTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

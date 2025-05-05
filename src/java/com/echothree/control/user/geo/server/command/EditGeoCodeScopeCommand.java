@@ -69,8 +69,8 @@ public class EditGeoCodeScopeCommand
     }
 
     /** Creates a new instance of EditGeoCodeScopeCommand */
-    public EditGeoCodeScopeCommand(UserVisitPK userVisitPK, EditGeoCodeScopeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditGeoCodeScopeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

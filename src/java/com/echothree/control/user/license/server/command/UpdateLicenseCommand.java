@@ -38,8 +38,8 @@ public class UpdateLicenseCommand
     }
     
     /** Creates a new instance of CreateLicenseTypeCommand */
-    public UpdateLicenseCommand(UserVisitPK userVisitPK) {
-        super(userVisitPK, null, COMMAND_SECURITY_DEFINITION, null, false);
+    public UpdateLicenseCommand() {
+        super(COMMAND_SECURITY_DEFINITION, null, false);
     }
     
     @Override

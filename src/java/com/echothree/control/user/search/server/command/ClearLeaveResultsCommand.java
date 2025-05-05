@@ -43,8 +43,8 @@ public class ClearLeaveResultsCommand
     }
     
     /** Creates a new instance of ClearLeaveResultsCommand */
-    public ClearLeaveResultsCommand(UserVisitPK userVisitPK, ClearLeaveResultsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION);
+    public ClearLeaveResultsCommand() {
+        super(COMMAND_SECURITY_DEFINITION);
     }
     
     @Override

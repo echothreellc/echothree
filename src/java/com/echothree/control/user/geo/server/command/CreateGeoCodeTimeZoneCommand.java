@@ -59,8 +59,8 @@ public class CreateGeoCodeTimeZoneCommand
     }
     
     /** Creates a new instance of CreateGeoCodeTimeZoneCommand */
-    public CreateGeoCodeTimeZoneCommand(UserVisitPK userVisitPK, CreateGeoCodeTimeZoneForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateGeoCodeTimeZoneCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

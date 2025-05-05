@@ -68,8 +68,8 @@ public class EditSymbolPositionCommand
     }
     
     /** Creates a new instance of EditSymbolPositionCommand */
-    public EditSymbolPositionCommand(UserVisitPK userVisitPK, EditSymbolPositionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditSymbolPositionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

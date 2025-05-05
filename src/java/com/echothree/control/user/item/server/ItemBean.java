@@ -43,22 +43,22 @@ public class ItemBean
     
     @Override
     public CommandResult createItemType(UserVisitPK userVisitPK, CreateItemTypeForm form) {
-        return new CreateItemTypeCommand(userVisitPK, form).run();
+        return new CreateItemTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemType(UserVisitPK userVisitPK, GetItemTypeForm form) {
-        return new GetItemTypeCommand(userVisitPK, form).run();
+        return new GetItemTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemTypes(UserVisitPK userVisitPK, GetItemTypesForm form) {
-        return new GetItemTypesCommand(userVisitPK, form).run();
+        return new GetItemTypesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemTypeChoices(UserVisitPK userVisitPK, GetItemTypeChoicesForm form) {
-        return new GetItemTypeChoicesCommand(userVisitPK, form).run();
+        return new GetItemTypeChoicesCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -67,7 +67,7 @@ public class ItemBean
     
     @Override
     public CommandResult createItemTypeDescription(UserVisitPK userVisitPK, CreateItemTypeDescriptionForm form) {
-        return new CreateItemTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateItemTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -76,22 +76,22 @@ public class ItemBean
     
     @Override
     public CommandResult createItemDeliveryType(UserVisitPK userVisitPK, CreateItemDeliveryTypeForm form) {
-        return new CreateItemDeliveryTypeCommand(userVisitPK, form).run();
+        return new CreateItemDeliveryTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemDeliveryType(UserVisitPK userVisitPK, GetItemDeliveryTypeForm form) {
-        return new GetItemDeliveryTypeCommand(userVisitPK, form).run();
+        return new GetItemDeliveryTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemDeliveryTypes(UserVisitPK userVisitPK, GetItemDeliveryTypesForm form) {
-        return new GetItemDeliveryTypesCommand(userVisitPK, form).run();
+        return new GetItemDeliveryTypesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemDeliveryTypeChoices(UserVisitPK userVisitPK, GetItemDeliveryTypeChoicesForm form) {
-        return new GetItemDeliveryTypeChoicesCommand(userVisitPK, form).run();
+        return new GetItemDeliveryTypeChoicesCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -100,7 +100,7 @@ public class ItemBean
     
     @Override
     public CommandResult createItemDeliveryTypeDescription(UserVisitPK userVisitPK, CreateItemDeliveryTypeDescriptionForm form) {
-        return new CreateItemDeliveryTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateItemDeliveryTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -109,22 +109,22 @@ public class ItemBean
     
     @Override
     public CommandResult createItemInventoryType(UserVisitPK userVisitPK, CreateItemInventoryTypeForm form) {
-        return new CreateItemInventoryTypeCommand(userVisitPK, form).run();
+        return new CreateItemInventoryTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemInventoryType(UserVisitPK userVisitPK, GetItemInventoryTypeForm form) {
-        return new GetItemInventoryTypeCommand(userVisitPK, form).run();
+        return new GetItemInventoryTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemInventoryTypes(UserVisitPK userVisitPK, GetItemInventoryTypesForm form) {
-        return new GetItemInventoryTypesCommand(userVisitPK, form).run();
+        return new GetItemInventoryTypesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemInventoryTypeChoices(UserVisitPK userVisitPK, GetItemInventoryTypeChoicesForm form) {
-        return new GetItemInventoryTypeChoicesCommand(userVisitPK, form).run();
+        return new GetItemInventoryTypeChoicesCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -133,7 +133,7 @@ public class ItemBean
     
     @Override
     public CommandResult createItemInventoryTypeDescription(UserVisitPK userVisitPK, CreateItemInventoryTypeDescriptionForm form) {
-        return new CreateItemInventoryTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateItemInventoryTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -142,22 +142,22 @@ public class ItemBean
     
     @Override
     public CommandResult createItemUseType(UserVisitPK userVisitPK, CreateItemUseTypeForm form) {
-        return new CreateItemUseTypeCommand(userVisitPK, form).run();
+        return new CreateItemUseTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemUseType(UserVisitPK userVisitPK, GetItemUseTypeForm form) {
-        return new GetItemUseTypeCommand(userVisitPK, form).run();
+        return new GetItemUseTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemUseTypes(UserVisitPK userVisitPK, GetItemUseTypesForm form) {
-        return new GetItemUseTypesCommand(userVisitPK, form).run();
+        return new GetItemUseTypesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemUseTypeChoices(UserVisitPK userVisitPK, GetItemUseTypeChoicesForm form) {
-        return new GetItemUseTypeChoicesCommand(userVisitPK, form).run();
+        return new GetItemUseTypeChoicesCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -166,7 +166,7 @@ public class ItemBean
     
     @Override
     public CommandResult createItemUseTypeDescription(UserVisitPK userVisitPK, CreateItemUseTypeDescriptionForm form) {
-        return new CreateItemUseTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateItemUseTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -175,37 +175,37 @@ public class ItemBean
     
     @Override
     public CommandResult createItemCategory(UserVisitPK userVisitPK, CreateItemCategoryForm form) {
-        return new CreateItemCategoryCommand(userVisitPK, form).run();
+        return new CreateItemCategoryCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemCategoryChoices(UserVisitPK userVisitPK, GetItemCategoryChoicesForm form) {
-        return new GetItemCategoryChoicesCommand(userVisitPK, form).run();
+        return new GetItemCategoryChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemCategory(UserVisitPK userVisitPK, GetItemCategoryForm form) {
-        return new GetItemCategoryCommand(userVisitPK, form).run();
+        return new GetItemCategoryCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemCategories(UserVisitPK userVisitPK, GetItemCategoriesForm form) {
-        return new GetItemCategoriesCommand(userVisitPK, form).run();
+        return new GetItemCategoriesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultItemCategory(UserVisitPK userVisitPK, SetDefaultItemCategoryForm form) {
-        return new SetDefaultItemCategoryCommand(userVisitPK, form).run();
+        return new SetDefaultItemCategoryCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editItemCategory(UserVisitPK userVisitPK, EditItemCategoryForm form) {
-        return new EditItemCategoryCommand(userVisitPK, form).run();
+        return new EditItemCategoryCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteItemCategory(UserVisitPK userVisitPK, DeleteItemCategoryForm form) {
-        return new DeleteItemCategoryCommand(userVisitPK, form).run();
+        return new DeleteItemCategoryCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -214,27 +214,27 @@ public class ItemBean
     
     @Override
     public CommandResult createItemCategoryDescription(UserVisitPK userVisitPK, CreateItemCategoryDescriptionForm form) {
-        return new CreateItemCategoryDescriptionCommand(userVisitPK, form).run();
+        return new CreateItemCategoryDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemCategoryDescription(UserVisitPK userVisitPK, GetItemCategoryDescriptionForm form) {
-        return new GetItemCategoryDescriptionCommand(userVisitPK, form).run();
+        return new GetItemCategoryDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemCategoryDescriptions(UserVisitPK userVisitPK, GetItemCategoryDescriptionsForm form) {
-        return new GetItemCategoryDescriptionsCommand(userVisitPK, form).run();
+        return new GetItemCategoryDescriptionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editItemCategoryDescription(UserVisitPK userVisitPK, EditItemCategoryDescriptionForm form) {
-        return new EditItemCategoryDescriptionCommand(userVisitPK, form).run();
+        return new EditItemCategoryDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteItemCategoryDescription(UserVisitPK userVisitPK, DeleteItemCategoryDescriptionForm form) {
-        return new DeleteItemCategoryDescriptionCommand(userVisitPK, form).run();
+        return new DeleteItemCategoryDescriptionCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -243,22 +243,22 @@ public class ItemBean
 
     @Override
     public CommandResult createItemAliasChecksumType(UserVisitPK userVisitPK, CreateItemAliasChecksumTypeForm form) {
-        return new CreateItemAliasChecksumTypeCommand(userVisitPK, form).run();
+        return new CreateItemAliasChecksumTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemAliasChecksumTypes(UserVisitPK userVisitPK, GetItemAliasChecksumTypesForm form) {
-        return new GetItemAliasChecksumTypesCommand(userVisitPK, form).run();
+        return new GetItemAliasChecksumTypesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemAliasChecksumType(UserVisitPK userVisitPK, GetItemAliasChecksumTypeForm form) {
-        return new GetItemAliasChecksumTypeCommand(userVisitPK, form).run();
+        return new GetItemAliasChecksumTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemAliasChecksumTypeChoices(UserVisitPK userVisitPK, GetItemAliasChecksumTypeChoicesForm form) {
-        return new GetItemAliasChecksumTypeChoicesCommand(userVisitPK, form).run();
+        return new GetItemAliasChecksumTypeChoicesCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -267,7 +267,7 @@ public class ItemBean
 
     @Override
     public CommandResult createItemAliasChecksumTypeDescription(UserVisitPK userVisitPK, CreateItemAliasChecksumTypeDescriptionForm form) {
-        return new CreateItemAliasChecksumTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateItemAliasChecksumTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -276,37 +276,37 @@ public class ItemBean
     
     @Override
     public CommandResult createItemAliasType(UserVisitPK userVisitPK, CreateItemAliasTypeForm form) {
-        return new CreateItemAliasTypeCommand(userVisitPK, form).run();
+        return new CreateItemAliasTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemAliasTypeChoices(UserVisitPK userVisitPK, GetItemAliasTypeChoicesForm form) {
-        return new GetItemAliasTypeChoicesCommand(userVisitPK, form).run();
+        return new GetItemAliasTypeChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemAliasType(UserVisitPK userVisitPK, GetItemAliasTypeForm form) {
-        return new GetItemAliasTypeCommand(userVisitPK, form).run();
+        return new GetItemAliasTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemAliasTypes(UserVisitPK userVisitPK, GetItemAliasTypesForm form) {
-        return new GetItemAliasTypesCommand(userVisitPK, form).run();
+        return new GetItemAliasTypesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultItemAliasType(UserVisitPK userVisitPK, SetDefaultItemAliasTypeForm form) {
-        return new SetDefaultItemAliasTypeCommand(userVisitPK, form).run();
+        return new SetDefaultItemAliasTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editItemAliasType(UserVisitPK userVisitPK, EditItemAliasTypeForm form) {
-        return new EditItemAliasTypeCommand(userVisitPK, form).run();
+        return new EditItemAliasTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteItemAliasType(UserVisitPK userVisitPK, DeleteItemAliasTypeForm form) {
-        return new DeleteItemAliasTypeCommand(userVisitPK, form).run();
+        return new DeleteItemAliasTypeCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -315,27 +315,27 @@ public class ItemBean
     
     @Override
     public CommandResult createItemAliasTypeDescription(UserVisitPK userVisitPK, CreateItemAliasTypeDescriptionForm form) {
-        return new CreateItemAliasTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateItemAliasTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemAliasTypeDescription(UserVisitPK userVisitPK, GetItemAliasTypeDescriptionForm form) {
-        return new GetItemAliasTypeDescriptionCommand(userVisitPK, form).run();
+        return new GetItemAliasTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemAliasTypeDescriptions(UserVisitPK userVisitPK, GetItemAliasTypeDescriptionsForm form) {
-        return new GetItemAliasTypeDescriptionsCommand(userVisitPK, form).run();
+        return new GetItemAliasTypeDescriptionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editItemAliasTypeDescription(UserVisitPK userVisitPK, EditItemAliasTypeDescriptionForm form) {
-        return new EditItemAliasTypeDescriptionCommand(userVisitPK, form).run();
+        return new EditItemAliasTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteItemAliasTypeDescription(UserVisitPK userVisitPK, DeleteItemAliasTypeDescriptionForm form) {
-        return new DeleteItemAliasTypeDescriptionCommand(userVisitPK, form).run();
+        return new DeleteItemAliasTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -344,37 +344,37 @@ public class ItemBean
 
     @Override
     public CommandResult createItemDescriptionType(UserVisitPK userVisitPK, CreateItemDescriptionTypeForm form) {
-        return new CreateItemDescriptionTypeCommand(userVisitPK, form).run();
+        return new CreateItemDescriptionTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemDescriptionTypeChoices(UserVisitPK userVisitPK, GetItemDescriptionTypeChoicesForm form) {
-        return new GetItemDescriptionTypeChoicesCommand(userVisitPK, form).run();
+        return new GetItemDescriptionTypeChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemDescriptionType(UserVisitPK userVisitPK, GetItemDescriptionTypeForm form) {
-        return new GetItemDescriptionTypeCommand(userVisitPK, form).run();
+        return new GetItemDescriptionTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemDescriptionTypes(UserVisitPK userVisitPK, GetItemDescriptionTypesForm form) {
-        return new GetItemDescriptionTypesCommand(userVisitPK, form).run();
+        return new GetItemDescriptionTypesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultItemDescriptionType(UserVisitPK userVisitPK, SetDefaultItemDescriptionTypeForm form) {
-        return new SetDefaultItemDescriptionTypeCommand(userVisitPK, form).run();
+        return new SetDefaultItemDescriptionTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editItemDescriptionType(UserVisitPK userVisitPK, EditItemDescriptionTypeForm form) {
-        return new EditItemDescriptionTypeCommand(userVisitPK, form).run();
+        return new EditItemDescriptionTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteItemDescriptionType(UserVisitPK userVisitPK, DeleteItemDescriptionTypeForm form) {
-        return new DeleteItemDescriptionTypeCommand(userVisitPK, form).run();
+        return new DeleteItemDescriptionTypeCommand().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -383,27 +383,27 @@ public class ItemBean
 
     @Override
     public CommandResult createItemDescriptionTypeDescription(UserVisitPK userVisitPK, CreateItemDescriptionTypeDescriptionForm form) {
-        return new CreateItemDescriptionTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateItemDescriptionTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemDescriptionTypeDescription(UserVisitPK userVisitPK, GetItemDescriptionTypeDescriptionForm form) {
-        return new GetItemDescriptionTypeDescriptionCommand(userVisitPK, form).run();
+        return new GetItemDescriptionTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemDescriptionTypeDescriptions(UserVisitPK userVisitPK, GetItemDescriptionTypeDescriptionsForm form) {
-        return new GetItemDescriptionTypeDescriptionsCommand(userVisitPK, form).run();
+        return new GetItemDescriptionTypeDescriptionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editItemDescriptionTypeDescription(UserVisitPK userVisitPK, EditItemDescriptionTypeDescriptionForm form) {
-        return new EditItemDescriptionTypeDescriptionCommand(userVisitPK, form).run();
+        return new EditItemDescriptionTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteItemDescriptionTypeDescription(UserVisitPK userVisitPK, DeleteItemDescriptionTypeDescriptionForm form) {
-        return new DeleteItemDescriptionTypeDescriptionCommand(userVisitPK, form).run();
+        return new DeleteItemDescriptionTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -412,37 +412,37 @@ public class ItemBean
 
     @Override
     public CommandResult createItemDescriptionTypeUseType(UserVisitPK userVisitPK, CreateItemDescriptionTypeUseTypeForm form) {
-        return new CreateItemDescriptionTypeUseTypeCommand(userVisitPK, form).run();
+        return new CreateItemDescriptionTypeUseTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemDescriptionTypeUseTypeChoices(UserVisitPK userVisitPK, GetItemDescriptionTypeUseTypeChoicesForm form) {
-        return new GetItemDescriptionTypeUseTypeChoicesCommand(userVisitPK, form).run();
+        return new GetItemDescriptionTypeUseTypeChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemDescriptionTypeUseType(UserVisitPK userVisitPK, GetItemDescriptionTypeUseTypeForm form) {
-        return new GetItemDescriptionTypeUseTypeCommand(userVisitPK, form).run();
+        return new GetItemDescriptionTypeUseTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemDescriptionTypeUseTypes(UserVisitPK userVisitPK, GetItemDescriptionTypeUseTypesForm form) {
-        return new GetItemDescriptionTypeUseTypesCommand(userVisitPK, form).run();
+        return new GetItemDescriptionTypeUseTypesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultItemDescriptionTypeUseType(UserVisitPK userVisitPK, SetDefaultItemDescriptionTypeUseTypeForm form) {
-        return new SetDefaultItemDescriptionTypeUseTypeCommand(userVisitPK, form).run();
+        return new SetDefaultItemDescriptionTypeUseTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editItemDescriptionTypeUseType(UserVisitPK userVisitPK, EditItemDescriptionTypeUseTypeForm form) {
-        return new EditItemDescriptionTypeUseTypeCommand(userVisitPK, form).run();
+        return new EditItemDescriptionTypeUseTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteItemDescriptionTypeUseType(UserVisitPK userVisitPK, DeleteItemDescriptionTypeUseTypeForm form) {
-        return new DeleteItemDescriptionTypeUseTypeCommand(userVisitPK, form).run();
+        return new DeleteItemDescriptionTypeUseTypeCommand().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -451,27 +451,27 @@ public class ItemBean
 
     @Override
     public CommandResult createItemDescriptionTypeUseTypeDescription(UserVisitPK userVisitPK, CreateItemDescriptionTypeUseTypeDescriptionForm form) {
-        return new CreateItemDescriptionTypeUseTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateItemDescriptionTypeUseTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemDescriptionTypeUseTypeDescription(UserVisitPK userVisitPK, GetItemDescriptionTypeUseTypeDescriptionForm form) {
-        return new GetItemDescriptionTypeUseTypeDescriptionCommand(userVisitPK, form).run();
+        return new GetItemDescriptionTypeUseTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemDescriptionTypeUseTypeDescriptions(UserVisitPK userVisitPK, GetItemDescriptionTypeUseTypeDescriptionsForm form) {
-        return new GetItemDescriptionTypeUseTypeDescriptionsCommand(userVisitPK, form).run();
+        return new GetItemDescriptionTypeUseTypeDescriptionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editItemDescriptionTypeUseTypeDescription(UserVisitPK userVisitPK, EditItemDescriptionTypeUseTypeDescriptionForm form) {
-        return new EditItemDescriptionTypeUseTypeDescriptionCommand(userVisitPK, form).run();
+        return new EditItemDescriptionTypeUseTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteItemDescriptionTypeUseTypeDescription(UserVisitPK userVisitPK, DeleteItemDescriptionTypeUseTypeDescriptionForm form) {
-        return new DeleteItemDescriptionTypeUseTypeDescriptionCommand(userVisitPK, form).run();
+        return new DeleteItemDescriptionTypeUseTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -480,22 +480,22 @@ public class ItemBean
 
     @Override
     public CommandResult createItemDescriptionTypeUse(UserVisitPK userVisitPK, CreateItemDescriptionTypeUseForm form) {
-        return new CreateItemDescriptionTypeUseCommand(userVisitPK, form).run();
+        return new CreateItemDescriptionTypeUseCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemDescriptionTypeUse(UserVisitPK userVisitPK, GetItemDescriptionTypeUseForm form) {
-        return new GetItemDescriptionTypeUseCommand(userVisitPK, form).run();
+        return new GetItemDescriptionTypeUseCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemDescriptionTypeUses(UserVisitPK userVisitPK, GetItemDescriptionTypeUsesForm form) {
-        return new GetItemDescriptionTypeUsesCommand(userVisitPK, form).run();
+        return new GetItemDescriptionTypeUsesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteItemDescriptionTypeUse(UserVisitPK userVisitPK, DeleteItemDescriptionTypeUseForm form) {
-        return new DeleteItemDescriptionTypeUseCommand(userVisitPK, form).run();
+        return new DeleteItemDescriptionTypeUseCommand().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -504,37 +504,37 @@ public class ItemBean
 
     @Override
     public CommandResult createItemImageType(UserVisitPK userVisitPK, CreateItemImageTypeForm form) {
-        return new CreateItemImageTypeCommand(userVisitPK, form).run();
+        return new CreateItemImageTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemImageTypeChoices(UserVisitPK userVisitPK, GetItemImageTypeChoicesForm form) {
-        return new GetItemImageTypeChoicesCommand(userVisitPK, form).run();
+        return new GetItemImageTypeChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemImageType(UserVisitPK userVisitPK, GetItemImageTypeForm form) {
-        return new GetItemImageTypeCommand(userVisitPK, form).run();
+        return new GetItemImageTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemImageTypes(UserVisitPK userVisitPK, GetItemImageTypesForm form) {
-        return new GetItemImageTypesCommand(userVisitPK, form).run();
+        return new GetItemImageTypesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultItemImageType(UserVisitPK userVisitPK, SetDefaultItemImageTypeForm form) {
-        return new SetDefaultItemImageTypeCommand(userVisitPK, form).run();
+        return new SetDefaultItemImageTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editItemImageType(UserVisitPK userVisitPK, EditItemImageTypeForm form) {
-        return new EditItemImageTypeCommand(userVisitPK, form).run();
+        return new EditItemImageTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteItemImageType(UserVisitPK userVisitPK, DeleteItemImageTypeForm form) {
-        return new DeleteItemImageTypeCommand(userVisitPK, form).run();
+        return new DeleteItemImageTypeCommand().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -543,27 +543,27 @@ public class ItemBean
 
     @Override
     public CommandResult createItemImageTypeDescription(UserVisitPK userVisitPK, CreateItemImageTypeDescriptionForm form) {
-        return new CreateItemImageTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateItemImageTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemImageTypeDescription(UserVisitPK userVisitPK, GetItemImageTypeDescriptionForm form) {
-        return new GetItemImageTypeDescriptionCommand(userVisitPK, form).run();
+        return new GetItemImageTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemImageTypeDescriptions(UserVisitPK userVisitPK, GetItemImageTypeDescriptionsForm form) {
-        return new GetItemImageTypeDescriptionsCommand(userVisitPK, form).run();
+        return new GetItemImageTypeDescriptionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editItemImageTypeDescription(UserVisitPK userVisitPK, EditItemImageTypeDescriptionForm form) {
-        return new EditItemImageTypeDescriptionCommand(userVisitPK, form).run();
+        return new EditItemImageTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteItemImageTypeDescription(UserVisitPK userVisitPK, DeleteItemImageTypeDescriptionForm form) {
-        return new DeleteItemImageTypeDescriptionCommand(userVisitPK, form).run();
+        return new DeleteItemImageTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -572,32 +572,32 @@ public class ItemBean
     
     @Override
     public CommandResult createItem(UserVisitPK userVisitPK, CreateItemForm form) {
-        return new CreateItemCommand(userVisitPK, form).run();
+        return new CreateItemCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemStatusChoices(UserVisitPK userVisitPK, GetItemStatusChoicesForm form) {
-        return new GetItemStatusChoicesCommand(userVisitPK, form).run();
+        return new GetItemStatusChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setItemStatus(UserVisitPK userVisitPK, SetItemStatusForm form) {
-        return new SetItemStatusCommand(userVisitPK, form).run();
+        return new SetItemStatusCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItem(UserVisitPK userVisitPK, GetItemForm form) {
-        return new GetItemCommand(userVisitPK, form).run();
+        return new GetItemCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItems(UserVisitPK userVisitPK, GetItemsForm form) {
-        return new GetItemsCommand(userVisitPK, form).run();
+        return new GetItemsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editItem(UserVisitPK userVisitPK, EditItemForm form) {
-        return new EditItemCommand(userVisitPK, form).run();
+        return new EditItemCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -606,32 +606,32 @@ public class ItemBean
     
     @Override
     public CommandResult createItemUnitOfMeasureType(UserVisitPK userVisitPK, CreateItemUnitOfMeasureTypeForm form) {
-        return new CreateItemUnitOfMeasureTypeCommand(userVisitPK, form).run();
+        return new CreateItemUnitOfMeasureTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemUnitOfMeasureType(UserVisitPK userVisitPK, GetItemUnitOfMeasureTypeForm form) {
-        return new GetItemUnitOfMeasureTypeCommand(userVisitPK, form).run();
+        return new GetItemUnitOfMeasureTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemUnitOfMeasureTypes(UserVisitPK userVisitPK, GetItemUnitOfMeasureTypesForm form) {
-        return new GetItemUnitOfMeasureTypesCommand(userVisitPK, form).run();
+        return new GetItemUnitOfMeasureTypesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultItemUnitOfMeasureType(UserVisitPK userVisitPK, SetDefaultItemUnitOfMeasureTypeForm form) {
-        return new SetDefaultItemUnitOfMeasureTypeCommand(userVisitPK, form).run();
+        return new SetDefaultItemUnitOfMeasureTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editItemUnitOfMeasureType(UserVisitPK userVisitPK, EditItemUnitOfMeasureTypeForm form) {
-        return new EditItemUnitOfMeasureTypeCommand(userVisitPK, form).run();
+        return new EditItemUnitOfMeasureTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteItemUnitOfMeasureType(UserVisitPK userVisitPK, DeleteItemUnitOfMeasureTypeForm form) {
-        return new DeleteItemUnitOfMeasureTypeCommand(userVisitPK, form).run();
+        return new DeleteItemUnitOfMeasureTypeCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -640,27 +640,27 @@ public class ItemBean
     
     @Override
     public CommandResult createItemAlias(UserVisitPK userVisitPK, CreateItemAliasForm form) {
-        return new CreateItemAliasCommand(userVisitPK, form).run();
+        return new CreateItemAliasCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemAlias(UserVisitPK userVisitPK, GetItemAliasForm form) {
-        return new GetItemAliasCommand(userVisitPK, form).run();
+        return new GetItemAliasCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemAliases(UserVisitPK userVisitPK, GetItemAliasesForm form) {
-        return new GetItemAliasesCommand(userVisitPK, form).run();
+        return new GetItemAliasesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editItemAlias(UserVisitPK userVisitPK, EditItemAliasForm form) {
-        return new EditItemAliasCommand(userVisitPK, form).run();
+        return new EditItemAliasCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteItemAlias(UserVisitPK userVisitPK, DeleteItemAliasForm form) {
-        return new DeleteItemAliasCommand(userVisitPK, form).run();
+        return new DeleteItemAliasCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -669,27 +669,27 @@ public class ItemBean
     
     @Override
     public CommandResult createItemDescription(UserVisitPK userVisitPK, CreateItemDescriptionForm form) {
-        return new CreateItemDescriptionCommand(userVisitPK, form).run();
+        return new CreateItemDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemDescription(UserVisitPK userVisitPK, GetItemDescriptionForm form) {
-        return new GetItemDescriptionCommand(userVisitPK, form).run();
+        return new GetItemDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemDescriptions(UserVisitPK userVisitPK, GetItemDescriptionsForm form) {
-        return new GetItemDescriptionsCommand(userVisitPK, form).run();
+        return new GetItemDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editItemDescription(UserVisitPK userVisitPK, EditItemDescriptionForm form) {
-        return new EditItemDescriptionCommand(userVisitPK, form).run();
+        return new EditItemDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteItemDescription(UserVisitPK userVisitPK, DeleteItemDescriptionForm form) {
-        return new DeleteItemDescriptionCommand(userVisitPK, form).run();
+        return new DeleteItemDescriptionCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -698,22 +698,22 @@ public class ItemBean
     
     @Override
     public CommandResult createItemPriceType(UserVisitPK userVisitPK, CreateItemPriceTypeForm form) {
-        return new CreateItemPriceTypeCommand(userVisitPK, form).run();
+        return new CreateItemPriceTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemPriceType(UserVisitPK userVisitPK, GetItemPriceTypeForm form) {
-        return new GetItemPriceTypeCommand(userVisitPK, form).run();
+        return new GetItemPriceTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemPriceTypes(UserVisitPK userVisitPK, GetItemPriceTypesForm form) {
-        return new GetItemPriceTypesCommand(userVisitPK, form).run();
+        return new GetItemPriceTypesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemPriceTypeChoices(UserVisitPK userVisitPK, GetItemPriceTypeChoicesForm form) {
-        return new GetItemPriceTypeChoicesCommand(userVisitPK, form).run();
+        return new GetItemPriceTypeChoicesCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -722,7 +722,7 @@ public class ItemBean
     
     @Override
     public CommandResult createItemPriceTypeDescription(UserVisitPK userVisitPK, CreateItemPriceTypeDescriptionForm form) {
-        return new CreateItemPriceTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateItemPriceTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -731,27 +731,27 @@ public class ItemBean
     
     @Override
     public CommandResult createItemPrice(UserVisitPK userVisitPK, CreateItemPriceForm form) {
-        return new CreateItemPriceCommand(userVisitPK, form).run();
+        return new CreateItemPriceCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemPrice(UserVisitPK userVisitPK, GetItemPriceForm form) {
-        return new GetItemPriceCommand(userVisitPK, form).run();
+        return new GetItemPriceCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemPrices(UserVisitPK userVisitPK, GetItemPricesForm form) {
-        return new GetItemPricesCommand(userVisitPK, form).run();
+        return new GetItemPricesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editItemPrice(UserVisitPK userVisitPK, EditItemPriceForm form) {
-        return new EditItemPriceCommand(userVisitPK, form).run();
+        return new EditItemPriceCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteItemPrice(UserVisitPK userVisitPK, DeleteItemPriceForm form) {
-        return new DeleteItemPriceCommand(userVisitPK, form).run();
+        return new DeleteItemPriceCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -760,27 +760,27 @@ public class ItemBean
     
     @Override
     public CommandResult createItemVolume(UserVisitPK userVisitPK, CreateItemVolumeForm form) {
-        return new CreateItemVolumeCommand(userVisitPK, form).run();
+        return new CreateItemVolumeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemVolume(UserVisitPK userVisitPK, GetItemVolumeForm form) {
-        return new GetItemVolumeCommand(userVisitPK, form).run();
+        return new GetItemVolumeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemVolumes(UserVisitPK userVisitPK, GetItemVolumesForm form) {
-        return new GetItemVolumesCommand(userVisitPK, form).run();
+        return new GetItemVolumesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editItemVolume(UserVisitPK userVisitPK, EditItemVolumeForm form) {
-        return new EditItemVolumeCommand(userVisitPK, form).run();
+        return new EditItemVolumeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteItemVolume(UserVisitPK userVisitPK, DeleteItemVolumeForm form) {
-        return new DeleteItemVolumeCommand(userVisitPK, form).run();
+        return new DeleteItemVolumeCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -789,27 +789,27 @@ public class ItemBean
     
     @Override
     public CommandResult createItemWeight(UserVisitPK userVisitPK, CreateItemWeightForm form) {
-        return new CreateItemWeightCommand(userVisitPK, form).run();
+        return new CreateItemWeightCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemWeight(UserVisitPK userVisitPK, GetItemWeightForm form) {
-        return new GetItemWeightCommand(userVisitPK, form).run();
+        return new GetItemWeightCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemWeights(UserVisitPK userVisitPK, GetItemWeightsForm form) {
-        return new GetItemWeightsCommand(userVisitPK, form).run();
+        return new GetItemWeightsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editItemWeight(UserVisitPK userVisitPK, EditItemWeightForm form) {
-        return new EditItemWeightCommand(userVisitPK, form).run();
+        return new EditItemWeightCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteItemWeight(UserVisitPK userVisitPK, DeleteItemWeightForm form) {
-        return new DeleteItemWeightCommand(userVisitPK, form).run();
+        return new DeleteItemWeightCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -818,27 +818,27 @@ public class ItemBean
     
     @Override
     public CommandResult createItemCountryOfOrigin(UserVisitPK userVisitPK, CreateItemCountryOfOriginForm form) {
-        return new CreateItemCountryOfOriginCommand(userVisitPK, form).run();
+        return new CreateItemCountryOfOriginCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemCountryOfOrigin(UserVisitPK userVisitPK, GetItemCountryOfOriginForm form) {
-        return new GetItemCountryOfOriginCommand(userVisitPK, form).run();
+        return new GetItemCountryOfOriginCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemCountryOfOrigins(UserVisitPK userVisitPK, GetItemCountryOfOriginsForm form) {
-        return new GetItemCountryOfOriginsCommand(userVisitPK, form).run();
+        return new GetItemCountryOfOriginsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editItemCountryOfOrigin(UserVisitPK userVisitPK, EditItemCountryOfOriginForm form) {
-        return new EditItemCountryOfOriginCommand(userVisitPK, form).run();
+        return new EditItemCountryOfOriginCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteItemCountryOfOrigin(UserVisitPK userVisitPK, DeleteItemCountryOfOriginForm form) {
-        return new DeleteItemCountryOfOriginCommand(userVisitPK, form).run();
+        return new DeleteItemCountryOfOriginCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -847,22 +847,22 @@ public class ItemBean
     
     @Override
     public CommandResult createItemKitMember(UserVisitPK userVisitPK, CreateItemKitMemberForm form) {
-        return new CreateItemKitMemberCommand(userVisitPK, form).run();
+        return new CreateItemKitMemberCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemKitMember(UserVisitPK userVisitPK, GetItemKitMemberForm form) {
-        return new GetItemKitMemberCommand(userVisitPK, form).run();
+        return new GetItemKitMemberCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemKitMembers(UserVisitPK userVisitPK, GetItemKitMembersForm form) {
-        return new GetItemKitMembersCommand(userVisitPK, form).run();
+        return new GetItemKitMembersCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteItemKitMember(UserVisitPK userVisitPK, DeleteItemKitMemberForm form) {
-        return new DeleteItemKitMemberCommand(userVisitPK, form).run();
+        return new DeleteItemKitMemberCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -871,27 +871,27 @@ public class ItemBean
     
     @Override
     public CommandResult createItemPackCheckRequirement(UserVisitPK userVisitPK, CreateItemPackCheckRequirementForm form) {
-        return new CreateItemPackCheckRequirementCommand(userVisitPK, form).run();
+        return new CreateItemPackCheckRequirementCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemPackCheckRequirement(UserVisitPK userVisitPK, GetItemPackCheckRequirementForm form) {
-        return new GetItemPackCheckRequirementCommand(userVisitPK, form).run();
+        return new GetItemPackCheckRequirementCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemPackCheckRequirements(UserVisitPK userVisitPK, GetItemPackCheckRequirementsForm form) {
-        return new GetItemPackCheckRequirementsCommand(userVisitPK, form).run();
+        return new GetItemPackCheckRequirementsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editItemPackCheckRequirement(UserVisitPK userVisitPK, EditItemPackCheckRequirementForm form) {
-        return new EditItemPackCheckRequirementCommand(userVisitPK, form).run();
+        return new EditItemPackCheckRequirementCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteItemPackCheckRequirement(UserVisitPK userVisitPK, DeleteItemPackCheckRequirementForm form) {
-        return new DeleteItemPackCheckRequirementCommand(userVisitPK, form).run();
+        return new DeleteItemPackCheckRequirementCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -900,17 +900,17 @@ public class ItemBean
     
     @Override
     public CommandResult getItemShippingTime(UserVisitPK userVisitPK, GetItemShippingTimeForm form) {
-        return new GetItemShippingTimeCommand(userVisitPK, form).run();
+        return new GetItemShippingTimeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemShippingTimes(UserVisitPK userVisitPK, GetItemShippingTimesForm form) {
-        return new GetItemShippingTimesCommand(userVisitPK, form).run();
+        return new GetItemShippingTimesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editItemShippingTime(UserVisitPK userVisitPK, EditItemShippingTimeForm form) {
-        return new EditItemShippingTimeCommand(userVisitPK, form).run();
+        return new EditItemShippingTimeCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -919,27 +919,27 @@ public class ItemBean
     
     @Override
     public CommandResult createItemUnitCustomerTypeLimit(UserVisitPK userVisitPK, CreateItemUnitCustomerTypeLimitForm form) {
-        return new CreateItemUnitCustomerTypeLimitCommand(userVisitPK, form).run();
+        return new CreateItemUnitCustomerTypeLimitCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemUnitCustomerTypeLimit(UserVisitPK userVisitPK, GetItemUnitCustomerTypeLimitForm form) {
-        return new GetItemUnitCustomerTypeLimitCommand(userVisitPK, form).run();
+        return new GetItemUnitCustomerTypeLimitCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemUnitCustomerTypeLimits(UserVisitPK userVisitPK, GetItemUnitCustomerTypeLimitsForm form) {
-        return new GetItemUnitCustomerTypeLimitsCommand(userVisitPK, form).run();
+        return new GetItemUnitCustomerTypeLimitsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editItemUnitCustomerTypeLimit(UserVisitPK userVisitPK, EditItemUnitCustomerTypeLimitForm form) {
-        return new EditItemUnitCustomerTypeLimitCommand(userVisitPK, form).run();
+        return new EditItemUnitCustomerTypeLimitCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteItemUnitCustomerTypeLimit(UserVisitPK userVisitPK, DeleteItemUnitCustomerTypeLimitForm form) {
-        return new DeleteItemUnitCustomerTypeLimitCommand(userVisitPK, form).run();
+        return new DeleteItemUnitCustomerTypeLimitCommand().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -948,27 +948,27 @@ public class ItemBean
     
     @Override
     public CommandResult createItemUnitLimit(UserVisitPK userVisitPK, CreateItemUnitLimitForm form) {
-        return new CreateItemUnitLimitCommand(userVisitPK, form).run();
+        return new CreateItemUnitLimitCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemUnitLimit(UserVisitPK userVisitPK, GetItemUnitLimitForm form) {
-        return new GetItemUnitLimitCommand(userVisitPK, form).run();
+        return new GetItemUnitLimitCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemUnitLimits(UserVisitPK userVisitPK, GetItemUnitLimitsForm form) {
-        return new GetItemUnitLimitsCommand(userVisitPK, form).run();
+        return new GetItemUnitLimitsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editItemUnitLimit(UserVisitPK userVisitPK, EditItemUnitLimitForm form) {
-        return new EditItemUnitLimitCommand(userVisitPK, form).run();
+        return new EditItemUnitLimitCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteItemUnitLimit(UserVisitPK userVisitPK, DeleteItemUnitLimitForm form) {
-        return new DeleteItemUnitLimitCommand(userVisitPK, form).run();
+        return new DeleteItemUnitLimitCommand().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -977,27 +977,27 @@ public class ItemBean
     
     @Override
     public CommandResult createItemUnitPriceLimit(UserVisitPK userVisitPK, CreateItemUnitPriceLimitForm form) {
-        return new CreateItemUnitPriceLimitCommand(userVisitPK, form).run();
+        return new CreateItemUnitPriceLimitCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemUnitPriceLimit(UserVisitPK userVisitPK, GetItemUnitPriceLimitForm form) {
-        return new GetItemUnitPriceLimitCommand(userVisitPK, form).run();
+        return new GetItemUnitPriceLimitCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemUnitPriceLimits(UserVisitPK userVisitPK, GetItemUnitPriceLimitsForm form) {
-        return new GetItemUnitPriceLimitsCommand(userVisitPK, form).run();
+        return new GetItemUnitPriceLimitsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editItemUnitPriceLimit(UserVisitPK userVisitPK, EditItemUnitPriceLimitForm form) {
-        return new EditItemUnitPriceLimitCommand(userVisitPK, form).run();
+        return new EditItemUnitPriceLimitCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteItemUnitPriceLimit(UserVisitPK userVisitPK, DeleteItemUnitPriceLimitForm form) {
-        return new DeleteItemUnitPriceLimitCommand(userVisitPK, form).run();
+        return new DeleteItemUnitPriceLimitCommand().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -1006,37 +1006,37 @@ public class ItemBean
 
     @Override
     public CommandResult createRelatedItemType(UserVisitPK userVisitPK, CreateRelatedItemTypeForm form) {
-        return new CreateRelatedItemTypeCommand(userVisitPK, form).run();
+        return new CreateRelatedItemTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getRelatedItemTypeChoices(UserVisitPK userVisitPK, GetRelatedItemTypeChoicesForm form) {
-        return new GetRelatedItemTypeChoicesCommand(userVisitPK, form).run();
+        return new GetRelatedItemTypeChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getRelatedItemType(UserVisitPK userVisitPK, GetRelatedItemTypeForm form) {
-        return new GetRelatedItemTypeCommand(userVisitPK, form).run();
+        return new GetRelatedItemTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getRelatedItemTypes(UserVisitPK userVisitPK, GetRelatedItemTypesForm form) {
-        return new GetRelatedItemTypesCommand(userVisitPK, form).run();
+        return new GetRelatedItemTypesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultRelatedItemType(UserVisitPK userVisitPK, SetDefaultRelatedItemTypeForm form) {
-        return new SetDefaultRelatedItemTypeCommand(userVisitPK, form).run();
+        return new SetDefaultRelatedItemTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editRelatedItemType(UserVisitPK userVisitPK, EditRelatedItemTypeForm form) {
-        return new EditRelatedItemTypeCommand(userVisitPK, form).run();
+        return new EditRelatedItemTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteRelatedItemType(UserVisitPK userVisitPK, DeleteRelatedItemTypeForm form) {
-        return new DeleteRelatedItemTypeCommand(userVisitPK, form).run();
+        return new DeleteRelatedItemTypeCommand().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -1045,27 +1045,27 @@ public class ItemBean
 
     @Override
     public CommandResult createRelatedItemTypeDescription(UserVisitPK userVisitPK, CreateRelatedItemTypeDescriptionForm form) {
-        return new CreateRelatedItemTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateRelatedItemTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getRelatedItemTypeDescription(UserVisitPK userVisitPK, GetRelatedItemTypeDescriptionForm form) {
-        return new GetRelatedItemTypeDescriptionCommand(userVisitPK, form).run();
+        return new GetRelatedItemTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getRelatedItemTypeDescriptions(UserVisitPK userVisitPK, GetRelatedItemTypeDescriptionsForm form) {
-        return new GetRelatedItemTypeDescriptionsCommand(userVisitPK, form).run();
+        return new GetRelatedItemTypeDescriptionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editRelatedItemTypeDescription(UserVisitPK userVisitPK, EditRelatedItemTypeDescriptionForm form) {
-        return new EditRelatedItemTypeDescriptionCommand(userVisitPK, form).run();
+        return new EditRelatedItemTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteRelatedItemTypeDescription(UserVisitPK userVisitPK, DeleteRelatedItemTypeDescriptionForm form) {
-        return new DeleteRelatedItemTypeDescriptionCommand(userVisitPK, form).run();
+        return new DeleteRelatedItemTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -1074,27 +1074,27 @@ public class ItemBean
     
     @Override
     public CommandResult createRelatedItem(UserVisitPK userVisitPK, CreateRelatedItemForm form) {
-        return new CreateRelatedItemCommand(userVisitPK, form).run();
+        return new CreateRelatedItemCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getRelatedItem(UserVisitPK userVisitPK, GetRelatedItemForm form) {
-        return new GetRelatedItemCommand(userVisitPK, form).run();
+        return new GetRelatedItemCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getRelatedItems(UserVisitPK userVisitPK, GetRelatedItemsForm form) {
-        return new GetRelatedItemsCommand(userVisitPK, form).run();
+        return new GetRelatedItemsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editRelatedItem(UserVisitPK userVisitPK, EditRelatedItemForm form) {
-        return new EditRelatedItemCommand(userVisitPK, form).run();
+        return new EditRelatedItemCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteRelatedItem(UserVisitPK userVisitPK, DeleteRelatedItemForm form) {
-        return new DeleteRelatedItemCommand(userVisitPK, form).run();
+        return new DeleteRelatedItemCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -1103,37 +1103,37 @@ public class ItemBean
 
     @Override
     public CommandResult createHarmonizedTariffScheduleCode(UserVisitPK userVisitPK, CreateHarmonizedTariffScheduleCodeForm form) {
-        return new CreateHarmonizedTariffScheduleCodeCommand(userVisitPK, form).run();
+        return new CreateHarmonizedTariffScheduleCodeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getHarmonizedTariffScheduleCodes(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodesForm form) {
-        return new GetHarmonizedTariffScheduleCodesCommand(userVisitPK, form).run();
+        return new GetHarmonizedTariffScheduleCodesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getHarmonizedTariffScheduleCode(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeForm form) {
-        return new GetHarmonizedTariffScheduleCodeCommand(userVisitPK, form).run();
+        return new GetHarmonizedTariffScheduleCodeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getHarmonizedTariffScheduleCodeChoices(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeChoicesForm form) {
-        return new GetHarmonizedTariffScheduleCodeChoicesCommand(userVisitPK, form).run();
+        return new GetHarmonizedTariffScheduleCodeChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultHarmonizedTariffScheduleCode(UserVisitPK userVisitPK, SetDefaultHarmonizedTariffScheduleCodeForm form) {
-        return new SetDefaultHarmonizedTariffScheduleCodeCommand(userVisitPK, form).run();
+        return new SetDefaultHarmonizedTariffScheduleCodeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editHarmonizedTariffScheduleCode(UserVisitPK userVisitPK, EditHarmonizedTariffScheduleCodeForm form) {
-        return new EditHarmonizedTariffScheduleCodeCommand(userVisitPK, form).run();
+        return new EditHarmonizedTariffScheduleCodeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteHarmonizedTariffScheduleCode(UserVisitPK userVisitPK, DeleteHarmonizedTariffScheduleCodeForm form) {
-        return new DeleteHarmonizedTariffScheduleCodeCommand(userVisitPK, form).run();
+        return new DeleteHarmonizedTariffScheduleCodeCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -1142,27 +1142,27 @@ public class ItemBean
 
     @Override
     public CommandResult createHarmonizedTariffScheduleCodeTranslation(UserVisitPK userVisitPK, CreateHarmonizedTariffScheduleCodeTranslationForm form) {
-        return new CreateHarmonizedTariffScheduleCodeTranslationCommand(userVisitPK, form).run();
+        return new CreateHarmonizedTariffScheduleCodeTranslationCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getHarmonizedTariffScheduleCodeTranslations(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeTranslationsForm form) {
-        return new GetHarmonizedTariffScheduleCodeTranslationsCommand(userVisitPK, form).run();
+        return new GetHarmonizedTariffScheduleCodeTranslationsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getHarmonizedTariffScheduleCodeTranslation(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeTranslationForm form) {
-        return new GetHarmonizedTariffScheduleCodeTranslationCommand(userVisitPK, form).run();
+        return new GetHarmonizedTariffScheduleCodeTranslationCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editHarmonizedTariffScheduleCodeTranslation(UserVisitPK userVisitPK, EditHarmonizedTariffScheduleCodeTranslationForm form) {
-        return new EditHarmonizedTariffScheduleCodeTranslationCommand(userVisitPK, form).run();
+        return new EditHarmonizedTariffScheduleCodeTranslationCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteHarmonizedTariffScheduleCodeTranslation(UserVisitPK userVisitPK, DeleteHarmonizedTariffScheduleCodeTranslationForm form) {
-        return new DeleteHarmonizedTariffScheduleCodeTranslationCommand(userVisitPK, form).run();
+        return new DeleteHarmonizedTariffScheduleCodeTranslationCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -1171,37 +1171,37 @@ public class ItemBean
 
     @Override
     public CommandResult createHarmonizedTariffScheduleCodeUnit(UserVisitPK userVisitPK, CreateHarmonizedTariffScheduleCodeUnitForm form) {
-        return new CreateHarmonizedTariffScheduleCodeUnitCommand(userVisitPK, form).run();
+        return new CreateHarmonizedTariffScheduleCodeUnitCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getHarmonizedTariffScheduleCodeUnits(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUnitsForm form) {
-        return new GetHarmonizedTariffScheduleCodeUnitsCommand(userVisitPK, form).run();
+        return new GetHarmonizedTariffScheduleCodeUnitsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getHarmonizedTariffScheduleCodeUnit(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUnitForm form) {
-        return new GetHarmonizedTariffScheduleCodeUnitCommand(userVisitPK, form).run();
+        return new GetHarmonizedTariffScheduleCodeUnitCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getHarmonizedTariffScheduleCodeUnitChoices(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUnitChoicesForm form) {
-        return new GetHarmonizedTariffScheduleCodeUnitChoicesCommand(userVisitPK, form).run();
+        return new GetHarmonizedTariffScheduleCodeUnitChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultHarmonizedTariffScheduleCodeUnit(UserVisitPK userVisitPK, SetDefaultHarmonizedTariffScheduleCodeUnitForm form) {
-        return new SetDefaultHarmonizedTariffScheduleCodeUnitCommand(userVisitPK, form).run();
+        return new SetDefaultHarmonizedTariffScheduleCodeUnitCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editHarmonizedTariffScheduleCodeUnit(UserVisitPK userVisitPK, EditHarmonizedTariffScheduleCodeUnitForm form) {
-        return new EditHarmonizedTariffScheduleCodeUnitCommand(userVisitPK, form).run();
+        return new EditHarmonizedTariffScheduleCodeUnitCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteHarmonizedTariffScheduleCodeUnit(UserVisitPK userVisitPK, DeleteHarmonizedTariffScheduleCodeUnitForm form) {
-        return new DeleteHarmonizedTariffScheduleCodeUnitCommand(userVisitPK, form).run();
+        return new DeleteHarmonizedTariffScheduleCodeUnitCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -1210,27 +1210,27 @@ public class ItemBean
 
     @Override
     public CommandResult createHarmonizedTariffScheduleCodeUnitDescription(UserVisitPK userVisitPK, CreateHarmonizedTariffScheduleCodeUnitDescriptionForm form) {
-        return new CreateHarmonizedTariffScheduleCodeUnitDescriptionCommand(userVisitPK, form).run();
+        return new CreateHarmonizedTariffScheduleCodeUnitDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getHarmonizedTariffScheduleCodeUnitDescriptions(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUnitDescriptionsForm form) {
-        return new GetHarmonizedTariffScheduleCodeUnitDescriptionsCommand(userVisitPK, form).run();
+        return new GetHarmonizedTariffScheduleCodeUnitDescriptionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getHarmonizedTariffScheduleCodeUnitDescription(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUnitDescriptionForm form) {
-        return new GetHarmonizedTariffScheduleCodeUnitDescriptionCommand(userVisitPK, form).run();
+        return new GetHarmonizedTariffScheduleCodeUnitDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editHarmonizedTariffScheduleCodeUnitDescription(UserVisitPK userVisitPK, EditHarmonizedTariffScheduleCodeUnitDescriptionForm form) {
-        return new EditHarmonizedTariffScheduleCodeUnitDescriptionCommand(userVisitPK, form).run();
+        return new EditHarmonizedTariffScheduleCodeUnitDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteHarmonizedTariffScheduleCodeUnitDescription(UserVisitPK userVisitPK, DeleteHarmonizedTariffScheduleCodeUnitDescriptionForm form) {
-        return new DeleteHarmonizedTariffScheduleCodeUnitDescriptionCommand(userVisitPK, form).run();
+        return new DeleteHarmonizedTariffScheduleCodeUnitDescriptionCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -1239,37 +1239,37 @@ public class ItemBean
 
     @Override
     public CommandResult createHarmonizedTariffScheduleCodeUseType(UserVisitPK userVisitPK, CreateHarmonizedTariffScheduleCodeUseTypeForm form) {
-        return new CreateHarmonizedTariffScheduleCodeUseTypeCommand(userVisitPK, form).run();
+        return new CreateHarmonizedTariffScheduleCodeUseTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getHarmonizedTariffScheduleCodeUseTypes(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUseTypesForm form) {
-        return new GetHarmonizedTariffScheduleCodeUseTypesCommand(userVisitPK, form).run();
+        return new GetHarmonizedTariffScheduleCodeUseTypesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getHarmonizedTariffScheduleCodeUseType(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUseTypeForm form) {
-        return new GetHarmonizedTariffScheduleCodeUseTypeCommand(userVisitPK, form).run();
+        return new GetHarmonizedTariffScheduleCodeUseTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getHarmonizedTariffScheduleCodeUseTypeChoices(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUseTypeChoicesForm form) {
-        return new GetHarmonizedTariffScheduleCodeUseTypeChoicesCommand(userVisitPK, form).run();
+        return new GetHarmonizedTariffScheduleCodeUseTypeChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultHarmonizedTariffScheduleCodeUseType(UserVisitPK userVisitPK, SetDefaultHarmonizedTariffScheduleCodeUseTypeForm form) {
-        return new SetDefaultHarmonizedTariffScheduleCodeUseTypeCommand(userVisitPK, form).run();
+        return new SetDefaultHarmonizedTariffScheduleCodeUseTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editHarmonizedTariffScheduleCodeUseType(UserVisitPK userVisitPK, EditHarmonizedTariffScheduleCodeUseTypeForm form) {
-        return new EditHarmonizedTariffScheduleCodeUseTypeCommand(userVisitPK, form).run();
+        return new EditHarmonizedTariffScheduleCodeUseTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteHarmonizedTariffScheduleCodeUseType(UserVisitPK userVisitPK, DeleteHarmonizedTariffScheduleCodeUseTypeForm form) {
-        return new DeleteHarmonizedTariffScheduleCodeUseTypeCommand(userVisitPK, form).run();
+        return new DeleteHarmonizedTariffScheduleCodeUseTypeCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -1278,27 +1278,27 @@ public class ItemBean
 
     @Override
     public CommandResult createHarmonizedTariffScheduleCodeUseTypeDescription(UserVisitPK userVisitPK, CreateHarmonizedTariffScheduleCodeUseTypeDescriptionForm form) {
-        return new CreateHarmonizedTariffScheduleCodeUseTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateHarmonizedTariffScheduleCodeUseTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getHarmonizedTariffScheduleCodeUseTypeDescriptions(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUseTypeDescriptionsForm form) {
-        return new GetHarmonizedTariffScheduleCodeUseTypeDescriptionsCommand(userVisitPK, form).run();
+        return new GetHarmonizedTariffScheduleCodeUseTypeDescriptionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getHarmonizedTariffScheduleCodeUseTypeDescription(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUseTypeDescriptionForm form) {
-        return new GetHarmonizedTariffScheduleCodeUseTypeDescriptionCommand(userVisitPK, form).run();
+        return new GetHarmonizedTariffScheduleCodeUseTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editHarmonizedTariffScheduleCodeUseTypeDescription(UserVisitPK userVisitPK, EditHarmonizedTariffScheduleCodeUseTypeDescriptionForm form) {
-        return new EditHarmonizedTariffScheduleCodeUseTypeDescriptionCommand(userVisitPK, form).run();
+        return new EditHarmonizedTariffScheduleCodeUseTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteHarmonizedTariffScheduleCodeUseTypeDescription(UserVisitPK userVisitPK, DeleteHarmonizedTariffScheduleCodeUseTypeDescriptionForm form) {
-        return new DeleteHarmonizedTariffScheduleCodeUseTypeDescriptionCommand(userVisitPK, form).run();
+        return new DeleteHarmonizedTariffScheduleCodeUseTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -1307,22 +1307,22 @@ public class ItemBean
 
     @Override
     public CommandResult createHarmonizedTariffScheduleCodeUse(UserVisitPK userVisitPK, CreateHarmonizedTariffScheduleCodeUseForm form) {
-        return new CreateHarmonizedTariffScheduleCodeUseCommand(userVisitPK, form).run();
+        return new CreateHarmonizedTariffScheduleCodeUseCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getHarmonizedTariffScheduleCodeUses(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUsesForm form) {
-        return new GetHarmonizedTariffScheduleCodeUsesCommand(userVisitPK, form).run();
+        return new GetHarmonizedTariffScheduleCodeUsesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getHarmonizedTariffScheduleCodeUse(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUseForm form) {
-        return new GetHarmonizedTariffScheduleCodeUseCommand(userVisitPK, form).run();
+        return new GetHarmonizedTariffScheduleCodeUseCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteHarmonizedTariffScheduleCodeUse(UserVisitPK userVisitPK, DeleteHarmonizedTariffScheduleCodeUseForm form) {
-        return new DeleteHarmonizedTariffScheduleCodeUseCommand(userVisitPK, form).run();
+        return new DeleteHarmonizedTariffScheduleCodeUseCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -1331,27 +1331,27 @@ public class ItemBean
 
     @Override
     public CommandResult createItemHarmonizedTariffScheduleCode(UserVisitPK userVisitPK, CreateItemHarmonizedTariffScheduleCodeForm form) {
-        return new CreateItemHarmonizedTariffScheduleCodeCommand(userVisitPK, form).run();
+        return new CreateItemHarmonizedTariffScheduleCodeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemHarmonizedTariffScheduleCodes(UserVisitPK userVisitPK, GetItemHarmonizedTariffScheduleCodesForm form) {
-        return new GetItemHarmonizedTariffScheduleCodesCommand(userVisitPK, form).run();
+        return new GetItemHarmonizedTariffScheduleCodesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getItemHarmonizedTariffScheduleCode(UserVisitPK userVisitPK, GetItemHarmonizedTariffScheduleCodeForm form) {
-        return new GetItemHarmonizedTariffScheduleCodeCommand(userVisitPK, form).run();
+        return new GetItemHarmonizedTariffScheduleCodeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editItemHarmonizedTariffScheduleCode(UserVisitPK userVisitPK, EditItemHarmonizedTariffScheduleCodeForm form) {
-        return new EditItemHarmonizedTariffScheduleCodeCommand(userVisitPK, form).run();
+        return new EditItemHarmonizedTariffScheduleCodeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteItemHarmonizedTariffScheduleCode(UserVisitPK userVisitPK, DeleteItemHarmonizedTariffScheduleCodeForm form) {
-        return new DeleteItemHarmonizedTariffScheduleCodeCommand(userVisitPK, form).run();
+        return new DeleteItemHarmonizedTariffScheduleCodeCommand().run(userVisitPK, form);
     }
 
 }

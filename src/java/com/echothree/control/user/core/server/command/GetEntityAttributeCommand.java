@@ -44,8 +44,8 @@ public class GetEntityAttributeCommand
     }
     
     /** Creates a new instance of GetEntityAttributeCommand */
-    public GetEntityAttributeCommand(UserVisitPK userVisitPK, GetEntityAttributeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetEntityAttributeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

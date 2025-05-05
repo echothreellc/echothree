@@ -41,8 +41,8 @@ public class DecryptCommand
     }
     
     /** Creates a new instance of DecryptCommand */
-    public DecryptCommand(UserVisitPK userVisitPK, DecryptForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DecryptCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

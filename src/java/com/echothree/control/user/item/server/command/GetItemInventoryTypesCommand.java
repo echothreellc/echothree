@@ -40,8 +40,8 @@ public class GetItemInventoryTypesCommand
     }
 
     /** Creates a new instance of GetItemInventoryTypesCommand */
-    public GetItemInventoryTypesCommand(UserVisitPK userVisitPK, GetItemInventoryTypesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetItemInventoryTypesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

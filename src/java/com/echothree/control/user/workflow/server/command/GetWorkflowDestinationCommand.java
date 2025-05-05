@@ -59,8 +59,8 @@ public class GetWorkflowDestinationCommand
     }
     
     /** Creates a new instance of GetWorkflowDestinationCommand */
-    public GetWorkflowDestinationCommand(UserVisitPK userVisitPK, GetWorkflowDestinationForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetWorkflowDestinationCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

@@ -45,8 +45,8 @@ public class GetUseResultsCommand
     }
 
     /** Creates a new instance of GetUseResultsCommand */
-    public GetUseResultsCommand(UserVisitPK userVisitPK, GetUseResultsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetUseResultsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

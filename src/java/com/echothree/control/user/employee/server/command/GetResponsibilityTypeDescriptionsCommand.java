@@ -42,8 +42,8 @@ public class GetResponsibilityTypeDescriptionsCommand
     }
     
     /** Creates a new instance of GetResponsibilityTypeDescriptionsCommand */
-    public GetResponsibilityTypeDescriptionsCommand(UserVisitPK userVisitPK, GetResponsibilityTypeDescriptionsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetResponsibilityTypeDescriptionsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

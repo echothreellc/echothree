@@ -53,8 +53,8 @@ public class GetSearchDefaultOperatorsCommand
     }
 
     /** Creates a new instance of GetSearchDefaultOperatorsCommand */
-    public GetSearchDefaultOperatorsCommand(UserVisitPK userVisitPK, GetSearchDefaultOperatorsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetSearchDefaultOperatorsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

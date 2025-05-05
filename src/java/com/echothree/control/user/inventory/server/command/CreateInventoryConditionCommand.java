@@ -57,8 +57,8 @@ public class CreateInventoryConditionCommand
     }
     
     /** Creates a new instance of CreateInventoryConditionCommand */
-    public CreateInventoryConditionCommand(UserVisitPK userVisitPK, CreateInventoryConditionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateInventoryConditionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

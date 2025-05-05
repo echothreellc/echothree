@@ -55,8 +55,8 @@ public class SetDefaultShipmentAliasTypeCommand
     }
     
     /** Creates a new instance of SetDefaultShipmentAliasTypeCommand */
-    public SetDefaultShipmentAliasTypeCommand(UserVisitPK userVisitPK, SetDefaultShipmentAliasTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultShipmentAliasTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -59,8 +59,8 @@ public class GetPartyEntityTypeCommand
     }
     
     /** Creates a new instance of GetPartyEntityTypeCommand */
-    public GetPartyEntityTypeCommand(UserVisitPK userVisitPK, GetPartyEntityTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetPartyEntityTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

@@ -47,8 +47,8 @@ public class GetWorkAssignmentsCommand
     }
     
     /** Creates a new instance of GetWorkAssignmentsCommand */
-    public GetWorkAssignmentsCommand(UserVisitPK userVisitPK, GetWorkAssignmentsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetWorkAssignmentsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

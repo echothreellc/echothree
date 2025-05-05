@@ -60,8 +60,8 @@ public class CreateServiceCommand
     }
     
     /** Creates a new instance of CreateServiceCommand */
-    public CreateServiceCommand(UserVisitPK userVisitPK, CreateServiceForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateServiceCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

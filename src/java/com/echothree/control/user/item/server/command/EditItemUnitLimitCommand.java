@@ -57,8 +57,8 @@ public class EditItemUnitLimitCommand
     }
     
     /** Creates a new instance of EditItemUnitLimitCommand */
-    public EditItemUnitLimitCommand(UserVisitPK userVisitPK, EditItemUnitLimitForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditItemUnitLimitCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

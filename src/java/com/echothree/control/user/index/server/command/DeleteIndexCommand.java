@@ -55,8 +55,8 @@ public class DeleteIndexCommand
     }
     
     /** Creates a new instance of DeleteIndexCommand */
-    public DeleteIndexCommand(UserVisitPK userVisitPK, DeleteIndexForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteIndexCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

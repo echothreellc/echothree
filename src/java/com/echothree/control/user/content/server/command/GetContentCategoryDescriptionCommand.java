@@ -60,8 +60,8 @@ public class GetContentCategoryDescriptionCommand
     }
     
     /** Creates a new instance of GetContentCategoryDescriptionCommand */
-    public GetContentCategoryDescriptionCommand(UserVisitPK userVisitPK, GetContentCategoryDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetContentCategoryDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

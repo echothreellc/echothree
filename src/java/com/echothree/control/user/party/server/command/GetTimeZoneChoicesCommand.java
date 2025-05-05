@@ -43,8 +43,8 @@ public class GetTimeZoneChoicesCommand
     }
     
     /** Creates a new instance of GetTimeZoneChoicesCommand */
-    public GetTimeZoneChoicesCommand(UserVisitPK userVisitPK, GetTimeZoneChoicesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public GetTimeZoneChoicesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -53,8 +53,8 @@ public class GetSalesOrderBatchesCommand
     }
 
     /** Creates a new instance of GetSalesOrderBatchesCommand */
-    public GetSalesOrderBatchesCommand(UserVisitPK userVisitPK, GetSalesOrderBatchesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetSalesOrderBatchesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

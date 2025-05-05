@@ -16,12 +16,10 @@
 
 package com.echothree.util.server.control;
 
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseEditResult;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.form.BaseEdit;
-import com.echothree.util.common.form.BaseEditForm;
 import com.echothree.util.common.form.BaseSpec;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -32,9 +30,9 @@ import java.util.List;
 public abstract class BaseAbstractEditCommand<S extends BaseSpec, E extends BaseEdit, R extends BaseEditResult<E>, BE extends BaseEntity, LE extends BaseEntity>
         extends BaseEditCommand<S, E> {
     
-    protected BaseAbstractEditCommand(UserVisitPK userVisitPK, BaseEditForm<S, E> editForm, CommandSecurityDefinition commandSecurityDefinition, List<FieldDefinition> specFieldDefinitions,
+    protected BaseAbstractEditCommand(CommandSecurityDefinition commandSecurityDefinition, List<FieldDefinition> specFieldDefinitions,
             List<FieldDefinition> editFieldDefinitions) {
-        super(userVisitPK, editForm, commandSecurityDefinition, specFieldDefinitions, editFieldDefinitions);
+        super(commandSecurityDefinition, specFieldDefinitions, editFieldDefinitions);
     }
     
     protected abstract R getResult();

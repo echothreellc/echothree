@@ -64,8 +64,8 @@ public class GetFilterAdjustmentPercentCommand
     }
 
     /** Creates a new instance of DeleteFilterAdjustmentPercentCommand */
-    public GetFilterAdjustmentPercentCommand(UserVisitPK userVisitPK, GetFilterAdjustmentPercentForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetFilterAdjustmentPercentCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
 
     @Override

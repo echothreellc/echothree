@@ -42,8 +42,8 @@ public class DeleteUnitOfMeasureTypeWeightCommand
     }
     
     /** Creates a new instance of DeleteUnitOfMeasureTypeWeightCommand */
-    public DeleteUnitOfMeasureTypeWeightCommand(UserVisitPK userVisitPK, DeleteUnitOfMeasureTypeWeightForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteUnitOfMeasureTypeWeightCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

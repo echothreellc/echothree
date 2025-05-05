@@ -43,8 +43,8 @@ public class CreateSelectorBooleanTypeCommand
     }
     
     /** Creates a new instance of CreateSelectorBooleanTypeCommand */
-    public CreateSelectorBooleanTypeCommand(UserVisitPK userVisitPK, CreateSelectorBooleanTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateSelectorBooleanTypeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

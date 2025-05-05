@@ -55,8 +55,8 @@ public class SetDefaultServiceCommand
     }
     
     /** Creates a new instance of SetDefaultServiceCommand */
-    public SetDefaultServiceCommand(UserVisitPK userVisitPK, SetDefaultServiceForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultServiceCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

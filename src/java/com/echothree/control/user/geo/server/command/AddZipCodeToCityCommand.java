@@ -61,8 +61,8 @@ public class AddZipCodeToCityCommand
     }
     
     /** Creates a new instance of AddZipCodeToCityCommand */
-    public AddZipCodeToCityCommand(UserVisitPK userVisitPK, AddZipCodeToCityForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public AddZipCodeToCityCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

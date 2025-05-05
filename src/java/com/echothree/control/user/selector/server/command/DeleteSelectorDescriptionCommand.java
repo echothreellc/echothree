@@ -57,8 +57,8 @@ public class DeleteSelectorDescriptionCommand
     }
     
     /** Creates a new instance of DeleteSelectorDescriptionCommand */
-    public DeleteSelectorDescriptionCommand(UserVisitPK userVisitPK, DeleteSelectorDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteSelectorDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

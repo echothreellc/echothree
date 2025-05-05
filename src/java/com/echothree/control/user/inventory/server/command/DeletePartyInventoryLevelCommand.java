@@ -45,8 +45,8 @@ public class DeletePartyInventoryLevelCommand
     }
     
     /** Creates a new instance of DeletePartyInventoryLevelCommand */
-    public DeletePartyInventoryLevelCommand(UserVisitPK userVisitPK, DeletePartyInventoryLevelForm form) {
-        super(userVisitPK, form, FORM_FIELD_DEFINITIONS);
+    public DeletePartyInventoryLevelCommand() {
+        super(FORM_FIELD_DEFINITIONS);
     }
     
     @Override

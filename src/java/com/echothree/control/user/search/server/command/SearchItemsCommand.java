@@ -68,8 +68,8 @@ public class SearchItemsCommand
     }
 
     /** Creates a new instance of SearchItemsCommand */
-    public SearchItemsCommand(UserVisitPK userVisitPK, SearchItemsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SearchItemsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

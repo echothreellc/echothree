@@ -43,8 +43,8 @@ public class GetForumGroupCommand
     }
     
     /** Creates a new instance of GetForumGroupCommand */
-    public GetForumGroupCommand(UserVisitPK userVisitPK, GetForumGroupForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetForumGroupCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

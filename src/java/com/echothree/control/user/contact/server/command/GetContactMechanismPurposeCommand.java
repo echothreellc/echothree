@@ -51,8 +51,8 @@ public class GetContactMechanismPurposeCommand
     }
     
     /** Creates a new instance of GetContactMechanismPurposeCommand */
-    public GetContactMechanismPurposeCommand(UserVisitPK userVisitPK, GetContactMechanismPurposeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetContactMechanismPurposeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

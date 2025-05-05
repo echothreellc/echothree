@@ -43,8 +43,8 @@ public class GetWorkEffortCommand
     }
     
     /** Creates a new instance of GetWorkEffortCommand */
-    public GetWorkEffortCommand(UserVisitPK userVisitPK, GetWorkEffortForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetWorkEffortCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

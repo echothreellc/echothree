@@ -57,8 +57,8 @@ public class DeletePartyTypeDocumentTypeUsageTypeCommand
     }
     
     /** Creates a new instance of DeletePartyTypeDocumentTypeUsageTypeCommand */
-    public DeletePartyTypeDocumentTypeUsageTypeCommand(UserVisitPK userVisitPK, DeletePartyTypeDocumentTypeUsageTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeletePartyTypeDocumentTypeUsageTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

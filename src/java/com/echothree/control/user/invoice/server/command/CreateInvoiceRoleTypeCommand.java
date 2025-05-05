@@ -50,8 +50,8 @@ public class CreateInvoiceRoleTypeCommand
     }
     
     /** Creates a new instance of CreateInvoiceRoleTypeCommand */
-    public CreateInvoiceRoleTypeCommand(UserVisitPK userVisitPK, CreateInvoiceRoleTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateInvoiceRoleTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

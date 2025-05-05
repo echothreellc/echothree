@@ -59,8 +59,8 @@ public class GetReturnPolicyTranslationCommand
     }
     
     /** Creates a new instance of GetReturnPolicyTranslationCommand */
-    public GetReturnPolicyTranslationCommand(UserVisitPK userVisitPK, GetReturnPolicyTranslationForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetReturnPolicyTranslationCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

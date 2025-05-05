@@ -18,7 +18,6 @@ package com.echothree.control.user.shipment.server.command;
 
 import com.echothree.control.user.shipment.common.edit.ShipmentAliasEdit;
 import com.echothree.control.user.shipment.common.edit.ShipmentEditFactory;
-import com.echothree.control.user.shipment.common.form.EditShipmentAliasForm;
 import com.echothree.control.user.shipment.common.result.EditShipmentAliasResult;
 import com.echothree.control.user.shipment.common.result.ShipmentResultFactory;
 import com.echothree.control.user.shipment.common.spec.ShipmentAliasSpec;
@@ -28,11 +27,10 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.shipment.server.ShipmentControl;
 import com.echothree.model.data.shipment.server.entity.ShipmentAlias;
 import com.echothree.model.data.shipment.server.entity.ShipmentAliasType;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -61,15 +59,20 @@ public class EditShipmentAliasCommand
     }
     
     /** Creates a new instance of EditShipmentAliasCommand */
-    public EditShipmentAliasCommand(UserVisitPK userVisitPK, EditShipmentAliasForm form) {
-        super(userVisitPK, form, new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+    public EditShipmentAliasCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
+
+    @Override
+    protected CommandSecurityDefinition getCommandSecurityDefinition() {
+        return new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                        new SecurityRoleDefinition(ShipmentAliasUtil.getInstance().getSecurityRoleGroupNameByShipmentTypeSpec(form == null ? null : form.getSpec()), SecurityRoles.Edit.name())
-                        )))
-                ))), SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+                        new SecurityRoleDefinition(ShipmentAliasUtil.getInstance().getSecurityRoleGroupNameByShipmentTypeSpec(spec == null ? null : spec), SecurityRoles.Edit.name())
+                )))
+        )));
     }
-    
+
     @Override
     public EditShipmentAliasResult getResult() {
         return ShipmentResultFactory.getEditShipmentAliasResult();

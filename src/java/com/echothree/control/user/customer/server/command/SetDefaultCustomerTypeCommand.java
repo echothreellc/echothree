@@ -54,8 +54,8 @@ public class SetDefaultCustomerTypeCommand
     }
     
     /** Creates a new instance of SetDefaultCustomerTypeCommand */
-    public SetDefaultCustomerTypeCommand(UserVisitPK userVisitPK, SetDefaultCustomerTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultCustomerTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

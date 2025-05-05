@@ -18,7 +18,6 @@ package com.echothree.control.user.search.server.command;
 
 import com.echothree.control.user.search.common.form.BaseClearResultsForm;
 import com.echothree.model.control.search.server.logic.SearchLogic;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -38,8 +37,8 @@ public abstract class BaseClearResultsCommand<F extends BaseClearResultsForm>
     }
 
     /** Creates a new instance of BaseClearResultsCommand */
-    protected BaseClearResultsCommand(UserVisitPK userVisitPK, F form, CommandSecurityDefinition COMMAND_SECURITY_DEFINITION) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    protected BaseClearResultsCommand(CommandSecurityDefinition COMMAND_SECURITY_DEFINITION) {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     protected BaseResult execute(String searchKindName) {

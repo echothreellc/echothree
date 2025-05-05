@@ -58,8 +58,8 @@ public class DeleteBatchAliasTypeDescriptionCommand
     }
     
     /** Creates a new instance of DeleteBatchAliasTypeDescriptionCommand */
-    public DeleteBatchAliasTypeDescriptionCommand(UserVisitPK userVisitPK, DeleteBatchAliasTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteBatchAliasTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

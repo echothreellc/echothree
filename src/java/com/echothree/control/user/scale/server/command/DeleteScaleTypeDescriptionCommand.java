@@ -43,8 +43,8 @@ public class DeleteScaleTypeDescriptionCommand
     }
 
     /** Creates a new instance of DeleteScaleTypeDescriptionCommand */
-    public DeleteScaleTypeDescriptionCommand(UserVisitPK userVisitPK, DeleteScaleTypeDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteScaleTypeDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
    @Override

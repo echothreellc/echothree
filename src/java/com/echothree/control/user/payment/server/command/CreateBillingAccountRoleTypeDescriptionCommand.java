@@ -52,8 +52,8 @@ public class CreateBillingAccountRoleTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateBillingAccountRoleTypeDescriptionCommand */
-    public CreateBillingAccountRoleTypeDescriptionCommand(UserVisitPK userVisitPK, CreateBillingAccountRoleTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateBillingAccountRoleTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

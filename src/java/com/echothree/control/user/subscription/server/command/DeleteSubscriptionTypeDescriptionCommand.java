@@ -44,8 +44,8 @@ public class DeleteSubscriptionTypeDescriptionCommand
     }
     
     /** Creates a new instance of DeleteSubscriptionTypeDescriptionCommand */
-    public DeleteSubscriptionTypeDescriptionCommand(UserVisitPK userVisitPK, DeleteSubscriptionTypeDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteSubscriptionTypeDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

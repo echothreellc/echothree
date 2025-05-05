@@ -65,8 +65,8 @@ public class CreateEditorCommand
     }
     
     /** Creates a new instance of CreateEditorCommand */
-    public CreateEditorCommand(UserVisitPK userVisitPK, CreateEditorForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateEditorCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -58,8 +58,8 @@ public class DeleteTransactionEntityRoleTypeDescriptionCommand
     }
     
     /** Creates a new instance of DeleteTransactionEntityRoleTypeDescriptionCommand */
-    public DeleteTransactionEntityRoleTypeDescriptionCommand(UserVisitPK userVisitPK, DeleteTransactionEntityRoleTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteTransactionEntityRoleTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

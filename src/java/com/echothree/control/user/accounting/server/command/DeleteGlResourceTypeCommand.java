@@ -55,8 +55,8 @@ public class DeleteGlResourceTypeCommand
     }
     
     /** Creates a new instance of DeleteGlResourceTypeCommand */
-    public DeleteGlResourceTypeCommand(UserVisitPK userVisitPK, DeleteGlResourceTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteGlResourceTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

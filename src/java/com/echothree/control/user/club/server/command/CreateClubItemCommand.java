@@ -51,8 +51,8 @@ public class CreateClubItemCommand
     }
     
     /** Creates a new instance of CreateClubItemCommand */
-    public CreateClubItemCommand(UserVisitPK userVisitPK, CreateClubItemForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateClubItemCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

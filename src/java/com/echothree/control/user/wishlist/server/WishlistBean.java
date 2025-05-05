@@ -43,37 +43,37 @@ public class WishlistBean
     
     @Override
     public CommandResult createWishlistType(UserVisitPK userVisitPK, CreateWishlistTypeForm form) {
-        return new CreateWishlistTypeCommand(userVisitPK, form).run();
+        return new CreateWishlistTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWishlistType(UserVisitPK userVisitPK, GetWishlistTypeForm form) {
-        return new GetWishlistTypeCommand(userVisitPK, form).run();
+        return new GetWishlistTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWishlistTypes(UserVisitPK userVisitPK, GetWishlistTypesForm form) {
-        return new GetWishlistTypesCommand(userVisitPK, form).run();
+        return new GetWishlistTypesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWishlistTypeChoices(UserVisitPK userVisitPK, GetWishlistTypeChoicesForm form) {
-        return new GetWishlistTypeChoicesCommand(userVisitPK, form).run();
+        return new GetWishlistTypeChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultWishlistType(UserVisitPK userVisitPK, SetDefaultWishlistTypeForm form) {
-        return new SetDefaultWishlistTypeCommand(userVisitPK, form).run();
+        return new SetDefaultWishlistTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editWishlistType(UserVisitPK userVisitPK, EditWishlistTypeForm form) {
-        return new EditWishlistTypeCommand(userVisitPK, form).run();
+        return new EditWishlistTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteWishlistType(UserVisitPK userVisitPK, DeleteWishlistTypeForm form) {
-        return new DeleteWishlistTypeCommand(userVisitPK, form).run();
+        return new DeleteWishlistTypeCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -82,22 +82,22 @@ public class WishlistBean
     
     @Override
     public CommandResult createWishlistTypeDescription(UserVisitPK userVisitPK, CreateWishlistTypeDescriptionForm form) {
-        return new CreateWishlistTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateWishlistTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWishlistTypeDescriptions(UserVisitPK userVisitPK, GetWishlistTypeDescriptionsForm form) {
-        return new GetWishlistTypeDescriptionsCommand(userVisitPK, form).run();
+        return new GetWishlistTypeDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editWishlistTypeDescription(UserVisitPK userVisitPK, EditWishlistTypeDescriptionForm form) {
-        return new EditWishlistTypeDescriptionCommand(userVisitPK, form).run();
+        return new EditWishlistTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteWishlistTypeDescription(UserVisitPK userVisitPK, DeleteWishlistTypeDescriptionForm form) {
-        return new DeleteWishlistTypeDescriptionCommand(userVisitPK, form).run();
+        return new DeleteWishlistTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -106,37 +106,37 @@ public class WishlistBean
     
     @Override
     public CommandResult createWishlistPriority(UserVisitPK userVisitPK, CreateWishlistPriorityForm form) {
-        return new CreateWishlistPriorityCommand(userVisitPK, form).run();
+        return new CreateWishlistPriorityCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWishlistPriority(UserVisitPK userVisitPK, GetWishlistPriorityForm form) {
-        return new GetWishlistPriorityCommand(userVisitPK, form).run();
+        return new GetWishlistPriorityCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWishlistPriorities(UserVisitPK userVisitPK, GetWishlistPrioritiesForm form) {
-        return new GetWishlistPrioritiesCommand(userVisitPK, form).run();
+        return new GetWishlistPrioritiesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWishlistPriorityChoices(UserVisitPK userVisitPK, GetWishlistPriorityChoicesForm form) {
-        return new GetWishlistPriorityChoicesCommand(userVisitPK, form).run();
+        return new GetWishlistPriorityChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultWishlistPriority(UserVisitPK userVisitPK, SetDefaultWishlistPriorityForm form) {
-        return new SetDefaultWishlistPriorityCommand(userVisitPK, form).run();
+        return new SetDefaultWishlistPriorityCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editWishlistPriority(UserVisitPK userVisitPK, EditWishlistPriorityForm form) {
-        return new EditWishlistPriorityCommand(userVisitPK, form).run();
+        return new EditWishlistPriorityCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteWishlistPriority(UserVisitPK userVisitPK, DeleteWishlistPriorityForm form) {
-        return new DeleteWishlistPriorityCommand(userVisitPK, form).run();
+        return new DeleteWishlistPriorityCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -145,22 +145,22 @@ public class WishlistBean
     
     @Override
     public CommandResult createWishlistPriorityDescription(UserVisitPK userVisitPK, CreateWishlistPriorityDescriptionForm form) {
-        return new CreateWishlistPriorityDescriptionCommand(userVisitPK, form).run();
+        return new CreateWishlistPriorityDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWishlistPriorityDescriptions(UserVisitPK userVisitPK, GetWishlistPriorityDescriptionsForm form) {
-        return new GetWishlistPriorityDescriptionsCommand(userVisitPK, form).run();
+        return new GetWishlistPriorityDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editWishlistPriorityDescription(UserVisitPK userVisitPK, EditWishlistPriorityDescriptionForm form) {
-        return new EditWishlistPriorityDescriptionCommand(userVisitPK, form).run();
+        return new EditWishlistPriorityDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteWishlistPriorityDescription(UserVisitPK userVisitPK, DeleteWishlistPriorityDescriptionForm form) {
-        return new DeleteWishlistPriorityDescriptionCommand(userVisitPK, form).run();
+        return new DeleteWishlistPriorityDescriptionCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -169,12 +169,12 @@ public class WishlistBean
     
     @Override
     public CommandResult createWishlistLine(UserVisitPK userVisitPK, CreateWishlistLineForm form) {
-        return new CreateWishlistLineCommand(userVisitPK, form).run();
+        return new CreateWishlistLineCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWishlistLines(UserVisitPK userVisitPK, GetWishlistLinesForm form) {
-        return new GetWishlistLinesCommand(userVisitPK, form).run();
+        return new GetWishlistLinesCommand().run(userVisitPK, form);
     }
     
 }

@@ -44,8 +44,8 @@ public class CreatePartyContactMechanismRelationshipCommand
     }
     
     /** Creates a new instance of CreatePartyContactMechanismRelationshipCommand */
-    public CreatePartyContactMechanismRelationshipCommand(UserVisitPK userVisitPK, CreatePartyContactMechanismRelationshipForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreatePartyContactMechanismRelationshipCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -61,8 +61,8 @@ public class GetOrderPrioritiesCommand
     }
     
     /** Creates a new instance of GetOrderPrioritiesCommand */
-    public GetOrderPrioritiesCommand(UserVisitPK userVisitPK, GetOrderPrioritiesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetOrderPrioritiesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     OrderType orderType;

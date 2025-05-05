@@ -55,8 +55,8 @@ public class EditMessageTypeCommand
     }
     
     /** Creates a new instance of EditMessageTypeCommand */
-    public EditMessageTypeCommand(UserVisitPK userVisitPK, EditMessageTypeForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditMessageTypeCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

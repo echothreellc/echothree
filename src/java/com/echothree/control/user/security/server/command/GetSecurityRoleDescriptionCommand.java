@@ -59,8 +59,8 @@ public class GetSecurityRoleDescriptionCommand
     }
     
     /** Creates a new instance of GetSecurityRoleDescriptionCommand */
-    public GetSecurityRoleDescriptionCommand(UserVisitPK userVisitPK, GetSecurityRoleDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetSecurityRoleDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

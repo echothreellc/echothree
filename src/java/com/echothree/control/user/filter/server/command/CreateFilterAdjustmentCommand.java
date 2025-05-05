@@ -58,8 +58,8 @@ public class CreateFilterAdjustmentCommand
     }
     
     /** Creates a new instance of CreateFilterAdjustmentCommand */
-    public CreateFilterAdjustmentCommand(UserVisitPK userVisitPK, CreateFilterAdjustmentForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateFilterAdjustmentCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

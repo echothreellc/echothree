@@ -43,27 +43,27 @@ public class MessageBean
     
     @Override
     public CommandResult createMessageType(UserVisitPK userVisitPK, CreateMessageTypeForm form) {
-        return new CreateMessageTypeCommand(userVisitPK, form).run();
+        return new CreateMessageTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getMessageType(UserVisitPK userVisitPK, GetMessageTypeForm form) {
-        return new GetMessageTypeCommand(userVisitPK, form).run();
+        return new GetMessageTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getMessageTypes(UserVisitPK userVisitPK, GetMessageTypesForm form) {
-        return new GetMessageTypesCommand(userVisitPK, form).run();
+        return new GetMessageTypesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editMessageType(UserVisitPK userVisitPK, EditMessageTypeForm form) {
-        return new EditMessageTypeCommand(userVisitPK, form).run();
+        return new EditMessageTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteMessageType(UserVisitPK userVisitPK, DeleteMessageTypeForm form) {
-        return new DeleteMessageTypeCommand(userVisitPK, form).run();
+        return new DeleteMessageTypeCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -72,22 +72,22 @@ public class MessageBean
     
     @Override
     public CommandResult createMessageTypeDescription(UserVisitPK userVisitPK, CreateMessageTypeDescriptionForm form) {
-        return new CreateMessageTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateMessageTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getMessageTypeDescriptions(UserVisitPK userVisitPK, GetMessageTypeDescriptionsForm form) {
-        return new GetMessageTypeDescriptionsCommand(userVisitPK, form).run();
+        return new GetMessageTypeDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editMessageTypeDescription(UserVisitPK userVisitPK, EditMessageTypeDescriptionForm form) {
-        return new EditMessageTypeDescriptionCommand(userVisitPK, form).run();
+        return new EditMessageTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteMessageTypeDescription(UserVisitPK userVisitPK, DeleteMessageTypeDescriptionForm form) {
-        return new DeleteMessageTypeDescriptionCommand(userVisitPK, form).run();
+        return new DeleteMessageTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -96,22 +96,22 @@ public class MessageBean
     
     @Override
     public CommandResult createMessage(UserVisitPK userVisitPK, CreateMessageForm form) {
-        return new CreateMessageCommand(userVisitPK, form).run();
+        return new CreateMessageCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getMessage(UserVisitPK userVisitPK, GetMessageForm form) {
-        return new GetMessageCommand(userVisitPK, form).run();
+        return new GetMessageCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getMessages(UserVisitPK userVisitPK, GetMessagesForm form) {
-        return new GetMessagesCommand(userVisitPK, form).run();
+        return new GetMessagesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteMessage(UserVisitPK userVisitPK, DeleteMessageForm form) {
-        return new DeleteMessageCommand(userVisitPK, form).run();
+        return new DeleteMessageCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -120,22 +120,22 @@ public class MessageBean
     
     @Override
     public CommandResult createMessageDescription(UserVisitPK userVisitPK, CreateMessageDescriptionForm form) {
-        return new CreateMessageDescriptionCommand(userVisitPK, form).run();
+        return new CreateMessageDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getMessageDescriptions(UserVisitPK userVisitPK, GetMessageDescriptionsForm form) {
-        return new GetMessageDescriptionsCommand(userVisitPK, form).run();
+        return new GetMessageDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editMessageDescription(UserVisitPK userVisitPK, EditMessageDescriptionForm form) {
-        return new EditMessageDescriptionCommand(userVisitPK, form).run();
+        return new EditMessageDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteMessageDescription(UserVisitPK userVisitPK, DeleteMessageDescriptionForm form) {
-        return new DeleteMessageDescriptionCommand(userVisitPK, form).run();
+        return new DeleteMessageDescriptionCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -144,22 +144,22 @@ public class MessageBean
     
     @Override
     public CommandResult createEntityMessage(UserVisitPK userVisitPK, CreateEntityMessageForm form) {
-        return new CreateEntityMessageCommand(userVisitPK, form).run();
+        return new CreateEntityMessageCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getEntityMessage(UserVisitPK userVisitPK, GetEntityMessageForm form) {
-        return new GetEntityMessageCommand(userVisitPK, form).run();
+        return new GetEntityMessageCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getEntityMessages(UserVisitPK userVisitPK, GetEntityMessagesForm form) {
-        return new GetEntityMessagesCommand(userVisitPK, form).run();
+        return new GetEntityMessagesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteEntityMessage(UserVisitPK userVisitPK, DeleteEntityMessageForm form) {
-        return new DeleteEntityMessageCommand(userVisitPK, form).run();
+        return new DeleteEntityMessageCommand().run(userVisitPK, form);
     }
     
 }

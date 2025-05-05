@@ -41,8 +41,8 @@ public class SetDefaultScaleTypeCommand
     }
 
     /** Creates a new instance of SetDefaultScaleTypeCommand */
-    public SetDefaultScaleTypeCommand(UserVisitPK userVisitPK, SetDefaultScaleTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultScaleTypeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
    @Override

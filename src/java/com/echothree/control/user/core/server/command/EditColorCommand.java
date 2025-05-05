@@ -72,8 +72,8 @@ public class EditColorCommand
     }
     
     /** Creates a new instance of EditColorCommand */
-    public EditColorCommand(UserVisitPK userVisitPK, EditColorForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditColorCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

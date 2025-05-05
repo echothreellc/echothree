@@ -69,8 +69,8 @@ public class EditFilterStepElementDescriptionCommand
     }
     
     /** Creates a new instance of EditFilterStepElementDescriptionCommand */
-    public EditFilterStepElementDescriptionCommand(UserVisitPK userVisitPK, EditFilterStepElementDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditFilterStepElementDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

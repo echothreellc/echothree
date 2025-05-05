@@ -57,8 +57,8 @@ public class DeleteWishlistPriorityDescriptionCommand
     }
     
     /** Creates a new instance of DeleteWishlistPriorityDescriptionCommand */
-    public DeleteWishlistPriorityDescriptionCommand(UserVisitPK userVisitPK, DeleteWishlistPriorityDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteWishlistPriorityDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

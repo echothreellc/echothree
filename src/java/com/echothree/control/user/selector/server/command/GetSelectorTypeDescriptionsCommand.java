@@ -57,8 +57,8 @@ public class GetSelectorTypeDescriptionsCommand
     }
     
     /** Creates a new instance of GetSelectorTypeDescriptionsCommand */
-    public GetSelectorTypeDescriptionsCommand(UserVisitPK userVisitPK, GetSelectorTypeDescriptionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetSelectorTypeDescriptionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

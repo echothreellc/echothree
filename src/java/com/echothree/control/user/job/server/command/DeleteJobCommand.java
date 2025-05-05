@@ -55,8 +55,8 @@ public class DeleteJobCommand
     }
     
     /** Creates a new instance of DeleteJobCommand */
-    public DeleteJobCommand(UserVisitPK userVisitPK, DeleteJobForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteJobCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

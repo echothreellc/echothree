@@ -70,8 +70,8 @@ public class EditIndexCommand
     }
     
     /** Creates a new instance of EditIndexCommand */
-    public EditIndexCommand(UserVisitPK userVisitPK, EditIndexForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditIndexCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

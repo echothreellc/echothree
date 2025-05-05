@@ -57,8 +57,8 @@ public class GetSequenceDescriptionsCommand
     }
     
     /** Creates a new instance of GetSequenceDescriptionsCommand */
-    public GetSequenceDescriptionsCommand(UserVisitPK userVisitPK, GetSequenceDescriptionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetSequenceDescriptionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

@@ -27,8 +27,8 @@ public class GetUserVisitCommand
         extends BaseSimpleCommand<GetUserVisitForm> {
     
     /** Creates a new instance of GetUserVisitCommand */
-    public GetUserVisitCommand(GetUserVisitForm form) {
-        super(null, form, null, null, false);
+    public GetUserVisitCommand() {
+        super(null, null, false);
     }
     
     @Override

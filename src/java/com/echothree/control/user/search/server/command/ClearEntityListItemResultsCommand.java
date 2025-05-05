@@ -27,8 +27,8 @@ public class ClearEntityListItemResultsCommand
     // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
 
     /** Creates a new instance of ClearEntityListItemResultsCommand */
-    public ClearEntityListItemResultsCommand(UserVisitPK userVisitPK, ClearEntityListItemResultsForm form) {
-        super(userVisitPK, form, null);
+    public ClearEntityListItemResultsCommand() {
+        super(null);
     }
     
     @Override

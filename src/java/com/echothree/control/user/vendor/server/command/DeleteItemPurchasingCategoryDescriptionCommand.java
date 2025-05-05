@@ -57,8 +57,8 @@ public class DeleteItemPurchasingCategoryDescriptionCommand
     }
     
     /** Creates a new instance of DeleteItemPurchasingCategoryDescriptionCommand */
-    public DeleteItemPurchasingCategoryDescriptionCommand(UserVisitPK userVisitPK, DeleteItemPurchasingCategoryDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteItemPurchasingCategoryDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

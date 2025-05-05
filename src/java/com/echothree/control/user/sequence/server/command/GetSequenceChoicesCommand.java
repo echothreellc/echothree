@@ -57,8 +57,8 @@ public class GetSequenceChoicesCommand
     }
     
     /** Creates a new instance of GetSequenceChoicesCommand */
-    public GetSequenceChoicesCommand(UserVisitPK userVisitPK, GetSequenceChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetSequenceChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

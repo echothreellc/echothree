@@ -64,8 +64,8 @@ public class GetCountyCommand
     }
     
     /** Creates a new instance of GetCountyCommand */
-    public GetCountyCommand(UserVisitPK userVisitPK, GetCountyForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetCountyCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

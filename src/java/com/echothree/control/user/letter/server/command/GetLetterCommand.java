@@ -60,8 +60,8 @@ public class GetLetterCommand
     }
     
     /** Creates a new instance of GetLetterCommand */
-    public GetLetterCommand(UserVisitPK userVisitPK, GetLetterForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetLetterCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

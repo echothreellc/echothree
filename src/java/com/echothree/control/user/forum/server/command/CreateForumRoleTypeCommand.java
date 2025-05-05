@@ -43,8 +43,8 @@ public class CreateForumRoleTypeCommand
     }
     
     /** Creates a new instance of CreateForumRoleTypeCommand */
-    public CreateForumRoleTypeCommand(UserVisitPK userVisitPK, CreateForumRoleTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateForumRoleTypeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

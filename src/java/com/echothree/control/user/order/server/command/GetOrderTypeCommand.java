@@ -45,8 +45,8 @@ public class GetOrderTypeCommand
     }
     
     /** Creates a new instance of GetOrderTypeCommand */
-    public GetOrderTypeCommand(UserVisitPK userVisitPK, GetOrderTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetOrderTypeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

@@ -57,8 +57,8 @@ public class DeleteAllocationPriorityDescriptionCommand
     }
     
     /** Creates a new instance of DeleteAllocationPriorityDescriptionCommand */
-    public DeleteAllocationPriorityDescriptionCommand(UserVisitPK userVisitPK, DeleteAllocationPriorityDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteAllocationPriorityDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

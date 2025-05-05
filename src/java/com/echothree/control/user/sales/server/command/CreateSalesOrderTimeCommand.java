@@ -41,8 +41,8 @@ public class CreateSalesOrderTimeCommand
     }
     
     /** Creates a new instance of CreateSalesOrderTimeCommand */
-    public CreateSalesOrderTimeCommand(UserVisitPK userVisitPK, CreateSalesOrderTimeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateSalesOrderTimeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

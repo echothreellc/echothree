@@ -58,8 +58,8 @@ public class GetEntityAttributeDescriptionCommand
     }
     
     /** Creates a new instance of GetEntityAttributeDescriptionCommand */
-    public GetEntityAttributeDescriptionCommand(UserVisitPK userVisitPK, GetEntityAttributeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetEntityAttributeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

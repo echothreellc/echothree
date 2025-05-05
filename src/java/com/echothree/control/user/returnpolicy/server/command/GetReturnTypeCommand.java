@@ -58,8 +58,8 @@ public class GetReturnTypeCommand
     }
     
     /** Creates a new instance of GetReturnTypeCommand */
-    public GetReturnTypeCommand(UserVisitPK userVisitPK, GetReturnTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetReturnTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

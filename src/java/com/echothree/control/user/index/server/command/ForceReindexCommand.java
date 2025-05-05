@@ -41,8 +41,8 @@ public class ForceReindexCommand
     }
     
     /** Creates a new instance of ForceReindexCommand */
-    public ForceReindexCommand(UserVisitPK userVisitPK, ForceReindexForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public ForceReindexCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

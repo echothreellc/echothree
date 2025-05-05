@@ -48,8 +48,8 @@ public class CreateForumMessageAttachmentCommand
     }
     
     /** Creates a new instance of CreateForumMessageAttachmentCommand */
-    public CreateForumMessageAttachmentCommand(UserVisitPK userVisitPK, CreateForumMessageAttachmentForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateForumMessageAttachmentCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

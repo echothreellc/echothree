@@ -60,8 +60,8 @@ public class CreateGeoCodeTypeCommand
     }
     
     /** Creates a new instance of CreateGeoCodeTypeCommand */
-    public CreateGeoCodeTypeCommand(UserVisitPK userVisitPK, CreateGeoCodeTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateGeoCodeTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

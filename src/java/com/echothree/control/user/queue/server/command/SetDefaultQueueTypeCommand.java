@@ -55,8 +55,8 @@ public class SetDefaultQueueTypeCommand
     }
     
     /** Creates a new instance of SetDefaultQueueTypeCommand */
-    public SetDefaultQueueTypeCommand(UserVisitPK userVisitPK, SetDefaultQueueTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultQueueTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

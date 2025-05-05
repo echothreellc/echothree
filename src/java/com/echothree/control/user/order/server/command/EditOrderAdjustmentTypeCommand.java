@@ -71,8 +71,8 @@ public class EditOrderAdjustmentTypeCommand
     }
     
     /** Creates a new instance of EditOrderAdjustmentTypeCommand */
-    public EditOrderAdjustmentTypeCommand(UserVisitPK userVisitPK, EditOrderAdjustmentTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditOrderAdjustmentTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

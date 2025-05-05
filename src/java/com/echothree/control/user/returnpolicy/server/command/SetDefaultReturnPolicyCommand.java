@@ -55,8 +55,8 @@ public class SetDefaultReturnPolicyCommand
     }
     
     /** Creates a new instance of SetDefaultReturnPolicyCommand */
-    public SetDefaultReturnPolicyCommand(UserVisitPK userVisitPK, SetDefaultReturnPolicyForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultReturnPolicyCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

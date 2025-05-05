@@ -57,8 +57,8 @@ public class SetDefaultCancellationReasonTypeCommand
     }
     
     /** Creates a new instance of SetDefaultCancellationReasonTypeCommand */
-    public SetDefaultCancellationReasonTypeCommand(UserVisitPK userVisitPK, SetDefaultCancellationReasonTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultCancellationReasonTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

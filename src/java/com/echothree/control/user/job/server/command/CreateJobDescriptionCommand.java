@@ -58,8 +58,8 @@ public class CreateJobDescriptionCommand
     }
     
     /** Creates a new instance of CreateJobDescriptionCommand */
-    public CreateJobDescriptionCommand(UserVisitPK userVisitPK, CreateJobDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateJobDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

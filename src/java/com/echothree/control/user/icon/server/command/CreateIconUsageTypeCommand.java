@@ -44,8 +44,8 @@ public class CreateIconUsageTypeCommand
     }
     
     /** Creates a new instance of CreateIconUsageTypeCommand */
-    public CreateIconUsageTypeCommand(UserVisitPK userVisitPK, CreateIconUsageTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateIconUsageTypeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

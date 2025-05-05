@@ -56,8 +56,8 @@ public class GetLeaveTypeChoicesCommand
     }
 
     /** Creates a new instance of GetLeaveTypeChoicesCommand */
-    public GetLeaveTypeChoicesCommand(UserVisitPK userVisitPK, GetLeaveTypeChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetLeaveTypeChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
    @Override

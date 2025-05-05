@@ -57,8 +57,8 @@ public class DeleteContentWebAddressDescriptionCommand
     }
     
     /** Creates a new instance of DeleteContentWebAddressDescriptionCommand */
-    public DeleteContentWebAddressDescriptionCommand(UserVisitPK userVisitPK, DeleteContentWebAddressDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteContentWebAddressDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

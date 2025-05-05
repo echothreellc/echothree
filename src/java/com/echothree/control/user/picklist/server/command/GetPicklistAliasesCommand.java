@@ -49,15 +49,20 @@ public class GetPicklistAliasesCommand
     }
     
     /** Creates a new instance of GetPicklistAliasesCommand */
-    public GetPicklistAliasesCommand(UserVisitPK userVisitPK, GetPicklistAliasesForm form) {
-        super(userVisitPK, form, new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+    public GetPicklistAliasesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
+    }
+
+    @Override
+    protected CommandSecurityDefinition getCommandSecurityDefinition() {
+        return new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(PicklistAliasUtil.getInstance().getSecurityRoleGroupNameByPicklistTypeSpec(form), SecurityRoles.List.name())
-                        )))
-                ))), FORM_FIELD_DEFINITIONS, false);
+                )))
+        )));
     }
-    
+
     @Override
     protected BaseResult execute() {
         var picklistControl = Session.getModelController(PicklistControl.class);

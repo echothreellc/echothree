@@ -56,8 +56,8 @@ public class GetAllocationPriorityDescriptionsCommand
     }
     
     /** Creates a new instance of GetAllocationPriorityDescriptionsCommand */
-    public GetAllocationPriorityDescriptionsCommand(UserVisitPK userVisitPK, GetAllocationPriorityDescriptionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetAllocationPriorityDescriptionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

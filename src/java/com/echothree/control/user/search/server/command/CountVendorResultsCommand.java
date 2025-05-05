@@ -45,8 +45,8 @@ public class CountVendorResultsCommand
     }
     
     /** Creates a new instance of CountVendorResultsCommand */
-    public CountVendorResultsCommand(UserVisitPK userVisitPK, CountVendorResultsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION);
+    public CountVendorResultsCommand() {
+        super(COMMAND_SECURITY_DEFINITION);
     }
     
     @Override

@@ -61,8 +61,8 @@ public class CreateEntityTagCommand
     }
     
     /** Creates a new instance of CreateEntityTagCommand */
-    public CreateEntityTagCommand(UserVisitPK userVisitPK, CreateEntityTagForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateEntityTagCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

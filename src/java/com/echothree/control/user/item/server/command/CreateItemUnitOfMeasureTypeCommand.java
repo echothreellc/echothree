@@ -59,8 +59,8 @@ public class CreateItemUnitOfMeasureTypeCommand
     }
     
     /** Creates a new instance of CreateItemUnitOfMeasureTypeCommand */
-    public CreateItemUnitOfMeasureTypeCommand(UserVisitPK userVisitPK, CreateItemUnitOfMeasureTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateItemUnitOfMeasureTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

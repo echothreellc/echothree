@@ -61,8 +61,8 @@ public class CreateJobCommand
     }
     
     /** Creates a new instance of CreateJobCommand */
-    public CreateJobCommand(UserVisitPK userVisitPK, CreateJobForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateJobCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -69,8 +69,8 @@ public class CreateContactWebAddressCommand
     }
     
     /** Creates a new instance of CreateContactWebAddressCommand */
-    public CreateContactWebAddressCommand(UserVisitPK userVisitPK, CreateContactWebAddressForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateContactWebAddressCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
 
     @Override

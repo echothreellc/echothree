@@ -18,7 +18,6 @@ package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.edit.PartyAliasEdit;
 import com.echothree.control.user.party.common.edit.PartyEditFactory;
-import com.echothree.control.user.party.common.form.EditPartyAliasForm;
 import com.echothree.control.user.party.common.result.EditPartyAliasResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.control.user.party.common.spec.PartyAliasSpec;
@@ -28,11 +27,10 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.party.server.entity.PartyAlias;
 import com.echothree.model.data.party.server.entity.PartyAliasType;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -60,15 +58,20 @@ public class EditPartyAliasCommand
     }
     
     /** Creates a new instance of EditPartyAliasCommand */
-    public EditPartyAliasCommand(UserVisitPK userVisitPK, EditPartyAliasForm form) {
-        super(userVisitPK, form, new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+    public EditPartyAliasCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
+
+    @Override
+    protected CommandSecurityDefinition getCommandSecurityDefinition() {
+        return new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                        new SecurityRoleDefinition(PartyAliasUtil.getInstance().getSecurityRoleGroupNameByPartyName(form == null ? null : form.getSpec().getPartyName()), SecurityRoles.Edit.name())
-                        )))
-                ))), SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+                        new SecurityRoleDefinition(PartyAliasUtil.getInstance().getSecurityRoleGroupNameByPartyName(spec.getPartyName()), SecurityRoles.Edit.name())
+                )))
+        )));
     }
-    
+
     @Override
     public EditPartyAliasResult getResult() {
         return PartyResultFactory.getEditPartyAliasResult();

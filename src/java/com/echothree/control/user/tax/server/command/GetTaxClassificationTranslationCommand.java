@@ -60,8 +60,8 @@ public class GetTaxClassificationTranslationCommand
     }
     
     /** Creates a new instance of GetTaxClassificationTranslationCommand */
-    public GetTaxClassificationTranslationCommand(UserVisitPK userVisitPK, GetTaxClassificationTranslationForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetTaxClassificationTranslationCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

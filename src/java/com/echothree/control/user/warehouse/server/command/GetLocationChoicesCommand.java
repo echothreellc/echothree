@@ -57,8 +57,8 @@ public class GetLocationChoicesCommand
     }
     
     /** Creates a new instance of GetLocationChoicesCommand */
-    public GetLocationChoicesCommand(UserVisitPK userVisitPK, GetLocationChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetLocationChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

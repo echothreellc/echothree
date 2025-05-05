@@ -58,8 +58,8 @@ public class DeleteLocationTypeDescriptionCommand
     }
     
     /** Creates a new instance of DeleteLocationTypeDescriptionCommand */
-    public DeleteLocationTypeDescriptionCommand(UserVisitPK userVisitPK, DeleteLocationTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteLocationTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

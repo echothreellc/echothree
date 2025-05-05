@@ -57,8 +57,8 @@ public class CreateFilterStepDestinationCommand
     }
     
     /** Creates a new instance of CreateFilterStepDestinationCommand */
-    public CreateFilterStepDestinationCommand(UserVisitPK userVisitPK, CreateFilterStepDestinationForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateFilterStepDestinationCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

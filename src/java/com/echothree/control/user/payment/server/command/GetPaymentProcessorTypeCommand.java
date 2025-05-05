@@ -47,8 +47,8 @@ public class GetPaymentProcessorTypeCommand
     }
     
     /** Creates a new instance of GetPaymentProcessorTypeCommand */
-    public GetPaymentProcessorTypeCommand(UserVisitPK userVisitPK, GetPaymentProcessorTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetPaymentProcessorTypeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

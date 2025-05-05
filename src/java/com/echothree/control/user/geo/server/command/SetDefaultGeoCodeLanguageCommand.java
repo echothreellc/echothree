@@ -57,8 +57,8 @@ public class SetDefaultGeoCodeLanguageCommand
     }
     
     /** Creates a new instance of SetDefaultGeoCodeLanguageCommand */
-    public SetDefaultGeoCodeLanguageCommand(UserVisitPK userVisitPK, SetDefaultGeoCodeLanguageForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultGeoCodeLanguageCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

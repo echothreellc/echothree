@@ -60,8 +60,8 @@ public class GetContentCatalogItemCommand
     }
     
     /** Creates a new instance of GetContentCatalogItemCommand */
-    public GetContentCatalogItemCommand(UserVisitPK userVisitPK, GetContentCatalogItemForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetContentCatalogItemCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

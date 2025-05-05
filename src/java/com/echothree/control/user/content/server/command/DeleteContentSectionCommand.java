@@ -57,8 +57,8 @@ public class DeleteContentSectionCommand
     }
 
     /** Creates a new instance of DeleteContentSectionCommand */
-    public DeleteContentSectionCommand(UserVisitPK userVisitPK, DeleteContentSectionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteContentSectionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
 
     @Override

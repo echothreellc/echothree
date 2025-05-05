@@ -41,8 +41,8 @@ public class SetDefaultTaxCommand
     }
     
     /** Creates a new instance of SetDefaultTaxCommand */
-    public SetDefaultTaxCommand(UserVisitPK userVisitPK, SetDefaultTaxForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultTaxCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

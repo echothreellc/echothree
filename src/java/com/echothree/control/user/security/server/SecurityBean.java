@@ -43,37 +43,37 @@ public class SecurityBean
     
     @Override
     public CommandResult createSecurityRoleGroup(UserVisitPK userVisitPK, CreateSecurityRoleGroupForm form) {
-        return new CreateSecurityRoleGroupCommand(userVisitPK, form).run();
+        return new CreateSecurityRoleGroupCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSecurityRoleGroupChoices(UserVisitPK userVisitPK, GetSecurityRoleGroupChoicesForm form) {
-        return new GetSecurityRoleGroupChoicesCommand(userVisitPK, form).run();
+        return new GetSecurityRoleGroupChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSecurityRoleGroup(UserVisitPK userVisitPK, GetSecurityRoleGroupForm form) {
-        return new GetSecurityRoleGroupCommand(userVisitPK, form).run();
+        return new GetSecurityRoleGroupCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSecurityRoleGroups(UserVisitPK userVisitPK, GetSecurityRoleGroupsForm form) {
-        return new GetSecurityRoleGroupsCommand(userVisitPK, form).run();
+        return new GetSecurityRoleGroupsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultSecurityRoleGroup(UserVisitPK userVisitPK, SetDefaultSecurityRoleGroupForm form) {
-        return new SetDefaultSecurityRoleGroupCommand(userVisitPK, form).run();
+        return new SetDefaultSecurityRoleGroupCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editSecurityRoleGroup(UserVisitPK userVisitPK, EditSecurityRoleGroupForm form) {
-        return new EditSecurityRoleGroupCommand(userVisitPK, form).run();
+        return new EditSecurityRoleGroupCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteSecurityRoleGroup(UserVisitPK userVisitPK, DeleteSecurityRoleGroupForm form) {
-        return new DeleteSecurityRoleGroupCommand(userVisitPK, form).run();
+        return new DeleteSecurityRoleGroupCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -82,27 +82,27 @@ public class SecurityBean
     
     @Override
     public CommandResult createSecurityRoleGroupDescription(UserVisitPK userVisitPK, CreateSecurityRoleGroupDescriptionForm form) {
-        return new CreateSecurityRoleGroupDescriptionCommand(userVisitPK, form).run();
+        return new CreateSecurityRoleGroupDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSecurityRoleGroupDescription(UserVisitPK userVisitPK, GetSecurityRoleGroupDescriptionForm form) {
-        return new GetSecurityRoleGroupDescriptionCommand(userVisitPK, form).run();
+        return new GetSecurityRoleGroupDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSecurityRoleGroupDescriptions(UserVisitPK userVisitPK, GetSecurityRoleGroupDescriptionsForm form) {
-        return new GetSecurityRoleGroupDescriptionsCommand(userVisitPK, form).run();
+        return new GetSecurityRoleGroupDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editSecurityRoleGroupDescription(UserVisitPK userVisitPK, EditSecurityRoleGroupDescriptionForm form) {
-        return new EditSecurityRoleGroupDescriptionCommand(userVisitPK, form).run();
+        return new EditSecurityRoleGroupDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteSecurityRoleGroupDescription(UserVisitPK userVisitPK, DeleteSecurityRoleGroupDescriptionForm form) {
-        return new DeleteSecurityRoleGroupDescriptionCommand(userVisitPK, form).run();
+        return new DeleteSecurityRoleGroupDescriptionCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -111,42 +111,42 @@ public class SecurityBean
     
     @Override
     public CommandResult checkSecurityRoles(UserVisitPK userVisitPK, CheckSecurityRolesForm form) {
-        return new CheckSecurityRolesCommand(userVisitPK, form).run();
+        return new CheckSecurityRolesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult createSecurityRole(UserVisitPK userVisitPK, CreateSecurityRoleForm form) {
-        return new CreateSecurityRoleCommand(userVisitPK, form).run();
+        return new CreateSecurityRoleCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSecurityRoles(UserVisitPK userVisitPK, GetSecurityRolesForm form) {
-        return new GetSecurityRolesCommand(userVisitPK, form).run();
+        return new GetSecurityRolesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSecurityRole(UserVisitPK userVisitPK, GetSecurityRoleForm form) {
-        return new GetSecurityRoleCommand(userVisitPK, form).run();
+        return new GetSecurityRoleCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSecurityRoleChoices(UserVisitPK userVisitPK, GetSecurityRoleChoicesForm form) {
-        return new GetSecurityRoleChoicesCommand(userVisitPK, form).run();
+        return new GetSecurityRoleChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultSecurityRole(UserVisitPK userVisitPK, SetDefaultSecurityRoleForm form) {
-        return new SetDefaultSecurityRoleCommand(userVisitPK, form).run();
+        return new SetDefaultSecurityRoleCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editSecurityRole(UserVisitPK userVisitPK, EditSecurityRoleForm form) {
-        return new EditSecurityRoleCommand(userVisitPK, form).run();
+        return new EditSecurityRoleCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteSecurityRole(UserVisitPK userVisitPK, DeleteSecurityRoleForm form) {
-        return new DeleteSecurityRoleCommand(userVisitPK, form).run();
+        return new DeleteSecurityRoleCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -155,27 +155,27 @@ public class SecurityBean
     
     @Override
     public CommandResult createSecurityRoleDescription(UserVisitPK userVisitPK, CreateSecurityRoleDescriptionForm form) {
-        return new CreateSecurityRoleDescriptionCommand(userVisitPK, form).run();
+        return new CreateSecurityRoleDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSecurityRoleDescription(UserVisitPK userVisitPK, GetSecurityRoleDescriptionForm form) {
-        return new GetSecurityRoleDescriptionCommand(userVisitPK, form).run();
+        return new GetSecurityRoleDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSecurityRoleDescriptions(UserVisitPK userVisitPK, GetSecurityRoleDescriptionsForm form) {
-        return new GetSecurityRoleDescriptionsCommand(userVisitPK, form).run();
+        return new GetSecurityRoleDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editSecurityRoleDescription(UserVisitPK userVisitPK, EditSecurityRoleDescriptionForm form) {
-        return new EditSecurityRoleDescriptionCommand(userVisitPK, form).run();
+        return new EditSecurityRoleDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteSecurityRoleDescription(UserVisitPK userVisitPK, DeleteSecurityRoleDescriptionForm form) {
-        return new DeleteSecurityRoleDescriptionCommand(userVisitPK, form).run();
+        return new DeleteSecurityRoleDescriptionCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -184,27 +184,27 @@ public class SecurityBean
     
     @Override
     public CommandResult createSecurityRolePartyType(UserVisitPK userVisitPK, CreateSecurityRolePartyTypeForm form) {
-        return new CreateSecurityRolePartyTypeCommand(userVisitPK, form).run();
+        return new CreateSecurityRolePartyTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSecurityRolePartyTypes(UserVisitPK userVisitPK, GetSecurityRolePartyTypesForm form) {
-        return new GetSecurityRolePartyTypesCommand(userVisitPK, form).run();
+        return new GetSecurityRolePartyTypesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSecurityRolePartyType(UserVisitPK userVisitPK, GetSecurityRolePartyTypeForm form) {
-        return new GetSecurityRolePartyTypeCommand(userVisitPK, form).run();
+        return new GetSecurityRolePartyTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editSecurityRolePartyType(UserVisitPK userVisitPK, EditSecurityRolePartyTypeForm form) {
-        return new EditSecurityRolePartyTypeCommand(userVisitPK, form).run();
+        return new EditSecurityRolePartyTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteSecurityRolePartyType(UserVisitPK userVisitPK, DeleteSecurityRolePartyTypeForm form) {
-        return new DeleteSecurityRolePartyTypeCommand(userVisitPK, form).run();
+        return new DeleteSecurityRolePartyTypeCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -213,37 +213,37 @@ public class SecurityBean
     
     @Override
     public CommandResult createPartySecurityRoleTemplate(UserVisitPK userVisitPK, CreatePartySecurityRoleTemplateForm form) {
-        return new CreatePartySecurityRoleTemplateCommand(userVisitPK, form).run();
+        return new CreatePartySecurityRoleTemplateCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPartySecurityRoleTemplate(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateForm form) {
-        return new GetPartySecurityRoleTemplateCommand(userVisitPK, form).run();
+        return new GetPartySecurityRoleTemplateCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPartySecurityRoleTemplates(UserVisitPK userVisitPK, GetPartySecurityRoleTemplatesForm form) {
-        return new GetPartySecurityRoleTemplatesCommand(userVisitPK, form).run();
+        return new GetPartySecurityRoleTemplatesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPartySecurityRoleTemplateChoices(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateChoicesForm form) {
-        return new GetPartySecurityRoleTemplateChoicesCommand(userVisitPK, form).run();
+        return new GetPartySecurityRoleTemplateChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultPartySecurityRoleTemplate(UserVisitPK userVisitPK, SetDefaultPartySecurityRoleTemplateForm form) {
-        return new SetDefaultPartySecurityRoleTemplateCommand(userVisitPK, form).run();
+        return new SetDefaultPartySecurityRoleTemplateCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editPartySecurityRoleTemplate(UserVisitPK userVisitPK, EditPartySecurityRoleTemplateForm form) {
-        return new EditPartySecurityRoleTemplateCommand(userVisitPK, form).run();
+        return new EditPartySecurityRoleTemplateCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deletePartySecurityRoleTemplate(UserVisitPK userVisitPK, DeletePartySecurityRoleTemplateForm form) {
-        return new DeletePartySecurityRoleTemplateCommand(userVisitPK, form).run();
+        return new DeletePartySecurityRoleTemplateCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -252,27 +252,27 @@ public class SecurityBean
     
     @Override
     public CommandResult createPartySecurityRoleTemplateDescription(UserVisitPK userVisitPK, CreatePartySecurityRoleTemplateDescriptionForm form) {
-        return new CreatePartySecurityRoleTemplateDescriptionCommand(userVisitPK, form).run();
+        return new CreatePartySecurityRoleTemplateDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPartySecurityRoleTemplateDescription(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateDescriptionForm form) {
-        return new GetPartySecurityRoleTemplateDescriptionCommand(userVisitPK, form).run();
+        return new GetPartySecurityRoleTemplateDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPartySecurityRoleTemplateDescriptions(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateDescriptionsForm form) {
-        return new GetPartySecurityRoleTemplateDescriptionsCommand(userVisitPK, form).run();
+        return new GetPartySecurityRoleTemplateDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editPartySecurityRoleTemplateDescription(UserVisitPK userVisitPK, EditPartySecurityRoleTemplateDescriptionForm form) {
-        return new EditPartySecurityRoleTemplateDescriptionCommand(userVisitPK, form).run();
+        return new EditPartySecurityRoleTemplateDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deletePartySecurityRoleTemplateDescription(UserVisitPK userVisitPK, DeletePartySecurityRoleTemplateDescriptionForm form) {
-        return new DeletePartySecurityRoleTemplateDescriptionCommand(userVisitPK, form).run();
+        return new DeletePartySecurityRoleTemplateDescriptionCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -281,22 +281,22 @@ public class SecurityBean
     
     @Override
     public CommandResult createPartySecurityRoleTemplateRole(UserVisitPK userVisitPK, CreatePartySecurityRoleTemplateRoleForm form) {
-        return new CreatePartySecurityRoleTemplateRoleCommand(userVisitPK, form).run();
+        return new CreatePartySecurityRoleTemplateRoleCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPartySecurityRoleTemplateRole(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateRoleForm form) {
-        return new GetPartySecurityRoleTemplateRoleCommand(userVisitPK, form).run();
+        return new GetPartySecurityRoleTemplateRoleCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPartySecurityRoleTemplateRoles(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateRolesForm form) {
-        return new GetPartySecurityRoleTemplateRolesCommand(userVisitPK, form).run();
+        return new GetPartySecurityRoleTemplateRolesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deletePartySecurityRoleTemplateRole(UserVisitPK userVisitPK, DeletePartySecurityRoleTemplateRoleForm form) {
-        return new DeletePartySecurityRoleTemplateRoleCommand(userVisitPK, form).run();
+        return new DeletePartySecurityRoleTemplateRoleCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -305,22 +305,22 @@ public class SecurityBean
     
     @Override
     public CommandResult createPartySecurityRoleTemplateTrainingClass(UserVisitPK userVisitPK, CreatePartySecurityRoleTemplateTrainingClassForm form) {
-        return new CreatePartySecurityRoleTemplateTrainingClassCommand(userVisitPK, form).run();
+        return new CreatePartySecurityRoleTemplateTrainingClassCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPartySecurityRoleTemplateTrainingClass(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateTrainingClassForm form) {
-        return new GetPartySecurityRoleTemplateTrainingClassCommand(userVisitPK, form).run();
+        return new GetPartySecurityRoleTemplateTrainingClassCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPartySecurityRoleTemplateTrainingClasses(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateTrainingClassesForm form) {
-        return new GetPartySecurityRoleTemplateTrainingClassesCommand(userVisitPK, form).run();
+        return new GetPartySecurityRoleTemplateTrainingClassesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deletePartySecurityRoleTemplateTrainingClass(UserVisitPK userVisitPK, DeletePartySecurityRoleTemplateTrainingClassForm form) {
-        return new DeletePartySecurityRoleTemplateTrainingClassCommand(userVisitPK, form).run();
+        return new DeletePartySecurityRoleTemplateTrainingClassCommand().run(userVisitPK, form);
     }
     
 }

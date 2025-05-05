@@ -48,8 +48,8 @@ public class GetItemUnitPriceLimitCommand
     }
     
     /** Creates a new instance of GetItemUnitPriceLimitCommand */
-    public GetItemUnitPriceLimitCommand(UserVisitPK userVisitPK, GetItemUnitPriceLimitForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public GetItemUnitPriceLimitCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

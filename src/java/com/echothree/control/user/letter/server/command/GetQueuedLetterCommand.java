@@ -58,8 +58,8 @@ public class GetQueuedLetterCommand
     }
     
     /** Creates a new instance of GetQueuedLetterCommand */
-    public GetQueuedLetterCommand(UserVisitPK userVisitPK, GetQueuedLetterForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetQueuedLetterCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

@@ -44,8 +44,8 @@ public class CreateCommunicationEventPurposeDescriptionCommand
     }
     
     /** Creates a new instance of CreateCommunicationEventPurposeDescriptionCommand */
-    public CreateCommunicationEventPurposeDescriptionCommand(UserVisitPK userVisitPK, CreateCommunicationEventPurposeDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateCommunicationEventPurposeDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

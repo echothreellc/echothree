@@ -44,8 +44,8 @@ public class GetWebAddressStatusChoicesCommand
     }
 
     /** Creates a new instance of GetWebAddressStatusChoicesCommand */
-    public GetWebAddressStatusChoicesCommand(UserVisitPK userVisitPK, GetWebAddressStatusChoicesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public GetWebAddressStatusChoicesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
 
     @Override

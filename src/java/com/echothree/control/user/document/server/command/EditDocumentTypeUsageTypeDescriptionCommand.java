@@ -69,8 +69,8 @@ public class EditDocumentTypeUsageTypeDescriptionCommand
     }
     
     /** Creates a new instance of EditDocumentTypeUsageTypeDescriptionCommand */
-    public EditDocumentTypeUsageTypeDescriptionCommand(UserVisitPK userVisitPK, EditDocumentTypeUsageTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditDocumentTypeUsageTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

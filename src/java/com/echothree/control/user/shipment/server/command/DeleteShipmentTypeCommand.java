@@ -55,8 +55,8 @@ public class DeleteShipmentTypeCommand
     }
     
     /** Creates a new instance of DeleteShipmentTypeCommand */
-    public DeleteShipmentTypeCommand(UserVisitPK userVisitPK, DeleteShipmentTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteShipmentTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

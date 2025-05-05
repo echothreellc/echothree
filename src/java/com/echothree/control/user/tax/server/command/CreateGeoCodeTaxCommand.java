@@ -43,8 +43,8 @@ public class CreateGeoCodeTaxCommand
     }
     
     /** Creates a new instance of CreateGeoCodeTaxCommand */
-    public CreateGeoCodeTaxCommand(UserVisitPK userVisitPK, CreateGeoCodeTaxForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateGeoCodeTaxCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

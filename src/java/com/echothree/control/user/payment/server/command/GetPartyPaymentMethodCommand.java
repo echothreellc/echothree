@@ -58,8 +58,8 @@ public class GetPartyPaymentMethodCommand
     }
     
     /** Creates a new instance of GetPartyPaymentMethodCommand */
-    public GetPartyPaymentMethodCommand(UserVisitPK userVisitPK, GetPartyPaymentMethodForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetPartyPaymentMethodCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

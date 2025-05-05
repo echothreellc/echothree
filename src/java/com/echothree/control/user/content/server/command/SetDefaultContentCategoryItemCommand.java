@@ -65,8 +65,8 @@ public class SetDefaultContentCategoryItemCommand
     }
     
     /** Creates a new instance of SetDefaultContentCategoryItemCommand */
-    public SetDefaultContentCategoryItemCommand(UserVisitPK userVisitPK, SetDefaultContentCategoryItemForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultContentCategoryItemCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

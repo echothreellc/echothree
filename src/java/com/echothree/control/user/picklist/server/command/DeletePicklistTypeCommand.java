@@ -55,8 +55,8 @@ public class DeletePicklistTypeCommand
     }
     
     /** Creates a new instance of DeletePicklistTypeCommand */
-    public DeletePicklistTypeCommand(UserVisitPK userVisitPK, DeletePicklistTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeletePicklistTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

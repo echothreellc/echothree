@@ -59,8 +59,8 @@ public class GetFilterStepDestinationsCommand
     }
     
     /** Creates a new instance of GetFilterStepDestinationsCommand */
-    public GetFilterStepDestinationsCommand(UserVisitPK userVisitPK, GetFilterStepDestinationsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetFilterStepDestinationsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

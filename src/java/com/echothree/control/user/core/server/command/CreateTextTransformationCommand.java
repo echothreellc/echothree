@@ -58,8 +58,8 @@ public class CreateTextTransformationCommand
     }
     
     /** Creates a new instance of CreateTextTransformationCommand */
-    public CreateTextTransformationCommand(UserVisitPK userVisitPK, CreateTextTransformationForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateTextTransformationCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

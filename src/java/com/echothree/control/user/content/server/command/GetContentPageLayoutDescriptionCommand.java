@@ -58,8 +58,8 @@ public class GetContentPageLayoutDescriptionCommand
     }
     
     /** Creates a new instance of GetContentPageLayoutDescriptionCommand */
-    public GetContentPageLayoutDescriptionCommand(UserVisitPK userVisitPK, GetContentPageLayoutDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetContentPageLayoutDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

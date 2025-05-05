@@ -59,8 +59,8 @@ public class ExecuteGraphQlCommand
     }
     
     /** Creates a new instance of ExecuteGraphQlCommand */
-    public ExecuteGraphQlCommand(UserVisitPK userVisitPK, ExecuteGraphQlForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public ExecuteGraphQlCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     private static final String GRAPHQL_QUERY = "query";

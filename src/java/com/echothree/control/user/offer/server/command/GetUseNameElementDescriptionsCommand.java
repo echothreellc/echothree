@@ -56,8 +56,8 @@ public class GetUseNameElementDescriptionsCommand
     }
     
     /** Creates a new instance of GetUseNameElementDescriptionsCommand */
-    public GetUseNameElementDescriptionsCommand(UserVisitPK userVisitPK, GetUseNameElementDescriptionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetUseNameElementDescriptionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -56,8 +56,8 @@ public class EditInventoryLocationGroupCommand
     }
     
     /** Creates a new instance of EditInventoryLocationGroupCommand */
-    public EditInventoryLocationGroupCommand(UserVisitPK userVisitPK, EditInventoryLocationGroupForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditInventoryLocationGroupCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

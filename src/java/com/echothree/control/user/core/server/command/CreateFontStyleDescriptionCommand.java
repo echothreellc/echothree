@@ -58,8 +58,8 @@ public class CreateFontStyleDescriptionCommand
     }
     
     /** Creates a new instance of CreateFontStyleDescriptionCommand */
-    public CreateFontStyleDescriptionCommand(UserVisitPK userVisitPK, CreateFontStyleDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateFontStyleDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

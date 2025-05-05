@@ -58,8 +58,8 @@ public class GetPartyTypeDocumentTypeUsageTypeCommand
     }
     
     /** Creates a new instance of GetPartyTypeDocumentTypeUsageTypeCommand */
-    public GetPartyTypeDocumentTypeUsageTypeCommand(UserVisitPK userVisitPK, GetPartyTypeDocumentTypeUsageTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetPartyTypeDocumentTypeUsageTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

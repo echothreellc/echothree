@@ -42,8 +42,8 @@ public class GetUnitOfMeasureEquivalentsCommand
     }
     
     /** Creates a new instance of GetUnitOfMeasureEquivalentsCommand */
-    public GetUnitOfMeasureEquivalentsCommand(UserVisitPK userVisitPK, GetUnitOfMeasureEquivalentsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetUnitOfMeasureEquivalentsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

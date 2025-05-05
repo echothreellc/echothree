@@ -54,8 +54,8 @@ public class SetDefaultPartyDocumentCommand
     }
     
     /** Creates a new instance of SetDefaultPartyDocumentCommand */
-    public SetDefaultPartyDocumentCommand(UserVisitPK userVisitPK, SetDefaultPartyDocumentForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultPartyDocumentCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

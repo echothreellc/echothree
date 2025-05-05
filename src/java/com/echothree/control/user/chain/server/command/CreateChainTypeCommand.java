@@ -59,8 +59,8 @@ public class CreateChainTypeCommand
     }
     
     /** Creates a new instance of CreateChainTypeCommand */
-    public CreateChainTypeCommand(UserVisitPK userVisitPK, CreateChainTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateChainTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

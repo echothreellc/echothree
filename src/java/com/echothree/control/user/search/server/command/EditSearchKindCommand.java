@@ -69,8 +69,8 @@ public class EditSearchKindCommand
     }
 
     /** Creates a new instance of EditSearchKindCommand */
-    public EditSearchKindCommand(UserVisitPK userVisitPK, EditSearchKindForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditSearchKindCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

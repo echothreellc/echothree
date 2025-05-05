@@ -60,8 +60,8 @@ public class CreateContactListContactMechanismPurposeCommand
     }
     
     /** Creates a new instance of CreateContactListContactMechanismPurposeCommand */
-    public CreateContactListContactMechanismPurposeCommand(UserVisitPK userVisitPK, CreateContactListContactMechanismPurposeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateContactListContactMechanismPurposeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

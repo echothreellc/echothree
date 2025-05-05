@@ -80,8 +80,8 @@ public class EditHarmonizedTariffScheduleCodeCommand
     }
 
     /** Creates a new instance of EditHarmonizedTariffScheduleCodeCommand */
-    public EditHarmonizedTariffScheduleCodeCommand(UserVisitPK userVisitPK, EditHarmonizedTariffScheduleCodeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditHarmonizedTariffScheduleCodeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

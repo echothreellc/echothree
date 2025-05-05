@@ -44,8 +44,8 @@ public class DeleteCustomerTypeCreditLimitCommand
     }
     
     /** Creates a new instance of DeleteCustomerTypeCreditLimitCommand */
-    public DeleteCustomerTypeCreditLimitCommand(UserVisitPK userVisitPK, DeleteCustomerTypeCreditLimitForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteCustomerTypeCreditLimitCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

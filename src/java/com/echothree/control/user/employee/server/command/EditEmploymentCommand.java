@@ -63,8 +63,8 @@ public class EditEmploymentCommand
     }
     
     /** Creates a new instance of EditEmploymentCommand */
-    public EditEmploymentCommand(UserVisitPK userVisitPK, EditEmploymentForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditEmploymentCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

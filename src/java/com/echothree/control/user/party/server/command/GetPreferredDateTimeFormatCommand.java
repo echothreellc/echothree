@@ -40,8 +40,8 @@ public class GetPreferredDateTimeFormatCommand
     }
 
     /** Creates a new instance of GetPreferredDateTimeFormatCommand */
-    public GetPreferredDateTimeFormatCommand(UserVisitPK userVisitPK, GetPreferredDateTimeFormatForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetPreferredDateTimeFormatCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

@@ -66,8 +66,8 @@ public class CreateContentCollectionCommand
     }
     
     /** Creates a new instance of CreateContentCollectionCommand */
-    public CreateContentCollectionCommand(UserVisitPK userVisitPK, CreateContentCollectionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateContentCollectionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

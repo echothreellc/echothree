@@ -53,8 +53,8 @@ public class GetIndexesCommand
     }
     
     /** Creates a new instance of GetIndexesCommand */
-    public GetIndexesCommand(UserVisitPK userVisitPK, GetIndexesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetIndexesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

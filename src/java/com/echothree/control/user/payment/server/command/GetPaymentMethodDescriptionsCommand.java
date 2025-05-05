@@ -56,8 +56,8 @@ public class GetPaymentMethodDescriptionsCommand
     }
     
     /** Creates a new instance of GetPaymentMethodDescriptionsCommand */
-    public GetPaymentMethodDescriptionsCommand(UserVisitPK userVisitPK, GetPaymentMethodDescriptionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetPaymentMethodDescriptionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

@@ -53,8 +53,8 @@ public class DeleteSourceCommand
     }
 
     /** Creates a new instance of DeleteSourceCommand */
-    public DeleteSourceCommand(UserVisitPK userVisitPK, DeleteSourceForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteSourceCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
 
     @Override

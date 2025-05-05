@@ -55,8 +55,8 @@ public class GetPurchaseOrderStatusChoicesCommand
     }
     
     /** Creates a new instance of GetPurchaseOrderStatusChoicesCommand */
-    public GetPurchaseOrderStatusChoicesCommand(UserVisitPK userVisitPK, GetPurchaseOrderStatusChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetPurchaseOrderStatusChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

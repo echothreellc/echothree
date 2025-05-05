@@ -58,8 +58,8 @@ public class CreateCarrierTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateCarrierTypeDescriptionCommand */
-    public CreateCarrierTypeDescriptionCommand(UserVisitPK userVisitPK, CreateCarrierTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateCarrierTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

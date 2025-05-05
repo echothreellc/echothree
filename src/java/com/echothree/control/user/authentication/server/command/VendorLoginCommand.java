@@ -31,7 +31,9 @@ import com.echothree.util.common.validation.FieldType;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class VendorLoginCommand
         extends BaseLoginCommand<VendorLoginForm> {
 
@@ -47,8 +49,8 @@ public class VendorLoginCommand
     }
     
     /** Creates a new instance of VendorLoginCommand */
-    public VendorLoginCommand(UserVisitPK userVisitPK, VendorLoginForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS);
+    public VendorLoginCommand() {
+        super(null, FORM_FIELD_DEFINITIONS);
     }
     
     @Override

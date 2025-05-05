@@ -53,8 +53,8 @@ public class GetCustomersCommand
     }
 
     /** Creates a new instance of GetCustomersCommand */
-    public GetCustomersCommand(UserVisitPK userVisitPK, GetCustomersForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetCustomersCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

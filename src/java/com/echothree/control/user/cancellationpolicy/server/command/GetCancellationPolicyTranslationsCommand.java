@@ -57,8 +57,8 @@ public class GetCancellationPolicyTranslationsCommand
     }
     
     /** Creates a new instance of GetCancellationPolicyTranslationsCommand */
-    public GetCancellationPolicyTranslationsCommand(UserVisitPK userVisitPK, GetCancellationPolicyTranslationsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetCancellationPolicyTranslationsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

@@ -54,8 +54,8 @@ public class SetDefaultDocumentTypeCommand
     }
     
     /** Creates a new instance of SetDefaultDocumentTypeCommand */
-    public SetDefaultDocumentTypeCommand(UserVisitPK userVisitPK, SetDefaultDocumentTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultDocumentTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -47,8 +47,8 @@ public class GetFreeOnBoardCommand
     }
     
     /** Creates a new instance of GetFreeOnBoardCommand */
-    public GetFreeOnBoardCommand(UserVisitPK userVisitPK, GetFreeOnBoardForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetFreeOnBoardCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

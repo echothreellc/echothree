@@ -23,7 +23,6 @@ import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.control.search.server.logic.UserVisitSearchFacetLogic;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -46,8 +45,8 @@ public abstract class BaseGetResultsFacetCommand<F extends BaseGetResultsFacetFo
     }
 
     /** Creates a new instance of BaseGetResultsFacetCommand */
-    protected BaseGetResultsFacetCommand(UserVisitPK userVisitPK, F form, CommandSecurityDefinition COMMAND_SECURITY_DEFINITION) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    protected BaseGetResultsFacetCommand(CommandSecurityDefinition COMMAND_SECURITY_DEFINITION) {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     protected BaseResult execute(final String componentVendorName, final String entityTypeName, final String searchKindName,

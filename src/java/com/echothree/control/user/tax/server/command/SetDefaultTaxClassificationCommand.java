@@ -56,8 +56,8 @@ public class SetDefaultTaxClassificationCommand
     }
     
     /** Creates a new instance of SetDefaultTaxClassificationCommand */
-    public SetDefaultTaxClassificationCommand(UserVisitPK userVisitPK, SetDefaultTaxClassificationForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultTaxClassificationCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

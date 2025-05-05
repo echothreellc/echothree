@@ -28,7 +28,6 @@ import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyAlias;
 import com.echothree.model.data.party.server.entity.PartyAliasType;
 import com.echothree.model.data.party.server.factory.PartyAliasFactory;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -38,7 +37,9 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class GetPartyAliasesCommand
@@ -55,13 +56,18 @@ public class GetPartyAliasesCommand
     }
     
     /** Creates a new instance of GetPartyAliasesCommand */
-    public GetPartyAliasesCommand(UserVisitPK userVisitPK, GetPartyAliasesForm form) {
-        super(userVisitPK, form, new CommandSecurityDefinition(List.of(
+    public GetPartyAliasesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
+    }
+
+    @Override
+    protected CommandSecurityDefinition getCommandSecurityDefinition() {
+        return new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(PartyAliasUtil.getInstance().getSecurityRoleGroupNameBySpecs(form, form), SecurityRoles.List.name())
-                ))
-        )), FORM_FIELD_DEFINITIONS, false);
+                )))
+        )));
     }
 
     Party party;

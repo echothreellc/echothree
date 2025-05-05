@@ -44,8 +44,8 @@ public class DeleteCommentUsageTypeCommand
     }
     
     /** Creates a new instance of DeleteCommentUsageTypeCommand */
-    public DeleteCommentUsageTypeCommand(UserVisitPK userVisitPK, DeleteCommentUsageTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteCommentUsageTypeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -47,8 +47,8 @@ public class GetEntityMessagesCommand
     }
     
     /** Creates a new instance of GetEntityMessagesCommand */
-    public GetEntityMessagesCommand(UserVisitPK userVisitPK, GetEntityMessagesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetEntityMessagesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

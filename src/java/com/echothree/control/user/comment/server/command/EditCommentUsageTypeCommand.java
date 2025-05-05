@@ -57,8 +57,8 @@ public class EditCommentUsageTypeCommand
     }
     
     /** Creates a new instance of EditCommentUsageTypeCommand */
-    public EditCommentUsageTypeCommand(UserVisitPK userVisitPK, EditCommentUsageTypeForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditCommentUsageTypeCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

@@ -57,8 +57,8 @@ public class DeleteLeaveReasonDescriptionCommand
     }
 
     /** Creates a new instance of DeleteLeaveReasonDescriptionCommand */
-    public DeleteLeaveReasonDescriptionCommand(UserVisitPK userVisitPK, DeleteLeaveReasonDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteLeaveReasonDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
    @Override

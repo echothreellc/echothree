@@ -44,8 +44,8 @@ public class CreatePostalAddressFormatCommand
     }
     
     /** Creates a new instance of CreatePostalAddressFormatCommand */
-    public CreatePostalAddressFormatCommand(UserVisitPK userVisitPK, CreatePostalAddressFormatForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreatePostalAddressFormatCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

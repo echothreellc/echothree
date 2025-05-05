@@ -56,8 +56,8 @@ public class CreateFilterEntranceStepCommand
     }
     
     /** Creates a new instance of CreateFilterEntranceStepCommand */
-    public CreateFilterEntranceStepCommand(UserVisitPK userVisitPK, CreateFilterEntranceStepForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateFilterEntranceStepCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

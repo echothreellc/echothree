@@ -57,8 +57,8 @@ public class GetIndexTypeDescriptionCommand
     }
     
     /** Creates a new instance of GetIndexTypeDescriptionCommand */
-    public GetIndexTypeDescriptionCommand(UserVisitPK userVisitPK, GetIndexTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetIndexTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

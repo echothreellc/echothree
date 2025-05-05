@@ -42,8 +42,8 @@ public class GetAssociateProgramDescriptionsCommand
     }
     
     /** Creates a new instance of GetAssociateProgramDescriptionsCommand */
-    public GetAssociateProgramDescriptionsCommand(UserVisitPK userVisitPK, GetAssociateProgramDescriptionsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetAssociateProgramDescriptionsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

@@ -31,8 +31,8 @@ import java.util.List;
 public abstract class BasePartyInventoryLevelCommand<F
         extends PartyInventoryLevelSpec> extends BaseSimpleCommand<F> {
     
-    protected BasePartyInventoryLevelCommand(UserVisitPK userVisitPK, F form, List<FieldDefinition> FORM_FIELD_DEFINITIONS) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    protected BasePartyInventoryLevelCommand(List<FieldDefinition> FORM_FIELD_DEFINITIONS) {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     protected String getPartyTypeName(final Party party) {

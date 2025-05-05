@@ -60,8 +60,8 @@ public class GetLotCommand
     }
     
     /** Creates a new instance of GetLotCommand */
-    public GetLotCommand(UserVisitPK userVisitPK, GetLotForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetLotCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

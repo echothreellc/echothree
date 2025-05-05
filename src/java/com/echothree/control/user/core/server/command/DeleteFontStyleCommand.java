@@ -55,8 +55,8 @@ public class DeleteFontStyleCommand
     }
     
     /** Creates a new instance of DeleteFontStyleCommand */
-    public DeleteFontStyleCommand(UserVisitPK userVisitPK, DeleteFontStyleForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteFontStyleCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

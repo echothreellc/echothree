@@ -55,8 +55,8 @@ public class SetDefaultTerminationReasonCommand
     }
     
     /** Creates a new instance of SetDefaultTerminationReasonCommand */
-    public SetDefaultTerminationReasonCommand(UserVisitPK userVisitPK, SetDefaultTerminationReasonForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultTerminationReasonCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

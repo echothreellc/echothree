@@ -56,8 +56,8 @@ public class GetProtocolDescriptionsCommand
     }
     
     /** Creates a new instance of GetProtocolDescriptionsCommand */
-    public GetProtocolDescriptionsCommand(UserVisitPK userVisitPK, GetProtocolDescriptionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetProtocolDescriptionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

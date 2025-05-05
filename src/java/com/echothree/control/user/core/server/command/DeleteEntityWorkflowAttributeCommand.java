@@ -56,8 +56,8 @@ public class DeleteEntityWorkflowAttributeCommand
     }
     
     /** Creates a new instance of DeleteEntityWorkflowAttributeCommand */
-    public DeleteEntityWorkflowAttributeCommand(UserVisitPK userVisitPK, DeleteEntityWorkflowAttributeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteEntityWorkflowAttributeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

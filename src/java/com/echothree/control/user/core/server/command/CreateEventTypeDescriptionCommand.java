@@ -44,8 +44,8 @@ public class CreateEventTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateEventTypeDescriptionCommand */
-    public CreateEventTypeDescriptionCommand(UserVisitPK userVisitPK, CreateEventTypeDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateEventTypeDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

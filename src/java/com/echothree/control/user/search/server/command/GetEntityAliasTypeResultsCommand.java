@@ -57,8 +57,8 @@ public class GetEntityAliasTypeResultsCommand
     }
 
     /** Creates a new instance of GetEntityAliasTypeResultsCommand */
-    public GetEntityAliasTypeResultsCommand(UserVisitPK userVisitPK, GetEntityAliasTypeResultsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetEntityAliasTypeResultsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

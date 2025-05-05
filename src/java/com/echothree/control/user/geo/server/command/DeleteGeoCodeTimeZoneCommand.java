@@ -57,8 +57,8 @@ public class DeleteGeoCodeTimeZoneCommand
     }
     
     /** Creates a new instance of DeleteGeoCodeTimeZoneCommand */
-    public DeleteGeoCodeTimeZoneCommand(UserVisitPK userVisitPK, DeleteGeoCodeTimeZoneForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteGeoCodeTimeZoneCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

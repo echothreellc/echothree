@@ -59,8 +59,8 @@ public class DeleteEntityIntegerRangeDescriptionCommand
     }
     
     /** Creates a new instance of DeleteEntityIntegerRangeDescriptionCommand */
-    public DeleteEntityIntegerRangeDescriptionCommand(UserVisitPK userVisitPK, DeleteEntityIntegerRangeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteEntityIntegerRangeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

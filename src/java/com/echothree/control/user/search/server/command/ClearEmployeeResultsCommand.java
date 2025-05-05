@@ -44,8 +44,8 @@ public class ClearEmployeeResultsCommand
     }
 
     /** Creates a new instance of ClearEmployeeResultsCommand */
-    public ClearEmployeeResultsCommand(UserVisitPK userVisitPK, ClearEmployeeResultsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION);
+    public ClearEmployeeResultsCommand() {
+        super(COMMAND_SECURITY_DEFINITION);
     }
     
     @Override

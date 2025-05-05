@@ -56,8 +56,8 @@ public class GetGlAccountClassDescriptionsCommand
     }
     
     /** Creates a new instance of GetGlAccountClassDescriptionsCommand */
-    public GetGlAccountClassDescriptionsCommand(UserVisitPK userVisitPK, GetGlAccountClassDescriptionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetGlAccountClassDescriptionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

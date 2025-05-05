@@ -58,8 +58,8 @@ public class CreateQueueTypeCommand
     }
     
     /** Creates a new instance of CreateQueueTypeCommand */
-    public CreateQueueTypeCommand(UserVisitPK userVisitPK, CreateQueueTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateQueueTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

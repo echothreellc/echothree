@@ -44,8 +44,8 @@ public class CreateScaleUseTypeCommand
     }
 
     /** Creates a new instance of CreateScaleUseTypeCommand */
-    public CreateScaleUseTypeCommand(UserVisitPK userVisitPK, CreateScaleUseTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateScaleUseTypeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
    @Override

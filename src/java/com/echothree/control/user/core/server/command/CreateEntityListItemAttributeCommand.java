@@ -53,8 +53,8 @@ public class CreateEntityListItemAttributeCommand
     }
     
     /** Creates a new instance of CreateEntityListItemAttributeCommand */
-    public CreateEntityListItemAttributeCommand(UserVisitPK userVisitPK, CreateEntityListItemAttributeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateEntityListItemAttributeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

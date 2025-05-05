@@ -56,8 +56,8 @@ public class SetDefaultEntityLongRangeCommand
     }
     
     /** Creates a new instance of SetDefaultEntityLongRangeCommand */
-    public SetDefaultEntityLongRangeCommand(UserVisitPK userVisitPK, SetDefaultEntityLongRangeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public SetDefaultEntityLongRangeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

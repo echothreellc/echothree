@@ -63,8 +63,8 @@ public class CreateEntityGeoPointDefaultCommand
     }
 
     /** Creates a new instance of CreateEntityGeoPointDefaultCommand */
-    public CreateEntityGeoPointDefaultCommand(UserVisitPK userVisitPK, CreateEntityGeoPointDefaultForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateEntityGeoPointDefaultCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

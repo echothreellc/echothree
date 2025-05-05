@@ -57,8 +57,8 @@ public class GetEntityAppearanceCommand
     }
     
     /** Creates a new instance of GetEntityAppearanceCommand */
-    public GetEntityAppearanceCommand(UserVisitPK userVisitPK, GetEntityAppearanceForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetEntityAppearanceCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

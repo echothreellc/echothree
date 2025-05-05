@@ -67,8 +67,8 @@ public class EditGlAccountCategoryDescriptionCommand
     }
     
     /** Creates a new instance of EditGlAccountCategoryDescriptionCommand */
-    public EditGlAccountCategoryDescriptionCommand(UserVisitPK userVisitPK, EditGlAccountCategoryDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditGlAccountCategoryDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

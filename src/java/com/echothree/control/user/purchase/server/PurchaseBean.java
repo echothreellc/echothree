@@ -43,17 +43,17 @@ public class PurchaseBean
 
     @Override
     public CommandResult createPurchaseOrder(UserVisitPK userVisitPK, CreatePurchaseOrderForm form) {
-        return new CreatePurchaseOrderCommand(userVisitPK, form).run();
+        return new CreatePurchaseOrderCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPurchaseOrderStatusChoices(UserVisitPK userVisitPK, GetPurchaseOrderStatusChoicesForm form) {
-        return new GetPurchaseOrderStatusChoicesCommand(userVisitPK, form).run();
+        return new GetPurchaseOrderStatusChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setPurchaseOrderStatus(UserVisitPK userVisitPK, SetPurchaseOrderStatusForm form) {
-        return new SetPurchaseOrderStatusCommand(userVisitPK, form).run();
+        return new SetPurchaseOrderStatusCommand().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -62,17 +62,17 @@ public class PurchaseBean
 
     @Override
     public CommandResult createPurchaseInvoice(UserVisitPK userVisitPK, CreatePurchaseInvoiceForm form) {
-        return new CreatePurchaseInvoiceCommand(userVisitPK, form).run();
+        return new CreatePurchaseInvoiceCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPurchaseInvoiceStatusChoices(UserVisitPK userVisitPK, GetPurchaseInvoiceStatusChoicesForm form) {
-        return new GetPurchaseInvoiceStatusChoicesCommand(userVisitPK, form).run();
+        return new GetPurchaseInvoiceStatusChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setPurchaseInvoiceStatus(UserVisitPK userVisitPK, SetPurchaseInvoiceStatusForm form) {
-        return new SetPurchaseInvoiceStatusCommand(userVisitPK, form).run();
+        return new SetPurchaseInvoiceStatusCommand().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -81,7 +81,7 @@ public class PurchaseBean
     
     @Override
     public CommandResult createPurchaseInvoiceLine(UserVisitPK userVisitPK, CreatePurchaseInvoiceLineForm form) {
-        return new CreatePurchaseInvoiceLineCommand(userVisitPK, form).run();
+        return new CreatePurchaseInvoiceLineCommand().run(userVisitPK, form);
     }
 
 }

@@ -58,8 +58,8 @@ public class GetReturnReasonCommand
     }
     
     /** Creates a new instance of GetReturnReasonCommand */
-    public GetReturnReasonCommand(UserVisitPK userVisitPK, GetReturnReasonForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetReturnReasonCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

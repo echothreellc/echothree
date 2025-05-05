@@ -53,8 +53,8 @@ public class DeleteCustomerTypeCommand
     }
     
     /** Creates a new instance of DeleteCustomerTypeCommand */
-    public DeleteCustomerTypeCommand(UserVisitPK userVisitPK, DeleteCustomerTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteCustomerTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

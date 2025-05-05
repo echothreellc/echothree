@@ -42,8 +42,8 @@ public class SetWebAddressStatusCommand
     }
 
     /** Creates a new instance of SetWebAddressStatusCommand */
-    public SetWebAddressStatusCommand(UserVisitPK userVisitPK, SetWebAddressStatusForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SetWebAddressStatusCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
 
     @Override

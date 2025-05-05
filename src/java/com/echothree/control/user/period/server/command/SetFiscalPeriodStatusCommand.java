@@ -55,8 +55,8 @@ public class SetFiscalPeriodStatusCommand
     }
     
     /** Creates a new instance of SetFiscalPeriodStatusCommand */
-    public SetFiscalPeriodStatusCommand(UserVisitPK userVisitPK, SetFiscalPeriodStatusForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetFiscalPeriodStatusCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

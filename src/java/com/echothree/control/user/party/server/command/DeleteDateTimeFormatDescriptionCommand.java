@@ -42,8 +42,8 @@ public class DeleteDateTimeFormatDescriptionCommand
     }
     
     /** Creates a new instance of DeleteDateTimeFormatDescriptionCommand */
-    public DeleteDateTimeFormatDescriptionCommand(UserVisitPK userVisitPK, DeleteDateTimeFormatDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteDateTimeFormatDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

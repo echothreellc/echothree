@@ -57,8 +57,8 @@ public class SetPartyContactListStatusCommand
     }
     
     /** Creates a new instance of SetPartyContactListStatusCommand */
-    public SetPartyContactListStatusCommand(UserVisitPK userVisitPK, SetPartyContactListStatusForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetPartyContactListStatusCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -42,8 +42,8 @@ public class SetDefaultWorkEffortScopeCommand
     }
     
     /** Creates a new instance of SetDefaultWorkEffortScopeCommand */
-    public SetDefaultWorkEffortScopeCommand(UserVisitPK userVisitPK, SetDefaultWorkEffortScopeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultWorkEffortScopeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

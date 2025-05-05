@@ -101,8 +101,8 @@ public class CreateCustomerTypeCommand
     }
     
     /** Creates a new instance of CreateCustomerTypeCommand */
-    public CreateCustomerTypeCommand(UserVisitPK userVisitPK, CreateCustomerTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateCustomerTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

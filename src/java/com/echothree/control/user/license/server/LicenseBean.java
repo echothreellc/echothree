@@ -43,37 +43,37 @@ public class LicenseBean
     
     @Override
     public CommandResult createLicenseType(UserVisitPK userVisitPK, CreateLicenseTypeForm form) {
-        return new CreateLicenseTypeCommand(userVisitPK, form).run();
+        return new CreateLicenseTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getLicenseTypeChoices(UserVisitPK userVisitPK, GetLicenseTypeChoicesForm form) {
-        return new GetLicenseTypeChoicesCommand(userVisitPK, form).run();
+        return new GetLicenseTypeChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getLicenseType(UserVisitPK userVisitPK, GetLicenseTypeForm form) {
-        return new GetLicenseTypeCommand(userVisitPK, form).run();
+        return new GetLicenseTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getLicenseTypes(UserVisitPK userVisitPK, GetLicenseTypesForm form) {
-        return new GetLicenseTypesCommand(userVisitPK, form).run();
+        return new GetLicenseTypesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultLicenseType(UserVisitPK userVisitPK, SetDefaultLicenseTypeForm form) {
-        return new SetDefaultLicenseTypeCommand(userVisitPK, form).run();
+        return new SetDefaultLicenseTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editLicenseType(UserVisitPK userVisitPK, EditLicenseTypeForm form) {
-        return new EditLicenseTypeCommand(userVisitPK, form).run();
+        return new EditLicenseTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteLicenseType(UserVisitPK userVisitPK, DeleteLicenseTypeForm form) {
-        return new DeleteLicenseTypeCommand(userVisitPK, form).run();
+        return new DeleteLicenseTypeCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -82,27 +82,27 @@ public class LicenseBean
     
     @Override
     public CommandResult createLicenseTypeDescription(UserVisitPK userVisitPK, CreateLicenseTypeDescriptionForm form) {
-        return new CreateLicenseTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateLicenseTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getLicenseTypeDescription(UserVisitPK userVisitPK, GetLicenseTypeDescriptionForm form) {
-        return new GetLicenseTypeDescriptionCommand(userVisitPK, form).run();
+        return new GetLicenseTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getLicenseTypeDescriptions(UserVisitPK userVisitPK, GetLicenseTypeDescriptionsForm form) {
-        return new GetLicenseTypeDescriptionsCommand(userVisitPK, form).run();
+        return new GetLicenseTypeDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editLicenseTypeDescription(UserVisitPK userVisitPK, EditLicenseTypeDescriptionForm form) {
-        return new EditLicenseTypeDescriptionCommand(userVisitPK, form).run();
+        return new EditLicenseTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteLicenseTypeDescription(UserVisitPK userVisitPK, DeleteLicenseTypeDescriptionForm form) {
-        return new DeleteLicenseTypeDescriptionCommand(userVisitPK, form).run();
+        return new DeleteLicenseTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -111,7 +111,7 @@ public class LicenseBean
     
     @Override
     public CommandResult updateLicense(UserVisitPK userVisitPK) {
-        return new UpdateLicenseCommand(userVisitPK).run();
+        return new UpdateLicenseCommand().run(userVisitPK);
     }
     
 }

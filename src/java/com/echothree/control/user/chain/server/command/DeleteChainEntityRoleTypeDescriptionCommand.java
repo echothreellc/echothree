@@ -59,8 +59,8 @@ public class DeleteChainEntityRoleTypeDescriptionCommand
     }
     
     /** Creates a new instance of DeleteChainEntityRoleTypeDescriptionCommand */
-    public DeleteChainEntityRoleTypeDescriptionCommand(UserVisitPK userVisitPK, DeleteChainEntityRoleTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteChainEntityRoleTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

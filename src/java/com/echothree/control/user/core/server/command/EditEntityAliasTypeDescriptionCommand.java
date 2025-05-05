@@ -71,8 +71,8 @@ public class EditEntityAliasTypeDescriptionCommand
     }
     
     /** Creates a new instance of EditEntityAliasTypeDescriptionCommand */
-    public EditEntityAliasTypeDescriptionCommand(UserVisitPK userVisitPK, EditEntityAliasTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditEntityAliasTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

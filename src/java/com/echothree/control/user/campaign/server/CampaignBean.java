@@ -43,47 +43,47 @@ public class CampaignBean
     
     @Override
     public CommandResult createCampaign(UserVisitPK userVisitPK, CreateCampaignForm form) {
-        return new CreateCampaignCommand(userVisitPK, form).run();
+        return new CreateCampaignCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCampaignChoices(UserVisitPK userVisitPK, GetCampaignChoicesForm form) {
-        return new GetCampaignChoicesCommand(userVisitPK, form).run();
+        return new GetCampaignChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCampaign(UserVisitPK userVisitPK, GetCampaignForm form) {
-        return new GetCampaignCommand(userVisitPK, form).run();
+        return new GetCampaignCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCampaigns(UserVisitPK userVisitPK, GetCampaignsForm form) {
-        return new GetCampaignsCommand(userVisitPK, form).run();
+        return new GetCampaignsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultCampaign(UserVisitPK userVisitPK, SetDefaultCampaignForm form) {
-        return new SetDefaultCampaignCommand(userVisitPK, form).run();
+        return new SetDefaultCampaignCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCampaignStatusChoices(UserVisitPK userVisitPK, GetCampaignStatusChoicesForm form) {
-        return new GetCampaignStatusChoicesCommand(userVisitPK, form).run();
+        return new GetCampaignStatusChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setCampaignStatus(UserVisitPK userVisitPK, SetCampaignStatusForm form) {
-        return new SetCampaignStatusCommand(userVisitPK, form).run();
+        return new SetCampaignStatusCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editCampaign(UserVisitPK userVisitPK, EditCampaignForm form) {
-        return new EditCampaignCommand(userVisitPK, form).run();
+        return new EditCampaignCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCampaign(UserVisitPK userVisitPK, DeleteCampaignForm form) {
-        return new DeleteCampaignCommand(userVisitPK, form).run();
+        return new DeleteCampaignCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -92,27 +92,27 @@ public class CampaignBean
     
     @Override
     public CommandResult createCampaignDescription(UserVisitPK userVisitPK, CreateCampaignDescriptionForm form) {
-        return new CreateCampaignDescriptionCommand(userVisitPK, form).run();
+        return new CreateCampaignDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCampaignDescription(UserVisitPK userVisitPK, GetCampaignDescriptionForm form) {
-        return new GetCampaignDescriptionCommand(userVisitPK, form).run();
+        return new GetCampaignDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCampaignDescriptions(UserVisitPK userVisitPK, GetCampaignDescriptionsForm form) {
-        return new GetCampaignDescriptionsCommand(userVisitPK, form).run();
+        return new GetCampaignDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editCampaignDescription(UserVisitPK userVisitPK, EditCampaignDescriptionForm form) {
-        return new EditCampaignDescriptionCommand(userVisitPK, form).run();
+        return new EditCampaignDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCampaignDescription(UserVisitPK userVisitPK, DeleteCampaignDescriptionForm form) {
-        return new DeleteCampaignDescriptionCommand(userVisitPK, form).run();
+        return new DeleteCampaignDescriptionCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -121,47 +121,47 @@ public class CampaignBean
     
     @Override
     public CommandResult createCampaignSource(UserVisitPK userVisitPK, CreateCampaignSourceForm form) {
-        return new CreateCampaignSourceCommand(userVisitPK, form).run();
+        return new CreateCampaignSourceCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCampaignSourceChoices(UserVisitPK userVisitPK, GetCampaignSourceChoicesForm form) {
-        return new GetCampaignSourceChoicesCommand(userVisitPK, form).run();
+        return new GetCampaignSourceChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCampaignSource(UserVisitPK userVisitPK, GetCampaignSourceForm form) {
-        return new GetCampaignSourceCommand(userVisitPK, form).run();
+        return new GetCampaignSourceCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCampaignSources(UserVisitPK userVisitPK, GetCampaignSourcesForm form) {
-        return new GetCampaignSourcesCommand(userVisitPK, form).run();
+        return new GetCampaignSourcesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultCampaignSource(UserVisitPK userVisitPK, SetDefaultCampaignSourceForm form) {
-        return new SetDefaultCampaignSourceCommand(userVisitPK, form).run();
+        return new SetDefaultCampaignSourceCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCampaignSourceStatusChoices(UserVisitPK userVisitPK, GetCampaignSourceStatusChoicesForm form) {
-        return new GetCampaignSourceStatusChoicesCommand(userVisitPK, form).run();
+        return new GetCampaignSourceStatusChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setCampaignSourceStatus(UserVisitPK userVisitPK, SetCampaignSourceStatusForm form) {
-        return new SetCampaignSourceStatusCommand(userVisitPK, form).run();
+        return new SetCampaignSourceStatusCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editCampaignSource(UserVisitPK userVisitPK, EditCampaignSourceForm form) {
-        return new EditCampaignSourceCommand(userVisitPK, form).run();
+        return new EditCampaignSourceCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCampaignSource(UserVisitPK userVisitPK, DeleteCampaignSourceForm form) {
-        return new DeleteCampaignSourceCommand(userVisitPK, form).run();
+        return new DeleteCampaignSourceCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -170,27 +170,27 @@ public class CampaignBean
     
     @Override
     public CommandResult createCampaignSourceDescription(UserVisitPK userVisitPK, CreateCampaignSourceDescriptionForm form) {
-        return new CreateCampaignSourceDescriptionCommand(userVisitPK, form).run();
+        return new CreateCampaignSourceDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCampaignSourceDescription(UserVisitPK userVisitPK, GetCampaignSourceDescriptionForm form) {
-        return new GetCampaignSourceDescriptionCommand(userVisitPK, form).run();
+        return new GetCampaignSourceDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCampaignSourceDescriptions(UserVisitPK userVisitPK, GetCampaignSourceDescriptionsForm form) {
-        return new GetCampaignSourceDescriptionsCommand(userVisitPK, form).run();
+        return new GetCampaignSourceDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editCampaignSourceDescription(UserVisitPK userVisitPK, EditCampaignSourceDescriptionForm form) {
-        return new EditCampaignSourceDescriptionCommand(userVisitPK, form).run();
+        return new EditCampaignSourceDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCampaignSourceDescription(UserVisitPK userVisitPK, DeleteCampaignSourceDescriptionForm form) {
-        return new DeleteCampaignSourceDescriptionCommand(userVisitPK, form).run();
+        return new DeleteCampaignSourceDescriptionCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -199,47 +199,47 @@ public class CampaignBean
     
     @Override
     public CommandResult createCampaignMedium(UserVisitPK userVisitPK, CreateCampaignMediumForm form) {
-        return new CreateCampaignMediumCommand(userVisitPK, form).run();
+        return new CreateCampaignMediumCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCampaignMediumChoices(UserVisitPK userVisitPK, GetCampaignMediumChoicesForm form) {
-        return new GetCampaignMediumChoicesCommand(userVisitPK, form).run();
+        return new GetCampaignMediumChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCampaignMedium(UserVisitPK userVisitPK, GetCampaignMediumForm form) {
-        return new GetCampaignMediumCommand(userVisitPK, form).run();
+        return new GetCampaignMediumCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCampaignMediums(UserVisitPK userVisitPK, GetCampaignMediumsForm form) {
-        return new GetCampaignMediumsCommand(userVisitPK, form).run();
+        return new GetCampaignMediumsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultCampaignMedium(UserVisitPK userVisitPK, SetDefaultCampaignMediumForm form) {
-        return new SetDefaultCampaignMediumCommand(userVisitPK, form).run();
+        return new SetDefaultCampaignMediumCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCampaignMediumStatusChoices(UserVisitPK userVisitPK, GetCampaignMediumStatusChoicesForm form) {
-        return new GetCampaignMediumStatusChoicesCommand(userVisitPK, form).run();
+        return new GetCampaignMediumStatusChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setCampaignMediumStatus(UserVisitPK userVisitPK, SetCampaignMediumStatusForm form) {
-        return new SetCampaignMediumStatusCommand(userVisitPK, form).run();
+        return new SetCampaignMediumStatusCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editCampaignMedium(UserVisitPK userVisitPK, EditCampaignMediumForm form) {
-        return new EditCampaignMediumCommand(userVisitPK, form).run();
+        return new EditCampaignMediumCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCampaignMedium(UserVisitPK userVisitPK, DeleteCampaignMediumForm form) {
-        return new DeleteCampaignMediumCommand(userVisitPK, form).run();
+        return new DeleteCampaignMediumCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -248,27 +248,27 @@ public class CampaignBean
     
     @Override
     public CommandResult createCampaignMediumDescription(UserVisitPK userVisitPK, CreateCampaignMediumDescriptionForm form) {
-        return new CreateCampaignMediumDescriptionCommand(userVisitPK, form).run();
+        return new CreateCampaignMediumDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCampaignMediumDescription(UserVisitPK userVisitPK, GetCampaignMediumDescriptionForm form) {
-        return new GetCampaignMediumDescriptionCommand(userVisitPK, form).run();
+        return new GetCampaignMediumDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCampaignMediumDescriptions(UserVisitPK userVisitPK, GetCampaignMediumDescriptionsForm form) {
-        return new GetCampaignMediumDescriptionsCommand(userVisitPK, form).run();
+        return new GetCampaignMediumDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editCampaignMediumDescription(UserVisitPK userVisitPK, EditCampaignMediumDescriptionForm form) {
-        return new EditCampaignMediumDescriptionCommand(userVisitPK, form).run();
+        return new EditCampaignMediumDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCampaignMediumDescription(UserVisitPK userVisitPK, DeleteCampaignMediumDescriptionForm form) {
-        return new DeleteCampaignMediumDescriptionCommand(userVisitPK, form).run();
+        return new DeleteCampaignMediumDescriptionCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -277,47 +277,47 @@ public class CampaignBean
     
     @Override
     public CommandResult createCampaignTerm(UserVisitPK userVisitPK, CreateCampaignTermForm form) {
-        return new CreateCampaignTermCommand(userVisitPK, form).run();
+        return new CreateCampaignTermCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCampaignTermChoices(UserVisitPK userVisitPK, GetCampaignTermChoicesForm form) {
-        return new GetCampaignTermChoicesCommand(userVisitPK, form).run();
+        return new GetCampaignTermChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCampaignTerm(UserVisitPK userVisitPK, GetCampaignTermForm form) {
-        return new GetCampaignTermCommand(userVisitPK, form).run();
+        return new GetCampaignTermCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCampaignTerms(UserVisitPK userVisitPK, GetCampaignTermsForm form) {
-        return new GetCampaignTermsCommand(userVisitPK, form).run();
+        return new GetCampaignTermsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultCampaignTerm(UserVisitPK userVisitPK, SetDefaultCampaignTermForm form) {
-        return new SetDefaultCampaignTermCommand(userVisitPK, form).run();
+        return new SetDefaultCampaignTermCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCampaignTermStatusChoices(UserVisitPK userVisitPK, GetCampaignTermStatusChoicesForm form) {
-        return new GetCampaignTermStatusChoicesCommand(userVisitPK, form).run();
+        return new GetCampaignTermStatusChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setCampaignTermStatus(UserVisitPK userVisitPK, SetCampaignTermStatusForm form) {
-        return new SetCampaignTermStatusCommand(userVisitPK, form).run();
+        return new SetCampaignTermStatusCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editCampaignTerm(UserVisitPK userVisitPK, EditCampaignTermForm form) {
-        return new EditCampaignTermCommand(userVisitPK, form).run();
+        return new EditCampaignTermCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCampaignTerm(UserVisitPK userVisitPK, DeleteCampaignTermForm form) {
-        return new DeleteCampaignTermCommand(userVisitPK, form).run();
+        return new DeleteCampaignTermCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -326,27 +326,27 @@ public class CampaignBean
     
     @Override
     public CommandResult createCampaignTermDescription(UserVisitPK userVisitPK, CreateCampaignTermDescriptionForm form) {
-        return new CreateCampaignTermDescriptionCommand(userVisitPK, form).run();
+        return new CreateCampaignTermDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCampaignTermDescription(UserVisitPK userVisitPK, GetCampaignTermDescriptionForm form) {
-        return new GetCampaignTermDescriptionCommand(userVisitPK, form).run();
+        return new GetCampaignTermDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCampaignTermDescriptions(UserVisitPK userVisitPK, GetCampaignTermDescriptionsForm form) {
-        return new GetCampaignTermDescriptionsCommand(userVisitPK, form).run();
+        return new GetCampaignTermDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editCampaignTermDescription(UserVisitPK userVisitPK, EditCampaignTermDescriptionForm form) {
-        return new EditCampaignTermDescriptionCommand(userVisitPK, form).run();
+        return new EditCampaignTermDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCampaignTermDescription(UserVisitPK userVisitPK, DeleteCampaignTermDescriptionForm form) {
-        return new DeleteCampaignTermDescriptionCommand(userVisitPK, form).run();
+        return new DeleteCampaignTermDescriptionCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -355,47 +355,47 @@ public class CampaignBean
     
     @Override
     public CommandResult createCampaignContent(UserVisitPK userVisitPK, CreateCampaignContentForm form) {
-        return new CreateCampaignContentCommand(userVisitPK, form).run();
+        return new CreateCampaignContentCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCampaignContentChoices(UserVisitPK userVisitPK, GetCampaignContentChoicesForm form) {
-        return new GetCampaignContentChoicesCommand(userVisitPK, form).run();
+        return new GetCampaignContentChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCampaignContent(UserVisitPK userVisitPK, GetCampaignContentForm form) {
-        return new GetCampaignContentCommand(userVisitPK, form).run();
+        return new GetCampaignContentCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCampaignContents(UserVisitPK userVisitPK, GetCampaignContentsForm form) {
-        return new GetCampaignContentsCommand(userVisitPK, form).run();
+        return new GetCampaignContentsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultCampaignContent(UserVisitPK userVisitPK, SetDefaultCampaignContentForm form) {
-        return new SetDefaultCampaignContentCommand(userVisitPK, form).run();
+        return new SetDefaultCampaignContentCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCampaignContentStatusChoices(UserVisitPK userVisitPK, GetCampaignContentStatusChoicesForm form) {
-        return new GetCampaignContentStatusChoicesCommand(userVisitPK, form).run();
+        return new GetCampaignContentStatusChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setCampaignContentStatus(UserVisitPK userVisitPK, SetCampaignContentStatusForm form) {
-        return new SetCampaignContentStatusCommand(userVisitPK, form).run();
+        return new SetCampaignContentStatusCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editCampaignContent(UserVisitPK userVisitPK, EditCampaignContentForm form) {
-        return new EditCampaignContentCommand(userVisitPK, form).run();
+        return new EditCampaignContentCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCampaignContent(UserVisitPK userVisitPK, DeleteCampaignContentForm form) {
-        return new DeleteCampaignContentCommand(userVisitPK, form).run();
+        return new DeleteCampaignContentCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -404,27 +404,27 @@ public class CampaignBean
     
     @Override
     public CommandResult createCampaignContentDescription(UserVisitPK userVisitPK, CreateCampaignContentDescriptionForm form) {
-        return new CreateCampaignContentDescriptionCommand(userVisitPK, form).run();
+        return new CreateCampaignContentDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCampaignContentDescription(UserVisitPK userVisitPK, GetCampaignContentDescriptionForm form) {
-        return new GetCampaignContentDescriptionCommand(userVisitPK, form).run();
+        return new GetCampaignContentDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCampaignContentDescriptions(UserVisitPK userVisitPK, GetCampaignContentDescriptionsForm form) {
-        return new GetCampaignContentDescriptionsCommand(userVisitPK, form).run();
+        return new GetCampaignContentDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editCampaignContentDescription(UserVisitPK userVisitPK, EditCampaignContentDescriptionForm form) {
-        return new EditCampaignContentDescriptionCommand(userVisitPK, form).run();
+        return new EditCampaignContentDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCampaignContentDescription(UserVisitPK userVisitPK, DeleteCampaignContentDescriptionForm form) {
-        return new DeleteCampaignContentDescriptionCommand(userVisitPK, form).run();
+        return new DeleteCampaignContentDescriptionCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -433,7 +433,7 @@ public class CampaignBean
     
     @Override
     public CommandResult createUserVisitCampaign(UserVisitPK userVisitPK, CreateUserVisitCampaignForm form) {
-        return new CreateUserVisitCampaignCommand(userVisitPK, form).run();
+        return new CreateUserVisitCampaignCommand().run(userVisitPK, form);
     }
     
 }

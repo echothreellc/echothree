@@ -58,8 +58,8 @@ public class CreateDocumentDescriptionCommand
     }
     
     /** Creates a new instance of CreateDocumentDescriptionCommand */
-    public CreateDocumentDescriptionCommand(UserVisitPK userVisitPK, CreateDocumentDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateDocumentDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -58,8 +58,8 @@ public class DeleteSecurityRoleDescriptionCommand
     }
     
     /** Creates a new instance of DeleteSecurityRoleDescriptionCommand */
-    public DeleteSecurityRoleDescriptionCommand(UserVisitPK userVisitPK, DeleteSecurityRoleDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteSecurityRoleDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

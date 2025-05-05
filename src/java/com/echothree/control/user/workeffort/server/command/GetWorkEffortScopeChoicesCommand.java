@@ -44,8 +44,8 @@ public class GetWorkEffortScopeChoicesCommand
     }
     
     /** Creates a new instance of GetWorkEffortScopeChoicesCommand */
-    public GetWorkEffortScopeChoicesCommand(UserVisitPK userVisitPK, GetWorkEffortScopeChoicesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public GetWorkEffortScopeChoicesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

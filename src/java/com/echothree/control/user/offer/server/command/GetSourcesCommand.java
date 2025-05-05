@@ -55,8 +55,8 @@ public class GetSourcesCommand
     }
     
     /** Creates a new instance of GetSourcesCommand */
-    public GetSourcesCommand(UserVisitPK userVisitPK, GetSourcesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetSourcesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

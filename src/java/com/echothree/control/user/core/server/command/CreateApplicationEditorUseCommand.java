@@ -64,8 +64,8 @@ public class CreateApplicationEditorUseCommand
     }
     
     /** Creates a new instance of CreateApplicationEditorUseCommand */
-    public CreateApplicationEditorUseCommand(UserVisitPK userVisitPK, CreateApplicationEditorUseForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateApplicationEditorUseCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

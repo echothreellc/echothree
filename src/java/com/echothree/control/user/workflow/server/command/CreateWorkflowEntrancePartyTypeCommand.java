@@ -58,8 +58,8 @@ public class CreateWorkflowEntrancePartyTypeCommand
     }
     
     /** Creates a new instance of CreateWorkflowEntrancePartyTypeCommand */
-    public CreateWorkflowEntrancePartyTypeCommand(UserVisitPK userVisitPK, CreateWorkflowEntrancePartyTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateWorkflowEntrancePartyTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

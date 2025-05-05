@@ -39,8 +39,8 @@ public class RemovedExpiredEntityLocksCommand
     }
     
     /** Creates a new instance of RemovedExpiredEntityLocksCommand */
-    public RemovedExpiredEntityLocksCommand(UserVisitPK userVisitPK) {
-        super(userVisitPK, COMMAND_SECURITY_DEFINITION, false);
+    public RemovedExpiredEntityLocksCommand() {
+        super(COMMAND_SECURITY_DEFINITION, false);
     }
 
     @Override

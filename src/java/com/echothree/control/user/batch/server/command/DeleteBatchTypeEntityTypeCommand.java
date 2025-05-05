@@ -43,8 +43,8 @@ public class DeleteBatchTypeEntityTypeCommand
     }
     
     /** Creates a new instance of DeleteBatchTypeEntityTypeCommand */
-    public DeleteBatchTypeEntityTypeCommand(UserVisitPK userVisitPK, DeleteBatchTypeEntityTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteBatchTypeEntityTypeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

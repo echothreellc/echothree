@@ -50,8 +50,8 @@ public class DeleteEntityLongDefaultCommand
     }
 
     /** Creates a new instance of CreateEntityLongDefaultCommand */
-    public DeleteEntityLongDefaultCommand(UserVisitPK userVisitPK, DeleteEntityLongDefaultForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteEntityLongDefaultCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

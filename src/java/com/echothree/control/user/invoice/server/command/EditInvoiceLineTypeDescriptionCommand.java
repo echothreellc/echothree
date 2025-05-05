@@ -68,8 +68,8 @@ public class EditInvoiceLineTypeDescriptionCommand
     }
     
     /** Creates a new instance of EditInvoiceLineTypeDescriptionCommand */
-    public EditInvoiceLineTypeDescriptionCommand(UserVisitPK userVisitPK, EditInvoiceLineTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditInvoiceLineTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

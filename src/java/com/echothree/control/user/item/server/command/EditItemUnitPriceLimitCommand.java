@@ -63,8 +63,8 @@ public class EditItemUnitPriceLimitCommand
     }
     
     /** Creates a new instance of EditItemUnitPriceLimitCommand */
-    public EditItemUnitPriceLimitCommand(UserVisitPK userVisitPK, EditItemUnitPriceLimitForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditItemUnitPriceLimitCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

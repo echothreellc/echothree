@@ -54,8 +54,8 @@ public class SetDefaultSymbolPositionCommand
     }
     
     /** Creates a new instance of SetDefaultSymbolPositionCommand */
-    public SetDefaultSymbolPositionCommand(UserVisitPK userVisitPK, SetDefaultSymbolPositionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultSymbolPositionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -56,8 +56,8 @@ public class GetSourceChoicesCommand
     }
     
     /** Creates a new instance of GetSourceChoicesCommand */
-    public GetSourceChoicesCommand(UserVisitPK userVisitPK, GetSourceChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetSourceChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

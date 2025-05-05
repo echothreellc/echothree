@@ -43,8 +43,8 @@ public class DeletePostalAddressFormatDescriptionCommand
     }
     
     /** Creates a new instance of DeletePostalAddressFormatDescriptionCommand */
-    public DeletePostalAddressFormatDescriptionCommand(UserVisitPK userVisitPK, DeletePostalAddressFormatDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeletePostalAddressFormatDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

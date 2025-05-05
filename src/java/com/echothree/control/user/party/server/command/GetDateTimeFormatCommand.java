@@ -51,8 +51,8 @@ public class GetDateTimeFormatCommand
     }
     
     /** Creates a new instance of GetDateTimeFormatCommand */
-    public GetDateTimeFormatCommand(UserVisitPK userVisitPK, GetDateTimeFormatForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetDateTimeFormatCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

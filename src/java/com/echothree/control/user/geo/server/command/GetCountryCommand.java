@@ -71,8 +71,8 @@ public class GetCountryCommand
     Log log = null;
     
     /** Creates a new instance of GetCountryCommand */
-    public GetCountryCommand(UserVisitPK userVisitPK, GetCountryForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetCountryCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
         
         if(GeoDebugFlags.GetCountryCommand) {
             log = getLog();

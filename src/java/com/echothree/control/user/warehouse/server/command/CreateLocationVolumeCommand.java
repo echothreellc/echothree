@@ -65,8 +65,8 @@ public class CreateLocationVolumeCommand
     }
     
     /** Creates a new instance of CreateLocationVolumeCommand */
-    public CreateLocationVolumeCommand(UserVisitPK userVisitPK, CreateLocationVolumeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateLocationVolumeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -57,8 +57,8 @@ public class CreateCommandMessageCommand
     }
     
     /** Creates a new instance of CreateCommandMessageCommand */
-    public CreateCommandMessageCommand(UserVisitPK userVisitPK, CreateCommandMessageForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateCommandMessageCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

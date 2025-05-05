@@ -59,8 +59,8 @@ public class GetFiltersCommand
     }
     
     /** Creates a new instance of GetFiltersCommand */
-    public GetFiltersCommand(UserVisitPK userVisitPK, GetFiltersForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetFiltersCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     FilterType filterType;

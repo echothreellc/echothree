@@ -70,8 +70,8 @@ public class EditPicklistTimeTypeCommand
     }
     
     /** Creates a new instance of EditPicklistTimeTypeCommand */
-    public EditPicklistTimeTypeCommand(UserVisitPK userVisitPK, EditPicklistTimeTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditPicklistTimeTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

@@ -70,8 +70,8 @@ public class EditShipmentTimeTypeDescriptionCommand
     }
     
     /** Creates a new instance of EditShipmentTimeTypeDescriptionCommand */
-    public EditShipmentTimeTypeDescriptionCommand(UserVisitPK userVisitPK, EditShipmentTimeTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditShipmentTimeTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

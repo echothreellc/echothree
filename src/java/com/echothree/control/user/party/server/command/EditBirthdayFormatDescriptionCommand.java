@@ -68,8 +68,8 @@ public class EditBirthdayFormatDescriptionCommand
     }
 
     /** Creates a new instance of EditBirthdayFormatDescriptionCommand */
-    public EditBirthdayFormatDescriptionCommand(UserVisitPK userVisitPK, EditBirthdayFormatDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditBirthdayFormatDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

@@ -58,8 +58,8 @@ public class CreateBirthdayFormatCommand
     }
     
     /** Creates a new instance of CreateBirthdayFormatCommand */
-    public CreateBirthdayFormatCommand(UserVisitPK userVisitPK, CreateBirthdayFormatForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateBirthdayFormatCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

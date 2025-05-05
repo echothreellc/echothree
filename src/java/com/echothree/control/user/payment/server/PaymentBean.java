@@ -43,7 +43,7 @@ public class PaymentBean
     
     @Override
     public CommandResult createBillingAccountRoleType(UserVisitPK userVisitPK, CreateBillingAccountRoleTypeForm form) {
-        return new CreateBillingAccountRoleTypeCommand(userVisitPK, form).run();
+        return new CreateBillingAccountRoleTypeCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -52,7 +52,7 @@ public class PaymentBean
     
     @Override
     public CommandResult createBillingAccountRoleTypeDescription(UserVisitPK userVisitPK, CreateBillingAccountRoleTypeDescriptionForm form) {
-        return new CreateBillingAccountRoleTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateBillingAccountRoleTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -61,37 +61,37 @@ public class PaymentBean
 
     @Override
     public CommandResult createPaymentMethodType(UserVisitPK userVisitPK, CreatePaymentMethodTypeForm form) {
-        return new CreatePaymentMethodTypeCommand(userVisitPK, form).run();
+        return new CreatePaymentMethodTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPaymentMethodTypes(UserVisitPK userVisitPK, GetPaymentMethodTypesForm form) {
-        return new GetPaymentMethodTypesCommand(userVisitPK, form).run();
+        return new GetPaymentMethodTypesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPaymentMethodType(UserVisitPK userVisitPK, GetPaymentMethodTypeForm form) {
-        return new GetPaymentMethodTypeCommand(userVisitPK, form).run();
+        return new GetPaymentMethodTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPaymentMethodTypeChoices(UserVisitPK userVisitPK, GetPaymentMethodTypeChoicesForm form) {
-        return new GetPaymentMethodTypeChoicesCommand(userVisitPK, form).run();
+        return new GetPaymentMethodTypeChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultPaymentMethodType(UserVisitPK userVisitPK, SetDefaultPaymentMethodTypeForm form) {
-        return new SetDefaultPaymentMethodTypeCommand(userVisitPK, form).run();
+        return new SetDefaultPaymentMethodTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editPaymentMethodType(UserVisitPK userVisitPK, EditPaymentMethodTypeForm form) {
-        return new EditPaymentMethodTypeCommand(userVisitPK, form).run();
+        return new EditPaymentMethodTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deletePaymentMethodType(UserVisitPK userVisitPK, DeletePaymentMethodTypeForm form) {
-        return new DeletePaymentMethodTypeCommand(userVisitPK, form).run();
+        return new DeletePaymentMethodTypeCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -100,22 +100,22 @@ public class PaymentBean
 
     @Override
     public CommandResult createPaymentMethodTypeDescription(UserVisitPK userVisitPK, CreatePaymentMethodTypeDescriptionForm form) {
-        return new CreatePaymentMethodTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreatePaymentMethodTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPaymentMethodTypeDescriptions(UserVisitPK userVisitPK, GetPaymentMethodTypeDescriptionsForm form) {
-        return new GetPaymentMethodTypeDescriptionsCommand(userVisitPK, form).run();
+        return new GetPaymentMethodTypeDescriptionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editPaymentMethodTypeDescription(UserVisitPK userVisitPK, EditPaymentMethodTypeDescriptionForm form) {
-        return new EditPaymentMethodTypeDescriptionCommand(userVisitPK, form).run();
+        return new EditPaymentMethodTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deletePaymentMethodTypeDescription(UserVisitPK userVisitPK, DeletePaymentMethodTypeDescriptionForm form) {
-        return new DeletePaymentMethodTypeDescriptionCommand(userVisitPK, form).run();
+        return new DeletePaymentMethodTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -124,37 +124,37 @@ public class PaymentBean
 
     @Override
     public CommandResult createPaymentMethodTypePartyType(UserVisitPK userVisitPK, CreatePaymentMethodTypePartyTypeForm form) {
-        return new CreatePaymentMethodTypePartyTypeCommand(userVisitPK, form).run();
+        return new CreatePaymentMethodTypePartyTypeCommand().run(userVisitPK, form);
     }
 
 //    @Override
 //    public CommandResult getPaymentMethodTypePartyTypes(UserVisitPK userVisitPK, GetPaymentMethodTypePartyTypesForm form) {
-//        return new GetPaymentMethodTypePartyTypesCommand(userVisitPK, form).run();
+//        return new GetPaymentMethodTypePartyTypesCommand().run(userVisitPK, form);
 //    }
 //
 //    @Override
 //    public CommandResult getPaymentMethodTypePartyType(UserVisitPK userVisitPK, GetPaymentMethodTypePartyTypeForm form) {
-//        return new GetPaymentMethodTypePartyTypeCommand(userVisitPK, form).run();
+//        return new GetPaymentMethodTypePartyTypeCommand().run(userVisitPK, form);
 //    }
 //
 //    @Override
 //    public CommandResult getPaymentMethodTypePartyTypeChoices(UserVisitPK userVisitPK, GetPaymentMethodTypePartyTypeChoicesForm form) {
-//        return new GetPaymentMethodTypePartyTypeChoicesCommand(userVisitPK, form).run();
+//        return new GetPaymentMethodTypePartyTypeChoicesCommand().run(userVisitPK, form);
 //    }
 //
 //    @Override
 //    public CommandResult setDefaultPaymentMethodTypePartyType(UserVisitPK userVisitPK, SetDefaultPaymentMethodTypePartyTypeForm form) {
-//        return new SetDefaultPaymentMethodTypePartyTypeCommand(userVisitPK, form).run();
+//        return new SetDefaultPaymentMethodTypePartyTypeCommand().run(userVisitPK, form);
 //    }
 //
 //    @Override
 //    public CommandResult editPaymentMethodTypePartyType(UserVisitPK userVisitPK, EditPaymentMethodTypePartyTypeForm form) {
-//        return new EditPaymentMethodTypePartyTypeCommand(userVisitPK, form).run();
+//        return new EditPaymentMethodTypePartyTypeCommand().run(userVisitPK, form);
 //    }
 //
 //    @Override
 //    public CommandResult deletePaymentMethodTypePartyType(UserVisitPK userVisitPK, DeletePaymentMethodTypePartyTypeForm form) {
-//        return new DeletePaymentMethodTypePartyTypeCommand(userVisitPK, form).run();
+//        return new DeletePaymentMethodTypePartyTypeCommand().run(userVisitPK, form);
 //    }
 
     // -------------------------------------------------------------------------
@@ -163,37 +163,37 @@ public class PaymentBean
 
     @Override
     public CommandResult createPaymentProcessorType(UserVisitPK userVisitPK, CreatePaymentProcessorTypeForm form) {
-        return new CreatePaymentProcessorTypeCommand(userVisitPK, form).run();
+        return new CreatePaymentProcessorTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPaymentProcessorTypes(UserVisitPK userVisitPK, GetPaymentProcessorTypesForm form) {
-        return new GetPaymentProcessorTypesCommand(userVisitPK, form).run();
+        return new GetPaymentProcessorTypesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPaymentProcessorType(UserVisitPK userVisitPK, GetPaymentProcessorTypeForm form) {
-        return new GetPaymentProcessorTypeCommand(userVisitPK, form).run();
+        return new GetPaymentProcessorTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPaymentProcessorTypeChoices(UserVisitPK userVisitPK, GetPaymentProcessorTypeChoicesForm form) {
-        return new GetPaymentProcessorTypeChoicesCommand(userVisitPK, form).run();
+        return new GetPaymentProcessorTypeChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultPaymentProcessorType(UserVisitPK userVisitPK, SetDefaultPaymentProcessorTypeForm form) {
-        return new SetDefaultPaymentProcessorTypeCommand(userVisitPK, form).run();
+        return new SetDefaultPaymentProcessorTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editPaymentProcessorType(UserVisitPK userVisitPK, EditPaymentProcessorTypeForm form) {
-        return new EditPaymentProcessorTypeCommand(userVisitPK, form).run();
+        return new EditPaymentProcessorTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deletePaymentProcessorType(UserVisitPK userVisitPK, DeletePaymentProcessorTypeForm form) {
-        return new DeletePaymentProcessorTypeCommand(userVisitPK, form).run();
+        return new DeletePaymentProcessorTypeCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -202,22 +202,22 @@ public class PaymentBean
 
     @Override
     public CommandResult createPaymentProcessorTypeDescription(UserVisitPK userVisitPK, CreatePaymentProcessorTypeDescriptionForm form) {
-        return new CreatePaymentProcessorTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreatePaymentProcessorTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPaymentProcessorTypeDescriptions(UserVisitPK userVisitPK, GetPaymentProcessorTypeDescriptionsForm form) {
-        return new GetPaymentProcessorTypeDescriptionsCommand(userVisitPK, form).run();
+        return new GetPaymentProcessorTypeDescriptionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editPaymentProcessorTypeDescription(UserVisitPK userVisitPK, EditPaymentProcessorTypeDescriptionForm form) {
-        return new EditPaymentProcessorTypeDescriptionCommand(userVisitPK, form).run();
+        return new EditPaymentProcessorTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deletePaymentProcessorTypeDescription(UserVisitPK userVisitPK, DeletePaymentProcessorTypeDescriptionForm form) {
-        return new DeletePaymentProcessorTypeDescriptionCommand(userVisitPK, form).run();
+        return new DeletePaymentProcessorTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -226,37 +226,37 @@ public class PaymentBean
 
     @Override
     public CommandResult createPaymentProcessorTypeCodeType(UserVisitPK userVisitPK, CreatePaymentProcessorTypeCodeTypeForm form) {
-        return new CreatePaymentProcessorTypeCodeTypeCommand(userVisitPK, form).run();
+        return new CreatePaymentProcessorTypeCodeTypeCommand().run(userVisitPK, form);
     }
 
 //    @Override
 //    public CommandResult getPaymentProcessorTypeCodeTypes(UserVisitPK userVisitPK, GetPaymentProcessorTypeCodeTypesForm form) {
-//        return new GetPaymentProcessorTypeCodeTypesCommand(userVisitPK, form).run();
+//        return new GetPaymentProcessorTypeCodeTypesCommand().run(userVisitPK, form);
 //    }
 
     @Override
     public CommandResult getPaymentProcessorTypeCodeType(UserVisitPK userVisitPK, GetPaymentProcessorTypeCodeTypeForm form) {
-        return new GetPaymentProcessorTypeCodeTypeCommand(userVisitPK, form).run();
+        return new GetPaymentProcessorTypeCodeTypeCommand().run(userVisitPK, form);
     }
 
 //    @Override
 //    public CommandResult getPaymentProcessorTypeCodeTypeChoices(UserVisitPK userVisitPK, GetPaymentProcessorTypeCodeTypeChoicesForm form) {
-//        return new GetPaymentProcessorTypeCodeTypeChoicesCommand(userVisitPK, form).run();
+//        return new GetPaymentProcessorTypeCodeTypeChoicesCommand().run(userVisitPK, form);
 //    }
 //
 //    @Override
 //    public CommandResult setDefaultPaymentProcessorTypeCodeType(UserVisitPK userVisitPK, SetDefaultPaymentProcessorTypeCodeTypeForm form) {
-//        return new SetDefaultPaymentProcessorTypeCodeTypeCommand(userVisitPK, form).run();
+//        return new SetDefaultPaymentProcessorTypeCodeTypeCommand().run(userVisitPK, form);
 //    }
 //
 //    @Override
 //    public CommandResult editPaymentProcessorTypeCodeType(UserVisitPK userVisitPK, EditPaymentProcessorTypeCodeTypeForm form) {
-//        return new EditPaymentProcessorTypeCodeTypeCommand(userVisitPK, form).run();
+//        return new EditPaymentProcessorTypeCodeTypeCommand().run(userVisitPK, form);
 //    }
 //
 //    @Override
 //    public CommandResult deletePaymentProcessorTypeCodeType(UserVisitPK userVisitPK, DeletePaymentProcessorTypeCodeTypeForm form) {
-//        return new DeletePaymentProcessorTypeCodeTypeCommand(userVisitPK, form).run();
+//        return new DeletePaymentProcessorTypeCodeTypeCommand().run(userVisitPK, form);
 //    }
 
     // -------------------------------------------------------------------------
@@ -265,27 +265,27 @@ public class PaymentBean
 
     @Override
     public CommandResult createPaymentProcessorTypeCodeTypeDescription(UserVisitPK userVisitPK, CreatePaymentProcessorTypeCodeTypeDescriptionForm form) {
-        return new CreatePaymentProcessorTypeCodeTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreatePaymentProcessorTypeCodeTypeDescriptionCommand().run(userVisitPK, form);
     }
 
 //    @Override
 //    public CommandResult getPaymentProcessorTypeCodeTypeDescription(UserVisitPK userVisitPK, GetPaymentProcessorTypeCodeTypeDescriptionForm form) {
-//        return new GetPaymentProcessorTypeCodeTypeDescriptionCommand(userVisitPK, form).run();
+//        return new GetPaymentProcessorTypeCodeTypeDescriptionCommand().run(userVisitPK, form);
 //    }
 //
 //    @Override
 //    public CommandResult getPaymentProcessorTypeCodeTypeDescriptions(UserVisitPK userVisitPK, GetPaymentProcessorTypeCodeTypeDescriptionsForm form) {
-//        return new GetPaymentProcessorTypeCodeTypeDescriptionsCommand(userVisitPK, form).run();
+//        return new GetPaymentProcessorTypeCodeTypeDescriptionsCommand().run(userVisitPK, form);
 //    }
 //
 //    @Override
 //    public CommandResult editPaymentProcessorTypeCodeTypeDescription(UserVisitPK userVisitPK, EditPaymentProcessorTypeCodeTypeDescriptionForm form) {
-//        return new EditPaymentProcessorTypeCodeTypeDescriptionCommand(userVisitPK, form).run();
+//        return new EditPaymentProcessorTypeCodeTypeDescriptionCommand().run(userVisitPK, form);
 //    }
 //
 //    @Override
 //    public CommandResult deletePaymentProcessorTypeCodeTypeDescription(UserVisitPK userVisitPK, DeletePaymentProcessorTypeCodeTypeDescriptionForm form) {
-//        return new DeletePaymentProcessorTypeCodeTypeDescriptionCommand(userVisitPK, form).run();
+//        return new DeletePaymentProcessorTypeCodeTypeDescriptionCommand().run(userVisitPK, form);
 //    }
 
     // -------------------------------------------------------------------------
@@ -294,37 +294,37 @@ public class PaymentBean
 
     @Override
     public CommandResult createPaymentProcessorTypeCode(UserVisitPK userVisitPK, CreatePaymentProcessorTypeCodeForm form) {
-        return new CreatePaymentProcessorTypeCodeCommand(userVisitPK, form).run();
+        return new CreatePaymentProcessorTypeCodeCommand().run(userVisitPK, form);
     }
 
 //    @Override
 //    public CommandResult getPaymentProcessorTypeCodes(UserVisitPK userVisitPK, GetPaymentProcessorTypeCodesForm form) {
-//        return new GetPaymentProcessorTypeCodesCommand(userVisitPK, form).run();
+//        return new GetPaymentProcessorTypeCodesCommand().run(userVisitPK, form);
 //    }
 
     @Override
     public CommandResult getPaymentProcessorTypeCode(UserVisitPK userVisitPK, GetPaymentProcessorTypeCodeForm form) {
-        return new GetPaymentProcessorTypeCodeCommand(userVisitPK, form).run();
+        return new GetPaymentProcessorTypeCodeCommand().run(userVisitPK, form);
     }
 
 //    @Override
 //    public CommandResult getPaymentProcessorTypeCodeChoices(UserVisitPK userVisitPK, GetPaymentProcessorTypeCodeChoicesForm form) {
-//        return new GetPaymentProcessorTypeCodeChoicesCommand(userVisitPK, form).run();
+//        return new GetPaymentProcessorTypeCodeChoicesCommand().run(userVisitPK, form);
 //    }
 //
 //    @Override
 //    public CommandResult setDefaultPaymentProcessorTypeCode(UserVisitPK userVisitPK, SetDefaultPaymentProcessorTypeCodeForm form) {
-//        return new SetDefaultPaymentProcessorTypeCodeCommand(userVisitPK, form).run();
+//        return new SetDefaultPaymentProcessorTypeCodeCommand().run(userVisitPK, form);
 //    }
 //
 //    @Override
 //    public CommandResult editPaymentProcessorTypeCode(UserVisitPK userVisitPK, EditPaymentProcessorTypeCodeForm form) {
-//        return new EditPaymentProcessorTypeCodeCommand(userVisitPK, form).run();
+//        return new EditPaymentProcessorTypeCodeCommand().run(userVisitPK, form);
 //    }
 //
 //    @Override
 //    public CommandResult deletePaymentProcessorTypeCode(UserVisitPK userVisitPK, DeletePaymentProcessorTypeCodeForm form) {
-//        return new DeletePaymentProcessorTypeCodeCommand(userVisitPK, form).run();
+//        return new DeletePaymentProcessorTypeCodeCommand().run(userVisitPK, form);
 //    }
 
     // -------------------------------------------------------------------------
@@ -333,27 +333,27 @@ public class PaymentBean
 
     @Override
     public CommandResult createPaymentProcessorTypeCodeDescription(UserVisitPK userVisitPK, CreatePaymentProcessorTypeCodeDescriptionForm form) {
-        return new CreatePaymentProcessorTypeCodeDescriptionCommand(userVisitPK, form).run();
+        return new CreatePaymentProcessorTypeCodeDescriptionCommand().run(userVisitPK, form);
     }
 
 //    @Override
 //    public CommandResult getPaymentProcessorTypeCodeDescription(UserVisitPK userVisitPK, GetPaymentProcessorTypeCodeDescriptionForm form) {
-//        return new GetPaymentProcessorTypeCodeDescriptionCommand(userVisitPK, form).run();
+//        return new GetPaymentProcessorTypeCodeDescriptionCommand().run(userVisitPK, form);
 //    }
 //
 //    @Override
 //    public CommandResult getPaymentProcessorTypeCodeDescriptions(UserVisitPK userVisitPK, GetPaymentProcessorTypeCodeDescriptionsForm form) {
-//        return new GetPaymentProcessorTypeCodeDescriptionsCommand(userVisitPK, form).run();
+//        return new GetPaymentProcessorTypeCodeDescriptionsCommand().run(userVisitPK, form);
 //    }
 //
 //    @Override
 //    public CommandResult editPaymentProcessorTypeCodeDescription(UserVisitPK userVisitPK, EditPaymentProcessorTypeCodeDescriptionForm form) {
-//        return new EditPaymentProcessorTypeCodeDescriptionCommand(userVisitPK, form).run();
+//        return new EditPaymentProcessorTypeCodeDescriptionCommand().run(userVisitPK, form);
 //    }
 //
 //    @Override
 //    public CommandResult deletePaymentProcessorTypeCodeDescription(UserVisitPK userVisitPK, DeletePaymentProcessorTypeCodeDescriptionForm form) {
-//        return new DeletePaymentProcessorTypeCodeDescriptionCommand(userVisitPK, form).run();
+//        return new DeletePaymentProcessorTypeCodeDescriptionCommand().run(userVisitPK, form);
 //    }
 
     // -------------------------------------------------------------------------
@@ -362,37 +362,37 @@ public class PaymentBean
 
     @Override
     public CommandResult createPaymentProcessorTypeAction(UserVisitPK userVisitPK, CreatePaymentProcessorTypeActionForm form) {
-        return new CreatePaymentProcessorTypeActionCommand(userVisitPK, form).run();
+        return new CreatePaymentProcessorTypeActionCommand().run(userVisitPK, form);
     }
 
 //    @Override
 //    public CommandResult getPaymentProcessorTypeActions(UserVisitPK userVisitPK, GetPaymentProcessorTypeActionsForm form) {
-//        return new GetPaymentProcessorTypeActionsCommand(userVisitPK, form).run();
+//        return new GetPaymentProcessorTypeActionsCommand().run(userVisitPK, form);
 //    }
 //
 //    @Override
 //    public CommandResult getPaymentProcessorTypeAction(UserVisitPK userVisitPK, GetPaymentProcessorTypeActionForm form) {
-//        return new GetPaymentProcessorTypeActionCommand(userVisitPK, form).run();
+//        return new GetPaymentProcessorTypeActionCommand().run(userVisitPK, form);
 //    }
 //
 //    @Override
 //    public CommandResult getPaymentProcessorTypeActionChoices(UserVisitPK userVisitPK, GetPaymentProcessorTypeActionChoicesForm form) {
-//        return new GetPaymentProcessorTypeActionChoicesCommand(userVisitPK, form).run();
+//        return new GetPaymentProcessorTypeActionChoicesCommand().run(userVisitPK, form);
 //    }
 //
 //    @Override
 //    public CommandResult setDefaultPaymentProcessorTypeAction(UserVisitPK userVisitPK, SetDefaultPaymentProcessorTypeActionForm form) {
-//        return new SetDefaultPaymentProcessorTypeActionCommand(userVisitPK, form).run();
+//        return new SetDefaultPaymentProcessorTypeActionCommand().run(userVisitPK, form);
 //    }
 //
 //    @Override
 //    public CommandResult editPaymentProcessorTypeAction(UserVisitPK userVisitPK, EditPaymentProcessorTypeActionForm form) {
-//        return new EditPaymentProcessorTypeActionCommand(userVisitPK, form).run();
+//        return new EditPaymentProcessorTypeActionCommand().run(userVisitPK, form);
 //    }
 //
 //    @Override
 //    public CommandResult deletePaymentProcessorTypeAction(UserVisitPK userVisitPK, DeletePaymentProcessorTypeActionForm form) {
-//        return new DeletePaymentProcessorTypeActionCommand(userVisitPK, form).run();
+//        return new DeletePaymentProcessorTypeActionCommand().run(userVisitPK, form);
 //    }
 
     // -------------------------------------------------------------------------
@@ -401,37 +401,37 @@ public class PaymentBean
     
     @Override
     public CommandResult createPaymentProcessor(UserVisitPK userVisitPK, CreatePaymentProcessorForm form) {
-        return new CreatePaymentProcessorCommand(userVisitPK, form).run();
+        return new CreatePaymentProcessorCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editPaymentProcessor(UserVisitPK userVisitPK, EditPaymentProcessorForm form) {
-        return new EditPaymentProcessorCommand(userVisitPK, form).run();
+        return new EditPaymentProcessorCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPaymentProcessors(UserVisitPK userVisitPK, GetPaymentProcessorsForm form) {
-        return new GetPaymentProcessorsCommand(userVisitPK, form).run();
+        return new GetPaymentProcessorsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPaymentProcessor(UserVisitPK userVisitPK, GetPaymentProcessorForm form) {
-        return new GetPaymentProcessorCommand(userVisitPK, form).run();
+        return new GetPaymentProcessorCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPaymentProcessorChoices(UserVisitPK userVisitPK, GetPaymentProcessorChoicesForm form) {
-        return new GetPaymentProcessorChoicesCommand(userVisitPK, form).run();
+        return new GetPaymentProcessorChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultPaymentProcessor(UserVisitPK userVisitPK, SetDefaultPaymentProcessorForm form) {
-        return new SetDefaultPaymentProcessorCommand(userVisitPK, form).run();
+        return new SetDefaultPaymentProcessorCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deletePaymentProcessor(UserVisitPK userVisitPK, DeletePaymentProcessorForm form) {
-        return new DeletePaymentProcessorCommand(userVisitPK, form).run();
+        return new DeletePaymentProcessorCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -440,27 +440,27 @@ public class PaymentBean
 
     @Override
     public CommandResult createPaymentProcessorDescription(UserVisitPK userVisitPK, CreatePaymentProcessorDescriptionForm form) {
-        return new CreatePaymentProcessorDescriptionCommand(userVisitPK, form).run();
+        return new CreatePaymentProcessorDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editPaymentProcessorDescription(UserVisitPK userVisitPK, EditPaymentProcessorDescriptionForm form) {
-        return new EditPaymentProcessorDescriptionCommand(userVisitPK, form).run();
+        return new EditPaymentProcessorDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPaymentProcessorDescription(UserVisitPK userVisitPK, GetPaymentProcessorDescriptionForm form) {
-        return new GetPaymentProcessorDescriptionCommand(userVisitPK, form).run();
+        return new GetPaymentProcessorDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPaymentProcessorDescriptions(UserVisitPK userVisitPK, GetPaymentProcessorDescriptionsForm form) {
-        return new GetPaymentProcessorDescriptionsCommand(userVisitPK, form).run();
+        return new GetPaymentProcessorDescriptionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deletePaymentProcessorDescription(UserVisitPK userVisitPK, DeletePaymentProcessorDescriptionForm form) {
-        return new DeletePaymentProcessorDescriptionCommand(userVisitPK, form).run();
+        return new DeletePaymentProcessorDescriptionCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -469,22 +469,22 @@ public class PaymentBean
 
     @Override
     public CommandResult createPaymentProcessorAction(UserVisitPK userVisitPK, CreatePaymentProcessorActionForm form) {
-        return new CreatePaymentProcessorActionCommand(userVisitPK, form).run();
+        return new CreatePaymentProcessorActionCommand().run(userVisitPK, form);
     }
 
 //    @Override
 //    public CommandResult getPaymentProcessorAction(UserVisitPK userVisitPK, GetPaymentProcessorActionForm form) {
-//        return new GetPaymentProcessorActionCommand(userVisitPK, form).run();
+//        return new GetPaymentProcessorActionCommand().run(userVisitPK, form);
 //    }
 //
 //    @Override
 //    public CommandResult getPaymentProcessorActions(UserVisitPK userVisitPK, GetPaymentProcessorActionsForm form) {
-//        return new GetPaymentProcessorActionsCommand(userVisitPK, form).run();
+//        return new GetPaymentProcessorActionsCommand().run(userVisitPK, form);
 //    }
 //
 //    @Override
 //    public CommandResult deletePaymentProcessorAction(UserVisitPK userVisitPK, DeletePaymentProcessorActionForm form) {
-//        return new DeletePaymentProcessorActionCommand(userVisitPK, form).run();
+//        return new DeletePaymentProcessorActionCommand().run(userVisitPK, form);
 //    }
 
     // -------------------------------------------------------------------------
@@ -493,12 +493,12 @@ public class PaymentBean
 
     @Override
     public CommandResult getPaymentProcessorTransactions(UserVisitPK userVisitPK, GetPaymentProcessorTransactionsForm form) {
-        return new GetPaymentProcessorTransactionsCommand(userVisitPK, form).run();
+        return new GetPaymentProcessorTransactionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPaymentProcessorTransaction(UserVisitPK userVisitPK, GetPaymentProcessorTransactionForm form) {
-        return new GetPaymentProcessorTransactionCommand(userVisitPK, form).run();
+        return new GetPaymentProcessorTransactionCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -507,7 +507,7 @@ public class PaymentBean
 
     @Override
     public CommandResult getPaymentProcessorTransactionCodes(UserVisitPK userVisitPK, GetPaymentProcessorTransactionCodesForm form) {
-        return new GetPaymentProcessorTransactionCodesCommand(userVisitPK, form).run();
+        return new GetPaymentProcessorTransactionCodesCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -516,37 +516,37 @@ public class PaymentBean
     
     @Override
     public CommandResult createPaymentMethod(UserVisitPK userVisitPK, CreatePaymentMethodForm form) {
-        return new CreatePaymentMethodCommand(userVisitPK, form).run();
+        return new CreatePaymentMethodCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editPaymentMethod(UserVisitPK userVisitPK, EditPaymentMethodForm form) {
-        return new EditPaymentMethodCommand(userVisitPK, form).run();
+        return new EditPaymentMethodCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPaymentMethods(UserVisitPK userVisitPK, GetPaymentMethodsForm form) {
-        return new GetPaymentMethodsCommand(userVisitPK, form).run();
+        return new GetPaymentMethodsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPaymentMethod(UserVisitPK userVisitPK, GetPaymentMethodForm form) {
-        return new GetPaymentMethodCommand(userVisitPK, form).run();
+        return new GetPaymentMethodCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPaymentMethodChoices(UserVisitPK userVisitPK, GetPaymentMethodChoicesForm form) {
-        return new GetPaymentMethodChoicesCommand(userVisitPK, form).run();
+        return new GetPaymentMethodChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultPaymentMethod(UserVisitPK userVisitPK, SetDefaultPaymentMethodForm form) {
-        return new SetDefaultPaymentMethodCommand(userVisitPK, form).run();
+        return new SetDefaultPaymentMethodCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deletePaymentMethod(UserVisitPK userVisitPK, DeletePaymentMethodForm form) {
-        return new DeletePaymentMethodCommand(userVisitPK, form).run();
+        return new DeletePaymentMethodCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -555,27 +555,27 @@ public class PaymentBean
     
     @Override
     public CommandResult createPaymentMethodDescription(UserVisitPK userVisitPK, CreatePaymentMethodDescriptionForm form) {
-        return new CreatePaymentMethodDescriptionCommand(userVisitPK, form).run();
+        return new CreatePaymentMethodDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editPaymentMethodDescription(UserVisitPK userVisitPK, EditPaymentMethodDescriptionForm form) {
-        return new EditPaymentMethodDescriptionCommand(userVisitPK, form).run();
+        return new EditPaymentMethodDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPaymentMethodDescription(UserVisitPK userVisitPK, GetPaymentMethodDescriptionForm form) {
-        return new GetPaymentMethodDescriptionCommand(userVisitPK, form).run();
+        return new GetPaymentMethodDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPaymentMethodDescriptions(UserVisitPK userVisitPK, GetPaymentMethodDescriptionsForm form) {
-        return new GetPaymentMethodDescriptionsCommand(userVisitPK, form).run();
+        return new GetPaymentMethodDescriptionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deletePaymentMethodDescription(UserVisitPK userVisitPK, DeletePaymentMethodDescriptionForm form) {
-        return new DeletePaymentMethodDescriptionCommand(userVisitPK, form).run();
+        return new DeletePaymentMethodDescriptionCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -584,37 +584,37 @@ public class PaymentBean
     
     @Override
     public CommandResult createPartyPaymentMethod(UserVisitPK userVisitPK, CreatePartyPaymentMethodForm form) {
-        return new CreatePartyPaymentMethodCommand(userVisitPK, form).run();
+        return new CreatePartyPaymentMethodCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editPartyPaymentMethod(UserVisitPK userVisitPK, EditPartyPaymentMethodForm form) {
-        return new EditPartyPaymentMethodCommand(userVisitPK, form).run();
+        return new EditPartyPaymentMethodCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPartyPaymentMethod(UserVisitPK userVisitPK, GetPartyPaymentMethodForm form) {
-        return new GetPartyPaymentMethodCommand(userVisitPK, form).run();
+        return new GetPartyPaymentMethodCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPartyPaymentMethods(UserVisitPK userVisitPK, GetPartyPaymentMethodsForm form) {
-        return new GetPartyPaymentMethodsCommand(userVisitPK, form).run();
+        return new GetPartyPaymentMethodsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPartyPaymentMethodChoices(UserVisitPK userVisitPK, GetPartyPaymentMethodChoicesForm form) {
-        return new GetPartyPaymentMethodChoicesCommand(userVisitPK, form).run();
+        return new GetPartyPaymentMethodChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultPartyPaymentMethod(UserVisitPK userVisitPK, SetDefaultPartyPaymentMethodForm form) {
-        return new SetDefaultPartyPaymentMethodCommand(userVisitPK, form).run();
+        return new SetDefaultPartyPaymentMethodCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deletePartyPaymentMethod(UserVisitPK userVisitPK, DeletePartyPaymentMethodForm form) {
-        return new DeletePartyPaymentMethodCommand(userVisitPK, form).run();
+        return new DeletePartyPaymentMethodCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -623,37 +623,37 @@ public class PaymentBean
 
     @Override
     public CommandResult createPaymentProcessorActionType(UserVisitPK userVisitPK, CreatePaymentProcessorActionTypeForm form) {
-        return new CreatePaymentProcessorActionTypeCommand(userVisitPK, form).run();
+        return new CreatePaymentProcessorActionTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPaymentProcessorActionTypes(UserVisitPK userVisitPK, GetPaymentProcessorActionTypesForm form) {
-        return new GetPaymentProcessorActionTypesCommand(userVisitPK, form).run();
+        return new GetPaymentProcessorActionTypesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPaymentProcessorActionType(UserVisitPK userVisitPK, GetPaymentProcessorActionTypeForm form) {
-        return new GetPaymentProcessorActionTypeCommand(userVisitPK, form).run();
+        return new GetPaymentProcessorActionTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPaymentProcessorActionTypeChoices(UserVisitPK userVisitPK, GetPaymentProcessorActionTypeChoicesForm form) {
-        return new GetPaymentProcessorActionTypeChoicesCommand(userVisitPK, form).run();
+        return new GetPaymentProcessorActionTypeChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultPaymentProcessorActionType(UserVisitPK userVisitPK, SetDefaultPaymentProcessorActionTypeForm form) {
-        return new SetDefaultPaymentProcessorActionTypeCommand(userVisitPK, form).run();
+        return new SetDefaultPaymentProcessorActionTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editPaymentProcessorActionType(UserVisitPK userVisitPK, EditPaymentProcessorActionTypeForm form) {
-        return new EditPaymentProcessorActionTypeCommand(userVisitPK, form).run();
+        return new EditPaymentProcessorActionTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deletePaymentProcessorActionType(UserVisitPK userVisitPK, DeletePaymentProcessorActionTypeForm form) {
-        return new DeletePaymentProcessorActionTypeCommand(userVisitPK, form).run();
+        return new DeletePaymentProcessorActionTypeCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -662,22 +662,22 @@ public class PaymentBean
 
     @Override
     public CommandResult createPaymentProcessorActionTypeDescription(UserVisitPK userVisitPK, CreatePaymentProcessorActionTypeDescriptionForm form) {
-        return new CreatePaymentProcessorActionTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreatePaymentProcessorActionTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPaymentProcessorActionTypeDescriptions(UserVisitPK userVisitPK, GetPaymentProcessorActionTypeDescriptionsForm form) {
-        return new GetPaymentProcessorActionTypeDescriptionsCommand(userVisitPK, form).run();
+        return new GetPaymentProcessorActionTypeDescriptionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editPaymentProcessorActionTypeDescription(UserVisitPK userVisitPK, EditPaymentProcessorActionTypeDescriptionForm form) {
-        return new EditPaymentProcessorActionTypeDescriptionCommand(userVisitPK, form).run();
+        return new EditPaymentProcessorActionTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deletePaymentProcessorActionTypeDescription(UserVisitPK userVisitPK, DeletePaymentProcessorActionTypeDescriptionForm form) {
-        return new DeletePaymentProcessorActionTypeDescriptionCommand(userVisitPK, form).run();
+        return new DeletePaymentProcessorActionTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -686,37 +686,37 @@ public class PaymentBean
 
     @Override
     public CommandResult createPaymentProcessorResultCode(UserVisitPK userVisitPK, CreatePaymentProcessorResultCodeForm form) {
-        return new CreatePaymentProcessorResultCodeCommand(userVisitPK, form).run();
+        return new CreatePaymentProcessorResultCodeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPaymentProcessorResultCodes(UserVisitPK userVisitPK, GetPaymentProcessorResultCodesForm form) {
-        return new GetPaymentProcessorResultCodesCommand(userVisitPK, form).run();
+        return new GetPaymentProcessorResultCodesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPaymentProcessorResultCode(UserVisitPK userVisitPK, GetPaymentProcessorResultCodeForm form) {
-        return new GetPaymentProcessorResultCodeCommand(userVisitPK, form).run();
+        return new GetPaymentProcessorResultCodeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPaymentProcessorResultCodeChoices(UserVisitPK userVisitPK, GetPaymentProcessorResultCodeChoicesForm form) {
-        return new GetPaymentProcessorResultCodeChoicesCommand(userVisitPK, form).run();
+        return new GetPaymentProcessorResultCodeChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultPaymentProcessorResultCode(UserVisitPK userVisitPK, SetDefaultPaymentProcessorResultCodeForm form) {
-        return new SetDefaultPaymentProcessorResultCodeCommand(userVisitPK, form).run();
+        return new SetDefaultPaymentProcessorResultCodeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editPaymentProcessorResultCode(UserVisitPK userVisitPK, EditPaymentProcessorResultCodeForm form) {
-        return new EditPaymentProcessorResultCodeCommand(userVisitPK, form).run();
+        return new EditPaymentProcessorResultCodeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deletePaymentProcessorResultCode(UserVisitPK userVisitPK, DeletePaymentProcessorResultCodeForm form) {
-        return new DeletePaymentProcessorResultCodeCommand(userVisitPK, form).run();
+        return new DeletePaymentProcessorResultCodeCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -725,22 +725,22 @@ public class PaymentBean
 
     @Override
     public CommandResult createPaymentProcessorResultCodeDescription(UserVisitPK userVisitPK, CreatePaymentProcessorResultCodeDescriptionForm form) {
-        return new CreatePaymentProcessorResultCodeDescriptionCommand(userVisitPK, form).run();
+        return new CreatePaymentProcessorResultCodeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPaymentProcessorResultCodeDescriptions(UserVisitPK userVisitPK, GetPaymentProcessorResultCodeDescriptionsForm form) {
-        return new GetPaymentProcessorResultCodeDescriptionsCommand(userVisitPK, form).run();
+        return new GetPaymentProcessorResultCodeDescriptionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editPaymentProcessorResultCodeDescription(UserVisitPK userVisitPK, EditPaymentProcessorResultCodeDescriptionForm form) {
-        return new EditPaymentProcessorResultCodeDescriptionCommand(userVisitPK, form).run();
+        return new EditPaymentProcessorResultCodeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deletePaymentProcessorResultCodeDescription(UserVisitPK userVisitPK, DeletePaymentProcessorResultCodeDescriptionForm form) {
-        return new DeletePaymentProcessorResultCodeDescriptionCommand(userVisitPK, form).run();
+        return new DeletePaymentProcessorResultCodeDescriptionCommand().run(userVisitPK, form);
     }
 
 }

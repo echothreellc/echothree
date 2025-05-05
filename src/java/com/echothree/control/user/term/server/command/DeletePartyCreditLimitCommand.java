@@ -44,8 +44,8 @@ public class DeletePartyCreditLimitCommand
     }
     
     /** Creates a new instance of DeletePartyCreditLimitCommand */
-    public DeletePartyCreditLimitCommand(UserVisitPK userVisitPK, DeletePartyCreditLimitForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeletePartyCreditLimitCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

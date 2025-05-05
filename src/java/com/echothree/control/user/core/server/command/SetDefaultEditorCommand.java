@@ -55,8 +55,8 @@ public class SetDefaultEditorCommand
     }
     
     /** Creates a new instance of SetDefaultEditorCommand */
-    public SetDefaultEditorCommand(UserVisitPK userVisitPK, SetDefaultEditorForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultEditorCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

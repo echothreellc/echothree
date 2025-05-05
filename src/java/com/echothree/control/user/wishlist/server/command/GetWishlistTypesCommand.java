@@ -39,8 +39,8 @@ public class GetWishlistTypesCommand
     }
     
     /** Creates a new instance of GetWishlistTypesCommand */
-    public GetWishlistTypesCommand(UserVisitPK userVisitPK, GetWishlistTypesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetWishlistTypesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

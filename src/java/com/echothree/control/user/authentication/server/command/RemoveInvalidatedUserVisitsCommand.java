@@ -18,7 +18,6 @@ package com.echothree.control.user.authentication.server.command;
 
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.user.server.logic.UserVisitLogic;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
@@ -38,8 +37,8 @@ public class RemoveInvalidatedUserVisitsCommand
     }
     
     /** Creates a new instance of RemoveInvalidatedUserVisitsCommand */
-    public RemoveInvalidatedUserVisitsCommand(UserVisitPK userVisitPK) {
-        super(userVisitPK, COMMAND_SECURITY_DEFINITION, false);
+    public RemoveInvalidatedUserVisitsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, false);
     }
     
     @Override

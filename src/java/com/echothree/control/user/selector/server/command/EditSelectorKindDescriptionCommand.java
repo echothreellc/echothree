@@ -69,8 +69,8 @@ public class EditSelectorKindDescriptionCommand
     }
 
     /** Creates a new instance of EditSelectorKindDescriptionCommand */
-    public EditSelectorKindDescriptionCommand(UserVisitPK userVisitPK, EditSelectorKindDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditSelectorKindDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

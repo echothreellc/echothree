@@ -42,8 +42,8 @@ public class GetCommunicationSourcesCommand
     }
     
     /** Creates a new instance of GetCommunicationSourcesCommand */
-    public GetCommunicationSourcesCommand(UserVisitPK userVisitPK, GetCommunicationSourcesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetCommunicationSourcesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

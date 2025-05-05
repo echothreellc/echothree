@@ -76,8 +76,8 @@ public class EditEditorCommand
     }
     
     /** Creates a new instance of EditEditorCommand */
-    public EditEditorCommand(UserVisitPK userVisitPK, EditEditorForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditEditorCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

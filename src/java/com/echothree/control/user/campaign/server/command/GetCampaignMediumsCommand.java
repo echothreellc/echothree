@@ -53,8 +53,8 @@ public class GetCampaignMediumsCommand
     }
     
     /** Creates a new instance of GetCampaignMediumsCommand */
-    public GetCampaignMediumsCommand(UserVisitPK userVisitPK, GetCampaignMediumsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetCampaignMediumsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

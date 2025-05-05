@@ -76,8 +76,8 @@ public class EditCancellationPolicyTranslationCommand
     }
 
     /** Creates a new instance of EditCancellationPolicyTranslationCommand */
-    public EditCancellationPolicyTranslationCommand(UserVisitPK userVisitPK, EditCancellationPolicyTranslationForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditCancellationPolicyTranslationCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

@@ -78,8 +78,8 @@ public class CreatePurchaseInvoiceCommand
     }
     
     /** Creates a new instance of CreatePurchaseInvoiceCommand */
-    public CreatePurchaseInvoiceCommand(UserVisitPK userVisitPK, CreatePurchaseInvoiceForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreatePurchaseInvoiceCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

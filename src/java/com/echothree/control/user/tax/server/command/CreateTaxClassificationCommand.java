@@ -64,8 +64,8 @@ public class CreateTaxClassificationCommand
     }
     
     /** Creates a new instance of CreateTaxClassificationCommand */
-    public CreateTaxClassificationCommand(UserVisitPK userVisitPK, CreateTaxClassificationForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateTaxClassificationCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -58,8 +58,8 @@ public class DeletePicklistAliasTypeDescriptionCommand
     }
     
     /** Creates a new instance of DeletePicklistAliasTypeDescriptionCommand */
-    public DeletePicklistAliasTypeDescriptionCommand(UserVisitPK userVisitPK, DeletePicklistAliasTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeletePicklistAliasTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

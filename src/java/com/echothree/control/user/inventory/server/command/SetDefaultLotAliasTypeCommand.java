@@ -54,8 +54,8 @@ public class SetDefaultLotAliasTypeCommand
     }
     
     /** Creates a new instance of SetDefaultLotAliasTypeCommand */
-    public SetDefaultLotAliasTypeCommand(UserVisitPK userVisitPK, SetDefaultLotAliasTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultLotAliasTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

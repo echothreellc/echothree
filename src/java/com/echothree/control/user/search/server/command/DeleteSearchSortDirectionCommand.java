@@ -55,8 +55,8 @@ public class DeleteSearchSortDirectionCommand
     }
     
     /** Creates a new instance of DeleteSearchSortDirectionCommand */
-    public DeleteSearchSortDirectionCommand(UserVisitPK userVisitPK, DeleteSearchSortDirectionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteSearchSortDirectionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

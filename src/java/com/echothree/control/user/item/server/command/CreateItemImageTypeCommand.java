@@ -63,8 +63,8 @@ public class CreateItemImageTypeCommand
     }
     
     /** Creates a new instance of CreateItemImageTypeCommand */
-    public CreateItemImageTypeCommand(UserVisitPK userVisitPK, CreateItemImageTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateItemImageTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

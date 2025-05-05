@@ -57,8 +57,8 @@ public class CreatePartyCarrierCommand
     }
     
     /** Creates a new instance of CreatePartyCarrierCommand */
-    public CreatePartyCarrierCommand(UserVisitPK userVisitPK, CreatePartyCarrierForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreatePartyCarrierCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

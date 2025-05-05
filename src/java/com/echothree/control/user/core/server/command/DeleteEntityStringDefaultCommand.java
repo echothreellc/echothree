@@ -58,8 +58,8 @@ public class DeleteEntityStringDefaultCommand
     }
     
     /** Creates a new instance of DeleteEntityStringDefaultCommand */
-    public DeleteEntityStringDefaultCommand(UserVisitPK userVisitPK, DeleteEntityStringDefaultForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteEntityStringDefaultCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

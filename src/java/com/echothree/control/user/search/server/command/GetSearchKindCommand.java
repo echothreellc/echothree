@@ -58,8 +58,8 @@ public class GetSearchKindCommand
     }
 
     /** Creates a new instance of GetSearchKindCommand */
-    public GetSearchKindCommand(UserVisitPK userVisitPK, GetSearchKindForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetSearchKindCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

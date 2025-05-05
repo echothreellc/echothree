@@ -54,8 +54,8 @@ public class SetDefaultGeoCodeScopeCommand
     }
     
     /** Creates a new instance of SetDefaultGeoCodeScopeCommand */
-    public SetDefaultGeoCodeScopeCommand(UserVisitPK userVisitPK, SetDefaultGeoCodeScopeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultGeoCodeScopeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

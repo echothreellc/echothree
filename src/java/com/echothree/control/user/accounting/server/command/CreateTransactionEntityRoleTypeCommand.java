@@ -60,8 +60,8 @@ public class CreateTransactionEntityRoleTypeCommand
     }
     
     /** Creates a new instance of CreateTransactionEntityRoleTypeCommand */
-    public CreateTransactionEntityRoleTypeCommand(UserVisitPK userVisitPK, CreateTransactionEntityRoleTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateTransactionEntityRoleTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

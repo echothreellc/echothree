@@ -45,8 +45,8 @@ public class CreateForumMimeTypeCommand
     }
     
     /** Creates a new instance of CreateForumMimeTypeCommand */
-    public CreateForumMimeTypeCommand(UserVisitPK userVisitPK, CreateForumMimeTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateForumMimeTypeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

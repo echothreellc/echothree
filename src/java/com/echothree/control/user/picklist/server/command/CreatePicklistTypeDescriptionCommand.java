@@ -58,8 +58,8 @@ public class CreatePicklistTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreatePicklistTypeDescriptionCommand */
-    public CreatePicklistTypeDescriptionCommand(UserVisitPK userVisitPK, CreatePicklistTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreatePicklistTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

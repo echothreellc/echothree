@@ -45,8 +45,8 @@ public class GetSecurityRoleGroupResultsCommand
     }
 
     /** Creates a new instance of GetSecurityRoleGroupResultsCommand */
-    public GetSecurityRoleGroupResultsCommand(UserVisitPK userVisitPK, GetSecurityRoleGroupResultsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetSecurityRoleGroupResultsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

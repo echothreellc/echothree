@@ -58,8 +58,8 @@ public class GetPartyContactListCommand
     }
     
     /** Creates a new instance of GetPartyContactListCommand */
-    public GetPartyContactListCommand(UserVisitPK userVisitPK, GetPartyContactListForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetPartyContactListCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

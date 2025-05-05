@@ -63,8 +63,8 @@ public class CreateFilterAdjustmentPercentCommand
     }
     
     /** Creates a new instance of CreateFilterAdjustmentPercentCommand */
-    public CreateFilterAdjustmentPercentCommand(UserVisitPK userVisitPK, CreateFilterAdjustmentPercentForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateFilterAdjustmentPercentCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

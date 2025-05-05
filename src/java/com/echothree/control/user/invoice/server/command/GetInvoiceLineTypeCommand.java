@@ -58,8 +58,8 @@ public class GetInvoiceLineTypeCommand
     }
     
     /** Creates a new instance of GetInvoiceLineTypeCommand */
-    public GetInvoiceLineTypeCommand(UserVisitPK userVisitPK, GetInvoiceLineTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetInvoiceLineTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

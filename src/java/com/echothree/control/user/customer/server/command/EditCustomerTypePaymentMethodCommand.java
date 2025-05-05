@@ -57,8 +57,8 @@ public class EditCustomerTypePaymentMethodCommand
     }
     
     /** Creates a new instance of EditCustomerTypePaymentMethodCommand */
-    public EditCustomerTypePaymentMethodCommand(UserVisitPK userVisitPK, EditCustomerTypePaymentMethodForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditCustomerTypePaymentMethodCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

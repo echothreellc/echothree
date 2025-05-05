@@ -69,8 +69,8 @@ public class EditReturnTypeShippingMethodCommand
     }
     
     /** Creates a new instance of EditReturnTypeShippingMethodCommand */
-    public EditReturnTypeShippingMethodCommand(UserVisitPK userVisitPK, EditReturnTypeShippingMethodForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditReturnTypeShippingMethodCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

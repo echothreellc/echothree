@@ -73,8 +73,8 @@ public class EditEntityIntegerRangeCommand
     }
     
     /** Creates a new instance of EditEntityIntegerRangeCommand */
-    public EditEntityIntegerRangeCommand(UserVisitPK userVisitPK, EditEntityIntegerRangeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditEntityIntegerRangeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

@@ -57,8 +57,8 @@ public class DeleteWorkflowDestinationCommand
     }
     
     /** Creates a new instance of DeleteWorkflowDestinationCommand */
-    public DeleteWorkflowDestinationCommand(UserVisitPK userVisitPK, DeleteWorkflowDestinationForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteWorkflowDestinationCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

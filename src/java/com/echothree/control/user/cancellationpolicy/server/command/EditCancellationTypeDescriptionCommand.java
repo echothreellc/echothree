@@ -68,8 +68,8 @@ public class EditCancellationTypeDescriptionCommand
     }
     
     /** Creates a new instance of EditCancellationTypeDescriptionCommand */
-    public EditCancellationTypeDescriptionCommand(UserVisitPK userVisitPK, EditCancellationTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditCancellationTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

@@ -63,8 +63,8 @@ public class GetQueueTypeCommand
     }
     
     /** Creates a new instance of GetQueueTypeCommand */
-    public GetQueueTypeCommand(UserVisitPK userVisitPK, GetQueueTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetQueueTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
 

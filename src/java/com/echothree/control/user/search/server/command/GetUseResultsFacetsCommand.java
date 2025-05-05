@@ -29,8 +29,8 @@ public class GetUseResultsFacetsCommand
         extends BaseGetResultsFacetsCommand<GetUseResultsFacetsForm, GetUseResultsFacetsResult> {
 
     /** Creates a new instance of GetUseResultsFacetsCommand */
-    public GetUseResultsFacetsCommand(UserVisitPK userVisitPK, GetUseResultsFacetsForm form) {
-        super(userVisitPK, form, null);
+    public GetUseResultsFacetsCommand() {
+        super(null);
     }
 
     @Override

@@ -41,8 +41,8 @@ public class DeletePrinterGroupCommand
     }
 
     /** Creates a new instance of DeletePrinterGroupCommand */
-    public DeletePrinterGroupCommand(UserVisitPK userVisitPK, DeletePrinterGroupForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeletePrinterGroupCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
    @Override

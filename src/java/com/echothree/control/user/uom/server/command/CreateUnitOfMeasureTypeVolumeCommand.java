@@ -50,8 +50,8 @@ public class CreateUnitOfMeasureTypeVolumeCommand
     }
     
     /** Creates a new instance of CreateUnitOfMeasureTypeVolumeCommand */
-    public CreateUnitOfMeasureTypeVolumeCommand(UserVisitPK userVisitPK, CreateUnitOfMeasureTypeVolumeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateUnitOfMeasureTypeVolumeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

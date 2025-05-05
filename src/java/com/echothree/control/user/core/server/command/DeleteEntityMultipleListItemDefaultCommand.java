@@ -52,8 +52,8 @@ public class DeleteEntityMultipleListItemDefaultCommand
     }
 
     /** Creates a new instance of DeleteEntityListItemDefaultCommand */
-    public DeleteEntityMultipleListItemDefaultCommand(UserVisitPK userVisitPK, DeleteEntityMultipleListItemDefaultForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteEntityMultipleListItemDefaultCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -43,8 +43,8 @@ public class DeleteItemVolumeCommand
     }
     
     /** Creates a new instance of DeleteItemVolumeCommand */
-    public DeleteItemVolumeCommand(UserVisitPK userVisitPK, DeleteItemVolumeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteItemVolumeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

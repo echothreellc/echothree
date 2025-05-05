@@ -57,8 +57,8 @@ public class SetDefaultGeoCodeCurrencyCommand
     }
     
     /** Creates a new instance of SetDefaultGeoCodeCurrencyCommand */
-    public SetDefaultGeoCodeCurrencyCommand(UserVisitPK userVisitPK, SetDefaultGeoCodeCurrencyForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultGeoCodeCurrencyCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

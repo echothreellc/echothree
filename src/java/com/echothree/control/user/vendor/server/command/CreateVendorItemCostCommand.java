@@ -62,8 +62,8 @@ public class CreateVendorItemCostCommand
     }
     
     /** Creates a new instance of CreateVendorItemCostCommand */
-    public CreateVendorItemCostCommand(UserVisitPK userVisitPK, CreateVendorItemCostForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateVendorItemCostCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -56,8 +56,8 @@ public class GetBirthdayFormatDescriptionsCommand
     }
     
     /** Creates a new instance of GetBirthdayFormatDescriptionsCommand */
-    public GetBirthdayFormatDescriptionsCommand(UserVisitPK userVisitPK, GetBirthdayFormatDescriptionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetBirthdayFormatDescriptionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

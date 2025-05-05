@@ -25,8 +25,8 @@ public class ClearForumMessageResultsCommand
         extends BaseClearResultsCommand<ClearForumMessageResultsForm> {
     
     /** Creates a new instance of ClearForumMessageResultsCommand */
-    public ClearForumMessageResultsCommand(UserVisitPK userVisitPK, ClearForumMessageResultsForm form) {
-        super(userVisitPK, form, null);
+    public ClearForumMessageResultsCommand() {
+        super(null);
     }
     
     @Override

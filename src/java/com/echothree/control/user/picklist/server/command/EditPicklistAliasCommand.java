@@ -61,15 +61,20 @@ public class EditPicklistAliasCommand
     }
     
     /** Creates a new instance of EditPicklistAliasCommand */
-    public EditPicklistAliasCommand(UserVisitPK userVisitPK, EditPicklistAliasForm form) {
-        super(userVisitPK, form, new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+    public EditPicklistAliasCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
+
+    @Override
+    protected CommandSecurityDefinition getCommandSecurityDefinition() {
+        return new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                        new SecurityRoleDefinition(PicklistAliasUtil.getInstance().getSecurityRoleGroupNameByPicklistTypeSpec(form == null ? null : form.getSpec()), SecurityRoles.Edit.name())
-                        )))
-                ))), SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+                        new SecurityRoleDefinition(PicklistAliasUtil.getInstance().getSecurityRoleGroupNameByPicklistTypeSpec(spec), SecurityRoles.Edit.name())
+                )))
+        )));
     }
-    
+
     @Override
     public EditPicklistAliasResult getResult() {
         return PicklistResultFactory.getEditPicklistAliasResult();

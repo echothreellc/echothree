@@ -57,8 +57,8 @@ public class GetFontWeightDescriptionCommand
     }
     
     /** Creates a new instance of GetFontWeightDescriptionCommand */
-    public GetFontWeightDescriptionCommand(UserVisitPK userVisitPK, GetFontWeightDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetFontWeightDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

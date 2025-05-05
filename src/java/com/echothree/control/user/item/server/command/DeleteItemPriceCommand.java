@@ -62,8 +62,8 @@ public class DeleteItemPriceCommand
     }
     
     /** Creates a new instance of DeleteItemPriceCommand */
-    public DeleteItemPriceCommand(UserVisitPK userVisitPK, DeleteItemPriceForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteItemPriceCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

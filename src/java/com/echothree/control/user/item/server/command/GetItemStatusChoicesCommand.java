@@ -44,8 +44,8 @@ public class GetItemStatusChoicesCommand
     }
     
     /** Creates a new instance of GetItemStatusChoicesCommand */
-    public GetItemStatusChoicesCommand(UserVisitPK userVisitPK, GetItemStatusChoicesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public GetItemStatusChoicesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

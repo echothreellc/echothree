@@ -42,8 +42,8 @@ public class GetTermChoicesCommand
     }
     
     /** Creates a new instance of GetTermChoicesCommand */
-    public GetTermChoicesCommand(UserVisitPK userVisitPK, GetTermChoicesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public GetTermChoicesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

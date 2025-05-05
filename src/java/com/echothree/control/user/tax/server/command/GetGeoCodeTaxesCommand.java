@@ -42,8 +42,8 @@ public class GetGeoCodeTaxesCommand
     }
     
     /** Creates a new instance of GetGeoCodeTaxesCommand */
-    public GetGeoCodeTaxesCommand(UserVisitPK userVisitPK, GetGeoCodeTaxesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetGeoCodeTaxesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

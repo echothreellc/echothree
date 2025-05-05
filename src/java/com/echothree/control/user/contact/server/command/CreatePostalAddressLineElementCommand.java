@@ -48,8 +48,8 @@ public class CreatePostalAddressLineElementCommand
     }
     
     /** Creates a new instance of CreatePostalAddressLineElementCommand */
-    public CreatePostalAddressLineElementCommand(UserVisitPK userVisitPK, CreatePostalAddressLineElementForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreatePostalAddressLineElementCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

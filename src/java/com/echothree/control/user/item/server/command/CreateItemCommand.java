@@ -100,8 +100,8 @@ public class CreateItemCommand
     }
     
     /** Creates a new instance of CreateItemCommand */
-    public CreateItemCommand(UserVisitPK userVisitPK, CreateItemForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateItemCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

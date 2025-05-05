@@ -52,8 +52,8 @@ public class GetFontStylesCommand
     }
     
     /** Creates a new instance of GetFontStylesCommand */
-    public GetFontStylesCommand(UserVisitPK userVisitPK, GetFontStylesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetFontStylesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

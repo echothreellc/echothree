@@ -54,8 +54,8 @@ public class SetDefaultItemAliasTypeCommand
     }
     
     /** Creates a new instance of SetDefaultItemAliasTypeCommand */
-    public SetDefaultItemAliasTypeCommand(UserVisitPK userVisitPK, SetDefaultItemAliasTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultItemAliasTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

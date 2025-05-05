@@ -63,8 +63,8 @@ public class CreateShippingMethodCommand
     }
     
     /** Creates a new instance of CreateShippingMethodCommand */
-    public CreateShippingMethodCommand(UserVisitPK userVisitPK, CreateShippingMethodForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateShippingMethodCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

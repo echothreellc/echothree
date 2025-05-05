@@ -58,8 +58,8 @@ public class GetSearchSortOrdersCommand
     }
 
     /** Creates a new instance of GetSearchSortOrdersCommand */
-    public GetSearchSortOrdersCommand(UserVisitPK userVisitPK, GetSearchSortOrdersForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetSearchSortOrdersCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     SearchKind searchKind;

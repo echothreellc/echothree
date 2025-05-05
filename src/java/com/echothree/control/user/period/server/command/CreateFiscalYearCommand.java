@@ -52,8 +52,8 @@ public class CreateFiscalYearCommand
     }
     
     /** Creates a new instance of CreateFiscalYearCommand */
-    public CreateFiscalYearCommand(UserVisitPK userVisitPK, CreateFiscalYearForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateFiscalYearCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -54,8 +54,8 @@ public class SetDefaultFreeOnBoardCommand
     }
     
     /** Creates a new instance of SetDefaultFreeOnBoardCommand */
-    public SetDefaultFreeOnBoardCommand(UserVisitPK userVisitPK, SetDefaultFreeOnBoardForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultFreeOnBoardCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

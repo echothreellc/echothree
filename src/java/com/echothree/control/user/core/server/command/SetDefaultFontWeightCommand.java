@@ -55,8 +55,8 @@ public class SetDefaultFontWeightCommand
     }
     
     /** Creates a new instance of SetDefaultFontWeightCommand */
-    public SetDefaultFontWeightCommand(UserVisitPK userVisitPK, SetDefaultFontWeightForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultFontWeightCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -58,8 +58,8 @@ public class DeleteReturnTypeShippingMethodCommand
     }
     
     /** Creates a new instance of DeleteReturnTypeShippingMethodCommand */
-    public DeleteReturnTypeShippingMethodCommand(UserVisitPK userVisitPK, DeleteReturnTypeShippingMethodForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteReturnTypeShippingMethodCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

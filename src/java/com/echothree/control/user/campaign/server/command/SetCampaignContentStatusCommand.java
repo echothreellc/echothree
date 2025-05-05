@@ -57,8 +57,8 @@ public class SetCampaignContentStatusCommand
     }
     
     /** Creates a new instance of SetCampaignContentStatusCommand */
-    public SetCampaignContentStatusCommand(UserVisitPK userVisitPK, SetCampaignContentStatusForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetCampaignContentStatusCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

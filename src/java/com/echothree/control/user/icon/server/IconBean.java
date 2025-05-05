@@ -43,7 +43,7 @@ public class IconBean
     
     @Override
     public CommandResult createIconUsageType(UserVisitPK userVisitPK, CreateIconUsageTypeForm form) {
-        return new CreateIconUsageTypeCommand(userVisitPK, form).run();
+        return new CreateIconUsageTypeCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -52,7 +52,7 @@ public class IconBean
     
     @Override
     public CommandResult createIconUsageTypeDescription(UserVisitPK userVisitPK, CreateIconUsageTypeDescriptionForm form) {
-        return new CreateIconUsageTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateIconUsageTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -61,7 +61,7 @@ public class IconBean
     
     @Override
     public CommandResult getIconChoices(UserVisitPK userVisitPK, GetIconChoicesForm form) {
-        return new GetIconChoicesCommand(userVisitPK, form).run();
+        return new GetIconChoicesCommand().run(userVisitPK, form);
     }
     
 }

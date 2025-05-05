@@ -43,37 +43,37 @@ public class TagBean
     
     @Override
     public CommandResult createTagScope(UserVisitPK userVisitPK, CreateTagScopeForm form) {
-        return new CreateTagScopeCommand(userVisitPK, form).run();
+        return new CreateTagScopeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTagScope(UserVisitPK userVisitPK, GetTagScopeForm form) {
-        return new GetTagScopeCommand(userVisitPK, form).run();
+        return new GetTagScopeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTagScopes(UserVisitPK userVisitPK, GetTagScopesForm form) {
-        return new GetTagScopesCommand(userVisitPK, form).run();
+        return new GetTagScopesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTagScopeChoices(UserVisitPK userVisitPK, GetTagScopeChoicesForm form) {
-        return new GetTagScopeChoicesCommand(userVisitPK, form).run();
+        return new GetTagScopeChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultTagScope(UserVisitPK userVisitPK, SetDefaultTagScopeForm form) {
-        return new SetDefaultTagScopeCommand(userVisitPK, form).run();
+        return new SetDefaultTagScopeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editTagScope(UserVisitPK userVisitPK, EditTagScopeForm form) {
-        return new EditTagScopeCommand(userVisitPK, form).run();
+        return new EditTagScopeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteTagScope(UserVisitPK userVisitPK, DeleteTagScopeForm form) {
-        return new DeleteTagScopeCommand(userVisitPK, form).run();
+        return new DeleteTagScopeCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -82,27 +82,27 @@ public class TagBean
     
     @Override
     public CommandResult createTagScopeDescription(UserVisitPK userVisitPK, CreateTagScopeDescriptionForm form) {
-        return new CreateTagScopeDescriptionCommand(userVisitPK, form).run();
+        return new CreateTagScopeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTagScopeDescription(UserVisitPK userVisitPK, GetTagScopeDescriptionForm form) {
-        return new GetTagScopeDescriptionCommand(userVisitPK, form).run();
+        return new GetTagScopeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTagScopeDescriptions(UserVisitPK userVisitPK, GetTagScopeDescriptionsForm form) {
-        return new GetTagScopeDescriptionsCommand(userVisitPK, form).run();
+        return new GetTagScopeDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editTagScopeDescription(UserVisitPK userVisitPK, EditTagScopeDescriptionForm form) {
-        return new EditTagScopeDescriptionCommand(userVisitPK, form).run();
+        return new EditTagScopeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteTagScopeDescription(UserVisitPK userVisitPK, DeleteTagScopeDescriptionForm form) {
-        return new DeleteTagScopeDescriptionCommand(userVisitPK, form).run();
+        return new DeleteTagScopeDescriptionCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -111,22 +111,22 @@ public class TagBean
     
     @Override
     public CommandResult createTagScopeEntityType(UserVisitPK userVisitPK, CreateTagScopeEntityTypeForm form) {
-        return new CreateTagScopeEntityTypeCommand(userVisitPK, form).run();
+        return new CreateTagScopeEntityTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTagScopeEntityType(UserVisitPK userVisitPK, GetTagScopeEntityTypeForm form) {
-        return new GetTagScopeEntityTypeCommand(userVisitPK, form).run();
+        return new GetTagScopeEntityTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTagScopeEntityTypes(UserVisitPK userVisitPK, GetTagScopeEntityTypesForm form) {
-        return new GetTagScopeEntityTypesCommand(userVisitPK, form).run();
+        return new GetTagScopeEntityTypesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteTagScopeEntityType(UserVisitPK userVisitPK, DeleteTagScopeEntityTypeForm form) {
-        return new DeleteTagScopeEntityTypeCommand(userVisitPK, form).run();
+        return new DeleteTagScopeEntityTypeCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -135,32 +135,32 @@ public class TagBean
     
     @Override
     public CommandResult createTag(UserVisitPK userVisitPK, CreateTagForm form) {
-        return new CreateTagCommand(userVisitPK, form).run();
+        return new CreateTagCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTag(UserVisitPK userVisitPK, GetTagForm form) {
-        return new GetTagCommand(userVisitPK, form).run();
+        return new GetTagCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTags(UserVisitPK userVisitPK, GetTagsForm form) {
-        return new GetTagsCommand(userVisitPK, form).run();
+        return new GetTagsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTagChoices(UserVisitPK userVisitPK, GetTagChoicesForm form) {
-        return new GetTagChoicesCommand(userVisitPK, form).run();
+        return new GetTagChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editTag(UserVisitPK userVisitPK, EditTagForm form) {
-        return new EditTagCommand(userVisitPK, form).run();
+        return new EditTagCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteTag(UserVisitPK userVisitPK, DeleteTagForm form) {
-        return new DeleteTagCommand(userVisitPK, form).run();
+        return new DeleteTagCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -169,22 +169,22 @@ public class TagBean
     
     @Override
     public CommandResult createEntityTag(UserVisitPK userVisitPK, CreateEntityTagForm form) {
-        return new CreateEntityTagCommand(userVisitPK, form).run();
+        return new CreateEntityTagCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getEntityTag(UserVisitPK userVisitPK, GetEntityTagForm form) {
-        return new GetEntityTagCommand(userVisitPK, form).run();
+        return new GetEntityTagCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getEntityTags(UserVisitPK userVisitPK, GetEntityTagsForm form) {
-        return new GetEntityTagsCommand(userVisitPK, form).run();
+        return new GetEntityTagsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteEntityTag(UserVisitPK userVisitPK, DeleteEntityTagForm form) {
-        return new DeleteEntityTagCommand(userVisitPK, form).run();
+        return new DeleteEntityTagCommand().run(userVisitPK, form);
     }
     
 }

@@ -55,8 +55,8 @@ public class SetDefaultRelatedItemTypeCommand
     }
     
     /** Creates a new instance of SetDefaultRelatedItemTypeCommand */
-    public SetDefaultRelatedItemTypeCommand(UserVisitPK userVisitPK, SetDefaultRelatedItemTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultRelatedItemTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

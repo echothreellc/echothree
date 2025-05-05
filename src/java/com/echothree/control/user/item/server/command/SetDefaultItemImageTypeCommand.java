@@ -55,8 +55,8 @@ public class SetDefaultItemImageTypeCommand
     }
     
     /** Creates a new instance of SetDefaultItemImageTypeCommand */
-    public SetDefaultItemImageTypeCommand(UserVisitPK userVisitPK, SetDefaultItemImageTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultItemImageTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

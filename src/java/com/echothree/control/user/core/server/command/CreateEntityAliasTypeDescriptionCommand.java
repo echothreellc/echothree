@@ -60,8 +60,8 @@ public class CreateEntityAliasTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateEntityAliasTypeDescriptionCommand */
-    public CreateEntityAliasTypeDescriptionCommand(UserVisitPK userVisitPK, CreateEntityAliasTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateEntityAliasTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

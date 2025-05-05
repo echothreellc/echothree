@@ -57,8 +57,8 @@ public class DeleteHarmonizedTariffScheduleCodeUseTypeDescriptionCommand
     }
     
     /** Creates a new instance of DeleteHarmonizedTariffScheduleCodeUseTypeDescriptionCommand */
-    public DeleteHarmonizedTariffScheduleCodeUseTypeDescriptionCommand(UserVisitPK userVisitPK, DeleteHarmonizedTariffScheduleCodeUseTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteHarmonizedTariffScheduleCodeUseTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

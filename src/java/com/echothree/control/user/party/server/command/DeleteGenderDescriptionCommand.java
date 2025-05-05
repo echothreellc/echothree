@@ -42,8 +42,8 @@ public class DeleteGenderDescriptionCommand
     }
     
     /** Creates a new instance of DeleteGenderDescriptionCommand */
-    public DeleteGenderDescriptionCommand(UserVisitPK userVisitPK, DeleteGenderDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteGenderDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

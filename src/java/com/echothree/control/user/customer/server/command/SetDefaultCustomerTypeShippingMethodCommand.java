@@ -43,8 +43,8 @@ public class SetDefaultCustomerTypeShippingMethodCommand
     }
     
     /** Creates a new instance of SetDefaultCustomerTypeShippingMethodCommand */
-    public SetDefaultCustomerTypeShippingMethodCommand(UserVisitPK userVisitPK, SetDefaultCustomerTypeShippingMethodForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultCustomerTypeShippingMethodCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

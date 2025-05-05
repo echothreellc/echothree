@@ -27,8 +27,8 @@ public class CountEntityAttributeResultsCommand
         extends BaseCountResultsCommand<CountEntityAttributeResultsForm, CountEntityAttributeResultsResult> {
     
     /** Creates a new instance of CountEntityAttributeResultsCommand */
-    public CountEntityAttributeResultsCommand(UserVisitPK userVisitPK, CountEntityAttributeResultsForm form) {
-        super(userVisitPK, form, null);
+    public CountEntityAttributeResultsCommand() {
+        super(null);
     }
     
     @Override

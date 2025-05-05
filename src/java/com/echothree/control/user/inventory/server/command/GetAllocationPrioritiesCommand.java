@@ -52,8 +52,8 @@ public class GetAllocationPrioritiesCommand
     }
     
     /** Creates a new instance of GetAllocationPrioritiesCommand */
-    public GetAllocationPrioritiesCommand(UserVisitPK userVisitPK, GetAllocationPrioritiesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetAllocationPrioritiesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

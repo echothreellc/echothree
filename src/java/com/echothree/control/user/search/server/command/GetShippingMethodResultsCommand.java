@@ -57,8 +57,8 @@ public class GetShippingMethodResultsCommand
     }
 
     /** Creates a new instance of GetShippingMethodResultsCommand */
-    public GetShippingMethodResultsCommand(UserVisitPK userVisitPK, GetShippingMethodResultsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetShippingMethodResultsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

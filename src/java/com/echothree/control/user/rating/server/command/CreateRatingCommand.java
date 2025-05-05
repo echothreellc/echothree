@@ -51,8 +51,8 @@ public class CreateRatingCommand
     }
     
     /** Creates a new instance of CreateRatingCommand */
-    public CreateRatingCommand(UserVisitPK userVisitPK, CreateRatingForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateRatingCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

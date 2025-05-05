@@ -56,8 +56,8 @@ public class GetContentWebAddressDescriptionsCommand
     }
     
     /** Creates a new instance of GetContentWebAddressDescriptionsCommand */
-    public GetContentWebAddressDescriptionsCommand(UserVisitPK userVisitPK, GetContentWebAddressDescriptionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetContentWebAddressDescriptionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

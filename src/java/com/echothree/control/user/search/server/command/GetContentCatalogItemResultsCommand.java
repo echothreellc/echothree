@@ -45,8 +45,8 @@ public class GetContentCatalogItemResultsCommand
     }
 
     /** Creates a new instance of GetContentCatalogItemResultsCommand */
-    public GetContentCatalogItemResultsCommand(UserVisitPK userVisitPK, GetContentCatalogItemResultsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetContentCatalogItemResultsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

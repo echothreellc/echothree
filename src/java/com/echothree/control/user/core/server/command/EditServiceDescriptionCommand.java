@@ -69,8 +69,8 @@ public class EditServiceDescriptionCommand
     }
     
     /** Creates a new instance of EditServiceDescriptionCommand */
-    public EditServiceDescriptionCommand(UserVisitPK userVisitPK, EditServiceDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditServiceDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

@@ -42,8 +42,8 @@ public class GetMimeTypeDescriptionsCommand
     }
 
     /** Creates a new instance of GetMimeTypeDescriptionsCommand */
-    public GetMimeTypeDescriptionsCommand(UserVisitPK userVisitPK, GetMimeTypeDescriptionsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetMimeTypeDescriptionsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
    @Override

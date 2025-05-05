@@ -80,8 +80,8 @@ public class EditVendorItemCommand
     }
     
     /** Creates a new instance of EditVendorItemCommand */
-    public EditVendorItemCommand(UserVisitPK userVisitPK, EditVendorItemForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditVendorItemCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

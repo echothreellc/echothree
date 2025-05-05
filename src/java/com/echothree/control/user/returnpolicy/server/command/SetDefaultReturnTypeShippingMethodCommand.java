@@ -57,8 +57,8 @@ public class SetDefaultReturnTypeShippingMethodCommand
     }
     
     /** Creates a new instance of SetDefaultReturnTypeShippingMethodCommand */
-    public SetDefaultReturnTypeShippingMethodCommand(UserVisitPK userVisitPK, SetDefaultReturnTypeShippingMethodForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultReturnTypeShippingMethodCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

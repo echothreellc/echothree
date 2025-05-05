@@ -17,16 +17,17 @@
 package com.echothree.control.user.authentication.server.command;
 
 import com.echothree.model.control.user.server.logic.UserVisitLogic;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LogoutCommand
         extends BaseSimpleCommand {
     
     /** Creates a new instance of LogoutCommand */
-    public LogoutCommand(UserVisitPK userVisitPK) {
-        super(userVisitPK, null, false);
+    public LogoutCommand() {
+        super(null, false);
     }
     
     @Override

@@ -56,8 +56,8 @@ public class SetDefaultContentForumCommand
     }
     
     /** Creates a new instance of SetDefaultContentForumCommand */
-    public SetDefaultContentForumCommand(UserVisitPK userVisitPK, SetDefaultContentForumForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultContentForumCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

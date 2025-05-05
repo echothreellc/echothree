@@ -55,8 +55,8 @@ public class DeleteQueueTypeCommand
     }
     
     /** Creates a new instance of DeleteQueueTypeCommand */
-    public DeleteQueueTypeCommand(UserVisitPK userVisitPK, DeleteQueueTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteQueueTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

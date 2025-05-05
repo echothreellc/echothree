@@ -57,8 +57,8 @@ public class GetWorkflowStepsCommand
     }
     
     /** Creates a new instance of GetWorkflowStepsCommand */
-    public GetWorkflowStepsCommand(UserVisitPK userVisitPK, GetWorkflowStepsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetWorkflowStepsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     Workflow workflow;

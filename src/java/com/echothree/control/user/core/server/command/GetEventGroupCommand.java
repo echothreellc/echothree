@@ -43,8 +43,8 @@ public class GetEventGroupCommand
     }
     
     /** Creates a new instance of GetEventGroupCommand */
-    public GetEventGroupCommand(UserVisitPK userVisitPK, GetEventGroupForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetEventGroupCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

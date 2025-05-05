@@ -53,8 +53,8 @@ public class DeleteFilterCommand
     }
     
     /** Creates a new instance of DeleteFilterCommand */
-    public DeleteFilterCommand(UserVisitPK userVisitPK, DeleteFilterForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteFilterCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

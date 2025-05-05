@@ -43,8 +43,8 @@ public class DeleteGeoCodeTaxCommand
     }
     
     /** Creates a new instance of DeleteGeoCodeTaxCommand */
-    public DeleteGeoCodeTaxCommand(UserVisitPK userVisitPK, DeleteGeoCodeTaxForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteGeoCodeTaxCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

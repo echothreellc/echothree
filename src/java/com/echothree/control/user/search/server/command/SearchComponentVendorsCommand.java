@@ -68,8 +68,8 @@ public class SearchComponentVendorsCommand
     }
 
     /** Creates a new instance of SearchComponentVendorsCommand */
-    public SearchComponentVendorsCommand(UserVisitPK userVisitPK, SearchComponentVendorsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SearchComponentVendorsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

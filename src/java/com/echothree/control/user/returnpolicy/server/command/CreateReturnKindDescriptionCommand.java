@@ -58,8 +58,8 @@ public class CreateReturnKindDescriptionCommand
     }
     
     /** Creates a new instance of CreateReturnKindDescriptionCommand */
-    public CreateReturnKindDescriptionCommand(UserVisitPK userVisitPK, CreateReturnKindDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateReturnKindDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

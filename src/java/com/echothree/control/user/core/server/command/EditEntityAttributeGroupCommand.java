@@ -67,8 +67,8 @@ public class EditEntityAttributeGroupCommand
     }
     
     /** Creates a new instance of EditEntityAttributeGroupCommand */
-    public EditEntityAttributeGroupCommand(UserVisitPK userVisitPK, EditEntityAttributeGroupForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditEntityAttributeGroupCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

@@ -64,8 +64,8 @@ public class CreateLetterCommand
     }
     
     /** Creates a new instance of CreateLetterCommand */
-    public CreateLetterCommand(UserVisitPK userVisitPK, CreateLetterForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateLetterCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

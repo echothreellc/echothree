@@ -56,8 +56,8 @@ public class SetDefaultWorkflowDestinationCommand
     }
     
     /** Creates a new instance of SetDefaultWorkflowDestinationCommand */
-    public SetDefaultWorkflowDestinationCommand(UserVisitPK userVisitPK, SetDefaultWorkflowDestinationForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultWorkflowDestinationCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

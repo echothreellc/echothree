@@ -49,8 +49,8 @@ public class CreateInvoiceLineUseTypeCommand
     }
     
     /** Creates a new instance of CreateInvoiceLineUseTypeCommand */
-    public CreateInvoiceLineUseTypeCommand(UserVisitPK userVisitPK, CreateInvoiceLineUseTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateInvoiceLineUseTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

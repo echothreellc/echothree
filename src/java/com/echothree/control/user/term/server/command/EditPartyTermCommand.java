@@ -55,8 +55,8 @@ public class EditPartyTermCommand
     }
     
     /** Creates a new instance of EditPartyTermCommand */
-    public EditPartyTermCommand(UserVisitPK userVisitPK, EditPartyTermForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditPartyTermCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

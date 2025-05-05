@@ -56,8 +56,8 @@ public class SetCustomerStatusCommand
     }
     
     /** Creates a new instance of SetCustomerStatusCommand */
-    public SetCustomerStatusCommand(UserVisitPK userVisitPK, SetCustomerStatusForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetCustomerStatusCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

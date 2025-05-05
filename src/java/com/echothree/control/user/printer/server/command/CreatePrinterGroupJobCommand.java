@@ -68,8 +68,8 @@ public class CreatePrinterGroupJobCommand
     }
     
     /** Creates a new instance of CreatePrinterGroupJobCommand */
-    public CreatePrinterGroupJobCommand(UserVisitPK userVisitPK, CreatePrinterGroupJobForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreatePrinterGroupJobCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
 
     private void createPrinterGroupJob(final PrinterGroup printerGroup, final MimeType mimeType, final ByteArray blob, final String clob,

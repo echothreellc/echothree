@@ -56,8 +56,8 @@ public class DeleteReturnReasonCommand
     }
     
     /** Creates a new instance of DeleteReturnReasonCommand */
-    public DeleteReturnReasonCommand(UserVisitPK userVisitPK, DeleteReturnReasonForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteReturnReasonCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

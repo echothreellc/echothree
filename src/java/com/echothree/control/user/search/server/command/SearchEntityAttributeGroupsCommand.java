@@ -68,8 +68,8 @@ public class SearchEntityAttributeGroupsCommand
     }
 
     /** Creates a new instance of SearchEntityAttributeGroupsCommand */
-    public SearchEntityAttributeGroupsCommand(UserVisitPK userVisitPK, SearchEntityAttributeGroupsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SearchEntityAttributeGroupsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

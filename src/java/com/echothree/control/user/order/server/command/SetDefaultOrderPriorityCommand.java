@@ -56,8 +56,8 @@ public class SetDefaultOrderPriorityCommand
     }
     
     /** Creates a new instance of SetDefaultOrderPriorityCommand */
-    public SetDefaultOrderPriorityCommand(UserVisitPK userVisitPK, SetDefaultOrderPriorityForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultOrderPriorityCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

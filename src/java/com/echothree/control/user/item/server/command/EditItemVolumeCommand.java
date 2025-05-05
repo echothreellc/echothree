@@ -64,8 +64,8 @@ public class EditItemVolumeCommand
     }
     
     /** Creates a new instance of EditItemVolumeCommand */
-    public EditItemVolumeCommand(UserVisitPK userVisitPK, EditItemVolumeForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditItemVolumeCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

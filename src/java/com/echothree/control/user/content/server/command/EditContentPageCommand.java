@@ -74,8 +74,8 @@ public class EditContentPageCommand
     }
     
     /** Creates a new instance of EditContentPageCommand */
-    public EditContentPageCommand(UserVisitPK userVisitPK, EditContentPageForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditContentPageCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

@@ -63,8 +63,8 @@ public class SearchForumMessagesCommand
     }
 
     /** Creates a new instance of SearchForumMessagesCommand */
-    public SearchForumMessagesCommand(UserVisitPK userVisitPK, SearchForumMessagesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SearchForumMessagesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

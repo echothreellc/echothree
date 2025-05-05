@@ -41,8 +41,8 @@ public class DeleteForumThreadCommand
     }
     
     /** Creates a new instance of DeleteForumThreadCommand */
-    public DeleteForumThreadCommand(UserVisitPK userVisitPK, DeleteForumThreadForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteForumThreadCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

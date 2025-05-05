@@ -51,8 +51,8 @@ public class GetLanguageCommand
     }
     
     /** Creates a new instance of GetLanguageCommand */
-    public GetLanguageCommand(UserVisitPK userVisitPK, GetLanguageForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetLanguageCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

@@ -43,8 +43,8 @@ public class SetCustomerCreditStatusCommand
     }
     
     /** Creates a new instance of SetCustomerCreditStatusCommand */
-    public SetCustomerCreditStatusCommand(UserVisitPK userVisitPK, SetCustomerCreditStatusForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SetCustomerCreditStatusCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

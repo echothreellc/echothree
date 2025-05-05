@@ -42,8 +42,8 @@ public class GetSelectorComparisonTypeChoicesCommand
     }
     
     /** Creates a new instance of GetSelectorComparisonTypeChoicesCommand */
-    public GetSelectorComparisonTypeChoicesCommand(UserVisitPK userVisitPK, GetSelectorComparisonTypeChoicesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public GetSelectorComparisonTypeChoicesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

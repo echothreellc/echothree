@@ -71,8 +71,8 @@ public class EditPartyInventoryLevelCommand
     }
 
     /** Creates a new instance of EditPartyInventoryLevelCommand */
-    public EditPartyInventoryLevelCommand(UserVisitPK userVisitPK, EditPartyInventoryLevelForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditPartyInventoryLevelCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

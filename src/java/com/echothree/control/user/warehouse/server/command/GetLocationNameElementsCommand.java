@@ -57,8 +57,8 @@ public class GetLocationNameElementsCommand
     }
     
     /** Creates a new instance of GetLocationNameElementsCommand */
-    public GetLocationNameElementsCommand(UserVisitPK userVisitPK, GetLocationNameElementsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetLocationNameElementsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

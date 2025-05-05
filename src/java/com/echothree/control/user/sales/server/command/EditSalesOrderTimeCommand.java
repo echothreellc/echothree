@@ -56,8 +56,8 @@ public class EditSalesOrderTimeCommand
     }
 
     /** Creates a new instance of EditSalesOrderTimeCommand */
-    public EditSalesOrderTimeCommand(UserVisitPK userVisitPK, EditSalesOrderTimeForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditSalesOrderTimeCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

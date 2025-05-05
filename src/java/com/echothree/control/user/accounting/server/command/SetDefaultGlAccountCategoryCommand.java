@@ -54,8 +54,8 @@ public class SetDefaultGlAccountCategoryCommand
     }
     
     /** Creates a new instance of SetDefaultGlAccountCategoryCommand */
-    public SetDefaultGlAccountCategoryCommand(UserVisitPK userVisitPK, SetDefaultGlAccountCategoryForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultGlAccountCategoryCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -57,8 +57,8 @@ public class DeleteVendorTypeDescriptionCommand
     }
     
     /** Creates a new instance of DeleteVendorTypeDescriptionCommand */
-    public DeleteVendorTypeDescriptionCommand(UserVisitPK userVisitPK, DeleteVendorTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteVendorTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -39,8 +39,8 @@ public class GetScalesCommand
     }
 
     /** Creates a new instance of GetScalesCommand */
-    public GetScalesCommand(UserVisitPK userVisitPK, GetScalesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetScalesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

@@ -75,8 +75,8 @@ public class EditItemCategoryCommand
     }
     
     /** Creates a new instance of EditItemCategoryCommand */
-    public EditItemCategoryCommand(UserVisitPK userVisitPK, EditItemCategoryForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditItemCategoryCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

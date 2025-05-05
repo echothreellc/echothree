@@ -56,8 +56,8 @@ public class DeleteInvoiceTimeTypeCommand
     }
     
     /** Creates a new instance of DeleteInvoiceTimeTypeCommand */
-    public DeleteInvoiceTimeTypeCommand(UserVisitPK userVisitPK, DeleteInvoiceTimeTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteInvoiceTimeTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

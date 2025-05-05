@@ -69,8 +69,8 @@ public class EditProtocolCommand
     }
     
     /** Creates a new instance of EditProtocolCommand */
-    public EditProtocolCommand(UserVisitPK userVisitPK, EditProtocolForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditProtocolCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

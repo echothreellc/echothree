@@ -59,8 +59,8 @@ public class GetLetterDescriptionsCommand
     }
     
     /** Creates a new instance of GetLetterDescriptionsCommand */
-    public GetLetterDescriptionsCommand(UserVisitPK userVisitPK, GetLetterDescriptionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetLetterDescriptionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

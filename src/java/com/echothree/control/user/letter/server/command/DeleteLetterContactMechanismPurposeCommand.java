@@ -59,8 +59,8 @@ public class DeleteLetterContactMechanismPurposeCommand
     }
     
     /** Creates a new instance of DeleteLetterContactMechanismPurposeCommand */
-    public DeleteLetterContactMechanismPurposeCommand(UserVisitPK userVisitPK, DeleteLetterContactMechanismPurposeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteLetterContactMechanismPurposeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

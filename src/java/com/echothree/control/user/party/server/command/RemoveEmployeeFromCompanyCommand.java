@@ -43,8 +43,8 @@ public class RemoveEmployeeFromCompanyCommand
     }
     
     /** Creates a new instance of RemoveEmployeeFromCompanyCommand */
-    public RemoveEmployeeFromCompanyCommand(UserVisitPK userVisitPK, RemoveEmployeeFromCompanyForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public RemoveEmployeeFromCompanyCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

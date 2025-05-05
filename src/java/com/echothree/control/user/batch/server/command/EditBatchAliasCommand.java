@@ -18,7 +18,6 @@ package com.echothree.control.user.batch.server.command;
 
 import com.echothree.control.user.batch.common.edit.BatchAliasEdit;
 import com.echothree.control.user.batch.common.edit.BatchEditFactory;
-import com.echothree.control.user.batch.common.form.EditBatchAliasForm;
 import com.echothree.control.user.batch.common.result.BatchResultFactory;
 import com.echothree.control.user.batch.common.result.EditBatchAliasResult;
 import com.echothree.control.user.batch.common.spec.BatchAliasSpec;
@@ -28,11 +27,10 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.batch.server.entity.BatchAlias;
 import com.echothree.model.data.batch.server.entity.BatchAliasType;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -61,15 +59,20 @@ public class EditBatchAliasCommand
     }
     
     /** Creates a new instance of EditBatchAliasCommand */
-    public EditBatchAliasCommand(UserVisitPK userVisitPK, EditBatchAliasForm form) {
-        super(userVisitPK, form, new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+    public EditBatchAliasCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
+
+    @Override
+    protected CommandSecurityDefinition getCommandSecurityDefinition() {
+        return new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                        new SecurityRoleDefinition(BatchAliasUtil.getInstance().getSecurityRoleGroupNameByBatchTypeSpec(form == null ? null : form.getSpec()), SecurityRoles.Edit.name())
-                        )))
-                ))), SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+                        new SecurityRoleDefinition(BatchAliasUtil.getInstance().getSecurityRoleGroupNameByBatchTypeSpec(spec), SecurityRoles.Edit.name())
+                )))
+        )));
     }
-    
+
     @Override
     public EditBatchAliasResult getResult() {
         return BatchResultFactory.getEditBatchAliasResult();

@@ -62,8 +62,8 @@ public class EditDepartmentCommand
     }
     
     /** Creates a new instance of EditDepartmentCommand */
-    public EditDepartmentCommand(UserVisitPK userVisitPK, EditDepartmentForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditDepartmentCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

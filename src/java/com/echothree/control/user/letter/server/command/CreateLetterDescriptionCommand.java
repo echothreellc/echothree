@@ -61,8 +61,8 @@ public class CreateLetterDescriptionCommand
     }
     
     /** Creates a new instance of CreateLetterDescriptionCommand */
-    public CreateLetterDescriptionCommand(UserVisitPK userVisitPK, CreateLetterDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateLetterDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

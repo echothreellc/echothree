@@ -55,8 +55,8 @@ public class SetDefaultLeaveTypeCommand
     }
 
     /** Creates a new instance of SetDefaultLeaveTypeCommand */
-    public SetDefaultLeaveTypeCommand(UserVisitPK userVisitPK, SetDefaultLeaveTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultLeaveTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
    @Override

@@ -50,8 +50,8 @@ public class CreatePartyTypeLockoutPolicyCommand
     }
     
     /** Creates a new instance of CreatePartyTypeLockoutPolicyCommand */
-    public CreatePartyTypeLockoutPolicyCommand(UserVisitPK userVisitPK, CreatePartyTypeLockoutPolicyForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreatePartyTypeLockoutPolicyCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -61,8 +61,8 @@ public class CreateContentPageCommand
     }
     
     /** Creates a new instance of CreateContentPageCommand */
-    public CreateContentPageCommand(UserVisitPK userVisitPK, CreateContentPageForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateContentPageCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

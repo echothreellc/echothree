@@ -43,22 +43,22 @@ public class WorkflowBean
     
     @Override
     public CommandResult createWorkflowStepType(UserVisitPK userVisitPK, CreateWorkflowStepTypeForm form) {
-        return new CreateWorkflowStepTypeCommand(userVisitPK, form).run();
+        return new CreateWorkflowStepTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getWorkflowStepType(UserVisitPK userVisitPK, GetWorkflowStepTypeForm form) {
-        return new GetWorkflowStepTypeCommand(userVisitPK, form).run();
+        return new GetWorkflowStepTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getWorkflowStepTypes(UserVisitPK userVisitPK, GetWorkflowStepTypesForm form) {
-        return new GetWorkflowStepTypesCommand(userVisitPK, form).run();
+        return new GetWorkflowStepTypesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getWorkflowStepTypeChoices(UserVisitPK userVisitPK, GetWorkflowStepTypeChoicesForm form) {
-        return new GetWorkflowStepTypeChoicesCommand(userVisitPK, form).run();
+        return new GetWorkflowStepTypeChoicesCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -67,7 +67,7 @@ public class WorkflowBean
     
     @Override
     public CommandResult createWorkflowStepTypeDescription(UserVisitPK userVisitPK, CreateWorkflowStepTypeDescriptionForm form) {
-        return new CreateWorkflowStepTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateWorkflowStepTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -76,32 +76,32 @@ public class WorkflowBean
     
     @Override
     public CommandResult createWorkflow(UserVisitPK userVisitPK, CreateWorkflowForm form) {
-        return new CreateWorkflowCommand(userVisitPK, form).run();
+        return new CreateWorkflowCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkflow(UserVisitPK userVisitPK, GetWorkflowForm form) {
-        return new GetWorkflowCommand(userVisitPK, form).run();
+        return new GetWorkflowCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkflows(UserVisitPK userVisitPK, GetWorkflowsForm form) {
-        return new GetWorkflowsCommand(userVisitPK, form).run();
+        return new GetWorkflowsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getWorkflowChoices(UserVisitPK userVisitPK, GetWorkflowChoicesForm form) {
-        return new GetWorkflowChoicesCommand(userVisitPK, form).run();
+        return new GetWorkflowChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editWorkflow(UserVisitPK userVisitPK, EditWorkflowForm form) {
-        return new EditWorkflowCommand(userVisitPK, form).run();
+        return new EditWorkflowCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteWorkflow(UserVisitPK userVisitPK, DeleteWorkflowForm form) {
-        return new DeleteWorkflowCommand(userVisitPK, form).run();
+        return new DeleteWorkflowCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -110,27 +110,27 @@ public class WorkflowBean
     
     @Override
     public CommandResult createWorkflowDescription(UserVisitPK userVisitPK, CreateWorkflowDescriptionForm form) {
-        return new CreateWorkflowDescriptionCommand(userVisitPK, form).run();
+        return new CreateWorkflowDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkflowDescription(UserVisitPK userVisitPK, GetWorkflowDescriptionForm form) {
-        return new GetWorkflowDescriptionCommand(userVisitPK, form).run();
+        return new GetWorkflowDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkflowDescriptions(UserVisitPK userVisitPK, GetWorkflowDescriptionsForm form) {
-        return new GetWorkflowDescriptionsCommand(userVisitPK, form).run();
+        return new GetWorkflowDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editWorkflowDescription(UserVisitPK userVisitPK, EditWorkflowDescriptionForm form) {
-        return new EditWorkflowDescriptionCommand(userVisitPK, form).run();
+        return new EditWorkflowDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteWorkflowDescription(UserVisitPK userVisitPK, DeleteWorkflowDescriptionForm form) {
-        return new DeleteWorkflowDescriptionCommand(userVisitPK, form).run();
+        return new DeleteWorkflowDescriptionCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -139,37 +139,37 @@ public class WorkflowBean
     
     @Override
     public CommandResult createWorkflowStep(UserVisitPK userVisitPK, CreateWorkflowStepForm form) {
-        return new CreateWorkflowStepCommand(userVisitPK, form).run();
+        return new CreateWorkflowStepCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkflowStep(UserVisitPK userVisitPK, GetWorkflowStepForm form) {
-        return new GetWorkflowStepCommand(userVisitPK, form).run();
+        return new GetWorkflowStepCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkflowSteps(UserVisitPK userVisitPK, GetWorkflowStepsForm form) {
-        return new GetWorkflowStepsCommand(userVisitPK, form).run();
+        return new GetWorkflowStepsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkflowStepChoices(UserVisitPK userVisitPK, GetWorkflowStepChoicesForm form) {
-        return new GetWorkflowStepChoicesCommand(userVisitPK, form).run();
+        return new GetWorkflowStepChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editWorkflowStep(UserVisitPK userVisitPK, EditWorkflowStepForm form) {
-        return new EditWorkflowStepCommand(userVisitPK, form).run();
+        return new EditWorkflowStepCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultWorkflowStep(UserVisitPK userVisitPK, SetDefaultWorkflowStepForm form) {
-        return new SetDefaultWorkflowStepCommand(userVisitPK, form).run();
+        return new SetDefaultWorkflowStepCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteWorkflowStep(UserVisitPK userVisitPK, DeleteWorkflowStepForm form) {
-        return new DeleteWorkflowStepCommand(userVisitPK, form).run();
+        return new DeleteWorkflowStepCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -178,27 +178,27 @@ public class WorkflowBean
     
     @Override
     public CommandResult createWorkflowStepDescription(UserVisitPK userVisitPK, CreateWorkflowStepDescriptionForm form) {
-        return new CreateWorkflowStepDescriptionCommand(userVisitPK, form).run();
+        return new CreateWorkflowStepDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkflowStepDescription(UserVisitPK userVisitPK, GetWorkflowStepDescriptionForm form) {
-        return new GetWorkflowStepDescriptionCommand(userVisitPK, form).run();
+        return new GetWorkflowStepDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkflowStepDescriptions(UserVisitPK userVisitPK, GetWorkflowStepDescriptionsForm form) {
-        return new GetWorkflowStepDescriptionsCommand(userVisitPK, form).run();
+        return new GetWorkflowStepDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editWorkflowStepDescription(UserVisitPK userVisitPK, EditWorkflowStepDescriptionForm form) {
-        return new EditWorkflowStepDescriptionCommand(userVisitPK, form).run();
+        return new EditWorkflowStepDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteWorkflowStepDescription(UserVisitPK userVisitPK, DeleteWorkflowStepDescriptionForm form) {
-        return new DeleteWorkflowStepDescriptionCommand(userVisitPK, form).run();
+        return new DeleteWorkflowStepDescriptionCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -207,32 +207,32 @@ public class WorkflowBean
     
     @Override
     public CommandResult createWorkflowDestination(UserVisitPK userVisitPK, CreateWorkflowDestinationForm form) {
-        return new CreateWorkflowDestinationCommand(userVisitPK, form).run();
+        return new CreateWorkflowDestinationCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkflowDestination(UserVisitPK userVisitPK, GetWorkflowDestinationForm form) {
-        return new GetWorkflowDestinationCommand(userVisitPK, form).run();
+        return new GetWorkflowDestinationCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkflowDestinations(UserVisitPK userVisitPK, GetWorkflowDestinationsForm form) {
-        return new GetWorkflowDestinationsCommand(userVisitPK, form).run();
+        return new GetWorkflowDestinationsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editWorkflowDestination(UserVisitPK userVisitPK, EditWorkflowDestinationForm form) {
-        return new EditWorkflowDestinationCommand(userVisitPK, form).run();
+        return new EditWorkflowDestinationCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultWorkflowDestination(UserVisitPK userVisitPK, SetDefaultWorkflowDestinationForm form) {
-        return new SetDefaultWorkflowDestinationCommand(userVisitPK, form).run();
+        return new SetDefaultWorkflowDestinationCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteWorkflowDestination(UserVisitPK userVisitPK, DeleteWorkflowDestinationForm form) {
-        return new DeleteWorkflowDestinationCommand(userVisitPK, form).run();
+        return new DeleteWorkflowDestinationCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -241,27 +241,27 @@ public class WorkflowBean
     
     @Override
     public CommandResult createWorkflowDestinationDescription(UserVisitPK userVisitPK, CreateWorkflowDestinationDescriptionForm form) {
-        return new CreateWorkflowDestinationDescriptionCommand(userVisitPK, form).run();
+        return new CreateWorkflowDestinationDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkflowDestinationDescription(UserVisitPK userVisitPK, GetWorkflowDestinationDescriptionForm form) {
-        return new GetWorkflowDestinationDescriptionCommand(userVisitPK, form).run();
+        return new GetWorkflowDestinationDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkflowDestinationDescriptions(UserVisitPK userVisitPK, GetWorkflowDestinationDescriptionsForm form) {
-        return new GetWorkflowDestinationDescriptionsCommand(userVisitPK, form).run();
+        return new GetWorkflowDestinationDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editWorkflowDestinationDescription(UserVisitPK userVisitPK, EditWorkflowDestinationDescriptionForm form) {
-        return new EditWorkflowDestinationDescriptionCommand(userVisitPK, form).run();
+        return new EditWorkflowDestinationDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteWorkflowDestinationDescription(UserVisitPK userVisitPK, DeleteWorkflowDestinationDescriptionForm form) {
-        return new DeleteWorkflowDestinationDescriptionCommand(userVisitPK, form).run();
+        return new DeleteWorkflowDestinationDescriptionCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -270,22 +270,22 @@ public class WorkflowBean
     
     @Override
     public CommandResult createWorkflowDestinationStep(UserVisitPK userVisitPK, CreateWorkflowDestinationStepForm form) {
-        return new CreateWorkflowDestinationStepCommand(userVisitPK, form).run();
+        return new CreateWorkflowDestinationStepCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkflowDestinationStep(UserVisitPK userVisitPK, GetWorkflowDestinationStepForm form) {
-        return new GetWorkflowDestinationStepCommand(userVisitPK, form).run();
+        return new GetWorkflowDestinationStepCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkflowDestinationSteps(UserVisitPK userVisitPK, GetWorkflowDestinationStepsForm form) {
-        return new GetWorkflowDestinationStepsCommand(userVisitPK, form).run();
+        return new GetWorkflowDestinationStepsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteWorkflowDestinationStep(UserVisitPK userVisitPK, DeleteWorkflowDestinationStepForm form) {
-        return new DeleteWorkflowDestinationStepCommand(userVisitPK, form).run();
+        return new DeleteWorkflowDestinationStepCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -294,22 +294,22 @@ public class WorkflowBean
     
     @Override
     public CommandResult createWorkflowDestinationSelector(UserVisitPK userVisitPK, CreateWorkflowDestinationSelectorForm form) {
-        return new CreateWorkflowDestinationSelectorCommand(userVisitPK, form).run();
+        return new CreateWorkflowDestinationSelectorCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkflowDestinationSelector(UserVisitPK userVisitPK, GetWorkflowDestinationSelectorForm form) {
-        return new GetWorkflowDestinationSelectorCommand(userVisitPK, form).run();
+        return new GetWorkflowDestinationSelectorCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkflowDestinationSelectors(UserVisitPK userVisitPK, GetWorkflowDestinationSelectorsForm form) {
-        return new GetWorkflowDestinationSelectorsCommand(userVisitPK, form).run();
+        return new GetWorkflowDestinationSelectorsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteWorkflowDestinationSelector(UserVisitPK userVisitPK, DeleteWorkflowDestinationSelectorForm form) {
-        return new DeleteWorkflowDestinationSelectorCommand(userVisitPK, form).run();
+        return new DeleteWorkflowDestinationSelectorCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -318,22 +318,22 @@ public class WorkflowBean
     
     @Override
     public CommandResult createWorkflowDestinationPartyType(UserVisitPK userVisitPK, CreateWorkflowDestinationPartyTypeForm form) {
-        return new CreateWorkflowDestinationPartyTypeCommand(userVisitPK, form).run();
+        return new CreateWorkflowDestinationPartyTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkflowDestinationPartyType(UserVisitPK userVisitPK, GetWorkflowDestinationPartyTypeForm form) {
-        return new GetWorkflowDestinationPartyTypeCommand(userVisitPK, form).run();
+        return new GetWorkflowDestinationPartyTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkflowDestinationPartyTypes(UserVisitPK userVisitPK, GetWorkflowDestinationPartyTypesForm form) {
-        return new GetWorkflowDestinationPartyTypesCommand(userVisitPK, form).run();
+        return new GetWorkflowDestinationPartyTypesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteWorkflowDestinationPartyType(UserVisitPK userVisitPK, DeleteWorkflowDestinationPartyTypeForm form) {
-        return new DeleteWorkflowDestinationPartyTypeCommand(userVisitPK, form).run();
+        return new DeleteWorkflowDestinationPartyTypeCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -342,22 +342,22 @@ public class WorkflowBean
     
     @Override
     public CommandResult createWorkflowDestinationSecurityRole(UserVisitPK userVisitPK, CreateWorkflowDestinationSecurityRoleForm form) {
-        return new CreateWorkflowDestinationSecurityRoleCommand(userVisitPK, form).run();
+        return new CreateWorkflowDestinationSecurityRoleCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkflowDestinationSecurityRole(UserVisitPK userVisitPK, GetWorkflowDestinationSecurityRoleForm form) {
-        return new GetWorkflowDestinationSecurityRoleCommand(userVisitPK, form).run();
+        return new GetWorkflowDestinationSecurityRoleCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkflowDestinationSecurityRoles(UserVisitPK userVisitPK, GetWorkflowDestinationSecurityRolesForm form) {
-        return new GetWorkflowDestinationSecurityRolesCommand(userVisitPK, form).run();
+        return new GetWorkflowDestinationSecurityRolesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteWorkflowDestinationSecurityRole(UserVisitPK userVisitPK, DeleteWorkflowDestinationSecurityRoleForm form) {
-        return new DeleteWorkflowDestinationSecurityRoleCommand(userVisitPK, form).run();
+        return new DeleteWorkflowDestinationSecurityRoleCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -366,22 +366,22 @@ public class WorkflowBean
     
     @Override
     public CommandResult createWorkflowEntityType(UserVisitPK userVisitPK, CreateWorkflowEntityTypeForm form) {
-        return new CreateWorkflowEntityTypeCommand(userVisitPK, form).run();
+        return new CreateWorkflowEntityTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkflowEntityType(UserVisitPK userVisitPK, GetWorkflowEntityTypeForm form) {
-        return new GetWorkflowEntityTypeCommand(userVisitPK, form).run();
+        return new GetWorkflowEntityTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getWorkflowEntityTypes(UserVisitPK userVisitPK, GetWorkflowEntityTypesForm form) {
-        return new GetWorkflowEntityTypesCommand(userVisitPK, form).run();
+        return new GetWorkflowEntityTypesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteWorkflowEntityType(UserVisitPK userVisitPK, DeleteWorkflowEntityTypeForm form) {
-        return new DeleteWorkflowEntityTypeCommand(userVisitPK, form).run();
+        return new DeleteWorkflowEntityTypeCommand().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -390,32 +390,32 @@ public class WorkflowBean
     
     @Override
     public CommandResult createWorkflowEntrance(UserVisitPK userVisitPK, CreateWorkflowEntranceForm form) {
-        return new CreateWorkflowEntranceCommand(userVisitPK, form).run();
+        return new CreateWorkflowEntranceCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkflowEntrance(UserVisitPK userVisitPK, GetWorkflowEntranceForm form) {
-        return new GetWorkflowEntranceCommand(userVisitPK, form).run();
+        return new GetWorkflowEntranceCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkflowEntrances(UserVisitPK userVisitPK, GetWorkflowEntrancesForm form) {
-        return new GetWorkflowEntrancesCommand(userVisitPK, form).run();
+        return new GetWorkflowEntrancesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editWorkflowEntrance(UserVisitPK userVisitPK, EditWorkflowEntranceForm form) {
-        return new EditWorkflowEntranceCommand(userVisitPK, form).run();
+        return new EditWorkflowEntranceCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultWorkflowEntrance(UserVisitPK userVisitPK, SetDefaultWorkflowEntranceForm form) {
-        return new SetDefaultWorkflowEntranceCommand(userVisitPK, form).run();
+        return new SetDefaultWorkflowEntranceCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteWorkflowEntrance(UserVisitPK userVisitPK, DeleteWorkflowEntranceForm form) {
-        return new DeleteWorkflowEntranceCommand(userVisitPK, form).run();
+        return new DeleteWorkflowEntranceCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -424,27 +424,27 @@ public class WorkflowBean
     
     @Override
     public CommandResult createWorkflowEntranceDescription(UserVisitPK userVisitPK, CreateWorkflowEntranceDescriptionForm form) {
-        return new CreateWorkflowEntranceDescriptionCommand(userVisitPK, form).run();
+        return new CreateWorkflowEntranceDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkflowEntranceDescription(UserVisitPK userVisitPK, GetWorkflowEntranceDescriptionForm form) {
-        return new GetWorkflowEntranceDescriptionCommand(userVisitPK, form).run();
+        return new GetWorkflowEntranceDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkflowEntranceDescriptions(UserVisitPK userVisitPK, GetWorkflowEntranceDescriptionsForm form) {
-        return new GetWorkflowEntranceDescriptionsCommand(userVisitPK, form).run();
+        return new GetWorkflowEntranceDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editWorkflowEntranceDescription(UserVisitPK userVisitPK, EditWorkflowEntranceDescriptionForm form) {
-        return new EditWorkflowEntranceDescriptionCommand(userVisitPK, form).run();
+        return new EditWorkflowEntranceDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteWorkflowEntranceDescription(UserVisitPK userVisitPK, DeleteWorkflowEntranceDescriptionForm form) {
-        return new DeleteWorkflowEntranceDescriptionCommand(userVisitPK, form).run();
+        return new DeleteWorkflowEntranceDescriptionCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -453,22 +453,22 @@ public class WorkflowBean
     
     @Override
     public CommandResult createWorkflowEntranceStep(UserVisitPK userVisitPK, CreateWorkflowEntranceStepForm form) {
-        return new CreateWorkflowEntranceStepCommand(userVisitPK, form).run();
+        return new CreateWorkflowEntranceStepCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkflowEntranceStep(UserVisitPK userVisitPK, GetWorkflowEntranceStepForm form) {
-        return new GetWorkflowEntranceStepCommand(userVisitPK, form).run();
+        return new GetWorkflowEntranceStepCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkflowEntranceSteps(UserVisitPK userVisitPK, GetWorkflowEntranceStepsForm form) {
-        return new GetWorkflowEntranceStepsCommand(userVisitPK, form).run();
+        return new GetWorkflowEntranceStepsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteWorkflowEntranceStep(UserVisitPK userVisitPK, DeleteWorkflowEntranceStepForm form) {
-        return new DeleteWorkflowEntranceStepCommand(userVisitPK, form).run();
+        return new DeleteWorkflowEntranceStepCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -477,22 +477,22 @@ public class WorkflowBean
     
     @Override
     public CommandResult createWorkflowEntranceSelector(UserVisitPK userVisitPK, CreateWorkflowEntranceSelectorForm form) {
-        return new CreateWorkflowEntranceSelectorCommand(userVisitPK, form).run();
+        return new CreateWorkflowEntranceSelectorCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkflowEntranceSelector(UserVisitPK userVisitPK, GetWorkflowEntranceSelectorForm form) {
-        return new GetWorkflowEntranceSelectorCommand(userVisitPK, form).run();
+        return new GetWorkflowEntranceSelectorCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkflowEntranceSelectors(UserVisitPK userVisitPK, GetWorkflowEntranceSelectorsForm form) {
-        return new GetWorkflowEntranceSelectorsCommand(userVisitPK, form).run();
+        return new GetWorkflowEntranceSelectorsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteWorkflowEntranceSelector(UserVisitPK userVisitPK, DeleteWorkflowEntranceSelectorForm form) {
-        return new DeleteWorkflowEntranceSelectorCommand(userVisitPK, form).run();
+        return new DeleteWorkflowEntranceSelectorCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -501,22 +501,22 @@ public class WorkflowBean
     
     @Override
     public CommandResult createWorkflowEntrancePartyType(UserVisitPK userVisitPK, CreateWorkflowEntrancePartyTypeForm form) {
-        return new CreateWorkflowEntrancePartyTypeCommand(userVisitPK, form).run();
+        return new CreateWorkflowEntrancePartyTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkflowEntrancePartyType(UserVisitPK userVisitPK, GetWorkflowEntrancePartyTypeForm form) {
-        return new GetWorkflowEntrancePartyTypeCommand(userVisitPK, form).run();
+        return new GetWorkflowEntrancePartyTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkflowEntrancePartyTypes(UserVisitPK userVisitPK, GetWorkflowEntrancePartyTypesForm form) {
-        return new GetWorkflowEntrancePartyTypesCommand(userVisitPK, form).run();
+        return new GetWorkflowEntrancePartyTypesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteWorkflowEntrancePartyType(UserVisitPK userVisitPK, DeleteWorkflowEntrancePartyTypeForm form) {
-        return new DeleteWorkflowEntrancePartyTypeCommand(userVisitPK, form).run();
+        return new DeleteWorkflowEntrancePartyTypeCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -525,22 +525,22 @@ public class WorkflowBean
     
     @Override
     public CommandResult createWorkflowEntranceSecurityRole(UserVisitPK userVisitPK, CreateWorkflowEntranceSecurityRoleForm form) {
-        return new CreateWorkflowEntranceSecurityRoleCommand(userVisitPK, form).run();
+        return new CreateWorkflowEntranceSecurityRoleCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkflowEntranceSecurityRole(UserVisitPK userVisitPK, GetWorkflowEntranceSecurityRoleForm form) {
-        return new GetWorkflowEntranceSecurityRoleCommand(userVisitPK, form).run();
+        return new GetWorkflowEntranceSecurityRoleCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkflowEntranceSecurityRoles(UserVisitPK userVisitPK, GetWorkflowEntranceSecurityRolesForm form) {
-        return new GetWorkflowEntranceSecurityRolesCommand(userVisitPK, form).run();
+        return new GetWorkflowEntranceSecurityRolesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteWorkflowEntranceSecurityRole(UserVisitPK userVisitPK, DeleteWorkflowEntranceSecurityRoleForm form) {
-        return new DeleteWorkflowEntranceSecurityRoleCommand(userVisitPK, form).run();
+        return new DeleteWorkflowEntranceSecurityRoleCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -549,22 +549,22 @@ public class WorkflowBean
     
     @Override
     public CommandResult createWorkflowSelectorKind(UserVisitPK userVisitPK, CreateWorkflowSelectorKindForm form) {
-        return new CreateWorkflowSelectorKindCommand(userVisitPK, form).run();
+        return new CreateWorkflowSelectorKindCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkflowSelectorKind(UserVisitPK userVisitPK, GetWorkflowSelectorKindForm form) {
-        return new GetWorkflowSelectorKindCommand(userVisitPK, form).run();
+        return new GetWorkflowSelectorKindCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkflowSelectorKinds(UserVisitPK userVisitPK, GetWorkflowSelectorKindsForm form) {
-        return new GetWorkflowSelectorKindsCommand(userVisitPK, form).run();
+        return new GetWorkflowSelectorKindsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteWorkflowSelectorKind(UserVisitPK userVisitPK, DeleteWorkflowSelectorKindForm form) {
-        return new DeleteWorkflowSelectorKindCommand(userVisitPK, form).run();
+        return new DeleteWorkflowSelectorKindCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -573,7 +573,7 @@ public class WorkflowBean
     
     @Override
     public CommandResult getWorkflowEntityStatuses(UserVisitPK userVisitPK, GetWorkflowEntityStatusesForm form) {
-        return new GetWorkflowEntityStatusesCommand(userVisitPK, form).run();
+        return new GetWorkflowEntityStatusesCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -582,7 +582,7 @@ public class WorkflowBean
     
     @Override
     public CommandResult processWorkflowTriggers(UserVisitPK userVisitPK) {
-        return new ProcessWorkflowTriggersCommand(userVisitPK).run();
+        return new ProcessWorkflowTriggersCommand().run(userVisitPK);
     }
     
 }

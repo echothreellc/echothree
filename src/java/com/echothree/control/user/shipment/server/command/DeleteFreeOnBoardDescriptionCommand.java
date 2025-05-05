@@ -57,8 +57,8 @@ public class DeleteFreeOnBoardDescriptionCommand
     }
     
     /** Creates a new instance of DeleteFreeOnBoardDescriptionCommand */
-    public DeleteFreeOnBoardDescriptionCommand(UserVisitPK userVisitPK, DeleteFreeOnBoardDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteFreeOnBoardDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -47,8 +47,8 @@ public class CreatePrinterCommand
     }
 
     /** Creates a new instance of CreatePrinterCommand */
-    public CreatePrinterCommand(UserVisitPK userVisitPK, CreatePrinterForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreatePrinterCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
    @Override

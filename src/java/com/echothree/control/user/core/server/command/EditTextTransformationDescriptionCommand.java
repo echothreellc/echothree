@@ -69,8 +69,8 @@ public class EditTextTransformationDescriptionCommand
     }
     
     /** Creates a new instance of EditTextTransformationDescriptionCommand */
-    public EditTextTransformationDescriptionCommand(UserVisitPK userVisitPK, EditTextTransformationDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditTextTransformationDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

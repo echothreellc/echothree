@@ -57,8 +57,8 @@ public class DeletePartyTypeContactListCommand
     }
     
     /** Creates a new instance of DeletePartyTypeContactListCommand */
-    public DeletePartyTypeContactListCommand(UserVisitPK userVisitPK, DeletePartyTypeContactListForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeletePartyTypeContactListCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

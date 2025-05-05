@@ -67,8 +67,8 @@ public class EditEntityBlobAttributeCommand
     }
     
     /** Creates a new instance of EditEntityBlobAttributeCommand */
-    public EditEntityBlobAttributeCommand(UserVisitPK userVisitPK, EditEntityBlobAttributeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditEntityBlobAttributeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

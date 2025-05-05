@@ -62,8 +62,8 @@ public class CreateWorkRequirementTypeCommand
     }
     
     /** Creates a new instance of CreateWorkRequirementTypeCommand */
-    public CreateWorkRequirementTypeCommand(UserVisitPK userVisitPK, CreateWorkRequirementTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateWorkRequirementTypeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -65,8 +65,8 @@ public class GetVendorItemsCommand
     }
     
     /** Creates a new instance of GetVendorItemsCommand */
-    public GetVendorItemsCommand(UserVisitPK userVisitPK, GetVendorItemsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetVendorItemsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     Vendor vendor;

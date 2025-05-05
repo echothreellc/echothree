@@ -44,8 +44,8 @@ public class GetAssociateChoicesCommand
     }
     
     /** Creates a new instance of GetAssociateChoicesCommand */
-    public GetAssociateChoicesCommand(UserVisitPK userVisitPK, GetAssociateChoicesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public GetAssociateChoicesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

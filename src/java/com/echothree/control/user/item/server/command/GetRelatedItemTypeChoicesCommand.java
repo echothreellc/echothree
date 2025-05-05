@@ -55,8 +55,8 @@ public class GetRelatedItemTypeChoicesCommand
     }
     
     /** Creates a new instance of GetRelatedItemTypeChoicesCommand */
-    public GetRelatedItemTypeChoicesCommand(UserVisitPK userVisitPK, GetRelatedItemTypeChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetRelatedItemTypeChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

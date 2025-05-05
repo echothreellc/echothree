@@ -55,8 +55,8 @@ public class DeleteEmployeeTypeCommand
     }
     
     /** Creates a new instance of DeleteEmployeeTypeCommand */
-    public DeleteEmployeeTypeCommand(UserVisitPK userVisitPK, DeleteEmployeeTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteEmployeeTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

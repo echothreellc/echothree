@@ -43,8 +43,8 @@ public class CreateNameSuffixCommand
     }
     
     /** Creates a new instance of CreateNameSuffixCommand */
-    public CreateNameSuffixCommand(UserVisitPK userVisitPK, CreateNameSuffixForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateNameSuffixCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

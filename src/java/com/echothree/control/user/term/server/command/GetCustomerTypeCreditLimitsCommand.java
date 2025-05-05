@@ -43,8 +43,8 @@ public class GetCustomerTypeCreditLimitsCommand
     }
     
     /** Creates a new instance of GetCustomerTypeCreditLimitsCommand */
-    public GetCustomerTypeCreditLimitsCommand(UserVisitPK userVisitPK, GetCustomerTypeCreditLimitsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetCustomerTypeCreditLimitsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

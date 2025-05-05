@@ -47,8 +47,8 @@ public class CreateInventoryLocationGroupCapacityCommand
     }
     
     /** Creates a new instance of CreateInventoryLocationGroupCapacityCommand */
-    public CreateInventoryLocationGroupCapacityCommand(UserVisitPK userVisitPK, CreateInventoryLocationGroupCapacityForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateInventoryLocationGroupCapacityCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

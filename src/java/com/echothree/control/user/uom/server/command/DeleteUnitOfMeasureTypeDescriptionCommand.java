@@ -44,8 +44,8 @@ public class DeleteUnitOfMeasureTypeDescriptionCommand
     }
     
     /** Creates a new instance of DeleteUnitOfMeasureTypeDescriptionCommand */
-    public DeleteUnitOfMeasureTypeDescriptionCommand(UserVisitPK userVisitPK, DeleteUnitOfMeasureTypeDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteUnitOfMeasureTypeDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

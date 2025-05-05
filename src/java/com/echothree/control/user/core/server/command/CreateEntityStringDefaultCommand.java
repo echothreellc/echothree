@@ -56,8 +56,8 @@ public class CreateEntityStringDefaultCommand
     }
     
     /** Creates a new instance of CreateEntityStringDefaultCommand */
-    public CreateEntityStringDefaultCommand(UserVisitPK userVisitPK, CreateEntityStringDefaultForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateEntityStringDefaultCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

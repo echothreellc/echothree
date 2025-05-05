@@ -61,8 +61,8 @@ public class DeleteVendorItemCostCommand
     }
     
     /** Creates a new instance of DeleteVendorItemCostCommand */
-    public DeleteVendorItemCostCommand(UserVisitPK userVisitPK, DeleteVendorItemCostForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteVendorItemCostCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

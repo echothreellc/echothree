@@ -59,8 +59,8 @@ public class GetItemDescriptionTypeUseTypeCommand
     }
 
     /** Creates a new instance of GetItemDescriptionTypeUseTypeCommand */
-    public GetItemDescriptionTypeUseTypeCommand(UserVisitPK userVisitPK, GetItemDescriptionTypeUseTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetItemDescriptionTypeUseTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

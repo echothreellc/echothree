@@ -59,8 +59,8 @@ public class GetContentCatalogDescriptionCommand
     }
     
     /** Creates a new instance of GetContentCatalogDescriptionCommand */
-    public GetContentCatalogDescriptionCommand(UserVisitPK userVisitPK, GetContentCatalogDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetContentCatalogDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

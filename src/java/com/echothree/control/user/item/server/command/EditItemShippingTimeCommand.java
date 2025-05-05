@@ -57,8 +57,8 @@ public class EditItemShippingTimeCommand
     }
     
     /** Creates a new instance of EditItemShippingTimeCommand */
-    public EditItemShippingTimeCommand(UserVisitPK userVisitPK, EditItemShippingTimeForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditItemShippingTimeCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

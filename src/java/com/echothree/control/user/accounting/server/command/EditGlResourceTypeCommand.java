@@ -68,8 +68,8 @@ public class EditGlResourceTypeCommand
     }
     
     /** Creates a new instance of EditGlResourceTypeCommand */
-    public EditGlResourceTypeCommand(UserVisitPK userVisitPK, EditGlResourceTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditGlResourceTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

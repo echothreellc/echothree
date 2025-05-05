@@ -57,8 +57,8 @@ public class DeleteGeoCodeScopeDescriptionCommand
     }
     
     /** Creates a new instance of DeleteGeoCodeScopeDescriptionCommand */
-    public DeleteGeoCodeScopeDescriptionCommand(UserVisitPK userVisitPK, DeleteGeoCodeScopeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteGeoCodeScopeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

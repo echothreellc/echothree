@@ -60,8 +60,8 @@ public class GetWorkflowEntranceSelectorsCommand
     }
     
     /** Creates a new instance of GetWorkflowEntranceSelectorsCommand */
-    public GetWorkflowEntranceSelectorsCommand(UserVisitPK userVisitPK, GetWorkflowEntranceSelectorsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetWorkflowEntranceSelectorsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     WorkflowEntrance workflowEntrance;

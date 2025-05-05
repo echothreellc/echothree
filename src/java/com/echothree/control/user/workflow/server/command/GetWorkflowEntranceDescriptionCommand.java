@@ -59,8 +59,8 @@ public class GetWorkflowEntranceDescriptionCommand
     }
     
     /** Creates a new instance of GetWorkflowEntranceDescriptionCommand */
-    public GetWorkflowEntranceDescriptionCommand(UserVisitPK userVisitPK, GetWorkflowEntranceDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetWorkflowEntranceDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

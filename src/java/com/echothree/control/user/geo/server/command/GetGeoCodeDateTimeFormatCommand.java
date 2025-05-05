@@ -58,8 +58,8 @@ public class GetGeoCodeDateTimeFormatCommand
     }
     
     /** Creates a new instance of GetGeoCodeDateTimeFormatCommand */
-    public GetGeoCodeDateTimeFormatCommand(UserVisitPK userVisitPK, GetGeoCodeDateTimeFormatForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetGeoCodeDateTimeFormatCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

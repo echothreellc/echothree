@@ -57,8 +57,8 @@ public class DeleteTextTransformationDescriptionCommand
     }
     
     /** Creates a new instance of DeleteTextTransformationDescriptionCommand */
-    public DeleteTextTransformationDescriptionCommand(UserVisitPK userVisitPK, DeleteTextTransformationDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteTextTransformationDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

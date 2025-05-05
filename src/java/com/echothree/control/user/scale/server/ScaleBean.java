@@ -43,37 +43,37 @@ public class ScaleBean
 
     @Override
     public CommandResult createScaleType(UserVisitPK userVisitPK, CreateScaleTypeForm form) {
-        return new CreateScaleTypeCommand(userVisitPK, form).run();
+        return new CreateScaleTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getScaleTypeChoices(UserVisitPK userVisitPK, GetScaleTypeChoicesForm form) {
-        return new GetScaleTypeChoicesCommand(userVisitPK, form).run();
+        return new GetScaleTypeChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getScaleType(UserVisitPK userVisitPK, GetScaleTypeForm form) {
-        return new GetScaleTypeCommand(userVisitPK, form).run();
+        return new GetScaleTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getScaleTypes(UserVisitPK userVisitPK, GetScaleTypesForm form) {
-        return new GetScaleTypesCommand(userVisitPK, form).run();
+        return new GetScaleTypesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultScaleType(UserVisitPK userVisitPK, SetDefaultScaleTypeForm form) {
-        return new SetDefaultScaleTypeCommand(userVisitPK, form).run();
+        return new SetDefaultScaleTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editScaleType(UserVisitPK userVisitPK, EditScaleTypeForm form) {
-        return new EditScaleTypeCommand(userVisitPK, form).run();
+        return new EditScaleTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteScaleType(UserVisitPK userVisitPK, DeleteScaleTypeForm form) {
-        return new DeleteScaleTypeCommand(userVisitPK, form).run();
+        return new DeleteScaleTypeCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -82,27 +82,27 @@ public class ScaleBean
 
     @Override
     public CommandResult createScaleTypeDescription(UserVisitPK userVisitPK, CreateScaleTypeDescriptionForm form) {
-        return new CreateScaleTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateScaleTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getScaleTypeDescription(UserVisitPK userVisitPK, GetScaleTypeDescriptionForm form) {
-        return new GetScaleTypeDescriptionCommand(userVisitPK, form).run();
+        return new GetScaleTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getScaleTypeDescriptions(UserVisitPK userVisitPK, GetScaleTypeDescriptionsForm form) {
-        return new GetScaleTypeDescriptionsCommand(userVisitPK, form).run();
+        return new GetScaleTypeDescriptionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editScaleTypeDescription(UserVisitPK userVisitPK, EditScaleTypeDescriptionForm form) {
-        return new EditScaleTypeDescriptionCommand(userVisitPK, form).run();
+        return new EditScaleTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteScaleTypeDescription(UserVisitPK userVisitPK, DeleteScaleTypeDescriptionForm form) {
-        return new DeleteScaleTypeDescriptionCommand(userVisitPK, form).run();
+        return new DeleteScaleTypeDescriptionCommand().run(userVisitPK, form);
     }
 
      // -------------------------------------------------------------------------
@@ -111,37 +111,37 @@ public class ScaleBean
     
     @Override
     public CommandResult createScale(UserVisitPK userVisitPK, CreateScaleForm form) {
-        return new CreateScaleCommand(userVisitPK, form).run();
+        return new CreateScaleCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getScaleChoices(UserVisitPK userVisitPK, GetScaleChoicesForm form) {
-        return new GetScaleChoicesCommand(userVisitPK, form).run();
+        return new GetScaleChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getScale(UserVisitPK userVisitPK, GetScaleForm form) {
-        return new GetScaleCommand(userVisitPK, form).run();
+        return new GetScaleCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getScales(UserVisitPK userVisitPK, GetScalesForm form) {
-        return new GetScalesCommand(userVisitPK, form).run();
+        return new GetScalesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultScale(UserVisitPK userVisitPK, SetDefaultScaleForm form) {
-        return new SetDefaultScaleCommand(userVisitPK, form).run();
+        return new SetDefaultScaleCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editScale(UserVisitPK userVisitPK, EditScaleForm form) {
-        return new EditScaleCommand(userVisitPK, form).run();
+        return new EditScaleCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteScale(UserVisitPK userVisitPK, DeleteScaleForm form) {
-        return new DeleteScaleCommand(userVisitPK, form).run();
+        return new DeleteScaleCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -150,27 +150,27 @@ public class ScaleBean
     
     @Override
     public CommandResult createScaleDescription(UserVisitPK userVisitPK, CreateScaleDescriptionForm form) {
-        return new CreateScaleDescriptionCommand(userVisitPK, form).run();
+        return new CreateScaleDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getScaleDescription(UserVisitPK userVisitPK, GetScaleDescriptionForm form) {
-        return new GetScaleDescriptionCommand(userVisitPK, form).run();
+        return new GetScaleDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getScaleDescriptions(UserVisitPK userVisitPK, GetScaleDescriptionsForm form) {
-        return new GetScaleDescriptionsCommand(userVisitPK, form).run();
+        return new GetScaleDescriptionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editScaleDescription(UserVisitPK userVisitPK, EditScaleDescriptionForm form) {
-        return new EditScaleDescriptionCommand(userVisitPK, form).run();
+        return new EditScaleDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteScaleDescription(UserVisitPK userVisitPK, DeleteScaleDescriptionForm form) {
-        return new DeleteScaleDescriptionCommand(userVisitPK, form).run();
+        return new DeleteScaleDescriptionCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -179,37 +179,37 @@ public class ScaleBean
 
     @Override
     public CommandResult createScaleUseType(UserVisitPK userVisitPK, CreateScaleUseTypeForm form) {
-        return new CreateScaleUseTypeCommand(userVisitPK, form).run();
+        return new CreateScaleUseTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getScaleUseTypeChoices(UserVisitPK userVisitPK, GetScaleUseTypeChoicesForm form) {
-        return new GetScaleUseTypeChoicesCommand(userVisitPK, form).run();
+        return new GetScaleUseTypeChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getScaleUseType(UserVisitPK userVisitPK, GetScaleUseTypeForm form) {
-        return new GetScaleUseTypeCommand(userVisitPK, form).run();
+        return new GetScaleUseTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getScaleUseTypes(UserVisitPK userVisitPK, GetScaleUseTypesForm form) {
-        return new GetScaleUseTypesCommand(userVisitPK, form).run();
+        return new GetScaleUseTypesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultScaleUseType(UserVisitPK userVisitPK, SetDefaultScaleUseTypeForm form) {
-        return new SetDefaultScaleUseTypeCommand(userVisitPK, form).run();
+        return new SetDefaultScaleUseTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editScaleUseType(UserVisitPK userVisitPK, EditScaleUseTypeForm form) {
-        return new EditScaleUseTypeCommand(userVisitPK, form).run();
+        return new EditScaleUseTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteScaleUseType(UserVisitPK userVisitPK, DeleteScaleUseTypeForm form) {
-        return new DeleteScaleUseTypeCommand(userVisitPK, form).run();
+        return new DeleteScaleUseTypeCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -218,27 +218,27 @@ public class ScaleBean
 
     @Override
     public CommandResult createScaleUseTypeDescription(UserVisitPK userVisitPK, CreateScaleUseTypeDescriptionForm form) {
-        return new CreateScaleUseTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateScaleUseTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getScaleUseTypeDescription(UserVisitPK userVisitPK, GetScaleUseTypeDescriptionForm form) {
-        return new GetScaleUseTypeDescriptionCommand(userVisitPK, form).run();
+        return new GetScaleUseTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getScaleUseTypeDescriptions(UserVisitPK userVisitPK, GetScaleUseTypeDescriptionsForm form) {
-        return new GetScaleUseTypeDescriptionsCommand(userVisitPK, form).run();
+        return new GetScaleUseTypeDescriptionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editScaleUseTypeDescription(UserVisitPK userVisitPK, EditScaleUseTypeDescriptionForm form) {
-        return new EditScaleUseTypeDescriptionCommand(userVisitPK, form).run();
+        return new EditScaleUseTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteScaleUseTypeDescription(UserVisitPK userVisitPK, DeleteScaleUseTypeDescriptionForm form) {
-        return new DeleteScaleUseTypeDescriptionCommand(userVisitPK, form).run();
+        return new DeleteScaleUseTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -247,27 +247,27 @@ public class ScaleBean
 
     @Override
     public CommandResult createPartyScaleUse(UserVisitPK userVisitPK, CreatePartyScaleUseForm form) {
-        return new CreatePartyScaleUseCommand(userVisitPK, form).run();
+        return new CreatePartyScaleUseCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPartyScaleUse(UserVisitPK userVisitPK, GetPartyScaleUseForm form) {
-        return new GetPartyScaleUseCommand(userVisitPK, form).run();
+        return new GetPartyScaleUseCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPartyScaleUses(UserVisitPK userVisitPK, GetPartyScaleUsesForm form) {
-        return new GetPartyScaleUsesCommand(userVisitPK, form).run();
+        return new GetPartyScaleUsesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editPartyScaleUse(UserVisitPK userVisitPK, EditPartyScaleUseForm form) {
-        return new EditPartyScaleUseCommand(userVisitPK, form).run();
+        return new EditPartyScaleUseCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deletePartyScaleUse(UserVisitPK userVisitPK, DeletePartyScaleUseForm form) {
-        return new DeletePartyScaleUseCommand(userVisitPK, form).run();
+        return new DeletePartyScaleUseCommand().run(userVisitPK, form);
     }
 
 }

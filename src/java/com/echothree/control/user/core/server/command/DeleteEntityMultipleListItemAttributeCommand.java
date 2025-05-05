@@ -54,8 +54,8 @@ public class DeleteEntityMultipleListItemAttributeCommand
     }
     
     /** Creates a new instance of DeleteEntityMultipleListItemAttributeCommand */
-    public DeleteEntityMultipleListItemAttributeCommand(UserVisitPK userVisitPK, DeleteEntityMultipleListItemAttributeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteEntityMultipleListItemAttributeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

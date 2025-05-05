@@ -45,8 +45,8 @@ public class LoadBaseKeysCommand
     }
     
     /** Creates a new instance of LoadBaseKeysCommand */
-    public LoadBaseKeysCommand(UserVisitPK userVisitPK, LoadBaseKeysForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, null, false);
+    public LoadBaseKeysCommand() {
+        super(COMMAND_SECURITY_DEFINITION, null, false);
     }
     
     @Override

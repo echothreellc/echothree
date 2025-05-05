@@ -60,8 +60,8 @@ public class CreateGlAccountClassCommand
     }
     
     /** Creates a new instance of CreateGlAccountClassCommand */
-    public CreateGlAccountClassCommand(UserVisitPK userVisitPK, CreateGlAccountClassForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateGlAccountClassCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

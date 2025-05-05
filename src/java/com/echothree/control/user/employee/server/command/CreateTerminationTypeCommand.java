@@ -58,8 +58,8 @@ public class CreateTerminationTypeCommand
     }
     
     /** Creates a new instance of CreateTerminationTypeCommand */
-    public CreateTerminationTypeCommand(UserVisitPK userVisitPK, CreateTerminationTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateTerminationTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

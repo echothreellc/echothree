@@ -67,8 +67,8 @@ public class EditWorkflowDescriptionCommand
     }
     
     /** Creates a new instance of EditWorkflowDescriptionCommand */
-    public EditWorkflowDescriptionCommand(UserVisitPK userVisitPK, EditWorkflowDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditWorkflowDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

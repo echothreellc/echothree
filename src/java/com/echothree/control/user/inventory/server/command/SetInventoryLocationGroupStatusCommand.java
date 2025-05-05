@@ -44,8 +44,8 @@ public class SetInventoryLocationGroupStatusCommand
     }
     
     /** Creates a new instance of SetInventoryLocationGroupStatusCommand */
-    public SetInventoryLocationGroupStatusCommand(UserVisitPK userVisitPK, SetInventoryLocationGroupStatusForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SetInventoryLocationGroupStatusCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

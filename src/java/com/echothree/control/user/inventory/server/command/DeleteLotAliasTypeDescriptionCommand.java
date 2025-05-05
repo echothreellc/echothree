@@ -57,8 +57,8 @@ public class DeleteLotAliasTypeDescriptionCommand
     }
     
     /** Creates a new instance of DeleteLotAliasTypeDescriptionCommand */
-    public DeleteLotAliasTypeDescriptionCommand(UserVisitPK userVisitPK, DeleteLotAliasTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteLotAliasTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

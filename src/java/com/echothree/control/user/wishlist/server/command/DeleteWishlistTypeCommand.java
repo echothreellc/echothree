@@ -55,8 +55,8 @@ public class DeleteWishlistTypeCommand
     }
     
     /** Creates a new instance of DeleteWishlistTypeCommand */
-    public DeleteWishlistTypeCommand(UserVisitPK userVisitPK, DeleteWishlistTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteWishlistTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

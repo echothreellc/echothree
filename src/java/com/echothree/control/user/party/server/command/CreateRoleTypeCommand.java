@@ -42,8 +42,8 @@ public class CreateRoleTypeCommand
     }
     
     /** Creates a new instance of CreateRoleTypeCommand */
-    public CreateRoleTypeCommand(UserVisitPK userVisitPK, CreateRoleTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateRoleTypeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

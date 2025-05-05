@@ -56,8 +56,8 @@ public class SetDefaultCancellationPolicyCommand
     }
     
     /** Creates a new instance of SetDefaultCancellationPolicyCommand */
-    public SetDefaultCancellationPolicyCommand(UserVisitPK userVisitPK, SetDefaultCancellationPolicyForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultCancellationPolicyCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

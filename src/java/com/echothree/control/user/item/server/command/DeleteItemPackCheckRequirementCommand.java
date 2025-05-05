@@ -43,8 +43,8 @@ public class DeleteItemPackCheckRequirementCommand
     }
     
     /** Creates a new instance of DeleteItemPackCheckRequirementCommand */
-    public DeleteItemPackCheckRequirementCommand(UserVisitPK userVisitPK, DeleteItemPackCheckRequirementForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteItemPackCheckRequirementCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

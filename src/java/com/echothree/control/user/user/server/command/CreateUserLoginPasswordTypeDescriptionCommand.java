@@ -42,8 +42,8 @@ public class CreateUserLoginPasswordTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateUserLoginPasswordTypeDescriptionCommand */
-    public CreateUserLoginPasswordTypeDescriptionCommand(UserVisitPK userVisitPK, CreateUserLoginPasswordTypeDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateUserLoginPasswordTypeDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

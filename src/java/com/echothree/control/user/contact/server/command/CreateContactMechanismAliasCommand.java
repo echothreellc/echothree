@@ -44,8 +44,8 @@ public class CreateContactMechanismAliasCommand
     }
     
     /** Creates a new instance of CreateContactMechanismAliasCommand */
-    public CreateContactMechanismAliasCommand(UserVisitPK userVisitPK, CreateContactMechanismAliasForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateContactMechanismAliasCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

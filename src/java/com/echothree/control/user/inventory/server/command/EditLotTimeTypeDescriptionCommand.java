@@ -69,8 +69,8 @@ public class EditLotTimeTypeDescriptionCommand
     }
     
     /** Creates a new instance of EditLotTimeTypeDescriptionCommand */
-    public EditLotTimeTypeDescriptionCommand(UserVisitPK userVisitPK, EditLotTimeTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditLotTimeTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

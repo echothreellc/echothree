@@ -47,8 +47,8 @@ public class CreateTermTypeCommand
     }
     
     /** Creates a new instance of CreateTermTypeCommand */
-    public CreateTermTypeCommand(UserVisitPK userVisitPK, CreateTermTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateTermTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

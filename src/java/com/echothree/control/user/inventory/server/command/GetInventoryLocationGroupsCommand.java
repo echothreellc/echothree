@@ -43,8 +43,8 @@ public class GetInventoryLocationGroupsCommand
     }
     
     /** Creates a new instance of GetInventoryLocationGroupsCommand */
-    public GetInventoryLocationGroupsCommand(UserVisitPK userVisitPK, GetInventoryLocationGroupsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetInventoryLocationGroupsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

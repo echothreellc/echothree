@@ -60,8 +60,8 @@ public class GetOfferNameElementCommand
     }
     
     /** Creates a new instance of GetOfferNameElementCommand */
-    public GetOfferNameElementCommand(UserVisitPK userVisitPK, GetOfferNameElementForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetOfferNameElementCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

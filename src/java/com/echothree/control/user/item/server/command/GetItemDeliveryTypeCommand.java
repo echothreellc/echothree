@@ -49,8 +49,8 @@ public class GetItemDeliveryTypeCommand
     }
 
     /** Creates a new instance of GetItemDeliveryTypeCommand */
-    public GetItemDeliveryTypeCommand(UserVisitPK userVisitPK, GetItemDeliveryTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetItemDeliveryTypeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

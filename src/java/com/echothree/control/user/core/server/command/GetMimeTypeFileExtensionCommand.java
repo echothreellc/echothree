@@ -43,8 +43,8 @@ public class GetMimeTypeFileExtensionCommand
     }
     
     /** Creates a new instance of GetMimeTypeFileExtensionCommand */
-    public GetMimeTypeFileExtensionCommand(UserVisitPK userVisitPK, GetMimeTypeFileExtensionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetMimeTypeFileExtensionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

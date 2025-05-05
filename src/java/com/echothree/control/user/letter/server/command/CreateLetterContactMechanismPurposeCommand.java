@@ -62,8 +62,8 @@ public class CreateLetterContactMechanismPurposeCommand
     }
     
     /** Creates a new instance of CreateLetterContactMechanismPurposeCommand */
-    public CreateLetterContactMechanismPurposeCommand(UserVisitPK userVisitPK, CreateLetterContactMechanismPurposeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateLetterContactMechanismPurposeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

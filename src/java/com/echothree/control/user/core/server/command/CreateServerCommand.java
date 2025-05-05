@@ -58,8 +58,8 @@ public class CreateServerCommand
     }
     
     /** Creates a new instance of CreateServerCommand */
-    public CreateServerCommand(UserVisitPK userVisitPK, CreateServerForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateServerCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

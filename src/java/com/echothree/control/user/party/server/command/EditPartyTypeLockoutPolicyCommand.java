@@ -59,8 +59,8 @@ public class EditPartyTypeLockoutPolicyCommand
     }
     
     /** Creates a new instance of EditPartyTypeLockoutPolicyCommand */
-    public EditPartyTypeLockoutPolicyCommand(UserVisitPK userVisitPK, EditPartyTypeLockoutPolicyForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditPartyTypeLockoutPolicyCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

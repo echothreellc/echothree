@@ -58,8 +58,8 @@ public class DeletePartyPrinterGroupUseCommand
     }
 
     /** Creates a new instance of DeletePartyPrinterGroupUseCommand */
-    public DeletePartyPrinterGroupUseCommand(UserVisitPK userVisitPK, DeletePartyPrinterGroupUseForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeletePartyPrinterGroupUseCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

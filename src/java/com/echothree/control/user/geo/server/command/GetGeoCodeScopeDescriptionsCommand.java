@@ -56,8 +56,8 @@ public class GetGeoCodeScopeDescriptionsCommand
     }
     
     /** Creates a new instance of GetGeoCodeScopeDescriptionsCommand */
-    public GetGeoCodeScopeDescriptionsCommand(UserVisitPK userVisitPK, GetGeoCodeScopeDescriptionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetGeoCodeScopeDescriptionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

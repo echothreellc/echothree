@@ -55,8 +55,8 @@ public class GetContentCategoryItemsCommand
     }
     
     /** Creates a new instance of GetContentCategoryItemsCommand */
-    public GetContentCategoryItemsCommand(UserVisitPK userVisitPK, GetContentCategoryItemsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetContentCategoryItemsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     private ContentCategory contentCategory;

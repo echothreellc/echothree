@@ -70,8 +70,8 @@ public class EditCarrierOptionDescriptionCommand
     }
 
     /** Creates a new instance of EditCarrierOptionDescriptionCommand */
-    public EditCarrierOptionDescriptionCommand(UserVisitPK userVisitPK, EditCarrierOptionDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditCarrierOptionDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

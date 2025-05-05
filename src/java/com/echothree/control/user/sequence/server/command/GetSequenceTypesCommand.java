@@ -53,8 +53,8 @@ public class GetSequenceTypesCommand
     }
 
     /** Creates a new instance of GetSequenceTypesCommand */
-    public GetSequenceTypesCommand(UserVisitPK userVisitPK, GetSequenceTypesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetSequenceTypesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

@@ -54,8 +54,8 @@ public class SetDefaultItemDescriptionTypeCommand
     }
     
     /** Creates a new instance of SetDefaultItemDescriptionTypeCommand */
-    public SetDefaultItemDescriptionTypeCommand(UserVisitPK userVisitPK, SetDefaultItemDescriptionTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultItemDescriptionTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

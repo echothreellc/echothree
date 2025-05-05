@@ -42,8 +42,8 @@ public class GetItemVolumesCommand
     }
     
     /** Creates a new instance of GetItemVolumesCommand */
-    public GetItemVolumesCommand(UserVisitPK userVisitPK, GetItemVolumesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetItemVolumesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

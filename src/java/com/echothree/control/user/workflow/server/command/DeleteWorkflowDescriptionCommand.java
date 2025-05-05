@@ -57,8 +57,8 @@ public class DeleteWorkflowDescriptionCommand
     }
     
     /** Creates a new instance of DeleteWorkflowDescriptionCommand */
-    public DeleteWorkflowDescriptionCommand(UserVisitPK userVisitPK, DeleteWorkflowDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteWorkflowDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

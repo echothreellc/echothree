@@ -54,8 +54,8 @@ public class SetDefaultTagScopeCommand
     }
     
     /** Creates a new instance of SetDefaultTagScopeCommand */
-    public SetDefaultTagScopeCommand(UserVisitPK userVisitPK, SetDefaultTagScopeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultTagScopeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

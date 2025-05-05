@@ -54,8 +54,8 @@ public class SetDefaultShipmentTypeCommand
     }
     
     /** Creates a new instance of SetDefaultShipmentTypeCommand */
-    public SetDefaultShipmentTypeCommand(UserVisitPK userVisitPK, SetDefaultShipmentTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultShipmentTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

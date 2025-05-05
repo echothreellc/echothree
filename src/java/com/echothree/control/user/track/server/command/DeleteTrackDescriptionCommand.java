@@ -57,8 +57,8 @@ public class DeleteTrackDescriptionCommand
     }
     
     /** Creates a new instance of DeleteTrackDescriptionCommand */
-    public DeleteTrackDescriptionCommand(UserVisitPK userVisitPK, DeleteTrackDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteTrackDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

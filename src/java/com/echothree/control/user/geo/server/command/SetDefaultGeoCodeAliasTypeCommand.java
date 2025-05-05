@@ -55,8 +55,8 @@ public class SetDefaultGeoCodeAliasTypeCommand
     }
     
     /** Creates a new instance of SetDefaultGeoCodeAliasTypeCommand */
-    public SetDefaultGeoCodeAliasTypeCommand(UserVisitPK userVisitPK, SetDefaultGeoCodeAliasTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultGeoCodeAliasTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

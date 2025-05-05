@@ -69,8 +69,8 @@ public class EditSearchDefaultOperatorCommand
     }
     
     /** Creates a new instance of EditSearchDefaultOperatorCommand */
-    public EditSearchDefaultOperatorCommand(UserVisitPK userVisitPK, EditSearchDefaultOperatorForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditSearchDefaultOperatorCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

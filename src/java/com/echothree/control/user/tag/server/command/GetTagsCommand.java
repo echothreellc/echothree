@@ -59,8 +59,8 @@ public class GetTagsCommand
     }
     
     /** Creates a new instance of GetTagsCommand */
-    public GetTagsCommand(UserVisitPK userVisitPK, GetTagsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetTagsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     TagScope tagScope;

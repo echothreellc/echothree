@@ -80,8 +80,8 @@ public class SearchEmployeesCommand
     }
 
     /** Creates a new instance of SearchEmployeesCommand */
-    public SearchEmployeesCommand(UserVisitPK userVisitPK, SearchEmployeesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SearchEmployeesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

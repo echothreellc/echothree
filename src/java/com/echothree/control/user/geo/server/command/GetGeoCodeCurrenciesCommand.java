@@ -58,8 +58,8 @@ public class GetGeoCodeCurrenciesCommand
     }
     
     /** Creates a new instance of GetGeoCodeCurrenciesCommand */
-    public GetGeoCodeCurrenciesCommand(UserVisitPK userVisitPK, GetGeoCodeCurrenciesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetGeoCodeCurrenciesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

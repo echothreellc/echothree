@@ -56,8 +56,8 @@ public class SetDefaultOrderAliasTypeCommand
     }
     
     /** Creates a new instance of SetDefaultOrderAliasTypeCommand */
-    public SetDefaultOrderAliasTypeCommand(UserVisitPK userVisitPK, SetDefaultOrderAliasTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultOrderAliasTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

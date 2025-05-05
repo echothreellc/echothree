@@ -75,8 +75,8 @@ public class EditContactEmailAddressCommand
     }
     
     /** Creates a new instance of EditContactEmailAddressCommand */
-    public EditContactEmailAddressCommand(UserVisitPK userVisitPK, EditContactEmailAddressForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditContactEmailAddressCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

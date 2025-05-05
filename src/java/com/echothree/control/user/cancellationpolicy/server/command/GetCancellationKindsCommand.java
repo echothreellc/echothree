@@ -54,8 +54,8 @@ public class GetCancellationKindsCommand
     }
 
     /** Creates a new instance of GetCancellationKindsCommand */
-    public GetCancellationKindsCommand(UserVisitPK userVisitPK, GetCancellationKindsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetCancellationKindsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

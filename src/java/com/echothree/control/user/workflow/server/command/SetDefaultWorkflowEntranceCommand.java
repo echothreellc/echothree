@@ -55,8 +55,8 @@ public class SetDefaultWorkflowEntranceCommand
     }
     
     /** Creates a new instance of SetDefaultWorkflowEntranceCommand */
-    public SetDefaultWorkflowEntranceCommand(UserVisitPK userVisitPK, SetDefaultWorkflowEntranceForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultWorkflowEntranceCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -39,8 +39,8 @@ public class GetInventoryConditionUseTypesCommand
     }
     
     /** Creates a new instance of GetInventoryConditionUseTypesCommand */
-    public GetInventoryConditionUseTypesCommand(UserVisitPK userVisitPK, GetInventoryConditionUseTypesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetInventoryConditionUseTypesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

@@ -55,8 +55,8 @@ public class SetDefaultLeaveReasonCommand
     }
 
     /** Creates a new instance of SetDefaultLeaveReasonCommand */
-    public SetDefaultLeaveReasonCommand(UserVisitPK userVisitPK, SetDefaultLeaveReasonForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultLeaveReasonCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
    @Override

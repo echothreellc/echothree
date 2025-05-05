@@ -58,8 +58,8 @@ public class CreateLeaveReasonDescriptionCommand
     }
 
     /** Creates a new instance of CreateLeaveReasonDescriptionCommand */
-    public CreateLeaveReasonDescriptionCommand(UserVisitPK userVisitPK, CreateLeaveReasonDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateLeaveReasonDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
    @Override

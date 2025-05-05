@@ -56,8 +56,8 @@ public class SetDefaultWishlistPriorityCommand
     }
     
     /** Creates a new instance of SetDefaultWishlistPriorityCommand */
-    public SetDefaultWishlistPriorityCommand(UserVisitPK userVisitPK, SetDefaultWishlistPriorityForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultWishlistPriorityCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

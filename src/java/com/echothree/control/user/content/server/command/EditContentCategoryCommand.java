@@ -88,8 +88,8 @@ public class EditContentCategoryCommand
     }
     
     /** Creates a new instance of EditContentCategoryCommand */
-    public EditContentCategoryCommand(UserVisitPK userVisitPK, EditContentCategoryForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditContentCategoryCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

@@ -45,8 +45,8 @@ public class GetContactMechanismResultsCommand
     }
 
     /** Creates a new instance of GetContactMechanismResultsCommand */
-    public GetContactMechanismResultsCommand(UserVisitPK userVisitPK, GetContactMechanismResultsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetContactMechanismResultsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

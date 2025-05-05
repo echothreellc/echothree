@@ -57,8 +57,8 @@ public class CreateItemAliasChecksumTypeCommand
     }
     
     /** Creates a new instance of CreateItemAliasChecksumTypeCommand */
-    public CreateItemAliasChecksumTypeCommand(UserVisitPK userVisitPK, CreateItemAliasChecksumTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateItemAliasChecksumTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

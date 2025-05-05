@@ -57,8 +57,8 @@ public class GetColorDescriptionCommand
     }
     
     /** Creates a new instance of GetColorDescriptionCommand */
-    public GetColorDescriptionCommand(UserVisitPK userVisitPK, GetColorDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetColorDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

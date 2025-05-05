@@ -57,8 +57,8 @@ public class GetAppearanceDescriptionCommand
     }
     
     /** Creates a new instance of GetAppearanceDescriptionCommand */
-    public GetAppearanceDescriptionCommand(UserVisitPK userVisitPK, GetAppearanceDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetAppearanceDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

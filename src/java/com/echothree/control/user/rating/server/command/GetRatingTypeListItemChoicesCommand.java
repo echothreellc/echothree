@@ -50,8 +50,8 @@ public class GetRatingTypeListItemChoicesCommand
     }
     
     /** Creates a new instance of GetRatingTypeListItemsCommand */
-    public GetRatingTypeListItemChoicesCommand(UserVisitPK userVisitPK, GetRatingTypeListItemChoicesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public GetRatingTypeListItemChoicesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -57,8 +57,8 @@ public class GetEditorDescriptionCommand
     }
     
     /** Creates a new instance of GetEditorDescriptionCommand */
-    public GetEditorDescriptionCommand(UserVisitPK userVisitPK, GetEditorDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetEditorDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

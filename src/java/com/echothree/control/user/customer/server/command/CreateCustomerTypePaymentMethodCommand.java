@@ -46,8 +46,8 @@ public class CreateCustomerTypePaymentMethodCommand
     }
     
     /** Creates a new instance of CreateCustomerTypePaymentMethodCommand */
-    public CreateCustomerTypePaymentMethodCommand(UserVisitPK userVisitPK, CreateCustomerTypePaymentMethodForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateCustomerTypePaymentMethodCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

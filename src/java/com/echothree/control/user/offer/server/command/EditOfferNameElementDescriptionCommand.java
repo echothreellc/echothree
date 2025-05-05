@@ -67,8 +67,8 @@ public class EditOfferNameElementDescriptionCommand
     }
     
     /** Creates a new instance of EditOfferNameElementDescriptionCommand */
-    public EditOfferNameElementDescriptionCommand(UserVisitPK userVisitPK, EditOfferNameElementDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditOfferNameElementDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

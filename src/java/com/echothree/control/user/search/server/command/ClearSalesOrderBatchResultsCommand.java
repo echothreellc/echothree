@@ -25,8 +25,8 @@ public class ClearSalesOrderBatchResultsCommand
         extends BaseClearResultsCommand<ClearSalesOrderBatchResultsForm> {
     
     /** Creates a new instance of ClearSalesOrderBatchResultsCommand */
-    public ClearSalesOrderBatchResultsCommand(UserVisitPK userVisitPK, ClearSalesOrderBatchResultsForm form) {
-        super(userVisitPK, form, null);
+    public ClearSalesOrderBatchResultsCommand() {
+        super(null);
     }
     
     @Override

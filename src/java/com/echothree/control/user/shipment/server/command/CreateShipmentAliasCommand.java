@@ -21,11 +21,10 @@ import com.echothree.control.user.shipment.server.command.util.ShipmentAliasUtil
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.shipment.server.ShipmentControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -51,13 +50,18 @@ public class CreateShipmentAliasCommand
     }
     
     /** Creates a new instance of CreateShipmentAliasCommand */
-    public CreateShipmentAliasCommand(UserVisitPK userVisitPK, CreateShipmentAliasForm form) {
-        super(userVisitPK, form, new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+    public CreateShipmentAliasCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
+    }
+
+    @Override
+    protected CommandSecurityDefinition getCommandSecurityDefinition() {
+        return new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(ShipmentAliasUtil.getInstance().getSecurityRoleGroupNameByShipmentTypeSpec(form), SecurityRoles.Create.name())
-                        )))
-                ))), FORM_FIELD_DEFINITIONS, false);
+                )))
+        )));
     }
 
     @Override

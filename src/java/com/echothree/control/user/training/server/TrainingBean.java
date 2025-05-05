@@ -43,37 +43,37 @@ public class TrainingBean
     
     @Override
     public CommandResult createTrainingClass(UserVisitPK userVisitPK, CreateTrainingClassForm form) {
-        return new CreateTrainingClassCommand(userVisitPK, form).run();
+        return new CreateTrainingClassCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTrainingClasses(UserVisitPK userVisitPK, GetTrainingClassesForm form) {
-        return new GetTrainingClassesCommand(userVisitPK, form).run();
+        return new GetTrainingClassesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTrainingClass(UserVisitPK userVisitPK, GetTrainingClassForm form) {
-        return new GetTrainingClassCommand(userVisitPK, form).run();
+        return new GetTrainingClassCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTrainingClassChoices(UserVisitPK userVisitPK, GetTrainingClassChoicesForm form) {
-        return new GetTrainingClassChoicesCommand(userVisitPK, form).run();
+        return new GetTrainingClassChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultTrainingClass(UserVisitPK userVisitPK, SetDefaultTrainingClassForm form) {
-        return new SetDefaultTrainingClassCommand(userVisitPK, form).run();
+        return new SetDefaultTrainingClassCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editTrainingClass(UserVisitPK userVisitPK, EditTrainingClassForm form) {
-        return new EditTrainingClassCommand(userVisitPK, form).run();
+        return new EditTrainingClassCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteTrainingClass(UserVisitPK userVisitPK, DeleteTrainingClassForm form) {
-        return new DeleteTrainingClassCommand(userVisitPK, form).run();
+        return new DeleteTrainingClassCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -82,27 +82,27 @@ public class TrainingBean
     
     @Override
     public CommandResult createTrainingClassTranslation(UserVisitPK userVisitPK, CreateTrainingClassTranslationForm form) {
-        return new CreateTrainingClassTranslationCommand(userVisitPK, form).run();
+        return new CreateTrainingClassTranslationCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTrainingClassTranslation(UserVisitPK userVisitPK, GetTrainingClassTranslationForm form) {
-        return new GetTrainingClassTranslationCommand(userVisitPK, form).run();
+        return new GetTrainingClassTranslationCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTrainingClassTranslations(UserVisitPK userVisitPK, GetTrainingClassTranslationsForm form) {
-        return new GetTrainingClassTranslationsCommand(userVisitPK, form).run();
+        return new GetTrainingClassTranslationsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editTrainingClassTranslation(UserVisitPK userVisitPK, EditTrainingClassTranslationForm form) {
-        return new EditTrainingClassTranslationCommand(userVisitPK, form).run();
+        return new EditTrainingClassTranslationCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteTrainingClassTranslation(UserVisitPK userVisitPK, DeleteTrainingClassTranslationForm form) {
-        return new DeleteTrainingClassTranslationCommand(userVisitPK, form).run();
+        return new DeleteTrainingClassTranslationCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -111,27 +111,27 @@ public class TrainingBean
     
     @Override
     public CommandResult createTrainingClassSection(UserVisitPK userVisitPK, CreateTrainingClassSectionForm form) {
-        return new CreateTrainingClassSectionCommand(userVisitPK, form).run();
+        return new CreateTrainingClassSectionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTrainingClassSections(UserVisitPK userVisitPK, GetTrainingClassSectionsForm form) {
-        return new GetTrainingClassSectionsCommand(userVisitPK, form).run();
+        return new GetTrainingClassSectionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTrainingClassSection(UserVisitPK userVisitPK, GetTrainingClassSectionForm form) {
-        return new GetTrainingClassSectionCommand(userVisitPK, form).run();
+        return new GetTrainingClassSectionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editTrainingClassSection(UserVisitPK userVisitPK, EditTrainingClassSectionForm form) {
-        return new EditTrainingClassSectionCommand(userVisitPK, form).run();
+        return new EditTrainingClassSectionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteTrainingClassSection(UserVisitPK userVisitPK, DeleteTrainingClassSectionForm form) {
-        return new DeleteTrainingClassSectionCommand(userVisitPK, form).run();
+        return new DeleteTrainingClassSectionCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -140,27 +140,27 @@ public class TrainingBean
     
     @Override
     public CommandResult createTrainingClassSectionTranslation(UserVisitPK userVisitPK, CreateTrainingClassSectionTranslationForm form) {
-        return new CreateTrainingClassSectionTranslationCommand(userVisitPK, form).run();
+        return new CreateTrainingClassSectionTranslationCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTrainingClassSectionTranslation(UserVisitPK userVisitPK, GetTrainingClassSectionTranslationForm form) {
-        return new GetTrainingClassSectionTranslationCommand(userVisitPK, form).run();
+        return new GetTrainingClassSectionTranslationCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTrainingClassSectionTranslations(UserVisitPK userVisitPK, GetTrainingClassSectionTranslationsForm form) {
-        return new GetTrainingClassSectionTranslationsCommand(userVisitPK, form).run();
+        return new GetTrainingClassSectionTranslationsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editTrainingClassSectionTranslation(UserVisitPK userVisitPK, EditTrainingClassSectionTranslationForm form) {
-        return new EditTrainingClassSectionTranslationCommand(userVisitPK, form).run();
+        return new EditTrainingClassSectionTranslationCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteTrainingClassSectionTranslation(UserVisitPK userVisitPK, DeleteTrainingClassSectionTranslationForm form) {
-        return new DeleteTrainingClassSectionTranslationCommand(userVisitPK, form).run();
+        return new DeleteTrainingClassSectionTranslationCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -169,27 +169,27 @@ public class TrainingBean
     
     @Override
     public CommandResult createTrainingClassPage(UserVisitPK userVisitPK, CreateTrainingClassPageForm form) {
-        return new CreateTrainingClassPageCommand(userVisitPK, form).run();
+        return new CreateTrainingClassPageCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTrainingClassPages(UserVisitPK userVisitPK, GetTrainingClassPagesForm form) {
-        return new GetTrainingClassPagesCommand(userVisitPK, form).run();
+        return new GetTrainingClassPagesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTrainingClassPage(UserVisitPK userVisitPK, GetTrainingClassPageForm form) {
-        return new GetTrainingClassPageCommand(userVisitPK, form).run();
+        return new GetTrainingClassPageCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editTrainingClassPage(UserVisitPK userVisitPK, EditTrainingClassPageForm form) {
-        return new EditTrainingClassPageCommand(userVisitPK, form).run();
+        return new EditTrainingClassPageCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteTrainingClassPage(UserVisitPK userVisitPK, DeleteTrainingClassPageForm form) {
-        return new DeleteTrainingClassPageCommand(userVisitPK, form).run();
+        return new DeleteTrainingClassPageCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -198,27 +198,27 @@ public class TrainingBean
     
     @Override
     public CommandResult createTrainingClassPageTranslation(UserVisitPK userVisitPK, CreateTrainingClassPageTranslationForm form) {
-        return new CreateTrainingClassPageTranslationCommand(userVisitPK, form).run();
+        return new CreateTrainingClassPageTranslationCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTrainingClassPageTranslation(UserVisitPK userVisitPK, GetTrainingClassPageTranslationForm form) {
-        return new GetTrainingClassPageTranslationCommand(userVisitPK, form).run();
+        return new GetTrainingClassPageTranslationCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTrainingClassPageTranslations(UserVisitPK userVisitPK, GetTrainingClassPageTranslationsForm form) {
-        return new GetTrainingClassPageTranslationsCommand(userVisitPK, form).run();
+        return new GetTrainingClassPageTranslationsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editTrainingClassPageTranslation(UserVisitPK userVisitPK, EditTrainingClassPageTranslationForm form) {
-        return new EditTrainingClassPageTranslationCommand(userVisitPK, form).run();
+        return new EditTrainingClassPageTranslationCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteTrainingClassPageTranslation(UserVisitPK userVisitPK, DeleteTrainingClassPageTranslationForm form) {
-        return new DeleteTrainingClassPageTranslationCommand(userVisitPK, form).run();
+        return new DeleteTrainingClassPageTranslationCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -227,27 +227,27 @@ public class TrainingBean
     
     @Override
     public CommandResult createTrainingClassQuestion(UserVisitPK userVisitPK, CreateTrainingClassQuestionForm form) {
-        return new CreateTrainingClassQuestionCommand(userVisitPK, form).run();
+        return new CreateTrainingClassQuestionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTrainingClassQuestions(UserVisitPK userVisitPK, GetTrainingClassQuestionsForm form) {
-        return new GetTrainingClassQuestionsCommand(userVisitPK, form).run();
+        return new GetTrainingClassQuestionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTrainingClassQuestion(UserVisitPK userVisitPK, GetTrainingClassQuestionForm form) {
-        return new GetTrainingClassQuestionCommand(userVisitPK, form).run();
+        return new GetTrainingClassQuestionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editTrainingClassQuestion(UserVisitPK userVisitPK, EditTrainingClassQuestionForm form) {
-        return new EditTrainingClassQuestionCommand(userVisitPK, form).run();
+        return new EditTrainingClassQuestionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteTrainingClassQuestion(UserVisitPK userVisitPK, DeleteTrainingClassQuestionForm form) {
-        return new DeleteTrainingClassQuestionCommand(userVisitPK, form).run();
+        return new DeleteTrainingClassQuestionCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -256,27 +256,27 @@ public class TrainingBean
     
     @Override
     public CommandResult createTrainingClassQuestionTranslation(UserVisitPK userVisitPK, CreateTrainingClassQuestionTranslationForm form) {
-        return new CreateTrainingClassQuestionTranslationCommand(userVisitPK, form).run();
+        return new CreateTrainingClassQuestionTranslationCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTrainingClassQuestionTranslation(UserVisitPK userVisitPK, GetTrainingClassQuestionTranslationForm form) {
-        return new GetTrainingClassQuestionTranslationCommand(userVisitPK, form).run();
+        return new GetTrainingClassQuestionTranslationCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTrainingClassQuestionTranslations(UserVisitPK userVisitPK, GetTrainingClassQuestionTranslationsForm form) {
-        return new GetTrainingClassQuestionTranslationsCommand(userVisitPK, form).run();
+        return new GetTrainingClassQuestionTranslationsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editTrainingClassQuestionTranslation(UserVisitPK userVisitPK, EditTrainingClassQuestionTranslationForm form) {
-        return new EditTrainingClassQuestionTranslationCommand(userVisitPK, form).run();
+        return new EditTrainingClassQuestionTranslationCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteTrainingClassQuestionTranslation(UserVisitPK userVisitPK, DeleteTrainingClassQuestionTranslationForm form) {
-        return new DeleteTrainingClassQuestionTranslationCommand(userVisitPK, form).run();
+        return new DeleteTrainingClassQuestionTranslationCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -285,27 +285,27 @@ public class TrainingBean
     
     @Override
     public CommandResult createTrainingClassAnswer(UserVisitPK userVisitPK, CreateTrainingClassAnswerForm form) {
-        return new CreateTrainingClassAnswerCommand(userVisitPK, form).run();
+        return new CreateTrainingClassAnswerCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTrainingClassAnswers(UserVisitPK userVisitPK, GetTrainingClassAnswersForm form) {
-        return new GetTrainingClassAnswersCommand(userVisitPK, form).run();
+        return new GetTrainingClassAnswersCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTrainingClassAnswer(UserVisitPK userVisitPK, GetTrainingClassAnswerForm form) {
-        return new GetTrainingClassAnswerCommand(userVisitPK, form).run();
+        return new GetTrainingClassAnswerCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editTrainingClassAnswer(UserVisitPK userVisitPK, EditTrainingClassAnswerForm form) {
-        return new EditTrainingClassAnswerCommand(userVisitPK, form).run();
+        return new EditTrainingClassAnswerCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteTrainingClassAnswer(UserVisitPK userVisitPK, DeleteTrainingClassAnswerForm form) {
-        return new DeleteTrainingClassAnswerCommand(userVisitPK, form).run();
+        return new DeleteTrainingClassAnswerCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -314,27 +314,27 @@ public class TrainingBean
     
     @Override
     public CommandResult createTrainingClassAnswerTranslation(UserVisitPK userVisitPK, CreateTrainingClassAnswerTranslationForm form) {
-        return new CreateTrainingClassAnswerTranslationCommand(userVisitPK, form).run();
+        return new CreateTrainingClassAnswerTranslationCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTrainingClassAnswerTranslation(UserVisitPK userVisitPK, GetTrainingClassAnswerTranslationForm form) {
-        return new GetTrainingClassAnswerTranslationCommand(userVisitPK, form).run();
+        return new GetTrainingClassAnswerTranslationCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTrainingClassAnswerTranslations(UserVisitPK userVisitPK, GetTrainingClassAnswerTranslationsForm form) {
-        return new GetTrainingClassAnswerTranslationsCommand(userVisitPK, form).run();
+        return new GetTrainingClassAnswerTranslationsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editTrainingClassAnswerTranslation(UserVisitPK userVisitPK, EditTrainingClassAnswerTranslationForm form) {
-        return new EditTrainingClassAnswerTranslationCommand(userVisitPK, form).run();
+        return new EditTrainingClassAnswerTranslationCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteTrainingClassAnswerTranslation(UserVisitPK userVisitPK, DeleteTrainingClassAnswerTranslationForm form) {
-        return new DeleteTrainingClassAnswerTranslationCommand(userVisitPK, form).run();
+        return new DeleteTrainingClassAnswerTranslationCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -343,37 +343,37 @@ public class TrainingBean
 
     @Override
     public CommandResult createPartyTrainingClass(UserVisitPK userVisitPK, CreatePartyTrainingClassForm form) {
-        return new CreatePartyTrainingClassCommand(userVisitPK, form).run();
+        return new CreatePartyTrainingClassCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPartyTrainingClassStatusChoices(UserVisitPK userVisitPK, GetPartyTrainingClassStatusChoicesForm form) {
-        return new GetPartyTrainingClassStatusChoicesCommand(userVisitPK, form).run();
+        return new GetPartyTrainingClassStatusChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setPartyTrainingClassStatus(UserVisitPK userVisitPK, SetPartyTrainingClassStatusForm form) {
-        return new SetPartyTrainingClassStatusCommand(userVisitPK, form).run();
+        return new SetPartyTrainingClassStatusCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPartyTrainingClass(UserVisitPK userVisitPK, GetPartyTrainingClassForm form) {
-        return new GetPartyTrainingClassCommand(userVisitPK, form).run();
+        return new GetPartyTrainingClassCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPartyTrainingClasses(UserVisitPK userVisitPK, GetPartyTrainingClassesForm form) {
-        return new GetPartyTrainingClassesCommand(userVisitPK, form).run();
+        return new GetPartyTrainingClassesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editPartyTrainingClass(UserVisitPK userVisitPK, EditPartyTrainingClassForm form) {
-        return new EditPartyTrainingClassCommand(userVisitPK, form).run();
+        return new EditPartyTrainingClassCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deletePartyTrainingClass(UserVisitPK userVisitPK, DeletePartyTrainingClassForm form) {
-        return new DeletePartyTrainingClassCommand(userVisitPK, form).run();
+        return new DeletePartyTrainingClassCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -382,17 +382,17 @@ public class TrainingBean
 
     @Override
     public CommandResult getPartyTrainingClassSession(UserVisitPK userVisitPK, GetPartyTrainingClassSessionForm form) {
-        return new GetPartyTrainingClassSessionCommand(userVisitPK, form).run();
+        return new GetPartyTrainingClassSessionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPartyTrainingClassSessions(UserVisitPK userVisitPK, GetPartyTrainingClassSessionsForm form) {
-        return new GetPartyTrainingClassSessionsCommand(userVisitPK, form).run();
+        return new GetPartyTrainingClassSessionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deletePartyTrainingClassSession(UserVisitPK userVisitPK, DeletePartyTrainingClassSessionForm form) {
-        return new DeletePartyTrainingClassSessionCommand(userVisitPK, form).run();
+        return new DeletePartyTrainingClassSessionCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -401,7 +401,7 @@ public class TrainingBean
     
     @Override
     public CommandResult editPartyTrainingClassSessionPage(UserVisitPK userVisitPK, EditPartyTrainingClassSessionPageForm form) {
-        return new EditPartyTrainingClassSessionPageCommand(userVisitPK, form).run();
+        return new EditPartyTrainingClassSessionPageCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -410,7 +410,7 @@ public class TrainingBean
     
     @Override
     public CommandResult editPartyTrainingClassSessionAnswer(UserVisitPK userVisitPK, EditPartyTrainingClassSessionAnswerForm form) {
-        return new EditPartyTrainingClassSessionAnswerCommand(userVisitPK, form).run();
+        return new EditPartyTrainingClassSessionAnswerCommand().run(userVisitPK, form);
     }
 
 }

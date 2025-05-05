@@ -70,8 +70,8 @@ public class EditGeoCodeAliasCommand
     }
     
     /** Creates a new instance of EditGeoCodeAliasCommand */
-    public EditGeoCodeAliasCommand(UserVisitPK userVisitPK, EditGeoCodeAliasForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditGeoCodeAliasCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

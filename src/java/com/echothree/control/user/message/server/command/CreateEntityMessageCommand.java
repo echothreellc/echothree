@@ -46,8 +46,8 @@ public class CreateEntityMessageCommand
     }
     
     /** Creates a new instance of CreateEntityMessageCommand */
-    public CreateEntityMessageCommand(UserVisitPK userVisitPK, CreateEntityMessageForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateEntityMessageCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

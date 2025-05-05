@@ -57,8 +57,8 @@ public class GetPicklistAliasTypeChoicesCommand
     }
     
     /** Creates a new instance of GetPicklistAliasTypeChoicesCommand */
-    public GetPicklistAliasTypeChoicesCommand(UserVisitPK userVisitPK, GetPicklistAliasTypeChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetPicklistAliasTypeChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

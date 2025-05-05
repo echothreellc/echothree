@@ -57,8 +57,8 @@ public class DeleteCancellationPolicyReasonCommand
     }
     
     /** Creates a new instance of DeleteCancellationPolicyReasonCommand */
-    public DeleteCancellationPolicyReasonCommand(UserVisitPK userVisitPK, DeleteCancellationPolicyReasonForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteCancellationPolicyReasonCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -54,8 +54,8 @@ public class CreateEntityDateAttributeCommand
     }
     
     /** Creates a new instance of CreateEntityDateAttributeCommand */
-    public CreateEntityDateAttributeCommand(UserVisitPK userVisitPK, CreateEntityDateAttributeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateEntityDateAttributeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

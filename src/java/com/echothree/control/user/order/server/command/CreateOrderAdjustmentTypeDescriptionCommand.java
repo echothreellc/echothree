@@ -60,8 +60,8 @@ public class CreateOrderAdjustmentTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateOrderAdjustmentTypeDescriptionCommand */
-    public CreateOrderAdjustmentTypeDescriptionCommand(UserVisitPK userVisitPK, CreateOrderAdjustmentTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateOrderAdjustmentTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

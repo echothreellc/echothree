@@ -57,8 +57,8 @@ public class GetShipmentTimeTypeChoicesCommand
     }
     
     /** Creates a new instance of GetShipmentTimeTypeChoicesCommand */
-    public GetShipmentTimeTypeChoicesCommand(UserVisitPK userVisitPK, GetShipmentTimeTypeChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetShipmentTimeTypeChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

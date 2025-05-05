@@ -43,8 +43,8 @@ public class DeleteCommunicationEventPurposeDescriptionCommand
     }
     
     /** Creates a new instance of DeleteCommunicationEventPurposeDescriptionCommand */
-    public DeleteCommunicationEventPurposeDescriptionCommand(UserVisitPK userVisitPK, DeleteCommunicationEventPurposeDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteCommunicationEventPurposeDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

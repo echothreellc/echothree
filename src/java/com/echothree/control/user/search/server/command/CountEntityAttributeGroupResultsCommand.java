@@ -27,8 +27,8 @@ public class CountEntityAttributeGroupResultsCommand
         extends BaseCountResultsCommand<CountEntityAttributeGroupResultsForm, CountEntityAttributeGroupResultsResult> {
     
     /** Creates a new instance of CountEntityAttributeGroupResultsCommand */
-    public CountEntityAttributeGroupResultsCommand(UserVisitPK userVisitPK, CountEntityAttributeGroupResultsForm form) {
-        super(userVisitPK, form, null);
+    public CountEntityAttributeGroupResultsCommand() {
+        super(null);
     }
     
     @Override

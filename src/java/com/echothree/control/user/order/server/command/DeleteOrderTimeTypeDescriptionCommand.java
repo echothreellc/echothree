@@ -59,8 +59,8 @@ public class DeleteOrderTimeTypeDescriptionCommand
     }
     
     /** Creates a new instance of DeleteOrderTimeTypeDescriptionCommand */
-    public DeleteOrderTimeTypeDescriptionCommand(UserVisitPK userVisitPK, DeleteOrderTimeTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteOrderTimeTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -61,8 +61,8 @@ public class GetShippingMethodCarrierServicesCommand
     }
     
     /** Creates a new instance of GetShippingMethodCarrierServicesCommand */
-    public GetShippingMethodCarrierServicesCommand(UserVisitPK userVisitPK, GetShippingMethodCarrierServicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetShippingMethodCarrierServicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

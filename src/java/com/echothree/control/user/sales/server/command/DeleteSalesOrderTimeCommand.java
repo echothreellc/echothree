@@ -40,8 +40,8 @@ public class DeleteSalesOrderTimeCommand
     }
     
     /** Creates a new instance of DeleteSalesOrderTimeCommand */
-    public DeleteSalesOrderTimeCommand(UserVisitPK userVisitPK, DeleteSalesOrderTimeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteSalesOrderTimeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -43,8 +43,8 @@ public class ClearShippingMethodResultsCommand
     }
 
     /** Creates a new instance of ClearEntityAttributeResultsCommand */
-    public ClearShippingMethodResultsCommand(UserVisitPK userVisitPK, ClearShippingMethodResultsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION);
+    public ClearShippingMethodResultsCommand() {
+        super(COMMAND_SECURITY_DEFINITION);
     }
     
     @Override

@@ -42,8 +42,8 @@ public class GetItemDeliveryTypeChoicesCommand
     }
     
     /** Creates a new instance of GetItemDeliveryTypeChoicesCommand */
-    public GetItemDeliveryTypeChoicesCommand(UserVisitPK userVisitPK, GetItemDeliveryTypeChoicesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public GetItemDeliveryTypeChoicesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

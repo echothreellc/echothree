@@ -53,8 +53,8 @@ public class DeletePaymentProcessorActionTypeCommand
     }
     
     /** Creates a new instance of DeletePaymentProcessorActionTypeCommand */
-    public DeletePaymentProcessorActionTypeCommand(UserVisitPK userVisitPK, DeletePaymentProcessorActionTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeletePaymentProcessorActionTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

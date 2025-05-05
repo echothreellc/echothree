@@ -63,8 +63,8 @@ public class EditEntityListItemDefaultCommand
     }
     
     /** Creates a new instance of EditEntityListItemDefaultCommand */
-    public EditEntityListItemDefaultCommand(UserVisitPK userVisitPK, EditEntityListItemDefaultForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditEntityListItemDefaultCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

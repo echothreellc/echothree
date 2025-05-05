@@ -59,8 +59,8 @@ public class DeletePartyApplicationEditorUseCommand
     }
     
     /** Creates a new instance of DeletePartyApplicationEditorUseCommand */
-    public DeletePartyApplicationEditorUseCommand(UserVisitPK userVisitPK, DeletePartyApplicationEditorUseForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeletePartyApplicationEditorUseCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -43,8 +43,8 @@ public class ClearComponentVendorResultsCommand
     }
 
     /** Creates a new instance of ClearComponentVendorResultsCommand */
-    public ClearComponentVendorResultsCommand(UserVisitPK userVisitPK, ClearComponentVendorResultsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION);
+    public ClearComponentVendorResultsCommand() {
+        super(COMMAND_SECURITY_DEFINITION);
     }
     
     @Override

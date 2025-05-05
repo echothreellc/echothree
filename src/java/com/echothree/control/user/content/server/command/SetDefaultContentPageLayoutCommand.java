@@ -54,8 +54,8 @@ public class SetDefaultContentPageLayoutCommand
     }
     
     /** Creates a new instance of SetDefaultContentPageLayoutCommand */
-    public SetDefaultContentPageLayoutCommand(UserVisitPK userVisitPK, SetDefaultContentPageLayoutForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultContentPageLayoutCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

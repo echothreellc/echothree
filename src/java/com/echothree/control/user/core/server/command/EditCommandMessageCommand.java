@@ -68,8 +68,8 @@ public class EditCommandMessageCommand
     }
     
     /** Creates a new instance of EditCommandMessageCommand */
-    public EditCommandMessageCommand(UserVisitPK userVisitPK, EditCommandMessageForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditCommandMessageCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

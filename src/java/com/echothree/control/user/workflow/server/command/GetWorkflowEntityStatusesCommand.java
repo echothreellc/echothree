@@ -57,8 +57,8 @@ public class GetWorkflowEntityStatusesCommand
     }
     
     /** Creates a new instance of GetWorkflowEntityStatusesCommand */
-    public GetWorkflowEntityStatusesCommand(UserVisitPK userVisitPK, GetWorkflowEntityStatusesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetWorkflowEntityStatusesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     Workflow workflow;

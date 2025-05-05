@@ -43,8 +43,8 @@ public class SetDefaultCustomerTypePaymentMethodCommand
     }
     
     /** Creates a new instance of SetDefaultCustomerTypePaymentMethodCommand */
-    public SetDefaultCustomerTypePaymentMethodCommand(UserVisitPK userVisitPK, SetDefaultCustomerTypePaymentMethodForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultCustomerTypePaymentMethodCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

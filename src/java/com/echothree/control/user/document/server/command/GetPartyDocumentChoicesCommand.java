@@ -59,8 +59,8 @@ public class GetPartyDocumentChoicesCommand
     }
     
     /** Creates a new instance of GetPartyDocumentChoicesCommand */
-    public GetPartyDocumentChoicesCommand(UserVisitPK userVisitPK, GetPartyDocumentChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetPartyDocumentChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -55,8 +55,8 @@ public class DeleteSearchUseTypeCommand
     }
     
     /** Creates a new instance of DeleteSearchUseTypeCommand */
-    public DeleteSearchUseTypeCommand(UserVisitPK userVisitPK, DeleteSearchUseTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteSearchUseTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -76,8 +76,8 @@ public class EditCancellationPolicyCommand
     }
 
     /** Creates a new instance of EditCancellationPolicyCommand */
-    public EditCancellationPolicyCommand(UserVisitPK userVisitPK, EditCancellationPolicyForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditCancellationPolicyCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

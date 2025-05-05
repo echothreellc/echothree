@@ -59,8 +59,8 @@ public class CreatePartyAliasTypeCommand
     }
     
     /** Creates a new instance of CreatePartyAliasTypeCommand */
-    public CreatePartyAliasTypeCommand(UserVisitPK userVisitPK, CreatePartyAliasTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreatePartyAliasTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

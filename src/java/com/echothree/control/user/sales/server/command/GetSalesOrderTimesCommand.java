@@ -40,8 +40,8 @@ public class GetSalesOrderTimesCommand
     }
     
     /** Creates a new instance of GetSalesOrderTimesCommand */
-    public GetSalesOrderTimesCommand(UserVisitPK userVisitPK, GetSalesOrderTimesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public GetSalesOrderTimesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

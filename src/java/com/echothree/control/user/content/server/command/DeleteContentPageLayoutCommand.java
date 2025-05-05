@@ -53,8 +53,8 @@ public class DeleteContentPageLayoutCommand
     }
     
     /** Creates a new instance of DeleteContentPageLayoutCommand */
-    public DeleteContentPageLayoutCommand(UserVisitPK userVisitPK, DeleteContentPageLayoutForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteContentPageLayoutCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

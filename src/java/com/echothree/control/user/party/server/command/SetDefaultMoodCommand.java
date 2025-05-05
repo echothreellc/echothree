@@ -41,8 +41,8 @@ public class SetDefaultMoodCommand
     }
     
     /** Creates a new instance of SetDefaultMoodCommand */
-    public SetDefaultMoodCommand(UserVisitPK userVisitPK, SetDefaultMoodForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultMoodCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

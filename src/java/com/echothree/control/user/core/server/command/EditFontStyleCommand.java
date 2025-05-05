@@ -69,8 +69,8 @@ public class EditFontStyleCommand
     }
     
     /** Creates a new instance of EditFontStyleCommand */
-    public EditFontStyleCommand(UserVisitPK userVisitPK, EditFontStyleForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditFontStyleCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

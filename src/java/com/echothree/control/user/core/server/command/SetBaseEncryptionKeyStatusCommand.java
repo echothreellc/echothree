@@ -51,8 +51,8 @@ public class SetBaseEncryptionKeyStatusCommand
     }
     
     /** Creates a new instance of SetBaseEncryptionKeyStatusCommand */
-    public SetBaseEncryptionKeyStatusCommand(UserVisitPK userVisitPK, SetBaseEncryptionKeyStatusForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetBaseEncryptionKeyStatusCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

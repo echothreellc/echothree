@@ -57,8 +57,8 @@ public class DeleteUseNameElementDescriptionCommand
     }
     
     /** Creates a new instance of DeleteUseNameElementDescriptionCommand */
-    public DeleteUseNameElementDescriptionCommand(UserVisitPK userVisitPK, DeleteUseNameElementDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteUseNameElementDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

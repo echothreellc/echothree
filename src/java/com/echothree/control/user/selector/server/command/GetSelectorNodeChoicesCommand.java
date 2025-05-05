@@ -46,8 +46,8 @@ public class GetSelectorNodeChoicesCommand
     }
     
     /** Creates a new instance of GetSelectorNodeChoicesCommand */
-    public GetSelectorNodeChoicesCommand(UserVisitPK userVisitPK, GetSelectorNodeChoicesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public GetSelectorNodeChoicesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

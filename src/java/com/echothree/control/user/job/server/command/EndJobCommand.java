@@ -49,8 +49,8 @@ public class EndJobCommand
     }
     
     /** Creates a new instance of EndJobCommand */
-    public EndJobCommand(UserVisitPK userVisitPK, EndJobForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public EndJobCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

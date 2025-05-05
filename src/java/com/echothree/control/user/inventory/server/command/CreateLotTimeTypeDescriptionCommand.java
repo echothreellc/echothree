@@ -58,8 +58,8 @@ public class CreateLotTimeTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateLotTimeTypeDescriptionCommand */
-    public CreateLotTimeTypeDescriptionCommand(UserVisitPK userVisitPK, CreateLotTimeTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateLotTimeTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

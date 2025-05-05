@@ -56,8 +56,8 @@ public class EditRatingTypeListItemDescriptionCommand
     }
     
     /** Creates a new instance of EditRatingTypeListItemDescriptionCommand */
-    public EditRatingTypeListItemDescriptionCommand(UserVisitPK userVisitPK, EditRatingTypeListItemDescriptionForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditRatingTypeListItemDescriptionCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

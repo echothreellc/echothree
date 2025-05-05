@@ -56,8 +56,8 @@ public class GetCustomerTypeDescriptionsCommand
     }
     
     /** Creates a new instance of GetCustomerTypeDescriptionsCommand */
-    public GetCustomerTypeDescriptionsCommand(UserVisitPK userVisitPK, GetCustomerTypeDescriptionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetCustomerTypeDescriptionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

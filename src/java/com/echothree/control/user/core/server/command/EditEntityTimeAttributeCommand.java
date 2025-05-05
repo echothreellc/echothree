@@ -66,8 +66,8 @@ public class EditEntityTimeAttributeCommand
     }
     
     /** Creates a new instance of EditEntityTimeAttributeCommand */
-    public EditEntityTimeAttributeCommand(UserVisitPK userVisitPK, EditEntityTimeAttributeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditEntityTimeAttributeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

@@ -67,8 +67,8 @@ public class ResetLockoutCommand
     }
     
     /** Creates a new instance of ResetLockoutCommand */
-    public ResetLockoutCommand(UserVisitPK userVisitPK, ResetLockoutForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS);
+    public ResetLockoutCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS);
     }
 
     @Override

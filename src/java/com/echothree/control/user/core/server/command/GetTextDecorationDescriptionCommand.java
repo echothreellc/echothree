@@ -57,8 +57,8 @@ public class GetTextDecorationDescriptionCommand
     }
     
     /** Creates a new instance of GetTextDecorationDescriptionCommand */
-    public GetTextDecorationDescriptionCommand(UserVisitPK userVisitPK, GetTextDecorationDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetTextDecorationDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

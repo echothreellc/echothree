@@ -47,8 +47,8 @@ public class GetPaymentProcessorResultCodeCommand
     }
     
     /** Creates a new instance of GetPaymentProcessorResultCodeCommand */
-    public GetPaymentProcessorResultCodeCommand(UserVisitPK userVisitPK, GetPaymentProcessorResultCodeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetPaymentProcessorResultCodeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

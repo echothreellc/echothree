@@ -55,8 +55,8 @@ public class SetDefaultCommandMessageTypeCommand
     }
     
     /** Creates a new instance of SetDefaultCommandMessageTypeCommand */
-    public SetDefaultCommandMessageTypeCommand(UserVisitPK userVisitPK, SetDefaultCommandMessageTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultCommandMessageTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

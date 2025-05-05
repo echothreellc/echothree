@@ -44,8 +44,8 @@ public class GetEmailAddressVerificationChoicesCommand
     }
 
     /** Creates a new instance of GetEmailAddressVerificationChoicesCommand */
-    public GetEmailAddressVerificationChoicesCommand(UserVisitPK userVisitPK, GetEmailAddressVerificationChoicesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public GetEmailAddressVerificationChoicesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
 
     @Override

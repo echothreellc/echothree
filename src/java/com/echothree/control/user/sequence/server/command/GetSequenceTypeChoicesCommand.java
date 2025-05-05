@@ -55,8 +55,8 @@ public class GetSequenceTypeChoicesCommand
     }
     
     /** Creates a new instance of GetSequenceTypeChoicesCommand */
-    public GetSequenceTypeChoicesCommand(UserVisitPK userVisitPK, GetSequenceTypeChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetSequenceTypeChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

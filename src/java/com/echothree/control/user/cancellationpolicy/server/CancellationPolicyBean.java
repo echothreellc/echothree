@@ -43,27 +43,27 @@ public class CancellationPolicyBean
     
     @Override
     public CommandResult getPartyCancellationPolicy(UserVisitPK userVisitPK, GetPartyCancellationPolicyForm form) {
-        return new GetPartyCancellationPolicyCommand(userVisitPK, form).run();
+        return new GetPartyCancellationPolicyCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPartyCancellationPolicies(UserVisitPK userVisitPK, GetPartyCancellationPoliciesForm form) {
-        return new GetPartyCancellationPoliciesCommand(userVisitPK, form).run();
+        return new GetPartyCancellationPoliciesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPartyCancellationPolicyStatusChoices(UserVisitPK userVisitPK, GetPartyCancellationPolicyStatusChoicesForm form) {
-        return new GetPartyCancellationPolicyStatusChoicesCommand(userVisitPK, form).run();
+        return new GetPartyCancellationPolicyStatusChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setPartyCancellationPolicyStatus(UserVisitPK userVisitPK, SetPartyCancellationPolicyStatusForm form) {
-        return new SetPartyCancellationPolicyStatusCommand(userVisitPK, form).run();
+        return new SetPartyCancellationPolicyStatusCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deletePartyCancellationPolicy(UserVisitPK userVisitPK, DeletePartyCancellationPolicyForm form) {
-        return new DeletePartyCancellationPolicyCommand(userVisitPK, form).run();
+        return new DeletePartyCancellationPolicyCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -72,37 +72,37 @@ public class CancellationPolicyBean
     
     @Override
     public CommandResult createCancellationKind(UserVisitPK userVisitPK, CreateCancellationKindForm form) {
-        return new CreateCancellationKindCommand(userVisitPK, form).run();
+        return new CreateCancellationKindCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCancellationKinds(UserVisitPK userVisitPK, GetCancellationKindsForm form) {
-        return new GetCancellationKindsCommand(userVisitPK, form).run();
+        return new GetCancellationKindsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCancellationKind(UserVisitPK userVisitPK, GetCancellationKindForm form) {
-        return new GetCancellationKindCommand(userVisitPK, form).run();
+        return new GetCancellationKindCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCancellationKindChoices(UserVisitPK userVisitPK, GetCancellationKindChoicesForm form) {
-        return new GetCancellationKindChoicesCommand(userVisitPK, form).run();
+        return new GetCancellationKindChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultCancellationKind(UserVisitPK userVisitPK, SetDefaultCancellationKindForm form) {
-        return new SetDefaultCancellationKindCommand(userVisitPK, form).run();
+        return new SetDefaultCancellationKindCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editCancellationKind(UserVisitPK userVisitPK, EditCancellationKindForm form) {
-        return new EditCancellationKindCommand(userVisitPK, form).run();
+        return new EditCancellationKindCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCancellationKind(UserVisitPK userVisitPK, DeleteCancellationKindForm form) {
-        return new DeleteCancellationKindCommand(userVisitPK, form).run();
+        return new DeleteCancellationKindCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -111,22 +111,22 @@ public class CancellationPolicyBean
     
     @Override
     public CommandResult createCancellationKindDescription(UserVisitPK userVisitPK, CreateCancellationKindDescriptionForm form) {
-        return new CreateCancellationKindDescriptionCommand(userVisitPK, form).run();
+        return new CreateCancellationKindDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCancellationKindDescriptions(UserVisitPK userVisitPK, GetCancellationKindDescriptionsForm form) {
-        return new GetCancellationKindDescriptionsCommand(userVisitPK, form).run();
+        return new GetCancellationKindDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editCancellationKindDescription(UserVisitPK userVisitPK, EditCancellationKindDescriptionForm form) {
-        return new EditCancellationKindDescriptionCommand(userVisitPK, form).run();
+        return new EditCancellationKindDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCancellationKindDescription(UserVisitPK userVisitPK, DeleteCancellationKindDescriptionForm form) {
-        return new DeleteCancellationKindDescriptionCommand(userVisitPK, form).run();
+        return new DeleteCancellationKindDescriptionCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -135,37 +135,37 @@ public class CancellationPolicyBean
     
     @Override
     public CommandResult createCancellationPolicy(UserVisitPK userVisitPK, CreateCancellationPolicyForm form) {
-        return new CreateCancellationPolicyCommand(userVisitPK, form).run();
+        return new CreateCancellationPolicyCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCancellationPolicies(UserVisitPK userVisitPK, GetCancellationPoliciesForm form) {
-        return new GetCancellationPoliciesCommand(userVisitPK, form).run();
+        return new GetCancellationPoliciesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCancellationPolicy(UserVisitPK userVisitPK, GetCancellationPolicyForm form) {
-        return new GetCancellationPolicyCommand(userVisitPK, form).run();
+        return new GetCancellationPolicyCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCancellationPolicyChoices(UserVisitPK userVisitPK, GetCancellationPolicyChoicesForm form) {
-        return new GetCancellationPolicyChoicesCommand(userVisitPK, form).run();
+        return new GetCancellationPolicyChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultCancellationPolicy(UserVisitPK userVisitPK, SetDefaultCancellationPolicyForm form) {
-        return new SetDefaultCancellationPolicyCommand(userVisitPK, form).run();
+        return new SetDefaultCancellationPolicyCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editCancellationPolicy(UserVisitPK userVisitPK, EditCancellationPolicyForm form) {
-        return new EditCancellationPolicyCommand(userVisitPK, form).run();
+        return new EditCancellationPolicyCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCancellationPolicy(UserVisitPK userVisitPK, DeleteCancellationPolicyForm form) {
-        return new DeleteCancellationPolicyCommand(userVisitPK, form).run();
+        return new DeleteCancellationPolicyCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -174,27 +174,27 @@ public class CancellationPolicyBean
     
     @Override
     public CommandResult createCancellationPolicyTranslation(UserVisitPK userVisitPK, CreateCancellationPolicyTranslationForm form) {
-        return new CreateCancellationPolicyTranslationCommand(userVisitPK, form).run();
+        return new CreateCancellationPolicyTranslationCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCancellationPolicyTranslation(UserVisitPK userVisitPK, GetCancellationPolicyTranslationForm form) {
-        return new GetCancellationPolicyTranslationCommand(userVisitPK, form).run();
+        return new GetCancellationPolicyTranslationCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getCancellationPolicyTranslations(UserVisitPK userVisitPK, GetCancellationPolicyTranslationsForm form) {
-        return new GetCancellationPolicyTranslationsCommand(userVisitPK, form).run();
+        return new GetCancellationPolicyTranslationsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editCancellationPolicyTranslation(UserVisitPK userVisitPK, EditCancellationPolicyTranslationForm form) {
-        return new EditCancellationPolicyTranslationCommand(userVisitPK, form).run();
+        return new EditCancellationPolicyTranslationCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCancellationPolicyTranslation(UserVisitPK userVisitPK, DeleteCancellationPolicyTranslationForm form) {
-        return new DeleteCancellationPolicyTranslationCommand(userVisitPK, form).run();
+        return new DeleteCancellationPolicyTranslationCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -203,27 +203,27 @@ public class CancellationPolicyBean
     
     @Override
     public CommandResult createCancellationPolicyReason(UserVisitPK userVisitPK, CreateCancellationPolicyReasonForm form) {
-        return new CreateCancellationPolicyReasonCommand(userVisitPK, form).run();
+        return new CreateCancellationPolicyReasonCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCancellationPolicyReasons(UserVisitPK userVisitPK, GetCancellationPolicyReasonsForm form) {
-        return new GetCancellationPolicyReasonsCommand(userVisitPK, form).run();
+        return new GetCancellationPolicyReasonsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultCancellationPolicyReason(UserVisitPK userVisitPK, SetDefaultCancellationPolicyReasonForm form) {
-        return new SetDefaultCancellationPolicyReasonCommand(userVisitPK, form).run();
+        return new SetDefaultCancellationPolicyReasonCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editCancellationPolicyReason(UserVisitPK userVisitPK, EditCancellationPolicyReasonForm form) {
-        return new EditCancellationPolicyReasonCommand(userVisitPK, form).run();
+        return new EditCancellationPolicyReasonCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCancellationPolicyReason(UserVisitPK userVisitPK, DeleteCancellationPolicyReasonForm form) {
-        return new DeleteCancellationPolicyReasonCommand(userVisitPK, form).run();
+        return new DeleteCancellationPolicyReasonCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -232,37 +232,37 @@ public class CancellationPolicyBean
     
     @Override
     public CommandResult createCancellationReason(UserVisitPK userVisitPK, CreateCancellationReasonForm form) {
-        return new CreateCancellationReasonCommand(userVisitPK, form).run();
+        return new CreateCancellationReasonCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCancellationReasons(UserVisitPK userVisitPK, GetCancellationReasonsForm form) {
-        return new GetCancellationReasonsCommand(userVisitPK, form).run();
+        return new GetCancellationReasonsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCancellationReason(UserVisitPK userVisitPK, GetCancellationReasonForm form) {
-        return new GetCancellationReasonCommand(userVisitPK, form).run();
+        return new GetCancellationReasonCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCancellationReasonChoices(UserVisitPK userVisitPK, GetCancellationReasonChoicesForm form) {
-        return new GetCancellationReasonChoicesCommand(userVisitPK, form).run();
+        return new GetCancellationReasonChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultCancellationReason(UserVisitPK userVisitPK, SetDefaultCancellationReasonForm form) {
-        return new SetDefaultCancellationReasonCommand(userVisitPK, form).run();
+        return new SetDefaultCancellationReasonCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editCancellationReason(UserVisitPK userVisitPK, EditCancellationReasonForm form) {
-        return new EditCancellationReasonCommand(userVisitPK, form).run();
+        return new EditCancellationReasonCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCancellationReason(UserVisitPK userVisitPK, DeleteCancellationReasonForm form) {
-        return new DeleteCancellationReasonCommand(userVisitPK, form).run();
+        return new DeleteCancellationReasonCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -271,22 +271,22 @@ public class CancellationPolicyBean
     
     @Override
     public CommandResult createCancellationReasonDescription(UserVisitPK userVisitPK, CreateCancellationReasonDescriptionForm form) {
-        return new CreateCancellationReasonDescriptionCommand(userVisitPK, form).run();
+        return new CreateCancellationReasonDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCancellationReasonDescriptions(UserVisitPK userVisitPK, GetCancellationReasonDescriptionsForm form) {
-        return new GetCancellationReasonDescriptionsCommand(userVisitPK, form).run();
+        return new GetCancellationReasonDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editCancellationReasonDescription(UserVisitPK userVisitPK, EditCancellationReasonDescriptionForm form) {
-        return new EditCancellationReasonDescriptionCommand(userVisitPK, form).run();
+        return new EditCancellationReasonDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCancellationReasonDescription(UserVisitPK userVisitPK, DeleteCancellationReasonDescriptionForm form) {
-        return new DeleteCancellationReasonDescriptionCommand(userVisitPK, form).run();
+        return new DeleteCancellationReasonDescriptionCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -295,27 +295,27 @@ public class CancellationPolicyBean
     
     @Override
     public CommandResult createCancellationReasonType(UserVisitPK userVisitPK, CreateCancellationReasonTypeForm form) {
-        return new CreateCancellationReasonTypeCommand(userVisitPK, form).run();
+        return new CreateCancellationReasonTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCancellationReasonTypes(UserVisitPK userVisitPK, GetCancellationReasonTypesForm form) {
-        return new GetCancellationReasonTypesCommand(userVisitPK, form).run();
+        return new GetCancellationReasonTypesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultCancellationReasonType(UserVisitPK userVisitPK, SetDefaultCancellationReasonTypeForm form) {
-        return new SetDefaultCancellationReasonTypeCommand(userVisitPK, form).run();
+        return new SetDefaultCancellationReasonTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editCancellationReasonType(UserVisitPK userVisitPK, EditCancellationReasonTypeForm form) {
-        return new EditCancellationReasonTypeCommand(userVisitPK, form).run();
+        return new EditCancellationReasonTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCancellationReasonType(UserVisitPK userVisitPK, DeleteCancellationReasonTypeForm form) {
-        return new DeleteCancellationReasonTypeCommand(userVisitPK, form).run();
+        return new DeleteCancellationReasonTypeCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -324,37 +324,37 @@ public class CancellationPolicyBean
     
     @Override
     public CommandResult createCancellationType(UserVisitPK userVisitPK, CreateCancellationTypeForm form) {
-        return new CreateCancellationTypeCommand(userVisitPK, form).run();
+        return new CreateCancellationTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCancellationTypes(UserVisitPK userVisitPK, GetCancellationTypesForm form) {
-        return new GetCancellationTypesCommand(userVisitPK, form).run();
+        return new GetCancellationTypesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCancellationType(UserVisitPK userVisitPK, GetCancellationTypeForm form) {
-        return new GetCancellationTypeCommand(userVisitPK, form).run();
+        return new GetCancellationTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCancellationTypeChoices(UserVisitPK userVisitPK, GetCancellationTypeChoicesForm form) {
-        return new GetCancellationTypeChoicesCommand(userVisitPK, form).run();
+        return new GetCancellationTypeChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultCancellationType(UserVisitPK userVisitPK, SetDefaultCancellationTypeForm form) {
-        return new SetDefaultCancellationTypeCommand(userVisitPK, form).run();
+        return new SetDefaultCancellationTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editCancellationType(UserVisitPK userVisitPK, EditCancellationTypeForm form) {
-        return new EditCancellationTypeCommand(userVisitPK, form).run();
+        return new EditCancellationTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCancellationType(UserVisitPK userVisitPK, DeleteCancellationTypeForm form) {
-        return new DeleteCancellationTypeCommand(userVisitPK, form).run();
+        return new DeleteCancellationTypeCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -363,22 +363,22 @@ public class CancellationPolicyBean
     
     @Override
     public CommandResult createCancellationTypeDescription(UserVisitPK userVisitPK, CreateCancellationTypeDescriptionForm form) {
-        return new CreateCancellationTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateCancellationTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCancellationTypeDescriptions(UserVisitPK userVisitPK, GetCancellationTypeDescriptionsForm form) {
-        return new GetCancellationTypeDescriptionsCommand(userVisitPK, form).run();
+        return new GetCancellationTypeDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editCancellationTypeDescription(UserVisitPK userVisitPK, EditCancellationTypeDescriptionForm form) {
-        return new EditCancellationTypeDescriptionCommand(userVisitPK, form).run();
+        return new EditCancellationTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCancellationTypeDescription(UserVisitPK userVisitPK, DeleteCancellationTypeDescriptionForm form) {
-        return new DeleteCancellationTypeDescriptionCommand(userVisitPK, form).run();
+        return new DeleteCancellationTypeDescriptionCommand().run(userVisitPK, form);
     }
     
 }

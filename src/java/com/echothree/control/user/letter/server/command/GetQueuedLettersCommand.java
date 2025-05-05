@@ -59,8 +59,8 @@ public class GetQueuedLettersCommand
     }
     
     /** Creates a new instance of GetQueuedLettersCommand */
-    public GetQueuedLettersCommand(UserVisitPK userVisitPK, GetQueuedLettersForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetQueuedLettersCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

@@ -59,8 +59,8 @@ public class CreateInvoiceTimeTypeCommand
     }
     
     /** Creates a new instance of CreateInvoiceTimeTypeCommand */
-    public CreateInvoiceTimeTypeCommand(UserVisitPK userVisitPK, CreateInvoiceTimeTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateInvoiceTimeTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -25,8 +25,8 @@ public class InvalidateUserVisitCommand
         extends BaseSimpleCommand {
     
     /** Creates a new instance of InvalidateUserVisitCommand */
-    public InvalidateUserVisitCommand(UserVisitPK userVisitPK) {
-        super(userVisitPK, null, false);
+    public InvalidateUserVisitCommand() {
+        super(null, false);
 
         // Prevent the possible creation of an extra UserSession when we're just going to be deleting it anyway.
         setCheckIdentityVerifiedTime(false);

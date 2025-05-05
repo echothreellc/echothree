@@ -49,8 +49,8 @@ public class GetItemPriceTypeCommand
     }
 
     /** Creates a new instance of GetItemPriceTypeCommand */
-    public GetItemPriceTypeCommand(UserVisitPK userVisitPK, GetItemPriceTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetItemPriceTypeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

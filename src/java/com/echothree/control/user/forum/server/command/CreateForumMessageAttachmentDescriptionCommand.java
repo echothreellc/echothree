@@ -45,8 +45,8 @@ public class CreateForumMessageAttachmentDescriptionCommand
     }
     
     /** Creates a new instance of CreateForumMessageAttachmentDescriptionCommand */
-    public CreateForumMessageAttachmentDescriptionCommand(UserVisitPK userVisitPK, CreateForumMessageAttachmentDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateForumMessageAttachmentDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

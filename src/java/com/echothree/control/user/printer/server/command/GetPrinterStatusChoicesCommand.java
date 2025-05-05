@@ -43,8 +43,8 @@ public class GetPrinterStatusChoicesCommand
     }
 
     /** Creates a new instance of GetPrinterStatusChoicesCommand */
-    public GetPrinterStatusChoicesCommand(UserVisitPK userVisitPK, GetPrinterStatusChoicesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public GetPrinterStatusChoicesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
    @Override

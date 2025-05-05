@@ -57,8 +57,8 @@ public class DeleteTrainingClassTranslationCommand
     }
     
     /** Creates a new instance of DeleteTrainingClassTranslationCommand */
-    public DeleteTrainingClassTranslationCommand(UserVisitPK userVisitPK, DeleteTrainingClassTranslationForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteTrainingClassTranslationCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

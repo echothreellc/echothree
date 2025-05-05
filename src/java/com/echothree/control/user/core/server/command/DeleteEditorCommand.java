@@ -55,8 +55,8 @@ public class DeleteEditorCommand
     }
     
     /** Creates a new instance of DeleteEditorCommand */
-    public DeleteEditorCommand(UserVisitPK userVisitPK, DeleteEditorForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteEditorCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

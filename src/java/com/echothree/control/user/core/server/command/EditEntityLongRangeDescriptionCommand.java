@@ -71,8 +71,8 @@ public class EditEntityLongRangeDescriptionCommand
     }
     
     /** Creates a new instance of EditEntityLongRangeDescriptionCommand */
-    public EditEntityLongRangeDescriptionCommand(UserVisitPK userVisitPK, EditEntityLongRangeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditEntityLongRangeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

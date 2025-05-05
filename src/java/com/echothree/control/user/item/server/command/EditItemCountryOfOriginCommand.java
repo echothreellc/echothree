@@ -56,8 +56,8 @@ public class EditItemCountryOfOriginCommand
     }
     
     /** Creates a new instance of EditItemCountryOfOriginCommand */
-    public EditItemCountryOfOriginCommand(UserVisitPK userVisitPK, EditItemCountryOfOriginForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditItemCountryOfOriginCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

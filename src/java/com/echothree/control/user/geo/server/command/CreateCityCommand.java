@@ -66,8 +66,8 @@ public class CreateCityCommand
     }
     
     /** Creates a new instance of CreateCityCommand */
-    public CreateCityCommand(UserVisitPK userVisitPK, CreateCityForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateCityCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -81,8 +81,8 @@ public class EditFilterAdjustmentAmountCommand
     }
     
     /** Creates a new instance of EditFilterAdjustmentAmountCommand */
-    public EditFilterAdjustmentAmountCommand(UserVisitPK userVisitPK, EditFilterAdjustmentAmountForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, null);
+    public EditFilterAdjustmentAmountCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, null);
     }
     
     @Override

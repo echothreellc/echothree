@@ -61,8 +61,8 @@ public class CreateContentSectionCommand
     }
     
     /** Creates a new instance of CreateContentSectionCommand */
-    public CreateContentSectionCommand(UserVisitPK userVisitPK, CreateContentSectionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateContentSectionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

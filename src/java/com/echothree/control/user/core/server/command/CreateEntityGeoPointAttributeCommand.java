@@ -62,8 +62,8 @@ public class CreateEntityGeoPointAttributeCommand
     }
     
     /** Creates a new instance of CreateEntityGeoPointAttributeCommand */
-    public CreateEntityGeoPointAttributeCommand(UserVisitPK userVisitPK, CreateEntityGeoPointAttributeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateEntityGeoPointAttributeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

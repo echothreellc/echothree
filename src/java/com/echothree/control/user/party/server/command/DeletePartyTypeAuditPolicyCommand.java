@@ -41,8 +41,8 @@ public class DeletePartyTypeAuditPolicyCommand
     }
     
     /** Creates a new instance of DeletePartyTypeAuditPolicyCommand */
-    public DeletePartyTypeAuditPolicyCommand(UserVisitPK userVisitPK, DeletePartyTypeAuditPolicyForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeletePartyTypeAuditPolicyCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -58,8 +58,8 @@ public class GetScaleTypeDescriptionCommand
     }
     
     /** Creates a new instance of GetScaleTypeDescriptionCommand */
-    public GetScaleTypeDescriptionCommand(UserVisitPK userVisitPK, GetScaleTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetScaleTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

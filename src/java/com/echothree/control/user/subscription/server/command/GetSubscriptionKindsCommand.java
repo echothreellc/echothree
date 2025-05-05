@@ -53,8 +53,8 @@ public class GetSubscriptionKindsCommand
     }
 
     /** Creates a new instance of GetSubscriptionKindsCommand */
-    public GetSubscriptionKindsCommand(UserVisitPK userVisitPK, GetSubscriptionKindsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetSubscriptionKindsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

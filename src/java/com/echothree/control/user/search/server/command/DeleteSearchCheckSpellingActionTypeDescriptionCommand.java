@@ -57,8 +57,8 @@ public class DeleteSearchCheckSpellingActionTypeDescriptionCommand
     }
     
     /** Creates a new instance of DeleteSearchCheckSpellingActionTypeDescriptionCommand */
-    public DeleteSearchCheckSpellingActionTypeDescriptionCommand(UserVisitPK userVisitPK, DeleteSearchCheckSpellingActionTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteSearchCheckSpellingActionTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

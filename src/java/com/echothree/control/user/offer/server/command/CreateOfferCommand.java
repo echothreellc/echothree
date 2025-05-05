@@ -78,8 +78,8 @@ public class CreateOfferCommand
     }
     
     /** Creates a new instance of CreateOfferCommand */
-    public CreateOfferCommand(UserVisitPK userVisitPK, CreateOfferForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateOfferCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

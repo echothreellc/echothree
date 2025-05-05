@@ -55,8 +55,8 @@ public class DeleteFontWeightCommand
     }
     
     /** Creates a new instance of DeleteFontWeightCommand */
-    public DeleteFontWeightCommand(UserVisitPK userVisitPK, DeleteFontWeightForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteFontWeightCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

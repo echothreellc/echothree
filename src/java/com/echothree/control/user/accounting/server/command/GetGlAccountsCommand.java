@@ -57,8 +57,8 @@ public class GetGlAccountsCommand
     }
     
     /** Creates a new instance of GetGlAccountsCommand */
-    public GetGlAccountsCommand(UserVisitPK userVisitPK, GetGlAccountsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetGlAccountsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     GlAccountCategory glAccountCategory = null;

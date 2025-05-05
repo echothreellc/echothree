@@ -57,8 +57,8 @@ public class DeleteOrderAliasTypeCommand
     }
     
     /** Creates a new instance of DeleteOrderAliasTypeCommand */
-    public DeleteOrderAliasTypeCommand(UserVisitPK userVisitPK, DeleteOrderAliasTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteOrderAliasTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -61,8 +61,8 @@ public class GetPartyReturnPolicyStatusChoicesCommand
     }
     
     /** Creates a new instance of GetPartyReturnPolicyStatusChoicesCommand */
-    public GetPartyReturnPolicyStatusChoicesCommand(UserVisitPK userVisitPK, GetPartyReturnPolicyStatusChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetPartyReturnPolicyStatusChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

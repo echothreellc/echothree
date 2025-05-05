@@ -69,8 +69,8 @@ public class EditPartyTypeContactListCommand
     }
     
     /** Creates a new instance of EditPartyTypeContactListCommand */
-    public EditPartyTypeContactListCommand(UserVisitPK userVisitPK, EditPartyTypeContactListForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditPartyTypeContactListCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

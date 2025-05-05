@@ -55,8 +55,8 @@ public class DeleteSecurityRoleGroupCommand
     }
     
     /** Creates a new instance of DeleteSecurityRoleGroupCommand */
-    public DeleteSecurityRoleGroupCommand(UserVisitPK userVisitPK, DeleteSecurityRoleGroupForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteSecurityRoleGroupCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

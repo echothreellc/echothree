@@ -57,8 +57,8 @@ public class DeleteContactMechanismAliasTypeDescriptionCommand
     }
     
     /** Creates a new instance of DeleteContactMechanismAliasTypeDescriptionCommand */
-    public DeleteContactMechanismAliasTypeDescriptionCommand(UserVisitPK userVisitPK, DeleteContactMechanismAliasTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteContactMechanismAliasTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

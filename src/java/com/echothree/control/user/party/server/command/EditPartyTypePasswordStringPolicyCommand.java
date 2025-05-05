@@ -72,8 +72,8 @@ public class EditPartyTypePasswordStringPolicyCommand
     }
     
     /** Creates a new instance of EditPartyTypePasswordStringPolicyCommand */
-    public EditPartyTypePasswordStringPolicyCommand(UserVisitPK userVisitPK, EditPartyTypePasswordStringPolicyForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditPartyTypePasswordStringPolicyCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

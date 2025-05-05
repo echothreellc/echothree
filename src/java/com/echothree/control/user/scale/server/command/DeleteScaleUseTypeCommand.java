@@ -41,8 +41,8 @@ public class DeleteScaleUseTypeCommand
     }
 
     /** Creates a new instance of DeleteScaleUseTypeCommand */
-    public DeleteScaleUseTypeCommand(UserVisitPK userVisitPK, DeleteScaleUseTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteScaleUseTypeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
    @Override

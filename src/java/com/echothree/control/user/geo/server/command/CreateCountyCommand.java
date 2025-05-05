@@ -67,8 +67,8 @@ public class CreateCountyCommand
     }
     
     /** Creates a new instance of CreateCountyCommand */
-    public CreateCountyCommand(UserVisitPK userVisitPK, CreateCountyForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateCountyCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

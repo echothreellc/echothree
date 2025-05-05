@@ -57,8 +57,8 @@ public class GetReturnPoliciesCommand
     }
     
     /** Creates a new instance of GetReturnPoliciesCommand */
-    public GetReturnPoliciesCommand(UserVisitPK userVisitPK, GetReturnPoliciesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetReturnPoliciesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     ReturnKind returnKind;

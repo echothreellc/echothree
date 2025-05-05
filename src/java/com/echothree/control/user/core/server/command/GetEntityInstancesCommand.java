@@ -60,8 +60,8 @@ public class GetEntityInstancesCommand
     }
     
     /** Creates a new instance of GetEntityInstancesCommand */
-    public GetEntityInstancesCommand(UserVisitPK userVisitPK, GetEntityInstancesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetEntityInstancesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     EntityType entityType;

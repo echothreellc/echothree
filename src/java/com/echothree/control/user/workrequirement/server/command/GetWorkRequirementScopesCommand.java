@@ -45,8 +45,8 @@ public class GetWorkRequirementScopesCommand
     }
     
     /** Creates a new instance of GetWorkRequirementScopesCommand */
-    public GetWorkRequirementScopesCommand(UserVisitPK userVisitPK, GetWorkRequirementScopesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetWorkRequirementScopesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

@@ -43,8 +43,8 @@ public class GetDateTimeFormatChoicesCommand
     }
     
     /** Creates a new instance of GetDateTimeFormatChoicesCommand */
-    public GetDateTimeFormatChoicesCommand(UserVisitPK userVisitPK, GetDateTimeFormatChoicesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public GetDateTimeFormatChoicesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

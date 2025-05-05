@@ -43,37 +43,37 @@ public class VendorBean
     
     @Override
     public CommandResult createVendorType(UserVisitPK userVisitPK, CreateVendorTypeForm form) {
-        return new CreateVendorTypeCommand(userVisitPK, form).run();
+        return new CreateVendorTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getVendorTypeChoices(UserVisitPK userVisitPK, GetVendorTypeChoicesForm form) {
-        return new GetVendorTypeChoicesCommand(userVisitPK, form).run();
+        return new GetVendorTypeChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getVendorType(UserVisitPK userVisitPK, GetVendorTypeForm form) {
-        return new GetVendorTypeCommand(userVisitPK, form).run();
+        return new GetVendorTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getVendorTypes(UserVisitPK userVisitPK, GetVendorTypesForm form) {
-        return new GetVendorTypesCommand(userVisitPK, form).run();
+        return new GetVendorTypesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultVendorType(UserVisitPK userVisitPK, SetDefaultVendorTypeForm form) {
-        return new SetDefaultVendorTypeCommand(userVisitPK, form).run();
+        return new SetDefaultVendorTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editVendorType(UserVisitPK userVisitPK, EditVendorTypeForm form) {
-        return new EditVendorTypeCommand(userVisitPK, form).run();
+        return new EditVendorTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteVendorType(UserVisitPK userVisitPK, DeleteVendorTypeForm form) {
-        return new DeleteVendorTypeCommand(userVisitPK, form).run();
+        return new DeleteVendorTypeCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -82,27 +82,27 @@ public class VendorBean
     
     @Override
     public CommandResult createVendorTypeDescription(UserVisitPK userVisitPK, CreateVendorTypeDescriptionForm form) {
-        return new CreateVendorTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateVendorTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getVendorTypeDescription(UserVisitPK userVisitPK, GetVendorTypeDescriptionForm form) {
-        return new GetVendorTypeDescriptionCommand(userVisitPK, form).run();
+        return new GetVendorTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getVendorTypeDescriptions(UserVisitPK userVisitPK, GetVendorTypeDescriptionsForm form) {
-        return new GetVendorTypeDescriptionsCommand(userVisitPK, form).run();
+        return new GetVendorTypeDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editVendorTypeDescription(UserVisitPK userVisitPK, EditVendorTypeDescriptionForm form) {
-        return new EditVendorTypeDescriptionCommand(userVisitPK, form).run();
+        return new EditVendorTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteVendorTypeDescription(UserVisitPK userVisitPK, DeleteVendorTypeDescriptionForm form) {
-        return new DeleteVendorTypeDescriptionCommand(userVisitPK, form).run();
+        return new DeleteVendorTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -111,17 +111,17 @@ public class VendorBean
 
     @Override
     public CommandResult getVendor(UserVisitPK userVisitPK, GetVendorForm form) {
-        return new GetVendorCommand(userVisitPK, form).run();
+        return new GetVendorCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getVendors(UserVisitPK userVisitPK, GetVendorsForm form) {
-        return new GetVendorsCommand(userVisitPK, form).run();
+        return new GetVendorsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editVendor(UserVisitPK userVisitPK, EditVendorForm form) {
-        return new EditVendorCommand(userVisitPK, form).run();
+        return new EditVendorCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -130,37 +130,37 @@ public class VendorBean
     
     @Override
     public CommandResult createVendorItem(UserVisitPK userVisitPK, CreateVendorItemForm form) {
-        return new CreateVendorItemCommand(userVisitPK, form).run();
+        return new CreateVendorItemCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getVendorItem(UserVisitPK userVisitPK, GetVendorItemForm form) {
-        return new GetVendorItemCommand(userVisitPK, form).run();
+        return new GetVendorItemCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getVendorItems(UserVisitPK userVisitPK, GetVendorItemsForm form) {
-        return new GetVendorItemsCommand(userVisitPK, form).run();
+        return new GetVendorItemsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getVendorItemStatusChoices(UserVisitPK userVisitPK, GetVendorItemStatusChoicesForm form) {
-        return new GetVendorItemStatusChoicesCommand(userVisitPK, form).run();
+        return new GetVendorItemStatusChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setVendorItemStatus(UserVisitPK userVisitPK, SetVendorItemStatusForm form) {
-        return new SetVendorItemStatusCommand(userVisitPK, form).run();
+        return new SetVendorItemStatusCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editVendorItem(UserVisitPK userVisitPK, EditVendorItemForm form) {
-        return new EditVendorItemCommand(userVisitPK, form).run();
+        return new EditVendorItemCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteVendorItem(UserVisitPK userVisitPK, DeleteVendorItemForm form) {
-        return new DeleteVendorItemCommand(userVisitPK, form).run();
+        return new DeleteVendorItemCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -169,27 +169,27 @@ public class VendorBean
     
     @Override
     public CommandResult createVendorItemCost(UserVisitPK userVisitPK, CreateVendorItemCostForm form) {
-        return new CreateVendorItemCostCommand(userVisitPK, form).run();
+        return new CreateVendorItemCostCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getVendorItemCost(UserVisitPK userVisitPK, GetVendorItemCostForm form) {
-        return new GetVendorItemCostCommand(userVisitPK, form).run();
+        return new GetVendorItemCostCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getVendorItemCosts(UserVisitPK userVisitPK, GetVendorItemCostsForm form) {
-        return new GetVendorItemCostsCommand(userVisitPK, form).run();
+        return new GetVendorItemCostsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editVendorItemCost(UserVisitPK userVisitPK, EditVendorItemCostForm form) {
-        return new EditVendorItemCostCommand(userVisitPK, form).run();
+        return new EditVendorItemCostCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteVendorItemCost(UserVisitPK userVisitPK, DeleteVendorItemCostForm form) {
-        return new DeleteVendorItemCostCommand(userVisitPK, form).run();
+        return new DeleteVendorItemCostCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -198,37 +198,37 @@ public class VendorBean
     
     @Override
     public CommandResult createItemPurchasingCategory(UserVisitPK userVisitPK, CreateItemPurchasingCategoryForm form) {
-        return new CreateItemPurchasingCategoryCommand(userVisitPK, form).run();
+        return new CreateItemPurchasingCategoryCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemPurchasingCategoryChoices(UserVisitPK userVisitPK, GetItemPurchasingCategoryChoicesForm form) {
-        return new GetItemPurchasingCategoryChoicesCommand(userVisitPK, form).run();
+        return new GetItemPurchasingCategoryChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemPurchasingCategory(UserVisitPK userVisitPK, GetItemPurchasingCategoryForm form) {
-        return new GetItemPurchasingCategoryCommand(userVisitPK, form).run();
+        return new GetItemPurchasingCategoryCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemPurchasingCategories(UserVisitPK userVisitPK, GetItemPurchasingCategoriesForm form) {
-        return new GetItemPurchasingCategoriesCommand(userVisitPK, form).run();
+        return new GetItemPurchasingCategoriesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultItemPurchasingCategory(UserVisitPK userVisitPK, SetDefaultItemPurchasingCategoryForm form) {
-        return new SetDefaultItemPurchasingCategoryCommand(userVisitPK, form).run();
+        return new SetDefaultItemPurchasingCategoryCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editItemPurchasingCategory(UserVisitPK userVisitPK, EditItemPurchasingCategoryForm form) {
-        return new EditItemPurchasingCategoryCommand(userVisitPK, form).run();
+        return new EditItemPurchasingCategoryCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteItemPurchasingCategory(UserVisitPK userVisitPK, DeleteItemPurchasingCategoryForm form) {
-        return new DeleteItemPurchasingCategoryCommand(userVisitPK, form).run();
+        return new DeleteItemPurchasingCategoryCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -237,27 +237,27 @@ public class VendorBean
     
     @Override
     public CommandResult createItemPurchasingCategoryDescription(UserVisitPK userVisitPK, CreateItemPurchasingCategoryDescriptionForm form) {
-        return new CreateItemPurchasingCategoryDescriptionCommand(userVisitPK, form).run();
+        return new CreateItemPurchasingCategoryDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemPurchasingCategoryDescription(UserVisitPK userVisitPK, GetItemPurchasingCategoryDescriptionForm form) {
-        return new GetItemPurchasingCategoryDescriptionCommand(userVisitPK, form).run();
+        return new GetItemPurchasingCategoryDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemPurchasingCategoryDescriptions(UserVisitPK userVisitPK, GetItemPurchasingCategoryDescriptionsForm form) {
-        return new GetItemPurchasingCategoryDescriptionsCommand(userVisitPK, form).run();
+        return new GetItemPurchasingCategoryDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editItemPurchasingCategoryDescription(UserVisitPK userVisitPK, EditItemPurchasingCategoryDescriptionForm form) {
-        return new EditItemPurchasingCategoryDescriptionCommand(userVisitPK, form).run();
+        return new EditItemPurchasingCategoryDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteItemPurchasingCategoryDescription(UserVisitPK userVisitPK, DeleteItemPurchasingCategoryDescriptionForm form) {
-        return new DeleteItemPurchasingCategoryDescriptionCommand(userVisitPK, form).run();
+        return new DeleteItemPurchasingCategoryDescriptionCommand().run(userVisitPK, form);
     }
     
 }

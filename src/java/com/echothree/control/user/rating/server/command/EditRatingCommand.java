@@ -51,8 +51,8 @@ public class EditRatingCommand
     }
     
     /** Creates a new instance of EditRatingCommand */
-    public EditRatingCommand(UserVisitPK userVisitPK, EditRatingForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditRatingCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

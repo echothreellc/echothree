@@ -51,8 +51,8 @@ public class CreateCacheEntryCommand
     }
     
     /** Creates a new instance of CreateCacheEntryCommand */
-    public CreateCacheEntryCommand(UserVisitPK userVisitPK, CreateCacheEntryForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateCacheEntryCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

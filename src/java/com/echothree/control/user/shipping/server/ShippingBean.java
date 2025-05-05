@@ -43,32 +43,32 @@ public class ShippingBean
     
     @Override
     public CommandResult createShippingMethod(UserVisitPK userVisitPK, CreateShippingMethodForm form) {
-        return new CreateShippingMethodCommand(userVisitPK, form).run();
+        return new CreateShippingMethodCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getShippingMethod(UserVisitPK userVisitPK, GetShippingMethodForm form) {
-        return new GetShippingMethodCommand(userVisitPK, form).run();
+        return new GetShippingMethodCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getShippingMethods(UserVisitPK userVisitPK, GetShippingMethodsForm form) {
-        return new GetShippingMethodsCommand(userVisitPK, form).run();
+        return new GetShippingMethodsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getShippingMethodChoices(UserVisitPK userVisitPK, GetShippingMethodChoicesForm form) {
-        return new GetShippingMethodChoicesCommand(userVisitPK, form).run();
+        return new GetShippingMethodChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editShippingMethod(UserVisitPK userVisitPK, EditShippingMethodForm form) {
-        return new EditShippingMethodCommand(userVisitPK, form).run();
+        return new EditShippingMethodCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteShippingMethod(UserVisitPK userVisitPK, DeleteShippingMethodForm form) {
-        return new DeleteShippingMethodCommand(userVisitPK, form).run();
+        return new DeleteShippingMethodCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -77,27 +77,27 @@ public class ShippingBean
     
     @Override
     public CommandResult createShippingMethodDescription(UserVisitPK userVisitPK, CreateShippingMethodDescriptionForm form) {
-        return new CreateShippingMethodDescriptionCommand(userVisitPK, form).run();
+        return new CreateShippingMethodDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getShippingMethodDescription(UserVisitPK userVisitPK, GetShippingMethodDescriptionForm form) {
-        return new GetShippingMethodDescriptionCommand(userVisitPK, form).run();
+        return new GetShippingMethodDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getShippingMethodDescriptions(UserVisitPK userVisitPK, GetShippingMethodDescriptionsForm form) {
-        return new GetShippingMethodDescriptionsCommand(userVisitPK, form).run();
+        return new GetShippingMethodDescriptionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editShippingMethodDescription(UserVisitPK userVisitPK, EditShippingMethodDescriptionForm form) {
-        return new EditShippingMethodDescriptionCommand(userVisitPK, form).run();
+        return new EditShippingMethodDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteShippingMethodDescription(UserVisitPK userVisitPK, DeleteShippingMethodDescriptionForm form) {
-        return new DeleteShippingMethodDescriptionCommand(userVisitPK, form).run();
+        return new DeleteShippingMethodDescriptionCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -106,22 +106,22 @@ public class ShippingBean
     
     @Override
     public CommandResult createShippingMethodCarrierService(UserVisitPK userVisitPK, CreateShippingMethodCarrierServiceForm form) {
-        return new CreateShippingMethodCarrierServiceCommand(userVisitPK, form).run();
+        return new CreateShippingMethodCarrierServiceCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getShippingMethodCarrierService(UserVisitPK userVisitPK, GetShippingMethodCarrierServiceForm form) {
-        return new GetShippingMethodCarrierServiceCommand(userVisitPK, form).run();
+        return new GetShippingMethodCarrierServiceCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getShippingMethodCarrierServices(UserVisitPK userVisitPK, GetShippingMethodCarrierServicesForm form) {
-        return new GetShippingMethodCarrierServicesCommand(userVisitPK, form).run();
+        return new GetShippingMethodCarrierServicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteShippingMethodCarrierService(UserVisitPK userVisitPK, DeleteShippingMethodCarrierServiceForm form) {
-        return new DeleteShippingMethodCarrierServiceCommand(userVisitPK, form).run();
+        return new DeleteShippingMethodCarrierServiceCommand().run(userVisitPK, form);
     }
     
 }

@@ -55,8 +55,8 @@ public class SetDefaultBatchAliasTypeCommand
     }
     
     /** Creates a new instance of SetDefaultBatchAliasTypeCommand */
-    public SetDefaultBatchAliasTypeCommand(UserVisitPK userVisitPK, SetDefaultBatchAliasTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultBatchAliasTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

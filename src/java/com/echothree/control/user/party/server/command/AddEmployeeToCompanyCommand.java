@@ -43,8 +43,8 @@ public class AddEmployeeToCompanyCommand
     }
     
     /** Creates a new instance of AddEmployeeToCompanyCommand */
-    public AddEmployeeToCompanyCommand(UserVisitPK userVisitPK, AddEmployeeToCompanyForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public AddEmployeeToCompanyCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

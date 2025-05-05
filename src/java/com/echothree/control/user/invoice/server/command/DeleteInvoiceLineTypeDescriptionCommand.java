@@ -58,8 +58,8 @@ public class DeleteInvoiceLineTypeDescriptionCommand
     }
     
     /** Creates a new instance of DeleteInvoiceLineTypeDescriptionCommand */
-    public DeleteInvoiceLineTypeDescriptionCommand(UserVisitPK userVisitPK, DeleteInvoiceLineTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteInvoiceLineTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

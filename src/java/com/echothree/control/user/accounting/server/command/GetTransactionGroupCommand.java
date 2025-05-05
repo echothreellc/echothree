@@ -58,8 +58,8 @@ public class GetTransactionGroupCommand
     }
     
     /** Creates a new instance of GetTransactionGroupCommand */
-    public GetTransactionGroupCommand(UserVisitPK userVisitPK, GetTransactionGroupForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetTransactionGroupCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

@@ -63,8 +63,8 @@ public class EditEntityTimeDefaultCommand
     }
     
     /** Creates a new instance of EditEntityTimeDefaultCommand */
-    public EditEntityTimeDefaultCommand(UserVisitPK userVisitPK, EditEntityTimeDefaultForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditEntityTimeDefaultCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

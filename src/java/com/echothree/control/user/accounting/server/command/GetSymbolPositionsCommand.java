@@ -52,8 +52,8 @@ public class GetSymbolPositionsCommand
     }
     
     /** Creates a new instance of GetSymbolPositionsCommand */
-    public GetSymbolPositionsCommand(UserVisitPK userVisitPK, GetSymbolPositionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetSymbolPositionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

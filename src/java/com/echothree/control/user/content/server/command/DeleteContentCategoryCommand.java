@@ -57,8 +57,8 @@ public class DeleteContentCategoryCommand
     }
     
     /** Creates a new instance of DeleteContentCategoryCommand */
-    public DeleteContentCategoryCommand(UserVisitPK userVisitPK, DeleteContentCategoryForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteContentCategoryCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -54,8 +54,8 @@ public class GetContentPagesCommand
     }
     
     /** Creates a new instance of GetContentPagesCommand */
-    public GetContentPagesCommand(UserVisitPK userVisitPK, GetContentPagesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetContentPagesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     private ContentSection contentSection;

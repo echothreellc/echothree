@@ -58,8 +58,8 @@ public class CreateLetterSourceDescriptionCommand
     }
     
     /** Creates a new instance of CreateLetterSourceDescriptionCommand */
-    public CreateLetterSourceDescriptionCommand(UserVisitPK userVisitPK, CreateLetterSourceDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateLetterSourceDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

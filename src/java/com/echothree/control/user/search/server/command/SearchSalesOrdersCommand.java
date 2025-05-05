@@ -58,8 +58,8 @@ public class SearchSalesOrdersCommand
     }
 
     /** Creates a new instance of SearchSalesOrdersCommand */
-    public SearchSalesOrdersCommand(UserVisitPK userVisitPK, SearchSalesOrdersForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SearchSalesOrdersCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

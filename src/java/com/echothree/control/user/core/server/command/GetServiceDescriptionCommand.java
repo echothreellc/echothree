@@ -57,8 +57,8 @@ public class GetServiceDescriptionCommand
     }
     
     /** Creates a new instance of GetServiceDescriptionCommand */
-    public GetServiceDescriptionCommand(UserVisitPK userVisitPK, GetServiceDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetServiceDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -58,8 +58,8 @@ public class GetPartyPrinterGroupUsesCommand
     }
 
     /** Creates a new instance of GetPartyPrinterGroupUsesCommand */
-    public GetPartyPrinterGroupUsesCommand(UserVisitPK userVisitPK, GetPartyPrinterGroupUsesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetPartyPrinterGroupUsesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

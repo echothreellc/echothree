@@ -75,8 +75,8 @@ public class EditHarmonizedTariffScheduleCodeTranslationCommand
     }
 
     /** Creates a new instance of EditHarmonizedTariffScheduleCodeTranslationCommand */
-    public EditHarmonizedTariffScheduleCodeTranslationCommand(UserVisitPK userVisitPK, EditHarmonizedTariffScheduleCodeTranslationForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditHarmonizedTariffScheduleCodeTranslationCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

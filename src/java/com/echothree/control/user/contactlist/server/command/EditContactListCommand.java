@@ -79,8 +79,8 @@ public class EditContactListCommand
     }
 
     /** Creates a new instance of EditContactListCommand */
-    public EditContactListCommand(UserVisitPK userVisitPK, EditContactListForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditContactListCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

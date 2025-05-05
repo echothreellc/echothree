@@ -44,8 +44,8 @@ public class CreateSelectorComparisonTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateSelectorComparisonTypeDescriptionCommand */
-    public CreateSelectorComparisonTypeDescriptionCommand(UserVisitPK userVisitPK, CreateSelectorComparisonTypeDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateSelectorComparisonTypeDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

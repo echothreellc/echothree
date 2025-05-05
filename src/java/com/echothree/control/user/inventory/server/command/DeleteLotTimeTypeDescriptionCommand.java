@@ -57,8 +57,8 @@ public class DeleteLotTimeTypeDescriptionCommand
     }
     
     /** Creates a new instance of DeleteLotTimeTypeDescriptionCommand */
-    public DeleteLotTimeTypeDescriptionCommand(UserVisitPK userVisitPK, DeleteLotTimeTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteLotTimeTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -57,8 +57,8 @@ public class GetCampaignContentStatusChoicesCommand
     }
     
     /** Creates a new instance of GetCampaignContentStatusChoicesCommand */
-    public GetCampaignContentStatusChoicesCommand(UserVisitPK userVisitPK, GetCampaignContentStatusChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetCampaignContentStatusChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

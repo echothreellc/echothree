@@ -79,8 +79,8 @@ public class EditItemPriceCommand
     }
     
     /** Creates a new instance of EditItemPriceCommand */
-    public EditItemPriceCommand(UserVisitPK userVisitPK, EditItemPriceForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditItemPriceCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

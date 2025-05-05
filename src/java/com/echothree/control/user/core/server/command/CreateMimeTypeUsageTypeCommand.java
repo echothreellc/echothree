@@ -43,8 +43,8 @@ public class CreateMimeTypeUsageTypeCommand
     }
     
     /** Creates a new instance of CreateMimeTypeUsageTypeCommand */
-    public CreateMimeTypeUsageTypeCommand(UserVisitPK userVisitPK, CreateMimeTypeUsageTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateMimeTypeUsageTypeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -55,8 +55,8 @@ public class DeleteSymbolPositionCommand
     }
     
     /** Creates a new instance of DeleteSymbolPositionCommand */
-    public DeleteSymbolPositionCommand(UserVisitPK userVisitPK, DeleteSymbolPositionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteSymbolPositionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

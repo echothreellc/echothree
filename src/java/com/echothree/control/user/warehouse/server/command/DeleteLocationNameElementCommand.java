@@ -57,8 +57,8 @@ public class DeleteLocationNameElementCommand
     }
     
     /** Creates a new instance of DeleteLocationNameElementCommand */
-    public DeleteLocationNameElementCommand(UserVisitPK userVisitPK, DeleteLocationNameElementForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteLocationNameElementCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

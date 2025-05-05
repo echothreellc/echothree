@@ -58,8 +58,8 @@ public class GetPrinterDescriptionCommand
     }
     
     /** Creates a new instance of GetPrinterDescriptionCommand */
-    public GetPrinterDescriptionCommand(UserVisitPK userVisitPK, GetPrinterDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetPrinterDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

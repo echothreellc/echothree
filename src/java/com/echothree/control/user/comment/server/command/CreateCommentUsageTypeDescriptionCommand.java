@@ -47,8 +47,8 @@ public class CreateCommentUsageTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateCommentUsageTypeDescriptionCommand */
-    public CreateCommentUsageTypeDescriptionCommand(UserVisitPK userVisitPK, CreateCommentUsageTypeDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateCommentUsageTypeDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

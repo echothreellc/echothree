@@ -45,8 +45,8 @@ public class CountWarehouseResultsCommand
     }
     
     /** Creates a new instance of CountWarehouseResultsCommand */
-    public CountWarehouseResultsCommand(UserVisitPK userVisitPK, CountWarehouseResultsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION);
+    public CountWarehouseResultsCommand() {
+        super(COMMAND_SECURITY_DEFINITION);
     }
     
     @Override

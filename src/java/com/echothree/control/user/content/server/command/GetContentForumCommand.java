@@ -46,8 +46,8 @@ public class GetContentForumCommand
     }
     
     /** Creates a new instance of GetContentForumCommand */
-    public GetContentForumCommand(UserVisitPK userVisitPK, GetContentForumForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetContentForumCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

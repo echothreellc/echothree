@@ -51,8 +51,8 @@ public class CreateItemInventoryTypeCommand
     }
     
     /** Creates a new instance of CreateItemInventoryTypeCommand */
-    public CreateItemInventoryTypeCommand(UserVisitPK userVisitPK, CreateItemInventoryTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateItemInventoryTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

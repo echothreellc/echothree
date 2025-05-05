@@ -59,8 +59,8 @@ public class GetWorkflowsCommand
     }
     
     /** Creates a new instance of GetWorkflowsCommand */
-    public GetWorkflowsCommand(UserVisitPK userVisitPK, GetWorkflowsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetWorkflowsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     SelectorKind selectorKind;

@@ -58,8 +58,8 @@ public class GetCountryChoicesCommand
     }
     
     /** Creates a new instance of GetCountryChoicesCommand */
-    public GetCountryChoicesCommand(UserVisitPK userVisitPK, GetCountryChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetCountryChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

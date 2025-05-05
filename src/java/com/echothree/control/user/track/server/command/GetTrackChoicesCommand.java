@@ -55,8 +55,8 @@ public class GetTrackChoicesCommand
     }
     
     /** Creates a new instance of GetTrackChoicesCommand */
-    public GetTrackChoicesCommand(UserVisitPK userVisitPK, GetTrackChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetTrackChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

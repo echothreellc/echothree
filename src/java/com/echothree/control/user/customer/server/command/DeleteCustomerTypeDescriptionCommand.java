@@ -57,8 +57,8 @@ public class DeleteCustomerTypeDescriptionCommand
     }
     
     /** Creates a new instance of DeleteCustomerTypeDescriptionCommand */
-    public DeleteCustomerTypeDescriptionCommand(UserVisitPK userVisitPK, DeleteCustomerTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteCustomerTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

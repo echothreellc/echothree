@@ -54,8 +54,8 @@ public class SetDefaultVendorTypeCommand
     }
     
     /** Creates a new instance of SetDefaultVendorTypeCommand */
-    public SetDefaultVendorTypeCommand(UserVisitPK userVisitPK, SetDefaultVendorTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultVendorTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

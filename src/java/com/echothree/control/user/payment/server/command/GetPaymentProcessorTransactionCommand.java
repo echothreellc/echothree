@@ -60,8 +60,8 @@ public class GetPaymentProcessorTransactionCommand
     }
     
     /** Creates a new instance of GetPaymentProcessorTransactionCommand */
-    public GetPaymentProcessorTransactionCommand(UserVisitPK userVisitPK, GetPaymentProcessorTransactionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetPaymentProcessorTransactionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

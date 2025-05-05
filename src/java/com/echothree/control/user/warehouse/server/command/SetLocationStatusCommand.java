@@ -57,8 +57,8 @@ public class SetLocationStatusCommand
     }
     
     /** Creates a new instance of SetLocationStatusCommand */
-    public SetLocationStatusCommand(UserVisitPK userVisitPK, SetLocationStatusForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetLocationStatusCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

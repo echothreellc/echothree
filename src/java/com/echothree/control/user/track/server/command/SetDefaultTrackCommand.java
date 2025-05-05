@@ -55,8 +55,8 @@ public class SetDefaultTrackCommand
     }
     
     /** Creates a new instance of SetDefaultTrackCommand */
-    public SetDefaultTrackCommand(UserVisitPK userVisitPK, SetDefaultTrackForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultTrackCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

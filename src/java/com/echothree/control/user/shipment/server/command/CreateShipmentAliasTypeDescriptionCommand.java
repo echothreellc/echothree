@@ -59,8 +59,8 @@ public class CreateShipmentAliasTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateShipmentAliasTypeDescriptionCommand */
-    public CreateShipmentAliasTypeDescriptionCommand(UserVisitPK userVisitPK, CreateShipmentAliasTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateShipmentAliasTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

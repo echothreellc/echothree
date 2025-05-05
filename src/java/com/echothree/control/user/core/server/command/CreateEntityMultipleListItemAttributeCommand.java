@@ -55,8 +55,8 @@ public class CreateEntityMultipleListItemAttributeCommand
     }
     
     /** Creates a new instance of CreateEntityMultipleListItemAttributeCommand */
-    public CreateEntityMultipleListItemAttributeCommand(UserVisitPK userVisitPK, CreateEntityMultipleListItemAttributeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateEntityMultipleListItemAttributeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

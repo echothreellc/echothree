@@ -44,8 +44,8 @@ public class DeletePartyContactMechanismRelationshipCommand
     }
     
     /** Creates a new instance of DeletePartyContactMechanismRelationshipCommand */
-    public DeletePartyContactMechanismRelationshipCommand(UserVisitPK userVisitPK, DeletePartyContactMechanismRelationshipForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeletePartyContactMechanismRelationshipCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -75,8 +75,8 @@ public class EditFilterAdjustmentPercentCommand
     }
     
     /** Creates a new instance of EditFilterAdjustmentPercentCommand */
-    public EditFilterAdjustmentPercentCommand(UserVisitPK userVisitPK, EditFilterAdjustmentPercentForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditFilterAdjustmentPercentCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

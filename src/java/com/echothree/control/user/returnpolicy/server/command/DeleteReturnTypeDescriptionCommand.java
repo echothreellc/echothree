@@ -58,8 +58,8 @@ public class DeleteReturnTypeDescriptionCommand
     }
     
     /** Creates a new instance of DeleteReturnTypeDescriptionCommand */
-    public DeleteReturnTypeDescriptionCommand(UserVisitPK userVisitPK, DeleteReturnTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteReturnTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

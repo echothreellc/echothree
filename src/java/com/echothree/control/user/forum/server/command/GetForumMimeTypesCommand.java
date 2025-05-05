@@ -42,8 +42,8 @@ public class GetForumMimeTypesCommand
     }
     
     /** Creates a new instance of GetForumMimeTypesCommand */
-    public GetForumMimeTypesCommand(UserVisitPK userVisitPK, GetForumMimeTypesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetForumMimeTypesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

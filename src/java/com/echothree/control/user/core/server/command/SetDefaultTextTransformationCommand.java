@@ -55,8 +55,8 @@ public class SetDefaultTextTransformationCommand
     }
     
     /** Creates a new instance of SetDefaultTextTransformationCommand */
-    public SetDefaultTextTransformationCommand(UserVisitPK userVisitPK, SetDefaultTextTransformationForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultTextTransformationCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

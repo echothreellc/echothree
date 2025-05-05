@@ -78,8 +78,8 @@ public class EditBatchTypeCommand
     }
     
     /** Creates a new instance of EditBatchTypeCommand */
-    public EditBatchTypeCommand(UserVisitPK userVisitPK, EditBatchTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditBatchTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

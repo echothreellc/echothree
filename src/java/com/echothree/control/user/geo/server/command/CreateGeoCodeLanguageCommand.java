@@ -59,8 +59,8 @@ public class CreateGeoCodeLanguageCommand
     }
     
     /** Creates a new instance of CreateGeoCodeLanguageCommand */
-    public CreateGeoCodeLanguageCommand(UserVisitPK userVisitPK, CreateGeoCodeLanguageForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateGeoCodeLanguageCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

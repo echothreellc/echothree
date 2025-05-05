@@ -59,8 +59,8 @@ public class CreateEntityClobAttributeCommand
     }
     
     /** Creates a new instance of CreateEntityClobAttributeCommand */
-    public CreateEntityClobAttributeCommand(UserVisitPK userVisitPK, CreateEntityClobAttributeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateEntityClobAttributeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

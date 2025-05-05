@@ -58,8 +58,8 @@ public class GetOrderTimeTypeDescriptionsCommand
     }
     
     /** Creates a new instance of GetOrderTimeTypeDescriptionsCommand */
-    public GetOrderTimeTypeDescriptionsCommand(UserVisitPK userVisitPK, GetOrderTimeTypeDescriptionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetOrderTimeTypeDescriptionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

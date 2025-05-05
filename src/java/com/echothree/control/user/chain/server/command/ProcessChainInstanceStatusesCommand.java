@@ -41,8 +41,8 @@ public class ProcessChainInstanceStatusesCommand
     }
     
     /** Creates a new instance of ProcessChainInstanceStatusesCommand */
-    public ProcessChainInstanceStatusesCommand(UserVisitPK userVisitPK) {
-        super(userVisitPK, COMMAND_SECURITY_DEFINITION, false);
+    public ProcessChainInstanceStatusesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, false);
     }
 
     @Override

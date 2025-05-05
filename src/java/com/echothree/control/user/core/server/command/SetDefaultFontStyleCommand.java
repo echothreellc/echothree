@@ -55,8 +55,8 @@ public class SetDefaultFontStyleCommand
     }
     
     /** Creates a new instance of SetDefaultFontStyleCommand */
-    public SetDefaultFontStyleCommand(UserVisitPK userVisitPK, SetDefaultFontStyleForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultFontStyleCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -57,8 +57,8 @@ public class CreateRelatedItemTypeCommand
     }
 
     /** Creates a new instance of CreateRelatedItemTypeCommand */
-    public CreateRelatedItemTypeCommand(UserVisitPK userVisitPK, CreateRelatedItemTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateRelatedItemTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
 
     @Override

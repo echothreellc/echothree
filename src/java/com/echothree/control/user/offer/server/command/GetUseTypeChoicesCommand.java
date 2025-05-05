@@ -55,8 +55,8 @@ public class GetUseTypeChoicesCommand
     }
     
     /** Creates a new instance of GetUseTypeChoicesCommand */
-    public GetUseTypeChoicesCommand(UserVisitPK userVisitPK, GetUseTypeChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetUseTypeChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

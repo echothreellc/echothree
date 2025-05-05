@@ -59,8 +59,8 @@ public class GetSelectorsCommand
     }
 
     /** Creates a new instance of GetSelectorsCommand */
-    public GetSelectorsCommand(UserVisitPK userVisitPK, GetSelectorsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetSelectorsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     SelectorType selectorType;

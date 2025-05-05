@@ -57,8 +57,8 @@ public class DeleteContactListDescriptionCommand
     }
     
     /** Creates a new instance of DeleteContactListDescriptionCommand */
-    public DeleteContactListDescriptionCommand(UserVisitPK userVisitPK, DeleteContactListDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteContactListDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

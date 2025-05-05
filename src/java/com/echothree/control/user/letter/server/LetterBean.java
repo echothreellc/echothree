@@ -43,37 +43,37 @@ public class LetterBean
     
     @Override
     public CommandResult createLetterSource(UserVisitPK userVisitPK, CreateLetterSourceForm form) {
-        return new CreateLetterSourceCommand(userVisitPK, form).run();
+        return new CreateLetterSourceCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getLetterSourceChoices(UserVisitPK userVisitPK, GetLetterSourceChoicesForm form) {
-        return new GetLetterSourceChoicesCommand(userVisitPK, form).run();
+        return new GetLetterSourceChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getLetterSource(UserVisitPK userVisitPK, GetLetterSourceForm form) {
-        return new GetLetterSourceCommand(userVisitPK, form).run();
+        return new GetLetterSourceCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getLetterSources(UserVisitPK userVisitPK, GetLetterSourcesForm form) {
-        return new GetLetterSourcesCommand(userVisitPK, form).run();
+        return new GetLetterSourcesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultLetterSource(UserVisitPK userVisitPK, SetDefaultLetterSourceForm form) {
-        return new SetDefaultLetterSourceCommand(userVisitPK, form).run();
+        return new SetDefaultLetterSourceCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editLetterSource(UserVisitPK userVisitPK, EditLetterSourceForm form) {
-        return new EditLetterSourceCommand(userVisitPK, form).run();
+        return new EditLetterSourceCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteLetterSource(UserVisitPK userVisitPK, DeleteLetterSourceForm form) {
-        return new DeleteLetterSourceCommand(userVisitPK, form).run();
+        return new DeleteLetterSourceCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -82,22 +82,22 @@ public class LetterBean
     
     @Override
     public CommandResult createLetterSourceDescription(UserVisitPK userVisitPK, CreateLetterSourceDescriptionForm form) {
-        return new CreateLetterSourceDescriptionCommand(userVisitPK, form).run();
+        return new CreateLetterSourceDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getLetterSourceDescriptions(UserVisitPK userVisitPK, GetLetterSourceDescriptionsForm form) {
-        return new GetLetterSourceDescriptionsCommand(userVisitPK, form).run();
+        return new GetLetterSourceDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editLetterSourceDescription(UserVisitPK userVisitPK, EditLetterSourceDescriptionForm form) {
-        return new EditLetterSourceDescriptionCommand(userVisitPK, form).run();
+        return new EditLetterSourceDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteLetterSourceDescription(UserVisitPK userVisitPK, DeleteLetterSourceDescriptionForm form) {
-        return new DeleteLetterSourceDescriptionCommand(userVisitPK, form).run();
+        return new DeleteLetterSourceDescriptionCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -106,37 +106,37 @@ public class LetterBean
     
     @Override
     public CommandResult createLetter(UserVisitPK userVisitPK, CreateLetterForm form) {
-        return new CreateLetterCommand(userVisitPK, form).run();
+        return new CreateLetterCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getLetterChoices(UserVisitPK userVisitPK, GetLetterChoicesForm form) {
-        return new GetLetterChoicesCommand(userVisitPK, form).run();
+        return new GetLetterChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getLetter(UserVisitPK userVisitPK, GetLetterForm form) {
-        return new GetLetterCommand(userVisitPK, form).run();
+        return new GetLetterCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getLetters(UserVisitPK userVisitPK, GetLettersForm form) {
-        return new GetLettersCommand(userVisitPK, form).run();
+        return new GetLettersCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultLetter(UserVisitPK userVisitPK, SetDefaultLetterForm form) {
-        return new SetDefaultLetterCommand(userVisitPK, form).run();
+        return new SetDefaultLetterCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editLetter(UserVisitPK userVisitPK, EditLetterForm form) {
-        return new EditLetterCommand(userVisitPK, form).run();
+        return new EditLetterCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteLetter(UserVisitPK userVisitPK, DeleteLetterForm form) {
-        return new DeleteLetterCommand(userVisitPK, form).run();
+        return new DeleteLetterCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -145,22 +145,22 @@ public class LetterBean
     
     @Override
     public CommandResult createLetterDescription(UserVisitPK userVisitPK, CreateLetterDescriptionForm form) {
-        return new CreateLetterDescriptionCommand(userVisitPK, form).run();
+        return new CreateLetterDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getLetterDescriptions(UserVisitPK userVisitPK, GetLetterDescriptionsForm form) {
-        return new GetLetterDescriptionsCommand(userVisitPK, form).run();
+        return new GetLetterDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editLetterDescription(UserVisitPK userVisitPK, EditLetterDescriptionForm form) {
-        return new EditLetterDescriptionCommand(userVisitPK, form).run();
+        return new EditLetterDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteLetterDescription(UserVisitPK userVisitPK, DeleteLetterDescriptionForm form) {
-        return new DeleteLetterDescriptionCommand(userVisitPK, form).run();
+        return new DeleteLetterDescriptionCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -169,22 +169,22 @@ public class LetterBean
     
     @Override
     public CommandResult createLetterContactMechanismPurpose(UserVisitPK userVisitPK, CreateLetterContactMechanismPurposeForm form) {
-        return new CreateLetterContactMechanismPurposeCommand(userVisitPK, form).run();
+        return new CreateLetterContactMechanismPurposeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getLetterContactMechanismPurposes(UserVisitPK userVisitPK, GetLetterContactMechanismPurposesForm form) {
-        return new GetLetterContactMechanismPurposesCommand(userVisitPK, form).run();
+        return new GetLetterContactMechanismPurposesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editLetterContactMechanismPurpose(UserVisitPK userVisitPK, EditLetterContactMechanismPurposeForm form) {
-        return new EditLetterContactMechanismPurposeCommand(userVisitPK, form).run();
+        return new EditLetterContactMechanismPurposeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteLetterContactMechanismPurpose(UserVisitPK userVisitPK, DeleteLetterContactMechanismPurposeForm form) {
-        return new DeleteLetterContactMechanismPurposeCommand(userVisitPK, form).run();
+        return new DeleteLetterContactMechanismPurposeCommand().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -193,17 +193,17 @@ public class LetterBean
 
     @Override
     public CommandResult getQueuedLetter(UserVisitPK userVisitPK, GetQueuedLetterForm form) {
-        return new GetQueuedLetterCommand(userVisitPK, form).run();
+        return new GetQueuedLetterCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getQueuedLetters(UserVisitPK userVisitPK, GetQueuedLettersForm form) {
-        return new GetQueuedLettersCommand(userVisitPK, form).run();
+        return new GetQueuedLettersCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteQueuedLetter(UserVisitPK userVisitPK, DeleteQueuedLetterForm form) {
-        return new DeleteQueuedLetterCommand(userVisitPK, form).run();
+        return new DeleteQueuedLetterCommand().run(userVisitPK, form);
     }
 
 }

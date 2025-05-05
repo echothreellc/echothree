@@ -55,8 +55,8 @@ public class SetDefaultContentCatalogCommand
     }
     
     /** Creates a new instance of SetDefaultContentCatalogCommand */
-    public SetDefaultContentCatalogCommand(UserVisitPK userVisitPK, SetDefaultContentCatalogForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultContentCatalogCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

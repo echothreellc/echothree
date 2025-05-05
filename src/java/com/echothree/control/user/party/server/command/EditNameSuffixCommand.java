@@ -54,8 +54,8 @@ public class EditNameSuffixCommand
     }
     
     /** Creates a new instance of EditNameSuffixCommand */
-    public EditNameSuffixCommand(UserVisitPK userVisitPK, EditNameSuffixForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditNameSuffixCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

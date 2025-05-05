@@ -71,8 +71,8 @@ public class EditOrderTimeTypeDescriptionCommand
     }
     
     /** Creates a new instance of EditOrderTimeTypeDescriptionCommand */
-    public EditOrderTimeTypeDescriptionCommand(UserVisitPK userVisitPK, EditOrderTimeTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditOrderTimeTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

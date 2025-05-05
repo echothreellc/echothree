@@ -51,8 +51,8 @@ public class GetTimeZoneCommand
     }
     
     /** Creates a new instance of GetTimeZoneCommand */
-    public GetTimeZoneCommand(UserVisitPK userVisitPK, GetTimeZoneForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetTimeZoneCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

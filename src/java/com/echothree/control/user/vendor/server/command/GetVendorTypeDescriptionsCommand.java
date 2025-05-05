@@ -56,8 +56,8 @@ public class GetVendorTypeDescriptionsCommand
     }
     
     /** Creates a new instance of GetVendorTypeDescriptionsCommand */
-    public GetVendorTypeDescriptionsCommand(UserVisitPK userVisitPK, GetVendorTypeDescriptionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetVendorTypeDescriptionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

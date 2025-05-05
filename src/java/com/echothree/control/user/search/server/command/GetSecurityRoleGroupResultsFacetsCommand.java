@@ -29,8 +29,8 @@ public class GetSecurityRoleGroupResultsFacetsCommand
         extends BaseGetResultsFacetsCommand<GetSecurityRoleGroupResultsFacetsForm, GetSecurityRoleGroupResultsFacetsResult> {
 
     /** Creates a new instance of GetSecurityRoleGroupResultsFacetsCommand */
-    public GetSecurityRoleGroupResultsFacetsCommand(UserVisitPK userVisitPK, GetSecurityRoleGroupResultsFacetsForm form) {
-        super(userVisitPK, form, null);
+    public GetSecurityRoleGroupResultsFacetsCommand() {
+        super(null);
     }
 
     @Override

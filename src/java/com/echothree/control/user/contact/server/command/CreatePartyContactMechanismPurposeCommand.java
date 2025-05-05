@@ -44,8 +44,8 @@ public class CreatePartyContactMechanismPurposeCommand
     }
     
     /** Creates a new instance of CreatePartyContactMechanismPurposeCommand */
-    public CreatePartyContactMechanismPurposeCommand(UserVisitPK userVisitPK, CreatePartyContactMechanismPurposeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreatePartyContactMechanismPurposeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

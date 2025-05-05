@@ -55,8 +55,8 @@ public class DeleteReturnKindCommand
     }
     
     /** Creates a new instance of DeleteReturnKindCommand */
-    public DeleteReturnKindCommand(UserVisitPK userVisitPK, DeleteReturnKindForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteReturnKindCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

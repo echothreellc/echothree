@@ -55,8 +55,8 @@ public class SetDefaultSecurityRoleCommand
     }
     
     /** Creates a new instance of SetDefaultSecurityRoleCommand */
-    public SetDefaultSecurityRoleCommand(UserVisitPK userVisitPK, SetDefaultSecurityRoleForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultSecurityRoleCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

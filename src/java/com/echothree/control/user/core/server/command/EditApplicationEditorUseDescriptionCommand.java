@@ -71,8 +71,8 @@ public class EditApplicationEditorUseDescriptionCommand
     }
     
     /** Creates a new instance of EditApplicationEditorUseDescriptionCommand */
-    public EditApplicationEditorUseDescriptionCommand(UserVisitPK userVisitPK, EditApplicationEditorUseDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditApplicationEditorUseDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

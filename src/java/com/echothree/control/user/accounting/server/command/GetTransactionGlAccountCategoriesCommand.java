@@ -58,8 +58,8 @@ public class GetTransactionGlAccountCategoriesCommand
     }
     
     /** Creates a new instance of GetTransactionGlAccountCategoriesCommand */
-    public GetTransactionGlAccountCategoriesCommand(UserVisitPK userVisitPK, GetTransactionGlAccountCategoriesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetTransactionGlAccountCategoriesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
 
     TransactionType transactionType;

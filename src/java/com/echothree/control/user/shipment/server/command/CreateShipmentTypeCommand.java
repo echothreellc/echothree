@@ -66,8 +66,8 @@ public class CreateShipmentTypeCommand
     }
     
     /** Creates a new instance of CreateShipmentTypeCommand */
-    public CreateShipmentTypeCommand(UserVisitPK userVisitPK, CreateShipmentTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateShipmentTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

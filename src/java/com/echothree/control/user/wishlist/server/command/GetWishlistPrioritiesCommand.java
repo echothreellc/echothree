@@ -47,8 +47,8 @@ public class GetWishlistPrioritiesCommand
     }
     
     /** Creates a new instance of GetWishlistPrioritiesCommand */
-    public GetWishlistPrioritiesCommand(UserVisitPK userVisitPK, GetWishlistPrioritiesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetWishlistPrioritiesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
 
     WishlistType wishlistType;

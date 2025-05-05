@@ -43,8 +43,8 @@ public class CreateTimeZoneDescriptionCommand
     }
     
     /** Creates a new instance of CreateTimeZoneDescriptionCommand */
-    public CreateTimeZoneDescriptionCommand(UserVisitPK userVisitPK, CreateTimeZoneDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateTimeZoneDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

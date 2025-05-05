@@ -44,8 +44,8 @@ public class CreateSkillTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateSkillTypeDescriptionCommand */
-    public CreateSkillTypeDescriptionCommand(UserVisitPK userVisitPK, CreateSkillTypeDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateSkillTypeDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

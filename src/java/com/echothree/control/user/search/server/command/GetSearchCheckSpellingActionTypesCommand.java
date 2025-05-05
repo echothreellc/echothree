@@ -40,8 +40,8 @@ public class GetSearchCheckSpellingActionTypesCommand
     }
 
     /** Creates a new instance of GetSearchCheckSpellingActionTypesCommand */
-    public GetSearchCheckSpellingActionTypesCommand(UserVisitPK userVisitPK, GetSearchCheckSpellingActionTypesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetSearchCheckSpellingActionTypesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

@@ -55,8 +55,8 @@ public class EditForumForumThreadCommand
     }
     
     /** Creates a new instance of EditForumForumThreadCommand */
-    public EditForumForumThreadCommand(UserVisitPK userVisitPK, EditForumForumThreadForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditForumForumThreadCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

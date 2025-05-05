@@ -58,8 +58,8 @@ public class GetGeoCodeTimeZonesCommand
     }
     
     /** Creates a new instance of GetGeoCodeTimeZonesCommand */
-    public GetGeoCodeTimeZonesCommand(UserVisitPK userVisitPK, GetGeoCodeTimeZonesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetGeoCodeTimeZonesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

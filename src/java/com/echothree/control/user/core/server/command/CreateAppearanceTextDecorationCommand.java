@@ -58,8 +58,8 @@ public class CreateAppearanceTextDecorationCommand
     }
     
     /** Creates a new instance of CreateAppearanceTextDecorationCommand */
-    public CreateAppearanceTextDecorationCommand(UserVisitPK userVisitPK, CreateAppearanceTextDecorationForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateAppearanceTextDecorationCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

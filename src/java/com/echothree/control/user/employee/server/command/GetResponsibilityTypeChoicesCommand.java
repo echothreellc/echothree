@@ -43,8 +43,8 @@ public class GetResponsibilityTypeChoicesCommand
     }
     
     /** Creates a new instance of GetResponsibilityTypeChoicesCommand */
-    public GetResponsibilityTypeChoicesCommand(UserVisitPK userVisitPK, GetResponsibilityTypeChoicesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public GetResponsibilityTypeChoicesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

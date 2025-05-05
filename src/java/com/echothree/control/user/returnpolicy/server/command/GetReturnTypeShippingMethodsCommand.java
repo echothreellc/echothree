@@ -59,8 +59,8 @@ public class GetReturnTypeShippingMethodsCommand
     }
     
     /** Creates a new instance of GetReturnTypeShippingMethodsCommand */
-    public GetReturnTypeShippingMethodsCommand(UserVisitPK userVisitPK, GetReturnTypeShippingMethodsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetReturnTypeShippingMethodsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

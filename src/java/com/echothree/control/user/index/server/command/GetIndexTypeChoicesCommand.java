@@ -55,8 +55,8 @@ public class GetIndexTypeChoicesCommand
     }
     
     /** Creates a new instance of GetIndexTypeChoicesCommand */
-    public GetIndexTypeChoicesCommand(UserVisitPK userVisitPK, GetIndexTypeChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetIndexTypeChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

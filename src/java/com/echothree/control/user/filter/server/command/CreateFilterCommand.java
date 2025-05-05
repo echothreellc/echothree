@@ -59,8 +59,8 @@ public class CreateFilterCommand
     }
     
     /** Creates a new instance of CreateFilterCommand */
-    public CreateFilterCommand(UserVisitPK userVisitPK, CreateFilterForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateFilterCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

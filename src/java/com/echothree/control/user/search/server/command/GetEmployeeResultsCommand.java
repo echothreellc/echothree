@@ -55,8 +55,8 @@ public class GetEmployeeResultsCommand
     }
 
     /** Creates a new instance of GetEmployeeResultsCommand */
-    public GetEmployeeResultsCommand(UserVisitPK userVisitPK, GetEmployeeResultsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetEmployeeResultsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

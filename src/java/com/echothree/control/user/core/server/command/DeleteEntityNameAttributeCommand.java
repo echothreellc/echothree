@@ -53,8 +53,8 @@ public class DeleteEntityNameAttributeCommand
     }
     
     /** Creates a new instance of DeleteEntityNameAttributeCommand */
-    public DeleteEntityNameAttributeCommand(UserVisitPK userVisitPK, DeleteEntityNameAttributeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteEntityNameAttributeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

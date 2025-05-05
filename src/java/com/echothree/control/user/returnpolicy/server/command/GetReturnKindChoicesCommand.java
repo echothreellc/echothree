@@ -55,8 +55,8 @@ public class GetReturnKindChoicesCommand
     }
     
     /** Creates a new instance of GetReturnKindChoicesCommand */
-    public GetReturnKindChoicesCommand(UserVisitPK userVisitPK, GetReturnKindChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetReturnKindChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

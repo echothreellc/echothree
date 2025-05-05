@@ -33,7 +33,6 @@ import com.echothree.model.control.user.common.UserConstants;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyRelationship;
 import com.echothree.model.data.party.server.entity.PartyType;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserLoginPasswordString;
 import com.echothree.model.data.user.server.entity.UserLoginStatus;
 import com.echothree.util.common.form.BaseForm;
@@ -51,9 +50,9 @@ public abstract class BaseLoginCommand<F extends BaseForm>
         extends BaseSimpleCommand<F> {
     
     /** Creates a new instance of BaseLoginCommand */
-    protected BaseLoginCommand(final UserVisitPK userVisitPK, final F form, final CommandSecurityDefinition commandSecurityDefinition,
+    protected BaseLoginCommand(final CommandSecurityDefinition commandSecurityDefinition,
             final List<FieldDefinition> formFieldDefinition) {
-        super(userVisitPK, form, commandSecurityDefinition, formFieldDefinition, false);
+        super(commandSecurityDefinition, formFieldDefinition, false);
     }
     
     protected UserLoginPasswordString checkPassword(final String password, final Party party, final String userLoginPasswordTypeName,

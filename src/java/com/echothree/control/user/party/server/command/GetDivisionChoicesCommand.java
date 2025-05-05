@@ -47,8 +47,8 @@ public class GetDivisionChoicesCommand
     }
     
     /** Creates a new instance of GetDivisionChoicesCommand */
-    public GetDivisionChoicesCommand(UserVisitPK userVisitPK, GetDivisionChoicesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public GetDivisionChoicesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

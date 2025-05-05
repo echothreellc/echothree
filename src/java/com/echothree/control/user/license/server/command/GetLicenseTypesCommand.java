@@ -53,8 +53,8 @@ public class GetLicenseTypesCommand
     }
     
     /** Creates a new instance of GetLicenseTypesCommand */
-    public GetLicenseTypesCommand(UserVisitPK userVisitPK, GetLicenseTypesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetLicenseTypesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

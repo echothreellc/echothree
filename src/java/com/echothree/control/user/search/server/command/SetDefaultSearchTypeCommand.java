@@ -55,8 +55,8 @@ public class SetDefaultSearchTypeCommand
     }
     
     /** Creates a new instance of SetDefaultSearchTypeCommand */
-    public SetDefaultSearchTypeCommand(UserVisitPK userVisitPK, SetDefaultSearchTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultSearchTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

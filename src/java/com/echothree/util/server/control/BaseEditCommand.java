@@ -19,6 +19,7 @@ package com.echothree.util.server.control;
 import com.echothree.model.control.core.common.transfer.EntityLockTransfer;
 import com.echothree.model.control.core.server.control.EntityLockControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.exception.EntityLockException;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.EditMode;
@@ -33,6 +34,7 @@ import com.echothree.util.server.persistence.BaseValue;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
 import java.util.List;
+import java.util.concurrent.Future;
 
 public abstract class BaseEditCommand<S extends BaseSpec, E extends BaseEdit>
         extends BaseCommand {
@@ -44,20 +46,34 @@ public abstract class BaseEditCommand<S extends BaseSpec, E extends BaseEdit>
     protected S spec = null;
     protected E edit = null;
     
-    protected BaseEditCommand(UserVisitPK userVisitPK, BaseEditForm<S, E> editForm, CommandSecurityDefinition commandSecurityDefinition,
+    protected BaseEditCommand(CommandSecurityDefinition commandSecurityDefinition,
             List<FieldDefinition> specFieldDefinitions, List<FieldDefinition> editFieldDefinitions) {
-        super(userVisitPK, commandSecurityDefinition);
+        super(commandSecurityDefinition);
         
         this.specFieldDefinitions = specFieldDefinitions;
         this.editFieldDefinitions = editFieldDefinitions;
-        
+    }
+
+    private void  initForRun(BaseEditForm<S, E> editForm) {
         if(editForm != null) {
             editMode = editForm.getEditMode();
             spec = editForm.getSpec();
             edit = editForm.getEdit();
         }
     }
-    
+
+    public Future<CommandResult> runAsync(UserVisitPK userVisitPK, BaseEditForm<S, E> editForm) {
+        initForRun(editForm);
+
+        return super.runAsync(userVisitPK);
+    }
+
+    public final CommandResult run(UserVisitPK userVisitPK, BaseEditForm<S, E> editForm) {
+        initForRun(editForm);
+
+        return super.run(userVisitPK);
+    }
+
     protected void setupValidatorForSpec(Validator validator) {
         // Nothing.
     }

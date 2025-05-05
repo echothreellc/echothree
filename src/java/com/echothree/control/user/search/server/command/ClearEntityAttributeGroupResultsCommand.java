@@ -43,8 +43,8 @@ public class ClearEntityAttributeGroupResultsCommand
     }
 
     /** Creates a new instance of ClearEntityAttributeResultsCommand */
-    public ClearEntityAttributeGroupResultsCommand(UserVisitPK userVisitPK, ClearEntityAttributeGroupResultsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION);
+    public ClearEntityAttributeGroupResultsCommand() {
+        super(COMMAND_SECURITY_DEFINITION);
     }
     
     @Override

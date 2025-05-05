@@ -60,8 +60,8 @@ public class CreatePicklistAliasTypeCommand
     }
     
     /** Creates a new instance of CreatePicklistAliasTypeCommand */
-    public CreatePicklistAliasTypeCommand(UserVisitPK userVisitPK, CreatePicklistAliasTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreatePicklistAliasTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

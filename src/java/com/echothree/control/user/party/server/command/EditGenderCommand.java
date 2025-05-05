@@ -54,8 +54,8 @@ public class EditGenderCommand
     }
     
     /** Creates a new instance of EditGenderCommand */
-    public EditGenderCommand(UserVisitPK userVisitPK, EditGenderForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditGenderCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

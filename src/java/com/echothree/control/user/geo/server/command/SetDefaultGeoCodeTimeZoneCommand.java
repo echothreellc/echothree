@@ -57,8 +57,8 @@ public class SetDefaultGeoCodeTimeZoneCommand
     }
     
     /** Creates a new instance of SetDefaultGeoCodeTimeZoneCommand */
-    public SetDefaultGeoCodeTimeZoneCommand(UserVisitPK userVisitPK, SetDefaultGeoCodeTimeZoneForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultGeoCodeTimeZoneCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

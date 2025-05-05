@@ -57,8 +57,8 @@ public class GetSecurityRolePartyTypesCommand
     }
     
     /** Creates a new instance of GetSecurityRolePartyTypesCommand */
-    public GetSecurityRolePartyTypesCommand(UserVisitPK userVisitPK, GetSecurityRolePartyTypesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetSecurityRolePartyTypesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

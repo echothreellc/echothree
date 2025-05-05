@@ -71,8 +71,8 @@ public class EditItemTaxClassificationCommand
     }
 
     /** Creates a new instance of EditItemTaxClassificationCommand */
-    public EditItemTaxClassificationCommand(UserVisitPK userVisitPK, EditItemTaxClassificationForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditItemTaxClassificationCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

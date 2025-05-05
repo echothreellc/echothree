@@ -68,8 +68,8 @@ public class EditTerminationTypeCommand
     }
     
     /** Creates a new instance of EditTerminationTypeCommand */
-    public EditTerminationTypeCommand(UserVisitPK userVisitPK, EditTerminationTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditTerminationTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

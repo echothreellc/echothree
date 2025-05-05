@@ -57,8 +57,8 @@ public class GetBaseEncryptionKeyStatusChoicesCommand
     }
     
     /** Creates a new instance of GetBaseEncryptionKeyStatusChoicesCommand */
-    public GetBaseEncryptionKeyStatusChoicesCommand(UserVisitPK userVisitPK, GetBaseEncryptionKeyStatusChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetBaseEncryptionKeyStatusChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

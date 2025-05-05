@@ -53,8 +53,8 @@ public class GetOffersCommand
     }
     
     /** Creates a new instance of GetOffersCommand */
-    public GetOffersCommand(UserVisitPK userVisitPK, GetOffersForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetOffersCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

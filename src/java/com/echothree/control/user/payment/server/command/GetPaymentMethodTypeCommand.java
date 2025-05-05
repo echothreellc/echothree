@@ -47,8 +47,8 @@ public class GetPaymentMethodTypeCommand
     }
     
     /** Creates a new instance of GetPaymentMethodTypeCommand */
-    public GetPaymentMethodTypeCommand(UserVisitPK userVisitPK, GetPaymentMethodTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetPaymentMethodTypeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

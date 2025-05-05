@@ -57,8 +57,8 @@ public class CreateSequenceEncoderTypeCommand
     }
     
     /** Creates a new instance of CreateSequenceEncoderTypeCommand */
-    public CreateSequenceEncoderTypeCommand(UserVisitPK userVisitPK, CreateSequenceEncoderTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateSequenceEncoderTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

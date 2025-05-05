@@ -54,8 +54,8 @@ public class SetDefaultAllocationPriorityCommand
     }
     
     /** Creates a new instance of SetDefaultAllocationPriorityCommand */
-    public SetDefaultAllocationPriorityCommand(UserVisitPK userVisitPK, SetDefaultAllocationPriorityForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultAllocationPriorityCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

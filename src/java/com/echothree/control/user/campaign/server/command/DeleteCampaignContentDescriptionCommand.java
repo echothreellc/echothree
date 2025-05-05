@@ -57,8 +57,8 @@ public class DeleteCampaignContentDescriptionCommand
     }
     
     /** Creates a new instance of DeleteCampaignContentDescriptionCommand */
-    public DeleteCampaignContentDescriptionCommand(UserVisitPK userVisitPK, DeleteCampaignContentDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteCampaignContentDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
