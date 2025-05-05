@@ -29,7 +29,7 @@ import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.ThreadUtils;
 import javax.ejb.Stateless;
-import javax.inject.Inject;
+import javax.enterprise.inject.spi.CDI;
 
 @Stateless
 public class AuthenticationBean
@@ -125,84 +125,54 @@ public class AuthenticationBean
     //   Logins
     // -------------------------------------------------------------------------
 
-    @Inject
-    GetCustomerLoginDefaultsCommand getCustomerLoginDefaultsCommand;
-
     @Override
     public CommandResult getCustomerLoginDefaults(UserVisitPK userVisitPK, GetCustomerLoginDefaultsForm form) {
-        return getCustomerLoginDefaultsCommand.run(userVisitPK, form);
+        return CDI.current().select(GetCustomerLoginDefaultsCommand.class).get().run(userVisitPK, form);
     }
-
-    @Inject
-    CustomerLoginCommand customerLoginCommand;
 
     @Override
     public CommandResult customerLogin(UserVisitPK userVisitPK, CustomerLoginForm form) {
-        return customerLoginCommand.run(userVisitPK, form);
+        return CDI.current().select(CustomerLoginCommand.class).get().run(userVisitPK, form);
     }
-
-    @Inject
-    GetEmployeeLoginDefaultsCommand getEmployeeLoginDefaultsCommand;
 
     @Override
     public CommandResult getEmployeeLoginDefaults(UserVisitPK userVisitPK, GetEmployeeLoginDefaultsForm form) {
-        return getEmployeeLoginDefaultsCommand.run(userVisitPK, form);
+        return CDI.current().select(GetEmployeeLoginDefaultsCommand.class).get().run(userVisitPK, form);
     }
-
-    @Inject
-    EmployeeLoginCommand employeeLoginCommand;
 
     @Override
     public CommandResult employeeLogin(UserVisitPK userVisitPK, EmployeeLoginForm form) {
-        return employeeLoginCommand.run(userVisitPK, form);
+        return CDI.current().select(EmployeeLoginCommand.class).get().run(userVisitPK, form);
     }
-
-    @Inject
-    GetVendorLoginDefaultsCommand getVendorLoginDefaultsCommand;
 
     @Override
     public CommandResult getVendorLoginDefaults(UserVisitPK userVisitPK, GetVendorLoginDefaultsForm form) {
-        return getVendorLoginDefaultsCommand.run(userVisitPK, form);
+        return CDI.current().select(GetVendorLoginDefaultsCommand.class).get().run(userVisitPK, form);
     }
-
-    @Inject
-    VendorLoginCommand vendorLoginCommand;
 
     @Override
     public CommandResult vendorLogin(UserVisitPK userVisitPK, VendorLoginForm form) {
-        return vendorLoginCommand.run(userVisitPK, form);
+        return CDI.current().select(VendorLoginCommand.class).get().run(userVisitPK, form);
     }
-
-    @Inject
-    SetPasswordCommand setPasswordCommand;
 
     @Override
     public CommandResult setPassword(UserVisitPK userVisitPK, SetPasswordForm form) {
-        return setPasswordCommand.run(userVisitPK, form);
+        return CDI.current().select(SetPasswordCommand.class).get().run(userVisitPK, form);
     }
-
-    @Inject
-    RecoverPasswordCommand recoverPasswordCommand;
 
     @Override
     public CommandResult recoverPassword(UserVisitPK userVisitPK, RecoverPasswordForm form) {
-        return recoverPasswordCommand.run(userVisitPK, form);
+        return CDI.current().select(RecoverPasswordCommand.class).get().run(userVisitPK, form);
     }
 
-    @Inject
-    IdleCommand idleCommand;
-    
     @Override
     public CommandResult idle(UserVisitPK userVisitPK) {
-        return idleCommand.run(userVisitPK);
+        return CDI.current().select(IdleCommand.class).get().run(userVisitPK);
     }
-
-    @Inject
-    LogoutCommand logoutCommand;
 
     @Override
     public CommandResult logout(UserVisitPK userVisitPK) {
-        return logoutCommand.run(userVisitPK);
+        return CDI.current().select(LogoutCommand.class).get().run(userVisitPK);
     }
     
 }
