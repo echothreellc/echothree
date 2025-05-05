@@ -16,11 +16,13 @@
 
 package com.echothree.util.server.control;
 
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.SecurityResult;
+import com.echothree.util.common.form.BaseForm;
 
-public interface GraphQlSecurityCommand {
+public interface GraphQlSecurityCommand<F extends BaseForm> {
     
-    SecurityResult security();
+    SecurityResult security(UserVisitPK userVisitPK, F form);
     
     boolean hasSecurityMessages();
     
