@@ -1,5 +1,17 @@
 # Changelog
 
+## 2025-05-11-01
+
+* Move Party Entity Type Functions to PartyEntityTypeControl [1551](https://gitlab.echothree.com/echothree/echothree/-/issues/1551)
+* Move Party Application Editor Use Functions to PartyApplicationEditorUseControl [1552](https://gitlab.echothree.com/echothree/echothree/-/issues/1552)
+* Move Party Entity Types to Party Component [1553](https://gitlab.echothree.com/echothree/echothree/-/issues/1553)
+* Move Party Application Editor Uses to Party Component [1554](https://gitlab.echothree.com/echothree/echothree/-/issues/1554)
+* Replace Charsets.UTF_8 With StandardCharsets.UTF_8 [1555](https://gitlab.echothree.com/echothree/echothree/-/issues/1555)
+* jOOQ 3.20.4 Upgrade [1556](https://gitlab.echothree.com/echothree/echothree/-/issues/1556)
+* Parameterless Constructors for User Commands [1557](https://gitlab.echothree.com/echothree/echothree/-/issues/1557)
+* Error Prone 2.38.0 Upgrade [1558](https://gitlab.echothree.com/echothree/echothree/-/issues/1558)
+* Permission Check Failing for GraphQL Fields [1559](https://gitlab.echothree.com/echothree/echothree/-/issues/1559)
+
 ## 2025-04-27-01
 
 * Move Appearance Functions to AppearanceControl [1534](https://gitlab.echothree.com/echothree/echothree/-/issues/1534)
