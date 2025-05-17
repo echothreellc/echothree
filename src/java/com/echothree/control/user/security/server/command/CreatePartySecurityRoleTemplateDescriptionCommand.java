@@ -58,8 +58,8 @@ public class CreatePartySecurityRoleTemplateDescriptionCommand
     }
     
     /** Creates a new instance of CreatePartySecurityRoleTemplateDescriptionCommand */
-    public CreatePartySecurityRoleTemplateDescriptionCommand(UserVisitPK userVisitPK, CreatePartySecurityRoleTemplateDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreatePartySecurityRoleTemplateDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

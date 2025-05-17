@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.workeffort.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
@@ -33,7 +33,7 @@ import com.echothree.util.server.persistence.Session;
 public class WorkEffortTypeTransferCache
         extends BaseWorkEffortTransferCache<WorkEffortType, WorkEffortTypeTransfer> {
     
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
     WorkRequirementControl workRequirementControl = Session.getModelController(WorkRequirementControl.class);
@@ -60,7 +60,7 @@ public class WorkEffortTypeTransferCache
         if(workEffortTypeTransfer == null) {
             var workEffortTypeDetail = workEffortType.getLastDetail();
             var workEffortTypeName = workEffortTypeDetail.getWorkEffortTypeName();
-            var entityTypeTransfer = coreControl.getEntityTypeTransfer(userVisit, workEffortTypeDetail.getEntityType());
+            var entityTypeTransfer = entityTypeControl.getEntityTypeTransfer(userVisit, workEffortTypeDetail.getEntityType());
             var workEffortSequence = workEffortTypeDetail.getWorkEffortSequence();
             var workEffortSequenceTransfer = workEffortSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, workEffortSequence);
             var unformattedScheduledTime = workEffortTypeDetail.getScheduledTime();

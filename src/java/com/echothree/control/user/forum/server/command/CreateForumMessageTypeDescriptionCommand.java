@@ -44,8 +44,8 @@ public class CreateForumMessageTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateForumMessageTypeDescriptionCommand */
-    public CreateForumMessageTypeDescriptionCommand(UserVisitPK userVisitPK, CreateForumMessageTypeDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateForumMessageTypeDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

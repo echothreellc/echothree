@@ -42,8 +42,8 @@ public class GetChainInstanceCommand
     }
     
     /** Creates a new instance of GetChainInstanceCommand */
-    public GetChainInstanceCommand(UserVisitPK userVisitPK, GetChainInstanceForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetChainInstanceCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

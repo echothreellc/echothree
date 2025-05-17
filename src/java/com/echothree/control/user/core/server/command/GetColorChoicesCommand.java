@@ -18,17 +18,19 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetColorChoicesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.ColorControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -53,18 +55,18 @@ public class GetColorChoicesCommand
     }
     
     /** Creates a new instance of GetColorChoicesCommand */
-    public GetColorChoicesCommand(UserVisitPK userVisitPK, GetColorChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetColorChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var colorControl = Session.getModelController(ColorControl.class);
         var result = CoreResultFactory.getGetColorChoicesResult();
         var defaultColorChoice = form.getDefaultColorChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
-        result.setColorChoices(coreControl.getColorChoices(defaultColorChoice, getPreferredLanguage(), allowNullChoice));
+        result.setColorChoices(colorControl.getColorChoices(defaultColorChoice, getPreferredLanguage(), allowNullChoice));
         
         return result;
     }

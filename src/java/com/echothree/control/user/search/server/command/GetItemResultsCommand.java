@@ -41,8 +41,8 @@ public class GetItemResultsCommand
     }
 
     /** Creates a new instance of GetItemResultsCommand */
-    public GetItemResultsCommand(UserVisitPK userVisitPK, GetItemResultsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetItemResultsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

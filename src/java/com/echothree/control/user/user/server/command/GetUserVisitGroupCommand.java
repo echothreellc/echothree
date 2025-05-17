@@ -58,8 +58,8 @@ public class GetUserVisitGroupCommand
     }
 
     /** Creates a new instance of GetUserVisitGroupCommand */
-    public GetUserVisitGroupCommand(UserVisitPK userVisitPK, GetUserVisitGroupForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetUserVisitGroupCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

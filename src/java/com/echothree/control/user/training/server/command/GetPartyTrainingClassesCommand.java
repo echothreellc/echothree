@@ -58,8 +58,8 @@ public class GetPartyTrainingClassesCommand
     }
     
     /** Creates a new instance of GetPartyTrainingClassesCommand */
-    public GetPartyTrainingClassesCommand(UserVisitPK userVisitPK, GetPartyTrainingClassesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetPartyTrainingClassesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

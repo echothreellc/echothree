@@ -18,16 +18,15 @@ package com.echothree.control.user.user.server.command;
 
 import com.echothree.control.user.user.common.form.GetUserSessionForm;
 import com.echothree.control.user.user.common.result.UserResultFactory;
-import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.employee.common.workflow.EmployeeAvailabilityConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class GetUserSessionCommand
@@ -37,13 +36,12 @@ public class GetUserSessionCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                ));
+        FORM_FIELD_DEFINITIONS = List.of();
     }
 
     /** Creates a new instance of GetUserSessionCommand */
-    public GetUserSessionCommand(UserVisitPK userVisitPK, GetUserSessionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetUserSessionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
@@ -53,8 +51,9 @@ public class GetUserSessionCommand
         var userSession = getUserSession();
         
         if(userSession != null) {
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var workflowControl = Session.getModelController(WorkflowControl.class);
-            var entityInstance = getCoreControl().getEntityInstanceByBasePK(getPartyPK());
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(getPartyPK());
             var party = userSession.getParty();
             var partyTypeName = party == null ? null : party.getLastDetail().getPartyType().getPartyTypeName();
             var userVisit = getUserVisit();

@@ -56,8 +56,8 @@ public class DeleteEntityAttributeGroupDescriptionCommand
     }
     
     /** Creates a new instance of DeleteEntityAttributeGroupDescriptionCommand */
-    public DeleteEntityAttributeGroupDescriptionCommand(UserVisitPK userVisitPK, DeleteEntityAttributeGroupDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteEntityAttributeGroupDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

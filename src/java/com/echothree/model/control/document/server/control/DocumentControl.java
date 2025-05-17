@@ -18,6 +18,7 @@ package com.echothree.model.control.document.server.control;
 
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.document.common.choice.DocumentChoicesBean;
 import com.echothree.model.control.document.common.choice.DocumentTypeChoicesBean;
 import com.echothree.model.control.document.common.choice.DocumentTypeUsageTypeChoicesBean;
@@ -1486,8 +1487,10 @@ public class DocumentControl
     }
 
     public void removeDocument(Document document) {
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+
         document.remove();
-        getCoreControl().removeEntityInstanceByBasePK(document.getPrimaryKey());
+        entityInstanceControl.removeEntityInstanceByBasePK(document.getPrimaryKey());
     }
     
     // --------------------------------------------------------------------------------

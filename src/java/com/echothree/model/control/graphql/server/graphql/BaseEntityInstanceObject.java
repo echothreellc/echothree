@@ -23,6 +23,8 @@ import com.echothree.control.user.core.server.command.GetEntityAttributeGroupCom
 import com.echothree.control.user.tag.common.form.TagFormFactory;
 import com.echothree.control.user.tag.server.command.GetTagScopeCommand;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityAliasControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.graphql.CoreSecurityUtils;
 import com.echothree.model.control.core.server.graphql.EntityAliasTypeObject;
 import com.echothree.model.control.core.server.graphql.EntityAttributeGroupObject;
@@ -79,9 +81,9 @@ public abstract class BaseEntityInstanceObject
     
     protected EntityInstance getEntityInstanceByBasePK() {
         if(entityInstance == null) {
-            var coreControl = Session.getModelController(CoreControl.class);
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
-            entityInstance = coreControl.getEntityInstanceByBasePK(basePrimaryKey);
+            entityInstance = entityInstanceControl.getEntityInstanceByBasePK(basePrimaryKey);
         }
         
         return entityInstance;
@@ -92,9 +94,9 @@ public abstract class BaseEntityInstanceObject
         WorkflowEntityStatusObject result = null;
 
         if(WorkflowSecurityUtils.getHasWorkflowEntityStatusesAccess(env)) {
-            var coreControl = Session.getModelController(CoreControl.class);
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var workflowControl = Session.getModelController(WorkflowControl.class);
-            var entityInstance = coreControl.getEntityInstanceByBasePK(basePrimaryKey);
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(basePrimaryKey);
             var workflow = WorkflowLogic.getInstance().getWorkflowByName(null, workflowName);
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstance(workflow, entityInstance);
 
@@ -109,9 +111,9 @@ public abstract class BaseEntityInstanceObject
     @GraphQLNonNull
     @GraphQLID
     public String getId() {
-        var coreControl = Session.getModelController(CoreControl.class);
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
-        entityInstance = coreControl.ensureUuidForEntityInstance(getEntityInstanceByBasePK(), false);
+        entityInstance = entityInstanceControl.ensureUuidForEntityInstance(getEntityInstanceByBasePK(), false);
 
         return entityInstance.getUuid();
     }
@@ -129,11 +131,11 @@ public abstract class BaseEntityInstanceObject
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<EntityAliasTypeObject> getEntityAliasTypes(final DataFetchingEnvironment env) {
         if(CoreSecurityUtils.getHasEntityAliasTypesAccess(env)) {
-            var coreControl = Session.getModelController(CoreControl.class);
-            var totalCount = coreControl.countEntityAliasTypesByEntityType(getEntityInstanceByBasePK().getEntityType());
+            var entityAliasControl = Session.getModelController(EntityAliasControl.class);
+            var totalCount = entityAliasControl.countEntityAliasTypesByEntityType(getEntityInstanceByBasePK().getEntityType());
 
             try(var objectLimiter = new ObjectLimiter(env, EntityAliasTypeConstants.COMPONENT_VENDOR_NAME, EntityAliasTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var entities = coreControl.getEntityAliasTypesByEntityType(getEntityInstanceByBasePK().getEntityType());
+                var entities = entityAliasControl.getEntityAliasTypesByEntityType(getEntityInstanceByBasePK().getEntityType());
                 var entityAliasTypes = new ArrayList<EntityAliasTypeObject>(entities.size());
 
                 for(var entity : entities) {
@@ -167,7 +169,7 @@ public abstract class BaseEntityInstanceObject
 
         commandForm.setUuid(id);
 
-        var entityAliasType = new GetEntityAliasTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
+        var entityAliasType = new GetEntityAliasTypeCommand().getEntityForGraphQl(getUserVisitPK(env), commandForm);
         if(entityInstance != null && entityAliasType != null) {
             return new EntityAliasTypeObject(entityAliasType, entityInstance);
         } else {
@@ -214,7 +216,7 @@ public abstract class BaseEntityInstanceObject
         commandForm.setEntityAttributeGroupName(entityAttributeGroupName);
         commandForm.setUuid(id);
 
-        entityAttributeGroup = new GetEntityAttributeGroupCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
+        entityAttributeGroup = new GetEntityAttributeGroupCommand().getEntityForGraphQl(getUserVisitPK(env), commandForm);
 
         if(entityInstance != null && entityAttributeGroup != null) {
             return new EntityAttributeGroupObject(entityAttributeGroup, entityInstance);
@@ -241,7 +243,7 @@ public abstract class BaseEntityInstanceObject
 
         commandForm.setUuid(id);
 
-        var entityAttribute = new GetEntityAttributeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
+        var entityAttribute = new GetEntityAttributeCommand().getEntityForGraphQl(getUserVisitPK(env), commandForm);
         if(entityInstance != null && entityAttribute != null) {
             return new EntityAttributeObject(entityAttribute, entityInstance);
         } else {
@@ -286,7 +288,7 @@ public abstract class BaseEntityInstanceObject
         commandForm.setTagScopeName(tagScopeName);
         commandForm.setUuid(id);
 
-        var tagScope = new GetTagScopeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
+        var tagScope = new GetTagScopeCommand().getEntityForGraphQl(getUserVisitPK(env), commandForm);
         if(entityInstance != null && tagScope != null) {
             return new TagScopeObject(tagScope, entityInstance);
         } else {

@@ -70,8 +70,8 @@ public class EditDocumentTypeUsageCommand
     }
     
     /** Creates a new instance of EditDocumentTypeUsageCommand */
-    public EditDocumentTypeUsageCommand(UserVisitPK userVisitPK, EditDocumentTypeUsageForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditDocumentTypeUsageCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

@@ -43,8 +43,8 @@ public class DeleteWorkEffortScopeDescriptionCommand
     }
     
     /** Creates a new instance of DeleteWorkEffortScopeDescriptionCommand */
-    public DeleteWorkEffortScopeDescriptionCommand(UserVisitPK userVisitPK, DeleteWorkEffortScopeDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteWorkEffortScopeDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

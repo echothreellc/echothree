@@ -20,6 +20,7 @@ import com.echothree.control.user.printer.common.form.CreatePrinterGroupJobForm;
 import com.echothree.control.user.printer.common.result.CreatePrinterGroupJobResult;
 import com.echothree.control.user.printer.common.result.PrinterResultFactory;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.printer.server.logic.PrinterGroupJobLogic;
@@ -28,11 +29,11 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.printer.server.entity.PrinterGroup;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -67,8 +68,8 @@ public class CreatePrinterGroupJobCommand
     }
     
     /** Creates a new instance of CreatePrinterGroupJobCommand */
-    public CreatePrinterGroupJobCommand(UserVisitPK userVisitPK, CreatePrinterGroupJobForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreatePrinterGroupJobCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
 
     private void createPrinterGroupJob(final PrinterGroup printerGroup, final MimeType mimeType, final ByteArray blob, final String clob,
@@ -94,9 +95,9 @@ public class CreatePrinterGroupJobCommand
         var printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
 
         if(printerGroup != null) {
-            var coreControl = getCoreControl();
+            var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
             var mimeTypeName = form.getMimeTypeName();
-            var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+            var mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
 
             if(mimeType != null) {
                 var entityAttributeType = mimeType.getLastDetail().getEntityAttributeType();

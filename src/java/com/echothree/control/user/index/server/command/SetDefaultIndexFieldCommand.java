@@ -55,8 +55,8 @@ public class SetDefaultIndexFieldCommand
     }
     
     /** Creates a new instance of SetDefaultIndexFieldCommand */
-    public SetDefaultIndexFieldCommand(UserVisitPK userVisitPK, SetDefaultIndexFieldForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultIndexFieldCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

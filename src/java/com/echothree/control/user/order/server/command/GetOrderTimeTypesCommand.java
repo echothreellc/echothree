@@ -61,8 +61,8 @@ public class GetOrderTimeTypesCommand
     }
     
     /** Creates a new instance of GetOrderTimeTypesCommand */
-    public GetOrderTimeTypesCommand(UserVisitPK userVisitPK, GetOrderTimeTypesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetOrderTimeTypesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     OrderType orderType;

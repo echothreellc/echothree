@@ -48,8 +48,8 @@ public class GetContactMechanismPurposeChoicesCommand
     }
     
     /** Creates a new instance of GetContactMechanismPurposeChoicesCommand */
-    public GetContactMechanismPurposeChoicesCommand(UserVisitPK userVisitPK, GetContactMechanismPurposeChoicesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public GetContactMechanismPurposeChoicesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

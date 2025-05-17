@@ -17,6 +17,7 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.CreateProfileForm;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.icon.common.IconConstants;
 import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -78,8 +79,8 @@ public class CreateProfileCommand
     }
     
     /** Creates a new instance of CreateProfileCommand */
-    public CreateProfileCommand(UserVisitPK userVisitPK, CreateProfileForm form) {
-        super(userVisitPK, form, null, null, false);
+    public CreateProfileCommand() {
+        super(null, null, false);
     }
     
     @Override
@@ -136,11 +137,11 @@ public class CreateProfileCommand
                                 var birthdayFormat = birthdayFormatName == null? null: partyControl.getBirthdayFormatByName(birthdayFormatName);
 
                                 if(birthdayFormat != null) {
-                                    var coreControl = getCoreControl();
-                                    var bioMimeType = bioMimeTypeName == null? null: coreControl.getMimeTypeByName(bioMimeTypeName);
+                                    var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
+                                    var bioMimeType = bioMimeTypeName == null? null: mimeTypeControl.getMimeTypeByName(bioMimeTypeName);
 
                                     if(bioMimeTypeName == null || bioMimeType != null) {
-                                        var signatureMimeType = signatureMimeTypeName == null? null: coreControl.getMimeTypeByName(signatureMimeTypeName);
+                                        var signatureMimeType = signatureMimeTypeName == null? null: mimeTypeControl.getMimeTypeByName(signatureMimeTypeName);
 
                                         if(signatureMimeTypeName == null || signatureMimeType != null) {
                                             var pronunciation = form.getPronunciation();

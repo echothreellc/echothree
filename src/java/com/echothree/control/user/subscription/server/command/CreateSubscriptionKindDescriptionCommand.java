@@ -58,8 +58,8 @@ public class CreateSubscriptionKindDescriptionCommand
     }
     
     /** Creates a new instance of CreateSubscriptionKindDescriptionCommand */
-    public CreateSubscriptionKindDescriptionCommand(UserVisitPK userVisitPK, CreateSubscriptionKindDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateSubscriptionKindDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

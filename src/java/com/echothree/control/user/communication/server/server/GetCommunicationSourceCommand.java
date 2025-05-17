@@ -43,8 +43,8 @@ public class GetCommunicationSourceCommand
     }
     
     /** Creates a new instance of GetCommunicationSourceCommand */
-    public GetCommunicationSourceCommand(UserVisitPK userVisitPK, GetCommunicationSourceForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetCommunicationSourceCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

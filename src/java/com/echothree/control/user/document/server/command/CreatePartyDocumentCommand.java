@@ -20,6 +20,7 @@ import com.echothree.control.user.document.common.form.CreatePartyDocumentForm;
 import com.echothree.control.user.document.common.result.CreatePartyDocumentResult;
 import com.echothree.control.user.document.common.result.DocumentResultFactory;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.document.server.logic.DocumentLogic;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -30,11 +31,11 @@ import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.document.server.entity.DocumentType;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -70,8 +71,8 @@ public class CreatePartyDocumentCommand
     }
     
     /** Creates a new instance of CreatePartyDocumentCommand */
-    public CreatePartyDocumentCommand(UserVisitPK userVisitPK, CreatePartyDocumentForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreatePartyDocumentCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
 
     private void createPartyDocument(Party party, DocumentType documentType, MimeType mimeType, ByteArray blob, String clob, CreatePartyDocumentResult result) {
@@ -137,13 +138,13 @@ public class CreatePartyDocumentCommand
                     }
 
                     if(!hasExecutionErrors()) {
-                        var coreControl = getCoreControl();
+                        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
                         var mimeTypeName = form.getMimeTypeName();
-                        var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+                        var mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
 
                         if(mimeType != null) {
                             var mimeTypeUsageType = documentType.getLastDetail().getMimeTypeUsageType();
-                            var mimeTypeUsage = mimeTypeUsageType == null ? null : coreControl.getMimeTypeUsage(mimeType, mimeTypeUsageType);
+                            var mimeTypeUsage = mimeTypeUsageType == null ? null : mimeTypeControl.getMimeTypeUsage(mimeType, mimeTypeUsageType);
 
                             if(mimeTypeUsageType == null || mimeTypeUsage != null) {
                                 var entityAttributeType = mimeType.getLastDetail().getEntityAttributeType();

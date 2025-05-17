@@ -22,6 +22,7 @@ import com.echothree.control.user.core.common.form.EditEntityAliasTypeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditEntityAliasTypeResult;
 import com.echothree.control.user.core.common.spec.EntityAliasTypeUniversalSpec;
+import com.echothree.model.control.core.server.control.EntityAliasControl;
 import com.echothree.model.control.core.server.logic.EntityAliasTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -35,6 +36,7 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.List;
 
 public class EditEntityAliasTypeCommand
@@ -70,8 +72,8 @@ public class EditEntityAliasTypeCommand
     }
     
     /** Creates a new instance of EditEntityAliasTypeCommand */
-    public EditEntityAliasTypeCommand(UserVisitPK userVisitPK, EditEntityAliasTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditEntityAliasTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override
@@ -101,15 +103,15 @@ public class EditEntityAliasTypeCommand
 
     @Override
     public void fillInResult(EditEntityAliasTypeResult result, EntityAliasType entityAliasType) {
-        var coreControl = getCoreControl();
+        var entityAliasControl = Session.getModelController(EntityAliasControl.class);
 
-        result.setEntityAliasType(coreControl.getEntityAliasTypeTransfer(getUserVisit(), entityAliasType, null));
+        result.setEntityAliasType(entityAliasControl.getEntityAliasTypeTransfer(getUserVisit(), entityAliasType, null));
     }
 
     @Override
     public void doLock(EntityAliasTypeEdit edit, EntityAliasType entityAliasType) {
-        var coreControl = getCoreControl();
-        var entityAliasTypeDescription = coreControl.getEntityAliasTypeDescription(entityAliasType, getPreferredLanguage());
+        var entityAliasControl = Session.getModelController(EntityAliasControl.class);
+        var entityAliasTypeDescription = entityAliasControl.getEntityAliasTypeDescription(entityAliasType, getPreferredLanguage());
         var entityAliasTypeDetail = entityAliasType.getLastDetail();
 
         edit.setEntityAliasTypeName(entityAliasTypeDetail.getEntityAliasTypeName());
@@ -124,9 +126,9 @@ public class EditEntityAliasTypeCommand
 
     @Override
     public void canUpdate(EntityAliasType entityAliasType) {
-        var coreControl = getCoreControl();
+        var entityAliasControl = Session.getModelController(EntityAliasControl.class);
         var entityAliasTypeName = edit.getEntityAliasTypeName();
-        var duplicateEntityAliasType = coreControl.getEntityAliasTypeByName(entityAliasType.getLastDetail().getEntityType(),
+        var duplicateEntityAliasType = entityAliasControl.getEntityAliasTypeByName(entityAliasType.getLastDetail().getEntityType(),
                 entityAliasTypeName);
 
         if(duplicateEntityAliasType != null && !entityAliasType.equals(duplicateEntityAliasType)) {
@@ -136,10 +138,10 @@ public class EditEntityAliasTypeCommand
 
     @Override
     public void doUpdate(EntityAliasType entityAliasType) {
-        var coreControl = getCoreControl();
+        var entityAliasControl = Session.getModelController(EntityAliasControl.class);
         var partyPK = getPartyPK();
-        var entityAliasTypeDetailValue = coreControl.getEntityAliasTypeDetailValueForUpdate(entityAliasType);
-        var entityAliasTypeDescription = coreControl.getEntityAliasTypeDescriptionForUpdate(entityAliasType, getPreferredLanguage());
+        var entityAliasTypeDetailValue = entityAliasControl.getEntityAliasTypeDetailValueForUpdate(entityAliasType);
+        var entityAliasTypeDescription = entityAliasControl.getEntityAliasTypeDescriptionForUpdate(entityAliasType, getPreferredLanguage());
         var description = edit.getDescription();
 
         entityAliasTypeDetailValue.setEntityAliasTypeName(edit.getEntityAliasTypeName());
@@ -150,15 +152,15 @@ public class EditEntityAliasTypeCommand
         EntityAliasTypeLogic.getInstance().updateEntityAliasTypeFromValue(session, entityAliasTypeDetailValue, partyPK);
 
         if(entityAliasTypeDescription == null && description != null) {
-            coreControl.createEntityAliasTypeDescription(entityAliasType, getPreferredLanguage(), description, partyPK);
+            entityAliasControl.createEntityAliasTypeDescription(entityAliasType, getPreferredLanguage(), description, partyPK);
         } else if(entityAliasTypeDescription != null) {
             if(description == null) {
-                coreControl.deleteEntityAliasTypeDescription(entityAliasTypeDescription, partyPK);
+                entityAliasControl.deleteEntityAliasTypeDescription(entityAliasTypeDescription, partyPK);
             } else {
-                var entityAliasTypeDescriptionValue = coreControl.getEntityAliasTypeDescriptionValue(entityAliasTypeDescription);
+                var entityAliasTypeDescriptionValue = entityAliasControl.getEntityAliasTypeDescriptionValue(entityAliasTypeDescription);
 
                 entityAliasTypeDescriptionValue.setDescription(description);
-                coreControl.updateEntityAliasTypeDescriptionFromValue(entityAliasTypeDescriptionValue, partyPK);
+                entityAliasControl.updateEntityAliasTypeDescriptionFromValue(entityAliasTypeDescriptionValue, partyPK);
             }
         }
     }

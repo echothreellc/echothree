@@ -55,8 +55,8 @@ public class DeleteContentCollectionCommand
     }
     
     /** Creates a new instance of DeleteContentCollectionCommand */
-    public DeleteContentCollectionCommand(UserVisitPK userVisitPK, DeleteContentCollectionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteContentCollectionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

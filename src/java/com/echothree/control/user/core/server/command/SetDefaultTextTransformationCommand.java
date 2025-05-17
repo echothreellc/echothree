@@ -17,6 +17,7 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.SetDefaultTextTransformationForm;
+import com.echothree.model.control.core.server.control.TextControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -29,6 +30,7 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -53,19 +55,19 @@ public class SetDefaultTextTransformationCommand
     }
     
     /** Creates a new instance of SetDefaultTextTransformationCommand */
-    public SetDefaultTextTransformationCommand(UserVisitPK userVisitPK, SetDefaultTextTransformationForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultTextTransformationCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var textControl = Session.getModelController(TextControl.class);
         var textTransformationName = form.getTextTransformationName();
-        var textTransformationDetailValue = coreControl.getTextTransformationDetailValueByNameForUpdate(textTransformationName);
+        var textTransformationDetailValue = textControl.getTextTransformationDetailValueByNameForUpdate(textTransformationName);
         
         if(textTransformationDetailValue != null) {
             textTransformationDetailValue.setIsDefault(Boolean.TRUE);
-            coreControl.updateTextTransformationFromValue(textTransformationDetailValue, getPartyPK());
+            textControl.updateTextTransformationFromValue(textTransformationDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownTextTransformationName.name(), textTransformationName);
         }

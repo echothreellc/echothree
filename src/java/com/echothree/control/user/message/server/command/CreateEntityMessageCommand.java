@@ -17,12 +17,13 @@
 package com.echothree.control.user.message.server.command;
 
 import com.echothree.control.user.message.common.form.CreateEntityMessageForm;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.message.server.control.MessageControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -45,23 +46,23 @@ public class CreateEntityMessageCommand
     }
     
     /** Creates a new instance of CreateEntityMessageCommand */
-    public CreateEntityMessageCommand(UserVisitPK userVisitPK, CreateEntityMessageForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateEntityMessageCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var entityRef = form.getEntityRef();
-        var entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
+        var entityInstance = entityInstanceControl.getEntityInstanceByEntityRef(entityRef);
         
         if(entityInstance != null) {
             var componentVendorName = form.getComponentVendorName();
-            var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+            var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
             
             if(componentVendor != null) {
                 var entityTypeName = form.getEntityTypeName();
-                var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+                var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
                 
                 if(entityType != null) {
                     var messageControl = Session.getModelController(MessageControl.class);

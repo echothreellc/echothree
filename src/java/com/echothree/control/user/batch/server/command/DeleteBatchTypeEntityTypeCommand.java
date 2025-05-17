@@ -19,10 +19,10 @@ package com.echothree.control.user.batch.server.command;
 import com.echothree.control.user.batch.common.form.DeleteBatchTypeEntityTypeForm;
 import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -43,8 +43,8 @@ public class DeleteBatchTypeEntityTypeCommand
     }
     
     /** Creates a new instance of DeleteBatchTypeEntityTypeCommand */
-    public DeleteBatchTypeEntityTypeCommand(UserVisitPK userVisitPK, DeleteBatchTypeEntityTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteBatchTypeEntityTypeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
@@ -54,13 +54,12 @@ public class DeleteBatchTypeEntityTypeCommand
         var batchType = batchControl.getBatchTypeByName(batchTypeName);
         
         if(batchType != null) {
-            var coreControl = getCoreControl();
             var componentVendorName = form.getComponentVendorName();
-            var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+            var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
             
             if(componentVendor != null) {
                 var entityTypeName = form.getEntityTypeName();
-                var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+                var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
                 
                 if(entityType != null) {
                     var batchTypeEntityType = batchControl.getBatchTypeEntityTypeForUpdate(batchType, entityType);

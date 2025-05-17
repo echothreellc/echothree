@@ -83,8 +83,8 @@ public class EditOfferCommand
     }
     
     /** Creates a new instance of EditOfferCommand */
-    public EditOfferCommand(UserVisitPK userVisitPK, EditOfferForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditOfferCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

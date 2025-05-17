@@ -58,8 +58,8 @@ public class CreateLeaveTypeDescriptionCommand
     }
 
     /** Creates a new instance of CreateLeaveTypeDescriptionCommand */
-    public CreateLeaveTypeDescriptionCommand(UserVisitPK userVisitPK, CreateLeaveTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateLeaveTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
    @Override

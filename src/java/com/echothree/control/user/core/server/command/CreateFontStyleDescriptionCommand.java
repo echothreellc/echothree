@@ -17,15 +17,16 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateFontStyleDescriptionForm;
+import com.echothree.model.control.core.server.control.FontControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -57,15 +58,15 @@ public class CreateFontStyleDescriptionCommand
     }
     
     /** Creates a new instance of CreateFontStyleDescriptionCommand */
-    public CreateFontStyleDescriptionCommand(UserVisitPK userVisitPK, CreateFontStyleDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateFontStyleDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var fontControl = Session.getModelController(FontControl.class);
         var fontStyleName = form.getFontStyleName();
-        var fontStyle = coreControl.getFontStyleByName(fontStyleName);
+        var fontStyle = fontControl.getFontStyleByName(fontStyleName);
         
         if(fontStyle != null) {
             var partyControl = Session.getModelController(PartyControl.class);
@@ -73,12 +74,12 @@ public class CreateFontStyleDescriptionCommand
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                var fontStyleDescription = coreControl.getFontStyleDescription(fontStyle, language);
+                var fontStyleDescription = fontControl.getFontStyleDescription(fontStyle, language);
                 
                 if(fontStyleDescription == null) {
                     var description = form.getDescription();
-                    
-                    coreControl.createFontStyleDescription(fontStyle, language, description, getPartyPK());
+
+                    fontControl.createFontStyleDescription(fontStyle, language, description, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateFontStyleDescription.name(), fontStyleName, languageIsoName);
                 }

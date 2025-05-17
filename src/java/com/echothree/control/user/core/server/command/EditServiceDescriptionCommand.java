@@ -22,6 +22,7 @@ import com.echothree.control.user.core.common.form.EditServiceDescriptionForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditServiceDescriptionResult;
 import com.echothree.control.user.core.common.spec.ServiceDescriptionSpec;
+import com.echothree.model.control.core.server.control.ServerControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -29,10 +30,10 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.Service;
 import com.echothree.model.data.core.server.entity.ServiceDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -68,8 +69,8 @@ public class EditServiceDescriptionCommand
     }
     
     /** Creates a new instance of EditServiceDescriptionCommand */
-    public EditServiceDescriptionCommand(UserVisitPK userVisitPK, EditServiceDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditServiceDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override
@@ -84,10 +85,10 @@ public class EditServiceDescriptionCommand
 
     @Override
     public ServiceDescription getEntity(EditServiceDescriptionResult result) {
-        var coreControl = getCoreControl();
+        var serverControl = Session.getModelController(ServerControl.class);
         ServiceDescription serviceDescription = null;
         var serviceName = spec.getServiceName();
-        var service = coreControl.getServiceByName(serviceName);
+        var service = serverControl.getServiceByName(serviceName);
 
         if(service != null) {
             var partyControl = Session.getModelController(PartyControl.class);
@@ -96,9 +97,9 @@ public class EditServiceDescriptionCommand
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    serviceDescription = coreControl.getServiceDescription(service, language);
+                    serviceDescription = serverControl.getServiceDescription(service, language);
                 } else { // EditMode.UPDATE
-                    serviceDescription = coreControl.getServiceDescriptionForUpdate(service, language);
+                    serviceDescription = serverControl.getServiceDescriptionForUpdate(service, language);
                 }
 
                 if(serviceDescription == null) {
@@ -121,9 +122,9 @@ public class EditServiceDescriptionCommand
 
     @Override
     public void fillInResult(EditServiceDescriptionResult result, ServiceDescription serviceDescription) {
-        var coreControl = getCoreControl();
+        var serverControl = Session.getModelController(ServerControl.class);
 
-        result.setServiceDescription(coreControl.getServiceDescriptionTransfer(getUserVisit(), serviceDescription));
+        result.setServiceDescription(serverControl.getServiceDescriptionTransfer(getUserVisit(), serviceDescription));
     }
 
     @Override
@@ -133,11 +134,11 @@ public class EditServiceDescriptionCommand
 
     @Override
     public void doUpdate(ServiceDescription serviceDescription) {
-        var coreControl = getCoreControl();
-        var serviceDescriptionValue = coreControl.getServiceDescriptionValue(serviceDescription);
+        var serverControl = Session.getModelController(ServerControl.class);
+        var serviceDescriptionValue = serverControl.getServiceDescriptionValue(serviceDescription);
         serviceDescriptionValue.setDescription(edit.getDescription());
 
-        coreControl.updateServiceDescriptionFromValue(serviceDescriptionValue, getPartyPK());
+        serverControl.updateServiceDescriptionFromValue(serviceDescriptionValue, getPartyPK());
     }
     
 }

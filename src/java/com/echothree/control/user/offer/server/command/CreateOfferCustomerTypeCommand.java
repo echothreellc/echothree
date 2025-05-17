@@ -59,8 +59,8 @@ public class CreateOfferCustomerTypeCommand
     }
     
     /** Creates a new instance of CreateOfferCustomerTypeCommand */
-    public CreateOfferCustomerTypeCommand(UserVisitPK userVisitPK, CreateOfferCustomerTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateOfferCustomerTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

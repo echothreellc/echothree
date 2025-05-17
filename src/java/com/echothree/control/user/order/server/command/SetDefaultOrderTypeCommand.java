@@ -54,8 +54,8 @@ public class SetDefaultOrderTypeCommand
     }
     
     /** Creates a new instance of SetDefaultOrderTypeCommand */
-    public SetDefaultOrderTypeCommand(UserVisitPK userVisitPK, SetDefaultOrderTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultOrderTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -18,12 +18,14 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEventGroupStatusChoicesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -42,22 +44,22 @@ public class GetEventGroupStatusChoicesCommand
     }
     
     /** Creates a new instance of GetEventGroupStatusChoicesCommand */
-    public GetEventGroupStatusChoicesCommand(UserVisitPK userVisitPK, GetEventGroupStatusChoicesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public GetEventGroupStatusChoicesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var eventControl = Session.getModelController(EventControl.class);
         var result = CoreResultFactory.getGetEventGroupStatusChoicesResult();
         var eventGroupName = form.getEventGroupName();
-        var eventGroup = coreControl.getEventGroupByName(eventGroupName);
+        var eventGroup = eventControl.getEventGroupByName(eventGroupName);
         
         if(eventGroupName == null || eventGroup != null) {
             var defaultEventGroupStatusChoice = form.getDefaultEventGroupStatusChoice();
             var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
-            result.setEventGroupStatusChoices(coreControl.getEventGroupStatusChoices(defaultEventGroupStatusChoice,
+            result.setEventGroupStatusChoices(eventControl.getEventGroupStatusChoices(defaultEventGroupStatusChoice,
                     getPreferredLanguage(), allowNullChoice, eventGroup, getPartyPK()));
         } else {
             addExecutionError(ExecutionErrors.UnknownEventGroupName.name(), eventGroupName);

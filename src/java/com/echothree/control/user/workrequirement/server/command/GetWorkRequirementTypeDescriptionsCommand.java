@@ -44,8 +44,8 @@ public class GetWorkRequirementTypeDescriptionsCommand
     }
     
     /** Creates a new instance of GetWorkRequirementTypeDescriptionsCommand */
-    public GetWorkRequirementTypeDescriptionsCommand(UserVisitPK userVisitPK, GetWorkRequirementTypeDescriptionsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetWorkRequirementTypeDescriptionsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

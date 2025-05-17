@@ -59,8 +59,8 @@ public class SetEmployeeAvailabilityCommand
     }
     
     /** Creates a new instance of SetEmployeeAvailabilityCommand */
-    public SetEmployeeAvailabilityCommand(UserVisitPK userVisitPK, SetEmployeeAvailabilityForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetEmployeeAvailabilityCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

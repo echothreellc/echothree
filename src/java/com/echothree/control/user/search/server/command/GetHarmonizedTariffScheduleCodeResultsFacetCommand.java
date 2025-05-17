@@ -29,8 +29,8 @@ public class GetHarmonizedTariffScheduleCodeResultsFacetCommand
         extends BaseGetResultsFacetCommand<GetHarmonizedTariffScheduleCodeResultsFacetForm, GetHarmonizedTariffScheduleCodeResultsFacetResult> {
 
     /** Creates a new instance of GetHarmonizedTariffScheduleCodeResultsFacetCommand */
-    public GetHarmonizedTariffScheduleCodeResultsFacetCommand(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeResultsFacetForm form) {
-        super(userVisitPK, form, null);
+    public GetHarmonizedTariffScheduleCodeResultsFacetCommand() {
+        super(null);
     }
 
     @Override

@@ -54,8 +54,8 @@ public class SetDefaultPartySecurityRoleTemplateCommand
     }
     
     /** Creates a new instance of SetDefaultPartySecurityRoleTemplateCommand */
-    public SetDefaultPartySecurityRoleTemplateCommand(UserVisitPK userVisitPK, SetDefaultPartySecurityRoleTemplateForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultPartySecurityRoleTemplateCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

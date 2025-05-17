@@ -55,8 +55,8 @@ public class GetQueueTypeChoicesCommand
     }
     
     /** Creates a new instance of GetQueueTypeChoicesCommand */
-    public GetQueueTypeChoicesCommand(UserVisitPK userVisitPK, GetQueueTypeChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetQueueTypeChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -54,8 +54,8 @@ public class SetDefaultPaymentProcessorResultCodeCommand
     }
     
     /** Creates a new instance of SetDefaultPaymentProcessorResultCodeCommand */
-    public SetDefaultPaymentProcessorResultCodeCommand(UserVisitPK userVisitPK, SetDefaultPaymentProcessorResultCodeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultPaymentProcessorResultCodeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

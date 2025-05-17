@@ -18,7 +18,6 @@ package com.echothree.model.control.party.server.transfer;
 
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.model.control.party.common.transfer.DivisionTransfer;
@@ -36,8 +35,8 @@ public class DivisionTransferCache
     
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
     ContactControl contactControl = Session.getModelController(ContactControl.class);
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
     DocumentControl documentControl = Session.getModelController(DocumentControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     PrinterControl printerControl = Session.getModelController(PrinterControl.class);
     ScaleControl scaleControl = Session.getModelController(ScaleControl.class);
     boolean includePartyContactMechanisms;
@@ -46,8 +45,8 @@ public class DivisionTransferCache
     boolean includePartyScaleUses;
     
     /** Creates a new instance of DivisionTransferCache */
-    public DivisionTransferCache(UserVisit userVisit, PartyControl partyControl) {
-        super(userVisit, partyControl);
+    public DivisionTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         var options = session.getOptions();
         if(options != null) {
@@ -63,11 +62,12 @@ public class DivisionTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public DivisionTransfer getDivisionTransfer(PartyDivision partyDivision) {
-        return getDivisionTransfer(partyDivision.getParty());
+    public DivisionTransfer getTransfer(PartyDivision partyDivision) {
+        return getTransfer(partyDivision.getParty());
     }
-    
-    public DivisionTransfer getDivisionTransfer(Party party) {
+
+    @Override
+    public DivisionTransfer getTransfer(Party party) {
         var divisionTransfer = get(party);
         
         if(divisionTransfer == null) {

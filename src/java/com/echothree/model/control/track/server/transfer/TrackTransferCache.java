@@ -16,11 +16,11 @@
 
 package com.echothree.model.control.track.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.track.common.TrackOptions;
 import com.echothree.model.control.track.common.transfer.TrackTransfer;
-import com.echothree.model.control.track.server.control.TrackControl;
 import com.echothree.model.control.track.common.workflow.TrackStatusConstants;
+import com.echothree.model.control.track.server.control.TrackControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.track.server.entity.Track;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -29,7 +29,7 @@ import com.echothree.util.server.persistence.Session;
 public class TrackTransferCache
         extends BaseTrackTransferCache<Track, TrackTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of TrackTransferCache */
@@ -56,7 +56,7 @@ public class TrackTransferCache
             var sortOrder = trackDetail.getSortOrder();
             var description = trackControl.getBestTrackDescription(track, getLanguage());
 
-            var entityInstance = coreControl.getEntityInstanceByBasePK(track.getPrimaryKey());
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(track.getPrimaryKey());
             var trackStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     TrackStatusConstants.Workflow_TRACK_STATUS, entityInstance);
             

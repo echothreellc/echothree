@@ -58,8 +58,8 @@ public class DeleteCancellationTypeDescriptionCommand
     }
     
     /** Creates a new instance of DeleteCancellationTypeDescriptionCommand */
-    public DeleteCancellationTypeDescriptionCommand(UserVisitPK userVisitPK, DeleteCancellationTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteCancellationTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

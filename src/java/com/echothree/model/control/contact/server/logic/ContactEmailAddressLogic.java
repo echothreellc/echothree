@@ -21,7 +21,7 @@ import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.common.workflow.EmailAddressStatusConstants;
 import com.echothree.model.control.contact.common.workflow.EmailAddressVerificationConstants;
 import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
@@ -49,7 +49,7 @@ public class ContactEmailAddressLogic
     public PartyContactMechanism createContactEmailAddress(Party party, String emailAddress, Boolean allowSolicitation,
             String description, String contactMechanismPurposeName, BasePK createdBy) {
         var contactControl = Session.getModelController(ContactControl.class);
-        var coreControl = Session.getModelController(CoreControl.class);
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var workflowControl = Session.getModelController(WorkflowControl.class);
         var contactMechanismName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.name());
         var contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.EMAIL_ADDRESS.name());
@@ -61,7 +61,7 @@ public class ContactEmailAddressLogic
 
         var partyContactMechanism = contactControl.createPartyContactMechanism(party, contactMechanism, description, Boolean.FALSE, 1, createdBy);
 
-        var entityInstance = coreControl.getEntityInstanceByBasePK(contactMechanism.getPrimaryKey());
+        var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(contactMechanism.getPrimaryKey());
         workflowControl.addEntityToWorkflowUsingNames(null, EmailAddressStatusConstants.Workflow_EMAIL_ADDRESS_STATUS,
                 EmailAddressStatusConstants.WorkflowEntrance_NEW_EMAIL_ADDRESS, entityInstance, null, null, createdBy);
         workflowControl.addEntityToWorkflowUsingNames(null, EmailAddressVerificationConstants.Workflow_EMAIL_ADDRESS_VERIFICATION,

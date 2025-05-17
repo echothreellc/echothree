@@ -17,12 +17,14 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateComponentForm;
+import com.echothree.model.control.core.server.control.ComponentControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -41,24 +43,24 @@ public class CreateComponentCommand
     }
     
     /** Creates a new instance of CreateComponentCommand */
-    public CreateComponentCommand(UserVisitPK userVisitPK, CreateComponentForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateComponentCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var componentControl = Session.getModelController(ComponentControl.class);
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var componentName = form.getComponentName();
-            var component = coreControl.getComponentByName(componentVendor, componentName);
+            var component = componentControl.getComponentByName(componentVendor, componentName);
             
             if(component == null) {
                 var description = form.getDescription();
                 
-                coreControl.createComponent(componentVendor, componentName, description, getPartyPK());
+                componentControl.createComponent(componentVendor, componentName, description, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.DuplicateComponentName.name(), componentVendorName, componentName);
             }

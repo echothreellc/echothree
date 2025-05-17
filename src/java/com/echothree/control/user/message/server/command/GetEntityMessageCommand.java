@@ -18,12 +18,13 @@ package com.echothree.control.user.message.server.command;
 
 import com.echothree.control.user.message.common.form.GetEntityMessageForm;
 import com.echothree.control.user.message.common.result.MessageResultFactory;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.message.server.control.MessageControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -46,36 +47,36 @@ public class GetEntityMessageCommand
     }
     
     /** Creates a new instance of GetEntityMessageCommand */
-    public GetEntityMessageCommand(UserVisitPK userVisitPK, GetEntityMessageForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetEntityMessageCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var result = MessageResultFactory.getGetEntityMessageResult();
         var entityRef = form.getEntityRef();
-        var entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
+        var entityInstance = entityInstanceControl.getEntityInstanceByEntityRef(entityRef);
         
         if(entityInstance != null) {
             var componentVendorName = form.getComponentVendorName();
-            var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+            var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
             var userVisit = getUserVisit();
             
-            result.setComponentVendor(coreControl.getComponentVendorTransfer(userVisit, componentVendor));
+            result.setComponentVendor(getComponentControl().getComponentVendorTransfer(userVisit, componentVendor));
             
             if(componentVendor != null) {
                 var entityTypeName = form.getEntityTypeName();
-                var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+                var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
                 
-                result.setEntityType(coreControl.getEntityTypeTransfer(userVisit, entityType));
+                result.setEntityType(getEntityTypeControl().getEntityTypeTransfer(userVisit, entityType));
                 
                 if(entityType != null) {
                     var messageControl = Session.getModelController(MessageControl.class);
                     var messageTypeName = form.getMessageTypeName();
                     var messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
                     
-                    result.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityInstance, false, false, false, false));
+                    result.setEntityInstance(entityInstanceControl.getEntityInstanceTransfer(userVisit, entityInstance, false, false, false, false));
                     
                     if(messageType != null) {
                         var messageName = form.getMessageName();

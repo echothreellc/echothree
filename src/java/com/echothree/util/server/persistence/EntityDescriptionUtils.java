@@ -19,7 +19,9 @@ package com.echothree.util.server.persistence;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.ComponentControl;
+import com.echothree.model.control.core.server.control.EntityTypeControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.item.common.ItemConstants;
@@ -94,7 +96,6 @@ public class EntityDescriptionUtils {
             var componentVendorName = entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName();
 
             if(componentVendorName.equals(ComponentVendors.ECHO_THREE.name())) {
-                var coreControl = Session.getModelController(CoreControl.class);
                 var entityTypeName = entityTypeDetail.getEntityTypeName();
 
                 if(entityTypeName.equals(EntityTypes.Party.name())) {
@@ -162,7 +163,7 @@ public class EntityDescriptionUtils {
 
                     description = forum == null ? null : forumControl.getBestForumDescription(forum, getLanguage(userVisit));
                 } else if(entityTypeName.equals(EntityTypes.ForumThread.name())) {
-                    // TODO: A method is needed to push the current limit on ForumMessages, and then pop it. A quick implemention of that
+                    // TODO: A method is needed to push the current limit on ForumMessages, and then pop it. A quick implementation of that
                     // proved difficult due to the limitCache in the Session. Its key is the Class for the BaseFactory vs. a String used by
                     // the limits Map.
                     var forumControl = Session.getModelController(ForumControl.class);
@@ -171,8 +172,8 @@ public class EntityDescriptionUtils {
                     if(forumThread != null) {
                         var forumMessages = forumControl.getForumMessagesByForumThread(forumThread);
 
-                        if(forumMessages.size() > 0) {
-                            description = getDescriptionForForumMessage(userVisit, forumMessages.iterator().next());
+                        if(!forumMessages.isEmpty()) {
+                            description = getDescriptionForForumMessage(userVisit, forumMessages.getFirst());
                         }
                     }
                 } else if(entityTypeName.equals(EntityTypes.ForumMessage.name())) {
@@ -181,22 +182,25 @@ public class EntityDescriptionUtils {
 
                     description = forumMessage == null ? null : getDescriptionForForumMessage(userVisit, forumMessage);
                 } else if(entityTypeName.equals(EntityTypes.MimeType.name())) {
-                    var mimeType = coreControl.getMimeTypeByEntityInstance(entityInstance);
+                    var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
+                    var mimeType = mimeTypeControl.getMimeTypeByEntityInstance(entityInstance);
 
-                    description = mimeType == null ? null : coreControl.getBestMimeTypeDescription(mimeType, getLanguage(userVisit));
+                    description = mimeType == null ? null : mimeTypeControl.getBestMimeTypeDescription(mimeType, getLanguage(userVisit));
                 } else if(entityTypeName.equals(EntityTypes.Location.name())) {
                     var warehouseControl = Session.getModelController(WarehouseControl.class);
                     var location = warehouseControl.getLocationByEntityInstance(entityInstance);
 
                     description = location == null ? null : warehouseControl.getBestLocationDescription(location, getLanguage(userVisit));
                 } else if(entityTypeName.equals(EntityTypes.ComponentVendor.name())) {
-                    var componentVendor = coreControl.getComponentVendorByEntityInstance(entityInstance);
+                    var componentControl = Session.getModelController(ComponentControl.class);
+                    var componentVendor = componentControl.getComponentVendorByEntityInstance(entityInstance);
 
                     description = componentVendor == null ? null : componentVendor.getLastDetail().getDescription();
                 } else if(entityTypeName.equals(EntityTypes.EntityType.name())) {
-                    var entityType = coreControl.getEntityTypeByEntityInstance(entityInstance);
+                    var entityTypeControl = Session.getModelController(EntityTypeControl.class);
+                    var entityType = entityTypeControl.getEntityTypeByEntityInstance(entityInstance);
 
-                    description = entityType == null ? null : coreControl.getBestEntityTypeDescription(entityType, getLanguage(userVisit));
+                    description = entityType == null ? null : entityTypeControl.getBestEntityTypeDescription(entityType, getLanguage(userVisit));
                 }
             }
         }

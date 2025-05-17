@@ -41,8 +41,8 @@ public class SetDefaultAssociateProgramCommand
     }
     
     /** Creates a new instance of SetDefaultAssociateProgramCommand */
-    public SetDefaultAssociateProgramCommand(UserVisitPK userVisitPK, SetDefaultAssociateProgramForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultAssociateProgramCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

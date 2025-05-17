@@ -59,8 +59,8 @@ public class GetPartyReturnPolicyCommand
     }
 
     /** Creates a new instance of GetPartyReturnPolicyCommand */
-    public GetPartyReturnPolicyCommand(UserVisitPK userVisitPK, GetPartyReturnPolicyForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetPartyReturnPolicyCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

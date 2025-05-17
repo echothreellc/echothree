@@ -489,4 +489,32 @@ public interface PartyService
 
     CommandResult getParties(UserVisitPK userVisitPK, GetPartiesForm form);
 
+    // -------------------------------------------------------------------------
+    //   Party Entity Types
+    // -------------------------------------------------------------------------
+
+    CommandResult createPartyEntityType(UserVisitPK userVisitPK, CreatePartyEntityTypeForm form);
+
+    CommandResult editPartyEntityType(UserVisitPK userVisitPK, EditPartyEntityTypeForm form);
+
+    CommandResult getPartyEntityType(UserVisitPK userVisitPK, GetPartyEntityTypeForm form);
+
+    CommandResult getPartyEntityTypes(UserVisitPK userVisitPK, GetPartyEntityTypesForm form);
+
+    CommandResult deletePartyEntityType(UserVisitPK userVisitPK, DeletePartyEntityTypeForm form);
+
+    // --------------------------------------------------------------------------------
+    //   Party Application Editor Uses
+    // --------------------------------------------------------------------------------
+
+    CommandResult createPartyApplicationEditorUse(UserVisitPK userVisitPK, CreatePartyApplicationEditorUseForm form);
+
+    CommandResult getPartyApplicationEditorUse(UserVisitPK userVisitPK, GetPartyApplicationEditorUseForm form);
+
+    CommandResult getPartyApplicationEditorUses(UserVisitPK userVisitPK, GetPartyApplicationEditorUsesForm form);
+
+    CommandResult editPartyApplicationEditorUse(UserVisitPK userVisitPK, EditPartyApplicationEditorUseForm form);
+
+    CommandResult deletePartyApplicationEditorUse(UserVisitPK userVisitPK, DeletePartyApplicationEditorUseForm form);
+
 }

@@ -18,6 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEntityAliasForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.EntityAliasControl;
 import com.echothree.model.control.core.server.logic.EntityAliasTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -31,6 +32,7 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.List;
 
 public class GetEntityAliasCommand
@@ -58,8 +60,8 @@ public class GetEntityAliasCommand
     }
 
     /** Creates a new instance of DeleteEntityAliasCommand */
-    public GetEntityAliasCommand(UserVisitPK userVisitPK, GetEntityAliasForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetEntityAliasCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
 
     @Override
@@ -76,11 +78,11 @@ public class GetEntityAliasCommand
 
     @Override
     protected BaseResult getResult(EntityAlias entityAlias) {
-        var coreControl = getCoreControl();
+        var entityAliasControl = Session.getModelController(EntityAliasControl.class);
         var result = CoreResultFactory.getGetEntityAliasResult();
 
         if(entityAlias != null) {
-            result.setEntityAlias(coreControl.getEntityAliasTransfer(getUserVisit(), entityAlias));
+            result.setEntityAlias(entityAliasControl.getEntityAliasTransfer(getUserVisit(), entityAlias));
         }
 
         return result;

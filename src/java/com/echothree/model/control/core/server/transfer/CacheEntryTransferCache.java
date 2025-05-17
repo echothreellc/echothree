@@ -20,7 +20,8 @@ import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.transfer.CacheEntryTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.CacheEntryControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.data.core.server.entity.CacheEntry;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
@@ -31,7 +32,8 @@ import com.echothree.util.server.persistence.Session;
 public class CacheEntryTransferCache
         extends BaseCoreTransferCache<CacheEntry, CacheEntryTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    CacheEntryControl cacheEntryControl = Session.getModelController(CacheEntryControl.class);
+    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
 
     boolean includeBlob;
     boolean includeClob;
@@ -77,7 +79,7 @@ public class CacheEntryTransferCache
         if(cacheEntryTransfer == null) {
             var cacheEntryKey = filterCacheEntryKey ? null : cacheEntry.getCacheEntryKey();
             var mimeType = cacheEntry.getMimeType();
-            var mimeTypeTransfer = filterMimeType ? null : coreControl.getMimeTypeTransfer(userVisit, mimeType);
+            var mimeTypeTransfer = filterMimeType ? null : mimeTypeControl.getMimeTypeTransfer(userVisit, mimeType);
             var unformattedCreatedTime = cacheEntry.getCreatedTime();
             var createdTime = filterCreatedTime ? null : formatTypicalDateTime(unformattedCreatedTime);
             var unformattedValidUntilTime = cacheEntry.getValidUntilTime();
@@ -88,7 +90,7 @@ public class CacheEntryTransferCache
             var entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
             if(entityAttributeTypeName.equals(EntityAttributeTypes.CLOB.name())) {
                 if(includeClob) {
-                    var cacheClobEntry = coreControl.getCacheClobEntryByCacheEntry(cacheEntry);
+                    var cacheClobEntry = cacheEntryControl.getCacheClobEntryByCacheEntry(cacheEntry);
 
                     if(cacheClobEntry != null) {
                         clob = cacheClobEntry.getClob();
@@ -96,7 +98,7 @@ public class CacheEntryTransferCache
                 }
             } else if(entityAttributeTypeName.equals(EntityAttributeTypes.BLOB.name())) {
                 if(includeBlob) {
-                    var cacheBlobEntry = coreControl.getCacheBlobEntryByCacheEntry(cacheEntry);
+                    var cacheBlobEntry = cacheEntryControl.getCacheBlobEntryByCacheEntry(cacheEntry);
 
                     if(cacheBlobEntry != null) {
                         blob = cacheBlobEntry.getBlob();
@@ -110,7 +112,7 @@ public class CacheEntryTransferCache
             put(cacheEntry, cacheEntryTransfer);
             
             if(includeCacheEntryDependencies) {
-                cacheEntryTransfer.setCacheEntryDependencies(new ListWrapper<>(coreControl.getCacheEntryDependencyTransfersByCacheEntry(userVisit, cacheEntry)));
+                cacheEntryTransfer.setCacheEntryDependencies(new ListWrapper<>(cacheEntryControl.getCacheEntryDependencyTransfersByCacheEntry(userVisit, cacheEntry)));
             }
         }
         

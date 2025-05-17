@@ -55,8 +55,8 @@ public class SetDefaultCancellationKindCommand
     }
     
     /** Creates a new instance of SetDefaultCancellationKindCommand */
-    public SetDefaultCancellationKindCommand(UserVisitPK userVisitPK, SetDefaultCancellationKindForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultCancellationKindCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

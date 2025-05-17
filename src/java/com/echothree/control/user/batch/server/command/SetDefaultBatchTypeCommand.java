@@ -54,8 +54,8 @@ public class SetDefaultBatchTypeCommand
     }
     
     /** Creates a new instance of SetDefaultBatchTypeCommand */
-    public SetDefaultBatchTypeCommand(UserVisitPK userVisitPK, SetDefaultBatchTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultBatchTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

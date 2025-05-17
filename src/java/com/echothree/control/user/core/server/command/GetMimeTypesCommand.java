@@ -18,6 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetMimeTypesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.core.server.logic.MimeTypeLogic;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
@@ -26,6 +27,7 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
+import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 
@@ -42,8 +44,8 @@ public class GetMimeTypesCommand
     }
 
     /** Creates a new instance of GetMimeTypesCommand */
-    public GetMimeTypesCommand(UserVisitPK userVisitPK, GetMimeTypesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetMimeTypesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
 
     MimeTypeUsageType mimeTypeUsageType;
@@ -58,21 +60,23 @@ public class GetMimeTypesCommand
 
     @Override
     protected Long getTotalEntities() {
+        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
+
         return hasExecutionErrors() ? null :
-                mimeTypeUsageType == null ? getCoreControl().countMimeTypes() :
-                        getCoreControl().countMimeTypesByMimeTypeUsageType(mimeTypeUsageType);
+                mimeTypeUsageType == null ? mimeTypeControl.countMimeTypes() :
+                        mimeTypeControl.countMimeTypesByMimeTypeUsageType(mimeTypeUsageType);
     }
 
     @Override
     protected Collection<MimeType> getEntities() {
-        var coreControl = getCoreControl();
+        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
         Collection<MimeType> mimeTypes = null;
 
         if(!hasExecutionErrors()) {
             if(mimeTypeUsageType == null) {
-                mimeTypes = coreControl.getMimeTypes();
+                mimeTypes = mimeTypeControl.getMimeTypes();
             } else {
-                mimeTypes = coreControl.getMimeTypesByMimeTypeUsageType(mimeTypeUsageType);
+                mimeTypes = mimeTypeControl.getMimeTypesByMimeTypeUsageType(mimeTypeUsageType);
             }
         }
 
@@ -84,9 +88,9 @@ public class GetMimeTypesCommand
         var result = CoreResultFactory.getGetMimeTypesResult();
 
         if(entities != null) {
-            var coreControl = getCoreControl();
+            var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
 
-            result.setMimeTypes(coreControl.getMimeTypeTransfers(getUserVisit(), entities));
+            result.setMimeTypes(mimeTypeControl.getMimeTypeTransfers(getUserVisit(), entities));
         }
 
         return result;

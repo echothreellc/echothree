@@ -18,12 +18,13 @@ package com.echothree.control.user.associate.server.command;
 
 import com.echothree.control.user.associate.common.form.CreateAssociateForm;
 import com.echothree.model.control.associate.server.control.AssociateControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -47,8 +48,8 @@ public class CreateAssociateCommand
     }
     
     /** Creates a new instance of CreateAssociateCommand */
-    public CreateAssociateCommand(UserVisitPK userVisitPK, CreateAssociateForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateAssociateCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
@@ -67,9 +68,9 @@ public class CreateAssociateCommand
                 var party = partyControl.getPartyByName(partyName);
                 
                 if(party != null) {
-                    var coreControl = getCoreControl();
+                    var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
                     var summaryMimeTypeName = form.getSummaryMimeTypeName();
-                    var summaryMimeType = coreControl.getMimeTypeByName(summaryMimeTypeName);
+                    var summaryMimeType = mimeTypeControl.getMimeTypeByName(summaryMimeTypeName);
                     
                     if(summaryMimeType != null) {
                         var description = form.getDescription();

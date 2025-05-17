@@ -54,8 +54,8 @@ public class SetDefaultContactListGroupCommand
     }
     
     /** Creates a new instance of SetDefaultContactListGroupCommand */
-    public SetDefaultContactListGroupCommand(UserVisitPK userVisitPK, SetDefaultContactListGroupForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultContactListGroupCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

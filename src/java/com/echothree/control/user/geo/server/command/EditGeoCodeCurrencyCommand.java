@@ -68,8 +68,8 @@ public class EditGeoCodeCurrencyCommand
     }
     
     /** Creates a new instance of EditGeoCodeCurrencyCommand */
-    public EditGeoCodeCurrencyCommand(UserVisitPK userVisitPK, EditGeoCodeCurrencyForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditGeoCodeCurrencyCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

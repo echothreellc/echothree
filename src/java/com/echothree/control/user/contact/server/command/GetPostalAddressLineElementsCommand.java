@@ -43,8 +43,8 @@ public class GetPostalAddressLineElementsCommand
     }
     
     /** Creates a new instance of GetPostalAddressLineElementsCommand */
-    public GetPostalAddressLineElementsCommand(UserVisitPK userVisitPK, GetPostalAddressLineElementsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetPostalAddressLineElementsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

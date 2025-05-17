@@ -17,12 +17,14 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateComponentVersionForm;
+import com.echothree.model.control.core.server.control.ComponentControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -44,33 +46,33 @@ public class CreateComponentVersionCommand
     }
     
     /** Creates a new instance of CreateComponentVersionCommand */
-    public CreateComponentVersionCommand(UserVisitPK userVisitPK, CreateComponentVersionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateComponentVersionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var componentControl = Session.getModelController(ComponentControl.class);
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var componentName = form.getComponentName();
-            var component = coreControl.getComponentByName(componentVendor, componentName);
+            var component = componentControl.getComponentByName(componentVendor, componentName);
             
             if(component != null) {
-                var componentVersion = coreControl.getComponentVersion(component);
+                var componentVersion = componentControl.getComponentVersion(component);
                 
                 if(componentVersion == null) {
                     var componentStageName = form.getComponentStageName();
-                    var componentStage = coreControl.getComponentStageByName(componentStageName);
+                    var componentStage = componentControl.getComponentStageByName(componentStageName);
                     
                     if(componentStage != null) {
                         var majorRevision = Integer.valueOf(form.getMajorRevision());
                         var minorRevision = Integer.valueOf(form.getMinorRevision());
                         var buildNumber = Integer.valueOf(form.getBuildNumber());
                         
-                        coreControl.createComponentVersion(component, majorRevision, minorRevision, componentStage, buildNumber, getPartyPK());
+                        componentControl.createComponentVersion(component, majorRevision, minorRevision, componentStage, buildNumber, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.UnknownComponentStageName.name(), componentStageName);
                     }

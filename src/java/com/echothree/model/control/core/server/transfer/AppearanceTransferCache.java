@@ -18,7 +18,9 @@ package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.transfer.AppearanceTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.AppearanceControl;
+import com.echothree.model.control.core.server.control.ColorControl;
+import com.echothree.model.control.core.server.control.FontControl;
 import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
@@ -27,7 +29,9 @@ import com.echothree.util.server.persistence.Session;
 public class AppearanceTransferCache
         extends BaseCoreTransferCache<Appearance, AppearanceTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    AppearanceControl appearanceControl = Session.getModelController(AppearanceControl.class);
+    ColorControl colorControl = Session.getModelController(ColorControl.class);
+    FontControl fontControl = Session.getModelController(FontControl.class);
 
     boolean includeTextDecorations;
     boolean includeTextTransformations;
@@ -52,27 +56,27 @@ public class AppearanceTransferCache
             var appearanceDetail = appearance.getLastDetail();
             var appearanceName = appearanceDetail.getAppearanceName();
             var textColor = appearanceDetail.getTextColor();
-            var textColorTransfer = textColor == null ? null : coreControl.getColorTransfer(userVisit, textColor);
+            var textColorTransfer = textColor == null ? null : colorControl.getColorTransfer(userVisit, textColor);
             var backgroundColor = appearanceDetail.getBackgroundColor();
-            var backgroundColorTransfer = backgroundColor == null ? null : coreControl.getColorTransfer(userVisit, backgroundColor);
+            var backgroundColorTransfer = backgroundColor == null ? null : colorControl.getColorTransfer(userVisit, backgroundColor);
             var fontStyle = appearanceDetail.getFontStyle();
-            var fontStyleTransfer = fontStyle == null ? null : coreControl.getFontStyleTransfer(userVisit, fontStyle);
+            var fontStyleTransfer = fontStyle == null ? null : fontControl.getFontStyleTransfer(userVisit, fontStyle);
             var fontWeight = appearanceDetail.getFontWeight();
-            var fontWeightTransfer = fontWeight == null ? null : coreControl.getFontWeightTransfer(userVisit, fontWeight);
+            var fontWeightTransfer = fontWeight == null ? null : fontControl.getFontWeightTransfer(userVisit, fontWeight);
             var isDefault = appearanceDetail.getIsDefault();
             var sortOrder = appearanceDetail.getSortOrder();
-            var description = coreControl.getBestAppearanceDescription(appearance, getLanguage());
+            var description = appearanceControl.getBestAppearanceDescription(appearance, getLanguage());
 
             appearanceTransfer = new AppearanceTransfer(appearanceName, textColorTransfer, backgroundColorTransfer, fontStyleTransfer, fontWeightTransfer,
                     isDefault, sortOrder, description);
             put(appearance, appearanceTransfer);
             
             if(includeTextDecorations) {
-                appearanceTransfer.setAppearanceTextDecorations(new ListWrapper<>(coreControl.getAppearanceTextDecorationTransfersByAppearance(userVisit, appearance)));
+                appearanceTransfer.setAppearanceTextDecorations(new ListWrapper<>(appearanceControl.getAppearanceTextDecorationTransfersByAppearance(userVisit, appearance)));
             }
             
             if(includeTextTransformations) {
-                appearanceTransfer.setAppearanceTextTransformations(new ListWrapper<>(coreControl.getAppearanceTextTransformationTransfersByAppearance(userVisit, appearance)));
+                appearanceTransfer.setAppearanceTextTransformations(new ListWrapper<>(appearanceControl.getAppearanceTextTransformationTransfersByAppearance(userVisit, appearance)));
             }
         }
 

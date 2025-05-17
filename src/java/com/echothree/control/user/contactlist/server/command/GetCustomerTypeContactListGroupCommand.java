@@ -58,8 +58,8 @@ public class GetCustomerTypeContactListGroupCommand
     }
     
     /** Creates a new instance of GetCustomerTypeContactListGroupCommand */
-    public GetCustomerTypeContactListGroupCommand(UserVisitPK userVisitPK, GetCustomerTypeContactListGroupForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetCustomerTypeContactListGroupCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

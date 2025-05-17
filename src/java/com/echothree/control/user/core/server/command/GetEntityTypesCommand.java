@@ -56,8 +56,8 @@ public class GetEntityTypesCommand
     }
     
     /** Creates a new instance of GetEntityTypesCommand */
-    public GetEntityTypesCommand(UserVisitPK userVisitPK, GetEntityTypesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetEntityTypesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     ComponentVendor componentVendor;
@@ -75,8 +75,8 @@ public class GetEntityTypesCommand
     protected Long getTotalEntities() {
         return hasExecutionErrors() ? null :
                 componentVendor == null ?
-                getCoreControl().countEntityTypes() :
-                getCoreControl().countEntityTypesByComponentVendor(componentVendor);
+                getEntityTypeControl().countEntityTypes() :
+                getEntityTypeControl().countEntityTypesByComponentVendor(componentVendor);
     }
 
     @Override
@@ -85,8 +85,8 @@ public class GetEntityTypesCommand
 
         if(!hasExecutionErrors()) {
             entities = componentVendor == null ?
-                    getCoreControl().getEntityTypes():
-                    getCoreControl().getEntityTypesByComponentVendor(componentVendor);
+                    getEntityTypeControl().getEntityTypes():
+                    getEntityTypeControl().getEntityTypesByComponentVendor(componentVendor);
         }
 
         return entities;
@@ -97,22 +97,21 @@ public class GetEntityTypesCommand
         var result = CoreResultFactory.getGetEntityTypesResult();
 
         if(entities != null) {
-            var coreControl = getCoreControl();
             var userVisit = getUserVisit();
 
             if(componentVendor != null) {
-                result.setComponentVendor(coreControl.getComponentVendorTransfer(userVisit, componentVendor));
+                result.setComponentVendor(getComponentControl().getComponentVendorTransfer(userVisit, componentVendor));
 
                 if(session.hasLimit(EntityTypeFactory.class)) {
-                    result.setEntityTypeCount(coreControl.countEntityTypesByComponentVendor(componentVendor));
+                    result.setEntityTypeCount(getEntityTypeControl().countEntityTypesByComponentVendor(componentVendor));
                 }
             } else {
                 if(session.hasLimit(EntityTypeFactory.class)) {
-                    result.setEntityTypeCount(coreControl.countEntityTypes());
+                    result.setEntityTypeCount(getEntityTypeControl().countEntityTypes());
                 }
             }
 
-            result.setEntityTypes(coreControl.getEntityTypeTransfers(userVisit, entities));
+            result.setEntityTypes(getEntityTypeControl().getEntityTypeTransfers(userVisit, entities));
         }
 
         return result;

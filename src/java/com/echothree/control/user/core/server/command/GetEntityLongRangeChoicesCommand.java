@@ -19,19 +19,21 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.GetEntityLongRangeChoicesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -58,8 +60,8 @@ public class GetEntityLongRangeChoicesCommand
     }
     
     /** Creates a new instance of GetEntityLongRangeChoicesCommand */
-    public GetEntityLongRangeChoicesCommand(UserVisitPK userVisitPK, GetEntityLongRangeChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetEntityLongRangeChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
@@ -72,14 +74,14 @@ public class GetEntityLongRangeChoicesCommand
                 + (entityRef == null && componentVendorName != null && entityTypeName != null? 1: 0);
         
         if(parameterCount == 1) {
-            var coreControl = getCoreControl();
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             EntityType entityType = null;
             
             if(entityRef == null) {
-                var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+                var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
                 
                 if(componentVendor != null) {
-                    entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+                    entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
                     
                     if(entityType == null) {
                         addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), componentVendorName, entityTypeName);
@@ -88,7 +90,7 @@ public class GetEntityLongRangeChoicesCommand
                     addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
                 }
             } else {
-                var entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
+                var entityInstance = entityInstanceControl.getEntityInstanceByEntityRef(entityRef);
                 
                 if(entityInstance != null) {
                     entityType = entityInstance.getEntityType();
@@ -98,6 +100,7 @@ public class GetEntityLongRangeChoicesCommand
             }
             
             if(!hasExecutionErrors()) {
+                var coreControl = getCoreControl();
                 var entityAttributeName = form.getEntityAttributeName();
                 var entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
                 

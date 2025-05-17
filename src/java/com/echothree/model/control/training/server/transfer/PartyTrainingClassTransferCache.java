@@ -16,12 +16,12 @@
 
 package com.echothree.model.control.training.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.training.common.TrainingOptions;
+import com.echothree.model.control.training.common.training.PartyTrainingClassStatusConstants;
 import com.echothree.model.control.training.common.transfer.PartyTrainingClassTransfer;
 import com.echothree.model.control.training.server.control.TrainingControl;
-import com.echothree.model.control.training.common.training.PartyTrainingClassStatusConstants;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.training.server.entity.PartyTrainingClass;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -31,7 +31,7 @@ import com.echothree.util.server.persistence.Session;
 public class PartyTrainingClassTransferCache
         extends BaseTrainingTransferCache<PartyTrainingClass, PartyTrainingClassTransfer> {
     
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     boolean includePartyTrainingClassSessions;
@@ -61,7 +61,7 @@ public class PartyTrainingClassTransferCache
             var unformattedValidUntilTime = partyTrainingClassDetail.getValidUntilTime();
             var validUntilTime = unformattedValidUntilTime == null ? null : formatTypicalDateTime(unformattedValidUntilTime);
 
-            var entityInstance = coreControl.getEntityInstanceByBasePK(partyTrainingClass.getPrimaryKey());
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(partyTrainingClass.getPrimaryKey());
             var partyTrainingClassStatus = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     PartyTrainingClassStatusConstants.Workflow_PARTY_TRAINING_CLASS_STATUS, entityInstance);
 

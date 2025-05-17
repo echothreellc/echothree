@@ -21,10 +21,10 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -53,18 +53,17 @@ public class DeleteComponentVendorCommand
     }
     
     /** Creates a new instance of DeleteComponentVendorCommand */
-    public DeleteComponentVendorCommand(UserVisitPK userVisitPK, DeleteComponentVendorForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteComponentVendorCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
         var componentVendorName = form.getComponentVendorName();
-        var coreControl = getCoreControl();
-        var componentVendor = coreControl.getComponentVendorByNameForUpdate(componentVendorName);
+        var componentVendor = getComponentControl().getComponentVendorByNameForUpdate(componentVendorName);
         
         if(componentVendor != null) {
-            coreControl.deleteComponentVendor(componentVendor, getPartyPK());
+            getComponentControl().deleteComponentVendor(componentVendor, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
         }

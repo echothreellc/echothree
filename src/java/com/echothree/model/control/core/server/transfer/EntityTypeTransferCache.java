@@ -20,7 +20,10 @@ import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
+import com.echothree.model.control.core.server.control.ComponentControl;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
+import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.message.server.control.MessageControl;
 import com.echothree.model.control.rating.server.control.RatingControl;
@@ -38,10 +41,13 @@ public class EntityTypeTransferCache
         extends BaseCoreTransferCache<EntityType, EntityTypeTransfer> {
 
     CoreControl coreControl = Session.getModelController(CoreControl.class);
-    CommentControl commentControl;
-    IndexControl indexControl;
-    MessageControl messageControl;
-    RatingControl ratingControl;
+    ComponentControl componentControl = Session.getModelController(ComponentControl.class);
+    CommentControl commentControl; // As-needed
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+    EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
+    IndexControl indexControl; // As-needed
+    MessageControl messageControl; // As-needed
+    RatingControl ratingControl; // As-needed
     UomControl uomControl = Session.getModelController(UomControl.class);
     UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
     UnitOfMeasureUtils unitOfMeasureUtils = UnitOfMeasureUtils.getInstance();
@@ -127,7 +133,7 @@ public class EntityTypeTransferCache
             put(entityType, entityTypeTransfer);
             
             if(!filterComponentVendor) {
-                entityTypeTransfer.setComponentVendor(coreControl.getComponentVendorTransfer(userVisit, entityTypeDetail.getComponentVendor()));
+                entityTypeTransfer.setComponentVendor(componentControl.getComponentVendorTransfer(userVisit, entityTypeDetail.getComponentVendor()));
             }
             
             if(!filterEntityTypeName) {
@@ -155,11 +161,11 @@ public class EntityTypeTransferCache
             }
 
             if(!filterDescription) {
-                entityTypeTransfer.setDescription(coreControl.getBestEntityTypeDescription(entityType, getLanguage()));
+                entityTypeTransfer.setDescription(entityTypeControl.getBestEntityTypeDescription(entityType, getLanguage()));
             }
             
             if(!filterEntityInstance) {
-                entityTypeTransfer.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityType, false, false, false, false));
+                entityTypeTransfer.setEntityInstance(entityInstanceControl.getEntityInstanceTransfer(userVisit, entityType, false, false, false, false));
             }
             
             setupEntityInstance(entityType, null, entityTypeTransfer);
@@ -189,11 +195,11 @@ public class EntityTypeTransferCache
             }
 
             if(includeEntityInstancesCount) {
-                entityTypeTransfer.setEntityInstancesCount(coreControl.countEntityInstancesByEntityType(entityType));
+                entityTypeTransfer.setEntityInstancesCount(entityInstanceControl.countEntityInstancesByEntityType(entityType));
             }
 
             if(includeEntityInstances) {
-                entityTypeTransfer.setEntityInstances(new ListWrapper<>(coreControl.getEntityInstanceTransfersByEntityType(userVisit, entityType, false, false, false, false)));
+                entityTypeTransfer.setEntityInstances(new ListWrapper<>(entityInstanceControl.getEntityInstanceTransfersByEntityType(userVisit, entityType, false, false, false, false)));
             }
         }
         

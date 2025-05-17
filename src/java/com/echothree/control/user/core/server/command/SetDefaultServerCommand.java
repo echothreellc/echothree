@@ -17,6 +17,7 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.SetDefaultServerForm;
+import com.echothree.model.control.core.server.control.ServerControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -29,6 +30,7 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -53,19 +55,19 @@ public class SetDefaultServerCommand
     }
     
     /** Creates a new instance of SetDefaultServerCommand */
-    public SetDefaultServerCommand(UserVisitPK userVisitPK, SetDefaultServerForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultServerCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var serverControl = Session.getModelController(ServerControl.class);
         var serverName = form.getServerName();
-        var serverDetailValue = coreControl.getServerDetailValueByNameForUpdate(serverName);
+        var serverDetailValue = serverControl.getServerDetailValueByNameForUpdate(serverName);
         
         if(serverDetailValue != null) {
             serverDetailValue.setIsDefault(Boolean.TRUE);
-            coreControl.updateServerFromValue(serverDetailValue, getPartyPK());
+            serverControl.updateServerFromValue(serverDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownServerName.name(), serverName);
         }

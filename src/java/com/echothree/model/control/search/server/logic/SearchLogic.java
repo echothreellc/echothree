@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.search.server.logic;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.search.common.exception.DuplicateSearchResultActionException;
 import com.echothree.model.control.search.common.exception.UnknownCachedExecutedSearchResultException;
 import com.echothree.model.control.search.common.exception.UnknownDefaultSearchDefaultOperatorException;
@@ -260,12 +260,12 @@ public class SearchLogic
             var searchResultActionType = getSearchResultActionTypeByName(eea, searchResultActionTypeName);
             
             if(eea == null || !eea.hasExecutionErrors()) {
-                var coreControl = Session.getModelController(CoreControl.class);
+                var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
                 var searchControl = Session.getModelController(SearchControl.class);
                 var search = userVisitSearch.getSearch();
                 var cachedSearch = search.getCachedSearch();
                 var basePK = baseEntity.getPrimaryKey();
-                var entityInstance = coreControl.getEntityInstanceByBasePK(basePK);
+                var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(basePK);
 
                 if(cachedSearch == null) {
                     if(!searchControl.searchResultExists(search, entityInstance)) {

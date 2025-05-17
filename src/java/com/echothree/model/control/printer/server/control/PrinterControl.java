@@ -19,7 +19,7 @@ package com.echothree.model.control.printer.server.control;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.printer.common.choice.PrinterGroupChoicesBean;
 import com.echothree.model.control.printer.common.choice.PrinterGroupJobStatusChoicesBean;
@@ -1016,10 +1016,10 @@ public class PrinterControl
     }
 
     private PrinterGroupJob convertEntityInstanceToPrinterGroupJob(final EntityInstance entityInstance, final EntityPermission entityPermission) {
-        var coreControl = Session.getModelController(CoreControl.class);
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         PrinterGroupJob printerGroupJob = null;
 
-        if(coreControl.verifyEntityInstance(entityInstance, ComponentVendors.ECHO_THREE.name(), EntityTypes.PrinterGroupJob.name())) {
+        if(entityInstanceControl.verifyEntityInstance(entityInstance, ComponentVendors.ECHO_THREE.name(), EntityTypes.PrinterGroupJob.name())) {
             printerGroupJob = PrinterGroupJobFactory.getInstance().getEntityFromPK(entityPermission, new PrinterGroupJobPK(entityInstance.getEntityUniqueId()));
         }
 
@@ -1347,11 +1347,12 @@ public class PrinterControl
 
     public void removePrinterGroupJob(PrinterGroupJob printerGroupJob) {
         var documentControl = Session.getModelController(DocumentControl.class);
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
         // Cascades to the PrinterGroupJob, so a seprate remove isn't required.
         documentControl.removeDocument(printerGroupJob.getLastDetail().getDocumentForUpdate());
 
-        getCoreControl().removeEntityInstanceByBasePK(printerGroupJob.getPrimaryKey());
+        entityInstanceControl.removeEntityInstanceByBasePK(printerGroupJob.getPrimaryKey());
     }
 
     public void removePrinterGroupJobs(List<PrinterGroupJob> printerGroupJobs) {

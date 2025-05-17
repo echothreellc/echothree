@@ -61,8 +61,8 @@ public class GetTagScopeEntityTypeCommand
     }
     
     /** Creates a new instance of GetTagScopeEntityTypeCommand */
-    public GetTagScopeEntityTypeCommand(UserVisitPK userVisitPK, GetTagScopeEntityTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetTagScopeEntityTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

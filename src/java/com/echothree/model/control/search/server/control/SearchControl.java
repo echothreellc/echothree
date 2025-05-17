@@ -17,6 +17,7 @@
 package com.echothree.model.control.search.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.search.common.choice.SearchCheckSpellingActionTypeChoicesBean;
 import com.echothree.model.control.search.common.choice.SearchDefaultOperatorChoicesBean;
 import com.echothree.model.control.search.common.choice.SearchKindChoicesBean;
@@ -3973,7 +3974,9 @@ public class SearchControl
     }
     
     public void removeSearch(Search search) {
-        getCoreControl().removeEntityInstanceByBasePK(search.getPrimaryKey());
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+
+        entityInstanceControl.removeEntityInstanceByBasePK(search.getPrimaryKey());
         search.remove();
     }
     
@@ -5064,10 +5067,10 @@ public class SearchControl
         }
 
         try (var rs = getUserVisitSearchResultSet(userVisitSearch)) {
-            var coreControl = getCoreControl();
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
             while(rs.next()) {
-                var entityInstance = coreControl.getEntityInstanceByPK(new EntityInstancePK(rs.getLong(ENI_ENTITYINSTANCEID_COLUMN_INDEX)));
+                var entityInstance = entityInstanceControl.getEntityInstanceByPK(new EntityInstancePK(rs.getLong(ENI_ENTITYINSTANCEID_COLUMN_INDEX)));
 
                 entityInstances.add(entityInstance);
             }

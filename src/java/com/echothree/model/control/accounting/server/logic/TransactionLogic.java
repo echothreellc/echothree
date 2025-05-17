@@ -26,7 +26,7 @@ import com.echothree.model.control.accounting.server.database.TransactionBalance
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
@@ -199,7 +199,7 @@ public class TransactionLogic
         var credit = originalCredit == null ? null : getAmount(glAccount, originalCurrency, originalCredit);
 
         return accountingControl.createTransactionGlEntry(transaction, getTransactionGlEntrySequence(accountingControl, transaction),
-                null, groupParty, transactionGlAccountCategory, glAccount, originalCurrency, originalDebit,
+                groupParty, transactionGlAccountCategory, glAccount, originalCurrency, originalDebit,
                 originalCredit, debit, credit, createdBy);
     }
     
@@ -215,8 +215,8 @@ public class TransactionLogic
     public TransactionEntityRole createTransactionEntityRole(final Transaction transaction,
             final TransactionEntityRoleType transactionEntityRoleType, final BasePK pk, final BasePK createdBy) {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        var coreControl = Session.getModelController(CoreControl.class);
-        var entityInstance = coreControl.getEntityInstanceByBasePK(pk);
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+        var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(pk);
         
         if(!transactionEntityRoleType.getLastDetail().getEntityType().equals(entityInstance.getEntityType())) {
             throw new IllegalArgumentException("entityInstance is not of the required EntityType");
@@ -243,7 +243,7 @@ public class TransactionLogic
     public void postTransaction(final ExecutionErrorAccumulator eea, final Session session, final Transaction transaction,
             final BasePK createdBy) {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        var coreControl = Session.getModelController(CoreControl.class);
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var workflowControl = Session.getModelController(WorkflowControl.class);
 
         validateTransactionBalanced(eea, transaction);
@@ -256,7 +256,7 @@ public class TransactionLogic
             // If it isn't in the Transaction Status workflow, assume this is a system generated transaction and
             // we've gone directly to posting it.
             var workflow = WorkflowLogic.getInstance().getWorkflowByName(null, TransactionStatusConstants.Workflow_TRANSACTION_STATUS);
-            var entityInstance = coreControl.getEntityInstanceByBasePK(transaction.getPrimaryKey());
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(transaction.getPrimaryKey());
             if(!workflowControl.isEntityInWorkflow(workflow, entityInstance)) {
                 var workflowEntrance = WorkflowEntranceLogic.getInstance().getWorkflowEntranceByName(null, workflow,
                         TransactionStatusConstants.WorkflowEntrance_TRANSACTION_STATUS_NEW_POSTED);

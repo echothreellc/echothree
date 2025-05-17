@@ -53,8 +53,8 @@ public class GetHarmonizedTariffScheduleCodeUnitsCommand
     }
 
     /** Creates a new instance of GetHarmonizedTariffScheduleCodeUnitsCommand */
-    public GetHarmonizedTariffScheduleCodeUnitsCommand(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUnitsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetHarmonizedTariffScheduleCodeUnitsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

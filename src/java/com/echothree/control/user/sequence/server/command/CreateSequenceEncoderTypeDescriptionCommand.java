@@ -58,8 +58,8 @@ public class CreateSequenceEncoderTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateSequenceEncoderTypeDescriptionCommand */
-    public CreateSequenceEncoderTypeDescriptionCommand(UserVisitPK userVisitPK, CreateSequenceEncoderTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateSequenceEncoderTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

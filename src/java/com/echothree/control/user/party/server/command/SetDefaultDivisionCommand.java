@@ -42,8 +42,8 @@ public class SetDefaultDivisionCommand
     }
     
     /** Creates a new instance of SetDefaultDivisionCommand */
-    public SetDefaultDivisionCommand(UserVisitPK userVisitPK, SetDefaultDivisionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultDivisionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

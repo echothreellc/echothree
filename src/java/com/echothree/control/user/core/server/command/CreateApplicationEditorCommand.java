@@ -17,19 +17,22 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateApplicationEditorForm;
+import com.echothree.model.control.core.server.control.ApplicationControl;
 import com.echothree.model.control.core.server.logic.ApplicationLogic;
+import com.echothree.model.control.core.server.logic.EditorLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -57,8 +60,8 @@ public class CreateApplicationEditorCommand
     }
     
     /** Creates a new instance of CreateApplicationEditorCommand */
-    public CreateApplicationEditorCommand(UserVisitPK userVisitPK, CreateApplicationEditorForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateApplicationEditorCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
@@ -68,17 +71,17 @@ public class CreateApplicationEditorCommand
         
         if(!hasExecutionErrors()) {
             var editorName = form.getEditorName();
-            var editor = ApplicationLogic.getInstance().getEditorByName(this, editorName);
+            var editor = EditorLogic.getInstance().getEditorByName(this, editorName);
             
             if(!hasExecutionErrors()) {
-                var coreControl = getCoreControl();
-                var applicationEditor = coreControl.getApplicationEditor(application, editor);
+                var applicationControl = Session.getModelController(ApplicationControl.class);
+                var applicationEditor = applicationControl.getApplicationEditor(application, editor);
                 
                 if(applicationEditor == null) {
                     var isDefault = Boolean.valueOf(form.getIsDefault());
                     var sortOrder = Integer.valueOf(form.getSortOrder());
                     
-                    coreControl.createApplicationEditor(application, editor, isDefault, sortOrder, getPartyPK());
+                    applicationControl.createApplicationEditor(application, editor, isDefault, sortOrder, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateApplicationEditor.name(), applicationName, editorName);
                 }

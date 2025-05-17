@@ -18,7 +18,7 @@ package com.echothree.model.control.associate.server.logic;
 
 import com.echothree.control.user.associate.common.spec.AssociatePartyContactMechanismSpec;
 import com.echothree.model.control.associate.server.control.AssociateControl;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.associate.server.entity.AssociateReferral;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -67,10 +67,10 @@ public class AssociateReferralLogic
                                 associateProgram.getLastDetail().getAssociateProgramName(),
                                 associate.getLastDetail().getAssociateName(), associatePartyContactMechanismName);
                     } else {
-                        var coreControl = Session.getModelController(CoreControl.class);
+                        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
                         associateReferral = associateControl.createAssociateReferral(associate, associatePartyContactMechanism,
-                                coreControl.getEntityInstanceByBasePK(targetPK), session.START_TIME_LONG, partyPK);
+                                entityInstanceControl.getEntityInstanceByBasePK(targetPK), session.START_TIME_LONG, partyPK);
 
                         userVisit.setAssociateReferral(associateReferral);
                     }

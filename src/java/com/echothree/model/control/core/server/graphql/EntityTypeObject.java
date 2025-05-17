@@ -17,13 +17,15 @@
 package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
+import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.BaseGraphQl;
-import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.control.tag.server.graphql.TagScopeEntityTypeObject;
 import com.echothree.model.control.tag.server.graphql.TagSecurityUtils;
@@ -111,10 +113,10 @@ public class EntityTypeObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        var coreControl = Session.getModelController(CoreControl.class);
+        var entityTypeControl = Session.getModelController(EntityTypeControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return coreControl.getBestEntityTypeDescription(entityType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
+        return entityTypeControl.getBestEntityTypeDescription(entityType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
     @GraphQLField
@@ -123,11 +125,11 @@ public class EntityTypeObject
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<EntityInstanceObject> getEntityInstances(final DataFetchingEnvironment env) {
         if(CoreSecurityUtils.getHasEntityInstancesAccess(env)) {
-            var coreControl = Session.getModelController(CoreControl.class);
-            var totalCount = coreControl.countEntityInstancesByEntityType(entityType);
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+            var totalCount = entityInstanceControl.countEntityInstancesByEntityType(entityType);
 
             try(var objectLimiter = new ObjectLimiter(env, EntityInstanceConstants.COMPONENT_VENDOR_NAME, EntityInstanceConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var entities = coreControl.getEntityInstancesByEntityType(entityType);
+                var entities = entityInstanceControl.getEntityInstancesByEntityType(entityType);
                 var entityInstances = entities.stream().map(EntityInstanceObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, entityInstances);

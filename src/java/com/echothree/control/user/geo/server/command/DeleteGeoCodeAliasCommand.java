@@ -56,8 +56,8 @@ public class DeleteGeoCodeAliasCommand
     }
     
     /** Creates a new instance of DeleteGeoCodeAliasCommand */
-    public DeleteGeoCodeAliasCommand(UserVisitPK userVisitPK, DeleteGeoCodeAliasForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteGeoCodeAliasCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

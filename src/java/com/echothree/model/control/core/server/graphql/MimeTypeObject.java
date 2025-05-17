@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.core.server.graphql;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.user.server.control.UserControl;
@@ -86,10 +86,10 @@ public class MimeTypeObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        var coreControl = Session.getModelController(CoreControl.class);
+        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return coreControl.getBestMimeTypeDescription(mimeType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
+        return mimeTypeControl.getBestMimeTypeDescription(mimeType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
     @GraphQLField
@@ -99,8 +99,8 @@ public class MimeTypeObject
         List<MimeTypeUsageObject> mimeTypeUsages = null;
         
         if(CoreSecurityUtils.getHasMimeTypeUsagesAccess(env)) {
-            var coreControl = Session.getModelController(CoreControl.class);
-            var entities = coreControl.getMimeTypeUsagesByMimeType(mimeType);
+            var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
+            var entities = mimeTypeControl.getMimeTypeUsagesByMimeType(mimeType);
             List<MimeTypeUsageObject> objects = new ArrayList<>(entities.size());
 
             entities.forEach((entity) -> {
@@ -120,8 +120,8 @@ public class MimeTypeObject
         List<MimeTypeFileExtensionObject> mimeTypeFileExtensions = null;
         
         if(CoreSecurityUtils.getHasMimeTypeFileExtensionsAccess(env)) {
-            var coreControl = Session.getModelController(CoreControl.class);
-            var entities = coreControl.getMimeTypeFileExtensionsByMimeType(mimeType);
+            var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
+            var entities = mimeTypeControl.getMimeTypeFileExtensionsByMimeType(mimeType);
             List<MimeTypeFileExtensionObject> objects = new ArrayList<>(entities.size());
 
             entities.forEach((entity) -> {

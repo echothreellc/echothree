@@ -42,8 +42,8 @@ public class GetForumPartyRolesCommand
     }
     
     /** Creates a new instance of GetForumPartyRolesCommand */
-    public GetForumPartyRolesCommand(UserVisitPK userVisitPK, GetForumPartyRolesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetForumPartyRolesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

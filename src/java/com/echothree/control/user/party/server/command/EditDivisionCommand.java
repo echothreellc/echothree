@@ -61,8 +61,8 @@ public class EditDivisionCommand
     }
     
     /** Creates a new instance of EditDivisionCommand */
-    public EditDivisionCommand(UserVisitPK userVisitPK, EditDivisionForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditDivisionCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

@@ -59,8 +59,8 @@ public class CreateTrackCommand
     }
     
     /** Creates a new instance of CreateTrackCommand */
-    public CreateTrackCommand(UserVisitPK userVisitPK, CreateTrackForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateTrackCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

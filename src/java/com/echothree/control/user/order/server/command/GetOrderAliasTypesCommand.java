@@ -57,8 +57,8 @@ public class GetOrderAliasTypesCommand
     }
 
     /** Creates a new instance of GetOrderAliasTypesCommand */
-    public GetOrderAliasTypesCommand(UserVisitPK userVisitPK, GetOrderAliasTypesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetOrderAliasTypesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

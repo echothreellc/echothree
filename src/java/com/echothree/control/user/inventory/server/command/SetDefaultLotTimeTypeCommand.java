@@ -54,8 +54,8 @@ public class SetDefaultLotTimeTypeCommand
     }
     
     /** Creates a new instance of SetDefaultLotTimeTypeCommand */
-    public SetDefaultLotTimeTypeCommand(UserVisitPK userVisitPK, SetDefaultLotTimeTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultLotTimeTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

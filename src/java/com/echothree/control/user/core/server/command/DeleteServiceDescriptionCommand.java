@@ -17,15 +17,16 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteServiceDescriptionForm;
+import com.echothree.model.control.core.server.control.ServerControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -56,15 +57,15 @@ public class DeleteServiceDescriptionCommand
     }
     
     /** Creates a new instance of DeleteServiceDescriptionCommand */
-    public DeleteServiceDescriptionCommand(UserVisitPK userVisitPK, DeleteServiceDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteServiceDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var serverControl = Session.getModelController(ServerControl.class);
         var serviceName = form.getServiceName();
-        var service = coreControl.getServiceByName(serviceName);
+        var service = serverControl.getServiceByName(serviceName);
         
         if(service != null) {
             var partyControl = Session.getModelController(PartyControl.class);
@@ -72,10 +73,10 @@ public class DeleteServiceDescriptionCommand
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                var serviceDescription = coreControl.getServiceDescriptionForUpdate(service, language);
+                var serviceDescription = serverControl.getServiceDescriptionForUpdate(service, language);
                 
                 if(serviceDescription != null) {
-                    coreControl.deleteServiceDescription(serviceDescription, getPartyPK());
+                    serverControl.deleteServiceDescription(serviceDescription, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownServiceDescription.name());
                 }

@@ -55,8 +55,8 @@ public class DeleteBatchTypeCommand
     }
     
     /** Creates a new instance of DeleteBatchTypeCommand */
-    public DeleteBatchTypeCommand(UserVisitPK userVisitPK, DeleteBatchTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteBatchTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

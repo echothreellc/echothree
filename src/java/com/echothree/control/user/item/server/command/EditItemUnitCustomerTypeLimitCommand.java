@@ -59,8 +59,8 @@ public class EditItemUnitCustomerTypeLimitCommand
     }
     
     /** Creates a new instance of EditItemUnitCustomerTypeLimitCommand */
-    public EditItemUnitCustomerTypeLimitCommand(UserVisitPK userVisitPK, EditItemUnitCustomerTypeLimitForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditItemUnitCustomerTypeLimitCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

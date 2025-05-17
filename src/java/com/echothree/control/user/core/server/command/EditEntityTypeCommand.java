@@ -30,10 +30,10 @@ import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -74,8 +74,8 @@ public class EditEntityTypeCommand
     }
     
     /** Creates a new instance of EditEntityTypeCommand */
-    public EditEntityTypeCommand(UserVisitPK userVisitPK, EditEntityTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditEntityTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override
@@ -92,19 +92,18 @@ public class EditEntityTypeCommand
     
     @Override
     public EntityType getEntity(EditEntityTypeResult result) {
-        var coreControl = getCoreControl();
         EntityType entityType = null;
         var componentVendorName = spec.getComponentVendorName();
         
-        componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
             var entityTypeName = spec.getEntityTypeName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+                entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
             } else { // EditMode.UPDATE
-                entityType = coreControl.getEntityTypeByNameForUpdate(componentVendor, entityTypeName);
+                entityType = getEntityTypeControl().getEntityTypeByNameForUpdate(componentVendor, entityTypeName);
             }
 
             if(entityType == null) {
@@ -124,16 +123,13 @@ public class EditEntityTypeCommand
 
     @Override
     public void fillInResult(EditEntityTypeResult result, EntityType entityType) {
-        var coreControl = getCoreControl();
-
-        result.setEntityType(coreControl.getEntityTypeTransfer(getUserVisit(), entityType));
+        result.setEntityType(getEntityTypeControl().getEntityTypeTransfer(getUserVisit(), entityType));
     }
 
     @Override
     public void doLock(EntityTypeEdit edit, EntityType entityType) {
-        var coreControl = getCoreControl();
         var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
-        var entityTypeDescription = coreControl.getEntityTypeDescription(entityType, getPreferredLanguage());
+        var entityTypeDescription = getEntityTypeControl().getEntityTypeDescription(entityType, getPreferredLanguage());
         var entityTypeDetail = entityType.getLastDetail();
         UnitOfMeasureTypeLogic.StringUnitOfMeasure stringUnitOfMeasure;
 
@@ -154,9 +150,8 @@ public class EditEntityTypeCommand
 
     @Override
     public void canUpdate(EntityType entityType) {
-        var coreControl = getCoreControl();
         var entityTypeName = edit.getEntityTypeName();
-        var duplicateEntityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+        var duplicateEntityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
 
         if(duplicateEntityType != null && !entityType.equals(duplicateEntityType)) {
             addExecutionError(ExecutionErrors.DuplicateEntityTypeName.name(), entityTypeName);
@@ -173,10 +168,9 @@ public class EditEntityTypeCommand
 
     @Override
     public void doUpdate(EntityType entityType) {
-        var coreControl = getCoreControl();
         var partyPK = getPartyPK();
-        var entityTypeDetailValue = coreControl.getEntityTypeDetailValueForUpdate(entityType);
-        var entityTypeDescription = coreControl.getEntityTypeDescriptionForUpdate(entityType, getPreferredLanguage());
+        var entityTypeDetailValue = getEntityTypeControl().getEntityTypeDetailValueForUpdate(entityType);
+        var entityTypeDescription = getEntityTypeControl().getEntityTypeDescriptionForUpdate(entityType, getPreferredLanguage());
         var description = edit.getDescription();
 
         entityTypeDetailValue.setEntityTypeName(edit.getEntityTypeName());
@@ -185,19 +179,19 @@ public class EditEntityTypeCommand
         entityTypeDetailValue.setIsExtensible(Boolean.valueOf(edit.getIsExtensible()));
         entityTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        coreControl.updateEntityTypeFromValue(entityTypeDetailValue, partyPK);
+        getEntityTypeControl().updateEntityTypeFromValue(entityTypeDetailValue, partyPK);
 
         if(entityTypeDescription == null && description != null) {
-            coreControl.createEntityTypeDescription(entityType, getPreferredLanguage(), description, partyPK);
+            getEntityTypeControl().createEntityTypeDescription(entityType, getPreferredLanguage(), description, partyPK);
         } else {
             if(entityTypeDescription != null && description == null) {
-                coreControl.deleteEntityTypeDescription(entityTypeDescription, partyPK);
+                getEntityTypeControl().deleteEntityTypeDescription(entityTypeDescription, partyPK);
             } else {
                 if(entityTypeDescription != null && description != null) {
-                    var entityTypeDescriptionValue = coreControl.getEntityTypeDescriptionValue(entityTypeDescription);
+                    var entityTypeDescriptionValue = getEntityTypeControl().getEntityTypeDescriptionValue(entityTypeDescription);
 
                     entityTypeDescriptionValue.setDescription(description);
-                    coreControl.updateEntityTypeDescriptionFromValue(entityTypeDescriptionValue, partyPK);
+                    getEntityTypeControl().updateEntityTypeDescriptionFromValue(entityTypeDescriptionValue, partyPK);
                 }
             }
         }

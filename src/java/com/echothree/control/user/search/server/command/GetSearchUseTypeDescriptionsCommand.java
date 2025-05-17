@@ -56,8 +56,8 @@ public class GetSearchUseTypeDescriptionsCommand
     }
     
     /** Creates a new instance of GetSearchUseTypeDescriptionsCommand */
-    public GetSearchUseTypeDescriptionsCommand(UserVisitPK userVisitPK, GetSearchUseTypeDescriptionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetSearchUseTypeDescriptionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

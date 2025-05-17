@@ -59,8 +59,8 @@ public class CreateIndexFieldCommand
     }
     
     /** Creates a new instance of CreateIndexFieldCommand */
-    public CreateIndexFieldCommand(UserVisitPK userVisitPK, CreateIndexFieldForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateIndexFieldCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

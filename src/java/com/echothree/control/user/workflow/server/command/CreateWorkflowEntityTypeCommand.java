@@ -22,10 +22,10 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -57,8 +57,8 @@ public class CreateWorkflowEntityTypeCommand
     }
     
     /** Creates a new instance of CreateWorkflowEntityTypeCommand */
-    public CreateWorkflowEntityTypeCommand(UserVisitPK userVisitPK, CreateWorkflowEntityTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateWorkflowEntityTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
@@ -68,13 +68,12 @@ public class CreateWorkflowEntityTypeCommand
         var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow != null) {
-            var coreControl = getCoreControl();
             var componentVendorName = form.getComponentVendorName();
-            var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+            var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
             
             if(componentVendor != null) {
                 var entityTypeName = form.getEntityTypeName();
-                var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+                var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
                 
                 if(entityType != null) {
                     var workflowEntityType = workflowControl.getWorkflowEntityType(workflow, entityType);

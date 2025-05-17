@@ -69,8 +69,8 @@ public class EditPrinterDescriptionCommand
     }
 
     /** Creates a new instance of EditPrinterDescriptionCommand */
-    public EditPrinterDescriptionCommand(UserVisitPK userVisitPK, EditPrinterDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditPrinterDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

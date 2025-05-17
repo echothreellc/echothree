@@ -18,6 +18,7 @@ package com.echothree.control.user.message.server.command;
 
 import com.echothree.control.user.message.common.form.CreateMessageTypeForm;
 import com.echothree.control.user.message.common.result.MessageResultFactory;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.message.server.control.MessageControl;
 import com.echothree.model.data.message.server.entity.MessageType;
@@ -49,8 +50,8 @@ public class CreateMessageTypeCommand
     }
     
     /** Creates a new instance of CreateMessageTypeCommand */
-    public CreateMessageTypeCommand(UserVisitPK userVisitPK, CreateMessageTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateMessageTypeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
@@ -71,9 +72,9 @@ public class CreateMessageTypeCommand
                 messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
                 
                 if(messageType == null) {
-                    var coreControl = getCoreControl();
+                    var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
                     var mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
-                    var mimeTypeUsageType = mimeTypeUsageTypeName == null? null: coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
+                    var mimeTypeUsageType = mimeTypeUsageTypeName == null? null: mimeTypeControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
                     
                     if(mimeTypeUsageTypeName == null || mimeTypeUsageType != null) {
                         var partyPK = getPartyPK();

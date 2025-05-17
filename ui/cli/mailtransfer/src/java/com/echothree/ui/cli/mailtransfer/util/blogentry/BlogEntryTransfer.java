@@ -31,7 +31,6 @@ import com.echothree.util.common.cyberneko.HtmlWriter;
 import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.common.string.StringUtils;
 import com.echothree.util.common.string.XmlUtils;
-import com.google.common.base.Charsets;
 import com.google.common.base.Splitter;
 import com.google.common.html.HtmlEscapers;
 import java.io.BufferedReader;
@@ -41,6 +40,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringReader;
 import java.net.SocketException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -415,8 +415,7 @@ public class BlogEntryTransfer {
             collectedParts.addCapturedMessagePart(html);
 
             log.info(indent + "text/plain");
-        } else if(content instanceof MimeMultipart) {
-            var mimeMultipartContent = (MimeMultipart)content;
+        } else if(content instanceof MimeMultipart mimeMultipartContent) {
             var mimeType = new MimeType(mimeMultipartContent.getContentType());
             var subType = mimeType.getSubType();
             var mimeTypeName = mimeType.getPrimaryType() + "/" + subType;
@@ -460,8 +459,7 @@ public class BlogEntryTransfer {
                     log.error(indent + "unknown subType: " + subType);
                     break;
             }
-        } else if(content instanceof MimeBodyPart) {
-            var mimeBodyPart = (MimeBodyPart)content;
+        } else if(content instanceof MimeBodyPart mimeBodyPart) {
             var mimeType = new MimeType(mimeBodyPart.getContentType());
 
             var primaryType = mimeType.getPrimaryType();
@@ -616,7 +614,7 @@ public class BlogEntryTransfer {
                                     stringBuilder.append('\n');
                                 }
 
-                                var message = new ByteArray(stringBuilder.toString().getBytes(Charsets.UTF_8));
+                                var message = new ByteArray(stringBuilder.toString().getBytes(StandardCharsets.UTF_8));
 
                                 String description;
                                 String sender = null;

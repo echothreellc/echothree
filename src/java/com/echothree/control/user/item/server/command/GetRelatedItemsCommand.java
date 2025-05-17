@@ -50,8 +50,8 @@ public class GetRelatedItemsCommand
     }
     
     /** Creates a new instance of GetRelatedItemsCommand */
-    public GetRelatedItemsCommand(UserVisitPK userVisitPK, GetRelatedItemsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetRelatedItemsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
 
     RelatedItemType relatedItemType;

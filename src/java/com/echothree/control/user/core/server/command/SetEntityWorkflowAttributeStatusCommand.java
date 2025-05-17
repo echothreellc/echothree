@@ -60,8 +60,8 @@ public class SetEntityWorkflowAttributeStatusCommand
     }
     
     /** Creates a new instance of SetEntityWorkflowAttributeStatusCommand */
-    public SetEntityWorkflowAttributeStatusCommand(UserVisitPK userVisitPK, SetEntityWorkflowAttributeStatusForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetEntityWorkflowAttributeStatusCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

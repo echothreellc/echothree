@@ -24,6 +24,7 @@ import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.control.user.item.common.spec.ItemDescriptionSpec;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemDescriptionLogic;
 import com.echothree.model.control.item.server.logic.ItemDescriptionLogic.ImageDimensions;
@@ -37,12 +38,12 @@ import com.echothree.model.data.item.server.entity.ItemDescription;
 import com.echothree.model.data.item.server.entity.ItemDescriptionType;
 import com.echothree.model.data.item.server.entity.ItemImageType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.persistence.type.ByteArray;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -82,8 +83,8 @@ public class EditItemDescriptionCommand
     }
     
     /** Creates a new instance of EditItemDescriptionCommand */
-    public EditItemDescriptionCommand(UserVisitPK userVisitPK, EditItemDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditItemDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override
@@ -201,15 +202,15 @@ public class EditItemDescriptionCommand
                 addExecutionError(ExecutionErrors.InvalidMimeType.name());
             }
         } else {
-            var coreControl = getCoreControl();
+            var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
 
-            mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+            mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
 
             if(mimeType != null) {
                 var mimeTypeUsageType = itemDescriptionType.getLastDetail().getMimeTypeUsageType();
 
                 if(mimeTypeUsageType != null) {
-                    var mimeTypeUsage = coreControl.getMimeTypeUsage(mimeType, mimeTypeUsageType);
+                    var mimeTypeUsage = mimeTypeControl.getMimeTypeUsage(mimeType, mimeTypeUsageType);
 
                     if(mimeTypeUsage != null) {
                         var mimeTypeDetail = mimeType.getLastDetail();

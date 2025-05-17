@@ -53,8 +53,8 @@ public class EditPostalAddressFormatDescriptionCommand
     }
     
     /** Creates a new instance of EditPostalAddressFormatDescriptionCommand */
-    public EditPostalAddressFormatDescriptionCommand(UserVisitPK userVisitPK, EditPostalAddressFormatDescriptionForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditPostalAddressFormatDescriptionCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

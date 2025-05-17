@@ -50,8 +50,8 @@ public class GetComponentVendorsCommand
     }
     
     /** Creates a new instance of GetComponentVendorsCommand */
-    public GetComponentVendorsCommand(UserVisitPK userVisitPK, GetComponentVendorsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetComponentVendorsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override
@@ -61,12 +61,12 @@ public class GetComponentVendorsCommand
 
     @Override
     protected Long getTotalEntities() {
-        return getCoreControl().countComponentVendors();
+        return getComponentControl().countComponentVendors();
     }
 
     @Override
     protected Collection<ComponentVendor> getEntities() {
-        return getCoreControl().getComponentVendors();
+        return getComponentControl().getComponentVendors();
     }
 
     @Override
@@ -74,7 +74,7 @@ public class GetComponentVendorsCommand
         var result = CoreResultFactory.getGetComponentVendorsResult();
 
         if(entities != null) {
-            result.setComponentVendors(getCoreControl().getComponentVendorTransfers(getUserVisit(), entities));
+            result.setComponentVendors(getComponentControl().getComponentVendorTransfers(getUserVisit(), entities));
         }
 
         return result;

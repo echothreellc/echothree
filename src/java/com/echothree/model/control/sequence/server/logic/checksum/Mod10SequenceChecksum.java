@@ -17,7 +17,7 @@
 package com.echothree.model.control.sequence.server.logic.checksum;
 
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
-import com.google.common.base.Charsets;
+import java.nio.charset.StandardCharsets;
 
 public class Mod10SequenceChecksum
         implements SequenceChecksum {
@@ -36,7 +36,7 @@ public class Mod10SequenceChecksum
 
     @Override
     public String calculate(String value) {
-        var bytes = value.getBytes(Charsets.UTF_8);
+        var bytes = value.getBytes(StandardCharsets.UTF_8);
         var sum = 0;
 
         for(var i = 0; i < bytes.length; i++) {

@@ -55,8 +55,8 @@ public class DeleteSearchDefaultOperatorCommand
     }
     
     /** Creates a new instance of DeleteSearchDefaultOperatorCommand */
-    public DeleteSearchDefaultOperatorCommand(UserVisitPK userVisitPK, DeleteSearchDefaultOperatorForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteSearchDefaultOperatorCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

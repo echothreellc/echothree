@@ -18,6 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEntityAliasTypeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.EntityAliasControl;
 import com.echothree.model.control.core.server.logic.EntityAliasTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -31,6 +32,7 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.List;
 
 public class GetEntityAliasTypeCommand
@@ -57,8 +59,8 @@ public class GetEntityAliasTypeCommand
     }
     
     /** Creates a new instance of GetEntityAliasTypeCommand */
-    public GetEntityAliasTypeCommand(UserVisitPK userVisitPK, GetEntityAliasTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetEntityAliasTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
@@ -68,11 +70,11 @@ public class GetEntityAliasTypeCommand
     
     @Override
     protected BaseResult getResult(EntityAliasType entityAliasType) {
-        var coreControl = getCoreControl();
+        var entityAliasControl = Session.getModelController(EntityAliasControl.class);
         var result = CoreResultFactory.getGetEntityAliasTypeResult();
 
         if(entityAliasType != null) {
-            result.setEntityAliasType(coreControl.getEntityAliasTypeTransfer(getUserVisit(), entityAliasType, null));
+            result.setEntityAliasType(entityAliasControl.getEntityAliasTypeTransfer(getUserVisit(), entityAliasType, null));
         }
         
         return result;

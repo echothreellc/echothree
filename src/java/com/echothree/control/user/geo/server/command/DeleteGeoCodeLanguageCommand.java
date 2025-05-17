@@ -57,8 +57,8 @@ public class DeleteGeoCodeLanguageCommand
     }
     
     /** Creates a new instance of DeleteGeoCodeLanguageCommand */
-    public DeleteGeoCodeLanguageCommand(UserVisitPK userVisitPK, DeleteGeoCodeLanguageForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteGeoCodeLanguageCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

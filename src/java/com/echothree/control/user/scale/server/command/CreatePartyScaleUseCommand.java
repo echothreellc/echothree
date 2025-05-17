@@ -59,8 +59,8 @@ public class CreatePartyScaleUseCommand
     }
 
     /** Creates a new instance of CreatePartyScaleUseCommand */
-    public CreatePartyScaleUseCommand(UserVisitPK userVisitPK, CreatePartyScaleUseForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreatePartyScaleUseCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

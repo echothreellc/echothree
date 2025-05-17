@@ -21,15 +21,17 @@ import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.logic.AppearanceLogic;
+import com.echothree.model.control.core.server.control.TextControl;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.core.server.logic.TextLogic;
 import com.echothree.model.data.core.server.entity.TextDecoration;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -49,13 +51,12 @@ public class GetTextDecorationCommand
     }
     
     /** Creates a new instance of GetTextDecorationCommand */
-    public GetTextDecorationCommand(UserVisitPK userVisitPK, GetTextDecorationForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetTextDecorationCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
     protected TextDecoration getEntity() {
-        var coreControl = getCoreControl();
         TextDecoration textDecoration = null;
         var textDecorationName = form.getTextDecorationName();
         var parameterCount = (textDecorationName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
@@ -66,10 +67,12 @@ public class GetTextDecorationCommand
                         ComponentVendors.ECHO_THREE.name(), EntityTypes.TextDecoration.name());
 
                 if(!hasExecutionErrors()) {
-                    textDecoration = coreControl.getTextDecorationByEntityInstance(entityInstance);
+                    var textControl = Session.getModelController(TextControl.class);
+
+                    textDecoration = textControl.getTextDecorationByEntityInstance(entityInstance);
                 }
             } else {
-                textDecoration = AppearanceLogic.getInstance().getTextDecorationByName(this, textDecorationName);
+                textDecoration = TextLogic.getInstance().getTextDecorationByName(this, textDecorationName);
             }
 
             if(textDecoration != null) {
@@ -84,11 +87,12 @@ public class GetTextDecorationCommand
     
     @Override
     protected BaseResult getResult(TextDecoration textDecoration) {
-        var coreControl = getCoreControl();
         var result = CoreResultFactory.getGetTextDecorationResult();
 
         if(textDecoration != null) {
-            result.setTextDecoration(coreControl.getTextDecorationTransfer(getUserVisit(), textDecoration));
+            var textControl = Session.getModelController(TextControl.class);
+
+            result.setTextDecoration(textControl.getTextDecorationTransfer(getUserVisit(), textDecoration));
         }
 
         return result;

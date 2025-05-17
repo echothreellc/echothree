@@ -57,8 +57,8 @@ public class GetSequenceChecksumTypeCommand
     }
 
     /** Creates a new instance of GetSequenceChecksumTypeCommand */
-    public GetSequenceChecksumTypeCommand(UserVisitPK userVisitPK, GetSequenceChecksumTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetSequenceChecksumTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

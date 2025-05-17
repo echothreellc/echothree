@@ -55,8 +55,8 @@ public class DeleteItemAliasCommand
     }
     
     /** Creates a new instance of DeleteItemAliasCommand */
-    public DeleteItemAliasCommand(UserVisitPK userVisitPK, DeleteItemAliasForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteItemAliasCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

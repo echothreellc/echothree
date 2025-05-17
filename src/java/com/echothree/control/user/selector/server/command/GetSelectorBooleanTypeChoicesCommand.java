@@ -42,8 +42,8 @@ public class GetSelectorBooleanTypeChoicesCommand
     }
     
     /** Creates a new instance of GetSelectorBooleanTypeChoicesCommand */
-    public GetSelectorBooleanTypeChoicesCommand(UserVisitPK userVisitPK, GetSelectorBooleanTypeChoicesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public GetSelectorBooleanTypeChoicesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -59,8 +59,8 @@ public class GetEntityIntegerRangesCommand
     }
     
     /** Creates a new instance of GetEntityIntegerRangesCommand */
-    public GetEntityIntegerRangesCommand(UserVisitPK userVisitPK, GetEntityIntegerRangesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetEntityIntegerRangesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     EntityAttribute entityAttribute;
@@ -69,12 +69,12 @@ public class GetEntityIntegerRangesCommand
     protected Collection<EntityIntegerRange> getEntities() {
         var coreControl = getCoreControl();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
         Collection<EntityIntegerRange> entityIntegerRanges = null;
 
         if(componentVendor != null) {
             var entityTypeName = form.getEntityTypeName();
-            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
 
             if(entityType != null) {
                 var entityAttributeName = form.getEntityAttributeName();

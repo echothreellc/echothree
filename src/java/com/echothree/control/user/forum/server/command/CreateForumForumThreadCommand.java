@@ -44,8 +44,8 @@ public class CreateForumForumThreadCommand
     }
     
     /** Creates a new instance of CreateForumForumThreadCommand */
-    public CreateForumForumThreadCommand(UserVisitPK userVisitPK, CreateForumForumThreadForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateForumForumThreadCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -60,8 +60,8 @@ public class CreateWorkEffortScopeCommand
     }
     
     /** Creates a new instance of CreateWorkEffortScopeCommand */
-    public CreateWorkEffortScopeCommand(UserVisitPK userVisitPK, CreateWorkEffortScopeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateWorkEffortScopeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -21,6 +21,7 @@ import com.echothree.model.control.campaign.common.transfer.CampaignMediumTransf
 import com.echothree.model.control.campaign.server.control.CampaignControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.campaign.common.workflow.CampaignMediumStatusConstants;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.campaign.server.entity.CampaignMedium;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -29,7 +30,7 @@ import com.echothree.util.server.persistence.Session;
 public class CampaignMediumTransferCache
         extends BaseCampaignTransferCache<CampaignMedium, CampaignMediumTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of CampaignMediumTransferCache */
@@ -56,7 +57,7 @@ public class CampaignMediumTransferCache
             var sortOrder = campaignMediumDetail.getSortOrder();
             var description = campaignControl.getBestCampaignMediumDescription(campaignMedium, getLanguage());
 
-            var entityInstance = coreControl.getEntityInstanceByBasePK(campaignMedium.getPrimaryKey());
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignMedium.getPrimaryKey());
             var campaignMediumStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     CampaignMediumStatusConstants.Workflow_CAMPAIGN_MEDIUM_STATUS, entityInstance);
             

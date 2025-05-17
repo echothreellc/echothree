@@ -67,8 +67,8 @@ public class EditJobDescriptionCommand
     }
     
     /** Creates a new instance of EditJobDescriptionCommand */
-    public EditJobDescriptionCommand(UserVisitPK userVisitPK, EditJobDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditJobDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

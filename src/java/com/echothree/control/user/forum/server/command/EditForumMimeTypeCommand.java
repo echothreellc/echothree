@@ -22,14 +22,15 @@ import com.echothree.control.user.forum.common.form.EditForumMimeTypeForm;
 import com.echothree.control.user.forum.common.result.EditForumMimeTypeResult;
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
 import com.echothree.control.user.forum.common.spec.ForumMimeTypeSpec;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.forum.server.entity.Forum;
 import com.echothree.model.data.forum.server.entity.ForumMimeType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -55,8 +56,8 @@ public class EditForumMimeTypeCommand
     }
     
     /** Creates a new instance of EditForumMimeTypeCommand */
-    public EditForumMimeTypeCommand(UserVisitPK userVisitPK, EditForumMimeTypeForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditForumMimeTypeCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override
@@ -77,9 +78,9 @@ public class EditForumMimeTypeCommand
         var forum = forumControl.getForumByName(forumName);
 
         if(forum != null) {
-            var coreControl = getCoreControl();
+            var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
             var mimeTypeName = spec.getMimeTypeName();
-            var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+            var mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
 
             if(mimeType != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

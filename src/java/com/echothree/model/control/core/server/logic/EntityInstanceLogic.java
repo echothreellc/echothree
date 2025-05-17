@@ -28,7 +28,8 @@ import com.echothree.model.control.core.common.exception.InvalidEntityTypeExcept
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.common.exception.UnknownEntityRefException;
 import com.echothree.model.control.core.common.exception.UnknownUuidException;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
+import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -60,12 +61,12 @@ public class EntityInstanceLogic
         EntityInstance entityInstance = null;
 
         if(!ComponentVendors.ECHO_THREE.name().equals(componentVendorName)) {
-            var coreControl = Session.getModelController(CoreControl.class);
+            var eventControl = Session.getModelController(EventControl.class);
             var entityTypeName = entityTypeDetail.getEntityTypeName();
             var entityIdGenerator = new EntityIdGenerator(componentVendorName, entityTypeName, 1); // TODO
             var entityId = entityIdGenerator.getNextEntityId();
             var basePK = new BasePK(componentVendorName, entityTypeName, entityId);
-            var event = coreControl.sendEvent(basePK, EventTypes.CREATE, null, null, createdBy);
+            var event = eventControl.sendEvent(basePK, EventTypes.CREATE, null, null, createdBy);
 
             entityInstance = event.getEntityInstance();
         } else {
@@ -75,9 +76,9 @@ public class EntityInstanceLogic
         return entityInstance;
     }
 
-    private boolean checkEntityTimeForDeletion(CoreControl coreControl, EntityInstance entityInstance) {
+    private boolean checkEntityTimeForDeletion(EventControl eventControl, EntityInstance entityInstance) {
         boolean wasDeleted = false;
-        var entityTime = coreControl.getEntityTime(entityInstance);
+        var entityTime = eventControl.getEntityTime(entityInstance);
 
         // If the EntityTime is null, then we're not going to find a DeletedTime, which means it must exist...
         // do not mark it as having been deleted.
@@ -93,13 +94,14 @@ public class EntityInstanceLogic
     }
     
     public EntityInstance getEntityInstanceByEntityRef(final ExecutionErrorAccumulator eea, final String entityRef) {
-        var coreControl = Session.getModelController(CoreControl.class);
-        var entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+        var entityInstance = entityInstanceControl.getEntityInstanceByEntityRef(entityRef);
 
         if(entityInstance == null) {
             handleExecutionError(UnknownEntityRefException.class, eea, ExecutionErrors.UnknownEntityRef.name(), entityRef);
         } else {
-            var wasDeleted = checkEntityTimeForDeletion(coreControl, entityInstance);
+            var eventControl = Session.getModelController(EventControl.class);
+            var wasDeleted = checkEntityTimeForDeletion(eventControl, entityInstance);
 
             if(wasDeleted) {
                 entityInstance = null;
@@ -116,13 +118,14 @@ public class EntityInstanceLogic
     }
     
     public EntityInstance getEntityInstanceByUuid(final ExecutionErrorAccumulator eea, final String uuid) {
-        var coreControl = Session.getModelController(CoreControl.class);
-        var entityInstance = coreControl.getEntityInstanceByUuid(uuid);
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+        var entityInstance = entityInstanceControl.getEntityInstanceByUuid(uuid);
 
         if(entityInstance == null) {
             handleExecutionError(UnknownUuidException.class, eea, ExecutionErrors.UnknownUuid.name(), uuid);
         } else {
-            var wasDeleted = checkEntityTimeForDeletion(coreControl, coreControl.getEntityInstanceByUuid(uuid));
+            var eventControl = Session.getModelController(EventControl.class);
+            var wasDeleted = checkEntityTimeForDeletion(eventControl, entityInstanceControl.getEntityInstanceByUuid(uuid));
 
             if(wasDeleted) {
                 entityInstance = null;
@@ -220,9 +223,9 @@ public class EntityInstanceLogic
         var componentVendorName = entityInstance.getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName();
 
         if(!ComponentVendors.ECHO_THREE.name().equals(componentVendorName)) {
-            var coreControl = Session.getModelController(CoreControl.class);
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
-            coreControl.deleteEntityInstance(entityInstance, deletedBy);
+            entityInstanceControl.deleteEntityInstance(entityInstance, deletedBy);
         } else {
             handleExecutionError(InvalidComponentVendorException.class, eea, ExecutionErrors.InvalidComponentVendor.name(), componentVendorName);
         }
@@ -232,9 +235,9 @@ public class EntityInstanceLogic
         var componentVendorName = entityInstance.getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName();
 
         if(!ComponentVendors.ECHO_THREE.name().equals(componentVendorName)) {
-            var coreControl = Session.getModelController(CoreControl.class);
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
-            coreControl.removeEntityInstance(entityInstance);
+            entityInstanceControl.removeEntityInstance(entityInstance);
         } else {
             handleExecutionError(InvalidComponentVendorException.class, eea, ExecutionErrors.InvalidComponentVendor.name(), componentVendorName);
         }

@@ -16,17 +16,17 @@
 
 package com.echothree.control.user.authentication.server.command;
 
-import com.echothree.model.control.accounting.server.logic.TransactionLogic;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class IdleCommand
         extends BaseSimpleCommand {
     
     /** Creates a new instance of IdleCommand */
-    public IdleCommand(UserVisitPK userVisitPK) {
-        super(userVisitPK, null, false);
+    public IdleCommand() {
+        super(null, false);
         
         // This command has no possible side effects beyond updating the LastCommandTime for the UserVisit. Do not log it.
         setLogCommand(false);

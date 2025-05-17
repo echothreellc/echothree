@@ -19,6 +19,7 @@ package com.echothree.control.user.comment.server.command;
 import com.echothree.control.user.comment.common.form.CreateCommentTypeForm;
 import com.echothree.control.user.comment.common.result.CommentResultFactory;
 import com.echothree.model.control.comment.server.control.CommentControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
@@ -57,8 +58,8 @@ public class CreateCommentTypeCommand
     }
     
     /** Creates a new instance of CreateCommentTypeCommand */
-    public CreateCommentTypeCommand(UserVisitPK userVisitPK, CreateCommentTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateCommentTypeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
@@ -117,9 +118,9 @@ public class CreateCommentTypeCommand
                             }
 
                             if(!hasExecutionErrors()) {
-                                var coreControl = getCoreControl();
+                                var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
                                 var mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
-                                var mimeTypeUsageType = mimeTypeUsageTypeName == null ? null : coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
+                                var mimeTypeUsageType = mimeTypeUsageTypeName == null ? null : mimeTypeControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
 
                                 if(mimeTypeUsageTypeName == null || (mimeTypeUsageTypeName != null && mimeTypeUsageType != null)) {
                                     var partyPK = getPartyPK();

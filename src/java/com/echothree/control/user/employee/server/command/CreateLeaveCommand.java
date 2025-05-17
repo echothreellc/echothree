@@ -71,8 +71,8 @@ public class CreateLeaveCommand
     }
     
     /** Creates a new instance of CreateLeaveCommand */
-    public CreateLeaveCommand(UserVisitPK userVisitPK, CreateLeaveForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateLeaveCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

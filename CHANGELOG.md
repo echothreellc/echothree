@@ -1,5 +1,55 @@
 # Changelog
 
+## 2025-05-11-01
+
+* Move Party Entity Type Functions to PartyEntityTypeControl [1551](https://gitlab.echothree.com/echothree/echothree/-/issues/1551)
+* Move Party Application Editor Use Functions to PartyApplicationEditorUseControl [1552](https://gitlab.echothree.com/echothree/echothree/-/issues/1552)
+* Move Party Entity Types to Party Component [1553](https://gitlab.echothree.com/echothree/echothree/-/issues/1553)
+* Move Party Application Editor Uses to Party Component [1554](https://gitlab.echothree.com/echothree/echothree/-/issues/1554)
+* Replace Charsets.UTF_8 With StandardCharsets.UTF_8 [1555](https://gitlab.echothree.com/echothree/echothree/-/issues/1555)
+* jOOQ 3.20.4 Upgrade [1556](https://gitlab.echothree.com/echothree/echothree/-/issues/1556)
+* Parameterless Constructors for User Commands [1557](https://gitlab.echothree.com/echothree/echothree/-/issues/1557)
+* Error Prone 2.38.0 Upgrade [1558](https://gitlab.echothree.com/echothree/echothree/-/issues/1558)
+* Permission Check Failing for GraphQL Fields [1559](https://gitlab.echothree.com/echothree/echothree/-/issues/1559)
+
+## 2025-04-27-01
+
+* Move Appearance Functions to AppearanceControl [1534](https://gitlab.echothree.com/echothree/echothree/-/issues/1534)
+* Move Text Functions to TextControl [1535](https://gitlab.echothree.com/echothree/echothree/-/issues/1535)
+* ICU4J 77.1 Upgrade [1536](https://gitlab.echothree.com/echothree/echothree/-/issues/1536)
+* Move Font Functions to FontControl [1537](https://gitlab.echothree.com/echothree/echothree/-/issues/1537)
+* Move Color Functions to ColorControl [1538](https://gitlab.echothree.com/echothree/echothree/-/issues/1538)
+* Move Editor Functions to EditorControl [1539](https://gitlab.echothree.com/echothree/echothree/-/issues/1539)
+* Move Application Functions to ApplicationControl [1540](https://gitlab.echothree.com/echothree/echothree/-/issues/1540)
+* Move Command Functions to CommandControl [1541](https://gitlab.echothree.com/echothree/echothree/-/issues/1541)
+* ClassGraph 4.8.179 Upgrade [1542](https://gitlab.echothree.com/echothree/echothree/-/issues/1542)
+* Move Component Functions to ComponentControl [1543](https://gitlab.echothree.com/echothree/echothree/-/issues/1543)
+* Move Mime Type Functions to MimeTypeControl [1544](https://gitlab.echothree.com/echothree/echothree/-/issues/1544)
+* Move Entity Instance Functions to EntityInstanceControl [1545](https://gitlab.echothree.com/echothree/echothree/-/issues/1545)
+* Move Encryption Key Functions to EncryptionKeyControl [1546](https://gitlab.echothree.com/echothree/echothree/-/issues/1546)
+* Move Cache Entry Functions to CacheEntryControl [1547](https://gitlab.echothree.com/echothree/echothree/-/issues/1547)
+* Move Event Functions to EventControl [1548](https://gitlab.echothree.com/echothree/echothree/-/issues/1548)
+* Move Entity Alias Functions to EntityAliasControl [1549](https://gitlab.echothree.com/echothree/echothree/-/issues/1549)
+* Move Server Functions to ServerControl [1550](https://gitlab.echothree.com/echothree/echothree/-/issues/1550)
+
+## 2025-04-13-01
+
+* jOOQ 3.20.3 Upgrade [1529](https://gitlab.echothree.com/echothree/echothree/-/issues/1529)
+* Move Component Vendor Functions to ComponentVendorControl [1530](https://gitlab.echothree.com/echothree/echothree/-/issues/1530)
+* Move Entity Type Functions to EntityTypeControl [1531](https://gitlab.echothree.com/echothree/echothree/-/issues/1531)
+* Correct Pattern Matching Instanceof Warnings From Error Prone [1532](https://gitlab.echothree.com/echothree/echothree/-/issues/1532)
+* Apache Lucene 10.2.0 Upgrade [1533](https://gitlab.echothree.com/echothree/echothree/-/issues/1533)
+
+## 2025-03-30-01
+
+* Add Transaction GL Entry Object and Queries [1510](https://gitlab.echothree.com/echothree/echothree/-/issues/1510)
+* Add Transaction Entity Role Object and Queries [1511](https://gitlab.echothree.com/echothree/echothree/-/issues/1511)
+* Guava 33.4.5-jre Upgrade [1524](https://gitlab.echothree.com/echothree/echothree/-/issues/1524)
+* Bootstrap 4.6.2 Upgrade [1525](https://gitlab.echothree.com/echothree/echothree/-/issues/1525)
+* Add Transaction Time Type Object and Queries [1526](https://gitlab.echothree.com/echothree/echothree/-/issues/1526)
+* Add Transaction Time Object and Queries [1527](https://gitlab.echothree.com/echothree/echothree/-/issues/1527)
+* Remove Parent Transaction GL Entry from Transaction GL Entry [1528](https://gitlab.echothree.com/echothree/echothree/-/issues/1528)
+
 ## 2025-03-16-01
 
 * Add Default Value for Multiple List Item Attributes [1466](https://gitlab.echothree.com/echothree/echothree/-/issues/1466)

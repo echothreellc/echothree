@@ -22,10 +22,10 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -58,19 +58,18 @@ public class CreateEntityTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateEntityTypeDescriptionCommand */
-    public CreateEntityTypeDescriptionCommand(UserVisitPK userVisitPK, CreateEntityTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateEntityTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var entityTypeName = form.getEntityTypeName();
-            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
@@ -78,12 +77,12 @@ public class CreateEntityTypeDescriptionCommand
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    var entityTypeDescription = coreControl.getEntityTypeDescription(entityType, language);
+                    var entityTypeDescription = getEntityTypeControl().getEntityTypeDescription(entityType, language);
                     
                     if(entityTypeDescription == null) {
                         var description = form.getDescription();
-                        
-                        coreControl.createEntityTypeDescription(entityType, language, description, getPartyPK());
+
+                        getEntityTypeControl().createEntityTypeDescription(entityType, language, description, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.DuplicateEntityTypeDescription.name(), componentVendorName, entityTypeName, languageIsoName);
                     }

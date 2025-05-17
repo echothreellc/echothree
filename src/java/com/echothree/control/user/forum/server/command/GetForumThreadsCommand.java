@@ -52,8 +52,8 @@ public class GetForumThreadsCommand
     }
     
     /** Creates a new instance of GetForumThreadsCommand */
-    public GetForumThreadsCommand(UserVisitPK userVisitPK, GetForumThreadsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetForumThreadsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

@@ -46,8 +46,8 @@ public class CountEmployeeResultsCommand
     }
 
     /** Creates a new instance of CountEmployeeResultsCommand */
-    public CountEmployeeResultsCommand(UserVisitPK userVisitPK, CountEmployeeResultsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION);
+    public CountEmployeeResultsCommand() {
+        super(COMMAND_SECURITY_DEFINITION);
     }
     
     @Override

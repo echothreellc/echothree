@@ -60,8 +60,8 @@ public class EditCompanyCommand
     }
     
     /** Creates a new instance of EditCompanyCommand */
-    public EditCompanyCommand(UserVisitPK userVisitPK, EditCompanyForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditCompanyCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

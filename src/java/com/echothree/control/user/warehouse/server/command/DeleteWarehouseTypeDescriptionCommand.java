@@ -57,8 +57,8 @@ public class DeleteWarehouseTypeDescriptionCommand
     }
     
     /** Creates a new instance of DeleteWarehouseTypeDescriptionCommand */
-    public DeleteWarehouseTypeDescriptionCommand(UserVisitPK userVisitPK, DeleteWarehouseTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteWarehouseTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

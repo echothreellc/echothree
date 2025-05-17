@@ -60,8 +60,8 @@ public class GetSelectorCommand
     }
 
     /** Creates a new instance of GetSelectorCommand */
-    public GetSelectorCommand(UserVisitPK userVisitPK, GetSelectorForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetSelectorCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

@@ -19,6 +19,8 @@ package com.echothree.model.control.core.server.transfer;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.transfer.EntityBlobAttributeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.core.server.entity.EntityBlobAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -29,6 +31,8 @@ public class EntityBlobAttributeTransferCache
         extends BaseCoreTransferCache<EntityBlobAttribute, EntityBlobAttributeTransfer> {
 
     CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     boolean includeBlob;
@@ -50,10 +54,10 @@ public class EntityBlobAttributeTransferCache
         
         if(entityBlobAttributeTransfer == null) {
             var entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityBlobAttribute.getEntityAttribute(), entityInstance) : null;
-            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityBlobAttribute.getEntityInstance(), false, false, false, false);
+            var entityInstanceTransfer = entityInstanceControl.getEntityInstanceTransfer(userVisit, entityBlobAttribute.getEntityInstance(), false, false, false, false);
             var language = partyControl.getLanguageTransfer(userVisit, entityBlobAttribute.getLanguage());
             var blobAttribute = includeBlob ? entityBlobAttribute.getBlobAttribute() : null;
-            var mimeType = coreControl.getMimeTypeTransfer(userVisit, entityBlobAttribute.getMimeType());
+            var mimeType = mimeTypeControl.getMimeTypeTransfer(userVisit, entityBlobAttribute.getMimeType());
             String eTag = null;
             
             if(includeETag) {

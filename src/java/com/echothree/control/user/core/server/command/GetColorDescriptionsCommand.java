@@ -18,18 +18,20 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetColorDescriptionsForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.ColorControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -54,20 +56,20 @@ public class GetColorDescriptionsCommand
     }
     
     /** Creates a new instance of GetColorDescriptionsCommand */
-    public GetColorDescriptionsCommand(UserVisitPK userVisitPK, GetColorDescriptionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetColorDescriptionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var colorControl = Session.getModelController(ColorControl.class);
         var result = CoreResultFactory.getGetColorDescriptionsResult();
         var colorName = form.getColorName();
-        var color = coreControl.getColorByName(colorName);
+        var color = colorControl.getColorByName(colorName);
         
         if(color != null) {
-            result.setColor(coreControl.getColorTransfer(getUserVisit(), color));
-            result.setColorDescriptions(coreControl.getColorDescriptionTransfersByColor(getUserVisit(), color));
+            result.setColor(colorControl.getColorTransfer(getUserVisit(), color));
+            result.setColorDescriptions(colorControl.getColorDescriptionTransfersByColor(getUserVisit(), color));
         } else {
             addExecutionError(ExecutionErrors.UnknownColorName.name(), colorName);
         }

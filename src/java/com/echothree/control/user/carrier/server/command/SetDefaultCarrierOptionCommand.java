@@ -55,8 +55,8 @@ public class SetDefaultCarrierOptionCommand
     }
     
     /** Creates a new instance of SetDefaultCarrierOptionCommand */
-    public SetDefaultCarrierOptionCommand(UserVisitPK userVisitPK, SetDefaultCarrierOptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultCarrierOptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

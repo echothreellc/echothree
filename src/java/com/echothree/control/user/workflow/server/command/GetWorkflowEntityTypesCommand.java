@@ -62,8 +62,8 @@ public class GetWorkflowEntityTypesCommand
     }
     
     /** Creates a new instance of GetWorkflowEntityTypesCommand */
-    public GetWorkflowEntityTypesCommand(UserVisitPK userVisitPK, GetWorkflowEntityTypesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetWorkflowEntityTypesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     Workflow workflow;
@@ -123,7 +123,7 @@ public class GetWorkflowEntityTypesCommand
             var userVisit = getUserVisit();
 
             result.setWorkflow(workflow == null ? null : workflowControl.getWorkflowTransfer(userVisit, workflow));
-            result.setEntityType(entityType == null ? null : getCoreControl().getEntityTypeTransfer(userVisit, entityType));
+            result.setEntityType(entityType == null ? null : getEntityTypeControl().getEntityTypeTransfer(userVisit, entityType));
             result.setWorkflowEntityTypes(workflowControl.getWorkflowEntityTypeTransfers(userVisit, entities));
         }
 

@@ -44,8 +44,8 @@ public class GetItemAliasCommand
     }
     
     /** Creates a new instance of GetItemAliasCommand */
-    public GetItemAliasCommand(UserVisitPK userVisitPK, GetItemAliasForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public GetItemAliasCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
 
     @Override

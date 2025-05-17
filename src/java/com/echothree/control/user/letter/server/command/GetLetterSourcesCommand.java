@@ -53,8 +53,8 @@ public class GetLetterSourcesCommand
     }
     
     /** Creates a new instance of GetLetterSourcesCommand */
-    public GetLetterSourcesCommand(UserVisitPK userVisitPK, GetLetterSourcesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetLetterSourcesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

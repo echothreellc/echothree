@@ -42,8 +42,8 @@ public class GetTermDescriptionsCommand
     }
     
     /** Creates a new instance of GetTermDescriptionsCommand */
-    public GetTermDescriptionsCommand(UserVisitPK userVisitPK, GetTermDescriptionsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetTermDescriptionsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

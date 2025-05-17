@@ -16,11 +16,11 @@
 
 package com.echothree.model.control.printer.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.printer.common.transfer.PrinterGroupJobTransfer;
-import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.printer.common.workflow.PrinterGroupJobStatusConstants;
+import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.printer.server.entity.PrinterGroupJob;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -29,8 +29,8 @@ import com.echothree.util.server.persistence.Session;
 public class PrinterGroupJobTransferCache
         extends BasePrinterTransferCache<PrinterGroupJob, PrinterGroupJobTransfer> {
     
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
     DocumentControl documentControl = Session.getModelController(DocumentControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of PrinterGroupJobTransferCache */
@@ -51,7 +51,7 @@ public class PrinterGroupJobTransferCache
             var copies = printerGroupJobDetail.getCopies();
             var priority = printerGroupJobDetail.getPriority();
 
-            var entityInstance = coreControl.getEntityInstanceByBasePK(printerGroupJob.getPrimaryKey());
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(printerGroupJob.getPrimaryKey());
             var printerGroupJobStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     PrinterGroupJobStatusConstants.Workflow_PRINTER_GROUP_JOB_STATUS, entityInstance);
             

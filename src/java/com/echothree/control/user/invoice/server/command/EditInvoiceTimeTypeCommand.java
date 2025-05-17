@@ -70,8 +70,8 @@ public class EditInvoiceTimeTypeCommand
     }
     
     /** Creates a new instance of EditInvoiceTimeTypeCommand */
-    public EditInvoiceTimeTypeCommand(UserVisitPK userVisitPK, EditInvoiceTimeTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditInvoiceTimeTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

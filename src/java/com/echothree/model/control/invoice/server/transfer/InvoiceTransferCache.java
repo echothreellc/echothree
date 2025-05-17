@@ -17,7 +17,7 @@
 package com.echothree.model.control.invoice.server.transfer;
 
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.invoice.common.InvoiceOptions;
 import com.echothree.model.control.invoice.common.InvoiceTypes;
 import com.echothree.model.control.invoice.common.transfer.InvoiceRoleTransfer;
@@ -43,7 +43,7 @@ public class InvoiceTransferCache
     
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
     BillingControl billingControl = Session.getModelController(BillingControl.class);
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     TermControl termControl = Session.getModelController(TermControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     boolean includeLines;
@@ -106,7 +106,7 @@ public class InvoiceTransferCache
             WorkflowEntityStatusTransfer invoiceStatus = null;
 
             var invoiceTypeName = invoiceType.getInvoiceTypeName();
-            var entityInstance = coreControl.getEntityInstanceByBasePK(invoice.getPrimaryKey());
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(invoice.getPrimaryKey());
             if(invoiceTypeName.equals(InvoiceTypes.PURCHASE_INVOICE.name())) {
                 invoiceStatus = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit, PurchaseInvoiceStatusConstants.Workflow_PURCHASE_INVOICE_STATUS, entityInstance);
             }

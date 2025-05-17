@@ -27,18 +27,21 @@ import com.echothree.util.server.persistence.Session;
 
 public class PartyTypePasswordStringPolicyTransferCache
         extends BasePartyTransferCache<PartyTypePasswordStringPolicy, PartyTypePasswordStringPolicyTransfer> {
-    
+
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
+
     UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
     
     /** Creates a new instance of PartyTypePasswordStringPolicyTransferCache */
-    public PartyTypePasswordStringPolicyTransferCache(UserVisit userVisit, PartyControl partyControl) {
-        super(userVisit, partyControl);
+    public PartyTypePasswordStringPolicyTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         setIncludeEntityInstance(true);
     }
-    
-    public PartyTypePasswordStringPolicyTransfer getPartyTypePasswordStringPolicyTransfer(PartyTypePasswordStringPolicy partyTypePasswordStringPolicy) {
+
+    @Override
+    public PartyTypePasswordStringPolicyTransfer getTransfer(PartyTypePasswordStringPolicy partyTypePasswordStringPolicy) {
         var partyTypePasswordStringPolicyTransfer = get(partyTypePasswordStringPolicy);
         
         if(partyTypePasswordStringPolicyTransfer == null) {

@@ -56,8 +56,8 @@ public class GetEntityAttributeDescriptionsCommand
     }
     
     /** Creates a new instance of GetEntityAttributeDescriptionsCommand */
-    public GetEntityAttributeDescriptionsCommand(UserVisitPK userVisitPK, GetEntityAttributeDescriptionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetEntityAttributeDescriptionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
@@ -65,11 +65,11 @@ public class GetEntityAttributeDescriptionsCommand
         var coreControl = getCoreControl();
         var result = CoreResultFactory.getGetEntityAttributeDescriptionsResult();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var entityTypeName = form.getEntityTypeName();
-            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
                 var entityAttributeName = form.getEntityAttributeName();

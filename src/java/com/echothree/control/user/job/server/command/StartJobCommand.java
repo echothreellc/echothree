@@ -49,8 +49,8 @@ public class StartJobCommand
     }
     
     /** Creates a new instance of StartJobCommand */
-    public StartJobCommand(UserVisitPK userVisitPK, StartJobForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public StartJobCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

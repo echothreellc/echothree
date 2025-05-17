@@ -17,7 +17,7 @@
 package com.echothree.model.control.returnpolicy.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.returnpolicy.common.choice.ReturnKindChoicesBean;
 import com.echothree.model.control.returnpolicy.common.choice.ReturnPolicyChoicesBean;
 import com.echothree.model.control.returnpolicy.common.choice.ReturnReasonChoicesBean;
@@ -281,12 +281,12 @@ public class ReturnPolicyControl
     }
 
     public void deletePartyReturnPolicy(PartyReturnPolicy partyReturnPolicy, BasePK deletedBy) {
-        var coreControl = Session.getModelController(CoreControl.class);
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
         partyReturnPolicy.setThruTime(session.START_TIME_LONG);
 
         // Performed manually, since sendEvent doesn't call it for relatedEntityInstances.
-        coreControl.deleteEntityInstanceDependencies(coreControl.getEntityInstanceByBasePK(partyReturnPolicy.getPrimaryKey()), deletedBy);
+        entityInstanceControl.deleteEntityInstanceDependencies(entityInstanceControl.getEntityInstanceByBasePK(partyReturnPolicy.getPrimaryKey()), deletedBy);
 
         sendEvent(partyReturnPolicy.getPartyPK(), EventTypes.MODIFY, partyReturnPolicy.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }

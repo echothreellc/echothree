@@ -58,8 +58,8 @@ public class CreateSearchDefaultOperatorDescriptionCommand
     }
     
     /** Creates a new instance of CreateSearchDefaultOperatorDescriptionCommand */
-    public CreateSearchDefaultOperatorDescriptionCommand(UserVisitPK userVisitPK, CreateSearchDefaultOperatorDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateSearchDefaultOperatorDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

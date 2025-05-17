@@ -59,8 +59,8 @@ public class GetPartyContactListStatusChoicesCommand
     }
     
     /** Creates a new instance of GetPartyContactListStatusChoicesCommand */
-    public GetPartyContactListStatusChoicesCommand(UserVisitPK userVisitPK, GetPartyContactListStatusChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetPartyContactListStatusChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

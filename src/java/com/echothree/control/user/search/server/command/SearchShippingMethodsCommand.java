@@ -68,8 +68,8 @@ public class SearchShippingMethodsCommand
     }
 
     /** Creates a new instance of SearchShippingMethodsCommand */
-    public SearchShippingMethodsCommand(UserVisitPK userVisitPK, SearchShippingMethodsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SearchShippingMethodsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

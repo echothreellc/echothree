@@ -7339,7 +7339,7 @@
                 <securityRoleDescription languageIsoName="en" description="Application Editor Use Description" />
             </securityRole>
         </securityRoleGroup>
-        <securityRoleGroup securityRoleGroupName="PartyApplicationEditorUse" parentSecurityRoleGroupName="CoreComponent" isDefault="false" sortOrder="1">
+        <securityRoleGroup securityRoleGroupName="PartyApplicationEditorUse" parentSecurityRoleGroupName="PartyComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Party Application Editor Use" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Party Application Editor Use Create" />
@@ -7522,7 +7522,7 @@
                 <securityRoleDescription languageIsoName="en" description="Entity Appearance Review" />
             </securityRole>
         </securityRoleGroup>
-        <securityRoleGroup securityRoleGroupName="PartyEntityType" parentSecurityRoleGroupName="CoreComponent" isDefault="false" sortOrder="1">
+        <securityRoleGroup securityRoleGroupName="PartyEntityType" parentSecurityRoleGroupName="PartyComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Party Entity Type" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Party Entity Type Create" />

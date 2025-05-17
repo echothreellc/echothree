@@ -18,12 +18,13 @@ package com.echothree.control.user.message.server.command;
 
 import com.echothree.control.user.message.common.form.GetEntityMessagesForm;
 import com.echothree.control.user.message.common.result.MessageResultFactory;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.message.server.control.MessageControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -46,8 +47,8 @@ public class GetEntityMessagesCommand
     }
     
     /** Creates a new instance of GetEntityMessagesCommand */
-    public GetEntityMessagesCommand(UserVisitPK userVisitPK, GetEntityMessagesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetEntityMessagesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
@@ -61,28 +62,28 @@ public class GetEntityMessagesCommand
         var parameterCount = (componentVendorName == null && entityTypeName == null && messageTypeName == null && messageName == null ? 0 : 1) + (entityRef == null ? 0 : 1);
         
         if(parameterCount == 1) {
-            var coreControl = getCoreControl();
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var messageControl = Session.getModelController(MessageControl.class);
             var userVisit = getUserVisit();
             
             if(entityRef != null) {
-                var entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
+                var entityInstance = entityInstanceControl.getEntityInstanceByEntityRef(entityRef);
                 
                 if(entityInstance != null) {
-                    result.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityInstance, false, false, false, false));
+                    result.setEntityInstance(entityInstanceControl.getEntityInstanceTransfer(userVisit, entityInstance, false, false, false, false));
                     result.setEntityMessages(messageControl.getEntityMessageTransfersByEntityInstance(userVisit, entityInstance));
                 } else {
                     addExecutionError(ExecutionErrors.UnknownEntityRef.name(), entityRef);
                 }
             } else {
-                var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+                var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
                 
-                result.setComponentVendor(coreControl.getComponentVendorTransfer(userVisit, componentVendor));
+                result.setComponentVendor(getComponentControl().getComponentVendorTransfer(userVisit, componentVendor));
                 
                 if(componentVendor != null) {
-                    var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+                    var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
                     
-                    result.setEntityType(coreControl.getEntityTypeTransfer(userVisit, entityType));
+                    result.setEntityType(getEntityTypeControl().getEntityTypeTransfer(userVisit, entityType));
                     
                     if(entityType != null) {
                         var messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);

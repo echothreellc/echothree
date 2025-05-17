@@ -18,12 +18,14 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetCommandsForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -40,23 +42,23 @@ public class GetCommandsCommand
     }
     
     /** Creates a new instance of GetCommandsCommand */
-    public GetCommandsCommand(UserVisitPK userVisitPK, GetCommandsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetCommandsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var commandControl = Session.getModelController(CommandControl.class);
         var result = CoreResultFactory.getGetCommandsResult();
         var componentVendorName = form.getComponentVendorName();
         
         if(componentVendorName == null) {
-            result.setCommands(coreControl.getCommandTransfers(getUserVisit()));
+            result.setCommands(commandControl.getCommandTransfers(getUserVisit()));
         } else {
-            var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+            var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
             
             if(componentVendor != null) {
-                result.setCommands(coreControl.getCommandTransfersByComponentVendor(getUserVisit(), componentVendor));
+                result.setCommands(commandControl.getCommandTransfersByComponentVendor(getUserVisit(), componentVendor));
             } else {
                 addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
             }

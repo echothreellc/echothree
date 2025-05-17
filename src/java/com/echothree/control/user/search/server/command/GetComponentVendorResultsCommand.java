@@ -18,7 +18,7 @@ package com.echothree.control.user.search.server.command;
 
 import com.echothree.control.user.search.common.form.GetComponentVendorResultsForm;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
-import com.echothree.model.control.core.server.control.ComponentVendorControl;
+import com.echothree.model.control.core.server.control.ComponentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.search.server.control.SearchControl;
@@ -57,8 +57,8 @@ public class GetComponentVendorResultsCommand
     }
 
     /** Creates a new instance of GetComponentVendorResultsCommand */
-    public GetComponentVendorResultsCommand(UserVisitPK userVisitPK, GetComponentVendorResultsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetComponentVendorResultsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
@@ -76,7 +76,7 @@ public class GetComponentVendorResultsCommand
                 var userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
                 
                 if(userVisitSearch != null) {
-                    var entityListItemControl = Session.getModelController(ComponentVendorControl.class);
+                    var entityListItemControl = Session.getModelController(ComponentControl.class);
 
                     if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
                         result.setComponentVendorResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));

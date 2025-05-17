@@ -73,8 +73,8 @@ public class SearchLeavesCommand
     }
 
     /** Creates a new instance of SearchLeavesCommand */
-    public SearchLeavesCommand(UserVisitPK userVisitPK, SearchLeavesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SearchLeavesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -39,8 +39,8 @@ public class DeleteNameSuffixCommand
     }
     
     /** Creates a new instance of DeleteNameSuffixCommand */
-    public DeleteNameSuffixCommand(UserVisitPK userVisitPK, DeleteNameSuffixForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteNameSuffixCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

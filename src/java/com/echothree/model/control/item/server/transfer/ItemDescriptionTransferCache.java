@@ -16,7 +16,9 @@
 
 package com.echothree.model.control.item.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
+import com.echothree.model.control.core.server.control.EventControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.item.common.ItemOptions;
 import com.echothree.model.control.item.common.ItemProperties;
 import com.echothree.model.control.item.common.transfer.ItemDescriptionTransfer;
@@ -31,8 +33,10 @@ import com.echothree.util.server.persistence.Session;
 
 public class ItemDescriptionTransferCache
         extends BaseItemTransferCache<ItemDescription, ItemDescriptionTransfer> {
-    
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+    EventControl eventControl = Session.getModelController(EventControl.class);
+    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     boolean includeBlob;
@@ -98,7 +102,7 @@ public class ItemDescriptionTransferCache
             var itemTransfer = filterItem ? null : itemControl.getItemTransfer(userVisit, item);
             var languageTransfer = filterLanguage ? null : partyControl.getLanguageTransfer(userVisit, itemDescriptionDetail.getLanguage());
             var mimeType = filterMimeType ? null : itemDescriptionDetail.getMimeType();
-            var mimeTypeTransfer = mimeType == null? null: coreControl.getMimeTypeTransfer(userVisit, mimeType);
+            var mimeTypeTransfer = mimeType == null? null: mimeTypeControl.getMimeTypeTransfer(userVisit, mimeType);
             ByteArray blobDescription = null;
             String clobDescription = null;
             String stringDescription = null;
@@ -109,23 +113,23 @@ public class ItemDescriptionTransferCache
             String eTag = null;
             long eTagEntityId = 0;
             var eTagSize = 0;
-            
+
             if(includeBlob || includeETag) {
                 var itemBlobDescription = itemControl.getItemBlobDescription(itemDescription);
-                
+
                 if(itemBlobDescription != null) {
                     if(includeBlob) {
                         blobDescription = itemBlobDescription.getBlobDescription();
                     }
-                    
+
                     eTagEntityId = itemBlobDescription.getPrimaryKey().getEntityId();
                     eTagSize = itemBlobDescription.getBlobDescription().byteArrayValue().length;
                 }
             }
-            
+
             if(includeClob || includeETag) {
                 var itemClobDescription = itemControl.getItemClobDescription(itemDescription);
-                
+
                 if(itemClobDescription != null) {
                     if(includeClob) {
                         clobDescription = itemClobDescription.getClobDescription();
@@ -135,10 +139,10 @@ public class ItemDescriptionTransferCache
                     eTagSize = itemClobDescription.getClobDescription().length();
                 }
             }
-            
+
             if(includeString || includeETag) {
                 var itemStringDescription = itemControl.getItemStringDescription(itemDescription);
-                
+
                 if(itemStringDescription != null) {
                     if(includeString) {
                         stringDescription = itemStringDescription.getStringDescription();
@@ -164,10 +168,10 @@ public class ItemDescriptionTransferCache
                 // Item Descriptions do not have their own EntityTime, fall back on the Item's EntityTime.
                 var entityTimeTransfer = item == null ? null : itemTransfer.getEntityInstance().getEntityTime();
                 Long maxTime;
-                
+
                 if(entityTimeTransfer == null) {
-                    var entityInstance = coreControl.getEntityInstanceByBasePK(item.getPrimaryKey());
-                    var entityTime = coreControl.getEntityTime(entityInstance);
+                    var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(item.getPrimaryKey());
+                    var entityTime = eventControl.getEntityTime(entityInstance);
                     var modifiedTime = entityTime.getModifiedTime();
                     
                     maxTime = modifiedTime == null ? entityTime.getCreatedTime() : modifiedTime;

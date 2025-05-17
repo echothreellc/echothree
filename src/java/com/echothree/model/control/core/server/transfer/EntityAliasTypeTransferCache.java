@@ -19,7 +19,8 @@ package com.echothree.model.control.core.server.transfer;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.transfer.EntityAliasTypeTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityAliasControl;
+import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.data.core.server.entity.EntityAliasType;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -29,7 +30,8 @@ import com.echothree.util.server.persistence.Session;
 public class EntityAliasTypeTransferCache
         extends BaseCoreTransferCache<EntityAliasType, EntityAliasTypeTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityAliasControl entityAliasControl = Session.getModelController(EntityAliasControl.class);
+    EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
 
     boolean includeAlias;
 
@@ -74,12 +76,12 @@ public class EntityAliasTypeTransferCache
         
         if(entityAliasTypeTransfer == null) {
             var entityAliasTypeDetail = entityAliasType.getLastDetail();
-            var entityTypeTransfer = filterEntityType ? null : coreControl.getEntityTypeTransfer(userVisit, entityAliasTypeDetail.getEntityType());
+            var entityTypeTransfer = filterEntityType ? null : entityTypeControl.getEntityTypeTransfer(userVisit, entityAliasTypeDetail.getEntityType());
             var entityAliasTypeName = filterEntityAliasTypeName ? null : entityAliasTypeDetail.getEntityAliasTypeName();
             var validationPattern = filterValidationPattern ? null : entityAliasTypeDetail.getValidationPattern();
             var isDefault = filterIsDefault ? null : entityAliasTypeDetail.getIsDefault();
             var sortOrder = filterSortOrder ? null : entityAliasTypeDetail.getSortOrder();
-            var description = filterDescription ? null : coreControl.getBestEntityAliasTypeDescription(entityAliasType, getLanguage());
+            var description = filterDescription ? null : entityAliasControl.getBestEntityAliasTypeDescription(entityAliasType, getLanguage());
             
             entityAliasTypeTransfer = new EntityAliasTypeTransfer(entityTypeTransfer, entityAliasTypeName,
                     validationPattern, isDefault, sortOrder, description);

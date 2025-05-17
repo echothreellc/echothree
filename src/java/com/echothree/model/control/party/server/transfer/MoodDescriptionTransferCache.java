@@ -17,7 +17,6 @@
 package com.echothree.model.control.party.server.transfer;
 
 import com.echothree.model.control.party.common.transfer.MoodDescriptionTransfer;
-import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.MoodDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -25,11 +24,12 @@ public class MoodDescriptionTransferCache
         extends BasePartyDescriptionTransferCache<MoodDescription, MoodDescriptionTransfer> {
     
     /** Creates a new instance of MoodDescriptionTransferCache */
-    public MoodDescriptionTransferCache(UserVisit userVisit, PartyControl partyControl) {
-        super(userVisit, partyControl);
+    public MoodDescriptionTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
-    
-    public MoodDescriptionTransfer getMoodDescriptionTransfer(MoodDescription moodDescription) {
+
+    @Override
+    public MoodDescriptionTransfer getTransfer(MoodDescription moodDescription) {
         var moodDescriptionTransfer = get(moodDescription);
         
         if(moodDescriptionTransfer == null) {

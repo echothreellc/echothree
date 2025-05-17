@@ -22,6 +22,7 @@ import com.echothree.control.user.core.common.form.EditTextDecorationDescription
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditTextDecorationDescriptionResult;
 import com.echothree.control.user.core.common.spec.TextDecorationDescriptionSpec;
+import com.echothree.model.control.core.server.control.TextControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -29,10 +30,10 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.TextDecoration;
 import com.echothree.model.data.core.server.entity.TextDecorationDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -68,8 +69,8 @@ public class EditTextDecorationDescriptionCommand
     }
     
     /** Creates a new instance of EditTextDecorationDescriptionCommand */
-    public EditTextDecorationDescriptionCommand(UserVisitPK userVisitPK, EditTextDecorationDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditTextDecorationDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override
@@ -84,10 +85,10 @@ public class EditTextDecorationDescriptionCommand
 
     @Override
     public TextDecorationDescription getEntity(EditTextDecorationDescriptionResult result) {
-        var coreControl = getCoreControl();
+        var textControl = Session.getModelController(TextControl.class);
         TextDecorationDescription textDecorationDescription = null;
         var textDecorationName = spec.getTextDecorationName();
-        var textDecoration = coreControl.getTextDecorationByName(textDecorationName);
+        var textDecoration = textControl.getTextDecorationByName(textDecorationName);
 
         if(textDecoration != null) {
             var partyControl = Session.getModelController(PartyControl.class);
@@ -96,9 +97,9 @@ public class EditTextDecorationDescriptionCommand
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    textDecorationDescription = coreControl.getTextDecorationDescription(textDecoration, language);
+                    textDecorationDescription = textControl.getTextDecorationDescription(textDecoration, language);
                 } else { // EditMode.UPDATE
-                    textDecorationDescription = coreControl.getTextDecorationDescriptionForUpdate(textDecoration, language);
+                    textDecorationDescription = textControl.getTextDecorationDescriptionForUpdate(textDecoration, language);
                 }
 
                 if(textDecorationDescription == null) {
@@ -121,9 +122,9 @@ public class EditTextDecorationDescriptionCommand
 
     @Override
     public void fillInResult(EditTextDecorationDescriptionResult result, TextDecorationDescription textDecorationDescription) {
-        var coreControl = getCoreControl();
+        var textControl = Session.getModelController(TextControl.class);
 
-        result.setTextDecorationDescription(coreControl.getTextDecorationDescriptionTransfer(getUserVisit(), textDecorationDescription));
+        result.setTextDecorationDescription(textControl.getTextDecorationDescriptionTransfer(getUserVisit(), textDecorationDescription));
     }
 
     @Override
@@ -133,11 +134,11 @@ public class EditTextDecorationDescriptionCommand
 
     @Override
     public void doUpdate(TextDecorationDescription textDecorationDescription) {
-        var coreControl = getCoreControl();
-        var textDecorationDescriptionValue = coreControl.getTextDecorationDescriptionValue(textDecorationDescription);
+        var textControl = Session.getModelController(TextControl.class);
+        var textDecorationDescriptionValue = textControl.getTextDecorationDescriptionValue(textDecorationDescription);
         textDecorationDescriptionValue.setDescription(edit.getDescription());
 
-        coreControl.updateTextDecorationDescriptionFromValue(textDecorationDescriptionValue, getPartyPK());
+        textControl.updateTextDecorationDescriptionFromValue(textDecorationDescriptionValue, getPartyPK());
     }
     
 }

@@ -46,8 +46,8 @@ public class ChangeBaseKeysCommand
     }
     
     /** Creates a new instance of ChangeBaseKeysCommand */
-    public ChangeBaseKeysCommand(UserVisitPK userVisitPK, ChangeBaseKeysForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, null, false);
+    public ChangeBaseKeysCommand() {
+        super(COMMAND_SECURITY_DEFINITION, null, false);
     }
     
     @Override

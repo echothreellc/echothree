@@ -20,6 +20,7 @@ import com.echothree.control.user.vendor.common.form.CreateVendorItemForm;
 import com.echothree.control.user.vendor.common.result.VendorResultFactory;
 import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.returnpolicy.common.ReturnKinds;
@@ -73,8 +74,8 @@ public class CreateVendorItemCommand
     }
     
     /** Creates a new instance of CreateVendorItemCommand */
-    public CreateVendorItemCommand(UserVisitPK userVisitPK, CreateVendorItemForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateVendorItemCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
@@ -147,7 +148,7 @@ public class CreateVendorItemCommand
                             }
                             
                             if(returnPolicyName == null || returnPolicy != null) {
-                                var coreControl = getCoreControl();
+                                var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
                                 var workflowControl = Session.getModelController(WorkflowControl.class);
                                 var description = form.getDescription();
                                 var priority = Integer.valueOf(form.getPriority());
@@ -156,7 +157,7 @@ public class CreateVendorItemCommand
                                 vendorItem = vendorControl.createVendorItem(item, vendorParty, vendorItemName, description, priority, cancellationPolicy,
                                         returnPolicy, createdBy);
 
-                                var entityInstance = coreControl.getEntityInstanceByBasePK(vendorItem.getPrimaryKey());
+                                var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(vendorItem.getPrimaryKey());
                                 workflowControl.addEntityToWorkflowUsingNames(null, VendorItemStatusConstants.Workflow_VENDOR_ITEM_STATUS,
                                         VendorItemStatusConstants.WorkflowEntrance_NEW_ACTIVE, entityInstance, null, null, createdBy);
                             } else {

@@ -56,8 +56,8 @@ public class DeleteInvoiceLineTypeCommand
     }
     
     /** Creates a new instance of DeleteInvoiceLineTypeCommand */
-    public DeleteInvoiceLineTypeCommand(UserVisitPK userVisitPK, DeleteInvoiceLineTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteInvoiceLineTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

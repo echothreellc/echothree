@@ -42,8 +42,8 @@ public class GetSelectorNodeTypeCommand
     }
     
     /** Creates a new instance of GetSelectorNodeTypeCommand */
-    public GetSelectorNodeTypeCommand(UserVisitPK userVisitPK, GetSelectorNodeTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetSelectorNodeTypeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

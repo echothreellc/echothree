@@ -42,8 +42,8 @@ public class DeleteTimeZoneDescriptionCommand
     }
     
     /** Creates a new instance of DeleteTimeZoneDescriptionCommand */
-    public DeleteTimeZoneDescriptionCommand(UserVisitPK userVisitPK, DeleteTimeZoneDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteTimeZoneDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -17,12 +17,14 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.SetEventGroupStatusForm;
+import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -40,20 +42,20 @@ public class SetEventGroupStatusCommand
     }
     
     /** Creates a new instance of SetEventGroupStatusCommand */
-    public SetEventGroupStatusCommand(UserVisitPK userVisitPK, SetEventGroupStatusForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SetEventGroupStatusCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var eventControl = Session.getModelController(EventControl.class);
         var eventGroupName = form.getEventGroupName();
-        var eventGroup = coreControl.getEventGroupByName(eventGroupName);
+        var eventGroup = eventControl.getEventGroupByName(eventGroupName);
         
         if(eventGroup != null) {
             var eventGroupStatusChoice = form.getEventGroupStatusChoice();
-            
-            coreControl.setEventGroupStatus(this, eventGroup, eventGroupStatusChoice, getPartyPK());
+
+            eventControl.setEventGroupStatus(this, eventGroup, eventGroupStatusChoice, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownEventGroupName.name(), eventGroupName);
         }

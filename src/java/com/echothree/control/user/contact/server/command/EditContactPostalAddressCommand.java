@@ -18,7 +18,6 @@ package com.echothree.control.user.contact.server.command;
 
 import com.echothree.control.user.contact.common.edit.ContactEditFactory;
 import com.echothree.control.user.contact.common.edit.ContactPostalAddressEdit;
-import com.echothree.control.user.contact.common.form.EditContactPostalAddressForm;
 import com.echothree.control.user.contact.common.result.ContactResultFactory;
 import com.echothree.control.user.contact.common.result.EditContactPostalAddressResult;
 import com.echothree.control.user.contact.common.spec.PartyContactMechanismSpec;
@@ -32,7 +31,6 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.model.data.geo.server.entity.GeoCode;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.command.SecurityResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -119,14 +117,15 @@ public class EditContactPostalAddressCommand
     }
 
     /** Creates a new instance of EditContactPostalAddressCommand */
-    public EditContactPostalAddressCommand(UserVisitPK userVisitPK, EditContactPostalAddressForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, null);
-        
+    public EditContactPostalAddressCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, null);
+    }
+
+    @Override
+    protected List<FieldDefinition> getEditFieldDefinitions() {
         var partyTypeName = getPartyTypeName();
-        var EDIT_FIELD_DEFINITIONS =
-                partyTypeName.equals(PartyTypes.CUSTOMER.name()) ? editCustomerFieldDefinitions : editOtherFieldDefinitions;
-        
-        setEditFieldDefinitions(EDIT_FIELD_DEFINITIONS);
+
+        return partyTypeName.equals(PartyTypes.CUSTOMER.name()) ? editCustomerFieldDefinitions : editOtherFieldDefinitions;
     }
 
     @Override

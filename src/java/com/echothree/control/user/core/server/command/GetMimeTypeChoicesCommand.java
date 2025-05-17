@@ -19,15 +19,16 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.GetMimeTypeChoicesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.comment.server.control.CommentControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -57,29 +58,29 @@ public class GetMimeTypeChoicesCommand
     }
 
     /** Creates a new instance of GetMimeTypeChoicesCommand */
-    public GetMimeTypeChoicesCommand(UserVisitPK userVisitPK, GetMimeTypeChoicesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public GetMimeTypeChoicesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
    @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
-       var result = CoreResultFactory.getGetMimeTypeChoicesResult();
-       var mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
-       var itemDescriptionTypeName = form.getItemDescriptionTypeName();
-       var forumName = form.getForumName();
-       var forumMessageName = form.getForumMessageName();
-       var componentVendorName = form.getComponentVendorName();
-       var entityTypeName = form.getEntityTypeName();
-       var commentTypeName = form.getCommentTypeName();
-       var commentName = form.getCommentName();
-       var documentTypeName = form.getDocumentTypeName();
-       var documentName = form.getDocumentName();
+        var result = CoreResultFactory.getGetMimeTypeChoicesResult();
+        var mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
+        var itemDescriptionTypeName = form.getItemDescriptionTypeName();
+        var forumName = form.getForumName();
+        var forumMessageName = form.getForumMessageName();
+        var componentVendorName = form.getComponentVendorName();
+        var entityTypeName = form.getEntityTypeName();
+        var commentTypeName = form.getCommentTypeName();
+        var commentName = form.getCommentName();
+        var documentTypeName = form.getDocumentTypeName();
+        var documentName = form.getDocumentName();
         var parameterCount = (mimeTypeUsageTypeName != null? 1: 0) + (itemDescriptionTypeName != null? 1: 0) + (forumName != null? 1: 0)
                 + (forumMessageName != null? 1: 0) + (componentVendorName != null && entityTypeName != null && commentTypeName != null? 1: 0)
                 + (commentName != null? 1: 0) + (documentTypeName != null? 1: 0) + (documentName != null? 1: 0);
 
         if(parameterCount == 1) {
+            var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
             var defaultMimeTypeChoice = form.getDefaultMimeTypeChoice();
             var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
@@ -87,7 +88,7 @@ public class GetMimeTypeChoicesCommand
                 MimeTypeUsageType mimeTypeUsageType = null;
         
                 if(mimeTypeUsageTypeName != null) {
-                    mimeTypeUsageType = coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
+                    mimeTypeUsageType = mimeTypeControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
 
                     if(mimeTypeUsageType == null) {
                         addExecutionError(ExecutionErrors.UnknownMimeTypeUsageTypeName.name(), mimeTypeUsageTypeName);
@@ -136,7 +137,7 @@ public class GetMimeTypeChoicesCommand
                 }
 
                 if(mimeTypeUsageType != null) {
-                    result.setMimeTypeChoices(coreControl.getMimeTypeChoices(mimeTypeUsageType, defaultMimeTypeChoice,
+                    result.setMimeTypeChoices(mimeTypeControl.getMimeTypeChoices(mimeTypeUsageType, defaultMimeTypeChoice,
                             getPreferredLanguage(), allowNullChoice));
                 }
             } else if(forumName != null || forumMessageName != null) {
@@ -177,10 +178,10 @@ public class GetMimeTypeChoicesCommand
                         addExecutionError(ExecutionErrors.UnknownCommentName.name(), commentName);
                     }
                 } else {
-                    var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+                    var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
 
                     if(componentVendor != null) {
-                        var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+                        var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
 
                         if(entityType != null) {
                             var commentType = commentControl.getCommentTypeByName(entityType, commentTypeName);
@@ -199,7 +200,7 @@ public class GetMimeTypeChoicesCommand
                 }
 
                 if(mimeTypeUsageType != null) {
-                    result.setMimeTypeChoices(coreControl.getMimeTypeChoices(mimeTypeUsageType, defaultMimeTypeChoice, getPreferredLanguage(), allowNullChoice));
+                    result.setMimeTypeChoices(mimeTypeControl.getMimeTypeChoices(mimeTypeUsageType, defaultMimeTypeChoice, getPreferredLanguage(), allowNullChoice));
                 } else {
                     addExecutionError(ExecutionErrors.InvalidCommentType.name(), commentTypeName);
                 }

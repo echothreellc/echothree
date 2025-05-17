@@ -18,6 +18,7 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.CreateInventoryLocationGroupForm;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.inventory.common.workflow.InventoryLocationGroupStatusConstants;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
@@ -49,8 +50,8 @@ public class CreateInventoryLocationGroupCommand
     }
     
     /** Creates a new instance of CreateInventoryLocationGroupCommand */
-    public CreateInventoryLocationGroupCommand(UserVisitPK userVisitPK, CreateInventoryLocationGroupForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateInventoryLocationGroupCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
@@ -68,7 +69,7 @@ public class CreateInventoryLocationGroupCommand
                     inventoryLocationGroupName);
             
             if(inventoryLocationGroup == null) {
-                var coreControl = getCoreControl();
+                var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
                 var workflowControl = Session.getModelController(WorkflowControl.class);
                 var createdBy = getPartyPK();
                 var isDefault = Boolean.valueOf(form.getIsDefault());
@@ -78,7 +79,7 @@ public class CreateInventoryLocationGroupCommand
                 inventoryLocationGroup = inventoryControl.createInventoryLocationGroup(warehouseParty, inventoryLocationGroupName,
                         isDefault, sortOrder, getPartyPK());
 
-                var entityInstance = coreControl.getEntityInstanceByBasePK(inventoryLocationGroup.getPrimaryKey());
+                var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(inventoryLocationGroup.getPrimaryKey());
                 workflowControl.addEntityToWorkflowUsingNames(null, InventoryLocationGroupStatusConstants.Workflow_INVENTORY_LOCATION_GROUP_STATUS,
                         InventoryLocationGroupStatusConstants.WorkflowEntrance_NEW_INVENTORY_LOCATION_GROUP, entityInstance, null, null, createdBy);
                 

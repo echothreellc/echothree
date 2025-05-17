@@ -22,6 +22,7 @@ import com.echothree.control.user.core.common.form.EditColorDescriptionForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditColorDescriptionResult;
 import com.echothree.control.user.core.common.spec.ColorDescriptionSpec;
+import com.echothree.model.control.core.server.control.ColorControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -29,10 +30,10 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.Color;
 import com.echothree.model.data.core.server.entity.ColorDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -68,8 +69,8 @@ public class EditColorDescriptionCommand
     }
     
     /** Creates a new instance of EditColorDescriptionCommand */
-    public EditColorDescriptionCommand(UserVisitPK userVisitPK, EditColorDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditColorDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override
@@ -84,10 +85,10 @@ public class EditColorDescriptionCommand
 
     @Override
     public ColorDescription getEntity(EditColorDescriptionResult result) {
-        var coreControl = getCoreControl();
+        var colorControl = Session.getModelController(ColorControl.class);
         ColorDescription colorDescription = null;
         var colorName = spec.getColorName();
-        var color = coreControl.getColorByName(colorName);
+        var color = colorControl.getColorByName(colorName);
 
         if(color != null) {
             var partyControl = Session.getModelController(PartyControl.class);
@@ -96,9 +97,9 @@ public class EditColorDescriptionCommand
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    colorDescription = coreControl.getColorDescription(color, language);
+                    colorDescription = colorControl.getColorDescription(color, language);
                 } else { // EditMode.UPDATE
-                    colorDescription = coreControl.getColorDescriptionForUpdate(color, language);
+                    colorDescription = colorControl.getColorDescriptionForUpdate(color, language);
                 }
 
                 if(colorDescription == null) {
@@ -121,9 +122,9 @@ public class EditColorDescriptionCommand
 
     @Override
     public void fillInResult(EditColorDescriptionResult result, ColorDescription colorDescription) {
-        var coreControl = getCoreControl();
+        var colorControl = Session.getModelController(ColorControl.class);
 
-        result.setColorDescription(coreControl.getColorDescriptionTransfer(getUserVisit(), colorDescription));
+        result.setColorDescription(colorControl.getColorDescriptionTransfer(getUserVisit(), colorDescription));
     }
 
     @Override
@@ -133,11 +134,11 @@ public class EditColorDescriptionCommand
 
     @Override
     public void doUpdate(ColorDescription colorDescription) {
-        var coreControl = getCoreControl();
-        var colorDescriptionValue = coreControl.getColorDescriptionValue(colorDescription);
+        var colorControl = Session.getModelController(ColorControl.class);
+        var colorDescriptionValue = colorControl.getColorDescriptionValue(colorDescription);
         colorDescriptionValue.setDescription(edit.getDescription());
 
-        coreControl.updateColorDescriptionFromValue(colorDescriptionValue, getPartyPK());
+        colorControl.updateColorDescriptionFromValue(colorDescriptionValue, getPartyPK());
     }
     
 }

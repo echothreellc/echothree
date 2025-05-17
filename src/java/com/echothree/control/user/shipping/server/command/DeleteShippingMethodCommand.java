@@ -55,8 +55,8 @@ public class DeleteShippingMethodCommand
     }
     
     /** Creates a new instance of DeleteShippingMethodCommand */
-    public DeleteShippingMethodCommand(UserVisitPK userVisitPK, DeleteShippingMethodForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteShippingMethodCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

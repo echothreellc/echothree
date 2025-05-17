@@ -63,8 +63,8 @@ public class EditEntityBooleanDefaultCommand
     }
     
     /** Creates a new instance of EditEntityBooleanDefaultCommand */
-    public EditEntityBooleanDefaultCommand(UserVisitPK userVisitPK, EditEntityBooleanDefaultForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditEntityBooleanDefaultCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

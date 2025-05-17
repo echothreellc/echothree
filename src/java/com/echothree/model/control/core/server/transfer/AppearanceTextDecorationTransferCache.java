@@ -17,7 +17,8 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.AppearanceTextDecorationTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.AppearanceControl;
+import com.echothree.model.control.core.server.control.TextControl;
 import com.echothree.model.data.core.server.entity.AppearanceTextDecoration;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -25,7 +26,8 @@ import com.echothree.util.server.persistence.Session;
 public class AppearanceTextDecorationTransferCache
         extends BaseCoreTransferCache<AppearanceTextDecoration, AppearanceTextDecorationTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    AppearanceControl appearanceControl = Session.getModelController(AppearanceControl.class);
+    TextControl textControl = Session.getModelController(TextControl.class);
 
     /** Creates a new instance of AppearanceTextDecorationTransferCache */
     public AppearanceTextDecorationTransferCache(UserVisit userVisit) {
@@ -36,8 +38,8 @@ public class AppearanceTextDecorationTransferCache
         var appearanceTextDecorationTransfer = get(appearanceTextDecoration);
 
         if(appearanceTextDecorationTransfer == null) {
-            var appearance = coreControl.getAppearanceTransfer(userVisit, appearanceTextDecoration.getAppearance());
-            var textDecoration = coreControl.getTextDecorationTransfer(userVisit, appearanceTextDecoration.getTextDecoration());
+            var appearance = appearanceControl.getAppearanceTransfer(userVisit, appearanceTextDecoration.getAppearance());
+            var textDecoration = textControl.getTextDecorationTransfer(userVisit, appearanceTextDecoration.getTextDecoration());
 
             appearanceTextDecorationTransfer = new AppearanceTextDecorationTransfer(appearance, textDecoration);
             put(appearanceTextDecoration, appearanceTextDecorationTransfer);

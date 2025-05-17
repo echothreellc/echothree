@@ -21,15 +21,17 @@ import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.logic.AppearanceLogic;
+import com.echothree.model.control.core.server.control.ColorControl;
+import com.echothree.model.control.core.server.logic.ColorLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.data.core.server.entity.Color;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -49,13 +51,12 @@ public class GetColorCommand
     }
     
     /** Creates a new instance of GetColorCommand */
-    public GetColorCommand(UserVisitPK userVisitPK, GetColorForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetColorCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
     protected Color getEntity() {
-        var coreControl = getCoreControl();
         Color color = null;
         var colorName = form.getColorName();
         var parameterCount = (colorName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
@@ -66,10 +67,12 @@ public class GetColorCommand
                         ComponentVendors.ECHO_THREE.name(), EntityTypes.Color.name());
 
                 if(!hasExecutionErrors()) {
-                    color = coreControl.getColorByEntityInstance(entityInstance);
+                    var colorControl = Session.getModelController(ColorControl.class);
+
+                    color = colorControl.getColorByEntityInstance(entityInstance);
                 }
             } else {
-                color = AppearanceLogic.getInstance().getColorByName(this, colorName);
+                color = ColorLogic.getInstance().getColorByName(this, colorName);
             }
 
             if(color != null) {
@@ -84,11 +87,12 @@ public class GetColorCommand
     
     @Override
     protected BaseResult getResult(Color color) {
-        var coreControl = getCoreControl();
         var result = CoreResultFactory.getGetColorResult();
 
         if(color != null) {
-            result.setColor(coreControl.getColorTransfer(getUserVisit(), color));
+            var colorControl = Session.getModelController(ColorControl.class);
+
+            result.setColor(colorControl.getColorTransfer(getUserVisit(), color));
         }
 
         return result;

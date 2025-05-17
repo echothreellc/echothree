@@ -58,8 +58,8 @@ public class GetEntityTypeCommand
     }
     
     /** Creates a new instance of GetEntityTypeCommand */
-    public GetEntityTypeCommand(UserVisitPK userVisitPK, GetEntityTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetEntityTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
@@ -74,7 +74,7 @@ public class GetEntityTypeCommand
         var result = CoreResultFactory.getGetEntityTypeResult();
 
         if(entityType != null) {
-            result.setEntityType(getCoreControl().getEntityTypeTransfer(getUserVisit(), entityType));
+            result.setEntityType(getEntityTypeControl().getEntityTypeTransfer(getUserVisit(), entityType));
         }
 
         return result;

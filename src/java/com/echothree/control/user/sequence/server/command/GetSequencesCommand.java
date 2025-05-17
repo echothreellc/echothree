@@ -60,8 +60,8 @@ public class GetSequencesCommand
     }
 
     /** Creates a new instance of GetSequencesCommand */
-    public GetSequencesCommand(UserVisitPK userVisitPK, GetSequencesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetSequencesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     SequenceType sequenceType;

@@ -18,6 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GenerateUuidForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -27,6 +28,7 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -51,8 +53,8 @@ public class GenerateUuidCommand
     }
     
     /** Creates a new instance of GenerateUuidCommand */
-    public GenerateUuidCommand(UserVisitPK userVisitPK, GenerateUuidForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GenerateUuidCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
@@ -61,7 +63,9 @@ public class GenerateUuidCommand
         var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, null);
         
         if(!hasExecutionErrors()) {
-            result.setUuid(getCoreControl().ensureUuidForEntityInstance(entityInstance, Boolean.valueOf(form.getForceRegeneration())).getUuid());
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+
+            result.setUuid(entityInstanceControl.ensureUuidForEntityInstance(entityInstance, Boolean.valueOf(form.getForceRegeneration())).getUuid());
         }
         
         return result;

@@ -57,8 +57,8 @@ public class SetLeaveStatusCommand
     }
     
     /** Creates a new instance of SetLeaveStatusCommand */
-    public SetLeaveStatusCommand(UserVisitPK userVisitPK, SetLeaveStatusForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS);
+    public SetLeaveStatusCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS);
     }
     
     @Override

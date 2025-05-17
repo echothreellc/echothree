@@ -55,8 +55,8 @@ public class EditUnitOfMeasureTypeWeightCommand
     }
     
     /** Creates a new instance of EditUnitOfMeasureTypeWeightCommand */
-    public EditUnitOfMeasureTypeWeightCommand(UserVisitPK userVisitPK, EditUnitOfMeasureTypeWeightForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditUnitOfMeasureTypeWeightCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

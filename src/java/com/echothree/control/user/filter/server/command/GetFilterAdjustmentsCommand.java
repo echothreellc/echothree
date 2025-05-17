@@ -58,8 +58,8 @@ public class GetFilterAdjustmentsCommand
     }
     
     /** Creates a new instance of GetFilterAdjustmentsCommand */
-    public GetFilterAdjustmentsCommand(UserVisitPK userVisitPK, GetFilterAdjustmentsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetFilterAdjustmentsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     FilterKind filterKind;

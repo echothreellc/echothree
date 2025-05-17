@@ -52,8 +52,8 @@ public class CreateEntityBooleanDefaultCommand
     }
 
     /** Creates a new instance of CreateEntityBooleanDefaultCommand */
-    public CreateEntityBooleanDefaultCommand(UserVisitPK userVisitPK, CreateEntityBooleanDefaultForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateEntityBooleanDefaultCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

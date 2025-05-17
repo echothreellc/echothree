@@ -47,8 +47,8 @@ public class InvalidateAbandonedUserVisitsCommand
     }
     
     /** Creates a new instance of InvalidateAbandonedUserVisitsCommand */
-    public InvalidateAbandonedUserVisitsCommand(UserVisitPK userVisitPK, InvalidateAbandonedUserVisitsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public InvalidateAbandonedUserVisitsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -17,7 +17,6 @@
 package com.echothree.model.control.party.server.transfer;
 
 import com.echothree.model.control.party.common.transfer.PartyAliasTypeDescriptionTransfer;
-import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.PartyAliasTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -25,11 +24,12 @@ public class PartyAliasTypeDescriptionTransferCache
         extends BasePartyDescriptionTransferCache<PartyAliasTypeDescription, PartyAliasTypeDescriptionTransfer> {
     
     /** Creates a new instance of PartyAliasTypeDescriptionTransferCache */
-    public PartyAliasTypeDescriptionTransferCache(UserVisit userVisit, PartyControl partyControl) {
-        super(userVisit, partyControl);
+    public PartyAliasTypeDescriptionTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
-    
-    public PartyAliasTypeDescriptionTransfer getPartyAliasTypeDescriptionTransfer(PartyAliasTypeDescription partyAliasTypeDescription) {
+
+    @Override
+    public PartyAliasTypeDescriptionTransfer getTransfer(PartyAliasTypeDescription partyAliasTypeDescription) {
         var partyAliasTypeDescriptionTransfer = get(partyAliasTypeDescription);
         
         if(partyAliasTypeDescriptionTransfer == null) {

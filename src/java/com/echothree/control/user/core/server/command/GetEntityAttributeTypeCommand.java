@@ -43,8 +43,8 @@ public class GetEntityAttributeTypeCommand
     }
     
     /** Creates a new instance of GetEntityAttributeTypeCommand */
-    public GetEntityAttributeTypeCommand(UserVisitPK userVisitPK, GetEntityAttributeTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetEntityAttributeTypeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     

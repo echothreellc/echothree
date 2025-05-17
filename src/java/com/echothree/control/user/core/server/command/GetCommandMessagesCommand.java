@@ -18,18 +18,20 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetCommandMessagesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -54,20 +56,20 @@ public class GetCommandMessagesCommand
     }
     
     /** Creates a new instance of GetCommandMessagesCommand */
-    public GetCommandMessagesCommand(UserVisitPK userVisitPK, GetCommandMessagesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetCommandMessagesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var commandControl = Session.getModelController(CommandControl.class);
         var result = CoreResultFactory.getGetCommandMessagesResult();
         var commandMessageTypeName = form.getCommandMessageTypeName();
-        var commandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);
+        var commandMessageType = commandControl.getCommandMessageTypeByName(commandMessageTypeName);
         
         if(commandMessageType != null) {
-            result.setCommandMessageType(coreControl.getCommandMessageTypeTransfer(getUserVisit(), commandMessageType));
-            result.setCommandMessages(coreControl.getCommandMessageTransfers(getUserVisit(), commandMessageType));
+            result.setCommandMessageType(commandControl.getCommandMessageTypeTransfer(getUserVisit(), commandMessageType));
+            result.setCommandMessages(commandControl.getCommandMessageTransfers(getUserVisit(), commandMessageType));
         } else {
             addExecutionError(ExecutionErrors.UnknownCommandMessageTypeName.name(), commandMessageTypeName);
         }

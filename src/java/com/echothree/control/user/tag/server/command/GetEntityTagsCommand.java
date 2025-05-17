@@ -18,6 +18,7 @@ package com.echothree.control.user.tag.server.command;
 
 import com.echothree.control.user.tag.common.form.GetEntityTagsForm;
 import com.echothree.control.user.tag.common.result.TagResultFactory;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -66,8 +67,8 @@ public class GetEntityTagsCommand
     }
     
     /** Creates a new instance of GetEntityTagsCommand */
-    public GetEntityTagsCommand(UserVisitPK userVisitPK, GetEntityTagsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetEntityTagsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     EntityInstance taggedEntityInstance;
@@ -110,9 +111,9 @@ public class GetEntityTagsCommand
             var userVisit = getUserVisit();
 
             if(taggedEntityInstance != null) {
-                var coreControl = getCoreControl();
+                var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
-                result.setTaggedEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, taggedEntityInstance, false, false, false, false));
+                result.setTaggedEntityInstance(entityInstanceControl.getEntityInstanceTransfer(userVisit, taggedEntityInstance, false, false, false, false));
             } else {
                 result.setTag(tagControl.getTagTransfer(userVisit, tag));
             }

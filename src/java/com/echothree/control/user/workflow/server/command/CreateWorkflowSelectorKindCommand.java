@@ -57,8 +57,8 @@ public class CreateWorkflowSelectorKindCommand
     }
     
     /** Creates a new instance of CreateWorkflowSelectorKindCommand */
-    public CreateWorkflowSelectorKindCommand(UserVisitPK userVisitPK, CreateWorkflowSelectorKindForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateWorkflowSelectorKindCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

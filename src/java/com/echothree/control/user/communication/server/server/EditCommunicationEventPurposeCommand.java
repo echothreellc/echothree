@@ -54,8 +54,8 @@ public class EditCommunicationEventPurposeCommand
     }
     
     /** Creates a new instance of EditCommunicationEventPurposeCommand */
-    public EditCommunicationEventPurposeCommand(UserVisitPK userVisitPK, EditCommunicationEventPurposeForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditCommunicationEventPurposeCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

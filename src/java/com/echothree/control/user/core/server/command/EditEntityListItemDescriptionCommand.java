@@ -71,8 +71,8 @@ public class EditEntityListItemDescriptionCommand
     }
     
     /** Creates a new instance of EditEntityListItemDescriptionCommand */
-    public EditEntityListItemDescriptionCommand(UserVisitPK userVisitPK, EditEntityListItemDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditEntityListItemDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override
@@ -90,11 +90,11 @@ public class EditEntityListItemDescriptionCommand
         var coreControl = getCoreControl();
         EntityListItemDescription entityListItemDescription = null;
         var componentVendorName = spec.getComponentVendorName();
-        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
             var entityTypeName = spec.getEntityTypeName();
-            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
 
             if(entityType != null) {
                 var entityAttributeName = spec.getEntityAttributeName();

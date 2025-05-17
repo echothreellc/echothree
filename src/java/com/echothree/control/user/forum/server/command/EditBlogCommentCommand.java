@@ -22,6 +22,7 @@ import com.echothree.control.user.forum.common.form.EditBlogCommentForm;
 import com.echothree.control.user.forum.common.result.EditBlogCommentResult;
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
 import com.echothree.control.user.forum.common.spec.ForumMessageSpec;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.icon.common.IconConstants;
@@ -30,10 +31,10 @@ import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.forum.server.entity.ForumMessage;
 import com.echothree.model.data.icon.server.entity.Icon;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.DateUtils;
@@ -62,8 +63,8 @@ public class EditBlogCommentCommand
     }
     
     /** Creates a new instance of EditBlogCommentCommand */
-    public EditBlogCommentCommand(UserVisitPK userVisitPK, EditBlogCommentForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditBlogCommentCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override
@@ -161,10 +162,10 @@ public class EditBlogCommentCommand
                 }
 
                 if(!hasExecutionErrors()) {
-                    var coreControl = getCoreControl();
+                    var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
                     var contentMimeTypeName = edit.getContentMimeTypeName();
 
-                    contentMimeType = contentMimeTypeName == null? null: coreControl.getMimeTypeByName(contentMimeTypeName);
+                    contentMimeType = contentMimeTypeName == null? null: mimeTypeControl.getMimeTypeByName(contentMimeTypeName);
 
                     if(contentMimeType != null) {
                         var forum = forumControl.getDefaultForumForumThread(forumMessageDetail.getForumThread()).getForum();

@@ -58,8 +58,8 @@ public class GetContactListFrequencyDescriptionCommand
     }
     
     /** Creates a new instance of GetContactListFrequencyDescriptionCommand */
-    public GetContactListFrequencyDescriptionCommand(UserVisitPK userVisitPK, GetContactListFrequencyDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetContactListFrequencyDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

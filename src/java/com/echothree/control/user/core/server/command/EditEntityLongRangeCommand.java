@@ -73,8 +73,8 @@ public class EditEntityLongRangeCommand
     }
     
     /** Creates a new instance of EditEntityLongRangeCommand */
-    public EditEntityLongRangeCommand(UserVisitPK userVisitPK, EditEntityLongRangeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditEntityLongRangeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override
@@ -94,11 +94,11 @@ public class EditEntityLongRangeCommand
         var coreControl = getCoreControl();
         EntityLongRange entityLongRange = null;
         var componentVendorName = spec.getComponentVendorName();
-        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
             var entityTypeName = spec.getEntityTypeName();
-            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
 
             if(entityType != null) {
                 var entityAttributeName = spec.getEntityAttributeName();

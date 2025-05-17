@@ -58,8 +58,8 @@ public class DeleteEntityListItemCommand
     }
     
     /** Creates a new instance of DeleteEntityListItemCommand */
-    public DeleteEntityListItemCommand(UserVisitPK userVisitPK, DeleteEntityListItemForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteEntityListItemCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

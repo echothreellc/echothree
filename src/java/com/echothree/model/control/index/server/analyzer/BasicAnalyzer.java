@@ -18,6 +18,7 @@ package com.echothree.model.control.index.server.analyzer;
 
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityAliasControl;
 import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.server.indexer.IndexerDebugFlags;
 import com.echothree.model.control.party.common.Languages;
@@ -97,11 +98,12 @@ public class BasicAnalyzer
 
     public BasicAnalyzer(final ExecutionErrorAccumulator eea, final Language language, final EntityType entityType) {
         super(AnalyzerWrapper.PER_FIELD_REUSE_STRATEGY);
-        
+
         var coreControl = Session.getModelController(CoreControl.class);
+        var entityAliasControl = Session.getModelController(EntityAliasControl.class);
         var tagControl = Session.getModelController(TagControl.class);
         
-        init(eea, language, entityType, coreControl.getEntityAliasTypesByEntityType(entityType),
+        init(eea, language, entityType, entityAliasControl.getEntityAliasTypesByEntityType(entityType),
                 coreControl.getEntityAttributesByEntityType(entityType), tagControl.getTagScopesByEntityType(entityType));
     }
 

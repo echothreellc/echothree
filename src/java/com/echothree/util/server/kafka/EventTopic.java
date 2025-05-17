@@ -16,15 +16,15 @@
 
 package com.echothree.util.server.kafka;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.core.server.entity.Event;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.EntityInstanceUtils;
-import com.google.common.base.Charsets;
 import com.google.common.net.MediaType;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import fish.payara.cloud.connectors.kafka.api.KafkaConnectionFactory;
+import java.nio.charset.StandardCharsets;
 import org.apache.http.HttpHeaders;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.header.Headers;
@@ -46,7 +46,7 @@ public class EventTopic {
     Gson gson = new GsonBuilder().serializeNulls().create();
 
     Headers HEADERS_JSON = new RecordHeaders()
-            .add(new RecordHeader(HttpHeaders.CONTENT_TYPE, MediaType.JSON_UTF_8.toString().getBytes(Charsets.UTF_8)));
+            .add(new RecordHeader(HttpHeaders.CONTENT_TYPE, MediaType.JSON_UTF_8.toString().getBytes(StandardCharsets.UTF_8)));
 
     protected EventTopic() {}
 
@@ -54,11 +54,11 @@ public class EventTopic {
         if(kafkaConnectionFactory != null) {
             try {
                 try(var kafkaConnection = kafkaConnectionFactory.createConnection()) {
-                    var coreControl = Session.getModelController(CoreControl.class);
+                    var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
                     var eventId = event.getPrimaryKey().getEntityId();
                     var eventTime = event.getEventTime();
                     var eventTimeSequence = event.getEventTimeSequence();
-                    var entityInstance = coreControl.ensureUuidForEntityInstance(event.getEntityInstance(), false);
+                    var entityInstance = entityInstanceControl.ensureUuidForEntityInstance(event.getEntityInstance(), false);
                     var entityRef = entityInstanceUtils.getEntityRefByEntityInstance(entityInstance);
                     var id = entityInstance.getUuid();
                     var eventTypeName = event.getEventType().getEventTypeName();

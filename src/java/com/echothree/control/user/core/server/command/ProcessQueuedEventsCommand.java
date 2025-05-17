@@ -16,13 +16,14 @@
 
 package com.echothree.control.user.core.server.command;
 
+import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.core.server.entity.EventSubscriber;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -40,15 +41,15 @@ public class ProcessQueuedEventsCommand
     }
     
     /** Creates a new instance of ProcessQueuedEventsCommand */
-    public ProcessQueuedEventsCommand(UserVisitPK userVisitPK) {
-        super(userVisitPK, COMMAND_SECURITY_DEFINITION, false);
+    public ProcessQueuedEventsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, false);
     }
 
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var eventControl = Session.getModelController(EventControl.class);
         var remainingTime = (long) 2 * 60 * 1000; // 2 minutes
-        var queuedEvents = coreControl.getQueuedEventsForUpdate();
+        var queuedEvents = eventControl.getQueuedEventsForUpdate();
 
         for(var queuedEvent : queuedEvents) {
             var startTime = System.currentTimeMillis();
@@ -60,32 +61,32 @@ public class ProcessQueuedEventsCommand
                 var eventType = event.getEventType();
                 var entityInstance = event.getEntityInstance();
                 var entityType = entityInstance.getEntityType();
-                var eventSubscriberEventTypes = coreControl.getEventSubscriberEventTypes(eventType);
-                var eventSubscriberEntityTypes = coreControl.getEventSubscriberEntityTypes(entityType, eventType);
-                var eventSubscriberEntityInstances = coreControl.getEventSubscriberEntityInstances(entityInstance, eventType);
+                var eventSubscriberEventTypes = eventControl.getEventSubscriberEventTypes(eventType);
+                var eventSubscriberEntityTypes = eventControl.getEventSubscriberEntityTypes(entityType, eventType);
+                var eventSubscriberEntityInstances = eventControl.getEventSubscriberEntityInstances(entityInstance, eventType);
 
                 eventSubscriberEventTypes.stream().map((eventSubscriberEventType) -> eventSubscriberEventType.getEventSubscriber()).filter((eventSubscriber) -> !eventSubscribers.contains(eventSubscriber)).map((eventSubscriber) -> {
-                    coreControl.createQueuedSubscriberEvent(eventSubscriber, event);
+                    eventControl.createQueuedSubscriberEvent(eventSubscriber, event);
                     return eventSubscriber;
                 }).forEach((eventSubscriber) -> {
                     eventSubscribers.add(eventSubscriber);
                 });
 
                 eventSubscriberEntityTypes.stream().map((eventSubscriberEntityType) -> eventSubscriberEntityType.getEventSubscriber()).filter((eventSubscriber) -> !eventSubscribers.contains(eventSubscriber)).map((eventSubscriber) -> {
-                    coreControl.createQueuedSubscriberEvent(eventSubscriber, event);
+                    eventControl.createQueuedSubscriberEvent(eventSubscriber, event);
                     return eventSubscriber;
                 }).forEach((eventSubscriber) -> {
                     eventSubscribers.add(eventSubscriber);
                 });
                 
                 eventSubscriberEntityInstances.stream().map((eventSubscriberEntityInstance) -> eventSubscriberEntityInstance.getEventSubscriber()).filter((eventSubscriber) -> !eventSubscribers.contains(eventSubscriber)).map((eventSubscriber) -> {
-                    coreControl.createQueuedSubscriberEvent(eventSubscriber, event);
+                    eventControl.createQueuedSubscriberEvent(eventSubscriber, event);
                     return eventSubscriber;
                 }).forEach((eventSubscriber) -> {
                     eventSubscribers.add(eventSubscriber);
                 });
 
-                coreControl.removeQueuedEvent(queuedEvent);
+                eventControl.removeQueuedEvent(queuedEvent);
 
                 remainingTime -= System.currentTimeMillis() - startTime;
                 if(remainingTime < 0) {

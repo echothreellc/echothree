@@ -18,7 +18,7 @@ package com.echothree.model.control.purchase.server.logic;
 
 import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
 import com.echothree.model.control.cancellationpolicy.server.logic.CancellationPolicyLogic;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.order.common.OrderRoleTypes;
 import com.echothree.model.control.order.common.OrderTypes;
 import com.echothree.model.control.order.server.control.OrderControl;
@@ -174,7 +174,7 @@ public class PurchaseOrderLogic
             var sequence = SequenceGeneratorLogic.getInstance().getDefaultSequence(eea, SequenceTypes.PURCHASE_ORDER.name());
 
             if(eea == null || !eea.hasExecutionErrors()) {
-                var coreControl = Session.getModelController(CoreControl.class);
+                var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
                 var orderRoleControl = Session.getModelController(OrderRoleControl.class);
                 var workflowControl = Session.getModelController(WorkflowControl.class);
                 var userSesson = userControl.getUserSessionByUserVisit(userVisit);;
@@ -186,7 +186,7 @@ public class PurchaseOrderLogic
 
                 orderControl.createOrderUserVisit(order, userVisit);
 
-                var entityInstance = coreControl.getEntityInstanceByBasePK(order.getPrimaryKey());
+                var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(order.getPrimaryKey());
                 workflowControl.addEntityToWorkflowUsingNames(null, PurchaseOrderStatusConstants.Workflow_PURCHASE_ORDER_STATUS,
                         workflowEntranceName, entityInstance, null, null, createdByPartyPK);
 
@@ -256,8 +256,8 @@ public class PurchaseOrderLogic
             workflowControl.getWorkflowEntranceChoices(purchaseOrderStatusChoicesBean, defaultOrderStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(PurchaseOrderStatusConstants.Workflow_PURCHASE_ORDER_STATUS), partyPK);
         } else {
-            var coreControl = Session.getModelController(CoreControl.class);
-            var entityInstance = coreControl.getEntityInstanceByBasePK(order.getPrimaryKey());
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(order.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PurchaseOrderStatusConstants.Workflow_PURCHASE_ORDER_STATUS, entityInstance);
 
             workflowControl.getWorkflowDestinationChoices(purchaseOrderStatusChoicesBean, defaultOrderStatusChoice, language, allowNullChoice, workflowEntityStatus.getWorkflowStep(), partyPK);
@@ -267,10 +267,10 @@ public class PurchaseOrderLogic
     }
 
     public void setPurchaseOrderStatus(final Session session, final ExecutionErrorAccumulator eea, final Order order, final String orderStatusChoice, final PartyPK modifiedBy) {
-        var coreControl = Session.getModelController(CoreControl.class);
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, PurchaseOrderStatusConstants.Workflow_PURCHASE_ORDER_STATUS);
-        var entityInstance = coreControl.getEntityInstanceByBasePK(order.getPrimaryKey());
+        var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(order.getPrimaryKey());
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
         var workflowDestination = orderStatusChoice == null? null: workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), orderStatusChoice);
 

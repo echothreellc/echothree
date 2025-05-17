@@ -54,8 +54,8 @@ public class SetDefaultItemPurchasingCategoryCommand
     }
     
     /** Creates a new instance of SetDefaultItemPurchasingCategoryCommand */
-    public SetDefaultItemPurchasingCategoryCommand(UserVisitPK userVisitPK, SetDefaultItemPurchasingCategoryForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultItemPurchasingCategoryCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

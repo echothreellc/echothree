@@ -54,8 +54,8 @@ public class SetSalesOrderBatchStatusCommand
     }
     
     /** Creates a new instance of SetSalesOrderBatchStatusCommand */
-    public SetSalesOrderBatchStatusCommand(UserVisitPK userVisitPK, SetSalesOrderBatchStatusForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetSalesOrderBatchStatusCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

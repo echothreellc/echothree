@@ -83,8 +83,8 @@ public class EditContactTelephoneCommand
     }
     
     /** Creates a new instance of EditContactTelephoneCommand */
-    public EditContactTelephoneCommand(UserVisitPK userVisitPK, EditContactTelephoneForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditContactTelephoneCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

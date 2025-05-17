@@ -59,8 +59,8 @@ public class GetWorkflowEntranceSecurityRolesCommand
     }
     
     /** Creates a new instance of GetWorkflowEntranceSecurityRolesCommand */
-    public GetWorkflowEntranceSecurityRolesCommand(UserVisitPK userVisitPK, GetWorkflowEntranceSecurityRolesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetWorkflowEntranceSecurityRolesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     WorkflowEntrancePartyType workflowEntrancePartyType;

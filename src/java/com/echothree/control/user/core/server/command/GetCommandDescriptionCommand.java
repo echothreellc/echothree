@@ -18,12 +18,13 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetCommandDescriptionForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -43,20 +44,20 @@ public class GetCommandDescriptionCommand
     }
     
     /** Creates a new instance of GetCommandDescriptionCommand */
-    public GetCommandDescriptionCommand(UserVisitPK userVisitPK, GetCommandDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetCommandDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var commandControl = Session.getModelController(CommandControl.class);
         var result = CoreResultFactory.getGetCommandDescriptionResult();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
             var commandName = form.getCommandName();
-            var command = coreControl.getCommandByName(componentVendor, commandName);
+            var command = commandControl.getCommandByName(componentVendor, commandName);
 
             if(command != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
@@ -64,10 +65,10 @@ public class GetCommandDescriptionCommand
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    var commandDescription = coreControl.getCommandDescription(command, language);
+                    var commandDescription = commandControl.getCommandDescription(command, language);
 
                     if(commandDescription != null) {
-                        result.setCommandDescription(coreControl.getCommandDescriptionTransfer(getUserVisit(), commandDescription));
+                        result.setCommandDescription(commandControl.getCommandDescriptionTransfer(getUserVisit(), commandDescription));
                     } else {
                         addExecutionError(ExecutionErrors.UnknownCommandDescription.name());
                     }

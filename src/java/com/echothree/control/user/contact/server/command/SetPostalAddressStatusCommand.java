@@ -42,8 +42,8 @@ public class SetPostalAddressStatusCommand
     }
 
     /** Creates a new instance of SetPostalAddressStatusCommand */
-    public SetPostalAddressStatusCommand(UserVisitPK userVisitPK, SetPostalAddressStatusForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SetPostalAddressStatusCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
 
     @Override

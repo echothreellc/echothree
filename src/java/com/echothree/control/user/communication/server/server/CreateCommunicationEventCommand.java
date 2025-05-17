@@ -20,8 +20,16 @@ import com.echothree.control.user.communication.common.form.CreateCommunicationE
 import com.echothree.model.control.accounting.common.AccountingConstants;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.communication.common.CommunicationConstants;
+import com.echothree.model.control.communication.common.workflow.IncomingCustomerEmailConstants;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
+import com.echothree.model.control.contact.common.ContactMechanismPurposes;
 import com.echothree.model.control.contact.server.control.ContactControl;
+import com.echothree.model.control.contact.server.logic.ContactEmailAddressLogic;
+import com.echothree.model.control.core.common.MimeTypes;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
+import com.echothree.model.control.customer.common.workflow.CustomerCreditStatusConstants;
+import com.echothree.model.control.customer.common.workflow.CustomerStatusConstants;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.document.common.DocumentConstants;
 import com.echothree.model.control.document.server.control.DocumentControl;
@@ -30,20 +38,14 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.control.workeffort.server.logic.WorkEffortLogic;
-import com.echothree.model.control.customer.common.workflow.CustomerCreditStatusConstants;
-import com.echothree.model.control.customer.common.workflow.CustomerStatusConstants;
-import com.echothree.model.control.communication.common.workflow.IncomingCustomerEmailConstants;
-import com.echothree.model.control.contact.common.ContactMechanismPurposes;
-import com.echothree.model.control.contact.server.logic.ContactEmailAddressLogic;
-import com.echothree.model.control.core.common.MimeTypes;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.io.ByteArrayInputStream;
@@ -68,8 +70,8 @@ public class CreateCommunicationEventCommand
     }
     
     /** Creates a new instance of CreateCommunicationEventCommand */
-    public CreateCommunicationEventCommand(UserVisitPK userVisitPK, CreateCommunicationEventForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateCommunicationEventCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
@@ -90,7 +92,6 @@ public class CreateCommunicationEventCommand
 
                 if(communicationEventType != null) {
                     var contactControl = Session.getModelController(ContactControl.class);
-                    var coreControl = getCoreControl();
                     var documentControl = Session.getModelController(DocumentControl.class);
                     var workflowControl = Session.getModelController(WorkflowControl.class);
                     var createdBy = getPartyPK();
@@ -106,6 +107,7 @@ public class CreateCommunicationEventCommand
                     if(communicationSourceTypeName.equals(CommunicationConstants.CommunicationSourceType_EMAIL)
                             && communicationEventTypeName.equals(CommunicationConstants.CommunicationEventType_EMAIL)
                             && clobDocument == null && blobDocument != null) {
+                        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
                         String description = null;
                         String emailAddress = null;
 
@@ -219,7 +221,7 @@ public class CreateCommunicationEventCommand
                                                     customerCreditStatusWorkflowEntrance = workflowControl.getDefaultWorkflowEntrance(customerCreditStatusWorkflow);
                                                 }
 
-                                                var entityInstance = getCoreControl().getEntityInstanceByBasePK(party.getPrimaryKey());
+                                                var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(party.getPrimaryKey());
                                                 workflowControl.addEntityToWorkflow(customerStatusWorkflowEntrance, entityInstance, null, null, createdBy);
                                                 workflowControl.addEntityToWorkflow(customerCreditStatusWorkflowEntrance, entityInstance, null, null, createdBy);
                                             } else {
@@ -242,8 +244,9 @@ public class CreateCommunicationEventCommand
                         }
 
                         if(!hasExecutionErrors()) {
+                            var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
                             var documentType = documentControl.getDocumentTypeByName(DocumentConstants.DocumentType_COMMUNICATION_EVENT_EMAIL);
-                            var mimeType = coreControl.getMimeTypeByName(MimeTypes.MESSAGE_RFC822.mimeTypeName());
+                            var mimeType = mimeTypeControl.getMimeTypeByName(MimeTypes.MESSAGE_RFC822.mimeTypeName());
 
                             var document = documentControl.createDocument(documentType, mimeType, null, createdBy);
                             documentControl.createDocumentBlob(document, blobDocument, createdBy);
@@ -256,7 +259,7 @@ public class CreateCommunicationEventCommand
                             var communicationEvent = communicationControl.createCommunicationEvent(communicationEventType, communicationSource, communicationEventPurpose, null, null,
                                     partyContactMechanism, document, createdBy);
 
-                            var entityInstance = getCoreControl().getEntityInstanceByBasePK(communicationEvent.getPrimaryKey());
+                            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(communicationEvent.getPrimaryKey());
                             var workEffort = WorkEffortLogic.getInstance().createWorkEffort(preparedWorkEffort, entityInstance, createdBy);
 
                             var senderRoleType = communicationControl.getCommunicationEventRoleTypeByName(CommunicationConstants.CommunicationEventRoleType_SENDER);

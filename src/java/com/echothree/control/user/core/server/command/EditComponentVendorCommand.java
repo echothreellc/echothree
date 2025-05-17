@@ -27,10 +27,10 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -65,8 +65,8 @@ public class EditComponentVendorCommand
     }
     
     /** Creates a new instance of EditComponentVendorCommand */
-    public EditComponentVendorCommand(UserVisitPK userVisitPK, EditComponentVendorForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditComponentVendorCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override
@@ -81,18 +81,17 @@ public class EditComponentVendorCommand
 
     @Override
     public ComponentVendor getEntity(EditComponentVendorResult result) {
-        var coreControl = getCoreControl();
         ComponentVendor componentVendor;
         var componentVendorName = spec.getComponentVendorName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+            componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
         } else { // EditMode.UPDATE
-            componentVendor = coreControl.getComponentVendorByNameForUpdate(componentVendorName);
+            componentVendor = getComponentControl().getComponentVendorByNameForUpdate(componentVendorName);
         }
 
         if(componentVendor != null) {
-            result.setComponentVendor(coreControl.getComponentVendorTransfer(getUserVisit(), componentVendor));
+            result.setComponentVendor(getComponentControl().getComponentVendorTransfer(getUserVisit(), componentVendor));
         } else {
             addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
         }
@@ -107,9 +106,7 @@ public class EditComponentVendorCommand
 
     @Override
     public void fillInResult(EditComponentVendorResult result, ComponentVendor componentVendor) {
-        var coreControl = getCoreControl();
-
-        result.setComponentVendor(coreControl.getComponentVendorTransfer(getUserVisit(), componentVendor));
+        result.setComponentVendor(getComponentControl().getComponentVendorTransfer(getUserVisit(), componentVendor));
     }
 
     @Override
@@ -122,9 +119,8 @@ public class EditComponentVendorCommand
 
     @Override
     public void canUpdate(ComponentVendor componentVendor) {
-        var coreControl = getCoreControl();
         var componentVendorName = edit.getComponentVendorName();
-        var duplicateComponentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var duplicateComponentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
 
         if(duplicateComponentVendor != null && !componentVendor.equals(duplicateComponentVendor)) {
             addExecutionError(ExecutionErrors.DuplicateComponentVendorName.name(), componentVendorName);
@@ -133,13 +129,12 @@ public class EditComponentVendorCommand
 
     @Override
     public void doUpdate(ComponentVendor componentVendor) {
-        var coreControl = getCoreControl();
-        var componentVendorDetailValue = coreControl.getComponentVendorDetailValueForUpdate(componentVendor);
+        var componentVendorDetailValue = getComponentControl().getComponentVendorDetailValueForUpdate(componentVendor);
 
         componentVendorDetailValue.setComponentVendorName(edit.getComponentVendorName());
         componentVendorDetailValue.setDescription(edit.getDescription());
 
-        coreControl.updateComponentVendorFromValue(componentVendorDetailValue, getPartyPK());
+        getComponentControl().updateComponentVendorFromValue(componentVendorDetailValue, getPartyPK());
 
     }
     

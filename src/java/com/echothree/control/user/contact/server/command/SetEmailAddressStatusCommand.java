@@ -42,8 +42,8 @@ public class SetEmailAddressStatusCommand
     }
 
     /** Creates a new instance of SetEmailAddressStatusCommand */
-    public SetEmailAddressStatusCommand(UserVisitPK userVisitPK, SetEmailAddressStatusForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SetEmailAddressStatusCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
 
     @Override

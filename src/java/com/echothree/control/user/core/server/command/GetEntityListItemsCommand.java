@@ -49,8 +49,8 @@ public class GetEntityListItemsCommand
     }
     
     /** Creates a new instance of GetEntityListItemsCommand */
-    public GetEntityListItemsCommand(UserVisitPK userVisitPK, GetEntityListItemsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetEntityListItemsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     EntityAttribute entityAttribute;

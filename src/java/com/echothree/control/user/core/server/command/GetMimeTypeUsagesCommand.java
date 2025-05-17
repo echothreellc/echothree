@@ -18,14 +18,16 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetMimeTypeUsagesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.core.server.entity.MimeTypeUsage;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -43,8 +45,8 @@ public class GetMimeTypeUsagesCommand
     }
     
     /** Creates a new instance of GetMimeTypeUsagesCommand */
-    public GetMimeTypeUsagesCommand(UserVisitPK userVisitPK, GetMimeTypeUsagesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetMimeTypeUsagesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
 
     MimeType mimeType;
@@ -52,13 +54,13 @@ public class GetMimeTypeUsagesCommand
     @Override
     protected Collection<MimeTypeUsage> getEntities() {
         Collection<MimeTypeUsage> mimeTypeUsages = null;
-        var coreControl = getCoreControl();
+        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
         var mimeTypeName = form.getMimeTypeName();
         
-        mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+        mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
         
         if(mimeType != null) {
-            mimeTypeUsages = coreControl.getMimeTypeUsagesByMimeType(mimeType);
+            mimeTypeUsages = mimeTypeControl.getMimeTypeUsagesByMimeType(mimeType);
         } else {
             addExecutionError(ExecutionErrors.UnknownMimeTypeName.name(), mimeTypeName);
         }
@@ -71,11 +73,11 @@ public class GetMimeTypeUsagesCommand
         var result = CoreResultFactory.getGetMimeTypeUsagesResult();
 
         if(entities != null) {
-            var coreControl = getCoreControl();
+            var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
             var userVisit = getUserVisit();
 
-            result.setMimeType(coreControl.getMimeTypeTransfer(userVisit, mimeType));
-            result.setMimeTypeUsages(coreControl.getMimeTypeUsageTransfersByMimeType(userVisit, entities));
+            result.setMimeType(mimeTypeControl.getMimeTypeTransfer(userVisit, mimeType));
+            result.setMimeTypeUsages(mimeTypeControl.getMimeTypeUsageTransfersByMimeType(userVisit, entities));
         }
         
         return result;

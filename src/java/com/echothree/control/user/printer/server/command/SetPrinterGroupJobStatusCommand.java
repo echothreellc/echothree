@@ -42,8 +42,8 @@ public class SetPrinterGroupJobStatusCommand
     }
 
     /** Creates a new instance of SetPrinterGroupJobStatusCommand */
-    public SetPrinterGroupJobStatusCommand(UserVisitPK userVisitPK, SetPrinterGroupJobStatusForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SetPrinterGroupJobStatusCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
    @Override

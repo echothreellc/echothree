@@ -21,7 +21,7 @@ import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.common.exception.UnknownEntityTypeNameException;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -47,8 +47,8 @@ public class EntityTypeLogic
     
     public EntityType getEntityTypeByName(final ExecutionErrorAccumulator eea, final ComponentVendor componentVendor,
             final String entityTypeName, final EntityPermission entityPermission) {
-        var coreControl = Session.getModelController(CoreControl.class);
-        var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName, entityPermission);
+        var entityTypeControl = Session.getModelController(EntityTypeControl.class);
+        var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName, entityPermission);
 
         if(entityType == null) {
             handleExecutionError(UnknownEntityTypeNameException.class, eea, ExecutionErrors.UnknownEntityTypeName.name(),
@@ -93,7 +93,6 @@ public class EntityTypeLogic
     public EntityType getEntityTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final EntityTypeUniversalSpec universalSpec, final EntityPermission entityPermission) {
         EntityType entityType = null;
-        var coreControl = Session.getModelController(CoreControl.class);
         var componentVendorName = universalSpec.getComponentVendorName();
         var entityTypeName = universalSpec.getEntityTypeName();
         var parameterCount = (componentVendorName == null ? 0 : 1) + (entityTypeName == null ? 0 : 1)
@@ -112,7 +111,9 @@ public class EntityTypeLogic
                         ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityType.name());
 
                 if(!eea.hasExecutionErrors()) {
-                    entityType = coreControl.getEntityTypeByEntityInstance(entityInstance, entityPermission);
+                    var entityTypeControl = Session.getModelController(EntityTypeControl.class);
+
+                    entityType = entityTypeControl.getEntityTypeByEntityInstance(entityInstance, entityPermission);
                 }
                 break;
             default:

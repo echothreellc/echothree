@@ -68,8 +68,8 @@ public class EditGeoCodeTimeZoneCommand
     }
     
     /** Creates a new instance of EditGeoCodeTimeZoneCommand */
-    public EditGeoCodeTimeZoneCommand(UserVisitPK userVisitPK, EditGeoCodeTimeZoneForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditGeoCodeTimeZoneCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

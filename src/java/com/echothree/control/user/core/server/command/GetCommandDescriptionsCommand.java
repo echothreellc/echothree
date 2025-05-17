@@ -18,12 +18,14 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetCommandDescriptionsForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -41,26 +43,26 @@ public class GetCommandDescriptionsCommand
     }
     
     /** Creates a new instance of GetCommandDescriptionsCommand */
-    public GetCommandDescriptionsCommand(UserVisitPK userVisitPK, GetCommandDescriptionsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetCommandDescriptionsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var commandControl = Session.getModelController(CommandControl.class);
         var result = CoreResultFactory.getGetCommandDescriptionsResult();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var commandName = form.getCommandName();
-            var command = coreControl.getCommandByName(componentVendor, commandName);
+            var command = commandControl.getCommandByName(componentVendor, commandName);
             
             if(command != null) {
                 var userVisit = getUserVisit();
                 
-                result.setCommand(coreControl.getCommandTransfer(userVisit, command));
-                result.setCommandDescriptions(coreControl.getCommandDescriptionTransfersByCommand(userVisit, command));
+                result.setCommand(commandControl.getCommandTransfer(userVisit, command));
+                result.setCommandDescriptions(commandControl.getCommandDescriptionTransfersByCommand(userVisit, command));
             } else {
                 addExecutionError(ExecutionErrors.UnknownCommandName.name(), commandName);
             }

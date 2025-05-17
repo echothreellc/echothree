@@ -924,20 +924,6 @@ public interface CoreService
     CommandResult deleteEntityWorkflowAttribute(UserVisitPK userVisitPK, DeleteEntityWorkflowAttributeForm form);
 
     // -------------------------------------------------------------------------
-    //   Party Entity Types
-    // -------------------------------------------------------------------------
-    
-    CommandResult createPartyEntityType(UserVisitPK userVisitPK, CreatePartyEntityTypeForm form);
-    
-    CommandResult editPartyEntityType(UserVisitPK userVisitPK, EditPartyEntityTypeForm form);
-    
-    CommandResult getPartyEntityType(UserVisitPK userVisitPK, GetPartyEntityTypeForm form);
-    
-    CommandResult getPartyEntityTypes(UserVisitPK userVisitPK, GetPartyEntityTypesForm form);
-    
-    CommandResult deletePartyEntityType(UserVisitPK userVisitPK, DeletePartyEntityTypeForm form);
-    
-    // -------------------------------------------------------------------------
     //   Cache Entries
     // -------------------------------------------------------------------------
 
@@ -1068,20 +1054,6 @@ public interface CoreService
     CommandResult editApplicationEditorUseDescription(UserVisitPK userVisitPK, EditApplicationEditorUseDescriptionForm form);
     
     CommandResult deleteApplicationEditorUseDescription(UserVisitPK userVisitPK, DeleteApplicationEditorUseDescriptionForm form);
-    
-    // --------------------------------------------------------------------------------
-    //   Party Application Editor Uses
-    // --------------------------------------------------------------------------------
-    
-    CommandResult createPartyApplicationEditorUse(UserVisitPK userVisitPK, CreatePartyApplicationEditorUseForm form);
-    
-    CommandResult getPartyApplicationEditorUse(UserVisitPK userVisitPK, GetPartyApplicationEditorUseForm form);
-    
-    CommandResult getPartyApplicationEditorUses(UserVisitPK userVisitPK, GetPartyApplicationEditorUsesForm form);
-    
-    CommandResult editPartyApplicationEditorUse(UserVisitPK userVisitPK, EditPartyApplicationEditorUseForm form);
-    
-    CommandResult deletePartyApplicationEditorUse(UserVisitPK userVisitPK, DeletePartyApplicationEditorUseForm form);
     
     // --------------------------------------------------------------------------------
     //   Appearances

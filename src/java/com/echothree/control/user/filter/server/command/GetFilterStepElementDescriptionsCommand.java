@@ -58,8 +58,8 @@ public class GetFilterStepElementDescriptionsCommand
     }
     
     /** Creates a new instance of GetFilterStepElementDescriptionsCommand */
-    public GetFilterStepElementDescriptionsCommand(UserVisitPK userVisitPK, GetFilterStepElementDescriptionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetFilterStepElementDescriptionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

@@ -18,11 +18,10 @@ package com.echothree.model.control.accounting.server.transfer;
 import com.echothree.model.control.accounting.common.AccountingOptions;
 import com.echothree.model.control.accounting.common.transfer.TransactionTimeTransfer;
 import com.echothree.model.control.accounting.common.transfer.TransactionTransfer;
-import com.echothree.model.control.accounting.common.workflow.TransactionGroupStatusConstants;
 import com.echothree.model.control.accounting.common.workflow.TransactionStatusConstants;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.accounting.server.control.TransactionTimeControl;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.accounting.server.entity.Transaction;
@@ -35,7 +34,7 @@ public class TransactionTransferCache
         extends BaseAccountingTransferCache<Transaction, TransactionTransfer> {
 
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     TransactionTimeControl transactionTimeControl = Session.getModelController(TransactionTimeControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
@@ -70,7 +69,7 @@ public class TransactionTransferCache
             var transactionGroupTransfer = accountingControl.getTransactionGroupTransfer(userVisit, transactionDetail.getTransactionGroup());
             var transactionTypeTransfer = accountingControl.getTransactionTypeTransfer(userVisit, transactionDetail.getTransactionType());
 
-            var entityInstance = coreControl.getEntityInstanceByBasePK(transaction.getPrimaryKey());
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(transaction.getPrimaryKey());
             var transactionStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     TransactionStatusConstants.Workflow_TRANSACTION_STATUS, entityInstance);
 

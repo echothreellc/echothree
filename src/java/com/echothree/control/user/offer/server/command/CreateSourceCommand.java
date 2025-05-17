@@ -62,8 +62,8 @@ public class CreateSourceCommand
     }
     
     /** Creates a new instance of CreateSourceCommand */
-    public CreateSourceCommand(UserVisitPK userVisitPK, CreateSourceForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateSourceCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

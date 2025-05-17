@@ -57,8 +57,8 @@ public class GetTransactionGlAccountCategoryDescriptionsCommand
     }
     
     /** Creates a new instance of GetTransactionGlAccountCategoryDescriptionsCommand */
-    public GetTransactionGlAccountCategoryDescriptionsCommand(UserVisitPK userVisitPK, GetTransactionGlAccountCategoryDescriptionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetTransactionGlAccountCategoryDescriptionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

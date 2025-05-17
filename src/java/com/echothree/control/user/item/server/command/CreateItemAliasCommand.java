@@ -61,8 +61,8 @@ public class CreateItemAliasCommand
     }
     
     /** Creates a new instance of CreateItemAliasCommand */
-    public CreateItemAliasCommand(UserVisitPK userVisitPK, CreateItemAliasForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateItemAliasCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

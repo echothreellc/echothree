@@ -57,8 +57,8 @@ public class DeletePeriodKindDescriptionCommand
     }
     
     /** Creates a new instance of DeletePeriodKindDescriptionCommand */
-    public DeletePeriodKindDescriptionCommand(UserVisitPK userVisitPK, DeletePeriodKindDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeletePeriodKindDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

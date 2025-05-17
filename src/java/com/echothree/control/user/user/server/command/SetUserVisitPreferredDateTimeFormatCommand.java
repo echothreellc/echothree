@@ -39,8 +39,8 @@ public class SetUserVisitPreferredDateTimeFormatCommand
     }
 
     /** Creates a new instance of SetUserVisitPreferredDateTimeFormatCommand */
-    public SetUserVisitPreferredDateTimeFormatCommand(UserVisitPK userVisitPK, SetUserVisitPreferredDateTimeFormatForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SetUserVisitPreferredDateTimeFormatCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -42,8 +42,8 @@ public class SetDefaultUnitOfMeasureKindUseCommand
     }
     
     /** Creates a new instance of SetDefaultUnitOfMeasureKindUseCommand */
-    public SetDefaultUnitOfMeasureKindUseCommand(UserVisitPK userVisitPK, SetDefaultUnitOfMeasureKindUseForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultUnitOfMeasureKindUseCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

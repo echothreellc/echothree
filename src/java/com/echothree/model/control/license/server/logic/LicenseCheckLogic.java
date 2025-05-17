@@ -18,7 +18,6 @@ package com.echothree.model.control.license.server.logic;
 
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.persistence.Session;
-import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -112,10 +111,10 @@ public class LicenseCheckLogic
                             var entity = closeableHttpResponse.getEntity();
 
                             if(entity != null) {
-                                var text = CharStreams.toString(new InputStreamReader(entity.getContent(), Charsets.UTF_8));
+                                var text = CharStreams.toString(new InputStreamReader(entity.getContent(), StandardCharsets.UTF_8));
                                 var properties = new Properties();
 
-                                properties.loadFromXML(new ByteArrayInputStream(text.getBytes(Charsets.UTF_8)));
+                                properties.loadFromXML(new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8)));
 
                                 var retrievedServerName = properties.getProperty("serverName");
 

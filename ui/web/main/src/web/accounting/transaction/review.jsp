@@ -62,9 +62,6 @@
                 <display:column titleKey="columnTitle.sequence">
                     <c:out value="${transactionGlEntry.transactionGlEntrySequence}" />
                 </display:column>
-                <display:column titleKey="columnTitle.parent">
-                    <c:out value="${transactionGlEntry.parentTransactionGlEntry.transactionGlEntrySequence}" />
-                </display:column>
                 <display:column>
                     <c:set var="party" scope="request" value="${transactionGlEntry.groupParty}" />
                     <jsp:include page="../../include/party.jsp" />

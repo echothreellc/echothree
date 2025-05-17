@@ -56,8 +56,8 @@ public class SearchOffersCommand
     }
 
     /** Creates a new instance of SearchOffersCommand */
-    public SearchOffersCommand(UserVisitPK userVisitPK, SearchOffersForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SearchOffersCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

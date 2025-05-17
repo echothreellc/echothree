@@ -56,8 +56,8 @@ public class EditForumMessageAttachmentDescriptionCommand
     }
     
     /** Creates a new instance of EditForumMessageAttachmentDescriptionCommand */
-    public EditForumMessageAttachmentDescriptionCommand(UserVisitPK userVisitPK, EditForumMessageAttachmentDescriptionForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditForumMessageAttachmentDescriptionCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

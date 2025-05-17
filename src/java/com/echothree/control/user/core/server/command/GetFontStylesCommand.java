@@ -18,6 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetFontStylesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.FontControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -29,6 +30,7 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 
@@ -50,8 +52,8 @@ public class GetFontStylesCommand
     }
     
     /** Creates a new instance of GetFontStylesCommand */
-    public GetFontStylesCommand(UserVisitPK userVisitPK, GetFontStylesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetFontStylesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override
@@ -61,16 +63,16 @@ public class GetFontStylesCommand
 
     @Override
     protected Long getTotalEntities() {
-        var coreControl = getCoreControl();
+        var fontControl = Session.getModelController(FontControl.class);
 
-        return coreControl.countFontStyles();
+        return fontControl.countFontStyles();
     }
 
     @Override
     protected Collection<FontStyle> getEntities() {
-        var coreControl = getCoreControl();
+        var fontControl = Session.getModelController(FontControl.class);
         
-        return coreControl.getFontStyles();
+        return fontControl.getFontStyles();
     }
     
     @Override
@@ -78,7 +80,9 @@ public class GetFontStylesCommand
         var result = CoreResultFactory.getGetFontStylesResult();
 
         if(entities != null) {
-            result.setFontStyles(getCoreControl().getFontStyleTransfers(getUserVisit(), entities));
+            var fontControl = Session.getModelController(FontControl.class);
+
+            result.setFontStyles(fontControl.getFontStyleTransfers(getUserVisit(), entities));
         }
 
         return result;

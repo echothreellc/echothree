@@ -49,8 +49,8 @@ public class CreateSubscriptionTypeCommand
     }
     
     /** Creates a new instance of CreateSubscriptionTypeCommand */
-    public CreateSubscriptionTypeCommand(UserVisitPK userVisitPK, CreateSubscriptionTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateSubscriptionTypeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

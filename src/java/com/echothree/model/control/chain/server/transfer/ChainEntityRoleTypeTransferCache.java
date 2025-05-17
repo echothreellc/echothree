@@ -18,16 +18,16 @@ package com.echothree.model.control.chain.server.transfer;
 
 import com.echothree.model.control.chain.common.transfer.ChainEntityRoleTypeTransfer;
 import com.echothree.model.control.chain.server.control.ChainControl;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.data.chain.server.entity.ChainEntityRoleType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
 public class ChainEntityRoleTypeTransferCache
         extends BaseChainTransferCache<ChainEntityRoleType, ChainEntityRoleTypeTransfer> {
-    
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
-    
+
+    EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
+
     /** Creates a new instance of ChainEntityRoleTypeTransferCache */
     public ChainEntityRoleTypeTransferCache(UserVisit userVisit, ChainControl chainControl) {
         super(userVisit, chainControl);
@@ -42,7 +42,7 @@ public class ChainEntityRoleTypeTransferCache
             var chainEntityRoleTypeDetail = chainEntityRoleType.getLastDetail();
             var chainType = chainControl.getChainTypeTransfer(userVisit, chainEntityRoleTypeDetail.getChainType());
             var chainEntityRoleTypeName = chainEntityRoleTypeDetail.getChainEntityRoleTypeName();
-            var entityType = coreControl.getEntityTypeTransfer(userVisit, chainEntityRoleTypeDetail.getEntityType());
+            var entityType = entityTypeControl.getEntityTypeTransfer(userVisit, chainEntityRoleTypeDetail.getEntityType());
             var sortOrder = chainEntityRoleTypeDetail.getSortOrder();
             var description = chainControl.getBestChainEntityRoleTypeDescription(chainEntityRoleType, getLanguage());
             

@@ -59,8 +59,8 @@ public class GetSearchSortOrderDescriptionCommand
     }
     
     /** Creates a new instance of GetSearchSortOrderDescriptionCommand */
-    public GetSearchSortOrderDescriptionCommand(UserVisitPK userVisitPK, GetSearchSortOrderDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetSearchSortOrderDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

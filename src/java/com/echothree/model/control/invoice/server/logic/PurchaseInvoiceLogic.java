@@ -18,7 +18,7 @@ package com.echothree.model.control.invoice.server.logic;
 
 import com.echothree.model.control.accounting.common.AccountingConstants;
 import com.echothree.model.control.accounting.server.logic.GlAccountLogic;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.invoice.common.InvoiceTypes;
 import com.echothree.model.control.invoice.common.choice.PurchaseInvoiceStatusChoicesBean;
 import com.echothree.model.control.invoice.common.workflow.PurchaseInvoiceStatusConstants;
@@ -109,9 +109,9 @@ public class PurchaseInvoiceLogic {
                     freeOnBoard, reference, description, invoicedTime, dueTime, paidTime, createdBy);
 
             if(!eea.hasExecutionErrors() && workflowEntranceName != null) {
-                var coreControl = Session.getModelController(CoreControl.class);
+                var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
                 var workflowControl = Session.getModelController(WorkflowControl.class);
-                var entityInstance = coreControl.getEntityInstanceByBasePK(invoice.getPrimaryKey());
+                var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(invoice.getPrimaryKey());
 
                 workflowControl.addEntityToWorkflowUsingNames(null, PurchaseInvoiceStatusConstants.Workflow_PURCHASE_INVOICE_STATUS, workflowEntranceName,
                         entityInstance, null, null, createdBy);
@@ -123,10 +123,10 @@ public class PurchaseInvoiceLogic {
     
     public InvoiceLine createInvoiceLine(final ExecutionErrorAccumulator eea, final Invoice invoice, final Integer invoiceLineSequence, final InvoiceLine parentInvoiceLine,
             final Long amount, final InvoiceLineType invoiceLineType, final GlAccount glAccount, final String description, final BasePK createdBy) {
-        var coreControl = Session.getModelController(CoreControl.class);
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var workflowControl = Session.getModelController(WorkflowControl.class);
         InvoiceLine invoiceLine = null;
-        var entityInstance = coreControl.getEntityInstanceByBasePK(invoice.getPrimaryKey());
+        var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(invoice.getPrimaryKey());
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PurchaseInvoiceStatusConstants.Workflow_PURCHASE_INVOICE_STATUS, entityInstance);
         var workflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
 
@@ -148,8 +148,8 @@ public class PurchaseInvoiceLogic {
             workflowControl.getWorkflowEntranceChoices(purchaseInvoiceStatusChoicesBean, defaultInvoiceStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(PurchaseInvoiceStatusConstants.Workflow_PURCHASE_INVOICE_STATUS), partyPK);
         } else {
-            var coreControl = Session.getModelController(CoreControl.class);
-            var entityInstance = coreControl.getEntityInstanceByBasePK(invoice.getPrimaryKey());
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(invoice.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PurchaseInvoiceStatusConstants.Workflow_PURCHASE_INVOICE_STATUS, entityInstance);
             
             workflowControl.getWorkflowDestinationChoices(purchaseInvoiceStatusChoicesBean, defaultInvoiceStatusChoice, language, allowNullChoice, workflowEntityStatus.getWorkflowStep(), partyPK);
@@ -159,9 +159,9 @@ public class PurchaseInvoiceLogic {
     }
     
     public void setPurchaseInvoiceStatus(final ExecutionErrorAccumulator eea, final Invoice invoice, final String invoiceStatusChoice, final PartyPK modifiedBy) {
-        var coreControl = Session.getModelController(CoreControl.class);
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        var entityInstance = coreControl.getEntityInstanceByBasePK(invoice.getPrimaryKey());
+        var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(invoice.getPrimaryKey());
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PurchaseInvoiceStatusConstants.Workflow_PURCHASE_INVOICE_STATUS,
                 entityInstance);
         var workflowDestination = invoiceStatusChoice == null? null: workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), invoiceStatusChoice);

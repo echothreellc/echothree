@@ -45,8 +45,8 @@ public class CreateItemPackCheckRequirementCommand
     }
     
     /** Creates a new instance of CreateItemPackCheckRequirementCommand */
-    public CreateItemPackCheckRequirementCommand(UserVisitPK userVisitPK, CreateItemPackCheckRequirementForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateItemPackCheckRequirementCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

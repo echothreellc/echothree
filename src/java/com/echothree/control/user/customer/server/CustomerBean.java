@@ -43,37 +43,37 @@ public class CustomerBean
 
     @Override
     public CommandResult getCustomers(UserVisitPK userVisitPK, GetCustomersForm form) {
-        return new GetCustomersCommand(userVisitPK, form).run();
+        return new GetCustomersCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getCustomer(UserVisitPK userVisitPK, GetCustomerForm form) {
-        return new GetCustomerCommand(userVisitPK, form).run();
+        return new GetCustomerCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editCustomer(UserVisitPK userVisitPK, EditCustomerForm form) {
-        return new EditCustomerCommand(userVisitPK, form).run();
+        return new EditCustomerCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCustomerStatusChoices(UserVisitPK userVisitPK, GetCustomerStatusChoicesForm form) {
-        return new GetCustomerStatusChoicesCommand(userVisitPK, form).run();
+        return new GetCustomerStatusChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setCustomerStatus(UserVisitPK userVisitPK, SetCustomerStatusForm form) {
-        return new SetCustomerStatusCommand(userVisitPK, form).run();
+        return new SetCustomerStatusCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCustomerCreditStatusChoices(UserVisitPK userVisitPK, GetCustomerCreditStatusChoicesForm form) {
-        return new GetCustomerCreditStatusChoicesCommand(userVisitPK, form).run();
+        return new GetCustomerCreditStatusChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setCustomerCreditStatus(UserVisitPK userVisitPK, SetCustomerCreditStatusForm form) {
-        return new SetCustomerCreditStatusCommand(userVisitPK, form).run();
+        return new SetCustomerCreditStatusCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -82,37 +82,37 @@ public class CustomerBean
     
     @Override
     public CommandResult createCustomerType(UserVisitPK userVisitPK, CreateCustomerTypeForm form) {
-        return new CreateCustomerTypeCommand(userVisitPK, form).run();
+        return new CreateCustomerTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCustomerTypes(UserVisitPK userVisitPK, GetCustomerTypesForm form) {
-        return new GetCustomerTypesCommand(userVisitPK, form).run();
+        return new GetCustomerTypesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCustomerType(UserVisitPK userVisitPK, GetCustomerTypeForm form) {
-        return new GetCustomerTypeCommand(userVisitPK, form).run();
+        return new GetCustomerTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCustomerTypeChoices(UserVisitPK userVisitPK, GetCustomerTypeChoicesForm form) {
-        return new GetCustomerTypeChoicesCommand(userVisitPK, form).run();
+        return new GetCustomerTypeChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultCustomerType(UserVisitPK userVisitPK, SetDefaultCustomerTypeForm form) {
-        return new SetDefaultCustomerTypeCommand(userVisitPK, form).run();
+        return new SetDefaultCustomerTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editCustomerType(UserVisitPK userVisitPK, EditCustomerTypeForm form) {
-        return new EditCustomerTypeCommand(userVisitPK, form).run();
+        return new EditCustomerTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCustomerType(UserVisitPK userVisitPK, DeleteCustomerTypeForm form) {
-        return new DeleteCustomerTypeCommand(userVisitPK, form).run();
+        return new DeleteCustomerTypeCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -121,22 +121,22 @@ public class CustomerBean
     
     @Override
     public CommandResult createCustomerTypeDescription(UserVisitPK userVisitPK, CreateCustomerTypeDescriptionForm form) {
-        return new CreateCustomerTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateCustomerTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCustomerTypeDescriptions(UserVisitPK userVisitPK, GetCustomerTypeDescriptionsForm form) {
-        return new GetCustomerTypeDescriptionsCommand(userVisitPK, form).run();
+        return new GetCustomerTypeDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editCustomerTypeDescription(UserVisitPK userVisitPK, EditCustomerTypeDescriptionForm form) {
-        return new EditCustomerTypeDescriptionCommand(userVisitPK, form).run();
+        return new EditCustomerTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCustomerTypeDescription(UserVisitPK userVisitPK, DeleteCustomerTypeDescriptionForm form) {
-        return new DeleteCustomerTypeDescriptionCommand(userVisitPK, form).run();
+        return new DeleteCustomerTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -145,32 +145,32 @@ public class CustomerBean
     
     @Override
     public CommandResult createCustomerTypePaymentMethod(UserVisitPK userVisitPK, CreateCustomerTypePaymentMethodForm form) {
-        return new CreateCustomerTypePaymentMethodCommand(userVisitPK, form).run();
+        return new CreateCustomerTypePaymentMethodCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCustomerTypePaymentMethod(UserVisitPK userVisitPK, GetCustomerTypePaymentMethodForm form) {
-        return new GetCustomerTypePaymentMethodCommand(userVisitPK, form).run();
+        return new GetCustomerTypePaymentMethodCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCustomerTypePaymentMethods(UserVisitPK userVisitPK, GetCustomerTypePaymentMethodsForm form) {
-        return new GetCustomerTypePaymentMethodsCommand(userVisitPK, form).run();
+        return new GetCustomerTypePaymentMethodsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultCustomerTypePaymentMethod(UserVisitPK userVisitPK, SetDefaultCustomerTypePaymentMethodForm form) {
-        return new SetDefaultCustomerTypePaymentMethodCommand(userVisitPK, form).run();
+        return new SetDefaultCustomerTypePaymentMethodCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editCustomerTypePaymentMethod(UserVisitPK userVisitPK, EditCustomerTypePaymentMethodForm form) {
-        return new EditCustomerTypePaymentMethodCommand(userVisitPK, form).run();
+        return new EditCustomerTypePaymentMethodCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCustomerTypePaymentMethod(UserVisitPK userVisitPK, DeleteCustomerTypePaymentMethodForm form) {
-        return new DeleteCustomerTypePaymentMethodCommand(userVisitPK, form).run();
+        return new DeleteCustomerTypePaymentMethodCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -179,32 +179,32 @@ public class CustomerBean
     
     @Override
     public CommandResult createCustomerTypeShippingMethod(UserVisitPK userVisitPK, CreateCustomerTypeShippingMethodForm form) {
-        return new CreateCustomerTypeShippingMethodCommand(userVisitPK, form).run();
+        return new CreateCustomerTypeShippingMethodCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCustomerTypeShippingMethod(UserVisitPK userVisitPK, GetCustomerTypeShippingMethodForm form) {
-        return new GetCustomerTypeShippingMethodCommand(userVisitPK, form).run();
+        return new GetCustomerTypeShippingMethodCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCustomerTypeShippingMethods(UserVisitPK userVisitPK, GetCustomerTypeShippingMethodsForm form) {
-        return new GetCustomerTypeShippingMethodsCommand(userVisitPK, form).run();
+        return new GetCustomerTypeShippingMethodsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultCustomerTypeShippingMethod(UserVisitPK userVisitPK, SetDefaultCustomerTypeShippingMethodForm form) {
-        return new SetDefaultCustomerTypeShippingMethodCommand(userVisitPK, form).run();
+        return new SetDefaultCustomerTypeShippingMethodCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editCustomerTypeShippingMethod(UserVisitPK userVisitPK, EditCustomerTypeShippingMethodForm form) {
-        return new EditCustomerTypeShippingMethodCommand(userVisitPK, form).run();
+        return new EditCustomerTypeShippingMethodCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCustomerTypeShippingMethod(UserVisitPK userVisitPK, DeleteCustomerTypeShippingMethodForm form) {
-        return new DeleteCustomerTypeShippingMethodCommand(userVisitPK, form).run();
+        return new DeleteCustomerTypeShippingMethodCommand().run(userVisitPK, form);
     }
     
 }

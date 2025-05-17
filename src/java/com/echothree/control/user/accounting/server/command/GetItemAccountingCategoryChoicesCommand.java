@@ -55,8 +55,8 @@ public class GetItemAccountingCategoryChoicesCommand
     }
     
     /** Creates a new instance of GetItemAccountingCategoryChoicesCommand */
-    public GetItemAccountingCategoryChoicesCommand(UserVisitPK userVisitPK, GetItemAccountingCategoryChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetItemAccountingCategoryChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

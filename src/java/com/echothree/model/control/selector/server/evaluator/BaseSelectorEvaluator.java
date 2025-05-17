@@ -17,7 +17,11 @@
 package com.echothree.model.control.selector.server.evaluator;
 
 import com.echothree.model.control.core.common.EntityAttributeTypes;
+import com.echothree.model.control.core.server.control.ComponentControl;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
+import com.echothree.model.control.core.server.control.EntityTypeControl;
+import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.control.selector.common.SelectorBooleanTypes;
 import com.echothree.model.control.selector.common.SelectorNodeTypes;
 import com.echothree.model.control.selector.server.control.SelectorControl;
@@ -35,6 +39,10 @@ public class BaseSelectorEvaluator {
     protected Session session;
     protected BasePK evaluatedBy;
     protected CoreControl coreControl = Session.getModelController(CoreControl.class);
+    protected EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+    protected EventControl eventControl = Session.getModelController(EventControl.class);
+    protected ComponentControl componentControl = Session.getModelController(ComponentControl.class);
+    protected EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
     protected SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
     protected WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     protected Log log;
@@ -54,7 +62,7 @@ public class BaseSelectorEvaluator {
     }
     
     protected EntityInstance getEntityInstanceByBasePK(BasePK pk) {
-        return coreControl.getEntityInstanceByBasePK(pk);
+        return entityInstanceControl.getEntityInstanceByBasePK(pk);
     }
     
     protected EntityInstance getEntityInstanceByBaseEntity(BaseEntity baseEntity) {

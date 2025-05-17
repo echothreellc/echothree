@@ -18,6 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEntityInstancesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -32,6 +33,7 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -58,8 +60,8 @@ public class GetEntityInstancesCommand
     }
     
     /** Creates a new instance of GetEntityInstancesCommand */
-    public GetEntityInstancesCommand(UserVisitPK userVisitPK, GetEntityInstancesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetEntityInstancesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     EntityType entityType;
@@ -74,7 +76,9 @@ public class GetEntityInstancesCommand
 
     @Override
     protected Long getTotalEntities() {
-        return hasExecutionErrors() ? null : getCoreControl().countEntityInstancesByEntityType(entityType);
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+
+        return hasExecutionErrors() ? null : entityInstanceControl.countEntityInstancesByEntityType(entityType);
     }
 
     @Override
@@ -82,7 +86,9 @@ public class GetEntityInstancesCommand
         Collection<EntityInstance> entities = null;
 
         if(!hasExecutionErrors()) {
-            entities = getCoreControl().getEntityInstancesByEntityType(entityType);
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+
+            entities = entityInstanceControl.getEntityInstancesByEntityType(entityType);
         }
 
         return entities;
@@ -93,7 +99,9 @@ public class GetEntityInstancesCommand
         var result = CoreResultFactory.getGetEntityInstancesResult();
 
         if(entities != null) {
-            result.setEntityInstances(getCoreControl().getEntityInstanceTransfers(getUserVisit(), entities,
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+
+            result.setEntityInstances(entityInstanceControl.getEntityInstanceTransfers(getUserVisit(), entities,
                     false, false, false, false));
         }
 

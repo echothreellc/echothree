@@ -57,8 +57,8 @@ public class GetCarrierServiceChoicesCommand
     }
     
     /** Creates a new instance of GetCarrierServiceChoicesCommand */
-    public GetCarrierServiceChoicesCommand(UserVisitPK userVisitPK, GetCarrierServiceChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetCarrierServiceChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

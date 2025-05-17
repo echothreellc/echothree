@@ -17,18 +17,20 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.SetDefaultTextDecorationForm;
+import com.echothree.model.control.core.server.control.TextControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -53,19 +55,19 @@ public class SetDefaultTextDecorationCommand
     }
     
     /** Creates a new instance of SetDefaultTextDecorationCommand */
-    public SetDefaultTextDecorationCommand(UserVisitPK userVisitPK, SetDefaultTextDecorationForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultTextDecorationCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var textControl = Session.getModelController(TextControl.class);
         var textDecorationName = form.getTextDecorationName();
-        var textDecorationDetailValue = coreControl.getTextDecorationDetailValueByNameForUpdate(textDecorationName);
+        var textDecorationDetailValue = textControl.getTextDecorationDetailValueByNameForUpdate(textDecorationName);
         
         if(textDecorationDetailValue != null) {
             textDecorationDetailValue.setIsDefault(Boolean.TRUE);
-            coreControl.updateTextDecorationFromValue(textDecorationDetailValue, getPartyPK());
+            textControl.updateTextDecorationFromValue(textDecorationDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownTextDecorationName.name(), textDecorationName);
         }

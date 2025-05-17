@@ -27,8 +27,8 @@ public class CountSecurityRoleGroupResultsCommand
         extends BaseCountResultsCommand<CountSecurityRoleGroupResultsForm, CountSecurityRoleGroupResultsResult> {
     
     /** Creates a new instance of CountSecurityRoleGroupResultsCommand */
-    public CountSecurityRoleGroupResultsCommand(UserVisitPK userVisitPK, CountSecurityRoleGroupResultsForm form) {
-        super(userVisitPK, form, null);
+    public CountSecurityRoleGroupResultsCommand() {
+        super(null);
     }
     
     @Override

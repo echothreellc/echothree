@@ -42,8 +42,8 @@ public class CheckSecurityRolesCommand
     }
     
     /** Creates a new instance of CheckSecurityRolesCommand */
-    public CheckSecurityRolesCommand(UserVisitPK userVisitPK, CheckSecurityRolesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CheckSecurityRolesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

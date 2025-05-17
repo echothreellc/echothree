@@ -18,6 +18,7 @@ package com.echothree.control.user.rating.server.command;
 
 import com.echothree.control.user.rating.common.form.CreateRatingForm;
 import com.echothree.control.user.rating.common.result.RatingResultFactory;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
@@ -50,17 +51,17 @@ public class CreateRatingCommand
     }
     
     /** Creates a new instance of CreateRatingCommand */
-    public CreateRatingCommand(UserVisitPK userVisitPK, CreateRatingForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateRatingCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
         var result = RatingResultFactory.getCreateRatingResult();
-        var coreControl = getCoreControl();
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         String ratingName = null;
         var entityRef = form.getEntityRef();
-        var ratedEntityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
+        var ratedEntityInstance = entityInstanceControl.getEntityInstanceByEntityRef(entityRef);
         
         if(ratedEntityInstance != null) {
             var ratingControl = Session.getModelController(RatingControl.class);
@@ -73,12 +74,12 @@ public class CreateRatingCommand
                 var userLogin = userControl.getUserLoginByUsername(ratedByUsername);
                 
                 if(userLogin != null) {
-                    ratedByEntityInstance = coreControl.getEntityInstanceByBasePK(userLogin.getPartyPK());
+                    ratedByEntityInstance = entityInstanceControl.getEntityInstanceByBasePK(userLogin.getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownRatedByUsername.name(), ratedByUsername);
                 }
             } else {
-                ratedByEntityInstance = coreControl.getEntityInstanceByBasePK(createdBy);
+                ratedByEntityInstance = entityInstanceControl.getEntityInstanceByBasePK(createdBy);
             }
             
             if(!hasExecutionErrors()) {

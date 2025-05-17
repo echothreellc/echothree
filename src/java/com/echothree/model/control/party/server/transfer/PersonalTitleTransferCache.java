@@ -17,7 +17,6 @@
 package com.echothree.model.control.party.server.transfer;
 
 import com.echothree.model.control.party.common.transfer.PersonalTitleTransfer;
-import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.PersonalTitle;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -25,13 +24,14 @@ public class PersonalTitleTransferCache
         extends BasePartyTransferCache<PersonalTitle, PersonalTitleTransfer> {
     
     /** Creates a new instance of PersonalTitleTransferCache */
-    public PersonalTitleTransferCache(UserVisit userVisit, PartyControl partyControl) {
-        super(userVisit, partyControl);
+    public PersonalTitleTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         setIncludeEntityInstance(true);
     }
-    
-    public PersonalTitleTransfer getPersonalTitleTransfer(PersonalTitle personalTitle) {
+
+    @Override
+    public PersonalTitleTransfer getTransfer(PersonalTitle personalTitle) {
         var personalTitleTransfer = get(personalTitle);
         
         if(personalTitleTransfer == null) {

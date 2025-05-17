@@ -22,10 +22,10 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -61,8 +61,8 @@ public class CreateChainEntityRoleTypeCommand
     }
     
     /** Creates a new instance of CreateChainEntityRoleTypeCommand */
-    public CreateChainEntityRoleTypeCommand(UserVisitPK userVisitPK, CreateChainEntityRoleTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateChainEntityRoleTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
@@ -80,13 +80,12 @@ public class CreateChainEntityRoleTypeCommand
                 var chainEntityRoleType = chainControl.getChainEntityRoleTypeByName(chainType, chainEntityRoleTypeName);
 
                 if(chainEntityRoleType == null) {
-                    var coreControl = getCoreControl();
                     var componentVendorName = form.getComponentVendorName();
-                    var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+                    var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
                     
                     if(componentVendor != null) {
                         var entityTypeName = form.getEntityTypeName();
-                        var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+                        var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
                         
                         if(entityType != null) {
                             var partyPK = getPartyPK();

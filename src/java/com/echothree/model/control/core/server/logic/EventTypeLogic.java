@@ -17,7 +17,7 @@
 package com.echothree.model.control.core.server.logic;
 
 import com.echothree.model.control.core.common.exception.UnknownEventTypeNameException;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.data.core.server.entity.EventType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
@@ -40,8 +40,8 @@ public class EventTypeLogic
     }
 
     public EventType getEventTypeByName(final ExecutionErrorAccumulator eea, final String eventTypeName) {
-        var coreControl = Session.getModelController(CoreControl.class);
-        var eventType = coreControl.getEventTypeByName(eventTypeName);
+        var eventControl = Session.getModelController(EventControl.class);
+        var eventType = eventControl.getEventTypeByName(eventTypeName);
 
         if(eventType == null) {
             handleExecutionError(UnknownEventTypeNameException.class, eea, ExecutionErrors.UnknownEventTypeName.name(), eventTypeName);

@@ -27,8 +27,8 @@ public class CountForumMessageResultsCommand
         extends BaseCountResultsCommand<CountForumMessageResultsForm, CountForumMessageResultsResult> {
     
     /** Creates a new instance of CountForumMessageResultsCommand */
-    public CountForumMessageResultsCommand(UserVisitPK userVisitPK, CountForumMessageResultsForm form) {
-        super(userVisitPK, form, null);
+    public CountForumMessageResultsCommand() {
+        super(null);
     }
     
     @Override

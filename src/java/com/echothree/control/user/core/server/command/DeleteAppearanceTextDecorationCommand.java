@@ -17,19 +17,22 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteAppearanceTextDecorationForm;
+import com.echothree.model.control.core.server.control.AppearanceControl;
 import com.echothree.model.control.core.server.logic.AppearanceLogic;
+import com.echothree.model.control.core.server.logic.TextLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -55,8 +58,8 @@ public class DeleteAppearanceTextDecorationCommand
     }
     
     /** Creates a new instance of DeleteAppearanceTextDecorationCommand */
-    public DeleteAppearanceTextDecorationCommand(UserVisitPK userVisitPK, DeleteAppearanceTextDecorationForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteAppearanceTextDecorationCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
@@ -66,14 +69,14 @@ public class DeleteAppearanceTextDecorationCommand
         
         if(!hasExecutionErrors()) {
             var textDecorationName = form.getTextDecorationName();
-            var textDecoration = AppearanceLogic.getInstance().getTextDecorationByName(this, textDecorationName);
+            var textDecoration = TextLogic.getInstance().getTextDecorationByName(this, textDecorationName);
             
             if(!hasExecutionErrors()) {
-                var coreControl = getCoreControl();
-                var appearanceTextDecoration = coreControl.getAppearanceTextDecorationForUpdate(appearance, textDecoration);
+                var appearanceControl = Session.getModelController(AppearanceControl.class);
+                var appearanceTextDecoration = appearanceControl.getAppearanceTextDecorationForUpdate(appearance, textDecoration);
                 
                 if(appearanceTextDecoration != null) {
-                    coreControl.deleteAppearanceTextDecoration(appearanceTextDecoration, getPartyPK());
+                    appearanceControl.deleteAppearanceTextDecoration(appearanceTextDecoration, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownAppearanceTextDecoration.name(), appearanceName, textDecorationName);
                 }

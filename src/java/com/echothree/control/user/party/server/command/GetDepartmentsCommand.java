@@ -59,8 +59,8 @@ public class GetDepartmentsCommand
     }
     
     /** Creates a new instance of GetDepartmentsCommand */
-    public GetDepartmentsCommand(UserVisitPK userVisitPK, GetDepartmentsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetDepartmentsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     PartyDivision partyDivision;

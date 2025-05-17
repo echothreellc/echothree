@@ -47,7 +47,7 @@ public class ComponentVendorIndexer
     
     @Override
     protected ComponentVendor getEntity(final EntityInstance entityInstance) {
-        return coreControl.getComponentVendorByEntityInstance(entityInstance);
+        return componentControl.getComponentVendorByEntityInstance(entityInstance);
     }
     
     @Override

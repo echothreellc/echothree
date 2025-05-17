@@ -44,8 +44,8 @@ public class GetWorkEffortScopeCommand
     }
     
     /** Creates a new instance of GetWorkEffortScopeCommand */
-    public GetWorkEffortScopeCommand(UserVisitPK userVisitPK, GetWorkEffortScopeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetWorkEffortScopeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

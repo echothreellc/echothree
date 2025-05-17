@@ -18,16 +18,19 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateCacheEntryForm;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
+import com.echothree.model.control.core.server.control.CacheEntryControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.PersistenceUtils;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -48,19 +51,20 @@ public class CreateCacheEntryCommand
     }
     
     /** Creates a new instance of CreateCacheEntryCommand */
-    public CreateCacheEntryCommand(UserVisitPK userVisitPK, CreateCacheEntryForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateCacheEntryCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var cacheEntryControl = Session.getModelController(CacheEntryControl.class);
         var cacheEntryKey = form.getCacheEntryKey();
-        var cacheEntry = coreControl.getCacheEntryByCacheEntryKey(cacheEntryKey);
+        var cacheEntry = cacheEntryControl.getCacheEntryByCacheEntryKey(cacheEntryKey);
 
         if(cacheEntry == null) {
+            var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
             var mimeTypeName = form.getMimeTypeName();
-            var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+            var mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
 
             if(mimeType != null) {
                 var validForTime = UnitOfMeasureTypeLogic.getInstance().checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
@@ -77,7 +81,7 @@ public class CreateCacheEntryCommand
                             var clob = form.getClob();
 
                             if(clob != null) {
-                                coreControl.createCacheEntry(cacheEntryKey, mimeType, session.START_TIME_LONG,
+                                cacheEntryControl.createCacheEntry(cacheEntryKey, mimeType, session.START_TIME_LONG,
                                         validForTime == null ? null : session.START_TIME + validForTime, clob, null, entityRefs);
                             } else {
                                 addExecutionError(ExecutionErrors.MissingClob.name());
@@ -86,7 +90,7 @@ public class CreateCacheEntryCommand
                             var blob = form.getBlob();
 
                             if(blob != null) {
-                                coreControl.createCacheEntry(cacheEntryKey, mimeType, session.START_TIME_LONG,
+                                cacheEntryControl.createCacheEntry(cacheEntryKey, mimeType, session.START_TIME_LONG,
                                         validForTime == null ? null : session.START_TIME + validForTime, null, blob, entityRefs);
                             } else {
                                 addExecutionError(ExecutionErrors.MissingBlob.name());

@@ -18,13 +18,17 @@ package com.echothree.util.server.control;
 
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.MimeTypes;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.common.form.ValidationResult;
+import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
 import java.util.List;
+import java.util.concurrent.Future;
 
 public abstract class BaseSimpleCommand<F extends BaseForm>
         extends BaseCommand {
@@ -39,6 +43,19 @@ public abstract class BaseSimpleCommand<F extends BaseForm>
         this.allowLimits = allowLimits;
     }
 
+    protected BaseSimpleCommand(CommandSecurityDefinition commandSecurityDefinition,
+            List<FieldDefinition> formFieldDefinitions, boolean allowLimits) {
+        super(commandSecurityDefinition);
+        
+        init(form, formFieldDefinitions, allowLimits);
+    }
+    
+    protected BaseSimpleCommand(CommandSecurityDefinition commandSecurityDefinition, boolean allowLimits) {
+        super(commandSecurityDefinition);
+        
+        init(null, null, allowLimits);
+    }
+
     @Override
     protected void setupSession() {
         super.setupSession();
@@ -51,19 +68,6 @@ public abstract class BaseSimpleCommand<F extends BaseForm>
                 session.setLimits(form.getLimits());
             }
         }
-    }
-
-    protected BaseSimpleCommand(UserVisitPK userVisitPK, F form, CommandSecurityDefinition commandSecurityDefinition,
-            List<FieldDefinition> formFieldDefinitions, boolean allowLimits) {
-        super(userVisitPK, commandSecurityDefinition);
-        
-        init(form, formFieldDefinitions, allowLimits);
-    }
-    
-    protected BaseSimpleCommand(UserVisitPK userVisitPK, CommandSecurityDefinition commandSecurityDefinition, boolean allowLimits) {
-        super(userVisitPK, commandSecurityDefinition);
-        
-        init(null, null, allowLimits);
     }
 
     protected F getForm() {
@@ -81,13 +85,27 @@ public abstract class BaseSimpleCommand<F extends BaseForm>
     protected ValidationResult validate(Validator validator) {
         return validator.validate(form, getFormFieldDefinitions());
     }
-    
+
+    @Override
+    protected ValidationResult validate() {
+        ValidationResult validationResult = null;
+
+        if(getFormFieldDefinitions() != null) {
+            var validator = new Validator(this);
+
+            setupValidator(validator);
+            validationResult = validate(validator);
+        }
+
+        return validationResult;
+    }
+
     protected void setupPreferredClobMimeType() {
         var preferredClobMimeTypeName = form.getPreferredClobMimeTypeName();
         
         if(preferredClobMimeTypeName != null) {
-            var coreControl = getCoreControl();
-            var preferredClobMimeType = coreControl.getMimeTypeByName(preferredClobMimeTypeName);
+            var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
+            var preferredClobMimeType = mimeTypeControl.getMimeTypeByName(preferredClobMimeTypeName);
 
             if(preferredClobMimeType == null) {
                 addExecutionError(ExecutionErrors.UnknownPreferredClobMimeTypeName.name(), preferredClobMimeTypeName);
@@ -106,23 +124,27 @@ public abstract class BaseSimpleCommand<F extends BaseForm>
         }
     }
     
-    @Override
-    protected ValidationResult validate() {
-        ValidationResult validationResult = null;
-        
-        if(getFormFieldDefinitions() != null) {
-            var validator = new Validator(this);
-            
-            setupValidator(validator);
-            validationResult = validate(validator);
-        }
-        
-        return validationResult;
+    private void initForRun(F form) {
+        this.form = form;
     }
 
+    public Future<CommandResult> runAsync(UserVisitPK userVisitPK, F form) {
+        initForRun(form);
+
+        return super.runAsync(userVisitPK);
+    }
+
+    public CommandResult run(UserVisitPK userVisitPK, F form) {
+        initForRun(form);
+
+        return super.run(userVisitPK);
+    }
 
     // Perform security and validation for GraphQL queries.
-    public boolean canQueryByGraphQl() {
+    public boolean canQueryByGraphQl(UserVisitPK userVisitPK, F form) {
+        initForRun(form);
+        setUserVisitPK(userVisitPK);
+
         initSession();
 
         var securityResult = security();

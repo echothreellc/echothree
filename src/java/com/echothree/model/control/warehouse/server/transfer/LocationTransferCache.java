@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.warehouse.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.warehouse.common.WarehouseOptions;
 import com.echothree.model.control.warehouse.common.transfer.LocationTransfer;
@@ -32,7 +32,7 @@ import com.echothree.util.server.persistence.Session;
 public class LocationTransferCache
         extends BaseWarehouseTransferCache<Location, LocationTransfer> {
     
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
     LocationUseTypeControl locationUseTypeControl = Session.getModelController(LocationUseTypeControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
@@ -69,7 +69,7 @@ public class LocationTransferCache
             var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupTransfer(userVisit, locationDetail.getInventoryLocationGroup());
             var description = warehouseControl.getBestLocationDescription(location, getLanguage());
 
-            var entityInstance = coreControl.getEntityInstanceByBasePK(location.getPrimaryKey());
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(location.getPrimaryKey());
             var locationStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     LocationStatusConstants.Workflow_LOCATION_STATUS, entityInstance);
             

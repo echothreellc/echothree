@@ -42,8 +42,8 @@ public class GetWorkEffortTypeDescriptionsCommand
     }
     
     /** Creates a new instance of GetWorkEffortTypeDescriptionsCommand */
-    public GetWorkEffortTypeDescriptionsCommand(UserVisitPK userVisitPK, GetWorkEffortTypeDescriptionsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetWorkEffortTypeDescriptionsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

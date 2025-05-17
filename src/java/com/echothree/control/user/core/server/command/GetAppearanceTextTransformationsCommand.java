@@ -18,18 +18,20 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetAppearanceTextTransformationsForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.AppearanceControl;
 import com.echothree.model.control.core.server.logic.AppearanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -54,8 +56,8 @@ public class GetAppearanceTextTransformationsCommand
     }
     
     /** Creates a new instance of GetAppearanceTextTransformationsCommand */
-    public GetAppearanceTextTransformationsCommand(UserVisitPK userVisitPK, GetAppearanceTextTransformationsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetAppearanceTextTransformationsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
@@ -65,10 +67,10 @@ public class GetAppearanceTextTransformationsCommand
         var appearance = AppearanceLogic.getInstance().getAppearanceByName(this, appearanceName);
         
         if(!hasExecutionErrors()) {
-            var coreControl = getCoreControl();
+            var appearanceControl = Session.getModelController(AppearanceControl.class);
             
-            result.setAppearance(coreControl.getAppearanceTransfer(getUserVisit(), appearance));
-            result.setAppearanceTextTransformations(coreControl.getAppearanceTextTransformationTransfersByAppearance(getUserVisit(), appearance));
+            result.setAppearance(appearanceControl.getAppearanceTransfer(getUserVisit(), appearance));
+            result.setAppearanceTextTransformations(appearanceControl.getAppearanceTextTransformationTransfersByAppearance(getUserVisit(), appearance));
         }
         
         return result;

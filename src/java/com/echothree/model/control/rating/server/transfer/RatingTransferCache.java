@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.rating.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.rating.common.transfer.RatingTransfer;
 import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.data.rating.server.entity.Rating;
@@ -25,14 +25,12 @@ import com.echothree.util.server.persistence.Session;
 
 public class RatingTransferCache
         extends BaseRatingTransferCache<Rating, RatingTransfer> {
-    
-    CoreControl coreControl;
+
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     
     /** Creates a new instance of RatingTransferCache */
     public RatingTransferCache(UserVisit userVisit, RatingControl ratingControl) {
         super(userVisit, ratingControl);
-        
-        coreControl = Session.getModelController(CoreControl.class);
     }
     
     public RatingTransfer getRatingTransfer(Rating rating) {
@@ -46,9 +44,9 @@ public class RatingTransferCache
             
             ratingTransfer.setRatingName(ratingDetail.getRatingName());
             ratingTransfer.setRatingTypeListItem(ratingControl.getRatingTypeListItemTransfer(userVisit, ratingDetail.getRatingTypeListItem()));
-            ratingTransfer.setRatedEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, ratingDetail.getRatedEntityInstance(), false, false, false, false));
-            ratingTransfer.setRatedByEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, ratingDetail.getRatedByEntityInstance(), false, false, false, false));
-            ratingTransfer.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, coreControl.getEntityInstanceByBasePK(rating.getPrimaryKey()), false, false, false, false));
+            ratingTransfer.setRatedEntityInstance(entityInstanceControl.getEntityInstanceTransfer(userVisit, ratingDetail.getRatedEntityInstance(), false, false, false, false));
+            ratingTransfer.setRatedByEntityInstance(entityInstanceControl.getEntityInstanceTransfer(userVisit, ratingDetail.getRatedByEntityInstance(), false, false, false, false));
+            ratingTransfer.setEntityInstance(entityInstanceControl.getEntityInstanceTransfer(userVisit, entityInstanceControl.getEntityInstanceByBasePK(rating.getPrimaryKey()), false, false, false, false));
             
         }
         

@@ -69,8 +69,8 @@ public class EditTrackDescriptionCommand
     }
     
     /** Creates a new instance of EditTrackDescriptionCommand */
-    public EditTrackDescriptionCommand(UserVisitPK userVisitPK, EditTrackDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditTrackDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

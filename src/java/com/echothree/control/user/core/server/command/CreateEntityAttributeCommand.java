@@ -222,8 +222,8 @@ public class CreateEntityAttributeCommand
     }
     
     /** Creates a new instance of CreateEntityAttributeCommand */
-    public CreateEntityAttributeCommand(UserVisitPK userVisitPK, CreateEntityAttributeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateEntityAttributeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     public static ValidationResult AdditionalEntityAttributeValidation(EntityAttributeEdit edit, Validator validator,

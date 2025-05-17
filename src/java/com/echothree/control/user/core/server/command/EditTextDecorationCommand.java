@@ -22,19 +22,21 @@ import com.echothree.control.user.core.common.form.EditTextDecorationForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditTextDecorationResult;
 import com.echothree.control.user.core.common.spec.TextDecorationSpec;
+import com.echothree.model.control.core.server.control.TextControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.TextDecoration;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -67,8 +69,8 @@ public class EditTextDecorationCommand
     }
     
     /** Creates a new instance of EditTextDecorationCommand */
-    public EditTextDecorationCommand(UserVisitPK userVisitPK, EditTextDecorationForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditTextDecorationCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override
@@ -83,14 +85,14 @@ public class EditTextDecorationCommand
 
     @Override
     public TextDecoration getEntity(EditTextDecorationResult result) {
-        var coreControl = getCoreControl();
+        var textControl = Session.getModelController(TextControl.class);
         TextDecoration textDecoration;
         var textDecorationName = spec.getTextDecorationName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            textDecoration = coreControl.getTextDecorationByName(textDecorationName);
+            textDecoration = textControl.getTextDecorationByName(textDecorationName);
         } else { // EditMode.UPDATE
-            textDecoration = coreControl.getTextDecorationByNameForUpdate(textDecorationName);
+            textDecoration = textControl.getTextDecorationByNameForUpdate(textDecorationName);
         }
 
         if(textDecoration == null) {
@@ -107,15 +109,15 @@ public class EditTextDecorationCommand
 
     @Override
     public void fillInResult(EditTextDecorationResult result, TextDecoration textDecoration) {
-        var coreControl = getCoreControl();
+        var textControl = Session.getModelController(TextControl.class);
 
-        result.setTextDecoration(coreControl.getTextDecorationTransfer(getUserVisit(), textDecoration));
+        result.setTextDecoration(textControl.getTextDecorationTransfer(getUserVisit(), textDecoration));
     }
 
     @Override
     public void doLock(TextDecorationEdit edit, TextDecoration textDecoration) {
-        var coreControl = getCoreControl();
-        var textDecorationDescription = coreControl.getTextDecorationDescription(textDecoration, getPreferredLanguage());
+        var textControl = Session.getModelController(TextControl.class);
+        var textDecorationDescription = textControl.getTextDecorationDescription(textDecoration, getPreferredLanguage());
         var textDecorationDetail = textDecoration.getLastDetail();
 
         edit.setTextDecorationName(textDecorationDetail.getTextDecorationName());
@@ -129,9 +131,9 @@ public class EditTextDecorationCommand
 
     @Override
     public void canUpdate(TextDecoration textDecoration) {
-        var coreControl = getCoreControl();
+        var textControl = Session.getModelController(TextControl.class);
         var textDecorationName = edit.getTextDecorationName();
-        var duplicateTextDecoration = coreControl.getTextDecorationByName(textDecorationName);
+        var duplicateTextDecoration = textControl.getTextDecorationByName(textDecorationName);
 
         if(duplicateTextDecoration != null && !textDecoration.equals(duplicateTextDecoration)) {
             addExecutionError(ExecutionErrors.DuplicateTextDecorationName.name(), textDecorationName);
@@ -140,29 +142,29 @@ public class EditTextDecorationCommand
 
     @Override
     public void doUpdate(TextDecoration textDecoration) {
-        var coreControl = getCoreControl();
+        var textControl = Session.getModelController(TextControl.class);
         var partyPK = getPartyPK();
-        var textDecorationDetailValue = coreControl.getTextDecorationDetailValueForUpdate(textDecoration);
-        var textDecorationDescription = coreControl.getTextDecorationDescriptionForUpdate(textDecoration, getPreferredLanguage());
+        var textDecorationDetailValue = textControl.getTextDecorationDetailValueForUpdate(textDecoration);
+        var textDecorationDescription = textControl.getTextDecorationDescriptionForUpdate(textDecoration, getPreferredLanguage());
         var description = edit.getDescription();
 
         textDecorationDetailValue.setTextDecorationName(edit.getTextDecorationName());
         textDecorationDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         textDecorationDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        coreControl.updateTextDecorationFromValue(textDecorationDetailValue, partyPK);
+        textControl.updateTextDecorationFromValue(textDecorationDetailValue, partyPK);
 
         if(textDecorationDescription == null && description != null) {
-            coreControl.createTextDecorationDescription(textDecoration, getPreferredLanguage(), description, partyPK);
+            textControl.createTextDecorationDescription(textDecoration, getPreferredLanguage(), description, partyPK);
         } else {
             if(textDecorationDescription != null && description == null) {
-                coreControl.deleteTextDecorationDescription(textDecorationDescription, partyPK);
+                textControl.deleteTextDecorationDescription(textDecorationDescription, partyPK);
             } else {
                 if(textDecorationDescription != null && description != null) {
-                    var textDecorationDescriptionValue = coreControl.getTextDecorationDescriptionValue(textDecorationDescription);
+                    var textDecorationDescriptionValue = textControl.getTextDecorationDescriptionValue(textDecorationDescription);
 
                     textDecorationDescriptionValue.setDescription(description);
-                    coreControl.updateTextDecorationDescriptionFromValue(textDecorationDescriptionValue, partyPK);
+                    textControl.updateTextDecorationDescriptionFromValue(textDecorationDescriptionValue, partyPK);
                 }
             }
         }

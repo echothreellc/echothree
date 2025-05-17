@@ -20,10 +20,10 @@ import com.echothree.control.user.batch.common.form.GetBatchTypeEntityTypesForm;
 import com.echothree.control.user.batch.common.result.BatchResultFactory;
 import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -44,8 +44,8 @@ public class GetBatchTypeEntityTypesCommand
     }
     
     /** Creates a new instance of GetBatchTypeEntityTypesCommand */
-    public GetBatchTypeEntityTypesCommand(UserVisitPK userVisitPK, GetBatchTypeEntityTypesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetBatchTypeEntityTypesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
@@ -69,14 +69,13 @@ public class GetBatchTypeEntityTypesCommand
                     addExecutionError(ExecutionErrors.UnknownBatchTypeName.name(), batchTypeName);
                 }
             } else {
-                var coreControl = getCoreControl();
-                var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+                var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
 
                 if(componentVendor != null) {
-                    var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+                    var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
 
                     if(entityType != null) {
-                        result.setEntityType(coreControl.getEntityTypeTransfer(getUserVisit(), entityType));
+                        result.setEntityType(getEntityTypeControl().getEntityTypeTransfer(getUserVisit(), entityType));
                         result.setBatchTypeEntityTypes(batchControl.getBatchTypeEntityTypeTransfersByEntityType(getUserVisit(), entityType));
                     } else {
                         addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), componentVendorName, entityTypeName);

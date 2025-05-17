@@ -47,8 +47,8 @@ public class RemoveInactiveUserKeysCommand
     }
     
     /** Creates a new instance of RemoveInactiveUserKeysCommand */
-    public RemoveInactiveUserKeysCommand(UserVisitPK userVisitPK, RemoveInactiveUserKeysForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public RemoveInactiveUserKeysCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

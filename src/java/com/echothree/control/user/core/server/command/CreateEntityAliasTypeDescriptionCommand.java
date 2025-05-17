@@ -17,6 +17,7 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateEntityAliasTypeDescriptionForm;
+import com.echothree.model.control.core.server.control.EntityAliasControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -59,23 +60,23 @@ public class CreateEntityAliasTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateEntityAliasTypeDescriptionCommand */
-    public CreateEntityAliasTypeDescriptionCommand(UserVisitPK userVisitPK, CreateEntityAliasTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateEntityAliasTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var entityTypeName = form.getEntityTypeName();
-            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
+                var entityAliasControl = Session.getModelController(EntityAliasControl.class);
                 var entityAliasTypeName = form.getEntityAliasTypeName();
-                var entityAliasType = coreControl.getEntityAliasTypeByName(entityType, entityAliasTypeName);
+                var entityAliasType = entityAliasControl.getEntityAliasTypeByName(entityType, entityAliasTypeName);
                 
                 if(entityAliasType != null) {
                     var partyControl = Session.getModelController(PartyControl.class);
@@ -83,12 +84,12 @@ public class CreateEntityAliasTypeDescriptionCommand
                     var language = partyControl.getLanguageByIsoName(languageIsoName);
                     
                     if(language != null) {
-                        var entityAliasTypeDescription = coreControl.getEntityAliasTypeDescription(entityAliasType, language);
+                        var entityAliasTypeDescription = entityAliasControl.getEntityAliasTypeDescription(entityAliasType, language);
                         
                         if(entityAliasTypeDescription == null) {
                             var description = form.getDescription();
-                            
-                            coreControl.createEntityAliasTypeDescription(entityAliasType, language, description, getPartyPK());
+
+                            entityAliasControl.createEntityAliasTypeDescription(entityAliasType, language, description, getPartyPK());
                         } else {
                             addExecutionError(ExecutionErrors.DuplicateEntityAliasTypeDescription.name(), componentVendorName, entityTypeName, entityAliasTypeName, languageIsoName);
                         }

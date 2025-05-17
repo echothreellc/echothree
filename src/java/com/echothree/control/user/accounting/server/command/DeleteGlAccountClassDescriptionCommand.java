@@ -57,8 +57,8 @@ public class DeleteGlAccountClassDescriptionCommand
     }
     
     /** Creates a new instance of DeleteGlAccountClassDescriptionCommand */
-    public DeleteGlAccountClassDescriptionCommand(UserVisitPK userVisitPK, DeleteGlAccountClassDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteGlAccountClassDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

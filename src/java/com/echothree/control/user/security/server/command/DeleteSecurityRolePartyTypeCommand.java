@@ -58,8 +58,8 @@ public class DeleteSecurityRolePartyTypeCommand
     }
     
     /** Creates a new instance of DeleteSecurityRolePartyTypeCommand */
-    public DeleteSecurityRolePartyTypeCommand(UserVisitPK userVisitPK, DeleteSecurityRolePartyTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteSecurityRolePartyTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -49,8 +49,8 @@ public class DeleteItemKitMemberCommand
     }
     
     /** Creates a new instance of DeleteItemKitMemberCommand */
-    public DeleteItemKitMemberCommand(UserVisitPK userVisitPK, DeleteItemKitMemberForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteItemKitMemberCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

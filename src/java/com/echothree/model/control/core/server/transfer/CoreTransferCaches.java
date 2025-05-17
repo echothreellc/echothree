@@ -86,7 +86,6 @@ public class CoreTransferCaches
     protected CommandMessageTypeTransferCache commandMessageTypeTransferCache;
     protected CommandMessageTypeDescriptionTransferCache commandMessageTypeDescriptionTransferCache;
     protected BaseEncryptionKeyTransferCache baseEncryptionKeyTransferCache;
-    protected PartyEntityTypeTransferCache partyEntityTypeTransferCache;
     protected ProtocolTransferCache protocolTransferCache;
     protected ProtocolDescriptionTransferCache protocolDescriptionTransferCache;
     protected ServiceTransferCache serviceTransferCache;
@@ -100,7 +99,6 @@ public class CoreTransferCaches
     protected ApplicationEditorTransferCache applicationEditorTransferCache;
     protected ApplicationEditorUseTransferCache applicationEditorUseTransferCache;
     protected ApplicationEditorUseDescriptionTransferCache applicationEditorUseDescriptionTransferCache;
-    protected PartyApplicationEditorUseTransferCache partyApplicationEditorUseTransferCache;
     protected ColorTransferCache colorTransferCache;
     protected ColorDescriptionTransferCache colorDescriptionTransferCache;
     protected FontStyleTransferCache fontStyleTransferCache;
@@ -570,13 +568,6 @@ public class CoreTransferCaches
         return baseEncryptionKeyTransferCache;
     }
     
-    public PartyEntityTypeTransferCache getPartyEntityTypeTransferCache() {
-        if(partyEntityTypeTransferCache == null)
-            partyEntityTypeTransferCache = new PartyEntityTypeTransferCache(userVisit);
-        
-        return partyEntityTypeTransferCache;
-    }
-    
     public ProtocolTransferCache getProtocolTransferCache() {
         if(protocolTransferCache == null)
             protocolTransferCache = new ProtocolTransferCache(userVisit);
@@ -666,13 +657,6 @@ public class CoreTransferCaches
             applicationEditorUseDescriptionTransferCache = new ApplicationEditorUseDescriptionTransferCache(userVisit);
 
         return applicationEditorUseDescriptionTransferCache;
-    }
-
-    public PartyApplicationEditorUseTransferCache getPartyApplicationEditorUseTransferCache() {
-        if(partyApplicationEditorUseTransferCache == null)
-            partyApplicationEditorUseTransferCache = new PartyApplicationEditorUseTransferCache(userVisit);
-
-        return partyApplicationEditorUseTransferCache;
     }
 
     public ColorTransferCache getColorTransferCache() {

@@ -22,19 +22,21 @@ import com.echothree.control.user.core.common.form.EditEditorForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditEditorResult;
 import com.echothree.control.user.core.common.spec.EditorSpec;
+import com.echothree.model.control.core.server.control.EditorControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.Editor;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -74,8 +76,8 @@ public class EditEditorCommand
     }
     
     /** Creates a new instance of EditEditorCommand */
-    public EditEditorCommand(UserVisitPK userVisitPK, EditEditorForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditEditorCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override
@@ -90,14 +92,14 @@ public class EditEditorCommand
 
     @Override
     public Editor getEntity(EditEditorResult result) {
-        var coreControl = getCoreControl();
+        var editorControl = Session.getModelController(EditorControl.class);
         Editor editor;
         var editorName = spec.getEditorName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            editor = coreControl.getEditorByName(editorName);
+            editor = editorControl.getEditorByName(editorName);
         } else { // EditMode.UPDATE
-            editor = coreControl.getEditorByNameForUpdate(editorName);
+            editor = editorControl.getEditorByNameForUpdate(editorName);
         }
 
         if(editor == null) {
@@ -114,15 +116,15 @@ public class EditEditorCommand
 
     @Override
     public void fillInResult(EditEditorResult result, Editor editor) {
-        var coreControl = getCoreControl();
+        var editorControl = Session.getModelController(EditorControl.class);
 
-        result.setEditor(coreControl.getEditorTransfer(getUserVisit(), editor));
+        result.setEditor(editorControl.getEditorTransfer(getUserVisit(), editor));
     }
 
     @Override
     public void doLock(EditorEdit edit, Editor editor) {
-        var coreControl = getCoreControl();
-        var editorDescription = coreControl.getEditorDescription(editor, getPreferredLanguage());
+        var editorControl = Session.getModelController(EditorControl.class);
+        var editorDescription = editorControl.getEditorDescription(editor, getPreferredLanguage());
         var editorDetail = editor.getLastDetail();
         var minimumHeight = editorDetail.getMinimumHeight();
         var minimumWidth = editorDetail.getMinimumWidth();
@@ -149,9 +151,9 @@ public class EditEditorCommand
 
     @Override
     public void canUpdate(Editor editor) {
-        var coreControl = getCoreControl();
+        var editorControl = Session.getModelController(EditorControl.class);
         var editorName = edit.getEditorName();
-        var duplicateEditor = coreControl.getEditorByName(editorName);
+        var duplicateEditor = editorControl.getEditorByName(editorName);
 
         if(duplicateEditor != null && !editor.equals(duplicateEditor)) {
             addExecutionError(ExecutionErrors.DuplicateEditorName.name(), editorName);
@@ -160,10 +162,10 @@ public class EditEditorCommand
 
     @Override
     public void doUpdate(Editor editor) {
-        var coreControl = getCoreControl();
+        var editorControl = Session.getModelController(EditorControl.class);
         var partyPK = getPartyPK();
-        var editorDetailValue = coreControl.getEditorDetailValueForUpdate(editor);
-        var editorDescription = coreControl.getEditorDescriptionForUpdate(editor, getPreferredLanguage());
+        var editorDetailValue = editorControl.getEditorDetailValueForUpdate(editor);
+        var editorDescription = editorControl.getEditorDescriptionForUpdate(editor, getPreferredLanguage());
         var strMinimumHeight = edit.getMinimumHeight();
         var strMinimumWidth = edit.getMinimumWidth();
         var strMaximumHeight = edit.getMaximumHeight();
@@ -183,19 +185,19 @@ public class EditEditorCommand
         editorDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         editorDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        coreControl.updateEditorFromValue(editorDetailValue, partyPK);
+        editorControl.updateEditorFromValue(editorDetailValue, partyPK);
 
         if(editorDescription == null && description != null) {
-            coreControl.createEditorDescription(editor, getPreferredLanguage(), description, partyPK);
+            editorControl.createEditorDescription(editor, getPreferredLanguage(), description, partyPK);
         } else {
             if(editorDescription != null && description == null) {
-                coreControl.deleteEditorDescription(editorDescription, partyPK);
+                editorControl.deleteEditorDescription(editorDescription, partyPK);
             } else {
                 if(editorDescription != null && description != null) {
-                    var editorDescriptionValue = coreControl.getEditorDescriptionValue(editorDescription);
+                    var editorDescriptionValue = editorControl.getEditorDescriptionValue(editorDescription);
 
                     editorDescriptionValue.setDescription(description);
-                    coreControl.updateEditorDescriptionFromValue(editorDescriptionValue, partyPK);
+                    editorControl.updateEditorDescriptionFromValue(editorDescriptionValue, partyPK);
                 }
             }
         }

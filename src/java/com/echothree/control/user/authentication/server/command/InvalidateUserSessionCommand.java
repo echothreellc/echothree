@@ -25,8 +25,8 @@ public class InvalidateUserSessionCommand
         extends BaseSimpleCommand {
     
     /** Creates a new instance of InvalidateUserSessionCommand */
-    public InvalidateUserSessionCommand(UserVisitPK userVisitPK) {
-        super(userVisitPK, null, false);
+    public InvalidateUserSessionCommand() {
+        super(null, false);
     }
     
     @Override

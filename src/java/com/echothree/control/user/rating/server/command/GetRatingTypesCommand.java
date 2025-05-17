@@ -43,28 +43,27 @@ public class GetRatingTypesCommand
     }
     
     /** Creates a new instance of GetRatingTypesCommand */
-    public GetRatingTypesCommand(UserVisitPK userVisitPK, GetRatingTypesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetRatingTypesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
     protected BaseResult execute() {
         var result = RatingResultFactory.getGetRatingTypesResult();
-        var coreControl = getCoreControl();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var userVisit = getUserVisit();
             var entityTypeName = form.getEntityTypeName();
-            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
             
-            result.setComponentVendor(coreControl.getComponentVendorTransfer(userVisit, componentVendor));
+            result.setComponentVendor(getComponentControl().getComponentVendorTransfer(userVisit, componentVendor));
             
             if(entityType != null) {
                 var ratingControl = Session.getModelController(RatingControl.class);
                 
-                result.setEntityType(coreControl.getEntityTypeTransfer(userVisit, entityType));
+                result.setEntityType(getEntityTypeControl().getEntityTypeTransfer(userVisit, entityType));
                 result.setRatingTypes(ratingControl.getRatingTypeTransfers(userVisit, entityType));
             } else {
                 addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), entityTypeName);

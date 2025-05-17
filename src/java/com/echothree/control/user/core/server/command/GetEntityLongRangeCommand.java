@@ -44,8 +44,8 @@ public class GetEntityLongRangeCommand
     }
     
     /** Creates a new instance of GetEntityLongRangeCommand */
-    public GetEntityLongRangeCommand(UserVisitPK userVisitPK, GetEntityLongRangeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetEntityLongRangeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
 
 
@@ -54,11 +54,11 @@ public class GetEntityLongRangeCommand
         var coreControl = getCoreControl();
         EntityLongRange entityLongRange = null;
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
             var entityTypeName = form.getEntityTypeName();
-            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
 
             if(entityType != null) {
                 var entityAttributeName = form.getEntityAttributeName();

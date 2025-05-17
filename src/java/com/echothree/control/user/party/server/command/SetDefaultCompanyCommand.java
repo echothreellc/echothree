@@ -41,8 +41,8 @@ public class SetDefaultCompanyCommand
     }
     
     /** Creates a new instance of SetDefaultCompanyCommand */
-    public SetDefaultCompanyCommand(UserVisitPK userVisitPK, SetDefaultCompanyForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultCompanyCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

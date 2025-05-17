@@ -29,8 +29,8 @@ public class GetContentCatalogItemResultsFacetCommand
         extends BaseGetResultsFacetCommand<GetContentCatalogItemResultsFacetForm, GetContentCatalogItemResultsFacetResult> {
 
     /** Creates a new instance of GetContentCatalogItemResultsFacetCommand */
-    public GetContentCatalogItemResultsFacetCommand(UserVisitPK userVisitPK, GetContentCatalogItemResultsFacetForm form) {
-        super(userVisitPK, form, null);
+    public GetContentCatalogItemResultsFacetCommand() {
+        super(null);
     }
 
     @Override

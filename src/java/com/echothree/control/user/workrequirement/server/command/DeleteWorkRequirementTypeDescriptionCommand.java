@@ -44,8 +44,8 @@ public class DeleteWorkRequirementTypeDescriptionCommand
     }
     
     /** Creates a new instance of DeleteWorkRequirementTypeDescriptionCommand */
-    public DeleteWorkRequirementTypeDescriptionCommand(UserVisitPK userVisitPK, DeleteWorkRequirementTypeDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteWorkRequirementTypeDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

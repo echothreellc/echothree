@@ -58,8 +58,8 @@ public class CreateContentPageLayoutAreaCommand
     }
     
     /** Creates a new instance of CreateContentPageLayoutAreaCommand */
-    public CreateContentPageLayoutAreaCommand(UserVisitPK userVisitPK, CreateContentPageLayoutAreaForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateContentPageLayoutAreaCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

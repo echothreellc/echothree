@@ -17,18 +17,20 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.SetDefaultFontWeightForm;
+import com.echothree.model.control.core.server.control.FontControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -53,19 +55,19 @@ public class SetDefaultFontWeightCommand
     }
     
     /** Creates a new instance of SetDefaultFontWeightCommand */
-    public SetDefaultFontWeightCommand(UserVisitPK userVisitPK, SetDefaultFontWeightForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultFontWeightCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var fontControl = Session.getModelController(FontControl.class);
         var fontWeightName = form.getFontWeightName();
-        var fontWeightDetailValue = coreControl.getFontWeightDetailValueByNameForUpdate(fontWeightName);
+        var fontWeightDetailValue = fontControl.getFontWeightDetailValueByNameForUpdate(fontWeightName);
         
         if(fontWeightDetailValue != null) {
             fontWeightDetailValue.setIsDefault(Boolean.TRUE);
-            coreControl.updateFontWeightFromValue(fontWeightDetailValue, getPartyPK());
+            fontControl.updateFontWeightFromValue(fontWeightDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownFontWeightName.name(), fontWeightName);
         }

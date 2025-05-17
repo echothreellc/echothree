@@ -55,8 +55,8 @@ public class SetDefaultSearchCheckSpellingActionTypeCommand
     }
     
     /** Creates a new instance of SetDefaultSearchCheckSpellingActionTypeCommand */
-    public SetDefaultSearchCheckSpellingActionTypeCommand(UserVisitPK userVisitPK, SetDefaultSearchCheckSpellingActionTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultSearchCheckSpellingActionTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -49,8 +49,8 @@ public class CreateItemUnitPriceLimitCommand
     }
     
     /** Creates a new instance of CreateItemUnitPriceLimitCommand */
-    public CreateItemUnitPriceLimitCommand(UserVisitPK userVisitPK, CreateItemUnitPriceLimitForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateItemUnitPriceLimitCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

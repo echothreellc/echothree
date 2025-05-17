@@ -19,7 +19,7 @@ package com.echothree.model.control.party.server.logic;
 import com.echothree.model.control.chain.common.ChainConstants;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.chain.server.logic.BaseChainLogic;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.chain.server.entity.ChainInstance;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.common.persistence.BasePK;
@@ -51,8 +51,8 @@ public class PartyChainLogic
             var chainEntityRoleType = getChainEntityRoleTypeByName(eea, chainType, partyTypeName);
             
             if(!hasExecutionErrors(eea)) {
-                var ccoreControl = Session.getModelController(CoreControl.class);
-                var entityInstance = ccoreControl.getEntityInstanceByBasePK(party.getPrimaryKey());
+                var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+                var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(party.getPrimaryKey());
                 
                 if(resetChainIfRunning) {
                     deleteChainInstancedByChainEntityRoleTypeAndEntityInstance(chainEntityRoleType, entityInstance, createdBy);

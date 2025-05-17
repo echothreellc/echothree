@@ -57,8 +57,8 @@ public class GetComponentVendorCommand
     }
     
     /** Creates a new instance of GetComponentVendorCommand */
-    public GetComponentVendorCommand(UserVisitPK userVisitPK, GetComponentVendorForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetComponentVendorCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
@@ -73,7 +73,7 @@ public class GetComponentVendorCommand
         var result = CoreResultFactory.getGetComponentVendorResult();
         
         if(componentVendor != null) {
-            result.setComponentVendor(getCoreControl().getComponentVendorTransfer(getUserVisit(), componentVendor));
+            result.setComponentVendor(getComponentControl().getComponentVendorTransfer(getUserVisit(), componentVendor));
         }
         
         return result;

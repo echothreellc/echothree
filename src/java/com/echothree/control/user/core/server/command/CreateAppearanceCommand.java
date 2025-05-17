@@ -18,7 +18,9 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateAppearanceForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.model.control.core.server.logic.AppearanceLogic;
+import com.echothree.model.control.core.server.control.AppearanceControl;
+import com.echothree.model.control.core.server.control.ColorControl;
+import com.echothree.model.control.core.server.logic.FontLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -66,14 +68,14 @@ public class CreateAppearanceCommand
     }
     
     /** Creates a new instance of CreateAppearanceCommand */
-    public CreateAppearanceCommand(UserVisitPK userVisitPK, CreateAppearanceForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateAppearanceCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
         var result = CoreResultFactory.getCreateAppearanceResult();
-        var coreControl = getCoreControl();
+        var appearanceControl = Session.getModelController(AppearanceControl.class);
         var appearanceName = form.getAppearanceName();
         
         if(appearanceName == null) {
@@ -83,23 +85,24 @@ public class CreateAppearanceCommand
             appearanceName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         }
 
-        var appearance = coreControl.getAppearanceByName(appearanceName);
+        var appearance = appearanceControl.getAppearanceByName(appearanceName);
         
         if(appearance == null) {
+            var colorControl = Session.getModelController(ColorControl.class);
             var textColorName = form.getTextColorName();
-            var textColor = textColorName == null ? null : coreControl.getColorByName(textColorName);
+            var textColor = textColorName == null ? null : colorControl.getColorByName(textColorName);
             
             if(textColorName == null || textColor != null) {
                 var backgroundColorName = form.getBackgroundColorName();
-                var backgroundColor = backgroundColorName == null ? null : coreControl.getColorByName(backgroundColorName);
+                var backgroundColor = backgroundColorName == null ? null : colorControl.getColorByName(backgroundColorName);
 
                 if(backgroundColorName == null || backgroundColor != null) {
                     var fontStyleName = form.getFontStyleName();
-                    var fontStyle = fontStyleName == null ? null : AppearanceLogic.getInstance().getFontStyleByName(this, fontStyleName);
+                    var fontStyle = fontStyleName == null ? null : FontLogic.getInstance().getFontStyleByName(this, fontStyleName);
                     
                     if(!hasExecutionErrors()) {
                         var fontWeightName = form.getFontWeightName();
-                        var fontWeight = fontWeightName == null ? null : AppearanceLogic.getInstance().getFontWeightByName(this, fontWeightName);
+                        var fontWeight = fontWeightName == null ? null : FontLogic.getInstance().getFontWeightByName(this, fontWeightName);
 
                         if(!hasExecutionErrors()) {
                             var partyPK = getPartyPK();
@@ -107,11 +110,11 @@ public class CreateAppearanceCommand
                             var sortOrder = Integer.valueOf(form.getSortOrder());
                             var description = form.getDescription();
 
-                            appearance = coreControl.createAppearance(appearanceName, textColor, backgroundColor, fontStyle, fontWeight, isDefault, sortOrder,
+                            appearance = appearanceControl.createAppearance(appearanceName, textColor, backgroundColor, fontStyle, fontWeight, isDefault, sortOrder,
                                     partyPK);
 
                             if(description != null) {
-                                coreControl.createAppearanceDescription(appearance, getPreferredLanguage(), description, partyPK);
+                                appearanceControl.createAppearanceDescription(appearance, getPreferredLanguage(), description, partyPK);
                             }
                         }
                     }

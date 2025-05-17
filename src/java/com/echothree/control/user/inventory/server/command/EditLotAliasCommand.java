@@ -69,8 +69,8 @@ public class EditLotAliasCommand
     }
     
     /** Creates a new instance of EditLotAliasCommand */
-    public EditLotAliasCommand(UserVisitPK userVisitPK, EditLotAliasForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditLotAliasCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

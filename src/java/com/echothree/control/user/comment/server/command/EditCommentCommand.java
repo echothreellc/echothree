@@ -23,18 +23,19 @@ import com.echothree.control.user.comment.common.result.CommentResultFactory;
 import com.echothree.control.user.comment.common.spec.CommentSpec;
 import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.comment.server.entity.Comment;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.persistence.type.ByteArray;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -63,8 +64,8 @@ public class EditCommentCommand
     }
     
     /** Creates a new instance of EditCommentCommand */
-    public EditCommentCommand(UserVisitPK userVisitPK, EditCommentForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditCommentCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     protected void updateComment(CommentControl commentControl, Comment comment, Language language, String description, MimeType mimeType, BasePK updatedBy, ByteArray blob, String clob,
@@ -201,12 +202,12 @@ public class EditCommentCommand
                             addExecutionError(ExecutionErrors.InvalidMimeType.name());
                         }
                     } else {
-                        var coreControl = getCoreControl();
-                        var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+                        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
+                        var mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
 
                         if(mimeType != null) {
                             if(mimeTypeUsageType != null) {
-                                var mimeTypeUsage = coreControl.getMimeTypeUsage(mimeType, mimeTypeUsageType);
+                                var mimeTypeUsage = mimeTypeControl.getMimeTypeUsage(mimeType, mimeTypeUsageType);
 
                                 if(mimeTypeUsage != null) {
                                     var entityAttributeType = mimeType.getLastDetail().getEntityAttributeType();

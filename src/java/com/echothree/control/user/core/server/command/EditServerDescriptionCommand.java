@@ -22,6 +22,7 @@ import com.echothree.control.user.core.common.form.EditServerDescriptionForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditServerDescriptionResult;
 import com.echothree.control.user.core.common.spec.ServerDescriptionSpec;
+import com.echothree.model.control.core.server.control.ServerControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -29,10 +30,10 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.Server;
 import com.echothree.model.data.core.server.entity.ServerDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -68,8 +69,8 @@ public class EditServerDescriptionCommand
     }
     
     /** Creates a new instance of EditServerDescriptionCommand */
-    public EditServerDescriptionCommand(UserVisitPK userVisitPK, EditServerDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditServerDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override
@@ -84,10 +85,10 @@ public class EditServerDescriptionCommand
 
     @Override
     public ServerDescription getEntity(EditServerDescriptionResult result) {
-        var coreControl = getCoreControl();
+        var serverControl = Session.getModelController(ServerControl.class);
         ServerDescription serverDescription = null;
         var serverName = spec.getServerName();
-        var server = coreControl.getServerByName(serverName);
+        var server = serverControl.getServerByName(serverName);
 
         if(server != null) {
             var partyControl = Session.getModelController(PartyControl.class);
@@ -96,9 +97,9 @@ public class EditServerDescriptionCommand
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    serverDescription = coreControl.getServerDescription(server, language);
+                    serverDescription = serverControl.getServerDescription(server, language);
                 } else { // EditMode.UPDATE
-                    serverDescription = coreControl.getServerDescriptionForUpdate(server, language);
+                    serverDescription = serverControl.getServerDescriptionForUpdate(server, language);
                 }
 
                 if(serverDescription == null) {
@@ -121,9 +122,9 @@ public class EditServerDescriptionCommand
 
     @Override
     public void fillInResult(EditServerDescriptionResult result, ServerDescription serverDescription) {
-        var coreControl = getCoreControl();
+        var serverControl = Session.getModelController(ServerControl.class);
 
-        result.setServerDescription(coreControl.getServerDescriptionTransfer(getUserVisit(), serverDescription));
+        result.setServerDescription(serverControl.getServerDescriptionTransfer(getUserVisit(), serverDescription));
     }
 
     @Override
@@ -133,11 +134,11 @@ public class EditServerDescriptionCommand
 
     @Override
     public void doUpdate(ServerDescription serverDescription) {
-        var coreControl = getCoreControl();
-        var serverDescriptionValue = coreControl.getServerDescriptionValue(serverDescription);
+        var serverControl = Session.getModelController(ServerControl.class);
+        var serverDescriptionValue = serverControl.getServerDescriptionValue(serverDescription);
         serverDescriptionValue.setDescription(edit.getDescription());
 
-        coreControl.updateServerDescriptionFromValue(serverDescriptionValue, getPartyPK());
+        serverControl.updateServerDescriptionFromValue(serverDescriptionValue, getPartyPK());
     }
     
 }

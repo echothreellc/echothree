@@ -17,19 +17,22 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateEntityAppearanceForm;
+import com.echothree.model.control.core.server.control.AppearanceControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.logic.AppearanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -55,25 +58,26 @@ public class CreateEntityAppearanceCommand
     }
     
     /** Creates a new instance of CreateEntityAppearanceCommand */
-    public CreateEntityAppearanceCommand(UserVisitPK userVisitPK, CreateEntityAppearanceForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateEntityAppearanceCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var entityRef = form.getEntityRef();
-        var entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
+        var entityInstance = entityInstanceControl.getEntityInstanceByEntityRef(entityRef);
 
         if(entityInstance != null) {
-            var entityAppearance = coreControl.getEntityAppearance(entityInstance);
+            var appearanceControl = Session.getModelController(AppearanceControl.class);
+            var entityAppearance = appearanceControl.getEntityAppearance(entityInstance);
 
             if(entityAppearance == null) {
                 var appearanceName = form.getAppearanceName();
                 var appearance = AppearanceLogic.getInstance().getAppearanceByName(this, appearanceName);
 
                 if(!hasExecutionErrors()) {
-                    coreControl.createEntityAppearance(entityInstance, appearance, getPartyPK());
+                    appearanceControl.createEntityAppearance(entityInstance, appearance, getPartyPK());
                 }
             } else {
                 addExecutionError(ExecutionErrors.DuplicateEntityAppearance.name(), entityRef);

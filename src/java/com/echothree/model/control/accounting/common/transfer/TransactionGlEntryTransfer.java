@@ -24,7 +24,6 @@ public class TransactionGlEntryTransfer
 
     private TransactionTransfer transaction;
     private Integer transactionGlEntrySequence;
-    private TransactionGlEntryTransfer parentTransactionGlEntry;
     private PartyTransfer groupParty;
     private TransactionGlAccountCategoryTransfer transactionGlAccountCategory;
     private GlAccountTransfer glAccount;
@@ -39,14 +38,12 @@ public class TransactionGlEntryTransfer
     private String credit;
 
     public TransactionGlEntryTransfer(final TransactionTransfer transaction, final Integer transactionGlEntrySequence,
-            final TransactionGlEntryTransfer parentTransactionGlEntry, final PartyTransfer groupParty,
-            final TransactionGlAccountCategoryTransfer transactionGlAccountCategory, final GlAccountTransfer glAccount,
-            final CurrencyTransfer originalCurrency, final Long unformattedOriginalDebit, final String originalDebit,
-            final Long unformattedOriginalCredit, final String originalCredit, final Long unformattedDebit, final String debit,
-            final Long unformattedCredit, final String credit) {
+            final PartyTransfer groupParty, final TransactionGlAccountCategoryTransfer transactionGlAccountCategory,
+            final GlAccountTransfer glAccount, final CurrencyTransfer originalCurrency, final Long unformattedOriginalDebit,
+            final String originalDebit, final Long unformattedOriginalCredit, final String originalCredit, final Long unformattedDebit,
+            final String debit, final Long unformattedCredit, final String credit) {
         this.transaction = transaction;
         this.transactionGlEntrySequence = transactionGlEntrySequence;
-        this.parentTransactionGlEntry = parentTransactionGlEntry;
         this.groupParty = groupParty;
         this.transactionGlAccountCategory = transactionGlAccountCategory;
         this.glAccount = glAccount;
@@ -75,14 +72,6 @@ public class TransactionGlEntryTransfer
 
     public void setTransactionGlEntrySequence(final Integer transactionGlEntrySequence) {
         this.transactionGlEntrySequence = transactionGlEntrySequence;
-    }
-
-    public TransactionGlEntryTransfer getParentTransactionGlEntry() {
-        return parentTransactionGlEntry;
-    }
-
-    public void setParentTransactionGlEntry(final TransactionGlEntryTransfer parentTransactionGlEntry) {
-        this.parentTransactionGlEntry = parentTransactionGlEntry;
     }
 
     public PartyTransfer getGroupParty() {

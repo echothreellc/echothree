@@ -54,8 +54,8 @@ public class SetDefaultInvoiceTypeCommand
     }
     
     /** Creates a new instance of SetDefaultInvoiceTypeCommand */
-    public SetDefaultInvoiceTypeCommand(UserVisitPK userVisitPK, SetDefaultInvoiceTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultInvoiceTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

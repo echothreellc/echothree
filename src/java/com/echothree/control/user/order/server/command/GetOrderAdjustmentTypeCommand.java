@@ -59,8 +59,8 @@ public class GetOrderAdjustmentTypeCommand
     }
     
     /** Creates a new instance of GetOrderAdjustmentTypeCommand */
-    public GetOrderAdjustmentTypeCommand(UserVisitPK userVisitPK, GetOrderAdjustmentTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetOrderAdjustmentTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

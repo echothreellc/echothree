@@ -60,8 +60,8 @@ public class CreateChainEntityRoleTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateChainEntityRoleTypeDescriptionCommand */
-    public CreateChainEntityRoleTypeDescriptionCommand(UserVisitPK userVisitPK, CreateChainEntityRoleTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateChainEntityRoleTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

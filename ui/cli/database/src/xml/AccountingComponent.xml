@@ -1086,7 +1086,6 @@
                         <column name="TransactionGlEntryId" type="EID" nullAllowed="false" />
                         <column name="TransactionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Transactions" destinationColumn="TransactionId" />
                         <column name="TransactionGlEntrySequence" type="Integer" nullAllowed="false" />
-                        <column name="ParentTransactionGlEntryId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TransactionGlEntries" destinationColumn="TransactionGlEntryId" />
                         <column name="GroupPartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
                         <column name="TransactionGlAccountCategoryId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TransactionGlAccountCategories" destinationColumn="TransactionGlAccountCategoryId" />
                         <column name="GlAccountId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GlAccounts" destinationColumn="GlAccountId" />
@@ -1108,22 +1107,18 @@
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index2">
-                            <indexColumn name="ParentTransactionGlEntryId" />
-                            <indexColumn name="ThruTime" />
-                        </index>
-                        <index type="Multiple" name="Index3">
                             <indexColumn name="GroupPartyId" />
                             <indexColumn name="ThruTime" />
                         </index>
-                        <index type="Multiple" name="Index4">
+                        <index type="Multiple" name="Index3">
                             <indexColumn name="TransactionGlAccountCategoryId" />
                             <indexColumn name="ThruTime" />
                         </index>
-                        <index type="Multiple" name="Index5">
+                        <index type="Multiple" name="Index4">
                             <indexColumn name="GlAccountId" />
                             <indexColumn name="ThruTime" />
                         </index>
-                        <index type="Multiple" name="Index6">
+                        <index type="Multiple" name="Index5">
                             <indexColumn name="OriginalCurrencyId" />
                             <indexColumn name="ThruTime" />
                         </index>

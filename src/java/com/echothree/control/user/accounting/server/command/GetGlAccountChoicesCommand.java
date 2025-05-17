@@ -58,8 +58,8 @@ public class GetGlAccountChoicesCommand
     }
     
     /** Creates a new instance of GetGlAccountChoicesCommand */
-    public GetGlAccountChoicesCommand(UserVisitPK userVisitPK, GetGlAccountChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetGlAccountChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

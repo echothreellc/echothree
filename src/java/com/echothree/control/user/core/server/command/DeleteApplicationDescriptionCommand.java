@@ -17,15 +17,16 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteApplicationDescriptionForm;
+import com.echothree.model.control.core.server.control.ApplicationControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -56,15 +57,15 @@ public class DeleteApplicationDescriptionCommand
     }
     
     /** Creates a new instance of DeleteApplicationDescriptionCommand */
-    public DeleteApplicationDescriptionCommand(UserVisitPK userVisitPK, DeleteApplicationDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteApplicationDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var applicationControl = Session.getModelController(ApplicationControl.class);
         var applicationName = form.getApplicationName();
-        var application = coreControl.getApplicationByName(applicationName);
+        var application = applicationControl.getApplicationByName(applicationName);
         
         if(application != null) {
             var partyControl = Session.getModelController(PartyControl.class);
@@ -72,10 +73,10 @@ public class DeleteApplicationDescriptionCommand
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                var applicationDescription = coreControl.getApplicationDescriptionForUpdate(application, language);
+                var applicationDescription = applicationControl.getApplicationDescriptionForUpdate(application, language);
                 
                 if(applicationDescription != null) {
-                    coreControl.deleteApplicationDescription(applicationDescription, getPartyPK());
+                    applicationControl.deleteApplicationDescription(applicationDescription, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownApplicationDescription.name(), applicationName, languageIsoName);
                 }

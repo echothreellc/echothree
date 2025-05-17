@@ -69,8 +69,8 @@ public class EditReturnKindDescriptionCommand
     }
 
     /** Creates a new instance of EditReturnKindDescriptionCommand */
-    public EditReturnKindDescriptionCommand(UserVisitPK userVisitPK, EditReturnKindDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditReturnKindDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

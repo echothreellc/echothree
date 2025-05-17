@@ -53,8 +53,8 @@ public class GetContentCategoryCommand
     }
     
     /** Creates a new instance of GetContentCategoryCommand */
-    public GetContentCategoryCommand(UserVisitPK userVisitPK, GetContentCategoryForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetContentCategoryCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

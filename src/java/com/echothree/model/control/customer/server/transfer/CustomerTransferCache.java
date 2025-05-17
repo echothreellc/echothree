@@ -24,6 +24,7 @@ import com.echothree.model.control.communication.server.control.CommunicationCon
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.customer.common.CustomerOptions;
 import com.echothree.model.control.customer.common.transfer.CustomerTransfer;
 import com.echothree.model.control.customer.common.workflow.CustomerCreditStatusConstants;
@@ -62,8 +63,8 @@ public class CustomerTransferCache
     CommunicationControl communicationControl = Session.getModelController(CommunicationControl.class);
     ContactControl contactControl = Session.getModelController(ContactControl.class);
     ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
     DocumentControl documentControl = Session.getModelController(DocumentControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
     OfferUseControl offerUseControl = Session.getModelController(OfferUseControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
@@ -186,7 +187,7 @@ public class CustomerTransferCache
             var profile = partyControl.getProfile(party);
             var profileTransfer = profile == null ? null : partyControl.getProfileTransfer(userVisit, profile);
 
-            var entityInstance = coreControl.getEntityInstanceByBasePK(party.getPrimaryKey());
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(party.getPrimaryKey());
             var customerStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     CustomerStatusConstants.Workflow_CUSTOMER_STATUS, entityInstance);
 

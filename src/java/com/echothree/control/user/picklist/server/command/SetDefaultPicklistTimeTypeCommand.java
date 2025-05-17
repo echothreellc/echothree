@@ -55,8 +55,8 @@ public class SetDefaultPicklistTimeTypeCommand
     }
     
     /** Creates a new instance of SetDefaultPicklistTimeTypeCommand */
-    public SetDefaultPicklistTimeTypeCommand(UserVisitPK userVisitPK, SetDefaultPicklistTimeTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultPicklistTimeTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

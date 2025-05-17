@@ -55,8 +55,8 @@ public class GetFreeOnBoardChoicesCommand
     }
     
     /** Creates a new instance of GetFreeOnBoardChoicesCommand */
-    public GetFreeOnBoardChoicesCommand(UserVisitPK userVisitPK, GetFreeOnBoardChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetFreeOnBoardChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

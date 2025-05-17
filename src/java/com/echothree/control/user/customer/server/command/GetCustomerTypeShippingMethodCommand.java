@@ -44,8 +44,8 @@ public class GetCustomerTypeShippingMethodCommand
     }
     
     /** Creates a new instance of GetCustomerTypeShippingMethodCommand */
-    public GetCustomerTypeShippingMethodCommand(UserVisitPK userVisitPK, GetCustomerTypeShippingMethodForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public GetCustomerTypeShippingMethodCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

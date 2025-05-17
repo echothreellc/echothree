@@ -23,6 +23,7 @@ import com.echothree.control.user.document.common.result.DocumentResultFactory;
 import com.echothree.control.user.document.common.result.EditPartyDocumentResult;
 import com.echothree.control.user.document.common.spec.DocumentSpec;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.document.server.logic.DocumentLogic;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -34,11 +35,11 @@ import com.echothree.model.data.document.server.entity.DocumentBlob;
 import com.echothree.model.data.document.server.entity.DocumentClob;
 import com.echothree.model.data.document.server.entity.PartyDocument;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -77,8 +78,8 @@ public class EditPartyDocumentCommand
     }
     
     /** Creates a new instance of EditPartyDocumentCommand */
-    public EditPartyDocumentCommand(UserVisitPK userVisitPK, EditPartyDocumentForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditPartyDocumentCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override
@@ -156,14 +157,14 @@ public class EditPartyDocumentCommand
 
     @Override
     public void canUpdate(PartyDocument partyDocument) {
-        var coreControl = getCoreControl();
+        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
         var mimeTypeName = edit.getMimeTypeName();
 
-        mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+        mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
 
         if(mimeType != null) {
             var mimeTypeUsageType = partyDocument.getDocument().getLastDetail().getDocumentType().getLastDetail().getMimeTypeUsageType();
-            var mimeTypeUsage = mimeTypeUsageType == null ? null : coreControl.getMimeTypeUsage(mimeType, mimeTypeUsageType);
+            var mimeTypeUsage = mimeTypeUsageType == null ? null : mimeTypeControl.getMimeTypeUsage(mimeType, mimeTypeUsageType);
 
             if(mimeTypeUsageType == null || mimeTypeUsage != null) {
                 var entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();

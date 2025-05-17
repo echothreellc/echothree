@@ -65,8 +65,8 @@ public class GetCustomerCommand
     }
 
     /** Creates a new instance of GetCustomerCommand */
-    public GetCustomerCommand(UserVisitPK userVisitPK, GetCustomerForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetCustomerCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     String customerName;

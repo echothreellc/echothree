@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.party.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.control.party.common.transfer.ProfileTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
@@ -27,16 +27,18 @@ import com.echothree.util.server.string.DateUtils;
 
 public class ProfileTransferCache
         extends BasePartyTransferCache<Profile, ProfileTransfer> {
-    
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
     IconControl iconControl = Session.getModelController(IconControl.class);
-    
+    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+
     /** Creates a new instance of ProfileTransferCache */
-    public ProfileTransferCache(final UserVisit userVisit, final PartyControl partyControl) {
-        super(userVisit, partyControl);
+    public ProfileTransferCache(final UserVisit userVisit) {
+        super(userVisit);
     }
-    
-    public ProfileTransfer getProfileTransfer(final Profile profile) {
+
+    @Override
+    public ProfileTransfer getTransfer(final Profile profile) {
         var profileTransfer = get(profile);
         
         if(profileTransfer == null) {
@@ -54,10 +56,10 @@ public class ProfileTransferCache
             var hobbies = profile.getHobbies();
             var location = profile.getLocation();
             var bioMimeType = profile.getBioMimeType();
-            var bioMimeTypeTransfer = bioMimeType == null? null: coreControl.getMimeTypeTransfer(userVisit, bioMimeType);
+            var bioMimeTypeTransfer = bioMimeType == null? null: mimeTypeControl.getMimeTypeTransfer(userVisit, bioMimeType);
             var bio = profile.getBio();
             var signatureMimeType = profile.getSignatureMimeType();
-            var signatureMimeTypeTransfer = signatureMimeType == null? null: coreControl.getMimeTypeTransfer(userVisit, signatureMimeType);
+            var signatureMimeTypeTransfer = signatureMimeType == null? null: mimeTypeControl.getMimeTypeTransfer(userVisit, signatureMimeType);
             var signature = profile.getSignature();
             
             profileTransfer = new ProfileTransfer(nickname, iconTransfer, pronunciation, genderTransfer, pronouns, birthday,

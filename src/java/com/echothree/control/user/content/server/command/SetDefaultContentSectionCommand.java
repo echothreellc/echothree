@@ -55,8 +55,8 @@ public class SetDefaultContentSectionCommand
     }
     
     /** Creates a new instance of SetDefaultContentSectionCommand */
-    public SetDefaultContentSectionCommand(UserVisitPK userVisitPK, SetDefaultContentSectionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultContentSectionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

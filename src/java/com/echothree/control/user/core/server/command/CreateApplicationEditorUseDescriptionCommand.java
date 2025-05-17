@@ -17,16 +17,17 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateApplicationEditorUseDescriptionForm;
+import com.echothree.model.control.core.server.control.ApplicationControl;
 import com.echothree.model.control.core.server.logic.ApplicationLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -59,8 +60,8 @@ public class CreateApplicationEditorUseDescriptionCommand
     }
     
     /** Creates a new instance of CreateApplicationEditorUseDescriptionCommand */
-    public CreateApplicationEditorUseDescriptionCommand(UserVisitPK userVisitPK, CreateApplicationEditorUseDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateApplicationEditorUseDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
@@ -78,13 +79,13 @@ public class CreateApplicationEditorUseDescriptionCommand
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    var coreControl = getCoreControl();
-                    var applicationEditorUseDescription = coreControl.getApplicationEditorUseDescription(applicationEditorUse, language);
+                    var applicationControl = Session.getModelController(ApplicationControl.class);
+                    var applicationEditorUseDescription = applicationControl.getApplicationEditorUseDescription(applicationEditorUse, language);
 
                     if(applicationEditorUseDescription == null) {
                         var description = form.getDescription();
 
-                        coreControl.createApplicationEditorUseDescription(applicationEditorUse, language, description, getPartyPK());
+                        applicationControl.createApplicationEditorUseDescription(applicationEditorUse, language, description, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.DuplicateApplicationEditorUseDescription.name(), applicationEditorUseName, languageIsoName);
                     }

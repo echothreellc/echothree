@@ -17,6 +17,7 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteFontStyleDescriptionForm;
+import com.echothree.model.control.core.server.control.FontControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -56,15 +57,15 @@ public class DeleteFontStyleDescriptionCommand
     }
     
     /** Creates a new instance of DeleteFontStyleDescriptionCommand */
-    public DeleteFontStyleDescriptionCommand(UserVisitPK userVisitPK, DeleteFontStyleDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteFontStyleDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var fontControl = Session.getModelController(FontControl.class);
         var fontStyleName = form.getFontStyleName();
-        var fontStyle = coreControl.getFontStyleByName(fontStyleName);
+        var fontStyle = fontControl.getFontStyleByName(fontStyleName);
         
         if(fontStyle != null) {
             var partyControl = Session.getModelController(PartyControl.class);
@@ -72,10 +73,10 @@ public class DeleteFontStyleDescriptionCommand
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                var fontStyleDescription = coreControl.getFontStyleDescriptionForUpdate(fontStyle, language);
+                var fontStyleDescription = fontControl.getFontStyleDescriptionForUpdate(fontStyle, language);
                 
                 if(fontStyleDescription != null) {
-                    coreControl.deleteFontStyleDescription(fontStyleDescription, getPartyPK());
+                    fontControl.deleteFontStyleDescription(fontStyleDescription, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownFontStyleDescription.name(), fontStyleName, languageIsoName);
                 }

@@ -22,20 +22,22 @@ import com.echothree.control.user.core.common.form.EditServiceForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditServiceResult;
 import com.echothree.control.user.core.common.spec.ServiceSpec;
+import com.echothree.model.control.core.server.control.ServerControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.Protocol;
 import com.echothree.model.data.core.server.entity.Service;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -70,8 +72,8 @@ public class EditServiceCommand
     }
     
     /** Creates a new instance of EditServiceCommand */
-    public EditServiceCommand(UserVisitPK userVisitPK, EditServiceForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditServiceCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override
@@ -86,18 +88,18 @@ public class EditServiceCommand
 
     @Override
     public Service getEntity(EditServiceResult result) {
-        var coreControl = getCoreControl();
+        var serverControl = Session.getModelController(ServerControl.class);
         Service service;
         var serviceName = spec.getServiceName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            service = coreControl.getServiceByName(serviceName);
+            service = serverControl.getServiceByName(serviceName);
         } else { // EditMode.UPDATE
-            service = coreControl.getServiceByNameForUpdate(serviceName);
+            service = serverControl.getServiceByNameForUpdate(serviceName);
         }
 
         if(service != null) {
-            result.setService(coreControl.getServiceTransfer(getUserVisit(), service));
+            result.setService(serverControl.getServiceTransfer(getUserVisit(), service));
         } else {
             addExecutionError(ExecutionErrors.UnknownServiceName.name(), serviceName);
         }
@@ -112,15 +114,15 @@ public class EditServiceCommand
 
     @Override
     public void fillInResult(EditServiceResult result, Service service) {
-        var coreControl = getCoreControl();
+        var serverControl = Session.getModelController(ServerControl.class);
 
-        result.setService(coreControl.getServiceTransfer(getUserVisit(), service));
+        result.setService(serverControl.getServiceTransfer(getUserVisit(), service));
     }
 
     @Override
     public void doLock(ServiceEdit edit, Service service) {
-        var coreControl = getCoreControl();
-        var serviceDescription = coreControl.getServiceDescription(service, getPreferredLanguage());
+        var serverControl = Session.getModelController(ServerControl.class);
+        var serviceDescription = serverControl.getServiceDescription(service, getPreferredLanguage());
         var serviceDetail = service.getLastDetail();
 
         edit.setServiceName(serviceDetail.getServiceName());
@@ -138,16 +140,16 @@ public class EditServiceCommand
 
     @Override
     public void canUpdate(Service service) {
-        var coreControl = getCoreControl();
+        var serverControl = Session.getModelController(ServerControl.class);
         var serviceName = edit.getServiceName();
-        var duplicateService = coreControl.getServiceByName(serviceName);
+        var duplicateService = serverControl.getServiceByName(serviceName);
 
         if(duplicateService != null && !service.equals(duplicateService)) {
             addExecutionError(ExecutionErrors.DuplicateServiceName.name(), serviceName);
         } else {
             var protocolName = edit.getProtocolName();
 
-            protocol = coreControl.getProtocolByName(protocolName);
+            protocol = serverControl.getProtocolByName(protocolName);
 
             if(protocol == null) {
                 addExecutionError(ExecutionErrors.UnknownProtocolName.name(), protocolName);
@@ -157,10 +159,10 @@ public class EditServiceCommand
 
     @Override
     public void doUpdate(Service service) {
-        var coreControl = getCoreControl();
+        var serverControl = Session.getModelController(ServerControl.class);
         var partyPK = getPartyPK();
-        var serviceDetailValue = coreControl.getServiceDetailValueForUpdate(service);
-        var serviceDescription = coreControl.getServiceDescriptionForUpdate(service, getPreferredLanguage());
+        var serviceDetailValue = serverControl.getServiceDetailValueForUpdate(service);
+        var serviceDescription = serverControl.getServiceDescriptionForUpdate(service, getPreferredLanguage());
         var description = edit.getDescription();
 
         serviceDetailValue.setServiceName(edit.getServiceName());
@@ -169,19 +171,19 @@ public class EditServiceCommand
         serviceDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         serviceDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        coreControl.updateServiceFromValue(serviceDetailValue, partyPK);
+        serverControl.updateServiceFromValue(serviceDetailValue, partyPK);
 
         if(serviceDescription == null && description != null) {
-            coreControl.createServiceDescription(service, getPreferredLanguage(), description, partyPK);
+            serverControl.createServiceDescription(service, getPreferredLanguage(), description, partyPK);
         } else {
             if(serviceDescription != null && description == null) {
-                coreControl.deleteServiceDescription(serviceDescription, partyPK);
+                serverControl.deleteServiceDescription(serviceDescription, partyPK);
             } else {
                 if(serviceDescription != null && description != null) {
-                    var serviceDescriptionValue = coreControl.getServiceDescriptionValue(serviceDescription);
+                    var serviceDescriptionValue = serverControl.getServiceDescriptionValue(serviceDescription);
 
                     serviceDescriptionValue.setDescription(description);
-                    coreControl.updateServiceDescriptionFromValue(serviceDescriptionValue, partyPK);
+                    serverControl.updateServiceDescriptionFromValue(serviceDescriptionValue, partyPK);
                 }
             }
         }

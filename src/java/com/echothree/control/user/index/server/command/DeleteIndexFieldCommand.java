@@ -56,8 +56,8 @@ public class DeleteIndexFieldCommand
     }
     
     /** Creates a new instance of DeleteIndexFieldCommand */
-    public DeleteIndexFieldCommand(UserVisitPK userVisitPK, DeleteIndexFieldForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteIndexFieldCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

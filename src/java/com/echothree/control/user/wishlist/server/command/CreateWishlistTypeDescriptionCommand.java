@@ -58,8 +58,8 @@ public class CreateWishlistTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateWishlistTypeDescriptionCommand */
-    public CreateWishlistTypeDescriptionCommand(UserVisitPK userVisitPK, CreateWishlistTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateWishlistTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

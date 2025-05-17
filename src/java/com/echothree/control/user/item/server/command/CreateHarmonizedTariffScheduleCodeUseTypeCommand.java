@@ -58,8 +58,8 @@ public class CreateHarmonizedTariffScheduleCodeUseTypeCommand
     }
     
     /** Creates a new instance of CreateHarmonizedTariffScheduleCodeUseTypeCommand */
-    public CreateHarmonizedTariffScheduleCodeUseTypeCommand(UserVisitPK userVisitPK, CreateHarmonizedTariffScheduleCodeUseTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateHarmonizedTariffScheduleCodeUseTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

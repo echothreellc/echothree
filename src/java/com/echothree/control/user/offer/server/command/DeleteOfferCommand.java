@@ -53,8 +53,8 @@ public class DeleteOfferCommand
     }
     
     /** Creates a new instance of DeleteOfferCommand */
-    public DeleteOfferCommand(UserVisitPK userVisitPK, DeleteOfferForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteOfferCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

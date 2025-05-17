@@ -55,8 +55,8 @@ public class DeleteItemAccountingCategoryCommand
     }
     
     /** Creates a new instance of DeleteItemAccountingCategoryCommand */
-    public DeleteItemAccountingCategoryCommand(UserVisitPK userVisitPK, DeleteItemAccountingCategoryForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteItemAccountingCategoryCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

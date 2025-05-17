@@ -18,18 +18,23 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.ValidateForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.form.ValidationResult;
+import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.validation.Validator;
+import java.util.List;
 
 public class ValidateCommand
         extends BaseSimpleCommand<ValidateForm> {
     
     /** Creates a new instance of ValidateCommand */
-    public ValidateCommand(UserVisitPK userVisitPK, ValidateForm form) {
-        super(userVisitPK, form, null, form.getFormFieldDefinitions(), false);
+    public ValidateCommand() {
+        super(null, null, false);
+    }
+
+    protected List<FieldDefinition> getFormFieldDefinitions() {
+        return form.getFormFieldDefinitions();
     }
 
     @Override

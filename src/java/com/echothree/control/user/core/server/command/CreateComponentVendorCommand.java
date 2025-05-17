@@ -55,21 +55,20 @@ public class CreateComponentVendorCommand
     }
     
     /** Creates a new instance of CreateComponentVendorCommand */
-    public CreateComponentVendorCommand(UserVisitPK userVisitPK, CreateComponentVendorForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateComponentVendorCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
         var result = CoreResultFactory.getCreateComponentVendorResult();
         var componentVendorName = form.getComponentVendorName();
-        var coreControl = getCoreControl();
-        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
         
         if(componentVendor == null) {
             var description = form.getDescription();
 
-            componentVendor = coreControl.createComponentVendor(componentVendorName, description, getPartyPK());
+            componentVendor = getComponentControl().createComponentVendor(componentVendorName, description, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.DuplicateComponentVendorName.name(), componentVendorName);
         }

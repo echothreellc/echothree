@@ -41,8 +41,8 @@ public class EncryptCommand
     }
     
     /** Creates a new instance of EncryptCommand */
-    public EncryptCommand(UserVisitPK userVisitPK, EncryptForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public EncryptCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

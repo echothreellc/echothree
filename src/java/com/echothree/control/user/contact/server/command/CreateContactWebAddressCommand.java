@@ -21,6 +21,7 @@ import com.echothree.control.user.contact.common.result.ContactResultFactory;
 import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.common.workflow.WebAddressStatusConstants;
 import com.echothree.model.control.contact.server.control.ContactControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -68,8 +69,8 @@ public class CreateContactWebAddressCommand
     }
     
     /** Creates a new instance of CreateContactWebAddressCommand */
-    public CreateContactWebAddressCommand(UserVisitPK userVisitPK, CreateContactWebAddressForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateContactWebAddressCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
 
     @Override
@@ -88,7 +89,7 @@ public class CreateContactWebAddressCommand
         
         if(party != null) {
             var contactControl = Session.getModelController(ContactControl.class);
-                            var coreControl = getCoreControl();
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var workflowControl = Session.getModelController(WorkflowControl.class);
             BasePK createdBy = getPartyPK();
             var url = form.getUrl();
@@ -104,7 +105,7 @@ public class CreateContactWebAddressCommand
             contactControl.createPartyContactMechanism(party, contactMechanism, description, Boolean.FALSE, 1,
                     createdBy);
 
-            var entityInstance = coreControl.getEntityInstanceByBasePK(contactMechanism.getPrimaryKey());
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(contactMechanism.getPrimaryKey());
             workflowControl.addEntityToWorkflowUsingNames(null, WebAddressStatusConstants.Workflow_WEB_ADDRESS_STATUS,
                     WebAddressStatusConstants.WorkflowEntrance_NEW_WEB_ADDRESS, entityInstance, null, null, createdBy);
             

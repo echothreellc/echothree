@@ -69,8 +69,8 @@ public class EditTransactionTimeTypeDescriptionCommand
     }
     
     /** Creates a new instance of EditTransactionTimeTypeDescriptionCommand */
-    public EditTransactionTimeTypeDescriptionCommand(UserVisitPK userVisitPK, EditTransactionTimeTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditTransactionTimeTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

@@ -21,6 +21,8 @@ import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.control.core.common.transfer.EntityAliasTypeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityAttributeGroupTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityAliasControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.rating.common.transfer.RatingListWrapper;
 import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.control.tag.common.transfer.TagScopeTransfer;
@@ -214,8 +216,9 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         this.includeEntityAliasTypes = includeEntityAliasTypes;
     }
 
-    protected void setupEntityAliasTypes(CoreControl coreControl, EntityInstance entityInstance, V transfer) {
-        var entityAliasTypeTransfers = coreControl.getEntityAliasTypeTransfersByEntityType(userVisit, entityInstance.getEntityType(), entityInstance);
+    protected void setupEntityAliasTypes(EntityInstance entityInstance, V transfer) {
+        var entityAliasControl = Session.getModelController(EntityAliasControl.class);
+        var entityAliasTypeTransfers = entityAliasControl.getEntityAliasTypeTransfersByEntityType(userVisit, entityInstance.getEntityType(), entityInstance);
         var mapWrapper = new MapWrapper<EntityAliasTypeTransfer>(entityAliasTypeTransfers.size());
 
         entityAliasTypeTransfers.forEach((entityAliasTypeTransfer) -> {
@@ -241,7 +244,8 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         this.includeEntityAttributeGroups = includeEntityAttributeGroups;
     }
 
-    protected void setupEntityAttributeGroups(CoreControl coreControl, EntityInstance entityInstance, V transfer) {
+    protected void setupEntityAttributeGroups(EntityInstance entityInstance, V transfer) {
+        var coreControl = Session.getModelController(CoreControl.class);
         var entityAttributeGroupTransfers = coreControl.getEntityAttributeGroupTransfersByEntityType(userVisit, entityInstance.getEntityType(), entityInstance);
         var mapWrapper = new MapWrapper<EntityAttributeGroupTransfer>(entityAttributeGroupTransfers.size());
 
@@ -268,7 +272,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         this.includeTagScopes = includeTagScopes;
     }
 
-    protected void setupTagScopes(CoreControl coreControl, EntityInstance entityInstance, V transfer) {
+    protected void setupTagScopes(EntityInstance entityInstance, V transfer) {
         var tagControl = Session.getModelController(TagControl.class);
         var tagScopes = tagControl.getTagScopesByEntityType(entityInstance.getEntityType());
         var mapWrapper = new MapWrapper<TagScopeTransfer>(tagScopes.size());
@@ -369,29 +373,29 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     protected void setupEntityInstance(final K baseEntity, EntityInstance entityInstance, final V transfer) {
-        var coreControl = Session.getModelController(CoreControl.class);
-        
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+
         if(entityInstance == null) {
-            entityInstance = coreControl.getEntityInstanceByBasePK(baseEntity.getPrimaryKey());
+            entityInstance = entityInstanceControl.getEntityInstanceByBasePK(baseEntity.getPrimaryKey());
         }
 
         // Check to make sure entityInstance is not null. This may happen in a case where a non-versioned entity was
         // converted to a versioned one.
         if(entityInstance != null) {
-            transfer.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityInstance, includeEntityAppearance,
+            transfer.setEntityInstance(entityInstanceControl.getEntityInstanceTransfer(userVisit, entityInstance, includeEntityAppearance,
                     includeEntityVisit, includeNames, includeUuid));
 
             if(includeEntityAliasTypes || includeEntityAttributeGroups || includeTagScopes) {
                 if(includeEntityAliasTypes) {
-                    setupEntityAliasTypes(coreControl, entityInstance, transfer);
+                    setupEntityAliasTypes(entityInstance, transfer);
                 }
 
                 if(includeEntityAttributeGroups) {
-                    setupEntityAttributeGroups(coreControl, entityInstance, transfer);
+                    setupEntityAttributeGroups(entityInstance, transfer);
                 }
 
                 if(includeTagScopes) {
-                    setupTagScopes(coreControl, entityInstance, transfer);
+                    setupTagScopes(entityInstance, transfer);
                 }
             }
         }
@@ -401,9 +405,9 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         var commentControl = Session.getModelController(CommentControl.class);
         
         if(commentedEntityInstance == null) {
-            var coreControl = Session.getModelController(CoreControl.class);
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             
-            commentedEntityInstance = coreControl.getEntityInstanceByBasePK(commentedEntity.getPrimaryKey());
+            commentedEntityInstance = entityInstanceControl.getEntityInstanceByBasePK(commentedEntity.getPrimaryKey());
         }
 
         var commentType = commentControl.getCommentTypeByName(commentedEntityInstance.getEntityType(), commentTypeName);
@@ -417,9 +421,9 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         var ratingControl = Session.getModelController(RatingControl.class);
         
         if(ratedEntityInstance == null) {
-            var coreControl = Session.getModelController(CoreControl.class);
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             
-            ratedEntityInstance = coreControl.getEntityInstanceByBasePK(ratedEntity.getPrimaryKey());
+            ratedEntityInstance = entityInstanceControl.getEntityInstanceByBasePK(ratedEntity.getPrimaryKey());
         }
 
         var ratingType = ratingControl.getRatingTypeByName(ratedEntityInstance.getEntityType(), ratingTypeName);
@@ -433,9 +437,9 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         var workEffortControl = Session.getModelController(WorkEffortControl.class);
         
         if(owningEntityInstance == null) {
-            var coreControl = Session.getModelController(CoreControl.class);
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             
-            owningEntityInstance = coreControl.getEntityInstanceByBasePK(baseEntity.getPrimaryKey());
+            owningEntityInstance = entityInstanceControl.getEntityInstanceByBasePK(baseEntity.getPrimaryKey());
         }
         
         for(var workEffort: workEffortControl.getWorkEffortTransfersByOwningEntityInstance(userVisit, owningEntityInstance)) {

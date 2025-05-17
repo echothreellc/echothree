@@ -68,8 +68,8 @@ public class EditGeoCodeLanguageCommand
     }
     
     /** Creates a new instance of EditGeoCodeLanguageCommand */
-    public EditGeoCodeLanguageCommand(UserVisitPK userVisitPK, EditGeoCodeLanguageForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditGeoCodeLanguageCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

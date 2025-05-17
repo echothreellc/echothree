@@ -18,7 +18,7 @@ package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.transfer.MimeTypeUsageTypeTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
@@ -27,7 +27,7 @@ import com.echothree.util.server.persistence.Session;
 public class MimeTypeUsageTypeTransferCache
         extends BaseCoreTransferCache<MimeTypeUsageType, MimeTypeUsageTypeTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
 
     TransferProperties transferProperties;
     boolean filterMimeTypeUsageTypeName;
@@ -59,7 +59,7 @@ public class MimeTypeUsageTypeTransferCache
             var mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();
             var isDefault = mimeTypeUsageType.getIsDefault();
             var sortOrder = mimeTypeUsageType.getSortOrder();
-            var description = coreControl.getBestMimeTypeUsageTypeDescription(mimeTypeUsageType, getLanguage());
+            var description = mimeTypeControl.getBestMimeTypeUsageTypeDescription(mimeTypeUsageType, getLanguage());
             
             mimeTypeUsageTypeTransfer = new MimeTypeUsageTypeTransfer(mimeTypeUsageTypeName, isDefault, sortOrder, description);
             put(mimeTypeUsageType, mimeTypeUsageTypeTransfer);

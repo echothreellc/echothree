@@ -43,37 +43,37 @@ public class ChainBean
 
     @Override
     public CommandResult createChainActionType(UserVisitPK userVisitPK, CreateChainActionTypeForm form) {
-        return new CreateChainActionTypeCommand(userVisitPK, form).run();
+        return new CreateChainActionTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getChainActionTypes(UserVisitPK userVisitPK, GetChainActionTypesForm form) {
-        return new GetChainActionTypesCommand(userVisitPK, form).run();
+        return new GetChainActionTypesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getChainActionType(UserVisitPK userVisitPK, GetChainActionTypeForm form) {
-        return new GetChainActionTypeCommand(userVisitPK, form).run();
+        return new GetChainActionTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getChainActionTypeChoices(UserVisitPK userVisitPK, GetChainActionTypeChoicesForm form) {
-        return new GetChainActionTypeChoicesCommand(userVisitPK, form).run();
+        return new GetChainActionTypeChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultChainActionType(UserVisitPK userVisitPK, SetDefaultChainActionTypeForm form) {
-        return new SetDefaultChainActionTypeCommand(userVisitPK, form).run();
+        return new SetDefaultChainActionTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editChainActionType(UserVisitPK userVisitPK, EditChainActionTypeForm form) {
-        return new EditChainActionTypeCommand(userVisitPK, form).run();
+        return new EditChainActionTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteChainActionType(UserVisitPK userVisitPK, DeleteChainActionTypeForm form) {
-        return new DeleteChainActionTypeCommand(userVisitPK, form).run();
+        return new DeleteChainActionTypeCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -82,27 +82,27 @@ public class ChainBean
 
     @Override
     public CommandResult createChainActionTypeDescription(UserVisitPK userVisitPK, CreateChainActionTypeDescriptionForm form) {
-        return new CreateChainActionTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateChainActionTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getChainActionTypeDescriptions(UserVisitPK userVisitPK, GetChainActionTypeDescriptionsForm form) {
-        return new GetChainActionTypeDescriptionsCommand(userVisitPK, form).run();
+        return new GetChainActionTypeDescriptionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getChainActionTypeDescription(UserVisitPK userVisitPK, GetChainActionTypeDescriptionForm form) {
-        return new GetChainActionTypeDescriptionCommand(userVisitPK, form).run();
+        return new GetChainActionTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editChainActionTypeDescription(UserVisitPK userVisitPK, EditChainActionTypeDescriptionForm form) {
-        return new EditChainActionTypeDescriptionCommand(userVisitPK, form).run();
+        return new EditChainActionTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteChainActionTypeDescription(UserVisitPK userVisitPK, DeleteChainActionTypeDescriptionForm form) {
-        return new DeleteChainActionTypeDescriptionCommand(userVisitPK, form).run();
+        return new DeleteChainActionTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -111,7 +111,7 @@ public class ChainBean
     
     @Override
     public CommandResult createChainActionTypeUse(UserVisitPK userVisitPK, CreateChainActionTypeUseForm form) {
-        return new CreateChainActionTypeUseCommand(userVisitPK, form).run();
+        return new CreateChainActionTypeUseCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -120,37 +120,37 @@ public class ChainBean
 
     @Override
     public CommandResult createChainKind(UserVisitPK userVisitPK, CreateChainKindForm form) {
-        return new CreateChainKindCommand(userVisitPK, form).run();
+        return new CreateChainKindCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getChainKinds(UserVisitPK userVisitPK, GetChainKindsForm form) {
-        return new GetChainKindsCommand(userVisitPK, form).run();
+        return new GetChainKindsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getChainKind(UserVisitPK userVisitPK, GetChainKindForm form) {
-        return new GetChainKindCommand(userVisitPK, form).run();
+        return new GetChainKindCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getChainKindChoices(UserVisitPK userVisitPK, GetChainKindChoicesForm form) {
-        return new GetChainKindChoicesCommand(userVisitPK, form).run();
+        return new GetChainKindChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultChainKind(UserVisitPK userVisitPK, SetDefaultChainKindForm form) {
-        return new SetDefaultChainKindCommand(userVisitPK, form).run();
+        return new SetDefaultChainKindCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editChainKind(UserVisitPK userVisitPK, EditChainKindForm form) {
-        return new EditChainKindCommand(userVisitPK, form).run();
+        return new EditChainKindCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteChainKind(UserVisitPK userVisitPK, DeleteChainKindForm form) {
-        return new DeleteChainKindCommand(userVisitPK, form).run();
+        return new DeleteChainKindCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -159,27 +159,27 @@ public class ChainBean
 
     @Override
     public CommandResult createChainKindDescription(UserVisitPK userVisitPK, CreateChainKindDescriptionForm form) {
-        return new CreateChainKindDescriptionCommand(userVisitPK, form).run();
+        return new CreateChainKindDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getChainKindDescriptions(UserVisitPK userVisitPK, GetChainKindDescriptionsForm form) {
-        return new GetChainKindDescriptionsCommand(userVisitPK, form).run();
+        return new GetChainKindDescriptionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getChainKindDescription(UserVisitPK userVisitPK, GetChainKindDescriptionForm form) {
-        return new GetChainKindDescriptionCommand(userVisitPK, form).run();
+        return new GetChainKindDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editChainKindDescription(UserVisitPK userVisitPK, EditChainKindDescriptionForm form) {
-        return new EditChainKindDescriptionCommand(userVisitPK, form).run();
+        return new EditChainKindDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteChainKindDescription(UserVisitPK userVisitPK, DeleteChainKindDescriptionForm form) {
-        return new DeleteChainKindDescriptionCommand(userVisitPK, form).run();
+        return new DeleteChainKindDescriptionCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -188,37 +188,37 @@ public class ChainBean
 
     @Override
     public CommandResult createChainType(UserVisitPK userVisitPK, CreateChainTypeForm form) {
-        return new CreateChainTypeCommand(userVisitPK, form).run();
+        return new CreateChainTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getChainTypes(UserVisitPK userVisitPK, GetChainTypesForm form) {
-        return new GetChainTypesCommand(userVisitPK, form).run();
+        return new GetChainTypesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getChainType(UserVisitPK userVisitPK, GetChainTypeForm form) {
-        return new GetChainTypeCommand(userVisitPK, form).run();
+        return new GetChainTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getChainTypeChoices(UserVisitPK userVisitPK, GetChainTypeChoicesForm form) {
-        return new GetChainTypeChoicesCommand(userVisitPK, form).run();
+        return new GetChainTypeChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultChainType(UserVisitPK userVisitPK, SetDefaultChainTypeForm form) {
-        return new SetDefaultChainTypeCommand(userVisitPK, form).run();
+        return new SetDefaultChainTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editChainType(UserVisitPK userVisitPK, EditChainTypeForm form) {
-        return new EditChainTypeCommand(userVisitPK, form).run();
+        return new EditChainTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteChainType(UserVisitPK userVisitPK, DeleteChainTypeForm form) {
-        return new DeleteChainTypeCommand(userVisitPK, form).run();
+        return new DeleteChainTypeCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -227,27 +227,27 @@ public class ChainBean
 
     @Override
     public CommandResult createChainTypeDescription(UserVisitPK userVisitPK, CreateChainTypeDescriptionForm form) {
-        return new CreateChainTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateChainTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getChainTypeDescriptions(UserVisitPK userVisitPK, GetChainTypeDescriptionsForm form) {
-        return new GetChainTypeDescriptionsCommand(userVisitPK, form).run();
+        return new GetChainTypeDescriptionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getChainTypeDescription(UserVisitPK userVisitPK, GetChainTypeDescriptionForm form) {
-        return new GetChainTypeDescriptionCommand(userVisitPK, form).run();
+        return new GetChainTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editChainTypeDescription(UserVisitPK userVisitPK, EditChainTypeDescriptionForm form) {
-        return new EditChainTypeDescriptionCommand(userVisitPK, form).run();
+        return new EditChainTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteChainTypeDescription(UserVisitPK userVisitPK, DeleteChainTypeDescriptionForm form) {
-        return new DeleteChainTypeDescriptionCommand(userVisitPK, form).run();
+        return new DeleteChainTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -256,27 +256,27 @@ public class ChainBean
 
     @Override
     public CommandResult createChainEntityRoleType(UserVisitPK userVisitPK, CreateChainEntityRoleTypeForm form) {
-        return new CreateChainEntityRoleTypeCommand(userVisitPK, form).run();
+        return new CreateChainEntityRoleTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getChainEntityRoleTypes(UserVisitPK userVisitPK, GetChainEntityRoleTypesForm form) {
-        return new GetChainEntityRoleTypesCommand(userVisitPK, form).run();
+        return new GetChainEntityRoleTypesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getChainEntityRoleType(UserVisitPK userVisitPK, GetChainEntityRoleTypeForm form) {
-        return new GetChainEntityRoleTypeCommand(userVisitPK, form).run();
+        return new GetChainEntityRoleTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editChainEntityRoleType(UserVisitPK userVisitPK, EditChainEntityRoleTypeForm form) {
-        return new EditChainEntityRoleTypeCommand(userVisitPK, form).run();
+        return new EditChainEntityRoleTypeCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteChainEntityRoleType(UserVisitPK userVisitPK, DeleteChainEntityRoleTypeForm form) {
-        return new DeleteChainEntityRoleTypeCommand(userVisitPK, form).run();
+        return new DeleteChainEntityRoleTypeCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -285,27 +285,27 @@ public class ChainBean
 
     @Override
     public CommandResult createChainEntityRoleTypeDescription(UserVisitPK userVisitPK, CreateChainEntityRoleTypeDescriptionForm form) {
-        return new CreateChainEntityRoleTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreateChainEntityRoleTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getChainEntityRoleTypeDescriptions(UserVisitPK userVisitPK, GetChainEntityRoleTypeDescriptionsForm form) {
-        return new GetChainEntityRoleTypeDescriptionsCommand(userVisitPK, form).run();
+        return new GetChainEntityRoleTypeDescriptionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getChainEntityRoleTypeDescription(UserVisitPK userVisitPK, GetChainEntityRoleTypeDescriptionForm form) {
-        return new GetChainEntityRoleTypeDescriptionCommand(userVisitPK, form).run();
+        return new GetChainEntityRoleTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editChainEntityRoleTypeDescription(UserVisitPK userVisitPK, EditChainEntityRoleTypeDescriptionForm form) {
-        return new EditChainEntityRoleTypeDescriptionCommand(userVisitPK, form).run();
+        return new EditChainEntityRoleTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteChainEntityRoleTypeDescription(UserVisitPK userVisitPK, DeleteChainEntityRoleTypeDescriptionForm form) {
-        return new DeleteChainEntityRoleTypeDescriptionCommand(userVisitPK, form).run();
+        return new DeleteChainEntityRoleTypeDescriptionCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -314,37 +314,37 @@ public class ChainBean
 
     @Override
     public CommandResult createChain(UserVisitPK userVisitPK, CreateChainForm form) {
-        return new CreateChainCommand(userVisitPK, form).run();
+        return new CreateChainCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getChains(UserVisitPK userVisitPK, GetChainsForm form) {
-        return new GetChainsCommand(userVisitPK, form).run();
+        return new GetChainsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getChain(UserVisitPK userVisitPK, GetChainForm form) {
-        return new GetChainCommand(userVisitPK, form).run();
+        return new GetChainCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getChainChoices(UserVisitPK userVisitPK, GetChainChoicesForm form) {
-        return new GetChainChoicesCommand(userVisitPK, form).run();
+        return new GetChainChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultChain(UserVisitPK userVisitPK, SetDefaultChainForm form) {
-        return new SetDefaultChainCommand(userVisitPK, form).run();
+        return new SetDefaultChainCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editChain(UserVisitPK userVisitPK, EditChainForm form) {
-        return new EditChainCommand(userVisitPK, form).run();
+        return new EditChainCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteChain(UserVisitPK userVisitPK, DeleteChainForm form) {
-        return new DeleteChainCommand(userVisitPK, form).run();
+        return new DeleteChainCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -353,27 +353,27 @@ public class ChainBean
 
     @Override
     public CommandResult createChainDescription(UserVisitPK userVisitPK, CreateChainDescriptionForm form) {
-        return new CreateChainDescriptionCommand(userVisitPK, form).run();
+        return new CreateChainDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getChainDescriptions(UserVisitPK userVisitPK, GetChainDescriptionsForm form) {
-        return new GetChainDescriptionsCommand(userVisitPK, form).run();
+        return new GetChainDescriptionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getChainDescription(UserVisitPK userVisitPK, GetChainDescriptionForm form) {
-        return new GetChainDescriptionCommand(userVisitPK, form).run();
+        return new GetChainDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editChainDescription(UserVisitPK userVisitPK, EditChainDescriptionForm form) {
-        return new EditChainDescriptionCommand(userVisitPK, form).run();
+        return new EditChainDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteChainDescription(UserVisitPK userVisitPK, DeleteChainDescriptionForm form) {
-        return new DeleteChainDescriptionCommand(userVisitPK, form).run();
+        return new DeleteChainDescriptionCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -382,37 +382,37 @@ public class ChainBean
 
     @Override
     public CommandResult createChainActionSet(UserVisitPK userVisitPK, CreateChainActionSetForm form) {
-        return new CreateChainActionSetCommand(userVisitPK, form).run();
+        return new CreateChainActionSetCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getChainActionSets(UserVisitPK userVisitPK, GetChainActionSetsForm form) {
-        return new GetChainActionSetsCommand(userVisitPK, form).run();
+        return new GetChainActionSetsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getChainActionSet(UserVisitPK userVisitPK, GetChainActionSetForm form) {
-        return new GetChainActionSetCommand(userVisitPK, form).run();
+        return new GetChainActionSetCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getChainActionSetChoices(UserVisitPK userVisitPK, GetChainActionSetChoicesForm form) {
-        return new GetChainActionSetChoicesCommand(userVisitPK, form).run();
+        return new GetChainActionSetChoicesCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultChainActionSet(UserVisitPK userVisitPK, SetDefaultChainActionSetForm form) {
-        return new SetDefaultChainActionSetCommand(userVisitPK, form).run();
+        return new SetDefaultChainActionSetCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editChainActionSet(UserVisitPK userVisitPK, EditChainActionSetForm form) {
-        return new EditChainActionSetCommand(userVisitPK, form).run();
+        return new EditChainActionSetCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteChainActionSet(UserVisitPK userVisitPK, DeleteChainActionSetForm form) {
-        return new DeleteChainActionSetCommand(userVisitPK, form).run();
+        return new DeleteChainActionSetCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -421,27 +421,27 @@ public class ChainBean
 
     @Override
     public CommandResult createChainActionSetDescription(UserVisitPK userVisitPK, CreateChainActionSetDescriptionForm form) {
-        return new CreateChainActionSetDescriptionCommand(userVisitPK, form).run();
+        return new CreateChainActionSetDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getChainActionSetDescriptions(UserVisitPK userVisitPK, GetChainActionSetDescriptionsForm form) {
-        return new GetChainActionSetDescriptionsCommand(userVisitPK, form).run();
+        return new GetChainActionSetDescriptionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getChainActionSetDescription(UserVisitPK userVisitPK, GetChainActionSetDescriptionForm form) {
-        return new GetChainActionSetDescriptionCommand(userVisitPK, form).run();
+        return new GetChainActionSetDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editChainActionSetDescription(UserVisitPK userVisitPK, EditChainActionSetDescriptionForm form) {
-        return new EditChainActionSetDescriptionCommand(userVisitPK, form).run();
+        return new EditChainActionSetDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteChainActionSetDescription(UserVisitPK userVisitPK, DeleteChainActionSetDescriptionForm form) {
-        return new DeleteChainActionSetDescriptionCommand(userVisitPK, form).run();
+        return new DeleteChainActionSetDescriptionCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -450,27 +450,27 @@ public class ChainBean
 
     @Override
     public CommandResult createChainAction(UserVisitPK userVisitPK, CreateChainActionForm form) {
-        return new CreateChainActionCommand(userVisitPK, form).run();
+        return new CreateChainActionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getChainActions(UserVisitPK userVisitPK, GetChainActionsForm form) {
-        return new GetChainActionsCommand(userVisitPK, form).run();
+        return new GetChainActionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getChainAction(UserVisitPK userVisitPK, GetChainActionForm form) {
-        return new GetChainActionCommand(userVisitPK, form).run();
+        return new GetChainActionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editChainAction(UserVisitPK userVisitPK, EditChainActionForm form) {
-        return new EditChainActionCommand(userVisitPK, form).run();
+        return new EditChainActionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteChainAction(UserVisitPK userVisitPK, DeleteChainActionForm form) {
-        return new DeleteChainActionCommand(userVisitPK, form).run();
+        return new DeleteChainActionCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -479,27 +479,27 @@ public class ChainBean
 
     @Override
     public CommandResult createChainActionDescription(UserVisitPK userVisitPK, CreateChainActionDescriptionForm form) {
-        return new CreateChainActionDescriptionCommand(userVisitPK, form).run();
+        return new CreateChainActionDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getChainActionDescriptions(UserVisitPK userVisitPK, GetChainActionDescriptionsForm form) {
-        return new GetChainActionDescriptionsCommand(userVisitPK, form).run();
+        return new GetChainActionDescriptionsCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getChainActionDescription(UserVisitPK userVisitPK, GetChainActionDescriptionForm form) {
-        return new GetChainActionDescriptionCommand(userVisitPK, form).run();
+        return new GetChainActionDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editChainActionDescription(UserVisitPK userVisitPK, EditChainActionDescriptionForm form) {
-        return new EditChainActionDescriptionCommand(userVisitPK, form).run();
+        return new EditChainActionDescriptionCommand().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteChainActionDescription(UserVisitPK userVisitPK, DeleteChainActionDescriptionForm form) {
-        return new DeleteChainActionDescriptionCommand(userVisitPK, form).run();
+        return new DeleteChainActionDescriptionCommand().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -508,12 +508,12 @@ public class ChainBean
     
     @Override
     public CommandResult getChainInstance(UserVisitPK userVisitPK, GetChainInstanceForm form) {
-        return new GetChainInstanceCommand(userVisitPK, form).run();
+        return new GetChainInstanceCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getChainInstances(UserVisitPK userVisitPK, GetChainInstancesForm form) {
-        return new GetChainInstancesCommand(userVisitPK, form).run();
+        return new GetChainInstancesCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -522,7 +522,7 @@ public class ChainBean
     
     @Override
     public CommandResult processChainInstanceStatuses(UserVisitPK userVisitPK) {
-        return new ProcessChainInstanceStatusesCommand(userVisitPK).run();
+        return new ProcessChainInstanceStatusesCommand().run(userVisitPK);
     }
     
 }

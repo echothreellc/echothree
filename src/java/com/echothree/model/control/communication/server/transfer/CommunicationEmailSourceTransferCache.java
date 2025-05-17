@@ -18,7 +18,7 @@ package com.echothree.model.control.communication.server.transfer;
 
 import com.echothree.model.control.communication.common.transfer.CommunicationEmailSourceTransfer;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.ServerControl;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.data.communication.server.entity.CommunicationEmailSource;
@@ -27,25 +27,21 @@ import com.echothree.util.server.persistence.Session;
 
 public class CommunicationEmailSourceTransferCache
         extends BaseCommunicationTransferCache<CommunicationEmailSource, CommunicationEmailSourceTransfer> {
-    
-    CoreControl coreControl;
-    SelectorControl selectorControl;
-    WorkEffortControl workEffortControl;
+
+    ServerControl serverControl = Session.getModelController(ServerControl.class);
+    SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
+    WorkEffortControl workEffortControl = Session.getModelController(WorkEffortControl.class);
     
     /** Creates a new instance of CommunicationEmailSourceTransferCache */
     public CommunicationEmailSourceTransferCache(UserVisit userVisit, CommunicationControl communicationControl) {
         super(userVisit, communicationControl);
-        
-        coreControl = Session.getModelController(CoreControl.class);
-        selectorControl = Session.getModelController(SelectorControl.class);
-        workEffortControl = Session.getModelController(WorkEffortControl.class);
     }
     
     public CommunicationEmailSourceTransfer getCommunicationEmailSourceTransfer(CommunicationEmailSource communicationEmailSource) {
         var communicationEmailSourceTransfer = get(communicationEmailSource);
         
         if(communicationEmailSourceTransfer == null) {
-            var servertTransfer = coreControl.getServerTransfer(userVisit, communicationEmailSource.getServer());
+            var serverTransfer = serverControl.getServerTransfer(userVisit, communicationEmailSource.getServer());
             var username = communicationEmailSource.getUsername();
             var password = communicationControl.decodeCommunicationEmailSourcePassword(communicationEmailSource);
             var receiveWorkEffortScopeTransfer = workEffortControl.getWorkEffortScopeTransfer(userVisit, communicationEmailSource.getReceiveWorkEffortScope());
@@ -53,7 +49,7 @@ public class CommunicationEmailSourceTransferCache
             var reviewEmployeeSelector = communicationEmailSource.getReviewEmployeeSelector();
             var reviewEmployeeSelectorTransfer = reviewEmployeeSelector == null? null: selectorControl.getSelectorTransfer(userVisit, reviewEmployeeSelector);
             
-            communicationEmailSourceTransfer = new CommunicationEmailSourceTransfer(servertTransfer, username, password,
+            communicationEmailSourceTransfer = new CommunicationEmailSourceTransfer(serverTransfer, username, password,
                     receiveWorkEffortScopeTransfer, sendWorkEffortScopeTransfer, reviewEmployeeSelectorTransfer);
             put(communicationEmailSource, communicationEmailSourceTransfer);
         }

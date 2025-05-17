@@ -69,8 +69,8 @@ public class EditGeoCodeTypeDescriptionCommand
     }
 
     /** Creates a new instance of EditGeoCodeTypeDescriptionCommand */
-    public EditGeoCodeTypeDescriptionCommand(UserVisitPK userVisitPK, EditGeoCodeTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditGeoCodeTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

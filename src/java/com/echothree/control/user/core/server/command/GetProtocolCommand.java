@@ -19,18 +19,20 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.GetProtocolForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.core.server.control.ServerControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -55,19 +57,19 @@ public class GetProtocolCommand
     }
     
     /** Creates a new instance of GetProtocolCommand */
-    public GetProtocolCommand(UserVisitPK userVisitPK, GetProtocolForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetProtocolCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var serverControl = Session.getModelController(ServerControl.class);
         var result = CoreResultFactory.getGetProtocolResult();
         var protocolName = form.getProtocolName();
-        var protocol = coreControl.getProtocolByName(protocolName);
+        var protocol = serverControl.getProtocolByName(protocolName);
         
         if(protocol != null) {
-            result.setProtocol(coreControl.getProtocolTransfer(getUserVisit(), protocol));
+            result.setProtocol(serverControl.getProtocolTransfer(getUserVisit(), protocol));
             
             sendEvent(protocol.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {

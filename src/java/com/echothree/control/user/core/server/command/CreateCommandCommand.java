@@ -17,12 +17,14 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateCommandForm;
+import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -42,29 +44,29 @@ public class CreateCommandCommand
     }
     
     /** Creates a new instance of CreateCommandCommand */
-    public CreateCommandCommand(UserVisitPK userVisitPK, CreateCommandForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateCommandCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var commandControl = Session.getModelController(CommandControl.class);
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var commandName = form.getCommandName();
-            var command = coreControl.getCommandByName(componentVendor, commandName);
+            var command = commandControl.getCommandByName(componentVendor, commandName);
             
             if(command == null) {
                 var partyPK = getPartyPK();
                 var sortOrder = Integer.valueOf(form.getSortOrder());
                 var description = form.getDescription();
                 
-                command = coreControl.createCommand(componentVendor, commandName, sortOrder, partyPK);
+                command = commandControl.createCommand(componentVendor, commandName, sortOrder, partyPK);
                 
                 if(description != null) {
-                    coreControl.createCommandDescription(command, getPreferredLanguage(), description, partyPK);
+                    commandControl.createCommandDescription(command, getPreferredLanguage(), description, partyPK);
                 }
             } else {
                 addExecutionError(ExecutionErrors.DuplicateCommandName.name(), commandName);

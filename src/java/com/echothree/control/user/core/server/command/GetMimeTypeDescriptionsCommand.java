@@ -18,12 +18,14 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetMimeTypeDescriptionsForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -40,20 +42,20 @@ public class GetMimeTypeDescriptionsCommand
     }
 
     /** Creates a new instance of GetMimeTypeDescriptionsCommand */
-    public GetMimeTypeDescriptionsCommand(UserVisitPK userVisitPK, GetMimeTypeDescriptionsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetMimeTypeDescriptionsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
    @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
-       var result = CoreResultFactory.getGetMimeTypeDescriptionsResult();
-       var mimeTypeName = form.getMimeTypeName();
-       var mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
+        var result = CoreResultFactory.getGetMimeTypeDescriptionsResult();
+        var mimeTypeName = form.getMimeTypeName();
+        var mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
         
         if(mimeType != null) {
-            result.setMimeType(coreControl.getMimeTypeTransfer(getUserVisit(), mimeType));
-            result.setMimeTypeDescriptions(coreControl.getMimeTypeDescriptionTransfersByMimeType(getUserVisit(), mimeType));
+            result.setMimeType(mimeTypeControl.getMimeTypeTransfer(getUserVisit(), mimeType));
+            result.setMimeTypeDescriptions(mimeTypeControl.getMimeTypeDescriptionTransfersByMimeType(getUserVisit(), mimeType));
         } else {
             addExecutionError(ExecutionErrors.UnknownMimeTypeName.name(), mimeTypeName);
         }

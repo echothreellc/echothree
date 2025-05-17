@@ -17,6 +17,7 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteEntityAliasTypeDescriptionForm;
+import com.echothree.model.control.core.server.control.EntityAliasControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -58,23 +59,23 @@ public class DeleteEntityAliasTypeDescriptionCommand
     }
     
     /** Creates a new instance of DeleteEntityAliasTypeDescriptionCommand */
-    public DeleteEntityAliasTypeDescriptionCommand(UserVisitPK userVisitPK, DeleteEntityAliasTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteEntityAliasTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var entityTypeName = form.getEntityTypeName();
-            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
+                var entityAliasControl = Session.getModelController(EntityAliasControl.class);
                 var entityAliasTypeName = form.getEntityAliasTypeName();
-                var entityAliasType = coreControl.getEntityAliasTypeByName(entityType, entityAliasTypeName);
+                var entityAliasType = entityAliasControl.getEntityAliasTypeByName(entityType, entityAliasTypeName);
                 
                 if(entityAliasType != null) {
                     var partyControl = Session.getModelController(PartyControl.class);
@@ -82,10 +83,10 @@ public class DeleteEntityAliasTypeDescriptionCommand
                     var language = partyControl.getLanguageByIsoName(languageIsoName);
                     
                     if(language != null) {
-                        var entityAliasTypeDescription = coreControl.getEntityAliasTypeDescriptionForUpdate(entityAliasType, language);
+                        var entityAliasTypeDescription = entityAliasControl.getEntityAliasTypeDescriptionForUpdate(entityAliasType, language);
                         
                         if(entityAliasTypeDescription != null) {
-                            coreControl.deleteEntityAliasTypeDescription(entityAliasTypeDescription, getPartyPK());
+                            entityAliasControl.deleteEntityAliasTypeDescription(entityAliasTypeDescription, getPartyPK());
                         } else {
                             addExecutionError(ExecutionErrors.UnknownEntityAliasTypeDescription.name(), componentVendorName, entityTypeName, entityAliasTypeName,
                                     languageIsoName);

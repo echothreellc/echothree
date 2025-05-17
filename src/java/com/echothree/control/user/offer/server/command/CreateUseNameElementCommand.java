@@ -58,8 +58,8 @@ public class CreateUseNameElementCommand
     }
     
     /** Creates a new instance of CreateUseNameElementCommand */
-    public CreateUseNameElementCommand(UserVisitPK userVisitPK, CreateUseNameElementForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateUseNameElementCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

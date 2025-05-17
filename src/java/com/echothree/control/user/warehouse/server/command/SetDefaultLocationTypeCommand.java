@@ -56,8 +56,8 @@ public class SetDefaultLocationTypeCommand
     }
     
     /** Creates a new instance of SetDefaultLocationTypeCommand */
-    public SetDefaultLocationTypeCommand(UserVisitPK userVisitPK, SetDefaultLocationTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultLocationTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

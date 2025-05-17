@@ -59,8 +59,8 @@ public class GetPicklistTimeTypeDescriptionCommand
     }
     
     /** Creates a new instance of GetPicklistTimeTypeDescriptionCommand */
-    public GetPicklistTimeTypeDescriptionCommand(UserVisitPK userVisitPK, GetPicklistTimeTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetPicklistTimeTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

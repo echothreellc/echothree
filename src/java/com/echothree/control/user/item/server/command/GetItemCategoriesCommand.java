@@ -58,8 +58,8 @@ public class GetItemCategoriesCommand
     }
     
     /** Creates a new instance of GetItemCategoriesCommand */
-    public GetItemCategoriesCommand(UserVisitPK userVisitPK, GetItemCategoriesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetItemCategoriesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     private ItemCategory parentItemCategory;

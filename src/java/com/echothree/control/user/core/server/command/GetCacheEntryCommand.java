@@ -18,12 +18,14 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetCacheEntryForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.CacheEntryControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -40,16 +42,16 @@ public class GetCacheEntryCommand
     }
     
     /** Creates a new instance of GetCacheEntryCommand */
-    public GetCacheEntryCommand(UserVisitPK userVisitPK, GetCacheEntryForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetCacheEntryCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var cacheEntryControl = Session.getModelController(CacheEntryControl.class);
         var result = CoreResultFactory.getGetCacheEntryResult();
         var cacheEntryKey = form.getCacheEntryKey();
-        var cacheEntryTransfer = coreControl.getCacheEntryTransferByCacheEntryKey(getUserVisit(), cacheEntryKey);
+        var cacheEntryTransfer = cacheEntryControl.getCacheEntryTransferByCacheEntryKey(getUserVisit(), cacheEntryKey);
 
         if(cacheEntryTransfer != null) {
             result.setCacheEntry(cacheEntryTransfer);

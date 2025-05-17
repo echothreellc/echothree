@@ -57,8 +57,8 @@ public class GetSelectorTypeChoicesCommand
     }
     
     /** Creates a new instance of GetSelectorTypeChoicesCommand */
-    public GetSelectorTypeChoicesCommand(UserVisitPK userVisitPK, GetSelectorTypeChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetSelectorTypeChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

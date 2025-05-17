@@ -53,8 +53,8 @@ public class GetSelectorKindsCommand
     }
 
     /** Creates a new instance of GetSelectorKindsCommand */
-    public GetSelectorKindsCommand(UserVisitPK userVisitPK, GetSelectorKindsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetSelectorKindsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

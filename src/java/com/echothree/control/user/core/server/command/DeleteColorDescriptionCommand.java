@@ -17,15 +17,16 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteColorDescriptionForm;
+import com.echothree.model.control.core.server.control.ColorControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -56,15 +57,15 @@ public class DeleteColorDescriptionCommand
     }
     
     /** Creates a new instance of DeleteColorDescriptionCommand */
-    public DeleteColorDescriptionCommand(UserVisitPK userVisitPK, DeleteColorDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteColorDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var colorControl = Session.getModelController(ColorControl.class);
         var colorName = form.getColorName();
-        var color = coreControl.getColorByName(colorName);
+        var color = colorControl.getColorByName(colorName);
         
         if(color != null) {
             var partyControl = Session.getModelController(PartyControl.class);
@@ -72,10 +73,10 @@ public class DeleteColorDescriptionCommand
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                var colorDescription = coreControl.getColorDescriptionForUpdate(color, language);
+                var colorDescription = colorControl.getColorDescriptionForUpdate(color, language);
                 
                 if(colorDescription != null) {
-                    coreControl.deleteColorDescription(colorDescription, getPartyPK());
+                    colorControl.deleteColorDescription(colorDescription, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownColorDescription.name(), colorName, languageIsoName);
                 }

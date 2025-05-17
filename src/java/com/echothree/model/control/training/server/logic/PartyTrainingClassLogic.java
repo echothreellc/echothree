@@ -16,13 +16,13 @@
 
 package com.echothree.model.control.training.server.logic;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.training.common.exception.UnknownPartyTrainingClassNameException;
+import com.echothree.model.control.training.common.training.PartyTrainingClassStatusConstants;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.workeffort.common.workeffort.TrainingConstants;
 import com.echothree.model.control.workeffort.server.logic.WorkEffortLogic;
 import com.echothree.model.control.workeffort.server.logic.WorkEffortLogic.PreparedWorkEffort;
-import com.echothree.model.control.training.common.training.PartyTrainingClassStatusConstants;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workrequirement.server.logic.WorkRequirementLogic;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -174,7 +174,7 @@ public class PartyTrainingClassLogic
 
     public PartyTrainingClass createPartyTrainingClass(final Session session, final PreparedPartyTrainingClass preparedPartyTrainingClass,
             final BasePK createdBy) {
-        var coreControl = Session.getModelController(CoreControl.class);
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var trainingControl = Session.getModelController(TrainingControl.class);
         var party = preparedPartyTrainingClass.getParty();
         var trainingClass = preparedPartyTrainingClass.getTrainingClass();
@@ -183,7 +183,7 @@ public class PartyTrainingClassLogic
 
         var partyTrainingClass = trainingControl.createPartyTrainingClass(preparedPartyTrainingClass.getParty(), trainingClass,
                 preparedPartyTrainingClass.completedTime, preparedPartyTrainingClass.getValidUntilTime(), createdBy);
-        var entityInstance = coreControl.getEntityInstanceByBasePK(partyTrainingClass.getPrimaryKey());
+        var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(partyTrainingClass.getPrimaryKey());
 
         if(completedTime == null) {
             var preparedWorkEffort = preparedPartyTrainingClass.getPreparedWorkEffort();
@@ -223,8 +223,8 @@ public class PartyTrainingClassLogic
         var invalidPartyTrainingClass = false;
 
         if(modifiedBy.equals(partyTrainingClassDetail.getPartyPK())) {
-            var coreControl = Session.getModelController(CoreControl.class);
-            var entityInstance = coreControl.getEntityInstanceByBasePK(partyTrainingClass.getPrimaryKey());
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(partyTrainingClass.getPrimaryKey());
             var workflowControl = Session.getModelController(WorkflowControl.class);
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PartyTrainingClassStatusConstants.Workflow_PARTY_TRAINING_CLASS_STATUS,
                     entityInstance);

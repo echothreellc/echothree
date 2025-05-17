@@ -57,8 +57,8 @@ public class SetDefaultGeoCodeDateTimeFormatCommand
     }
     
     /** Creates a new instance of SetDefaultGeoCodeDateTimeFormatCommand */
-    public SetDefaultGeoCodeDateTimeFormatCommand(UserVisitPK userVisitPK, SetDefaultGeoCodeDateTimeFormatForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultGeoCodeDateTimeFormatCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

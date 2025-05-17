@@ -41,12 +41,12 @@ import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
-import com.google.common.base.Charsets;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.BitSet;
 import java.util.HashSet;
 import java.util.Locale;
@@ -476,9 +476,9 @@ public class ItemDescriptionAction
 
             if(entityAttributeTypeName == null || EntityAttributeTypes.CLOB.name().equals(entityAttributeTypeName)) {
                 if(entityAttributeTypeName == null) {
-                    bytes = itemDescription.getStringDescription().getBytes(Charsets.UTF_8);
+                    bytes = itemDescription.getStringDescription().getBytes(StandardCharsets.UTF_8);
                 } else {
-                    bytes = itemDescription.getClobDescription().getBytes(Charsets.UTF_8);
+                    bytes = itemDescription.getClobDescription().getBytes(StandardCharsets.UTF_8);
                 }
             } else {
                 if(EntityAttributeTypes.BLOB.name().equals(entityAttributeTypeName)) {

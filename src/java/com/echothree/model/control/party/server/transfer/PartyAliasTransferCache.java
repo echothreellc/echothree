@@ -20,18 +20,22 @@ import com.echothree.model.control.party.common.transfer.PartyAliasTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.PartyAlias;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class PartyAliasTransferCache
         extends BasePartyTransferCache<PartyAlias, PartyAliasTransfer> {
-    
+
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+
     /** Creates a new instance of PartyAliasTransferCache */
-    public PartyAliasTransferCache(UserVisit userVisit, PartyControl partyControl) {
-        super(userVisit, partyControl);
+    public PartyAliasTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         setIncludeEntityInstance(true);
     }
-    
-    public PartyAliasTransfer getPartyAliasTransfer(PartyAlias partyAlias) {
+
+    @Override
+    public PartyAliasTransfer getTransfer(PartyAlias partyAlias) {
         var partyAliasTransfer = get(partyAlias);
         
         if(partyAliasTransfer == null) {

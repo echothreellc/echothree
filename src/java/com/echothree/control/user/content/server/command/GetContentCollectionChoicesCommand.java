@@ -55,8 +55,8 @@ public class GetContentCollectionChoicesCommand
     }
     
     /** Creates a new instance of GetContentCollectionChoicesCommand */
-    public GetContentCollectionChoicesCommand(UserVisitPK userVisitPK, GetContentCollectionChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetContentCollectionChoicesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

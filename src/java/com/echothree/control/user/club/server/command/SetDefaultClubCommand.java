@@ -41,8 +41,8 @@ public class SetDefaultClubCommand
     }
     
     /** Creates a new instance of SetDefaultClubCommand */
-    public SetDefaultClubCommand(UserVisitPK userVisitPK, SetDefaultClubForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultClubCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

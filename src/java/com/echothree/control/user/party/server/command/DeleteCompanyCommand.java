@@ -41,8 +41,8 @@ public class DeleteCompanyCommand
     }
     
     /** Creates a new instance of DeleteCompanyCommand */
-    public DeleteCompanyCommand(UserVisitPK userVisitPK, DeleteCompanyForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public DeleteCompanyCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

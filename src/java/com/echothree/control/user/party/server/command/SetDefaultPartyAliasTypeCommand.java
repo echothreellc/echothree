@@ -55,8 +55,8 @@ public class SetDefaultPartyAliasTypeCommand
     }
     
     /** Creates a new instance of SetDefaultPartyAliasTypeCommand */
-    public SetDefaultPartyAliasTypeCommand(UserVisitPK userVisitPK, SetDefaultPartyAliasTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultPartyAliasTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

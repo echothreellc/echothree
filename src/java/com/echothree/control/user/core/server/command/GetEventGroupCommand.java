@@ -19,12 +19,14 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.GetEventGroupForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -41,19 +43,19 @@ public class GetEventGroupCommand
     }
     
     /** Creates a new instance of GetEventGroupCommand */
-    public GetEventGroupCommand(UserVisitPK userVisitPK, GetEventGroupForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetEventGroupCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var eventControl = Session.getModelController(EventControl.class);
         var result = CoreResultFactory.getGetEventGroupResult();
         var eventGroupName = form.getEventGroupName();
-        var eventGroup = coreControl.getEventGroupByName(eventGroupName);
+        var eventGroup = eventControl.getEventGroupByName(eventGroupName);
         
         if(eventGroup != null) {
-            result.setEventGroup(coreControl.getEventGroupTransfer(getUserVisit(), eventGroup));
+            result.setEventGroup(eventControl.getEventGroupTransfer(getUserVisit(), eventGroup));
             
             sendEvent(eventGroup.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {

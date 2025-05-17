@@ -50,8 +50,8 @@ public class DeleteEntityTimeDefaultCommand
     }
 
     /** Creates a new instance of CreateEntityTimeDefaultCommand */
-    public DeleteEntityTimeDefaultCommand(UserVisitPK userVisitPK, DeleteEntityTimeDefaultForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteEntityTimeDefaultCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

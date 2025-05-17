@@ -17,6 +17,7 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteEntityAliasForm;
+import com.echothree.model.control.core.server.control.EntityAliasControl;
 import com.echothree.model.control.core.server.logic.EntityAliasTypeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -31,6 +32,7 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.List;
 
 public class DeleteEntityAliasCommand
@@ -56,8 +58,8 @@ public class DeleteEntityAliasCommand
     }
 
     /** Creates a new instance of DeleteEntityAliasCommand */
-    public DeleteEntityAliasCommand(UserVisitPK userVisitPK, DeleteEntityAliasForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteEntityAliasCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
@@ -80,11 +82,11 @@ public class DeleteEntityAliasCommand
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAliasType.getLastDetail().getEntityType())) {
-                            var coreControl = getCoreControl();
-                            var entityAlias = coreControl.getEntityAliasForUpdate(entityInstance, entityAliasType);
+                            var entityAliasControl = Session.getModelController(EntityAliasControl.class);
+                            var entityAlias = entityAliasControl.getEntityAliasForUpdate(entityInstance, entityAliasType);
 
                             if(entityAlias != null) {
-                                coreControl.deleteEntityAlias(entityAlias, getPartyPK());
+                                entityAliasControl.deleteEntityAlias(entityAlias, getPartyPK());
                             } else {
                                 addExecutionError(ExecutionErrors.UnknownEntityAlias.name());
                             }

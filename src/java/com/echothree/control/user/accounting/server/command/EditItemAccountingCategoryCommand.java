@@ -72,8 +72,8 @@ public class EditItemAccountingCategoryCommand
     }
 
     /** Creates a new instance of EditItemAccountingCategoryCommand */
-    public EditItemAccountingCategoryCommand(UserVisitPK userVisitPK, EditItemAccountingCategoryForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditItemAccountingCategoryCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

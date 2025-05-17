@@ -66,7 +66,6 @@ import com.echothree.model.control.party.common.transfer.ProfileTransfer;
 import com.echothree.model.control.party.common.transfer.RoleTypeTransfer;
 import com.echothree.model.control.party.common.transfer.TimeZoneDescriptionTransfer;
 import com.echothree.model.control.party.common.transfer.TimeZoneTransfer;
-import com.echothree.model.control.party.server.transfer.PartyTransferCaches;
 import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
@@ -214,7 +213,6 @@ import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
-import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
@@ -227,25 +225,11 @@ import java.util.Map;
 import java.util.Objects;
 
 public class PartyControl
-        extends BaseModelControl {
+        extends BasePartyControl {
     
     /** Creates a new instance of PartyControl */
     public PartyControl() {
         super();
-    }
-    
-    // --------------------------------------------------------------------------------
-    //   Party Transfer Caches
-    // --------------------------------------------------------------------------------
-    
-    private PartyTransferCaches partyTransferCaches;
-    
-    public PartyTransferCaches getPartyTransferCaches(UserVisit userVisit) {
-        if(partyTransferCaches == null) {
-            partyTransferCaches = new PartyTransferCaches(userVisit, this);
-        }
-        
-        return partyTransferCaches;
     }
     
     // --------------------------------------------------------------------------------
@@ -368,7 +352,7 @@ public class PartyControl
     }
     
     public LanguageTransfer getLanguageTransfer(UserVisit userVisit, Language language) {
-        return getPartyTransferCaches(userVisit).getLanguageTransferCache().getLanguageTransfer(language);
+        return getPartyTransferCaches(userVisit).getLanguageTransferCache().getTransfer(language);
     }
     
     public List<LanguageTransfer> getLanguageTransfers(UserVisit userVisit, Collection<Language> languages) {
@@ -376,7 +360,7 @@ public class PartyControl
         var languageTransferCache = getPartyTransferCaches(userVisit).getLanguageTransferCache();
         
         languages.forEach((language) ->
-                languageTransfers.add(languageTransferCache.getLanguageTransfer(language))
+                languageTransfers.add(languageTransferCache.getTransfer(language))
         );
         
         return languageTransfers;
@@ -599,7 +583,7 @@ public class PartyControl
     }
     
     public PartyTypeTransfer getPartyTypeTransfer(UserVisit userVisit, PartyType partyType) {
-        return getPartyTransferCaches(userVisit).getPartyTypeTransferCache().getPartyTypeTransfer(partyType);
+        return getPartyTransferCaches(userVisit).getPartyTypeTransferCache().getTransfer(partyType);
     }
     
     public List<PartyTypeTransfer> getPartyTypeTransfers(UserVisit userVisit, Collection<PartyType> partyTypes) {
@@ -607,7 +591,7 @@ public class PartyControl
         var partyTypeTransferCache = getPartyTransferCaches(userVisit).getPartyTypeTransferCache();
         
         partyTypes.forEach((partyType) ->
-                partyTypeTransfers.add(partyTypeTransferCache.getPartyTypeTransfer(partyType))
+                partyTypeTransfers.add(partyTypeTransferCache.getTransfer(partyType))
         );
         
         return partyTypeTransfers;
@@ -994,7 +978,7 @@ public class PartyControl
     }
     
     public PersonalTitleTransfer getPersonalTitleTransfer(UserVisit userVisit, PersonalTitle personalTitle) {
-        return getPartyTransferCaches(userVisit).getPersonalTitleTransferCache().getPersonalTitleTransfer(personalTitle);
+        return getPartyTransferCaches(userVisit).getPersonalTitleTransferCache().getTransfer(personalTitle);
     }
     
     public List<PersonalTitleTransfer> getPersonalTitleTransfers(UserVisit userVisit, Collection<PersonalTitle> personalTitles) {
@@ -1002,7 +986,7 @@ public class PartyControl
         var personalTitleTransferCache = getPartyTransferCaches(userVisit).getPersonalTitleTransferCache();
         
         personalTitles.forEach((personalTitle) ->
-                personalTitleTransfers.add(personalTitleTransferCache.getPersonalTitleTransfer(personalTitle))
+                personalTitleTransfers.add(personalTitleTransferCache.getTransfer(personalTitle))
         );
         
         return personalTitleTransfers;
@@ -1264,7 +1248,7 @@ public class PartyControl
     }
     
     public NameSuffixTransfer getNameSuffixTransfer(UserVisit userVisit, NameSuffix nameSuffix) {
-        return getPartyTransferCaches(userVisit).getNameSuffixTransferCache().getNameSuffixTransfer(nameSuffix);
+        return getPartyTransferCaches(userVisit).getNameSuffixTransferCache().getTransfer(nameSuffix);
     }
     
     public List<NameSuffixTransfer> getNameSuffixTransfers(UserVisit userVisit, Collection<NameSuffix> nameSuffixes) {
@@ -1272,7 +1256,7 @@ public class PartyControl
         var nameSuffixTransferCache = getPartyTransferCaches(userVisit).getNameSuffixTransferCache();
         
         nameSuffixes.forEach((nameSuffix) ->
-                nameSuffixTransfers.add(nameSuffixTransferCache.getNameSuffixTransfer(nameSuffix))
+                nameSuffixTransfers.add(nameSuffixTransferCache.getTransfer(nameSuffix))
         );
         
         return nameSuffixTransfers;
@@ -1445,7 +1429,7 @@ public class PartyControl
     }
     
     public TimeZoneTransfer getTimeZoneTransfer(UserVisit userVisit, TimeZone timeZone) {
-        return getPartyTransferCaches(userVisit).getTimeZoneTransferCache().getTimeZoneTransfer(timeZone);
+        return getPartyTransferCaches(userVisit).getTimeZoneTransferCache().getTransfer(timeZone);
     }
     
     public List<TimeZoneTransfer> getTimeZoneTransfers(UserVisit userVisit, Collection<TimeZone> timeZones) {
@@ -1453,7 +1437,7 @@ public class PartyControl
         var timeZoneTransferCache = getPartyTransferCaches(userVisit).getTimeZoneTransferCache();
         
         timeZones.forEach((timeZone) ->
-                timeZoneTransfers.add(timeZoneTransferCache.getTimeZoneTransfer(timeZone))
+                timeZoneTransfers.add(timeZoneTransferCache.getTransfer(timeZone))
         );
         
         return timeZoneTransfers;
@@ -1581,7 +1565,7 @@ public class PartyControl
     }
     
     public TimeZoneDescriptionTransfer getTimeZoneDescriptionTransfer(UserVisit userVisit, TimeZoneDescription timeZoneDescription) {
-        return getPartyTransferCaches(userVisit).getTimeZoneDescriptionTransferCache().getTimeZoneDescriptionTransfer(timeZoneDescription);
+        return getPartyTransferCaches(userVisit).getTimeZoneDescriptionTransferCache().getTransfer(timeZoneDescription);
     }
     
     public List<TimeZoneDescriptionTransfer> getTimeZoneDescriptionTransfers(UserVisit userVisit, TimeZone timeZone) {
@@ -1590,7 +1574,7 @@ public class PartyControl
         var timeZoneDescriptionTransferCache = getPartyTransferCaches(userVisit).getTimeZoneDescriptionTransferCache();
         
         timeZoneDescriptions.forEach((timeZoneDescription) ->
-                timeZoneDescriptionTransfers.add(timeZoneDescriptionTransferCache.getTimeZoneDescriptionTransfer(timeZoneDescription))
+                timeZoneDescriptionTransfers.add(timeZoneDescriptionTransferCache.getTransfer(timeZoneDescription))
         );
         
         return timeZoneDescriptionTransfers;
@@ -1774,7 +1758,7 @@ public class PartyControl
     }
     
     public DateTimeFormatTransfer getDateTimeFormatTransfer(UserVisit userVisit, DateTimeFormat dateTimeFormat) {
-        return getPartyTransferCaches(userVisit).getDateTimeFormatTransferCache().getDateTimeFormatTransfer(dateTimeFormat);
+        return getPartyTransferCaches(userVisit).getDateTimeFormatTransferCache().getTransfer(dateTimeFormat);
     }
     
     public List<DateTimeFormatTransfer> getDateTimeFormatTransfers(UserVisit userVisit, Collection<DateTimeFormat> dateTimeFormats) {
@@ -1782,7 +1766,7 @@ public class PartyControl
         var dateTimeFormatTransferCache = getPartyTransferCaches(userVisit).getDateTimeFormatTransferCache();
         
         dateTimeFormats.forEach((dateTimeFormat) ->
-                dateTimeFormatTransfers.add(dateTimeFormatTransferCache.getDateTimeFormatTransfer(dateTimeFormat))
+                dateTimeFormatTransfers.add(dateTimeFormatTransferCache.getTransfer(dateTimeFormat))
         );
         
         return dateTimeFormatTransfers;
@@ -1911,7 +1895,7 @@ public class PartyControl
     }
     
     public DateTimeFormatDescriptionTransfer getDateTimeFormatDescriptionTransfer(UserVisit userVisit, DateTimeFormatDescription dateTimeFormatDescription) {
-        return getPartyTransferCaches(userVisit).getDateTimeFormatDescriptionTransferCache().getDateTimeFormatDescriptionTransfer(dateTimeFormatDescription);
+        return getPartyTransferCaches(userVisit).getDateTimeFormatDescriptionTransferCache().getTransfer(dateTimeFormatDescription);
     }
     
     public List<DateTimeFormatDescriptionTransfer> getDateTimeFormatDescriptionTransfers(UserVisit userVisit, DateTimeFormat dateTimeFormat) {
@@ -1920,7 +1904,7 @@ public class PartyControl
         var dateTimeFormatDescriptionTransferCache = getPartyTransferCaches(userVisit).getDateTimeFormatDescriptionTransferCache();
         
         dateTimeFormatDescriptions.forEach((dateTimeFormatDescription) ->
-                dateTimeFormatDescriptionTransfers.add(dateTimeFormatDescriptionTransferCache.getDateTimeFormatDescriptionTransfer(dateTimeFormatDescription))
+                dateTimeFormatDescriptionTransfers.add(dateTimeFormatDescriptionTransferCache.getTransfer(dateTimeFormatDescription))
         );
         
         return dateTimeFormatDescriptionTransfers;
@@ -2241,6 +2225,7 @@ public class PartyControl
     }
     
     public void deleteParty(Party party, BasePK deletedBy) {
+        var partyApplicationEditorUseControl = Session.getModelController(PartyApplicationEditorUseControl.class);
         var contactListControl = Session.getModelController(ContactListControl.class);
         var documentControl = Session.getModelController(DocumentControl.class);
         var printerControl = Session.getModelController(PrinterControl.class);
@@ -2254,7 +2239,7 @@ public class PartyControl
         var partyTypeName = partyType.getPartyTypeName();
         
         // TODO: Doesn't clean up all relationships
-        getCoreControl().deletePartyApplicationEditorUsesByParty(party, deletedBy);
+        partyApplicationEditorUseControl.deletePartyApplicationEditorUsesByParty(party, deletedBy);
         contactListControl.deletePartyContactListsByParty(party, deletedBy);
         documentControl.deletePartyDocumentsByParty(party, deletedBy);
         printerControl.deletePartyPrinterGroupUsesByParty(party, deletedBy);
@@ -2620,7 +2605,7 @@ public class PartyControl
     }
 
     public PartyAliasTransfer getPartyAliasTransfer(UserVisit userVisit, PartyAlias partyAlias) {
-        return getPartyTransferCaches(userVisit).getPartyAliasTransferCache().getPartyAliasTransfer(partyAlias);
+        return getPartyTransferCaches(userVisit).getPartyAliasTransferCache().getTransfer(partyAlias);
     }
 
     public List<PartyAliasTransfer> getPartyAliasTransfers(UserVisit userVisit, Collection<PartyAlias> partyaliases) {
@@ -2628,7 +2613,7 @@ public class PartyControl
         var partyAliasTransferCache = getPartyTransferCaches(userVisit).getPartyAliasTransferCache();
 
         partyaliases.forEach((partyAlias) ->
-                partyAliasTransfers.add(partyAliasTransferCache.getPartyAliasTransfer(partyAlias))
+                partyAliasTransfers.add(partyAliasTransferCache.getTransfer(partyAlias))
         );
 
         return partyAliasTransfers;
@@ -2917,7 +2902,7 @@ public class PartyControl
     }
 
     public PartyAliasTypeTransfer getPartyAliasTypeTransfer(UserVisit userVisit, PartyAliasType partyAliasType) {
-        return getPartyTransferCaches(userVisit).getPartyAliasTypeTransferCache().getPartyAliasTypeTransfer(partyAliasType);
+        return getPartyTransferCaches(userVisit).getPartyAliasTypeTransferCache().getTransfer(partyAliasType);
     }
 
     public List<PartyAliasTypeTransfer> getPartyAliasTypeTransfers(UserVisit userVisit, Collection<PartyAliasType> partyAliasTypes) {
@@ -2925,7 +2910,7 @@ public class PartyControl
         var partyAliasTypeTransferCache = getPartyTransferCaches(userVisit).getPartyAliasTypeTransferCache();
 
         partyAliasTypes.forEach((partyAliasType) ->
-                partyAliasTypeTransfers.add(partyAliasTypeTransferCache.getPartyAliasTypeTransfer(partyAliasType))
+                partyAliasTypeTransfers.add(partyAliasTypeTransferCache.getTransfer(partyAliasType))
         );
 
         return partyAliasTypeTransfers;
@@ -3159,7 +3144,7 @@ public class PartyControl
     }
 
     public PartyAliasTypeDescriptionTransfer getPartyAliasTypeDescriptionTransfer(UserVisit userVisit, PartyAliasTypeDescription partyAliasTypeDescription) {
-        return getPartyTransferCaches(userVisit).getPartyAliasTypeDescriptionTransferCache().getPartyAliasTypeDescriptionTransfer(partyAliasTypeDescription);
+        return getPartyTransferCaches(userVisit).getPartyAliasTypeDescriptionTransferCache().getTransfer(partyAliasTypeDescription);
     }
 
     public List<PartyAliasTypeDescriptionTransfer> getPartyAliasTypeDescriptionTransfersByPartyAliasType(UserVisit userVisit, PartyAliasType partyAliasType) {
@@ -3168,7 +3153,7 @@ public class PartyControl
         var partyAliasTypeDescriptionTransferCache = getPartyTransferCaches(userVisit).getPartyAliasTypeDescriptionTransferCache();
 
         partyAliasTypeDescriptions.forEach((partyAliasTypeDescription) ->
-                partyAliasTypeDescriptionTransfers.add(partyAliasTypeDescriptionTransferCache.getPartyAliasTypeDescriptionTransfer(partyAliasTypeDescription))
+                partyAliasTypeDescriptionTransfers.add(partyAliasTypeDescriptionTransferCache.getTransfer(partyAliasTypeDescription))
         );
 
         return partyAliasTypeDescriptionTransfers;
@@ -3298,7 +3283,7 @@ public class PartyControl
     }
 
     public RoleTypeTransfer getRoleTypeTransfer(UserVisit userVisit, RoleType roleType) {
-        return getPartyTransferCaches(userVisit).getRoleTypeTransferCache().getRoleTypeTransfer(roleType);
+        return getPartyTransferCaches(userVisit).getRoleTypeTransferCache().getTransfer(roleType);
     }
 
     public List<RoleTypeTransfer> getRoleTypeTransfers(UserVisit userVisit, Collection<RoleType> roleTypes) {
@@ -3306,7 +3291,7 @@ public class PartyControl
         var roleTypeTransferCache = getPartyTransferCaches(userVisit).getRoleTypeTransferCache();
 
         roleTypes.forEach((roleType) ->
-                roleTypeTransfers.add(roleTypeTransferCache.getRoleTypeTransfer(roleType))
+                roleTypeTransfers.add(roleTypeTransferCache.getTransfer(roleType))
         );
 
         return roleTypeTransfers;
@@ -3452,7 +3437,7 @@ public class PartyControl
     }
     
     public PartyGroupTransfer getPartyGroupTransfer(UserVisit userVisit, PartyGroup partyGroup) {
-        return getPartyTransferCaches(userVisit).getPartyGroupTransferCache().getPartyGroupTransfer(partyGroup);
+        return getPartyTransferCaches(userVisit).getPartyGroupTransferCache().getTransfer(partyGroup);
     }
     
     // --------------------------------------------------------------------------------
@@ -3703,7 +3688,7 @@ public class PartyControl
         var companyTransferCache = getPartyTransferCaches(userVisit).getCompanyTransferCache();
         
         partyCompanies.forEach((partyCompany) ->
-                companyTransfers.add(companyTransferCache.getCompanyTransfer(partyCompany))
+                companyTransfers.add(companyTransferCache.getTransfer(partyCompany))
         );
         
         return companyTransfers;
@@ -3714,7 +3699,7 @@ public class PartyControl
     }
     
     public CompanyTransfer getCompanyTransfer(UserVisit userVisit, PartyCompany partyCompany) {
-        return getPartyTransferCaches(userVisit).getCompanyTransferCache().getCompanyTransfer(partyCompany);
+        return getPartyTransferCaches(userVisit).getCompanyTransferCache().getTransfer(partyCompany);
     }
     
     public CompanyTransfer getCompanyTransfer(UserVisit userVisit, Party party) {
@@ -4056,7 +4041,7 @@ public class PartyControl
         var divisionTransferCache = getPartyTransferCaches(userVisit).getDivisionTransferCache();
         
         partyDivisions.forEach((partyDivision) ->
-                divisionTransfers.add(divisionTransferCache.getDivisionTransfer(partyDivision))
+                divisionTransfers.add(divisionTransferCache.getTransfer(partyDivision))
         );
         
         return divisionTransfers;
@@ -4067,7 +4052,7 @@ public class PartyControl
     }
     
     public DivisionTransfer getDivisionTransfer(UserVisit userVisit, PartyDivision partyDivision) {
-        return getPartyTransferCaches(userVisit).getDivisionTransferCache().getDivisionTransfer(partyDivision);
+        return getPartyTransferCaches(userVisit).getDivisionTransferCache().getTransfer(partyDivision);
     }
     
     public DivisionTransfer getDivisionTransfer(UserVisit userVisit, Party party) {
@@ -4411,7 +4396,7 @@ public class PartyControl
         var departmentTransferCache = getPartyTransferCaches(userVisit).getDepartmentTransferCache();
         
         partyDepartments.forEach((partyDepartment) ->
-                departmentTransfers.add(departmentTransferCache.getDepartmentTransfer(partyDepartment))
+                departmentTransfers.add(departmentTransferCache.getTransfer(partyDepartment))
         );
         
         return departmentTransfers;
@@ -4422,7 +4407,7 @@ public class PartyControl
     }
     
     public DepartmentTransfer getDepartmentTransfer(UserVisit userVisit, PartyDepartment partyDepartment) {
-        return getPartyTransferCaches(userVisit).getDepartmentTransferCache().getDepartmentTransfer(partyDepartment);
+        return getPartyTransferCaches(userVisit).getDepartmentTransferCache().getTransfer(partyDepartment);
     }
     
     public DepartmentTransfer getDepartmentTransfer(UserVisit userVisit, Party party) {
@@ -4587,7 +4572,7 @@ public class PartyControl
     }
     
     public PersonTransfer getPersonTransfer(UserVisit userVisit, Person person) {
-        return getPartyTransferCaches(userVisit).getPersonTransferCache().getPersonTransfer(person);
+        return getPartyTransferCaches(userVisit).getPersonTransferCache().getTransfer(person);
     }
     
     // --------------------------------------------------------------------------------
@@ -4785,7 +4770,7 @@ public class PartyControl
     }
     
     public PartyRelationshipTransfer getPartyRelationshipTransfer(UserVisit userVisit, PartyRelationship partyRelationship) {
-        return getPartyTransferCaches(userVisit).getPartyRelationshipTransferCache().getPartyRelationshipTransfer(partyRelationship);
+        return getPartyTransferCaches(userVisit).getPartyRelationshipTransferCache().getTransfer(partyRelationship);
     }
     
     public List<PartyRelationshipTransfer> getPartyRelationshipTransfers(UserVisit userVisit, Collection<PartyRelationship> partyRelationships) {
@@ -4793,7 +4778,7 @@ public class PartyControl
         var partyRelationshipTransferCache = getPartyTransferCaches(userVisit).getPartyRelationshipTransferCache();
         
         partyRelationships.forEach((partyRelationship) ->
-                partyRelationshipTransfers.add(partyRelationshipTransferCache.getPartyRelationshipTransfer(partyRelationship))
+                partyRelationshipTransfers.add(partyRelationshipTransferCache.getTransfer(partyRelationship))
         );
         
         return partyRelationshipTransfers;
@@ -4903,11 +4888,11 @@ public class PartyControl
     }
     
     public PartyTypeAuditPolicyTransfer getPartyTypeAuditPolicyTransfer(UserVisit userVisit, PartyTypeAuditPolicy partyTypeAuditPolicy) {
-        return getPartyTransferCaches(userVisit).getPartyTypeAuditPolicyTransferCache().getPartyTypeAuditPolicyTransfer(partyTypeAuditPolicy);
+        return getPartyTransferCaches(userVisit).getPartyTypeAuditPolicyTransferCache().getTransfer(partyTypeAuditPolicy);
     }
     
     public PartyTypeAuditPolicyTransfer getPartyTypeAuditPolicyTransferByPartyType(UserVisit userVisit, PartyType partyType) {
-        return getPartyTransferCaches(userVisit).getPartyTypeAuditPolicyTransferCache().getPartyTypeAuditPolicyTransfer(getPartyTypeAuditPolicy(partyType));
+        return getPartyTransferCaches(userVisit).getPartyTypeAuditPolicyTransferCache().getTransfer(getPartyTypeAuditPolicy(partyType));
     }
     
     public void updatePartyTypeAuditPolicyFromValue(PartyTypeAuditPolicyDetailValue partyTypeAuditPolicyDetailValue, BasePK updatedBy) {
@@ -5012,11 +4997,11 @@ public class PartyControl
     }
     
     public PartyTypeLockoutPolicyTransfer getPartyTypeLockoutPolicyTransfer(UserVisit userVisit, PartyTypeLockoutPolicy partyTypeLockoutPolicy) {
-        return getPartyTransferCaches(userVisit).getPartyTypeLockoutPolicyTransferCache().getPartyTypeLockoutPolicyTransfer(partyTypeLockoutPolicy);
+        return getPartyTransferCaches(userVisit).getPartyTypeLockoutPolicyTransferCache().getTransfer(partyTypeLockoutPolicy);
     }
     
     public PartyTypeLockoutPolicyTransfer getPartyTypeLockoutPolicyTransferByPartyType(UserVisit userVisit, PartyType partyType) {
-        return getPartyTransferCaches(userVisit).getPartyTypeLockoutPolicyTransferCache().getPartyTypeLockoutPolicyTransfer(getPartyTypeLockoutPolicy(partyType));
+        return getPartyTransferCaches(userVisit).getPartyTypeLockoutPolicyTransferCache().getTransfer(getPartyTypeLockoutPolicy(partyType));
     }
     
     public void updatePartyTypeLockoutPolicyFromValue(PartyTypeLockoutPolicyDetailValue partyTypeLockoutPolicyDetailValue, BasePK updatedBy) {
@@ -5129,11 +5114,11 @@ public class PartyControl
     }
     
     public PartyTypePasswordStringPolicyTransfer getPartyTypePasswordStringPolicyTransfer(UserVisit userVisit, PartyTypePasswordStringPolicy partyTypePasswordStringPolicy) {
-        return getPartyTransferCaches(userVisit).getPartyTypePasswordStringPolicyTransferCache().getPartyTypePasswordStringPolicyTransfer(partyTypePasswordStringPolicy);
+        return getPartyTransferCaches(userVisit).getPartyTypePasswordStringPolicyTransferCache().getTransfer(partyTypePasswordStringPolicy);
     }
     
     public PartyTypePasswordStringPolicyTransfer getPartyTypePasswordStringPolicyTransferByPartyType(UserVisit userVisit, PartyType partyType) {
-        return getPartyTransferCaches(userVisit).getPartyTypePasswordStringPolicyTransferCache().getPartyTypePasswordStringPolicyTransfer(getPartyTypePasswordStringPolicy(partyType));
+        return getPartyTransferCaches(userVisit).getPartyTypePasswordStringPolicyTransferCache().getTransfer(getPartyTypePasswordStringPolicy(partyType));
     }
     
     public void updatePartyTypePasswordStringPolicyFromValue(PartyTypePasswordStringPolicyDetailValue partyTypePasswordStringPolicyDetailValue, BasePK updatedBy) {
@@ -5358,7 +5343,7 @@ public class PartyControl
     }
     
     public GenderTransfer getGenderTransfer(UserVisit userVisit, Gender gender) {
-        return getPartyTransferCaches(userVisit).getGenderTransferCache().getGenderTransfer(gender);
+        return getPartyTransferCaches(userVisit).getGenderTransferCache().getTransfer(gender);
     }
     
     public List<GenderTransfer> getGenderTransfers(UserVisit userVisit) {
@@ -5367,7 +5352,7 @@ public class PartyControl
         var genderTransferCache = getPartyTransferCaches(userVisit).getGenderTransferCache();
         
         genders.forEach((gender) ->
-                genderTransfers.add(genderTransferCache.getGenderTransfer(gender))
+                genderTransfers.add(genderTransferCache.getTransfer(gender))
         );
         
         return genderTransfers;
@@ -5562,7 +5547,7 @@ public class PartyControl
     }
     
     public GenderDescriptionTransfer getGenderDescriptionTransfer(UserVisit userVisit, GenderDescription genderDescription) {
-        return getPartyTransferCaches(userVisit).getGenderDescriptionTransferCache().getGenderDescriptionTransfer(genderDescription);
+        return getPartyTransferCaches(userVisit).getGenderDescriptionTransferCache().getTransfer(genderDescription);
     }
     
     public List<GenderDescriptionTransfer> getGenderDescriptionTransfersByGender(UserVisit userVisit, Gender gender) {
@@ -5571,7 +5556,7 @@ public class PartyControl
         var genderDescriptionTransferCache = getPartyTransferCaches(userVisit).getGenderDescriptionTransferCache();
         
         genderDescriptions.forEach((genderDescription) ->
-                genderDescriptionTransfers.add(genderDescriptionTransferCache.getGenderDescriptionTransfer(genderDescription))
+                genderDescriptionTransfers.add(genderDescriptionTransferCache.getTransfer(genderDescription))
         );
         
         return genderDescriptionTransfers;
@@ -5782,7 +5767,7 @@ public class PartyControl
     }
     
     public MoodTransfer getMoodTransfer(UserVisit userVisit, Mood mood) {
-        return getPartyTransferCaches(userVisit).getMoodTransferCache().getMoodTransfer(mood);
+        return getPartyTransferCaches(userVisit).getMoodTransferCache().getTransfer(mood);
     }
     
     public List<MoodTransfer> getMoodTransfers(UserVisit userVisit) {
@@ -5791,7 +5776,7 @@ public class PartyControl
         var moodTransferCache = getPartyTransferCaches(userVisit).getMoodTransferCache();
         
         moods.forEach((mood) ->
-                moodTransfers.add(moodTransferCache.getMoodTransfer(mood))
+                moodTransfers.add(moodTransferCache.getTransfer(mood))
         );
         
         return moodTransfers;
@@ -5987,7 +5972,7 @@ public class PartyControl
     }
     
     public MoodDescriptionTransfer getMoodDescriptionTransfer(UserVisit userVisit, MoodDescription moodDescription) {
-        return getPartyTransferCaches(userVisit).getMoodDescriptionTransferCache().getMoodDescriptionTransfer(moodDescription);
+        return getPartyTransferCaches(userVisit).getMoodDescriptionTransferCache().getTransfer(moodDescription);
     }
     
     public List<MoodDescriptionTransfer> getMoodDescriptionTransfersByMood(UserVisit userVisit, Mood mood) {
@@ -5996,7 +5981,7 @@ public class PartyControl
         var moodDescriptionTransferCache = getPartyTransferCaches(userVisit).getMoodDescriptionTransferCache();
         
         moodDescriptions.forEach((moodDescription) ->
-                moodDescriptionTransfers.add(moodDescriptionTransferCache.getMoodDescriptionTransfer(moodDescription))
+                moodDescriptionTransfers.add(moodDescriptionTransferCache.getTransfer(moodDescription))
         );
         
         return moodDescriptionTransfers;
@@ -6250,7 +6235,7 @@ public class PartyControl
     }
 
     public BirthdayFormatTransfer getBirthdayFormatTransfer(UserVisit userVisit, BirthdayFormat birthdayFormat) {
-        return getPartyTransferCaches(userVisit).getBirthdayFormatTransferCache().getBirthdayFormatTransfer(birthdayFormat);
+        return getPartyTransferCaches(userVisit).getBirthdayFormatTransferCache().getTransfer(birthdayFormat);
     }
 
     public List<BirthdayFormatTransfer> getBirthdayFormatTransfers(UserVisit userVisit, Collection<BirthdayFormat> birthdayFormats) {
@@ -6258,7 +6243,7 @@ public class PartyControl
         var birthdayFormatTransferCache = getPartyTransferCaches(userVisit).getBirthdayFormatTransferCache();
 
         birthdayFormats.forEach((birthdayFormat) ->
-                birthdayFormatTransfers.add(birthdayFormatTransferCache.getBirthdayFormatTransfer(birthdayFormat))
+                birthdayFormatTransfers.add(birthdayFormatTransferCache.getTransfer(birthdayFormat))
         );
 
         return birthdayFormatTransfers;
@@ -6465,7 +6450,7 @@ public class PartyControl
     }
 
     public BirthdayFormatDescriptionTransfer getBirthdayFormatDescriptionTransfer(UserVisit userVisit, BirthdayFormatDescription birthdayFormatDescription) {
-        return getPartyTransferCaches(userVisit).getBirthdayFormatDescriptionTransferCache().getBirthdayFormatDescriptionTransfer(birthdayFormatDescription);
+        return getPartyTransferCaches(userVisit).getBirthdayFormatDescriptionTransferCache().getTransfer(birthdayFormatDescription);
     }
 
     public List<BirthdayFormatDescriptionTransfer> getBirthdayFormatDescriptionTransfers(UserVisit userVisit, BirthdayFormat birthdayFormat) {
@@ -6474,7 +6459,7 @@ public class PartyControl
         var birthdayFormatDescriptionTransferCache = getPartyTransferCaches(userVisit).getBirthdayFormatDescriptionTransferCache();
 
         birthdayFormatDescriptions.forEach((birthdayFormatDescription) ->
-                birthdayFormatDescriptionTransfers.add(birthdayFormatDescriptionTransferCache.getBirthdayFormatDescriptionTransfer(birthdayFormatDescription))
+                birthdayFormatDescriptionTransfers.add(birthdayFormatDescriptionTransferCache.getTransfer(birthdayFormatDescription))
         );
 
         return birthdayFormatDescriptionTransfers;
@@ -6661,7 +6646,7 @@ public class PartyControl
     }
     
     public ProfileTransfer getProfileTransfer(UserVisit userVisit, Profile profile) {
-        return getPartyTransferCaches(userVisit).getProfileTransferCache().getProfileTransfer(profile);
+        return getPartyTransferCaches(userVisit).getProfileTransferCache().getTransfer(profile);
     }
     
 }

@@ -18,18 +18,20 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetServiceDescriptionsForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.ServerControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -54,20 +56,20 @@ public class GetServiceDescriptionsCommand
     }
     
     /** Creates a new instance of GetServiceDescriptionsCommand */
-    public GetServiceDescriptionsCommand(UserVisitPK userVisitPK, GetServiceDescriptionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetServiceDescriptionsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var serverControl = Session.getModelController(ServerControl.class);
         var result = CoreResultFactory.getGetServiceDescriptionsResult();
         var serviceName = form.getServiceName();
-        var service = coreControl.getServiceByName(serviceName);
+        var service = serverControl.getServiceByName(serviceName);
         
         if(service != null) {
-            result.setService(coreControl.getServiceTransfer(getUserVisit(), service));
-            result.setServiceDescriptions(coreControl.getServiceDescriptionTransfersByService(getUserVisit(), service));
+            result.setService(serverControl.getServiceTransfer(getUserVisit(), service));
+            result.setServiceDescriptions(serverControl.getServiceDescriptionTransfersByService(getUserVisit(), service));
         } else {
             addExecutionError(ExecutionErrors.UnknownServiceName.name(), serviceName);
         }

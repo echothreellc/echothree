@@ -43,8 +43,8 @@ public class GetTaxCommand
     }
     
     /** Creates a new instance of GetTaxCommand */
-    public GetTaxCommand(UserVisitPK userVisitPK, GetTaxForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetTaxCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

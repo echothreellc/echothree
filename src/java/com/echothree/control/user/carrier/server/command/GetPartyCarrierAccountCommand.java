@@ -58,8 +58,8 @@ public class GetPartyCarrierAccountCommand
     }
     
     /** Creates a new instance of GetPartyCarrierAccountCommand */
-    public GetPartyCarrierAccountCommand(UserVisitPK userVisitPK, GetPartyCarrierAccountForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetPartyCarrierAccountCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

@@ -44,8 +44,8 @@ public class CreateGenderCommand
     }
     
     /** Creates a new instance of CreateGenderCommand */
-    public CreateGenderCommand(UserVisitPK userVisitPK, CreateGenderForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateGenderCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

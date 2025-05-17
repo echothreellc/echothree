@@ -43,8 +43,8 @@ public class CreateCommunicationEventTypeCommand
     }
     
     /** Creates a new instance of CreateCommunicationEventTypeCommand */
-    public CreateCommunicationEventTypeCommand(UserVisitPK userVisitPK, CreateCommunicationEventTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateCommunicationEventTypeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

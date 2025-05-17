@@ -53,8 +53,8 @@ public class GetItemsCommand
     }
 
     /** Creates a new instance of GetItemsCommand */
-    public GetItemsCommand(UserVisitPK userVisitPK, GetItemsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetItemsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

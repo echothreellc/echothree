@@ -43,37 +43,37 @@ public class PeriodBean
     
     @Override
     public CommandResult createPeriodKind(UserVisitPK userVisitPK, CreatePeriodKindForm form) {
-        return new CreatePeriodKindCommand(userVisitPK, form).run();
+        return new CreatePeriodKindCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPeriodKinds(UserVisitPK userVisitPK, GetPeriodKindsForm form) {
-        return new GetPeriodKindsCommand(userVisitPK, form).run();
+        return new GetPeriodKindsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPeriodKind(UserVisitPK userVisitPK, GetPeriodKindForm form) {
-        return new GetPeriodKindCommand(userVisitPK, form).run();
+        return new GetPeriodKindCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPeriodKindChoices(UserVisitPK userVisitPK, GetPeriodKindChoicesForm form) {
-        return new GetPeriodKindChoicesCommand(userVisitPK, form).run();
+        return new GetPeriodKindChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultPeriodKind(UserVisitPK userVisitPK, SetDefaultPeriodKindForm form) {
-        return new SetDefaultPeriodKindCommand(userVisitPK, form).run();
+        return new SetDefaultPeriodKindCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editPeriodKind(UserVisitPK userVisitPK, EditPeriodKindForm form) {
-        return new EditPeriodKindCommand(userVisitPK, form).run();
+        return new EditPeriodKindCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deletePeriodKind(UserVisitPK userVisitPK, DeletePeriodKindForm form) {
-        return new DeletePeriodKindCommand(userVisitPK, form).run();
+        return new DeletePeriodKindCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -82,22 +82,22 @@ public class PeriodBean
     
     @Override
     public CommandResult createPeriodKindDescription(UserVisitPK userVisitPK, CreatePeriodKindDescriptionForm form) {
-        return new CreatePeriodKindDescriptionCommand(userVisitPK, form).run();
+        return new CreatePeriodKindDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPeriodKindDescriptions(UserVisitPK userVisitPK, GetPeriodKindDescriptionsForm form) {
-        return new GetPeriodKindDescriptionsCommand(userVisitPK, form).run();
+        return new GetPeriodKindDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editPeriodKindDescription(UserVisitPK userVisitPK, EditPeriodKindDescriptionForm form) {
-        return new EditPeriodKindDescriptionCommand(userVisitPK, form).run();
+        return new EditPeriodKindDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deletePeriodKindDescription(UserVisitPK userVisitPK, DeletePeriodKindDescriptionForm form) {
-        return new DeletePeriodKindDescriptionCommand(userVisitPK, form).run();
+        return new DeletePeriodKindDescriptionCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -106,37 +106,37 @@ public class PeriodBean
     
     @Override
     public CommandResult createPeriodType(UserVisitPK userVisitPK, CreatePeriodTypeForm form) {
-        return new CreatePeriodTypeCommand(userVisitPK, form).run();
+        return new CreatePeriodTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPeriodTypes(UserVisitPK userVisitPK, GetPeriodTypesForm form) {
-        return new GetPeriodTypesCommand(userVisitPK, form).run();
+        return new GetPeriodTypesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPeriodType(UserVisitPK userVisitPK, GetPeriodTypeForm form) {
-        return new GetPeriodTypeCommand(userVisitPK, form).run();
+        return new GetPeriodTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPeriodTypeChoices(UserVisitPK userVisitPK, GetPeriodTypeChoicesForm form) {
-        return new GetPeriodTypeChoicesCommand(userVisitPK, form).run();
+        return new GetPeriodTypeChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultPeriodType(UserVisitPK userVisitPK, SetDefaultPeriodTypeForm form) {
-        return new SetDefaultPeriodTypeCommand(userVisitPK, form).run();
+        return new SetDefaultPeriodTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editPeriodType(UserVisitPK userVisitPK, EditPeriodTypeForm form) {
-        return new EditPeriodTypeCommand(userVisitPK, form).run();
+        return new EditPeriodTypeCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deletePeriodType(UserVisitPK userVisitPK, DeletePeriodTypeForm form) {
-        return new DeletePeriodTypeCommand(userVisitPK, form).run();
+        return new DeletePeriodTypeCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -145,22 +145,22 @@ public class PeriodBean
     
     @Override
     public CommandResult createPeriodTypeDescription(UserVisitPK userVisitPK, CreatePeriodTypeDescriptionForm form) {
-        return new CreatePeriodTypeDescriptionCommand(userVisitPK, form).run();
+        return new CreatePeriodTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPeriodTypeDescriptions(UserVisitPK userVisitPK, GetPeriodTypeDescriptionsForm form) {
-        return new GetPeriodTypeDescriptionsCommand(userVisitPK, form).run();
+        return new GetPeriodTypeDescriptionsCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editPeriodTypeDescription(UserVisitPK userVisitPK, EditPeriodTypeDescriptionForm form) {
-        return new EditPeriodTypeDescriptionCommand(userVisitPK, form).run();
+        return new EditPeriodTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deletePeriodTypeDescription(UserVisitPK userVisitPK, DeletePeriodTypeDescriptionForm form) {
-        return new DeletePeriodTypeDescriptionCommand(userVisitPK, form).run();
+        return new DeletePeriodTypeDescriptionCommand().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -169,17 +169,17 @@ public class PeriodBean
     
     @Override
     public CommandResult createFiscalYear(UserVisitPK userVisitPK, CreateFiscalYearForm form) {
-        return new CreateFiscalYearCommand(userVisitPK, form).run();
+        return new CreateFiscalYearCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getFiscalPeriodStatusChoices(UserVisitPK userVisitPK, GetFiscalPeriodStatusChoicesForm form) {
-        return new GetFiscalPeriodStatusChoicesCommand(userVisitPK, form).run();
+        return new GetFiscalPeriodStatusChoicesCommand().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setFiscalPeriodStatus(UserVisitPK userVisitPK, SetFiscalPeriodStatusForm form) {
-        return new SetFiscalPeriodStatusCommand(userVisitPK, form).run();
+        return new SetFiscalPeriodStatusCommand().run(userVisitPK, form);
     }
     
 }

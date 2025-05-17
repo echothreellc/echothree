@@ -54,8 +54,8 @@ public class SetDefaultFilterAdjustmentCommand
     }
     
     /** Creates a new instance of SetDefaultFilterAdjustmentCommand */
-    public SetDefaultFilterAdjustmentCommand(UserVisitPK userVisitPK, SetDefaultFilterAdjustmentForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultFilterAdjustmentCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

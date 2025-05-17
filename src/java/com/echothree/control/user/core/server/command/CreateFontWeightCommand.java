@@ -17,18 +17,20 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateFontWeightForm;
+import com.echothree.model.control.core.server.control.FontControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -56,15 +58,15 @@ public class CreateFontWeightCommand
     }
     
     /** Creates a new instance of CreateFontWeightCommand */
-    public CreateFontWeightCommand(UserVisitPK userVisitPK, CreateFontWeightForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateFontWeightCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var fontControl = Session.getModelController(FontControl.class);
         var fontWeightName = form.getFontWeightName();
-        var fontWeight = coreControl.getFontWeightByName(fontWeightName);
+        var fontWeight = fontControl.getFontWeightByName(fontWeightName);
         
         if(fontWeight == null) {
             var partyPK = getPartyPK();
@@ -72,10 +74,10 @@ public class CreateFontWeightCommand
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();
             
-            fontWeight = coreControl.createFontWeight(fontWeightName, isDefault, sortOrder, partyPK);
+            fontWeight = fontControl.createFontWeight(fontWeightName, isDefault, sortOrder, partyPK);
             
             if(description != null) {
-                coreControl.createFontWeightDescription(fontWeight, getPreferredLanguage(), description, partyPK);
+                fontControl.createFontWeightDescription(fontWeight, getPreferredLanguage(), description, partyPK);
             }
         } else {
             addExecutionError(ExecutionErrors.DuplicateFontWeightName.name(), fontWeightName);

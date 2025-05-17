@@ -18,11 +18,13 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetMimeTypeUsageTypeChoicesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -40,18 +42,18 @@ public class GetMimeTypeUsageTypeChoicesCommand
     }
     
     /** Creates a new instance of GetMimeTypeUsageTypeChoicesCommand */
-    public GetMimeTypeUsageTypeChoicesCommand(UserVisitPK userVisitPK, GetMimeTypeUsageTypeChoicesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public GetMimeTypeUsageTypeChoicesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
         var result = CoreResultFactory.getGetMimeTypeUsageTypeChoicesResult();
         var defaultMimeTypeUsageTypeChoice = form.getDefaultMimeTypeUsageTypeChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
-        result.setMimeTypeUsageTypeChoices(coreControl.getMimeTypeUsageTypeChoices(defaultMimeTypeUsageTypeChoice,
+        result.setMimeTypeUsageTypeChoices(mimeTypeControl.getMimeTypeUsageTypeChoices(defaultMimeTypeUsageTypeChoice,
                 getPreferredLanguage(), allowNullChoice));
         
         return result;

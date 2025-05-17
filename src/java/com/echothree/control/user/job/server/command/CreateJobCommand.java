@@ -17,18 +17,19 @@
 package com.echothree.control.user.job.server.command;
 
 import com.echothree.control.user.job.common.form.CreateJobForm;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
+import com.echothree.model.control.job.common.workflow.JobStatusConstants;
 import com.echothree.model.control.job.server.control.JobControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.job.common.workflow.JobStatusConstants;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -60,8 +61,8 @@ public class CreateJobCommand
     }
     
     /** Creates a new instance of CreateJobCommand */
-    public CreateJobCommand(UserVisitPK userVisitPK, CreateJobForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateJobCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
@@ -75,7 +76,7 @@ public class CreateJobCommand
             var runAsParty = partyControl.getPartyByName(jobName);
             
             if(runAsParty == null) {
-                var coreControl = getCoreControl();
+                var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
                 var workflowControl = Session.getModelController(WorkflowControl.class);
                 var partyType = partyControl.getPartyTypeByName(PartyTypes.UTILITY.name());
                 var sortOrder = Integer.valueOf(form.getSortOrder());
@@ -89,7 +90,7 @@ public class CreateJobCommand
                     jobControl.createJobDescription(job, getPreferredLanguage(), description, createdBy);
                 }
 
-                var entityInstance = coreControl.getEntityInstanceByBasePK(job.getPrimaryKey());
+                var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(job.getPrimaryKey());
                 workflowControl.addEntityToWorkflowUsingNames(null, JobStatusConstants.Workflow_JOB_STATUS, JobStatusConstants.WorkflowEntrance_NEW_ENABLED, entityInstance, null, null, createdBy);
             } else {
                 addExecutionError(ExecutionErrors.DuplicatePartyName.name(), jobName);

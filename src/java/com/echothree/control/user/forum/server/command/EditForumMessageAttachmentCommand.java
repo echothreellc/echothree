@@ -23,16 +23,17 @@ import com.echothree.control.user.forum.common.result.EditForumMessageAttachment
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
 import com.echothree.control.user.forum.common.spec.ForumMessageAttachmentSpec;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.forum.server.entity.ForumMessageAttachment;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemDescriptionType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -59,8 +60,8 @@ public class EditForumMessageAttachmentCommand
     }
     
     /** Creates a new instance of EditForumMessageAttachmentCommand */
-    public EditForumMessageAttachmentCommand(UserVisitPK userVisitPK, EditForumMessageAttachmentForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditForumMessageAttachmentCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override
@@ -138,10 +139,10 @@ public class EditForumMessageAttachmentCommand
 
     @Override
     public void canUpdate(ForumMessageAttachment forumMessageAttachment) {
-        var coreControl = getCoreControl();
+        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
         var mimeTypeName = edit.getMimeTypeName();
 
-        mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+        mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
 
         if(mimeType != null) {
             var entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();

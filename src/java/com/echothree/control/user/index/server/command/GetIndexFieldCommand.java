@@ -58,8 +58,8 @@ public class GetIndexFieldCommand
     }
     
     /** Creates a new instance of GetIndexFieldCommand */
-    public GetIndexFieldCommand(UserVisitPK userVisitPK, GetIndexFieldForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetIndexFieldCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

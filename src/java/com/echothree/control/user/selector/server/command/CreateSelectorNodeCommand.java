@@ -148,8 +148,8 @@ public class CreateSelectorNodeCommand
     }
     
     /** Creates a new instance of CreateSelectorNodeCommand */
-    public CreateSelectorNodeCommand(UserVisitPK userVisitPK, CreateSelectorNodeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateSelectorNodeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
@@ -371,11 +371,11 @@ public class CreateSelectorNodeCommand
             
             if(!hasExecutionErrors()) {
                 var componentVendorName = form.getComponentVendorName();
-                var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+                var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
                 
                 if(componentVendor != null) {
                     var entityTypeName = form.getEntityTypeName();
-                    var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+                    var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
                     
                     if(entityType != null) {
                         var entityAttributeName = form.getEntityAttributeName();

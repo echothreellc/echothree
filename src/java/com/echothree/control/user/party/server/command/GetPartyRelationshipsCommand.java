@@ -61,8 +61,8 @@ public class GetPartyRelationshipsCommand
     }
     
     /** Creates a new instance of GetPartyRelationshipsCommand */
-    public GetPartyRelationshipsCommand(UserVisitPK userVisitPK, GetPartyRelationshipsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetPartyRelationshipsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     Party fromParty;

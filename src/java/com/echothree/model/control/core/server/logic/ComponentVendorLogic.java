@@ -21,7 +21,7 @@ import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.common.exception.UnknownComponentVendorNameException;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.ComponentControl;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
@@ -46,8 +46,8 @@ public class ComponentVendorLogic
 
     public ComponentVendor getComponentVendorByName(final ExecutionErrorAccumulator eea, final String componentVendorName,
             final EntityPermission entityPermission) {
-        var coreControl = Session.getModelController(CoreControl.class);
-        var componentVendor = coreControl.getComponentVendorByName(componentVendorName, entityPermission);
+        var componentControl = Session.getModelController(ComponentControl.class);
+        var componentVendor = componentControl.getComponentVendorByName(componentVendorName, entityPermission);
 
         if(componentVendor == null) {
             handleExecutionError(UnknownComponentVendorNameException.class, eea, ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
@@ -67,7 +67,6 @@ public class ComponentVendorLogic
     public ComponentVendor getComponentVendorByUniversalSpec(final ExecutionErrorAccumulator eea,
             final ComponentVendorUniversalSpec universalSpec, final EntityPermission entityPermission) {
         ComponentVendor componentVendor = null;
-        var coreControl = Session.getModelController(CoreControl.class);
         var componentVendorName = universalSpec.getComponentVendorName();
         var parameterCount = (componentVendorName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
@@ -78,7 +77,9 @@ public class ComponentVendorLogic
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ComponentVendor.name());
 
                     if(!eea.hasExecutionErrors()) {
-                        componentVendor = coreControl.getComponentVendorByEntityInstance(entityInstance, entityPermission);
+                        var componentControl = Session.getModelController(ComponentControl.class);
+
+                        componentVendor = componentControl.getComponentVendorByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
                     componentVendor = getComponentVendorByName(eea, componentVendorName, entityPermission);

@@ -17,7 +17,8 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.CommandTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.CommandControl;
+import com.echothree.model.control.core.server.control.ComponentControl;
 import com.echothree.model.data.core.server.entity.Command;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -25,7 +26,8 @@ import com.echothree.util.server.persistence.Session;
 public class CommandTransferCache
         extends BaseCoreTransferCache<Command, CommandTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    CommandControl commandControl = Session.getModelController(CommandControl.class);
+    ComponentControl componentControl = Session.getModelController(ComponentControl.class);
 
     /** Creates a new instance of CommandTransferCache */
     public CommandTransferCache(UserVisit userVisit) {
@@ -39,10 +41,10 @@ public class CommandTransferCache
         
         if(commandTransfer == null) {
             var commandDetail = command.getLastDetail();
-            var componentVendor = coreControl.getComponentVendorTransfer(userVisit, commandDetail.getComponentVendor());
+            var componentVendor = componentControl.getComponentVendorTransfer(userVisit, commandDetail.getComponentVendor());
             var commandName = commandDetail.getCommandName();
             var sortOrder = commandDetail.getSortOrder();
-            var description = coreControl.getBestCommandDescription(command, getLanguage());
+            var description = commandControl.getBestCommandDescription(command, getLanguage());
     
             commandTransfer = new CommandTransfer(componentVendor, commandName, sortOrder, description);
             put(command, commandTransfer);

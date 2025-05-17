@@ -58,8 +58,8 @@ public class EditCustomerTypeCreditLimitCommand
     }
     
     /** Creates a new instance of EditCustomerTypeCreditLimitCommand */
-    public EditCustomerTypeCreditLimitCommand(UserVisitPK userVisitPK, EditCustomerTypeCreditLimitForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditCustomerTypeCreditLimitCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

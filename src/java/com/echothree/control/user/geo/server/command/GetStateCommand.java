@@ -68,8 +68,8 @@ public class GetStateCommand
     Log log = null;
     
     /** Creates a new instance of GetStateCommand */
-    public GetStateCommand(UserVisitPK userVisitPK, GetStateForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetStateCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
         
         if(GeoDebugFlags.GetStateCommand) {
             log = getLog();

@@ -42,8 +42,8 @@ public class SetDefaultForumForumThreadCommand
     }
     
     /** Creates a new instance of SetDefaultForumForumThreadCommand */
-    public SetDefaultForumForumThreadCommand(UserVisitPK userVisitPK, SetDefaultForumForumThreadForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultForumForumThreadCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

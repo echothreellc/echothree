@@ -64,22 +64,21 @@ public class CreateEntityTypeCommand
     }
     
     /** Creates a new instance of CreateEntityTypeCommand */
-    public CreateEntityTypeCommand(UserVisitPK userVisitPK, CreateEntityTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateEntityTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
         var result = CoreResultFactory.getCreateEntityTypeResult();
-        var coreControl = getCoreControl();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
         EntityType entityType = null;
 
         if(componentVendor != null) {
             var entityTypeName = form.getEntityTypeName();
 
-            entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
 
             if(entityType == null) {
                 var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
@@ -95,11 +94,11 @@ public class CreateEntityTypeCommand
                     var sortOrder = Integer.valueOf(form.getSortOrder());
                     var description = form.getDescription();
 
-                    entityType = coreControl.createEntityType(componentVendor, entityTypeName, keepAllHistory, lockTimeout,
+                    entityType = getEntityTypeControl().createEntityType(componentVendor, entityTypeName, keepAllHistory, lockTimeout,
                             isExtensible, sortOrder, partyPK);
 
                     if(description != null) {
-                        coreControl.createEntityTypeDescription(entityType, getPreferredLanguage(), description, partyPK);
+                        getEntityTypeControl().createEntityTypeDescription(entityType, getPreferredLanguage(), description, partyPK);
                     }
                 }
             } else {

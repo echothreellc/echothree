@@ -55,8 +55,8 @@ public class SetDefaultCarrierServiceCommand
     }
     
     /** Creates a new instance of SetDefaultCarrierServiceCommand */
-    public SetDefaultCarrierServiceCommand(UserVisitPK userVisitPK, SetDefaultCarrierServiceForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultCarrierServiceCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

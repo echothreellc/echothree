@@ -71,8 +71,8 @@ public class EditOrderAliasTypeDescriptionCommand
     }
 
     /** Creates a new instance of EditOrderAliasTypeDescriptionCommand */
-    public EditOrderAliasTypeDescriptionCommand(UserVisitPK userVisitPK, EditOrderAliasTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditOrderAliasTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

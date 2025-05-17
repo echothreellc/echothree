@@ -58,8 +58,8 @@ public class CreateContactListGroupCommand
     }
     
     /** Creates a new instance of CreateContactListGroupCommand */
-    public CreateContactListGroupCommand(UserVisitPK userVisitPK, CreateContactListGroupForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateContactListGroupCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

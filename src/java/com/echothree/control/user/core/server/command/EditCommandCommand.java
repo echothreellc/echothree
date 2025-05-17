@@ -22,14 +22,16 @@ import com.echothree.control.user.core.common.form.EditCommandForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditCommandResult;
 import com.echothree.control.user.core.common.spec.CommandSpec;
+import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.data.core.server.entity.Command;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -54,8 +56,8 @@ public class EditCommandCommand
     }
     
     /** Creates a new instance of EditCommandCommand */
-    public EditCommandCommand(UserVisitPK userVisitPK, EditCommandForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditCommandCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override
@@ -72,19 +74,19 @@ public class EditCommandCommand
     
     @Override
     public Command getEntity(EditCommandResult result) {
-        var coreControl = getCoreControl();
+        var commandControl = Session.getModelController(CommandControl.class);
         Command command = null;
         var componentVendorName = spec.getComponentVendorName();
         
-        componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
             var commandName = spec.getCommandName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                command = coreControl.getCommandByName(componentVendor, commandName);
+                command = commandControl.getCommandByName(componentVendor, commandName);
             } else { // EditMode.UPDATE
-                command = coreControl.getCommandByNameForUpdate(componentVendor, commandName);
+                command = commandControl.getCommandByNameForUpdate(componentVendor, commandName);
             }
 
             if(command == null) {
@@ -104,15 +106,15 @@ public class EditCommandCommand
 
     @Override
     public void fillInResult(EditCommandResult result, Command command) {
-        var coreControl = getCoreControl();
+        var commandControl = Session.getModelController(CommandControl.class);
 
-        result.setCommand(coreControl.getCommandTransfer(getUserVisit(), command));
+        result.setCommand(commandControl.getCommandTransfer(getUserVisit(), command));
     }
 
     @Override
     public void doLock(CommandEdit edit, Command command) {
-        var coreControl = getCoreControl();
-        var commandDescription = coreControl.getCommandDescription(command, getPreferredLanguage());
+        var commandControl = Session.getModelController(CommandControl.class);
+        var commandDescription = commandControl.getCommandDescription(command, getPreferredLanguage());
         var commandDetail = command.getLastDetail();
 
         edit.setCommandName(commandDetail.getCommandName());
@@ -125,9 +127,9 @@ public class EditCommandCommand
 
     @Override
     public void canUpdate(Command command) {
-        var coreControl = getCoreControl();
+        var commandControl = Session.getModelController(CommandControl.class);
         var commandName = edit.getCommandName();
-        var duplicateCommand = coreControl.getCommandByName(componentVendor, commandName);
+        var duplicateCommand = commandControl.getCommandByName(componentVendor, commandName);
 
         if(duplicateCommand != null && !command.equals(duplicateCommand)) {
             addExecutionError(ExecutionErrors.DuplicateCommandName.name(), commandName);
@@ -136,28 +138,28 @@ public class EditCommandCommand
 
     @Override
     public void doUpdate(Command command) {
-        var coreControl = getCoreControl();
+        var commandControl = Session.getModelController(CommandControl.class);
         var partyPK = getPartyPK();
-        var commandDetailValue = coreControl.getCommandDetailValueForUpdate(command);
-        var commandDescription = coreControl.getCommandDescriptionForUpdate(command, getPreferredLanguage());
+        var commandDetailValue = commandControl.getCommandDetailValueForUpdate(command);
+        var commandDescription = commandControl.getCommandDescriptionForUpdate(command, getPreferredLanguage());
         var description = edit.getDescription();
 
         commandDetailValue.setCommandName(edit.getCommandName());
         commandDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        coreControl.updateCommandFromValue(commandDetailValue, partyPK);
+        commandControl.updateCommandFromValue(commandDetailValue, partyPK);
 
         if(commandDescription == null && description != null) {
-            coreControl.createCommandDescription(command, getPreferredLanguage(), description, partyPK);
+            commandControl.createCommandDescription(command, getPreferredLanguage(), description, partyPK);
         } else {
             if(commandDescription != null && description == null) {
-                coreControl.deleteCommandDescription(commandDescription, partyPK);
+                commandControl.deleteCommandDescription(commandDescription, partyPK);
             } else {
                 if(commandDescription != null && description != null) {
-                    var commandDescriptionValue = coreControl.getCommandDescriptionValue(commandDescription);
+                    var commandDescriptionValue = commandControl.getCommandDescriptionValue(commandDescription);
 
                     commandDescriptionValue.setDescription(description);
-                    coreControl.updateCommandDescriptionFromValue(commandDescriptionValue, partyPK);
+                    commandControl.updateCommandDescriptionFromValue(commandDescriptionValue, partyPK);
                 }
             }
         }

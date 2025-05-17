@@ -16,13 +16,13 @@
 
 package com.echothree.model.control.printer.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.printer.common.PrinterOptions;
 import com.echothree.model.control.printer.common.transfer.PrinterGroupTransfer;
+import com.echothree.model.control.printer.common.workflow.PrinterGroupStatusConstants;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.control.printer.common.workflow.PrinterGroupStatusConstants;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.printer.server.entity.PrinterGroup;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -33,7 +33,7 @@ import com.echothree.util.server.string.UnitOfMeasureUtils;
 public class PrinterGroupTransferCache
         extends BasePrinterTransferCache<PrinterGroup, PrinterGroupTransfer> {
     
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     boolean includePrinters;
@@ -63,7 +63,7 @@ public class PrinterGroupTransferCache
             var sortOrder = printerGroupDetail.getSortOrder();
             var description = printerControl.getBestPrinterGroupDescription(printerGroup, getLanguage());
 
-            var entityInstance = coreControl.getEntityInstanceByBasePK(printerGroup.getPrimaryKey());
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(printerGroup.getPrimaryKey());
             var printerGroupStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     PrinterGroupStatusConstants.Workflow_PRINTER_GROUP_STATUS, entityInstance);
             

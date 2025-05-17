@@ -18,7 +18,7 @@ package com.echothree.model.control.content.server.indexer;
 
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
@@ -241,11 +241,11 @@ public class ContentCatalogItemIndexer
 
     @Override
     protected Document convertToDocument(final EntityInstance entityInstance, final ContentCatalogItem contentCatalogItem) {
-        var coreControl = Session.getModelController(CoreControl.class);
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var document = newDocumentWithEntityInstanceFields(entityInstance, contentCatalogItem.getPrimaryKey());
 
-        addEntityInstanceFieldsToDocument(document, coreControl.getEntityInstanceByBasePK(contentCatalogItem.getItemPK()));
-        addEntityInstanceFieldsToDocument(document, coreControl.getEntityInstanceByBasePK(contentCatalogItem.getContentCatalogPK()));
+        addEntityInstanceFieldsToDocument(document, entityInstanceControl.getEntityInstanceByBasePK(contentCatalogItem.getItemPK()));
+        addEntityInstanceFieldsToDocument(document, entityInstanceControl.getEntityInstanceByBasePK(contentCatalogItem.getContentCatalogPK()));
 
         addItemToDocument(contentCatalogItem.getItem(), document);
         addContentCatalogToDocument(contentCatalogItem.getContentCatalog(), document);

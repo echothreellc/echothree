@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.message.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.message.common.transfer.EntityMessageTransfer;
 import com.echothree.model.control.message.server.control.MessageControl;
 import com.echothree.model.data.message.server.entity.EntityMessage;
@@ -25,21 +25,19 @@ import com.echothree.util.server.persistence.Session;
 
 public class EntityMessageTransferCache
         extends BaseMessageTransferCache<EntityMessage, EntityMessageTransfer> {
-    
-    CoreControl coreControl;
+
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     
     /** Creates a new instance of EntityMessageTransferCache */
     public EntityMessageTransferCache(UserVisit userVisit, MessageControl messageControl) {
         super(userVisit, messageControl);
-        
-        coreControl = Session.getModelController(CoreControl.class);
     }
     
     public EntityMessageTransfer getEntityMessageTransfer(EntityMessage entityMessage) {
         var entityMessageTransfer = get(entityMessage);
         
         if(entityMessageTransfer == null) {
-            var entityInstance = coreControl.getEntityInstanceTransfer(userVisit, entityMessage, false, false, false, false);
+            var entityInstance = entityInstanceControl.getEntityInstanceTransfer(userVisit, entityMessage, false, false, false, false);
             var message = messageControl.getMessageTransfer(userVisit, entityMessage.getMessage());
             
             entityMessageTransfer = new EntityMessageTransfer(entityInstance, message);

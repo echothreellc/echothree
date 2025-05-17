@@ -37,9 +37,7 @@ public class ByteArray
     
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof ByteArray) {
-            var that = (ByteArray)obj;
-            
+        if(obj instanceof ByteArray that) {
             return Arrays.equals(_bytes, that.byteArrayValue());
         } else
             return false;

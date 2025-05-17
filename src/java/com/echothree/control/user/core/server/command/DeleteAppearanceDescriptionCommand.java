@@ -17,15 +17,16 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteAppearanceDescriptionForm;
+import com.echothree.model.control.core.server.control.AppearanceControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -56,15 +57,15 @@ public class DeleteAppearanceDescriptionCommand
     }
     
     /** Creates a new instance of DeleteAppearanceDescriptionCommand */
-    public DeleteAppearanceDescriptionCommand(UserVisitPK userVisitPK, DeleteAppearanceDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteAppearanceDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
+        var appearanceControl = Session.getModelController(AppearanceControl.class);
         var appearanceName = form.getAppearanceName();
-        var appearance = coreControl.getAppearanceByName(appearanceName);
+        var appearance = appearanceControl.getAppearanceByName(appearanceName);
         
         if(appearance != null) {
             var partyControl = Session.getModelController(PartyControl.class);
@@ -72,10 +73,10 @@ public class DeleteAppearanceDescriptionCommand
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                var appearanceDescription = coreControl.getAppearanceDescriptionForUpdate(appearance, language);
+                var appearanceDescription = appearanceControl.getAppearanceDescriptionForUpdate(appearance, language);
                 
                 if(appearanceDescription != null) {
-                    coreControl.deleteAppearanceDescription(appearanceDescription, getPartyPK());
+                    appearanceControl.deleteAppearanceDescription(appearanceDescription, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownAppearanceDescription.name(), appearanceName, languageIsoName);
                 }

@@ -16,7 +16,7 @@
 
 package com.echothree.util.server.persistence.translator;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -112,10 +112,10 @@ public class PartyNameTranslator
         }
         
         if(party != null) {
-            var coreControl = Session.getModelController(CoreControl.class);
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityNames = getNames(sequenceTypesToTargets, sequenceTypeName, party.getLastDetail());
             
-            result = entityNames == null ? null : new EntityInstanceAndNames(includeEntityInstance? coreControl.getEntityInstanceByBasePK(party.getPrimaryKey()) : null, entityNames);
+            result = entityNames == null ? null : new EntityInstanceAndNames(includeEntityInstance? entityInstanceControl.getEntityInstanceByBasePK(party.getPrimaryKey()) : null, entityNames);
         }
         
         return result;

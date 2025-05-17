@@ -17,16 +17,17 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteApplicationEditorUseDescriptionForm;
+import com.echothree.model.control.core.server.control.ApplicationControl;
 import com.echothree.model.control.core.server.logic.ApplicationLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -58,8 +59,8 @@ public class DeleteApplicationEditorUseDescriptionCommand
     }
     
     /** Creates a new instance of DeleteApplicationEditorUseDescriptionCommand */
-    public DeleteApplicationEditorUseDescriptionCommand(UserVisitPK userVisitPK, DeleteApplicationEditorUseDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteApplicationEditorUseDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
@@ -68,9 +69,9 @@ public class DeleteApplicationEditorUseDescriptionCommand
         var application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
 
         if(!hasExecutionErrors()) {
-            var coreControl = getCoreControl();
+            var applicationControl = Session.getModelController(ApplicationControl.class);
             var applicationEditorUseName = form.getApplicationEditorUseName();
-            var applicationEditorUse = coreControl.getApplicationEditorUseByName(application, applicationEditorUseName);
+            var applicationEditorUse = applicationControl.getApplicationEditorUseByName(application, applicationEditorUseName);
 
             if(applicationEditorUse != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
@@ -78,10 +79,10 @@ public class DeleteApplicationEditorUseDescriptionCommand
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    var applicationEditorUseDescription = coreControl.getApplicationEditorUseDescriptionForUpdate(applicationEditorUse, language);
+                    var applicationEditorUseDescription = applicationControl.getApplicationEditorUseDescriptionForUpdate(applicationEditorUse, language);
 
                     if(applicationEditorUseDescription != null) {
-                        coreControl.deleteApplicationEditorUseDescription(applicationEditorUseDescription, getPartyPK());
+                        applicationControl.deleteApplicationEditorUseDescription(applicationEditorUseDescription, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.UnknownApplicationEditorUseDescription.name(), applicationName, applicationEditorUseName, languageIsoName);
                     }

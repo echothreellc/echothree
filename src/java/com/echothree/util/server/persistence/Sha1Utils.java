@@ -17,8 +17,8 @@
 package com.echothree.util.server.persistence;
 
 import com.echothree.util.common.persistence.BaseKey;
-import com.google.common.base.Charsets;
 import com.google.common.io.BaseEncoding;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -52,7 +52,7 @@ public class Sha1Utils {
             
             sha1Encoder.reset();
             sha1Encoder.update(BaseEncoding.base64().decode(salt));
-            input = sha1Encoder.digest(password.getBytes(Charsets.UTF_8));
+            input = sha1Encoder.digest(password.getBytes(StandardCharsets.UTF_8));
             
             for(var i = 0; i < 1000; i++) {
                 sha1Encoder.reset();
@@ -85,7 +85,7 @@ public class Sha1Utils {
     }
     
     public String hash(String string) {
-        return hash(string.getBytes(Charsets.UTF_8));
+        return hash(string.getBytes(StandardCharsets.UTF_8));
     }
     
     public String hash(byte[] bytes) {

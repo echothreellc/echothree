@@ -17,12 +17,13 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateMimeTypeUsageTypeDescriptionForm;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -43,15 +44,15 @@ public class CreateMimeTypeUsageTypeDescriptionCommand
     }
     
     /** Creates a new instance of CreateMimeTypeUsageTypeDescriptionCommand */
-    public CreateMimeTypeUsageTypeDescriptionCommand(UserVisitPK userVisitPK, CreateMimeTypeUsageTypeDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    public CreateMimeTypeUsageTypeDescriptionCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-      var coreControl = getCoreControl();
+        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
         var mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
-        var mimeTypeUsageType = coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
+        var mimeTypeUsageType = mimeTypeControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
         
         if(mimeTypeUsageType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
@@ -59,12 +60,12 @@ public class CreateMimeTypeUsageTypeDescriptionCommand
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                var mimeTypeUsageTypeDescription = coreControl.getMimeTypeUsageTypeDescription(mimeTypeUsageType, language);
+                var mimeTypeUsageTypeDescription = mimeTypeControl.getMimeTypeUsageTypeDescription(mimeTypeUsageType, language);
 
                 if(mimeTypeUsageTypeDescription == null) {
                     var description = form.getDescription();
 
-                    coreControl.createMimeTypeUsageTypeDescription(mimeTypeUsageType, language, description);
+                    mimeTypeControl.createMimeTypeUsageTypeDescription(mimeTypeUsageType, language, description);
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateMimeTypeUsageTypeDescription.name(), mimeTypeUsageTypeName, languageIsoName);
                 }

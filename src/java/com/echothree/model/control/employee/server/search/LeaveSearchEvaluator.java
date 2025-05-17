@@ -18,6 +18,7 @@ package com.echothree.model.control.employee.server.search;
 
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.search.server.search.BaseSearchEvaluator;
 import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
@@ -264,8 +265,10 @@ public class LeaveSearchEvaluator
             var leave = employeeControl.getLeaveByName(leaveName);
             
             if(leave != null) {
+                var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+
                 resultSet = new EntityInstancePKHolder(1);
-                resultSet.add(getCoreControl().getEntityInstanceByBasePK(leave.getPrimaryKey()).getPrimaryKey(), null);
+                resultSet.add(entityInstanceControl.getEntityInstanceByBasePK(leave.getPrimaryKey()).getPrimaryKey(), null);
             }
         }
         

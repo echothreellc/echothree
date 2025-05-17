@@ -282,10 +282,10 @@ public class OfferItemSelectorEvaluator
             log.info(">>> OfferItemSelectorEvaluator.evaluate");
         
         long remainingTime = maximumTime;
-        var componentVendor = coreControl.getComponentVendorByName(ComponentVendors.ECHO_THREE.name());
+        var componentVendor = componentControl.getComponentVendorByName(ComponentVendors.ECHO_THREE.name());
         
         if(componentVendor != null) {
-            var entityType = coreControl.getEntityTypeByName(componentVendor, EntityTypes.Item.name());
+            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, EntityTypes.Item.name());
             
             if(entityType != null) {
                 var offerItemSelectors = offerControl.getDistinctOfferItemSelectors();
@@ -299,8 +299,8 @@ public class OfferItemSelectorEvaluator
                         log.info("--- offers = " + offers);
                     }
 
-                    var entityInstance = coreControl.getEntityInstanceByBasePK(offerItemSelector.getPrimaryKey());
-                    var entityTime = coreControl.getEntityTime(entityInstance);
+                    var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(offerItemSelector.getPrimaryKey());
+                    var entityTime = eventControl.getEntityTime(entityInstance);
                     var entityCreatedTime = entityTime.getCreatedTime();
                     var entityModifiedTime = entityTime.getModifiedTime();
                     var lastModifiedTime = entityModifiedTime != null? entityModifiedTime: entityCreatedTime;
@@ -323,9 +323,9 @@ public class OfferItemSelectorEvaluator
                     
                     List<EntityTime> entityTimes;
                     if(selectionTime == null) {
-                        entityTimes = coreControl.getEntityTimesByEntityType(entityType);
+                        entityTimes = eventControl.getEntityTimesByEntityType(entityType);
                     } else {
-                        entityTimes = coreControl.getEntityTimesByEntityTypeCreatedAfter(entityType, selectionTime);
+                        entityTimes = eventControl.getEntityTimesByEntityTypeCreatedAfter(entityType, selectionTime);
                     }
                     
                     if(entityTimes != null) {
@@ -347,7 +347,7 @@ public class OfferItemSelectorEvaluator
                             selectionTime = Long.valueOf(0);
                         }
                         
-                        entityTimes = coreControl.getEntityTimesByEntityTypeModifiedAfter(entityType, selectionTime);
+                        entityTimes = eventControl.getEntityTimesByEntityTypeModifiedAfter(entityType, selectionTime);
                         
                         if(entityTimes != null) {
                             if(BaseSelectorEvaluatorDebugFlags.OfferItemSelectorEvaluator)
@@ -369,7 +369,7 @@ public class OfferItemSelectorEvaluator
                             selectionTime = Long.valueOf(0);
                         }
                         
-                        entityTimes = coreControl.getEntityTimesByEntityTypeDeletedAfter(entityType, selectionTime);
+                        entityTimes = eventControl.getEntityTimesByEntityTypeDeletedAfter(entityType, selectionTime);
                         
                         if(entityTimes != null) {
                             if(BaseSelectorEvaluatorDebugFlags.OfferItemSelectorEvaluator)

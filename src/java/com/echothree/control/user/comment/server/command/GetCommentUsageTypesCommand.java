@@ -20,10 +20,10 @@ import com.echothree.control.user.comment.common.form.GetCommentUsageTypesForm;
 import com.echothree.control.user.comment.common.result.CommentResultFactory;
 import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -44,30 +44,29 @@ public class GetCommentUsageTypesCommand
     }
     
     /** Creates a new instance of GetCommentUsageTypesCommand */
-    public GetCommentUsageTypesCommand(UserVisitPK userVisitPK, GetCommentUsageTypesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetCommentUsageTypesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
     protected BaseResult execute() {
         var result = CommentResultFactory.getGetCommentUsageTypesResult();
-        var coreControl = getCoreControl();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var userVisit = getUserVisit();
             var entityTypeName = form.getEntityTypeName();
-            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
             
-            result.setComponentVendor(coreControl.getComponentVendorTransfer(userVisit, componentVendor));
+            result.setComponentVendor(getComponentControl().getComponentVendorTransfer(userVisit, componentVendor));
             
             if(entityType != null) {
                 var commentControl = Session.getModelController(CommentControl.class);
                 var commentTypeName = form.getCommentTypeName();
                 var commentType = commentControl.getCommentTypeByName(entityType, commentTypeName);
                 
-                result.setEntityType(coreControl.getEntityTypeTransfer(userVisit, entityType));
+                result.setEntityType(getEntityTypeControl().getEntityTypeTransfer(userVisit, entityType));
                 
                 if(commentType != null) {
                     result.setCommentType(commentControl.getCommentTypeTransfer(userVisit, commentType));

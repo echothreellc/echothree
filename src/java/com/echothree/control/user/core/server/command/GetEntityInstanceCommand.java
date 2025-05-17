@@ -18,6 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEntityInstanceForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -31,6 +32,7 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -56,8 +58,8 @@ public class GetEntityInstanceCommand
     }
     
     /** Creates a new instance of GetEntityInstanceCommand */
-    public GetEntityInstanceCommand(UserVisitPK userVisitPK, GetEntityInstanceForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetEntityInstanceCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override
@@ -72,7 +74,9 @@ public class GetEntityInstanceCommand
         var result = CoreResultFactory.getGetEntityInstanceResult();
 
         if(entityInstance != null) {
-            result.setEntityInstance(getCoreControl().getEntityInstanceTransfer(getUserVisit(), entityInstance,
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+
+            result.setEntityInstance(entityInstanceControl.getEntityInstanceTransfer(getUserVisit(), entityInstance,
                     false, false, false, false));
         }
 

@@ -75,8 +75,8 @@ public class EditItemPurchasingCategoryCommand
     }
 
     /** Creates a new instance of EditItemPurchasingCategoryCommand */
-    public EditItemPurchasingCategoryCommand(UserVisitPK userVisitPK, EditItemPurchasingCategoryForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditItemPurchasingCategoryCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override

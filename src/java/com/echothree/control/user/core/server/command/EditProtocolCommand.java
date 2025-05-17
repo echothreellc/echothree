@@ -22,19 +22,21 @@ import com.echothree.control.user.core.common.form.EditProtocolForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditProtocolResult;
 import com.echothree.control.user.core.common.spec.ProtocolSpec;
+import com.echothree.model.control.core.server.control.ServerControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.Protocol;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -67,8 +69,8 @@ public class EditProtocolCommand
     }
     
     /** Creates a new instance of EditProtocolCommand */
-    public EditProtocolCommand(UserVisitPK userVisitPK, EditProtocolForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditProtocolCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override
@@ -83,18 +85,18 @@ public class EditProtocolCommand
 
     @Override
     public Protocol getEntity(EditProtocolResult result) {
-        var coreControl = getCoreControl();
+        var serverControl = Session.getModelController(ServerControl.class);
         Protocol protocol;
         var protocolName = spec.getProtocolName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            protocol = coreControl.getProtocolByName(protocolName);
+            protocol = serverControl.getProtocolByName(protocolName);
         } else { // EditMode.UPDATE
-            protocol = coreControl.getProtocolByNameForUpdate(protocolName);
+            protocol = serverControl.getProtocolByNameForUpdate(protocolName);
         }
 
         if(protocol != null) {
-            result.setProtocol(coreControl.getProtocolTransfer(getUserVisit(), protocol));
+            result.setProtocol(serverControl.getProtocolTransfer(getUserVisit(), protocol));
         } else {
             addExecutionError(ExecutionErrors.UnknownProtocolName.name(), protocolName);
         }
@@ -109,15 +111,15 @@ public class EditProtocolCommand
 
     @Override
     public void fillInResult(EditProtocolResult result, Protocol protocol) {
-        var coreControl = getCoreControl();
+        var serverControl = Session.getModelController(ServerControl.class);
 
-        result.setProtocol(coreControl.getProtocolTransfer(getUserVisit(), protocol));
+        result.setProtocol(serverControl.getProtocolTransfer(getUserVisit(), protocol));
     }
 
     @Override
     public void doLock(ProtocolEdit edit, Protocol protocol) {
-        var coreControl = getCoreControl();
-        var protocolDescription = coreControl.getProtocolDescription(protocol, getPreferredLanguage());
+        var serverControl = Session.getModelController(ServerControl.class);
+        var protocolDescription = serverControl.getProtocolDescription(protocol, getPreferredLanguage());
         var protocolDetail = protocol.getLastDetail();
 
         edit.setProtocolName(protocolDetail.getProtocolName());
@@ -131,9 +133,9 @@ public class EditProtocolCommand
 
     @Override
     public void canUpdate(Protocol protocol) {
-        var coreControl = getCoreControl();
+        var serverControl = Session.getModelController(ServerControl.class);
         var protocolName = edit.getProtocolName();
-        var duplicateProtocol = coreControl.getProtocolByName(protocolName);
+        var duplicateProtocol = serverControl.getProtocolByName(protocolName);
 
         if(duplicateProtocol != null && !protocol.equals(duplicateProtocol)) {
             addExecutionError(ExecutionErrors.DuplicateProtocolName.name(), protocolName);
@@ -142,29 +144,29 @@ public class EditProtocolCommand
 
     @Override
     public void doUpdate(Protocol protocol) {
-        var coreControl = getCoreControl();
+        var serverControl = Session.getModelController(ServerControl.class);
         var partyPK = getPartyPK();
-        var protocolDetailValue = coreControl.getProtocolDetailValueForUpdate(protocol);
-        var protocolDescription = coreControl.getProtocolDescriptionForUpdate(protocol, getPreferredLanguage());
+        var protocolDetailValue = serverControl.getProtocolDetailValueForUpdate(protocol);
+        var protocolDescription = serverControl.getProtocolDescriptionForUpdate(protocol, getPreferredLanguage());
         var description = edit.getDescription();
 
         protocolDetailValue.setProtocolName(edit.getProtocolName());
         protocolDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         protocolDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        coreControl.updateProtocolFromValue(protocolDetailValue, partyPK);
+        serverControl.updateProtocolFromValue(protocolDetailValue, partyPK);
 
         if(protocolDescription == null && description != null) {
-            coreControl.createProtocolDescription(protocol, getPreferredLanguage(), description, partyPK);
+            serverControl.createProtocolDescription(protocol, getPreferredLanguage(), description, partyPK);
         } else {
             if(protocolDescription != null && description == null) {
-                coreControl.deleteProtocolDescription(protocolDescription, partyPK);
+                serverControl.deleteProtocolDescription(protocolDescription, partyPK);
             } else {
                 if(protocolDescription != null && description != null) {
-                    var protocolDescriptionValue = coreControl.getProtocolDescriptionValue(protocolDescription);
+                    var protocolDescriptionValue = serverControl.getProtocolDescriptionValue(protocolDescription);
 
                     protocolDescriptionValue.setDescription(description);
-                    coreControl.updateProtocolDescriptionFromValue(protocolDescriptionValue, partyPK);
+                    serverControl.updateProtocolDescriptionFromValue(protocolDescriptionValue, partyPK);
                 }
             }
         }

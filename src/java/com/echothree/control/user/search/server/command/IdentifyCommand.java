@@ -23,7 +23,7 @@ import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.transfer.ComponentVendorTransfer;
 import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.customer.server.search.CustomerSearchEvaluator;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
@@ -75,8 +75,8 @@ public class IdentifyCommand
     }
     
     /** Creates a new instance of IdentifyCommand */
-    public IdentifyCommand(UserVisitPK userVisitPK, IdentifyForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public IdentifyCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override
@@ -94,7 +94,8 @@ public class IdentifyCommand
     }
     
     private EntityInstanceTransfer fillInEntityInstance(EntityInstanceAndNames entityInstanceAndNames) {
-        var entityInstance = getCoreControl().getEntityInstanceTransfer(getUserVisit(), entityInstanceAndNames.getEntityInstance(), false, false, false, false);
+        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+        var entityInstance = entityInstanceControl.getEntityInstanceTransfer(getUserVisit(), entityInstanceAndNames.getEntityInstance(), false, false, false, false);
 
         entityInstance.setEntityNames(entityInstanceAndNames.getEntityNames());
         
@@ -116,7 +117,8 @@ public class IdentifyCommand
             var item = itemControl.getItemByNameThenAlias(target);
 
             if(item != null) {
-                var entityInstance = getCoreControl().getEntityInstanceByBasePK(item.getPrimaryKey());
+                var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+                var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(item.getPrimaryKey());
                 var entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(entityInstance);
 
                 entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
@@ -131,7 +133,8 @@ public class IdentifyCommand
             var partyCompany = partyControl.getPartyCompanyByName(target);
 
             if(partyCompany != null) {
-                var entityInstance = getCoreControl().getEntityInstanceByBasePK(partyCompany.getParty().getPrimaryKey());
+                var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+                var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(partyCompany.getParty().getPrimaryKey());
                 var entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(entityInstance);
 
                 entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
@@ -142,10 +145,11 @@ public class IdentifyCommand
     private void checkDivisions(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.Division.name(), SecurityRoles.Search.name())) {
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var partyControl = Session.getModelController(PartyControl.class);
             var partyDivisions = partyControl.getDivisionsByName(target);
 
-            partyDivisions.stream().map((partyDivision) -> getCoreControl().getEntityInstanceByBasePK(partyDivision.getParty().getPrimaryKey())).map((entityInstance) -> EntityNamesUtils.getInstance().getEntityNames(entityInstance)).forEach((entityInstanceAndNames) -> {
+            partyDivisions.stream().map((partyDivision) -> entityInstanceControl.getEntityInstanceByBasePK(partyDivision.getParty().getPrimaryKey())).map((entityInstance) -> EntityNamesUtils.getInstance().getEntityNames(entityInstance)).forEach((entityInstanceAndNames) -> {
                 entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
             });
         }
@@ -154,10 +158,11 @@ public class IdentifyCommand
     private void checkDepartments(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.Department.name(), SecurityRoles.Search.name())) {
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var partyControl = Session.getModelController(PartyControl.class);
             var partyDepartments = partyControl.getDepartmentsByName(target);
 
-            partyDepartments.stream().map((partyDepartment) -> getCoreControl().getEntityInstanceByBasePK(partyDepartment.getParty().getPrimaryKey())).map((entityInstance) -> EntityNamesUtils.getInstance().getEntityNames(entityInstance)).forEach((entityInstanceAndNames) -> {
+            partyDepartments.stream().map((partyDepartment) -> entityInstanceControl.getEntityInstanceByBasePK(partyDepartment.getParty().getPrimaryKey())).map((entityInstance) -> EntityNamesUtils.getInstance().getEntityNames(entityInstance)).forEach((entityInstanceAndNames) -> {
                 entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
             });
         }
@@ -166,11 +171,12 @@ public class IdentifyCommand
     private void checkWarehouses(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.Warehouse.name(), SecurityRoles.Search.name())) {
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var warehouseControl = Session.getModelController(WarehouseControl.class);
             var warehouse = warehouseControl.getWarehouseByName(target);
 
             if(warehouse != null) {
-                var entityInstance = getCoreControl().getEntityInstanceByBasePK(warehouse.getParty().getPrimaryKey());
+                var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(warehouse.getParty().getPrimaryKey());
                 var entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(entityInstance);
 
                 entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
@@ -181,10 +187,11 @@ public class IdentifyCommand
     private void checkLocations(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.Location.name(), SecurityRoles.Search.name())) {
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var warehouseControl = Session.getModelController(WarehouseControl.class);
             var locations = warehouseControl.getLocationsByName(target);
 
-            locations.stream().map((location) -> getCoreControl().getEntityInstanceByBasePK(location.getPrimaryKey())).map((entityInstance) -> EntityNamesUtils.getInstance().getEntityNames(entityInstance)).forEach((entityInstanceAndNames) -> {
+            locations.stream().map((location) -> entityInstanceControl.getEntityInstanceByBasePK(location.getPrimaryKey())).map((entityInstance) -> EntityNamesUtils.getInstance().getEntityNames(entityInstance)).forEach((entityInstanceAndNames) -> {
                 entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
             });
         }
@@ -193,11 +200,12 @@ public class IdentifyCommand
     private void checkEmployees(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.Employee.name(), SecurityRoles.Search.name())) {
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var employeeControl = Session.getModelController(EmployeeControl.class);
             var partyEmployee = employeeControl.getPartyEmployeeByName(target);
 
             if(partyEmployee != null) {
-                var entityInstance = getCoreControl().getEntityInstanceByBasePK(partyEmployee.getParty().getPrimaryKey());
+                var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(partyEmployee.getParty().getPrimaryKey());
                 var entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(entityInstance);
 
                 entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
@@ -208,11 +216,12 @@ public class IdentifyCommand
     private void checkCustomers(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.Customer.name(), SecurityRoles.Search.name())) {
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var customerControl = Session.getModelController(CustomerControl.class);
             var customer = customerControl.getCustomerByName(target);
 
             if(customer != null) {
-                var entityInstance = getCoreControl().getEntityInstanceByBasePK(customer.getParty().getPrimaryKey());
+                var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(customer.getParty().getPrimaryKey());
                 var entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(entityInstance);
 
                 entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
@@ -223,11 +232,12 @@ public class IdentifyCommand
     private void checkVendors(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.Vendor.name(), SecurityRoles.Search.name())) {
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var vendorControl = Session.getModelController(VendorControl.class);
             var vendor = vendorControl.getVendorByName(target);
 
             if(vendor != null) {
-                var entityInstance = getCoreControl().getEntityInstanceByBasePK(vendor.getParty().getPrimaryKey());
+                var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(vendor.getParty().getPrimaryKey());
                 var entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(entityInstance);
 
                 entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
@@ -238,10 +248,11 @@ public class IdentifyCommand
     private void checkVendorItems(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.VendorItem.name(), SecurityRoles.Search.name())) {
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var vendorControl = Session.getModelController(VendorControl.class);
             var vendorItems = vendorControl.getVendorItemsByVendorItemName(target);
 
-            vendorItems.stream().map((vendorItem) -> getCoreControl().getEntityInstanceByBasePK(vendorItem.getPrimaryKey())).map((entityInstance) -> EntityNamesUtils.getInstance().getEntityNames(entityInstance)).forEach((entityInstanceAndNames) -> {
+            vendorItems.stream().map((vendorItem) -> entityInstanceControl.getEntityInstanceByBasePK(vendorItem.getPrimaryKey())).map((entityInstance) -> EntityNamesUtils.getInstance().getEntityNames(entityInstance)).forEach((entityInstanceAndNames) -> {
                 entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
             });
         }
@@ -250,10 +261,11 @@ public class IdentifyCommand
     private void checkComponentVendors(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.ComponentVendor.name(), SecurityRoles.Search.name())) {
-            var componentVendor = getCoreControl().getComponentVendorByName(target);
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+            var componentVendor = getComponentControl().getComponentVendorByName(target);
 
             if(componentVendor != null) {
-                var entityInstance = getCoreControl().getEntityInstanceByBasePK(componentVendor.getPrimaryKey());
+                var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(componentVendor.getPrimaryKey());
                 var entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(entityInstance);
 
                 entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
@@ -264,10 +276,10 @@ public class IdentifyCommand
     private void checkEntityTypes(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.EntityType.name(), SecurityRoles.Search.name())) {
-            var coreControl = Session.getModelController(CoreControl.class);
-            var entityTypes = coreControl.getEntityTypesByName(target);
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+            var entityTypes = getEntityTypeControl().getEntityTypesByName(target);
 
-            entityTypes.stream().map((entityType) -> getCoreControl().getEntityInstanceByBasePK(entityType.getPrimaryKey())).map((entityInstance) -> EntityNamesUtils.getInstance().getEntityNames(entityInstance)).forEach((entityInstanceAndNames) -> {
+            entityTypes.stream().map((entityType) -> entityInstanceControl.getEntityInstanceByBasePK(entityType.getPrimaryKey())).map((entityInstance) -> EntityNamesUtils.getInstance().getEntityNames(entityInstance)).forEach((entityInstanceAndNames) -> {
                 entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
             });
         }

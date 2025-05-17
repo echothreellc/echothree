@@ -56,8 +56,8 @@ public class DeletePicklistTimeTypeCommand
     }
     
     /** Creates a new instance of DeletePicklistTimeTypeCommand */
-    public DeletePicklistTimeTypeCommand(UserVisitPK userVisitPK, DeletePicklistTimeTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeletePicklistTimeTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

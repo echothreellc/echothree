@@ -16,9 +16,9 @@
 
 package com.echothree.ui.cli.database.util;
 
-import static com.google.common.base.Charsets.UTF_8;
 import java.io.File;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.HashSet;
 import java.util.List;
@@ -159,7 +159,7 @@ public class DatabaseUtilitiesForJava {
                     var classFileName = theTable.getPKClass() + ".java";
                     var f = new File(componentDirectory + File.separatorChar + classFileName);
                     
-                    try (var bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
+                    try (var bw = Files.newBufferedWriter(f.toPath(), StandardCharsets.UTF_8)) {
                         var pw = new PrintWriter(bw);
                         
                         writeCopyright(pw);
@@ -610,7 +610,7 @@ public class DatabaseUtilitiesForJava {
                     var classFileName = theTable.getValueClass() + ".java";
                     var f = new File(componentDirectory + File.separatorChar + classFileName);
                     
-                    try (var bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
+                    try (var bw = Files.newBufferedWriter(f.toPath(), StandardCharsets.UTF_8)) {
                         var pw = new PrintWriter(bw);
                         
                         writeCopyright(pw);
@@ -634,7 +634,7 @@ public class DatabaseUtilitiesForJava {
                     var classFileName = theTable.getEntityClass() + ".java";
                     var f = new File(componentDirectory + File.separatorChar + classFileName);
                     
-                    try (var bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
+                    try (var bw = Files.newBufferedWriter(f.toPath(), StandardCharsets.UTF_8)) {
                         var pw = new PrintWriter(bw);
                         
                         writeCopyright(pw);
@@ -2321,7 +2321,7 @@ public class DatabaseUtilitiesForJava {
                     var classFileName = theTable.getFactoryClass() + ".java";
                     var f = new File(componentDirectory + File.separatorChar + classFileName);
                     
-                    try (var bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
+                    try (var bw = Files.newBufferedWriter(f.toPath(), StandardCharsets.UTF_8)) {
                         var pw = new PrintWriter(bw);
                         
                         writeCopyright(pw);
@@ -2359,7 +2359,7 @@ public class DatabaseUtilitiesForJava {
                 var classFileName = theTable.getConstantsClass() + ".java";
                 var f = new File(componentDirectory + File.separatorChar + classFileName);
                 
-                try (var bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
+                try (var bw = Files.newBufferedWriter(f.toPath(), StandardCharsets.UTF_8)) {
                     var pw = new PrintWriter(bw);
                     
                     writeCopyright(pw);
@@ -2377,7 +2377,7 @@ public class DatabaseUtilitiesForJava {
         var classFileName = "EntityTypes.java";
         var f = new File(directory + File.separatorChar + classFileName);
                 
-        try (var bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
+        try (var bw = Files.newBufferedWriter(f.toPath(), StandardCharsets.UTF_8)) {
             var pw = new PrintWriter(bw);
 
             writeCopyright(pw);

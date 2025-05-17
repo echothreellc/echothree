@@ -18,15 +18,15 @@ package com.echothree.model.control.batch.server.transfer;
 
 import com.echothree.model.control.batch.common.transfer.BatchTransfer;
 import com.echothree.model.control.batch.server.control.BatchControl;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.batch.server.entity.Batch;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
 public class BatchTransferCache
         extends GenericBatchTransferCache<BatchTransfer> {
-    
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     
     /** Creates a new instance of BatchTransferCache */
     public BatchTransferCache(UserVisit userVisit, BatchControl batchControl) {
@@ -44,7 +44,7 @@ public class BatchTransferCache
             var batchType = batchDetail.getBatchType();
             var batchTypeTransfer = batchControl.getBatchTypeTransfer(userVisit, batchType);
             var batchName = batchDetail.getBatchName();
-            var entityInstance = coreControl.getEntityInstanceByBasePK(batch.getPrimaryKey());
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(batch.getPrimaryKey());
             
             batchTransfer = new BatchTransfer(batchTypeTransfer, batchName, getBatchStatus(batch, entityInstance));
             put(batch, batchTransfer, entityInstance);

@@ -60,8 +60,8 @@ public class GetFilterAdjustmentFixedAmountsCommand
     }
 
     /** Creates a new instance of GetFilterAdjustmentFixedAmountsCommand */
-    public GetFilterAdjustmentFixedAmountsCommand(UserVisitPK userVisitPK, GetFilterAdjustmentFixedAmountsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetFilterAdjustmentFixedAmountsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     FilterAdjustment filterAdjustment;

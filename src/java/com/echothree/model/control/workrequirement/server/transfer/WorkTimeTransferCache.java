@@ -16,11 +16,11 @@
 
 package com.echothree.model.control.workrequirement.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.workrequirement.common.workflow.WorkTimeStatusConstants;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workrequirement.common.transfer.WorkTimeTransfer;
+import com.echothree.model.control.workrequirement.common.workflow.WorkTimeStatusConstants;
 import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workrequirement.server.entity.WorkTime;
@@ -29,7 +29,7 @@ import com.echothree.util.server.persistence.Session;
 public class WorkTimeTransferCache
         extends BaseWorkRequirementTransferCache<WorkTime, WorkTimeTransfer> {
     
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
@@ -53,7 +53,7 @@ public class WorkTimeTransferCache
             var unformattedEndTime = workTimeDetail.getEndTime();
             var endTime = formatTypicalDateTime(unformattedEndTime);
 
-            var entityInstance = coreControl.getEntityInstanceByBasePK(workTime.getPrimaryKey());
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(workTime.getPrimaryKey());
             var workTimeStatus = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     WorkTimeStatusConstants.Workflow_WORK_TIME_STATUS, entityInstance);
 

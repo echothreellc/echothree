@@ -59,8 +59,8 @@ public class GetFilterTypeDescriptionCommand
     }
     
     /** Creates a new instance of GetFilterTypeDescriptionCommand */
-    public GetFilterTypeDescriptionCommand(UserVisitPK userVisitPK, GetFilterTypeDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public GetFilterTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

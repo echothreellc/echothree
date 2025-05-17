@@ -16,7 +16,7 @@
 
 package com.echothree.util.server.string;
 
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.ThreadSession;
@@ -24,13 +24,13 @@ import com.echothree.util.server.persistence.ThreadSession;
 public abstract class BaseIdUtils {
 
     protected Long getEntityInstanceCreatedTime(EntityInstance entityInstance) {
-        var coreControl = Session.getModelController(CoreControl.class);
-        var entityTime = coreControl.getEntityTime(entityInstance);
+        var eventControl = Session.getModelController(EventControl.class);
+        var entityTime = eventControl.getEntityTime(entityInstance);
 
         if(entityTime == null) {
             var session = ThreadSession.currentSession();
 
-            entityTime = coreControl.createEntityTime(entityInstance, session.START_TIME, null, null);
+            entityTime = eventControl.createEntityTime(entityInstance, session.START_TIME, null, null);
         }
 
         return entityTime.getCreatedTime();

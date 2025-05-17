@@ -43,8 +43,8 @@ public class GetInventoryConditionUsesCommand
     }
     
     /** Creates a new instance of GetInventoryConditionUsesCommand */
-    public GetInventoryConditionUsesCommand(UserVisitPK userVisitPK, GetInventoryConditionUsesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetInventoryConditionUsesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

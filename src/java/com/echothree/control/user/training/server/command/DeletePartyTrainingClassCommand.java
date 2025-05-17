@@ -56,8 +56,8 @@ public class DeletePartyTrainingClassCommand
     }
     
     /** Creates a new instance of DeletePartyTrainingClassCommand */
-    public DeletePartyTrainingClassCommand(UserVisitPK userVisitPK, DeletePartyTrainingClassForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeletePartyTrainingClassCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

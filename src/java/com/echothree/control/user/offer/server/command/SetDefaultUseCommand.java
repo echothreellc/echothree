@@ -55,8 +55,8 @@ public class SetDefaultUseCommand
     }
     
     /** Creates a new instance of SetDefaultUseCommand */
-    public SetDefaultUseCommand(UserVisitPK userVisitPK, SetDefaultUseForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public SetDefaultUseCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

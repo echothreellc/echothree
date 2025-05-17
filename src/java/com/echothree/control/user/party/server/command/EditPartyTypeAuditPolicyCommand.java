@@ -56,8 +56,8 @@ public class EditPartyTypeAuditPolicyCommand
     }
     
     /** Creates a new instance of EditPartyTypeAuditPolicyCommand */
-    public EditPartyTypeAuditPolicyCommand(UserVisitPK userVisitPK, EditPartyTypeAuditPolicyForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditPartyTypeAuditPolicyCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

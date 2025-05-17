@@ -22,6 +22,7 @@ import com.echothree.control.user.scale.common.form.EditScaleForm;
 import com.echothree.control.user.scale.common.result.EditScaleResult;
 import com.echothree.control.user.scale.common.result.ScaleResultFactory;
 import com.echothree.control.user.scale.common.spec.ScaleSpec;
+import com.echothree.model.control.core.server.control.ServerControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -30,10 +31,10 @@ import com.echothree.model.data.core.server.entity.ServerService;
 import com.echothree.model.data.scale.server.entity.Scale;
 import com.echothree.model.data.scale.server.entity.ScaleType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -74,8 +75,8 @@ public class EditScaleCommand
     }
 
     /** Creates a new instance of EditScaleCommand */
-    public EditScaleCommand(UserVisitPK userVisitPK, EditScaleForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditScaleCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override
@@ -161,20 +162,20 @@ public class EditScaleCommand
             if(scaleType == null) {
                 addExecutionError(ExecutionErrors.UnknownScaleTypeName.name(), scaleTypeName);
             } else {
-                var coreControl = getCoreControl();
+                var serverControl = Session.getModelController(ServerControl.class);
                 var serverName = edit.getServerName();
-                var server = coreControl.getServerByName(serverName);
+                var server = serverControl.getServerByName(serverName);
 
                 if(server == null) {
                     addExecutionError(ExecutionErrors.UnknownServerName.name(), serverName);
                 } else {
                     var serviceName = edit.getServiceName();
-                    var service = coreControl.getServiceByName(serviceName);
+                    var service = serverControl.getServiceByName(serviceName);
 
                     if(service == null) {
                         addExecutionError(ExecutionErrors.UnknownServiceName.name(), serviceName);
                     } else {
-                        serverService = coreControl.getServerService(server, service);
+                        serverService = serverControl.getServerService(server, service);
 
                         if(serverService == null) {
                             addExecutionError(ExecutionErrors.UnknownServerService.name(), serverName, serviceName);

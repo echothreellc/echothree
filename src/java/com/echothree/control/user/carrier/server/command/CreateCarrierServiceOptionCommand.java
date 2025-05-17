@@ -71,8 +71,8 @@ public class CreateCarrierServiceOptionCommand
     }
     
     /** Creates a new instance of CreateCarrierServiceOptionCommand */
-    public CreateCarrierServiceOptionCommand(UserVisitPK userVisitPK, CreateCarrierServiceOptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateCarrierServiceOptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

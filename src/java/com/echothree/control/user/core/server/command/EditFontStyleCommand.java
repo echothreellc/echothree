@@ -22,19 +22,21 @@ import com.echothree.control.user.core.common.form.EditFontStyleForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditFontStyleResult;
 import com.echothree.control.user.core.common.spec.FontStyleSpec;
+import com.echothree.model.control.core.server.control.FontControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.FontStyle;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -67,8 +69,8 @@ public class EditFontStyleCommand
     }
     
     /** Creates a new instance of EditFontStyleCommand */
-    public EditFontStyleCommand(UserVisitPK userVisitPK, EditFontStyleForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditFontStyleCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override
@@ -83,14 +85,14 @@ public class EditFontStyleCommand
 
     @Override
     public FontStyle getEntity(EditFontStyleResult result) {
-        var coreControl = getCoreControl();
+        var fontControl = Session.getModelController(FontControl.class);
         FontStyle fontStyle;
         var fontStyleName = spec.getFontStyleName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            fontStyle = coreControl.getFontStyleByName(fontStyleName);
+            fontStyle = fontControl.getFontStyleByName(fontStyleName);
         } else { // EditMode.UPDATE
-            fontStyle = coreControl.getFontStyleByNameForUpdate(fontStyleName);
+            fontStyle = fontControl.getFontStyleByNameForUpdate(fontStyleName);
         }
 
         if(fontStyle == null) {
@@ -107,15 +109,15 @@ public class EditFontStyleCommand
 
     @Override
     public void fillInResult(EditFontStyleResult result, FontStyle fontStyle) {
-        var coreControl = getCoreControl();
+        var fontControl = Session.getModelController(FontControl.class);
 
-        result.setFontStyle(coreControl.getFontStyleTransfer(getUserVisit(), fontStyle));
+        result.setFontStyle(fontControl.getFontStyleTransfer(getUserVisit(), fontStyle));
     }
 
     @Override
     public void doLock(FontStyleEdit edit, FontStyle fontStyle) {
-        var coreControl = getCoreControl();
-        var fontStyleDescription = coreControl.getFontStyleDescription(fontStyle, getPreferredLanguage());
+        var fontControl = Session.getModelController(FontControl.class);
+        var fontStyleDescription = fontControl.getFontStyleDescription(fontStyle, getPreferredLanguage());
         var fontStyleDetail = fontStyle.getLastDetail();
 
         edit.setFontStyleName(fontStyleDetail.getFontStyleName());
@@ -129,9 +131,9 @@ public class EditFontStyleCommand
 
     @Override
     public void canUpdate(FontStyle fontStyle) {
-        var coreControl = getCoreControl();
+        var fontControl = Session.getModelController(FontControl.class);
         var fontStyleName = edit.getFontStyleName();
-        var duplicateFontStyle = coreControl.getFontStyleByName(fontStyleName);
+        var duplicateFontStyle = fontControl.getFontStyleByName(fontStyleName);
 
         if(duplicateFontStyle != null && !fontStyle.equals(duplicateFontStyle)) {
             addExecutionError(ExecutionErrors.DuplicateFontStyleName.name(), fontStyleName);
@@ -140,29 +142,29 @@ public class EditFontStyleCommand
 
     @Override
     public void doUpdate(FontStyle fontStyle) {
-        var coreControl = getCoreControl();
+        var fontControl = Session.getModelController(FontControl.class);
         var partyPK = getPartyPK();
-        var fontStyleDetailValue = coreControl.getFontStyleDetailValueForUpdate(fontStyle);
-        var fontStyleDescription = coreControl.getFontStyleDescriptionForUpdate(fontStyle, getPreferredLanguage());
+        var fontStyleDetailValue = fontControl.getFontStyleDetailValueForUpdate(fontStyle);
+        var fontStyleDescription = fontControl.getFontStyleDescriptionForUpdate(fontStyle, getPreferredLanguage());
         var description = edit.getDescription();
 
         fontStyleDetailValue.setFontStyleName(edit.getFontStyleName());
         fontStyleDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         fontStyleDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        coreControl.updateFontStyleFromValue(fontStyleDetailValue, partyPK);
+        fontControl.updateFontStyleFromValue(fontStyleDetailValue, partyPK);
 
         if(fontStyleDescription == null && description != null) {
-            coreControl.createFontStyleDescription(fontStyle, getPreferredLanguage(), description, partyPK);
+            fontControl.createFontStyleDescription(fontStyle, getPreferredLanguage(), description, partyPK);
         } else {
             if(fontStyleDescription != null && description == null) {
-                coreControl.deleteFontStyleDescription(fontStyleDescription, partyPK);
+                fontControl.deleteFontStyleDescription(fontStyleDescription, partyPK);
             } else {
                 if(fontStyleDescription != null && description != null) {
-                    var fontStyleDescriptionValue = coreControl.getFontStyleDescriptionValue(fontStyleDescription);
+                    var fontStyleDescriptionValue = fontControl.getFontStyleDescriptionValue(fontStyleDescription);
 
                     fontStyleDescriptionValue.setDescription(description);
-                    coreControl.updateFontStyleDescriptionFromValue(fontStyleDescriptionValue, partyPK);
+                    fontControl.updateFontStyleDescriptionFromValue(fontStyleDescriptionValue, partyPK);
                 }
             }
         }

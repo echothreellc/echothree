@@ -18,7 +18,9 @@ package com.echothree.model.control.employee.server.transfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
-import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
+import com.echothree.model.control.party.server.control.PartyApplicationEditorUseControl;
+import com.echothree.model.control.party.server.control.PartyEntityTypeControl;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.employee.common.EmployeeOptions;
 import com.echothree.model.control.employee.common.transfer.EmployeeTransfer;
@@ -46,11 +48,13 @@ public class EmployeeTransferCache
         extends BaseEmployeeTransferCache<Party, EmployeeTransfer> {
 
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    PartyApplicationEditorUseControl partyApplicationEditorUseControl = Session.getModelController(PartyApplicationEditorUseControl.class);
     ContactControl contactControl = Session.getModelController(ContactControl.class);
     ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
     DocumentControl documentControl = Session.getModelController(DocumentControl.class);
+    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
+    PartyEntityTypeControl partyEntityTypeControl = Session.getModelController(PartyEntityTypeControl.class);
     PrinterControl printerControl = Session.getModelController(PrinterControl.class);
     ScaleControl scaleControl = Session.getModelController(ScaleControl.class);
     TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
@@ -136,7 +140,7 @@ public class EmployeeTransferCache
             var employeeName = partyEmployee.getPartyEmployeeName();
             var employeeType = employeeControl.getEmployeeTypeTransfer(userVisit, partyEmployee.getEmployeeType());
 
-            var entityInstance = coreControl.getEntityInstanceByBasePK(party.getPrimaryKey());
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(party.getPrimaryKey());
             var employeeStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     EmployeeStatusConstants.Workflow_EMPLOYEE_STATUS, entityInstance);
             var employeeAvailabilityTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
@@ -179,11 +183,11 @@ public class EmployeeTransferCache
             }
             
             if(includePartyEntityTypes) {
-                employeeTransfer.setPartyEntityTypes(new ListWrapper<>(coreControl.getPartyEntityTypeTransfersByParty(userVisit, party)));
+                employeeTransfer.setPartyEntityTypes(new ListWrapper<>(partyEntityTypeControl.getPartyEntityTypeTransfersByParty(userVisit, party)));
             }
             
             if(includePartyApplicationEditorUses) {
-                employeeTransfer.setPartyApplicationEditorUses(new ListWrapper<>(coreControl.getPartyApplicationEditorUseTransfersByParty(userVisit, party)));
+                employeeTransfer.setPartyApplicationEditorUses(new ListWrapper<>(partyApplicationEditorUseControl.getPartyApplicationEditorUseTransfersByParty(userVisit, party)));
             }
 
             if(includePartyRelationships || includePartyRelationshipsByFromParty || includePartyRelationshipsByToParty) {

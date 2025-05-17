@@ -27,20 +27,20 @@ import java.util.List;
 
 public abstract class BaseMultipleEntitiesCommand<BE extends BaseEntity, F extends BaseForm>
         extends BaseSimpleCommand<F>
-        implements GraphQlSecurityCommand {
+        implements GraphQlSecurityCommand<F> {
     
-    protected BaseMultipleEntitiesCommand(UserVisitPK userVisitPK, F form, CommandSecurityDefinition commandSecurityDefinition,
+    protected BaseMultipleEntitiesCommand(CommandSecurityDefinition commandSecurityDefinition,
             List<FieldDefinition> formFieldDefinitions, boolean allowLimits) {
-        super(userVisitPK, form, commandSecurityDefinition, formFieldDefinitions, allowLimits);
+        super(commandSecurityDefinition, formFieldDefinitions, allowLimits);
     }
     
     protected abstract Collection<BE> getEntities();
     protected abstract BaseResult getResult(Collection<BE> entities);
 
-    public Collection<BE> getEntitiesForGraphQl() {
+    public Collection<BE> getEntitiesForGraphQl(UserVisitPK userVisitPK, F form) {
         Collection<BE> entities = null;
 
-        if(canQueryByGraphQl()) {
+        if(canQueryByGraphQl(userVisitPK, form)) {
             entities = getEntities();
         }
         
@@ -48,7 +48,10 @@ public abstract class BaseMultipleEntitiesCommand<BE extends BaseEntity, F exten
     }
 
     @Override
-    public SecurityResult security() {
+    public SecurityResult security(UserVisitPK userVisitPK, F form) {
+        this.form = form;
+        setUserVisitPK(userVisitPK);
+
         return super.security();
     }
 

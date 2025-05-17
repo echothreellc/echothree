@@ -50,8 +50,8 @@ public class DeleteEntityDateDefaultCommand
     }
 
     /** Creates a new instance of CreateEntityDateDefaultCommand */
-    public DeleteEntityDateDefaultCommand(UserVisitPK userVisitPK, DeleteEntityDateDefaultForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public DeleteEntityDateDefaultCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

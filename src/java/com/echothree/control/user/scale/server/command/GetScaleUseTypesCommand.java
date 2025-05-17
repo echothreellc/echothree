@@ -39,8 +39,8 @@ public class GetScaleUseTypesCommand
     }
 
     /** Creates a new instance of GetScaleUseTypesCommand */
-    public GetScaleUseTypesCommand(UserVisitPK userVisitPK, GetScaleUseTypesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    public GetScaleUseTypesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

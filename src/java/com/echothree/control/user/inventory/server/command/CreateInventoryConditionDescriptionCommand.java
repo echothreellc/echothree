@@ -58,8 +58,8 @@ public class CreateInventoryConditionDescriptionCommand
     }
     
     /** Creates a new instance of CreateInventoryConditionDescriptionCommand */
-    public CreateInventoryConditionDescriptionCommand(UserVisitPK userVisitPK, CreateInventoryConditionDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    public CreateInventoryConditionDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

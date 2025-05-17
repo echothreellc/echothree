@@ -21,6 +21,7 @@ import com.echothree.control.user.contact.common.result.ContactResultFactory;
 import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.common.workflow.PostalAddressStatusConstants;
 import com.echothree.model.control.contact.server.control.ContactControl;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
@@ -117,8 +118,8 @@ public class CreateContactPostalAddressCommand
     }
     
     /** Creates a new instance of CreateContactPostalAddressCommand */
-    public CreateContactPostalAddressCommand(UserVisitPK userVisitPK, CreateContactPostalAddressForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, null, false);
+    public CreateContactPostalAddressCommand() {
+        super(COMMAND_SECURITY_DEFINITION, null, false);
     }
 
     @Override
@@ -210,7 +211,7 @@ public class CreateContactPostalAddressCommand
                                             GeoCode countyGeoCode = null;
                                             
                                             var contactControl = Session.getModelController(ContactControl.class);
-                                            var coreControl = getCoreControl();
+                                            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
                                             var workflowControl = Session.getModelController(WorkflowControl.class);
                                             var soundex = new Soundex();
                                             BasePK createdBy = getPartyPK();
@@ -264,7 +265,7 @@ public class CreateContactPostalAddressCommand
                                             contactControl.createPartyContactMechanism(party, contactMechanism, description,
                                                     Boolean.FALSE, 1, createdBy);
 
-                                            var entityInstance = coreControl.getEntityInstanceByBasePK(contactMechanism.getPrimaryKey());
+                                            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(contactMechanism.getPrimaryKey());
                                             workflowControl.addEntityToWorkflowUsingNames(null, PostalAddressStatusConstants.Workflow_POSTAL_ADDRESS_STATUS,
                                                     PostalAddressStatusConstants.WorkflowEntrance_NEW_POSTAL_ADDRESS, entityInstance, null, null, createdBy);
                                             

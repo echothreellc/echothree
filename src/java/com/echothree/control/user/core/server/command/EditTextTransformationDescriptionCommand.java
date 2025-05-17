@@ -22,6 +22,7 @@ import com.echothree.control.user.core.common.form.EditTextTransformationDescrip
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditTextTransformationDescriptionResult;
 import com.echothree.control.user.core.common.spec.TextTransformationDescriptionSpec;
+import com.echothree.model.control.core.server.control.TextControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -29,10 +30,10 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.TextTransformation;
 import com.echothree.model.data.core.server.entity.TextTransformationDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -68,8 +69,8 @@ public class EditTextTransformationDescriptionCommand
     }
     
     /** Creates a new instance of EditTextTransformationDescriptionCommand */
-    public EditTextTransformationDescriptionCommand(UserVisitPK userVisitPK, EditTextTransformationDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    public EditTextTransformationDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override
@@ -84,10 +85,10 @@ public class EditTextTransformationDescriptionCommand
 
     @Override
     public TextTransformationDescription getEntity(EditTextTransformationDescriptionResult result) {
-        var coreControl = getCoreControl();
+        var textControl = Session.getModelController(TextControl.class);
         TextTransformationDescription textTransformationDescription = null;
         var textTransformationName = spec.getTextTransformationName();
-        var textTransformation = coreControl.getTextTransformationByName(textTransformationName);
+        var textTransformation = textControl.getTextTransformationByName(textTransformationName);
 
         if(textTransformation != null) {
             var partyControl = Session.getModelController(PartyControl.class);
@@ -96,9 +97,9 @@ public class EditTextTransformationDescriptionCommand
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    textTransformationDescription = coreControl.getTextTransformationDescription(textTransformation, language);
+                    textTransformationDescription = textControl.getTextTransformationDescription(textTransformation, language);
                 } else { // EditMode.UPDATE
-                    textTransformationDescription = coreControl.getTextTransformationDescriptionForUpdate(textTransformation, language);
+                    textTransformationDescription = textControl.getTextTransformationDescriptionForUpdate(textTransformation, language);
                 }
 
                 if(textTransformationDescription == null) {
@@ -121,9 +122,9 @@ public class EditTextTransformationDescriptionCommand
 
     @Override
     public void fillInResult(EditTextTransformationDescriptionResult result, TextTransformationDescription textTransformationDescription) {
-        var coreControl = getCoreControl();
+        var textControl = Session.getModelController(TextControl.class);
 
-        result.setTextTransformationDescription(coreControl.getTextTransformationDescriptionTransfer(getUserVisit(), textTransformationDescription));
+        result.setTextTransformationDescription(textControl.getTextTransformationDescriptionTransfer(getUserVisit(), textTransformationDescription));
     }
 
     @Override
@@ -133,11 +134,12 @@ public class EditTextTransformationDescriptionCommand
 
     @Override
     public void doUpdate(TextTransformationDescription textTransformationDescription) {
-        var coreControl = getCoreControl();
-        var textTransformationDescriptionValue = coreControl.getTextTransformationDescriptionValue(textTransformationDescription);
+        var textControl = Session.getModelController(TextControl.class);
+        var textTransformationDescriptionValue = textControl.getTextTransformationDescriptionValue(textTransformationDescription);
+
         textTransformationDescriptionValue.setDescription(edit.getDescription());
 
-        coreControl.updateTextTransformationDescriptionFromValue(textTransformationDescriptionValue, getPartyPK());
+        textControl.updateTextTransformationDescriptionFromValue(textTransformationDescriptionValue, getPartyPK());
     }
     
 }

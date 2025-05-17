@@ -60,8 +60,8 @@ public class GetOrderPriorityDescriptionCommand
     }
     
     /** Creates a new instance of GetOrderPriorityDescriptionCommand */
-    public GetOrderPriorityDescriptionCommand(UserVisitPK userVisitPK, GetOrderPriorityDescriptionForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    public GetOrderPriorityDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
