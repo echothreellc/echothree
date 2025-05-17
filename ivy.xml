@@ -13,7 +13,7 @@
         <dependency org="com.google.code.gson" name="gson" rev="2.13.1" conf="sources->sources" />
         <dependency org="com.google.errorprone" name="error_prone_core" rev="2.38.0" conf="sources->sources" />
         <dependency org="com.google.guava" name="failureaccess" rev="1.0.1" conf="sources->sources" />
-        <dependency org="com.google.guava" name="guava" rev="33.4.5-jre" conf="sources->sources" />
+        <dependency org="com.google.guava" name="guava" rev="33.4.8-jre" conf="sources->sources" />
         <dependency org="com.graphql-java" name="graphql-java" rev="21.5" conf="sources->sources" />
         <dependency org="com.graphql-java" name="graphql-java-extended-scalars" rev="21.0" conf="sources->sources" />
         <dependency org="com.ibm.icu" name="icu4j" rev="77.1" conf="sources->sources" />
@@ -105,7 +105,7 @@
         <dependency org="com.google.code.gson" name="gson" rev="2.13.1" conf="javadoc->javadoc" />
         <dependency org="com.google.errorprone" name="error_prone_core" rev="2.38.0" conf="javadoc->javadoc" />
         <dependency org="com.google.guava" name="failureaccess" rev="1.0.1" conf="javadoc->javadoc" />
-        <dependency org="com.google.guava" name="guava" rev="33.4.5-jre" conf="javadoc->javadoc" />
+        <dependency org="com.google.guava" name="guava" rev="33.4.8-jre" conf="javadoc->javadoc" />
         <dependency org="com.graphql-java" name="graphql-java" rev="21.5" conf="javadoc->javadoc" />
         <dependency org="com.graphql-java" name="graphql-java-extended-scalars" rev="21.0" conf="javadoc->javadoc" />
         <dependency org="com.ibm.icu" name="icu4j" rev="77.1" conf="javadoc->javadoc" />
@@ -198,7 +198,7 @@
             <artifact name="error_prone_core" e:classifier="with-dependencies" ext="jar"/>
         </dependency>
         <dependency org="com.google.guava" name="failureaccess" rev="1.0.1" conf="binaries->default" />
-        <dependency org="com.google.guava" name="guava" rev="33.4.5-jre" conf="binaries->default" />
+        <dependency org="com.google.guava" name="guava" rev="33.4.8-jre" conf="binaries->default" />
         <dependency org="com.graphql-java" name="graphql-java" rev="21.5" conf="binaries->default" />
         <dependency org="com.graphql-java" name="graphql-java-extended-scalars" rev="21.0" conf="binaries->default" />
         <dependency org="com.ibm.icu" name="icu4j" rev="77.1" conf="binaries->default" />
