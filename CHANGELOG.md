@@ -1,5 +1,11 @@
 # Changelog
 
+## 2025-05-25-01
+
+* Gson 2.13.1 Upgrade [1560](https://gitlab.echothree.com/echothree/echothree/-/issues/1560)
+* Guava 33.4.8-jre Upgrade [1561](https://gitlab.echothree.com/echothree/echothree/-/issues/1561)
+* Apache Lucene 10.2.1 Upgrade [1562](https://gitlab.echothree.com/echothree/echothree/-/issues/1562)
+
 ## 2025-05-11-01
 
 * Move Party Entity Type Functions to PartyEntityTypeControl [1551](https://gitlab.echothree.com/echothree/echothree/-/issues/1551)
