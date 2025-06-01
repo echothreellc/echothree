@@ -27,7 +27,7 @@
         <dependency org="commons-configuration" name="commons-configuration" rev="1.10" conf="sources->sources" />
         <dependency org="commons-digester" name="commons-digester" rev="1.8.1" conf="sources->sources" />
         <dependency org="commons-fileupload" name="commons-fileupload" rev="1.5" conf="sources->sources" />
-        <dependency org="commons-io" name="commons-io" rev="2.13.0" conf="sources->sources" />
+        <dependency org="commons-io" name="commons-io" rev="2.19.0" conf="sources->sources" />
         <dependency org="commons-lang" name="commons-lang" rev="2.6" conf="sources->sources" />
         <dependency org="commons-logging" name="commons-logging" rev="1.2" conf="sources->sources" />
         <dependency org="commons-logging" name="commons-logging-api" rev="1.1" conf="sources->sources" />
@@ -119,7 +119,7 @@
         <dependency org="commons-configuration" name="commons-configuration" rev="1.10" conf="javadoc->javadoc" />
         <dependency org="commons-digester" name="commons-digester" rev="1.8.1" conf="javadoc->javadoc" />
         <dependency org="commons-fileupload" name="commons-fileupload" rev="1.5" conf="javadoc->javadoc" />
-        <dependency org="commons-io" name="commons-io" rev="2.13.0" conf="javadoc->javadoc" />
+        <dependency org="commons-io" name="commons-io" rev="2.19.0" conf="javadoc->javadoc" />
         <dependency org="commons-lang" name="commons-lang" rev="2.6" conf="javadoc->javadoc" />
         <dependency org="commons-logging" name="commons-logging" rev="1.2" conf="javadoc->javadoc" />
         <dependency org="commons-logging" name="commons-logging-api" rev="1.1" conf="javadoc->javadoc" />
@@ -212,7 +212,7 @@
         <dependency org="commons-configuration" name="commons-configuration" rev="1.10" conf="binaries->default" />
         <dependency org="commons-digester" name="commons-digester" rev="1.8.1" conf="binaries->default" />
         <dependency org="commons-fileupload" name="commons-fileupload" rev="1.5" conf="binaries->default" />
-        <dependency org="commons-io" name="commons-io" rev="2.13.0" conf="binaries->default" />
+        <dependency org="commons-io" name="commons-io" rev="2.19.0" conf="binaries->default" />
         <dependency org="commons-lang" name="commons-lang" rev="2.6" conf="binaries->default" />
         <dependency org="commons-logging" name="commons-logging" rev="1.2" conf="binaries->default" />
         <dependency org="commons-logging" name="commons-logging-api" rev="1.1" conf="binaries->default" />
