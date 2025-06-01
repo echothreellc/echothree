@@ -63,6 +63,7 @@
         <dependency org="org.apache.avro" name="avro" rev="1.12.0" conf="sources->sources" />
         <dependency org="org.apache.avro" name="avro-tools" rev="1.12.0" conf="sources->sources" />
         <dependency org="org.apache.commons" name="commons-collections4" rev="4.4" conf="sources->sources" />
+        <dependency org="org.apache.commons" name="commons-text" rev="1.13.1" conf="sources->sources" />
         <dependency org="org.apache.httpcomponents" name="fluent-hc" rev="4.5.13" conf="sources->sources" />
         <dependency org="org.apache.httpcomponents" name="httpclient" rev="4.5.13" conf="sources->sources" />
         <dependency org="org.apache.httpcomponents" name="httpclient-cache" rev="4.5.13" conf="sources->sources" />
@@ -154,6 +155,7 @@
         <dependency org="org.apache.avro" name="avro" rev="1.12.0" conf="javadoc->javadoc" />
         <dependency org="org.apache.avro" name="avro-tools" rev="1.12.0" conf="javadoc->javadoc" />
         <dependency org="org.apache.commons" name="commons-collections4" rev="4.4" conf="javadoc->javadoc" />
+        <dependency org="org.apache.commons" name="commons-text" rev="1.13.1" conf="javadoc->javadoc" />
         <dependency org="org.apache.httpcomponents" name="fluent-hc" rev="4.5.13" conf="javadoc->javadoc" />
         <dependency org="org.apache.httpcomponents" name="httpclient" rev="4.5.13" conf="javadoc->javadoc" />
         <dependency org="org.apache.httpcomponents" name="httpclient-cache" rev="4.5.13" conf="javadoc->javadoc" />
@@ -250,6 +252,7 @@
         <dependency org="org.apache.avro" name="avro" rev="1.12.0" conf="binaries->default" />
         <dependency org="org.apache.avro" name="avro-tools" rev="1.12.0" conf="binaries->default" />
         <dependency org="org.apache.commons" name="commons-collections4" rev="4.4" conf="binaries->default" />
+        <dependency org="org.apache.commons" name="commons-text" rev="1.13.1" conf="binaries->default" />
         <dependency org="org.apache.httpcomponents" name="fluent-hc" rev="4.5.13" conf="binaries->default" />
         <dependency org="org.apache.httpcomponents" name="httpclient" rev="4.5.13" conf="binaries->default" />
         <dependency org="org.apache.httpcomponents" name="httpclient-cache" rev="4.5.13" conf="binaries->default" />
