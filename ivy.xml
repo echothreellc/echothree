@@ -21,7 +21,7 @@
         <dependency org="com.rometools" name="rome" rev="1.18.0" conf="sources->sources" />
         <dependency org="com.sun.mail" name="javax.mail" rev="1.6.2" conf="sources->sources" />
         <dependency org="commons-beanutils" name="commons-beanutils" rev="1.9.4" conf="sources->sources" />
-        <dependency org="commons-cli" name="commons-cli" rev="1.5.0" conf="sources->sources" />
+        <dependency org="commons-cli" name="commons-cli" rev="1.9.0" conf="sources->sources" />
         <dependency org="commons-codec" name="commons-codec" rev="1.17.1" conf="sources->sources" />
         <dependency org="commons-collections" name="commons-collections" rev="3.2.2" conf="sources->sources" />
         <dependency org="commons-configuration" name="commons-configuration" rev="1.10" conf="sources->sources" />
@@ -113,7 +113,7 @@
         <dependency org="com.rometools" name="rome" rev="1.18.0" conf="javadoc->javadoc" />
         <dependency org="com.sun.mail" name="javax.mail" rev="1.6.2" conf="javadoc->javadoc" />
         <dependency org="commons-beanutils" name="commons-beanutils" rev="1.9.4" conf="javadoc->javadoc" />
-        <dependency org="commons-cli" name="commons-cli" rev="1.5.0" conf="javadoc->javadoc" />
+        <dependency org="commons-cli" name="commons-cli" rev="1.9.0" conf="javadoc->javadoc" />
         <dependency org="commons-codec" name="commons-codec" rev="1.17.1" conf="javadoc->javadoc" />
         <dependency org="commons-collections" name="commons-collections" rev="3.2.2" conf="javadoc->javadoc" />
         <dependency org="commons-configuration" name="commons-configuration" rev="1.10" conf="javadoc->javadoc" />
@@ -206,7 +206,7 @@
         <dependency org="com.rometools" name="rome" rev="1.18.0" conf="binaries->default" />
         <dependency org="com.sun.mail" name="javax.mail" rev="1.6.2" conf="binaries->default" />
         <dependency org="commons-beanutils" name="commons-beanutils" rev="1.9.4" conf="binaries->default" />
-        <dependency org="commons-cli" name="commons-cli" rev="1.5.0" conf="binaries->default" />
+        <dependency org="commons-cli" name="commons-cli" rev="1.9.0" conf="binaries->default" />
         <dependency org="commons-codec" name="commons-codec" rev="1.17.1" conf="binaries->default" />
         <dependency org="commons-collections" name="commons-collections" rev="3.2.2" conf="binaries->default" />
         <dependency org="commons-configuration" name="commons-configuration" rev="1.10" conf="binaries->default" />
