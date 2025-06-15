@@ -16,83 +16,17 @@
 
 package com.echothree.model.control.geo.server.graphql;
 
-import com.echothree.model.control.geo.server.control.GeoControl;
-import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.BaseGraphQl;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.geo.server.entity.GeoCode;
-import com.echothree.model.data.geo.server.entity.GeoCodeDetail;
-import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
-import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.annotations.annotationTypes.GraphQLNonNull;
-import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("geo code object")
 @GraphQLName("GeoCode")
 public class GeoCodeObject
-        extends BaseEntityInstanceObject {
-    
-    private final GeoCode geoCode; // Always Present
+        extends BaseGeoCodeObject {
     
     public GeoCodeObject(GeoCode geoCode) {
-        super(geoCode.getPrimaryKey());
-        
-        this.geoCode = geoCode;
-    }
-
-    private GeoCodeDetail geoCodeDetail; // Optional, use getGeoCodeDetail()
-    
-    private GeoCodeDetail getGeoCodeDetail() {
-        if(geoCodeDetail == null) {
-            geoCodeDetail = geoCode.getLastDetail();
-        }
-        
-        return geoCodeDetail;
-    }
-    
-    @GraphQLField
-    @GraphQLDescription("geo code type name")
-    @GraphQLNonNull
-    public String getGeoCodeName() {
-        return getGeoCodeDetail().getGeoCodeName();
-    }
-
-    @GraphQLField
-    @GraphQLDescription("geo code type")
-    public GeoCodeTypeObject getGeoCodeType(final DataFetchingEnvironment env) {
-        return GeoSecurityUtils.getHasGeoCodeTypeAccess(env) ? new GeoCodeTypeObject(getGeoCodeDetail().getGeoCodeType()) : null;
-    }
-
-    @GraphQLField
-    @GraphQLDescription("geo code scope")
-    public GeoCodeScopeObject getGeoCodeScope(final DataFetchingEnvironment env) {
-        return GeoSecurityUtils.getHasGeoCodeScopeAccess(env) ? new GeoCodeScopeObject(getGeoCodeDetail().getGeoCodeScope()) : null;
-    }
-
-    @GraphQLField
-    @GraphQLDescription("is default")
-    @GraphQLNonNull
-    public boolean getIsDefault() {
-        return getGeoCodeDetail().getIsDefault();
-    }
-    
-    @GraphQLField
-    @GraphQLDescription("sort order")
-    @GraphQLNonNull
-    public int getSortOrder() {
-        return getGeoCodeDetail().getSortOrder();
-    }
-    
-    @GraphQLField
-    @GraphQLDescription("description")
-    @GraphQLNonNull
-    public String getDescription(final DataFetchingEnvironment env) {
-        var geoControl = Session.getModelController(GeoControl.class);
-        var userControl = Session.getModelController(UserControl.class);
-
-        return geoControl.getBestGeoCodeDescription(geoCode, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
+        super(geoCode);
     }
 
 }
