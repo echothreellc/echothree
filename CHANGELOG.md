@@ -1,5 +1,10 @@
 # Changelog
 
+## 2025-06-22-01
+
+* jOOQ 3.20.5 Upgrade [1568](https://gitlab.echothree.com/echothree/echothree/-/issues/1568)
+* Extract BaseGeoCodeObject from GeoCodeObject [1569](https://gitlab.echothree.com/echothree/echothree/-/issues/1569)
+
 ## 2025-06-08-01
 
 * commons-cli 1.9.0 Upgrade [1563](https://gitlab.echothree.com/echothree/echothree/-/issues/1563)
