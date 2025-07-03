@@ -70,12 +70,12 @@
         <dependency org="org.apache.httpcomponents" name="httpcore" rev="4.4.15" conf="sources->sources" />
         <dependency org="org.apache.httpcomponents" name="httpmime" rev="4.5.13" conf="sources->sources" />
         <dependency org="org.apache.kafka" name="kafka-clients" rev="3.6.1" conf="sources->sources" />
-        <dependency org="org.apache.lucene" name="lucene-analysis-common" rev="10.2.1" conf="sources->sources" />
-        <dependency org="org.apache.lucene" name="lucene-analysis-kuromoji" rev="10.2.1" conf="sources->sources" />
-        <dependency org="org.apache.lucene" name="lucene-backward-codecs" rev="10.2.1" conf="sources->sources" />
-        <dependency org="org.apache.lucene" name="lucene-core" rev="10.2.1" conf="sources->sources" />
-        <dependency org="org.apache.lucene" name="lucene-queryparser" rev="10.2.1" conf="sources->sources" />
-        <dependency org="org.apache.lucene" name="lucene-suggest" rev="10.2.1" conf="sources->sources" />
+        <dependency org="org.apache.lucene" name="lucene-analysis-common" rev="10.2.2" conf="sources->sources" />
+        <dependency org="org.apache.lucene" name="lucene-analysis-kuromoji" rev="10.2.2" conf="sources->sources" />
+        <dependency org="org.apache.lucene" name="lucene-backward-codecs" rev="10.2.2" conf="sources->sources" />
+        <dependency org="org.apache.lucene" name="lucene-core" rev="10.2.2" conf="sources->sources" />
+        <dependency org="org.apache.lucene" name="lucene-queryparser" rev="10.2.2" conf="sources->sources" />
+        <dependency org="org.apache.lucene" name="lucene-suggest" rev="10.2.2" conf="sources->sources" />
         <dependency org="org.apache.poi" name="poi" rev="3.2-FINAL" conf="sources->sources" />
         <dependency org="org.assertj" name="assertj-core" rev="3.23.1" conf="sources->sources" />
         <dependency org="org.assertj" name="assertj-guava" rev="3.5.0" conf="sources->sources" />
@@ -162,12 +162,12 @@
         <dependency org="org.apache.httpcomponents" name="httpcore" rev="4.4.15" conf="javadoc->javadoc" />
         <dependency org="org.apache.httpcomponents" name="httpmime" rev="4.5.13" conf="javadoc->javadoc" />
         <dependency org="org.apache.kafka" name="kafka-clients" rev="3.6.1" conf="javadoc->javadoc" />
-        <dependency org="org.apache.lucene" name="lucene-analysis-common" rev="10.2.1" conf="javadoc->javadoc" />
-        <dependency org="org.apache.lucene" name="lucene-analysis-kuromoji" rev="10.2.1" conf="javadoc->javadoc" />
-        <dependency org="org.apache.lucene" name="lucene-backward-codecs" rev="10.2.1" conf="javadoc->javadoc" />
-        <dependency org="org.apache.lucene" name="lucene-core" rev="10.2.1" conf="javadoc->javadoc" />
-        <dependency org="org.apache.lucene" name="lucene-queryparser" rev="10.2.1" conf="javadoc->javadoc" />
-        <dependency org="org.apache.lucene" name="lucene-suggest" rev="10.2.1" conf="javadoc->javadoc" />
+        <dependency org="org.apache.lucene" name="lucene-analysis-common" rev="10.2.2" conf="javadoc->javadoc" />
+        <dependency org="org.apache.lucene" name="lucene-analysis-kuromoji" rev="10.2.2" conf="javadoc->javadoc" />
+        <dependency org="org.apache.lucene" name="lucene-backward-codecs" rev="10.2.2" conf="javadoc->javadoc" />
+        <dependency org="org.apache.lucene" name="lucene-core" rev="10.2.2" conf="javadoc->javadoc" />
+        <dependency org="org.apache.lucene" name="lucene-queryparser" rev="10.2.2" conf="javadoc->javadoc" />
+        <dependency org="org.apache.lucene" name="lucene-suggest" rev="10.2.2" conf="javadoc->javadoc" />
         <dependency org="org.apache.poi" name="poi" rev="3.2-FINAL" conf="javadoc->javadoc" />
         <dependency org="org.assertj" name="assertj-core" rev="3.23.1" conf="javadoc->javadoc" />
         <dependency org="org.assertj" name="assertj-guava" rev="3.5.0" conf="javadoc->javadoc" />
@@ -259,12 +259,12 @@
         <dependency org="org.apache.httpcomponents" name="httpcore" rev="4.4.15" conf="binaries->default" />
         <dependency org="org.apache.httpcomponents" name="httpmime" rev="4.5.13" conf="binaries->default" />
         <dependency org="org.apache.kafka" name="kafka-clients" rev="3.6.1" conf="binaries->default" />
-        <dependency org="org.apache.lucene" name="lucene-analysis-common" rev="10.2.1" conf="binaries->default" />
-        <dependency org="org.apache.lucene" name="lucene-analysis-kuromoji" rev="10.2.1" conf="binaries->default" />
-        <dependency org="org.apache.lucene" name="lucene-backward-codecs" rev="10.2.1" conf="binaries->default" />
-        <dependency org="org.apache.lucene" name="lucene-core" rev="10.2.1" conf="binaries->default" />
-        <dependency org="org.apache.lucene" name="lucene-queryparser" rev="10.2.1" conf="binaries->default" />
-        <dependency org="org.apache.lucene" name="lucene-suggest" rev="10.2.1" conf="binaries->default" />
+        <dependency org="org.apache.lucene" name="lucene-analysis-common" rev="10.2.2" conf="binaries->default" />
+        <dependency org="org.apache.lucene" name="lucene-analysis-kuromoji" rev="10.2.2" conf="binaries->default" />
+        <dependency org="org.apache.lucene" name="lucene-backward-codecs" rev="10.2.2" conf="binaries->default" />
+        <dependency org="org.apache.lucene" name="lucene-core" rev="10.2.2" conf="binaries->default" />
+        <dependency org="org.apache.lucene" name="lucene-queryparser" rev="10.2.2" conf="binaries->default" />
+        <dependency org="org.apache.lucene" name="lucene-suggest" rev="10.2.2" conf="binaries->default" />
         <dependency org="org.apache.poi" name="poi" rev="3.2-FINAL" conf="binaries->default" />
         <dependency org="org.assertj" name="assertj-core" rev="3.23.1" conf="binaries->default" />
         <dependency org="org.assertj" name="assertj-guava" rev="3.5.0" conf="binaries->default" />
