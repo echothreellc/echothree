@@ -11,7 +11,7 @@
         <dependency org="com.fasterxml.uuid" name="java-uuid-generator" rev="5.1.0" conf="sources->sources" />
         <dependency org="com.github.ben-manes.caffeine" name="caffeine" rev="3.2.0" conf="sources->sources" />
         <dependency org="com.google.code.gson" name="gson" rev="2.13.1" conf="sources->sources" />
-        <dependency org="com.google.errorprone" name="error_prone_core" rev="2.38.0" conf="sources->sources" />
+        <dependency org="com.google.errorprone" name="error_prone_core" rev="2.39.0" conf="sources->sources" />
         <dependency org="com.google.guava" name="failureaccess" rev="1.0.1" conf="sources->sources" />
         <dependency org="com.google.guava" name="guava" rev="33.4.8-jre" conf="sources->sources" />
         <dependency org="com.graphql-java" name="graphql-java" rev="21.5" conf="sources->sources" />
@@ -104,7 +104,7 @@
         <dependency org="com.fasterxml.uuid" name="java-uuid-generator" rev="5.1.0" conf="javadoc->javadoc" />
         <dependency org="com.github.ben-manes.caffeine" name="caffeine" rev="3.2.0" conf="javadoc->javadoc" />
         <dependency org="com.google.code.gson" name="gson" rev="2.13.1" conf="javadoc->javadoc" />
-        <dependency org="com.google.errorprone" name="error_prone_core" rev="2.38.0" conf="javadoc->javadoc" />
+        <dependency org="com.google.errorprone" name="error_prone_core" rev="2.39.0" conf="javadoc->javadoc" />
         <dependency org="com.google.guava" name="failureaccess" rev="1.0.1" conf="javadoc->javadoc" />
         <dependency org="com.google.guava" name="guava" rev="33.4.8-jre" conf="javadoc->javadoc" />
         <dependency org="com.graphql-java" name="graphql-java" rev="21.5" conf="javadoc->javadoc" />
@@ -196,7 +196,7 @@
         <dependency org="com.fasterxml.uuid" name="java-uuid-generator" rev="5.1.0" conf="binaries->default" />
         <dependency org="com.github.ben-manes.caffeine" name="caffeine" rev="3.2.0" conf="binaries->default" />
         <dependency org="com.google.code.gson" name="gson" rev="2.13.1" conf="binaries->default" />
-        <dependency org="com.google.errorprone" name="error_prone_core" rev="2.38.0" conf="binaries->default">
+        <dependency org="com.google.errorprone" name="error_prone_core" rev="2.39.0" conf="binaries->default">
             <artifact name="error_prone_core" e:classifier="with-dependencies" ext="jar"/>
         </dependency>
         <dependency org="com.google.guava" name="failureaccess" rev="1.0.1" conf="binaries->default" />
