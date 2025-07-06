@@ -1,5 +1,11 @@
 # Changelog
 
+## 2025-07-06-01
+
+* Error Prone 2.39.0 Upgrade [1570](https://gitlab.echothree.com/echothree/echothree/-/issues/1570)
+* Apache Lucene 10.2.2 Upgrade [1571](https://gitlab.echothree.com/echothree/echothree/-/issues/1571)
+* JaCoCo 0.8.13 Upgrade [1572](https://gitlab.echothree.com/echothree/echothree/-/issues/1572)
+
 ## 2025-06-22-01
 
 * jOOQ 3.20.5 Upgrade [1568](https://gitlab.echothree.com/echothree/echothree/-/issues/1568)
