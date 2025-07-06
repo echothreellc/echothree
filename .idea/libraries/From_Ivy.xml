@@ -36,7 +36,6 @@
       <root url="jar://$PROJECT_DIR$/build/lib/error_prone_annotation.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/error_prone_annotations.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/error_prone_check_api.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib/error_prone_type_annotations.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/ezmorph.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/failureaccess.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/graphql-java-annotations.jar!/" />
@@ -59,7 +58,6 @@
       <root url="jar://$PROJECT_DIR$/build/lib/jfreechart.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/jooq.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/json-lib-jdk15.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib/jsr305.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/juel-api.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/juel-impl.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/junit.jar!/" />
@@ -70,7 +68,6 @@
       <root url="jar://$PROJECT_DIR$/build/lib/lucene-suggest.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/nekohtml.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/org.jacoco.agent-runtime.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib/org.jacoco.agent.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/org.jacoco.ant-nodeps.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/org.jacoco.core.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/org.jacoco.report.jar!/" />
@@ -130,7 +127,6 @@
       <root url="jar://$PROJECT_DIR$/build/lib/graphql-java-extended-scalars.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/java-diff-utils.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/jboss-threads.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib/org.eclipse.jgit.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/protostream-types.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/r2dbc-spi.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/wildfly-common.jar!/" />
@@ -141,6 +137,52 @@
       <root url="jar://$PROJECT_DIR$/build/lib/avro-tools.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/avro.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/java-uuid-generator.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/avro-compiler.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/avro-idl.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/avro-ipc-jetty.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/avro-ipc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/avro-mapred.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/byte-buddy.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/ci-environment.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/commons-compress.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/commons-lang3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/commons-text.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/gherkin.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/google-java-format.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/jackson-annotations.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/jackson-core.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/jackson-databind.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/jakarta.activation-api.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/jakarta.transaction-api.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/jakarta.xml.bind-api.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/javax.activation-api.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/jaxb-api.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/jetty-http.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/jetty-io.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/jetty-security.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/jetty-server.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/jetty-servlet.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/jetty-util-ajax.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/jetty-util.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/jooq-codegen.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/jooq-meta.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/jopt-simple.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/jspecify.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/junit-xml-formatter.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/log4j.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/lucene-backward-codecs.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/lucene-facet.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/lz4-java.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/query.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/snappy-java.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/testng-xml-formatter.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/trevni-avro-tests.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/trevni-avro.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/trevni-core-tests.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/trevni-core.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/velocity-engine-core.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/xz.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/zstd-jni.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/antlr4-runtime-javadoc.jar!/" />
@@ -191,7 +233,6 @@
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/org.jacoco.ant-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/org.jacoco.report-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/org.osgi.service.component.annotations-javadoc.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/poi-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/slf4j-api-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/slf4j-reload4j-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/textile4j-javadoc.jar!/" />
@@ -212,6 +253,14 @@
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/avro-tools-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/java-uuid-generator-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/caffeine-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/commons-validator-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/mysql-connector-j-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/reload4j-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/xercesImpl-javadoc.jar!/api" />
+      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/xercesImpl-javadoc.jar!/other" />
+      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/xercesImpl-javadoc.jar!/xerces2" />
+      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/xercesImpl-javadoc.jar!/xni" />
+      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/xercesImpl-javadoc.jar!/xs" />
     </JAVADOC>
     <SOURCES>
       <root url="jar://$PROJECT_DIR$/build/lib-sources/activation-sources.jar!/" />
@@ -278,7 +327,6 @@
       <root url="jar://$PROJECT_DIR$/build/lib-sources/lucene-core-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/lucene-queryparser-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/mysql-connector-j-sources.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib-sources/poi-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/validation-api-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/wildfly-client-all-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/xalan-sources.jar!/" />
@@ -298,6 +346,14 @@
       <root url="jar://$PROJECT_DIR$/build/lib-sources/avro-tools-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/java-uuid-generator-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/caffeine-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-sources/commons-text-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-sources/commons-validator-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-sources/dataflow-errorprone-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-sources/jakarta.xml.bind-api-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-sources/jooq-codegen-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-sources/jooq-meta-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-sources/lucene-backward-codecs-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-sources/reload4j-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

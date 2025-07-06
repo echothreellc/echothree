@@ -1,5 +1,24 @@
 # Changelog
 
+## 2025-07-06-01
+
+* Error Prone 2.39.0 Upgrade [1570](https://gitlab.echothree.com/echothree/echothree/-/issues/1570)
+* Apache Lucene 10.2.2 Upgrade [1571](https://gitlab.echothree.com/echothree/echothree/-/issues/1571)
+* JaCoCo 0.8.13 Upgrade [1572](https://gitlab.echothree.com/echothree/echothree/-/issues/1572)
+
+## 2025-06-22-01
+
+* jOOQ 3.20.5 Upgrade [1568](https://gitlab.echothree.com/echothree/echothree/-/issues/1568)
+* Extract BaseGeoCodeObject from GeoCodeObject [1569](https://gitlab.echothree.com/echothree/echothree/-/issues/1569)
+
+## 2025-06-08-01
+
+* commons-cli 1.9.0 Upgrade [1563](https://gitlab.echothree.com/echothree/echothree/-/issues/1563)
+* commons-codec 1.18.0 Upgrade [1564](https://gitlab.echothree.com/echothree/echothree/-/issues/1564)
+* cucumber-java8/cucumber-junit 7.23.0 Upgrade [1565](https://gitlab.echothree.com/echothree/echothree/-/issues/1565)
+* commons-io 2.19.0 Upgrade [1566](https://gitlab.echothree.com/echothree/echothree/-/issues/1566)
+* Add commons-text 1.13.1 [1567](https://gitlab.echothree.com/echothree/echothree/-/issues/1567)
+
 ## 2025-05-25-01
 
 * Gson 2.13.1 Upgrade [1560](https://gitlab.echothree.com/echothree/echothree/-/issues/1560)
