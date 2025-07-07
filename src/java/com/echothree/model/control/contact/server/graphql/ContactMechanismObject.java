@@ -90,6 +90,7 @@ public class ContactMechanismObject
         return switch(getContactMechanismTypeEnum()) {
             case EMAIL_ADDRESS -> new ContactEmailAddressObject(basePrimaryKey, contactControl.getContactEmailAddress(contactMechanism));
             case POSTAL_ADDRESS -> new ContactPostalAddressObject(basePrimaryKey, contactControl.getContactPostalAddress(contactMechanism));
+            case TELECOM_ADDRESS -> new ContactTelephoneObject(basePrimaryKey, contactControl.getContactTelephone(contactMechanism));
             default -> null; // Leave contactMechanismInterface null
         };
     }
