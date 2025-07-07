@@ -19,7 +19,7 @@ package com.echothree.model.control.contact.server.graphql;
 import graphql.annotations.annotationTypes.GraphQLUnion;
 
 @GraphQLUnion(possibleTypes = {ContactEmailAddressObject.class, ContactPostalAddressObject.class,
-        ContactTelephoneObject.class})
+        ContactTelephoneObject.class, ContactWebAddressObject.class})
 public interface ContactMechanismInterface {
 
 }

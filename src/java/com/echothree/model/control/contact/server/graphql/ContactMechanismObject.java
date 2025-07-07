@@ -91,6 +91,7 @@ public class ContactMechanismObject
             case EMAIL_ADDRESS -> new ContactEmailAddressObject(basePrimaryKey, contactControl.getContactEmailAddress(contactMechanism));
             case POSTAL_ADDRESS -> new ContactPostalAddressObject(basePrimaryKey, contactControl.getContactPostalAddress(contactMechanism));
             case TELECOM_ADDRESS -> new ContactTelephoneObject(basePrimaryKey, contactControl.getContactTelephone(contactMechanism));
+            case WEB_ADDRESS -> new ContactWebAddressObject(basePrimaryKey, contactControl.getContactWebAddress(contactMechanism));
             default -> null; // Leave contactMechanismInterface null
         };
     }
