@@ -16,15 +16,19 @@
 
 package com.echothree.model.control.contact.server.graphql;
 
+import com.echothree.model.control.contact.common.workflow.PostalAddressStatusConstants;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.geo.server.graphql.GeoCodeObject;
 import com.echothree.model.control.geo.server.graphql.GeoSecurityUtils;
+import com.echothree.model.control.graphql.server.graphql.BaseObject;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.party.server.graphql.NameSuffixObject;
 import com.echothree.model.control.party.server.graphql.PersonalTitleObject;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.control.workflow.server.graphql.WorkflowEntityStatusObject;
 import com.echothree.model.data.contact.server.entity.ContactPostalAddress;
 import com.echothree.model.data.geo.server.entity.GeoCode;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -35,11 +39,14 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("contact postal address object")
 @GraphQLName("ContactPostalAddress")
 public class ContactPostalAddressObject
+        extends BaseObject
         implements ContactMechanismInterface {
 
+    private final BasePK basePrimaryKey; // Always Present
     private final ContactPostalAddress contactPostalAddress; // Always Present
 
-    public ContactPostalAddressObject(ContactPostalAddress contactPostalAddress) {
+    public ContactPostalAddressObject(BasePK basePrimaryKey, ContactPostalAddress contactPostalAddress) {
+        this.basePrimaryKey = basePrimaryKey;
         this.contactPostalAddress = contactPostalAddress;
     }
 
@@ -244,6 +251,12 @@ public class ContactPostalAddressObject
     @GraphQLNonNull
     public boolean getIsCommercial() {
         return contactPostalAddress.getIsCommercial();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("postal address status")
+    public WorkflowEntityStatusObject getPostalAddressStatus(final DataFetchingEnvironment env) {
+        return getWorkflowEntityStatusObject(env, basePrimaryKey, PostalAddressStatusConstants.Workflow_POSTAL_ADDRESS_STATUS);
     }
 
 }

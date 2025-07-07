@@ -18,26 +18,7 @@ package com.echothree.model.control.contact.server.graphql;
 
 import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.control.core.common.EntityAttributeTypes;
-import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.core.server.graphql.AttributeInterface;
-import com.echothree.model.control.core.server.graphql.EntityBooleanAttributeObject;
-import com.echothree.model.control.core.server.graphql.EntityClobAttributeObject;
-import com.echothree.model.control.core.server.graphql.EntityCollectionAttributesObject;
-import com.echothree.model.control.core.server.graphql.EntityDateAttributeObject;
-import com.echothree.model.control.core.server.graphql.EntityEntityAttributeObject;
-import com.echothree.model.control.core.server.graphql.EntityGeoPointAttributeObject;
-import com.echothree.model.control.core.server.graphql.EntityIntegerAttributeObject;
-import com.echothree.model.control.core.server.graphql.EntityListItemAttributeObject;
-import com.echothree.model.control.core.server.graphql.EntityLongAttributeObject;
-import com.echothree.model.control.core.server.graphql.EntityMultipleListItemAttributesObject;
-import com.echothree.model.control.core.server.graphql.EntityNameAttributeObject;
-import com.echothree.model.control.core.server.graphql.EntityStringAttributeObject;
-import com.echothree.model.control.core.server.graphql.EntityTimeAttributeObject;
-import com.echothree.model.control.core.server.graphql.EntityWorkflowAttributeObject;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.BaseGraphQl;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
 import com.echothree.model.data.contact.server.entity.ContactMechanismDetail;
 import com.echothree.util.server.persistence.Session;
@@ -105,16 +86,12 @@ public class ContactMechanismObject
     @GraphQLDescription("contact mechanism")
     public ContactMechanismInterface getContactMechanism(final DataFetchingEnvironment env) {
         var contactControl = Session.getModelController(ContactControl.class);
-        ContactMechanismInterface contactMechanismInterface = null;
 
-        switch(getContactMechanismTypeEnum()) {
-            case POSTAL_ADDRESS -> {
-                contactMechanismInterface = new ContactPostalAddressObject(contactControl.getContactPostalAddress(contactMechanism));
-            }
-            default -> {} // Leave contactMechanismInterface null
-        }
-
-        return contactMechanismInterface;
+        return switch(getContactMechanismTypeEnum()) {
+            case EMAIL_ADDRESS -> new ContactEmailAddressObject(basePrimaryKey, contactControl.getContactEmailAddress(contactMechanism));
+            case POSTAL_ADDRESS -> new ContactPostalAddressObject(basePrimaryKey, contactControl.getContactPostalAddress(contactMechanism));
+            default -> null; // Leave contactMechanismInterface null
+        };
     }
 
 }

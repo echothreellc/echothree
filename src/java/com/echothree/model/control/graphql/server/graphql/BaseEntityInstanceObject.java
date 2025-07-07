@@ -39,10 +39,7 @@ import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.control.tag.server.graphql.TagScopeObject;
 import com.echothree.model.control.tag.server.graphql.TagSecurityUtils;
-import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.graphql.WorkflowEntityStatusObject;
-import com.echothree.model.control.workflow.server.graphql.WorkflowSecurityUtils;
-import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
 import com.echothree.model.data.core.common.EntityAliasTypeConstants;
 import com.echothree.model.data.core.common.EntityAttributeGroupConstants;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
@@ -91,19 +88,7 @@ public abstract class BaseEntityInstanceObject
 
     protected WorkflowEntityStatusObject getWorkflowEntityStatusObject(final DataFetchingEnvironment env,
             final String workflowName) {
-        WorkflowEntityStatusObject result = null;
-
-        if(WorkflowSecurityUtils.getHasWorkflowEntityStatusesAccess(env)) {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-            var workflowControl = Session.getModelController(WorkflowControl.class);
-            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(basePrimaryKey);
-            var workflow = WorkflowLogic.getInstance().getWorkflowByName(null, workflowName);
-            var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstance(workflow, entityInstance);
-
-            result = workflowEntityStatus == null ? null : new WorkflowEntityStatusObject(workflowEntityStatus);
-        }
-
-        return result;
+        return getWorkflowEntityStatusObject(env, basePrimaryKey, workflowName);
     }
 
     @GraphQLField
