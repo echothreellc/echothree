@@ -49,7 +49,7 @@ public class AddActionForm
             form.setSelectorKindName(SelectorKinds.ITEM.name());
             form.setSelectorTypeName(SelectorTypes.FILTER.name());
             form.setDefaultSelectorChoice(filterItemSelectorChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

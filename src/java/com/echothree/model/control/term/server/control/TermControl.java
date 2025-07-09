@@ -330,10 +330,10 @@ public class TermControl
         if(defaultFound && isDefault) {
             var defaultTermDetailValue = getDefaultTermDetailValueForUpdate();
             
-            defaultTermDetailValue.setIsDefault(Boolean.FALSE);
+            defaultTermDetailValue.setIsDefault(false);
             updateTermFromValue(defaultTermDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var term = TermFactory.getInstance().create();
@@ -550,11 +550,11 @@ public class TermControl
                 // If I'm the default, and a default already existed...
                 var defaultTermDetailValue = getDefaultTermDetailValueForUpdate();
                 
-                defaultTermDetailValue.setIsDefault(Boolean.FALSE);
+                defaultTermDetailValue.setIsDefault(false);
                 updateTermFromValue(defaultTermDetailValue, false, updatedBy);
             } else if(!isDefault && !defaultFound) {
                 // If I'm not the default, and no other default exists...
-                isDefault = Boolean.TRUE;
+                isDefault = true;
             }
         }
         
@@ -600,7 +600,7 @@ public class TermControl
                 }
                 var termDetailValue = Objects.requireNonNull(defaultTerm).getLastDetailForUpdate().getTermDetailValue().clone();
                 
-                termDetailValue.setIsDefault(Boolean.TRUE);
+                termDetailValue.setIsDefault(true);
                 updateTermFromValue(termDetailValue, false, deletedBy);
             }
         }

@@ -57,7 +57,7 @@ public class SetDefaultWorkEffortScopeCommand
             var workEffortTypePriorityDetailValue = workEffortControl.getWorkEffortScopeDetailValueByNameForUpdate(workEffortType, workEffortTypePriorityName);
             
             if(workEffortTypePriorityDetailValue != null) {
-                workEffortTypePriorityDetailValue.setIsDefault(Boolean.TRUE);
+                workEffortTypePriorityDetailValue.setIsDefault(true);
                 workEffortControl.updateWorkEffortScopeFromValue(workEffortTypePriorityDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownWorkEffortScopeName.name(), workEffortTypePriorityName);

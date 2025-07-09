@@ -66,7 +66,7 @@ public class SetDefaultCampaignMediumCommand
         var campaignMediumDetailValue = campaignControl.getCampaignMediumDetailValueByNameForUpdate(campaignMediumName);
         
         if(campaignMediumDetailValue != null) {
-            campaignMediumDetailValue.setIsDefault(Boolean.TRUE);
+            campaignMediumDetailValue.setIsDefault(true);
             campaignControl.updateCampaignMediumFromValue(campaignMediumDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownCampaignMediumName.name(), campaignMediumName);

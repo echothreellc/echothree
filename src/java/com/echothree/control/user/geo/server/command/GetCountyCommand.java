@@ -104,7 +104,7 @@ public class GetCountyCommand
             var geoCodeScopeName = countryIso2Letter + "_" + statePostal2Letter + "_COUNTIES";
             var geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
             if(geoCodeScope == null) {
-                geoCodeScope = geoControl.createGeoCodeScope(geoCodeScopeName, Boolean.FALSE, 0, createdBy);
+                geoCodeScope = geoControl.createGeoCodeScope(geoCodeScopeName, false, 0, createdBy);
             }
 
             if(geoCodeScope != null) {

@@ -43,7 +43,7 @@ public class EditActionForm
 
             form.setSequenceTypeName(SequenceTypes.SALES_ORDER.name());
             form.setDefaultSequenceChoice(salesOrderSequenceChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

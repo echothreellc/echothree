@@ -93,7 +93,7 @@ public class FinalStepForm
             var commandForm = SelectorUtil.getHome().getGetSelectorBooleanTypeChoicesForm();
 
             commandForm.setDefaultSelectorBooleanTypeChoice(selectorBooleanTypeChoice);
-            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = SelectorUtil.getHome().getSelectorBooleanTypeChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -114,7 +114,7 @@ public class FinalStepForm
             commandForm.setSelectorTypeName(selectorTypeName);
             commandForm.setSelectorName(selectorName);
             commandForm.setDefaultSelectorNodeChoice(leftSelectorNodeChoice);
-            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = SelectorUtil.getHome().getSelectorNodeChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -135,7 +135,7 @@ public class FinalStepForm
             commandForm.setSelectorTypeName(selectorTypeName);
             commandForm.setSelectorName(selectorName);
             commandForm.setDefaultSelectorNodeChoice(rightSelectorNodeChoice);
-            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = SelectorUtil.getHome().getSelectorNodeChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -153,7 +153,7 @@ public class FinalStepForm
             var commandForm = ItemUtil.getHome().getGetItemCategoryChoicesForm();
 
             commandForm.setDefaultItemCategoryChoice(itemCategoryChoice);
-            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = ItemUtil.getHome().getItemCategoryChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -171,7 +171,7 @@ public class FinalStepForm
             var commandForm = AccountingUtil.getHome().getGetItemAccountingCategoryChoicesForm();
 
             commandForm.setDefaultItemAccountingCategoryChoice(itemAccountingCategoryChoice);
-            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = AccountingUtil.getHome().getItemAccountingCategoryChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -189,7 +189,7 @@ public class FinalStepForm
             var commandForm = VendorUtil.getHome().getGetItemPurchasingCategoryChoicesForm();
 
             commandForm.setDefaultItemPurchasingCategoryChoice(itemPurchasingCategoryChoice);
-            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = VendorUtil.getHome().getItemPurchasingCategoryChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -207,7 +207,7 @@ public class FinalStepForm
             var form = EmployeeUtil.getHome().getGetResponsibilityTypeChoicesForm();
 
             form.setDefaultResponsibilityTypeChoice(responsibilityTypeChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = EmployeeUtil.getHome().getResponsibilityTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -225,7 +225,7 @@ public class FinalStepForm
             var form = EmployeeUtil.getHome().getGetSkillTypeChoicesForm();
 
             form.setDefaultSkillTypeChoice(skillTypeChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = EmployeeUtil.getHome().getSkillTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -243,7 +243,7 @@ public class FinalStepForm
             var form = TrainingUtil.getHome().getGetTrainingClassChoicesForm();
 
             form.setDefaultTrainingClassChoice(trainingClassChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = TrainingUtil.getHome().getTrainingClassChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -556,9 +556,9 @@ public class FinalStepForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        setIsRootSelectorNode(Boolean.FALSE);
-        setNegate(Boolean.FALSE);
-        setCheckParents(Boolean.FALSE);
+        setIsRootSelectorNode(false);
+        setNegate(false);
+        setCheckParents(false);
     }
     
 }

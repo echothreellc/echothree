@@ -76,7 +76,7 @@ public class SetDefaultGeoCodeCurrencyCommand
                 var geoCodeCurrencyValue = geoControl.getGeoCodeCurrencyValueForUpdate(geoCode, currency);
                 
                 if(geoCodeCurrencyValue != null) {
-                    geoCodeCurrencyValue.setIsDefault(Boolean.TRUE);
+                    geoCodeCurrencyValue.setIsDefault(true);
                     geoControl.updateGeoCodeCurrencyFromValue(geoCodeCurrencyValue, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownGeoCodeCurrency.name(), geoCodeName, currencyIsoName);

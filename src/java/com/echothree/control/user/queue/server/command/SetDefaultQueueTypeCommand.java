@@ -66,7 +66,7 @@ public class SetDefaultQueueTypeCommand
         var queueTypeDetailValue = queueControl.getQueueTypeDetailValueByNameForUpdate(queueTypeName);
         
         if(queueTypeDetailValue != null) {
-            queueTypeDetailValue.setIsDefault(Boolean.TRUE);
+            queueTypeDetailValue.setIsDefault(true);
             queueControl.updateQueueTypeFromValue(queueTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownQueueTypeName.name(), queueTypeName);

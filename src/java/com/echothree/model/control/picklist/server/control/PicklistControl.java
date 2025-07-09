@@ -111,10 +111,10 @@ public class PicklistControl
         if(defaultFound && isDefault) {
             var defaultPicklistTypeDetailValue = getDefaultPicklistTypeDetailValueForUpdate();
 
-            defaultPicklistTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultPicklistTypeDetailValue.setIsDefault(false);
             updatePicklistTypeFromValue(defaultPicklistTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var picklistType = PicklistTypeFactory.getInstance().create();
@@ -372,11 +372,11 @@ public class PicklistControl
                     // If I'm the default, and a default already existed...
                     var defaultPicklistTypeDetailValue = getDefaultPicklistTypeDetailValueForUpdate();
 
-                    defaultPicklistTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultPicklistTypeDetailValue.setIsDefault(false);
                     updatePicklistTypeFromValue(defaultPicklistTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -420,7 +420,7 @@ public class PicklistControl
                     }
                     var picklistTypeDetailValue = Objects.requireNonNull(defaultPicklistType).getLastDetailForUpdate().getPicklistTypeDetailValue().clone();
 
-                    picklistTypeDetailValue.setIsDefault(Boolean.TRUE);
+                    picklistTypeDetailValue.setIsDefault(true);
                     updatePicklistTypeFromValue(picklistTypeDetailValue, false, deletedBy);
                 }
             }
@@ -605,10 +605,10 @@ public class PicklistControl
         if(defaultFound && isDefault) {
             var defaultPicklistTimeTypeDetailValue = getDefaultPicklistTimeTypeDetailValueForUpdate(picklistType);
 
-            defaultPicklistTimeTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultPicklistTimeTypeDetailValue.setIsDefault(false);
             updatePicklistTimeTypeFromValue(defaultPicklistTimeTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var picklistTimeType = PicklistTimeTypeFactory.getInstance().create();
@@ -812,11 +812,11 @@ public class PicklistControl
                     // If I'm the default, and a default already existed...
                     var defaultPicklistTimeTypeDetailValue = getDefaultPicklistTimeTypeDetailValueForUpdate(picklistType);
 
-                    defaultPicklistTimeTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultPicklistTimeTypeDetailValue.setIsDefault(false);
                     updatePicklistTimeTypeFromValue(defaultPicklistTimeTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -856,7 +856,7 @@ public class PicklistControl
                 }
                 var picklistTimeTypeDetailValue = Objects.requireNonNull(defaultPicklistTimeType).getLastDetailForUpdate().getPicklistTimeTypeDetailValue().clone();
 
-                picklistTimeTypeDetailValue.setIsDefault(Boolean.TRUE);
+                picklistTimeTypeDetailValue.setIsDefault(true);
                 updatePicklistTimeTypeFromValue(picklistTimeTypeDetailValue, false, deletedBy);
             }
         }
@@ -1025,10 +1025,10 @@ public class PicklistControl
         if(defaultFound && isDefault) {
             var defaultPicklistAliasTypeDetailValue = getDefaultPicklistAliasTypeDetailValueForUpdate(picklistType);
 
-            defaultPicklistAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultPicklistAliasTypeDetailValue.setIsDefault(false);
             updatePicklistAliasTypeFromValue(defaultPicklistAliasTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var picklistAliasType = PicklistAliasTypeFactory.getInstance().create();
@@ -1229,11 +1229,11 @@ public class PicklistControl
                     // If I'm the default, and a default already existed...
                     var defaultPicklistAliasTypeDetailValue = getDefaultPicklistAliasTypeDetailValueForUpdate(picklistType);
 
-                    defaultPicklistAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultPicklistAliasTypeDetailValue.setIsDefault(false);
                     updatePicklistAliasTypeFromValue(defaultPicklistAliasTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -1273,7 +1273,7 @@ public class PicklistControl
                 }
                 var picklistAliasTypeDetailValue = Objects.requireNonNull(defaultPicklistAliasType).getLastDetailForUpdate().getPicklistAliasTypeDetailValue().clone();
 
-                picklistAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
+                picklistAliasTypeDetailValue.setIsDefault(true);
                 updatePicklistAliasTypeFromValue(picklistAliasTypeDetailValue, false, deletedBy);
             }
         }

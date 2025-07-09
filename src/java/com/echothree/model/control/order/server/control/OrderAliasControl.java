@@ -65,10 +65,10 @@ public class OrderAliasControl
         if(defaultFound && isDefault) {
             var defaultOrderAliasTypeDetailValue = getDefaultOrderAliasTypeDetailValueForUpdate(orderType);
 
-            defaultOrderAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultOrderAliasTypeDetailValue.setIsDefault(false);
             updateOrderAliasTypeFromValue(defaultOrderAliasTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var orderAliasType = OrderAliasTypeFactory.getInstance().create();
@@ -269,11 +269,11 @@ public class OrderAliasControl
                     // If I'm the default, and a default already existed...
                     var defaultOrderAliasTypeDetailValue = getDefaultOrderAliasTypeDetailValueForUpdate(orderType);
 
-                    defaultOrderAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultOrderAliasTypeDetailValue.setIsDefault(false);
                     updateOrderAliasTypeFromValue(defaultOrderAliasTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -313,7 +313,7 @@ public class OrderAliasControl
                 }
                 var orderAliasTypeDetailValue = Objects.requireNonNull(defaultOrderAliasType).getLastDetailForUpdate().getOrderAliasTypeDetailValue().clone();
 
-                orderAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
+                orderAliasTypeDetailValue.setIsDefault(true);
                 updateOrderAliasTypeFromValue(orderAliasTypeDetailValue, false, deletedBy);
             }
         }

@@ -65,7 +65,7 @@ public class SetDefaultPaymentProcessorTypeCommand
         var paymentProcessorTypeDetailValue = paymentProcessorTypeControl.getPaymentProcessorTypeDetailValueByNameForUpdate(paymentProcessorTypeName);
         
         if(paymentProcessorTypeDetailValue != null) {
-            paymentProcessorTypeDetailValue.setIsDefault(Boolean.TRUE);
+            paymentProcessorTypeDetailValue.setIsDefault(true);
             paymentProcessorTypeControl.updatePaymentProcessorTypeFromValue(paymentProcessorTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownPaymentProcessorTypeName.name(), paymentProcessorTypeName);

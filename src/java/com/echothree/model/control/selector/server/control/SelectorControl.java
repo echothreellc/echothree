@@ -192,10 +192,10 @@ public class SelectorControl
         if(defaultFound && isDefault) {
             var defaultSelectorKindDetailValue = getDefaultSelectorKindDetailValueForUpdate();
 
-            defaultSelectorKindDetailValue.setIsDefault(Boolean.FALSE);
+            defaultSelectorKindDetailValue.setIsDefault(false);
             updateSelectorKindFromValue(defaultSelectorKindDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var selectorKind = SelectorKindFactory.getInstance().create();
@@ -412,11 +412,11 @@ public class SelectorControl
                 // If I'm the default, and a default already existed...
                 var defaultSelectorKindDetailValue = getDefaultSelectorKindDetailValueForUpdate();
 
-                defaultSelectorKindDetailValue.setIsDefault(Boolean.FALSE);
+                defaultSelectorKindDetailValue.setIsDefault(false);
                 updateSelectorKindFromValue(defaultSelectorKindDetailValue, false, updatedBy);
             } else if(!isDefault && !defaultFound) {
                 // If I'm not the default, and no other default exists...
-                isDefault = Boolean.TRUE;
+                isDefault = true;
             }
         }
 
@@ -454,7 +454,7 @@ public class SelectorControl
                 }
                 var selectorKindDetailValue = Objects.requireNonNull(defaultSelectorKind).getLastDetailForUpdate().getSelectorKindDetailValue().clone();
 
-                selectorKindDetailValue.setIsDefault(Boolean.TRUE);
+                selectorKindDetailValue.setIsDefault(true);
                 updateSelectorKindFromValue(selectorKindDetailValue, false, deletedBy);
             }
         }
@@ -622,10 +622,10 @@ public class SelectorControl
         if(defaultFound && isDefault) {
             var defaultSelectorTypeDetailValue = getDefaultSelectorTypeDetailValueForUpdate(selectorKind);
 
-            defaultSelectorTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultSelectorTypeDetailValue.setIsDefault(false);
             updateSelectorTypeFromValue(defaultSelectorTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var selectorType = SelectorTypeFactory.getInstance().create();
@@ -853,11 +853,11 @@ public class SelectorControl
                     // If I'm the default, and a default already existed...
                     var defaultSelectorTypeDetailValue = getDefaultSelectorTypeDetailValueForUpdate(selectorKind);
 
-                    defaultSelectorTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultSelectorTypeDetailValue.setIsDefault(false);
                     updateSelectorTypeFromValue(defaultSelectorTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -897,7 +897,7 @@ public class SelectorControl
                 }
                 var selectorTypeDetailValue = Objects.requireNonNull(defaultSelectorType).getLastDetailForUpdate().getSelectorTypeDetailValue().clone();
 
-                selectorTypeDetailValue.setIsDefault(Boolean.TRUE);
+                selectorTypeDetailValue.setIsDefault(true);
                 updateSelectorTypeFromValue(selectorTypeDetailValue, false, deletedBy);
             }
         }
@@ -1609,10 +1609,10 @@ public class SelectorControl
         if(defaultFound && isDefault) {
             var defaultSelectorDetailValue = getDefaultSelectorDetailValueForUpdate(selectorType);
             
-            defaultSelectorDetailValue.setIsDefault(Boolean.FALSE);
+            defaultSelectorDetailValue.setIsDefault(false);
             updateSelectorFromValue(defaultSelectorDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var selector = SelectorFactory.getInstance().create();
@@ -1901,11 +1901,11 @@ public class SelectorControl
                 // If I'm the default, and a default already existed...
                 var defaultSelectorDetailValue = getDefaultSelectorDetailValueForUpdate(selectorType);
                 
-                defaultSelectorDetailValue.setIsDefault(Boolean.FALSE);
+                defaultSelectorDetailValue.setIsDefault(false);
                 updateSelectorFromValue(defaultSelectorDetailValue, false, updatedBy);
             } else if(!isDefault && !defaultFound) {
                 // If I'm not the default, and no other default exists...
-                isDefault = Boolean.TRUE;
+                isDefault = true;
             }
         }
         
@@ -1950,7 +1950,7 @@ public class SelectorControl
                 }
                 var selectorDetailValue = Objects.requireNonNull(defaultSelector).getLastDetailForUpdate().getSelectorDetailValue().clone();
                 
-                selectorDetailValue.setIsDefault(Boolean.TRUE);
+                selectorDetailValue.setIsDefault(true);
                 updateSelectorFromValue(selectorDetailValue, false, deletedBy);
             }
         }
@@ -2184,10 +2184,10 @@ public class SelectorControl
         if(rootFound && isRootSelectorNode) {
             var rootSelectorNodeDetailValue = getRootSelectorNodeDetailValueForUpdate(selector);
             
-            rootSelectorNodeDetailValue.setIsRootSelectorNode(Boolean.FALSE);
+            rootSelectorNodeDetailValue.setIsRootSelectorNode(false);
             updateSelectorNodeFromValue(rootSelectorNodeDetailValue, false, createdBy);
         } else if(!rootFound) {
-            isRootSelectorNode = Boolean.TRUE;
+            isRootSelectorNode = true;
         }
 
         var selectorNode = SelectorNodeFactory.getInstance().create();
@@ -2407,11 +2407,11 @@ public class SelectorControl
                     // If I'm the root, and a root already existed...
                     var rootSelectorNodeDetailValue = getRootSelectorNodeDetailValueForUpdate(selector);
                     
-                    rootSelectorNodeDetailValue.setIsRootSelectorNode(Boolean.FALSE);
+                    rootSelectorNodeDetailValue.setIsRootSelectorNode(false);
                     updateSelectorNodeFromValue(rootSelectorNodeDetailValue, false, updatedBy);
                 } else if(!isRootSelectorNode && !rootFound) {
                     // If I'm not the root, and no other root exists...
-                    isRootSelectorNode = Boolean.TRUE;
+                    isRootSelectorNode = true;
                 }
             }
             
@@ -2480,7 +2480,7 @@ public class SelectorControl
                 }
                 var selectorNodeDetailValue = Objects.requireNonNull(rootSelectorNode).getLastDetailForUpdate().getSelectorNodeDetailValue().clone();
                 
-                selectorNodeDetailValue.setIsRootSelectorNode(Boolean.TRUE);
+                selectorNodeDetailValue.setIsRootSelectorNode(true);
                 updateSelectorNodeFromValue(selectorNodeDetailValue, false, deletedBy);
             }
         }

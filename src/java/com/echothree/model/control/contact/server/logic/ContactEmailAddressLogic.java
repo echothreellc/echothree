@@ -59,7 +59,7 @@ public class ContactEmailAddressLogic
 
         contactControl.createContactEmailAddress(contactMechanism, emailAddress, createdBy);
 
-        var partyContactMechanism = contactControl.createPartyContactMechanism(party, contactMechanism, description, Boolean.FALSE, 1, createdBy);
+        var partyContactMechanism = contactControl.createPartyContactMechanism(party, contactMechanism, description, false, 1, createdBy);
 
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(contactMechanism.getPrimaryKey());
         workflowControl.addEntityToWorkflowUsingNames(null, EmailAddressStatusConstants.Workflow_EMAIL_ADDRESS_STATUS,
@@ -70,7 +70,7 @@ public class ContactEmailAddressLogic
         if(contactMechanismPurposeName != null) {
             var contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(ContactMechanismPurposes.PRIMARY_EMAIL.name());
 
-            contactControl.createPartyContactMechanismPurpose(partyContactMechanism, contactMechanismPurpose, Boolean.FALSE, 1, createdBy);
+            contactControl.createPartyContactMechanismPurpose(partyContactMechanism, contactMechanismPurpose, false, 1, createdBy);
         }
         
         return partyContactMechanism;

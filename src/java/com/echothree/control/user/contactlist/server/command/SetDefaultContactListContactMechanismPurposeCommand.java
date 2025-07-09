@@ -76,7 +76,7 @@ public class SetDefaultContactListContactMechanismPurposeCommand
                 var contactListContactMechanismPurposeDetailValue = contactListControl.getContactListContactMechanismPurposeDetailValueForUpdate(contactList, contactMechanismPurpose);
                 
                 if(contactListContactMechanismPurposeDetailValue != null) {
-                    contactListContactMechanismPurposeDetailValue.setIsDefault(Boolean.TRUE);
+                    contactListContactMechanismPurposeDetailValue.setIsDefault(true);
                     contactListControl.updateContactListContactMechanismPurposeFromValue(contactListContactMechanismPurposeDetailValue, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownContactListContactMechanismPurpose.name(), contactListName, contactMechanismPurposeName);

@@ -110,7 +110,7 @@ public class AddActionForm
             var form = ItemUtil.getHome().getGetItemTypeChoicesForm();
 
             form.setDefaultItemTypeChoice(itemTypeChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = ItemUtil.getHome().getItemTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -129,7 +129,7 @@ public class AddActionForm
             var form = ItemUtil.getHome().getGetItemUseTypeChoicesForm();
 
             form.setDefaultItemUseTypeChoice(itemUseTypeChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = ItemUtil.getHome().getItemUseTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -148,7 +148,7 @@ public class AddActionForm
             var form = ItemUtil.getHome().getGetItemCategoryChoicesForm();
 
             form.setDefaultItemCategoryChoice(itemCategoryChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = ItemUtil.getHome().getItemCategoryChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -167,7 +167,7 @@ public class AddActionForm
             var form = AccountingUtil.getHome().getGetItemAccountingCategoryChoicesForm();
 
             form.setDefaultItemAccountingCategoryChoice(itemAccountingCategoryChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = AccountingUtil.getHome().getItemAccountingCategoryChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -186,7 +186,7 @@ public class AddActionForm
             var form = VendorUtil.getHome().getGetItemPurchasingCategoryChoicesForm();
 
             form.setDefaultItemPurchasingCategoryChoice(itemPurchasingCategoryChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = VendorUtil.getHome().getItemPurchasingCategoryChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -205,7 +205,7 @@ public class AddActionForm
             var commandForm = PartyUtil.getHome().getGetCompanyChoicesForm();
 
             commandForm.setDefaultCompanyChoice(companyChoice);
-            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = PartyUtil.getHome().getCompanyChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -223,7 +223,7 @@ public class AddActionForm
             var form = ItemUtil.getHome().getGetItemDeliveryTypeChoicesForm();
 
             form.setDefaultItemDeliveryTypeChoice(itemDeliveryTypeChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = ItemUtil.getHome().getItemDeliveryTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -242,7 +242,7 @@ public class AddActionForm
             var form = ItemUtil.getHome().getGetItemInventoryTypeChoicesForm();
 
             form.setDefaultItemInventoryTypeChoice(itemInventoryTypeChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = ItemUtil.getHome().getItemInventoryTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -261,7 +261,7 @@ public class AddActionForm
             var form = ItemUtil.getHome().getGetItemStatusChoicesForm();
 
             form.setDefaultItemStatusChoice(itemStatusChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = ItemUtil.getHome().getItemStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -280,7 +280,7 @@ public class AddActionForm
             var form = UomUtil.getHome().getGetUnitOfMeasureKindChoicesForm();
 
             form.setDefaultUnitOfMeasureKindChoice(unitOfMeasureKindChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
             form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_QUANTITY);
 
             var commandResult = UomUtil.getHome().getUnitOfMeasureKindChoices(userVisitPK, form);
@@ -300,7 +300,7 @@ public class AddActionForm
             var form = ItemUtil.getHome().getGetItemPriceTypeChoicesForm();
 
             form.setDefaultItemPriceTypeChoice(itemPriceTypeChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = ItemUtil.getHome().getItemPriceTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -320,7 +320,7 @@ public class AddActionForm
 
             form.setCancellationKindName(CancellationKinds.CUSTOMER_CANCELLATION.name());
             form.setDefaultCancellationPolicyChoice(cancellationPolicyChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -339,7 +339,7 @@ public class AddActionForm
 
             form.setReturnKindName(ReturnKinds.CUSTOMER_RETURN.name());
             form.setDefaultReturnPolicyChoice(returnPolicyChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = ReturnPolicyUtil.getHome().getReturnPolicyChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -750,11 +750,11 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        setInventorySerialized(Boolean.FALSE);
-        setShippingChargeExempt(Boolean.FALSE);
-        setAllowClubDiscounts(Boolean.FALSE);
-        setAllowCouponDiscounts(Boolean.FALSE);
-        setAllowAssociatePayments(Boolean.FALSE);
+        setInventorySerialized(false);
+        setShippingChargeExempt(false);
+        setAllowClubDiscounts(false);
+        setAllowCouponDiscounts(false);
+        setAllowAssociatePayments(false);
     }
     
 }

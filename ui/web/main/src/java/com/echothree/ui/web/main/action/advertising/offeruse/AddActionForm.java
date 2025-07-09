@@ -46,7 +46,7 @@ public class AddActionForm
             var form = OfferUtil.getHome().getGetUseChoicesForm();
 
             form.setDefaultUseChoice(useChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = OfferUtil.getHome().getUseChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -65,7 +65,7 @@ public class AddActionForm
 
             form.setSequenceTypeName(SequenceTypes.SALES_ORDER.name());
             form.setDefaultSequenceChoice(salesOrderSequenceChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

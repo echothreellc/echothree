@@ -50,7 +50,7 @@ public class DescriptionAddActionForm
                 var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
 
                 commandForm.setDefaultMimeTypeChoice(mimeTypeChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(false));
                 commandForm.setItemDescriptionTypeName(itemDescriptionTypeName);
 
                 var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
@@ -73,7 +73,7 @@ public class DescriptionAddActionForm
                 var commandForm = ItemUtil.getHome().getGetItemImageTypeChoicesForm();
 
                 commandForm.setDefaultItemImageTypeChoice(itemImageTypeChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(false));
 
                 var commandResult = ItemUtil.getHome().getItemImageTypeChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();

@@ -65,7 +65,7 @@ public class SetDefaultContactMechanismAliasTypeCommand
         var contactMechanismAliasTypeDetailValue = contactControl.getContactMechanismAliasTypeDetailValueByNameForUpdate(contactMechanismAliasTypeName);
         
         if(contactMechanismAliasTypeDetailValue != null) {
-            contactMechanismAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
+            contactMechanismAliasTypeDetailValue.setIsDefault(true);
             contactControl.updateContactMechanismAliasTypeFromValue(contactMechanismAliasTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownContactMechanismAliasTypeName.name(), contactMechanismAliasTypeName);

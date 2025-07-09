@@ -117,10 +117,10 @@ public class CarrierControl
         if(defaultFound && isDefault) {
             var defaultCarrierTypeDetailValue = getDefaultCarrierTypeDetailValueForUpdate();
 
-            defaultCarrierTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultCarrierTypeDetailValue.setIsDefault(false);
             updateCarrierTypeFromValue(defaultCarrierTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var carrierType = CarrierTypeFactory.getInstance().create();
@@ -356,11 +356,11 @@ public class CarrierControl
                     // If I'm the default, and a default already existed...
                     var defaultCarrierTypeDetailValue = getDefaultCarrierTypeDetailValueForUpdate();
 
-                    defaultCarrierTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultCarrierTypeDetailValue.setIsDefault(false);
                     updateCarrierTypeFromValue(defaultCarrierTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -399,7 +399,7 @@ public class CarrierControl
                 }
                 var carrierTypeDetailValue = Objects.requireNonNull(defaultCarrierType).getLastDetailForUpdate().getCarrierTypeDetailValue().clone();
 
-                carrierTypeDetailValue.setIsDefault(Boolean.TRUE);
+                carrierTypeDetailValue.setIsDefault(true);
                 updateCarrierTypeFromValue(carrierTypeDetailValue, false, deletedBy);
             }
         }
@@ -572,10 +572,10 @@ public class CarrierControl
         if(defaultFound && isDefault) {
             var defaultCarrierValue = getDefaultCarrierValueForUpdate();
             
-            defaultCarrierValue.setIsDefault(Boolean.FALSE);
+            defaultCarrierValue.setIsDefault(false);
             updateCarrierFromValue(defaultCarrierValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var carrier = CarrierFactory.getInstance().create(party, carrierName, carrierType, geoCodeSelector, itemSelector, accountValidationPattern,
@@ -827,11 +827,11 @@ public class CarrierControl
                     // If I'm the default, and a default already existed...
                     var defaultCarrierValue = getDefaultCarrierValueForUpdate();
                     
-                    defaultCarrierValue.setIsDefault(Boolean.FALSE);
+                    defaultCarrierValue.setIsDefault(false);
                     updateCarrierFromValue(defaultCarrierValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -872,7 +872,7 @@ public class CarrierControl
 
                 var defaultCarrierValue = defaultCarrier.getCarrierValue();
                 
-                defaultCarrierValue.setIsDefault(Boolean.TRUE);
+                defaultCarrierValue.setIsDefault(true);
                 updateCarrierFromValue(defaultCarrierValue, false, deletedBy);
             }
         }
@@ -892,10 +892,10 @@ public class CarrierControl
         if(defaultFound && isDefault) {
             var defaultCarrierServiceDetailValue = getDefaultCarrierServiceDetailValueForUpdate(carrierParty);
             
-            defaultCarrierServiceDetailValue.setIsDefault(Boolean.FALSE);
+            defaultCarrierServiceDetailValue.setIsDefault(false);
             updateCarrierServiceFromValue(defaultCarrierServiceDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var carrierService = CarrierServiceFactory.getInstance().create();
@@ -1121,11 +1121,11 @@ public class CarrierControl
                     // If I'm the default, and a default already existed...
                     var defaultCarrierServiceDetailValue = getDefaultCarrierServiceDetailValueForUpdate(carrierParty);
                     
-                    defaultCarrierServiceDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultCarrierServiceDetailValue.setIsDefault(false);
                     updateCarrierServiceFromValue(defaultCarrierServiceDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -1172,7 +1172,7 @@ public class CarrierControl
 
                     var carrierServiceDetailValue = Objects.requireNonNull(defaultCarrierService).getLastDetailForUpdate().getCarrierServiceDetailValue().clone();
                     
-                    carrierServiceDetailValue.setIsDefault(Boolean.TRUE);
+                    carrierServiceDetailValue.setIsDefault(true);
                     updateCarrierServiceFromValue(carrierServiceDetailValue, false, deletedBy);
                 }
             }
@@ -1376,10 +1376,10 @@ public class CarrierControl
         if(defaultFound && isDefault) {
             var defaultCarrierOptionDetailValue = getDefaultCarrierOptionDetailValueForUpdate(carrierParty);
             
-            defaultCarrierOptionDetailValue.setIsDefault(Boolean.FALSE);
+            defaultCarrierOptionDetailValue.setIsDefault(false);
             updateCarrierOptionFromValue(defaultCarrierOptionDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var carrierOption = CarrierOptionFactory.getInstance().create();
@@ -1613,11 +1613,11 @@ public class CarrierControl
                     // If I'm the default, and a default already existed...
                     var defaultCarrierOptionDetailValue = getDefaultCarrierOptionDetailValueForUpdate(carrierParty);
                     
-                    defaultCarrierOptionDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultCarrierOptionDetailValue.setIsDefault(false);
                     updateCarrierOptionFromValue(defaultCarrierOptionDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -1663,7 +1663,7 @@ public class CarrierControl
 
                     var carrierOptionDetailValue = Objects.requireNonNull(defaultCarrierOption).getLastDetailForUpdate().getCarrierOptionDetailValue().clone();
                     
-                    carrierOptionDetailValue.setIsDefault(Boolean.TRUE);
+                    carrierOptionDetailValue.setIsDefault(true);
                     updateCarrierOptionFromValue(carrierOptionDetailValue, false, deletedBy);
                 }
             }

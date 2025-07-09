@@ -65,7 +65,7 @@ public class SetDefaultEmployeeTypeCommand
         var employeeTypeDetailValue = employeeControl.getEmployeeTypeDetailValueByNameForUpdate(employeeTypeName);
         
         if(employeeTypeDetailValue != null) {
-            employeeTypeDetailValue.setIsDefault(Boolean.TRUE);
+            employeeTypeDetailValue.setIsDefault(true);
             employeeControl.updateEmployeeTypeFromValue(employeeTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownEmployeeTypeName.name(), employeeTypeName);

@@ -65,7 +65,7 @@ public class SetDefaultContactListFrequencyCommand
         var contactListFrequencyDetailValue = contactListControl.getContactListFrequencyDetailValueByNameForUpdate(contactListFrequencyName);
         
         if(contactListFrequencyDetailValue != null) {
-            contactListFrequencyDetailValue.setIsDefault(Boolean.TRUE);
+            contactListFrequencyDetailValue.setIsDefault(true);
             contactListControl.updateContactListFrequencyFromValue(contactListFrequencyDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownContactListFrequencyName.name(), contactListFrequencyName);

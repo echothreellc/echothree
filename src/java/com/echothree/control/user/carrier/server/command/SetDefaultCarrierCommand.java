@@ -65,7 +65,7 @@ public class SetDefaultCarrierCommand
         var carrierValue = carrierControl.getCarrierValueByNameForUpdate(carrierName);
         
         if(carrierValue != null) {
-            carrierValue.setIsDefault(Boolean.TRUE);
+            carrierValue.setIsDefault(true);
             carrierControl.updateCarrierFromValue(carrierValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownCarrierName.name(), carrierName);

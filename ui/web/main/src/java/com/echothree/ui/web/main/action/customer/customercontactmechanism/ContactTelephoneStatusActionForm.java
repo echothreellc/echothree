@@ -42,7 +42,7 @@ public class ContactTelephoneStatusActionForm
 
             form.setContactMechanismName(contactMechanismName);
             form.setDefaultTelephoneStatusChoice(telephoneStatusChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = ContactUtil.getHome().getTelephoneStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

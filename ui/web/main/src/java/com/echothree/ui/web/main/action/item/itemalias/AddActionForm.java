@@ -47,7 +47,7 @@ public class AddActionForm
 
             form.setItemName(itemName);
             form.setDefaultUnitOfMeasureTypeChoice(unitOfMeasureTypeChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -66,7 +66,7 @@ public class AddActionForm
             var form = ItemUtil.getHome().getGetItemAliasTypeChoicesForm();
 
             form.setDefaultItemAliasTypeChoice(itemAliasTypeChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = ItemUtil.getHome().getItemAliasTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

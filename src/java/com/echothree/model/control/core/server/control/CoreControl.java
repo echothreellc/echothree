@@ -390,10 +390,10 @@ public class CoreControl
         if(defaultFound && isDefault) {
             var defaultEntityAttributeGroupDetailValue = getDefaultEntityAttributeGroupDetailValueForUpdate();
             
-            defaultEntityAttributeGroupDetailValue.setIsDefault(Boolean.FALSE);
+            defaultEntityAttributeGroupDetailValue.setIsDefault(false);
             updateEntityAttributeGroupFromValue(defaultEntityAttributeGroupDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var entityAttributeGroup = EntityAttributeGroupFactory.getInstance().create();
@@ -683,11 +683,11 @@ public class CoreControl
                     // If I'm the default, and a default already existed...
                     var defaultEntityAttributeGroupDetailValue = getDefaultEntityAttributeGroupDetailValueForUpdate();
                     
-                    defaultEntityAttributeGroupDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultEntityAttributeGroupDetailValue.setIsDefault(false);
                     updateEntityAttributeGroupFromValue(defaultEntityAttributeGroupDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -730,7 +730,7 @@ public class CoreControl
                 }
                 var entityAttributeGroupDetailValue = Objects.requireNonNull(defaultEntityAttributeGroup).getLastDetailForUpdate().getEntityAttributeGroupDetailValue().clone();
                 
-                entityAttributeGroupDetailValue.setIsDefault(Boolean.TRUE);
+                entityAttributeGroupDetailValue.setIsDefault(true);
                 updateEntityAttributeGroupFromValue(entityAttributeGroupDetailValue, false, deletedBy);
             }
         }
@@ -2395,10 +2395,10 @@ public class CoreControl
         if(defaultFound && isDefault) {
             var defaultEntityListItemDetailValue = getDefaultEntityListItemDetailValueForUpdate(entityAttribute);
             
-            defaultEntityListItemDetailValue.setIsDefault(Boolean.FALSE);
+            defaultEntityListItemDetailValue.setIsDefault(false);
             updateEntityListItemFromValue(defaultEntityListItemDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var entityListItem = EntityListItemFactory.getInstance().create();
@@ -2623,11 +2623,11 @@ public class CoreControl
                     // If I'm the default, and a default already existed...
                     var defaultEntityListItemDetailValue = getDefaultEntityListItemDetailValueForUpdate(entityAttribute);
                     
-                    defaultEntityListItemDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultEntityListItemDetailValue.setIsDefault(false);
                     updateEntityListItemFromValue(defaultEntityListItemDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -2712,7 +2712,7 @@ public class CoreControl
                     }
                     var entityListItemDetailValue = Objects.requireNonNull(defaultEntityListItem).getLastDetailForUpdate().getEntityListItemDetailValue().clone();
 
-                    entityListItemDetailValue.setIsDefault(Boolean.TRUE);
+                    entityListItemDetailValue.setIsDefault(true);
                     updateEntityListItemFromValue(entityListItemDetailValue, false, deletedBy);
                 }
             }
@@ -2909,10 +2909,10 @@ public class CoreControl
         if(defaultFound && isDefault) {
             var defaultEntityIntegerRangeDetailValue = getDefaultEntityIntegerRangeDetailValueForUpdate(entityAttribute);
             
-            defaultEntityIntegerRangeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultEntityIntegerRangeDetailValue.setIsDefault(false);
             updateEntityIntegerRangeFromValue(defaultEntityIntegerRangeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var entityIntegerRange = EntityIntegerRangeFactory.getInstance().create();
@@ -3121,11 +3121,11 @@ public class CoreControl
                     // If I'm the default, and a default already existed...
                     var defaultEntityIntegerRangeDetailValue = getDefaultEntityIntegerRangeDetailValueForUpdate(entityAttribute);
                     
-                    defaultEntityIntegerRangeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultEntityIntegerRangeDetailValue.setIsDefault(false);
                     updateEntityIntegerRangeFromValue(defaultEntityIntegerRangeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -3200,7 +3200,7 @@ public class CoreControl
                     }
                     var entityIntegerRangeDetailValue = Objects.requireNonNull(defaultEntityIntegerRange).getLastDetailForUpdate().getEntityIntegerRangeDetailValue().clone();
 
-                    entityIntegerRangeDetailValue.setIsDefault(Boolean.TRUE);
+                    entityIntegerRangeDetailValue.setIsDefault(true);
                     updateEntityIntegerRangeFromValue(entityIntegerRangeDetailValue, false, deletedBy);
                 }
             }
@@ -3397,10 +3397,10 @@ public class CoreControl
         if(defaultFound && isDefault) {
             var defaultEntityLongRangeDetailValue = getDefaultEntityLongRangeDetailValueForUpdate(entityAttribute);
             
-            defaultEntityLongRangeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultEntityLongRangeDetailValue.setIsDefault(false);
             updateEntityLongRangeFromValue(defaultEntityLongRangeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var entityLongRange = EntityLongRangeFactory.getInstance().create();
@@ -3609,11 +3609,11 @@ public class CoreControl
                     // If I'm the default, and a default already existed...
                     var defaultEntityLongRangeDetailValue = getDefaultEntityLongRangeDetailValueForUpdate(entityAttribute);
                     
-                    defaultEntityLongRangeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultEntityLongRangeDetailValue.setIsDefault(false);
                     updateEntityLongRangeFromValue(defaultEntityLongRangeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -3688,7 +3688,7 @@ public class CoreControl
                     }
                     var entityLongRangeDetailValue = Objects.requireNonNull(defaultEntityLongRange).getLastDetailForUpdate().getEntityLongRangeDetailValue().clone();
 
-                    entityLongRangeDetailValue.setIsDefault(Boolean.TRUE);
+                    entityLongRangeDetailValue.setIsDefault(true);
                     updateEntityLongRangeFromValue(entityLongRangeDetailValue, false, deletedBy);
                 }
             }

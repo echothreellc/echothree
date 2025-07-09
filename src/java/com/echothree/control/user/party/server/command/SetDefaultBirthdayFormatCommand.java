@@ -65,7 +65,7 @@ public class SetDefaultBirthdayFormatCommand
         var birthdayFormatDetailValue = partyControl.getBirthdayFormatDetailValueByNameForUpdate(birthdayFormatName);
         
         if(birthdayFormatDetailValue != null) {
-            birthdayFormatDetailValue.setIsDefault(Boolean.TRUE);
+            birthdayFormatDetailValue.setIsDefault(true);
             partyControl.updateBirthdayFormatFromValue(birthdayFormatDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownBirthdayFormatName.name(), birthdayFormatName);

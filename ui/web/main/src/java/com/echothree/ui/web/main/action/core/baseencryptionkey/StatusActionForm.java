@@ -41,7 +41,7 @@ public class StatusActionForm
 
             form.setBaseEncryptionKeyName(baseEncryptionKeyName);
             form.setDefaultBaseEncryptionKeyStatusChoice(baseEncryptionKeyStatusChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = CoreUtil.getHome().getBaseEncryptionKeyStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

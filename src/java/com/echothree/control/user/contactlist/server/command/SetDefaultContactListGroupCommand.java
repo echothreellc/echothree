@@ -65,7 +65,7 @@ public class SetDefaultContactListGroupCommand
         var contactListGroupDetailValue = contactListControl.getContactListGroupDetailValueByNameForUpdate(contactListGroupName);
         
         if(contactListGroupDetailValue != null) {
-            contactListGroupDetailValue.setIsDefault(Boolean.TRUE);
+            contactListGroupDetailValue.setIsDefault(true);
             contactListControl.updateContactListGroupFromValue(contactListGroupDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownContactListGroupName.name(), contactListGroupName);

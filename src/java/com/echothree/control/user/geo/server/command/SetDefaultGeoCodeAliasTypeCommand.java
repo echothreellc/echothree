@@ -70,7 +70,7 @@ public class SetDefaultGeoCodeAliasTypeCommand
             var geoAliasTypeDetailValue = geoControl.getGeoCodeAliasTypeDetailValueByNameForUpdate(geoCodeType, geoAliasTypeName);
 
             if(geoAliasTypeDetailValue != null) {
-                geoAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
+                geoAliasTypeDetailValue.setIsDefault(true);
                 geoControl.updateGeoCodeAliasTypeFromValue(geoAliasTypeDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownGeoCodeAliasTypeName.name(), geoCodeTypeName, geoAliasTypeName);

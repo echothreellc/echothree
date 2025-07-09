@@ -83,7 +83,7 @@ public class SetDefaultEntityIntegerRangeCommand
                         var entityIntegerRangeDetailValue = coreControl.getEntityIntegerRangeDetailValueByNameForUpdate(entityAttribute, entityIntegerRangeName);
 
                         if(entityIntegerRangeDetailValue != null) {
-                            entityIntegerRangeDetailValue.setIsDefault(Boolean.TRUE);
+                            entityIntegerRangeDetailValue.setIsDefault(true);
                             coreControl.updateEntityIntegerRangeFromValue(entityIntegerRangeDetailValue, getPartyPK());
                         } else {
                             addExecutionError(ExecutionErrors.UnknownEntityIntegerRangeName.name(), componentVendorName, entityTypeName, entityAttributeName, entityIntegerRangeName);

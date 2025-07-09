@@ -920,10 +920,10 @@ public class ForumControl
         if(defaultFound && isDefault) {
             var defaultForumGroupForumValue = getDefaultForumGroupForumValueForUpdate(forum);
             
-            defaultForumGroupForumValue.setIsDefault(Boolean.FALSE);
+            defaultForumGroupForumValue.setIsDefault(false);
             updateForumGroupForumFromValue(defaultForumGroupForumValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var forumGroupForum = ForumGroupForumFactory.getInstance().create(forumGroup, forum,
@@ -1157,11 +1157,11 @@ public class ForumControl
                     // If I'm the default, and a default already existed...
                     var defaultForumGroupForumValue = getDefaultForumGroupForumValueForUpdate(forum);
                     
-                    defaultForumGroupForumValue.setIsDefault(Boolean.FALSE);
+                    defaultForumGroupForumValue.setIsDefault(false);
                     updateForumGroupForumFromValue(defaultForumGroupForumValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -1193,7 +1193,7 @@ public class ForumControl
                 }
                 var forumGroupForumValue = defaultForumGroupForum.getForumGroupForumValue().clone();
                 
-                forumGroupForumValue.setIsDefault(Boolean.TRUE);
+                forumGroupForumValue.setIsDefault(true);
                 updateForumGroupForumFromValue(forumGroupForumValue, false, deletedBy);
             }
         }
@@ -1463,10 +1463,10 @@ public class ForumControl
         if(defaultFound && isDefault) {
             var defaultForumMimeTypeValue = getDefaultForumMimeTypeValueForUpdate(forum);
             
-            defaultForumMimeTypeValue.setIsDefault(Boolean.FALSE);
+            defaultForumMimeTypeValue.setIsDefault(false);
             updateForumMimeTypeFromValue(defaultForumMimeTypeValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var forumMimeType = ForumMimeTypeFactory.getInstance().create(forum, mimeType,
@@ -1728,11 +1728,11 @@ public class ForumControl
                     // If I'm the default, and a default already existed...
                     var defaultForumMimeTypeValue = getDefaultForumMimeTypeValueForUpdate(forum);
                     
-                    defaultForumMimeTypeValue.setIsDefault(Boolean.FALSE);
+                    defaultForumMimeTypeValue.setIsDefault(false);
                     updateForumMimeTypeFromValue(defaultForumMimeTypeValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -1764,7 +1764,7 @@ public class ForumControl
                 }
                 var forumMimeTypeValue = defaultForumMimeType.getForumMimeTypeValue().clone();
                 
-                forumMimeTypeValue.setIsDefault(Boolean.TRUE);
+                forumMimeTypeValue.setIsDefault(true);
                 updateForumMimeTypeFromValue(forumMimeTypeValue, false, deletedBy);
             }
         }
@@ -2257,10 +2257,10 @@ public class ForumControl
         if(defaultFound && isDefault) {
             var defaultForumForumThreadValue = getDefaultForumForumThreadValueForUpdate(forumThread);
             
-            defaultForumForumThreadValue.setIsDefault(Boolean.FALSE);
+            defaultForumForumThreadValue.setIsDefault(false);
             updateForumForumThreadFromValue(defaultForumForumThreadValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var forumForumThread = ForumForumThreadFactory.getInstance().create(forum, forumThread,
@@ -2486,11 +2486,11 @@ public class ForumControl
                     // If I'm the default, and a default already existed...
                     var defaultForumForumThreadValue = getDefaultForumForumThreadValueForUpdate(forumThread);
                     
-                    defaultForumForumThreadValue.setIsDefault(Boolean.FALSE);
+                    defaultForumForumThreadValue.setIsDefault(false);
                     updateForumForumThreadFromValue(defaultForumForumThreadValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -2523,7 +2523,7 @@ public class ForumControl
                     }
                     var forumForumThreadValue = defaultForumForumThread.getForumForumThreadValue().clone();
                     
-                    forumForumThreadValue.setIsDefault(Boolean.TRUE);
+                    forumForumThreadValue.setIsDefault(true);
                     updateForumForumThreadFromValue(forumForumThreadValue, false, deletedBy);
                 } else {
                     deleteForumThread(forumThread, deletedBy);

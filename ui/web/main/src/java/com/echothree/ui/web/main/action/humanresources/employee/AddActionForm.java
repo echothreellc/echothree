@@ -44,7 +44,7 @@ public class AddActionForm
                 var form = EmployeeUtil.getHome().getGetEmployeeTypeChoicesForm();
                 
                 form.setDefaultEmployeeTypeChoice(employeeTypeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+                form.setAllowNullChoice(String.valueOf(true));
 
                 var commandResult = EmployeeUtil.getHome().getEmployeeTypeChoices(userVisitPK, form);
                 var executionResult = commandResult.getExecutionResult();
@@ -66,7 +66,7 @@ public class AddActionForm
                 var form = SecurityUtil.getHome().getGetPartySecurityRoleTemplateChoicesForm();
                 
                 form.setDefaultPartySecurityRoleTemplateChoice(partySecurityRoleTemplateChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+                form.setAllowNullChoice(String.valueOf(false));
 
                 var commandResult = SecurityUtil.getHome().getPartySecurityRoleTemplateChoices(userVisitPK, form);
                 var executionResult = commandResult.getExecutionResult();

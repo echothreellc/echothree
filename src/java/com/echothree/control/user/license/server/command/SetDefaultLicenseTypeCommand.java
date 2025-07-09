@@ -66,7 +66,7 @@ public class SetDefaultLicenseTypeCommand
         var licenseTypeDetailValue = licenseControl.getLicenseTypeDetailValueByNameForUpdate(licenseTypeName);
         
         if(licenseTypeDetailValue != null) {
-            licenseTypeDetailValue.setIsDefault(Boolean.TRUE);
+            licenseTypeDetailValue.setIsDefault(true);
             licenseControl.updateLicenseTypeFromValue(licenseTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownLicenseTypeName.name(), licenseTypeName);

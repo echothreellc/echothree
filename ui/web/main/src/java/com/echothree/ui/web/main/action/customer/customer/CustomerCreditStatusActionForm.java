@@ -41,7 +41,7 @@ public class CustomerCreditStatusActionForm
 
             form.setCustomerName(customerName);
             form.setDefaultCustomerCreditStatusChoice(customerCreditStatusChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = CustomerUtil.getHome().getCustomerCreditStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

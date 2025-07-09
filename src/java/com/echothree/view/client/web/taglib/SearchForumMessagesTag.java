@@ -228,7 +228,7 @@ public class SearchForumMessagesTag
             commandForm.setRememberPreferences(rememberPreferences);
             commandForm.setForumName(forumName);
             commandForm.setForumMessageTypeName(forumMessageTypeName);
-            commandForm.setIncludeFutureForumThreads(includeFutureForumThreads == null? Boolean.FALSE.toString(): includeFutureForumThreads);
+            commandForm.setIncludeFutureForumThreads(includeFutureForumThreads == null? String.valueOf(false): includeFutureForumThreads);
             commandForm.setQ(q);
             commandForm.setCreatedSince(createdSince);
             commandForm.setModifiedSince(modifiedSince);

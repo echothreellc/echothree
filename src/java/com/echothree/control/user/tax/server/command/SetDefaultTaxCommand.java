@@ -52,7 +52,7 @@ public class SetDefaultTaxCommand
         var taxDetailValue = taxControl.getTaxDetailValueByNameForUpdate(taxName);
         
         if(taxDetailValue != null) {
-            taxDetailValue.setIsDefault(Boolean.TRUE);
+            taxDetailValue.setIsDefault(true);
             taxControl.updateTaxFromValue(taxDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownTaxName.name(), taxName);

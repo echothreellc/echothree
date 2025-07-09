@@ -84,7 +84,7 @@ public class GetPartyEntityTypeCommand
                     
                     if(partyEntityType == null) {
                         if(partyName == null) {
-                            partyEntityType = partyEntityTypeControl.createPartyEntityType(party, entityType, Boolean.TRUE, getPartyPK());
+                            partyEntityType = partyEntityTypeControl.createPartyEntityType(party, entityType, true, getPartyPK());
                         } else {
                             addExecutionError(ExecutionErrors.UnknownPartyEntityType.name());
                         }

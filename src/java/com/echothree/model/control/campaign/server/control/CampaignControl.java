@@ -154,10 +154,10 @@ public class CampaignControl
         if(defaultFound && isDefault) {
             var defaultCampaignDetailValue = getDefaultCampaignDetailValueForUpdate();
 
-            defaultCampaignDetailValue.setIsDefault(Boolean.FALSE);
+            defaultCampaignDetailValue.setIsDefault(false);
             updateCampaignFromValue(defaultCampaignDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var campaign = CampaignFactory.getInstance().create();
@@ -436,11 +436,11 @@ public class CampaignControl
                     // If I'm the default, and a default already existed...
                     var defaultCampaignDetailValue = getDefaultCampaignDetailValueForUpdate();
 
-                    defaultCampaignDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultCampaignDetailValue.setIsDefault(false);
                     updateCampaignFromValue(defaultCampaignDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -482,7 +482,7 @@ public class CampaignControl
                     }
                     var campaignDetailValue = Objects.requireNonNull(defaultCampaign).getLastDetailForUpdate().getCampaignDetailValue().clone();
 
-                    campaignDetailValue.setIsDefault(Boolean.TRUE);
+                    campaignDetailValue.setIsDefault(true);
                     updateCampaignFromValue(campaignDetailValue, false, deletedBy);
                 }
             }
@@ -672,10 +672,10 @@ public class CampaignControl
         if(defaultFound && isDefault) {
             var defaultCampaignSourceDetailValue = getDefaultCampaignSourceDetailValueForUpdate();
 
-            defaultCampaignSourceDetailValue.setIsDefault(Boolean.FALSE);
+            defaultCampaignSourceDetailValue.setIsDefault(false);
             updateCampaignSourceFromValue(defaultCampaignSourceDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var campaignSource = CampaignSourceFactory.getInstance().create();
@@ -954,11 +954,11 @@ public class CampaignControl
                     // If I'm the default, and a default already existed...
                     var defaultCampaignSourceDetailValue = getDefaultCampaignSourceDetailValueForUpdate();
 
-                    defaultCampaignSourceDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultCampaignSourceDetailValue.setIsDefault(false);
                     updateCampaignSourceFromValue(defaultCampaignSourceDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -1000,7 +1000,7 @@ public class CampaignControl
                     }
                     var campaignSourceDetailValue = Objects.requireNonNull(defaultCampaignSource).getLastDetailForUpdate().getCampaignSourceDetailValue().clone();
 
-                    campaignSourceDetailValue.setIsDefault(Boolean.TRUE);
+                    campaignSourceDetailValue.setIsDefault(true);
                     updateCampaignSourceFromValue(campaignSourceDetailValue, false, deletedBy);
                 }
             }
@@ -1190,10 +1190,10 @@ public class CampaignControl
         if(defaultFound && isDefault) {
             var defaultCampaignMediumDetailValue = getDefaultCampaignMediumDetailValueForUpdate();
 
-            defaultCampaignMediumDetailValue.setIsDefault(Boolean.FALSE);
+            defaultCampaignMediumDetailValue.setIsDefault(false);
             updateCampaignMediumFromValue(defaultCampaignMediumDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var campaignMedium = CampaignMediumFactory.getInstance().create();
@@ -1472,11 +1472,11 @@ public class CampaignControl
                     // If I'm the default, and a default already existed...
                     var defaultCampaignMediumDetailValue = getDefaultCampaignMediumDetailValueForUpdate();
 
-                    defaultCampaignMediumDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultCampaignMediumDetailValue.setIsDefault(false);
                     updateCampaignMediumFromValue(defaultCampaignMediumDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -1518,7 +1518,7 @@ public class CampaignControl
                     }
                     var campaignMediumDetailValue = Objects.requireNonNull(defaultCampaignMedium).getLastDetailForUpdate().getCampaignMediumDetailValue().clone();
 
-                    campaignMediumDetailValue.setIsDefault(Boolean.TRUE);
+                    campaignMediumDetailValue.setIsDefault(true);
                     updateCampaignMediumFromValue(campaignMediumDetailValue, false, deletedBy);
                 }
             }
@@ -1708,10 +1708,10 @@ public class CampaignControl
         if(defaultFound && isDefault) {
             var defaultCampaignTermDetailValue = getDefaultCampaignTermDetailValueForUpdate();
 
-            defaultCampaignTermDetailValue.setIsDefault(Boolean.FALSE);
+            defaultCampaignTermDetailValue.setIsDefault(false);
             updateCampaignTermFromValue(defaultCampaignTermDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var campaignTerm = CampaignTermFactory.getInstance().create();
@@ -1990,11 +1990,11 @@ public class CampaignControl
                     // If I'm the default, and a default already existed...
                     var defaultCampaignTermDetailValue = getDefaultCampaignTermDetailValueForUpdate();
 
-                    defaultCampaignTermDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultCampaignTermDetailValue.setIsDefault(false);
                     updateCampaignTermFromValue(defaultCampaignTermDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -2036,7 +2036,7 @@ public class CampaignControl
                     }
                     var campaignTermDetailValue = Objects.requireNonNull(defaultCampaignTerm).getLastDetailForUpdate().getCampaignTermDetailValue().clone();
 
-                    campaignTermDetailValue.setIsDefault(Boolean.TRUE);
+                    campaignTermDetailValue.setIsDefault(true);
                     updateCampaignTermFromValue(campaignTermDetailValue, false, deletedBy);
                 }
             }
@@ -2226,10 +2226,10 @@ public class CampaignControl
         if(defaultFound && isDefault) {
             var defaultCampaignContentDetailValue = getDefaultCampaignContentDetailValueForUpdate();
 
-            defaultCampaignContentDetailValue.setIsDefault(Boolean.FALSE);
+            defaultCampaignContentDetailValue.setIsDefault(false);
             updateCampaignContentFromValue(defaultCampaignContentDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var campaignContent = CampaignContentFactory.getInstance().create();
@@ -2508,11 +2508,11 @@ public class CampaignControl
                     // If I'm the default, and a default already existed...
                     var defaultCampaignContentDetailValue = getDefaultCampaignContentDetailValueForUpdate();
 
-                    defaultCampaignContentDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultCampaignContentDetailValue.setIsDefault(false);
                     updateCampaignContentFromValue(defaultCampaignContentDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -2554,7 +2554,7 @@ public class CampaignControl
                     }
                     var campaignContentDetailValue = Objects.requireNonNull(defaultCampaignContent).getLastDetailForUpdate().getCampaignContentDetailValue().clone();
 
-                    campaignContentDetailValue.setIsDefault(Boolean.TRUE);
+                    campaignContentDetailValue.setIsDefault(true);
                     updateCampaignContentFromValue(campaignContentDetailValue, false, deletedBy);
                 }
             }

@@ -63,7 +63,7 @@ public class AddActionForm
             var form = PartyUtil.getHome().getGetCompanyChoicesForm();
 
             form.setDefaultCompanyChoice(companyChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = PartyUtil.getHome().getCompanyChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -82,7 +82,7 @@ public class AddActionForm
             var form = EmployeeUtil.getHome().getGetLeaveTypeChoicesForm();
 
             form.setDefaultLeaveTypeChoice(leaveTypeChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = EmployeeUtil.getHome().getLeaveTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -101,7 +101,7 @@ public class AddActionForm
             var form = EmployeeUtil.getHome().getGetLeaveReasonChoicesForm();
 
             form.setDefaultLeaveReasonChoice(leaveReasonChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = EmployeeUtil.getHome().getLeaveReasonChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -120,7 +120,7 @@ public class AddActionForm
             var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
             form.setDefaultUnitOfMeasureTypeChoice(totalTimeUnitOfMeasureTypeChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
             form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
 
             var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
@@ -140,7 +140,7 @@ public class AddActionForm
             var form = EmployeeUtil.getHome().getGetLeaveStatusChoicesForm();
 
             form.setDefaultLeaveStatusChoice(leaveStatusChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = EmployeeUtil.getHome().getLeaveStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

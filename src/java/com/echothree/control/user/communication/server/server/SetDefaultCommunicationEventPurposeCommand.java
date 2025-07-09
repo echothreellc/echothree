@@ -52,7 +52,7 @@ public class SetDefaultCommunicationEventPurposeCommand
         var communicationEventPurposeDetailValue = communicationControl.getCommunicationEventPurposeDetailValueByNameForUpdate(communicationEventPurposeName);
         
         if(communicationEventPurposeDetailValue != null) {
-            communicationEventPurposeDetailValue.setIsDefault(Boolean.TRUE);
+            communicationEventPurposeDetailValue.setIsDefault(true);
             communicationControl.updateCommunicationEventPurposeFromValue(communicationEventPurposeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownCommunicationEventPurposeName.name(), communicationEventPurposeName);

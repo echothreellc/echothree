@@ -43,7 +43,7 @@ public class AddActionForm
             var commandForm = ContactUtil.getHome().getGetContactMechanismPurposeChoicesForm();
 
             commandForm.setDefaultContactMechanismPurposeChoice(contactMechanismPurposeChoice);
-            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = ContactUtil.getHome().getContactMechanismPurposeChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();

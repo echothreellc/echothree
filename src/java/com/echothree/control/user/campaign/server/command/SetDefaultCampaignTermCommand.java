@@ -66,7 +66,7 @@ public class SetDefaultCampaignTermCommand
         var campaignTermDetailValue = campaignControl.getCampaignTermDetailValueByNameForUpdate(campaignTermName);
         
         if(campaignTermDetailValue != null) {
-            campaignTermDetailValue.setIsDefault(Boolean.TRUE);
+            campaignTermDetailValue.setIsDefault(true);
             campaignControl.updateCampaignTermFromValue(campaignTermDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownCampaignTermName.name(), campaignTermName);

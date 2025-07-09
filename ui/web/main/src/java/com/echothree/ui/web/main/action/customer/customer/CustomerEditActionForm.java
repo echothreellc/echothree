@@ -68,7 +68,7 @@ public class CustomerEditActionForm
             var form = CustomerUtil.getHome().getGetCustomerTypeChoicesForm();
 
             form.setDefaultCustomerTypeChoice(customerTypeChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = CustomerUtil.getHome().getCustomerTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -88,7 +88,7 @@ public class CustomerEditActionForm
 
             form.setCancellationKindName(CancellationKinds.CUSTOMER_CANCELLATION.name());
             form.setDefaultCancellationPolicyChoice(cancellationPolicyChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -107,7 +107,7 @@ public class CustomerEditActionForm
 
             form.setReturnKindName(ReturnKinds.CUSTOMER_RETURN.name());
             form.setDefaultReturnPolicyChoice(returnPolicyChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = ReturnPolicyUtil.getHome().getReturnPolicyChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -126,7 +126,7 @@ public class CustomerEditActionForm
 
             form.setGlAccountCategoryName(AccountingConstants.GlAccountCategory_ACCOUNTS_RECEIVABLE);
             form.setDefaultGlAccountChoice(arGlAccountChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = AccountingUtil.getHome().getGlAccountChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -305,12 +305,12 @@ public class CustomerEditActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        setHoldUntilComplete(Boolean.FALSE);
-        setAllowBackorders(Boolean.FALSE);
-        setAllowSubstitutions(Boolean.FALSE);
-        setAllowCombiningShipments(Boolean.FALSE);
-        setRequireReference(Boolean.FALSE);
-        setAllowReferenceDuplicates(Boolean.FALSE);
+        setHoldUntilComplete(false);
+        setAllowBackorders(false);
+        setAllowSubstitutions(false);
+        setAllowCombiningShipments(false);
+        setRequireReference(false);
+        setAllowReferenceDuplicates(false);
     }
 
 }

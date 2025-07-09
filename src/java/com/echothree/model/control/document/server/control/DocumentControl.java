@@ -128,10 +128,10 @@ public class DocumentControl
         if(defaultFound && isDefault) {
             var defaultDocumentTypeDetailValue = getDefaultDocumentTypeDetailValueForUpdate();
             
-            defaultDocumentTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultDocumentTypeDetailValue.setIsDefault(false);
             updateDocumentTypeFromValue(defaultDocumentTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var documentType = DocumentTypeFactory.getInstance().create();
@@ -385,11 +385,11 @@ public class DocumentControl
                     // If I'm the default, and a default already existed...
                     var defaultDocumentTypeDetailValue = getDefaultDocumentTypeDetailValueForUpdate();
                     
-                    defaultDocumentTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultDocumentTypeDetailValue.setIsDefault(false);
                     updateDocumentTypeFromValue(defaultDocumentTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -433,7 +433,7 @@ public class DocumentControl
                     }
                     var documentTypeDetailValue = Objects.requireNonNull(defaultDocumentType).getLastDetailForUpdate().getDocumentTypeDetailValue().clone();
 
-                    documentTypeDetailValue.setIsDefault(Boolean.TRUE);
+                    documentTypeDetailValue.setIsDefault(true);
                     updateDocumentTypeFromValue(documentTypeDetailValue, false, deletedBy);
                 }
             }
@@ -619,10 +619,10 @@ public class DocumentControl
         if(defaultFound && isDefault) {
             var defaultDocumentTypeUsageTypeDetailValue = getDefaultDocumentTypeUsageTypeDetailValueForUpdate();
 
-            defaultDocumentTypeUsageTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultDocumentTypeUsageTypeDetailValue.setIsDefault(false);
             updateDocumentTypeUsageTypeFromValue(defaultDocumentTypeUsageTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var documentTypeUsageType = DocumentTypeUsageTypeFactory.getInstance().create();
@@ -818,11 +818,11 @@ public class DocumentControl
                     // If I'm the default, and a default already existed...
                     var defaultDocumentTypeUsageTypeDetailValue = getDefaultDocumentTypeUsageTypeDetailValueForUpdate();
 
-                    defaultDocumentTypeUsageTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultDocumentTypeUsageTypeDetailValue.setIsDefault(false);
                     updateDocumentTypeUsageTypeFromValue(defaultDocumentTypeUsageTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -865,7 +865,7 @@ public class DocumentControl
                     }
                     var documentTypeUsageTypeDetailValue = Objects.requireNonNull(defaultDocumentTypeUsageType).getLastDetailForUpdate().getDocumentTypeUsageTypeDetailValue().clone();
 
-                    documentTypeUsageTypeDetailValue.setIsDefault(Boolean.TRUE);
+                    documentTypeUsageTypeDetailValue.setIsDefault(true);
                     updateDocumentTypeUsageTypeFromValue(documentTypeUsageTypeDetailValue, false, deletedBy);
                 }
             }
@@ -1048,10 +1048,10 @@ public class DocumentControl
         if(defaultFound && isDefault) {
             var defaultDocumentTypeUsageValue = getDefaultDocumentTypeUsageValueForUpdate(documentTypeUsageType);
 
-            defaultDocumentTypeUsageValue.setIsDefault(Boolean.FALSE);
+            defaultDocumentTypeUsageValue.setIsDefault(false);
             updateDocumentTypeUsageFromValue(defaultDocumentTypeUsageValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var documentTypeUsage = DocumentTypeUsageFactory.getInstance().create(documentTypeUsageType, documentType, isDefault, sortOrder,
@@ -1246,11 +1246,11 @@ public class DocumentControl
                     // If I'm the default, and a default already existed...
                     var defaultDocumentTypeUsageValue = getDefaultDocumentTypeUsageValueForUpdate(documentTypeUsageType);
 
-                    defaultDocumentTypeUsageValue.setIsDefault(Boolean.FALSE);
+                    defaultDocumentTypeUsageValue.setIsDefault(false);
                     updateDocumentTypeUsageFromValue(defaultDocumentTypeUsageValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -1285,7 +1285,7 @@ public class DocumentControl
                     }
                     var documentTypeUsageDetailValue = defaultDocumentTypeUsage.getDocumentTypeUsageValue().clone();
 
-                    documentTypeUsageDetailValue.setIsDefault(Boolean.TRUE);
+                    documentTypeUsageDetailValue.setIsDefault(true);
                     updateDocumentTypeUsageFromValue(documentTypeUsageDetailValue, false, deletedBy);
                 }
             }
@@ -1870,10 +1870,10 @@ public class DocumentControl
         if(defaultFound && isDefault) {
             var defaultPartyTypeDocumentTypeUsageTypeValue = getDefaultPartyTypeDocumentTypeUsageTypeValueForUpdate(partyType);
 
-            defaultPartyTypeDocumentTypeUsageTypeValue.setIsDefault(Boolean.FALSE);
+            defaultPartyTypeDocumentTypeUsageTypeValue.setIsDefault(false);
             updatePartyTypeDocumentTypeUsageTypeFromValue(defaultPartyTypeDocumentTypeUsageTypeValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var partyTypeDocumentTypeUsageType = PartyTypeDocumentTypeUsageTypeFactory.getInstance().create(partyType,
@@ -2067,11 +2067,11 @@ public class DocumentControl
                     // If I'm the default, and a default already existed...
                     var defaultPartyTypeDocumentTypeUsageTypeValue = getDefaultPartyTypeDocumentTypeUsageTypeValueForUpdate(partyType);
 
-                    defaultPartyTypeDocumentTypeUsageTypeValue.setIsDefault(Boolean.FALSE);
+                    defaultPartyTypeDocumentTypeUsageTypeValue.setIsDefault(false);
                     updatePartyTypeDocumentTypeUsageTypeFromValue(defaultPartyTypeDocumentTypeUsageTypeValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -2106,7 +2106,7 @@ public class DocumentControl
                     }
                     var partyTypeDocumentTypeUsageTypeDetailValue = defaultPartyTypeDocumentTypeUsageType.getPartyTypeDocumentTypeUsageTypeValue().clone();
 
-                    partyTypeDocumentTypeUsageTypeDetailValue.setIsDefault(Boolean.TRUE);
+                    partyTypeDocumentTypeUsageTypeDetailValue.setIsDefault(true);
                     updatePartyTypeDocumentTypeUsageTypeFromValue(partyTypeDocumentTypeUsageTypeDetailValue, false, deletedBy);
                 }
             }
@@ -2147,10 +2147,10 @@ public class DocumentControl
         if(defaultFound && isDefault) {
             var defaultPartyDocumentValue = getDefaultPartyDocumentValueForUpdate(party, documentType);
 
-            defaultPartyDocumentValue.setIsDefault(Boolean.FALSE);
+            defaultPartyDocumentValue.setIsDefault(false);
             updatePartyDocumentFromValue(defaultPartyDocumentValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var partyDocument = PartyDocumentFactory.getInstance().create(party, document, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2424,11 +2424,11 @@ public class DocumentControl
                     // If I'm the default, and a default already existed...
                     var defaultPartyDocumentValue = getDefaultPartyDocumentValueForUpdate(party, documentType);
 
-                    defaultPartyDocumentValue.setIsDefault(Boolean.FALSE);
+                    defaultPartyDocumentValue.setIsDefault(false);
                     updatePartyDocumentFromValue(defaultPartyDocumentValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -2467,7 +2467,7 @@ public class DocumentControl
                     }
                     var partyDocumentDetailValue = defaultPartyDocument.getPartyDocumentValue().clone();
 
-                    partyDocumentDetailValue.setIsDefault(Boolean.TRUE);
+                    partyDocumentDetailValue.setIsDefault(true);
                     updatePartyDocumentFromValue(partyDocumentDetailValue, false, deletedBy);
                 }
             }

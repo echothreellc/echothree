@@ -42,7 +42,7 @@ public class ContactEmailAddressVerificationActionForm
 
             form.setContactMechanismName(contactMechanismName);
             form.setDefaultEmailAddressVerificationChoice(emailAddressVerificationChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = ContactUtil.getHome().getEmailAddressVerificationChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

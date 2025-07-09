@@ -42,7 +42,7 @@ public class CustomerStatusActionForm
 
             form.setCustomerName(customerName);
             form.setDefaultCustomerStatusChoice(customerStatusChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = CustomerUtil.getHome().getCustomerStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

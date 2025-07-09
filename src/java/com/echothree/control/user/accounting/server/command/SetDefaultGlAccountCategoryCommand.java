@@ -65,7 +65,7 @@ public class SetDefaultGlAccountCategoryCommand
         var glAccountCategoryDetailValue = accountingControl.getGlAccountCategoryDetailValueByNameForUpdate(glAccountCategoryName);
         
         if(glAccountCategoryDetailValue != null) {
-            glAccountCategoryDetailValue.setIsDefault(Boolean.TRUE);
+            glAccountCategoryDetailValue.setIsDefault(true);
             accountingControl.updateGlAccountCategoryFromValue(glAccountCategoryDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownGlAccountCategoryName.name(), glAccountCategoryName);

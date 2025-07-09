@@ -66,7 +66,7 @@ public class SetDefaultIndexCommand
         var indexDetailValue = indexControl.getIndexDetailValueByNameForUpdate(indexName);
         
         if(indexDetailValue != null) {
-            indexDetailValue.setIsDefault(Boolean.TRUE);
+            indexDetailValue.setIsDefault(true);
             indexControl.updateIndexFromValue(indexDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownIndexName.name(), indexName);

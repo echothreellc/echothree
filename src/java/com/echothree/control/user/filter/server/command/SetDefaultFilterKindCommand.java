@@ -65,7 +65,7 @@ public class SetDefaultFilterKindCommand
         var filterKindDetailValue = filterControl.getFilterKindDetailValueByNameForUpdate(filterKindName);
         
         if(filterKindDetailValue != null) {
-            filterKindDetailValue.setIsDefault(Boolean.TRUE);
+            filterKindDetailValue.setIsDefault(true);
             filterControl.updateFilterKindFromValue(filterKindDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownFilterKindName.name(), filterKindName);

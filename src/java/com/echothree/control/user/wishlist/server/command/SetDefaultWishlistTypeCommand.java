@@ -65,7 +65,7 @@ public class SetDefaultWishlistTypeCommand
         var wishlistTypeDetailValue = wishlistControl.getWishlistTypeDetailValueByNameForUpdate(wishlistTypeName);
         
         if(wishlistTypeDetailValue != null) {
-            wishlistTypeDetailValue.setIsDefault(Boolean.TRUE);
+            wishlistTypeDetailValue.setIsDefault(true);
             wishlistControl.updateWishlistTypeFromValue(wishlistTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownWishlistTypeName.name(), wishlistTypeName);

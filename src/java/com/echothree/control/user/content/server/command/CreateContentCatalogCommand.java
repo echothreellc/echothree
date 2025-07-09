@@ -138,7 +138,7 @@ public class CreateContentCatalogCommand
                     contentCatalog = contentControl.createContentCatalog(contentCollection, contentCatalogName, defaultOfferUse,
                             isDefault, sortOrder, partyPK);
                     contentControl.createContentCategory(contentCatalog, ContentCategories.ROOT.toString(), null,
-                            defaultOfferUse, null, Boolean.FALSE, 0, partyPK);
+                            defaultOfferUse, null, false, 0, partyPK);
                     
                     if(description != null) {
                         var language = getPreferredLanguage();

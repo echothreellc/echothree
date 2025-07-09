@@ -52,7 +52,7 @@ public class SetDefaultGenderCommand
         var genderDetailValue = partyControl.getGenderDetailValueByNameForUpdate(genderName);
         
         if(genderDetailValue != null) {
-            genderDetailValue.setIsDefault(Boolean.TRUE);
+            genderDetailValue.setIsDefault(true);
             partyControl.updateGenderFromValue(genderDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownGenderName.name(), genderName);

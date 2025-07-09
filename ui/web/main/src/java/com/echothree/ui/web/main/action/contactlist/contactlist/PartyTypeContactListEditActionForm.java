@@ -57,7 +57,7 @@ public class PartyTypeContactListEditActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
 
-        addWhenCreated = Boolean.FALSE;
+        addWhenCreated = false;
     }
 
 }

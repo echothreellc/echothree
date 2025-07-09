@@ -52,7 +52,7 @@ public class SetDefaultAssociateProgramCommand
         var associateProgramDetailValue = associateControl.getAssociateProgramDetailValueByNameForUpdate(associateProgramName);
         
         if(associateProgramDetailValue != null) {
-            associateProgramDetailValue.setIsDefault(Boolean.TRUE);
+            associateProgramDetailValue.setIsDefault(true);
             associateControl.updateAssociateProgramFromValue(associateProgramDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownAssociateProgramName.name(), associateProgramName);

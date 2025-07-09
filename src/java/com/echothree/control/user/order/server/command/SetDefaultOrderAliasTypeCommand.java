@@ -72,7 +72,7 @@ public class SetDefaultOrderAliasTypeCommand
             var orderAliasTypeDetailValue = orderAliasControl.getOrderAliasTypeDetailValueByNameForUpdate(orderType, orderAliasTypeName);
 
             if(orderAliasTypeDetailValue != null) {
-                orderAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
+                orderAliasTypeDetailValue.setIsDefault(true);
                 orderAliasControl.updateOrderAliasTypeFromValue(orderAliasTypeDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownOrderAliasTypeName.name(), orderTypeName, orderAliasTypeName);

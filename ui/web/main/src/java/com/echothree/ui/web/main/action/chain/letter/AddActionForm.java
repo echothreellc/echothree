@@ -52,7 +52,7 @@ public class AddActionForm
             var commandForm = LetterUtil.getHome().getGetLetterSourceChoicesForm();
 
             commandForm.setDefaultLetterSourceChoice(letterSourceChoice);
-            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = LetterUtil.getHome().getLetterSourceChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -71,7 +71,7 @@ public class AddActionForm
             var commandForm = ContactListUtil.getHome().getGetContactListChoicesForm();
 
             commandForm.setDefaultContactListChoice(contactListChoice);
-            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = ContactListUtil.getHome().getContactListChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -180,7 +180,7 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        isDefault = Boolean.FALSE;
+        isDefault = false;
     }
     
 }

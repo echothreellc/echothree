@@ -76,10 +76,10 @@ public class LicenseControl
         if(defaultFound && isDefault) {
             var defaultLicenseTypeDetailValue = getDefaultLicenseTypeDetailValueForUpdate();
 
-            defaultLicenseTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultLicenseTypeDetailValue.setIsDefault(false);
             updateLicenseTypeFromValue(defaultLicenseTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var licenseType = LicenseTypeFactory.getInstance().create();
@@ -282,11 +282,11 @@ public class LicenseControl
                     // If I'm the default, and a default already existed...
                     var defaultLicenseTypeDetailValue = getDefaultLicenseTypeDetailValueForUpdate();
 
-                    defaultLicenseTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultLicenseTypeDetailValue.setIsDefault(false);
                     updateLicenseTypeFromValue(defaultLicenseTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -327,7 +327,7 @@ public class LicenseControl
                     }
                     var licenseTypeDetailValue = Objects.requireNonNull(defaultLicenseType).getLastDetailForUpdate().getLicenseTypeDetailValue().clone();
 
-                    licenseTypeDetailValue.setIsDefault(Boolean.TRUE);
+                    licenseTypeDetailValue.setIsDefault(true);
                     updateLicenseTypeFromValue(licenseTypeDetailValue, false, deletedBy);
                 }
             }

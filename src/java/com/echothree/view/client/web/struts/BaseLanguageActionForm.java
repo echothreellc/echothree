@@ -36,7 +36,7 @@ public class BaseLanguageActionForm
                 var commandForm = PartyUtil.getHome().getGetLanguageChoicesForm();
                 
                 commandForm.setDefaultLanguageChoice(languageChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(false));
 
                 var commandResult = PartyUtil.getHome().getLanguageChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();

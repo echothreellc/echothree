@@ -137,10 +137,10 @@ public class VendorControl
         if(defaultFound && isDefault) {
             var defaultVendorTypeDetailValue = getDefaultVendorTypeDetailValueForUpdate();
             
-            defaultVendorTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultVendorTypeDetailValue.setIsDefault(false);
             updateVendorTypeFromValue(defaultVendorTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var vendorType = VendorTypeFactory.getInstance().create();
@@ -382,11 +382,11 @@ public class VendorControl
                     // If I'm the default, and a default already existed...
                     var defaultVendorTypeDetailValue = getDefaultVendorTypeDetailValueForUpdate();
                     
-                    defaultVendorTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultVendorTypeDetailValue.setIsDefault(false);
                     updateVendorTypeFromValue(defaultVendorTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -427,7 +427,7 @@ public class VendorControl
                 }
                 var vendorTypeDetailValue = Objects.requireNonNull(defaultVendorType).getLastDetailForUpdate().getVendorTypeDetailValue().clone();
                 
-                vendorTypeDetailValue.setIsDefault(Boolean.TRUE);
+                vendorTypeDetailValue.setIsDefault(true);
                 updateVendorTypeFromValue(vendorTypeDetailValue, false, deletedBy);
             }
         }
@@ -1564,10 +1564,10 @@ public class VendorControl
         if(defaultFound && isDefault) {
             var defaultItemPurchasingCategoryDetailValue = getDefaultItemPurchasingCategoryDetailValueForUpdate();
             
-            defaultItemPurchasingCategoryDetailValue.setIsDefault(Boolean.FALSE);
+            defaultItemPurchasingCategoryDetailValue.setIsDefault(false);
             updateItemPurchasingCategoryFromValue(defaultItemPurchasingCategoryDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var itemPurchasingCategory = ItemPurchasingCategoryFactory.getInstance().create();
@@ -1847,11 +1847,11 @@ public class VendorControl
                     // If I'm the default, and a default already existed...
                     var defaultItemPurchasingCategoryDetailValue = getDefaultItemPurchasingCategoryDetailValueForUpdate();
                     
-                    defaultItemPurchasingCategoryDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultItemPurchasingCategoryDetailValue.setIsDefault(false);
                     updateItemPurchasingCategoryFromValue(defaultItemPurchasingCategoryDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -1894,7 +1894,7 @@ public class VendorControl
                     }
                     var itemPurchasingCategoryDetailValue = Objects.requireNonNull(defaultItemPurchasingCategory).getLastDetailForUpdate().getItemPurchasingCategoryDetailValue().clone();
 
-                    itemPurchasingCategoryDetailValue.setIsDefault(Boolean.TRUE);
+                    itemPurchasingCategoryDetailValue.setIsDefault(true);
                     updateItemPurchasingCategoryFromValue(itemPurchasingCategoryDetailValue, false, deletedBy);
                 }
             }

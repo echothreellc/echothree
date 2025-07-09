@@ -67,7 +67,7 @@ public class SetDefaultOfferCommand
         var offerDetailValue = offerControl.getOfferDetailValueByNameForUpdate(offerName);
         
         if(offerDetailValue != null) {
-            offerDetailValue.setIsDefault(Boolean.TRUE);
+            offerDetailValue.setIsDefault(true);
             OfferLogic.getInstance().updateOfferFromValue(offerDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownOfferName.name(), offerName);

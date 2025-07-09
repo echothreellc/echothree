@@ -60,10 +60,10 @@ public class PaymentMethodTypeControl
         if(defaultFound && isDefault) {
             var defaultPaymentMethodTypeDetailValue = getDefaultPaymentMethodTypeDetailValueForUpdate();
 
-            defaultPaymentMethodTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultPaymentMethodTypeDetailValue.setIsDefault(false);
             updatePaymentMethodTypeFromValue(defaultPaymentMethodTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var paymentMethodType = PaymentMethodTypeFactory.getInstance().create();
@@ -258,11 +258,11 @@ public class PaymentMethodTypeControl
                     // If I'm the default, and a default already existed...
                     var defaultPaymentMethodTypeDetailValue = getDefaultPaymentMethodTypeDetailValueForUpdate();
 
-                    defaultPaymentMethodTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultPaymentMethodTypeDetailValue.setIsDefault(false);
                     updatePaymentMethodTypeFromValue(defaultPaymentMethodTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -304,7 +304,7 @@ public class PaymentMethodTypeControl
                 }
                 var paymentMethodTypeDetailValue = Objects.requireNonNull(defaultPaymentMethodType).getLastDetailForUpdate().getPaymentMethodTypeDetailValue().clone();
 
-                paymentMethodTypeDetailValue.setIsDefault(Boolean.TRUE);
+                paymentMethodTypeDetailValue.setIsDefault(true);
                 updatePaymentMethodTypeFromValue(paymentMethodTypeDetailValue, false, deletedBy);
             }
         }

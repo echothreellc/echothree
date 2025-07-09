@@ -44,7 +44,7 @@ public class StatusActionForm
             form.setVendorName(vendorName);
             form.setVendorItemName(vendorItemName);
             form.setDefaultVendorItemStatusChoice(vendorItemStatusChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = VendorUtil.getHome().getVendorItemStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

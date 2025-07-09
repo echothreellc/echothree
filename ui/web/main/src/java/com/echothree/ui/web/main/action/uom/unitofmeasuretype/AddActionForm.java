@@ -49,7 +49,7 @@ public class AddActionForm
                 var commandForm = AccountingUtil.getHome().getGetSymbolPositionChoicesForm();
                 
                 commandForm.setDefaultSymbolPositionChoice(symbolPositionChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(false));
 
                 var commandResult = AccountingUtil.getHome().getSymbolPositionChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
@@ -154,7 +154,7 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        isDefault = Boolean.FALSE;
+        isDefault = false;
     }
     
 }

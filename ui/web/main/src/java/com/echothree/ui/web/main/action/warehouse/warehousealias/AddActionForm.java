@@ -43,7 +43,7 @@ public class AddActionForm
 
             form.setPartyTypeName(PartyTypes.WAREHOUSE.name());
             form.setDefaultPartyAliasTypeChoice(partyAliasTypeChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = PartyUtil.getHome().getPartyAliasTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

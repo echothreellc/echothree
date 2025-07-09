@@ -65,7 +65,7 @@ public class SetDefaultContactListTypeCommand
         var contactListTypeDetailValue = contactListControl.getContactListTypeDetailValueByNameForUpdate(contactListTypeName);
         
         if(contactListTypeDetailValue != null) {
-            contactListTypeDetailValue.setIsDefault(Boolean.TRUE);
+            contactListTypeDetailValue.setIsDefault(true);
             contactListControl.updateContactListTypeFromValue(contactListTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownContactListTypeName.name(), contactListTypeName);

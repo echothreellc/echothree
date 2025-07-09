@@ -165,10 +165,10 @@ public class FilterControl
         if(defaultFound && isDefault) {
             var defaultFilterKindDetailValue = getDefaultFilterKindDetailValueForUpdate();
 
-            defaultFilterKindDetailValue.setIsDefault(Boolean.FALSE);
+            defaultFilterKindDetailValue.setIsDefault(false);
             updateFilterKindFromValue(defaultFilterKindDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var filterKind = FilterKindFactory.getInstance().create();
@@ -385,11 +385,11 @@ public class FilterControl
                 // If I'm the default, and a default already existed...
                 var defaultFilterKindDetailValue = getDefaultFilterKindDetailValueForUpdate();
 
-                defaultFilterKindDetailValue.setIsDefault(Boolean.FALSE);
+                defaultFilterKindDetailValue.setIsDefault(false);
                 updateFilterKindFromValue(defaultFilterKindDetailValue, false, updatedBy);
             } else if(!isDefault && !defaultFound) {
                 // If I'm not the default, and no other default exists...
-                isDefault = Boolean.TRUE;
+                isDefault = true;
             }
         }
 
@@ -427,7 +427,7 @@ public class FilterControl
                 }
                 var filterKindDetailValue = Objects.requireNonNull(defaultFilterKind).getLastDetailForUpdate().getFilterKindDetailValue().clone();
 
-                filterKindDetailValue.setIsDefault(Boolean.TRUE);
+                filterKindDetailValue.setIsDefault(true);
                 updateFilterKindFromValue(filterKindDetailValue, false, deletedBy);
             }
         }
@@ -595,10 +595,10 @@ public class FilterControl
         if(defaultFound && isDefault) {
             var defaultFilterTypeDetailValue = getDefaultFilterTypeDetailValueForUpdate(filterKind);
 
-            defaultFilterTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultFilterTypeDetailValue.setIsDefault(false);
             updateFilterTypeFromValue(defaultFilterTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var filterType = FilterTypeFactory.getInstance().create();
@@ -826,11 +826,11 @@ public class FilterControl
                     // If I'm the default, and a default already existed...
                     var defaultFilterTypeDetailValue = getDefaultFilterTypeDetailValueForUpdate(filterKind);
 
-                    defaultFilterTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultFilterTypeDetailValue.setIsDefault(false);
                     updateFilterTypeFromValue(defaultFilterTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -869,7 +869,7 @@ public class FilterControl
                 }
                 var filterTypeDetailValue = Objects.requireNonNull(defaultFilterType).getLastDetailForUpdate().getFilterTypeDetailValue().clone();
 
-                filterTypeDetailValue.setIsDefault(Boolean.TRUE);
+                filterTypeDetailValue.setIsDefault(true);
                 updateFilterTypeFromValue(filterTypeDetailValue, false, deletedBy);
             }
         }
@@ -1322,10 +1322,10 @@ public class FilterControl
         if(defaultFound && isDefault) {
             var defaultFilterAdjustmentDetailValue = getDefaultFilterAdjustmentDetailValueForUpdate(filterKind);
             
-            defaultFilterAdjustmentDetailValue.setIsDefault(Boolean.FALSE);
+            defaultFilterAdjustmentDetailValue.setIsDefault(false);
             updateFilterAdjustmentFromValue(defaultFilterAdjustmentDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var filterAdjustment = FilterAdjustmentFactory.getInstance().create();
@@ -1576,11 +1576,11 @@ public class FilterControl
                     // If I'm the default, and a default already existed...
                     var defaultFilterAdjustmentDetailValue = getDefaultFilterAdjustmentDetailValueForUpdate(filterKind);
                     
-                    defaultFilterAdjustmentDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultFilterAdjustmentDetailValue.setIsDefault(false);
                     updateFilterAdjustmentFromValue(defaultFilterAdjustmentDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -1623,7 +1623,7 @@ public class FilterControl
                 }
                 var filterAdjustmentDetailValue = Objects.requireNonNull(defaultFilterAdjustment).getLastDetailForUpdate().getFilterAdjustmentDetailValue().clone();
                 
-                filterAdjustmentDetailValue.setIsDefault(Boolean.TRUE);
+                filterAdjustmentDetailValue.setIsDefault(true);
                 updateFilterAdjustmentFromValue(filterAdjustmentDetailValue, false, deletedBy);
             }
         }
@@ -2352,10 +2352,10 @@ public class FilterControl
         if(defaultFound && isDefault) {
             var defaultFilterDetailValue = getDefaultFilterDetailValueForUpdate(filterType);
             
-            defaultFilterDetailValue.setIsDefault(Boolean.FALSE);
+            defaultFilterDetailValue.setIsDefault(false);
             updateFilterFromValue(defaultFilterDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var filter = FilterFactory.getInstance().create();
@@ -2617,11 +2617,11 @@ public class FilterControl
                     // If I'm the default, and a default already existed...
                     var defaultFilterDetailValue = getDefaultFilterDetailValueForUpdate(filterType);
                     
-                    defaultFilterDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultFilterDetailValue.setIsDefault(false);
                     updateFilterFromValue(defaultFilterDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -2662,7 +2662,7 @@ public class FilterControl
                 }
                 var filterDetailValue = Objects.requireNonNull(defaultFilter).getLastDetailForUpdate().getFilterDetailValue().clone();
                 
-                filterDetailValue.setIsDefault(Boolean.TRUE);
+                filterDetailValue.setIsDefault(true);
                 updateFilterFromValue(filterDetailValue, false, deletedBy);
             }
         }

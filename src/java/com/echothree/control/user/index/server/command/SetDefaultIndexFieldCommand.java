@@ -71,7 +71,7 @@ public class SetDefaultIndexFieldCommand
                     indexFieldName);
             
             if(indexFieldDetailValue != null) {
-                indexFieldDetailValue.setIsDefault(Boolean.TRUE);
+                indexFieldDetailValue.setIsDefault(true);
                 indexControl.updateIndexFieldFromValue(indexFieldDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownIndexFieldName.name(), indexTypeName, indexFieldName);

@@ -44,7 +44,7 @@ public class BasePersonActionForm
     private void setupPersonalTitleChoices()
             throws NamingException {
         if(personalTitleChoices == null) {
-            personalTitleChoices = PersonalTitlesHelper.getInstance().getPersonalTitleChoices(userVisitPK, Boolean.TRUE);
+            personalTitleChoices = PersonalTitlesHelper.getInstance().getPersonalTitleChoices(userVisitPK, true);
 
             if(personalTitleChoice == null) {
                 personalTitleChoice = personalTitleChoices == null ? null : personalTitleChoices.getDefaultValue();
@@ -55,7 +55,7 @@ public class BasePersonActionForm
     private void setupNameSuffixChoices()
             throws NamingException {
         if(nameSuffixChoices == null) {
-            nameSuffixChoices = NameSuffixesHelper.getInstance().getNameSuffixChoices(userVisitPK, Boolean.TRUE);
+            nameSuffixChoices = NameSuffixesHelper.getInstance().getNameSuffixChoices(userVisitPK, true);
 
             if(nameSuffixChoice == null) {
                 nameSuffixChoice = nameSuffixChoices == null ? null : nameSuffixChoices.getDefaultValue();

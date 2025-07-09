@@ -65,7 +65,7 @@ public class SetDefaultContentPageLayoutCommand
         var contentPageLayoutDetailValue = contentControl.getContentPageLayoutDetailValueByNameForUpdate(contentPageLayoutName);
         
         if(contentPageLayoutDetailValue != null) {
-            contentPageLayoutDetailValue.setIsDefault(Boolean.TRUE);
+            contentPageLayoutDetailValue.setIsDefault(true);
             contentControl.updateContentPageLayoutFromValue(contentPageLayoutDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownContentPageLayoutName.name(), contentPageLayoutName);

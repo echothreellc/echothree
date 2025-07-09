@@ -44,7 +44,7 @@ public class AddActionForm
                 
                 commandForm.setWorkflowName(workflowName);
                 commandForm.setDefaultSecurityRoleChoice(securityRoleChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(false));
 
                 var commandResult = SecurityUtil.getHome().getSecurityRoleChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();

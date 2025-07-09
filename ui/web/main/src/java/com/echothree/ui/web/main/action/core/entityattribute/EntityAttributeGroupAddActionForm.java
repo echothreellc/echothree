@@ -43,7 +43,7 @@ public class EntityAttributeGroupAddActionForm
             var commandForm = CoreUtil.getHome().getGetEntityAttributeGroupChoicesForm();
 
             commandForm.setDefaultEntityAttributeGroupChoice(entityAttributeGroupChoice);
-            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = CoreUtil.getHome().getEntityAttributeGroupChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();

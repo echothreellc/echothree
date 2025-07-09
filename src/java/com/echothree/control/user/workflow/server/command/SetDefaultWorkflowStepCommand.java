@@ -70,7 +70,7 @@ public class SetDefaultWorkflowStepCommand
             var workflowStepDetailValue = workflowControl.getWorkflowStepDetailValueByNameForUpdate(workflow, workflowStepName);
             
             if(workflowStepDetailValue != null) {
-                workflowStepDetailValue.setIsDefault(Boolean.TRUE);
+                workflowStepDetailValue.setIsDefault(true);
                 workflowControl.updateWorkflowStepFromValue(workflowStepDetailValue, getUserVisitPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownWorkflowStepName.name(), workflowName, workflowStepName);

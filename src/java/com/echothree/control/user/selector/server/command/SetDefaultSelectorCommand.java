@@ -73,7 +73,7 @@ public class SetDefaultSelectorCommand
                 var selectorDetailValue = selectorControl.getSelectorDetailValueByNameForUpdate(selectorType, selectorName);
                 
                 if(selectorDetailValue != null) {
-                    selectorDetailValue.setIsDefault(Boolean.TRUE);
+                    selectorDetailValue.setIsDefault(true);
                     selectorControl.updateSelectorFromValue(selectorDetailValue, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownSelectorName.name(), selectorName);

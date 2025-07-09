@@ -69,7 +69,7 @@ public class SetDefaultFilterAdjustmentCommand
             var filterAdjustmentDetailValue = filterControl.getFilterAdjustmentDetailValueByNameForUpdate(filterKind, filterAdjustmentName);
             
             if(filterAdjustmentDetailValue != null) {
-                filterAdjustmentDetailValue.setIsDefault(Boolean.TRUE);
+                filterAdjustmentDetailValue.setIsDefault(true);
                 filterControl.updateFilterAdjustmentFromValue(filterAdjustmentDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownFilterAdjustmentName.name(), filterAdjustmentName);

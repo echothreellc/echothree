@@ -71,7 +71,7 @@ public class SetDefaultReturnReasonCommand
                     returnReasonName);
             
             if(returnReasonDetailValue != null) {
-                returnReasonDetailValue.setIsDefault(Boolean.TRUE);
+                returnReasonDetailValue.setIsDefault(true);
                 returnPolicyControl.updateReturnReasonFromValue(returnReasonDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownReturnReasonName.name(), returnReasonName);

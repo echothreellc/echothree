@@ -65,7 +65,7 @@ public class SetDefaultDocumentTypeCommand
         var documentTypeDetailValue = documentControl.getDocumentTypeDetailValueByNameForUpdate(documentTypeName);
         
         if(documentTypeDetailValue != null) {
-            documentTypeDetailValue.setIsDefault(Boolean.TRUE);
+            documentTypeDetailValue.setIsDefault(true);
             documentControl.updateDocumentTypeFromValue(documentTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownDocumentTypeName.name(), documentTypeName);

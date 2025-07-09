@@ -68,7 +68,7 @@ public class SetDefaultPartyDocumentCommand
             var partyDocumentValue = documentControl.getPartyDocumentValueForUpdate(document);
 
             if(partyDocumentValue != null) {
-                partyDocumentValue.setIsDefault(Boolean.TRUE);
+                partyDocumentValue.setIsDefault(true);
                 documentControl.updatePartyDocumentFromValue(partyDocumentValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownPartyDocument.name(), documentName);

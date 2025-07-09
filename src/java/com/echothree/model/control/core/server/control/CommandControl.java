@@ -430,10 +430,10 @@ public class CommandControl
         if(defaultFound && isDefault) {
             var defaultCommandMessageTypeDetailValue = getDefaultCommandMessageTypeDetailValueForUpdate();
 
-            defaultCommandMessageTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultCommandMessageTypeDetailValue.setIsDefault(false);
             updateCommandMessageTypeFromValue(defaultCommandMessageTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var commandMessageType = CommandMessageTypeFactory.getInstance().create();
@@ -629,11 +629,11 @@ public class CommandControl
                     // If I'm the default, and a default already existed...
                     var defaultCommandMessageTypeDetailValue = getDefaultCommandMessageTypeDetailValueForUpdate();
 
-                    defaultCommandMessageTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultCommandMessageTypeDetailValue.setIsDefault(false);
                     updateCommandMessageTypeFromValue(defaultCommandMessageTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -672,7 +672,7 @@ public class CommandControl
                 }
                 var commandMessageTypeDetailValue = Objects.requireNonNull(defaultCommandMessageType).getLastDetailForUpdate().getCommandMessageTypeDetailValue().clone();
 
-                commandMessageTypeDetailValue.setIsDefault(Boolean.TRUE);
+                commandMessageTypeDetailValue.setIsDefault(true);
                 updateCommandMessageTypeFromValue(commandMessageTypeDetailValue, false, deletedBy);
             }
         }

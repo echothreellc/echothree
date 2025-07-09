@@ -49,7 +49,7 @@ public class AddActionForm
             var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
             form.setDefaultUnitOfMeasureTypeChoice(elevationUnitOfMeasureTypeChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
             form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_ELEVATION);
 
             var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
@@ -69,7 +69,7 @@ public class AddActionForm
             var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
             form.setDefaultUnitOfMeasureTypeChoice(altitudeUnitOfMeasureTypeChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
             form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_ALTITUDE);
 
             var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);

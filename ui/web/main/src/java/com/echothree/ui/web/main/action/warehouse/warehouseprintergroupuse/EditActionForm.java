@@ -41,7 +41,7 @@ public class EditActionForm
                 var commandForm = PrinterUtil.getHome().getGetPrinterGroupChoicesForm();
 
                 commandForm.setDefaultPrinterGroupChoice(printerGroupChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(false));
 
                 var commandResult = PrinterUtil.getHome().getPrinterGroupChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();

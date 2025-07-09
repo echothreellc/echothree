@@ -40,7 +40,7 @@ public class AddActionForm
             var form = ItemUtil.getHome().getGetItemDescriptionTypeUseTypeChoicesForm();
 
             form.setDefaultItemDescriptionTypeUseTypeChoice(itemDescriptionTypeUseTypeChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = ItemUtil.getHome().getItemDescriptionTypeUseTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

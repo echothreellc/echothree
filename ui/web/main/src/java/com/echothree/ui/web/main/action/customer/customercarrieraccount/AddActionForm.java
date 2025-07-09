@@ -44,7 +44,7 @@ public class AddActionForm
                 var commandForm = CarrierUtil.getHome().getGetCarrierChoicesForm();
 
                 commandForm.setDefaultCarrierChoice(carrierChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(false));
 
                 var commandResult = CarrierUtil.getHome().getCarrierChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
@@ -109,7 +109,7 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
 
-        alwaysUseThirdPartyBilling = Boolean.FALSE;
+        alwaysUseThirdPartyBilling = false;
     }
 
 }
