@@ -64,7 +64,7 @@ public class AddActionForm
             var form = ContactUtil.getHome().getGetPostalAddressFormatChoicesForm();
 
             form.setDefaultPostalAddressFormatChoice(postalAddressFormatChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = ContactUtil.getHome().getPostalAddressFormatChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -469,14 +469,14 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
 
-        this.areaCodeRequired = Boolean.FALSE;
-        this.cityRequired = Boolean.FALSE;
-        this.cityGeoCodeRequired = Boolean.FALSE;
-        this.stateRequired = Boolean.FALSE;
-        this.stateGeoCodeRequired = Boolean.FALSE;
-        this.postalCodeRequired = Boolean.FALSE;
-        this.postalCodeGeoCodeRequired = Boolean.FALSE;
-        this.isDefault = Boolean.FALSE;
+        this.areaCodeRequired = false;
+        this.cityRequired = false;
+        this.cityGeoCodeRequired = false;
+        this.stateRequired = false;
+        this.stateGeoCodeRequired = false;
+        this.postalCodeRequired = false;
+        this.postalCodeGeoCodeRequired = false;
+        this.isDefault = false;
     }
 
 }

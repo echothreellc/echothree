@@ -51,7 +51,7 @@ public class EncryptCommand
         var externalEntityTypeName = form.getExternalEntityTypeName();
         var value = form.getValue();
 
-        result.setValue(EncryptionUtils.getInstance().encrypt(externalEntityTypeName, null, Boolean.TRUE, value));
+        result.setValue(EncryptionUtils.getInstance().encrypt(externalEntityTypeName, null, true, value));
 
         return result;
     }

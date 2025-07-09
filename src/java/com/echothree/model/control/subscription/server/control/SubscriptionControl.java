@@ -105,10 +105,10 @@ public class SubscriptionControl
         if(defaultFound && isDefault) {
             var defaultSubscriptionKindDetailValue = getDefaultSubscriptionKindDetailValueForUpdate();
 
-            defaultSubscriptionKindDetailValue.setIsDefault(Boolean.FALSE);
+            defaultSubscriptionKindDetailValue.setIsDefault(false);
             updateSubscriptionKindFromValue(defaultSubscriptionKindDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var subscriptionKind = SubscriptionKindFactory.getInstance().create();
@@ -299,11 +299,11 @@ public class SubscriptionControl
                 // If I'm the default, and a default already existed...
                 var defaultSubscriptionKindDetailValue = getDefaultSubscriptionKindDetailValueForUpdate();
 
-                defaultSubscriptionKindDetailValue.setIsDefault(Boolean.FALSE);
+                defaultSubscriptionKindDetailValue.setIsDefault(false);
                 updateSubscriptionKindFromValue(defaultSubscriptionKindDetailValue, false, updatedBy);
             } else if(!isDefault && !defaultFound) {
                 // If I'm not the default, and no other default exists...
-                isDefault = Boolean.TRUE;
+                isDefault = true;
             }
         }
 
@@ -341,7 +341,7 @@ public class SubscriptionControl
                 }
                 var subscriptionKindDetailValue = Objects.requireNonNull(defaultSubscriptionKind).getLastDetailForUpdate().getSubscriptionKindDetailValue().clone();
 
-                subscriptionKindDetailValue.setIsDefault(Boolean.TRUE);
+                subscriptionKindDetailValue.setIsDefault(true);
                 updateSubscriptionKindFromValue(subscriptionKindDetailValue, false, deletedBy);
             }
         }
@@ -510,10 +510,10 @@ public class SubscriptionControl
         if(defaultFound && isDefault) {
             var defaultSubscriptionTypeDetailValue = getDefaultSubscriptionTypeDetailValueForUpdate(subscriptionKind);
             
-            defaultSubscriptionTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultSubscriptionTypeDetailValue.setIsDefault(false);
             updateSubscriptionTypeFromValue(defaultSubscriptionTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var subscriptionType = SubscriptionTypeFactory.getInstance().create();
@@ -739,11 +739,11 @@ public class SubscriptionControl
                     // If I'm the default, and a default already existed...
                     var defaultSubscriptionTypeDetailValue = getDefaultSubscriptionTypeDetailValueForUpdate(subscriptionKind);
                     
-                    defaultSubscriptionTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultSubscriptionTypeDetailValue.setIsDefault(false);
                     updateSubscriptionTypeFromValue(defaultSubscriptionTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -791,7 +791,7 @@ public class SubscriptionControl
                 }
                 var subscriptionTypeDetailValue = Objects.requireNonNull(defaultSubscriptionType).getLastDetailForUpdate().getSubscriptionTypeDetailValue().clone();
                 
-                subscriptionTypeDetailValue.setIsDefault(Boolean.TRUE);
+                subscriptionTypeDetailValue.setIsDefault(true);
                 updateSubscriptionTypeFromValue(subscriptionTypeDetailValue, false, deletedBy);
             }
         }

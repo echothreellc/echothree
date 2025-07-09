@@ -65,7 +65,7 @@ public class SetDefaultItemDescriptionTypeUseTypeCommand
         var itemDescriptionTypeUseTypeDetailValue = itemControl.getItemDescriptionTypeUseTypeDetailValueByNameForUpdate(itemDescriptionTypeUseTypeName);
         
         if(itemDescriptionTypeUseTypeDetailValue != null) {
-            itemDescriptionTypeUseTypeDetailValue.setIsDefault(Boolean.TRUE);
+            itemDescriptionTypeUseTypeDetailValue.setIsDefault(true);
             itemControl.updateItemDescriptionTypeUseTypeFromValue(itemDescriptionTypeUseTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownItemDescriptionTypeUseTypeName.name(), itemDescriptionTypeUseTypeName);

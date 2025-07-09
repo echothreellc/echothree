@@ -73,7 +73,7 @@ public class SetDefaultApplicationEditorUseCommand
                     applicationEditorUseName);
 
             if(applicationEditorUseDetailValue != null) {
-                applicationEditorUseDetailValue.setIsDefault(Boolean.TRUE);
+                applicationEditorUseDetailValue.setIsDefault(true);
                 applicationControl.updateApplicationEditorUseFromValue(applicationEditorUseDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownApplicationEditorUseName.name(), applicationEditorUseName);

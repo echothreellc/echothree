@@ -419,10 +419,10 @@ public class WorkEffortControl
         if(defaultFound && isDefault) {
             var defaultWorkEffortScopeDetailValue = getDefaultWorkEffortScopeDetailValueForUpdate(workEffortType);
             
-            defaultWorkEffortScopeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultWorkEffortScopeDetailValue.setIsDefault(false);
             updateWorkEffortScopeFromValue(defaultWorkEffortScopeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var workEffortScope = WorkEffortScopeFactory.getInstance().create();
@@ -649,11 +649,11 @@ public class WorkEffortControl
                     // If I'm the default, and a default already existed...
                     var defaultWorkEffortScopeDetailValue = getDefaultWorkEffortScopeDetailValueForUpdate(workEffortType);
                     
-                    defaultWorkEffortScopeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultWorkEffortScopeDetailValue.setIsDefault(false);
                     updateWorkEffortScopeFromValue(defaultWorkEffortScopeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -701,7 +701,7 @@ public class WorkEffortControl
 
                     var workEffortScopeDetailValue = Objects.requireNonNull(defaultWorkEffortScope).getLastDetailForUpdate().getWorkEffortScopeDetailValue().clone();
                     
-                    workEffortScopeDetailValue.setIsDefault(Boolean.TRUE);
+                    workEffortScopeDetailValue.setIsDefault(true);
                     updateWorkEffortScopeFromValue(workEffortScopeDetailValue, false, deletedBy);
                 }
             }

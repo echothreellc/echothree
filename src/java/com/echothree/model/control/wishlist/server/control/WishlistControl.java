@@ -110,10 +110,10 @@ public class WishlistControl
         if(defaultFound && isDefault) {
             var defaultWishlistTypeDetailValue = getDefaultWishlistTypeDetailValueForUpdate();
             
-            defaultWishlistTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultWishlistTypeDetailValue.setIsDefault(false);
             updateWishlistTypeFromValue(defaultWishlistTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var wishlistType = WishlistTypeFactory.getInstance().create();
@@ -340,11 +340,11 @@ public class WishlistControl
                     // If I'm the default, and a default already existed...
                     var defaultWishlistTypeDetailValue = getDefaultWishlistTypeDetailValueForUpdate();
                     
-                    defaultWishlistTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultWishlistTypeDetailValue.setIsDefault(false);
                     updateWishlistTypeFromValue(defaultWishlistTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -387,7 +387,7 @@ public class WishlistControl
                 }
                 var wishlistTypeDetailValue = Objects.requireNonNull(defaultWishlistType).getLastDetailForUpdate().getWishlistTypeDetailValue().clone();
                 
-                wishlistTypeDetailValue.setIsDefault(Boolean.TRUE);
+                wishlistTypeDetailValue.setIsDefault(true);
                 updateWishlistTypeFromValue(wishlistTypeDetailValue, false, deletedBy);
             }
         }
@@ -575,10 +575,10 @@ public class WishlistControl
         if(defaultFound && isDefault) {
             var defaultWishlistPriorityDetailValue = getDefaultWishlistPriorityDetailValueForUpdate(wishlistType);
             
-            defaultWishlistPriorityDetailValue.setIsDefault(Boolean.FALSE);
+            defaultWishlistPriorityDetailValue.setIsDefault(false);
             updateWishlistPriorityFromValue(defaultWishlistPriorityDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var wishlistPriority = WishlistPriorityFactory.getInstance().create();
@@ -835,11 +835,11 @@ public class WishlistControl
                     // If I'm the default, and a default already existed...
                     var defaultWishlistPriorityDetailValue = getDefaultWishlistPriorityDetailValueForUpdate(wishlistType);
                     
-                    defaultWishlistPriorityDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultWishlistPriorityDetailValue.setIsDefault(false);
                     updateWishlistPriorityFromValue(defaultWishlistPriorityDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -879,7 +879,7 @@ public class WishlistControl
                 }
                 var wishlistPriorityDetailValue = Objects.requireNonNull(defaultWishlistPriority).getLastDetailForUpdate().getWishlistPriorityDetailValue().clone();
                 
-                wishlistPriorityDetailValue.setIsDefault(Boolean.TRUE);
+                wishlistPriorityDetailValue.setIsDefault(true);
                 updateWishlistPriorityFromValue(wishlistPriorityDetailValue, false, deletedBy);
             }
         }

@@ -101,10 +101,10 @@ public class ScaleControl
         if(defaultFound && isDefault) {
             var defaultScaleTypeDetailValue = getDefaultScaleTypeDetailValueForUpdate();
 
-            defaultScaleTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultScaleTypeDetailValue.setIsDefault(false);
             updateScaleTypeFromValue(defaultScaleTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var scaleType = ScaleTypeFactory.getInstance().create();
@@ -304,11 +304,11 @@ public class ScaleControl
                     // If I'm the default, and a default already existed...
                     var defaultScaleTypeDetailValue = getDefaultScaleTypeDetailValueForUpdate();
 
-                    defaultScaleTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultScaleTypeDetailValue.setIsDefault(false);
                     updateScaleTypeFromValue(defaultScaleTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -347,7 +347,7 @@ public class ScaleControl
                 }
                 var scaleTypeDetailValue = Objects.requireNonNull(defaultScaleType).getLastDetailForUpdate().getScaleTypeDetailValue().clone();
 
-                scaleTypeDetailValue.setIsDefault(Boolean.TRUE);
+                scaleTypeDetailValue.setIsDefault(true);
                 updateScaleTypeFromValue(scaleTypeDetailValue, false, deletedBy);
             }
         }
@@ -520,10 +520,10 @@ public class ScaleControl
         if(defaultFound && isDefault) {
             var defaultScaleDetailValue = getDefaultScaleDetailValueForUpdate();
 
-            defaultScaleDetailValue.setIsDefault(Boolean.FALSE);
+            defaultScaleDetailValue.setIsDefault(false);
             updateScaleFromValue(defaultScaleDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var scale = ScaleFactory.getInstance().create();
@@ -792,11 +792,11 @@ public class ScaleControl
                     // If I'm the default, and a default already existed...
                     var defaultScaleDetailValue = getDefaultScaleDetailValueForUpdate();
 
-                    defaultScaleDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultScaleDetailValue.setIsDefault(false);
                     updateScaleFromValue(defaultScaleDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -838,7 +838,7 @@ public class ScaleControl
                     }
                     var scaleDetailValue = Objects.requireNonNull(defaultScale).getLastDetailForUpdate().getScaleDetailValue().clone();
 
-                    scaleDetailValue.setIsDefault(Boolean.TRUE);
+                    scaleDetailValue.setIsDefault(true);
                     updateScaleFromValue(scaleDetailValue, false, deletedBy);
                 }
             }
@@ -1031,10 +1031,10 @@ public class ScaleControl
         if(defaultFound && isDefault) {
             var defaultScaleUseTypeDetailValue = getDefaultScaleUseTypeDetailValueForUpdate();
 
-            defaultScaleUseTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultScaleUseTypeDetailValue.setIsDefault(false);
             updateScaleUseTypeFromValue(defaultScaleUseTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var scaleUseType = ScaleUseTypeFactory.getInstance().create();
@@ -1234,11 +1234,11 @@ public class ScaleControl
                     // If I'm the default, and a default already existed...
                     var defaultScaleUseTypeDetailValue = getDefaultScaleUseTypeDetailValueForUpdate();
 
-                    defaultScaleUseTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultScaleUseTypeDetailValue.setIsDefault(false);
                     updateScaleUseTypeFromValue(defaultScaleUseTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -1277,7 +1277,7 @@ public class ScaleControl
                 }
                 var scaleUseTypeDetailValue = Objects.requireNonNull(defaultScaleUseType).getLastDetailForUpdate().getScaleUseTypeDetailValue().clone();
 
-                scaleUseTypeDetailValue.setIsDefault(Boolean.TRUE);
+                scaleUseTypeDetailValue.setIsDefault(true);
                 updateScaleUseTypeFromValue(scaleUseTypeDetailValue, false, deletedBy);
             }
         }

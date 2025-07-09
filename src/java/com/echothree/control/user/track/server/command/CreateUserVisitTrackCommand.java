@@ -62,7 +62,7 @@ public class CreateUserVisitTrackCommand
                 
                 if(track == null) {
                     try {
-                        track = trackControl.createTrack(trackValue, Boolean.FALSE, 0, getPartyPK());
+                        track = trackControl.createTrack(trackValue, false, 0, getPartyPK());
                     } catch(PersistenceDatabaseException pde) {
                         if(PersistenceUtils.getInstance().isIntegrityConstraintViolation(pde)) {
                             track = trackControl.getTrackByValue(trackValue);

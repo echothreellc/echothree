@@ -44,7 +44,7 @@ public class AddActionForm
             form.setChainKindName(chainKindName);
             form.setChainTypeName(chainTypeName);
             form.setDefaultChainChoice(chainChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = ChainUtil.getHome().getChainChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

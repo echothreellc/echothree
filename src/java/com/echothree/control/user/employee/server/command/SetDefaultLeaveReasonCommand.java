@@ -66,7 +66,7 @@ public class SetDefaultLeaveReasonCommand
        var leaveReasonDetailValue = employeeControl.getLeaveReasonDetailValueByNameForUpdate(leaveReasonName);
         
         if(leaveReasonDetailValue != null) {
-            leaveReasonDetailValue.setIsDefault(Boolean.TRUE);
+            leaveReasonDetailValue.setIsDefault(true);
             employeeControl.updateLeaveReasonFromValue(leaveReasonDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownLeaveReasonName.name(), leaveReasonName);

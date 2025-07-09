@@ -64,7 +64,7 @@ public class MainAction
         var forumName = request.getParameter(ParameterConstants.FORUM_NAME);
 
         commandForm.setForumName(forumName);
-        commandForm.setIncludeFutureForumThreads(Boolean.TRUE.toString());
+        commandForm.setIncludeFutureForumThreads(String.valueOf(true));
 
         Set<String> options = new HashSet<>();
         options.add(ForumOptions.ForumThreadIncludeForumMessages);

@@ -61,10 +61,10 @@ public class OrderShipmentGroupControl
         if(defaultFound && isDefault) {
             var defaultOrderShipmentGroupDetailValue = getDefaultOrderShipmentGroupDetailValueForUpdate(order, itemDeliveryType);
 
-            defaultOrderShipmentGroupDetailValue.setIsDefault(Boolean.FALSE);
+            defaultOrderShipmentGroupDetailValue.setIsDefault(false);
             updateOrderShipmentGroupFromValue(defaultOrderShipmentGroupDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var orderShipmentGroup = OrderShipmentGroupFactory.getInstance().create();
@@ -273,11 +273,11 @@ public class OrderShipmentGroupControl
                     // If I'm the default, and a default already existed...
                     var defaultOrderShipmentGroupDetailValue = getDefaultOrderShipmentGroupDetailValueForUpdate(order, itemDeliveryType);
 
-                    defaultOrderShipmentGroupDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultOrderShipmentGroupDetailValue.setIsDefault(false);
                     updateOrderShipmentGroupFromValue(defaultOrderShipmentGroupDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -319,7 +319,7 @@ public class OrderShipmentGroupControl
                 }
                 var orderShipmentGroupDetailValue = Objects.requireNonNull(defaultOrderShipmentGroup).getLastDetailForUpdate().getOrderShipmentGroupDetailValue().clone();
 
-                orderShipmentGroupDetailValue.setIsDefault(Boolean.TRUE);
+                orderShipmentGroupDetailValue.setIsDefault(true);
                 updateOrderShipmentGroupFromValue(orderShipmentGroupDetailValue, false, deletedBy);
             }
         }

@@ -72,7 +72,7 @@ public class SetDefaultCancellationTypeCommand
                     cancellationTypeName);
             
             if(cancellationTypeDetailValue != null) {
-                cancellationTypeDetailValue.setIsDefault(Boolean.TRUE);
+                cancellationTypeDetailValue.setIsDefault(true);
                 cancellationPolicyControl.updateCancellationTypeFromValue(cancellationTypeDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownCancellationTypeName.name(), cancellationTypeName);

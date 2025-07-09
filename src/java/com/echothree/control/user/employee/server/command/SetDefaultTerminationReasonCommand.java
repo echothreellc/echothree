@@ -66,7 +66,7 @@ public class SetDefaultTerminationReasonCommand
         var terminationReasonDetailValue = employeeControl.getTerminationReasonDetailValueByNameForUpdate(terminationReasonName);
         
         if(terminationReasonDetailValue != null) {
-            terminationReasonDetailValue.setIsDefault(Boolean.TRUE);
+            terminationReasonDetailValue.setIsDefault(true);
             employeeControl.updateTerminationReasonFromValue(terminationReasonDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownTerminationReasonName.name(), terminationReasonName);

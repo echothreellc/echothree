@@ -1207,10 +1207,10 @@ public class ItemControl
         if(defaultFound && isDefault) {
             var defaultItemCategoryDetailValue = getDefaultItemCategoryDetailValueForUpdate();
             
-            defaultItemCategoryDetailValue.setIsDefault(Boolean.FALSE);
+            defaultItemCategoryDetailValue.setIsDefault(false);
             updateItemCategoryFromValue(defaultItemCategoryDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var itemCategory = ItemCategoryFactory.getInstance().create();
@@ -1493,11 +1493,11 @@ public class ItemControl
                     // If I'm the default, and a default already existed...
                     var defaultItemCategoryDetailValue = getDefaultItemCategoryDetailValueForUpdate();
                     
-                    defaultItemCategoryDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultItemCategoryDetailValue.setIsDefault(false);
                     updateItemCategoryFromValue(defaultItemCategoryDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -1539,7 +1539,7 @@ public class ItemControl
                     }
                     var itemCategoryDetailValue = Objects.requireNonNull(defaultItemCategory).getLastDetailForUpdate().getItemCategoryDetailValue().clone();
 
-                    itemCategoryDetailValue.setIsDefault(Boolean.TRUE);
+                    itemCategoryDetailValue.setIsDefault(true);
                     updateItemCategoryFromValue(itemCategoryDetailValue, false, deletedBy);
                 }
             }
@@ -2269,10 +2269,10 @@ public class ItemControl
         if(defaultFound && isDefault) {
             var defaultItemUnitOfMeasureTypeValue = getDefaultItemUnitOfMeasureTypeValueForUpdate(item);
             
-            defaultItemUnitOfMeasureTypeValue.setIsDefault(Boolean.FALSE);
+            defaultItemUnitOfMeasureTypeValue.setIsDefault(false);
             updateItemUnitOfMeasureTypeFromValue(defaultItemUnitOfMeasureTypeValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var itemUnitOfMeasureType = ItemUnitOfMeasureTypeFactory.getInstance().create(item, unitOfMeasureType,
@@ -2520,11 +2520,11 @@ public class ItemControl
                     // If I'm the default, and a default already existed...
                     var defaultItemUnitOfMeasureTypeValue = getDefaultItemUnitOfMeasureTypeValueForUpdate(item);
                     
-                    defaultItemUnitOfMeasureTypeValue.setIsDefault(Boolean.FALSE);
+                    defaultItemUnitOfMeasureTypeValue.setIsDefault(false);
                     updateItemUnitOfMeasureTypeFromValue(defaultItemUnitOfMeasureTypeValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -2571,7 +2571,7 @@ public class ItemControl
                 }
                 var itemUnitOfMeasureTypeValue = defaultItemUnitOfMeasureType.getItemUnitOfMeasureTypeValue().clone();
                 
-                itemUnitOfMeasureTypeValue.setIsDefault(Boolean.TRUE);
+                itemUnitOfMeasureTypeValue.setIsDefault(true);
                 updateItemUnitOfMeasureTypeFromValue(itemUnitOfMeasureTypeValue, false, deletedBy);
             }
         }
@@ -3022,10 +3022,10 @@ public class ItemControl
         if(defaultFound && isDefault) {
             var defaultItemAliasTypeDetailValue = getDefaultItemAliasTypeDetailValueForUpdate();
             
-            defaultItemAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultItemAliasTypeDetailValue.setIsDefault(false);
             updateItemAliasTypeFromValue(defaultItemAliasTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var itemAliasType = ItemAliasTypeFactory.getInstance().create();
@@ -3254,11 +3254,11 @@ public class ItemControl
                     // If I'm the default, and a default already existed...
                     final var defaultItemAliasTypeDetailValue = getDefaultItemAliasTypeDetailValueForUpdate();
                     
-                    defaultItemAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultItemAliasTypeDetailValue.setIsDefault(false);
                     updateItemAliasTypeFromValue(defaultItemAliasTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -3308,7 +3308,7 @@ public class ItemControl
                 }
                 var itemAliasTypeDetailValue = Objects.requireNonNull(defaultItemAliasType).getLastDetailForUpdate().getItemAliasTypeDetailValue().clone();
                 
-                itemAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
+                itemAliasTypeDetailValue.setIsDefault(true);
                 updateItemAliasTypeFromValue(itemAliasTypeDetailValue, false, deletedBy);
             }
         }
@@ -6627,10 +6627,10 @@ public class ItemControl
         if(defaultFound && isDefault) {
             var defaultItemDescriptionTypeDetailValue = getDefaultItemDescriptionTypeDetailValueForUpdate();
 
-            defaultItemDescriptionTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultItemDescriptionTypeDetailValue.setIsDefault(false);
             updateItemDescriptionTypeFromValue(defaultItemDescriptionTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var itemDescriptionType = ItemDescriptionTypeFactory.getInstance().create();
@@ -6988,11 +6988,11 @@ public class ItemControl
                     // If I'm the default, and a default already existed...
                     var defaultItemDescriptionTypeDetailValue = getDefaultItemDescriptionTypeDetailValueForUpdate();
 
-                    defaultItemDescriptionTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultItemDescriptionTypeDetailValue.setIsDefault(false);
                     updateItemDescriptionTypeFromValue(defaultItemDescriptionTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -7046,7 +7046,7 @@ public class ItemControl
                     }
                     var itemDescriptionTypeDetailValue = Objects.requireNonNull(defaultItemDescriptionType).getLastDetailForUpdate().getItemDescriptionTypeDetailValue().clone();
 
-                    itemDescriptionTypeDetailValue.setIsDefault(Boolean.TRUE);
+                    itemDescriptionTypeDetailValue.setIsDefault(true);
                     updateItemDescriptionTypeFromValue(itemDescriptionTypeDetailValue, false, deletedBy);
                 }
             }
@@ -7329,10 +7329,10 @@ public class ItemControl
         if(defaultFound && isDefault) {
             var defaultItemDescriptionTypeUseTypeDetailValue = getDefaultItemDescriptionTypeUseTypeDetailValueForUpdate();
 
-            defaultItemDescriptionTypeUseTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultItemDescriptionTypeUseTypeDetailValue.setIsDefault(false);
             updateItemDescriptionTypeUseTypeFromValue(defaultItemDescriptionTypeUseTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var itemDescriptionTypeUseType = ItemDescriptionTypeUseTypeFactory.getInstance().create();
@@ -7599,11 +7599,11 @@ public class ItemControl
                     // If I'm the default, and a default already existed...
                     var defaultItemDescriptionTypeUseTypeDetailValue = getDefaultItemDescriptionTypeUseTypeDetailValueForUpdate();
 
-                    defaultItemDescriptionTypeUseTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultItemDescriptionTypeUseTypeDetailValue.setIsDefault(false);
                     updateItemDescriptionTypeUseTypeFromValue(defaultItemDescriptionTypeUseTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -7642,7 +7642,7 @@ public class ItemControl
                 }
                 var itemDescriptionTypeUseTypeDetailValue = Objects.requireNonNull(defaultItemDescriptionTypeUseType).getLastDetailForUpdate().getItemDescriptionTypeUseTypeDetailValue().clone();
 
-                itemDescriptionTypeUseTypeDetailValue.setIsDefault(Boolean.TRUE);
+                itemDescriptionTypeUseTypeDetailValue.setIsDefault(true);
                 updateItemDescriptionTypeUseTypeFromValue(itemDescriptionTypeUseTypeDetailValue, false, deletedBy);
             }
         }
@@ -7992,10 +7992,10 @@ public class ItemControl
         if(defaultFound && isDefault) {
             var defaultItemImageTypeDetailValue = getDefaultItemImageTypeDetailValueForUpdate();
 
-            defaultItemImageTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultItemImageTypeDetailValue.setIsDefault(false);
             updateItemImageTypeFromValue(defaultItemImageTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var itemImageType = ItemImageTypeFactory.getInstance().create();
@@ -8220,11 +8220,11 @@ public class ItemControl
                     // If I'm the default, and a default already existed...
                     var defaultItemImageTypeDetailValue = getDefaultItemImageTypeDetailValueForUpdate();
 
-                    defaultItemImageTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultItemImageTypeDetailValue.setIsDefault(false);
                     updateItemImageTypeFromValue(defaultItemImageTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -8264,7 +8264,7 @@ public class ItemControl
                 }
                 var itemImageTypeDetailValue = Objects.requireNonNull(defaultItemImageType).getLastDetailForUpdate().getItemImageTypeDetailValue().clone();
 
-                itemImageTypeDetailValue.setIsDefault(Boolean.TRUE);
+                itemImageTypeDetailValue.setIsDefault(true);
                 updateItemImageTypeFromValue(itemImageTypeDetailValue, false, deletedBy);
             }
         }
@@ -9545,10 +9545,10 @@ public class ItemControl
         if(defaultFound && isDefault) {
             var defaultRelatedItemTypeDetailValue = getDefaultRelatedItemTypeDetailValueForUpdate();
 
-            defaultRelatedItemTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultRelatedItemTypeDetailValue.setIsDefault(false);
             updateRelatedItemTypeFromValue(defaultRelatedItemTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var relatedItemType = RelatedItemTypeFactory.getInstance().create();
@@ -9811,11 +9811,11 @@ public class ItemControl
                     // If I'm the default, and a default already existed...
                     var defaultRelatedItemTypeDetailValue = getDefaultRelatedItemTypeDetailValueForUpdate();
 
-                    defaultRelatedItemTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultRelatedItemTypeDetailValue.setIsDefault(false);
                     updateRelatedItemTypeFromValue(defaultRelatedItemTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -9854,7 +9854,7 @@ public class ItemControl
                 }
                 var relatedItemTypeDetailValue = Objects.requireNonNull(defaultRelatedItemType).getLastDetailForUpdate().getRelatedItemTypeDetailValue().clone();
 
-                relatedItemTypeDetailValue.setIsDefault(Boolean.TRUE);
+                relatedItemTypeDetailValue.setIsDefault(true);
                 updateRelatedItemTypeFromValue(relatedItemTypeDetailValue, false, deletedBy);
             }
         }
@@ -10393,10 +10393,10 @@ public class ItemControl
         if(defaultFound && isDefault) {
             var defaultHarmonizedTariffScheduleCodeDetailValue = getDefaultHarmonizedTariffScheduleCodeDetailValueForUpdate(countryGeoCode);
 
-            defaultHarmonizedTariffScheduleCodeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultHarmonizedTariffScheduleCodeDetailValue.setIsDefault(false);
             updateHarmonizedTariffScheduleCodeFromValue(defaultHarmonizedTariffScheduleCodeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var harmonizedTariffScheduleCode = HarmonizedTariffScheduleCodeFactory.getInstance().create();
@@ -10693,11 +10693,11 @@ public class ItemControl
                     // If I'm the default, and a default already existed...
                     var defaultHarmonizedTariffScheduleCodeDetailValue = getDefaultHarmonizedTariffScheduleCodeDetailValueForUpdate(countryGeoCode);
 
-                    defaultHarmonizedTariffScheduleCodeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultHarmonizedTariffScheduleCodeDetailValue.setIsDefault(false);
                     updateHarmonizedTariffScheduleCodeFromValue(defaultHarmonizedTariffScheduleCodeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -10739,7 +10739,7 @@ public class ItemControl
                 }
                 var harmonizedTariffScheduleCodeDetailValue = Objects.requireNonNull(defaultHarmonizedTariffScheduleCode).getLastDetailForUpdate().getHarmonizedTariffScheduleCodeDetailValue().clone();
 
-                harmonizedTariffScheduleCodeDetailValue.setIsDefault(Boolean.TRUE);
+                harmonizedTariffScheduleCodeDetailValue.setIsDefault(true);
                 updateHarmonizedTariffScheduleCodeFromValue(harmonizedTariffScheduleCodeDetailValue, false, deletedBy);
             }
         }
@@ -10926,10 +10926,10 @@ public class ItemControl
         if(defaultFound && isDefault) {
             var defaultHarmonizedTariffScheduleCodeUseTypeDetailValue = getDefaultHarmonizedTariffScheduleCodeUseTypeDetailValueForUpdate();
 
-            defaultHarmonizedTariffScheduleCodeUseTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultHarmonizedTariffScheduleCodeUseTypeDetailValue.setIsDefault(false);
             updateHarmonizedTariffScheduleCodeUseTypeFromValue(defaultHarmonizedTariffScheduleCodeUseTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var harmonizedTariffScheduleCodeUseType = HarmonizedTariffScheduleCodeUseTypeFactory.getInstance().create();
@@ -11120,11 +11120,11 @@ public class ItemControl
                 // If I'm the default, and a default already existed...
                 var defaultHarmonizedTariffScheduleCodeUseTypeDetailValue = getDefaultHarmonizedTariffScheduleCodeUseTypeDetailValueForUpdate();
 
-                defaultHarmonizedTariffScheduleCodeUseTypeDetailValue.setIsDefault(Boolean.FALSE);
+                defaultHarmonizedTariffScheduleCodeUseTypeDetailValue.setIsDefault(false);
                 updateHarmonizedTariffScheduleCodeUseTypeFromValue(defaultHarmonizedTariffScheduleCodeUseTypeDetailValue, false, updatedBy);
             } else if(!isDefault && !defaultFound) {
                 // If I'm not the default, and no other default exists...
-                isDefault = Boolean.TRUE;
+                isDefault = true;
             }
         }
 
@@ -11163,7 +11163,7 @@ public class ItemControl
                 }
                 var harmonizedTariffScheduleCodeUseTypeDetailValue = Objects.requireNonNull(defaultHarmonizedTariffScheduleCodeUseType).getLastDetailForUpdate().getHarmonizedTariffScheduleCodeUseTypeDetailValue().clone();
 
-                harmonizedTariffScheduleCodeUseTypeDetailValue.setIsDefault(Boolean.TRUE);
+                harmonizedTariffScheduleCodeUseTypeDetailValue.setIsDefault(true);
                 updateHarmonizedTariffScheduleCodeUseTypeFromValue(harmonizedTariffScheduleCodeUseTypeDetailValue, false, deletedBy);
             }
         }
@@ -11332,10 +11332,10 @@ public class ItemControl
         if(defaultFound && isDefault) {
             var defaultHarmonizedTariffScheduleCodeUnitDetailValue = getDefaultHarmonizedTariffScheduleCodeUnitDetailValueForUpdate();
 
-            defaultHarmonizedTariffScheduleCodeUnitDetailValue.setIsDefault(Boolean.FALSE);
+            defaultHarmonizedTariffScheduleCodeUnitDetailValue.setIsDefault(false);
             updateHarmonizedTariffScheduleCodeUnitFromValue(defaultHarmonizedTariffScheduleCodeUnitDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var harmonizedTariffScheduleCodeUnit = HarmonizedTariffScheduleCodeUnitFactory.getInstance().create();
@@ -11526,11 +11526,11 @@ public class ItemControl
                 // If I'm the default, and a default already existed...
                 var defaultHarmonizedTariffScheduleCodeUnitDetailValue = getDefaultHarmonizedTariffScheduleCodeUnitDetailValueForUpdate();
 
-                defaultHarmonizedTariffScheduleCodeUnitDetailValue.setIsDefault(Boolean.FALSE);
+                defaultHarmonizedTariffScheduleCodeUnitDetailValue.setIsDefault(false);
                 updateHarmonizedTariffScheduleCodeUnitFromValue(defaultHarmonizedTariffScheduleCodeUnitDetailValue, false, updatedBy);
             } else if(!isDefault && !defaultFound) {
                 // If I'm not the default, and no other default exists...
-                isDefault = Boolean.TRUE;
+                isDefault = true;
             }
         }
 
@@ -11569,7 +11569,7 @@ public class ItemControl
                 }
                 var harmonizedTariffScheduleCodeUnitDetailValue = Objects.requireNonNull(defaultHarmonizedTariffScheduleCodeUnit).getLastDetailForUpdate().getHarmonizedTariffScheduleCodeUnitDetailValue().clone();
 
-                harmonizedTariffScheduleCodeUnitDetailValue.setIsDefault(Boolean.TRUE);
+                harmonizedTariffScheduleCodeUnitDetailValue.setIsDefault(true);
                 updateHarmonizedTariffScheduleCodeUnitFromValue(harmonizedTariffScheduleCodeUnitDetailValue, false, deletedBy);
             }
         }

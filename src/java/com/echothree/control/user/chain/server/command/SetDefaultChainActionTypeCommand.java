@@ -65,7 +65,7 @@ public class SetDefaultChainActionTypeCommand
         var chainActionTypeDetailValue = chainControl.getChainActionTypeDetailValueByNameForUpdate(chainActionTypeName);
         
         if(chainActionTypeDetailValue != null) {
-            chainActionTypeDetailValue.setIsDefault(Boolean.TRUE);
+            chainActionTypeDetailValue.setIsDefault(true);
             chainControl.updateChainActionTypeFromValue(chainActionTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownChainActionTypeName.name(), chainActionTypeName);

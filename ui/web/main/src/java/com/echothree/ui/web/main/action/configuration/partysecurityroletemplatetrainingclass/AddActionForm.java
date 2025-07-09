@@ -40,7 +40,7 @@ public class AddActionForm
             var form = TrainingUtil.getHome().getGetTrainingClassChoicesForm();
 
             form.setDefaultTrainingClassChoice(trainingClassChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = TrainingUtil.getHome().getTrainingClassChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

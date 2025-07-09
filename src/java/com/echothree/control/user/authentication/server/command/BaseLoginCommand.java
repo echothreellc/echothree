@@ -170,16 +170,16 @@ public abstract class BaseLoginCommand<F extends BaseForm>
             if(partyContactMechanism == null) {
                 var contactMechanismName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.name());
                 var contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.INET_4.name());
-                var contactMechanism = contactControl.createContactMechanism(contactMechanismName, contactMechanismType, Boolean.FALSE, partyPK);
+                var contactMechanism = contactControl.createContactMechanism(contactMechanismName, contactMechanismType, false, partyPK);
 
                 contactControl.createContactInet4Address(contactMechanism, remoteInet4Address, partyPK);
-                partyContactMechanism = contactControl.createPartyContactMechanism(party, contactMechanism, null, Boolean.FALSE, 1, partyPK);
+                partyContactMechanism = contactControl.createPartyContactMechanism(party, contactMechanism, null, false, 1, partyPK);
             }
 
             var contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(ContactMechanismPurposes.INET_4_LOGIN.name());
             var partyContactMechanismPurpose = contactControl.getPartyContactMechanismPurpose(partyContactMechanism, contactMechanismPurpose);
             if(partyContactMechanismPurpose == null) {
-                contactControl.createPartyContactMechanismPurpose(partyContactMechanism, contactMechanismPurpose, Boolean.FALSE, 1, partyPK);
+                contactControl.createPartyContactMechanismPurpose(partyContactMechanism, contactMechanismPurpose, false, 1, partyPK);
             }
         }
     }

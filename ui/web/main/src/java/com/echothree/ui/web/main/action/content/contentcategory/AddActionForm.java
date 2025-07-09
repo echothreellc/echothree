@@ -55,7 +55,7 @@ public class AddActionForm
             var form = OfferUtil.getHome().getGetSourceChoicesForm();
 
             form.setDefaultSourceChoice(getDefaultSourceChoice());
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = OfferUtil.getHome().getSourceChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -86,7 +86,7 @@ public class AddActionForm
             form.setSelectorKindName(SelectorKinds.ITEM.name());
             form.setSelectorTypeName(SelectorTypes.CONTENT_CATEGORY.name());
             form.setDefaultSelectorChoice(getContentCategoryItemSelectorChoice());
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -185,7 +185,7 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        setIsDefault(Boolean.FALSE);
+        setIsDefault(false);
     }
     
 }

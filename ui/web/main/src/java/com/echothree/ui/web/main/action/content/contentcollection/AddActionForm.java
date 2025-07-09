@@ -41,7 +41,7 @@ public class AddActionForm
             var form = OfferUtil.getHome().getGetSourceChoicesForm();
 
             form.setDefaultSourceChoice(defaultSourceChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = OfferUtil.getHome().getSourceChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

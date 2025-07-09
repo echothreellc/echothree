@@ -101,10 +101,10 @@ public class PeriodControl
         if(defaultFound && isDefault) {
             var defaultPeriodKindDetailValue = getDefaultPeriodKindDetailValueForUpdate();
             
-            defaultPeriodKindDetailValue.setIsDefault(Boolean.FALSE);
+            defaultPeriodKindDetailValue.setIsDefault(false);
             updatePeriodKindFromValue(defaultPeriodKindDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var periodKind = PeriodKindFactory.getInstance().create();
@@ -298,11 +298,11 @@ public class PeriodControl
                 // If I'm the default, and a default already existed...
                 var defaultPeriodKindDetailValue = getDefaultPeriodKindDetailValueForUpdate();
                 
-                defaultPeriodKindDetailValue.setIsDefault(Boolean.FALSE);
+                defaultPeriodKindDetailValue.setIsDefault(false);
                 updatePeriodKindFromValue(defaultPeriodKindDetailValue, false, updatedBy);
             } else if(!isDefault && !defaultFound) {
                 // If I'm not the default, and no other default exists...
-                isDefault = Boolean.TRUE;
+                isDefault = true;
             }
         }
         
@@ -341,7 +341,7 @@ public class PeriodControl
                 }
                 var periodKindDetailValue = Objects.requireNonNull(defaultPeriodKind).getLastDetailForUpdate().getPeriodKindDetailValue().clone();
                 
-                periodKindDetailValue.setIsDefault(Boolean.TRUE);
+                periodKindDetailValue.setIsDefault(true);
                 updatePeriodKindFromValue(periodKindDetailValue, false, deletedBy);
             }
         }
@@ -527,10 +527,10 @@ public class PeriodControl
         if(defaultFound && isDefault) {
             var defaultPeriodTypeDetailValue = getDefaultPeriodTypeDetailValueForUpdate(periodKind);
             
-            defaultPeriodTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultPeriodTypeDetailValue.setIsDefault(false);
             updatePeriodTypeFromValue(defaultPeriodTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var periodType = PeriodTypeFactory.getInstance().create();
@@ -775,11 +775,11 @@ public class PeriodControl
                     // If I'm the default, and a default already existed...
                     var defaultPeriodTypeDetailValue = getDefaultPeriodTypeDetailValueForUpdate(periodKind);
                     
-                    defaultPeriodTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultPeriodTypeDetailValue.setIsDefault(false);
                     updatePeriodTypeFromValue(defaultPeriodTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -819,7 +819,7 @@ public class PeriodControl
                 }
                 var periodTypeDetailValue = Objects.requireNonNull(defaultPeriodType).getLastDetailForUpdate().getPeriodTypeDetailValue().clone();
                 
-                periodTypeDetailValue.setIsDefault(Boolean.TRUE);
+                periodTypeDetailValue.setIsDefault(true);
                 updatePeriodTypeFromValue(periodTypeDetailValue, false, deletedBy);
             }
         }

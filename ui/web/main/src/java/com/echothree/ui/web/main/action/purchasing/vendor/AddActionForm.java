@@ -73,7 +73,7 @@ public class AddActionForm
             var form = VendorUtil.getHome().getGetVendorTypeChoicesForm();
 
             form.setDefaultVendorTypeChoice(vendorTypeChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = VendorUtil.getHome().getVendorTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -93,7 +93,7 @@ public class AddActionForm
 
             form.setCancellationKindName(CancellationKinds.VENDOR_CANCELLATION.name());
             form.setDefaultCancellationPolicyChoice(cancellationPolicyChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -112,7 +112,7 @@ public class AddActionForm
 
             form.setReturnKindName(ReturnKinds.VENDOR_RETURN.name());
             form.setDefaultReturnPolicyChoice(returnPolicyChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = ReturnPolicyUtil.getHome().getReturnPolicyChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -131,7 +131,7 @@ public class AddActionForm
 
             form.setGlAccountCategoryName(AccountingConstants.GlAccountCategory_ACCOUNTS_PAYABLE);
             form.setDefaultGlAccountChoice(apGlAccountChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = AccountingUtil.getHome().getGlAccountChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -150,7 +150,7 @@ public class AddActionForm
             var form = ItemUtil.getHome().getGetItemAliasTypeChoicesForm();
 
             form.setDefaultItemAliasTypeChoice(defaultItemAliasTypeChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = ItemUtil.getHome().getItemAliasTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -351,8 +351,8 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        setAllowSolicitation(Boolean.FALSE);
-        setUseItemPurchasingCategories(Boolean.FALSE);
+        setAllowSolicitation(false);
+        setUseItemPurchasingCategories(false);
     }
     
 }

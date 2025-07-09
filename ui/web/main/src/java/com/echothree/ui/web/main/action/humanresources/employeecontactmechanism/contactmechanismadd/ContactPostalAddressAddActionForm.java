@@ -61,7 +61,7 @@ public class ContactPostalAddressAddActionForm
             var commandForm = PartyUtil.getHome().getGetPersonalTitleChoicesForm();
 
             commandForm.setDefaultPersonalTitleChoice(personalTitleChoice);
-            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = PartyUtil.getHome().getPersonalTitleChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -79,7 +79,7 @@ public class ContactPostalAddressAddActionForm
             var commandForm = PartyUtil.getHome().getGetNameSuffixChoicesForm();
 
             commandForm.setDefaultNameSuffixChoice(nameSuffixChoice);
-            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = PartyUtil.getHome().getNameSuffixChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -269,8 +269,8 @@ public class ContactPostalAddressAddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        setAllowSolicitation(Boolean.FALSE);
-        setIsCommercial(Boolean.FALSE);
+        setAllowSolicitation(false);
+        setIsCommercial(false);
     }
     
 }

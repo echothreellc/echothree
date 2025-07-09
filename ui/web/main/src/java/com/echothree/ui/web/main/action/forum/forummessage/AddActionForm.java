@@ -51,7 +51,7 @@ public class AddActionForm
 
             commandForm.setIconUsageTypeName(IconConstants.IconUsageType_FORUM_MESSAGE);
             commandForm.setDefaultIconChoice(forumMessageIconChoice);
-            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = IconUtil.getHome().getIconChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -70,7 +70,7 @@ public class AddActionForm
             var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
 
             commandForm.setDefaultMimeTypeChoice(contentMimeTypeChoice);
-            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(false));
             commandForm.setForumMessageName(getParentForumMessageName());
 
             var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);

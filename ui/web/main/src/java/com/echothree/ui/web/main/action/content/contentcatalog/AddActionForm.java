@@ -46,7 +46,7 @@ public class AddActionForm
             var getSourceChoicesForm = OfferUtil.getHome().getGetSourceChoicesForm();
 
             getSourceChoicesForm.setDefaultSourceChoice(getDefaultSourceChoice());
-            getSourceChoicesForm.setAllowNullChoice(Boolean.FALSE.toString());
+            getSourceChoicesForm.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = OfferUtil.getHome().getSourceChoices(userVisitPK, getSourceChoicesForm);
             var executionResult = commandResult.getExecutionResult();
@@ -120,7 +120,7 @@ public class AddActionForm
     @Override
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
-        setIsDefault(Boolean.FALSE);
+        setIsDefault(false);
     }
     
 }

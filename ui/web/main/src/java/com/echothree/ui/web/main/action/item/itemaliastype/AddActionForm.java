@@ -47,7 +47,7 @@ public class AddActionForm
             var form = ItemUtil.getHome().getGetItemAliasChecksumTypeChoicesForm();
 
             form.setDefaultItemAliasChecksumTypeChoice(itemAliasChecksumTypeChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = ItemUtil.getHome().getItemAliasChecksumTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -134,8 +134,8 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        allowMultiple = Boolean.FALSE;
-        isDefault = Boolean.FALSE;
+        allowMultiple = false;
+        isDefault = false;
     }
 
 }

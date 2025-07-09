@@ -154,7 +154,7 @@ public class CreateItemDescriptionCommand
             }
 
             if(imageDimensions != null) {
-                itemControl.createItemImageDescription(itemDescription, itemImageType, imageDimensions.getHeight(), imageDimensions.getWidth(), Boolean.FALSE,
+                itemControl.createItemImageDescription(itemDescription, itemImageType, imageDimensions.getHeight(), imageDimensions.getWidth(), false,
                         createdBy);
 
                 ItemDescriptionLogic.getInstance().deleteItemImageDescriptionChildren(itemDescription, createdBy);

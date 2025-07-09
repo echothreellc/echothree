@@ -53,7 +53,7 @@ public class AddActionForm
                 commandForm.setChainKindName(ChainConstants.ChainKind_CONTACT_LIST);
                 commandForm.setChainTypeName(ChainConstants.ChainType_CONFIRMATION_REQUEST);
                 commandForm.setDefaultChainChoice(confirmationRequestChainChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(true));
 
                 var commandResult = ChainUtil.getHome().getChainChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
@@ -77,7 +77,7 @@ public class AddActionForm
                 commandForm.setChainKindName(ChainConstants.ChainKind_CONTACT_LIST);
                 commandForm.setChainTypeName(ChainConstants.ChainType_SUBSCRIBE);
                 commandForm.setDefaultChainChoice(subscribeChainChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(true));
 
                 var commandResult = ChainUtil.getHome().getChainChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
@@ -101,7 +101,7 @@ public class AddActionForm
                 commandForm.setChainKindName(ChainConstants.ChainKind_CONTACT_LIST);
                 commandForm.setChainTypeName(ChainConstants.ChainType_UNSUBSCRIBE);
                 commandForm.setDefaultChainChoice(unsubscribeChainChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(true));
 
                 var commandResult = ChainUtil.getHome().getChainChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
@@ -224,8 +224,8 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        usedForSolicitation = Boolean.FALSE;
-        isDefault = Boolean.FALSE;
+        usedForSolicitation = false;
+        isDefault = false;
     }
 
 }

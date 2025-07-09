@@ -52,7 +52,7 @@ public class AddActionForm
             var form = SequenceUtil.getHome().getGetSequenceEncoderTypeChoicesForm();
 
             form.setDefaultSequenceEncoderTypeChoice(sequenceEncoderTypeChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = SequenceUtil.getHome().getSequenceEncoderTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -70,7 +70,7 @@ public class AddActionForm
             var form = SequenceUtil.getHome().getGetSequenceChecksumTypeChoicesForm();
 
             form.setDefaultSequenceChecksumTypeChoice(sequenceChecksumTypeChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = SequenceUtil.getHome().getSequenceChecksumTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -180,7 +180,7 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        isDefault = Boolean.FALSE;
+        isDefault = false;
     }
     
 }

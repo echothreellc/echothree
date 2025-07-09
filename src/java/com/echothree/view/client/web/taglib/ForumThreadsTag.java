@@ -151,7 +151,7 @@ public class ForumThreadsTag
             Map<String, Limit> limits = new HashMap<>();
             
             commandForm.setForumName(forumName);
-            commandForm.setIncludeFutureForumThreads(includeFutureForumThreads == null? Boolean.FALSE.toString(): includeFutureForumThreads);
+            commandForm.setIncludeFutureForumThreads(includeFutureForumThreads == null? String.valueOf(false): includeFutureForumThreads);
             
             setOptions(options, defaultOptions, commandForm);
 

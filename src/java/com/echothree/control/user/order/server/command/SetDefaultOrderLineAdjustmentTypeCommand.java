@@ -72,7 +72,7 @@ public class SetDefaultOrderLineAdjustmentTypeCommand
             var orderLineAdjustmentTypeDetailValue = orderLineAdjustmentControl.getOrderLineAdjustmentTypeDetailValueByNameForUpdate(orderType, orderLineAdjustmentTypeName);
 
             if(orderLineAdjustmentTypeDetailValue != null) {
-                orderLineAdjustmentTypeDetailValue.setIsDefault(Boolean.TRUE);
+                orderLineAdjustmentTypeDetailValue.setIsDefault(true);
                 orderLineAdjustmentControl.updateOrderLineAdjustmentTypeFromValue(orderLineAdjustmentTypeDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownOrderLineAdjustmentTypeName.name(), orderTypeName, orderLineAdjustmentTypeName);

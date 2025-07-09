@@ -98,11 +98,11 @@ public class CreateContactWebAddressCommand
 
             var contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.WEB_ADDRESS.name());
             var contactMechanism = contactControl.createContactMechanism(contactMechanismName, contactMechanismType,
-                    Boolean.FALSE, createdBy);
+                    false, createdBy);
             
             contactControl.createContactWebAddress(contactMechanism, url, createdBy);
             
-            contactControl.createPartyContactMechanism(party, contactMechanism, description, Boolean.FALSE, 1,
+            contactControl.createPartyContactMechanism(party, contactMechanism, description, false, 1,
                     createdBy);
 
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(contactMechanism.getPrimaryKey());

@@ -46,7 +46,7 @@ public class AddActionForm
             var form = WorkflowUtil.getHome().getGetWorkflowStepTypeChoicesForm();
 
             form.setDefaultWorkflowStepTypeChoice(workflowStepTypeChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = WorkflowUtil.getHome().getWorkflowStepTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -126,7 +126,7 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        isDefault = Boolean.FALSE;
+        isDefault = false;
     }
     
 }

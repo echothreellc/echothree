@@ -65,7 +65,7 @@ public class SetDefaultShipmentTypeCommand
         var shipmentTypeDetailValue = shipmentControl.getShipmentTypeDetailValueByNameForUpdate(shipmentTypeName);
         
         if(shipmentTypeDetailValue != null) {
-            shipmentTypeDetailValue.setIsDefault(Boolean.TRUE);
+            shipmentTypeDetailValue.setIsDefault(true);
             shipmentControl.updateShipmentTypeFromValue(shipmentTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownShipmentTypeName.name(), shipmentTypeName);

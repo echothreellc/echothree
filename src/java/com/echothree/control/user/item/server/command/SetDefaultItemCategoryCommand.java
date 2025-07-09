@@ -65,7 +65,7 @@ public class SetDefaultItemCategoryCommand
         var itemCategoryDetailValue = itemControl.getItemCategoryDetailValueByNameForUpdate(itemCategoryName);
         
         if(itemCategoryDetailValue != null) {
-            itemCategoryDetailValue.setIsDefault(Boolean.TRUE);
+            itemCategoryDetailValue.setIsDefault(true);
             itemControl.updateItemCategoryFromValue(itemCategoryDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownItemCategoryName.name(), itemCategoryName);

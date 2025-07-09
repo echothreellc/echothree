@@ -52,7 +52,7 @@ public class SetDefaultScaleCommand
        var scaleDetailValue = scaleControl.getScaleDetailValueByNameForUpdate(scaleName);
         
         if(scaleDetailValue != null) {
-            scaleDetailValue.setIsDefault(Boolean.TRUE);
+            scaleDetailValue.setIsDefault(true);
             scaleControl.updateScaleFromValue(scaleDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownScaleName.name(), scaleName);

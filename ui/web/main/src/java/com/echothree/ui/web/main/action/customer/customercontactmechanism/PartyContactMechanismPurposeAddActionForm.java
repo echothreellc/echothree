@@ -42,7 +42,7 @@ public class PartyContactMechanismPurposeAddActionForm
 
             form.setContactMechanismName(contactMechanismName);
             form.setDefaultContactMechanismPurposeChoice(contactMechanismPurposeChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = ContactUtil.getHome().getContactMechanismPurposeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

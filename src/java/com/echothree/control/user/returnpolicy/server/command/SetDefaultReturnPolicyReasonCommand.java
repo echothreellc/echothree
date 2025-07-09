@@ -79,7 +79,7 @@ public class SetDefaultReturnPolicyReasonCommand
                             returnReason);
                     
                     if(returnPolicyReasonValue != null) {
-                        returnPolicyReasonValue.setIsDefault(Boolean.TRUE);
+                        returnPolicyReasonValue.setIsDefault(true);
                         returnPolicyControl.updateReturnPolicyReasonFromValue(returnPolicyReasonValue, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.UnknownReturnPolicyReason.name());

@@ -61,10 +61,10 @@ public class PaymentProcessorTypeCodeControl
         if(defaultFound && isDefault) {
             var defaultPaymentProcessorTypeCodeDetailValue = getDefaultPaymentProcessorTypeCodeDetailValueForUpdate(paymentProcessorTypeCodeType);
 
-            defaultPaymentProcessorTypeCodeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultPaymentProcessorTypeCodeDetailValue.setIsDefault(false);
             updatePaymentProcessorTypeCodeFromValue(defaultPaymentProcessorTypeCodeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var paymentProcessorTypeCode = PaymentProcessorTypeCodeFactory.getInstance().create();
@@ -272,11 +272,11 @@ public class PaymentProcessorTypeCodeControl
                     // If I'm the default, and a default already existed...
                     var defaultPaymentProcessorTypeCodeDetailValue = getDefaultPaymentProcessorTypeCodeDetailValueForUpdate(paymentProcessorTypeCodeType);
 
-                    defaultPaymentProcessorTypeCodeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultPaymentProcessorTypeCodeDetailValue.setIsDefault(false);
                     updatePaymentProcessorTypeCodeFromValue(defaultPaymentProcessorTypeCodeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -319,7 +319,7 @@ public class PaymentProcessorTypeCodeControl
                 }
                 var paymentProcessorTypeCodeDetailValue = Objects.requireNonNull(defaultPaymentProcessorTypeCode).getLastDetailForUpdate().getPaymentProcessorTypeCodeDetailValue().clone();
 
-                paymentProcessorTypeCodeDetailValue.setIsDefault(Boolean.TRUE);
+                paymentProcessorTypeCodeDetailValue.setIsDefault(true);
                 updatePaymentProcessorTypeCodeFromValue(paymentProcessorTypeCodeDetailValue, false, deletedBy);
             }
         }

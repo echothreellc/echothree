@@ -366,7 +366,7 @@ public class BlogEntryTransfer {
 
                     commandForm.setForumName(forumNames.get(i));
                     commandForm.setForumThreadName(forumThreadName);
-                    commandForm.setIsDefault(Boolean.FALSE.toString());
+                    commandForm.setIsDefault(String.valueOf(false));
                     commandForm.setSortOrder("1");
 
                     commandResult = ForumUtil.getHome().createForumForumThread(getUserVisit(), commandForm);

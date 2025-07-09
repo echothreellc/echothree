@@ -66,7 +66,7 @@ public class SetDefaultItemImageTypeCommand
         var itemImageTypeDetailValue = itemControl.getItemImageTypeDetailValueByNameForUpdate(itemImageTypeName);
         
         if(itemImageTypeDetailValue != null) {
-            itemImageTypeDetailValue.setIsDefault(Boolean.TRUE);
+            itemImageTypeDetailValue.setIsDefault(true);
             itemControl.updateItemImageTypeFromValue(itemImageTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownItemImageTypeName.name(), itemImageTypeName);

@@ -67,10 +67,10 @@ public class OrderTypeControl
         if(defaultFound && isDefault) {
             var defaultOrderTypeDetailValue = getDefaultOrderTypeDetailValueForUpdate();
 
-            defaultOrderTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultOrderTypeDetailValue.setIsDefault(false);
             updateOrderTypeFromValue(defaultOrderTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var orderType = OrderTypeFactory.getInstance().create();
@@ -358,11 +358,11 @@ public class OrderTypeControl
                     // If I'm the default, and a default already existed...
                     var defaultOrderTypeDetailValue = getDefaultOrderTypeDetailValueForUpdate();
 
-                    defaultOrderTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultOrderTypeDetailValue.setIsDefault(false);
                     updateOrderTypeFromValue(defaultOrderTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -406,7 +406,7 @@ public class OrderTypeControl
                     }
                     var orderTypeDetailValue = Objects.requireNonNull(defaultOrderType).getLastDetailForUpdate().getOrderTypeDetailValue().clone();
 
-                    orderTypeDetailValue.setIsDefault(Boolean.TRUE);
+                    orderTypeDetailValue.setIsDefault(true);
                     updateOrderTypeFromValue(orderTypeDetailValue, false, deletedBy);
                 }
             }

@@ -76,7 +76,7 @@ public class SetDefaultGeoCodeTimeZoneCommand
                 var geoCodeTimeZoneValue = geoControl.getGeoCodeTimeZoneValueForUpdate(geoCode, timeZone);
                 
                 if(geoCodeTimeZoneValue != null) {
-                    geoCodeTimeZoneValue.setIsDefault(Boolean.TRUE);
+                    geoCodeTimeZoneValue.setIsDefault(true);
                     geoControl.updateGeoCodeTimeZoneFromValue(geoCodeTimeZoneValue, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownGeoCodeTimeZone.name(), geoCodeName, javaTimeZoneName);

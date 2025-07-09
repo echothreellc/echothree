@@ -76,7 +76,7 @@ public class Step2ActionForm
             var form = PaymentUtil.getHome().getGetPaymentProcessorChoicesForm();
 
             form.setDefaultPaymentProcessorChoice(paymentProcessorChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = PaymentUtil.getHome().getPaymentProcessorChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -97,7 +97,7 @@ public class Step2ActionForm
             form.setSelectorKindName(SelectorKinds.ITEM.name());
             form.setSelectorTypeName(SelectorTypes.PAYMENT_METHOD.name());
             form.setDefaultSelectorChoice(itemSelectorChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -118,7 +118,7 @@ public class Step2ActionForm
             form.setSelectorKindName(SelectorKinds.SALES_ORDER_ITEM.name());
             form.setSelectorTypeName(SelectorTypes.PAYMENT_METHOD.name());
             form.setDefaultSelectorChoice(salesOrderItemSelectorChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -377,21 +377,21 @@ public class Step2ActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        setIsDefault(Boolean.FALSE);
-        setRequestNameOnCard(Boolean.FALSE);
-        setRequireNameOnCard(Boolean.FALSE);
-        setCheckCardNumber(Boolean.FALSE);
-        setRequestExpirationDate(Boolean.FALSE);
-        setRequireExpirationDate(Boolean.FALSE);
-        setCheckExpirationDate(Boolean.FALSE);
-        setRequestSecurityCode(Boolean.FALSE);
-        setRequireSecurityCode(Boolean.FALSE);
-        setRetainCreditCard(Boolean.FALSE);
-        setRetainSecurityCode(Boolean.FALSE);
-        setRequestBilling(Boolean.FALSE);
-        setRequireBilling(Boolean.FALSE);
-        setRequestIssuer(Boolean.FALSE);
-        setRequireIssuer(Boolean.FALSE);
+        setIsDefault(false);
+        setRequestNameOnCard(false);
+        setRequireNameOnCard(false);
+        setCheckCardNumber(false);
+        setRequestExpirationDate(false);
+        setRequireExpirationDate(false);
+        setCheckExpirationDate(false);
+        setRequestSecurityCode(false);
+        setRequireSecurityCode(false);
+        setRetainCreditCard(false);
+        setRetainSecurityCode(false);
+        setRequestBilling(false);
+        setRequireBilling(false);
+        setRequestIssuer(false);
+        setRequireIssuer(false);
     }
     
 }

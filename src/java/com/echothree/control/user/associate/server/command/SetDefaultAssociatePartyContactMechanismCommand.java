@@ -63,7 +63,7 @@ public class SetDefaultAssociatePartyContactMechanismCommand
                         associatePartyContactMechanismName);
                 
                 if(associatePartyContactMechanismDetailValue != null) {
-                    associatePartyContactMechanismDetailValue.setIsDefault(Boolean.TRUE);
+                    associatePartyContactMechanismDetailValue.setIsDefault(true);
                     associateControl.updateAssociatePartyContactMechanismFromValue(associatePartyContactMechanismDetailValue, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownAssociatePartyContactMechanismName.name(), associatePartyContactMechanismName);

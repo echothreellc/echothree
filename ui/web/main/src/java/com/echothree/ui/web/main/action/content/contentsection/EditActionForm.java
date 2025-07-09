@@ -40,7 +40,7 @@ public class EditActionForm
 
             form.setContentCollectionName(contentCollectionName);
             form.setDefaultContentSectionChoice(parentContentSectionChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = ContentUtil.getHome().getContentSectionChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

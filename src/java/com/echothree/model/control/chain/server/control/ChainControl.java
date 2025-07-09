@@ -169,10 +169,10 @@ public class ChainControl
         if(defaultFound && isDefault) {
             var defaultChainKindDetailValue = getDefaultChainKindDetailValueForUpdate();
 
-            defaultChainKindDetailValue.setIsDefault(Boolean.FALSE);
+            defaultChainKindDetailValue.setIsDefault(false);
             updateChainKindFromValue(defaultChainKindDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var chainKind = ChainKindFactory.getInstance().create();
@@ -363,11 +363,11 @@ public class ChainControl
                 // If I'm the default, and a default already existed...
                 var defaultChainKindDetailValue = getDefaultChainKindDetailValueForUpdate();
 
-                defaultChainKindDetailValue.setIsDefault(Boolean.FALSE);
+                defaultChainKindDetailValue.setIsDefault(false);
                 updateChainKindFromValue(defaultChainKindDetailValue, false, updatedBy);
             } else if(!isDefault && !defaultFound) {
                 // If I'm not the default, and no other default exists...
-                isDefault = Boolean.TRUE;
+                isDefault = true;
             }
         }
 
@@ -406,7 +406,7 @@ public class ChainControl
                 }
                 var chainKindDetailValue = Objects.requireNonNull(defaultChainKind).getLastDetailForUpdate().getChainKindDetailValue().clone();
 
-                chainKindDetailValue.setIsDefault(Boolean.TRUE);
+                chainKindDetailValue.setIsDefault(true);
                 updateChainKindFromValue(chainKindDetailValue, false, deletedBy);
             }
         }
@@ -574,10 +574,10 @@ public class ChainControl
         if(defaultFound && isDefault) {
             var defaultChainTypeDetailValue = getDefaultChainTypeDetailValueForUpdate(chainKind);
 
-            defaultChainTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultChainTypeDetailValue.setIsDefault(false);
             updateChainTypeFromValue(defaultChainTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var chainType = ChainTypeFactory.getInstance().create();
@@ -810,11 +810,11 @@ public class ChainControl
                     // If I'm the default, and a default already existed...
                     var defaultChainTypeDetailValue = getDefaultChainTypeDetailValueForUpdate(chainKind);
 
-                    defaultChainTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultChainTypeDetailValue.setIsDefault(false);
                     updateChainTypeFromValue(defaultChainTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -855,7 +855,7 @@ public class ChainControl
                 }
                 var chainTypeDetailValue = Objects.requireNonNull(defaultChainType).getLastDetailForUpdate().getChainTypeDetailValue().clone();
 
-                chainTypeDetailValue.setIsDefault(Boolean.TRUE);
+                chainTypeDetailValue.setIsDefault(true);
                 updateChainTypeFromValue(chainTypeDetailValue, false, deletedBy);
             }
         }
@@ -1341,10 +1341,10 @@ public class ChainControl
         if(defaultFound && isDefault) {
             var defaultChainDetailValue = getDefaultChainDetailValueForUpdate(chainType);
 
-            defaultChainDetailValue.setIsDefault(Boolean.FALSE);
+            defaultChainDetailValue.setIsDefault(false);
             updateChainFromValue(defaultChainDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var chain = ChainFactory.getInstance().create();
@@ -1578,11 +1578,11 @@ public class ChainControl
                     // If I'm the default, and a default already existed...
                     var defaultChainDetailValue = getDefaultChainDetailValueForUpdate(chainType);
 
-                    defaultChainDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultChainDetailValue.setIsDefault(false);
                     updateChainFromValue(defaultChainDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -1628,7 +1628,7 @@ public class ChainControl
                 }
                 var chainDetailValue = Objects.requireNonNull(defaultChain).getLastDetailForUpdate().getChainDetailValue().clone();
 
-                chainDetailValue.setIsDefault(Boolean.TRUE);
+                chainDetailValue.setIsDefault(true);
                 updateChainFromValue(chainDetailValue, false, deletedBy);
             }
         }
@@ -1810,10 +1810,10 @@ public class ChainControl
         if(defaultFound && isDefault) {
             var defaultChainActionSetDetailValue = getDefaultChainActionSetDetailValueForUpdate(chain);
 
-            defaultChainActionSetDetailValue.setIsDefault(Boolean.FALSE);
+            defaultChainActionSetDetailValue.setIsDefault(false);
             updateChainActionSetFromValue(defaultChainActionSetDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var chainActionSet = ChainActionSetFactory.getInstance().create();
@@ -2012,11 +2012,11 @@ public class ChainControl
                     // If I'm the default, and a default already existed...
                     var defaultChainActionSetDetailValue = getDefaultChainActionSetDetailValueForUpdate(chain);
 
-                    defaultChainActionSetDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultChainActionSetDetailValue.setIsDefault(false);
                     updateChainActionSetFromValue(defaultChainActionSetDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -2057,7 +2057,7 @@ public class ChainControl
                 }
                 var chainActionSetDetailValue = Objects.requireNonNull(defaultChainActionSet).getLastDetailForUpdate().getChainActionSetDetailValue().clone();
 
-                chainActionSetDetailValue.setIsDefault(Boolean.TRUE);
+                chainActionSetDetailValue.setIsDefault(true);
                 updateChainActionSetFromValue(chainActionSetDetailValue, false, deletedBy);
             }
         }
@@ -2234,10 +2234,10 @@ public class ChainControl
         if(defaultFound && isDefault) {
             var defaultChainActionTypeDetailValue = getDefaultChainActionTypeDetailValueForUpdate();
 
-            defaultChainActionTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultChainActionTypeDetailValue.setIsDefault(false);
             updateChainActionTypeFromValue(defaultChainActionTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var chainActionType = ChainActionTypeFactory.getInstance().create();
@@ -2429,11 +2429,11 @@ public class ChainControl
                 // If I'm the default, and a default already existed...
                 var defaultChainActionTypeDetailValue = getDefaultChainActionTypeDetailValueForUpdate();
 
-                defaultChainActionTypeDetailValue.setIsDefault(Boolean.FALSE);
+                defaultChainActionTypeDetailValue.setIsDefault(false);
                 updateChainActionTypeFromValue(defaultChainActionTypeDetailValue, false, updatedBy);
             } else if(!isDefault && !defaultFound) {
                 // If I'm not the default, and no other default exists...
-                isDefault = Boolean.TRUE;
+                isDefault = true;
             }
         }
 
@@ -2471,7 +2471,7 @@ public class ChainControl
                 }
                 var chainActionTypeDetailValue = Objects.requireNonNull(defaultChainActionType).getLastDetailForUpdate().getChainActionTypeDetailValue().clone();
 
-                chainActionTypeDetailValue.setIsDefault(Boolean.TRUE);
+                chainActionTypeDetailValue.setIsDefault(true);
                 updateChainActionTypeFromValue(chainActionTypeDetailValue, false, deletedBy);
             }
         }

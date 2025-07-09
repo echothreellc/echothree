@@ -71,7 +71,7 @@ public class SetDefaultFilterTypeCommand
                     filterTypeName);
             
             if(filterTypeDetailValue != null) {
-                filterTypeDetailValue.setIsDefault(Boolean.TRUE);
+                filterTypeDetailValue.setIsDefault(true);
                 filterControl.updateFilterTypeFromValue(filterTypeDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownFilterTypeName.name(), filterKindName, filterTypeName);

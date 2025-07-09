@@ -76,7 +76,7 @@ public class SetDefaultGeoCodeLanguageCommand
                 var geoCodeLanguageValue = geoControl.getGeoCodeLanguageValueForUpdate(geoCode, language);
                 
                 if(geoCodeLanguageValue != null) {
-                    geoCodeLanguageValue.setIsDefault(Boolean.TRUE);
+                    geoCodeLanguageValue.setIsDefault(true);
                     geoControl.updateGeoCodeLanguageFromValue(geoCodeLanguageValue, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownGeoCodeLanguage.name(), geoCodeName, languageIsoName);

@@ -365,10 +365,10 @@ public class InvoiceControl
         if(defaultFound && isDefault) {
             var defaultInvoiceTypeDetailValue = getDefaultInvoiceTypeDetailValueForUpdate();
             
-            defaultInvoiceTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultInvoiceTypeDetailValue.setIsDefault(false);
             updateInvoiceTypeFromValue(defaultInvoiceTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var invoiceType = InvoiceTypeFactory.getInstance().create();
@@ -622,11 +622,11 @@ public class InvoiceControl
                     // If I'm the default, and a default already existed...
                     var defaultInvoiceTypeDetailValue = getDefaultInvoiceTypeDetailValueForUpdate();
                     
-                    defaultInvoiceTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultInvoiceTypeDetailValue.setIsDefault(false);
                     updateInvoiceTypeFromValue(defaultInvoiceTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -670,7 +670,7 @@ public class InvoiceControl
                     }
                     var invoiceTypeDetailValue = Objects.requireNonNull(defaultInvoiceType).getLastDetailForUpdate().getInvoiceTypeDetailValue().clone();
 
-                    invoiceTypeDetailValue.setIsDefault(Boolean.TRUE);
+                    invoiceTypeDetailValue.setIsDefault(true);
                     updateInvoiceTypeFromValue(invoiceTypeDetailValue, false, deletedBy);
                 }
             }
@@ -872,10 +872,10 @@ public class InvoiceControl
         if(defaultFound && isDefault) {
             var defaultInvoiceAliasTypeDetailValue = getDefaultInvoiceAliasTypeDetailValueForUpdate(invoiceType);
             
-            defaultInvoiceAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultInvoiceAliasTypeDetailValue.setIsDefault(false);
             updateInvoiceAliasTypeFromValue(defaultInvoiceAliasTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var invoiceAliasType = InvoiceAliasTypeFactory.getInstance().create();
@@ -1076,11 +1076,11 @@ public class InvoiceControl
                     // If I'm the default, and a default already existed...
                     var defaultInvoiceAliasTypeDetailValue = getDefaultInvoiceAliasTypeDetailValueForUpdate(invoiceType);
                     
-                    defaultInvoiceAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultInvoiceAliasTypeDetailValue.setIsDefault(false);
                     updateInvoiceAliasTypeFromValue(defaultInvoiceAliasTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -1120,7 +1120,7 @@ public class InvoiceControl
                 }
                 var invoiceAliasTypeDetailValue = Objects.requireNonNull(defaultInvoiceAliasType).getLastDetailForUpdate().getInvoiceAliasTypeDetailValue().clone();
                 
-                invoiceAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
+                invoiceAliasTypeDetailValue.setIsDefault(true);
                 updateInvoiceAliasTypeFromValue(invoiceAliasTypeDetailValue, false, deletedBy);
             }
         }
@@ -1149,10 +1149,10 @@ public class InvoiceControl
         if(defaultFound && isDefault) {
             var defaultInvoiceTimeTypeDetailValue = getDefaultInvoiceTimeTypeDetailValueForUpdate(invoiceType);
 
-            defaultInvoiceTimeTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultInvoiceTimeTypeDetailValue.setIsDefault(false);
             updateInvoiceTimeTypeFromValue(defaultInvoiceTimeTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var invoiceTimeType = InvoiceTimeTypeFactory.getInstance().create();
@@ -1356,11 +1356,11 @@ public class InvoiceControl
                     // If I'm the default, and a default already existed...
                     var defaultInvoiceTimeTypeDetailValue = getDefaultInvoiceTimeTypeDetailValueForUpdate(invoiceType);
 
-                    defaultInvoiceTimeTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultInvoiceTimeTypeDetailValue.setIsDefault(false);
                     updateInvoiceTimeTypeFromValue(defaultInvoiceTimeTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -1400,7 +1400,7 @@ public class InvoiceControl
                 }
                 var invoiceTimeTypeDetailValue = Objects.requireNonNull(defaultInvoiceTimeType).getLastDetailForUpdate().getInvoiceTimeTypeDetailValue().clone();
 
-                invoiceTimeTypeDetailValue.setIsDefault(Boolean.TRUE);
+                invoiceTimeTypeDetailValue.setIsDefault(true);
                 updateInvoiceTimeTypeFromValue(invoiceTimeTypeDetailValue, false, deletedBy);
             }
         }
@@ -1718,10 +1718,10 @@ public class InvoiceControl
         if(defaultFound && isDefault) {
             var defaultInvoiceLineTypeDetailValue = getDefaultInvoiceLineTypeDetailValueForUpdate(invoiceType);
             
-            defaultInvoiceLineTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultInvoiceLineTypeDetailValue.setIsDefault(false);
             updateInvoiceLineTypeFromValue(defaultInvoiceLineTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var invoiceLineType = InvoiceLineTypeFactory.getInstance().create();
@@ -2009,11 +2009,11 @@ public class InvoiceControl
                     // If I'm the default, and a default already existed...
                     var defaultInvoiceLineTypeDetailValue = getDefaultInvoiceLineTypeDetailValueForUpdate(invoiceType);
                     
-                    defaultInvoiceLineTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultInvoiceLineTypeDetailValue.setIsDefault(false);
                     updateInvoiceLineTypeFromValue(defaultInvoiceLineTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -2057,7 +2057,7 @@ public class InvoiceControl
                     }
                     var invoiceLineTypeDetailValue = Objects.requireNonNull(defaultInvoiceLineType).getLastDetailForUpdate().getInvoiceLineTypeDetailValue().clone();
 
-                    invoiceLineTypeDetailValue.setIsDefault(Boolean.TRUE);
+                    invoiceLineTypeDetailValue.setIsDefault(true);
                     updateInvoiceLineTypeFromValue(invoiceLineTypeDetailValue, false, deletedBy);
                 }
             }

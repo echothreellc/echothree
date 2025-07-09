@@ -271,7 +271,7 @@ public class EncryptionUtils {
     }
 
     public String encrypt(final String entityTypeName, final String entityColumnName, final String value) {
-        return encrypt(entityTypeName, entityColumnName, Boolean.FALSE, value);
+        return encrypt(entityTypeName, entityColumnName, false, value);
     }
 
     public String encrypt(final String entityTypeName, final String entityColumnName, final Boolean isExternal, final String value) {
@@ -293,7 +293,7 @@ public class EncryptionUtils {
     }
 
     public String decrypt(final String entityTypeName, final String entityColumnName, final String value) {
-        return decrypt(entityTypeName, entityColumnName, Boolean.FALSE, value);
+        return decrypt(entityTypeName, entityColumnName, false, value);
     }
 
     public String decrypt(final String entityTypeName, final String entityColumnName, Boolean isExternal, final String value) {

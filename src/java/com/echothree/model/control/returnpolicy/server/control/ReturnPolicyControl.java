@@ -317,10 +317,10 @@ public class ReturnPolicyControl
         if(defaultFound && isDefault) {
             var defaultReturnKindDetailValue = getDefaultReturnKindDetailValueForUpdate();
             
-            defaultReturnKindDetailValue.setIsDefault(Boolean.FALSE);
+            defaultReturnKindDetailValue.setIsDefault(false);
             updateReturnKindFromValue(defaultReturnKindDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var returnKind = ReturnKindFactory.getInstance().create();
@@ -538,11 +538,11 @@ public class ReturnPolicyControl
                 // If I'm the default, and a default already existed...
                 var defaultReturnKindDetailValue = getDefaultReturnKindDetailValueForUpdate();
                 
-                defaultReturnKindDetailValue.setIsDefault(Boolean.FALSE);
+                defaultReturnKindDetailValue.setIsDefault(false);
                 updateReturnKindFromValue(defaultReturnKindDetailValue, false, updatedBy);
             } else if(!isDefault && !defaultFound) {
                 // If I'm not the default, and no other default exists...
-                isDefault = Boolean.TRUE;
+                isDefault = true;
             }
         }
         
@@ -580,7 +580,7 @@ public class ReturnPolicyControl
                 }
                 var returnKindDetailValue = Objects.requireNonNull(defaultReturnKind).getLastDetailForUpdate().getReturnKindDetailValue().clone();
                 
-                returnKindDetailValue.setIsDefault(Boolean.TRUE);
+                returnKindDetailValue.setIsDefault(true);
                 updateReturnKindFromValue(returnKindDetailValue, false, deletedBy);
             }
         }
@@ -750,10 +750,10 @@ public class ReturnPolicyControl
         if(defaultFound && isDefault) {
             var defaultReturnPolicyDetailValue = getDefaultReturnPolicyDetailValueForUpdate(returnKind);
             
-            defaultReturnPolicyDetailValue.setIsDefault(Boolean.FALSE);
+            defaultReturnPolicyDetailValue.setIsDefault(false);
             updateReturnPolicyFromValue(defaultReturnPolicyDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var returnPolicy = ReturnPolicyFactory.getInstance().create();
@@ -1007,11 +1007,11 @@ public class ReturnPolicyControl
                     // If I'm the default, and a default already existed...
                     var defaultReturnPolicyDetailValue = getDefaultReturnPolicyDetailValueForUpdate(returnKind);
                     
-                    defaultReturnPolicyDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultReturnPolicyDetailValue.setIsDefault(false);
                     updateReturnPolicyFromValue(defaultReturnPolicyDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -1052,7 +1052,7 @@ public class ReturnPolicyControl
                 }
                 var returnPolicyDetailValue = Objects.requireNonNull(defaultReturnPolicy).getLastDetailForUpdate().getReturnPolicyDetailValue().clone();
                 
-                returnPolicyDetailValue.setIsDefault(Boolean.TRUE);
+                returnPolicyDetailValue.setIsDefault(true);
                 updateReturnPolicyFromValue(returnPolicyDetailValue, false, deletedBy);
             }
         }
@@ -1226,10 +1226,10 @@ public class ReturnPolicyControl
         if(defaultFound && isDefault) {
             var defaultReturnPolicyReasonValue = getDefaultReturnPolicyReasonValueForUpdate(returnPolicy);
             
-            defaultReturnPolicyReasonValue.setIsDefault(Boolean.FALSE);
+            defaultReturnPolicyReasonValue.setIsDefault(false);
             updateReturnPolicyReasonFromValue(defaultReturnPolicyReasonValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var returnPolicyReason = ReturnPolicyReasonFactory.getInstance().create(returnPolicy, returnReason,
@@ -1456,11 +1456,11 @@ public class ReturnPolicyControl
                     // If I'm the default, and a default already existed...
                     var defaultReturnPolicyReasonValue = getDefaultReturnPolicyReasonValueForUpdate(returnPolicy);
                     
-                    defaultReturnPolicyReasonValue.setIsDefault(Boolean.FALSE);
+                    defaultReturnPolicyReasonValue.setIsDefault(false);
                     updateReturnPolicyReasonFromValue(defaultReturnPolicyReasonValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -1492,7 +1492,7 @@ public class ReturnPolicyControl
                 }
                 var returnPolicyReasonValue = defaultReturnPolicyReason.getReturnPolicyReasonValue().clone();
                 
-                returnPolicyReasonValue.setIsDefault(Boolean.TRUE);
+                returnPolicyReasonValue.setIsDefault(true);
                 updateReturnPolicyReasonFromValue(returnPolicyReasonValue, false, deletedBy);
             }
         }
@@ -1526,10 +1526,10 @@ public class ReturnPolicyControl
         if(defaultFound && isDefault) {
             var defaultReturnReasonDetailValue = getDefaultReturnReasonDetailValueForUpdate(returnKind);
             
-            defaultReturnReasonDetailValue.setIsDefault(Boolean.FALSE);
+            defaultReturnReasonDetailValue.setIsDefault(false);
             updateReturnReasonFromValue(defaultReturnReasonDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var returnReason = ReturnReasonFactory.getInstance().create();
@@ -1754,11 +1754,11 @@ public class ReturnPolicyControl
                     // If I'm the default, and a default already existed...
                     var defaultReturnReasonDetailValue = getDefaultReturnReasonDetailValueForUpdate(returnKind);
                     
-                    defaultReturnReasonDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultReturnReasonDetailValue.setIsDefault(false);
                     updateReturnReasonFromValue(defaultReturnReasonDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -1799,7 +1799,7 @@ public class ReturnPolicyControl
                 }
                 var returnReasonDetailValue = Objects.requireNonNull(defaultReturnReason).getLastDetailForUpdate().getReturnReasonDetailValue().clone();
                 
-                returnReasonDetailValue.setIsDefault(Boolean.TRUE);
+                returnReasonDetailValue.setIsDefault(true);
                 updateReturnReasonFromValue(returnReasonDetailValue, false, deletedBy);
             }
         }
@@ -1994,10 +1994,10 @@ public class ReturnPolicyControl
         if(defaultFound && isDefault) {
             var defaultReturnReasonTypeValue = getDefaultReturnReasonTypeValueForUpdate(returnReason);
             
-            defaultReturnReasonTypeValue.setIsDefault(Boolean.FALSE);
+            defaultReturnReasonTypeValue.setIsDefault(false);
             updateReturnReasonTypeFromValue(defaultReturnReasonTypeValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var returnReasonType = ReturnReasonTypeFactory.getInstance().create(returnReason, returnType,
@@ -2225,11 +2225,11 @@ public class ReturnPolicyControl
                     // If I'm the default, and a default already existed...
                     var defaultReturnReasonTypeValue = getDefaultReturnReasonTypeValueForUpdate(returnReason);
                     
-                    defaultReturnReasonTypeValue.setIsDefault(Boolean.FALSE);
+                    defaultReturnReasonTypeValue.setIsDefault(false);
                     updateReturnReasonTypeFromValue(defaultReturnReasonTypeValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -2261,7 +2261,7 @@ public class ReturnPolicyControl
                 }
                 var returnReasonTypeValue = defaultReturnReasonType.getReturnReasonTypeValue().clone();
                 
-                returnReasonTypeValue.setIsDefault(Boolean.TRUE);
+                returnReasonTypeValue.setIsDefault(true);
                 updateReturnReasonTypeFromValue(returnReasonTypeValue, false, deletedBy);
             }
         }
@@ -2295,10 +2295,10 @@ public class ReturnPolicyControl
         if(defaultFound && isDefault) {
             var defaultReturnTypeDetailValue = getDefaultReturnTypeDetailValueForUpdate(returnKind);
             
-            defaultReturnTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultReturnTypeDetailValue.setIsDefault(false);
             updateReturnTypeFromValue(defaultReturnTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var returnType = ReturnTypeFactory.getInstance().create();
@@ -2502,11 +2502,11 @@ public class ReturnPolicyControl
                     // If I'm the default, and a default already existed...
                     var defaultReturnTypeDetailValue = getDefaultReturnTypeDetailValueForUpdate(returnKind);
                     
-                    defaultReturnTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultReturnTypeDetailValue.setIsDefault(false);
                     updateReturnTypeFromValue(defaultReturnTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -2547,7 +2547,7 @@ public class ReturnPolicyControl
                 }
                 var returnTypeDetailValue = Objects.requireNonNull(defaultReturnType).getLastDetailForUpdate().getReturnTypeDetailValue().clone();
                 
-                returnTypeDetailValue.setIsDefault(Boolean.TRUE);
+                returnTypeDetailValue.setIsDefault(true);
                 updateReturnTypeFromValue(returnTypeDetailValue, false, deletedBy);
             }
         }
@@ -2725,10 +2725,10 @@ public class ReturnPolicyControl
         if(defaultFound && isDefault) {
             var defaultReturnTypeShippingMethodValue = getDefaultReturnTypeShippingMethodValueForUpdate(returnType);
             
-            defaultReturnTypeShippingMethodValue.setIsDefault(Boolean.FALSE);
+            defaultReturnTypeShippingMethodValue.setIsDefault(false);
             updateReturnTypeShippingMethodFromValue(defaultReturnTypeShippingMethodValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var returnTypeShippingMethod = ReturnTypeShippingMethodFactory.getInstance().create(returnType, shippingMethod,
@@ -2956,11 +2956,11 @@ public class ReturnPolicyControl
                     // If I'm the default, and a default already existed...
                     var defaultReturnTypeShippingMethodValue = getDefaultReturnTypeShippingMethodValueForUpdate(returnType);
                     
-                    defaultReturnTypeShippingMethodValue.setIsDefault(Boolean.FALSE);
+                    defaultReturnTypeShippingMethodValue.setIsDefault(false);
                     updateReturnTypeShippingMethodFromValue(defaultReturnTypeShippingMethodValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -2992,7 +2992,7 @@ public class ReturnPolicyControl
                 }
                 var returnTypeShippingMethodValue = defaultReturnTypeShippingMethod.getReturnTypeShippingMethodValue().clone();
                 
-                returnTypeShippingMethodValue.setIsDefault(Boolean.TRUE);
+                returnTypeShippingMethodValue.setIsDefault(true);
                 updateReturnTypeShippingMethodFromValue(returnTypeShippingMethodValue, false, deletedBy);
             }
         }

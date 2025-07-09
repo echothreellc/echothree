@@ -64,10 +64,10 @@ public class LotAliasControl
         if(defaultFound && isDefault) {
             var defaultLotAliasTypeDetailValue = getDefaultLotAliasTypeDetailValueForUpdate();
 
-            defaultLotAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultLotAliasTypeDetailValue.setIsDefault(false);
             updateLotAliasTypeFromValue(defaultLotAliasTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var lotAliasType = LotAliasTypeFactory.getInstance().create();
@@ -265,11 +265,11 @@ public class LotAliasControl
                     // If I'm the default, and a default already existed...
                     var defaultLotAliasTypeDetailValue = getDefaultLotAliasTypeDetailValueForUpdate();
 
-                    defaultLotAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultLotAliasTypeDetailValue.setIsDefault(false);
                     updateLotAliasTypeFromValue(defaultLotAliasTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -308,7 +308,7 @@ public class LotAliasControl
                 }
                 var lotAliasTypeDetailValue = Objects.requireNonNull(defaultLotAliasType).getLastDetailForUpdate().getLotAliasTypeDetailValue().clone();
 
-                lotAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
+                lotAliasTypeDetailValue.setIsDefault(true);
                 updateLotAliasTypeFromValue(lotAliasTypeDetailValue, false, deletedBy);
             }
         }

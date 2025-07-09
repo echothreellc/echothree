@@ -48,7 +48,7 @@ public class TranslationAddActionForm
                 var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
                 
                 commandForm.setDefaultMimeTypeChoice(answerMimeTypeChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(false));
                 commandForm.setMimeTypeUsageTypeName(MimeTypeUsageTypes.TEXT.name());
 
                 var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
@@ -71,7 +71,7 @@ public class TranslationAddActionForm
                 var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
                 
                 commandForm.setDefaultMimeTypeChoice(selectedMimeTypeChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(true));
                 commandForm.setMimeTypeUsageTypeName(MimeTypeUsageTypes.TEXT.name());
 
                 var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);

@@ -73,7 +73,7 @@ public class SetDefaultTaxClassificationCommand
                     taxClassificationName);
             
             if(taxClassificationDetailValue != null) {
-                taxClassificationDetailValue.setIsDefault(Boolean.TRUE);
+                taxClassificationDetailValue.setIsDefault(true);
                 taxControl.updateTaxClassificationFromValue(taxClassificationDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownTaxClassificationName.name(), countryName, taxClassificationName);

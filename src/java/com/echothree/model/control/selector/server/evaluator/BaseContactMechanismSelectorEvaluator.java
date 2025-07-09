@@ -50,7 +50,7 @@ public class BaseContactMechanismSelectorEvaluator
         } else {
             if(BaseSelectorEvaluatorDebugFlags.BaseContactMechanismSelectorEvaluator)
                 log.info("--- snd was null, evaluating to FALSE");
-            result = Boolean.FALSE;
+            result = false;
         }
         
         if(BaseSelectorEvaluatorDebugFlags.BaseContactMechanismSelectorEvaluator)

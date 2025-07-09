@@ -46,7 +46,7 @@ public class AddActionForm
             var form = CoreUtil.getHome().getGetProtocolChoicesForm();
 
             form.setDefaultProtocolChoice(protocolChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = CoreUtil.getHome().getProtocolChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -125,7 +125,7 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        isDefault = Boolean.FALSE;
+        isDefault = false;
     }
 
 }

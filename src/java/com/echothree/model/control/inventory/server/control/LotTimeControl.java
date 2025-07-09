@@ -64,10 +64,10 @@ public class LotTimeControl
         if(defaultFound && isDefault) {
             var defaultLotTimeTypeDetailValue = getDefaultLotTimeTypeDetailValueForUpdate();
 
-            defaultLotTimeTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultLotTimeTypeDetailValue.setIsDefault(false);
             updateLotTimeTypeFromValue(defaultLotTimeTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var lotTimeType = LotTimeTypeFactory.getInstance().create();
@@ -264,11 +264,11 @@ public class LotTimeControl
                     // If I'm the default, and a default already existed...
                     var defaultLotTimeTypeDetailValue = getDefaultLotTimeTypeDetailValueForUpdate();
 
-                    defaultLotTimeTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultLotTimeTypeDetailValue.setIsDefault(false);
                     updateLotTimeTypeFromValue(defaultLotTimeTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -307,7 +307,7 @@ public class LotTimeControl
                 }
                 var lotTimeTypeDetailValue = Objects.requireNonNull(defaultLotTimeType).getLastDetailForUpdate().getLotTimeTypeDetailValue().clone();
 
-                lotTimeTypeDetailValue.setIsDefault(Boolean.TRUE);
+                lotTimeTypeDetailValue.setIsDefault(true);
                 updateLotTimeTypeFromValue(lotTimeTypeDetailValue, false, deletedBy);
             }
         }

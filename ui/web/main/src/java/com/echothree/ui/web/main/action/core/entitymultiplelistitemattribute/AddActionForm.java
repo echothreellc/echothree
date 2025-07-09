@@ -44,7 +44,7 @@ public class AddActionForm
             commandForm.setEntityRef(entityRef);
             commandForm.setEntityAttributeName(entityAttributeName);
             commandForm.setDefaultEntityListItemChoice(entityListItemChoice);
-            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = CoreUtil.getHome().getEntityListItemChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();

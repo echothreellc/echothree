@@ -61,7 +61,7 @@ public class SetDefaultUnitOfMeasureKindUseCommand
                         unitOfMeasureKind);
                 
                 if(unitOfMeasureKindUseValue != null) {
-                    unitOfMeasureKindUseValue.setIsDefault(Boolean.TRUE);
+                    unitOfMeasureKindUseValue.setIsDefault(true);
                     uomControl.updateUnitOfMeasureKindUseFromValue(unitOfMeasureKindUseValue, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownUnitOfMeasureKindUse.name());

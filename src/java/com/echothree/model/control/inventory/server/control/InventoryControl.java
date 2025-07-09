@@ -125,10 +125,10 @@ public class InventoryControl
         if(defaultFound && isDefault) {
             var defaultInventoryLocationGroupDetailValue = getDefaultInventoryLocationGroupDetailValueForUpdate(warehouseParty);
             
-            defaultInventoryLocationGroupDetailValue.setIsDefault(Boolean.FALSE);
+            defaultInventoryLocationGroupDetailValue.setIsDefault(false);
             updateInventoryLocationGroupFromValue(defaultInventoryLocationGroupDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var inventoryLocationGroup = InventoryLocationGroupFactory.getInstance().create();
@@ -363,11 +363,11 @@ public class InventoryControl
                 // If I'm the default, and a default already existed...
                 var defaultInventoryLocationGroupDetailValue = getDefaultInventoryLocationGroupDetailValueForUpdate(warehouseParty);
                 
-                defaultInventoryLocationGroupDetailValue.setIsDefault(Boolean.FALSE);
+                defaultInventoryLocationGroupDetailValue.setIsDefault(false);
                 updateInventoryLocationGroupFromValue(defaultInventoryLocationGroupDetailValue, false, updatedBy);
             } else if(!isDefault && !defaultFound) {
                 // If I'm not the default, and no other default exists...
-                isDefault = Boolean.TRUE;
+                isDefault = true;
             }
         }
         
@@ -438,7 +438,7 @@ public class InventoryControl
                     }
                     var inventoryLocationGroupDetailValue = Objects.requireNonNull(defaultInventoryLocationGroup).getLastDetailForUpdate().getInventoryLocationGroupDetailValue().clone();
                     
-                    inventoryLocationGroupDetailValue.setIsDefault(Boolean.TRUE);
+                    inventoryLocationGroupDetailValue.setIsDefault(true);
                     updateInventoryLocationGroupFromValue(inventoryLocationGroupDetailValue, false, deletedBy);
                 }
             }
@@ -900,10 +900,10 @@ public class InventoryControl
         if(defaultFound && isDefault) {
             var defaultInventoryConditionDetailValue = getDefaultInventoryConditionDetailValueForUpdate();
             
-            defaultInventoryConditionDetailValue.setIsDefault(Boolean.FALSE);
+            defaultInventoryConditionDetailValue.setIsDefault(false);
             updateInventoryConditionFromValue(defaultInventoryConditionDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var inventoryCondition = InventoryConditionFactory.getInstance().create();
@@ -1142,11 +1142,11 @@ public class InventoryControl
                     // If I'm the default, and a default already existed...
                     var defaultInventoryConditionDetailValue = getDefaultInventoryConditionDetailValueForUpdate();
                     
-                    defaultInventoryConditionDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultInventoryConditionDetailValue.setIsDefault(false);
                     updateInventoryConditionFromValue(defaultInventoryConditionDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -1197,7 +1197,7 @@ public class InventoryControl
                 }
                 var inventoryConditionDetailValue = Objects.requireNonNull(defaultInventoryCondition).getLastDetailForUpdate().getInventoryConditionDetailValue().clone();
                 
-                inventoryConditionDetailValue.setIsDefault(Boolean.TRUE);
+                inventoryConditionDetailValue.setIsDefault(true);
                 updateInventoryConditionFromValue(inventoryConditionDetailValue, false, deletedBy);
             }
         }
@@ -1498,10 +1498,10 @@ public class InventoryControl
         if(defaultFound && isDefault) {
             var defaultInventoryConditionUseValue = getDefaultInventoryConditionUseValueForUpdate(inventoryConditionUseType);
             
-            defaultInventoryConditionUseValue.setIsDefault(Boolean.FALSE);
+            defaultInventoryConditionUseValue.setIsDefault(false);
             updateInventoryConditionUseFromValue(defaultInventoryConditionUseValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var inventoryConditionUse = InventoryConditionUseFactory.getInstance().create(inventoryConditionUseType,
@@ -1753,11 +1753,11 @@ public class InventoryControl
                 // If I'm the default, and a default already existed...
                 var defaultInventoryConditionUseValue = getDefaultInventoryConditionUseValueForUpdate(inventoryConditionUseType);
                 
-                defaultInventoryConditionUseValue.setIsDefault(Boolean.FALSE);
+                defaultInventoryConditionUseValue.setIsDefault(false);
                 updateInventoryConditionUseFromValue(defaultInventoryConditionUseValue, false, updatedBy);
             } else if(!isDefault && !defaultFound) {
                 // If I'm not the default, and no other default exists...
-                isDefault = Boolean.TRUE;
+                isDefault = true;
             }
         }
         
@@ -1790,7 +1790,7 @@ public class InventoryControl
                 }
                 var inventoryConditionUseValue = defaultInventoryConditionUse.getInventoryConditionUseValue().clone();
                 
-                inventoryConditionUseValue.setIsDefault(Boolean.TRUE);
+                inventoryConditionUseValue.setIsDefault(true);
                 updateInventoryConditionUseFromValue(inventoryConditionUseValue, false, deletedBy);
             }
         }
@@ -2302,10 +2302,10 @@ public class InventoryControl
         if(defaultFound && isDefault) {
             var defaultAllocationPriorityDetailValue = getDefaultAllocationPriorityDetailValueForUpdate();
 
-            defaultAllocationPriorityDetailValue.setIsDefault(Boolean.FALSE);
+            defaultAllocationPriorityDetailValue.setIsDefault(false);
             updateAllocationPriorityFromValue(defaultAllocationPriorityDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var allocationPriority = AllocationPriorityFactory.getInstance().create();
@@ -2530,11 +2530,11 @@ public class InventoryControl
                     // If I'm the default, and a default already existed...
                     var defaultAllocationPriorityDetailValue = getDefaultAllocationPriorityDetailValueForUpdate();
 
-                    defaultAllocationPriorityDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultAllocationPriorityDetailValue.setIsDefault(false);
                     updateAllocationPriorityFromValue(defaultAllocationPriorityDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -2572,7 +2572,7 @@ public class InventoryControl
                 }
                 var allocationPriorityDetailValue = Objects.requireNonNull(defaultAllocationPriority).getLastDetailForUpdate().getAllocationPriorityDetailValue().clone();
 
-                allocationPriorityDetailValue.setIsDefault(Boolean.TRUE);
+                allocationPriorityDetailValue.setIsDefault(true);
                 updateAllocationPriorityFromValue(allocationPriorityDetailValue, false, deletedBy);
             }
         }

@@ -84,10 +84,10 @@ public class QueueControl
         if(defaultFound && isDefault) {
             var defaultQueueTypeDetailValue = getDefaultQueueTypeDetailValueForUpdate();
 
-            defaultQueueTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultQueueTypeDetailValue.setIsDefault(false);
             updateQueueTypeFromValue(defaultQueueTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var queueType = QueueTypeFactory.getInstance().create();
@@ -308,11 +308,11 @@ public class QueueControl
                     // If I'm the default, and a default already existed...
                     var defaultQueueTypeDetailValue = getDefaultQueueTypeDetailValueForUpdate();
 
-                    defaultQueueTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultQueueTypeDetailValue.setIsDefault(false);
                     updateQueueTypeFromValue(defaultQueueTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -354,7 +354,7 @@ public class QueueControl
                     }
                     var queueTypeDetailValue = Objects.requireNonNull(defaultQueueType).getLastDetailForUpdate().getQueueTypeDetailValue().clone();
 
-                    queueTypeDetailValue.setIsDefault(Boolean.TRUE);
+                    queueTypeDetailValue.setIsDefault(true);
                     updateQueueTypeFromValue(queueTypeDetailValue, false, deletedBy);
                 }
             }

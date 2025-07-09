@@ -55,8 +55,8 @@ public class SetDefaultCurrencyCommand
             var defaultCurrency = accountingControl.getDefaultCurrencyForUpdate();
             
             if(!currency.equals(defaultCurrency)) {
-                defaultCurrency.setIsDefault(Boolean.FALSE);
-                currency.setIsDefault(Boolean.TRUE);
+                defaultCurrency.setIsDefault(false);
+                currency.setIsDefault(true);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownCurrencyIsoName.name(), currencyIsoName);

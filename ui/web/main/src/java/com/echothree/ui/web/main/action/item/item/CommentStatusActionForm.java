@@ -42,7 +42,7 @@ public class CommentStatusActionForm
 
             form.setCommentName(commentName);
             form.setDefaultCommentStatusChoice(commentStatusChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = CommentUtil.getHome().getCommentStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

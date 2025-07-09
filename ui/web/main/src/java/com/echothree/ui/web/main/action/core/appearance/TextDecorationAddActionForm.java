@@ -40,7 +40,7 @@ public class TextDecorationAddActionForm
             var commandForm = CoreUtil.getHome().getGetTextDecorationChoicesForm();
 
             commandForm.setDefaultTextDecorationChoice(textDecorationChoice);
-            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = CoreUtil.getHome().getTextDecorationChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();

@@ -759,10 +759,10 @@ public class PartyControl
         if(defaultFound && isDefault) {
             var defaultPersonalTitleDetailValue = getDefaultPersonalTitleDetailValueForUpdate();
             
-            defaultPersonalTitleDetailValue.setIsDefault(Boolean.FALSE);
+            defaultPersonalTitleDetailValue.setIsDefault(false);
             updatePersonalTitleFromValue(defaultPersonalTitleDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var personalTitle = PersonalTitleFactory.getInstance().create((PersonalTitleDetailPK)null,
@@ -955,11 +955,11 @@ public class PartyControl
                     // If I'm the default, and a default already existed...
                     var defaultPersonalTitleDetailValue = getDefaultPersonalTitleDetailValueForUpdate();
                     
-                    defaultPersonalTitleDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultPersonalTitleDetailValue.setIsDefault(false);
                     updatePersonalTitleFromValue(defaultPersonalTitleDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -1014,7 +1014,7 @@ public class PartyControl
                 }
                 var personalTitleDetailValue = Objects.requireNonNull(defaultPersonalTitle).getLastDetailForUpdate().getPersonalTitleDetailValue().clone();
                 
-                personalTitleDetailValue.setIsDefault(Boolean.TRUE);
+                personalTitleDetailValue.setIsDefault(true);
                 updatePersonalTitleFromValue(personalTitleDetailValue, false, deletedBy);
             }
         }
@@ -1033,10 +1033,10 @@ public class PartyControl
         if(defaultFound && isDefault) {
             var defaultNameSuffixDetailValue = getDefaultNameSuffixDetailValueForUpdate();
             
-            defaultNameSuffixDetailValue.setIsDefault(Boolean.FALSE);
+            defaultNameSuffixDetailValue.setIsDefault(false);
             updateNameSuffixFromValue(defaultNameSuffixDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var nameSuffix = NameSuffixFactory.getInstance().create();
@@ -1225,11 +1225,11 @@ public class PartyControl
                     // If I'm the default, and a default already existed...
                     var defaultNameSuffixDetailValue = getDefaultNameSuffixDetailValueForUpdate();
                     
-                    defaultNameSuffixDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultNameSuffixDetailValue.setIsDefault(false);
                     updateNameSuffixFromValue(defaultNameSuffixDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -1284,7 +1284,7 @@ public class PartyControl
                 }
                 var nameSuffixDetailValue = Objects.requireNonNull(defaultNameSuffix).getLastDetailForUpdate().getNameSuffixDetailValue().clone();
                 
-                nameSuffixDetailValue.setIsDefault(Boolean.TRUE);
+                nameSuffixDetailValue.setIsDefault(true);
                 updateNameSuffixFromValue(nameSuffixDetailValue, false, deletedBy);
             }
         }
@@ -2750,10 +2750,10 @@ public class PartyControl
         if(defaultFound && isDefault) {
             var defaultPartyAliasTypeDetailValue = getDefaultPartyAliasTypeDetailValueForUpdate(partyType);
 
-            defaultPartyAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultPartyAliasTypeDetailValue.setIsDefault(false);
             updatePartyAliasTypeFromValue(defaultPartyAliasTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var partyAliasType = PartyAliasTypeFactory.getInstance().create();
@@ -2981,11 +2981,11 @@ public class PartyControl
                     // If I'm the default, and a default already existed...
                     var defaultPartyAliasTypeDetailValue = getDefaultPartyAliasTypeDetailValueForUpdate(partyType);
 
-                    defaultPartyAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultPartyAliasTypeDetailValue.setIsDefault(false);
                     updatePartyAliasTypeFromValue(defaultPartyAliasTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -3025,7 +3025,7 @@ public class PartyControl
                 }
                 var partyAliasTypeDetailValue = Objects.requireNonNull(defaultPartyAliasType).getLastDetailForUpdate().getPartyAliasTypeDetailValue().clone();
 
-                partyAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
+                partyAliasTypeDetailValue.setIsDefault(true);
                 updatePartyAliasTypeFromValue(partyAliasTypeDetailValue, false, deletedBy);
             }
         }
@@ -3452,10 +3452,10 @@ public class PartyControl
         if(defaultFound && isDefault) {
             var defaultPartyCompanyValue = getDefaultPartyCompanyValueForUpdate();
             
-            defaultPartyCompanyValue.setIsDefault(Boolean.FALSE);
+            defaultPartyCompanyValue.setIsDefault(false);
             updatePartyCompanyFromValue(defaultPartyCompanyValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var partyCompany = PartyCompanyFactory.getInstance().create(party, partyCompanyName, isDefault, sortOrder,
@@ -3727,11 +3727,11 @@ public class PartyControl
                     // If I'm the default, and a default already existed...
                     var defaultPartyCompanyValue = getDefaultPartyCompanyValueForUpdate();
                     
-                    defaultPartyCompanyValue.setIsDefault(Boolean.FALSE);
+                    defaultPartyCompanyValue.setIsDefault(false);
                     updatePartyCompanyFromValue(defaultPartyCompanyValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -3758,10 +3758,10 @@ public class PartyControl
         if(defaultFound && isDefault) {
             var defaultPartyDivisionValue = getDefaultPartyDivisionValueForUpdate(companyParty);
             
-            defaultPartyDivisionValue.setIsDefault(Boolean.FALSE);
+            defaultPartyDivisionValue.setIsDefault(false);
             updatePartyDivisionFromValue(defaultPartyDivisionValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var partyDivision = PartyDivisionFactory.getInstance().create(party, companyParty, partyDivisionName,
@@ -4081,11 +4081,11 @@ public class PartyControl
                     // If I'm the default, and a default already existed...
                     var defaultPartyDivisionValue = getDefaultPartyDivisionValueForUpdate(companyParty);
                     
-                    defaultPartyDivisionValue.setIsDefault(Boolean.FALSE);
+                    defaultPartyDivisionValue.setIsDefault(false);
                     updatePartyDivisionFromValue(defaultPartyDivisionValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -4112,10 +4112,10 @@ public class PartyControl
         if(defaultFound && isDefault) {
             var defaultPartyDepartmentValue = getDefaultPartyDepartmentValueForUpdate(divisionParty);
             
-            defaultPartyDepartmentValue.setIsDefault(Boolean.FALSE);
+            defaultPartyDepartmentValue.setIsDefault(false);
             updatePartyDepartmentFromValue(defaultPartyDepartmentValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var partyDepartment = PartyDepartmentFactory.getInstance().create(party, divisionParty,
@@ -4436,11 +4436,11 @@ public class PartyControl
                     // If I'm the default, and a default already existed...
                     var defaultPartyDepartmentValue = getDefaultPartyDepartmentValueForUpdate(companyParty);
                     
-                    defaultPartyDepartmentValue.setIsDefault(Boolean.FALSE);
+                    defaultPartyDepartmentValue.setIsDefault(false);
                     updatePartyDepartmentFromValue(defaultPartyDepartmentValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -5182,10 +5182,10 @@ public class PartyControl
         if(defaultFound && isDefault) {
             var defaultGenderDetailValue = getDefaultGenderDetailValueForUpdate();
             
-            defaultGenderDetailValue.setIsDefault(Boolean.FALSE);
+            defaultGenderDetailValue.setIsDefault(false);
             updateGenderFromValue(defaultGenderDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var gender = GenderFactory.getInstance().create();
@@ -5379,11 +5379,11 @@ public class PartyControl
                 // If I'm the default, and a default already existed...
                 var defaultGenderDetailValue = getDefaultGenderDetailValueForUpdate();
                 
-                defaultGenderDetailValue.setIsDefault(Boolean.FALSE);
+                defaultGenderDetailValue.setIsDefault(false);
                 updateGenderFromValue(defaultGenderDetailValue, false, updatedBy);
             } else if(!isDefault && !defaultFound) {
                 // If I'm not the default, and no other default exists...
-                isDefault = Boolean.TRUE;
+                isDefault = true;
             }
         }
         
@@ -5421,7 +5421,7 @@ public class PartyControl
                 }
                 var genderDetailValue = Objects.requireNonNull(defaultGender).getLastDetailForUpdate().getGenderDetailValue().clone();
                 
-                genderDetailValue.setIsDefault(Boolean.TRUE);
+                genderDetailValue.setIsDefault(true);
                 updateGenderFromValue(genderDetailValue, false, deletedBy);
             }
         }
@@ -5607,10 +5607,10 @@ public class PartyControl
         if(defaultFound && isDefault) {
             var defaultMoodDetailValue = getDefaultMoodDetailValueForUpdate();
             
-            defaultMoodDetailValue.setIsDefault(Boolean.FALSE);
+            defaultMoodDetailValue.setIsDefault(false);
             updateMoodFromValue(defaultMoodDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var mood = MoodFactory.getInstance().create();
@@ -5804,11 +5804,11 @@ public class PartyControl
                 // If I'm the default, and a default already existed...
                 var defaultMoodDetailValue = getDefaultMoodDetailValueForUpdate();
                 
-                defaultMoodDetailValue.setIsDefault(Boolean.FALSE);
+                defaultMoodDetailValue.setIsDefault(false);
                 updateMoodFromValue(defaultMoodDetailValue, false, updatedBy);
             } else if(!isDefault && !defaultFound) {
                 // If I'm not the default, and no other default exists...
-                isDefault = Boolean.TRUE;
+                isDefault = true;
             }
         }
         
@@ -5846,7 +5846,7 @@ public class PartyControl
                 }
                 var moodDetailValue = Objects.requireNonNull(defaultMood).getLastDetailForUpdate().getMoodDetailValue().clone();
                 
-                moodDetailValue.setIsDefault(Boolean.TRUE);
+                moodDetailValue.setIsDefault(true);
                 updateMoodFromValue(moodDetailValue, false, deletedBy);
             }
         }
@@ -6032,10 +6032,10 @@ public class PartyControl
         if(defaultFound && isDefault) {
             var defaultBirthdayFormatDetailValue = getDefaultBirthdayFormatDetailValueForUpdate();
 
-            defaultBirthdayFormatDetailValue.setIsDefault(Boolean.FALSE);
+            defaultBirthdayFormatDetailValue.setIsDefault(false);
             updateBirthdayFormatFromValue(defaultBirthdayFormatDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var birthdayFormat = BirthdayFormatFactory.getInstance().create();
@@ -6279,11 +6279,11 @@ public class PartyControl
                     // If I'm the default, and a default already existed...
                     var defaultBirthdayFormatDetailValue = getDefaultBirthdayFormatDetailValueForUpdate();
 
-                    defaultBirthdayFormatDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultBirthdayFormatDetailValue.setIsDefault(false);
                     updateBirthdayFormatFromValue(defaultBirthdayFormatDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -6321,7 +6321,7 @@ public class PartyControl
                 }
                 var birthdayFormatDetailValue = Objects.requireNonNull(defaultBirthdayFormat).getLastDetailForUpdate().getBirthdayFormatDetailValue().clone();
 
-                birthdayFormatDetailValue.setIsDefault(Boolean.TRUE);
+                birthdayFormatDetailValue.setIsDefault(true);
                 updateBirthdayFormatFromValue(birthdayFormatDetailValue, false, deletedBy);
             }
         }

@@ -65,10 +65,10 @@ public class OrderAdjustmentControl
         if(defaultFound && isDefault) {
             var defaultOrderAdjustmentTypeDetailValue = getDefaultOrderAdjustmentTypeDetailValueForUpdate(orderType);
 
-            defaultOrderAdjustmentTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultOrderAdjustmentTypeDetailValue.setIsDefault(false);
             updateOrderAdjustmentTypeFromValue(defaultOrderAdjustmentTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var orderAdjustmentType = OrderAdjustmentTypeFactory.getInstance().create();
@@ -272,11 +272,11 @@ public class OrderAdjustmentControl
                     // If I'm the default, and a default already existed...
                     var defaultOrderAdjustmentTypeDetailValue = getDefaultOrderAdjustmentTypeDetailValueForUpdate(orderType);
 
-                    defaultOrderAdjustmentTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultOrderAdjustmentTypeDetailValue.setIsDefault(false);
                     updateOrderAdjustmentTypeFromValue(defaultOrderAdjustmentTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -316,7 +316,7 @@ public class OrderAdjustmentControl
                 }
                 var orderAdjustmentTypeDetailValue = Objects.requireNonNull(defaultOrderAdjustmentType).getLastDetailForUpdate().getOrderAdjustmentTypeDetailValue().clone();
 
-                orderAdjustmentTypeDetailValue.setIsDefault(Boolean.TRUE);
+                orderAdjustmentTypeDetailValue.setIsDefault(true);
                 updateOrderAdjustmentTypeFromValue(orderAdjustmentTypeDetailValue, false, deletedBy);
             }
         }

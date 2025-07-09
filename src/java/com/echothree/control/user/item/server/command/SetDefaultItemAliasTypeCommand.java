@@ -65,7 +65,7 @@ public class SetDefaultItemAliasTypeCommand
         var itemAliasTypeDetailValue = itemControl.getItemAliasTypeDetailValueByNameForUpdate(itemAliasTypeName);
         
         if(itemAliasTypeDetailValue != null) {
-            itemAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
+            itemAliasTypeDetailValue.setIsDefault(true);
             itemControl.updateItemAliasTypeFromValue(itemAliasTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownItemAliasTypeName.name(), itemAliasTypeName);

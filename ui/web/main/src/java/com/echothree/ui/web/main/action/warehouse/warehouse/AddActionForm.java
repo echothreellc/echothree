@@ -56,7 +56,7 @@ public class AddActionForm
             var form = WarehouseUtil.getHome().getGetWarehouseTypeChoicesForm();
 
             form.setDefaultWarehouseTypeChoice(warehouseTypeChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = WarehouseUtil.getHome().getWarehouseTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -75,7 +75,7 @@ public class AddActionForm
                 var form = PrinterUtil.getHome().getGetPrinterGroupChoicesForm();
                 
                 form.setDefaultPrinterGroupChoice(inventoryMovePrinterGroupChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+                form.setAllowNullChoice(String.valueOf(false));
 
                 var commandResult = PrinterUtil.getHome().getPrinterGroupChoices(userVisitPK, form);
                 var executionResult = commandResult.getExecutionResult();
@@ -97,7 +97,7 @@ public class AddActionForm
                 var form = PrinterUtil.getHome().getGetPrinterGroupChoicesForm();
                 
                 form.setDefaultPrinterGroupChoice(picklistPrinterGroupChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+                form.setAllowNullChoice(String.valueOf(false));
 
                 var commandResult = PrinterUtil.getHome().getPrinterGroupChoices(userVisitPK, form);
                 var executionResult = commandResult.getExecutionResult();
@@ -119,7 +119,7 @@ public class AddActionForm
                 var form = PrinterUtil.getHome().getGetPrinterGroupChoicesForm();
                 
                 form.setDefaultPrinterGroupChoice(packingListPrinterGroupChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+                form.setAllowNullChoice(String.valueOf(false));
 
                 var commandResult = PrinterUtil.getHome().getPrinterGroupChoices(userVisitPK, form);
                 var executionResult = commandResult.getExecutionResult();
@@ -141,7 +141,7 @@ public class AddActionForm
                 var form = PrinterUtil.getHome().getGetPrinterGroupChoicesForm();
                 
                 form.setDefaultPrinterGroupChoice(shippingManifestPrinterGroupChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+                form.setAllowNullChoice(String.valueOf(false));
 
                 var commandResult = PrinterUtil.getHome().getPrinterGroupChoices(userVisitPK, form);
                 var executionResult = commandResult.getExecutionResult();
@@ -300,7 +300,7 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        setIsDefault(Boolean.FALSE);
+        setIsDefault(false);
     }
     
 }

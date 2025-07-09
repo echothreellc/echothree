@@ -66,7 +66,7 @@ public class SetDefaultTrackCommand
         var trackDetailValue = trackControl.getTrackDetailValueByNameForUpdate(trackName);
         
         if(trackDetailValue != null) {
-            trackDetailValue.setIsDefault(Boolean.TRUE);
+            trackDetailValue.setIsDefault(true);
             trackControl.updateTrackFromValue(trackDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownTrackName.name(), trackName);

@@ -48,7 +48,7 @@ public class AddActionForm
                 var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
 
                 commandForm.setDefaultMimeTypeChoice(policyMimeTypeChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(true));
                 commandForm.setMimeTypeUsageTypeName(MimeTypeUsageTypes.TEXT.name());
 
                 var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
@@ -138,7 +138,7 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        isDefault = Boolean.FALSE;
+        isDefault = false;
     }
     
 }

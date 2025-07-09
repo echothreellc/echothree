@@ -42,7 +42,7 @@ public class AddActionForm
 
                 form.setGeoCodeName(geoCodeName);
                 form.setDefaultGeoCodeAliasTypeChoice(geoCodeAliasTypeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+                form.setAllowNullChoice(String.valueOf(false));
 
                 var commandResult = GeoUtil.getHome().getGeoCodeAliasTypeChoices(userVisitPK, form);
                 var executionResult = commandResult.getExecutionResult();

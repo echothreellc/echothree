@@ -54,7 +54,7 @@ public class SetDefaultPersonalTitleCommand
         if(personalTitlePK != null) {
             var personalTitleDetailValue = partyControl.getPersonalTitleDetailValueByPKForUpdate(personalTitlePK);
              
-             personalTitleDetailValue.setIsDefault(Boolean.TRUE);
+             personalTitleDetailValue.setIsDefault(true);
              partyControl.updatePersonalTitleFromValue(personalTitleDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownPersonalTitleId.name(), personalTitleId);

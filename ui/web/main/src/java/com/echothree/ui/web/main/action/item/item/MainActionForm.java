@@ -71,7 +71,7 @@ public class MainActionForm
             var form = ItemUtil.getHome().getGetItemTypeChoicesForm();
 
             form.setDefaultItemTypeChoice(itemTypeChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = ItemUtil.getHome().getItemTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -90,7 +90,7 @@ public class MainActionForm
             var form = ItemUtil.getHome().getGetItemUseTypeChoicesForm();
 
             form.setDefaultItemUseTypeChoice(itemUseTypeChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = ItemUtil.getHome().getItemUseTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -110,7 +110,7 @@ public class MainActionForm
 
             form.setWorkflowName(ItemStatusConstants.Workflow_ITEM_STATUS);
             form.setDefaultWorkflowStepChoice(itemStatusChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -131,7 +131,7 @@ public class MainActionForm
             form.setSearchKindName(SearchKinds.ITEM.name());
             form.setSearchTypeName(SearchTypes.ITEM_MAINTENANCE.name());
             form.setDefaultSearchDefaultOperatorChoice(searchDefaultOperatorChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = SearchUtil.getHome().getSearchDefaultOperatorChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -152,7 +152,7 @@ public class MainActionForm
             form.setSearchKindName(SearchKinds.ITEM.name());
             form.setSearchTypeName(SearchTypes.ITEM_MAINTENANCE.name());
             form.setDefaultSearchSortOrderChoice(searchSortOrderChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = SearchUtil.getHome().getSearchSortOrderChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -173,7 +173,7 @@ public class MainActionForm
             form.setSearchKindName(SearchKinds.ITEM.name());
             form.setSearchTypeName(SearchTypes.ITEM_MAINTENANCE.name());
             form.setDefaultSearchSortDirectionChoice(searchSortDirectionChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = SearchUtil.getHome().getSearchSortDirectionChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -356,7 +356,7 @@ public class MainActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        setRememberPreferences(Boolean.FALSE);
+        setRememberPreferences(false);
     }
     
 }

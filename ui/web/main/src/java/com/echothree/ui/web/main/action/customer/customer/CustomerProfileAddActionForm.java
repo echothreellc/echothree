@@ -71,7 +71,7 @@ public class CustomerProfileAddActionForm
 
             commandForm.setIconUsageTypeName(IconConstants.IconUsageType_PROFILE);
             commandForm.setDefaultIconChoice(iconChoice);
-            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = IconUtil.getHome().getIconChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -90,7 +90,7 @@ public class CustomerProfileAddActionForm
             var commandForm = PartyUtil.getHome().getGetGenderChoicesForm();
 
             commandForm.setDefaultGenderChoice(genderChoice);
-            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = PartyUtil.getHome().getGenderChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -109,7 +109,7 @@ public class CustomerProfileAddActionForm
             var commandForm = PartyUtil.getHome().getGetBirthdayFormatChoicesForm();
 
             commandForm.setDefaultBirthdayFormatChoice(birthdayFormatChoice);
-            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = PartyUtil.getHome().getBirthdayFormatChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -128,7 +128,7 @@ public class CustomerProfileAddActionForm
             var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
 
             commandForm.setDefaultMimeTypeChoice(bioMimeTypeChoice);
-            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(true));
             commandForm.setMimeTypeUsageTypeName(MimeTypeUsageTypes.TEXT.name());
 
             var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
@@ -148,7 +148,7 @@ public class CustomerProfileAddActionForm
             var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
 
             commandForm.setDefaultMimeTypeChoice(signatureMimeTypeChoice);
-            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(true));
             commandForm.setMimeTypeUsageTypeName(MimeTypeUsageTypes.TEXT.name());
 
             var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);

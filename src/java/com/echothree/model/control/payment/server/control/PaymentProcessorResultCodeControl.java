@@ -60,10 +60,10 @@ public class PaymentProcessorResultCodeControl
         if(defaultFound && isDefault) {
             var defaultPaymentProcessorResultCodeDetailValue = getDefaultPaymentProcessorResultCodeDetailValueForUpdate();
 
-            defaultPaymentProcessorResultCodeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultPaymentProcessorResultCodeDetailValue.setIsDefault(false);
             updatePaymentProcessorResultCodeFromValue(defaultPaymentProcessorResultCodeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var paymentProcessorResultCode = PaymentProcessorResultCodeFactory.getInstance().create();
@@ -256,11 +256,11 @@ public class PaymentProcessorResultCodeControl
                     // If I'm the default, and a default already existed...
                     var defaultPaymentProcessorResultCodeDetailValue = getDefaultPaymentProcessorResultCodeDetailValueForUpdate();
 
-                    defaultPaymentProcessorResultCodeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultPaymentProcessorResultCodeDetailValue.setIsDefault(false);
                     updatePaymentProcessorResultCodeFromValue(defaultPaymentProcessorResultCodeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -302,7 +302,7 @@ public class PaymentProcessorResultCodeControl
                 }
                 var paymentProcessorResultCodeDetailValue = Objects.requireNonNull(defaultPaymentProcessorResultCode).getLastDetailForUpdate().getPaymentProcessorResultCodeDetailValue().clone();
 
-                paymentProcessorResultCodeDetailValue.setIsDefault(Boolean.TRUE);
+                paymentProcessorResultCodeDetailValue.setIsDefault(true);
                 updatePaymentProcessorResultCodeFromValue(paymentProcessorResultCodeDetailValue, false, deletedBy);
             }
         }

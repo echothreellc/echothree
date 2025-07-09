@@ -73,7 +73,7 @@ public class SetDefaultHarmonizedTariffScheduleCodeCommand
                     harmonizedTariffScheduleCodeName);
             
             if(harmonizedTariffScheduleCodeDetailValue != null) {
-                harmonizedTariffScheduleCodeDetailValue.setIsDefault(Boolean.TRUE);
+                harmonizedTariffScheduleCodeDetailValue.setIsDefault(true);
                 itemControl.updateHarmonizedTariffScheduleCodeFromValue(harmonizedTariffScheduleCodeDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownHarmonizedTariffScheduleCodeName.name(), countryName, harmonizedTariffScheduleCodeName);

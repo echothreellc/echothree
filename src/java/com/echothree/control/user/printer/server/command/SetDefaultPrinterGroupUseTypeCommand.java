@@ -52,7 +52,7 @@ public class SetDefaultPrinterGroupUseTypeCommand
        var printerGroupUseTypeDetailValue = printerControl.getPrinterGroupUseTypeDetailValueByNameForUpdate(printerGroupUseTypeName);
         
         if(printerGroupUseTypeDetailValue != null) {
-            printerGroupUseTypeDetailValue.setIsDefault(Boolean.TRUE);
+            printerGroupUseTypeDetailValue.setIsDefault(true);
             printerControl.updatePrinterGroupUseTypeFromValue(printerGroupUseTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownPrinterGroupUseTypeName.name(), printerGroupUseTypeName);

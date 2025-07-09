@@ -66,7 +66,7 @@ public class SetDefaultAppearanceCommand
         var appearanceDetailValue = appearanceControl.getAppearanceDetailValueByNameForUpdate(appearanceName);
         
         if(appearanceDetailValue != null) {
-            appearanceDetailValue.setIsDefault(Boolean.TRUE);
+            appearanceDetailValue.setIsDefault(true);
             appearanceControl.updateAppearanceFromValue(appearanceDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownAppearanceName.name(), appearanceName);

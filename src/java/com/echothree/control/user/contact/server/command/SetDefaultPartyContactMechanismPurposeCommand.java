@@ -71,7 +71,7 @@ public class SetDefaultPartyContactMechanismPurposeCommand
                                 contactMechanismPurpose);
                         
                         if(partyContactMechanismPurposeDetailValue != null) {
-                            partyContactMechanismPurposeDetailValue.setIsDefault(Boolean.TRUE);
+                            partyContactMechanismPurposeDetailValue.setIsDefault(true);
                             contactControl.updatePartyContactMechanismPurposeFromValue(partyContactMechanismPurposeDetailValue, getPartyPK());
                         } else {
                             addExecutionError(ExecutionErrors.UnknownPartyContactMechanismPurpose.name());

@@ -109,10 +109,10 @@ public class BatchControl
         if(defaultFound && isDefault) {
             var defaultBatchTypeDetailValue = getDefaultBatchTypeDetailValueForUpdate();
             
-            defaultBatchTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultBatchTypeDetailValue.setIsDefault(false);
             updateBatchTypeFromValue(defaultBatchTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var batchType = BatchTypeFactory.getInstance().create();
@@ -370,11 +370,11 @@ public class BatchControl
                     // If I'm the default, and a default already existed...
                     var defaultBatchTypeDetailValue = getDefaultBatchTypeDetailValueForUpdate();
                     
-                    defaultBatchTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultBatchTypeDetailValue.setIsDefault(false);
                     updateBatchTypeFromValue(defaultBatchTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -419,7 +419,7 @@ public class BatchControl
                     }
                     var batchTypeDetailValue = Objects.requireNonNull(defaultBatchType).getLastDetailForUpdate().getBatchTypeDetailValue().clone();
 
-                    batchTypeDetailValue.setIsDefault(Boolean.TRUE);
+                    batchTypeDetailValue.setIsDefault(true);
                     updateBatchTypeFromValue(batchTypeDetailValue, false, deletedBy);
                 }
             }
@@ -771,10 +771,10 @@ public class BatchControl
         if(defaultFound && isDefault) {
             var defaultBatchAliasTypeDetailValue = getDefaultBatchAliasTypeDetailValueForUpdate(batchType);
             
-            defaultBatchAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultBatchAliasTypeDetailValue.setIsDefault(false);
             updateBatchAliasTypeFromValue(defaultBatchAliasTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var batchAliasType = BatchAliasTypeFactory.getInstance().create();
@@ -975,11 +975,11 @@ public class BatchControl
                     // If I'm the default, and a default already existed...
                     var defaultBatchAliasTypeDetailValue = getDefaultBatchAliasTypeDetailValueForUpdate(batchType);
                     
-                    defaultBatchAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultBatchAliasTypeDetailValue.setIsDefault(false);
                     updateBatchAliasTypeFromValue(defaultBatchAliasTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -1019,7 +1019,7 @@ public class BatchControl
                 }
                 var batchAliasTypeDetailValue = Objects.requireNonNull(defaultBatchAliasType).getLastDetailForUpdate().getBatchAliasTypeDetailValue().clone();
                 
-                batchAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
+                batchAliasTypeDetailValue.setIsDefault(true);
                 updateBatchAliasTypeFromValue(batchAliasTypeDetailValue, false, deletedBy);
             }
         }

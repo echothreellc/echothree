@@ -66,7 +66,7 @@ public class SetDefaultCancellationKindCommand
         var cancellationKindDetailValue = cancellationPolicyControl.getCancellationKindDetailValueByNameForUpdate(cancellationKindName);
         
         if(cancellationKindDetailValue != null) {
-            cancellationKindDetailValue.setIsDefault(Boolean.TRUE);
+            cancellationKindDetailValue.setIsDefault(true);
             cancellationPolicyControl.updateCancellationKindFromValue(cancellationKindDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownCancellationKindName.name(), cancellationKindName);

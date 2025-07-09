@@ -148,12 +148,12 @@ public class CreateUserLoginCommand
                                                         userControl.createUserLogin(party, username, createdBy);
 
                                                         var userLoginPassword = userControl.createUserLoginPassword(party, userLoginPasswordType, createdBy);
-                                                        userControl.createUserLoginPasswordString(userLoginPassword, password1, session.START_TIME_LONG, Boolean.FALSE, createdBy);
+                                                        userControl.createUserLoginPasswordString(userLoginPassword, password1, session.START_TIME_LONG, false, createdBy);
 
                                                         if(partyTypePasswordStringPolicy != null && partyTypePasswordStringPolicy.getLastDetail().getForceChangeAfterCreate()) {
                                                             var userLoginStatus = userControl.getUserLoginStatusForUpdate(party);
 
-                                                            userLoginStatus.setForceChange(Boolean.TRUE);
+                                                            userLoginStatus.setForceChange(true);
                                                         }
 
                                                         if(recoveryQuestion != null && answer != null) {

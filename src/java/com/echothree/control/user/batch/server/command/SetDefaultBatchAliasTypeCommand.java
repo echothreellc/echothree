@@ -70,7 +70,7 @@ public class SetDefaultBatchAliasTypeCommand
             var batchAliasTypeDetailValue = batchControl.getBatchAliasTypeDetailValueByNameForUpdate(batchType, batchAliasTypeName);
 
             if(batchAliasTypeDetailValue != null) {
-                batchAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
+                batchAliasTypeDetailValue.setIsDefault(true);
                 batchControl.updateBatchAliasTypeFromValue(batchAliasTypeDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownBatchAliasTypeName.name(), batchTypeName, batchAliasTypeName);

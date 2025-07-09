@@ -44,7 +44,7 @@ public class BasePersonWithLoginActionForm
                 var form = UserUtil.getHome().getGetRecoveryQuestionChoicesForm();
                 
                 form.setDefaultRecoveryQuestionChoice(recoveryQuestionChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+                form.setAllowNullChoice(String.valueOf(true));
 
                 var commandResult = UserUtil.getHome().getRecoveryQuestionChoices(userVisitPK, form);
                 var executionResult = commandResult.getExecutionResult();

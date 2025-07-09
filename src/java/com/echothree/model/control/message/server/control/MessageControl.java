@@ -441,10 +441,10 @@ public class MessageControl
         if(defaultFound && isDefault) {
             var defaultMessageDetailValue = getDefaultMessageDetailValueForUpdate(messageType);
             
-            defaultMessageDetailValue.setIsDefault(Boolean.FALSE);
+            defaultMessageDetailValue.setIsDefault(false);
             updateMessageFromValue(defaultMessageDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var message = MessageFactory.getInstance().create();
@@ -668,11 +668,11 @@ public class MessageControl
                     // If I'm the default, and a default already existed...
                     var defaultMessageDetailValue = getDefaultMessageDetailValueForUpdate(messageType);
                     
-                    defaultMessageDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultMessageDetailValue.setIsDefault(false);
                     updateMessageFromValue(defaultMessageDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -715,7 +715,7 @@ public class MessageControl
                 }
                 var messageDetailValue = Objects.requireNonNull(defaultMessage).getLastDetailForUpdate().getMessageDetailValue().clone();
                 
-                messageDetailValue.setIsDefault(Boolean.TRUE);
+                messageDetailValue.setIsDefault(true);
                 updateMessageFromValue(messageDetailValue, false, deletedBy);
             }
         }

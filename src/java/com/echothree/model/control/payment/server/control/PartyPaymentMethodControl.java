@@ -90,10 +90,10 @@ public class PartyPaymentMethodControl
         if(defaultFound && isDefault) {
             var defaultPartyPaymentMethodDetailValue = getDefaultPartyPaymentMethodDetailValueForUpdate(party);
 
-            defaultPartyPaymentMethodDetailValue.setIsDefault(Boolean.FALSE);
+            defaultPartyPaymentMethodDetailValue.setIsDefault(false);
             updatePartyPaymentMethodFromValue(defaultPartyPaymentMethodDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var partyPaymentMethod = PartyPaymentMethodFactory.getInstance().create();
@@ -328,11 +328,11 @@ public class PartyPaymentMethodControl
                     // If I'm the default, and a default already existed...
                     var defaultPartyPaymentMethodDetailValue = getDefaultPartyPaymentMethodDetailValueForUpdate(party);
 
-                    defaultPartyPaymentMethodDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultPartyPaymentMethodDetailValue.setIsDefault(false);
                     updatePartyPaymentMethodFromValue(defaultPartyPaymentMethodDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -384,7 +384,7 @@ public class PartyPaymentMethodControl
                 }
                 var partyPaymentMethodDetailValue = Objects.requireNonNull(defaultPartyPaymentMethod).getLastDetailForUpdate().getPartyPaymentMethodDetailValue().clone();
 
-                partyPaymentMethodDetailValue.setIsDefault(Boolean.TRUE);
+                partyPaymentMethodDetailValue.setIsDefault(true);
                 updatePartyPaymentMethodFromValue(partyPaymentMethodDetailValue, false, deletedBy);
             }
         }

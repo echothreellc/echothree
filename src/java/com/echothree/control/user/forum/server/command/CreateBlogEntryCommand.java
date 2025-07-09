@@ -160,7 +160,7 @@ public class CreateBlogEntryCommand
                                                                                 BasePK createdBy = getPartyPK();
 
                                                                                 var forumThread = forumControl.createForumThread(forum, forumThreadIcon, postedTime, sortOrder, createdBy);
-                                                                                forumControl.createForumForumThread(forum, forumThread, Boolean.TRUE, 1, createdBy);
+                                                                                forumControl.createForumForumThread(forum, forumThread, true, 1, createdBy);
                                                                                 var forumMessageType = forumControl.getForumMessageTypeByName(ForumConstants.ForumMessageType_BLOG_ENTRY);
                                                                                 var forumMessage = forumControl.createForumMessage(forumThread, forumMessageType, null, forumMessageIcon, postedTime, createdBy);
                                                                                 forumControl.createForumMessageRole(forumMessage, forumRoleType, party, createdBy);

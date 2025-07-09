@@ -75,7 +75,7 @@ public class SetDefaultChainCommand
                 var chainDetailValue = chainControl.getChainDetailValueByNameForUpdate(chainType, chainName);
 
                 if(chainDetailValue != null) {
-                    chainDetailValue.setIsDefault(Boolean.TRUE);
+                    chainDetailValue.setIsDefault(true);
                     chainControl.updateChainFromValue(chainDetailValue, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownChainName.name(), chainKindName, chainTypeName, chainName);

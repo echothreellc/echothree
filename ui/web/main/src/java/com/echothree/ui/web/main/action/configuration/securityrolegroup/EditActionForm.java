@@ -39,7 +39,7 @@ public class EditActionForm
             var form = SecurityUtil.getHome().getGetSecurityRoleGroupChoicesForm();
 
             form.setDefaultSecurityRoleGroupChoice(parentSecurityRoleGroupChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = SecurityUtil.getHome().getSecurityRoleGroupChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

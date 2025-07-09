@@ -221,7 +221,7 @@ public class Validator {
         return validationMessages.isEmpty()? null: validationMessages;
     }
     
-    private final static FieldDefinition preferredClobMimeTypeNameFieldDefinition = new FieldDefinition("PreferredClobMimeTypeName", FieldType.MIME_TYPE, Boolean.FALSE, null, null);
+    private final static FieldDefinition preferredClobMimeTypeNameFieldDefinition = new FieldDefinition("PreferredClobMimeTypeName", FieldType.MIME_TYPE, false, null, null);
     
     public void validatePreferredClobMimeTypeName(Messages formValidationMessages, BaseForm form) {
         var validationMessages = validateField(form, preferredClobMimeTypeNameFieldDefinition);

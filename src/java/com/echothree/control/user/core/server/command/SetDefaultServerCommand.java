@@ -66,7 +66,7 @@ public class SetDefaultServerCommand
         var serverDetailValue = serverControl.getServerDetailValueByNameForUpdate(serverName);
         
         if(serverDetailValue != null) {
-            serverDetailValue.setIsDefault(Boolean.TRUE);
+            serverDetailValue.setIsDefault(true);
             serverControl.updateServerFromValue(serverDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownServerName.name(), serverName);

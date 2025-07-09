@@ -100,10 +100,10 @@ public class AssociateControl
         if(defaultFound && isDefault) {
             var defaultAssociateProgramDetailValue = getDefaultAssociateProgramDetailValueForUpdate();
             
-            defaultAssociateProgramDetailValue.setIsDefault(Boolean.FALSE);
+            defaultAssociateProgramDetailValue.setIsDefault(false);
             updateAssociateProgramFromValue(defaultAssociateProgramDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var associateProgram = AssociateProgramFactory.getInstance().create();
@@ -303,11 +303,11 @@ public class AssociateControl
                 // If I'm the default, and a default already existed...
                 var defaultAssociateProgramDetailValue = getDefaultAssociateProgramDetailValueForUpdate();
                 
-                defaultAssociateProgramDetailValue.setIsDefault(Boolean.FALSE);
+                defaultAssociateProgramDetailValue.setIsDefault(false);
                 updateAssociateProgramFromValue(defaultAssociateProgramDetailValue, false, updatedBy);
             } else if(!isDefault && !defaultFound) {
                 // If I'm not the default, and no other default exists...
-                isDefault = Boolean.TRUE;
+                isDefault = true;
             }
         }
         
@@ -348,7 +348,7 @@ public class AssociateControl
                 }
                 var associateProgramDetailValue = Objects.requireNonNull(defaultAssociateProgram).getLastDetailForUpdate().getAssociateProgramDetailValue().clone();
                 
-                associateProgramDetailValue.setIsDefault(Boolean.TRUE);
+                associateProgramDetailValue.setIsDefault(true);
                 updateAssociateProgramFromValue(associateProgramDetailValue, false, deletedBy);
             }
         }
@@ -743,10 +743,10 @@ public class AssociateControl
         if(defaultFound && isDefault) {
             var defaultAssociatePartyContactMechanismDetailValue = getDefaultAssociatePartyContactMechanismDetailValueForUpdate(associate);
             
-            defaultAssociatePartyContactMechanismDetailValue.setIsDefault(Boolean.FALSE);
+            defaultAssociatePartyContactMechanismDetailValue.setIsDefault(false);
             updateAssociatePartyContactMechanismFromValue(defaultAssociatePartyContactMechanismDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var associatePartyContactMechanism = AssociatePartyContactMechanismFactory.getInstance().create();
@@ -1020,11 +1020,11 @@ public class AssociateControl
                 // If I'm the default, and a default already existed...
                 var defaultAssociatePartyContactMechanismDetailValue = getDefaultAssociatePartyContactMechanismDetailValueForUpdate(associate);
                 
-                defaultAssociatePartyContactMechanismDetailValue.setIsDefault(Boolean.FALSE);
+                defaultAssociatePartyContactMechanismDetailValue.setIsDefault(false);
                 updateAssociatePartyContactMechanismFromValue(defaultAssociatePartyContactMechanismDetailValue, false, updatedBy);
             } else if(!isDefault && !defaultFound) {
                 // If I'm not the default, and no other default exists...
-                isDefault = Boolean.TRUE;
+                isDefault = true;
             }
         }
         
@@ -1064,7 +1064,7 @@ public class AssociateControl
                 }
                 var associatePartyContactMechanismDetailValue = Objects.requireNonNull(defaultAssociatePartyContactMechanism).getLastDetailForUpdate().getAssociatePartyContactMechanismDetailValue().clone();
                 
-                associatePartyContactMechanismDetailValue.setIsDefault(Boolean.TRUE);
+                associatePartyContactMechanismDetailValue.setIsDefault(true);
                 updateAssociatePartyContactMechanismFromValue(associatePartyContactMechanismDetailValue, false, deletedBy);
             }
         }

@@ -65,7 +65,7 @@ public class SetDefaultTrainingClassCommand
         var trainingClassDetailValue = trainingControl.getTrainingClassDetailValueByNameForUpdate(trainingClassName);
         
         if(trainingClassDetailValue != null) {
-            trainingClassDetailValue.setIsDefault(Boolean.TRUE);
+            trainingClassDetailValue.setIsDefault(true);
             trainingControl.updateTrainingClassFromValue(trainingClassDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownTrainingClassName.name(), trainingClassName);

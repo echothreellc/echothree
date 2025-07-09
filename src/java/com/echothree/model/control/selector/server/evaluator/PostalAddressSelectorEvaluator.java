@@ -88,7 +88,7 @@ public class PostalAddressSelectorEvaluator
         } else {
             if(BaseSelectorEvaluatorDebugFlags.BasePostalAddressSelectorEvaluator)
                 log.info("--- snd was null, evaluating to FALSE");
-            result = Boolean.FALSE;
+            result = false;
         }
         
         if(BaseSelectorEvaluatorDebugFlags.BasePostalAddressSelectorEvaluator)

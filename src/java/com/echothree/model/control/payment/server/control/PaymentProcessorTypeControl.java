@@ -60,10 +60,10 @@ public class PaymentProcessorTypeControl
         if(defaultFound && isDefault) {
             var defaultPaymentProcessorTypeDetailValue = getDefaultPaymentProcessorTypeDetailValueForUpdate();
 
-            defaultPaymentProcessorTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultPaymentProcessorTypeDetailValue.setIsDefault(false);
             updatePaymentProcessorTypeFromValue(defaultPaymentProcessorTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var paymentProcessorType = PaymentProcessorTypeFactory.getInstance().create();
@@ -258,11 +258,11 @@ public class PaymentProcessorTypeControl
                     // If I'm the default, and a default already existed...
                     var defaultPaymentProcessorTypeDetailValue = getDefaultPaymentProcessorTypeDetailValueForUpdate();
 
-                    defaultPaymentProcessorTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultPaymentProcessorTypeDetailValue.setIsDefault(false);
                     updatePaymentProcessorTypeFromValue(defaultPaymentProcessorTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -306,7 +306,7 @@ public class PaymentProcessorTypeControl
                 }
                 var paymentProcessorTypeDetailValue = Objects.requireNonNull(defaultPaymentProcessorType).getLastDetailForUpdate().getPaymentProcessorTypeDetailValue().clone();
 
-                paymentProcessorTypeDetailValue.setIsDefault(Boolean.TRUE);
+                paymentProcessorTypeDetailValue.setIsDefault(true);
                 updatePaymentProcessorTypeFromValue(paymentProcessorTypeDetailValue, false, deletedBy);
             }
         }

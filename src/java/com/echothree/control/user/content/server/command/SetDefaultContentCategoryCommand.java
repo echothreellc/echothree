@@ -76,7 +76,7 @@ public class SetDefaultContentCategoryCommand
                 
                 if(contentCategoryDetailValue != null) {
                     if(!contentCategoryDetailValue.getIsDefault()) {
-                        contentCategoryDetailValue.setIsDefault(Boolean.TRUE);
+                        contentCategoryDetailValue.setIsDefault(true);
                         contentControl.updateContentCategoryFromValue(contentCategoryDetailValue, getPartyPK());
                     }
                 } else {

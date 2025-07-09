@@ -44,7 +44,7 @@ public class AddActionForm
 
             form.setWorkflowName(destinationWorkflowName);
             form.setDefaultWorkflowStepChoice(destinationWorkflowStepChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

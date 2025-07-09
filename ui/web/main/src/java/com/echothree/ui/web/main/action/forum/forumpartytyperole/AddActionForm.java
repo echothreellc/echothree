@@ -45,7 +45,7 @@ public class AddActionForm
             var form = PartyUtil.getHome().getGetPartyTypeChoicesForm();
 
             form.setDefaultPartyTypeChoice(partyTypeChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = PartyUtil.getHome().getPartyTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -64,7 +64,7 @@ public class AddActionForm
             var form = ForumUtil.getHome().getGetForumRoleTypeChoicesForm();
 
             form.setDefaultForumRoleTypeChoice(forumRoleTypeChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = ForumUtil.getHome().getForumRoleTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

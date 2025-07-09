@@ -65,7 +65,7 @@ public class SetDefaultLotAliasTypeCommand
         var lotAliasTypeDetailValue = lotAliasControl.getLotAliasTypeDetailValueByNameForUpdate(lotAliasTypeName);
 
         if(lotAliasTypeDetailValue != null) {
-            lotAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
+            lotAliasTypeDetailValue.setIsDefault(true);
             lotAliasControl.updateLotAliasTypeFromValue(lotAliasTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownLotAliasTypeName.name(), lotAliasTypeName);

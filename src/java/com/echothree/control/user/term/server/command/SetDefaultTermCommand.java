@@ -52,7 +52,7 @@ public class SetDefaultTermCommand
         var termDetailValue = termControl.getTermDetailValueByNameForUpdate(termName);
         
         if(termDetailValue != null) {
-            termDetailValue.setIsDefault(Boolean.TRUE);
+            termDetailValue.setIsDefault(true);
             termControl.updateTermFromValue(termDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownTermName.name(), termName);

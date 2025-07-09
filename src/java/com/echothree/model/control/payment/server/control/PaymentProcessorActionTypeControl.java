@@ -60,10 +60,10 @@ public class PaymentProcessorActionTypeControl
         if(defaultFound && isDefault) {
             var defaultPaymentProcessorActionTypeDetailValue = getDefaultPaymentProcessorActionTypeDetailValueForUpdate();
 
-            defaultPaymentProcessorActionTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultPaymentProcessorActionTypeDetailValue.setIsDefault(false);
             updatePaymentProcessorActionTypeFromValue(defaultPaymentProcessorActionTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var paymentProcessorActionType = PaymentProcessorActionTypeFactory.getInstance().create();
@@ -256,11 +256,11 @@ public class PaymentProcessorActionTypeControl
                     // If I'm the default, and a default already existed...
                     var defaultPaymentProcessorActionTypeDetailValue = getDefaultPaymentProcessorActionTypeDetailValueForUpdate();
 
-                    defaultPaymentProcessorActionTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultPaymentProcessorActionTypeDetailValue.setIsDefault(false);
                     updatePaymentProcessorActionTypeFromValue(defaultPaymentProcessorActionTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -304,7 +304,7 @@ public class PaymentProcessorActionTypeControl
                 }
                 var paymentProcessorActionTypeDetailValue = Objects.requireNonNull(defaultPaymentProcessorActionType).getLastDetailForUpdate().getPaymentProcessorActionTypeDetailValue().clone();
 
-                paymentProcessorActionTypeDetailValue.setIsDefault(Boolean.TRUE);
+                paymentProcessorActionTypeDetailValue.setIsDefault(true);
                 updatePaymentProcessorActionTypeFromValue(paymentProcessorActionTypeDetailValue, false, deletedBy);
             }
         }

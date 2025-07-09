@@ -429,10 +429,10 @@ public class RatingControl
         if(defaultFound && isDefault) {
             var defaultRatingTypeListItemDetailValue = getDefaultRatingTypeListItemDetailValueForUpdate(ratingType);
             
-            defaultRatingTypeListItemDetailValue.setIsDefault(Boolean.FALSE);
+            defaultRatingTypeListItemDetailValue.setIsDefault(false);
             updateRatingTypeListItemFromValue(defaultRatingTypeListItemDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var ratingTypeListItem = RatingTypeListItemFactory.getInstance().create();
@@ -625,11 +625,11 @@ public class RatingControl
                     // If I'm the default, and a default already existed...
                     var defaultRatingTypeListItemDetailValue = getDefaultRatingTypeListItemDetailValueForUpdate(ratingType);
                     
-                    defaultRatingTypeListItemDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultRatingTypeListItemDetailValue.setIsDefault(false);
                     updateRatingTypeListItemFromValue(defaultRatingTypeListItemDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -704,7 +704,7 @@ public class RatingControl
                     }
                     var ratingTypeListItemDetailValue = Objects.requireNonNull(defaultRatingTypeListItem).getLastDetailForUpdate().getRatingTypeListItemDetailValue().clone();
 
-                    ratingTypeListItemDetailValue.setIsDefault(Boolean.TRUE);
+                    ratingTypeListItemDetailValue.setIsDefault(true);
                     updateRatingTypeListItemFromValue(ratingTypeListItemDetailValue, false, deletedBy);
                 }
             }

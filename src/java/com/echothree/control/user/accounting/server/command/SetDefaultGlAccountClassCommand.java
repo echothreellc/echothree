@@ -65,7 +65,7 @@ public class SetDefaultGlAccountClassCommand
         var glAccountClassDetailValue = accountingControl.getGlAccountClassDetailValueByNameForUpdate(glAccountClassName);
         
         if(glAccountClassDetailValue != null) {
-            glAccountClassDetailValue.setIsDefault(Boolean.TRUE);
+            glAccountClassDetailValue.setIsDefault(true);
             accountingControl.updateGlAccountClassFromValue(glAccountClassDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownGlAccountClassName.name(), glAccountClassName);

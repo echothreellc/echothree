@@ -76,7 +76,7 @@ public class SetDefaultContentPageCommand
                 
                 if(contentPageDetailValue != null) {
                     if(!contentPageDetailValue.getIsDefault()) {
-                        contentPageDetailValue.setIsDefault(Boolean.TRUE);
+                        contentPageDetailValue.setIsDefault(true);
                         contentControl.updateContentPageFromValue(contentPageDetailValue, getPartyPK());
                     }
                 } else {

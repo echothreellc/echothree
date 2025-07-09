@@ -42,7 +42,7 @@ public class StatusActionForm
 
             form.setItemName(itemName);
             form.setDefaultItemStatusChoice(itemStatusChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = ItemUtil.getHome().getItemStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

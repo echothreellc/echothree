@@ -66,7 +66,7 @@ public class SetDefaultTextTransformationCommand
         var textTransformationDetailValue = textControl.getTextTransformationDetailValueByNameForUpdate(textTransformationName);
         
         if(textTransformationDetailValue != null) {
-            textTransformationDetailValue.setIsDefault(Boolean.TRUE);
+            textTransformationDetailValue.setIsDefault(true);
             textControl.updateTextTransformationFromValue(textTransformationDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownTextTransformationName.name(), textTransformationName);

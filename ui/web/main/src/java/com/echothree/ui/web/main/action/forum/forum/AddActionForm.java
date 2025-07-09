@@ -58,7 +58,7 @@ public class AddActionForm
             var commandForm = ForumUtil.getHome().getGetForumTypeChoicesForm();
 
             commandForm.setDefaultForumTypeChoice(forumTypeChoice);
-            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = ForumUtil.getHome().getForumTypeChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -77,7 +77,7 @@ public class AddActionForm
 
             commandForm.setIconUsageTypeName(IconConstants.IconUsageType_FORUM);
             commandForm.setDefaultIconChoice(iconChoice);
-            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = IconUtil.getHome().getIconChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -96,7 +96,7 @@ public class AddActionForm
 
             commandForm.setSequenceTypeName(SequenceTypes.FORUM_THREAD.name());
             commandForm.setDefaultSequenceChoice(forumThreadSequenceChoice);
-            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -115,7 +115,7 @@ public class AddActionForm
 
             commandForm.setSequenceTypeName(SequenceTypes.FORUM_MESSAGE.name());
             commandForm.setDefaultSequenceChoice(forumMessageSequenceChoice);
-            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();

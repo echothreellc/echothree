@@ -66,7 +66,7 @@ public class SetDefaultEditorCommand
         var editorDetailValue = editorControl.getEditorDetailValueByNameForUpdate(editorName);
         
         if(editorDetailValue != null) {
-            editorDetailValue.setIsDefault(Boolean.TRUE);
+            editorDetailValue.setIsDefault(true);
             editorControl.updateEditorFromValue(editorDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownEditorName.name(), editorName);

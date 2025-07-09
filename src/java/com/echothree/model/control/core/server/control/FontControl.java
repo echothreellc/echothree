@@ -72,10 +72,10 @@ public class FontControl
         if(defaultFound && isDefault) {
             var defaultFontStyleDetailValue = getDefaultFontStyleDetailValueForUpdate();
 
-            defaultFontStyleDetailValue.setIsDefault(Boolean.FALSE);
+            defaultFontStyleDetailValue.setIsDefault(false);
             updateFontStyleFromValue(defaultFontStyleDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var fontStyle = FontStyleFactory.getInstance().create();
@@ -296,11 +296,11 @@ public class FontControl
                     // If I'm the default, and a default already existed...
                     var defaultFontStyleDetailValue = getDefaultFontStyleDetailValueForUpdate();
 
-                    defaultFontStyleDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultFontStyleDetailValue.setIsDefault(false);
                     updateFontStyleFromValue(defaultFontStyleDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -343,7 +343,7 @@ public class FontControl
                     }
                     var fontStyleDetailValue = Objects.requireNonNull(defaultFontStyle).getLastDetailForUpdate().getFontStyleDetailValue().clone();
 
-                    fontStyleDetailValue.setIsDefault(Boolean.TRUE);
+                    fontStyleDetailValue.setIsDefault(true);
                     updateFontStyleFromValue(fontStyleDetailValue, false, deletedBy);
                 }
             }
@@ -524,10 +524,10 @@ public class FontControl
         if(defaultFound && isDefault) {
             var defaultFontWeightDetailValue = getDefaultFontWeightDetailValueForUpdate();
 
-            defaultFontWeightDetailValue.setIsDefault(Boolean.FALSE);
+            defaultFontWeightDetailValue.setIsDefault(false);
             updateFontWeightFromValue(defaultFontWeightDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var fontWeight = FontWeightFactory.getInstance().create();
@@ -748,11 +748,11 @@ public class FontControl
                     // If I'm the default, and a default already existed...
                     var defaultFontWeightDetailValue = getDefaultFontWeightDetailValueForUpdate();
 
-                    defaultFontWeightDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultFontWeightDetailValue.setIsDefault(false);
                     updateFontWeightFromValue(defaultFontWeightDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -795,7 +795,7 @@ public class FontControl
                     }
                     var fontWeightDetailValue = Objects.requireNonNull(defaultFontWeight).getLastDetailForUpdate().getFontWeightDetailValue().clone();
 
-                    fontWeightDetailValue.setIsDefault(Boolean.TRUE);
+                    fontWeightDetailValue.setIsDefault(true);
                     updateFontWeightFromValue(fontWeightDetailValue, false, deletedBy);
                 }
             }

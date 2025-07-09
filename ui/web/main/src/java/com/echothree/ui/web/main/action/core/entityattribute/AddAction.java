@@ -107,7 +107,7 @@ public class AddAction
                         forwardKey = ForwardConstants.DISPLAY;
                     }
                 } else {
-                    actionForm.setTrackRevisions(Boolean.TRUE);
+                    actionForm.setTrackRevisions(true);
                     actionForm.setSortOrder("1");
                     forwardKey = ForwardConstants.FORM;
                 }

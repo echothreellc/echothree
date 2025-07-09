@@ -52,7 +52,7 @@ public class AddActionForm
                 var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
                 
                 commandForm.setDefaultMimeTypeChoice(answerMimeTypeChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(true));
                 commandForm.setMimeTypeUsageTypeName(MimeTypeUsageTypes.TEXT.name());
 
                 var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
@@ -75,7 +75,7 @@ public class AddActionForm
                 var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
                 
                 commandForm.setDefaultMimeTypeChoice(selectedMimeTypeChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(true));
                 commandForm.setMimeTypeUsageTypeName(MimeTypeUsageTypes.TEXT.name());
 
                 var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
@@ -202,7 +202,7 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        isCorrect = Boolean.FALSE;
+        isCorrect = false;
     }
 
 }

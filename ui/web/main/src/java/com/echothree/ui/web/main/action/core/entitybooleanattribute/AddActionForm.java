@@ -66,7 +66,7 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        this.booleanAttribute = Boolean.FALSE;
+        this.booleanAttribute = false;
     }
     
 }

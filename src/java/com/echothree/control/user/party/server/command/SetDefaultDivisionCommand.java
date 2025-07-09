@@ -59,7 +59,7 @@ public class SetDefaultDivisionCommand
                     divisionName);
             
             if(partyDivisionValue != null) {
-                partyDivisionValue.setIsDefault(Boolean.TRUE);
+                partyDivisionValue.setIsDefault(true);
                 
                 partyControl.updatePartyDivisionFromValue(partyDivisionValue, getPartyPK());
             } else {

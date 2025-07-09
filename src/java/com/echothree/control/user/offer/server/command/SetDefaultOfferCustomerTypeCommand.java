@@ -77,7 +77,7 @@ public class SetDefaultOfferCustomerTypeCommand
                         customerType);
 
                 if(offerCustomerTypeValue != null) {
-                    offerCustomerTypeValue.setIsDefault(Boolean.TRUE);
+                    offerCustomerTypeValue.setIsDefault(true);
                     offerControl.updateOfferCustomerTypeFromValue(offerCustomerTypeValue, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownOfferCustomerType.name(), offerName, customerTypeName);

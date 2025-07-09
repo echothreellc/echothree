@@ -73,7 +73,7 @@ public class SetDefaultDocumentTypeUsageCommand
                 var documentTypeUsageValue = documentControl.getDocumentTypeUsageValueForUpdate(documentTypeUsageType, documentType);
 
                 if(documentTypeUsageValue != null) {
-                    documentTypeUsageValue.setIsDefault(Boolean.TRUE);
+                    documentTypeUsageValue.setIsDefault(true);
                     documentControl.updateDocumentTypeUsageFromValue(documentTypeUsageValue, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownDocumentTypeUsage.name(), documentTypeUsageTypeName, documentType);

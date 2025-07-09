@@ -67,7 +67,7 @@ public class SetRootSelectorNodeCommand
                     var selectorNodeDetailValue = selectorControl.getSelectorNodeDetailValueByNameForUpdate(selector, selectorNodeName);
                     
                     if(selectorNodeDetailValue != null) {
-                        selectorNodeDetailValue.setIsRootSelectorNode(Boolean.TRUE);
+                        selectorNodeDetailValue.setIsRootSelectorNode(true);
                         selectorControl.updateSelectorNodeFromValue(selectorNodeDetailValue, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.UnknownSelectorNodeName.name(), selectorNodeName);

@@ -42,7 +42,7 @@ public class ContactWebAddressStatusActionForm
 
             form.setContactMechanismName(contactMechanismName);
             form.setDefaultWebAddressStatusChoice(webAddressStatusChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = ContactUtil.getHome().getWebAddressStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

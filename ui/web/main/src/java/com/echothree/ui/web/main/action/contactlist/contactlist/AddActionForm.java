@@ -57,7 +57,7 @@ public class AddActionForm
                 var commandForm = ContactListUtil.getHome().getGetContactListGroupChoicesForm();
 
                 commandForm.setDefaultContactListGroupChoice(contactListGroupChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(false));
 
                 var commandResult = ContactListUtil.getHome().getContactListGroupChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
@@ -79,7 +79,7 @@ public class AddActionForm
                 var commandForm = ContactListUtil.getHome().getGetContactListTypeChoicesForm();
 
                 commandForm.setDefaultContactListTypeChoice(contactListTypeChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(false));
 
                 var commandResult = ContactListUtil.getHome().getContactListTypeChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
@@ -101,7 +101,7 @@ public class AddActionForm
                 var commandForm = ContactListUtil.getHome().getGetContactListFrequencyChoicesForm();
 
                 commandForm.setDefaultContactListFrequencyChoice(contactListFrequencyChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(true));
 
                 var commandResult = ContactListUtil.getHome().getContactListFrequencyChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
@@ -123,7 +123,7 @@ public class AddActionForm
                 var commandForm = ContactListUtil.getHome().getGetPartyContactListStatusChoicesForm();
 
                 commandForm.setDefaultPartyContactListStatusChoice(defaultPartyContactListStatusChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(false));
 
                 var commandResult = ContactListUtil.getHome().getPartyContactListStatusChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
@@ -259,7 +259,7 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        isDefault = Boolean.FALSE;
+        isDefault = false;
     }
 
 }

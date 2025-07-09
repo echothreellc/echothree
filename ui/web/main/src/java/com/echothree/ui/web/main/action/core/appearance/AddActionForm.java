@@ -55,7 +55,7 @@ public class AddActionForm
             var commandForm = CoreUtil.getHome().getGetColorChoicesForm();
 
             commandForm.setDefaultColorChoice(textColorChoice);
-            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = CoreUtil.getHome().getColorChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -74,7 +74,7 @@ public class AddActionForm
             var commandForm = CoreUtil.getHome().getGetColorChoicesForm();
 
             commandForm.setDefaultColorChoice(backgroundColorChoice);
-            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = CoreUtil.getHome().getColorChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -93,7 +93,7 @@ public class AddActionForm
             var commandForm = CoreUtil.getHome().getGetFontStyleChoicesForm();
 
             commandForm.setDefaultFontStyleChoice(fontStyleChoice);
-            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = CoreUtil.getHome().getFontStyleChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -112,7 +112,7 @@ public class AddActionForm
             var commandForm = CoreUtil.getHome().getGetFontWeightChoicesForm();
 
             commandForm.setDefaultFontWeightChoice(fontWeightChoice);
-            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = CoreUtil.getHome().getFontWeightChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -249,7 +249,7 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        isDefault = Boolean.FALSE;
+        isDefault = false;
     }
 
 }

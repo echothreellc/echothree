@@ -60,10 +60,10 @@ public class FreeOnBoardControl
         if(defaultFound && isDefault) {
             var defaultFreeOnBoardDetailValue = getDefaultFreeOnBoardDetailValueForUpdate();
 
-            defaultFreeOnBoardDetailValue.setIsDefault(Boolean.FALSE);
+            defaultFreeOnBoardDetailValue.setIsDefault(false);
             updateFreeOnBoardFromValue(defaultFreeOnBoardDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var freeOnBoard = FreeOnBoardFactory.getInstance().create();
@@ -258,11 +258,11 @@ public class FreeOnBoardControl
                     // If I'm the default, and a default already existed...
                     var defaultFreeOnBoardDetailValue = getDefaultFreeOnBoardDetailValueForUpdate();
 
-                    defaultFreeOnBoardDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultFreeOnBoardDetailValue.setIsDefault(false);
                     updateFreeOnBoardFromValue(defaultFreeOnBoardDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -304,7 +304,7 @@ public class FreeOnBoardControl
                 }
                 var freeOnBoardDetailValue = Objects.requireNonNull(defaultFreeOnBoard).getLastDetailForUpdate().getFreeOnBoardDetailValue().clone();
 
-                freeOnBoardDetailValue.setIsDefault(Boolean.TRUE);
+                freeOnBoardDetailValue.setIsDefault(true);
                 updateFreeOnBoardFromValue(freeOnBoardDetailValue, false, deletedBy);
             }
         }

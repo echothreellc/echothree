@@ -66,7 +66,7 @@ public class SetDefaultWarehouseCommand
         var warehouseValue = warehouseControl.getWarehouseValueByNameForUpdate(warehouseName);
         
         if(warehouseValue != null) {
-            warehouseValue.setIsDefault(Boolean.TRUE);
+            warehouseValue.setIsDefault(true);
             warehouseControl.updateWarehouseFromValue(warehouseValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownWarehouseName.name(), warehouseName);

@@ -68,7 +68,7 @@ public class SetDefaultEntityAliasTypeCommand
         if(!hasExecutionErrors()) {
             var entityAliasTypeDetailValue = entityAliasControl.getEntityAliasTypeDetailValueForUpdate(entityAliasType);
 
-            entityAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
+            entityAliasTypeDetailValue.setIsDefault(true);
             entityAliasControl.updateEntityAliasTypeFromValue(entityAliasTypeDetailValue, getPartyPK());
         }
         

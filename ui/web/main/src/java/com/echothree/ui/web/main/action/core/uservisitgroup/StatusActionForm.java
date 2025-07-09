@@ -41,7 +41,7 @@ public class StatusActionForm
 
             form.setUserVisitGroupName(userVisitGroupName);
             form.setDefaultUserVisitGroupStatusChoice(userVisitGroupStatusChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = UserUtil.getHome().getUserVisitGroupStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

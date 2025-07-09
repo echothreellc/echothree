@@ -45,7 +45,7 @@ public class AddActionForm
             var form = VendorUtil.getHome().getGetItemPurchasingCategoryChoicesForm();
 
             form.setDefaultItemPurchasingCategoryChoice(parentItemPurchasingCategoryChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = VendorUtil.getHome().getItemPurchasingCategoryChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -112,7 +112,7 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        isDefault = Boolean.FALSE;
+        isDefault = false;
     }
     
 }

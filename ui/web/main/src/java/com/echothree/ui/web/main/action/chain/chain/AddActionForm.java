@@ -49,7 +49,7 @@ public class AddActionForm
 
             commandForm.setSequenceTypeName(SequenceTypes.CHAIN_INSTANCE.name());
             commandForm.setDefaultSequenceChoice(chainInstanceSequenceChoice);
-            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -137,7 +137,7 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        isDefault = Boolean.FALSE;
+        isDefault = false;
     }
 
 }

@@ -54,7 +54,7 @@ public class AddActionForm
                 var commandForm = ScaleUtil.getHome().getGetScaleTypeChoicesForm();
 
                 commandForm.setDefaultScaleTypeChoice(scaleTypeChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(false));
 
                 var commandResult = ScaleUtil.getHome().getScaleTypeChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
@@ -76,7 +76,7 @@ public class AddActionForm
                 var commandForm = CoreUtil.getHome().getGetServerChoicesForm();
 
                 commandForm.setDefaultServerChoice(serverChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(false));
 
                 var commandResult = CoreUtil.getHome().getServerChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
@@ -98,7 +98,7 @@ public class AddActionForm
                 var commandForm = CoreUtil.getHome().getGetServiceChoicesForm();
 
                 commandForm.setDefaultServiceChoice(serviceChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(false));
 
                 var commandResult = CoreUtil.getHome().getServiceChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
@@ -213,7 +213,7 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        isDefault = Boolean.FALSE;
+        isDefault = false;
     }
     
 }

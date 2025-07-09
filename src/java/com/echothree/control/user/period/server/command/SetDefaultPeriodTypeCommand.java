@@ -71,7 +71,7 @@ public class SetDefaultPeriodTypeCommand
                     periodTypeName);
             
             if(periodTypeDetailValue != null) {
-                periodTypeDetailValue.setIsDefault(Boolean.TRUE);
+                periodTypeDetailValue.setIsDefault(true);
                 periodControl.updatePeriodTypeFromValue(periodTypeDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownPeriodTypeName.name(), periodTypeName);

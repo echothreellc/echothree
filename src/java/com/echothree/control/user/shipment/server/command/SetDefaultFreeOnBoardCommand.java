@@ -65,7 +65,7 @@ public class SetDefaultFreeOnBoardCommand
         var freeOnBoardDetailValue = freeOnBoardControl.getFreeOnBoardDetailValueByNameForUpdate(freeOnBoardName);
         
         if(freeOnBoardDetailValue != null) {
-            freeOnBoardDetailValue.setIsDefault(Boolean.TRUE);
+            freeOnBoardDetailValue.setIsDefault(true);
             freeOnBoardControl.updateFreeOnBoardFromValue(freeOnBoardDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownFreeOnBoardName.name(), freeOnBoardName);

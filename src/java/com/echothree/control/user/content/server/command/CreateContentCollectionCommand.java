@@ -130,7 +130,7 @@ public class CreateContentCollectionCommand
                 var partyPK = getPartyPK();
 
                 contentCollection = contentControl.createContentCollection(contentCollectionName, defaultOfferUse, partyPK);
-                contentControl.createContentSection(contentCollection, ContentSections.ROOT.toString(), null, Boolean.FALSE, 0, partyPK);
+                contentControl.createContentSection(contentCollection, ContentSections.ROOT.toString(), null, false, 0, partyPK);
 
                 if(description != null) {
                     var language = getPreferredLanguage();

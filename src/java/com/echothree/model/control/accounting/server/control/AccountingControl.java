@@ -210,9 +210,9 @@ public class AccountingControl
         var defaultCurrency = getDefaultCurrencyForUpdate();
         
         if(defaultCurrency == null) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         } else if(isDefault) {
-            defaultCurrency.setIsDefault(Boolean.FALSE);
+            defaultCurrency.setIsDefault(false);
         }
 
         var currency = CurrencyFactory.getInstance().create(currencyIsoName, symbol, symbolPosition, symbolOnListStart,
@@ -487,10 +487,10 @@ public class AccountingControl
         if(defaultFound && isDefault) {
             var defaultItemAccountingCategoryDetailValue = getDefaultItemAccountingCategoryDetailValueForUpdate();
             
-            defaultItemAccountingCategoryDetailValue.setIsDefault(Boolean.FALSE);
+            defaultItemAccountingCategoryDetailValue.setIsDefault(false);
             updateItemAccountingCategoryFromValue(defaultItemAccountingCategoryDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var itemAccountingCategory = ItemAccountingCategoryFactory.getInstance().create();
@@ -777,11 +777,11 @@ public class AccountingControl
                     // If I'm the default, and a default already existed...
                     var defaultItemAccountingCategoryDetailValue = getDefaultItemAccountingCategoryDetailValueForUpdate();
                     
-                    defaultItemAccountingCategoryDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultItemAccountingCategoryDetailValue.setIsDefault(false);
                     updateItemAccountingCategoryFromValue(defaultItemAccountingCategoryDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -827,7 +827,7 @@ public class AccountingControl
                     }
                     var itemAccountingCategoryDetailValue = Objects.requireNonNull(defaultItemAccountingCategory).getLastDetailForUpdate().getItemAccountingCategoryDetailValue().clone();
 
-                    itemAccountingCategoryDetailValue.setIsDefault(Boolean.TRUE);
+                    itemAccountingCategoryDetailValue.setIsDefault(true);
                     updateItemAccountingCategoryFromValue(itemAccountingCategoryDetailValue, false, deletedBy);
                 }
             }
@@ -1202,10 +1202,10 @@ public class AccountingControl
         if(defaultFound && isDefault) {
             var defaultGlAccountClassDetailValue = getDefaultGlAccountClassDetailValueForUpdate();
             
-            defaultGlAccountClassDetailValue.setIsDefault(Boolean.FALSE);
+            defaultGlAccountClassDetailValue.setIsDefault(false);
             updateGlAccountClassFromValue(defaultGlAccountClassDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var glAccountClass = GlAccountClassFactory.getInstance().create();
@@ -1484,11 +1484,11 @@ public class AccountingControl
                     // If I'm the default, and a default already existed...
                     var defaultGlAccountClassDetailValue = getDefaultGlAccountClassDetailValueForUpdate();
                     
-                    defaultGlAccountClassDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultGlAccountClassDetailValue.setIsDefault(false);
                     updateGlAccountClassFromValue(defaultGlAccountClassDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -1531,7 +1531,7 @@ public class AccountingControl
                     }
                     var glAccountClassDetailValue = Objects.requireNonNull(defaultGlAccountClass).getLastDetailForUpdate().getGlAccountClassDetailValue().clone();
 
-                    glAccountClassDetailValue.setIsDefault(Boolean.TRUE);
+                    glAccountClassDetailValue.setIsDefault(true);
                     updateGlAccountClassFromValue(glAccountClassDetailValue, false, deletedBy);
                 }
             }
@@ -1733,10 +1733,10 @@ public class AccountingControl
         if(defaultFound && isDefault) {
             var defaultGlAccountCategoryDetailValue = getDefaultGlAccountCategoryDetailValueForUpdate();
             
-            defaultGlAccountCategoryDetailValue.setIsDefault(Boolean.FALSE);
+            defaultGlAccountCategoryDetailValue.setIsDefault(false);
             updateGlAccountCategoryFromValue(defaultGlAccountCategoryDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var glAccountCategory = GlAccountCategoryFactory.getInstance().create();
@@ -2016,11 +2016,11 @@ public class AccountingControl
                     // If I'm the default, and a default already existed...
                     var defaultGlAccountCategoryDetailValue = getDefaultGlAccountCategoryDetailValueForUpdate();
                     
-                    defaultGlAccountCategoryDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultGlAccountCategoryDetailValue.setIsDefault(false);
                     updateGlAccountCategoryFromValue(defaultGlAccountCategoryDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -2064,7 +2064,7 @@ public class AccountingControl
                     }
                     var glAccountCategoryDetailValue = Objects.requireNonNull(defaultGlAccountCategory).getLastDetailForUpdate().getGlAccountCategoryDetailValue().clone();
 
-                    glAccountCategoryDetailValue.setIsDefault(Boolean.TRUE);
+                    glAccountCategoryDetailValue.setIsDefault(true);
                     updateGlAccountCategoryFromValue(glAccountCategoryDetailValue, false, deletedBy);
                 }
             }
@@ -2265,10 +2265,10 @@ public class AccountingControl
         if(defaultFound && isDefault) {
             var defaultGlResourceTypeDetailValue = getDefaultGlResourceTypeDetailValueForUpdate();
             
-            defaultGlResourceTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultGlResourceTypeDetailValue.setIsDefault(false);
             updateGlResourceTypeFromValue(defaultGlResourceTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var glResourceType = GlResourceTypeFactory.getInstance().create();
@@ -2511,11 +2511,11 @@ public class AccountingControl
                     // If I'm the default, and a default already existed...
                     var defaultGlResourceTypeDetailValue = getDefaultGlResourceTypeDetailValueForUpdate();
                     
-                    defaultGlResourceTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultGlResourceTypeDetailValue.setIsDefault(false);
                     updateGlResourceTypeFromValue(defaultGlResourceTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -2554,7 +2554,7 @@ public class AccountingControl
                 }
                 var glResourceTypeDetailValue = Objects.requireNonNull(defaultGlResourceType).getLastDetailForUpdate().getGlResourceTypeDetailValue().clone();
                 
-                glResourceTypeDetailValue.setIsDefault(Boolean.TRUE);
+                glResourceTypeDetailValue.setIsDefault(true);
                 updateGlResourceTypeFromValue(glResourceTypeDetailValue, false, deletedBy);
             }
         }
@@ -2742,10 +2742,10 @@ public class AccountingControl
             if(defaultFound && isDefault) {
                 var defaultGlAccountDetailValue = getDefaultGlAccountDetailValueForUpdate(glAccountCategory);
                 
-                defaultGlAccountDetailValue.setIsDefault(Boolean.FALSE);
+                defaultGlAccountDetailValue.setIsDefault(false);
                 updateGlAccountFromValue(defaultGlAccountDetailValue, false, createdBy);
             } else if(!defaultFound) {
-                isDefault = Boolean.TRUE;
+                isDefault = true;
             }
         } else {
             isDefault = null;
@@ -3288,7 +3288,7 @@ public class AccountingControl
                 }
                 var glAccountDetailValue = Objects.requireNonNull(defaultGlAccount).getLastDetailForUpdate().getGlAccountDetailValue().clone();
                 
-                glAccountDetailValue.setIsDefault(Boolean.TRUE);
+                glAccountDetailValue.setIsDefault(true);
                 updateGlAccountFromValue(glAccountDetailValue, false, updatedBy);
             }
         }
@@ -3323,11 +3323,11 @@ public class AccountingControl
                         // If I'm the default, and a default already existed...
                         var defaultGlAccountDetailValue = getDefaultGlAccountDetailValueForUpdate(glAccountCategoryPK);
                         
-                        defaultGlAccountDetailValue.setIsDefault(Boolean.FALSE);
+                        defaultGlAccountDetailValue.setIsDefault(false);
                         updateGlAccountFromValue(defaultGlAccountDetailValue, false, updatedBy);
                     } else if(!isDefault && !defaultFound) {
                         // If I'm not the default, and no other default exists...
-                        isDefault = Boolean.TRUE;
+                        isDefault = true;
                     }
                 } else {
                     if(glAccountDetail.getIsDefault() != null) {
@@ -5631,10 +5631,10 @@ public class AccountingControl
         if(defaultFound && isDefault) {
             var defaultSymbolPositionDetailValue = getDefaultSymbolPositionDetailValueForUpdate();
             
-            defaultSymbolPositionDetailValue.setIsDefault(Boolean.FALSE);
+            defaultSymbolPositionDetailValue.setIsDefault(false);
             updateSymbolPositionFromValue(defaultSymbolPositionDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var symbolPosition = SymbolPositionFactory.getInstance().create();
@@ -5877,11 +5877,11 @@ public class AccountingControl
                     // If I'm the default, and a default already existed...
                     var defaultSymbolPositionDetailValue = getDefaultSymbolPositionDetailValueForUpdate();
                     
-                    defaultSymbolPositionDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultSymbolPositionDetailValue.setIsDefault(false);
                     updateSymbolPositionFromValue(defaultSymbolPositionDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -5919,7 +5919,7 @@ public class AccountingControl
                 }
                 var symbolPositionDetailValue = Objects.requireNonNull(defaultSymbolPosition).getLastDetailForUpdate().getSymbolPositionDetailValue().clone();
                 
-                symbolPositionDetailValue.setIsDefault(Boolean.TRUE);
+                symbolPositionDetailValue.setIsDefault(true);
                 updateSymbolPositionFromValue(symbolPositionDetailValue, false, deletedBy);
             }
         }

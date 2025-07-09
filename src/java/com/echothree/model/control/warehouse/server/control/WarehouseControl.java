@@ -124,10 +124,10 @@ public class WarehouseControl
         if(defaultFound && isDefault) {
             var defaultWarehouseTypeDetailValue = getDefaultWarehouseTypeDetailValueForUpdate();
 
-            defaultWarehouseTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultWarehouseTypeDetailValue.setIsDefault(false);
             updateWarehouseTypeFromValue(defaultWarehouseTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var warehouseType = WarehouseTypeFactory.getInstance().create();
@@ -345,11 +345,11 @@ public class WarehouseControl
                 // If I'm the default, and a default already existed...
                 var defaultWarehouseTypeDetailValue = getDefaultWarehouseTypeDetailValueForUpdate();
 
-                defaultWarehouseTypeDetailValue.setIsDefault(Boolean.FALSE);
+                defaultWarehouseTypeDetailValue.setIsDefault(false);
                 updateWarehouseTypeFromValue(defaultWarehouseTypeDetailValue, false, updatedBy);
             } else if(!isDefault && !defaultFound) {
                 // If I'm not the default, and no other default exists...
-                isDefault = Boolean.TRUE;
+                isDefault = true;
             }
         }
 
@@ -387,7 +387,7 @@ public class WarehouseControl
                 }
                 var warehouseTypeDetailValue = Objects.requireNonNull(defaultWarehouseType).getLastDetailForUpdate().getWarehouseTypeDetailValue().clone();
 
-                warehouseTypeDetailValue.setIsDefault(Boolean.TRUE);
+                warehouseTypeDetailValue.setIsDefault(true);
                 updateWarehouseTypeFromValue(warehouseTypeDetailValue, false, deletedBy);
             }
         }
@@ -556,10 +556,10 @@ public class WarehouseControl
         if(defaultFound && isDefault) {
             var defaultWarehouseValue = getDefaultWarehouseValueForUpdate();
             
-            defaultWarehouseValue.setIsDefault(Boolean.FALSE);
+            defaultWarehouseValue.setIsDefault(false);
             updateWarehouseFromValue(defaultWarehouseValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var warehouse = WarehouseFactory.getInstance().create(party, warehouseName, warehouseType, isDefault, sortOrder,
@@ -824,11 +824,11 @@ public class WarehouseControl
                     // If I'm the default, and a default already existed...
                     var defaultWarehouseValue = getDefaultWarehouseValueForUpdate();
                     
-                    defaultWarehouseValue.setIsDefault(Boolean.FALSE);
+                    defaultWarehouseValue.setIsDefault(false);
                     updateWarehouseFromValue(defaultWarehouseValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -869,7 +869,7 @@ public class WarehouseControl
 
                 var defaultWarehouseValue = defaultWarehouse.getWarehouseValue();
                 
-                defaultWarehouseValue.setIsDefault(Boolean.TRUE);
+                defaultWarehouseValue.setIsDefault(true);
                 updateWarehouseFromValue(defaultWarehouseValue, false, deletedBy);
             }
         }
@@ -1113,11 +1113,11 @@ public class WarehouseControl
                     // If I'm the default, and a default already existed...
                     var defaultLocationTypeDetailValue = getDefaultLocationTypeDetailValueForUpdate(warehouseParty);
                     
-                    defaultLocationTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultLocationTypeDetailValue.setIsDefault(false);
                     updateLocationTypeFromValue(defaultLocationTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -1159,7 +1159,7 @@ public class WarehouseControl
                     }
                     var locationTypeDetailValue = Objects.requireNonNull(defaultLocationType).getLastDetailForUpdate().getLocationTypeDetailValue().clone();
                     
-                    locationTypeDetailValue.setIsDefault(Boolean.TRUE);
+                    locationTypeDetailValue.setIsDefault(true);
                     updateLocationTypeFromValue(locationTypeDetailValue, false, deletedBy);
                 }
             }

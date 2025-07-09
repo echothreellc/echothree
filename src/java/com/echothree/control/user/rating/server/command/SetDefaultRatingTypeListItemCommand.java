@@ -67,7 +67,7 @@ public class SetDefaultRatingTypeListItemCommand
                     var ratingTypeListItemDetailValue = ratingControl.getRatingTypeListItemDetailValueByNameForUpdate(ratingType, ratingTypeListItemName);
                     
                     if(ratingTypeListItemDetailValue != null) {
-                        ratingTypeListItemDetailValue.setIsDefault(Boolean.TRUE);
+                        ratingTypeListItemDetailValue.setIsDefault(true);
                         ratingControl.updateRatingTypeListItemFromValue(ratingTypeListItemDetailValue, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.UnknownRatingTypeListItemName.name(), ratingTypeListItemName);

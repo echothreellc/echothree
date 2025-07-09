@@ -66,7 +66,7 @@ public class SetDefaultSourceCommand
         var sourceDetailValue = sourceControl.getSourceDetailValueByNameForUpdate(sourceName);
         
         if(sourceDetailValue != null) {
-            sourceDetailValue.setIsDefault(Boolean.TRUE);
+            sourceDetailValue.setIsDefault(true);
             sourceControl.updateSourceFromValue(sourceDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownSourceName.name(), sourceName);

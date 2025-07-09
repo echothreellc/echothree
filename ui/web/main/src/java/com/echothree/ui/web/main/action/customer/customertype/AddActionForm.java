@@ -102,7 +102,7 @@ public class AddActionForm
 
             form.setSequenceTypeName(SequenceTypes.CUSTOMER.name());
             form.setDefaultSequenceChoice(customerSequenceChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -120,7 +120,7 @@ public class AddActionForm
             var form = OfferUtil.getHome().getGetSourceChoicesForm();
 
             form.setDefaultSourceChoice(defaultSourceChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = OfferUtil.getHome().getSourceChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -138,7 +138,7 @@ public class AddActionForm
             var form = TermUtil.getHome().getGetTermChoicesForm();
 
             form.setDefaultTermChoice(defaultTermChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = TermUtil.getHome().getTermChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -156,7 +156,7 @@ public class AddActionForm
             var form = ShipmentUtil.getHome().getGetFreeOnBoardChoicesForm();
 
             form.setDefaultFreeOnBoardChoice(defaultFreeOnBoardChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = ShipmentUtil.getHome().getFreeOnBoardChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -175,7 +175,7 @@ public class AddActionForm
 
             form.setCancellationKindName(CancellationKinds.CUSTOMER_CANCELLATION.name());
             form.setDefaultCancellationPolicyChoice(defaultCancellationPolicyChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -194,7 +194,7 @@ public class AddActionForm
 
             form.setReturnKindName(ReturnKinds.CUSTOMER_RETURN.name());
             form.setDefaultReturnPolicyChoice(defaultReturnPolicyChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = ReturnPolicyUtil.getHome().getReturnPolicyChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -212,7 +212,7 @@ public class AddActionForm
             var form = CustomerUtil.getHome().getGetCustomerStatusChoicesForm();
 
             form.setDefaultCustomerStatusChoice(defaultCustomerStatusChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = CustomerUtil.getHome().getCustomerStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -230,7 +230,7 @@ public class AddActionForm
             var form = CustomerUtil.getHome().getGetCustomerCreditStatusChoicesForm();
 
             form.setDefaultCustomerCreditStatusChoice(defaultCustomerCreditStatusChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = CustomerUtil.getHome().getCustomerCreditStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -249,7 +249,7 @@ public class AddActionForm
 
             form.setGlAccountCategoryName(AccountingConstants.GlAccountCategory_ACCOUNTS_RECEIVABLE);
             form.setDefaultGlAccountChoice(defaultArGlAccountChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = AccountingUtil.getHome().getGlAccountChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -268,7 +268,7 @@ public class AddActionForm
             var form = InventoryUtil.getHome().getGetAllocationPriorityChoicesForm();
 
             form.setDefaultAllocationPriorityChoice(allocationPriorityChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = InventoryUtil.getHome().getAllocationPriorityChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -595,14 +595,14 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        defaultHoldUntilComplete = Boolean.FALSE;
-        defaultAllowBackorders = Boolean.FALSE;
-        defaultAllowSubstitutions = Boolean.FALSE;
-        defaultAllowCombiningShipments = Boolean.FALSE;
-        defaultRequireReference = Boolean.FALSE;
-        defaultAllowReferenceDuplicates = Boolean.FALSE;
-        defaultTaxable = Boolean.FALSE;
-        isDefault = Boolean.FALSE;
+        defaultHoldUntilComplete = false;
+        defaultAllowBackorders = false;
+        defaultAllowSubstitutions = false;
+        defaultAllowCombiningShipments = false;
+        defaultRequireReference = false;
+        defaultAllowReferenceDuplicates = false;
+        defaultTaxable = false;
+        isDefault = false;
     }
 
 }

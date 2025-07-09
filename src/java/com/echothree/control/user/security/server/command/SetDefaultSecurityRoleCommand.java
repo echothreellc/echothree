@@ -71,7 +71,7 @@ public class SetDefaultSecurityRoleCommand
                     securityRoleName);
             
             if(securityRoleDetailValue != null) {
-                securityRoleDetailValue.setIsDefault(Boolean.TRUE);
+                securityRoleDetailValue.setIsDefault(true);
                 securityControl.updateSecurityRoleFromValue(securityRoleDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownSecurityRoleName.name(), securityRoleGroupName, securityRoleName);

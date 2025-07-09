@@ -42,7 +42,7 @@ public class StatusActionForm
 
             form.setPartyTrainingClassName(partyTrainingClassName);
             form.setDefaultPartyTrainingClassStatusChoice(partyTrainingClassStatusChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = TrainingUtil.getHome().getPartyTrainingClassStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

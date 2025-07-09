@@ -124,10 +124,10 @@ public class PrinterControl
         if(defaultFound && isDefault) {
             var defaultPrinterGroupDetailValue = getDefaultPrinterGroupDetailValueForUpdate();
 
-            defaultPrinterGroupDetailValue.setIsDefault(Boolean.FALSE);
+            defaultPrinterGroupDetailValue.setIsDefault(false);
             updatePrinterGroupFromValue(defaultPrinterGroupDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var printerGroup = PrinterGroupFactory.getInstance().create();
@@ -328,11 +328,11 @@ public class PrinterControl
                     // If I'm the default, and a default already existed...
                     var defaultPrinterGroupDetailValue = getDefaultPrinterGroupDetailValueForUpdate();
 
-                    defaultPrinterGroupDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultPrinterGroupDetailValue.setIsDefault(false);
                     updatePrinterGroupFromValue(defaultPrinterGroupDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -402,7 +402,7 @@ public class PrinterControl
                 }
                 var printerGroupDetailValue = Objects.requireNonNull(defaultPrinterGroup).getLastDetailForUpdate().getPrinterGroupDetailValue().clone();
 
-                printerGroupDetailValue.setIsDefault(Boolean.TRUE);
+                printerGroupDetailValue.setIsDefault(true);
                 updatePrinterGroupFromValue(printerGroupDetailValue, false, deletedBy);
             }
         }
@@ -1376,10 +1376,10 @@ public class PrinterControl
         if(defaultFound && isDefault) {
             var defaultPrinterGroupUseTypeDetailValue = getDefaultPrinterGroupUseTypeDetailValueForUpdate();
 
-            defaultPrinterGroupUseTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultPrinterGroupUseTypeDetailValue.setIsDefault(false);
             updatePrinterGroupUseTypeFromValue(defaultPrinterGroupUseTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var printerGroupUseType = PrinterGroupUseTypeFactory.getInstance().create();
@@ -1579,11 +1579,11 @@ public class PrinterControl
                     // If I'm the default, and a default already existed...
                     var defaultPrinterGroupUseTypeDetailValue = getDefaultPrinterGroupUseTypeDetailValueForUpdate();
 
-                    defaultPrinterGroupUseTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultPrinterGroupUseTypeDetailValue.setIsDefault(false);
                     updatePrinterGroupUseTypeFromValue(defaultPrinterGroupUseTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -1622,7 +1622,7 @@ public class PrinterControl
                 }
                 var printerGroupUseTypeDetailValue = Objects.requireNonNull(defaultPrinterGroupUseType).getLastDetailForUpdate().getPrinterGroupUseTypeDetailValue().clone();
 
-                printerGroupUseTypeDetailValue.setIsDefault(Boolean.TRUE);
+                printerGroupUseTypeDetailValue.setIsDefault(true);
                 updatePrinterGroupUseTypeFromValue(printerGroupUseTypeDetailValue, false, deletedBy);
             }
         }

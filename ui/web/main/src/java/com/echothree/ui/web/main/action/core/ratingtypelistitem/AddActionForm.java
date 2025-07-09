@@ -93,7 +93,7 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        this.isDefault = Boolean.FALSE;
+        this.isDefault = false;
     }
     
 }

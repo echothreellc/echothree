@@ -129,8 +129,8 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        hasDimensions = Boolean.FALSE;
-        isDefault = Boolean.FALSE;
+        hasDimensions = false;
+        isDefault = false;
     }
 
 }

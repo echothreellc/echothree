@@ -290,11 +290,11 @@ public class EnterOrders {
         searchCustomersForm.setSearchTypeName(SearchTypes.ORDER_ENTRY.name());
         searchCustomersForm.setCustomerTypeName(customerTypeName);
         searchCustomersForm.setFirstName(nameResult.getFirstName());
-        searchCustomersForm.setFirstNameSoundex(Boolean.FALSE.toString());
+        searchCustomersForm.setFirstNameSoundex(String.valueOf(false));
         searchCustomersForm.setMiddleName(nameResult.getMiddleName());
-        searchCustomersForm.setMiddleNameSoundex(Boolean.FALSE.toString());
+        searchCustomersForm.setMiddleNameSoundex(String.valueOf(false));
         searchCustomersForm.setLastName(nameResult.getLastName());
-        searchCustomersForm.setLastNameSoundex(Boolean.FALSE.toString());
+        searchCustomersForm.setLastNameSoundex(String.valueOf(false));
 
         var searchCustomersResult = SearchUtil.getHome().searchCustomers(getUserVisit(), searchCustomersForm);
         if(searchCustomersResult.hasErrors()) {
@@ -424,7 +424,7 @@ public class EnterOrders {
             commandForm.setLastName(buyerNameResult.getLastName());
             commandForm.setNameSuffixId(buyerNameResult.getPersonalTitleChoice());
             commandForm.setEmailAddress(order.getBuyerEmail());
-            commandForm.setAllowSolicitation(Boolean.FALSE.toString());
+            commandForm.setAllowSolicitation(String.valueOf(false));
 
             var commandResult = PartyUtil.getHome().createCustomer(getUserVisit(), commandForm);
 
@@ -452,7 +452,7 @@ public class EnterOrders {
                     }
 
                     commandForm.setPartyName(partyName);
-                    commandForm.setAllowSolicitation(Boolean.FALSE.toString());
+                    commandForm.setAllowSolicitation(String.valueOf(false));
                     commandForm.setPersonalTitleId(recipientNameResult.getPersonalTitleChoice());
                     commandForm.setFirstName(recipientNameResult.getFirstName());
                     commandForm.setMiddleName(recipientNameResult.getMiddleName());
@@ -464,7 +464,7 @@ public class EnterOrders {
                     commandForm.setState(amazonOrderShipmentGroup.getShipState());
                     commandForm.setPostalCode(amazonOrderShipmentGroup.getShipZip());
                     commandForm.setCountryName(amazonOrderShipmentGroup.getShipCountry());
-                    commandForm.setIsCommercial(Boolean.FALSE.toString());
+                    commandForm.setIsCommercial(String.valueOf(false));
 
                     var commandResult = ContactUtil.getHome().createContactPostalAddress(getUserVisit(), commandForm);
 

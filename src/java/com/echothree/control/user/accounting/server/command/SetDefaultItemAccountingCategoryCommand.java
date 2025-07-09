@@ -65,7 +65,7 @@ public class SetDefaultItemAccountingCategoryCommand
         var itemAccountingCategoryDetailValue = accountingControl.getItemAccountingCategoryDetailValueByNameForUpdate(itemAccountingCategoryName);
         
         if(itemAccountingCategoryDetailValue != null) {
-            itemAccountingCategoryDetailValue.setIsDefault(Boolean.TRUE);
+            itemAccountingCategoryDetailValue.setIsDefault(true);
             accountingControl.updateItemAccountingCategoryFromValue(itemAccountingCategoryDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownItemAccountingCategoryName.name(), itemAccountingCategoryName);

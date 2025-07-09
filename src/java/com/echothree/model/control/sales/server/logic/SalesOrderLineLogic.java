@@ -167,7 +167,7 @@ public class SalesOrderLineLogic
                         // TODO.
 
                         orderShipmentGroup = salesOrderShipmentGroupLogic.createSalesOrderShipmentGroup(session, eea, order,
-                                orderShipmentGroupSequence, itemDeliveryType, Boolean.TRUE, partyContactMechanism,
+                                orderShipmentGroupSequence, itemDeliveryType, true, partyContactMechanism,
                                 shippingMethod, holdUntilComplete, createdByPartyPK);
                     } else {
                         var orderShipmentGroupDetail = orderShipmentGroup.getLastDetail();
@@ -344,7 +344,7 @@ public class SalesOrderLineLogic
                     // the taxable flag from the Order will override it.
                     if(taxable == null) {
                         // taxable = itemDetail.getTaxable();
-                        taxable = Boolean.TRUE; // TODO: This needs to consider the GeoCode-aware taxing system.
+                        taxable = true; // TODO: This needs to consider the GeoCode-aware taxing system.
                         
                         if(taxable) {
                             taxable = orderDetail.getTaxable();

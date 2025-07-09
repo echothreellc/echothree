@@ -44,7 +44,7 @@ public class AddActionForm
             var form = CoreUtil.getHome().getGetMimeTypeUsageTypeChoicesForm();
 
             form.setDefaultMimeTypeUsageTypeChoice(mimeTypeUsageTypeChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = CoreUtil.getHome().getMimeTypeUsageTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

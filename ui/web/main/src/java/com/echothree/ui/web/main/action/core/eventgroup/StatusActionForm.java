@@ -41,7 +41,7 @@ public class StatusActionForm
 
             form.setEventGroupName(eventGroupName);
             form.setDefaultEventGroupStatusChoice(eventGroupStatusChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = CoreUtil.getHome().getEventGroupStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

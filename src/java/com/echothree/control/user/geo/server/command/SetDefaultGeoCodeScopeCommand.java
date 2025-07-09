@@ -65,7 +65,7 @@ public class SetDefaultGeoCodeScopeCommand
         var geoCodeScopeDetailValue = geoControl.getGeoCodeScopeDetailValueByNameForUpdate(geoCodeScopeName);
         
         if(geoCodeScopeDetailValue != null) {
-            geoCodeScopeDetailValue.setIsDefault(Boolean.TRUE);
+            geoCodeScopeDetailValue.setIsDefault(true);
             geoControl.updateGeoCodeScopeFromValue(geoCodeScopeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownGeoCodeScopeName.name(), geoCodeScopeName);

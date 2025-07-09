@@ -41,7 +41,7 @@ public class AddActionForm
                 var commandForm = PartyUtil.getHome().getGetPartyTypeChoicesForm();
                 
                 commandForm.setDefaultPartyTypeChoice(partyTypeChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(false));
 
                 var commandResult = PartyUtil.getHome().getPartyTypeChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();

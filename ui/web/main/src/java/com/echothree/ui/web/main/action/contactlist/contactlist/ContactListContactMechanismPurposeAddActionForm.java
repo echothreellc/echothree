@@ -44,7 +44,7 @@ public class ContactListContactMechanismPurposeAddActionForm
             var form = ContactUtil.getHome().getGetContactMechanismPurposeChoicesForm();
 
             form.setDefaultContactMechanismPurposeChoice(contactMechanismPurposeChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = ContactUtil.getHome().getContactMechanismPurposeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -108,7 +108,7 @@ public class ContactListContactMechanismPurposeAddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        isDefault = Boolean.FALSE;
+        isDefault = false;
     }
 
 }

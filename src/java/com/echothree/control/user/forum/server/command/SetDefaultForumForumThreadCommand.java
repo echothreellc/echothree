@@ -60,7 +60,7 @@ public class SetDefaultForumForumThreadCommand
                 var forumForumThreadValue = forumControl.getForumForumThreadValueForUpdate(forum, forumThread);
                 
                 if(forumForumThreadValue != null) {
-                    forumForumThreadValue.setIsDefault(Boolean.TRUE);
+                    forumForumThreadValue.setIsDefault(true);
                     forumControl.updateForumForumThreadFromValue(forumForumThreadValue, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownForumForumThread.name());

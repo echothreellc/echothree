@@ -42,7 +42,7 @@ public class EditActionForm
 
             form.setContactListName(contactListName);
             form.setDefaultContactMechanismPurposeChoice(preferredContactMechanismPurposeChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = ContactUtil.getHome().getContactMechanismPurposeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

@@ -66,7 +66,7 @@ public class SetDefaultColorCommand
         var colorDetailValue = colorControl.getColorDetailValueByNameForUpdate(colorName);
         
         if(colorDetailValue != null) {
-            colorDetailValue.setIsDefault(Boolean.TRUE);
+            colorDetailValue.setIsDefault(true);
             colorControl.updateColorFromValue(colorDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownColorName.name(), colorName);

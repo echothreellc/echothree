@@ -115,7 +115,7 @@ public class AddActionForm
         componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
         entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
         entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);
-        this.isDefault = Boolean.FALSE;
+        this.isDefault = false;
     }
     
 }

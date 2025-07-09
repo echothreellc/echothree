@@ -66,7 +66,7 @@ public class SetDefaultTerminationTypeCommand
         var terminationTypeDetailValue = employeeControl.getTerminationTypeDetailValueByNameForUpdate(terminationTypeName);
         
         if(terminationTypeDetailValue != null) {
-            terminationTypeDetailValue.setIsDefault(Boolean.TRUE);
+            terminationTypeDetailValue.setIsDefault(true);
             employeeControl.updateTerminationTypeFromValue(terminationTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownTerminationTypeName.name(), terminationTypeName);

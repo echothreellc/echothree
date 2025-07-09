@@ -65,7 +65,7 @@ public class SetDefaultLetterSourceCommand
         var letterSourceDetailValue = letterControl.getLetterSourceDetailValueByNameForUpdate(letterSourceName);
         
         if(letterSourceDetailValue != null) {
-            letterSourceDetailValue.setIsDefault(Boolean.TRUE);
+            letterSourceDetailValue.setIsDefault(true);
             letterControl.updateLetterSourceFromValue(letterSourceDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownLetterSourceName.name(), letterSourceName);

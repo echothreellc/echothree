@@ -66,7 +66,7 @@ public class SetDefaultFontWeightCommand
         var fontWeightDetailValue = fontControl.getFontWeightDetailValueByNameForUpdate(fontWeightName);
         
         if(fontWeightDetailValue != null) {
-            fontWeightDetailValue.setIsDefault(Boolean.TRUE);
+            fontWeightDetailValue.setIsDefault(true);
             fontControl.updateFontWeightFromValue(fontWeightDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownFontWeightName.name(), fontWeightName);

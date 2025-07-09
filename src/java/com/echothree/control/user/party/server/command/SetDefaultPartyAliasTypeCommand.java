@@ -70,7 +70,7 @@ public class SetDefaultPartyAliasTypeCommand
             var partyAliasTypeDetailValue = partyControl.getPartyAliasTypeDetailValueByNameForUpdate(partyType, partyAliasTypeName);
 
             if(partyAliasTypeDetailValue != null) {
-                partyAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
+                partyAliasTypeDetailValue.setIsDefault(true);
                 partyControl.updatePartyAliasTypeFromValue(partyAliasTypeDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownPartyAliasTypeName.name(), partyTypeName, partyAliasTypeName);

@@ -149,8 +149,8 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
 
-        isRequired = Boolean.FALSE;
-        isDefault = Boolean.FALSE;
+        isRequired = false;
+        isDefault = false;
     }
 
 }

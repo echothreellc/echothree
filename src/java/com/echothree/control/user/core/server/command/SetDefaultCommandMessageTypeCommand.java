@@ -66,7 +66,7 @@ public class SetDefaultCommandMessageTypeCommand
         var commandMessageTypeDetailValue = commandControl.getCommandMessageTypeDetailValueByNameForUpdate(commandMessageTypeName);
         
         if(commandMessageTypeDetailValue != null) {
-            commandMessageTypeDetailValue.setIsDefault(Boolean.TRUE);
+            commandMessageTypeDetailValue.setIsDefault(true);
             commandControl.updateCommandMessageTypeFromValue(commandMessageTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownCommandMessageTypeName.name(), commandMessageTypeName);

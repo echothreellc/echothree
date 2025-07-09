@@ -70,7 +70,7 @@ public class SetDefaultWorkflowEntranceCommand
             var workflowEntranceDetailValue = workflowControl.getWorkflowEntranceDetailValueByNameForUpdate(workflow, workflowEntranceName);
             
             if(workflowEntranceDetailValue != null) {
-                workflowEntranceDetailValue.setIsDefault(Boolean.TRUE);
+                workflowEntranceDetailValue.setIsDefault(true);
                 workflowControl.updateWorkflowEntranceFromValue(workflowEntranceDetailValue, getUserVisitPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownWorkflowEntranceName.name(), workflowName, workflowEntranceName);

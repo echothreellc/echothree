@@ -176,7 +176,7 @@ public class GraphQlServlet
         var accessControlRequestHeaders = request.getHeader(ACCESS_CONTROL_REQUEST_HEADERS);
 
         response.addHeader(ACCESS_CONTROL_ALLOW_ORIGIN, origin == null ? "*" : origin);
-        response.addHeader(ACCESS_CONTROL_ALLOW_CREDENTIALS, Boolean.TRUE.toString());
+        response.addHeader(ACCESS_CONTROL_ALLOW_CREDENTIALS, String.valueOf(true));
         response.addHeader(ACCESS_CONTROL_ALLOW_METHODS, METHOD_POST + ", " + METHOD_GET + ", " + METHOD_OPTIONS);
         response.addHeader(ACCESS_CONTROL_ALLOW_HEADERS,
                 accessControlRequestHeaders == null ? CONTENT_TYPE + ", " + ORIGIN : accessControlRequestHeaders);
@@ -197,7 +197,7 @@ public class GraphQlServlet
         var result = queryInvoker.query(getUserVisitPK(request), invocationInput, remoteAddr);
 
         response.addHeader(ACCESS_CONTROL_ALLOW_ORIGIN, origin == null ? "*" : origin);
-        response.addHeader(ACCESS_CONTROL_ALLOW_CREDENTIALS, Boolean.TRUE.toString());
+        response.addHeader(ACCESS_CONTROL_ALLOW_CREDENTIALS, String.valueOf(true));
         response.setContentType(JSON_UTF_8.toString());
         response.setStatus(HttpServletResponse.SC_OK);
         response.getOutputStream().write(result.getBytes(StandardCharsets.UTF_8));

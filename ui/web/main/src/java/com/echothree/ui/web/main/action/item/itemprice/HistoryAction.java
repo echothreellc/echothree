@@ -55,7 +55,7 @@ public class HistoryAction
         commandForm.setInventoryConditionName(request.getParameter(ParameterConstants.INVENTORY_CONDITION_NAME));
         commandForm.setUnitOfMeasureTypeName(request.getParameter(ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME));
         commandForm.setCurrencyIsoName(request.getParameter(ParameterConstants.CURRENCY_ISO_NAME));
-        commandForm.setIncludeHistory(Boolean.TRUE.toString());
+        commandForm.setIncludeHistory(String.valueOf(true));
 
         var commandResult = ItemUtil.getHome().getItemPrice(getUserVisitPK(request), commandForm);
         

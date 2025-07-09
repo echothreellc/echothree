@@ -61,10 +61,10 @@ public class PaymentMethodTypePartyTypeControl
         if(defaultFound && isDefault) {
             var defaultPaymentMethodTypePartyTypeDetailValue = getDefaultPaymentMethodTypePartyTypeDetailValueForUpdate(paymentMethodType);
 
-            defaultPaymentMethodTypePartyTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultPaymentMethodTypePartyTypeDetailValue.setIsDefault(false);
             updatePaymentMethodTypePartyTypeFromValue(defaultPaymentMethodTypePartyTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var paymentMethodTypePartyType = PaymentMethodTypePartyTypeFactory.getInstance().create();
@@ -314,11 +314,11 @@ public class PaymentMethodTypePartyTypeControl
                     // If I'm the default, and a default already existed...
                     var defaultPaymentMethodTypePartyTypeDetailValue = getDefaultPaymentMethodTypePartyTypeDetailValueForUpdate(paymentMethodType);
 
-                    defaultPaymentMethodTypePartyTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultPaymentMethodTypePartyTypeDetailValue.setIsDefault(false);
                     updatePaymentMethodTypePartyTypeFromValue(defaultPaymentMethodTypePartyTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -357,7 +357,7 @@ public class PaymentMethodTypePartyTypeControl
                 }
                 var paymentMethodTypePartyTypeDetailValue = Objects.requireNonNull(defaultPaymentMethodTypePartyType).getLastDetailForUpdate().getPaymentMethodTypePartyTypeDetailValue().clone();
 
-                paymentMethodTypePartyTypeDetailValue.setIsDefault(Boolean.TRUE);
+                paymentMethodTypePartyTypeDetailValue.setIsDefault(true);
                 updatePaymentMethodTypePartyTypeFromValue(paymentMethodTypePartyTypeDetailValue, false, deletedBy);
             }
         }

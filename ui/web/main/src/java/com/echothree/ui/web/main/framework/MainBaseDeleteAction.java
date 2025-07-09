@@ -89,7 +89,7 @@ public abstract class MainBaseDeleteAction<A extends MainBaseDeleteActionForm>
                 var edit = result.getEdit();
 
                 if(edit != null) {
-                    edit.setConfirmDelete(Boolean.FALSE.toString());
+                    edit.setConfirmDelete(String.valueOf(false));
 
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);

@@ -47,7 +47,7 @@ public class AddActionForm
 
             form.setShipmentTypeName(ShipmentTypes.CUSTOMER_RETURN.name());
             form.setDefaultShippingMethodChoice(shippingMethodChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = ShippingUtil.getHome().getShippingMethodChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -119,7 +119,7 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        isDefault = Boolean.FALSE;
+        isDefault = false;
     }
     
 }

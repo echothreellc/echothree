@@ -43,7 +43,7 @@ public class PartyTypeContactListGroupAddActionForm
             var form = PartyUtil.getHome().getGetPartyTypeChoicesForm();
 
             form.setDefaultPartyTypeChoice(partyTypeChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = PartyUtil.getHome().getPartyTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -99,7 +99,7 @@ public class PartyTypeContactListGroupAddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
 
-        addWhenCreated = Boolean.FALSE;
+        addWhenCreated = false;
     }
 
 }

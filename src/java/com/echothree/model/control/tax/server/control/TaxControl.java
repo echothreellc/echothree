@@ -102,10 +102,10 @@ public class TaxControl
         if(defaultFound && isDefault) {
             var defaultTaxClassificationDetailValue = getDefaultTaxClassificationDetailValueForUpdate(countryGeoCode);
 
-            defaultTaxClassificationDetailValue.setIsDefault(Boolean.FALSE);
+            defaultTaxClassificationDetailValue.setIsDefault(false);
             updateTaxClassificationFromValue(defaultTaxClassificationDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var taxClassification = TaxClassificationFactory.getInstance().create();
@@ -335,11 +335,11 @@ public class TaxControl
                     // If I'm the default, and a default already existed...
                     var defaultTaxClassificationDetailValue = getDefaultTaxClassificationDetailValueForUpdate(countryGeoCode);
 
-                    defaultTaxClassificationDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultTaxClassificationDetailValue.setIsDefault(false);
                     updateTaxClassificationFromValue(defaultTaxClassificationDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -379,7 +379,7 @@ public class TaxControl
                 }
                 var taxClassificationDetailValue = Objects.requireNonNull(defaultTaxClassification).getLastDetailForUpdate().getTaxClassificationDetailValue().clone();
 
-                taxClassificationDetailValue.setIsDefault(Boolean.TRUE);
+                taxClassificationDetailValue.setIsDefault(true);
                 updateTaxClassificationFromValue(taxClassificationDetailValue, false, deletedBy);
             }
         }
@@ -792,10 +792,10 @@ public class TaxControl
         if(defaultFound && isDefault) {
             var defaultTaxDetailValue = getDefaultTaxDetailValueForUpdate();
             
-            defaultTaxDetailValue.setIsDefault(Boolean.FALSE);
+            defaultTaxDetailValue.setIsDefault(false);
             updateTaxFromValue(defaultTaxDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var tax = TaxFactory.getInstance().create();
@@ -963,11 +963,11 @@ public class TaxControl
                     // If I'm the default, and a default already existed...
                     var defaultTaxDetailValue = getDefaultTaxDetailValueForUpdate();
                     
-                    defaultTaxDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultTaxDetailValue.setIsDefault(false);
                     updateTaxFromValue(defaultTaxDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -1007,7 +1007,7 @@ public class TaxControl
                 }
                 var taxDetailValue = Objects.requireNonNull(defaultTax).getLastDetailForUpdate().getTaxDetailValue().clone();
                 
-                taxDetailValue.setIsDefault(Boolean.TRUE);
+                taxDetailValue.setIsDefault(true);
                 updateTaxFromValue(taxDetailValue, false, deletedBy);
             }
         }

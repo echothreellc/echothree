@@ -103,7 +103,7 @@ public class CreateCityCommand
         var geoCodeScopeName = countryIso2Letter + "_" + statePostal2Letter + "_CITIES";
         var geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
         if(geoCodeScope == null) {
-            geoCodeScope = geoControl.createGeoCodeScope(geoCodeScopeName, Boolean.FALSE, 0, getPartyPK());
+            geoCodeScope = geoControl.createGeoCodeScope(geoCodeScopeName, false, 0, getPartyPK());
         }
 
         var geoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_CITY);

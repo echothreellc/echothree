@@ -66,7 +66,7 @@ public class SetDefaultProtocolCommand
         var protocolDetailValue = serverControl.getProtocolDetailValueByNameForUpdate(protocolName);
         
         if(protocolDetailValue != null) {
-            protocolDetailValue.setIsDefault(Boolean.TRUE);
+            protocolDetailValue.setIsDefault(true);
             serverControl.updateProtocolFromValue(protocolDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownProtocolName.name(), protocolName);

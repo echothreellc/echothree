@@ -88,10 +88,10 @@ public class ClubControl
         if(defaultFound && isDefault) {
             var defaultClubDetailValue = getDefaultClubDetailValueForUpdate();
             
-            defaultClubDetailValue.setIsDefault(Boolean.FALSE);
+            defaultClubDetailValue.setIsDefault(false);
             updateClubFromValue(defaultClubDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var club = ClubFactory.getInstance().create();
@@ -315,11 +315,11 @@ public class ClubControl
                     // If I'm the default, and a default already existed...
                     var defaultClubDetailValue = getDefaultClubDetailValueForUpdate();
                     
-                    defaultClubDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultClubDetailValue.setIsDefault(false);
                     updateClubFromValue(defaultClubDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -358,7 +358,7 @@ public class ClubControl
                 }
                 var clubDetailValue = Objects.requireNonNull(defaultClub).getLastDetailForUpdate().getClubDetailValue().clone();
                 
-                clubDetailValue.setIsDefault(Boolean.TRUE);
+                clubDetailValue.setIsDefault(true);
                 updateClubFromValue(clubDetailValue, false, deletedBy);
             }
         }

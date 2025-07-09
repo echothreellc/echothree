@@ -44,7 +44,7 @@ public class AddActionForm
                 var commandForm = PartyUtil.getHome().getGetTimeZoneChoicesForm();
                 
                 commandForm.setDefaultTimeZoneChoice(timeZoneChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(false));
 
                 var commandResult = PartyUtil.getHome().getTimeZoneChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
@@ -108,7 +108,7 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        isDefault = Boolean.FALSE;
+        isDefault = false;
     }
     
 }

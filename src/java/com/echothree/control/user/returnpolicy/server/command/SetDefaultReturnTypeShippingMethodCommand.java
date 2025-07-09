@@ -81,7 +81,7 @@ public class SetDefaultReturnTypeShippingMethodCommand
                             shippingMethod);
                     
                     if(returnTypeShippingMethodValue != null) {
-                        returnTypeShippingMethodValue.setIsDefault(Boolean.TRUE);
+                        returnTypeShippingMethodValue.setIsDefault(true);
                         returnPolicyControl.updateReturnTypeShippingMethodFromValue(returnTypeShippingMethodValue, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.UnknownReturnTypeShippingMethod.name());

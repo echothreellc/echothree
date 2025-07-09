@@ -45,7 +45,7 @@ public class AddActionForm
             var form = AccountingUtil.getHome().getGetItemAccountingCategoryChoicesForm();
 
             form.setDefaultItemAccountingCategoryChoice(parentItemAccountingCategoryChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = AccountingUtil.getHome().getItemAccountingCategoryChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -112,7 +112,7 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        isDefault = Boolean.FALSE;
+        isDefault = false;
     }
     
 }

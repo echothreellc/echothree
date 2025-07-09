@@ -52,7 +52,7 @@ public class SetDefaultCompanyCommand
         var partyCompanyValue = partyControl.getPartyCompanyValueByNameForUpdate(companyName);
         
         if(partyCompanyValue != null) {
-            partyCompanyValue.setIsDefault(Boolean.TRUE);
+            partyCompanyValue.setIsDefault(true);
             
             partyControl.updatePartyCompanyFromValue(partyCompanyValue, getPartyPK());
         } else {

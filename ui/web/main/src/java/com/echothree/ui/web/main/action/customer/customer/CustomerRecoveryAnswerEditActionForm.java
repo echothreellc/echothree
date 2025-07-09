@@ -41,7 +41,7 @@ public class CustomerRecoveryAnswerEditActionForm
                 var form = UserUtil.getHome().getGetRecoveryQuestionChoicesForm();
                 
                 form.setDefaultRecoveryQuestionChoice(recoveryQuestionChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+                form.setAllowNullChoice(String.valueOf(false));
 
                 var commandResult = UserUtil.getHome().getRecoveryQuestionChoices(userVisitPK, form);
                 var executionResult = commandResult.getExecutionResult();

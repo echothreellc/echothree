@@ -65,7 +65,7 @@ public class SetDefaultTagScopeCommand
         var tagScopeDetailValue = tagControl.getTagScopeDetailValueByNameForUpdate(tagScopeName);
         
         if(tagScopeDetailValue != null) {
-            tagScopeDetailValue.setIsDefault(Boolean.TRUE);
+            tagScopeDetailValue.setIsDefault(true);
             tagControl.updateTagScopeFromValue(tagScopeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownTagScopeName.name(), tagScopeName);

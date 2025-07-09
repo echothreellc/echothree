@@ -53,7 +53,7 @@ public class AddActionForm
 
             form.setWarehouseName(warehouseName);
             form.setDefaultLocationTypeChoice(locationTypeChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = WarehouseUtil.getHome().getLocationTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -72,7 +72,7 @@ public class AddActionForm
             var form = WarehouseUtil.getHome().getGetLocationUseTypeChoicesForm();
 
             form.setDefaultLocationUseTypeChoice(locationUseTypeChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = WarehouseUtil.getHome().getLocationUseTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -92,7 +92,7 @@ public class AddActionForm
 
             form.setWarehouseName(warehouseName);
             form.setDefaultInventoryLocationGroupChoice(inventoryLocationGroupChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = InventoryUtil.getHome().getInventoryLocationGroupChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

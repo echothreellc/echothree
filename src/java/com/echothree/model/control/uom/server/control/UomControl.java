@@ -116,10 +116,10 @@ public class UomControl
         if(defaultFound && isDefault) {
             var defaultUnitOfMeasureKindDetailValue = getDefaultUnitOfMeasureKindDetailValueForUpdate();
             
-            defaultUnitOfMeasureKindDetailValue.setIsDefault(Boolean.FALSE);
+            defaultUnitOfMeasureKindDetailValue.setIsDefault(false);
             updateUnitOfMeasureKindFromValue(defaultUnitOfMeasureKindDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var unitOfMeasureKind = UnitOfMeasureKindFactory.getInstance().create();
@@ -423,11 +423,11 @@ public class UomControl
                     // If I'm the default, and a default already existed...
                     var defaultUnitOfMeasureKindDetailValue = getDefaultUnitOfMeasureKindDetailValueForUpdate();
                     
-                    defaultUnitOfMeasureKindDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultUnitOfMeasureKindDetailValue.setIsDefault(false);
                     updateUnitOfMeasureKindFromValue(defaultUnitOfMeasureKindDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -467,7 +467,7 @@ public class UomControl
                 }
                 var unitOfMeasureKindDetailValue = Objects.requireNonNull(defaultUnitOfMeasureKind).getLastDetailForUpdate().getUnitOfMeasureKindDetailValue().clone();
                 
-                unitOfMeasureKindDetailValue.setIsDefault(Boolean.TRUE);
+                unitOfMeasureKindDetailValue.setIsDefault(true);
                 updateUnitOfMeasureKindFromValue(unitOfMeasureKindDetailValue, false, deletedBy);
             }
         }
@@ -654,10 +654,10 @@ public class UomControl
         if(defaultFound && isDefault) {
             var defaultUnitOfMeasureTypeDetailValue = getDefaultUnitOfMeasureTypeDetailValueForUpdate(unitOfMeasureKind);
             
-            defaultUnitOfMeasureTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultUnitOfMeasureTypeDetailValue.setIsDefault(false);
             updateUnitOfMeasureTypeFromValue(defaultUnitOfMeasureTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var unitOfMeasureType = UnitOfMeasureTypeFactory.getInstance().create();
@@ -915,11 +915,11 @@ public class UomControl
                     // If I'm the default, and a default already existed...
                     var defaultUnitOfMeasureTypeDetailValue = getDefaultUnitOfMeasureTypeDetailValueForUpdate(unitOfMeasureKind);
                     
-                    defaultUnitOfMeasureTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultUnitOfMeasureTypeDetailValue.setIsDefault(false);
                     updateUnitOfMeasureTypeFromValue(defaultUnitOfMeasureTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -967,7 +967,7 @@ public class UomControl
                 }
                 var unitOfMeasureTypeDetailValue = Objects.requireNonNull(defaultUnitOfMeasureType).getLastDetailForUpdate().getUnitOfMeasureTypeDetailValue().clone();
                 
-                unitOfMeasureTypeDetailValue.setIsDefault(Boolean.TRUE);
+                unitOfMeasureTypeDetailValue.setIsDefault(true);
                 updateUnitOfMeasureTypeFromValue(unitOfMeasureTypeDetailValue, false, deletedBy);
             }
         }
@@ -1828,10 +1828,10 @@ public class UomControl
         if(defaultFound && isDefault) {
             var defaultUnitOfMeasureKindUseValue = getDefaultUnitOfMeasureKindUseValueForUpdate(unitOfMeasureKindUseType);
             
-            defaultUnitOfMeasureKindUseValue.setIsDefault(Boolean.FALSE);
+            defaultUnitOfMeasureKindUseValue.setIsDefault(false);
             updateUnitOfMeasureKindUseFromValue(defaultUnitOfMeasureKindUseValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var unitOfMeasureKindUse = UnitOfMeasureKindUseFactory.getInstance().create(session,
@@ -2143,11 +2143,11 @@ public class UomControl
                     // If I'm the default, and a default already existed...
                     var defaultUnitOfMeasureKindUseValue = getDefaultUnitOfMeasureKindUseValueForUpdate(unitOfMeasureKindUseType);
                     
-                    defaultUnitOfMeasureKindUseValue.setIsDefault(Boolean.FALSE);
+                    defaultUnitOfMeasureKindUseValue.setIsDefault(false);
                     updateUnitOfMeasureKindUseFromValue(defaultUnitOfMeasureKindUseValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -2181,7 +2181,7 @@ public class UomControl
                 }
                 var unitOfMeasureKindUseValue = defaultUnitOfMeasureKindUse.getUnitOfMeasureKindUseValue().clone();
                 
-                unitOfMeasureKindUseValue.setIsDefault(Boolean.TRUE);
+                unitOfMeasureKindUseValue.setIsDefault(true);
                 updateUnitOfMeasureKindUseFromValue(unitOfMeasureKindUseValue, false, deletedBy);
             }
         }

@@ -42,7 +42,7 @@ public class StatusActionForm
 
             form.setVendorName(vendorName);
             form.setDefaultVendorStatusChoice(vendorStatusChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = PartyUtil.getHome().getVendorStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

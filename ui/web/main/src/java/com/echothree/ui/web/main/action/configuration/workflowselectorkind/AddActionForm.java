@@ -40,7 +40,7 @@ public class AddActionForm
                 var commandForm = SelectorUtil.getHome().getGetSelectorKindChoicesForm();
                 
                 commandForm.setDefaultSelectorKindChoice(selectorKindChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(false));
 
                 var commandResult = SelectorUtil.getHome().getSelectorKindChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();

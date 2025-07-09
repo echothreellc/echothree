@@ -93,7 +93,7 @@ public class WorkflowTriggerLogic {
                 processWorkflowTrigger(session, eea, workflowTrigger, triggeredBy);
 
                 if(eea.hasExecutionErrors()) {
-                    workflowTrigger.setErrorsOccurred(Boolean.TRUE);
+                    workflowTrigger.setErrorsOccurred(true);
                     break;
                 } else {
                     remainingTime -= System.currentTimeMillis() - startTime;

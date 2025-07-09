@@ -52,7 +52,7 @@ public class SetDefaultClubCommand
         var clubDetailValue = clubControl.getClubDetailValueByNameForUpdate(clubName);
         
         if(clubDetailValue != null) {
-            clubDetailValue.setIsDefault(Boolean.TRUE);
+            clubDetailValue.setIsDefault(true);
             clubControl.updateClubFromValue(clubDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownClubName.name(), clubName);

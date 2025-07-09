@@ -44,7 +44,7 @@ public class AddActionForm
                 var commandForm = PrinterUtil.getHome().getGetPrinterGroupUseTypeChoicesForm();
 
                 commandForm.setDefaultPrinterGroupUseTypeChoice(printerGroupUseTypeChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(false));
 
                 var commandResult = PrinterUtil.getHome().getPrinterGroupUseTypeChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
@@ -66,7 +66,7 @@ public class AddActionForm
                 var commandForm = PrinterUtil.getHome().getGetPrinterGroupChoicesForm();
 
                 commandForm.setDefaultPrinterGroupChoice(printerGroupChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(false));
 
                 var commandResult = PrinterUtil.getHome().getPrinterGroupChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();

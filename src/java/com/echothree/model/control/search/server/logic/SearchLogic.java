@@ -297,7 +297,7 @@ public class SearchLogic
     
     public void invalidateCachedSearchesByIndex(Index index) {
         for(var cachedSearchToInvalidateResult : new CachedSearchToInvalidateQuery().execute(index)) {
-            cachedSearchToInvalidateResult.getCachedSearchStatus().setIsConsistent(Boolean.FALSE);
+            cachedSearchToInvalidateResult.getCachedSearchStatus().setIsConsistent(false);
         }
     }
     

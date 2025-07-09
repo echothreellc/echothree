@@ -111,7 +111,7 @@ public class EditActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        setIsDefault(Boolean.FALSE);
+        setIsDefault(false);
     }
     
 }

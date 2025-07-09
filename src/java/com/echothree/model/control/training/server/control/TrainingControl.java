@@ -170,10 +170,10 @@ public class TrainingControl
         if(defaultFound && isDefault) {
             var defaultTrainingClassDetailValue = getDefaultTrainingClassDetailValueForUpdate();
             
-            defaultTrainingClassDetailValue.setIsDefault(Boolean.FALSE);
+            defaultTrainingClassDetailValue.setIsDefault(false);
             updateTrainingClassFromValue(defaultTrainingClassDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var trainingClass = TrainingClassFactory.getInstance().create();
@@ -387,11 +387,11 @@ public class TrainingControl
                     // If I'm the default, and a default already existed...
                     var defaultTrainingClassDetailValue = getDefaultTrainingClassDetailValueForUpdate();
                     
-                    defaultTrainingClassDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultTrainingClassDetailValue.setIsDefault(false);
                     updateTrainingClassFromValue(defaultTrainingClassDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -432,7 +432,7 @@ public class TrainingControl
                 }
                 var trainingClassDetailValue = Objects.requireNonNull(defaultTrainingClass).getLastDetailForUpdate().getTrainingClassDetailValue().clone();
                 
-                trainingClassDetailValue.setIsDefault(Boolean.TRUE);
+                trainingClassDetailValue.setIsDefault(true);
                 updateTrainingClassFromValue(trainingClassDetailValue, false, deletedBy);
             }
         }

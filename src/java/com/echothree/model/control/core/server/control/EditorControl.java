@@ -59,10 +59,10 @@ public class EditorControl
         if(defaultFound && isDefault) {
             var defaultEditorDetailValue = getDefaultEditorDetailValueForUpdate();
 
-            defaultEditorDetailValue.setIsDefault(Boolean.FALSE);
+            defaultEditorDetailValue.setIsDefault(false);
             updateEditorFromValue(defaultEditorDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var editor = EditorFactory.getInstance().create();
@@ -264,11 +264,11 @@ public class EditorControl
                     // If I'm the default, and a default already existed...
                     var defaultEditorDetailValue = getDefaultEditorDetailValueForUpdate();
 
-                    defaultEditorDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultEditorDetailValue.setIsDefault(false);
                     updateEditorFromValue(defaultEditorDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -311,7 +311,7 @@ public class EditorControl
                     }
                     var editorDetailValue = Objects.requireNonNull(defaultEditor).getLastDetailForUpdate().getEditorDetailValue().clone();
 
-                    editorDetailValue.setIsDefault(Boolean.TRUE);
+                    editorDetailValue.setIsDefault(true);
                     updateEditorFromValue(editorDetailValue, false, deletedBy);
                 }
             }

@@ -75,7 +75,7 @@ public class EditActionForm
             var form = ItemUtil.getHome().getGetItemCategoryChoicesForm();
 
             form.setDefaultItemCategoryChoice(itemCategoryChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = ItemUtil.getHome().getItemCategoryChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -94,7 +94,7 @@ public class EditActionForm
             var form = AccountingUtil.getHome().getGetItemAccountingCategoryChoicesForm();
 
             form.setDefaultItemAccountingCategoryChoice(itemAccountingCategoryChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = AccountingUtil.getHome().getItemAccountingCategoryChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -113,7 +113,7 @@ public class EditActionForm
             var form = VendorUtil.getHome().getGetItemPurchasingCategoryChoicesForm();
 
             form.setDefaultItemPurchasingCategoryChoice(itemPurchasingCategoryChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = VendorUtil.getHome().getItemPurchasingCategoryChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -133,7 +133,7 @@ public class EditActionForm
 
             form.setCancellationKindName(CancellationKinds.CUSTOMER_CANCELLATION.name());
             form.setDefaultCancellationPolicyChoice(cancellationPolicyChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -152,7 +152,7 @@ public class EditActionForm
 
             form.setReturnKindName(ReturnKinds.CUSTOMER_RETURN.name());
             form.setDefaultReturnPolicyChoice(returnPolicyChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = ReturnPolicyUtil.getHome().getReturnPolicyChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -379,10 +379,10 @@ public class EditActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        setShippingChargeExempt(Boolean.FALSE);
-        setAllowClubDiscounts(Boolean.FALSE);
-        setAllowCouponDiscounts(Boolean.FALSE);
-        setAllowAssociatePayments(Boolean.FALSE);
+        setShippingChargeExempt(false);
+        setAllowClubDiscounts(false);
+        setAllowCouponDiscounts(false);
+        setAllowAssociatePayments(false);
     }
     
 }

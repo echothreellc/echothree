@@ -52,7 +52,7 @@ public class SetDefaultScaleUseTypeCommand
        var scaleUseTypeDetailValue = scaleControl.getScaleUseTypeDetailValueByNameForUpdate(scaleUseTypeName);
         
         if(scaleUseTypeDetailValue != null) {
-            scaleUseTypeDetailValue.setIsDefault(Boolean.TRUE);
+            scaleUseTypeDetailValue.setIsDefault(true);
             scaleControl.updateScaleUseTypeFromValue(scaleUseTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownScaleUseTypeName.name(), scaleUseTypeName);

@@ -40,7 +40,7 @@ public class AddActionForm
                 var commandForm = CoreUtil.getHome().getGetServiceChoicesForm();
 
                 commandForm.setDefaultServiceChoice(serviceChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(false));
 
                 var commandResult = CoreUtil.getHome().getServiceChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();

@@ -75,7 +75,7 @@ public class SetDefaultPartyTypeDocumentTypeUsageTypeCommand
                 var partyTypeDocumentTypeUsageTypeValue = documentControl.getPartyTypeDocumentTypeUsageTypeValueForUpdate(partyType, documentTypeUsageType);
 
                 if(partyTypeDocumentTypeUsageTypeValue != null) {
-                    partyTypeDocumentTypeUsageTypeValue.setIsDefault(Boolean.TRUE);
+                    partyTypeDocumentTypeUsageTypeValue.setIsDefault(true);
                     documentControl.updatePartyTypeDocumentTypeUsageTypeFromValue(partyTypeDocumentTypeUsageTypeValue, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownPartyTypeDocumentTypeUsageType.name(), partyTypeName, documentTypeUsageType);

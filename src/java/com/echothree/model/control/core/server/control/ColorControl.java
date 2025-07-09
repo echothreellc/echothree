@@ -61,10 +61,10 @@ public class ColorControl
         if(defaultFound && isDefault) {
             var defaultColorDetailValue = getDefaultColorDetailValueForUpdate();
 
-            defaultColorDetailValue.setIsDefault(Boolean.FALSE);
+            defaultColorDetailValue.setIsDefault(false);
             updateColorFromValue(defaultColorDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var color = ColorFactory.getInstance().create();
@@ -288,11 +288,11 @@ public class ColorControl
                     // If I'm the default, and a default already existed...
                     var defaultColorDetailValue = getDefaultColorDetailValueForUpdate();
 
-                    defaultColorDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultColorDetailValue.setIsDefault(false);
                     updateColorFromValue(defaultColorDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -335,7 +335,7 @@ public class ColorControl
                     }
                     var colorDetailValue = Objects.requireNonNull(defaultColor).getLastDetailForUpdate().getColorDetailValue().clone();
 
-                    colorDetailValue.setIsDefault(Boolean.TRUE);
+                    colorDetailValue.setIsDefault(true);
                     updateColorFromValue(colorDetailValue, false, deletedBy);
                 }
             }

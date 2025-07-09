@@ -60,7 +60,7 @@ public class SetDefaultInventoryLocationGroupCommand
             var inventoryLocationGroupDetailValue = inventoryControl.getInventoryLocationGroupDetailValueByNameForUpdate(warehouseParty, inventoryLocationGroupName);
             
             if(inventoryLocationGroupDetailValue != null) {
-                inventoryLocationGroupDetailValue.setIsDefault(Boolean.TRUE);
+                inventoryLocationGroupDetailValue.setIsDefault(true);
                 inventoryControl.updateInventoryLocationGroupFromValue(inventoryLocationGroupDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownInventoryLocationGroupName.name(), inventoryLocationGroupName);

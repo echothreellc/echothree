@@ -89,10 +89,10 @@ public class AddAction
                         forwardKey = ForwardConstants.DISPLAY;
                     }
                 } else {
-                    actionForm.setDefaultAllowBackorders(Boolean.TRUE);
-                    actionForm.setDefaultAllowSubstitutions(Boolean.TRUE);
-                    actionForm.setDefaultAllowCombiningShipments(Boolean.TRUE);
-                    actionForm.setDefaultTaxable(Boolean.TRUE);
+                    actionForm.setDefaultAllowBackorders(true);
+                    actionForm.setDefaultAllowSubstitutions(true);
+                    actionForm.setDefaultAllowCombiningShipments(true);
+                    actionForm.setDefaultTaxable(true);
                     actionForm.setSortOrder("1");
                     forwardKey = ForwardConstants.FORM;
                 }

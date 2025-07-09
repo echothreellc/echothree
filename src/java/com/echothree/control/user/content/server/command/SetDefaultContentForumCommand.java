@@ -76,7 +76,7 @@ public class SetDefaultContentForumCommand
                 
                 if(contentForumDetailValue != null) {
                     if(!contentForumDetailValue.getIsDefault()) {
-                        contentForumDetailValue.setIsDefault(Boolean.TRUE);
+                        contentForumDetailValue.setIsDefault(true);
                         contentControl.updateContentForumFromValue(contentForumDetailValue, getPartyPK());
                     }
                 } else {

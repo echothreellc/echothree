@@ -71,7 +71,7 @@ public class SetDefaultWishlistPriorityCommand
             var wishlistPriorityDetailValue = wishlistControl.getWishlistPriorityDetailValueByNameForUpdate(wishlistType, wishlistPriorityName);
             
             if(wishlistPriorityDetailValue != null) {
-                wishlistPriorityDetailValue.setIsDefault(Boolean.TRUE);
+                wishlistPriorityDetailValue.setIsDefault(true);
                 wishlistControl.updateWishlistPriorityFromValue(wishlistPriorityDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownWishlistPriorityName.name(), wishlistPriorityName);

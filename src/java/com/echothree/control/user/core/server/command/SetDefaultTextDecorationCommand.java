@@ -66,7 +66,7 @@ public class SetDefaultTextDecorationCommand
         var textDecorationDetailValue = textControl.getTextDecorationDetailValueByNameForUpdate(textDecorationName);
         
         if(textDecorationDetailValue != null) {
-            textDecorationDetailValue.setIsDefault(Boolean.TRUE);
+            textDecorationDetailValue.setIsDefault(true);
             textControl.updateTextDecorationFromValue(textDecorationDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownTextDecorationName.name(), textDecorationName);

@@ -139,7 +139,7 @@ public class AddActionForm
     @Override
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
-        isDefault = Boolean.FALSE;
+        isDefault = false;
     }
     
 }

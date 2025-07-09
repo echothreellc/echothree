@@ -102,10 +102,10 @@ public class IndexControl
         if(defaultFound && isDefault) {
             var defaultIndexTypeDetailValue = getDefaultIndexTypeDetailValueForUpdate();
 
-            defaultIndexTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultIndexTypeDetailValue.setIsDefault(false);
             updateIndexTypeFromValue(defaultIndexTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var indexType = IndexTypeFactory.getInstance().create();
@@ -360,11 +360,11 @@ public class IndexControl
                     // If I'm the default, and a default already existed...
                     var defaultIndexTypeDetailValue = getDefaultIndexTypeDetailValueForUpdate();
 
-                    defaultIndexTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultIndexTypeDetailValue.setIsDefault(false);
                     updateIndexTypeFromValue(defaultIndexTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -407,7 +407,7 @@ public class IndexControl
                     }
                     var indexTypeDetailValue = Objects.requireNonNull(defaultIndexType).getLastDetailForUpdate().getIndexTypeDetailValue().clone();
 
-                    indexTypeDetailValue.setIsDefault(Boolean.TRUE);
+                    indexTypeDetailValue.setIsDefault(true);
                     updateIndexTypeFromValue(indexTypeDetailValue, false, deletedBy);
                 }
             }
@@ -592,10 +592,10 @@ public class IndexControl
         if(defaultFound && isDefault) {
             var defaultIndexFieldDetailValue = getDefaultIndexFieldDetailValueForUpdate(indexType);
 
-            defaultIndexFieldDetailValue.setIsDefault(Boolean.FALSE);
+            defaultIndexFieldDetailValue.setIsDefault(false);
             updateIndexFieldFromValue(defaultIndexFieldDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var indexField = IndexFieldFactory.getInstance().create();
@@ -795,11 +795,11 @@ public class IndexControl
                     // If I'm the default, and a default already existed...
                     var defaultIndexFieldDetailValue = getDefaultIndexFieldDetailValueForUpdate(indexType);
 
-                    defaultIndexFieldDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultIndexFieldDetailValue.setIsDefault(false);
                     updateIndexFieldFromValue(defaultIndexFieldDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -841,7 +841,7 @@ public class IndexControl
                 }
                 var indexFieldDetailValue = Objects.requireNonNull(defaultIndexField).getLastDetailForUpdate().getIndexFieldDetailValue().clone();
 
-                indexFieldDetailValue.setIsDefault(Boolean.TRUE);
+                indexFieldDetailValue.setIsDefault(true);
                 updateIndexFieldFromValue(indexFieldDetailValue, false, deletedBy);
             }
         }
@@ -1017,10 +1017,10 @@ public class IndexControl
         if(defaultFound && isDefault) {
             var defaultIndexDetailValue = getDefaultIndexDetailValueForUpdate();
 
-            defaultIndexDetailValue.setIsDefault(Boolean.FALSE);
+            defaultIndexDetailValue.setIsDefault(false);
             updateIndexFromValue(defaultIndexDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var index = IndexFactory.getInstance().create();
@@ -1348,11 +1348,11 @@ public class IndexControl
                     // If I'm the default, and a default already existed...
                     var defaultIndexDetailValue = getDefaultIndexDetailValueForUpdate();
 
-                    defaultIndexDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultIndexDetailValue.setIsDefault(false);
                     updateIndexFromValue(defaultIndexDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -1396,7 +1396,7 @@ public class IndexControl
                     }
                     var indexDetailValue = Objects.requireNonNull(defaultIndex).getLastDetailForUpdate().getIndexDetailValue().clone();
 
-                    indexDetailValue.setIsDefault(Boolean.TRUE);
+                    indexDetailValue.setIsDefault(true);
                     updateIndexFromValue(indexDetailValue, false, deletedBy);
                 }
             }

@@ -70,7 +70,7 @@ public class SetDefaultPicklistAliasTypeCommand
             var picklistAliasTypeDetailValue = picklistControl.getPicklistAliasTypeDetailValueByNameForUpdate(picklistType, picklistAliasTypeName);
 
             if(picklistAliasTypeDetailValue != null) {
-                picklistAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
+                picklistAliasTypeDetailValue.setIsDefault(true);
                 picklistControl.updatePicklistAliasTypeFromValue(picklistAliasTypeDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownPicklistAliasTypeName.name(), picklistTypeName, picklistAliasTypeName);

@@ -105,10 +105,10 @@ public class SequenceControl
         if(defaultFound && isDefault) {
             var defaultSequenceTypeDetailValue = getDefaultSequenceTypeDetailValueForUpdate();
             
-            defaultSequenceTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultSequenceTypeDetailValue.setIsDefault(false);
             updateSequenceTypeFromValue(defaultSequenceTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var sequenceType = SequenceTypeFactory.getInstance().create();
@@ -408,11 +408,11 @@ public class SequenceControl
                 // If I'm the default, and a default already existed...
                 var defaultSequenceTypeDetailValue = getDefaultSequenceTypeDetailValueForUpdate();
                 
-                defaultSequenceTypeDetailValue.setIsDefault(Boolean.FALSE);
+                defaultSequenceTypeDetailValue.setIsDefault(false);
                 updateSequenceTypeFromValue(defaultSequenceTypeDetailValue, false, updatedBy);
             } else if(!isDefault && !defaultFound) {
                 // If I'm not the default, and no other default exists...
-                isDefault = Boolean.TRUE;
+                isDefault = true;
             }
         }
         
@@ -452,7 +452,7 @@ public class SequenceControl
                 }
                 var sequenceTypeDetailValue = Objects.requireNonNull(defaultSequenceType).getLastDetailForUpdate().getSequenceTypeDetailValue().clone();
                 
-                sequenceTypeDetailValue.setIsDefault(Boolean.TRUE);
+                sequenceTypeDetailValue.setIsDefault(true);
                 updateSequenceTypeFromValue(sequenceTypeDetailValue, false, deletedBy);
             }
         }
@@ -911,10 +911,10 @@ public class SequenceControl
         if(defaultFound && isDefault) {
             var defaultSequenceDetailValue = getDefaultSequenceDetailValueForUpdate(sequenceType);
             
-            defaultSequenceDetailValue.setIsDefault(Boolean.FALSE);
+            defaultSequenceDetailValue.setIsDefault(false);
             updateSequenceFromValue(defaultSequenceDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var sequence = SequenceFactory.getInstance().create();
@@ -1180,11 +1180,11 @@ public class SequenceControl
                 // If I'm the default, and a default already existed...
                 var defaultSequenceDetailValue = getDefaultSequenceDetailValueForUpdate(sequenceType);
                 
-                defaultSequenceDetailValue.setIsDefault(Boolean.FALSE);
+                defaultSequenceDetailValue.setIsDefault(false);
                 updateSequenceFromValue(defaultSequenceDetailValue, false, updatedBy);
             } else if(!isDefault && !defaultFound) {
                 // If I'm not the default, and no other default exists...
-                isDefault = Boolean.TRUE;
+                isDefault = true;
             }
         }
         
@@ -1231,7 +1231,7 @@ public class SequenceControl
                 }
                 var sequenceDetailValue = Objects.requireNonNull(defaultSequence).getLastDetailForUpdate().getSequenceDetailValue().clone();
                 
-                sequenceDetailValue.setIsDefault(Boolean.TRUE);
+                sequenceDetailValue.setIsDefault(true);
                 updateSequenceFromValue(sequenceDetailValue, false, deletedBy);
             }
         }

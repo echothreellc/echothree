@@ -66,7 +66,7 @@ public class SetDefaultLeaveTypeCommand
        var leaveTypeDetailValue = employeeControl.getLeaveTypeDetailValueByNameForUpdate(leaveTypeName);
         
         if(leaveTypeDetailValue != null) {
-            leaveTypeDetailValue.setIsDefault(Boolean.TRUE);
+            leaveTypeDetailValue.setIsDefault(true);
             employeeControl.updateLeaveTypeFromValue(leaveTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownLeaveTypeName.name(), leaveTypeName);

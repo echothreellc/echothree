@@ -65,7 +65,7 @@ public class SetDefaultPartySecurityRoleTemplateCommand
         var partySecurityRoleTemplateDetailValue = securityControl.getPartySecurityRoleTemplateDetailValueByNameForUpdate(partySecurityRoleTemplateName);
         
         if(partySecurityRoleTemplateDetailValue != null) {
-            partySecurityRoleTemplateDetailValue.setIsDefault(Boolean.TRUE);
+            partySecurityRoleTemplateDetailValue.setIsDefault(true);
             securityControl.updatePartySecurityRoleTemplateFromValue(partySecurityRoleTemplateDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownPartySecurityRoleTemplateName.name(), partySecurityRoleTemplateName);

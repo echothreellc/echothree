@@ -65,7 +65,7 @@ public class SetDefaultVendorTypeCommand
         var vendorTypeDetailValue = vendorControl.getVendorTypeDetailValueByNameForUpdate(vendorTypeName);
         
         if(vendorTypeDetailValue != null) {
-            vendorTypeDetailValue.setIsDefault(Boolean.TRUE);
+            vendorTypeDetailValue.setIsDefault(true);
             vendorControl.updateVendorTypeFromValue(vendorTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownVendorTypeName.name(), vendorTypeName);

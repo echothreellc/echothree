@@ -49,7 +49,7 @@ public class Step3ActionForm
                 var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
 
                 commandForm.setDefaultMimeTypeChoice(mimeTypeChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(false));
                 commandForm.setDocumentTypeName(documentTypeName);
 
                 var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
@@ -147,7 +147,7 @@ public class Step3ActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
 
-        isDefault = Boolean.FALSE;
+        isDefault = false;
     }
     
 }

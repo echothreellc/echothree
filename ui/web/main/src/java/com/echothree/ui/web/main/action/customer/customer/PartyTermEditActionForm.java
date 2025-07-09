@@ -44,7 +44,7 @@ public class PartyTermEditActionForm
             var form = TermUtil.getHome().getGetTermChoicesForm();
 
             form.setDefaultTermChoice(termChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = TermUtil.getHome().getTermChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -105,7 +105,7 @@ public class PartyTermEditActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        setTaxable(Boolean.FALSE);
+        setTaxable(false);
     }
     
 }

@@ -86,7 +86,7 @@ public class BasePartySelectorEvaluator
         } else {
             if(BaseSelectorEvaluatorDebugFlags.BasePartySelectorEvaluator)
                 log.info("--- snd was null, evaluating to FALSE");
-            result = Boolean.FALSE;
+            result = false;
         }
         
         if(BaseSelectorEvaluatorDebugFlags.BasePartySelectorEvaluator)

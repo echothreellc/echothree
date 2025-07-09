@@ -41,7 +41,7 @@ public class EditActionForm
                 var commandForm = ScaleUtil.getHome().getGetScaleChoicesForm();
 
                 commandForm.setDefaultScaleChoice(scaleChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(false));
 
                 var commandResult = ScaleUtil.getHome().getScaleChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();

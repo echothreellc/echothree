@@ -65,7 +65,7 @@ public class SetDefaultCustomerTypeCommand
         var customerTypeDetailValue = customerControl.getCustomerTypeDetailValueByNameForUpdate(customerTypeName);
         
         if(customerTypeDetailValue != null) {
-            customerTypeDetailValue.setIsDefault(Boolean.TRUE);
+            customerTypeDetailValue.setIsDefault(true);
             customerControl.updateCustomerTypeFromValue(customerTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownCustomerTypeName.name(), customerTypeName);

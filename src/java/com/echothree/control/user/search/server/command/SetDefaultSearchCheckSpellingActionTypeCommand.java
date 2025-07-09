@@ -66,7 +66,7 @@ public class SetDefaultSearchCheckSpellingActionTypeCommand
         var searchCheckSpellingActionTypeDetailValue = searchControl.getSearchCheckSpellingActionTypeDetailValueByNameForUpdate(searchCheckSpellingActionTypeName);
         
         if(searchCheckSpellingActionTypeDetailValue != null) {
-            searchCheckSpellingActionTypeDetailValue.setIsDefault(Boolean.TRUE);
+            searchCheckSpellingActionTypeDetailValue.setIsDefault(true);
             searchControl.updateSearchCheckSpellingActionTypeFromValue(searchCheckSpellingActionTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownSearchCheckSpellingActionTypeName.name(), searchCheckSpellingActionTypeName);

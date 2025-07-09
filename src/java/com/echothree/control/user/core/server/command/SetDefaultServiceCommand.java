@@ -66,7 +66,7 @@ public class SetDefaultServiceCommand
         var serviceDetailValue = serverControl.getServiceDetailValueByNameForUpdate(serviceName);
         
         if(serviceDetailValue != null) {
-            serviceDetailValue.setIsDefault(Boolean.TRUE);
+            serviceDetailValue.setIsDefault(true);
             serverControl.updateServiceFromValue(serviceDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownServiceName.name(), serviceName);

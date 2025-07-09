@@ -70,7 +70,7 @@ public class SetDefaultShipmentAliasTypeCommand
             var shipmentAliasTypeDetailValue = shipmentControl.getShipmentAliasTypeDetailValueByNameForUpdate(shipmentType, shipmentAliasTypeName);
 
             if(shipmentAliasTypeDetailValue != null) {
-                shipmentAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
+                shipmentAliasTypeDetailValue.setIsDefault(true);
                 shipmentControl.updateShipmentAliasTypeFromValue(shipmentAliasTypeDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownShipmentAliasTypeName.name(), shipmentTypeName, shipmentAliasTypeName);

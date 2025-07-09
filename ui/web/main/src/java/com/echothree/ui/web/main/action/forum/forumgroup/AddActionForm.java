@@ -47,7 +47,7 @@ public class AddActionForm
             // TODO: iconUsageType
             commandForm.setIconUsageTypeName(IconConstants.IconUsageType_FORUM_GROUP);
             commandForm.setDefaultIconChoice(iconChoice);
-            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = IconUtil.getHome().getIconChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();

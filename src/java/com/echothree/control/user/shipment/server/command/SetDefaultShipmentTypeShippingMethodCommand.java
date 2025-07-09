@@ -63,7 +63,7 @@ public class SetDefaultShipmentTypeShippingMethodCommand
                         shippingMethod);
                 
                 if(shipmentTypeShippingMethodValue != null) {
-                    shipmentTypeShippingMethodValue.setIsDefault(Boolean.TRUE);
+                    shipmentTypeShippingMethodValue.setIsDefault(true);
                     shipmentControl.updateShipmentTypeShippingMethodFromValue(shipmentTypeShippingMethodValue, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownShipmentTypeShippingMethod.name());

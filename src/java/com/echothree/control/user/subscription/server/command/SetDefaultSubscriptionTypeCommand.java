@@ -58,7 +58,7 @@ public class SetDefaultSubscriptionTypeCommand
                     subscriptionTypeName);
             
             if(subscriptionTypeDetailValue != null) {
-                subscriptionTypeDetailValue.setIsDefault(Boolean.TRUE);
+                subscriptionTypeDetailValue.setIsDefault(true);
                 subscriptionControl.updateSubscriptionTypeFromValue(subscriptionTypeDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownSubscriptionTypeName.name(), subscriptionTypeName);
