@@ -66,7 +66,7 @@ public class SetDefaultRelatedItemTypeCommand
         var relatedItemTypeDetailValue = itemControl.getRelatedItemTypeDetailValueByNameForUpdate(relatedItemTypeName);
         
         if(relatedItemTypeDetailValue != null) {
-            relatedItemTypeDetailValue.setIsDefault(Boolean.TRUE);
+            relatedItemTypeDetailValue.setIsDefault(true);
             itemControl.updateRelatedItemTypeFromValue(relatedItemTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownRelatedItemTypeName.name(), relatedItemTypeName);

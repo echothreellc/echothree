@@ -228,10 +228,10 @@ public class IconControl
         if(defaultFound && isDefault) {
             var defaultIconUsageTypeDetailValue = getDefaultIconUsageTypeDetailValueForUpdate();
             
-            defaultIconUsageTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultIconUsageTypeDetailValue.setIsDefault(false);
             updateIconUsageTypeFromValue(defaultIconUsageTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var iconUsageType = IconUsageTypeFactory.getInstance().create();
@@ -425,11 +425,11 @@ public class IconControl
                 // If I'm the default, and a default already existed...
                 var defaultIconUsageTypeDetailValue = getDefaultIconUsageTypeDetailValueForUpdate();
                 
-                defaultIconUsageTypeDetailValue.setIsDefault(Boolean.FALSE);
+                defaultIconUsageTypeDetailValue.setIsDefault(false);
                 updateIconUsageTypeFromValue(defaultIconUsageTypeDetailValue, false, updatedBy);
             } else if(!isDefault && !defaultFound) {
                 // If I'm not the default, and no other default exists...
-                isDefault = Boolean.TRUE;
+                isDefault = true;
             }
         }
         
@@ -467,7 +467,7 @@ public class IconControl
                 }
                 var iconUsageTypeDetailValue = Objects.requireNonNull(defaultIconUsageType).getLastDetailForUpdate().getIconUsageTypeDetailValue().clone();
                 
-                iconUsageTypeDetailValue.setIsDefault(Boolean.TRUE);
+                iconUsageTypeDetailValue.setIsDefault(true);
                 updateIconUsageTypeFromValue(iconUsageTypeDetailValue, false, deletedBy);
             }
         }
@@ -653,10 +653,10 @@ public class IconControl
         if(defaultFound && isDefault) {
             var defaultIconUsageValue = getDefaultIconUsageValueForUpdate(iconUsageType);
             
-            defaultIconUsageValue.setIsDefault(Boolean.FALSE);
+            defaultIconUsageValue.setIsDefault(false);
             updateIconUsageFromValue(defaultIconUsageValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var iconUsage = IconUsageFactory.getInstance().create(iconUsageType, icon,
@@ -882,11 +882,11 @@ public class IconControl
                     // If I'm the default, and a default already existed...
                     var defaultIconUsageValue = getDefaultIconUsageValueForUpdate(iconUsageType);
                     
-                    defaultIconUsageValue.setIsDefault(Boolean.FALSE);
+                    defaultIconUsageValue.setIsDefault(false);
                     updateIconUsageFromValue(defaultIconUsageValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -918,7 +918,7 @@ public class IconControl
                 }
                 var iconUsageValue = defaultIconUsage.getIconUsageValue().clone();
                 
-                iconUsageValue.setIsDefault(Boolean.TRUE);
+                iconUsageValue.setIsDefault(true);
                 updateIconUsageFromValue(iconUsageValue, false, deletedBy);
             }
         }

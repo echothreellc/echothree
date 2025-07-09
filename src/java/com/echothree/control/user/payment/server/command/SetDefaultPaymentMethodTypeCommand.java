@@ -65,7 +65,7 @@ public class SetDefaultPaymentMethodTypeCommand
         var paymentMethodTypeDetailValue = paymentMethodTypeControl.getPaymentMethodTypeDetailValueByNameForUpdate(paymentMethodTypeName);
         
         if(paymentMethodTypeDetailValue != null) {
-            paymentMethodTypeDetailValue.setIsDefault(Boolean.TRUE);
+            paymentMethodTypeDetailValue.setIsDefault(true);
             paymentMethodTypeControl.updatePaymentMethodTypeFromValue(paymentMethodTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownPaymentMethodTypeName.name(), paymentMethodTypeName);

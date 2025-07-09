@@ -55,7 +55,7 @@ public class AddActionForm
             var form = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUnitChoicesForm();
 
             form.setDefaultHarmonizedTariffScheduleCodeUnitChoice(firstHarmonizedTariffScheduleCodeUnitChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUnitChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -74,7 +74,7 @@ public class AddActionForm
             var form = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUnitChoicesForm();
 
             form.setDefaultHarmonizedTariffScheduleCodeUnitChoice(secondHarmonizedTariffScheduleCodeUnitChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUnitChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -93,7 +93,7 @@ public class AddActionForm
             var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
 
             commandForm.setDefaultMimeTypeChoice(overviewMimeTypeChoice);
-            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(true));
             commandForm.setMimeTypeUsageTypeName(MimeTypeUsageTypes.TEXT.name());
 
             var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
@@ -226,7 +226,7 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        isDefault = Boolean.FALSE;
+        isDefault = false;
     }
 
 }

@@ -56,7 +56,7 @@ public class MainActionForm
 
             form.setWorkflowName(EmployeeStatusConstants.Workflow_EMPLOYEE_STATUS);
             form.setDefaultWorkflowStepChoice(employeeStatusChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -76,7 +76,7 @@ public class MainActionForm
 
             form.setWorkflowName(EmployeeAvailabilityConstants.Workflow_EMPLOYEE_AVAILABILITY);
             form.setDefaultWorkflowStepChoice(employeeAvailabilityChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -213,9 +213,9 @@ public class MainActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        setFirstNameSoundex(Boolean.FALSE);
-        setMiddleNameSoundex(Boolean.FALSE);
-        setLastNameSoundex(Boolean.FALSE);
+        setFirstNameSoundex(false);
+        setMiddleNameSoundex(false);
+        setLastNameSoundex(false);
     }
     
 }

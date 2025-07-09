@@ -147,10 +147,10 @@ public class ContactListControl
         if(defaultFound && isDefault) {
             var defaultContactListTypeDetailValue = getDefaultContactListTypeDetailValueForUpdate();
 
-            defaultContactListTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultContactListTypeDetailValue.setIsDefault(false);
             updateContactListTypeFromValue(defaultContactListTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var contactListType = ContactListTypeFactory.getInstance().create();
@@ -439,11 +439,11 @@ public class ContactListControl
                 // If I'm the default, and a default already existed...
                 var defaultContactListTypeDetailValue = getDefaultContactListTypeDetailValueForUpdate();
 
-                defaultContactListTypeDetailValue.setIsDefault(Boolean.FALSE);
+                defaultContactListTypeDetailValue.setIsDefault(false);
                 updateContactListTypeFromValue(defaultContactListTypeDetailValue, false, updatedBy);
             } else if(!isDefault && !defaultFound) {
                 // If I'm not the default, and no other default exists...
-                isDefault = Boolean.TRUE;
+                isDefault = true;
             }
         }
 
@@ -482,7 +482,7 @@ public class ContactListControl
                 }
                 var contactListTypeDetailValue = Objects.requireNonNull(defaultContactListType).getLastDetailForUpdate().getContactListTypeDetailValue().clone();
 
-                contactListTypeDetailValue.setIsDefault(Boolean.TRUE);
+                contactListTypeDetailValue.setIsDefault(true);
                 updateContactListTypeFromValue(contactListTypeDetailValue, false, deletedBy);
             }
         }
@@ -674,10 +674,10 @@ public class ContactListControl
         if(defaultFound && isDefault) {
             var defaultContactListGroupDetailValue = getDefaultContactListGroupDetailValueForUpdate();
 
-            defaultContactListGroupDetailValue.setIsDefault(Boolean.FALSE);
+            defaultContactListGroupDetailValue.setIsDefault(false);
             updateContactListGroupFromValue(defaultContactListGroupDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var contactListGroup = ContactListGroupFactory.getInstance().create();
@@ -868,11 +868,11 @@ public class ContactListControl
                 // If I'm the default, and a default already existed...
                 var defaultContactListGroupDetailValue = getDefaultContactListGroupDetailValueForUpdate();
 
-                defaultContactListGroupDetailValue.setIsDefault(Boolean.FALSE);
+                defaultContactListGroupDetailValue.setIsDefault(false);
                 updateContactListGroupFromValue(defaultContactListGroupDetailValue, false, updatedBy);
             } else if(!isDefault && !defaultFound) {
                 // If I'm not the default, and no other default exists...
-                isDefault = Boolean.TRUE;
+                isDefault = true;
             }
         }
 
@@ -914,7 +914,7 @@ public class ContactListControl
                 }
                 var contactListGroupDetailValue = Objects.requireNonNull(defaultContactListGroup).getLastDetailForUpdate().getContactListGroupDetailValue().clone();
 
-                contactListGroupDetailValue.setIsDefault(Boolean.TRUE);
+                contactListGroupDetailValue.setIsDefault(true);
                 updateContactListGroupFromValue(contactListGroupDetailValue, false, deletedBy);
             }
         }
@@ -1082,10 +1082,10 @@ public class ContactListControl
         if(defaultFound && isDefault) {
             var defaultContactListFrequencyDetailValue = getDefaultContactListFrequencyDetailValueForUpdate();
 
-            defaultContactListFrequencyDetailValue.setIsDefault(Boolean.FALSE);
+            defaultContactListFrequencyDetailValue.setIsDefault(false);
             updateContactListFrequencyFromValue(defaultContactListFrequencyDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var contactListFrequency = ContactListFrequencyFactory.getInstance().create();
@@ -1276,11 +1276,11 @@ public class ContactListControl
                 // If I'm the default, and a default already existed...
                 var defaultContactListFrequencyDetailValue = getDefaultContactListFrequencyDetailValueForUpdate();
 
-                defaultContactListFrequencyDetailValue.setIsDefault(Boolean.FALSE);
+                defaultContactListFrequencyDetailValue.setIsDefault(false);
                 updateContactListFrequencyFromValue(defaultContactListFrequencyDetailValue, false, updatedBy);
             } else if(!isDefault && !defaultFound) {
                 // If I'm not the default, and no other default exists...
-                isDefault = Boolean.TRUE;
+                isDefault = true;
             }
         }
 
@@ -1319,7 +1319,7 @@ public class ContactListControl
                 }
                 var contactListFrequencyDetailValue = Objects.requireNonNull(defaultContactListFrequency).getLastDetailForUpdate().getContactListFrequencyDetailValue().clone();
 
-                contactListFrequencyDetailValue.setIsDefault(Boolean.TRUE);
+                contactListFrequencyDetailValue.setIsDefault(true);
                 updateContactListFrequencyFromValue(contactListFrequencyDetailValue, false, deletedBy);
             }
         }
@@ -1488,10 +1488,10 @@ public class ContactListControl
         if(defaultFound && isDefault) {
             var defaultContactListDetailValue = getDefaultContactListDetailValueForUpdate();
 
-            defaultContactListDetailValue.setIsDefault(Boolean.FALSE);
+            defaultContactListDetailValue.setIsDefault(false);
             updateContactListFromValue(defaultContactListDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var contactList = ContactListFactory.getInstance().create();
@@ -1818,11 +1818,11 @@ public class ContactListControl
                 // If I'm the default, and a default already existed...
                 var defaultContactListDetailValue = getDefaultContactListDetailValueForUpdate();
 
-                defaultContactListDetailValue.setIsDefault(Boolean.FALSE);
+                defaultContactListDetailValue.setIsDefault(false);
                 updateContactListFromValue(defaultContactListDetailValue, false, updatedBy);
             } else if(!isDefault && !defaultFound) {
                 // If I'm not the default, and no other default exists...
-                isDefault = Boolean.TRUE;
+                isDefault = true;
             }
         }
 
@@ -1867,7 +1867,7 @@ public class ContactListControl
                 }
                 var contactListDetailValue = Objects.requireNonNull(defaultContactList).getLastDetailForUpdate().getContactListDetailValue().clone();
 
-                contactListDetailValue.setIsDefault(Boolean.TRUE);
+                contactListDetailValue.setIsDefault(true);
                 updateContactListFromValue(contactListDetailValue, false, deletedBy);
             }
         }
@@ -3045,10 +3045,10 @@ public class ContactListControl
         if(defaultFound && isDefault) {
             var defaultContactListContactMechanismPurposeDetailValue = getDefaultContactListContactMechanismPurposeDetailValueForUpdate(contactList);
 
-            defaultContactListContactMechanismPurposeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultContactListContactMechanismPurposeDetailValue.setIsDefault(false);
             updateContactListContactMechanismPurposeFromValue(defaultContactListContactMechanismPurposeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var contactListContactMechanismPurpose = ContactListContactMechanismPurposeFactory.getInstance().create();
@@ -3292,11 +3292,11 @@ public class ContactListControl
                     // If I'm the default, and a default already existed...
                     var defaultContactListContactMechanismPurposeDetailValue = getDefaultContactListContactMechanismPurposeDetailValueForUpdate(contactList);
 
-                    defaultContactListContactMechanismPurposeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultContactListContactMechanismPurposeDetailValue.setIsDefault(false);
                     updateContactListContactMechanismPurposeFromValue(defaultContactListContactMechanismPurposeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -3338,7 +3338,7 @@ public class ContactListControl
                     }
                     var contactListContactMechanismPurposeDetailValue = Objects.requireNonNull(defaultContactListContactMechanismPurpose).getLastDetailForUpdate().getContactListContactMechanismPurposeDetailValue().clone();
 
-                    contactListContactMechanismPurposeDetailValue.setIsDefault(Boolean.TRUE);
+                    contactListContactMechanismPurposeDetailValue.setIsDefault(true);
                     updateContactListContactMechanismPurposeFromValue(contactListContactMechanismPurposeDetailValue, false, deletedBy);
                 }
             }

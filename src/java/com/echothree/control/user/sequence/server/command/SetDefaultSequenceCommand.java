@@ -70,7 +70,7 @@ public class SetDefaultSequenceCommand
             var sequenceDetailValue = sequenceControl.getSequenceDetailValueByNameForUpdate(sequenceType, sequenceName);
             
             if(sequenceDetailValue != null) {
-                sequenceDetailValue.setIsDefault(Boolean.TRUE);
+                sequenceDetailValue.setIsDefault(true);
                 sequenceControl.updateSequenceFromValue(sequenceDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownSequenceName.name(), sequenceName);

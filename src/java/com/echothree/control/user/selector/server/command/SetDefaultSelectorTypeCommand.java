@@ -71,7 +71,7 @@ public class SetDefaultSelectorTypeCommand
                     selectorTypeName);
             
             if(selectorTypeDetailValue != null) {
-                selectorTypeDetailValue.setIsDefault(Boolean.TRUE);
+                selectorTypeDetailValue.setIsDefault(true);
                 selectorControl.updateSelectorTypeFromValue(selectorTypeDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownSelectorTypeName.name(), selectorKindName, selectorTypeName);

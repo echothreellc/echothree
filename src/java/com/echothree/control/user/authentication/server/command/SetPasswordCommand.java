@@ -150,7 +150,7 @@ public class SetPasswordCommand
                                         userControl.updateUserLoginPasswordStringFromValue(userLoginPasswordStringValue, self.getPrimaryKey());
 
                                         userLoginStatus.setExpiredCount(0);
-                                        userLoginStatus.setForceChange(changingForSelf ? Boolean.FALSE : partyTypePasswordStringPolicy == null? Boolean.FALSE
+                                        userLoginStatus.setForceChange(changingForSelf ? false : partyTypePasswordStringPolicy == null? false
                                                 : partyTypePasswordStringPolicy.getLastDetail().getForceChangeAfterReset());
                                     }
                                 }

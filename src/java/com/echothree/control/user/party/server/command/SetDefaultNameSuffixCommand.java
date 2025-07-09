@@ -54,7 +54,7 @@ public class SetDefaultNameSuffixCommand
         if(nameSuffixPK != null) {
             var nameSuffixDetailValue = partyControl.getNameSuffixDetailValueByPKForUpdate(nameSuffixPK);
              
-             nameSuffixDetailValue.setIsDefault(Boolean.TRUE);
+             nameSuffixDetailValue.setIsDefault(true);
              partyControl.updateNameSuffixFromValue(nameSuffixDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownNameSuffixId.name(), nameSuffixId);

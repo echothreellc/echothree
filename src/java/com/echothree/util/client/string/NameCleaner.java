@@ -34,12 +34,12 @@ public final class NameCleaner
 
     protected final void loadPersonalTitles(UserVisitPK userVisitPK)
             throws NamingException {
-        setupPersonalTitles(PersonalTitlesHelper.getInstance().getPersonalTitleChoices(userVisitPK, Boolean.FALSE));
+        setupPersonalTitles(PersonalTitlesHelper.getInstance().getPersonalTitleChoices(userVisitPK, false));
     }
 
     protected void loadNameSuffixes(UserVisitPK userVisitPK)
             throws NamingException {
-        setupNameSuffixes(NameSuffixesHelper.getInstance().getNameSuffixChoices(userVisitPK, Boolean.FALSE));
+        setupNameSuffixes(NameSuffixesHelper.getInstance().getNameSuffixChoices(userVisitPK, false));
     }
 
 }

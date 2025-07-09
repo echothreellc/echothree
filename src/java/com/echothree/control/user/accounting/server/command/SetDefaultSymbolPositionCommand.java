@@ -65,7 +65,7 @@ public class SetDefaultSymbolPositionCommand
         var symbolPositionDetailValue = accountingControl.getSymbolPositionDetailValueByNameForUpdate(symbolPositionName);
         
         if(symbolPositionDetailValue != null) {
-            symbolPositionDetailValue.setIsDefault(Boolean.TRUE);
+            symbolPositionDetailValue.setIsDefault(true);
             accountingControl.updateSymbolPositionFromValue(symbolPositionDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownSymbolPositionName.name(), symbolPositionName);

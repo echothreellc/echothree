@@ -66,7 +66,7 @@ public class SetDefaultIndexTypeCommand
         var indexTypeDetailValue = indexControl.getIndexTypeDetailValueByNameForUpdate(indexTypeName);
         
         if(indexTypeDetailValue != null) {
-            indexTypeDetailValue.setIsDefault(Boolean.TRUE);
+            indexTypeDetailValue.setIsDefault(true);
             indexControl.updateIndexTypeFromValue(indexTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownIndexTypeName.name(), indexTypeName);

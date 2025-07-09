@@ -78,10 +78,10 @@ public class ApplicationControl
         if(defaultFound && isDefault) {
             var defaultApplicationDetailValue = getDefaultApplicationDetailValueForUpdate();
 
-            defaultApplicationDetailValue.setIsDefault(Boolean.FALSE);
+            defaultApplicationDetailValue.setIsDefault(false);
             updateApplicationFromValue(defaultApplicationDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var application = ApplicationFactory.getInstance().create();
@@ -283,11 +283,11 @@ public class ApplicationControl
                     // If I'm the default, and a default already existed...
                     var defaultApplicationDetailValue = getDefaultApplicationDetailValueForUpdate();
 
-                    defaultApplicationDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultApplicationDetailValue.setIsDefault(false);
                     updateApplicationFromValue(defaultApplicationDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -330,7 +330,7 @@ public class ApplicationControl
                     }
                     var applicationDetailValue = Objects.requireNonNull(defaultApplication).getLastDetailForUpdate().getApplicationDetailValue().clone();
 
-                    applicationDetailValue.setIsDefault(Boolean.TRUE);
+                    applicationDetailValue.setIsDefault(true);
                     updateApplicationFromValue(applicationDetailValue, false, deletedBy);
                 }
             }
@@ -511,10 +511,10 @@ public class ApplicationControl
         if(defaultFound && isDefault) {
             var defaultApplicationEditorDetailValue = getDefaultApplicationEditorDetailValueForUpdate(application);
 
-            defaultApplicationEditorDetailValue.setIsDefault(Boolean.FALSE);
+            defaultApplicationEditorDetailValue.setIsDefault(false);
             updateApplicationEditorFromValue(defaultApplicationEditorDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var applicationEditor = ApplicationEditorFactory.getInstance().create();
@@ -758,11 +758,11 @@ public class ApplicationControl
                     // If I'm the default, and a default already existed...
                     var defaultApplicationEditorDetailValue = getDefaultApplicationEditorDetailValueForUpdate(application);
 
-                    defaultApplicationEditorDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultApplicationEditorDetailValue.setIsDefault(false);
                     updateApplicationEditorFromValue(defaultApplicationEditorDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -806,7 +806,7 @@ public class ApplicationControl
                     }
                     var applicationEditorDetailValue = Objects.requireNonNull(defaultApplicationEditor).getLastDetailForUpdate().getApplicationEditorDetailValue().clone();
 
-                    applicationEditorDetailValue.setIsDefault(Boolean.TRUE);
+                    applicationEditorDetailValue.setIsDefault(true);
                     updateApplicationEditorFromValue(applicationEditorDetailValue, false, deletedBy);
                 }
             }
@@ -847,10 +847,10 @@ public class ApplicationControl
         if(defaultFound && isDefault) {
             var defaultApplicationEditorUseDetailValue = getDefaultApplicationEditorUseDetailValueForUpdate(application);
 
-            defaultApplicationEditorUseDetailValue.setIsDefault(Boolean.FALSE);
+            defaultApplicationEditorUseDetailValue.setIsDefault(false);
             updateApplicationEditorUseFromValue(defaultApplicationEditorUseDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var applicationEditorUse = ApplicationEditorUseFactory.getInstance().create();
@@ -1096,11 +1096,11 @@ public class ApplicationControl
                     // If I'm the default, and a default already existed...
                     var defaultApplicationEditorUseDetailValue = getDefaultApplicationEditorUseDetailValueForUpdate(application);
 
-                    defaultApplicationEditorUseDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultApplicationEditorUseDetailValue.setIsDefault(false);
                     updateApplicationEditorUseFromValue(defaultApplicationEditorUseDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -1144,7 +1144,7 @@ public class ApplicationControl
                     }
                     var applicationEditorUseDetailValue = Objects.requireNonNull(defaultApplicationEditorUse).getLastDetailForUpdate().getApplicationEditorUseDetailValue().clone();
 
-                    applicationEditorUseDetailValue.setIsDefault(Boolean.TRUE);
+                    applicationEditorUseDetailValue.setIsDefault(true);
                     updateApplicationEditorUseFromValue(applicationEditorUseDetailValue, false, deletedBy);
                 }
             }

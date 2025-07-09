@@ -140,7 +140,7 @@ public abstract class HtsCountryParser<H> {
         edit.setHarmonizedTariffScheduleCodeName(getHarmonizedTariffScheduleCodeName(htsc));
         edit.setFirstHarmonizedTariffScheduleCodeUnitName(getFirstHarmonizedTariffScheduleCodeUnitName(htsc));
         edit.setSecondHarmonizedTariffScheduleCodeUnitName(getSecondHarmonizedTariffScheduleCodeUnitName(htsc));
-        edit.setIsDefault(Boolean.FALSE.toString());
+        edit.setIsDefault(String.valueOf(false));
         edit.setSortOrder("1");
         edit.setDescription(getDescription(htsc));
         edit.setOverviewMimeTypeName(getOverviewMimeTypeName(htsc));

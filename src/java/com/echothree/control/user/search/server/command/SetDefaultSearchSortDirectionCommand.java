@@ -66,7 +66,7 @@ public class SetDefaultSearchSortDirectionCommand
         var searchSortDirectionDetailValue = searchControl.getSearchSortDirectionDetailValueByNameForUpdate(searchSortDirectionName);
         
         if(searchSortDirectionDetailValue != null) {
-            searchSortDirectionDetailValue.setIsDefault(Boolean.TRUE);
+            searchSortDirectionDetailValue.setIsDefault(true);
             searchControl.updateSearchSortDirectionFromValue(searchSortDirectionDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownSearchSortDirectionName.name(), searchSortDirectionName);

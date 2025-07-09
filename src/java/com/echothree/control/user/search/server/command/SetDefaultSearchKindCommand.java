@@ -65,7 +65,7 @@ public class SetDefaultSearchKindCommand
         var searchKindDetailValue = searchControl.getSearchKindDetailValueByNameForUpdate(searchKindName);
         
         if(searchKindDetailValue != null) {
-            searchKindDetailValue.setIsDefault(Boolean.TRUE);
+            searchKindDetailValue.setIsDefault(true);
             searchControl.updateSearchKindFromValue(searchKindDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownSearchKindName.name(), searchKindName);

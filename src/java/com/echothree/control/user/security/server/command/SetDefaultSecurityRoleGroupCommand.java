@@ -65,7 +65,7 @@ public class SetDefaultSecurityRoleGroupCommand
         var securityRoleGroupDetailValue = securityControl.getSecurityRoleGroupDetailValueByNameForUpdate(securityRoleGroupName);
         
         if(securityRoleGroupDetailValue != null) {
-            securityRoleGroupDetailValue.setIsDefault(Boolean.TRUE);
+            securityRoleGroupDetailValue.setIsDefault(true);
             securityControl.updateSecurityRoleGroupFromValue(securityRoleGroupDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownSecurityRoleGroupName.name(), securityRoleGroupName);

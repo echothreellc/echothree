@@ -65,7 +65,7 @@ public class SetDefaultHarmonizedTariffScheduleCodeUnitCommand
         var harmonizedTariffScheduleCodeUnitDetailValue = itemControl.getHarmonizedTariffScheduleCodeUnitDetailValueByNameForUpdate(harmonizedTariffScheduleCodeUnitName);
         
         if(harmonizedTariffScheduleCodeUnitDetailValue != null) {
-            harmonizedTariffScheduleCodeUnitDetailValue.setIsDefault(Boolean.TRUE);
+            harmonizedTariffScheduleCodeUnitDetailValue.setIsDefault(true);
             itemControl.updateHarmonizedTariffScheduleCodeUnitFromValue(harmonizedTariffScheduleCodeUnitDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownHarmonizedTariffScheduleCodeUnitName.name(), harmonizedTariffScheduleCodeUnitName);

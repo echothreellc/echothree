@@ -67,7 +67,7 @@ public class MainActionForm
             var form = CustomerUtil.getHome().getGetCustomerTypeChoicesForm();
 
             form.setDefaultCustomerTypeChoice(customerTypeChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = CustomerUtil.getHome().getCustomerTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -86,7 +86,7 @@ public class MainActionForm
             var commandForm = GeoUtil.getHome().getGetCountryChoicesForm();
 
             commandForm.setDefaultCountryChoice(countryChoice);
-            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = GeoUtil.getHome().getCountryChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -106,7 +106,7 @@ public class MainActionForm
 
             form.setPartyTypeName(PartyTypes.CUSTOMER.name());
             form.setDefaultPartyAliasTypeChoice(partyAliasTypeChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = PartyUtil.getHome().getPartyAliasTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -310,9 +310,9 @@ public class MainActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        setFirstNameSoundex(Boolean.FALSE);
-        setMiddleNameSoundex(Boolean.FALSE);
-        setLastNameSoundex(Boolean.FALSE);
+        setFirstNameSoundex(false);
+        setMiddleNameSoundex(false);
+        setLastNameSoundex(false);
     }
     
 }

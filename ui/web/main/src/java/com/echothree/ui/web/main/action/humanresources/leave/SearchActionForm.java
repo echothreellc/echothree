@@ -52,7 +52,7 @@ public class SearchActionForm
             var form = EmployeeUtil.getHome().getGetLeaveTypeChoicesForm();
 
             form.setDefaultLeaveTypeChoice(leaveTypeChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = EmployeeUtil.getHome().getLeaveTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -71,7 +71,7 @@ public class SearchActionForm
             var form = EmployeeUtil.getHome().getGetLeaveReasonChoicesForm();
 
             form.setDefaultLeaveReasonChoice(leaveReasonChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = EmployeeUtil.getHome().getLeaveReasonChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -91,7 +91,7 @@ public class SearchActionForm
 
             form.setWorkflowName(LeaveStatusConstants.Workflow_LEAVE_STATUS);
             form.setDefaultWorkflowStepChoice(leaveStatusChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

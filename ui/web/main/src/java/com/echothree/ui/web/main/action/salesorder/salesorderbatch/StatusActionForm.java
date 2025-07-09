@@ -43,7 +43,7 @@ public class StatusActionForm
 
             form.setBatchName(batchName);
             form.setDefaultSalesOrderBatchStatusChoice(salesOrderBatchStatusChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = SalesUtil.getHome().getSalesOrderBatchStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

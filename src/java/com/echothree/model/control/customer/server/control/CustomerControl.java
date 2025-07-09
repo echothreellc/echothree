@@ -128,10 +128,10 @@ public class CustomerControl
         if(defaultFound && isDefault) {
             var defaultCustomerTypeDetailValue = getDefaultCustomerTypeDetailValueForUpdate();
 
-            defaultCustomerTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultCustomerTypeDetailValue.setIsDefault(false);
             updateCustomerTypeFromValue(defaultCustomerTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var customerType = CustomerTypeFactory.getInstance().create();
@@ -385,11 +385,11 @@ public class CustomerControl
                     // If I'm the default, and a default already existed...
                     var defaultCustomerTypeDetailValue = getDefaultCustomerTypeDetailValueForUpdate();
 
-                    defaultCustomerTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultCustomerTypeDetailValue.setIsDefault(false);
                     updateCustomerTypeFromValue(defaultCustomerTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -440,7 +440,7 @@ public class CustomerControl
                 }
                 var customerTypeDetailValue = Objects.requireNonNull(defaultCustomerType).getLastDetailForUpdate().getCustomerTypeDetailValue().clone();
                 
-                customerTypeDetailValue.setIsDefault(Boolean.TRUE);
+                customerTypeDetailValue.setIsDefault(true);
                 updateCustomerTypeFromValue(customerTypeDetailValue, false, deletedBy);
             }
         }
@@ -916,10 +916,10 @@ public class CustomerControl
         if(defaultFound && isDefault) {
             var defaultCustomerTypePaymentMethodValue = getDefaultCustomerTypePaymentMethodValueForUpdate(customerType);
             
-            defaultCustomerTypePaymentMethodValue.setIsDefault(Boolean.FALSE);
+            defaultCustomerTypePaymentMethodValue.setIsDefault(false);
             updateCustomerTypePaymentMethodFromValue(defaultCustomerTypePaymentMethodValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var customerTypePaymentMethod = CustomerTypePaymentMethodFactory.getInstance().create(session, customerType, paymentMethod,
@@ -1140,11 +1140,11 @@ public class CustomerControl
                     // If I'm the default, and a default already existed...
                     var defaultCustomerTypePaymentMethodValue = getDefaultCustomerTypePaymentMethodValueForUpdate(customerType);
                     
-                    defaultCustomerTypePaymentMethodValue.setIsDefault(Boolean.FALSE);
+                    defaultCustomerTypePaymentMethodValue.setIsDefault(false);
                     updateCustomerTypePaymentMethodFromValue(defaultCustomerTypePaymentMethodValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -1176,7 +1176,7 @@ public class CustomerControl
                 }
                 var customerTypePaymentMethodValue = defaultCustomerTypePaymentMethod.getCustomerTypePaymentMethodValue().clone();
                 
-                customerTypePaymentMethodValue.setIsDefault(Boolean.TRUE);
+                customerTypePaymentMethodValue.setIsDefault(true);
                 updateCustomerTypePaymentMethodFromValue(customerTypePaymentMethodValue, false, deletedBy);
             }
         }
@@ -1210,10 +1210,10 @@ public class CustomerControl
         if(defaultFound && isDefault) {
             var defaultCustomerTypeShippingMethodValue = getDefaultCustomerTypeShippingMethodValueForUpdate(customerType);
             
-            defaultCustomerTypeShippingMethodValue.setIsDefault(Boolean.FALSE);
+            defaultCustomerTypeShippingMethodValue.setIsDefault(false);
             updateCustomerTypeShippingMethodFromValue(defaultCustomerTypeShippingMethodValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var customerTypeShippingMethod = CustomerTypeShippingMethodFactory.getInstance().create(session, customerType, shippingMethod,
@@ -1436,11 +1436,11 @@ public class CustomerControl
                     // If I'm the default, and a default already existed...
                     var defaultCustomerTypeShippingMethodValue = getDefaultCustomerTypeShippingMethodValueForUpdate(customerType);
                     
-                    defaultCustomerTypeShippingMethodValue.setIsDefault(Boolean.FALSE);
+                    defaultCustomerTypeShippingMethodValue.setIsDefault(false);
                     updateCustomerTypeShippingMethodFromValue(defaultCustomerTypeShippingMethodValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -1472,7 +1472,7 @@ public class CustomerControl
                 }
                 var customerTypeShippingMethodValue = defaultCustomerTypeShippingMethod.getCustomerTypeShippingMethodValue().clone();
                 
-                customerTypeShippingMethodValue.setIsDefault(Boolean.TRUE);
+                customerTypeShippingMethodValue.setIsDefault(true);
                 updateCustomerTypeShippingMethodFromValue(customerTypeShippingMethodValue, false, deletedBy);
             }
         }

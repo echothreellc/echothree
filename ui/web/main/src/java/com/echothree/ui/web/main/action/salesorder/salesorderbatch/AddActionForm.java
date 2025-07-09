@@ -48,7 +48,7 @@ public class AddActionForm
             var form = AccountingUtil.getHome().getGetCurrencyChoicesForm();
 
             form.setDefaultCurrencyChoice(currencyChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -66,7 +66,7 @@ public class AddActionForm
             var form = PaymentUtil.getHome().getGetPaymentMethodChoicesForm();
 
             form.setDefaultPaymentMethodChoice(paymentMethodChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = PaymentUtil.getHome().getPaymentMethodChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

@@ -371,12 +371,12 @@ public class CreateCustomerWithLoginCommand
 
                                                                     var userLoginPasswordType = userControl.getUserLoginPasswordTypeByName(UserConstants.UserLoginPasswordType_STRING);
                                                                     var userLoginPassword = userControl.createUserLoginPassword(party, userLoginPasswordType, createdBy);
-                                                                    userControl.createUserLoginPasswordString(userLoginPassword, password1, session.START_TIME_LONG, Boolean.FALSE, createdBy);
+                                                                    userControl.createUserLoginPasswordString(userLoginPassword, password1, session.START_TIME_LONG, false, createdBy);
 
                                                                     if(partyTypePasswordStringPolicy != null && partyTypePasswordStringPolicy.getLastDetail().getForceChangeAfterCreate()) {
                                                                         var userLoginStatus = userControl.getUserLoginStatusForUpdate(party);
 
-                                                                        userLoginStatus.setForceChange(Boolean.TRUE);
+                                                                        userLoginStatus.setForceChange(true);
                                                                     }
 
                                                                     var answer = form.getAnswer();

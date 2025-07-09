@@ -40,7 +40,7 @@ public class AddActionForm
             var form = EmployeeUtil.getHome().getGetResponsibilityTypeChoicesForm();
 
             form.setDefaultResponsibilityTypeChoice(responsibilityTypeChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = EmployeeUtil.getHome().getResponsibilityTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

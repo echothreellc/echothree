@@ -74,7 +74,7 @@ public class AddActionForm
 
             commandForm.setSequenceTypeName(SequenceTypes.ENTITY_LIST_ITEM.name());
             commandForm.setDefaultSequenceChoice(entityListItemSequenceChoice);
-            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -198,8 +198,8 @@ public class AddActionForm
         
         componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
         entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
-        trackRevisions = Boolean.FALSE;
-        checkContentWebAddress = Boolean.FALSE;
+        trackRevisions = false;
+        checkContentWebAddress = false;
     }
     
 }

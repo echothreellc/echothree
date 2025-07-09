@@ -44,7 +44,7 @@ public class AddActionForm
                 var commandForm = ScaleUtil.getHome().getGetScaleUseTypeChoicesForm();
 
                 commandForm.setDefaultScaleUseTypeChoice(scaleUseTypeChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(false));
 
                 var commandResult = ScaleUtil.getHome().getScaleUseTypeChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
@@ -66,7 +66,7 @@ public class AddActionForm
                 var commandForm = ScaleUtil.getHome().getGetScaleChoicesForm();
 
                 commandForm.setDefaultScaleChoice(scaleChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(false));
 
                 var commandResult = ScaleUtil.getHome().getScaleChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();

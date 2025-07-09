@@ -79,7 +79,7 @@ public class CreateUserVisitCampaignCommand
                 
                 if(campaign == null) {
                     try {
-                        campaign = campaignControl.createCampaign(campaignValue, Boolean.FALSE, 0, getPartyPK());
+                        campaign = campaignControl.createCampaign(campaignValue, false, 0, getPartyPK());
                     } catch(PersistenceDatabaseException pde) {
                         if(PersistenceUtils.getInstance().isIntegrityConstraintViolation(pde)) {
                             campaign = campaignControl.getCampaignByValue(campaignValue);
@@ -98,7 +98,7 @@ public class CreateUserVisitCampaignCommand
                 
                 if(campaignSource == null) {
                     try {
-                        campaignSource = campaignControl.createCampaignSource(campaignSourceValue, Boolean.FALSE, 0, getPartyPK());
+                        campaignSource = campaignControl.createCampaignSource(campaignSourceValue, false, 0, getPartyPK());
                     } catch(PersistenceDatabaseException pde) {
                         if(PersistenceUtils.getInstance().isIntegrityConstraintViolation(pde)) {
                             campaignSource = campaignControl.getCampaignSourceByValue(campaignSourceValue);
@@ -117,7 +117,7 @@ public class CreateUserVisitCampaignCommand
                 
                 if(campaignMedium == null) {
                     try {
-                        campaignMedium = campaignControl.createCampaignMedium(campaignMediumValue, Boolean.FALSE, 0, getPartyPK());
+                        campaignMedium = campaignControl.createCampaignMedium(campaignMediumValue, false, 0, getPartyPK());
                     } catch(PersistenceDatabaseException pde) {
                         if(PersistenceUtils.getInstance().isIntegrityConstraintViolation(pde)) {
                             campaignMedium = campaignControl.getCampaignMediumByValue(campaignMediumValue);
@@ -136,7 +136,7 @@ public class CreateUserVisitCampaignCommand
                 
                 if(campaignTerm == null) {
                     try {
-                        campaignTerm = campaignControl.createCampaignTerm(campaignTermValue, Boolean.FALSE, 0, getPartyPK());
+                        campaignTerm = campaignControl.createCampaignTerm(campaignTermValue, false, 0, getPartyPK());
                     } catch(PersistenceDatabaseException pde) {
                         if(PersistenceUtils.getInstance().isIntegrityConstraintViolation(pde)) {
                             campaignTerm = campaignControl.getCampaignTermByValue(campaignTermValue);
@@ -155,7 +155,7 @@ public class CreateUserVisitCampaignCommand
                 
                 if(campaignContent == null) {
                     try {
-                        campaignContent = campaignControl.createCampaignContent(campaignContentValue, Boolean.FALSE, 0, getPartyPK());
+                        campaignContent = campaignControl.createCampaignContent(campaignContentValue, false, 0, getPartyPK());
                     } catch(PersistenceDatabaseException pde) {
                         if(PersistenceUtils.getInstance().isIntegrityConstraintViolation(pde)) {
                             campaignContent = campaignControl.getCampaignContentByValue(campaignContentValue);

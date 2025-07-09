@@ -70,7 +70,7 @@ public class SetDefaultInvoiceTimeTypeCommand
             var invoiceTimeTypeDetailValue = invoiceControl.getInvoiceTimeTypeDetailValueByNameForUpdate(invoiceType, invoiceTimeTypeName);
 
             if(invoiceTimeTypeDetailValue != null) {
-                invoiceTimeTypeDetailValue.setIsDefault(Boolean.TRUE);
+                invoiceTimeTypeDetailValue.setIsDefault(true);
                 invoiceControl.updateInvoiceTimeTypeFromValue(invoiceTimeTypeDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownInvoiceTimeTypeName.name(), invoiceTypeName, invoiceTimeTypeName);

@@ -65,7 +65,7 @@ public class SetDefaultPicklistTypeCommand
         var picklistTypeDetailValue = picklistControl.getPicklistTypeDetailValueByNameForUpdate(picklistTypeName);
         
         if(picklistTypeDetailValue != null) {
-            picklistTypeDetailValue.setIsDefault(Boolean.TRUE);
+            picklistTypeDetailValue.setIsDefault(true);
             picklistControl.updatePicklistTypeFromValue(picklistTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownPicklistTypeName.name(), picklistTypeName);

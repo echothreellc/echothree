@@ -65,7 +65,7 @@ public class SetDefaultLotTimeTypeCommand
         var lotTimeTypeDetailValue = lotTimeControl.getLotTimeTypeDetailValueByNameForUpdate(lotTimeTypeName);
 
         if(lotTimeTypeDetailValue != null) {
-            lotTimeTypeDetailValue.setIsDefault(Boolean.TRUE);
+            lotTimeTypeDetailValue.setIsDefault(true);
             lotTimeControl.updateLotTimeTypeFromValue(lotTimeTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownLotTimeTypeName.name(), lotTimeTypeName);

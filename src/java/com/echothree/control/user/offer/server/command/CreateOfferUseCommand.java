@@ -112,7 +112,7 @@ public class CreateOfferUseCommand
                             BasePK partyPK = getPartyPK();
                             
                             offerUse = offerUseControl.createOfferUse(offer, use, salesOrderSequence, partyPK);
-                            sourceControl.createSource(sourceName, offerUse, Boolean.FALSE, 1, partyPK);
+                            sourceControl.createSource(sourceName, offerUse, false, 1, partyPK);
                         }  else {
                             addExecutionError(ExecutionErrors.DuplicateSourceName.name(), sourceName);
                         }

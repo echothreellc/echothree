@@ -65,7 +65,7 @@ public class SetDefaultSelectorKindCommand
         var selectorKindDetailValue = selectorControl.getSelectorKindDetailValueByNameForUpdate(selectorKindName);
         
         if(selectorKindDetailValue != null) {
-            selectorKindDetailValue.setIsDefault(Boolean.TRUE);
+            selectorKindDetailValue.setIsDefault(true);
             selectorControl.updateSelectorKindFromValue(selectorKindDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), selectorKindName);

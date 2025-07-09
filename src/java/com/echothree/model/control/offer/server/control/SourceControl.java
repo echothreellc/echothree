@@ -57,10 +57,10 @@ public class SourceControl
         if(defaultFound && isDefault) {
             var defaultSourceDetailValue = getDefaultSourceDetailValueForUpdate();
 
-            defaultSourceDetailValue.setIsDefault(Boolean.FALSE);
+            defaultSourceDetailValue.setIsDefault(false);
             updateSourceFromValue(defaultSourceDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var source = SourceFactory.getInstance().create();
@@ -325,11 +325,11 @@ public class SourceControl
                     // If I'm the default, and a default already existed...
                     var defaultSourceDetailValue = getDefaultSourceDetailValueForUpdate();
 
-                    defaultSourceDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultSourceDetailValue.setIsDefault(false);
                     updateSourceFromValue(defaultSourceDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -366,7 +366,7 @@ public class SourceControl
                 }
                 var sourceDetailValue = Objects.requireNonNull(defaultSource).getLastDetailForUpdate().getSourceDetailValue().clone();
 
-                sourceDetailValue.setIsDefault(Boolean.TRUE);
+                sourceDetailValue.setIsDefault(true);
                 updateSourceFromValue(sourceDetailValue, false, deletedBy);
             }
         }

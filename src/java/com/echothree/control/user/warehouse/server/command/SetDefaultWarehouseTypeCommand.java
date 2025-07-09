@@ -65,7 +65,7 @@ public class SetDefaultWarehouseTypeCommand
         var warehouseTypeDetailValue = warehouseControl.getWarehouseTypeDetailValueByNameForUpdate(warehouseTypeName);
         
         if(warehouseTypeDetailValue != null) {
-            warehouseTypeDetailValue.setIsDefault(Boolean.TRUE);
+            warehouseTypeDetailValue.setIsDefault(true);
             warehouseControl.updateWarehouseTypeFromValue(warehouseTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownWarehouseTypeName.name(), warehouseTypeName);

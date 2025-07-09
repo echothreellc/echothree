@@ -190,10 +190,10 @@ public class SearchControl
         if(defaultFound && isDefault) {
             var defaultSearchUseTypeDetailValue = getDefaultSearchUseTypeDetailValueForUpdate();
 
-            defaultSearchUseTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultSearchUseTypeDetailValue.setIsDefault(false);
             updateSearchUseTypeFromValue(defaultSearchUseTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var searchUseType = SearchUseTypeFactory.getInstance().create();
@@ -414,11 +414,11 @@ public class SearchControl
                     // If I'm the default, and a default already existed...
                     var defaultSearchUseTypeDetailValue = getDefaultSearchUseTypeDetailValueForUpdate();
 
-                    defaultSearchUseTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultSearchUseTypeDetailValue.setIsDefault(false);
                     updateSearchUseTypeFromValue(defaultSearchUseTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -460,7 +460,7 @@ public class SearchControl
                     }
                     var searchUseTypeDetailValue = Objects.requireNonNull(defaultSearchUseType).getLastDetailForUpdate().getSearchUseTypeDetailValue().clone();
 
-                    searchUseTypeDetailValue.setIsDefault(Boolean.TRUE);
+                    searchUseTypeDetailValue.setIsDefault(true);
                     updateSearchUseTypeFromValue(searchUseTypeDetailValue, false, deletedBy);
                 }
             }
@@ -642,10 +642,10 @@ public class SearchControl
         if(defaultFound && isDefault) {
             var defaultSearchResultActionTypeDetailValue = getDefaultSearchResultActionTypeDetailValueForUpdate();
 
-            defaultSearchResultActionTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultSearchResultActionTypeDetailValue.setIsDefault(false);
             updateSearchResultActionTypeFromValue(defaultSearchResultActionTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var searchResultActionType = SearchResultActionTypeFactory.getInstance().create();
@@ -870,11 +870,11 @@ public class SearchControl
                     // If I'm the default, and a default already existed...
                     var defaultSearchResultActionTypeDetailValue = getDefaultSearchResultActionTypeDetailValueForUpdate();
 
-                    defaultSearchResultActionTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultSearchResultActionTypeDetailValue.setIsDefault(false);
                     updateSearchResultActionTypeFromValue(defaultSearchResultActionTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -916,7 +916,7 @@ public class SearchControl
                     }
                     var searchResultActionTypeDetailValue = Objects.requireNonNull(defaultSearchResultActionType).getLastDetailForUpdate().getSearchResultActionTypeDetailValue().clone();
 
-                    searchResultActionTypeDetailValue.setIsDefault(Boolean.TRUE);
+                    searchResultActionTypeDetailValue.setIsDefault(true);
                     updateSearchResultActionTypeFromValue(searchResultActionTypeDetailValue, false, deletedBy);
                 }
             }
@@ -1098,10 +1098,10 @@ public class SearchControl
         if(defaultFound && isDefault) {
             var defaultSearchCheckSpellingActionTypeDetailValue = getDefaultSearchCheckSpellingActionTypeDetailValueForUpdate();
 
-            defaultSearchCheckSpellingActionTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultSearchCheckSpellingActionTypeDetailValue.setIsDefault(false);
             updateSearchCheckSpellingActionTypeFromValue(defaultSearchCheckSpellingActionTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var searchCheckSpellingActionType = SearchCheckSpellingActionTypeFactory.getInstance().create();
@@ -1322,11 +1322,11 @@ public class SearchControl
                     // If I'm the default, and a default already existed...
                     var defaultSearchCheckSpellingActionTypeDetailValue = getDefaultSearchCheckSpellingActionTypeDetailValueForUpdate();
 
-                    defaultSearchCheckSpellingActionTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultSearchCheckSpellingActionTypeDetailValue.setIsDefault(false);
                     updateSearchCheckSpellingActionTypeFromValue(defaultSearchCheckSpellingActionTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -1367,7 +1367,7 @@ public class SearchControl
                     }
                     var searchCheckSpellingActionTypeDetailValue = Objects.requireNonNull(defaultSearchCheckSpellingActionType).getLastDetailForUpdate().getSearchCheckSpellingActionTypeDetailValue().clone();
 
-                    searchCheckSpellingActionTypeDetailValue.setIsDefault(Boolean.TRUE);
+                    searchCheckSpellingActionTypeDetailValue.setIsDefault(true);
                     updateSearchCheckSpellingActionTypeFromValue(searchCheckSpellingActionTypeDetailValue, false, deletedBy);
                 }
             }
@@ -1549,10 +1549,10 @@ public class SearchControl
         if(defaultFound && isDefault) {
             var defaultSearchDefaultOperatorDetailValue = getDefaultSearchDefaultOperatorDetailValueForUpdate();
 
-            defaultSearchDefaultOperatorDetailValue.setIsDefault(Boolean.FALSE);
+            defaultSearchDefaultOperatorDetailValue.setIsDefault(false);
             updateSearchDefaultOperatorFromValue(defaultSearchDefaultOperatorDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var searchDefaultOperator = SearchDefaultOperatorFactory.getInstance().create();
@@ -1773,11 +1773,11 @@ public class SearchControl
                     // If I'm the default, and a default already existed...
                     var defaultSearchDefaultOperatorDetailValue = getDefaultSearchDefaultOperatorDetailValueForUpdate();
 
-                    defaultSearchDefaultOperatorDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultSearchDefaultOperatorDetailValue.setIsDefault(false);
                     updateSearchDefaultOperatorFromValue(defaultSearchDefaultOperatorDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -1820,7 +1820,7 @@ public class SearchControl
                     }
                     var searchDefaultOperatorDetailValue = Objects.requireNonNull(defaultSearchDefaultOperator).getLastDetailForUpdate().getSearchDefaultOperatorDetailValue().clone();
 
-                    searchDefaultOperatorDetailValue.setIsDefault(Boolean.TRUE);
+                    searchDefaultOperatorDetailValue.setIsDefault(true);
                     updateSearchDefaultOperatorFromValue(searchDefaultOperatorDetailValue, false, deletedBy);
                 }
             }
@@ -2002,10 +2002,10 @@ public class SearchControl
         if(defaultFound && isDefault) {
             var defaultSearchSortDirectionDetailValue = getDefaultSearchSortDirectionDetailValueForUpdate();
 
-            defaultSearchSortDirectionDetailValue.setIsDefault(Boolean.FALSE);
+            defaultSearchSortDirectionDetailValue.setIsDefault(false);
             updateSearchSortDirectionFromValue(defaultSearchSortDirectionDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var searchSortDirection = SearchSortDirectionFactory.getInstance().create();
@@ -2226,11 +2226,11 @@ public class SearchControl
                     // If I'm the default, and a default already existed...
                     var defaultSearchSortDirectionDetailValue = getDefaultSearchSortDirectionDetailValueForUpdate();
 
-                    defaultSearchSortDirectionDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultSearchSortDirectionDetailValue.setIsDefault(false);
                     updateSearchSortDirectionFromValue(defaultSearchSortDirectionDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -2273,7 +2273,7 @@ public class SearchControl
                     }
                     var searchSortDirectionDetailValue = Objects.requireNonNull(defaultSearchSortDirection).getLastDetailForUpdate().getSearchSortDirectionDetailValue().clone();
 
-                    searchSortDirectionDetailValue.setIsDefault(Boolean.TRUE);
+                    searchSortDirectionDetailValue.setIsDefault(true);
                     updateSearchSortDirectionFromValue(searchSortDirectionDetailValue, false, deletedBy);
                 }
             }
@@ -2455,10 +2455,10 @@ public class SearchControl
         if(defaultFound && isDefault) {
             var defaultSearchKindDetailValue = getDefaultSearchKindDetailValueForUpdate();
 
-            defaultSearchKindDetailValue.setIsDefault(Boolean.FALSE);
+            defaultSearchKindDetailValue.setIsDefault(false);
             updateSearchKindFromValue(defaultSearchKindDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var searchKind = SearchKindFactory.getInstance().create();
@@ -2676,11 +2676,11 @@ public class SearchControl
                 // If I'm the default, and a default already existed...
                 var defaultSearchKindDetailValue = getDefaultSearchKindDetailValueForUpdate();
 
-                defaultSearchKindDetailValue.setIsDefault(Boolean.FALSE);
+                defaultSearchKindDetailValue.setIsDefault(false);
                 updateSearchKindFromValue(defaultSearchKindDetailValue, false, updatedBy);
             } else if(!isDefault && !defaultFound) {
                 // If I'm not the default, and no other default exists...
-                isDefault = Boolean.TRUE;
+                isDefault = true;
             }
         }
 
@@ -2721,7 +2721,7 @@ public class SearchControl
                     }
                     var searchKindDetailValue = Objects.requireNonNull(defaultSearchKind).getLastDetailForUpdate().getSearchKindDetailValue().clone();
 
-                    searchKindDetailValue.setIsDefault(Boolean.TRUE);
+                    searchKindDetailValue.setIsDefault(true);
                     updateSearchKindFromValue(searchKindDetailValue, false, deletedBy);
                 }
             }
@@ -2903,10 +2903,10 @@ public class SearchControl
         if(defaultFound && isDefault) {
             var defaultSearchTypeDetailValue = getDefaultSearchTypeDetailValueForUpdate(searchKind);
 
-            defaultSearchTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultSearchTypeDetailValue.setIsDefault(false);
             updateSearchTypeFromValue(defaultSearchTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var searchType = SearchTypeFactory.getInstance().create();
@@ -3134,11 +3134,11 @@ public class SearchControl
                     // If I'm the default, and a default already existed...
                     var defaultSearchTypeDetailValue = getDefaultSearchTypeDetailValueForUpdate(searchKind);
 
-                    defaultSearchTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultSearchTypeDetailValue.setIsDefault(false);
                     updateSearchTypeFromValue(defaultSearchTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -3181,7 +3181,7 @@ public class SearchControl
                 }
                 var searchTypeDetailValue = Objects.requireNonNull(defaultSearchType).getLastDetailForUpdate().getSearchTypeDetailValue().clone();
 
-                searchTypeDetailValue.setIsDefault(Boolean.TRUE);
+                searchTypeDetailValue.setIsDefault(true);
                 updateSearchTypeFromValue(searchTypeDetailValue, false, deletedBy);
             }
         }
@@ -3358,10 +3358,10 @@ public class SearchControl
         if(defaultFound && isDefault) {
             var defaultSearchSortOrderDetailValue = getDefaultSearchSortOrderDetailValueForUpdate(searchKind);
 
-            defaultSearchSortOrderDetailValue.setIsDefault(Boolean.FALSE);
+            defaultSearchSortOrderDetailValue.setIsDefault(false);
             updateSearchSortOrderFromValue(defaultSearchSortOrderDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var searchSortOrder = SearchSortOrderFactory.getInstance().create();
@@ -3589,11 +3589,11 @@ public class SearchControl
                     // If I'm the default, and a default already existed...
                     var defaultSearchSortOrderDetailValue = getDefaultSearchSortOrderDetailValueForUpdate(searchKind);
 
-                    defaultSearchSortOrderDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultSearchSortOrderDetailValue.setIsDefault(false);
                     updateSearchSortOrderFromValue(defaultSearchSortOrderDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -3634,7 +3634,7 @@ public class SearchControl
                 }
                 var searchSortOrderDetailValue = Objects.requireNonNull(defaultSearchSortOrder).getLastDetailForUpdate().getSearchSortOrderDetailValue().clone();
 
-                searchSortOrderDetailValue.setIsDefault(Boolean.TRUE);
+                searchSortOrderDetailValue.setIsDefault(true);
                 updateSearchSortOrderFromValue(searchSortOrderDetailValue, false, deletedBy);
             }
         }
@@ -4234,7 +4234,7 @@ public class SearchControl
     // --------------------------------------------------------------------------------
 
     public CachedSearchStatus createCachedSearchStatus(CachedSearch cachedSearch) {
-        return CachedSearchStatusFactory.getInstance().create(cachedSearch, Boolean.TRUE);
+        return CachedSearchStatusFactory.getInstance().create(cachedSearch, true);
     }
 
     private static final Map<EntityPermission, String> getCachedSearchStatusQueries;

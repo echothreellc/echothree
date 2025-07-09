@@ -39,7 +39,7 @@ public class AvailabilityActionForm
             var form = PartyUtil.getHome().getGetEmployeeAvailabilityChoicesForm();
 
             form.setDefaultEmployeeAvailabilityChoice(employeeAvailabilityChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = PartyUtil.getHome().getEmployeeAvailabilityChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

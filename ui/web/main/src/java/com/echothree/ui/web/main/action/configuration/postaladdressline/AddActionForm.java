@@ -93,9 +93,9 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        setAlwaysIncludePrefix(Boolean.FALSE);
-        setAlwaysIncludeSuffix(Boolean.FALSE);
-        setCollapseIfEmpty(Boolean.FALSE);
+        setAlwaysIncludePrefix(false);
+        setAlwaysIncludeSuffix(false);
+        setCollapseIfEmpty(false);
     }
     
 }

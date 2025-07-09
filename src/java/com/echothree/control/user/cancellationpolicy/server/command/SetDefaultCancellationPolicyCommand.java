@@ -71,7 +71,7 @@ public class SetDefaultCancellationPolicyCommand
             var cancellationPolicyDetailValue = cancellationPolicyControl.getCancellationPolicyDetailValueByNameForUpdate(cancellationKind, cancellationPolicyName);
             
             if(cancellationPolicyDetailValue != null) {
-                cancellationPolicyDetailValue.setIsDefault(Boolean.TRUE);
+                cancellationPolicyDetailValue.setIsDefault(true);
                 cancellationPolicyControl.updateCancellationPolicyFromValue(cancellationPolicyDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownCancellationPolicyName.name(), cancellationPolicyName);

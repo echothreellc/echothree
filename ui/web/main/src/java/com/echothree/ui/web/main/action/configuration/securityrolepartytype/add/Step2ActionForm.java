@@ -45,7 +45,7 @@ public class Step2ActionForm
             form.setSelectorKindName(getPartyTypeName());
             form.setSelectorTypeName(SelectorTypes.SECURITY_ROLE.name());
             form.setDefaultSelectorChoice(partySelectorChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

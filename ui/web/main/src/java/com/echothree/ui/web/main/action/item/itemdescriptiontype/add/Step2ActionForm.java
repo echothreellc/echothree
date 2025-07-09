@@ -63,7 +63,7 @@ public class Step2ActionForm
             var form = ItemUtil.getHome().getGetItemDescriptionTypeChoicesForm();
 
             form.setDefaultItemDescriptionTypeChoice(parentItemDescriptionTypeChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = ItemUtil.getHome().getItemDescriptionTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -83,7 +83,7 @@ public class Step2ActionForm
 
             form.setMimeTypeUsageTypeName(mimeTypeUsageTypeName);
             form.setDefaultMimeTypeChoice(preferredMimeTypeChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -375,12 +375,12 @@ public class Step2ActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
 
-        checkContentWebAddress = Boolean.FALSE;
-        useParentIfMissing = Boolean.FALSE;
-        includeInIndex = Boolean.FALSE;
-        indexDefault = Boolean.FALSE;
-        isDefault = Boolean.FALSE;
-        scaleFromParent = Boolean.FALSE;
+        checkContentWebAddress = false;
+        useParentIfMissing = false;
+        includeInIndex = false;
+        indexDefault = false;
+        isDefault = false;
+        scaleFromParent = false;
     }
 
 }

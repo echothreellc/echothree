@@ -66,7 +66,7 @@ public class SetDefaultFontStyleCommand
         var fontStyleDetailValue = fontControl.getFontStyleDetailValueByNameForUpdate(fontStyleName);
         
         if(fontStyleDetailValue != null) {
-            fontStyleDetailValue.setIsDefault(Boolean.TRUE);
+            fontStyleDetailValue.setIsDefault(true);
             fontControl.updateFontStyleFromValue(fontStyleDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownFontStyleName.name(), fontStyleName);

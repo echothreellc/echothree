@@ -313,10 +313,10 @@ public class CancellationPolicyControl
         if(defaultFound && isDefault) {
             var defaultCancellationKindDetailValue = getDefaultCancellationKindDetailValueForUpdate();
             
-            defaultCancellationKindDetailValue.setIsDefault(Boolean.FALSE);
+            defaultCancellationKindDetailValue.setIsDefault(false);
             updateCancellationKindFromValue(defaultCancellationKindDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var cancellationKind = CancellationKindFactory.getInstance().create();
@@ -537,11 +537,11 @@ public class CancellationPolicyControl
                 // If I'm the default, and a default already existed...
                 var defaultCancellationKindDetailValue = getDefaultCancellationKindDetailValueForUpdate();
                 
-                defaultCancellationKindDetailValue.setIsDefault(Boolean.FALSE);
+                defaultCancellationKindDetailValue.setIsDefault(false);
                 updateCancellationKindFromValue(defaultCancellationKindDetailValue, false, updatedBy);
             } else if(!isDefault && !defaultFound) {
                 // If I'm not the default, and no other default exists...
-                isDefault = Boolean.TRUE;
+                isDefault = true;
             }
         }
         
@@ -579,7 +579,7 @@ public class CancellationPolicyControl
                 }
                 var cancellationKindDetailValue = Objects.requireNonNull(defaultCancellationKind).getLastDetailForUpdate().getCancellationKindDetailValue().clone();
                 
-                cancellationKindDetailValue.setIsDefault(Boolean.TRUE);
+                cancellationKindDetailValue.setIsDefault(true);
                 updateCancellationKindFromValue(cancellationKindDetailValue, false, deletedBy);
             }
         }
@@ -766,10 +766,10 @@ public class CancellationPolicyControl
         if(defaultFound && isDefault) {
             var defaultCancellationPolicyDetailValue = getDefaultCancellationPolicyDetailValueForUpdate(cancellationKind);
             
-            defaultCancellationPolicyDetailValue.setIsDefault(Boolean.FALSE);
+            defaultCancellationPolicyDetailValue.setIsDefault(false);
             updateCancellationPolicyFromValue(defaultCancellationPolicyDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var cancellationPolicy = CancellationPolicyFactory.getInstance().create();
@@ -1023,11 +1023,11 @@ public class CancellationPolicyControl
                     // If I'm the default, and a default already existed...
                     var defaultCancellationPolicyDetailValue = getDefaultCancellationPolicyDetailValueForUpdate(cancellationKind);
                     
-                    defaultCancellationPolicyDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultCancellationPolicyDetailValue.setIsDefault(false);
                     updateCancellationPolicyFromValue(defaultCancellationPolicyDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -1068,7 +1068,7 @@ public class CancellationPolicyControl
                 }
                 var cancellationPolicyDetailValue = Objects.requireNonNull(defaultCancellationPolicy).getLastDetailForUpdate().getCancellationPolicyDetailValue().clone();
                 
-                cancellationPolicyDetailValue.setIsDefault(Boolean.TRUE);
+                cancellationPolicyDetailValue.setIsDefault(true);
                 updateCancellationPolicyFromValue(cancellationPolicyDetailValue, false, deletedBy);
             }
         }
@@ -1242,10 +1242,10 @@ public class CancellationPolicyControl
         if(defaultFound && isDefault) {
             var defaultCancellationPolicyReasonValue = getDefaultCancellationPolicyReasonValueForUpdate(cancellationPolicy);
             
-            defaultCancellationPolicyReasonValue.setIsDefault(Boolean.FALSE);
+            defaultCancellationPolicyReasonValue.setIsDefault(false);
             updateCancellationPolicyReasonFromValue(defaultCancellationPolicyReasonValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var cancellationPolicyReason = CancellationPolicyReasonFactory.getInstance().create(cancellationPolicy, cancellationReason,
@@ -1472,11 +1472,11 @@ public class CancellationPolicyControl
                     // If I'm the default, and a default already existed...
                     var defaultCancellationPolicyReasonValue = getDefaultCancellationPolicyReasonValueForUpdate(cancellationPolicy);
                     
-                    defaultCancellationPolicyReasonValue.setIsDefault(Boolean.FALSE);
+                    defaultCancellationPolicyReasonValue.setIsDefault(false);
                     updateCancellationPolicyReasonFromValue(defaultCancellationPolicyReasonValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -1508,7 +1508,7 @@ public class CancellationPolicyControl
                 }
                 var cancellationPolicyReasonValue = defaultCancellationPolicyReason.getCancellationPolicyReasonValue().clone();
                 
-                cancellationPolicyReasonValue.setIsDefault(Boolean.TRUE);
+                cancellationPolicyReasonValue.setIsDefault(true);
                 updateCancellationPolicyReasonFromValue(cancellationPolicyReasonValue, false, deletedBy);
             }
         }
@@ -1542,10 +1542,10 @@ public class CancellationPolicyControl
         if(defaultFound && isDefault) {
             var defaultCancellationReasonDetailValue = getDefaultCancellationReasonDetailValueForUpdate(cancellationKind);
             
-            defaultCancellationReasonDetailValue.setIsDefault(Boolean.FALSE);
+            defaultCancellationReasonDetailValue.setIsDefault(false);
             updateCancellationReasonFromValue(defaultCancellationReasonDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var cancellationReason = CancellationReasonFactory.getInstance().create();
@@ -1770,11 +1770,11 @@ public class CancellationPolicyControl
                     // If I'm the default, and a default already existed...
                     var defaultCancellationReasonDetailValue = getDefaultCancellationReasonDetailValueForUpdate(cancellationKind);
                     
-                    defaultCancellationReasonDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultCancellationReasonDetailValue.setIsDefault(false);
                     updateCancellationReasonFromValue(defaultCancellationReasonDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -1815,7 +1815,7 @@ public class CancellationPolicyControl
                 }
                 var cancellationReasonDetailValue = Objects.requireNonNull(defaultCancellationReason).getLastDetailForUpdate().getCancellationReasonDetailValue().clone();
                 
-                cancellationReasonDetailValue.setIsDefault(Boolean.TRUE);
+                cancellationReasonDetailValue.setIsDefault(true);
                 updateCancellationReasonFromValue(cancellationReasonDetailValue, false, deletedBy);
             }
         }
@@ -2010,10 +2010,10 @@ public class CancellationPolicyControl
         if(defaultFound && isDefault) {
             var defaultCancellationReasonTypeValue = getDefaultCancellationReasonTypeValueForUpdate(cancellationReason);
             
-            defaultCancellationReasonTypeValue.setIsDefault(Boolean.FALSE);
+            defaultCancellationReasonTypeValue.setIsDefault(false);
             updateCancellationReasonTypeFromValue(defaultCancellationReasonTypeValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var cancellationReasonType = CancellationReasonTypeFactory.getInstance().create(cancellationReason, cancellationType,
@@ -2241,11 +2241,11 @@ public class CancellationPolicyControl
                     // If I'm the default, and a default already existed...
                     var defaultCancellationReasonTypeValue = getDefaultCancellationReasonTypeValueForUpdate(cancellationReason);
                     
-                    defaultCancellationReasonTypeValue.setIsDefault(Boolean.FALSE);
+                    defaultCancellationReasonTypeValue.setIsDefault(false);
                     updateCancellationReasonTypeFromValue(defaultCancellationReasonTypeValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -2277,7 +2277,7 @@ public class CancellationPolicyControl
                 }
                 var cancellationReasonTypeValue = defaultCancellationReasonType.getCancellationReasonTypeValue().clone();
                 
-                cancellationReasonTypeValue.setIsDefault(Boolean.TRUE);
+                cancellationReasonTypeValue.setIsDefault(true);
                 updateCancellationReasonTypeFromValue(cancellationReasonTypeValue, false, deletedBy);
             }
         }
@@ -2311,10 +2311,10 @@ public class CancellationPolicyControl
         if(defaultFound && isDefault) {
             var defaultCancellationTypeDetailValue = getDefaultCancellationTypeDetailValueForUpdate(cancellationKind);
             
-            defaultCancellationTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultCancellationTypeDetailValue.setIsDefault(false);
             updateCancellationTypeFromValue(defaultCancellationTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var cancellationType = CancellationTypeFactory.getInstance().create();
@@ -2540,11 +2540,11 @@ public class CancellationPolicyControl
                     // If I'm the default, and a default already existed...
                     var defaultCancellationTypeDetailValue = getDefaultCancellationTypeDetailValueForUpdate(cancellationKind);
                     
-                    defaultCancellationTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultCancellationTypeDetailValue.setIsDefault(false);
                     updateCancellationTypeFromValue(defaultCancellationTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -2584,7 +2584,7 @@ public class CancellationPolicyControl
                 }
                 var cancellationTypeDetailValue = Objects.requireNonNull(defaultCancellationType).getLastDetailForUpdate().getCancellationTypeDetailValue().clone();
                 
-                cancellationTypeDetailValue.setIsDefault(Boolean.TRUE);
+                cancellationTypeDetailValue.setIsDefault(true);
                 updateCancellationTypeFromValue(cancellationTypeDetailValue, false, deletedBy);
             }
         }

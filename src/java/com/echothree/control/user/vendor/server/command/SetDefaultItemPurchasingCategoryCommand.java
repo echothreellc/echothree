@@ -66,7 +66,7 @@ public class SetDefaultItemPurchasingCategoryCommand
         var itemPurchasingCategoryDetailValue = vendorControl.getItemPurchasingCategoryDetailValueByNameForUpdate(itemPurchasingCategoryName);
         
         if(itemPurchasingCategoryDetailValue != null) {
-            itemPurchasingCategoryDetailValue.setIsDefault(Boolean.TRUE);
+            itemPurchasingCategoryDetailValue.setIsDefault(true);
             vendorControl.updateItemPurchasingCategoryFromValue(itemPurchasingCategoryDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownItemPurchasingCategoryName.name(), itemPurchasingCategoryName);

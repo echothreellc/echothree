@@ -72,7 +72,7 @@ public class SetDefaultOrderPriorityCommand
             var orderPriorityDetailValue = orderPriorityControl.getOrderPriorityDetailValueByNameForUpdate(orderType, orderPriorityName);
 
             if(orderPriorityDetailValue != null) {
-                orderPriorityDetailValue.setIsDefault(Boolean.TRUE);
+                orderPriorityDetailValue.setIsDefault(true);
                 orderPriorityControl.updateOrderPriorityFromValue(orderPriorityDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownOrderPriorityName.name(), orderTypeName, orderPriorityName);

@@ -63,7 +63,7 @@ public class SetDefaultEntityAttributeGroupCommand
         var entityAttributeGroupDetailValue = coreControl.getEntityAttributeGroupDetailValueByNameForUpdate(entityAttributeGroupName);
         
         if(entityAttributeGroupDetailValue != null) {
-            entityAttributeGroupDetailValue.setIsDefault(Boolean.TRUE);
+            entityAttributeGroupDetailValue.setIsDefault(true);
             coreControl.updateEntityAttributeGroupFromValue(entityAttributeGroupDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownEntityAttributeGroupName.name(), entityAttributeGroupName);

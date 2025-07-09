@@ -65,7 +65,7 @@ public class SetDefaultReturnKindCommand
         var returnKindDetailValue = returnPolicyControl.getReturnKindDetailValueByNameForUpdate(returnKindName);
         
         if(returnKindDetailValue != null) {
-            returnKindDetailValue.setIsDefault(Boolean.TRUE);
+            returnKindDetailValue.setIsDefault(true);
             returnPolicyControl.updateReturnKindFromValue(returnKindDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownReturnKindName.name(), returnKindName);

@@ -52,7 +52,7 @@ public class SetDefaultSkillTypeCommand
         var skillTypeDetailValue = employeeControl.getSkillTypeDetailValueByNameForUpdate(skillTypeName);
         
         if(skillTypeDetailValue != null) {
-            skillTypeDetailValue.setIsDefault(Boolean.TRUE);
+            skillTypeDetailValue.setIsDefault(true);
             employeeControl.updateSkillTypeFromValue(skillTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownSkillTypeName.name(), skillTypeName);

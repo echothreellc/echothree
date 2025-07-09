@@ -40,7 +40,7 @@ public class EntityAppearanceAddActionForm
             var commandForm = CoreUtil.getHome().getGetAppearanceChoicesForm();
                 
                 commandForm.setDefaultAppearanceChoice(appearanceChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = CoreUtil.getHome().getAppearanceChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();

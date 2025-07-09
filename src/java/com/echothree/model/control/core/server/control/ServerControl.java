@@ -83,10 +83,10 @@ public class ServerControl
         if(defaultFound && isDefault) {
             var defaultProtocolDetailValue = getDefaultProtocolDetailValueForUpdate();
 
-            defaultProtocolDetailValue.setIsDefault(Boolean.FALSE);
+            defaultProtocolDetailValue.setIsDefault(false);
             updateProtocolFromValue(defaultProtocolDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var protocol = ProtocolFactory.getInstance().create();
@@ -282,11 +282,11 @@ public class ServerControl
                     // If I'm the default, and a default already existed...
                     var defaultProtocolDetailValue = getDefaultProtocolDetailValueForUpdate();
 
-                    defaultProtocolDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultProtocolDetailValue.setIsDefault(false);
                     updateProtocolFromValue(defaultProtocolDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -328,7 +328,7 @@ public class ServerControl
                     }
                     var protocolDetailValue = Objects.requireNonNull(defaultProtocol).getLastDetailForUpdate().getProtocolDetailValue().clone();
 
-                    protocolDetailValue.setIsDefault(Boolean.TRUE);
+                    protocolDetailValue.setIsDefault(true);
                     updateProtocolFromValue(protocolDetailValue, false, deletedBy);
                 }
             }
@@ -509,10 +509,10 @@ public class ServerControl
         if(defaultFound && isDefault) {
             var defaultServiceDetailValue = getDefaultServiceDetailValueForUpdate();
 
-            defaultServiceDetailValue.setIsDefault(Boolean.FALSE);
+            defaultServiceDetailValue.setIsDefault(false);
             updateServiceFromValue(defaultServiceDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var service = ServiceFactory.getInstance().create();
@@ -743,11 +743,11 @@ public class ServerControl
                     // If I'm the default, and a default already existed...
                     var defaultServiceDetailValue = getDefaultServiceDetailValueForUpdate();
 
-                    defaultServiceDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultServiceDetailValue.setIsDefault(false);
                     updateServiceFromValue(defaultServiceDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -789,7 +789,7 @@ public class ServerControl
                     }
                     var serviceDetailValue = Objects.requireNonNull(defaultService).getLastDetailForUpdate().getServiceDetailValue().clone();
 
-                    serviceDetailValue.setIsDefault(Boolean.TRUE);
+                    serviceDetailValue.setIsDefault(true);
                     updateServiceFromValue(serviceDetailValue, false, deletedBy);
                 }
             }
@@ -974,10 +974,10 @@ public class ServerControl
         if(defaultFound && isDefault) {
             var defaultServerDetailValue = getDefaultServerDetailValueForUpdate();
 
-            defaultServerDetailValue.setIsDefault(Boolean.FALSE);
+            defaultServerDetailValue.setIsDefault(false);
             updateServerFromValue(defaultServerDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var server = ServerFactory.getInstance().create();
@@ -1172,11 +1172,11 @@ public class ServerControl
                     // If I'm the default, and a default already existed...
                     var defaultServerDetailValue = getDefaultServerDetailValueForUpdate();
 
-                    defaultServerDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultServerDetailValue.setIsDefault(false);
                     updateServerFromValue(defaultServerDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -1218,7 +1218,7 @@ public class ServerControl
                     }
                     var serverDetailValue = Objects.requireNonNull(defaultServer).getLastDetailForUpdate().getServerDetailValue().clone();
 
-                    serverDetailValue.setIsDefault(Boolean.TRUE);
+                    serverDetailValue.setIsDefault(true);
                     updateServerFromValue(serverDetailValue, false, deletedBy);
                 }
             }

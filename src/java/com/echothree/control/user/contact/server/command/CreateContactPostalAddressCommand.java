@@ -263,7 +263,7 @@ public class CreateContactPostalAddressCommand
                                                     createdBy);
                                             
                                             contactControl.createPartyContactMechanism(party, contactMechanism, description,
-                                                    Boolean.FALSE, 1, createdBy);
+                                                    false, 1, createdBy);
 
                                             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(contactMechanism.getPrimaryKey());
                                             workflowControl.addEntityToWorkflowUsingNames(null, PostalAddressStatusConstants.Workflow_POSTAL_ADDRESS_STATUS,

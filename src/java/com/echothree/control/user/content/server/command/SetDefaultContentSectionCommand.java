@@ -71,7 +71,7 @@ public class SetDefaultContentSectionCommand
             
             if(contentSectionDetailValue != null) {
                 if(!contentSectionDetailValue.getIsDefault()) {
-                    contentSectionDetailValue.setIsDefault(Boolean.TRUE);
+                    contentSectionDetailValue.setIsDefault(true);
                     contentControl.updateContentSectionFromValue(contentSectionDetailValue, getPartyPK());
                 }
             } else {

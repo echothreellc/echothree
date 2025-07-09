@@ -50,7 +50,7 @@ public class SetDefaultRecoveryQuestionCommand
         var recoveryQuestionDetailValue = userControl.getRecoveryQuestionDetailValueByNameForUpdate(recoveryQuestionName);
         
         if(recoveryQuestionDetailValue != null) {
-            recoveryQuestionDetailValue.setIsDefault(Boolean.TRUE);
+            recoveryQuestionDetailValue.setIsDefault(true);
             userControl.updateRecoveryQuestionFromValue(recoveryQuestionDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownRecoveryQuestionName.name(), recoveryQuestionName);

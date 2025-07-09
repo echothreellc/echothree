@@ -71,7 +71,7 @@ public class SetDefaultSearchSortOrderCommand
                     searchSortOrderName);
             
             if(searchSortOrderDetailValue != null) {
-                searchSortOrderDetailValue.setIsDefault(Boolean.TRUE);
+                searchSortOrderDetailValue.setIsDefault(true);
                 searchControl.updateSearchSortOrderFromValue(searchSortOrderDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownSearchSortOrderName.name(), searchKindName, searchSortOrderName);

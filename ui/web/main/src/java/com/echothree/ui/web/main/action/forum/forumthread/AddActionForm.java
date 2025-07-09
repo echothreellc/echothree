@@ -59,7 +59,7 @@ public class AddActionForm
 
             commandForm.setIconUsageTypeName(IconConstants.IconUsageType_FORUM_THREAD);
             commandForm.setDefaultIconChoice(forumThreadIconChoice);
-            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = IconUtil.getHome().getIconChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -79,7 +79,7 @@ public class AddActionForm
 
             commandForm.setIconUsageTypeName(IconConstants.IconUsageType_FORUM_MESSAGE);
             commandForm.setDefaultIconChoice(forumMessageIconChoice);
-            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = IconUtil.getHome().getIconChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -98,7 +98,7 @@ public class AddActionForm
             var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
 
             commandForm.setDefaultMimeTypeChoice(feedSummaryMimeTypeChoice);
-            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(true));
             commandForm.setForumName(getForumName());
 
             var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
@@ -118,7 +118,7 @@ public class AddActionForm
             var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
 
             commandForm.setDefaultMimeTypeChoice(summaryMimeTypeChoice);
-            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(true));
             commandForm.setForumName(getForumName());
 
             var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
@@ -138,7 +138,7 @@ public class AddActionForm
             var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
 
             commandForm.setDefaultMimeTypeChoice(contentMimeTypeChoice);
-            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(false));
             commandForm.setForumName(getForumName());
 
             var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);

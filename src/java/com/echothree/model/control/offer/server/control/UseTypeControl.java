@@ -64,10 +64,10 @@ public class UseTypeControl
         if(defaultFound && isDefault) {
             var defaultUseTypeDetailValue = getDefaultUseTypeDetailValueForUpdate();
             
-            defaultUseTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultUseTypeDetailValue.setIsDefault(false);
             updateUseTypeFromValue(defaultUseTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var useType = UseTypeFactory.getInstance().create();
@@ -289,11 +289,11 @@ public class UseTypeControl
                     // If I'm the default, and a default already existed...
                     var defaultUseTypeDetailValue = getDefaultUseTypeDetailValueForUpdate();
                     
-                    defaultUseTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultUseTypeDetailValue.setIsDefault(false);
                     updateUseTypeFromValue(defaultUseTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -334,7 +334,7 @@ public class UseTypeControl
                 }
                 var useTypeDetailValue = Objects.requireNonNull(defaultUseType).getLastDetailForUpdate().getUseTypeDetailValue().clone();
                 
-                useTypeDetailValue.setIsDefault(Boolean.TRUE);
+                useTypeDetailValue.setIsDefault(true);
                 updateUseTypeFromValue(useTypeDetailValue, false, deletedBy);
             }
         }

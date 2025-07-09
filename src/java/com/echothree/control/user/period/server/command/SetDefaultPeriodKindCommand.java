@@ -65,7 +65,7 @@ public class SetDefaultPeriodKindCommand
         var periodKindDetailValue = periodControl.getPeriodKindDetailValueByNameForUpdate(periodKindName);
         
         if(periodKindDetailValue != null) {
-            periodKindDetailValue.setIsDefault(Boolean.TRUE);
+            periodKindDetailValue.setIsDefault(true);
             periodControl.updatePeriodKindFromValue(periodKindDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownPeriodKindName.name(), periodKindName);

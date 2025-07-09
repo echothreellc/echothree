@@ -74,7 +74,7 @@ public class SetDefaultFilterCommand
                 var filterDetailValue = filterControl.getFilterDetailValueByNameForUpdate(filterType, filterName);
                 
                 if(filterDetailValue != null) {
-                    filterDetailValue.setIsDefault(Boolean.TRUE);
+                    filterDetailValue.setIsDefault(true);
                     filterControl.updateFilterFromValue(filterDetailValue, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownFilterName.name(), filterName);

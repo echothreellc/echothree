@@ -72,10 +72,10 @@ public class TextControl
         if(defaultFound && isDefault) {
             var defaultTextDecorationDetailValue = getDefaultTextDecorationDetailValueForUpdate();
 
-            defaultTextDecorationDetailValue.setIsDefault(Boolean.FALSE);
+            defaultTextDecorationDetailValue.setIsDefault(false);
             updateTextDecorationFromValue(defaultTextDecorationDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var textDecoration = TextDecorationFactory.getInstance().create();
@@ -296,11 +296,11 @@ public class TextControl
                     // If I'm the default, and a default already existed...
                     var defaultTextDecorationDetailValue = getDefaultTextDecorationDetailValueForUpdate();
 
-                    defaultTextDecorationDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultTextDecorationDetailValue.setIsDefault(false);
                     updateTextDecorationFromValue(defaultTextDecorationDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -343,7 +343,7 @@ public class TextControl
                     }
                     var textDecorationDetailValue = Objects.requireNonNull(defaultTextDecoration).getLastDetailForUpdate().getTextDecorationDetailValue().clone();
 
-                    textDecorationDetailValue.setIsDefault(Boolean.TRUE);
+                    textDecorationDetailValue.setIsDefault(true);
                     updateTextDecorationFromValue(textDecorationDetailValue, false, deletedBy);
                 }
             }
@@ -524,10 +524,10 @@ public class TextControl
         if(defaultFound && isDefault) {
             var defaultTextTransformationDetailValue = getDefaultTextTransformationDetailValueForUpdate();
 
-            defaultTextTransformationDetailValue.setIsDefault(Boolean.FALSE);
+            defaultTextTransformationDetailValue.setIsDefault(false);
             updateTextTransformationFromValue(defaultTextTransformationDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var textTransformation = TextTransformationFactory.getInstance().create();
@@ -748,11 +748,11 @@ public class TextControl
                     // If I'm the default, and a default already existed...
                     var defaultTextTransformationDetailValue = getDefaultTextTransformationDetailValueForUpdate();
 
-                    defaultTextTransformationDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultTextTransformationDetailValue.setIsDefault(false);
                     updateTextTransformationFromValue(defaultTextTransformationDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -795,7 +795,7 @@ public class TextControl
                     }
                     var textTransformationDetailValue = Objects.requireNonNull(defaultTextTransformation).getLastDetailForUpdate().getTextTransformationDetailValue().clone();
 
-                    textTransformationDetailValue.setIsDefault(Boolean.TRUE);
+                    textTransformationDetailValue.setIsDefault(true);
                     updateTextTransformationFromValue(textTransformationDetailValue, false, deletedBy);
                 }
             }

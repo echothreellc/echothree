@@ -767,10 +767,10 @@ public class WorkflowControl
         if(defaultFound && isDefault) {
             var defaultWorkflowStepDetailValue = getDefaultWorkflowStepDetailValueForUpdate(workflow);
 
-            defaultWorkflowStepDetailValue.setIsDefault(Boolean.FALSE);
+            defaultWorkflowStepDetailValue.setIsDefault(false);
             updateWorkflowStepFromValue(defaultWorkflowStepDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var workflowStep = WorkflowStepFactory.getInstance().create();
@@ -1016,11 +1016,11 @@ public class WorkflowControl
                     // If I'm the default, and a default already existed...
                     var defaultWorkflowStepDetailValue = getDefaultWorkflowStepDetailValueForUpdate(workflow);
                     
-                    defaultWorkflowStepDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultWorkflowStepDetailValue.setIsDefault(false);
                     updateWorkflowStepFromValue(defaultWorkflowStepDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -1066,7 +1066,7 @@ public class WorkflowControl
                     }
                     var workflowStepDetailValue = Objects.requireNonNull(defaultWorkflowStep).getLastDetailForUpdate().getWorkflowStepDetailValue().clone();
 
-                    workflowStepDetailValue.setIsDefault(Boolean.TRUE);
+                    workflowStepDetailValue.setIsDefault(true);
                     updateWorkflowStepFromValue(workflowStepDetailValue, false, deletedBy);
                 }
             }
@@ -1442,10 +1442,10 @@ public class WorkflowControl
         if(defaultFound && isDefault) {
             var defaultWorkflowEntranceDetailValue = getDefaultWorkflowEntranceDetailValueForUpdate(workflow);
 
-            defaultWorkflowEntranceDetailValue.setIsDefault(Boolean.FALSE);
+            defaultWorkflowEntranceDetailValue.setIsDefault(false);
             updateWorkflowEntranceFromValue(defaultWorkflowEntranceDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var workflowEntrance = WorkflowEntranceFactory.getInstance().create();
@@ -1726,11 +1726,11 @@ public class WorkflowControl
                     // If I'm the default, and a default already existed...
                     var defaultWorkflowEntranceDetailValue = getDefaultWorkflowEntranceDetailValueForUpdate(workflow);
                     
-                    defaultWorkflowEntranceDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultWorkflowEntranceDetailValue.setIsDefault(false);
                     updateWorkflowEntranceFromValue(defaultWorkflowEntranceDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -1774,7 +1774,7 @@ public class WorkflowControl
                     }
                     var workflowEntranceDetailValue = Objects.requireNonNull(defaultWorkflowEntrance).getLastDetailForUpdate().getWorkflowEntranceDetailValue().clone();
 
-                    workflowEntranceDetailValue.setIsDefault(Boolean.TRUE);
+                    workflowEntranceDetailValue.setIsDefault(true);
                     updateWorkflowEntranceFromValue(workflowEntranceDetailValue, false, deletedBy);
                 }
             }
@@ -2688,10 +2688,10 @@ public class WorkflowControl
         if(defaultFound && isDefault) {
             var defaultWorkflowDestinationDetailValue = getDefaultWorkflowDestinationDetailValueForUpdate(workflowStep);
 
-            defaultWorkflowDestinationDetailValue.setIsDefault(Boolean.FALSE);
+            defaultWorkflowDestinationDetailValue.setIsDefault(false);
             updateWorkflowDestinationFromValue(defaultWorkflowDestinationDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var workflowDestination = WorkflowDestinationFactory.getInstance().create();
@@ -2934,11 +2934,11 @@ public class WorkflowControl
                     // If I'm the default, and a default already existed...
                     var defaultWorkflowDestinationDetailValue = getDefaultWorkflowDestinationDetailValueForUpdate(workflowStep);
                     
-                    defaultWorkflowDestinationDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultWorkflowDestinationDetailValue.setIsDefault(false);
                     updateWorkflowDestinationFromValue(defaultWorkflowDestinationDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -2982,7 +2982,7 @@ public class WorkflowControl
                     }
                     var workflowDestinationDetailValue = Objects.requireNonNull(defaultWorkflowDestination).getLastDetailForUpdate().getWorkflowDestinationDetailValue().clone();
 
-                    workflowDestinationDetailValue.setIsDefault(Boolean.TRUE);
+                    workflowDestinationDetailValue.setIsDefault(true);
                     updateWorkflowDestinationFromValue(workflowDestinationDetailValue, false, deletedBy);
                 }
             }

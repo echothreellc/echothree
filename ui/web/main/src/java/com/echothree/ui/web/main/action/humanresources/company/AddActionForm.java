@@ -50,7 +50,7 @@ public class AddActionForm
             var commandForm = PartyUtil.getHome().getGetCompanyChoicesForm();
 
             commandForm.setDefaultCompanyChoice(companyChoice);
-            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = PartyUtil.getHome().getCompanyChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -70,7 +70,7 @@ public class AddActionForm
 
             commandForm.setCompanyName(getCompanyName());
             commandForm.setDefaultDivisionChoice(divisionChoice);
-            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = PartyUtil.getHome().getDivisionChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -91,7 +91,7 @@ public class AddActionForm
             commandForm.setCompanyName(getCompanyName());
             commandForm.setDivisionName(getDivisionName());
             commandForm.setDefaultDepartmentChoice(departmentChoice);
-            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = PartyUtil.getHome().getDepartmentChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();

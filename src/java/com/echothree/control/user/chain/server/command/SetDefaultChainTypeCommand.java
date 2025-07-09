@@ -71,7 +71,7 @@ public class SetDefaultChainTypeCommand
                     chainTypeName);
             
             if(chainTypeDetailValue != null) {
-                chainTypeDetailValue.setIsDefault(Boolean.TRUE);
+                chainTypeDetailValue.setIsDefault(true);
                 chainControl.updateChainTypeFromValue(chainTypeDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownChainTypeName.name(), chainKindName, chainTypeName);

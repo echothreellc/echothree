@@ -66,7 +66,7 @@ public class SetDefaultUseCommand
         var useDetailValue = useControl.getUseDetailValueByNameForUpdate(useName);
         
         if(useDetailValue != null) {
-            useDetailValue.setIsDefault(Boolean.TRUE);
+            useDetailValue.setIsDefault(true);
             useControl.updateUseFromValue(useDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownUseName.name(), useName);

@@ -63,7 +63,7 @@ public class SetDefaultCustomerTypeShippingMethodCommand
                         shippingMethod);
                 
                 if(customerTypeShippingMethodValue != null) {
-                    customerTypeShippingMethodValue.setIsDefault(Boolean.TRUE);
+                    customerTypeShippingMethodValue.setIsDefault(true);
                     customerControl.updateCustomerTypeShippingMethodFromValue(customerTypeShippingMethodValue, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownCustomerTypeShippingMethod.name());

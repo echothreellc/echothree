@@ -45,7 +45,7 @@ public class AddActionForm
             var form = ContactListUtil.getHome().getGetContactListChoicesForm();
 
             form.setDefaultContactListChoice(contactListChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = ContactListUtil.getHome().getContactListChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -64,7 +64,7 @@ public class AddActionForm
             var form = ContactUtil.getHome().getGetContactMechanismPurposeChoicesForm();
 
             form.setDefaultContactMechanismPurposeChoice(preferredContactMechanismPurposeChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = ContactUtil.getHome().getContactMechanismPurposeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

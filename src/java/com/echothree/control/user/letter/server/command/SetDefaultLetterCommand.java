@@ -77,7 +77,7 @@ public class SetDefaultLetterCommand
                 var letterDetailValue = letterControl.getLetterDetailValueByNameForUpdate(chainType, letterName);
                 
                 if(letterDetailValue != null) {
-                    letterDetailValue.setIsDefault(Boolean.TRUE);
+                    letterDetailValue.setIsDefault(true);
                     letterControl.updateLetterFromValue(letterDetailValue, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownLetterName.name(), letterName);

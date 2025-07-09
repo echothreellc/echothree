@@ -57,7 +57,7 @@ public class AddActionForm
 
             form.setInventoryConditionUseTypeName(InventoryConstants.InventoryConditionUseType_PURCHASE_ORDER);
             form.setDefaultInventoryConditionChoice(inventoryConditionChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = InventoryUtil.getHome().getInventoryConditionChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -76,7 +76,7 @@ public class AddActionForm
 
             form.setItemName(itemName);
             form.setDefaultUnitOfMeasureTypeChoice(unitOfMeasureTypeChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -94,7 +94,7 @@ public class AddActionForm
             var form = AccountingUtil.getHome().getGetCurrencyChoicesForm();
 
             form.setDefaultCurrencyChoice(currencyChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

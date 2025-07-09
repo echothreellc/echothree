@@ -65,7 +65,7 @@ public class SetDefaultInvoiceTypeCommand
         var invoiceTypeDetailValue = invoiceControl.getInvoiceTypeDetailValueByNameForUpdate(invoiceTypeName);
         
         if(invoiceTypeDetailValue != null) {
-            invoiceTypeDetailValue.setIsDefault(Boolean.TRUE);
+            invoiceTypeDetailValue.setIsDefault(true);
             invoiceControl.updateInvoiceTypeFromValue(invoiceTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownInvoiceTypeName.name(), invoiceTypeName);

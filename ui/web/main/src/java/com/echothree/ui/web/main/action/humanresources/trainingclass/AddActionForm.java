@@ -84,7 +84,7 @@ public class AddActionForm
             var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
             form.setDefaultUnitOfMeasureTypeChoice(estimatedReadingTimeUnitOfMeasureTypeChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
             form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
 
             var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
@@ -104,7 +104,7 @@ public class AddActionForm
             var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
             form.setDefaultUnitOfMeasureTypeChoice(readingTimeAllowedUnitOfMeasureTypeChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
             form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
 
             var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
@@ -124,7 +124,7 @@ public class AddActionForm
             var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
             form.setDefaultUnitOfMeasureTypeChoice(estimatedTestingTimeUnitOfMeasureTypeChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
             form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
 
             var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
@@ -144,7 +144,7 @@ public class AddActionForm
             var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
             form.setDefaultUnitOfMeasureTypeChoice(testingTimeAllowedUnitOfMeasureTypeChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
             form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
 
             var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
@@ -164,7 +164,7 @@ public class AddActionForm
             var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
             form.setDefaultUnitOfMeasureTypeChoice(requiredCompletionTimeUnitOfMeasureTypeChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
             form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
 
             var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
@@ -185,7 +185,7 @@ public class AddActionForm
 
             form.setWorkEffortTypeName(TrainingConstants.WorkEffortType_TRAINING);
             form.setDefaultWorkEffortScopeChoice(workEffortScopeChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = WorkEffortUtil.getHome().getWorkEffortScopeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -204,7 +204,7 @@ public class AddActionForm
             var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
             form.setDefaultUnitOfMeasureTypeChoice(testingValidityTimeUnitOfMeasureTypeChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
             form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
 
             var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
@@ -224,7 +224,7 @@ public class AddActionForm
             var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
             form.setDefaultUnitOfMeasureTypeChoice(expiredRetentionTimeUnitOfMeasureTypeChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
             form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
 
             var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
@@ -244,7 +244,7 @@ public class AddActionForm
             var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
 
             commandForm.setDefaultMimeTypeChoice(overviewMimeTypeChoice);
-            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(true));
             commandForm.setMimeTypeUsageTypeName(MimeTypeUsageTypes.TEXT.name());
 
             var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
@@ -264,7 +264,7 @@ public class AddActionForm
             var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
 
             commandForm.setDefaultMimeTypeChoice(introductionMimeTypeChoice);
-            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(true));
             commandForm.setMimeTypeUsageTypeName(MimeTypeUsageTypes.TEXT.name());
 
             var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
@@ -632,8 +632,8 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        alwaysReassignOnExpiration = Boolean.FALSE;
-        isDefault = Boolean.FALSE;
+        alwaysReassignOnExpiration = false;
+        isDefault = false;
     }
 
 }

@@ -61,7 +61,7 @@ public class SetDefaultInventoryConditionUseCommand
                         inventoryCondition);
                 
                 if(inventoryConditionUseValue != null) {
-                    inventoryConditionUseValue.setIsDefault(Boolean.TRUE);
+                    inventoryConditionUseValue.setIsDefault(true);
                     inventoryControl.updateInventoryConditionUseFromValue(inventoryConditionUseValue, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownInventoryConditionUse.name());

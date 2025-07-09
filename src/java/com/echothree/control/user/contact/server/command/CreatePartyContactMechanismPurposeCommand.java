@@ -73,7 +73,7 @@ public class CreatePartyContactMechanismPurposeCommand
                             
                             if(partyContactMechanismPurpose == null) {
                                 contactControl.createPartyContactMechanismPurpose(partyContactMechanism, contactMechanismPurpose,
-                                        Boolean.FALSE, 1, getPartyPK());
+                                        false, 1, getPartyPK());
                             } else {
                                 addExecutionError(ExecutionErrors.DuplicatePartyContactMechanismPurpose.name());
                             }

@@ -123,10 +123,10 @@ public class CommunicationControl
         if(defaultFound && isDefault) {
             var defaultCommunicationEventPurposeDetailValue = getDefaultCommunicationEventPurposeDetailValueForUpdate();
             
-            defaultCommunicationEventPurposeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultCommunicationEventPurposeDetailValue.setIsDefault(false);
             updateCommunicationEventPurposeFromValue(defaultCommunicationEventPurposeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var communicationEventPurpose = CommunicationEventPurposeFactory.getInstance().create();
@@ -322,11 +322,11 @@ public class CommunicationControl
                     // If I'm the default, and a default already existed...
                     var defaultCommunicationEventPurposeDetailValue = getDefaultCommunicationEventPurposeDetailValueForUpdate();
                     
-                    defaultCommunicationEventPurposeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultCommunicationEventPurposeDetailValue.setIsDefault(false);
                     updateCommunicationEventPurposeFromValue(defaultCommunicationEventPurposeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -364,7 +364,7 @@ public class CommunicationControl
                 }
                 var communicationEventPurposeDetailValue = Objects.requireNonNull(defaultCommunicationEventPurpose).getLastDetailForUpdate().getCommunicationEventPurposeDetailValue().clone();
                 
-                communicationEventPurposeDetailValue.setIsDefault(Boolean.TRUE);
+                communicationEventPurposeDetailValue.setIsDefault(true);
                 updateCommunicationEventPurposeFromValue(communicationEventPurposeDetailValue, false, deletedBy);
             }
         }

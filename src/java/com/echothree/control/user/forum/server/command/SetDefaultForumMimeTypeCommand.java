@@ -62,7 +62,7 @@ public class SetDefaultForumMimeTypeCommand
                 var forumMimeTypeValue = forumControl.getForumMimeTypeValueForUpdate(forum, mimeType);
                 
                 if(forumMimeTypeValue != null) {
-                    forumMimeTypeValue.setIsDefault(Boolean.TRUE);
+                    forumMimeTypeValue.setIsDefault(true);
                     forumControl.updateForumMimeTypeFromValue(forumMimeTypeValue, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownForumMimeType.name());

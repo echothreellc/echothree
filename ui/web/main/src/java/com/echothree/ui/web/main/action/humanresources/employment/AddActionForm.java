@@ -52,7 +52,7 @@ public class AddActionForm
             var form = PartyUtil.getHome().getGetCompanyChoicesForm();
 
             form.setDefaultCompanyChoice(companyChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = PartyUtil.getHome().getCompanyChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -71,7 +71,7 @@ public class AddActionForm
             var form = EmployeeUtil.getHome().getGetTerminationTypeChoicesForm();
 
             form.setDefaultTerminationTypeChoice(terminationTypeChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = EmployeeUtil.getHome().getTerminationTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -90,7 +90,7 @@ public class AddActionForm
             var form = EmployeeUtil.getHome().getGetTerminationReasonChoicesForm();
 
             form.setDefaultTerminationReasonChoice(terminationReasonChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = EmployeeUtil.getHome().getTerminationReasonChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

@@ -66,7 +66,7 @@ public class SetDefaultSearchDefaultOperatorCommand
         var searchDefaultOperatorDetailValue = searchControl.getSearchDefaultOperatorDetailValueByNameForUpdate(searchDefaultOperatorName);
         
         if(searchDefaultOperatorDetailValue != null) {
-            searchDefaultOperatorDetailValue.setIsDefault(Boolean.TRUE);
+            searchDefaultOperatorDetailValue.setIsDefault(true);
             searchControl.updateSearchDefaultOperatorFromValue(searchDefaultOperatorDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownSearchDefaultOperatorName.name(), searchDefaultOperatorName);

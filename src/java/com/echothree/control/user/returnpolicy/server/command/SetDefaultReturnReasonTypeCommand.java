@@ -79,7 +79,7 @@ public class SetDefaultReturnReasonTypeCommand
                             returnType);
                     
                     if(returnReasonTypeValue != null) {
-                        returnReasonTypeValue.setIsDefault(Boolean.TRUE);
+                        returnReasonTypeValue.setIsDefault(true);
                         returnPolicyControl.updateReturnReasonTypeFromValue(returnReasonTypeValue, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.UnknownReturnReasonType.name());

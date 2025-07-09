@@ -132,7 +132,7 @@ public class CreateContactTelephoneCommand
                             contactControl.createContactTelephone(contactMechanism, countryGeoCode, areaCode, telephoneNumber,
                                     telephoneExtension, createdBy);
                             
-                            contactControl.createPartyContactMechanism(party, contactMechanism, description, Boolean.FALSE, 1, createdBy);
+                            contactControl.createPartyContactMechanism(party, contactMechanism, description, false, 1, createdBy);
 
                             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(contactMechanism.getPrimaryKey());
                             workflowControl.addEntityToWorkflowUsingNames(null, TelephoneStatusConstants.Workflow_TELEPHONE_STATUS,

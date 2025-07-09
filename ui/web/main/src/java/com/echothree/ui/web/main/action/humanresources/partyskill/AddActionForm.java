@@ -40,7 +40,7 @@ public class AddActionForm
             var form = EmployeeUtil.getHome().getGetSkillTypeChoicesForm();
 
             form.setDefaultSkillTypeChoice(skillTypeChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = EmployeeUtil.getHome().getSkillTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

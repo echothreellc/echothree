@@ -71,7 +71,7 @@ public class SetDefaultSearchTypeCommand
                     searchTypeName);
             
             if(searchTypeDetailValue != null) {
-                searchTypeDetailValue.setIsDefault(Boolean.TRUE);
+                searchTypeDetailValue.setIsDefault(true);
                 searchControl.updateSearchTypeFromValue(searchTypeDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownSearchTypeName.name(), searchKindName, searchTypeName);

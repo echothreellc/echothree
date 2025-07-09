@@ -65,7 +65,7 @@ public class SetDefaultBatchTypeCommand
         var batchTypeDetailValue = batchControl.getBatchTypeDetailValueByNameForUpdate(batchTypeName);
         
         if(batchTypeDetailValue != null) {
-            batchTypeDetailValue.setIsDefault(Boolean.TRUE);
+            batchTypeDetailValue.setIsDefault(true);
             batchControl.updateBatchTypeFromValue(batchTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownBatchTypeName.name(), batchTypeName);

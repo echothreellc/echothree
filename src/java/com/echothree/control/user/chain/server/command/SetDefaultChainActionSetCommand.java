@@ -80,7 +80,7 @@ public class SetDefaultChainActionSetCommand
                     var chainActionSetDetailValue = chainControl.getChainActionSetDetailValueByNameForUpdate(chain, chainActionSetName);
 
                     if(chainActionSetDetailValue != null) {
-                        chainActionSetDetailValue.setIsDefault(Boolean.TRUE);
+                        chainActionSetDetailValue.setIsDefault(true);
                         chainControl.updateChainActionSetFromValue(chainActionSetDetailValue, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.UnknownChainActionSetName.name(), chainKindName, chainTypeName, chainName, chainActionSetName);

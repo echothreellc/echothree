@@ -71,7 +71,7 @@ public class SetDefaultContentCatalogCommand
             
             if(contentCatalogDetailValue != null) {
                 if(!contentCatalogDetailValue.getIsDefault()) {
-                    contentCatalogDetailValue.setIsDefault(Boolean.TRUE);
+                    contentCatalogDetailValue.setIsDefault(true);
                     contentControl.updateContentCatalogFromValue(contentCatalogDetailValue, getPartyPK());
                 }
             } else {

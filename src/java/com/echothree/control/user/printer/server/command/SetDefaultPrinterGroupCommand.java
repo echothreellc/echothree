@@ -52,7 +52,7 @@ public class SetDefaultPrinterGroupCommand
        var printerGroupDetailValue = printerControl.getPrinterGroupDetailValueByNameForUpdate(printerGroupName);
         
         if(printerGroupDetailValue != null) {
-            printerGroupDetailValue.setIsDefault(Boolean.TRUE);
+            printerGroupDetailValue.setIsDefault(true);
             printerControl.updatePrinterGroupFromValue(printerGroupDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownPrinterGroupName.name(), printerGroupName);

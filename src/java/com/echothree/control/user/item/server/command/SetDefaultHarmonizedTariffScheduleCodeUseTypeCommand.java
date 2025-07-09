@@ -65,7 +65,7 @@ public class SetDefaultHarmonizedTariffScheduleCodeUseTypeCommand
         var harmonizedTariffScheduleCodeUseTypeDetailValue = itemControl.getHarmonizedTariffScheduleCodeUseTypeDetailValueByNameForUpdate(harmonizedTariffScheduleCodeUseTypeName);
         
         if(harmonizedTariffScheduleCodeUseTypeDetailValue != null) {
-            harmonizedTariffScheduleCodeUseTypeDetailValue.setIsDefault(Boolean.TRUE);
+            harmonizedTariffScheduleCodeUseTypeDetailValue.setIsDefault(true);
             itemControl.updateHarmonizedTariffScheduleCodeUseTypeFromValue(harmonizedTariffScheduleCodeUseTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownHarmonizedTariffScheduleCodeUseTypeName.name(), harmonizedTariffScheduleCodeUseTypeName);

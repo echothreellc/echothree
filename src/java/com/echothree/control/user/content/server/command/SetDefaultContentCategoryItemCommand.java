@@ -114,7 +114,7 @@ public class SetDefaultContentCategoryItemCommand
                                                 contentCatalogItem);
                                         
                                         if(contentCategoryItemValue != null) {
-                                            contentCategoryItemValue.setIsDefault(Boolean.TRUE);
+                                            contentCategoryItemValue.setIsDefault(true);
                                             
                                             ContentLogic.getInstance().updateContentCategoryItemFromValue(contentCategoryItemValue, getPartyPK());
                                         } else {

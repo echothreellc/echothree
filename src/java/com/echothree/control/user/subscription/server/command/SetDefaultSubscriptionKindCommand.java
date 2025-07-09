@@ -65,7 +65,7 @@ public class SetDefaultSubscriptionKindCommand
         var subscriptionKindDetailValue = subscriptionControl.getSubscriptionKindDetailValueByNameForUpdate(subscriptionKindName);
         
         if(subscriptionKindDetailValue != null) {
-            subscriptionKindDetailValue.setIsDefault(Boolean.TRUE);
+            subscriptionKindDetailValue.setIsDefault(true);
             subscriptionControl.updateSubscriptionKindFromValue(subscriptionKindDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownSubscriptionKindName.name(), subscriptionKindName);
