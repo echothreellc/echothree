@@ -1,5 +1,12 @@
 # Changelog
 
+## 2025-07-20-01
+
+* Add Contact Email Address Object [1573](https://gitlab.echothree.com/echothree/echothree/-/issues/1573)
+* Add Contact Web Address Object [1574](https://gitlab.echothree.com/echothree/echothree/-/issues/1574)
+* Add Contact Telephone Object [1575](https://gitlab.echothree.com/echothree/echothree/-/issues/1575)
+* Correct Boolean Literal Warnings From Error Prone [1576](https://gitlab.echothree.com/echothree/echothree/-/issues/1576)
+
 ## 2025-07-06-01
 
 * Error Prone 2.39.0 Upgrade [1570](https://gitlab.echothree.com/echothree/echothree/-/issues/1570)
