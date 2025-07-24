@@ -140,7 +140,7 @@ public class CreateWishlistLineCommand
                                                 
                                                 if(offerItemPrice != null) {
                                                     var strQuantity = form.getQuantity();
-                                                    Long quantity = strQuantity == null ? (long) 1 : Long.valueOf(strQuantity);
+                                                    Long quantity = strQuantity == null ? 1L : Long.valueOf(strQuantity);
                                                     var comment = form.getComment();
 
                                                     WishlistLogic.getInstance().createWishlistLine(session, this, getUserVisit(), party, source, offerItemPrice,

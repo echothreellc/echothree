@@ -53,7 +53,7 @@ public class RemoveInactiveUserKeysCommand
     
     @Override
     protected BaseResult execute() {
-        Long maximumTime = (long) 2 * 60 * 1000; // 2 minutes
+        Long maximumTime = 2L * 60 * 1000; // 2 minutes
         var inactiveTime = Long.valueOf(form.getInactiveTime());
         
         UserKeyLogic.getInstance().removeInactiveUserKeys(maximumTime, inactiveTime);

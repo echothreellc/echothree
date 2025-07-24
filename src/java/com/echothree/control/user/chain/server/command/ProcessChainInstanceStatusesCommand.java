@@ -51,7 +51,7 @@ public class ProcessChainInstanceStatusesCommand
         var chainInstanceStatusLogic = ChainInstanceStatusLogic.getInstance();
         BasePK processedBy = getPartyPK();
         long chainInstanceStatusesProcessed = 0;
-        var remainingTime = (long) 2 * 60 * 1000; // 2 minutes
+        var remainingTime = 2L * 60 * 1000; // 2 minutes
         
         for(var chainInstanceStatus: chainControl.getChainInstanceStatusesByNextChainActionSetTimeForUpdate(session.START_TIME_LONG)) {
             var startTime = System.currentTimeMillis();
