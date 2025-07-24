@@ -81,7 +81,7 @@ public class WorkflowTriggerLogic {
     
     public void processWorkflowTriggers(final Session session, final ExecutionErrorAccumulator eea, final PartyPK triggeredBy) {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        var remainingTime = (long) 1 * 60 * 1000; // 1 minute
+        var remainingTime = 1L * 60 * 1000; // 1 minute
         
         for(var workflowTrigger : workflowControl.getWorkflowTriggersByTriggerTime(session.START_TIME_LONG)) {
             var errorsOccurred = workflowTrigger.getErrorsOccurred();

@@ -48,7 +48,7 @@ public class ProcessQueuedEventsCommand
     @Override
     protected BaseResult execute() {
         var eventControl = Session.getModelController(EventControl.class);
-        var remainingTime = (long) 2 * 60 * 1000; // 2 minutes
+        var remainingTime = 2L * 60 * 1000; // 2 minutes
         var queuedEvents = eventControl.getQueuedEventsForUpdate();
 
         for(var queuedEvent : queuedEvents) {
