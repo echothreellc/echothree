@@ -63,9 +63,9 @@ import org.apache.commons.logging.LogFactory;
 
 public class EnterOrders {
 
-    private Log log = log = LogFactory.getLog(this.getClass());
+    private final Log LOG = LogFactory.getLog(this.getClass());
 
-    private static final Splitter TabSplitter = Splitter.on('\t')
+    private static final Splitter TAB_SPLITTER = Splitter.on('\t')
            .trimResults();
 
     private Configuration configuration;
@@ -239,9 +239,9 @@ public class EnterOrders {
 
             amazonOrders.setBatchName(batchName);
 
-            log.info(indent + "Created sales order batch: " + batchName + " containing " + batchCount + " order" + (batchCount > 1 ? "s" : "") + ", valued at " + currency.getSymbol() + batchAmount + ".");
+            LOG.info(indent + "Created sales order batch: " + batchName + " containing " + batchCount + " order" + (batchCount > 1 ? "s" : "") + ", valued at " + currency.getSymbol() + batchAmount + ".");
         } else {
-            log.info(indent + "Empty batch.");
+            LOG.info(indent + "Empty batch.");
         }
     }
 
@@ -257,7 +257,7 @@ public class EnterOrders {
 
         var commandResult = SalesUtil.getHome().createSalesOrderLine(getUserVisit(), createSalesOrderLineForm);
         if(commandResult.hasErrors()) {
-            log.error(indent + commandResult);
+            LOG.error(indent + commandResult);
         } else {
             var executionResult = commandResult.getExecutionResult();
             var createSalesOrderLineResult = (CreateSalesOrderLineResult)executionResult.getResult();
@@ -298,7 +298,7 @@ public class EnterOrders {
 
         var searchCustomersResult = SearchUtil.getHome().searchCustomers(getUserVisit(), searchCustomersForm);
         if(searchCustomersResult.hasErrors()) {
-            log.error(indent + searchCustomersResult);
+            LOG.error(indent + searchCustomersResult);
         } else {
             var getCustomerResultsForm = SearchUtil.getHome().getGetCustomerResultsForm();
 
@@ -342,7 +342,7 @@ public class EnterOrders {
 
                 if(getPostalAddressCount(partyContactMechanisms) == 0) {
                     // If there are no contact mechanisms, then use this customer. Nothing else to compare.
-                    log.info(indent + "No postal addresses found, using this customer.");
+                    LOG.info(indent + "No postal addresses found, using this customer.");
                     useCustomer = true;
                 } else {
                     var matchesRemaining = order.getAmazonOrderShipmentGroups().size();
@@ -401,7 +401,7 @@ public class EnterOrders {
                     customerName = customer.getCustomerName();
                     partyName = customer.getPartyName();
 
-                    log.info(indent + "Using customer " + customerName + ".");
+                    LOG.info(indent + "Using customer " + customerName + ".");
 
                     break;
                 } else {
@@ -429,7 +429,7 @@ public class EnterOrders {
             var commandResult = PartyUtil.getHome().createCustomer(getUserVisit(), commandForm);
 
             if(commandResult.hasErrors()) {
-                log.error(indent + "createCustomer: " + commandResult);
+                LOG.error(indent + "createCustomer: " + commandResult);
             } else {
                 var executionResult = commandResult.getExecutionResult();
                 var result = (CreateCustomerResult)executionResult.getResult();
@@ -437,7 +437,7 @@ public class EnterOrders {
                 customerName = result.getCustomerName();
                 partyName = result.getPartyName();
                 
-                log.info(indent + "Created customer " + customerName + " (\"" + buyerNameResult.getFormattedName() + "\").");
+                LOG.info(indent + "Created customer " + customerName + " (\"" + buyerNameResult.getFormattedName() + "\").");
             }
         }
 
@@ -469,7 +469,7 @@ public class EnterOrders {
                     var commandResult = ContactUtil.getHome().createContactPostalAddress(getUserVisit(), commandForm);
 
                     if(commandResult.hasErrors()) {
-                        log.error(indent + "createContactPostalAddress: " + commandResult);
+                        LOG.error(indent + "createContactPostalAddress: " + commandResult);
                     } else {
                         var executionResult = commandResult.getExecutionResult();
                         var result = (CreateContactPostalAddressResult)executionResult.getResult();
@@ -477,7 +477,7 @@ public class EnterOrders {
 
                         amazonOrderShipmentGroup.setContactMechanismName(contactMechanismName);
 
-                        log.info(indent + "Created postal address " + contactMechanismName + " for customer " + customerName + ".");
+                        LOG.info(indent + "Created postal address " + contactMechanismName + " for customer " + customerName + ".");
                     }
                 }
             }
@@ -503,7 +503,7 @@ public class EnterOrders {
             var commandResult = SalesUtil.getHome().createSalesOrder(getUserVisit(), commandForm);
 
             if(commandResult.hasErrors()) {
-                log.error(indent + "createSalesOrder: " + commandResult);
+                LOG.error(indent + "createSalesOrder: " + commandResult);
             } else {
                 var executionResult = commandResult.getExecutionResult();
                 var result = (CreateSalesOrderResult)executionResult.getResult();
@@ -511,7 +511,7 @@ public class EnterOrders {
 
                 order.setOrderName(orderName);
 
-                log.info(indent + "Created sales order " + orderName + ".");
+                LOG.info(indent + "Created sales order " + orderName + ".");
                 
                 createOrderPaymentPreference(order, paymentMethodName);
             }
@@ -531,12 +531,12 @@ public class EnterOrders {
         var commandResult = SalesUtil.getHome().createSalesOrderPaymentPreference(getUserVisit(), commandForm);
 
         if(commandResult.hasErrors()) {
-            log.error(indent + "createSalesOrderPaymentPreference: " + commandResult);
+            LOG.error(indent + "createSalesOrderPaymentPreference: " + commandResult);
         } else {
             var executionResult = commandResult.getExecutionResult();
             var result = (CreateSalesOrderPaymentPreferenceResult)executionResult.getResult();
 
-            log.info(indent + "Created sales order payment preference #" + result.getOrderPaymentPreferenceSequence() + ".");
+            LOG.info(indent + "Created sales order payment preference #" + result.getOrderPaymentPreferenceSequence() + ".");
         }
     }
     
@@ -551,9 +551,9 @@ public class EnterOrders {
         var commandResult = SalesUtil.getHome().setSalesOrderBatchStatus(getUserVisit(), commandForm);
 
         if(commandResult.hasErrors()) {
-            log.error(indent + "setSalesOrderBatchStatus: " + commandResult);
+            LOG.error(indent + "setSalesOrderBatchStatus: " + commandResult);
         } else {
-            log.info(indent + "Batch entry status set to " + salesOrderBatchStatusChoice + " for " + batchName + ".");
+            LOG.info(indent + "Batch entry status set to " + salesOrderBatchStatusChoice + " for " + batchName + ".");
         }
     }
 
@@ -574,9 +574,9 @@ public class EnterOrders {
         var commandResult = SalesUtil.getHome().setSalesOrderStatus(getUserVisit(), commandForm);
 
         if(commandResult.hasErrors()) {
-            log.error(indent + "setSalesOrderStatus: " + commandResult);
+            LOG.error(indent + "setSalesOrderStatus: " + commandResult);
         } else {
-            log.info(indent + "Order entry completed for " + orderName + ".");
+            LOG.info(indent + "Order entry completed for " + orderName + ".");
         }
     }
     
@@ -597,7 +597,7 @@ public class EnterOrders {
         var value = configuration.getString(property);
         
         if(value == null && required) {
-            log.error(property + " is a required property");
+            LOG.error(property + " is a required property");
         }
         
         return value;
