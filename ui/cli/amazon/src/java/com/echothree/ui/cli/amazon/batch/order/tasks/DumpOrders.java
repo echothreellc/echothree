@@ -23,9 +23,9 @@ import org.apache.commons.logging.LogFactory;
 
 public class DumpOrders {
 
-    private Log log = log = LogFactory.getLog(this.getClass());
+    private final Log LOG = LogFactory.getLog(this.getClass());
 
-    private static final Splitter TabSplitter = Splitter.on('\t')
+    private static final Splitter TAB_SPLITTER = Splitter.on('\t')
            .trimResults();
 
     private AmazonOrders amazonOrders;
@@ -54,74 +54,74 @@ public class DumpOrders {
 
     public void execute() {
         amazonOrders.getAmazonOrders().values().stream().map((order) -> {
-            log.info(Dashes);
+            LOG.info(Dashes);
             return order;
         }).map((order) -> {
-            log.info("");
+            LOG.info("");
             return order;
         }).map((order) -> {
-            log.info("Order Id: " + order.getOrderId());
+            LOG.info("Order Id: " + order.getOrderId());
             return order;
         }).map((order) -> {
-            log.info("");
+            LOG.info("");
             return order;
         }).map((order) -> {
-            log.info("Purchase Date: " + order.getPurchaseDate());
+            LOG.info("Purchase Date: " + order.getPurchaseDate());
             return order;
         }).map((order) -> {
-            log.info("Payments Date: " + order.getPaymentsDate());
+            LOG.info("Payments Date: " + order.getPaymentsDate());
             return order;
         }).map((order) -> {
-            log.info("");
+            LOG.info("");
             return order;
         }).map((order) -> {
-            log.info("Buyer:");
+            LOG.info("Buyer:");
             return order;
         }).map((order) -> {
-            log.info("   Name: " + order.getBuyerName());
+            LOG.info("   Name: " + order.getBuyerName());
             return order;
         }).map((order) -> {
-            log.info("  Email: " + order.getBuyerEmail());
+            LOG.info("  Email: " + order.getBuyerEmail());
             return order;
         }).map((order) -> {
-            log.info("");
+            LOG.info("");
             return order;
         }).forEach((order) -> {
             order.getAmazonOrderShipmentGroups().values().stream().map((orderShipmentGroup) -> {
                 var shipAddress2 = orderShipmentGroup.getShipAddress2();
-                log.info("Shipment Group:");
-                log.info("  " + orderShipmentGroup.getRecipientName());
-                log.info("  " + orderShipmentGroup.getShipAddress1());
+                LOG.info("Shipment Group:");
+                LOG.info("  " + orderShipmentGroup.getRecipientName());
+                LOG.info("  " + orderShipmentGroup.getShipAddress1());
                 if(shipAddress2 != null && shipAddress2.length() > 0) {
-                    log.info("    " + shipAddress2);
+                    LOG.info("    " + shipAddress2);
                 }
-                log.info("  " + orderShipmentGroup.getShipCity() + ", " + orderShipmentGroup.getShipState() + " " + orderShipmentGroup.getShipZip() + " " + orderShipmentGroup.getShipCountry());
+                LOG.info("  " + orderShipmentGroup.getShipCity() + ", " + orderShipmentGroup.getShipState() + " " + orderShipmentGroup.getShipZip() + " " + orderShipmentGroup.getShipCountry());
                 return orderShipmentGroup;
             }).map((orderShipmentGroup) -> {
-                log.info("");
+                LOG.info("");
                 return orderShipmentGroup;
             }).map((orderShipmentGroup) -> {
-                log.info("  Shipping Method: " + orderShipmentGroup.getShipMethod());
+                LOG.info("  Shipping Method: " + orderShipmentGroup.getShipMethod());
                 return orderShipmentGroup;
             }).map((orderShipmentGroup) -> {
-                log.info("");
+                LOG.info("");
                 return orderShipmentGroup;
             }).map((orderShipmentGroup) -> {
-                log.info(ItemHeader);
+                LOG.info(ItemHeader);
                 return orderShipmentGroup;
             }).map((orderShipmentGroup) -> {
                 orderShipmentGroup.getAmazonOrderLines().values().forEach((orderLine) -> {
-                    log.info(String.format("%14s %11s %-12s %-15s %-40s %8s %3s %8s %8s",
+                    LOG.info(String.format("%14s %11s %-12s %-15s %-40s %8s %3s %8s %8s",
                             orderLine.getOrderItemId(), orderLine.getListingId(), orderLine.getUpc(), orderLine.getSku(), limitLength(orderLine.getItemName(), 40),
                             orderLine.getPrice(), orderLine.getQuantityPurchased(), orderLine.getShippingFee(), orderLine.getTotalPrice()));
                 });
                 return orderShipmentGroup;
             }).forEach((_item) -> {
-                log.info("");
+                LOG.info("");
             });
         });
 
-        log.info(Dashes);
+        LOG.info(Dashes);
     }
 
 }

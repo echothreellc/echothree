@@ -1098,7 +1098,7 @@ public class CustomerControl
     
     private List<CustomerTypePaymentMethodTransfer> getCustomerTypePaymentMethodTransfersByPaymentMethod(UserVisit userVisit,
             List<CustomerTypePaymentMethod> customerTypePaymentMethods) {
-        List<CustomerTypePaymentMethodTransfer> customerTypePaymentMethodTransfers = customerTypePaymentMethodTransfers = new ArrayList<>(customerTypePaymentMethods.size());
+        List<CustomerTypePaymentMethodTransfer> customerTypePaymentMethodTransfers = new ArrayList<>(customerTypePaymentMethods.size());
         var customerTypePaymentMethodTransferCache = getCustomerTransferCaches(userVisit).getCustomerTypePaymentMethodTransferCache();
 
         for(var customerTypePaymentMethod : customerTypePaymentMethods) {
@@ -1394,7 +1394,7 @@ public class CustomerControl
     
     private List<CustomerTypeShippingMethodTransfer> getCustomerTypeShippingMethodTransfersByShippingMethod(UserVisit userVisit,
             List<CustomerTypeShippingMethod> customerTypeShippingMethods) {
-        List<CustomerTypeShippingMethodTransfer> customerTypeShippingMethodTransfers = customerTypeShippingMethodTransfers = new ArrayList<>(customerTypeShippingMethods.size());
+        List<CustomerTypeShippingMethodTransfer> customerTypeShippingMethodTransfers = new ArrayList<>(customerTypeShippingMethods.size());
         var customerTypeShippingMethodTransferCache = getCustomerTransferCaches(userVisit).getCustomerTypeShippingMethodTransferCache();
 
         for(var customerTypeShippingMethod : customerTypeShippingMethods) {

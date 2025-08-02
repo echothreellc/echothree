@@ -38,9 +38,9 @@ import org.apache.commons.logging.LogFactory;
 
 public class BuildOrders {
 
-    private Log log = log = LogFactory.getLog(this.getClass());
+    private final Log LOG = LogFactory.getLog(this.getClass());
 
-    private static final Splitter TabSplitter = Splitter.on('\t')
+    private static final Splitter TAB_SPLITTER = Splitter.on('\t')
            .trimResults();
 
     String filename;
@@ -76,7 +76,7 @@ public class BuildOrders {
             this.headerFields.add(headerField);
         }
 
-        log.debug(indent + "Header fields: " + this.headerFields);
+        LOG.debug(indent + "Header fields: " + this.headerFields);
     }
 
     private Map<String, String> handleDataFields(long line, Iterable<String> dataFields) {
@@ -87,11 +87,11 @@ public class BuildOrders {
             if(headerFieldsIter.hasNext()) {
                 dataFieldMap.put(headerFieldsIter.next(), dataField);
             } else {
-                log.debug(indent + "Line: " + line + ", discarding extra field: " + dataField);
+                LOG.debug(indent + "Line: " + line + ", discarding extra field: " + dataField);
             }
         }
 
-        log.debug(indent + "Line: " + line + ": " + dataFieldMap);
+        LOG.debug(indent + "Line: " + line + ": " + dataFieldMap);
 
         return dataFieldMap;
     }
@@ -146,14 +146,14 @@ public class BuildOrders {
 
     public void execute()
             throws IOException {
-        log.info(indent + "Using filename: " + filename);
+        LOG.info(indent + "Using filename: " + filename);
 
         var fis = new FileInputStream(new File(filename));
         var in = new BufferedReader(new InputStreamReader(fis, Charset.forName("windows-1252")));
         long count = 0;
 
         for(var line = in.readLine(); line != null; line = in.readLine()) {
-            var fields = TabSplitter.split(new String(line.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8));
+            var fields = TAB_SPLITTER.split(new String(line.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8));
 
             count++;
 
@@ -164,7 +164,7 @@ public class BuildOrders {
             }
         }
 
-        log.info(indent + "Read " + count + " line" + (count == 1 ? "" : "s") + ".");
+        LOG.info(indent + "Read " + count + " line" + (count == 1 ? "" : "s") + ".");
     }
     
 }

@@ -26,7 +26,7 @@ import org.apache.commons.logging.LogFactory;
 
 public class BatchOrderDirectoryHandler {
 
-    private Log log = log = LogFactory.getLog(this.getClass());
+    private final Log LOG = LogFactory.getLog(this.getClass());
 
     private Configuration configuration;
     private String directory;
@@ -64,7 +64,7 @@ public class BatchOrderDirectoryHandler {
 
     public void execute()
             throws IOException, NamingException {
-        log.info("Using directory: " + directory);
+        LOG.info("Using directory: " + directory);
 
         recurseFile(new File(directory), 0);
     }
@@ -76,13 +76,13 @@ public class BatchOrderDirectoryHandler {
         if(file.isDirectory()) {
             String contents[] = file.list();
 
-            log.info(indent + "Directory: " + file.getName());
+            LOG.info(indent + "Directory: " + file.getName());
 
             for(var i = 0; i < contents.length; i++) {
                 recurseFile(new File(new StringBuilder(file.getAbsolutePath()).append('/').append(contents[i]).toString()), depth + 1);
             }
         } else {
-            log.info(indent + "File: " + file.getName());
+            LOG.info(indent + "File: " + file.getName());
 
             new BatchOrderFileHandler(configuration, file.getAbsolutePath(), depth + 1).execute();
         }

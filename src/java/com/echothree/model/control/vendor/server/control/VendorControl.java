@@ -1490,7 +1490,7 @@ public class VendorControl
     }
     
     public List<VendorItemCostTransfer> getVendorItemCostTransfers(UserVisit userVisit, Collection<VendorItemCost> vendorItemCosts) {
-        List<VendorItemCostTransfer> vendorItemCostTransfers = vendorItemCostTransfers = new ArrayList<>(vendorItemCosts.size());
+        List<VendorItemCostTransfer> vendorItemCostTransfers = new ArrayList<>(vendorItemCosts.size());
         var vendorItemCostTransferCache = getVendorTransferCaches(userVisit).getVendorItemCostTransferCache();
         
         for(var vendorItemCost : vendorItemCosts) {
