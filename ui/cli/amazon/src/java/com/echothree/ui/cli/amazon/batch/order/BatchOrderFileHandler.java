@@ -30,9 +30,9 @@ import org.apache.commons.logging.LogFactory;
 
 public class BatchOrderFileHandler {
 
-    private Log log = log = LogFactory.getLog(this.getClass());
+    private final Log LOG = LogFactory.getLog(this.getClass());
 
-    private static final Splitter TabSplitter = Splitter.on('\t')
+    private static final Splitter TAB_SPLITTER = Splitter.on('\t')
            .trimResults();
 
     private Configuration configuration;
