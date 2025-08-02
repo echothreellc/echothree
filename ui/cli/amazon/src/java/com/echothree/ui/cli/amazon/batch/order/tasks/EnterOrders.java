@@ -158,7 +158,7 @@ public class EnterOrders {
         for(var i = 0; i < size; i++) {
             var testChar = rawValue[i];
 
-            if(testChar >= '\u0030' && testChar <= '\u0039') {
+            if(testChar >= '0' && testChar <= '9') {
                 if(separatorFound) {
                     cleanFraction.append(testChar);
                     if(cleanFraction.length() == intFractionDigits) {
