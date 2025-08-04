@@ -1,5 +1,12 @@
 # Changelog
 
+## 2025-08-03-01
+
+* Correct Int Literal Cast Warnings From Error Prone [1577](https://gitlab.echothree.com/echothree/echothree/-/issues/1577)
+* Correct Assignment Expression Warnings From Error Prone [1578](https://gitlab.echothree.com/echothree/echothree/-/issues/1578)
+* Correct Unicode Escape Warnings From Error Prone [1579](https://gitlab.echothree.com/echothree/echothree/-/issues/1579)
+* Correct Object To String Warnings From Error Prone [1580](https://gitlab.echothree.com/echothree/echothree/-/issues/1580)
+
 ## 2025-07-20-01
 
 * Add Contact Email Address Object [1573](https://gitlab.echothree.com/echothree/echothree/-/issues/1573)
