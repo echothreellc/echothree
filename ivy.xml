@@ -39,7 +39,7 @@
         <dependency org="fish.payara.cloud.connectors.kafka" name="kafka-jca-api" rev="0.8.0" conf="sources->sources" />
         <dependency org="io.cucumber" name="cucumber-java8" rev="7.23.0" conf="sources->sources" />
         <dependency org="io.cucumber" name="cucumber-junit" rev="7.23.0" conf="sources->sources" />
-        <dependency org="io.github.classgraph" name="classgraph" rev="4.8.179" conf="sources->sources" />
+        <dependency org="io.github.classgraph" name="classgraph" rev="4.8.181" conf="sources->sources" />
         <dependency org="io.github.graphql-java" name="graphql-java-annotations" rev="21.5" conf="sources->sources" />
         <dependency org="io.r2dbc" name="r2dbc-spi" rev="1.0.0.RELEASE" conf="sources->sources" />
         <dependency org="jakarta.xml.bind" name="jakarta.xml.bind-api" rev="3.0.1" conf="sources->sources" />
@@ -132,7 +132,7 @@
         <dependency org="fish.payara.cloud.connectors.kafka" name="kafka-jca-api" rev="0.8.0" conf="javadoc->javadoc" />
         <dependency org="io.cucumber" name="cucumber-java8" rev="7.23.0" conf="javadoc->javadoc" />
         <dependency org="io.cucumber" name="cucumber-junit" rev="7.23.0" conf="javadoc->javadoc" />
-        <dependency org="io.github.classgraph" name="classgraph" rev="4.8.179" conf="javadoc->javadoc" />
+        <dependency org="io.github.classgraph" name="classgraph" rev="4.8.181" conf="javadoc->javadoc" />
         <dependency org="io.github.graphql-java" name="graphql-java-annotations" rev="21.5" conf="javadoc->javadoc" />
         <dependency org="io.r2dbc" name="r2dbc-spi" rev="1.0.0.RELEASE" conf="javadoc->javadoc" />
         <dependency org="jakarta.xml.bind" name="jakarta.xml.bind-api" rev="3.0.1" conf="sources->sources" />
@@ -226,7 +226,7 @@
         <dependency org="fish.payara.cloud.connectors.kafka" name="kafka-jca-api" rev="0.8.0" conf="binaries->default" />
         <dependency org="io.cucumber" name="cucumber-java8" rev="7.23.0" conf="binaries->default" />
         <dependency org="io.cucumber" name="cucumber-junit" rev="7.23.0" conf="binaries->default" />
-        <dependency org="io.github.classgraph" name="classgraph" rev="4.8.179" conf="binaries->default" />
+        <dependency org="io.github.classgraph" name="classgraph" rev="4.8.181" conf="binaries->default" />
         <dependency org="io.github.graphql-java" name="graphql-java-annotations" rev="21.5" conf="binaries->default" />
         <dependency org="io.r2dbc" name="r2dbc-spi" rev="1.0.0.RELEASE" conf="binaries->default" />
         <dependency org="jakarta.xml.bind" name="jakarta.xml.bind-api" rev="3.0.1" conf="binaries->default" />
