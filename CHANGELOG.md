@@ -1,5 +1,12 @@
 # Changelog
 
+## 2025-08-17-01
+
+* ClassGraph 4.8.181 Upgrade [1581](https://gitlab.echothree.com/echothree/echothree/-/issues/1581)
+* Error Prone 2.41.0 Upgrade [1582](https://gitlab.echothree.com/echothree/echothree/-/issues/1582)
+* jOOQ 3.20.6 Upgrade [1583](https://gitlab.echothree.com/echothree/echothree/-/issues/1583)
+* Checksum Missing from Item Alias Types for UPC-A, ISBN-10, and ISBN-13 [1584](https://gitlab.echothree.com/echothree/echothree/-/issues/1584)
+
 ## 2025-08-03-01
 
 * Correct Int Literal Cast Warnings From Error Prone [1577](https://gitlab.echothree.com/echothree/echothree/-/issues/1577)
