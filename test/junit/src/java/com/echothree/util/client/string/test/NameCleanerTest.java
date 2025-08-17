@@ -58,6 +58,8 @@ public class NameCleanerTest
 
     @Override
     protected void tearDown() {
+        super.tearDown();
+
         nameCleaner = null;
     }
 
