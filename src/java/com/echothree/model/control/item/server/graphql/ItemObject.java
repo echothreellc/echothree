@@ -28,7 +28,7 @@ import com.echothree.model.control.graphql.server.graphql.count.CountingDataConn
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
-import com.echothree.model.control.item.common.ItemConstants;
+import com.echothree.model.control.item.common.ItemDescriptionTypes;
 import com.echothree.model.control.item.common.workflow.ItemStatusConstants;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
@@ -333,7 +333,7 @@ public class ItemObject
     @GraphQLDescription("description")
     public String getDescription(final DataFetchingEnvironment env) {
         var itemControl = Session.getModelController(ItemControl.class);
-        var itemDescriptionType = itemControl.getItemDescriptionTypeByName(ItemConstants.ItemDescriptionType_DEFAULT_DESCRIPTION);
+        var itemDescriptionType = itemControl.getItemDescriptionTypeByName(ItemDescriptionTypes.DEFAULT_DESCRIPTION.name());
 
         return itemDescriptionType == null ? null : itemControl.getBestItemStringDescription(itemDescriptionType, item, BaseGraphQl.getLanguageEntity(env));
     }

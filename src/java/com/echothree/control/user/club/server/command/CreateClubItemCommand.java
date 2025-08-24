@@ -18,17 +18,16 @@ package com.echothree.control.user.club.server.command;
 
 import com.echothree.control.user.club.common.form.CreateClubItemForm;
 import com.echothree.model.control.club.server.control.ClubControl;
-import com.echothree.model.control.item.common.ItemConstants;
+import com.echothree.model.control.item.common.ItemUseTypes;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.uom.server.util.Conversion;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -71,9 +70,9 @@ public class CreateClubItemCommand
                 var item = itemControl.getItemByName(itemName);
                 
                 if(item != null) {
-                    var itemUseTypeName = item.getLastDetail().getItemUseType().getItemUseTypeName();
+                    var itemUseType = ItemUseTypes.valueOf(item.getLastDetail().getItemUseType().getItemUseTypeName());
                     
-                    if(itemUseTypeName.equals(ItemConstants.ItemUseType_CLUB)) {
+                    if(itemUseType == ItemUseTypes.CLUB) {
                         var clubItem = clubControl.getClubItem(club, clubItemType, item);
                         
                         if(clubItem == null) {

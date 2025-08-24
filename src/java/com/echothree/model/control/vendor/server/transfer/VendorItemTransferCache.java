@@ -19,7 +19,7 @@ package com.echothree.model.control.vendor.server.transfer;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
-import com.echothree.model.control.item.common.ItemConstants;
+import com.echothree.model.control.item.common.ItemDescriptionTypes;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemDescriptionLogic;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
@@ -78,7 +78,7 @@ public class VendorItemTransferCache
             var returnPolicyTransfer = returnPolicy == null? null: returnPolicyControl.getReturnPolicyTransfer(userVisit, returnPolicy);
             
             if(description == null) {
-                description = itemDescriptionLogic.getBestStringUsingNames(null, ItemConstants.ItemDescriptionType_PURCHASE_ORDER_DESCRIPTION, item, getParty());
+                description = itemDescriptionLogic.getBestStringUsingNames(null, ItemDescriptionTypes.PURCHASE_ORDER_DESCRIPTION.name(), item, getParty());
             }
 
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(vendorItem.getPrimaryKey());

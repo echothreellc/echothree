@@ -22,8 +22,8 @@ import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
-import com.echothree.model.control.item.common.ItemConstants;
 import com.echothree.model.control.item.common.workflow.ItemStatusConstants;
+import com.echothree.model.control.item.common.ItemTypes;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -41,7 +41,6 @@ import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPol
 import com.echothree.model.data.item.server.entity.ItemDeliveryType;
 import com.echothree.model.data.item.server.entity.ItemInventoryType;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -126,8 +125,8 @@ public class CreateItemCommand
                     var itemCategory = itemCategoryName == null ? null : itemControl.getItemCategoryByName(itemCategoryName);
                     
                     if(itemCategoryName == null || itemCategory != null) {
-                        var isKitOrStyle = itemTypeName.equals(ItemConstants.ItemType_KIT)
-                                || itemTypeName.equals(ItemConstants.ItemType_STYLE);
+                        var isKitOrStyle = itemTypeName.equals(ItemTypes.KIT.name())
+                                || itemTypeName.equals(ItemTypes.STYLE.name());
                         var itemAccountingCategoryName = form.getItemAccountingCategoryName();
                         ItemAccountingCategory itemAccountingCategory = null;
                         
