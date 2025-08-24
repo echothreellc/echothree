@@ -18,13 +18,12 @@ package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.CreateItemAliasTypeForm;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
-import com.echothree.model.control.item.server.logic.ItemAliasChecksumTypeLogic;
+import com.echothree.model.control.item.server.logic.checksum.ItemAliasChecksumTypeLogic;
 import com.echothree.model.control.item.server.logic.ItemAliasTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.item.server.entity.ItemAliasType;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
