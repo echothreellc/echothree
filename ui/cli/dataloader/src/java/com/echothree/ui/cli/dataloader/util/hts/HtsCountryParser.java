@@ -36,9 +36,9 @@ import com.echothree.control.user.item.common.spec.HarmonizedTariffScheduleCodeS
 import com.echothree.control.user.item.common.spec.ItemSpecFactory;
 import com.echothree.model.control.geo.common.GeoConstants;
 import com.echothree.model.control.geo.common.transfer.CountryTransfer;
-import com.echothree.model.control.item.common.ItemConstants;
 import com.echothree.model.control.item.common.ItemOptions;
 import com.echothree.model.control.item.common.transfer.HarmonizedTariffScheduleCodeTransfer;
+import com.echothree.model.control.item.common.HarmonizedTariffScheduleCodeUseTypes;
 import com.echothree.model.control.party.common.Languages;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.EditMode;
@@ -310,15 +310,15 @@ public abstract class HtsCountryParser<H> {
             var isCurrentlyUsedForExport = false;
             
             for(var harmonizedTariffScheduleCodeUse : harmonizedTariffScheduleCodeUses) {
-                if(harmonizedTariffScheduleCodeUse.getHarmonizedTariffScheduleCodeUseType().getHarmonizedTariffScheduleCodeUseTypeName().equals(ItemConstants.HarmonizedTariffScheduleCodeUseType_IMPORT)) {
+                if(harmonizedTariffScheduleCodeUse.getHarmonizedTariffScheduleCodeUseType().getHarmonizedTariffScheduleCodeUseTypeName().equals(HarmonizedTariffScheduleCodeUseTypes.IMPORT.name())) {
                     isCurrentlyUsedForImport = true;
-                } else if(harmonizedTariffScheduleCodeUse.getHarmonizedTariffScheduleCodeUseType().getHarmonizedTariffScheduleCodeUseTypeName().equals(ItemConstants.HarmonizedTariffScheduleCodeUseType_EXPORT)) {
+                } else if(harmonizedTariffScheduleCodeUse.getHarmonizedTariffScheduleCodeUseType().getHarmonizedTariffScheduleCodeUseTypeName().equals(HarmonizedTariffScheduleCodeUseTypes.EXPORT.name())) {
                     isCurrentlyUsedForExport = true;
                 }
             }
             
-            createOrDeleteCodeUse(code, importCodes, isCurrentlyUsedForImport, ItemConstants.HarmonizedTariffScheduleCodeUseType_IMPORT, createCodeUseForm, deleteCodeUseForm);
-            createOrDeleteCodeUse(code, exportCodes, isCurrentlyUsedForExport, ItemConstants.HarmonizedTariffScheduleCodeUseType_EXPORT, createCodeUseForm, deleteCodeUseForm);
+            createOrDeleteCodeUse(code, importCodes, isCurrentlyUsedForImport, HarmonizedTariffScheduleCodeUseTypes.IMPORT.name(), createCodeUseForm, deleteCodeUseForm);
+            createOrDeleteCodeUse(code, exportCodes, isCurrentlyUsedForExport, HarmonizedTariffScheduleCodeUseTypes.EXPORT.name(), createCodeUseForm, deleteCodeUseForm);
         }
     }
     

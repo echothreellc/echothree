@@ -22,12 +22,12 @@ import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.geo.common.GeoConstants;
 import com.echothree.model.control.geo.common.GeoOptions;
-import com.echothree.model.control.item.common.ItemConstants;
 import com.echothree.model.control.item.common.ItemOptions;
 import com.echothree.model.control.item.common.ItemProperties;
 import com.echothree.model.control.item.common.transfer.ItemCountryOfOriginTransfer;
 import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.model.control.item.common.transfer.RelatedItemTransfer;
+import com.echothree.model.control.item.common.ItemDescriptionTypes;
 import com.echothree.model.control.item.common.workflow.ItemStatusConstants;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
@@ -248,7 +248,7 @@ public class ItemTransferCache
             var cancellationPolicyTransfer = cancellationPolicy == null ? null : cancellationPolicyControl.getCancellationPolicyTransfer(userVisit, cancellationPolicy);
             var returnPolicy = filterReturnPolicy ? null : itemDetail.getReturnPolicy();
             var returnPolicyTransfer = returnPolicy == null ? null : returnPolicyControl.getReturnPolicyTransfer(userVisit, returnPolicy);
-            var itemDescriptionType = filterDescription ? null : itemControl.getItemDescriptionTypeByName(ItemConstants.ItemDescriptionType_DEFAULT_DESCRIPTION);
+            var itemDescriptionType = filterDescription ? null : itemControl.getItemDescriptionTypeByName(ItemDescriptionTypes.DEFAULT_DESCRIPTION.name());
             var description = itemDescriptionType == null ? null : itemControl.getBestItemStringDescription(itemDescriptionType, item, getLanguage());
 
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(item.getPrimaryKey());

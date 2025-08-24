@@ -18,14 +18,13 @@ package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.DeleteItemKitMemberForm;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
-import com.echothree.model.control.item.common.ItemConstants;
+import com.echothree.model.control.item.common.ItemTypes;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -63,7 +62,7 @@ public class DeleteItemKitMemberCommand
             var itemDetail = item.getLastDetail();
             var itemTypeName = itemDetail.getItemType().getItemTypeName();
             
-            if(itemTypeName.equals(ItemConstants.ItemType_KIT)) {
+            if(itemTypeName.equals(ItemTypes.KIT.name())) {
                 var inventoryControl = Session.getModelController(InventoryControl.class);
                 var inventoryConditionName = form.getInventoryConditionName();
                 var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
