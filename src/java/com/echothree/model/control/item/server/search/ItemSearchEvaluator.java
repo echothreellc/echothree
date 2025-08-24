@@ -24,7 +24,7 @@ import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.common.IndexTypes;
 import com.echothree.model.control.index.server.analyzer.BasicAnalyzer;
-import com.echothree.model.control.item.common.ItemConstants;
+import com.echothree.model.control.item.common.ItemDescriptionTypes;
 import com.echothree.model.control.item.server.analyzer.ItemAnalyzer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemDescriptionLogic;
@@ -189,10 +189,10 @@ public class ItemSearchEvaluator
         if(searchSortOrderName.equals(SearchSortOrders.SCORE.name())) {
             sortFields = new SortField[]{
                 new SortField(null, SortField.Type.SCORE, reverse),
-                new SortField(ItemConstants.ItemDescriptionType_DEFAULT_DESCRIPTION + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse)
+                new SortField(ItemDescriptionTypes.DEFAULT_DESCRIPTION.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse)
             };
         } else if(searchSortOrderName.equals(SearchSortOrders.DEFAULT_DESCRIPTION.name())) {
-            sortFields = new SortField[]{new SortField(ItemConstants.ItemDescriptionType_DEFAULT_DESCRIPTION + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse)};
+            sortFields = new SortField[]{new SortField(ItemDescriptionTypes.DEFAULT_DESCRIPTION.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse)};
         } else if(searchSortOrderName.equals(SearchSortOrders.ITEM_NAME.name())) {
             sortFields = new SortField[]{new SortField(IndexFields.itemName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse)};
         } else if(searchSortOrderName.equals(SearchSortOrders.CREATED_TIME.name())) {

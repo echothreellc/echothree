@@ -20,7 +20,7 @@ import com.echothree.control.user.geo.common.GeoService;
 import com.echothree.control.user.item.common.ItemService;
 import com.echothree.model.control.core.common.MimeTypes;
 import com.echothree.model.control.geo.common.transfer.CountryTransfer;
-import com.echothree.model.control.item.common.ItemConstants;
+import com.echothree.model.control.item.common.HarmonizedTariffScheduleCodeUseTypes;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.string.StringUtils;
 import java.io.BufferedReader;
@@ -74,11 +74,11 @@ public class HtsUnitedStatesParser
         var harmonizedTariffScheduleCodeName = htsc.getCommodity();
         
         if(importCodes.containsKey(harmonizedTariffScheduleCodeName)) {
-            harmonizedTariffScheduleCodeUseNames.add(ItemConstants.HarmonizedTariffScheduleCodeUseType_IMPORT);
+            harmonizedTariffScheduleCodeUseNames.add(HarmonizedTariffScheduleCodeUseTypes.IMPORT.name());
         }
         
         if(exportCodes.containsKey(harmonizedTariffScheduleCodeName)) {
-            harmonizedTariffScheduleCodeUseNames.add(ItemConstants.HarmonizedTariffScheduleCodeUseType_EXPORT);
+            harmonizedTariffScheduleCodeUseNames.add(HarmonizedTariffScheduleCodeUseTypes.EXPORT.name());
         }
         
         return harmonizedTariffScheduleCodeUseNames;

@@ -21,9 +21,9 @@ import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
-import com.echothree.model.control.item.common.ItemConstants;
 import com.echothree.model.control.item.common.exception.UnknownDefaultItemAliasChecksumTypeException;
 import com.echothree.model.control.item.common.exception.UnknownItemAliasChecksumTypeNameException;
+import com.echothree.model.control.item.common.ItemAliasChecksumTypes;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemAliasChecksumType;
 import com.echothree.model.data.item.server.entity.ItemAliasType;
@@ -76,7 +76,7 @@ public class ItemAliasChecksumTypeLogic
         var parameterCount = (itemAliasChecksumTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 0:
+            case 0 -> {
                 if(allowDefault) {
                     itemAliasChecksumType = itemControl.getDefaultItemAliasChecksumType(entityPermission);
 
@@ -86,8 +86,8 @@ public class ItemAliasChecksumTypeLogic
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if(itemAliasChecksumTypeName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemAliasChecksumType.name());
@@ -98,10 +98,9 @@ public class ItemAliasChecksumTypeLogic
                 } else {
                     itemAliasChecksumType = getItemAliasChecksumTypeByName(eea, itemAliasChecksumTypeName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return itemAliasChecksumType;
@@ -279,17 +278,13 @@ public class ItemAliasChecksumTypeLogic
         var itemAliasChecksumType = itemAliasType.getLastDetail().getItemAliasChecksumType();
 
         if(itemAliasChecksumType != null) {
-            var itemAliasChecksumTypeName = itemAliasChecksumType.getItemAliasChecksumTypeName();
-
-            if(itemAliasChecksumTypeName.equals(ItemConstants.ItemAliasChecksumType_ISBN_10)) {
-                checkIsbn10Checksum(eea, alias);
-            } else if(itemAliasChecksumTypeName.equals(ItemConstants.ItemAliasChecksumType_ISBN_13)) {
-                checkIsbn13Checksum(eea, alias);
-            } else if(itemAliasChecksumTypeName.equals(ItemConstants.ItemAliasChecksumType_UPC_A)) {
-                checkUpcAChecksum(eea, alias);
+            switch(ItemAliasChecksumTypes.valueOf(itemAliasChecksumType.getItemAliasChecksumTypeName())) {
+                case ISBN_10 -> checkIsbn10Checksum(eea, alias);
+                case ISBN_13 -> checkIsbn13Checksum(eea, alias);
+                case UPC_A -> checkUpcAChecksum(eea, alias);
+                case NONE -> {}
             }
         }
     }
-
 
 }
