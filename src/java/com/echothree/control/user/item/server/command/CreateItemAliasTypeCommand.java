@@ -18,7 +18,7 @@ package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.CreateItemAliasTypeForm;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
-import com.echothree.model.control.item.server.logic.checksum.ItemAliasChecksumTypeLogic;
+import com.echothree.model.control.item.server.logic.ItemAliasChecksumTypeLogic;
 import com.echothree.model.control.item.server.logic.ItemAliasTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

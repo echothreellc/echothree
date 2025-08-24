@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.item.server.logic.checksum;
+package com.echothree.model.control.item.server.logic;
 
 import com.echothree.control.user.item.common.spec.ItemAliasChecksumTypeUniversalSpec;
 import com.echothree.model.control.core.common.ComponentVendors;
@@ -25,6 +25,9 @@ import com.echothree.model.control.item.common.ItemAliasChecksumTypes;
 import com.echothree.model.control.item.common.exception.UnknownDefaultItemAliasChecksumTypeException;
 import com.echothree.model.control.item.common.exception.UnknownItemAliasChecksumTypeNameException;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.item.server.logic.checksum.Isbn10ChecksumLogic;
+import com.echothree.model.control.item.server.logic.checksum.Isbn13ChecksumLogic;
+import com.echothree.model.control.item.server.logic.checksum.UpcAChecksumLogic;
 import com.echothree.model.data.item.server.entity.ItemAliasChecksumType;
 import com.echothree.model.data.item.server.entity.ItemAliasType;
 import com.echothree.util.common.message.ExecutionErrors;

@@ -22,7 +22,7 @@ import com.echothree.control.user.item.common.result.EditItemAliasResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.control.user.item.common.spec.ItemAliasSpec;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.control.item.server.logic.checksum.ItemAliasChecksumTypeLogic;
+import com.echothree.model.control.item.server.logic.ItemAliasChecksumTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
