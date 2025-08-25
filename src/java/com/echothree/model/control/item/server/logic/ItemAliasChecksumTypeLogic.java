@@ -28,6 +28,7 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.checksum.Isbn10ChecksumLogic;
 import com.echothree.model.control.item.server.logic.checksum.Isbn13ChecksumLogic;
 import com.echothree.model.control.item.server.logic.checksum.UpcAChecksumLogic;
+import com.echothree.model.control.item.server.logic.checksum.UpcEChecksumLogic;
 import com.echothree.model.data.item.server.entity.ItemAliasChecksumType;
 import com.echothree.model.data.item.server.entity.ItemAliasType;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -128,6 +129,7 @@ public class ItemAliasChecksumTypeLogic
                 case ISBN_10 -> Isbn10ChecksumLogic.getInstance().checkChecksum(eea, alias);
                 case ISBN_13 -> Isbn13ChecksumLogic.getInstance().checkChecksum(eea, alias);
                 case UPC_A -> UpcAChecksumLogic.getInstance().checkChecksum(eea, alias);
+                case UPC_E -> UpcEChecksumLogic.getInstance().checkChecksum(eea, alias);
                 case NONE -> {}
             }
         }

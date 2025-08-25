@@ -22,5 +22,6 @@ public enum ItemAliasChecksumTypes {
     ISBN_13,
     NONE,
     UPC_A,
+    UPC_E,
 
 }

@@ -66,16 +66,16 @@ public class UpcAChecksumLogic
                     var intermediate = (10 - (totalA * 3 + totalB) % 10) % 10;
 
                     if(intermediate != checkDigit) {
-                        eea.addExecutionError(ExecutionErrors.IncorrectUpcAChecksum.name());
+                        eea.addExecutionError(ExecutionErrors.IncorrectUpcAChecksum.name(), alias);
                     }
                 }
             }
 
             if(hasCharacterError) {
-                eea.addExecutionError(ExecutionErrors.IncorrectUpcACharacter.name());
+                eea.addExecutionError(ExecutionErrors.IncorrectUpcACharacter.name(), alias);
             }
         } else {
-            eea.addExecutionError(ExecutionErrors.IncorrectUpcALength.name());
+            eea.addExecutionError(ExecutionErrors.IncorrectUpcALength.name(), alias);
         }
     }
 

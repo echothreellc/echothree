@@ -64,16 +64,16 @@ public class Isbn10ChecksumLogic
                     checksum += runningTotal;
 
                     if(checksum % 11 != 0) {
-                        eea.addExecutionError(ExecutionErrors.IncorrectIsbn10Checksum.name());
+                        eea.addExecutionError(ExecutionErrors.IncorrectIsbn10Checksum.name(), alias);
                     }
                 }
             }
 
             if(hasCharacterError) {
-                eea.addExecutionError(ExecutionErrors.IncorrectIsbn10Character.name());
+                eea.addExecutionError(ExecutionErrors.IncorrectIsbn10Character.name(), alias);
             }
         } else {
-            eea.addExecutionError(ExecutionErrors.IncorrectIsbn10Length.name());
+            eea.addExecutionError(ExecutionErrors.IncorrectIsbn10Length.name(), alias);
         }
     }
 

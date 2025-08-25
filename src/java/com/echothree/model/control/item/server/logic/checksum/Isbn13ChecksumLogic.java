@@ -73,16 +73,16 @@ public class Isbn13ChecksumLogic
                     checksum += checkDigit;
 
                     if(!(checksum % 10 == 0)) {
-                        eea.addExecutionError(ExecutionErrors.IncorrectIsbn13Checksum.name());
+                        eea.addExecutionError(ExecutionErrors.IncorrectIsbn13Checksum.name(), alias);
                     }
                 }
             }
 
             if(hasCharacterError) {
-                eea.addExecutionError(ExecutionErrors.IncorrectIsbn13Character.name());
+                eea.addExecutionError(ExecutionErrors.IncorrectIsbn13Character.name(), alias);
             }
         } else {
-            eea.addExecutionError(ExecutionErrors.IncorrectIsbn13Length.name());
+            eea.addExecutionError(ExecutionErrors.IncorrectIsbn13Length.name(), alias);
         }
     }
 
