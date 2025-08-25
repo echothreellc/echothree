@@ -57,13 +57,10 @@ public class UpcEChecksumLogic
     public void checkChecksum(final ExecutionErrorAccumulator eea, final String alias) {
         if(alias.length() == 8) {
             if(alias.matches("\\d{8}")) {
-                var numberSystem = getDigit(alias, 0);
-                if (numberSystem != 0 && numberSystem != 1) {
-                    eea.addExecutionError(ExecutionErrors.IncorrectUpcENumberSystem.name(), alias);
+                switch(getDigit(alias, 0)) {
+                    case 0, 1 -> UpcAChecksumLogic.getInstance().checkChecksum(eea, expandUpcEToUpcA(alias));
+                    default -> eea.addExecutionError(ExecutionErrors.IncorrectUpcENumberSystem.name(), alias);
                 }
-
-                var upcA = expandUpcEToUpcA(alias);
-                UpcAChecksumLogic.getInstance().checkChecksum(eea, upcA);
             } else {
                 eea.addExecutionError(ExecutionErrors.IncorrectUpcECharacter.name(), alias);
             }
