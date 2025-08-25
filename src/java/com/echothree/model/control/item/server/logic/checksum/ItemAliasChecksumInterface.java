@@ -14,14 +14,12 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.item.common;
+package com.echothree.model.control.item.server.logic.checksum;
 
-public enum ItemAliasChecksumTypes {
+import com.echothree.util.server.message.ExecutionErrorAccumulator;
 
-    ISBN_10,
-    ISBN_13,
-    NONE,
-    UPC_A,
-    UPC_E,
+public interface ItemAliasChecksumInterface {
+
+    void checkChecksum(final ExecutionErrorAccumulator eea, final String alias);
 
 }

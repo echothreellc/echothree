@@ -14,14 +14,26 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.item.common;
+package com.echothree.model.control.item.server.logic.checksum;
 
-public enum ItemAliasChecksumTypes {
+import com.echothree.util.server.control.BaseLogic;
 
-    ISBN_10,
-    ISBN_13,
-    NONE,
-    UPC_A,
-    UPC_E,
+public class BaseChecksumLogic
+        extends BaseLogic {
+
+    protected BaseChecksumLogic() {
+        super();
+    }
+
+    protected int getDigit(String alias, int offset) {
+        var result = -1;
+        var digit = alias.charAt(offset);
+
+        if(digit >= '0' && digit <= '9') {
+            result = digit - '0';
+        }
+
+        return result;
+    }
 
 }
