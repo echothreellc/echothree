@@ -2331,5 +2331,8 @@ public enum ExecutionErrors {
     IncorrectUpcENumberSystem,
     IncorrectUpcECharacter,
     IncorrectUpcELength,
+    IncorrectEan13Checksum,
+    IncorrectEan13Character,
+    IncorrectEan13Length,
 
 }

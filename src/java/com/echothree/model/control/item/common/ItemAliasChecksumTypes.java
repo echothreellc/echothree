@@ -23,5 +23,6 @@ public enum ItemAliasChecksumTypes {
     NONE,
     UPC_A,
     UPC_E,
+    EAN_13,
 
 }
