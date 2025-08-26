@@ -2328,5 +2328,8 @@ public enum ExecutionErrors {
     DuplicateTransactionTimeTypeDescription,
     UnknownTransactionTimeTypeDescription,
     TransactionNotBalanced,
+    IncorrectUpcENumberSystem,
+    IncorrectUpcECharacter,
+    IncorrectUpcELength,
 
 }
