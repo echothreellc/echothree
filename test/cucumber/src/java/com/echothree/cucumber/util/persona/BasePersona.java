@@ -122,23 +122,27 @@ import com.echothree.control.user.inventory.common.form.SetInventoryLocationGrou
 import com.echothree.control.user.inventory.common.spec.AllocationPriorityUniversalSpec;
 import com.echothree.control.user.inventory.common.spec.InventoryConditionUniversalSpec;
 import com.echothree.control.user.inventory.common.spec.InventoryLocationGroupSpec;
+import com.echothree.control.user.item.common.edit.ItemAliasEdit;
 import com.echothree.control.user.item.common.edit.ItemAliasTypeEdit;
 import com.echothree.control.user.item.common.edit.ItemDescriptionTypeUseTypeEdit;
 import com.echothree.control.user.item.common.edit.ItemEdit;
 import com.echothree.control.user.item.common.edit.ItemImageTypeEdit;
 import com.echothree.control.user.item.common.edit.ItemPriceEdit;
 import com.echothree.control.user.item.common.edit.ItemUnitOfMeasureTypeEdit;
+import com.echothree.control.user.item.common.form.CreateItemAliasForm;
 import com.echothree.control.user.item.common.form.CreateItemAliasTypeForm;
 import com.echothree.control.user.item.common.form.CreateItemDescriptionTypeUseTypeForm;
 import com.echothree.control.user.item.common.form.CreateItemForm;
 import com.echothree.control.user.item.common.form.CreateItemImageTypeForm;
 import com.echothree.control.user.item.common.form.CreateItemPriceForm;
 import com.echothree.control.user.item.common.form.CreateItemUnitOfMeasureTypeForm;
+import com.echothree.control.user.item.common.form.DeleteItemAliasForm;
 import com.echothree.control.user.item.common.form.DeleteItemAliasTypeForm;
 import com.echothree.control.user.item.common.form.DeleteItemDescriptionTypeUseTypeForm;
 import com.echothree.control.user.item.common.form.DeleteItemImageTypeForm;
 import com.echothree.control.user.item.common.form.DeleteItemPriceForm;
 import com.echothree.control.user.item.common.form.DeleteItemUnitOfMeasureTypeForm;
+import com.echothree.control.user.item.common.spec.ItemAliasSpec;
 import com.echothree.control.user.item.common.spec.ItemAliasTypeUniversalSpec;
 import com.echothree.control.user.item.common.spec.ItemDescriptionTypeUseTypeUniversalSpec;
 import com.echothree.control.user.item.common.spec.ItemImageTypeUniversalSpec;
@@ -511,10 +515,16 @@ public class BasePersona {
     public ItemAliasTypeUniversalSpec itemAliasTypeSpec;
     public ItemAliasTypeEdit itemAliasTypeEdit;
 
+    public CreateItemAliasForm createItemAliasForm;
+    public DeleteItemAliasForm deleteItemAliasForm;
+    public ItemAliasSpec itemAliasSpec;
+    public ItemAliasEdit itemAliasEdit;
+
     public String lastItemName;
     public String lastItemImageTypeName;
     public String lastItemDescriptionTypeUseTypeName;
     public String lastItemAliasTypeName;
+    public String lastAlias;
 
     // Message
     public CreateMessageTypeForm createMessageTypeForm;
@@ -658,6 +668,11 @@ public class BasePersona {
 
     // Track
     public CreateUserVisitTrackForm createUserVisitTrackForm;
+
+    // Unit of Measure
+
+    public String lastUnitOfMeasureKindName;
+    public String lastUnitOfMeasureTypeName;
 
     // Vendor
     public CreateVendorForm createVendorForm;
