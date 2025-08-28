@@ -20,7 +20,7 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 
 public class Isbn10ChecksumLogic
-        extends BaseIsbnChecksumLogic
+        extends BaseChecksumLogic
         implements ItemAliasChecksumInterface {
 
     private Isbn10ChecksumLogic() {
@@ -33,6 +33,19 @@ public class Isbn10ChecksumLogic
     
     public static Isbn10ChecksumLogic getInstance() {
         return Isbn10ChecksumLogicHolder.instance;
+    }
+
+    private int getIsbn10CheckDigit(String alias, int offset) {
+        var result = -1;
+        var digit = alias.charAt(offset);
+
+        if(digit >= '0' && digit <= '9') {
+            result = digit - '0';
+        } else if(digit == 'X') {
+            result = 10;
+        }
+
+        return result;
     }
 
     @Override
@@ -55,7 +68,7 @@ public class Isbn10ChecksumLogic
             }
 
             if(!hasCharacterError) {
-                var checkDigit = getIsbnCheckDigit(alias, 9);
+                var checkDigit = getIsbn10CheckDigit(alias, 9);
 
                 hasCharacterError = checkDigit == -1;
 

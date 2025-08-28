@@ -162,6 +162,9 @@
         <itemAliasChecksumType itemAliasChecksumTypeName="EAN_13" isDefault="false" sortOrder="1">
             <itemAliasChecksumTypeDescription languageIsoName="en" description="EAN-13" />
         </itemAliasChecksumType>
+        <itemAliasChecksumType itemAliasChecksumTypeName="BOOKLAND_EAN" isDefault="false" sortOrder="1">
+            <itemAliasChecksumTypeDescription languageIsoName="en" description="Bookland EAN" />
+        </itemAliasChecksumType>
     </itemAliasChecksumTypes>
     <itemAliasTypes>
         <itemAliasType itemAliasTypeName="ADDTL_ITEM_NAME" itemAliasChecksumTypeName="NONE" allowMultiple="true" isDefault="true" sortOrder="0">
@@ -182,8 +185,8 @@
         <itemAliasType itemAliasTypeName="EAN_13" itemAliasChecksumTypeName="EAN_13" allowMultiple="false" isDefault="false" sortOrder="0">
             <itemAliasTypeDescription languageIsoName="en" description="EAN-13 (European Article Number, 13 Digits)" />
         </itemAliasType>
-        <itemAliasType itemAliasTypeName="BOOKLAND_EAN" itemAliasChecksumTypeName="NONE" allowMultiple="false" isDefault="false" sortOrder="0">
-            <itemAliasTypeDescription languageIsoName="en" description="Bookland European Article Number" />
+        <itemAliasType itemAliasTypeName="BOOKLAND_EAN" itemAliasChecksumTypeName="BOOKLAND_EAN" allowMultiple="false" isDefault="false" sortOrder="0">
+            <itemAliasTypeDescription languageIsoName="en" description="Bookland EAN (European Article Number)" />
         </itemAliasType>
     </itemAliasTypes>
     <itemPriceTypes>
