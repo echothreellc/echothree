@@ -20,7 +20,7 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 
 public class Ean13ChecksumLogic
-        extends BaseIsbnChecksumLogic
+        extends BaseChecksumLogic
         implements ItemAliasChecksumInterface {
 
     private Ean13ChecksumLogic() {
@@ -41,7 +41,7 @@ public class Ean13ChecksumLogic
             var hasCharacterError = false;
             int sum = 0;
 
-            for (int i = 0; i < 12; i++) {
+            for(int i = 0; i < 12; i++) {
                 int d = getDigit(alias, i);
 
                 if(d == -1) {
@@ -50,8 +50,8 @@ public class Ean13ChecksumLogic
                 }
 
                 // Positions are 1-based in the spec: odd positions weight 1, even positions weight 3.
-                // i is 0-based, so (i + 1) % 2 == 0 means even position.
-                sum += ((i + 1) % 2 == 0) ? (3 * d) : d;
+                // i is 0-based, so i % 2 == 0 means even position.
+                sum += i % 2 == 0 ? d : (3 * d);
             }
 
             if(!hasCharacterError) {

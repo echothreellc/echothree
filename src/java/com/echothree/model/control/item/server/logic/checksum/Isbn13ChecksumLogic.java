@@ -20,7 +20,7 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 
 public class Isbn13ChecksumLogic
-        extends BaseIsbnChecksumLogic
+        extends BaseChecksumLogic
         implements ItemAliasChecksumInterface {
 
     private Isbn13ChecksumLogic() {
@@ -40,32 +40,22 @@ public class Isbn13ChecksumLogic
         if(alias.length() == 13) {
             var hasCharacterError = false;
             var checksum = 0;
-            for(var i = 0; i < 12; i += 2) {
-                var digit = getDigit(alias, i);
 
-                if(digit == -1) {
+            for(int i = 0; i < 12; i++) {
+                int d = getDigit(alias, i);
+
+                if(d == -1) {
                     hasCharacterError = true;
                     break;
                 }
 
-                checksum += digit;
+                // Positions are 1-based in the spec: odd positions weight 1, even positions weight 3.
+                // i is 0-based, so i % 2 == 0 means even position.
+                checksum += i % 2 == 0 ? d : (3 * d);
             }
 
             if(!hasCharacterError) {
-                for(var i = 1; i < 12; i += 2) {
-                    var digit = getDigit(alias, i);
-
-                    if(digit == -1) {
-                        hasCharacterError = true;
-                        break;
-                    }
-
-                    checksum += getDigit(alias, i) * 3;
-                }
-            }
-
-            if(!hasCharacterError) {
-                var checkDigit = getIsbnCheckDigit(alias, 12);
+                var checkDigit = getDigit(alias, 12);
 
                 hasCharacterError = checkDigit == -1;
 
