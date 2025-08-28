@@ -24,5 +24,6 @@ public enum ItemAliasChecksumTypes {
     UPC_A,
     UPC_E,
     EAN_13,
+    BOOKLAND_EAN,
 
 }

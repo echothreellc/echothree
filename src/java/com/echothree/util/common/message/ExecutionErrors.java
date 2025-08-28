@@ -2334,5 +2334,8 @@ public enum ExecutionErrors {
     IncorrectEan13Checksum,
     IncorrectEan13Character,
     IncorrectEan13Length,
+    IncorrectBooklandEanPrefix,
+    IncorrectBooklandEanCharacter,
+    IncorrectBooklandEanLength,
 
 }
