@@ -13,22 +13,22 @@ Feature: Employee item image type
 
   Scenario: Existing employee adds a item image type, edits it, and then deletes it
     Given the employee Test begins using the application
-    And the user begins entering a new item image type
+    When the user begins entering a new item image type
     And the user sets the item image type's name to TEST_ITEM_IMAGE_TYPE
     And the user sets the item image type's sort order to "1"
     And the user sets the item image type to be the default
     And the user sets the item image type's description to "Test Item Image Type"
     And the user adds the new item image type
     Then no error should occur
-    And the user begins specifying a item image type to edit
+    When the user begins specifying a item image type to edit
     And the user sets the item image type's name to the last item image type added
-    And the user begins editing the item image type
+    When the user begins editing the item image type
     Then no error should occur
     And the user sets the item image type's sort order to "2"
     And the user sets the item image type's description to "Test Edited Item Image Type"
     And the user finishes editing the item image type
     Then no error should occur
-    And the user begins deleting a item image type
+    When the user begins deleting a item image type
     And the user sets the item image type's name to the last item image type added
     And the user deletes the item image type
     Then no error should occur

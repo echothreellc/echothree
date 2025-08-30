@@ -26,7 +26,7 @@ Feature: Employee selector
     And the user sets the selector's selector kind name to ITEM
     And the user sets the selector's selector type name to FILTER
     And the user sets the selector's name to the last selector added
-    And the user begins editing the selector
+    When the user begins editing the selector
     Then no error should occur
     And the user sets the selector's sort order to "2"
     And the user sets the selector's description to "Test Edited Selector"

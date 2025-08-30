@@ -93,7 +93,7 @@ public class LocationNameElementSteps implements En {
                     persona.locationNameElementSpec = WarehouseUtil.getHome().getLocationNameElementSpec();
                 });
 
-        And("^the user begins editing the location name element$",
+        When("^the user begins editing the location name element$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.locationNameElementSpec;

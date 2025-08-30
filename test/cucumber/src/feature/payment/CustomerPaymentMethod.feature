@@ -22,7 +22,7 @@ Feature: Party payment methods
 
   Scenario: Existing customer adds and then deletes a credit card
     Given the customer Test begins using the application
-    And the user begins entering a new payment method
+    When the user begins entering a new payment method
     And the user sets the payment method to VISA
     And the user sets the payment method's description to "My Card"
     And the user sets the payment method to be deleted when unused
@@ -34,7 +34,7 @@ Feature: Party payment methods
     And the user sets the payment method's expiration year to "2030"
     And the user sets the payment method's first name to "Test"
     And the user sets the payment method's last name to "Customer"
-    And the user begins entering a new postal address
+    When the user begins entering a new postal address
     And the user sets the postal address's first name to "Test"
     And the user sets the postal address's last name to "Customer"
     And the user sets the postal address's line 1 to "256 N Test Street"
@@ -56,7 +56,7 @@ Feature: Party payment methods
 
   Scenario: Existing customer adds and attempts to delete the postal address before the credit card and then deletes a credit card
     Given the customer Test begins using the application
-    And the user begins entering a new payment method
+    When the user begins entering a new payment method
     And the user sets the payment method to VISA
     And the user sets the payment method's description to "My Card"
     And the user sets the payment method to be deleted when unused
@@ -68,7 +68,7 @@ Feature: Party payment methods
     And the user sets the payment method's expiration year to "2030"
     And the user sets the payment method's first name to "Test"
     And the user sets the payment method's last name to "Customer"
-    And the user begins entering a new postal address
+    When the user begins entering a new postal address
     And the user sets the postal address's first name to "Test"
     And the user sets the postal address's last name to "Customer"
     And the user sets the postal address's line 1 to "256 N Test Street"
@@ -92,7 +92,7 @@ Feature: Party payment methods
 
   Scenario: Existing customer tries to add a credit card that has a bad number
     Given the customer Test begins using the application
-    And the user begins entering a new payment method
+    When the user begins entering a new payment method
     And the user sets the payment method to VISA
     And the user sets the payment method's description to "My Card"
     And the user sets the payment method to be deleted when unused
@@ -104,7 +104,7 @@ Feature: Party payment methods
     And the user sets the payment method's expiration year to "2030"
     And the user sets the payment method's first name to "Test"
     And the user sets the payment method's last name to "Customer"
-    And the user begins entering a new postal address
+    When the user begins entering a new postal address
     And the user sets the postal address's first name to "Test"
     And the user sets the postal address's last name to "Customer"
     And the user sets the postal address's line 1 to "256 N Test Street"
@@ -124,7 +124,7 @@ Feature: Party payment methods
 
   Scenario: Existing customer tries to add a credit card that is expired
     Given the customer Test begins using the application
-    And the user begins entering a new payment method
+    When the user begins entering a new payment method
     And the user sets the payment method to VISA
     And the user sets the payment method's description to "My Card"
     And the user sets the payment method to be deleted when unused
@@ -136,7 +136,7 @@ Feature: Party payment methods
     And the user sets the payment method's expiration year to "2010"
     And the user sets the payment method's first name to "Test"
     And the user sets the payment method's last name to "Customer"
-    And the user begins entering a new postal address
+    When the user begins entering a new postal address
     And the user sets the postal address's first name to "Test"
     And the user sets the postal address's last name to "Customer"
     And the user sets the postal address's line 1 to "256 N Test Street"
@@ -156,7 +156,7 @@ Feature: Party payment methods
 
   Scenario: Existing customer adds, edits and then deletes a credit card
     Given the customer Test begins using the application
-    And the user begins entering a new payment method
+    When the user begins entering a new payment method
     And the user sets the payment method to VISA
     And the user sets the payment method's description to "My Card"
     And the user sets the payment method to be deleted when unused
@@ -168,7 +168,7 @@ Feature: Party payment methods
     And the user sets the payment method's expiration year to "2030"
     And the user sets the payment method's first name to "Test"
     And the user sets the payment method's last name to "Customer"
-    And the user begins entering a new postal address
+    When the user begins entering a new postal address
     And the user sets the postal address's first name to "Test"
     And the user sets the postal address's last name to "Customer"
     And the user sets the postal address's line 1 to "256 N Test Street"
@@ -183,7 +183,7 @@ Feature: Party payment methods
     And the user sets the payment method's billing contact to the last postal address added
     And the user adds the new payment method
     Then no error should occur
-    And the user begins editing the last payment method added
+    When the user begins editing the last payment method added
     And the user sets the payment method's description to "My Edited Card"
     And the user sets the payment method's number to "4444333322221111"
     And the user sets the payment method's security code to "456"

@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SearchItemsSteps implements En {
 
     public SearchItemsSteps() {
-        And("^the user begins entering a new item search$",
+        When("^the user begins entering a new item search$",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -56,7 +56,7 @@ public class SearchItemsSteps implements En {
                     persona.searchItemsForm = null;
                 });
 
-        And("^the user begins recording an action on a result of the item search$",
+        When("^the user begins recording an action on a result of the item search$",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -78,7 +78,7 @@ public class SearchItemsSteps implements En {
                     persona.createItemSearchResultActionForm = null;
                 });
 
-        And("^the user begins clearing the item results$",
+        When("^the user begins clearing the item results$",
                 () -> {
                     var persona = CurrentPersona.persona;
 

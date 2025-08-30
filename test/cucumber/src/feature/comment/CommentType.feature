@@ -26,7 +26,7 @@ Feature: Employee comment type
     And the user sets the comment type's component vendor to ECHO_THREE
     And the user sets the comment type's entity type to Item
     And the user sets the comment type's name to the last comment type added
-    And the user begins editing the comment type
+    When the user begins editing the comment type
     Then no error should occur
     When the user sets the comment type's description to "Test Edited Comment Type"
     And the user finishes editing the comment type

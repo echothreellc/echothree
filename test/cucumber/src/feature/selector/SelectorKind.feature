@@ -22,7 +22,7 @@ Feature: Employee selector kind
     Then no error should occur
     When the user begins specifying a selector kind to edit
     And the user sets the selector kind's name to the last selector kind added
-    And the user begins editing the selector kind
+    When the user begins editing the selector kind
     Then no error should occur
     And the user sets the selector kind's sort order to "2"
     And the user sets the selector kind's description to "Test Edited Selector Kind"

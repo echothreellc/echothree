@@ -13,11 +13,11 @@ Feature: Employee purchase order
 
   Scenario: Existing employee adds a purchase order and sets the status of it to canceled
     Given the employee Test begins using the application
-    And the user begins entering a new purchase order
+    When the user begins entering a new purchase order
     And the user sets the purchase order's vendor name to TEST_VENDOR
     And the user adds the new purchase order
     Then no error should occur
-    And the user begins setting the status of a purchase order
+    When the user begins setting the status of a purchase order
     And the user sets the purchase order's purchase order name to the last purchase order added
     And the user sets the purchase order's status to ENTRY_TO_CANCELED
     And the user sets the status of the purchase order
@@ -25,11 +25,11 @@ Feature: Employee purchase order
 
   Scenario: Existing employee adds a purchase order and sets the status of it to entry complete
     Given the employee Test begins using the application
-    And the user begins entering a new purchase order
+    When the user begins entering a new purchase order
     And the user sets the purchase order's vendor name to TEST_VENDOR
     And the user adds the new purchase order
     Then no error should occur
-    And the user begins setting the status of a purchase order
+    When the user begins setting the status of a purchase order
     And the user sets the purchase order's purchase order name to the last purchase order added
     And the user sets the purchase order's status to ENTRY_TO_ENTRY_COMPLETE
     And the user sets the status of the purchase order

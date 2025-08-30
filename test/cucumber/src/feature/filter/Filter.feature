@@ -13,7 +13,7 @@ Feature: Employee filter
 
   Scenario: Existing employee adds a filter, edits it, and then deletes it
     Given the employee Test begins using the application
-    And the user begins entering a new filter
+    When the user begins entering a new filter
     And the user sets the filter's filter kind name to PRICE
     And the user sets the filter's filter type name to OFFER_ITEM_PRICE
     And the user sets the filter's name to TEST_FILTER_TYPE
@@ -24,17 +24,17 @@ Feature: Employee filter
     And the user sets the filter's description to "Test Filter"
     And the user adds the new filter
     Then no error should occur
-    And the user begins specifying a filter to edit
+    When the user begins specifying a filter to edit
     And the user sets the filter's filter kind name to PRICE
     And the user sets the filter's filter type name to OFFER_ITEM_PRICE
     And the user sets the filter's name to the last filter added
-    And the user begins editing the filter
+    When the user begins editing the filter
     Then no error should occur
     And the user sets the filter's sort order to "2"
     And the user sets the filter's description to "Test Edited Filter"
     And the user finishes editing the filter
     Then no error should occur
-    And the user begins deleting a filter
+    When the user begins deleting a filter
     And the user sets the filter's filter kind name to PRICE
     And the user sets the filter's filter type name to OFFER_ITEM_PRICE
     And the user sets the filter's name to the last filter added

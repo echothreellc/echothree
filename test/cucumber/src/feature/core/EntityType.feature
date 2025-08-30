@@ -27,7 +27,7 @@ Feature: Employee entity type
     When the user begins specifying an entity type to edit
     And the user sets the entity type's component vendor to ECHO_THREE
     And the user sets the entity type's name to the last entity type added
-    And the user begins editing the entity type
+    When the user begins editing the entity type
     Then no error should occur
     When the user sets the entity type's description to "Test Edited Entity Type"
     And the user finishes editing the entity type

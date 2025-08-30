@@ -49,7 +49,7 @@ Feature: Employee tag scope
     Then no error should occur
     When the user begins specifying a tag scope to edit
     And the user sets the tag scope's tag scope name to "CUCUMBER_TAG_SCOPE"
-    And the user begins editing the tag scope
+    When the user begins editing the tag scope
     Then no error should occur
     When the user sets the tag scope's new tag scope name to "CUCUMBER_TAG_SCOPE_EDITED"
     And the user sets the tag scope's sort order to "20"

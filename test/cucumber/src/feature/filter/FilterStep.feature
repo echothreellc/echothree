@@ -13,7 +13,7 @@ Feature: Employee filter step
 
   Scenario: Existing employee adds a filter step, edits it, and then deletes it
     Given the employee Test begins using the application
-    And the user begins entering a new filter
+    When the user begins entering a new filter
     And the user sets the filter's filter kind name to PRICE
     And the user sets the filter's filter type name to OFFER_ITEM_PRICE
     And the user sets the filter's name to TEST_FILTER
@@ -24,7 +24,7 @@ Feature: Employee filter step
     And the user sets the filter's description to "Test Filter"
     And the user adds the new filter
     Then no error should occur
-    And the user begins entering a new filter step
+    When the user begins entering a new filter step
     And the user sets the filter step's filter kind name to PRICE
     And the user sets the filter step's filter type name to OFFER_ITEM_PRICE
     And the user sets the filter step's filter name to TEST_FILTER
@@ -32,24 +32,24 @@ Feature: Employee filter step
     And the user sets the filter step's description to "Test Filter Step"
     And the user adds the new filter step
     Then no error should occur
-    And the user begins specifying a filter step to edit
+    When the user begins specifying a filter step to edit
     And the user sets the filter step's filter kind name to PRICE
     And the user sets the filter step's filter type name to OFFER_ITEM_PRICE
     And the user sets the filter step's filter name to TEST_FILTER
     And the user sets the filter step's name to the last filter step added
-    And the user begins editing the filter step
+    When the user begins editing the filter step
     Then no error should occur
     And the user sets the filter step's description to "Test Edited Filter Step"
     And the user finishes editing the filter step
     Then no error should occur
-    And the user begins deleting a filter step
+    When the user begins deleting a filter step
     And the user sets the filter step's filter kind name to PRICE
     And the user sets the filter step's filter type name to OFFER_ITEM_PRICE
     And the user sets the filter step's filter name to TEST_FILTER
     And the user sets the filter step's name to the last filter step added
     And the user deletes the filter step
     Then no error should occur
-    And the user begins deleting a filter
+    When the user begins deleting a filter
     And the user sets the filter's filter kind name to PRICE
     And the user sets the filter's filter type name to OFFER_ITEM_PRICE
     And the user sets the filter's name to the last filter added

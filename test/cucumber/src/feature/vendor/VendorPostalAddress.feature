@@ -13,13 +13,13 @@ Feature: Employee vendor with postal address
 
   Scenario: Existing employee adds a vendor, adds a postal address to it, and sets the status of it
     Given the employee Test begins using the application
-    And the user begins entering a new vendor
+    When the user begins entering a new vendor
     And the user sets the vendor's name to "Cucumber Postal Address Vendor"
     And the user sets the vendor to use use item purchasing categories
     And the user indicates the vendor does allow solicitations to the email address
     And the user adds the new vendor
     Then no error should occur
-    And the user begins entering a new postal address
+    When the user begins entering a new postal address
     And the user sets the postal address's party to the last party added
     And the user sets the postal address's company name to "Cucumber Postal Address Vendor"
     And the user sets the postal address's first name to "Test"

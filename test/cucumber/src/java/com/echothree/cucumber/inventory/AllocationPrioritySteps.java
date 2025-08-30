@@ -93,7 +93,7 @@ public class AllocationPrioritySteps implements En {
                     persona.allocationPrioritySpec = InventoryUtil.getHome().getAllocationPriorityUniversalSpec();
                 });
 
-        And("^the user begins editing the allocation priority",
+        When("^the user begins editing the allocation priority",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.allocationPrioritySpec;

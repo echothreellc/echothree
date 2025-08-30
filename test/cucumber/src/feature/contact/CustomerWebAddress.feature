@@ -12,7 +12,7 @@ Feature: Customer web address
 
   Scenario: Existing customer adds and then deletes an web address without a description
     Given the customer Test begins using the application
-    And the user begins entering a new web address
+    When the user begins entering a new web address
     And the user sets the web address's url to "http://www.echothree.com/"
     And the user adds the new web address
     Then no error should occur
@@ -21,7 +21,7 @@ Feature: Customer web address
 
   Scenario: Existing customer adds and then deletes an web address with a description
     Given the customer Test begins using the application
-    And the user begins entering a new web address
+    When the user begins entering a new web address
     And the user sets the web address's url to "http://www.echothree.com/"
     And the user sets the web address's description to "Additional Web Address"
     And the user adds the new web address
@@ -31,14 +31,14 @@ Feature: Customer web address
 
   Scenario: Existing customer adds, edits and then deletes an web address with a description
     Given the customer Test begins using the application
-    And the user begins entering a new web address
+    When the user begins entering a new web address
     And the user sets the web address's url to "http://www.echothree.com/"
     And the user sets the web address's description to "Additional Web Address"
     And the user adds the new web address
     Then no error should occur
-    And the user begins specifying a web address to edit
+    When the user begins specifying a web address to edit
     And the user sets the web address's contact mechanism to the last web address added
-    And the user begins editing the web address
+    When the user begins editing the web address
     Then no error should occur
     And the user sets the web address's url to "http://www.echothree.com/~rich"
     And the user sets the web address's description to "Edited Web Address"

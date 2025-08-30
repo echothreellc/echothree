@@ -34,7 +34,7 @@ Feature: Employee entity type
     And the user sets the entity instance's entity type to the last entity type added
     And the user adds the new entity instance
     Then no error should occur
-    And the user begins entering a new entity alias type
+    When the user begins entering a new entity alias type
     And the user sets the entity alias type's component vendor to "TEST_COMPONENT_VENDOR"
     And the user sets the entity alias type's entity type to "TEST_ENTITY_TYPE"
     And the user sets the entity alias type's name to "TEST_ENTITY_ALIAS_TYPE"
@@ -76,7 +76,7 @@ Feature: Employee entity type
     And the user sets the entity instance's entity type to the last entity type added
     And the user adds the new entity instance
     Then no error should occur
-    And the user begins entering a new entity alias type
+    When the user begins entering a new entity alias type
     And the user sets the entity alias type's component vendor to "TEST_COMPONENT_VENDOR"
     And the user sets the entity alias type's entity type to "TEST_ENTITY_TYPE"
     And the user sets the entity alias type's name to "TEST_ENTITY_ALIAS_TYPE"
@@ -123,7 +123,7 @@ Feature: Employee entity type
     And the user sets the entity instance's entity type to the last entity type added
     And the user adds the new entity instance
     Then no error should occur
-    And the user begins entering a new entity alias type
+    When the user begins entering a new entity alias type
     And the user sets the entity alias type's component vendor to "TEST_COMPONENT_VENDOR"
     And the user sets the entity alias type's entity type to "TEST_ENTITY_TYPE"
     And the user sets the entity alias type's name to "TEST_ENTITY_ALIAS_TYPE"
@@ -140,7 +140,7 @@ Feature: Employee entity type
     When the user begins specifying an entity alias to edit
     And the user sets the entity alias's entity to the last entity added
     And the user sets the entity alias's entity alias type to the last entity alias type added
-    And the user begins editing the entity alias
+    When the user begins editing the entity alias
     Then no error should occur
     And the user sets the entity alias's alias to "EditedEntityAlias"
     And the user finishes editing the entity alias

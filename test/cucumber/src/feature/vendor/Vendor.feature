@@ -13,14 +13,14 @@ Feature: Employee vendor
 
   Scenario: Existing employee adds a vendor, edits it, and sets the status of it
     Given the employee Test begins using the application
-    And the user begins entering a new vendor
+    When the user begins entering a new vendor
     And the user sets the vendor to use use item purchasing categories
     And the user indicates the vendor does allow solicitations to the email address
     And the user adds the new vendor
     Then no error should occur
-    And the user begins specifying a vendor to edit
+    When the user begins specifying a vendor to edit
     And the user sets the vendor's vendor name to the last vendor added
-    And the user begins editing the vendor
+    When the user begins editing the vendor
     Then no error should occur
     And the user sets the vendor's name to "Cucumber Vendor"
     And the user finishes editing the vendor

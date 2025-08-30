@@ -12,7 +12,7 @@ Feature: Customer postal address
 
   Scenario: Existing customer adds and then deletes an postal address without a description and does not allow solicitations
     Given the customer Test begins using the application
-    And the user begins entering a new postal address
+    When the user begins entering a new postal address
     And the user sets the postal address's first name to "Test"
     And the user sets the postal address's last name to "Customer"
     And the user sets the postal address's line 1 to "256 N Test Street"
@@ -29,7 +29,7 @@ Feature: Customer postal address
 
   Scenario: Existing customer adds and then deletes an postal address without a description and does allow solicitations
     Given the customer Test begins using the application
-    And the user begins entering a new postal address
+    When the user begins entering a new postal address
     And the user sets the postal address's first name to "Test"
     And the user sets the postal address's last name to "Customer"
     And the user sets the postal address's line 1 to "256 N Test Street"
@@ -46,7 +46,7 @@ Feature: Customer postal address
 
   Scenario: Existing customer adds and then deletes an postal address with a description and does not allow solicitations
     Given the customer Test begins using the application
-    And the user begins entering a new postal address
+    When the user begins entering a new postal address
     And the user sets the postal address's first name to "Test"
     And the user sets the postal address's last name to "Customer"
     And the user sets the postal address's line 1 to "256 N Test Street"
@@ -64,7 +64,7 @@ Feature: Customer postal address
 
   Scenario: Existing customer adds and then deletes an postal address with a description and does allow solicitations
     Given the customer Test begins using the application
-    And the user begins entering a new postal address
+    When the user begins entering a new postal address
     And the user sets the postal address's first name to "Test"
     And the user sets the postal address's last name to "Customer"
     And the user sets the postal address's line 1 to "256 N Test Street"
@@ -82,7 +82,7 @@ Feature: Customer postal address
 
   Scenario: Existing customer adds, edits and then deletes an postal address with a description and does allow solicitations
     Given the customer Test begins using the application
-    And the user begins entering a new postal address
+    When the user begins entering a new postal address
     And the user sets the postal address's first name to "Test"
     And the user sets the postal address's last name to "Customer"
     And the user sets the postal address's line 1 to "256 N Test Street"
@@ -95,9 +95,9 @@ Feature: Customer postal address
     And the user does not allow solicitations to the postal address
     And the user adds the new postal address
     Then no error should occur
-    And the user begins specifying a postal address to edit
+    When the user begins specifying a postal address to edit
     And the user sets the postal address's contact mechanism to the last postal address added
-    And the user begins editing the postal address
+    When the user begins editing the postal address
     Then no error should occur
     And the user sets the postal address's line 1 to "128 N Test Street"
     And the user sets the postal address's description to "Edited Postal"

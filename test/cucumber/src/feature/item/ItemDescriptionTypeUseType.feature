@@ -13,22 +13,22 @@ Feature: Employee item description type use type
 
   Scenario: Existing employee adds a item description type use type, edits it, and then deletes it
     Given the employee Test begins using the application
-    And the user begins entering a new item description type use type
+    When the user begins entering a new item description type use type
     And the user sets the item description type use type's name to TEST_ITEM_DESCRIPTION_TYPE_USE_TYPE
     And the user sets the item description type use type's sort order to "1"
     And the user sets the item description type use type to be the default
     And the user sets the item description type use type's description to "Test Item Description Type Use Type"
     And the user adds the new item description type use type
     Then no error should occur
-    And the user begins specifying a item description type use type to edit
+    When the user begins specifying a item description type use type to edit
     And the user sets the item description type use type's name to the last item description type use type added
-    And the user begins editing the item description type use type
+    When the user begins editing the item description type use type
     Then no error should occur
     And the user sets the item description type use type's sort order to "2"
     And the user sets the item description type use type's description to "Test Edited Item Description Type Use Type"
     And the user finishes editing the item description type use type
     Then no error should occur
-    And the user begins deleting a item description type use type
+    When the user begins deleting a item description type use type
     And the user sets the item description type use type's name to the last item description type use type added
     And the user deletes the item description type use type
     Then no error should occur

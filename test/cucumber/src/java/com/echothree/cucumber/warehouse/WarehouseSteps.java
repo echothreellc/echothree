@@ -99,7 +99,7 @@ public class WarehouseSteps
                     persona.warehouseUniversalSpec = WarehouseUtil.getHome().getWarehouseUniversalSpec();
                 });
 
-        And("^the user begins editing the warehouse$",
+        When("^the user begins editing the warehouse$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.warehouseUniversalSpec;

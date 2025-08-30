@@ -13,7 +13,7 @@ Feature: Employee item alias
 
   Scenario: Existing employee adds an item, then an item alias, edits it, and deletes it
     Given the employee Test begins using the application
-    And the user begins entering a new item
+    When the user begins entering a new item
     And the user sets the item's type to REGULAR
     And the user sets the item's use type to REGULAR
     And the user sets the item's category to DEFAULT
@@ -32,28 +32,28 @@ Feature: Employee item alias
     And the user sets the item's price type to FIXED
     And the user adds the new item
     Then no error should occur
-    And the user begins entering a new item unit of measure type
+    When the user begins entering a new item unit of measure type
     And the user sets the item unit of measure type's item to the last item added
     And the user sets the item unit of measure type's unit of measure type to EACH
     And the user sets the item unit of measure type's sort order to "1"
     And the user sets the item unit of measure type to be the default
     And the user adds the new item unit of measure type
     Then no error should occur
-    And the user begins entering a new item alias
+    When the user begins entering a new item alias
     And the user sets the item alias's item to the last item added
     And the user sets the item alias's unit of measure type to "EACH"
     And the user sets the item alias's item alias type to "ADDTL_ITEM_NAME"
     And the user sets the item alias's alias to "CUCUMBER_ALIAS"
     And the user adds the new item alias
     Then no error should occur
-    And the user begins specifying an item alias to edit
+    When the user begins specifying an item alias to edit
     And the user sets the item alias's alias to the last alias added
-    And the user begins editing the item alias
+    When the user begins editing the item alias
     Then no error should occur
     And the user sets the item alias's unit of measure type to "DOZEN"
     And the user finishes editing the item alias
     Then no error should occur
-    And the user begins deleting an item alias
+    When the user begins deleting an item alias
     And the user sets the item alias's alias to "CUCUMBER_ALIAS"
     And the user deletes the item alias
     Then no error should occur

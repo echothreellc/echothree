@@ -23,7 +23,7 @@ Feature: Employee allocation priority
     Then no error should occur
     When the user begins specifying an allocation priority to edit
     And the user sets the allocation priority's allocation priority name to the last allocation priority added
-    And the user begins editing the allocation priority
+    When the user begins editing the allocation priority
     Then no error should occur
     And the user sets the allocation priority's priority to "35"
     And the user sets the allocation priority's sort order to "20"

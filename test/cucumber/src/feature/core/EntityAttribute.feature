@@ -13,7 +13,7 @@ Feature: Employee entity attribute
 
   Scenario: Existing employee adds an integer entity attribute, edits it, and then deletes it
     Given the employee Test begins using the application
-    And the user begins entering a new entity attribute
+    When the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
     And the user sets the entity attribute's entity type to Item
     And the user sets the entity attribute's entity attribute type to INTEGER
@@ -26,11 +26,11 @@ Feature: Employee entity attribute
     And the user sets the entity attribute's description to "Test Integer Attribute"
     And the user adds the new entity attribute
     Then no error should occur
-    And the user begins specifying an entity attribute to edit
+    When the user begins specifying an entity attribute to edit
     And the user sets the entity attribute's component vendor to ECHO_THREE
     And the user sets the entity attribute's entity type to Item
     And the user sets the entity attribute's name to the last entity attribute added
-    And the user begins editing the entity attribute
+    When the user begins editing the entity attribute
     Then no error should occur
     And the user sets the entity attribute to not track revisions when modified
     And the user sets the entity attribute's upper integer range to "1000"
@@ -40,7 +40,7 @@ Feature: Employee entity attribute
     And the user sets the entity attribute's description to "Test Edited Integer Attribute"
     And the user finishes editing the entity attribute
     Then no error should occur
-    And the user begins deleting an entity attribute
+    When the user begins deleting an entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
     And the user sets the entity attribute's entity type to Item
     And the user sets the entity attribute's name to the last entity attribute added
@@ -49,7 +49,7 @@ Feature: Employee entity attribute
 
   Scenario: Existing employee adds a long entity attribute and then deletes it
     Given the employee Test begins using the application
-    And the user begins entering a new entity attribute
+    When the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
     And the user sets the entity attribute's entity type to Item
     And the user sets the entity attribute's entity attribute type to LONG
@@ -64,11 +64,11 @@ Feature: Employee entity attribute
     And the user sets the entity attribute's description to "Test Long Attribute"
     And the user adds the new entity attribute
     Then no error should occur
-    And the user begins specifying an entity attribute to edit
+    When the user begins specifying an entity attribute to edit
     And the user sets the entity attribute's component vendor to ECHO_THREE
     And the user sets the entity attribute's entity type to Item
     And the user sets the entity attribute's name to the last entity attribute added
-    And the user begins editing the entity attribute
+    When the user begins editing the entity attribute
     Then no error should occur
     And the user sets the entity attribute to not track revisions when modified
     And the user sets the entity attribute's upper long range to "1000"
@@ -79,7 +79,7 @@ Feature: Employee entity attribute
     And the user sets the entity attribute's description to "Test Edited Long Attribute"
     And the user finishes editing the entity attribute
     Then no error should occur
-    And the user begins deleting an entity attribute
+    When the user begins deleting an entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
     And the user sets the entity attribute's entity type to Item
     And the user sets the entity attribute's name to the last entity attribute added
@@ -88,7 +88,7 @@ Feature: Employee entity attribute
 
   Scenario: Existing employee adds a BLOB entity attribute and then deletes it
     Given the employee Test begins using the application
-    And the user begins entering a new entity attribute
+    When the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
     And the user sets the entity attribute's entity type to Item
     And the user sets the entity attribute's entity attribute type to BLOB
@@ -98,7 +98,7 @@ Feature: Employee entity attribute
     And the user sets the entity attribute's description to "Test BLOB Attribute"
     And the user adds the new entity attribute
     Then no error should occur
-    And the user begins deleting an entity attribute
+    When the user begins deleting an entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
     And the user sets the entity attribute's entity type to Item
     And the user sets the entity attribute's name to the last entity attribute added
@@ -107,7 +107,7 @@ Feature: Employee entity attribute
 
   Scenario: Existing employee adds a CLOB entity attribute and then deletes it
     Given the employee Test begins using the application
-    And the user begins entering a new entity attribute
+    When the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
     And the user sets the entity attribute's entity type to Item
     And the user sets the entity attribute's entity attribute type to CLOB
@@ -116,7 +116,7 @@ Feature: Employee entity attribute
     And the user sets the entity attribute's description to "Test CLOB Attribute"
     And the user adds the new entity attribute
     Then no error should occur
-    And the user begins deleting an entity attribute
+    When the user begins deleting an entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
     And the user sets the entity attribute's entity type to Item
     And the user sets the entity attribute's name to the last entity attribute added
@@ -125,7 +125,7 @@ Feature: Employee entity attribute
 
   Scenario: Existing employee adds a string entity attribute and then deletes it
     Given the employee Test begins using the application
-    And the user begins entering a new entity attribute
+    When the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
     And the user sets the entity attribute's entity type to Item
     And the user sets the entity attribute's entity attribute type to STRING
@@ -135,7 +135,7 @@ Feature: Employee entity attribute
     And the user sets the entity attribute's description to "Test String Attribute"
     And the user adds the new entity attribute
     Then no error should occur
-    And the user begins deleting an entity attribute
+    When the user begins deleting an entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
     And the user sets the entity attribute's entity type to Item
     And the user sets the entity attribute's name to the last entity attribute added
@@ -144,7 +144,7 @@ Feature: Employee entity attribute
 
   Scenario: Existing employee adds a boolean entity attribute and then deletes it
     Given the employee Test begins using the application
-    And the user begins entering a new entity attribute
+    When the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
     And the user sets the entity attribute's entity type to Item
     And the user sets the entity attribute's entity attribute type to BOOLEAN
@@ -153,7 +153,7 @@ Feature: Employee entity attribute
     And the user sets the entity attribute's description to "Test Boolean Attribute"
     And the user adds the new entity attribute
     Then no error should occur
-    And the user begins deleting an entity attribute
+    When the user begins deleting an entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
     And the user sets the entity attribute's entity type to Item
     And the user sets the entity attribute's name to the last entity attribute added
@@ -162,7 +162,7 @@ Feature: Employee entity attribute
 
   Scenario: Existing employee adds a collection entity attribute and then deletes it
     Given the employee Test begins using the application
-    And the user begins entering a new entity attribute
+    When the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
     And the user sets the entity attribute's entity type to Item
     And the user sets the entity attribute's entity attribute type to COLLECTION
@@ -171,7 +171,7 @@ Feature: Employee entity attribute
     And the user sets the entity attribute's description to "Test Entity Collection Attribute"
     And the user adds the new entity attribute
     Then no error should occur
-    And the user begins deleting an entity attribute
+    When the user begins deleting an entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
     And the user sets the entity attribute's entity type to Item
     And the user sets the entity attribute's name to the last entity attribute added
@@ -180,7 +180,7 @@ Feature: Employee entity attribute
 
   Scenario: Existing employee adds a date entity attribute and then deletes it
     Given the employee Test begins using the application
-    And the user begins entering a new entity attribute
+    When the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
     And the user sets the entity attribute's entity type to Item
     And the user sets the entity attribute's entity attribute type to DATE
@@ -189,7 +189,7 @@ Feature: Employee entity attribute
     And the user sets the entity attribute's description to "Test Date Attribute"
     And the user adds the new entity attribute
     Then no error should occur
-    And the user begins deleting an entity attribute
+    When the user begins deleting an entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
     And the user sets the entity attribute's entity type to Item
     And the user sets the entity attribute's name to the last entity attribute added
@@ -198,7 +198,7 @@ Feature: Employee entity attribute
 
   Scenario: Existing employee adds a time entity attribute and then deletes it
     Given the employee Test begins using the application
-    And the user begins entering a new entity attribute
+    When the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
     And the user sets the entity attribute's entity type to Item
     And the user sets the entity attribute's entity attribute type to TIME
@@ -207,7 +207,7 @@ Feature: Employee entity attribute
     And the user sets the entity attribute's description to "Test Time Attribute"
     And the user adds the new entity attribute
     Then no error should occur
-    And the user begins deleting an entity attribute
+    When the user begins deleting an entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
     And the user sets the entity attribute's entity type to Item
     And the user sets the entity attribute's name to the last entity attribute added
@@ -216,7 +216,7 @@ Feature: Employee entity attribute
 
   Scenario: Existing employee adds an entity entity attribute and then deletes it
     Given the employee Test begins using the application
-    And the user begins entering a new entity attribute
+    When the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
     And the user sets the entity attribute's entity type to Item
     And the user sets the entity attribute's entity attribute type to ENTITY
@@ -225,7 +225,7 @@ Feature: Employee entity attribute
     And the user sets the entity attribute's description to "Test Entity Attribute"
     And the user adds the new entity attribute
     Then no error should occur
-    And the user begins deleting an entity attribute
+    When the user begins deleting an entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
     And the user sets the entity attribute's entity type to Item
     And the user sets the entity attribute's name to the last entity attribute added
@@ -234,7 +234,7 @@ Feature: Employee entity attribute
 
   Scenario: Existing employee adds a geopoint entity attribute and then deletes it
     Given the employee Test begins using the application
-    And the user begins entering a new entity attribute
+    When the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
     And the user sets the entity attribute's entity type to Item
     And the user sets the entity attribute's entity attribute type to GEOPOINT
@@ -243,7 +243,7 @@ Feature: Employee entity attribute
     And the user sets the entity attribute's description to "Test Geo Point Attribute"
     And the user adds the new entity attribute
     Then no error should occur
-    And the user begins deleting an entity attribute
+    When the user begins deleting an entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
     And the user sets the entity attribute's entity type to Item
     And the user sets the entity attribute's name to the last entity attribute added
@@ -252,7 +252,7 @@ Feature: Employee entity attribute
 
   Scenario: Existing employee adds a name entity attribute and then deletes it
     Given the employee Test begins using the application
-    And the user begins entering a new entity attribute
+    When the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
     And the user sets the entity attribute's entity type to Item
     And the user sets the entity attribute's entity attribute type to NAME
@@ -261,7 +261,7 @@ Feature: Employee entity attribute
     And the user sets the entity attribute's description to "Test Name Attribute"
     And the user adds the new entity attribute
     Then no error should occur
-    And the user begins deleting an entity attribute
+    When the user begins deleting an entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
     And the user sets the entity attribute's entity type to Item
     And the user sets the entity attribute's name to the last entity attribute added
@@ -270,7 +270,7 @@ Feature: Employee entity attribute
 
   Scenario: Existing employee adds a list item entity attribute and then deletes it
     Given the employee Test begins using the application
-    And the user begins entering a new entity attribute
+    When the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
     And the user sets the entity attribute's entity type to Item
     And the user sets the entity attribute's entity attribute type to LISTITEM
@@ -279,7 +279,7 @@ Feature: Employee entity attribute
     And the user sets the entity attribute's description to "Test List Item Attribute"
     And the user adds the new entity attribute
     Then no error should occur
-    And the user begins deleting an entity attribute
+    When the user begins deleting an entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
     And the user sets the entity attribute's entity type to Item
     And the user sets the entity attribute's name to the last entity attribute added
@@ -288,7 +288,7 @@ Feature: Employee entity attribute
 
   Scenario: Existing employee adds a multiple list item entity attribute and then deletes it
     Given the employee Test begins using the application
-    And the user begins entering a new entity attribute
+    When the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
     And the user sets the entity attribute's entity type to Item
     And the user sets the entity attribute's entity attribute type to MULTIPLELISTITEM
@@ -297,7 +297,7 @@ Feature: Employee entity attribute
     And the user sets the entity attribute's description to "Test Multiple List Item Attribute"
     And the user adds the new entity attribute
     Then no error should occur
-    And the user begins deleting an entity attribute
+    When the user begins deleting an entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
     And the user sets the entity attribute's entity type to Item
     And the user sets the entity attribute's name to the last entity attribute added
@@ -306,7 +306,7 @@ Feature: Employee entity attribute
 
   Scenario: Existing employee adds an entity attribute to an entity type that is not extensible and receives an error
     Given the employee Test begins using the application
-    And the user begins entering a new entity attribute
+    When the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
     And the user sets the entity attribute's entity type to ItemAlias
     And the user sets the entity attribute's entity attribute type to INTEGER

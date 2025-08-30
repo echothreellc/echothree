@@ -120,7 +120,7 @@ public class LocationSteps implements En {
                     persona.locationSpec = WarehouseUtil.getHome().getLocationSpec();
                 });
 
-        And("^the user begins editing the location",
+        When("^the user begins editing the location",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.locationSpec;
