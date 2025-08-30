@@ -1886,7 +1886,7 @@ public enum ExecutionErrors {
     UnknownForumMessageAttachmentDescription,
     DuplicateForumMessageAttachmentDescription,
     MaximumInstancesExceeded,
-    MalformedUri,
+    MalformedUrl,
     DuplicateLeaveTypeDescription,
     DuplicateLeaveTypeName,
     UnknownLeaveTypeDescription,
