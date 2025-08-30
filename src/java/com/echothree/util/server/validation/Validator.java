@@ -37,6 +37,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -64,10 +65,10 @@ public class Validator {
     public static final String ERROR_INVALID_OPTION            = "InvalidOption";
     public static final String ERROR_INVALID_LIMIT             = "InvalidLimit";
     
-    public static final Map<FieldType, Class> fieldTypes;
+    public static final Map<FieldType, Class<? extends BaseFieldType>> fieldTypes;
     
     static {
-        Map<FieldType, Class> map = new HashMap<>(44);
+        Map<FieldType, Class<? extends BaseFieldType>> map = new HashMap<>(44);
         
         map.put(FieldType.BOOLEAN, BooleanFieldType.class);
         map.put(FieldType.COMMAND_NAME, CommandNameFieldType.class);
@@ -214,7 +215,7 @@ public class Validator {
         }
         
         if(!validationMessages.isEmpty()) {
-            getLog().info("formName = " + form == null ? null : form.getFormName() + ", fieldName = " + fieldName + ", originalFieldValue = \""
+            getLog().info("formName = " + form.getFormName() + ", fieldName = " + fieldName + ", originalFieldValue = \""
                     + originalFieldValue + "\", fieldValue = \"" + fieldValue + "\", errorList = " + validationMessages);
         }
         
@@ -288,7 +289,7 @@ public class Validator {
                         var count = limit.getCount();
                         var newCount = count == null ? null : validateUnsignedLong(count);
 
-                        if(count == null || (count != null && newCount != null)) {
+                        if(count == null || newCount != null) {
                             limit.setCount(newCount);
                         } else {
                             validLimit = false;
@@ -298,7 +299,7 @@ public class Validator {
                             var offset = limit.getOffset();
                             var newOffset = offset == null ? null : validateUnsignedLong(offset);
 
-                            if(offset == null || (offset != null && newOffset != null)) {
+                            if(offset == null || newOffset != null) {
                                 limit.setOffset(newOffset);
                             } else {
                                 validLimit = false;
@@ -318,9 +319,8 @@ public class Validator {
     public ValidationResult validate(BaseForm form, List<FieldDefinition> fieldDefinitions) {
         var formValidationMessages = new Messages();
         
-        fieldDefinitions.stream().map((fieldDefinition) -> validateField(form, fieldDefinition)).filter((validationMessages) -> (validationMessages != null)).forEach((validationMessages) -> {
-            formValidationMessages.add(validationMessages);
-        });
+        fieldDefinitions.stream().map((fieldDefinition) ->
+                validateField(form, fieldDefinition)).filter(Objects::nonNull).forEach(formValidationMessages::add);
         
         if(form != null) {
             validatePreferredClobMimeTypeName(formValidationMessages, form);
@@ -329,9 +329,8 @@ public class Validator {
         }
 
         var hasErrors = !formValidationMessages.isEmpty();
-        var validationResult = new ValidationResult(hasErrors? formValidationMessages: null);
-        
-        return validationResult;
+
+        return new ValidationResult(hasErrors ? formValidationMessages : null);
     }
 
 }
