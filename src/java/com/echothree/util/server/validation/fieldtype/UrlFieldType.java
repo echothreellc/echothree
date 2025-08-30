@@ -16,18 +16,19 @@
 
 package com.echothree.util.server.validation.fieldtype;
 
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.common.message.Message;
 import com.echothree.util.common.message.Messages;
+import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.validation.Validator;
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class UrlFieldType
         extends BaseFieldType {
     
-    /** Creates a new instance of UrlFieldType */
+    /** Creates a new instance of UriFieldType */
     public UrlFieldType(Validator validator, BaseForm baseForm, Messages validationMessages, String fieldValue, String[] splitFieldName, FieldDefinition fieldDefinition) {
         super(validator, baseForm, validationMessages, fieldValue, splitFieldName, fieldDefinition);
     }
@@ -37,8 +38,9 @@ public class UrlFieldType
         var hadErrors = false;
         
         try {
-            new URL(fieldValue);
-        } catch(MalformedURLException ex) {
+            var uri = new URI(fieldValue);
+            uri.toURL();
+        } catch(URISyntaxException | MalformedURLException ex) {
             validationMessages.add(fieldName, new Message(Validator.ERROR_INVALID_FORMAT));
             hadErrors = true;
         }
