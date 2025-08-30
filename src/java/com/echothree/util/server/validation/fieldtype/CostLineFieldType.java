@@ -39,7 +39,7 @@ public class CostLineFieldType
         var currency = getCurrency();
         
         if(currency == null) {
-            validationMessages.add(fieldName, new Message(Validator.ERROR_UNKOWN_CURRENCY_ISO_NAME));
+            validationMessages.add(fieldName, new Message(Validator.ERROR_UNKNOWN_CURRENCY_ISO_NAME));
             hadErrors = true;
         } else {
             fieldValue = DecimalUtils.getInstance().parse(currency.getMinusSign(), currency.getFractionSeparator(),
