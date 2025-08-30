@@ -13,7 +13,7 @@ Feature: Employee item alias type
 
   Scenario: Existing employee adds a item alias type, edits it, and then deletes it
     Given the employee Test begins using the application
-    And the user begins entering a new item alias type
+    When the user begins entering a new item alias type
     And the user sets the item alias type's name to CUCUMBER_ITEM_ALIAS_TYPE
     And the user sets the item alias type's checksum type to "NONE"
     And the user sets the item alias type to not allow multiple values per item
@@ -22,15 +22,15 @@ Feature: Employee item alias type
     And the user sets the item alias type's description to "Cucumber Item Alias Type"
     And the user adds the new item alias type
     Then no error should occur
-    And the user begins specifying a item alias type to edit
+    When the user begins specifying a item alias type to edit
     And the user sets the item alias type's name to the last item alias type added
-    And the user begins editing the item alias type
+    When the user begins editing the item alias type
     Then no error should occur
     And the user sets the item alias type's sort order to "2"
     And the user sets the item alias type's description to "Edited Cucumber Item Alias Type"
     And the user finishes editing the item alias type
     Then no error should occur
-    And the user begins deleting a item alias type
+    When the user begins deleting a item alias type
     And the user sets the item alias type's name to the last item alias type added
     And the user deletes the item alias type
     Then no error should occur

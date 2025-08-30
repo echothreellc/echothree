@@ -120,7 +120,7 @@ public class InventoryLocationGroupSteps implements En {
                     persona.inventoryLocationGroupSpec = InventoryUtil.getHome().getInventoryLocationGroupSpec();
                 });
 
-        And("^the user begins editing the inventory location group",
+        When("^the user begins editing the inventory location group",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.inventoryLocationGroupSpec;

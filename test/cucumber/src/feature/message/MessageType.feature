@@ -26,7 +26,7 @@ Feature: Employee message type
     And the user sets the message type's component vendor to ECHO_THREE
     And the user sets the message type's entity type to Item
     And the user sets the message type's name to the last message type added
-    And the user begins editing the message type
+    When the user begins editing the message type
     Then no error should occur
     When the user sets the message type's description to "Test Edited Message Type"
     And the user finishes editing the message type

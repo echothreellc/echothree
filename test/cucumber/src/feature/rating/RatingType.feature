@@ -25,7 +25,7 @@ Feature: Employee rating type
     And the user sets the rating type's component vendor to ECHO_THREE
     And the user sets the rating type's entity type to Item
     And the user sets the rating type's name to the last rating type added
-    And the user begins editing the rating type
+    When the user begins editing the rating type
     Then no error should occur
     When the user sets the rating type's description to "Test Edited Rating Type"
     And the user finishes editing the rating type

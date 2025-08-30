@@ -36,7 +36,7 @@ Feature: Employee inventory location group
     When the user begins specifying an inventory location group to edit
     And the user sets the inventory location group's warehouse name to the last warehouse added
     And the user sets the inventory location group's inventory location group name to the last inventory location group added
-    And the user begins editing the inventory location group
+    When the user begins editing the inventory location group
     Then no error should occur
     And the user sets the inventory location group's description to "Edited Cucumber Inventory Location Group"
     And the user finishes editing the inventory location group
