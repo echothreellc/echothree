@@ -51,18 +51,18 @@ public class Validator {
     
     private Currency currency = null;
     
-    public static final String ERROR_REQUIRED_FIELD           = "RequiredField";
-    public static final String ERROR_MINIMUM_LENGTH           = "MinimumLength";
-    public static final String ERROR_MAXIMUM_LENGTH           = "MaximumLength";
-    public static final String ERROR_MINIMUM_VALUE            = "MinimumValue";
-    public static final String ERROR_MAXIMUM_VALUE            = "MaximumValue";
-    public static final String ERROR_NO_VALUE_ALLOWED         = "NoValueAllowed";
-    public static final String ERROR_UNKOWN_CURRENCY_ISO_NAME = "UnknownCurrencyIsoName";
-    public static final String ERROR_UNKOWN_VENDOR_NAME       = "UnknownVendorName";
-    public static final String ERROR_INTERNAL_ERROR           = "InternalError";
-    public static final String ERROR_INVALID_FORMAT           = "InvalidFormat";
-    public static final String ERROR_INVALID_OPTION           = "InvalidOption";
-    public static final String ERROR_INVALID_LIMIT            = "InvalidLimit";
+    public static final String ERROR_REQUIRED_FIELD            = "RequiredField";
+    public static final String ERROR_MINIMUM_LENGTH            = "MinimumLength";
+    public static final String ERROR_MAXIMUM_LENGTH            = "MaximumLength";
+    public static final String ERROR_MINIMUM_VALUE             = "MinimumValue";
+    public static final String ERROR_MAXIMUM_VALUE             = "MaximumValue";
+    public static final String ERROR_NO_VALUE_ALLOWED          = "NoValueAllowed";
+    public static final String ERROR_UNKNOWN_CURRENCY_ISO_NAME = "UnknownCurrencyIsoName";
+    public static final String ERROR_UNKNOWN_VENDOR_NAME       = "UnknownVendorName";
+    public static final String ERROR_INTERNAL_ERROR            = "InternalError";
+    public static final String ERROR_INVALID_FORMAT            = "InvalidFormat";
+    public static final String ERROR_INVALID_OPTION            = "InvalidOption";
+    public static final String ERROR_INVALID_LIMIT             = "InvalidLimit";
     
     public static final Map<FieldType, Class> fieldTypes;
     
