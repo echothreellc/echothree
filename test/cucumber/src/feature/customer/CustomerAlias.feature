@@ -32,7 +32,7 @@ Feature: Employee customer alias
     Given the user begins specifying a party alias to edit
     And the user sets the party alias's party added by the anonymous user Gerald
     And the user sets the party alias type's party alias type to TEST
-    And the user begins editing the party alias
+    When the user begins editing the party alias
     Then no error should occur
     And the user sets the party alias's alias to "MY_EDITED_TEST_ALIAS"
     And the user finishes editing the party alias

@@ -24,7 +24,7 @@ Feature: Employee selector type
     When the user begins specifying a selector type to edit
     And the user sets the selector type's selector kind name to ITEM
     And the user sets the selector type's name to the last selector type added
-    And the user begins editing the selector type
+    When the user begins editing the selector type
     Then no error should occur
     And the user sets the selector type's sort order to "2"
     And the user sets the selector type's description to "Test Edited Selector Type"

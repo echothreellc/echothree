@@ -22,7 +22,7 @@ Feature: Employee inventory condition
     Then no error should occur
     When the user begins specifying an inventory condition to edit
     And the user sets the inventory condition's inventory condition name to the last inventory condition added
-    And the user begins editing the inventory condition
+    When the user begins editing the inventory condition
     Then no error should occur
     And the user sets the inventory condition's sort order to "20"
     And the user sets the inventory condition's description to "Edited Cucumber Inventory Condition"

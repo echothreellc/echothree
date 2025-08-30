@@ -64,7 +64,7 @@ Feature: Employee location
     When the user begins specifying a location to edit
     And the user sets the location's warehouse name to the last warehouse added
     And the user sets the location's location name to the last location added
-    And the user begins editing the location
+    When the user begins editing the location
     Then no error should occur
     And the user sets the location's description to "Edited Cucumber Location"
     And the user finishes editing the location
@@ -87,7 +87,7 @@ Feature: Employee location
 
   Scenario: Existing employee adds a location type with no validation pattern and then adds a location
     Given the employee Test begins using the application
-    And the user begins entering a new warehouse
+    When the user begins entering a new warehouse
     And the user sets the warehouse's warehouse name to "CucumberWarehouse"
     And the user sets the warehouse's warehouse type name to "DEFAULT"
     And the user sets the warehouse's name to "Cucumber Warehouse"
@@ -354,7 +354,7 @@ Feature: Employee location
     When the user begins specifying a location to edit
     And the user sets the location's warehouse name to the last warehouse added
     And the user sets the location's location name to the last location added
-    And the user begins editing the location
+    When the user begins editing the location
     Then no error should occur
     And the user sets the location's new location name to "BB"
     And the user finishes editing the location
@@ -417,7 +417,7 @@ Feature: Employee location
     When the user begins specifying a location to edit
     And the user sets the location's warehouse name to the last warehouse added
     And the user sets the location's location name to the last location added
-    And the user begins editing the location
+    When the user begins editing the location
     Then no error should occur
     And the user sets the location's new location name to "00"
     And the user finishes editing the location
@@ -479,7 +479,7 @@ Feature: Employee location
     When the user begins specifying a location to edit
     And the user sets the location's warehouse name to the last warehouse added
     And the user sets the location's location name to the last location added
-    And the user begins editing the location
+    When the user begins editing the location
     Then no error should occur
     And the user sets the location's new location name to "0000"
     And the user finishes editing the location
@@ -540,7 +540,7 @@ Feature: Employee location
     When the user begins specifying a location to edit
     And the user sets the location's warehouse name to the last warehouse added
     And the user sets the location's location name to the last location added
-    And the user begins editing the location
+    When the user begins editing the location
     Then no error should occur
     And the user sets the location's new location name to "0"
     And the user finishes editing the location

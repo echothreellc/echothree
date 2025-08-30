@@ -94,7 +94,7 @@ public class SelectorSteps implements En {
                     persona.selectorSpec = SelectorUtil.getHome().getSelectorSpec();
                 });
 
-        And("^the user begins editing the selector$",
+        When("^the user begins editing the selector$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.selectorSpec;

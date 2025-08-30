@@ -27,7 +27,7 @@ Feature: Employee warehouse
     Then no error should occur
     When the user begins specifying a warehouse to edit
     And the user sets the warehouse's warehouse name to the last warehouse added
-    And the user begins editing the warehouse
+    When the user begins editing the warehouse
     Then no error should occur
     And the user sets the warehouse's name to "Edited Cucumber Warehouse"
     And the user finishes editing the warehouse
