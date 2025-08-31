@@ -86,10 +86,10 @@ public class OfferControl
         if(defaultFound && isDefault) {
             var defaultOfferDetailValue = getDefaultOfferDetailValueForUpdate();
             
-            defaultOfferDetailValue.setIsDefault(Boolean.FALSE);
+            defaultOfferDetailValue.setIsDefault(false);
             updateOfferFromValue(defaultOfferDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var offer = OfferFactory.getInstance().create();
@@ -387,11 +387,11 @@ public class OfferControl
                     // If I'm the default, and a default already existed...
                     var defaultOfferDetailValue = getDefaultOfferDetailValueForUpdate();
                     
-                    defaultOfferDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultOfferDetailValue.setIsDefault(false);
                     updateOfferFromValue(defaultOfferDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -439,7 +439,7 @@ public class OfferControl
                 }
                 var offerDetailValue = Objects.requireNonNull(defaultOffer).getLastDetailForUpdate().getOfferDetailValue().clone();
                 
-                offerDetailValue.setIsDefault(Boolean.TRUE);
+                offerDetailValue.setIsDefault(true);
                 updateOfferFromValue(offerDetailValue, false, deletedBy);
             }
         }
@@ -666,10 +666,10 @@ public class OfferControl
         if(defaultFound && isDefault) {
             var defaultOfferCustomerTypeValue = getDefaultOfferCustomerTypeValueForUpdate(offer);
 
-            defaultOfferCustomerTypeValue.setIsDefault(Boolean.FALSE);
+            defaultOfferCustomerTypeValue.setIsDefault(false);
             updateOfferCustomerTypeFromValue(defaultOfferCustomerTypeValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var offerCustomerType = OfferCustomerTypeFactory.getInstance().create(offer, customerType,
@@ -894,11 +894,11 @@ public class OfferControl
                     // If I'm the default, and a default already existed...
                     var defaultOfferCustomerTypeValue = getDefaultOfferCustomerTypeValueForUpdate(offer);
 
-                    defaultOfferCustomerTypeValue.setIsDefault(Boolean.FALSE);
+                    defaultOfferCustomerTypeValue.setIsDefault(false);
                     updateOfferCustomerTypeFromValue(defaultOfferCustomerTypeValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -930,7 +930,7 @@ public class OfferControl
                 }
                 var offerCustomerTypeValue = defaultOfferCustomerType.getOfferCustomerTypeValue().clone();
 
-                offerCustomerTypeValue.setIsDefault(Boolean.TRUE);
+                offerCustomerTypeValue.setIsDefault(true);
                 updateOfferCustomerTypeFromValue(offerCustomerTypeValue, false, deletedBy);
             }
         }

@@ -61,7 +61,7 @@ public class SetDefaultForumGroupForumCommand
                         forum);
                 
                 if(forumGroupForumValue != null) {
-                    forumGroupForumValue.setIsDefault(Boolean.TRUE);
+                    forumGroupForumValue.setIsDefault(true);
                     forumControl.updateForumGroupForumFromValue(forumGroupForumValue, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownForumGroupForum.name());

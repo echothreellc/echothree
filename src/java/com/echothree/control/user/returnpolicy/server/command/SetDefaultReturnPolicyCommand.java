@@ -70,7 +70,7 @@ public class SetDefaultReturnPolicyCommand
             var returnPolicyDetailValue = returnPolicyControl.getReturnPolicyDetailValueByNameForUpdate(returnKind, returnPolicyName);
             
             if(returnPolicyDetailValue != null) {
-                returnPolicyDetailValue.setIsDefault(Boolean.TRUE);
+                returnPolicyDetailValue.setIsDefault(true);
                 returnPolicyControl.updateReturnPolicyFromValue(returnPolicyDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownReturnPolicyName.name(), returnPolicyName);

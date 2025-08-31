@@ -138,7 +138,7 @@ public class CreatePartyPaymentMethodCommand
         
         if(partyContactMechanismPurpose == null) {
             partyContactMechanismPurpose = contactControl.createPartyContactMechanismPurpose(partyContactMechanism,
-                    contactMechanismPurpose, Boolean.FALSE, 1, createdBy);
+                    contactMechanismPurpose, false, 1, createdBy);
         }
         
         return partyPaymentMethodControl.createPartyPaymentMethodContactMechanism(partyPaymentMethod, partyContactMechanismPurpose, createdBy);

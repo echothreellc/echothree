@@ -73,7 +73,7 @@ public class CommentAddActionForm
                 var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
                 
                 commandForm.setDefaultMimeTypeChoice(mimeTypeChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(false));
                 if(commentTypeName != null) {
                     commandForm.setComponentVendorName(ComponentVendors.ECHO_THREE.name());
                     commandForm.setEntityTypeName(EntityTypes.Item.name());

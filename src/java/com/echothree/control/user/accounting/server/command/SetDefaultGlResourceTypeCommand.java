@@ -65,7 +65,7 @@ public class SetDefaultGlResourceTypeCommand
         var glResourceTypeDetailValue = accountingControl.getGlResourceTypeDetailValueByNameForUpdate(glResourceTypeName);
         
         if(glResourceTypeDetailValue != null) {
-            glResourceTypeDetailValue.setIsDefault(Boolean.TRUE);
+            glResourceTypeDetailValue.setIsDefault(true);
             accountingControl.updateGlResourceTypeFromValue(glResourceTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownGlResourceTypeName.name(), glResourceTypeName);

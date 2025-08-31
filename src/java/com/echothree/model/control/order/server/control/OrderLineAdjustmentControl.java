@@ -66,10 +66,10 @@ public class OrderLineAdjustmentControl
         if(defaultFound && isDefault) {
             var defaultOrderLineAdjustmentTypeDetailValue = getDefaultOrderLineAdjustmentTypeDetailValueForUpdate(orderType);
 
-            defaultOrderLineAdjustmentTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultOrderLineAdjustmentTypeDetailValue.setIsDefault(false);
             updateOrderLineAdjustmentTypeFromValue(defaultOrderLineAdjustmentTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var orderLineAdjustmentType = OrderLineAdjustmentTypeFactory.getInstance().create();
@@ -273,11 +273,11 @@ public class OrderLineAdjustmentControl
                     // If I'm the default, and a default already existed...
                     var defaultOrderLineAdjustmentTypeDetailValue = getDefaultOrderLineAdjustmentTypeDetailValueForUpdate(orderType);
 
-                    defaultOrderLineAdjustmentTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultOrderLineAdjustmentTypeDetailValue.setIsDefault(false);
                     updateOrderLineAdjustmentTypeFromValue(defaultOrderLineAdjustmentTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -317,7 +317,7 @@ public class OrderLineAdjustmentControl
                 }
                 var orderLineAdjustmentTypeDetailValue = Objects.requireNonNull(defaultOrderLineAdjustmentType).getLastDetailForUpdate().getOrderLineAdjustmentTypeDetailValue().clone();
 
-                orderLineAdjustmentTypeDetailValue.setIsDefault(Boolean.TRUE);
+                orderLineAdjustmentTypeDetailValue.setIsDefault(true);
                 updateOrderLineAdjustmentTypeFromValue(orderLineAdjustmentTypeDetailValue, false, deletedBy);
             }
         }

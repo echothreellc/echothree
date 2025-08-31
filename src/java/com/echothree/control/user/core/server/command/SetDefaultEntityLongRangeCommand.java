@@ -83,7 +83,7 @@ public class SetDefaultEntityLongRangeCommand
                         var entityLongRangeDetailValue = coreControl.getEntityLongRangeDetailValueByNameForUpdate(entityAttribute, entityLongRangeName);
 
                         if(entityLongRangeDetailValue != null) {
-                            entityLongRangeDetailValue.setIsDefault(Boolean.TRUE);
+                            entityLongRangeDetailValue.setIsDefault(true);
                             coreControl.updateEntityLongRangeFromValue(entityLongRangeDetailValue, getPartyPK());
                         } else {
                             addExecutionError(ExecutionErrors.UnknownEntityLongRangeName.name(), componentVendorName, entityTypeName, entityAttributeName, entityLongRangeName);

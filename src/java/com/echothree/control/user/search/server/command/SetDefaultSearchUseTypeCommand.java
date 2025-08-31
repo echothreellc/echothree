@@ -66,7 +66,7 @@ public class SetDefaultSearchUseTypeCommand
         var searchUseTypeDetailValue = searchControl.getSearchUseTypeDetailValueByNameForUpdate(searchUseTypeName);
         
         if(searchUseTypeDetailValue != null) {
-            searchUseTypeDetailValue.setIsDefault(Boolean.TRUE);
+            searchUseTypeDetailValue.setIsDefault(true);
             searchControl.updateSearchUseTypeFromValue(searchUseTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownSearchUseTypeName.name(), searchUseTypeName);

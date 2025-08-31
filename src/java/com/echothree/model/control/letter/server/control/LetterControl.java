@@ -105,10 +105,10 @@ public class LetterControl
         if(defaultFound && isDefault) {
             var defaultLetterSourceDetailValue = getDefaultLetterSourceDetailValueForUpdate();
             
-            defaultLetterSourceDetailValue.setIsDefault(Boolean.FALSE);
+            defaultLetterSourceDetailValue.setIsDefault(false);
             updateLetterSourceFromValue(defaultLetterSourceDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var letterSource = LetterSourceFactory.getInstance().create();
@@ -423,11 +423,11 @@ public class LetterControl
                     // If I'm the default, and a default already existed...
                     var defaultLetterSourceDetailValue = getDefaultLetterSourceDetailValueForUpdate();
                     
-                    defaultLetterSourceDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultLetterSourceDetailValue.setIsDefault(false);
                     updateLetterSourceFromValue(defaultLetterSourceDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -467,7 +467,7 @@ public class LetterControl
                 }
                 var letterSourceDetailValue = Objects.requireNonNull(defaultLetterSource).getLastDetailForUpdate().getLetterSourceDetailValue().clone();
                 
-                letterSourceDetailValue.setIsDefault(Boolean.TRUE);
+                letterSourceDetailValue.setIsDefault(true);
                 updateLetterSourceFromValue(letterSourceDetailValue, false, deletedBy);
             }
         }
@@ -683,10 +683,10 @@ public class LetterControl
         if(defaultFound && isDefault) {
             var defaultLetterDetailValue = getDefaultLetterDetailValueForUpdate(chainType);
             
-            defaultLetterDetailValue.setIsDefault(Boolean.FALSE);
+            defaultLetterDetailValue.setIsDefault(false);
             updateLetterFromValue(defaultLetterDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var letter = LetterFactory.getInstance().create();
@@ -987,11 +987,11 @@ public class LetterControl
                     // If I'm the default, and a default already existed...
                     var defaultLetterDetailValue = getDefaultLetterDetailValueForUpdate(chainType);
                     
-                    defaultLetterDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultLetterDetailValue.setIsDefault(false);
                     updateLetterFromValue(defaultLetterDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -1031,7 +1031,7 @@ public class LetterControl
                 }
                 var letterDetailValue = Objects.requireNonNull(defaultLetter).getLastDetailForUpdate().getLetterDetailValue().clone();
                 
-                letterDetailValue.setIsDefault(Boolean.TRUE);
+                letterDetailValue.setIsDefault(true);
                 updateLetterFromValue(letterDetailValue, false, deletedBy);
             }
         }

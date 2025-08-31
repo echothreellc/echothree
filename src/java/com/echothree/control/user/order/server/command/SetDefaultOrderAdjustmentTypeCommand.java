@@ -72,7 +72,7 @@ public class SetDefaultOrderAdjustmentTypeCommand
             var orderAdjustmentTypeDetailValue = orderAdjustmentControl.getOrderAdjustmentTypeDetailValueByNameForUpdate(orderType, orderAdjustmentTypeName);
 
             if(orderAdjustmentTypeDetailValue != null) {
-                orderAdjustmentTypeDetailValue.setIsDefault(Boolean.TRUE);
+                orderAdjustmentTypeDetailValue.setIsDefault(true);
                 orderAdjustmentControl.updateOrderAdjustmentTypeFromValue(orderAdjustmentTypeDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownOrderAdjustmentTypeName.name(), orderTypeName, orderAdjustmentTypeName);

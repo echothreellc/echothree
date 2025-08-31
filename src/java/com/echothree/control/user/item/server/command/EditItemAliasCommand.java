@@ -18,7 +18,6 @@ package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.edit.ItemAliasEdit;
 import com.echothree.control.user.item.common.edit.ItemEditFactory;
-import com.echothree.control.user.item.common.form.EditItemAliasForm;
 import com.echothree.control.user.item.common.result.EditItemAliasResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.control.user.item.common.spec.ItemAliasSpec;
@@ -33,7 +32,6 @@ import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemAlias;
 import com.echothree.model.data.item.server.entity.ItemAliasType;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;

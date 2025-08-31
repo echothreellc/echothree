@@ -51,7 +51,7 @@ public class RatingAddActionForm
                     commandForm.setRatingName(ratingName);
                 }
                 commandForm.setDefaultRatingTypeListItemChoice(ratingTypeListItemChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(false));
 
                 var commandResult = RatingUtil.getHome().getRatingTypeListItemChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();

@@ -41,7 +41,7 @@ public class StatusActionForm
 
             form.setTransactionGroupName(transactionGroupName);
             form.setDefaultTransactionGroupStatusChoice(transactionGroupStatusChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = AccountingUtil.getHome().getTransactionGroupStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

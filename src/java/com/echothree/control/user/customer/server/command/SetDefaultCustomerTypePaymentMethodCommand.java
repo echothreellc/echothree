@@ -63,7 +63,7 @@ public class SetDefaultCustomerTypePaymentMethodCommand
                         paymentMethod);
                 
                 if(customerTypePaymentMethodValue != null) {
-                    customerTypePaymentMethodValue.setIsDefault(Boolean.TRUE);
+                    customerTypePaymentMethodValue.setIsDefault(true);
                     customerControl.updateCustomerTypePaymentMethodFromValue(customerTypePaymentMethodValue, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownCustomerTypePaymentMethod.name());

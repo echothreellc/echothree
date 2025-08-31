@@ -65,7 +65,7 @@ public class SetDefaultAllocationPriorityCommand
         var allocationPriorityDetailValue = inventoryControl.getAllocationPriorityDetailValueByNameForUpdate(allocationPriorityName);
 
         if(allocationPriorityDetailValue != null) {
-            allocationPriorityDetailValue.setIsDefault(Boolean.TRUE);
+            allocationPriorityDetailValue.setIsDefault(true);
             inventoryControl.updateAllocationPriorityFromValue(allocationPriorityDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownAllocationPriorityName.name(), allocationPriorityName);

@@ -64,7 +64,7 @@ public class AddActionForm
             var form = AccountingUtil.getHome().getGetGlAccountChoicesForm();
 
             form.setDefaultGlAccountChoice(parentGlAccountChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = AccountingUtil.getHome().getGlAccountChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -82,7 +82,7 @@ public class AddActionForm
             var form = AccountingUtil.getHome().getGetGlAccountTypeChoicesForm();
 
             form.setDefaultGlAccountTypeChoice(glAccountTypeChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = AccountingUtil.getHome().getGlAccountTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -100,7 +100,7 @@ public class AddActionForm
             var form = AccountingUtil.getHome().getGetGlAccountClassChoicesForm();
 
             form.setDefaultGlAccountClassChoice(glAccountClassChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = AccountingUtil.getHome().getGlAccountClassChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -118,7 +118,7 @@ public class AddActionForm
             var form = AccountingUtil.getHome().getGetGlAccountCategoryChoicesForm();
 
             form.setDefaultGlAccountCategoryChoice(glAccountCategoryChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = AccountingUtil.getHome().getGlAccountCategoryChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -136,7 +136,7 @@ public class AddActionForm
             var form = AccountingUtil.getHome().getGetGlResourceTypeChoicesForm();
 
             form.setDefaultGlResourceTypeChoice(glResourceTypeChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = AccountingUtil.getHome().getGlResourceTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -154,7 +154,7 @@ public class AddActionForm
             var form = AccountingUtil.getHome().getGetCurrencyChoicesForm();
 
             form.setDefaultCurrencyChoice(currencyChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -308,7 +308,7 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        isDefault = Boolean.FALSE;
+        isDefault = false;
     }
     
 }

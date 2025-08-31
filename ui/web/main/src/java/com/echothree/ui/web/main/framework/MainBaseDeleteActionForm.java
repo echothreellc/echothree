@@ -37,7 +37,7 @@ public class MainBaseDeleteActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        confirmDelete = Boolean.FALSE;
+        confirmDelete = false;
     }
     
 }

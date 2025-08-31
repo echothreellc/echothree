@@ -70,7 +70,7 @@ public class SetDefaultShipmentTimeTypeCommand
             var shipmentTimeTypeDetailValue = shipmentControl.getShipmentTimeTypeDetailValueByNameForUpdate(shipmentType, shipmentTimeTypeName);
 
             if(shipmentTimeTypeDetailValue != null) {
-                shipmentTimeTypeDetailValue.setIsDefault(Boolean.TRUE);
+                shipmentTimeTypeDetailValue.setIsDefault(true);
                 shipmentControl.updateShipmentTimeTypeFromValue(shipmentTimeTypeDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownShipmentTimeTypeName.name(), shipmentTypeName, shipmentTimeTypeName);

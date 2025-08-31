@@ -53,7 +53,7 @@ public class AddActionForm
             commandForm.setPartyName(partyName);
             commandForm.setContactMechanismTypeName(ContactMechanismTypes.EMAIL_ADDRESS.name());
             commandForm.setDefaultContactMechanismChoice(emailAddressContactMechanismChoice);
-            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = ContactUtil.getHome().getContactMechanismChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -74,7 +74,7 @@ public class AddActionForm
             commandForm.setPartyName(partyName);
             commandForm.setContactMechanismTypeName(ContactMechanismTypes.POSTAL_ADDRESS.name());
             commandForm.setDefaultContactMechanismChoice(postalAddressContactMechanismChoice);
-            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = ContactUtil.getHome().getContactMechanismChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -95,7 +95,7 @@ public class AddActionForm
             commandForm.setPartyName(partyName);
             commandForm.setContactMechanismTypeName(ContactMechanismTypes.WEB_ADDRESS.name());
             commandForm.setDefaultContactMechanismChoice(letterSourceContactMechanismChoice);
-            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = ContactUtil.getHome().getContactMechanismChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -221,7 +221,7 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        isDefault = Boolean.FALSE;
+        isDefault = false;
     }
 
 }

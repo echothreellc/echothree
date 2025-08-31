@@ -68,7 +68,7 @@ public class BillingAccountLogic {
                     var partyContactMechanismPurpose = contactControl.getPartyContactMechanismPurpose(billFromPartyContactMechanism, contactMechanismPurpose);
                     
                     if(partyContactMechanismPurpose == null) {
-                        contactControl.createPartyContactMechanismPurpose(billFromPartyContactMechanism, contactMechanismPurpose, Boolean.FALSE, 1, createdBy);
+                        contactControl.createPartyContactMechanismPurpose(billFromPartyContactMechanism, contactMechanismPurpose, false, 1, createdBy);
                     }
                 }
 
@@ -85,7 +85,7 @@ public class BillingAccountLogic {
                     var partyContactMechanismPurpose = contactControl.getPartyContactMechanismPurpose(billToPartyContactMechanism, contactMechanismPurpose);
                     
                     if(partyContactMechanismPurpose == null) {
-                        contactControl.createPartyContactMechanismPurpose(billToPartyContactMechanism, contactMechanismPurpose, Boolean.FALSE, 1, createdBy);
+                        contactControl.createPartyContactMechanismPurpose(billToPartyContactMechanism, contactMechanismPurpose, false, 1, createdBy);
                     }
                 }
             }

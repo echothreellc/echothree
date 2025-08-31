@@ -24,7 +24,7 @@ import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.control.item.common.ItemConstants;
+import com.echothree.model.control.item.common.ItemDescriptionTypes;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.training.server.control.TrainingControl;
@@ -55,14 +55,14 @@ public class EntityDescriptionUtils {
         var itemControl = Session.getModelController(ItemControl.class);
 
         // TODO: Context Cache
-        return itemControl.getItemDescriptionTypeByName(ItemConstants.ItemDescriptionType_DEFAULT_DESCRIPTION);
+        return itemControl.getItemDescriptionTypeByName(ItemDescriptionTypes.DEFAULT_DESCRIPTION.name());
     }
 
     private ItemDescriptionType getItemPurchaseOrderDescriptionType() {
         var itemControl = Session.getModelController(ItemControl.class);
 
         // TODO: Context Cache
-        return itemControl.getItemDescriptionTypeByName(ItemConstants.ItemDescriptionType_PURCHASE_ORDER_DESCRIPTION);
+        return itemControl.getItemDescriptionTypeByName(ItemDescriptionTypes.PURCHASE_ORDER_DESCRIPTION.name());
     }
 
     private String getDescriptionForForumMessage(UserVisit userVisit, ForumMessage forumMessage) {

@@ -44,7 +44,7 @@ public class AddActionForm
                 var commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
                 
                 commandForm.setDefaultMimeTypeChoice(mimeTypeChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(false));
                 commandForm.setMimeTypeUsageTypeName(MimeTypeUsageTypes.TEXT.name());
 
                 var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);

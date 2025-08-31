@@ -83,7 +83,7 @@ public class AddAction
                         forwardKey = ForwardConstants.DISPLAY;
                     }
                 } else {
-                    actionForm.setDefaultAllowBackorders(Boolean.TRUE);
+                    actionForm.setDefaultAllowBackorders(true);
                     actionForm.setSortOrder("1");
                     forwardKey = ForwardConstants.FORM;
                 }

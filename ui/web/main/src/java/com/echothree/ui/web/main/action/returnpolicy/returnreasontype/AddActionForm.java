@@ -46,7 +46,7 @@ public class AddActionForm
 
             form.setReturnKindName(returnKindName);
             form.setDefaultReturnTypeChoice(returnTypeChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = ReturnPolicyUtil.getHome().getReturnTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -118,7 +118,7 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        isDefault = Boolean.FALSE;
+        isDefault = false;
     }
     
 }

@@ -105,10 +105,10 @@ public class ShipmentControl
         if(defaultFound && isDefault) {
             var defaultShipmentTypeDetailValue = getDefaultShipmentTypeDetailValueForUpdate();
 
-            defaultShipmentTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultShipmentTypeDetailValue.setIsDefault(false);
             updateShipmentTypeFromValue(defaultShipmentTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var shipmentType = ShipmentTypeFactory.getInstance().create();
@@ -367,11 +367,11 @@ public class ShipmentControl
                     // If I'm the default, and a default already existed...
                     var defaultShipmentTypeDetailValue = getDefaultShipmentTypeDetailValueForUpdate();
 
-                    defaultShipmentTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultShipmentTypeDetailValue.setIsDefault(false);
                     updateShipmentTypeFromValue(defaultShipmentTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -416,7 +416,7 @@ public class ShipmentControl
                     }
                     var shipmentTypeDetailValue = Objects.requireNonNull(defaultShipmentType).getLastDetailForUpdate().getShipmentTypeDetailValue().clone();
 
-                    shipmentTypeDetailValue.setIsDefault(Boolean.TRUE);
+                    shipmentTypeDetailValue.setIsDefault(true);
                     updateShipmentTypeFromValue(shipmentTypeDetailValue, false, deletedBy);
                 }
             }
@@ -601,10 +601,10 @@ public class ShipmentControl
         if(defaultFound && isDefault) {
             var defaultShipmentTimeTypeDetailValue = getDefaultShipmentTimeTypeDetailValueForUpdate(shipmentType);
 
-            defaultShipmentTimeTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultShipmentTimeTypeDetailValue.setIsDefault(false);
             updateShipmentTimeTypeFromValue(defaultShipmentTimeTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var shipmentTimeType = ShipmentTimeTypeFactory.getInstance().create();
@@ -808,11 +808,11 @@ public class ShipmentControl
                     // If I'm the default, and a default already existed...
                     var defaultShipmentTimeTypeDetailValue = getDefaultShipmentTimeTypeDetailValueForUpdate(shipmentType);
 
-                    defaultShipmentTimeTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultShipmentTimeTypeDetailValue.setIsDefault(false);
                     updateShipmentTimeTypeFromValue(defaultShipmentTimeTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -852,7 +852,7 @@ public class ShipmentControl
                 }
                 var shipmentTimeTypeDetailValue = Objects.requireNonNull(defaultShipmentTimeType).getLastDetailForUpdate().getShipmentTimeTypeDetailValue().clone();
 
-                shipmentTimeTypeDetailValue.setIsDefault(Boolean.TRUE);
+                shipmentTimeTypeDetailValue.setIsDefault(true);
                 updateShipmentTimeTypeFromValue(shipmentTimeTypeDetailValue, false, deletedBy);
             }
         }
@@ -1021,10 +1021,10 @@ public class ShipmentControl
         if(defaultFound && isDefault) {
             var defaultShipmentTypeShippingMethodValue = getDefaultShipmentTypeShippingMethodValueForUpdate(shipmentType);
             
-            defaultShipmentTypeShippingMethodValue.setIsDefault(Boolean.FALSE);
+            defaultShipmentTypeShippingMethodValue.setIsDefault(false);
             updateShipmentTypeShippingMethodFromValue(defaultShipmentTypeShippingMethodValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var shipmentTypeShippingMethod = ShipmentTypeShippingMethodFactory.getInstance().create(shipmentType, shippingMethod,
@@ -1250,11 +1250,11 @@ public class ShipmentControl
                     // If I'm the default, and a default already existed...
                     var defaultShipmentTypeShippingMethodValue = getDefaultShipmentTypeShippingMethodValueForUpdate(shipmentType);
                     
-                    defaultShipmentTypeShippingMethodValue.setIsDefault(Boolean.FALSE);
+                    defaultShipmentTypeShippingMethodValue.setIsDefault(false);
                     updateShipmentTypeShippingMethodFromValue(defaultShipmentTypeShippingMethodValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -1286,7 +1286,7 @@ public class ShipmentControl
                 }
                 var shipmentTypeShippingMethodValue = defaultShipmentTypeShippingMethod.getShipmentTypeShippingMethodValue().clone();
                 
-                shipmentTypeShippingMethodValue.setIsDefault(Boolean.TRUE);
+                shipmentTypeShippingMethodValue.setIsDefault(true);
                 updateShipmentTypeShippingMethodFromValue(shipmentTypeShippingMethodValue, false, deletedBy);
             }
         }
@@ -1509,10 +1509,10 @@ public class ShipmentControl
         if(defaultFound && isDefault) {
             var defaultShipmentAliasTypeDetailValue = getDefaultShipmentAliasTypeDetailValueForUpdate(shipmentType);
 
-            defaultShipmentAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultShipmentAliasTypeDetailValue.setIsDefault(false);
             updateShipmentAliasTypeFromValue(defaultShipmentAliasTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var shipmentAliasType = ShipmentAliasTypeFactory.getInstance().create();
@@ -1713,11 +1713,11 @@ public class ShipmentControl
                     // If I'm the default, and a default already existed...
                     var defaultShipmentAliasTypeDetailValue = getDefaultShipmentAliasTypeDetailValueForUpdate(shipmentType);
 
-                    defaultShipmentAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultShipmentAliasTypeDetailValue.setIsDefault(false);
                     updateShipmentAliasTypeFromValue(defaultShipmentAliasTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -1757,7 +1757,7 @@ public class ShipmentControl
                 }
                 var shipmentAliasTypeDetailValue = Objects.requireNonNull(defaultShipmentAliasType).getLastDetailForUpdate().getShipmentAliasTypeDetailValue().clone();
 
-                shipmentAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
+                shipmentAliasTypeDetailValue.setIsDefault(true);
                 updateShipmentAliasTypeFromValue(shipmentAliasTypeDetailValue, false, deletedBy);
             }
         }

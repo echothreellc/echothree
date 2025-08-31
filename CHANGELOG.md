@@ -1,5 +1,36 @@
 # Changelog
 
+## 2025-08-31-01
+
+* Break Apart ItemConstants into Enums [1585](https://gitlab.echothree.com/echothree/echothree/-/issues/1585)
+* Add Item Alias Type for UPC-E [1586](https://gitlab.echothree.com/echothree/echothree/-/issues/1586)
+* Convert Item Alias Type EAN to EAN-13 and Add Checksum [1587](https://gitlab.echothree.com/echothree/echothree/-/issues/1587)
+* Add Checksum for ItemAlias Type BOOKLAND_EAN [1588](https://gitlab.echothree.com/echothree/echothree/-/issues/1588)
+* Caffeine 3.2.2 Upgrade [1589](https://gitlab.echothree.com/echothree/echothree/-/issues/1589)
+* cucumber-java8/cucumber-junit 7.27.2 Upgrade [1590](https://gitlab.echothree.com/echothree/echothree/-/issues/1590)
+* Remove Usage of Deprecated URL Constructor [1591](https://gitlab.echothree.com/echothree/echothree/-/issues/1591)
+
+## 2025-08-17-01
+
+* ClassGraph 4.8.181 Upgrade [1581](https://gitlab.echothree.com/echothree/echothree/-/issues/1581)
+* Error Prone 2.41.0 Upgrade [1582](https://gitlab.echothree.com/echothree/echothree/-/issues/1582)
+* jOOQ 3.20.6 Upgrade [1583](https://gitlab.echothree.com/echothree/echothree/-/issues/1583)
+* Checksum Missing from Item Alias Types for UPC-A, ISBN-10, and ISBN-13 [1584](https://gitlab.echothree.com/echothree/echothree/-/issues/1584)
+
+## 2025-08-03-01
+
+* Correct Int Literal Cast Warnings From Error Prone [1577](https://gitlab.echothree.com/echothree/echothree/-/issues/1577)
+* Correct Assignment Expression Warnings From Error Prone [1578](https://gitlab.echothree.com/echothree/echothree/-/issues/1578)
+* Correct Unicode Escape Warnings From Error Prone [1579](https://gitlab.echothree.com/echothree/echothree/-/issues/1579)
+* Correct Object To String Warnings From Error Prone [1580](https://gitlab.echothree.com/echothree/echothree/-/issues/1580)
+
+## 2025-07-20-01
+
+* Add Contact Email Address Object [1573](https://gitlab.echothree.com/echothree/echothree/-/issues/1573)
+* Add Contact Web Address Object [1574](https://gitlab.echothree.com/echothree/echothree/-/issues/1574)
+* Add Contact Telephone Object [1575](https://gitlab.echothree.com/echothree/echothree/-/issues/1575)
+* Correct Boolean Literal Warnings From Error Prone [1576](https://gitlab.echothree.com/echothree/echothree/-/issues/1576)
+
 ## 2025-07-06-01
 
 * Error Prone 2.39.0 Upgrade [1570](https://gitlab.echothree.com/echothree/echothree/-/issues/1570)

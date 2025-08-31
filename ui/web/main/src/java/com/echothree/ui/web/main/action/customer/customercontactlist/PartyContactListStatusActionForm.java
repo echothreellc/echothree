@@ -43,7 +43,7 @@ public class PartyContactListStatusActionForm
             form.setPartyName(partyName);
             form.setContactListName(contactListName);
             form.setDefaultPartyContactListStatusChoice(partyContactListStatusChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = ContactListUtil.getHome().getPartyContactListStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

@@ -65,7 +65,7 @@ public class SetDefaultDepartmentCommand
                         departmentName);
                 
                 if(partyDepartmentValue != null) {
-                    partyDepartmentValue.setIsDefault(Boolean.TRUE);
+                    partyDepartmentValue.setIsDefault(true);
                     
                     partyControl.updatePartyDepartmentFromValue(partyDepartmentValue, getPartyPK());
                 } else {

@@ -18,7 +18,7 @@ package com.echothree.ui.web.main.action.item.item;
 
 import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.result.CreateItemResult;
-import com.echothree.model.control.item.common.ItemConstants;
+import com.echothree.model.control.item.common.ItemTypes;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -58,8 +58,8 @@ public class AddAction
         if(wasPost(request)) {
             var commandForm = ItemUtil.getHome().getCreateItemForm();
             var itemTypeName = actionForm.getItemTypeChoice();
-            var isKitOrStyle = itemTypeName == null? false: itemTypeName.equals(ItemConstants.ItemType_KIT)
-                    || itemTypeName.equals(ItemConstants.ItemType_STYLE);
+            var isKitOrStyle = itemTypeName == null ? false : itemTypeName.equals(ItemTypes.KIT.name())
+                    || itemTypeName.equals(ItemTypes.STYLE.name());
             var inventorySerialized = actionForm.getInventorySerialized();
             
             commandForm.setItemName(actionForm.getItemName());

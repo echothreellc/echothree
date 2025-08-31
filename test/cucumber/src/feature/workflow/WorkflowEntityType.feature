@@ -13,25 +13,25 @@ Feature: Employee workflow entity type
 
   Scenario: Existing employee adds a workflow entity type and then deletes it
     Given the employee Test begins using the application
-    And the user begins entering a new workflow
+    When the user begins entering a new workflow
     And the user sets the workflow's name to "CUCUMBER_WORKFLOW"
     And the user sets the workflow's sort order to "1"
     And the user sets the workflow's description to "Cucumber Workflow"
     And the user adds the new workflow
     Then no error should occur
-    And the user begins entering a new workflow entity type
+    When the user begins entering a new workflow entity type
     And the user sets the workflow entity type's workflow name to the last workflow added
     And the user sets the workflow entity type's component vendor to "ECHO_THREE"
     And the user sets the workflow entity type's entity type to "Party"
     And the user adds the new workflow entity type
     Then no error should occur
-    And the user begins deleting a workflow entity type
+    When the user begins deleting a workflow entity type
     And the user sets the workflow entity type's workflow name to the last workflow added
     And the user sets the workflow entity type's component vendor to "ECHO_THREE"
     And the user sets the workflow entity type's entity type to "Party"
     And the user deletes the workflow entity type
     Then no error should occur
-    And the user begins deleting a workflow
+    When the user begins deleting a workflow
     And the user sets the workflow's name to the last workflow added
     And the user deletes the workflow
     Then no error should occur

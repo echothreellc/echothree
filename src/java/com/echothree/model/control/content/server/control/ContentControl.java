@@ -405,10 +405,10 @@ public class ContentControl
         if(defaultFound && isDefault) {
             var defaultContentPageLayoutDetailValue = getDefaultContentPageLayoutDetailValueForUpdate();
             
-            defaultContentPageLayoutDetailValue.setIsDefault(Boolean.FALSE);
+            defaultContentPageLayoutDetailValue.setIsDefault(false);
             updateContentPageLayoutFromValue(defaultContentPageLayoutDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var contentPageLayout = ContentPageLayoutFactory.getInstance().create();
@@ -630,11 +630,11 @@ public class ContentControl
                     // If I'm the default, and a default already existed...
                     var defaultContentPageLayoutDetailValue = getDefaultContentPageLayoutDetailValueForUpdate();
                     
-                    defaultContentPageLayoutDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultContentPageLayoutDetailValue.setIsDefault(false);
                     updateContentPageLayoutFromValue(defaultContentPageLayoutDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -673,7 +673,7 @@ public class ContentControl
                 }
                 var contentPageLayoutDetailValue = Objects.requireNonNull(defaultContentPageLayout).getLastDetailForUpdate().getContentPageLayoutDetailValue().clone();
                 
-                contentPageLayoutDetailValue.setIsDefault(Boolean.TRUE);
+                contentPageLayoutDetailValue.setIsDefault(true);
                 updateContentPageLayoutFromValue(contentPageLayoutDetailValue, false, deletedBy);
             }
         }
@@ -1342,17 +1342,17 @@ public class ContentControl
         
         if(defaultFound) {
             if(defaultContentSection.getLastDetail().getContentSectionName().equals(ContentSections.ROOT.toString())) {
-                isDefault = Boolean.TRUE;
+                isDefault = true;
             }
         }
         
         if(defaultFound && isDefault) {
             var defaultContentSectionDetailValue = getDefaultContentSectionDetailValueForUpdate(contentCollection);
             
-            defaultContentSectionDetailValue.setIsDefault(Boolean.FALSE);
+            defaultContentSectionDetailValue.setIsDefault(false);
             updateContentSectionFromValue(defaultContentSectionDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var contentSection = ContentSectionFactory.getInstance().create();
@@ -1658,11 +1658,11 @@ public class ContentControl
                     // If I'm the default, and a default already existed...
                     var defaultContentSectionDetailValue = getDefaultContentSectionDetailValueForUpdate(contentCollection);
 
-                    defaultContentSectionDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultContentSectionDetailValue.setIsDefault(false);
                     updateContentSectionFromValue(defaultContentSectionDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -1720,7 +1720,7 @@ public class ContentControl
                 }
                 var contentSectionDetailValue = Objects.requireNonNull(defaultContentSection).getLastDetailForUpdate().getContentSectionDetailValue().clone();
                 
-                contentSectionDetailValue.setIsDefault(Boolean.TRUE);
+                contentSectionDetailValue.setIsDefault(true);
                 updateContentSectionFromValue(contentSectionDetailValue, false, deletedBy);
             }
         }
@@ -1915,10 +1915,10 @@ public class ContentControl
         if(defaultFound && isDefault) {
             var defaultContentPageDetailValue = getDefaultContentPageDetailValueForUpdate(contentSection);
             
-            defaultContentPageDetailValue.setIsDefault(Boolean.FALSE);
+            defaultContentPageDetailValue.setIsDefault(false);
             updateContentPageFromValue(defaultContentPageDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var contentPage = ContentPageFactory.getInstance().create();
@@ -2169,11 +2169,11 @@ public class ContentControl
                     // If I'm the default, and a default already existed...
                     var defaultContentPageDetailValue = getDefaultContentPageDetailValueForUpdate(contentSection);
 
-                    defaultContentPageDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultContentPageDetailValue.setIsDefault(false);
                     updateContentPageFromValue(defaultContentPageDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -2216,7 +2216,7 @@ public class ContentControl
                 defaultContentPage = contentPages.iterator().next();
                 var contentPageDetailValue = Objects.requireNonNull(defaultContentPage).getLastDetailForUpdate().getContentPageDetailValue().clone();
                 
-                contentPageDetailValue.setIsDefault(Boolean.TRUE);
+                contentPageDetailValue.setIsDefault(true);
                 updateContentPageFromValue(contentPageDetailValue, false, deletedBy);
             }
         }
@@ -2759,10 +2759,10 @@ public class ContentControl
         if(defaultFound && isDefault) {
             var defaultContentCatalogDetailValue = getDefaultContentCatalogDetailValueForUpdate(contentCollection);
             
-            defaultContentCatalogDetailValue.setIsDefault(Boolean.FALSE);
+            defaultContentCatalogDetailValue.setIsDefault(false);
             updateContentCatalogFromValue(defaultContentCatalogDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var contentCatalog = ContentCatalogFactory.getInstance().create();
@@ -3009,11 +3009,11 @@ public class ContentControl
                     // If I'm the default, and a default already existed...
                     var defaultContentCatalogDetailValue = getDefaultContentCatalogDetailValueForUpdate(contentCollection);
 
-                    defaultContentCatalogDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultContentCatalogDetailValue.setIsDefault(false);
                     updateContentCatalogFromValue(defaultContentCatalogDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -3058,7 +3058,7 @@ public class ContentControl
                 defaultContentCatalog = contentCatalogs.iterator().next();
                 var contentCatalogDetailValue = Objects.requireNonNull(defaultContentCatalog).getLastDetailForUpdate().getContentCatalogDetailValue().clone();
                 
-                contentCatalogDetailValue.setIsDefault(Boolean.TRUE);
+                contentCatalogDetailValue.setIsDefault(true);
                 updateContentCatalogFromValue(contentCatalogDetailValue, false, deletedBy);
             }
         }
@@ -3816,16 +3816,16 @@ public class ContentControl
         
         if(defaultFound) {
             if(defaultContentCategory.getLastDetail().getContentCategoryName().equals(ContentCategories.ROOT.toString()))
-                isDefault = Boolean.TRUE;
+                isDefault = true;
         }
         
         if(defaultFound && isDefault) {
             var defaultContentCategoryDetailValue = getDefaultContentCategoryDetailValueForUpdate(contentCatalog);
             
-            defaultContentCategoryDetailValue.setIsDefault(Boolean.FALSE);
+            defaultContentCategoryDetailValue.setIsDefault(false);
             updateContentCategoryFromValue(defaultContentCategoryDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var contentCategory = ContentCategoryFactory.getInstance().create();
@@ -4229,11 +4229,11 @@ public class ContentControl
                     // If I'm the default, and a default already existed...
                     var defaultContentCategoryDetailValue = getDefaultContentCategoryDetailValueForUpdate(contentCatalog);
 
-                    defaultContentCategoryDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultContentCategoryDetailValue.setIsDefault(false);
                     updateContentCategoryFromValue(defaultContentCategoryDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -4297,7 +4297,7 @@ public class ContentControl
                 }
                 var contentCategoryDetailValue = Objects.requireNonNull(defaultContentCategory).getLastDetailForUpdate().getContentCategoryDetailValue().clone();
                 
-                contentCategoryDetailValue.setIsDefault(Boolean.TRUE);
+                contentCategoryDetailValue.setIsDefault(true);
                 updateContentCategoryFromValue(contentCategoryDetailValue, false, deletedBy);
             }
         }
@@ -4495,10 +4495,10 @@ public class ContentControl
         if(defaultFound && isDefault) {
             var defaultContentCategoryItemValue = getDefaultContentCategoryItemValueForUpdate(contentCatalogItem);
             
-            defaultContentCategoryItemValue.setIsDefault(Boolean.FALSE);
+            defaultContentCategoryItemValue.setIsDefault(false);
             updateContentCategoryItemFromValue(defaultContentCategoryItemValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var contentCategoryItem = ContentCategoryItemFactory.getInstance().create(session,
@@ -4747,11 +4747,11 @@ public class ContentControl
                     // If I'm the default, and a default already existed...
                     var defaultContentCategoryItemValue = getDefaultContentCategoryItemValueForUpdate(contentCatalogItem);
                     
-                    defaultContentCategoryItemValue.setIsDefault(Boolean.FALSE);
+                    defaultContentCategoryItemValue.setIsDefault(false);
                     updateContentCategoryItemFromValue(defaultContentCategoryItemValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -4787,7 +4787,7 @@ public class ContentControl
                     }
                     var contentCategoryItemValue = defaultContentCategoryItem.getContentCategoryItemValue().clone();
 
-                    contentCategoryItemValue.setIsDefault(Boolean.TRUE);
+                    contentCategoryItemValue.setIsDefault(true);
                     updateContentCategoryItemFromValue(contentCategoryItemValue, false, deletedBy);
                 }
             }
@@ -4823,10 +4823,10 @@ public class ContentControl
         if(defaultFound && isDefault) {
             var defaultContentForumDetailValue = getDefaultContentForumDetailValueForUpdate(contentCollection);
             
-            defaultContentForumDetailValue.setIsDefault(Boolean.FALSE);
+            defaultContentForumDetailValue.setIsDefault(false);
             updateContentForumFromValue(defaultContentForumDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var contentForum = ContentForumFactory.getInstance().create();
@@ -5013,11 +5013,11 @@ public class ContentControl
                     // If I'm the default, and a default already existed...
                     var defaultContentForumDetailValue = getDefaultContentForumDetailValueForUpdate(contentCollection);
 
-                    defaultContentForumDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultContentForumDetailValue.setIsDefault(false);
                     updateContentForumFromValue(defaultContentForumDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -5055,7 +5055,7 @@ public class ContentControl
                 }
                 var contentForumDetailValue = Objects.requireNonNull(defaultContentForum).getLastDetailForUpdate().getContentForumDetailValue().clone();
                 
-                contentForumDetailValue.setIsDefault(Boolean.TRUE);
+                contentForumDetailValue.setIsDefault(true);
                 updateContentForumFromValue(contentForumDetailValue, false, deletedBy);
             }
         }

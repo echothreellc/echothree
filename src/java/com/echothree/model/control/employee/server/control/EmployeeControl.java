@@ -180,10 +180,10 @@ public class EmployeeControl
         if(defaultFound && isDefault) {
             var defaultResponsibilityTypeDetailValue = getDefaultResponsibilityTypeDetailValueForUpdate();
             
-            defaultResponsibilityTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultResponsibilityTypeDetailValue.setIsDefault(false);
             updateResponsibilityTypeFromValue(defaultResponsibilityTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var responsibilityType = ResponsibilityTypeFactory.getInstance().create();
@@ -379,11 +379,11 @@ public class EmployeeControl
                     // If I'm the default, and a default already existed...
                     var defaultResponsibilityTypeDetailValue = getDefaultResponsibilityTypeDetailValueForUpdate();
                     
-                    defaultResponsibilityTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultResponsibilityTypeDetailValue.setIsDefault(false);
                     updateResponsibilityTypeFromValue(defaultResponsibilityTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -422,7 +422,7 @@ public class EmployeeControl
                 }
                 var responsibilityTypeDetailValue = Objects.requireNonNull(defaultResponsibilityType).getLastDetailForUpdate().getResponsibilityTypeDetailValue().clone();
                 
-                responsibilityTypeDetailValue.setIsDefault(Boolean.TRUE);
+                responsibilityTypeDetailValue.setIsDefault(true);
                 updateResponsibilityTypeFromValue(responsibilityTypeDetailValue, false, deletedBy);
             }
         }
@@ -608,10 +608,10 @@ public class EmployeeControl
         if(defaultFound && isDefault) {
             var defaultSkillTypeDetailValue = getDefaultSkillTypeDetailValueForUpdate();
             
-            defaultSkillTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultSkillTypeDetailValue.setIsDefault(false);
             updateSkillTypeFromValue(defaultSkillTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var skillType = SkillTypeFactory.getInstance().create();
@@ -806,11 +806,11 @@ public class EmployeeControl
                     // If I'm the default, and a default already existed...
                     var defaultSkillTypeDetailValue = getDefaultSkillTypeDetailValueForUpdate();
                     
-                    defaultSkillTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultSkillTypeDetailValue.setIsDefault(false);
                     updateSkillTypeFromValue(defaultSkillTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -849,7 +849,7 @@ public class EmployeeControl
                 }
                 var skillTypeDetailValue = Objects.requireNonNull(defaultSkillType).getLastDetailForUpdate().getSkillTypeDetailValue().clone();
                 
-                skillTypeDetailValue.setIsDefault(Boolean.TRUE);
+                skillTypeDetailValue.setIsDefault(true);
                 updateSkillTypeFromValue(skillTypeDetailValue, false, deletedBy);
             }
         }
@@ -1035,10 +1035,10 @@ public class EmployeeControl
         if(defaultFound && isDefault) {
             var defaultLeaveTypeDetailValue = getDefaultLeaveTypeDetailValueForUpdate();
 
-            defaultLeaveTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultLeaveTypeDetailValue.setIsDefault(false);
             updateLeaveTypeFromValue(defaultLeaveTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var leaveType = LeaveTypeFactory.getInstance().create();
@@ -1238,11 +1238,11 @@ public class EmployeeControl
                     // If I'm the default, and a default already existed...
                     var defaultLeaveTypeDetailValue = getDefaultLeaveTypeDetailValueForUpdate();
 
-                    defaultLeaveTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultLeaveTypeDetailValue.setIsDefault(false);
                     updateLeaveTypeFromValue(defaultLeaveTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -1280,7 +1280,7 @@ public class EmployeeControl
                 }
                 var leaveTypeDetailValue = Objects.requireNonNull(defaultLeaveType).getLastDetailForUpdate().getLeaveTypeDetailValue().clone();
 
-                leaveTypeDetailValue.setIsDefault(Boolean.TRUE);
+                leaveTypeDetailValue.setIsDefault(true);
                 updateLeaveTypeFromValue(leaveTypeDetailValue, false, deletedBy);
             }
         }
@@ -1452,10 +1452,10 @@ public class EmployeeControl
         if(defaultFound && isDefault) {
             var defaultLeaveReasonDetailValue = getDefaultLeaveReasonDetailValueForUpdate();
 
-            defaultLeaveReasonDetailValue.setIsDefault(Boolean.FALSE);
+            defaultLeaveReasonDetailValue.setIsDefault(false);
             updateLeaveReasonFromValue(defaultLeaveReasonDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var leaveReason = LeaveReasonFactory.getInstance().create();
@@ -1655,11 +1655,11 @@ public class EmployeeControl
                     // If I'm the default, and a default already existed...
                     var defaultLeaveReasonDetailValue = getDefaultLeaveReasonDetailValueForUpdate();
 
-                    defaultLeaveReasonDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultLeaveReasonDetailValue.setIsDefault(false);
                     updateLeaveReasonFromValue(defaultLeaveReasonDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -1697,7 +1697,7 @@ public class EmployeeControl
                 }
                 var leaveReasonDetailValue = Objects.requireNonNull(defaultLeaveReason).getLastDetailForUpdate().getLeaveReasonDetailValue().clone();
 
-                leaveReasonDetailValue.setIsDefault(Boolean.TRUE);
+                leaveReasonDetailValue.setIsDefault(true);
                 updateLeaveReasonFromValue(leaveReasonDetailValue, false, deletedBy);
             }
         }
@@ -2216,10 +2216,10 @@ public class EmployeeControl
         if(defaultFound && isDefault) {
             var defaultTerminationReasonDetailValue = getDefaultTerminationReasonDetailValueForUpdate();
             
-            defaultTerminationReasonDetailValue.setIsDefault(Boolean.FALSE);
+            defaultTerminationReasonDetailValue.setIsDefault(false);
             updateTerminationReasonFromValue(defaultTerminationReasonDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var terminationReason = TerminationReasonFactory.getInstance().create();
@@ -2415,11 +2415,11 @@ public class EmployeeControl
                     // If I'm the default, and a default already existed...
                     var defaultTerminationReasonDetailValue = getDefaultTerminationReasonDetailValueForUpdate();
                     
-                    defaultTerminationReasonDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultTerminationReasonDetailValue.setIsDefault(false);
                     updateTerminationReasonFromValue(defaultTerminationReasonDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -2458,7 +2458,7 @@ public class EmployeeControl
                 }
                 var terminationReasonDetailValue = Objects.requireNonNull(defaultTerminationReason).getLastDetailForUpdate().getTerminationReasonDetailValue().clone();
                 
-                terminationReasonDetailValue.setIsDefault(Boolean.TRUE);
+                terminationReasonDetailValue.setIsDefault(true);
                 updateTerminationReasonFromValue(terminationReasonDetailValue, false, deletedBy);
             }
         }
@@ -2644,10 +2644,10 @@ public class EmployeeControl
         if(defaultFound && isDefault) {
             var defaultTerminationTypeDetailValue = getDefaultTerminationTypeDetailValueForUpdate();
             
-            defaultTerminationTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultTerminationTypeDetailValue.setIsDefault(false);
             updateTerminationTypeFromValue(defaultTerminationTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var terminationType = TerminationTypeFactory.getInstance().create();
@@ -2843,11 +2843,11 @@ public class EmployeeControl
                     // If I'm the default, and a default already existed...
                     var defaultTerminationTypeDetailValue = getDefaultTerminationTypeDetailValueForUpdate();
                     
-                    defaultTerminationTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultTerminationTypeDetailValue.setIsDefault(false);
                     updateTerminationTypeFromValue(defaultTerminationTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -2886,7 +2886,7 @@ public class EmployeeControl
                 }
                 var terminationTypeDetailValue = Objects.requireNonNull(defaultTerminationType).getLastDetailForUpdate().getTerminationTypeDetailValue().clone();
                 
-                terminationTypeDetailValue.setIsDefault(Boolean.TRUE);
+                terminationTypeDetailValue.setIsDefault(true);
                 updateTerminationTypeFromValue(terminationTypeDetailValue, false, deletedBy);
             }
         }
@@ -3382,10 +3382,10 @@ public class EmployeeControl
         if(defaultFound && isDefault) {
             var defaultEmployeeTypeDetailValue = getDefaultEmployeeTypeDetailValueForUpdate();
             
-            defaultEmployeeTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultEmployeeTypeDetailValue.setIsDefault(false);
             updateEmployeeTypeFromValue(defaultEmployeeTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var employeeType = EmployeeTypeFactory.getInstance().create();
@@ -3586,11 +3586,11 @@ public class EmployeeControl
                     // If I'm the default, and a default already existed...
                     var defaultEmployeeTypeDetailValue = getDefaultEmployeeTypeDetailValueForUpdate();
                     
-                    defaultEmployeeTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultEmployeeTypeDetailValue.setIsDefault(false);
                     updateEmployeeTypeFromValue(defaultEmployeeTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -3628,7 +3628,7 @@ public class EmployeeControl
                 }
                 var employeeTypeDetailValue = Objects.requireNonNull(defaultEmployeeType).getLastDetailForUpdate().getEmployeeTypeDetailValue().clone();
                 
-                employeeTypeDetailValue.setIsDefault(Boolean.TRUE);
+                employeeTypeDetailValue.setIsDefault(true);
                 updateEmployeeTypeFromValue(employeeTypeDetailValue, false, deletedBy);
             }
         }

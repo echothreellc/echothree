@@ -146,7 +146,7 @@ public class InitialDataParser
     
     public void loadPersonalTitles()
             throws NamingException, SAXException {
-        var personalTitleChoices = PersonalTitlesHelper.getInstance().getPersonalTitleChoices(getUserVisit(), Boolean.TRUE);
+        var personalTitleChoices = PersonalTitlesHelper.getInstance().getPersonalTitleChoices(getUserVisit(), true);
         var valueIter = personalTitleChoices.getValues().iterator();
         var labelIter = personalTitleChoices.getLabels().iterator();
         
@@ -171,7 +171,7 @@ public class InitialDataParser
     
     public void loadNameSuffixes()
             throws NamingException, SAXException {
-        var nameSuffixChoices = NameSuffixesHelper.getInstance().getNameSuffixChoices(getUserVisit(), Boolean.TRUE);
+        var nameSuffixChoices = NameSuffixesHelper.getInstance().getNameSuffixChoices(getUserVisit(), true);
         var valueIter = nameSuffixChoices.getValues().iterator();
         var labelIter = nameSuffixChoices.getLabels().iterator();
         

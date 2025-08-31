@@ -40,7 +40,7 @@ public class TextTransformationAddActionForm
             var commandForm = CoreUtil.getHome().getGetTextTransformationChoicesForm();
 
             commandForm.setDefaultTextTransformationChoice(textTransformationChoice);
-            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = CoreUtil.getHome().getTextTransformationChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();

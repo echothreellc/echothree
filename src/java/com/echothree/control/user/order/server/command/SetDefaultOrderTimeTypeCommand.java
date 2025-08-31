@@ -72,7 +72,7 @@ public class SetDefaultOrderTimeTypeCommand
             var orderTimeTypeDetailValue = orderTimeControl.getOrderTimeTypeDetailValueByNameForUpdate(orderType, orderTimeTypeName);
 
             if(orderTimeTypeDetailValue != null) {
-                orderTimeTypeDetailValue.setIsDefault(Boolean.TRUE);
+                orderTimeTypeDetailValue.setIsDefault(true);
                 orderTimeControl.updateOrderTimeTypeFromValue(orderTimeTypeDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownOrderTimeTypeName.name(), orderTypeName, orderTimeTypeName);

@@ -66,7 +66,7 @@ public class SetDefaultApplicationCommand
         var applicationDetailValue = applicationControl.getApplicationDetailValueByNameForUpdate(applicationName);
         
         if(applicationDetailValue != null) {
-            applicationDetailValue.setIsDefault(Boolean.TRUE);
+            applicationDetailValue.setIsDefault(true);
             applicationControl.updateApplicationFromValue(applicationDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownApplicationName.name(), applicationName);

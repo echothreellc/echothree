@@ -378,10 +378,10 @@ public class GeoControl
         if(defaultFound && isDefault) {
             var defaultGeoCodeTypeDetailValue = getDefaultGeoCodeTypeDetailValueForUpdate();
             
-            defaultGeoCodeTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultGeoCodeTypeDetailValue.setIsDefault(false);
             updateGeoCodeTypeFromValue(defaultGeoCodeTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var geoCodeType = GeoCodeTypeFactory.getInstance().create();
@@ -665,11 +665,11 @@ public class GeoControl
                     // If I'm the default, and a default already existed...
                     var defaultGeoCodeTypeDetailValue = getDefaultGeoCodeTypeDetailValueForUpdate();
                     
-                    defaultGeoCodeTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultGeoCodeTypeDetailValue.setIsDefault(false);
                     updateGeoCodeTypeFromValue(defaultGeoCodeTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -713,7 +713,7 @@ public class GeoControl
                     }
                     var geoCodeTypeDetailValue = Objects.requireNonNull(defaultGeoCodeType).getLastDetailForUpdate().getGeoCodeTypeDetailValue().clone();
 
-                    geoCodeTypeDetailValue.setIsDefault(Boolean.TRUE);
+                    geoCodeTypeDetailValue.setIsDefault(true);
                     updateGeoCodeTypeFromValue(geoCodeTypeDetailValue, false, deletedBy);
                 }
             }
@@ -913,10 +913,10 @@ public class GeoControl
         if(defaultFound && isDefault) {
             var defaultGeoCodeScopeDetailValue = getDefaultGeoCodeScopeDetailValueForUpdate();
             
-            defaultGeoCodeScopeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultGeoCodeScopeDetailValue.setIsDefault(false);
             updateGeoCodeScopeFromValue(defaultGeoCodeScopeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var geoCodeScope = GeoCodeScopeFactory.getInstance().create();
@@ -1136,11 +1136,11 @@ public class GeoControl
                     // If I'm the default, and a default already existed...
                     var defaultGeoCodeScopeDetailValue = getDefaultGeoCodeScopeDetailValueForUpdate();
                     
-                    defaultGeoCodeScopeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultGeoCodeScopeDetailValue.setIsDefault(false);
                     updateGeoCodeScopeFromValue(defaultGeoCodeScopeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -1180,7 +1180,7 @@ public class GeoControl
                 }
                 var geoCodeScopeDetailValue = Objects.requireNonNull(defaultGeoCodeScope).getLastDetailForUpdate().getGeoCodeScopeDetailValue().clone();
                 
-                geoCodeScopeDetailValue.setIsDefault(Boolean.TRUE);
+                geoCodeScopeDetailValue.setIsDefault(true);
                 updateGeoCodeScopeFromValue(geoCodeScopeDetailValue, false, deletedBy);
             }
         }
@@ -1364,10 +1364,10 @@ public class GeoControl
         if(defaultFound && isDefault) {
             var defaultGeoCodeAliasTypeDetailValue = getDefaultGeoCodeAliasTypeDetailValueForUpdate(geoCodeType);
             
-            defaultGeoCodeAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultGeoCodeAliasTypeDetailValue.setIsDefault(false);
             updateGeoCodeAliasTypeFromValue(defaultGeoCodeAliasTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var geoCodeAliasType = GeoCodeAliasTypeFactory.getInstance().create();
@@ -1634,11 +1634,11 @@ public class GeoControl
                     // If I'm the default, and a default already existed...
                     var defaultGeoCodeAliasTypeDetailValue = getDefaultGeoCodeAliasTypeDetailValueForUpdate(geoCodeType);
                     
-                    defaultGeoCodeAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultGeoCodeAliasTypeDetailValue.setIsDefault(false);
                     updateGeoCodeAliasTypeFromValue(defaultGeoCodeAliasTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -1678,7 +1678,7 @@ public class GeoControl
                 }
                 var geoCodeAliasTypeDetailValue = Objects.requireNonNull(defaultGeoCodeAliasType).getLastDetailForUpdate().getGeoCodeAliasTypeDetailValue().clone();
                 
-                geoCodeAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
+                geoCodeAliasTypeDetailValue.setIsDefault(true);
                 updateGeoCodeAliasTypeFromValue(geoCodeAliasTypeDetailValue, false, deletedBy);
             }
         }
@@ -1861,10 +1861,10 @@ public class GeoControl
         if(defaultFound && isDefault) {
             var defaultGeoCodeDetailValue = getDefaultGeoCodeDetailValueForUpdate(geoCodeScope);
             
-            defaultGeoCodeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultGeoCodeDetailValue.setIsDefault(false);
             updateGeoCodeFromValue(defaultGeoCodeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var geoCode = GeoCodeFactory.getInstance().create();
@@ -2087,11 +2087,11 @@ public class GeoControl
                     // If I'm the default, and a default already existed...
                     var defaultGeoCodeDetailValue = getDefaultGeoCodeDetailValueForUpdate(geoCodeScope);
                     
-                    defaultGeoCodeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultGeoCodeDetailValue.setIsDefault(false);
                     updateGeoCodeFromValue(defaultGeoCodeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -2146,7 +2146,7 @@ public class GeoControl
                 }
                 var geoCodeDetailValue = Objects.requireNonNull(defaultGeoCode).getLastDetailForUpdate().getGeoCodeDetailValue().clone();
 
-                geoCodeDetailValue.setIsDefault(Boolean.TRUE);
+                geoCodeDetailValue.setIsDefault(true);
                 updateGeoCodeFromValue(geoCodeDetailValue, false, deletedBy);
             }
         }
@@ -2731,10 +2731,10 @@ public class GeoControl
         if(defaultFound && isDefault) {
             var defaultGeoCodeLanguageValue = getDefaultGeoCodeLanguageValueForUpdate(geoCode);
             
-            defaultGeoCodeLanguageValue.setIsDefault(Boolean.FALSE);
+            defaultGeoCodeLanguageValue.setIsDefault(false);
             updateGeoCodeLanguageFromValue(defaultGeoCodeLanguageValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var geoCodeLanguage = GeoCodeLanguageFactory.getInstance().create(geoCode, language, isDefault,
@@ -2961,11 +2961,11 @@ public class GeoControl
                     // If I'm the default, and a default already existed...
                     var defaultGeoCodeLanguageValue = getDefaultGeoCodeLanguageValueForUpdate(geoCode);
                     
-                    defaultGeoCodeLanguageValue.setIsDefault(Boolean.FALSE);
+                    defaultGeoCodeLanguageValue.setIsDefault(false);
                     updateGeoCodeLanguageFromValue(defaultGeoCodeLanguageValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -2997,7 +2997,7 @@ public class GeoControl
                 }
                 var geoCodeLanguageValue = defaultGeoCodeLanguage.getGeoCodeLanguageValue().clone();
                 
-                geoCodeLanguageValue.setIsDefault(Boolean.TRUE);
+                geoCodeLanguageValue.setIsDefault(true);
                 updateGeoCodeLanguageFromValue(geoCodeLanguageValue, false, deletedBy);
             }
         }
@@ -3031,10 +3031,10 @@ public class GeoControl
         if(defaultFound && isDefault) {
             var defaultGeoCodeCurrencyValue = getDefaultGeoCodeCurrencyValueForUpdate(geoCode);
             
-            defaultGeoCodeCurrencyValue.setIsDefault(Boolean.FALSE);
+            defaultGeoCodeCurrencyValue.setIsDefault(false);
             updateGeoCodeCurrencyFromValue(defaultGeoCodeCurrencyValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var geoCodeCurrency = GeoCodeCurrencyFactory.getInstance().create(geoCode, currency, isDefault,
@@ -3261,11 +3261,11 @@ public class GeoControl
                     // If I'm the default, and a default already existed...
                     var defaultGeoCodeCurrencyValue = getDefaultGeoCodeCurrencyValueForUpdate(geoCode);
                     
-                    defaultGeoCodeCurrencyValue.setIsDefault(Boolean.FALSE);
+                    defaultGeoCodeCurrencyValue.setIsDefault(false);
                     updateGeoCodeCurrencyFromValue(defaultGeoCodeCurrencyValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -3297,7 +3297,7 @@ public class GeoControl
                 }
                 var geoCodeCurrencyValue = defaultGeoCodeCurrency.getGeoCodeCurrencyValue().clone();
                 
-                geoCodeCurrencyValue.setIsDefault(Boolean.TRUE);
+                geoCodeCurrencyValue.setIsDefault(true);
                 updateGeoCodeCurrencyFromValue(geoCodeCurrencyValue, false, deletedBy);
             }
         }
@@ -3331,10 +3331,10 @@ public class GeoControl
         if(defaultFound && isDefault) {
             var defaultGeoCodeTimeZoneValue = getDefaultGeoCodeTimeZoneValueForUpdate(geoCode);
             
-            defaultGeoCodeTimeZoneValue.setIsDefault(Boolean.FALSE);
+            defaultGeoCodeTimeZoneValue.setIsDefault(false);
             updateGeoCodeTimeZoneFromValue(defaultGeoCodeTimeZoneValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var geoCodeTimeZone = GeoCodeTimeZoneFactory.getInstance().create(geoCode, timeZone, isDefault,
@@ -3561,11 +3561,11 @@ public class GeoControl
                     // If I'm the default, and a default already existed...
                     var defaultGeoCodeTimeZoneValue = getDefaultGeoCodeTimeZoneValueForUpdate(geoCode);
                     
-                    defaultGeoCodeTimeZoneValue.setIsDefault(Boolean.FALSE);
+                    defaultGeoCodeTimeZoneValue.setIsDefault(false);
                     updateGeoCodeTimeZoneFromValue(defaultGeoCodeTimeZoneValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -3597,7 +3597,7 @@ public class GeoControl
                 }
                 var geoCodeTimeZoneValue = defaultGeoCodeTimeZone.getGeoCodeTimeZoneValue().clone();
                 
-                geoCodeTimeZoneValue.setIsDefault(Boolean.TRUE);
+                geoCodeTimeZoneValue.setIsDefault(true);
                 updateGeoCodeTimeZoneFromValue(geoCodeTimeZoneValue, false, deletedBy);
             }
         }
@@ -3631,10 +3631,10 @@ public class GeoControl
         if(defaultFound && isDefault) {
             var defaultGeoCodeDateTimeFormatValue = getDefaultGeoCodeDateTimeFormatValueForUpdate(geoCode);
             
-            defaultGeoCodeDateTimeFormatValue.setIsDefault(Boolean.FALSE);
+            defaultGeoCodeDateTimeFormatValue.setIsDefault(false);
             updateGeoCodeDateTimeFormatFromValue(defaultGeoCodeDateTimeFormatValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var geoCodeDateTimeFormat = GeoCodeDateTimeFormatFactory.getInstance().create(geoCode,
@@ -3864,11 +3864,11 @@ public class GeoControl
                     // If I'm the default, and a default already existed...
                     var defaultGeoCodeDateTimeFormatValue = getDefaultGeoCodeDateTimeFormatValueForUpdate(geoCode);
                     
-                    defaultGeoCodeDateTimeFormatValue.setIsDefault(Boolean.FALSE);
+                    defaultGeoCodeDateTimeFormatValue.setIsDefault(false);
                     updateGeoCodeDateTimeFormatFromValue(defaultGeoCodeDateTimeFormatValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -3900,7 +3900,7 @@ public class GeoControl
                 }
                 var geoCodeDateTimeFormatValue = defaultGeoCodeDateTimeFormat.getGeoCodeDateTimeFormatValue().clone();
                 
-                geoCodeDateTimeFormatValue.setIsDefault(Boolean.TRUE);
+                geoCodeDateTimeFormatValue.setIsDefault(true);
                 updateGeoCodeDateTimeFormatFromValue(geoCodeDateTimeFormatValue, false, deletedBy);
             }
         }

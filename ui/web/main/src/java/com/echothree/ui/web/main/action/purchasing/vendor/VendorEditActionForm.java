@@ -79,7 +79,7 @@ public class VendorEditActionForm
             var form = VendorUtil.getHome().getGetVendorTypeChoicesForm();
 
             form.setDefaultVendorTypeChoice(vendorTypeChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = VendorUtil.getHome().getVendorTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -98,7 +98,7 @@ public class VendorEditActionForm
             var form = ItemUtil.getHome().getGetItemAliasTypeChoicesForm();
 
             form.setDefaultItemAliasTypeChoice(defaultItemAliasTypeChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = ItemUtil.getHome().getItemAliasTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -118,7 +118,7 @@ public class VendorEditActionForm
 
             form.setCancellationKindName(CancellationKinds.VENDOR_CANCELLATION.name());
             form.setDefaultCancellationPolicyChoice(cancellationPolicyChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -137,7 +137,7 @@ public class VendorEditActionForm
 
             form.setReturnKindName(ReturnKinds.VENDOR_RETURN.name());
             form.setDefaultReturnPolicyChoice(returnPolicyChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = ReturnPolicyUtil.getHome().getReturnPolicyChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -156,7 +156,7 @@ public class VendorEditActionForm
 
             form.setGlAccountCategoryName(AccountingConstants.GlAccountCategory_ACCOUNTS_PAYABLE);
             form.setDefaultGlAccountChoice(apGlAccountChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = AccountingUtil.getHome().getGlAccountChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -405,13 +405,13 @@ public class VendorEditActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        setUseItemPurchasingCategories(Boolean.FALSE);
-        setHoldUntilComplete(Boolean.FALSE);
-        setAllowBackorders(Boolean.FALSE);
-        setAllowSubstitutions(Boolean.FALSE);
-        setAllowCombiningShipments(Boolean.FALSE);
-        setRequireReference(Boolean.FALSE);
-        setAllowReferenceDuplicates(Boolean.FALSE);
+        setUseItemPurchasingCategories(false);
+        setHoldUntilComplete(false);
+        setAllowBackorders(false);
+        setAllowSubstitutions(false);
+        setAllowCombiningShipments(false);
+        setRequireReference(false);
+        setAllowReferenceDuplicates(false);
     }
 
 }

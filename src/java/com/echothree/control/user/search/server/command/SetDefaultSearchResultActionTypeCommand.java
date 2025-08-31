@@ -66,7 +66,7 @@ public class SetDefaultSearchResultActionTypeCommand
         var searchResultActionTypeDetailValue = searchControl.getSearchResultActionTypeDetailValueByNameForUpdate(searchResultActionTypeName);
         
         if(searchResultActionTypeDetailValue != null) {
-            searchResultActionTypeDetailValue.setIsDefault(Boolean.TRUE);
+            searchResultActionTypeDetailValue.setIsDefault(true);
             searchControl.updateSearchResultActionTypeFromValue(searchResultActionTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownSearchResultActionTypeName.name(), searchResultActionTypeName);

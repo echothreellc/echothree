@@ -272,10 +272,10 @@ public class FinancialControl
         if(defaultFound && isDefault) {
             var defaultFinancialAccountTypeDetailValue = getDefaultFinancialAccountTypeDetailValueForUpdate();
             
-            defaultFinancialAccountTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultFinancialAccountTypeDetailValue.setIsDefault(false);
             updateFinancialAccountTypeFromValue(defaultFinancialAccountTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var financialAccountType = FinancialAccountTypeFactory.getInstance().create();
@@ -535,11 +535,11 @@ public class FinancialControl
                     // If I'm the default, and a default already existed...
                     var defaultFinancialAccountTypeDetailValue = getDefaultFinancialAccountTypeDetailValueForUpdate();
                     
-                    defaultFinancialAccountTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultFinancialAccountTypeDetailValue.setIsDefault(false);
                     updateFinancialAccountTypeFromValue(defaultFinancialAccountTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -584,7 +584,7 @@ public class FinancialControl
                     }
                     var financialAccountTypeDetailValue = Objects.requireNonNull(defaultFinancialAccountType).getLastDetailForUpdate().getFinancialAccountTypeDetailValue().clone();
 
-                    financialAccountTypeDetailValue.setIsDefault(Boolean.TRUE);
+                    financialAccountTypeDetailValue.setIsDefault(true);
                     updateFinancialAccountTypeFromValue(financialAccountTypeDetailValue, false, deletedBy);
                 }
             }
@@ -771,10 +771,10 @@ public class FinancialControl
         if(defaultFound && isDefault) {
             var defaultFinancialAccountTransactionTypeDetailValue = getDefaultFinancialAccountTransactionTypeDetailValueForUpdate(financialAccountType);
             
-            defaultFinancialAccountTransactionTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultFinancialAccountTransactionTypeDetailValue.setIsDefault(false);
             updateFinancialAccountTransactionTypeFromValue(defaultFinancialAccountTransactionTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var financialAccountTransactionType = FinancialAccountTransactionTypeFactory.getInstance().create();
@@ -1045,11 +1045,11 @@ public class FinancialControl
                     // If I'm the default, and a default already existed...
                     var defaultFinancialAccountTransactionTypeDetailValue = getDefaultFinancialAccountTransactionTypeDetailValueForUpdate(financialAccountType);
                     
-                    defaultFinancialAccountTransactionTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultFinancialAccountTransactionTypeDetailValue.setIsDefault(false);
                     updateFinancialAccountTransactionTypeFromValue(defaultFinancialAccountTransactionTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -1095,7 +1095,7 @@ public class FinancialControl
                     }
                     var financialAccountTransactionTypeDetailValue = Objects.requireNonNull(defaultFinancialAccountTransactionType).getLastDetailForUpdate().getFinancialAccountTransactionTypeDetailValue().clone();
 
-                    financialAccountTransactionTypeDetailValue.setIsDefault(Boolean.TRUE);
+                    financialAccountTransactionTypeDetailValue.setIsDefault(true);
                     updateFinancialAccountTransactionTypeFromValue(financialAccountTransactionTypeDetailValue, false, deletedBy);
                 }
             }
@@ -1289,10 +1289,10 @@ public class FinancialControl
         if(defaultFound && isDefault) {
             var defaultFinancialAccountAliasTypeDetailValue = getDefaultFinancialAccountAliasTypeDetailValueForUpdate(financialAccountType);
             
-            defaultFinancialAccountAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultFinancialAccountAliasTypeDetailValue.setIsDefault(false);
             updateFinancialAccountAliasTypeFromValue(defaultFinancialAccountAliasTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var financialAccountAliasType = FinancialAccountAliasTypeFactory.getInstance().create();
@@ -1495,11 +1495,11 @@ public class FinancialControl
                     // If I'm the default, and a default already existed...
                     var defaultFinancialAccountAliasTypeDetailValue = getDefaultFinancialAccountAliasTypeDetailValueForUpdate(financialAccountType);
                     
-                    defaultFinancialAccountAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultFinancialAccountAliasTypeDetailValue.setIsDefault(false);
                     updateFinancialAccountAliasTypeFromValue(defaultFinancialAccountAliasTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -1540,7 +1540,7 @@ public class FinancialControl
                 }
                 var financialAccountAliasTypeDetailValue = Objects.requireNonNull(defaultFinancialAccountAliasType).getLastDetailForUpdate().getFinancialAccountAliasTypeDetailValue().clone();
                 
-                financialAccountAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
+                financialAccountAliasTypeDetailValue.setIsDefault(true);
                 updateFinancialAccountAliasTypeFromValue(financialAccountAliasTypeDetailValue, false, deletedBy);
             }
         }

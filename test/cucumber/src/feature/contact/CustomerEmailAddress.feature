@@ -12,7 +12,7 @@ Feature: Customer email address
 
   Scenario: Existing customer adds and then deletes an email address without a description and does not allow solicitations
     Given the customer Test begins using the application
-    And the user begins entering a new email address
+    When the user begins entering a new email address
     And the user sets the email address's email address to "Additional@echothree.com"
     And the user does not allow solicitations to the email address
     And the user adds the new email address
@@ -22,7 +22,7 @@ Feature: Customer email address
 
   Scenario: Existing customer adds and then deletes an email address without a description and does allow solicitations
     Given the customer Test begins using the application
-    And the user begins entering a new email address
+    When the user begins entering a new email address
     And the user sets the email address's email address to "Additional@echothree.com"
     And the user does allow solicitations to the email address
     And the user adds the new email address
@@ -32,7 +32,7 @@ Feature: Customer email address
 
   Scenario: Existing customer adds and then deletes an email address with a description and does not allow solicitations
     Given the customer Test begins using the application
-    And the user begins entering a new email address
+    When the user begins entering a new email address
     And the user sets the email address's email address to "Additional@echothree.com"
     And the user sets the email address's description to "Additional Email"
     And the user does not allow solicitations to the email address
@@ -43,7 +43,7 @@ Feature: Customer email address
 
   Scenario: Existing customer adds and then deletes an email address with a description and does allow solicitations
     Given the customer Test begins using the application
-    And the user begins entering a new email address
+    When the user begins entering a new email address
     And the user sets the email address's email address to "Additional@echothree.com"
     And the user sets the email address's description to "Additional Email"
     And the user does allow solicitations to the email address
@@ -54,15 +54,15 @@ Feature: Customer email address
 
   Scenario: Existing customer adds, edits and then deletes an email address with a description and does allow solicitations
     Given the customer Test begins using the application
-    And the user begins entering a new email address
+    When the user begins entering a new email address
     And the user sets the email address's email address to "Additional@echothree.com"
     And the user sets the email address's description to "Additional Email"
     And the user does allow solicitations to the email address
     And the user adds the new email address
     Then no error should occur
-    And the user begins specifying an email address to edit
+    When the user begins specifying an email address to edit
     And the user sets the email address's contact mechanism to the last email address added
-    And the user begins editing the email address
+    When the user begins editing the email address
     Then no error should occur
     And the user sets the email address's email address to "Edited@echothree.com"
     And the user sets the email address's description to "Edited Email"

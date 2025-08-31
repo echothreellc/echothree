@@ -66,7 +66,7 @@ public class SetDefaultCampaignContentCommand
         var campaignContentDetailValue = campaignControl.getCampaignContentDetailValueByNameForUpdate(campaignContentName);
         
         if(campaignContentDetailValue != null) {
-            campaignContentDetailValue.setIsDefault(Boolean.TRUE);
+            campaignContentDetailValue.setIsDefault(true);
             campaignControl.updateCampaignContentFromValue(campaignContentDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownCampaignContentName.name(), campaignContentName);

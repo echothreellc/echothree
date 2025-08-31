@@ -63,10 +63,10 @@ public class OrderPriorityControl
         if(defaultFound && isDefault) {
             var defaultOrderPriorityDetailValue = getDefaultOrderPriorityDetailValueForUpdate(orderType);
 
-            defaultOrderPriorityDetailValue.setIsDefault(Boolean.FALSE);
+            defaultOrderPriorityDetailValue.setIsDefault(false);
             updateOrderPriorityFromValue(defaultOrderPriorityDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var orderPriority = OrderPriorityFactory.getInstance().create();
@@ -303,11 +303,11 @@ public class OrderPriorityControl
                     // If I'm the default, and a default already existed...
                     var defaultOrderPriorityDetailValue = getDefaultOrderPriorityDetailValueForUpdate(orderType);
 
-                    defaultOrderPriorityDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultOrderPriorityDetailValue.setIsDefault(false);
                     updateOrderPriorityFromValue(defaultOrderPriorityDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -346,7 +346,7 @@ public class OrderPriorityControl
                 }
                 var orderPriorityDetailValue = Objects.requireNonNull(defaultOrderPriority).getLastDetailForUpdate().getOrderPriorityDetailValue().clone();
 
-                orderPriorityDetailValue.setIsDefault(Boolean.TRUE);
+                orderPriorityDetailValue.setIsDefault(true);
                 updateOrderPriorityFromValue(orderPriorityDetailValue, false, deletedBy);
             }
         }

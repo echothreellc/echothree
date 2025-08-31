@@ -72,7 +72,7 @@ public class SetDefaultLocationTypeCommand
             var locationTypeDetailValue = warehouseControl.getLocationTypeDetailValueByNameForUpdate(warehouseParty, locationTypeName);
             
             if(locationTypeDetailValue != null) {
-                locationTypeDetailValue.setIsDefault(Boolean.TRUE);
+                locationTypeDetailValue.setIsDefault(true);
                 warehouseControl.updateLocationTypeFromValue(locationTypeDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownLocationTypeName.name(), locationTypeName);

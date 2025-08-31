@@ -52,7 +52,7 @@ public class SetDefaultMimeTypeCommand
         var mimeTypeDetailValue = mimeTypeControl.getMimeTypeDetailValueByNameForUpdate(mimeTypeName);
 
         if(mimeTypeDetailValue != null) {
-            mimeTypeDetailValue.setIsDefault(Boolean.TRUE);
+            mimeTypeDetailValue.setIsDefault(true);
             mimeTypeControl.updateMimeTypeFromValue(mimeTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownMimeTypeName.name(), mimeTypeName);

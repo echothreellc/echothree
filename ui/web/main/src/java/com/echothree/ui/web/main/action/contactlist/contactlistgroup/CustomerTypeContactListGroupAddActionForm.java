@@ -43,7 +43,7 @@ public class CustomerTypeContactListGroupAddActionForm
             var form = CustomerUtil.getHome().getGetCustomerTypeChoicesForm();
 
             form.setDefaultCustomerTypeChoice(customerTypeChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = CustomerUtil.getHome().getCustomerTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -99,7 +99,7 @@ public class CustomerTypeContactListGroupAddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
 
-        addWhenCreated = Boolean.FALSE;
+        addWhenCreated = false;
     }
 
 }

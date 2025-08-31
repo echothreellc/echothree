@@ -63,7 +63,7 @@ public class AddActionForm
             var commandForm = PartyUtil.getHome().getGetCompanyChoicesForm();
 
             commandForm.setDefaultCompanyChoice(companyChoice);
-            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = PartyUtil.getHome().getCompanyChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -82,7 +82,7 @@ public class AddActionForm
             var commandForm = WarehouseUtil.getHome().getGetWarehouseChoicesForm();
 
             commandForm.setDefaultWarehouseChoice(warehouseChoice);
-            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = WarehouseUtil.getHome().getWarehouseChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -102,7 +102,7 @@ public class AddActionForm
 
             form.setInventoryConditionUseTypeName(InventoryConstants.InventoryConditionUseType_PURCHASE_ORDER);
             form.setDefaultInventoryConditionChoice(inventoryConditionChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = InventoryUtil.getHome().getInventoryConditionChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -121,7 +121,7 @@ public class AddActionForm
             var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
             form.setDefaultUnitOfMeasureTypeChoice(minimumInventoryUnitOfMeasureTypeChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
             form.setItemName(itemName);
 
             var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
@@ -141,7 +141,7 @@ public class AddActionForm
             var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
             form.setDefaultUnitOfMeasureTypeChoice(maximumInventoryUnitOfMeasureTypeChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
             form.setItemName(itemName);
 
             var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
@@ -161,7 +161,7 @@ public class AddActionForm
             var form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
             form.setDefaultUnitOfMeasureTypeChoice(reorderQuantityUnitOfMeasureTypeChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
             form.setItemName(itemName);
 
             var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);

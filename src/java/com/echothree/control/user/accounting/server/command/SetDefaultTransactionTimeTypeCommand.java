@@ -65,7 +65,7 @@ public class SetDefaultTransactionTimeTypeCommand
         var transactionTimeTypeDetailValue = transactionTimeControl.getTransactionTimeTypeDetailValueByNameForUpdate(transactionTimeTypeName);
 
         if(transactionTimeTypeDetailValue != null) {
-            transactionTimeTypeDetailValue.setIsDefault(Boolean.TRUE);
+            transactionTimeTypeDetailValue.setIsDefault(true);
             transactionTimeControl.updateTransactionTimeTypeFromValue(transactionTimeTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownTransactionTimeTypeName.name(), transactionTimeTypeName);

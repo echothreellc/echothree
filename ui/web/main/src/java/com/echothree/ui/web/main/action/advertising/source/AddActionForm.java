@@ -48,7 +48,7 @@ public class AddActionForm
             var form = OfferUtil.getHome().getGetOfferChoicesForm();
 
             form.setDefaultOfferChoice(offerChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = OfferUtil.getHome().getOfferChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -66,7 +66,7 @@ public class AddActionForm
             var form = OfferUtil.getHome().getGetUseChoicesForm();
 
             form.setDefaultUseChoice(useChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = OfferUtil.getHome().getUseChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -148,7 +148,7 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
 
-        isDefault = Boolean.FALSE;
+        isDefault = false;
     }
 
 }

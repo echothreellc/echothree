@@ -41,7 +41,7 @@ public class EditActionForm
             form.setContentCollectionName(contentCollectionName);
             form.setContentCatalogName(contentCatalogName);
             form.setDefaultContentCategoryChoice(parentContentCategoryChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = ContentUtil.getHome().getContentCategoryChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

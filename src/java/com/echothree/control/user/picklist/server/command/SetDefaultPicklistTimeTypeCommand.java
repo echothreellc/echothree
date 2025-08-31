@@ -70,7 +70,7 @@ public class SetDefaultPicklistTimeTypeCommand
             var picklistTimeTypeDetailValue = picklistControl.getPicklistTimeTypeDetailValueByNameForUpdate(picklistType, picklistTimeTypeName);
 
             if(picklistTimeTypeDetailValue != null) {
-                picklistTimeTypeDetailValue.setIsDefault(Boolean.TRUE);
+                picklistTimeTypeDetailValue.setIsDefault(true);
                 picklistControl.updatePicklistTimeTypeFromValue(picklistTimeTypeDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownPicklistTimeTypeName.name(), picklistTypeName, picklistTimeTypeName);

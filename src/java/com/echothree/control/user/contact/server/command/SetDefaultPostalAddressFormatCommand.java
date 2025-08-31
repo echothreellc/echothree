@@ -52,7 +52,7 @@ public class SetDefaultPostalAddressFormatCommand
         var postalAddressFormatDetailValue = contactControl.getPostalAddressFormatDetailValueByNameForUpdate(postalAddressFormatName);
         
         if(postalAddressFormatDetailValue != null) {
-            postalAddressFormatDetailValue.setIsDefault(Boolean.TRUE);
+            postalAddressFormatDetailValue.setIsDefault(true);
             contactControl.updatePostalAddressFormatFromValue(postalAddressFormatDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownPostalAddressFormatName.name(), postalAddressFormatName);

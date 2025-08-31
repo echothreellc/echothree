@@ -54,7 +54,7 @@ public class BasePartyActionForm
                 var commandForm = AccountingUtil.getHome().getGetCurrencyChoicesForm();
                 
                 commandForm.setDefaultCurrencyChoice(currencyChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(true));
 
                 var commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
@@ -97,7 +97,7 @@ public class BasePartyActionForm
                 var commandForm = PartyUtil.getHome().getGetDateTimeFormatChoicesForm();
                 
                 commandForm.setDefaultDateTimeFormatChoice(dateTimeFormatChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(true));
 
                 var commandResult = PartyUtil.getHome().getDateTimeFormatChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
@@ -140,7 +140,7 @@ public class BasePartyActionForm
                 var commandForm = PartyUtil.getHome().getGetLanguageChoicesForm();
                 
                 commandForm.setDefaultLanguageChoice(languageChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(true));
 
                 var commandResult = PartyUtil.getHome().getLanguageChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
@@ -183,7 +183,7 @@ public class BasePartyActionForm
                 var commandForm = PartyUtil.getHome().getGetTimeZoneChoicesForm();
                 
                 commandForm.setDefaultTimeZoneChoice(timeZoneChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+                commandForm.setAllowNullChoice(String.valueOf(true));
 
                 var commandResult = PartyUtil.getHome().getTimeZoneChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();

@@ -47,7 +47,7 @@ Feature: Employee location type
     And the user sets the location name element's warehouse name to the last warehouse added
     And the user sets the location name element's location type name to the last location type added
     And the user sets the location name element's location name element name to the last location name element added
-    And the user begins editing the location name element
+    When the user begins editing the location name element
     Then no error should occur
     And the user sets the location name element's description to "Edited Cucumber Location Name Element"
     And the user finishes editing the location name element

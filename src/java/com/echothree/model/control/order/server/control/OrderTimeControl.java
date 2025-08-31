@@ -72,10 +72,10 @@ public class OrderTimeControl
         if(defaultFound && isDefault) {
             var defaultOrderTimeTypeDetailValue = getDefaultOrderTimeTypeDetailValueForUpdate(orderType);
 
-            defaultOrderTimeTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultOrderTimeTypeDetailValue.setIsDefault(false);
             updateOrderTimeTypeFromValue(defaultOrderTimeTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var orderTimeType = OrderTimeTypeFactory.getInstance().create();
@@ -311,11 +311,11 @@ public class OrderTimeControl
                     // If I'm the default, and a default already existed...
                     var defaultOrderTimeTypeDetailValue = getDefaultOrderTimeTypeDetailValueForUpdate(orderType);
 
-                    defaultOrderTimeTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultOrderTimeTypeDetailValue.setIsDefault(false);
                     updateOrderTimeTypeFromValue(defaultOrderTimeTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -355,7 +355,7 @@ public class OrderTimeControl
                 }
                 var orderTimeTypeDetailValue = Objects.requireNonNull(defaultOrderTimeType).getLastDetailForUpdate().getOrderTimeTypeDetailValue().clone();
 
-                orderTimeTypeDetailValue.setIsDefault(Boolean.TRUE);
+                orderTimeTypeDetailValue.setIsDefault(true);
                 updateOrderTimeTypeFromValue(orderTimeTypeDetailValue, false, deletedBy);
             }
         }

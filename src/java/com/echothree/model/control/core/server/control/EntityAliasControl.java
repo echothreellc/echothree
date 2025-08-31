@@ -69,10 +69,10 @@ public class EntityAliasControl
         if(defaultFound && isDefault) {
             var defaultEntityAliasTypeDetailValue = getDefaultEntityAliasTypeDetailValueForUpdate(entityType);
 
-            defaultEntityAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultEntityAliasTypeDetailValue.setIsDefault(false);
             updateEntityAliasTypeFromValue(defaultEntityAliasTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var entityAliasType = EntityAliasTypeFactory.getInstance().create();
@@ -289,11 +289,11 @@ public class EntityAliasControl
                     // If I'm the default, and a default already existed...
                     var defaultEntityAliasTypeDetailValue = getDefaultEntityAliasTypeDetailValueForUpdate(entityType);
 
-                    defaultEntityAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultEntityAliasTypeDetailValue.setIsDefault(false);
                     updateEntityAliasTypeFromValue(defaultEntityAliasTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -370,7 +370,7 @@ public class EntityAliasControl
                     }
                     var entityAliasTypeDetailValue = Objects.requireNonNull(defaultEntityAliasType).getLastDetailForUpdate().getEntityAliasTypeDetailValue().clone();
 
-                    entityAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
+                    entityAliasTypeDetailValue.setIsDefault(true);
                     updateEntityAliasTypeFromValue(entityAliasTypeDetailValue, false, deletedBy);
                 }
             }

@@ -56,7 +56,7 @@ public class AddActionForm
 
             form.setContactMechanismTypeName(ContactMechanismTypes.POSTAL_ADDRESS.name());
             form.setDefaultContactMechanismPurposeChoice(contactMechanismPurposeChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = ContactUtil.getHome().getContactMechanismPurposeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -75,7 +75,7 @@ public class AddActionForm
             var form = AccountingUtil.getHome().getGetGlAccountChoicesForm();
 
             form.setDefaultGlAccountChoice(glAccountChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = AccountingUtil.getHome().getGlAccountChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -200,10 +200,10 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        includeShippingCharge = Boolean.FALSE;
-        includeProcessingCharge = Boolean.FALSE;
-        includeInsuranceCharge = Boolean.FALSE;
-        isDefault = Boolean.FALSE;
+        includeShippingCharge = false;
+        includeProcessingCharge = false;
+        includeInsuranceCharge = false;
+        isDefault = false;
     }
     
 }

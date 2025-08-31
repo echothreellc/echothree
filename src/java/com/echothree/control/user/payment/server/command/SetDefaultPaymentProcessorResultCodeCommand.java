@@ -65,7 +65,7 @@ public class SetDefaultPaymentProcessorResultCodeCommand
         var paymentProcessorResultCodeDetailValue = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeDetailValueByNameForUpdate(paymentProcessorResultCodeName);
         
         if(paymentProcessorResultCodeDetailValue != null) {
-            paymentProcessorResultCodeDetailValue.setIsDefault(Boolean.TRUE);
+            paymentProcessorResultCodeDetailValue.setIsDefault(true);
             paymentProcessorResultCodeControl.updatePaymentProcessorResultCodeFromValue(paymentProcessorResultCodeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownPaymentProcessorResultCodeName.name(), paymentProcessorResultCodeName);

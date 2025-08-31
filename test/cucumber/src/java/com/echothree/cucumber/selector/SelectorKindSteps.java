@@ -94,7 +94,7 @@ public class SelectorKindSteps implements En {
                     persona.selectorKindSpec = SelectorUtil.getHome().getSelectorKindSpec();
                 });
 
-        And("^the user begins editing the selector kind$",
+        When("^the user begins editing the selector kind$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.selectorKindSpec;

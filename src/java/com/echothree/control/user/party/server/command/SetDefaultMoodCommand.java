@@ -52,7 +52,7 @@ public class SetDefaultMoodCommand
         var moodDetailValue = partyControl.getMoodDetailValueByNameForUpdate(moodName);
         
         if(moodDetailValue != null) {
-            moodDetailValue.setIsDefault(Boolean.TRUE);
+            moodDetailValue.setIsDefault(true);
             partyControl.updateMoodFromValue(moodDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownMoodName.name(), moodName);

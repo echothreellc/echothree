@@ -81,10 +81,10 @@ public class AppearanceControl
         if(defaultFound && isDefault) {
             var defaultAppearanceDetailValue = getDefaultAppearanceDetailValueForUpdate();
 
-            defaultAppearanceDetailValue.setIsDefault(Boolean.FALSE);
+            defaultAppearanceDetailValue.setIsDefault(false);
             updateAppearanceFromValue(defaultAppearanceDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var appearance = AppearanceFactory.getInstance().create();
@@ -438,11 +438,11 @@ public class AppearanceControl
                     // If I'm the default, and a default already existed...
                     var defaultAppearanceDetailValue = getDefaultAppearanceDetailValueForUpdate();
 
-                    defaultAppearanceDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultAppearanceDetailValue.setIsDefault(false);
                     updateAppearanceFromValue(defaultAppearanceDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -486,7 +486,7 @@ public class AppearanceControl
                     }
                     var appearanceDetailValue = Objects.requireNonNull(defaultAppearance).getLastDetailForUpdate().getAppearanceDetailValue().clone();
 
-                    appearanceDetailValue.setIsDefault(Boolean.TRUE);
+                    appearanceDetailValue.setIsDefault(true);
                     updateAppearanceFromValue(appearanceDetailValue, false, deletedBy);
                 }
             }

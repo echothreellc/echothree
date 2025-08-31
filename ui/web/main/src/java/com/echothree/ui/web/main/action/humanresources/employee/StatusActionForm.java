@@ -42,7 +42,7 @@ public class StatusActionForm
 
             form.setEmployeeName(employeeName);
             form.setDefaultEmployeeStatusChoice(employeeStatusChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = PartyUtil.getHome().getEmployeeStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

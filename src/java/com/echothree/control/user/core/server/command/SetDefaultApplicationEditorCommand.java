@@ -76,7 +76,7 @@ public class SetDefaultApplicationEditorCommand
                 var applicationEditorDetailValue = applicationControl.getApplicationEditorDetailValueForUpdate(application, editor);
                 
                 if(applicationEditorDetailValue != null) {
-                    applicationEditorDetailValue.setIsDefault(Boolean.TRUE);
+                    applicationEditorDetailValue.setIsDefault(true);
                     applicationControl.updateApplicationEditorFromValue(applicationEditorDetailValue, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownApplicationEditor.name(), applicationName, editorName);

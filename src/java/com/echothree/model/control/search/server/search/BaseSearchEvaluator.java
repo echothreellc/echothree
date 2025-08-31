@@ -252,7 +252,7 @@ public abstract class BaseSearchEvaluator
                         var cachedSearchStatus = searchControl.getCachedSearchStatusForUpdate(cachedSearch);
 
                         createCachedExecutedSearchResults(cachedSearch, entityInstancePKHolder);
-                        cachedSearchStatus.setIsConsistent(Boolean.TRUE);
+                        cachedSearchStatus.setIsConsistent(true);
                     } catch(PersistenceDatabaseException pde) {
                         // The only code in the try that should cause this error is the call to createCachedSearch(...). If it fails,
                         // then check to see if someone else already performed that search while we were also performing it. If they
@@ -326,7 +326,7 @@ public abstract class BaseSearchEvaluator
                                 createCachedExecutedSearchResults(cachedSearch, entityInstancePKHolder);
                             }
 
-                            cachedSearchStatus.setIsConsistent(Boolean.TRUE);
+                            cachedSearchStatus.setIsConsistent(true);
                         }
                     }
                 }

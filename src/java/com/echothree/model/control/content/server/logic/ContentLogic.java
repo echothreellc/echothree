@@ -43,7 +43,8 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -69,13 +70,14 @@ public class ContentLogic
         if(referrer != null) {
             try {
                 var contentControl = Session.getModelController(ContentControl.class);
-                var url = new URL(referrer);
+                var uri = new URI(referrer);
+                var url = uri.toURL();
                 var contentWebAddressName = url.getHost();
 
                 if(!contentControl.validContentWebAddressName(contentWebAddressName)) {
                     handleExecutionError(UnknownContentWebAddressNameException.class, eea, ExecutionErrors.UnknownContentWebAddressName.name(), contentWebAddressName);
                 }
-            } catch(MalformedURLException mue) {
+            } catch(URISyntaxException | MalformedURLException ex) {
                 handleExecutionError(MalformedUrlException.class, eea, ExecutionErrors.MalformedUrl.name(), referrer);
             }
         }

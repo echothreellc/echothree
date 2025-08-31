@@ -150,31 +150,43 @@
         <itemAliasChecksumType itemAliasChecksumTypeName="UPC_A" isDefault="false" sortOrder="1">
             <itemAliasChecksumTypeDescription languageIsoName="en" description="UPC-A" />
         </itemAliasChecksumType>
+        <itemAliasChecksumType itemAliasChecksumTypeName="UPC_E" isDefault="false" sortOrder="1">
+            <itemAliasChecksumTypeDescription languageIsoName="en" description="UPC-E" />
+        </itemAliasChecksumType>
         <itemAliasChecksumType itemAliasChecksumTypeName="ISBN_10" isDefault="false" sortOrder="1">
             <itemAliasChecksumTypeDescription languageIsoName="en" description="ISBN-10" />
         </itemAliasChecksumType>
         <itemAliasChecksumType itemAliasChecksumTypeName="ISBN_13" isDefault="false" sortOrder="1">
             <itemAliasChecksumTypeDescription languageIsoName="en" description="ISBN-13" />
         </itemAliasChecksumType>
+        <itemAliasChecksumType itemAliasChecksumTypeName="EAN_13" isDefault="false" sortOrder="1">
+            <itemAliasChecksumTypeDescription languageIsoName="en" description="EAN-13" />
+        </itemAliasChecksumType>
+        <itemAliasChecksumType itemAliasChecksumTypeName="BOOKLAND_EAN" isDefault="false" sortOrder="1">
+            <itemAliasChecksumTypeDescription languageIsoName="en" description="Bookland EAN" />
+        </itemAliasChecksumType>
     </itemAliasChecksumTypes>
     <itemAliasTypes>
         <itemAliasType itemAliasTypeName="ADDTL_ITEM_NAME" itemAliasChecksumTypeName="NONE" allowMultiple="true" isDefault="true" sortOrder="0">
             <itemAliasTypeDescription languageIsoName="en" description="Additional Item Name" />
         </itemAliasType>
-        <itemAliasType itemAliasTypeName="UPC" itemAliasChecksumTypeName="NONE" allowMultiple="false" isDefault="false" sortOrder="0">
-            <itemAliasTypeDescription languageIsoName="en" description="Universal Product Code" />
+        <itemAliasType itemAliasTypeName="UPC_A" itemAliasChecksumTypeName="UPC_A" allowMultiple="false" isDefault="false" sortOrder="0">
+            <itemAliasTypeDescription languageIsoName="en" description="UPC-A (Universal Product Code)" />
         </itemAliasType>
-        <itemAliasType itemAliasTypeName="ISBN10" itemAliasChecksumTypeName="NONE" allowMultiple="false" isDefault="false" sortOrder="0">
-            <itemAliasTypeDescription languageIsoName="en" description="International Standard Book Number, 10 Digits" />
+        <itemAliasType itemAliasTypeName="UPC_E" itemAliasChecksumTypeName="UPC_E" allowMultiple="false" isDefault="false" sortOrder="0">
+            <itemAliasTypeDescription languageIsoName="en" description="UPC-E (Universal Product Code)" />
         </itemAliasType>
-        <itemAliasType itemAliasTypeName="ISBN13" itemAliasChecksumTypeName="NONE" allowMultiple="false" isDefault="false" sortOrder="0">
-            <itemAliasTypeDescription languageIsoName="en" description="International Standard Book Number, 13 Digits" />
+        <itemAliasType itemAliasTypeName="ISBN_10" itemAliasChecksumTypeName="ISBN_10" allowMultiple="false" isDefault="false" sortOrder="0">
+            <itemAliasTypeDescription languageIsoName="en" description="ISBN-10 (International Standard Book Number, 10 Digits)" />
         </itemAliasType>
-        <itemAliasType itemAliasTypeName="EAN" itemAliasChecksumTypeName="NONE" allowMultiple="false" isDefault="false" sortOrder="0">
-            <itemAliasTypeDescription languageIsoName="en" description="European Article Number" />
+        <itemAliasType itemAliasTypeName="ISBN_13" itemAliasChecksumTypeName="ISBN_13" allowMultiple="false" isDefault="false" sortOrder="0">
+            <itemAliasTypeDescription languageIsoName="en" description="ISBN-13 (International Standard Book Number, 13 Digits)" />
         </itemAliasType>
-        <itemAliasType itemAliasTypeName="BOOKLAND_EAN" itemAliasChecksumTypeName="NONE" allowMultiple="false" isDefault="false" sortOrder="0">
-            <itemAliasTypeDescription languageIsoName="en" description="Bookland European Article Number" />
+        <itemAliasType itemAliasTypeName="EAN_13" itemAliasChecksumTypeName="EAN_13" allowMultiple="false" isDefault="false" sortOrder="0">
+            <itemAliasTypeDescription languageIsoName="en" description="EAN-13 (European Article Number, 13 Digits)" />
+        </itemAliasType>
+        <itemAliasType itemAliasTypeName="BOOKLAND_EAN" itemAliasChecksumTypeName="BOOKLAND_EAN" allowMultiple="false" isDefault="false" sortOrder="0">
+            <itemAliasTypeDescription languageIsoName="en" description="Bookland EAN (European Article Number)" />
         </itemAliasType>
     </itemAliasTypes>
     <itemPriceTypes>

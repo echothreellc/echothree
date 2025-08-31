@@ -120,9 +120,9 @@ public class MainActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        setFirstNameSoundex(Boolean.FALSE);
-        setMiddleNameSoundex(Boolean.FALSE);
-        setLastNameSoundex(Boolean.FALSE);
+        setFirstNameSoundex(false);
+        setMiddleNameSoundex(false);
+        setLastNameSoundex(false);
     }
     
 }

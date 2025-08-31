@@ -84,7 +84,7 @@ public class SetDefaultEntityListItemCommand
                         var entityListItemDetailValue = coreControl.getEntityListItemDetailValueByNameForUpdate(entityAttribute, entityListItemName);
 
                         if(entityListItemDetailValue != null) {
-                            entityListItemDetailValue.setIsDefault(Boolean.TRUE);
+                            entityListItemDetailValue.setIsDefault(true);
                             coreControl.updateEntityListItemFromValue(entityListItemDetailValue, getPartyPK());
                         } else {
                             addExecutionError(ExecutionErrors.UnknownEntityListItemName.name(), componentVendorName, entityTypeName, entityAttributeName, entityListItemName);

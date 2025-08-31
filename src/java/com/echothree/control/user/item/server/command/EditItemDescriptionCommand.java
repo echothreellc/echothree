@@ -347,7 +347,7 @@ public class EditItemDescriptionCommand
                 if(imageDimensions != null) {
                     itemImageDescriptionValue.setHeight(imageDimensions.getHeight());
                     itemImageDescriptionValue.setWidth(imageDimensions.getWidth());
-                    itemImageDescriptionValue.setScaledFromParent(Boolean.FALSE);
+                    itemImageDescriptionValue.setScaledFromParent(false);
 
                     itemControl.updateItemImageDescriptionFromValue(itemImageDescriptionValue, updatedBy);
                 }
@@ -360,7 +360,7 @@ public class EditItemDescriptionCommand
             itemControl.createItemBlobDescription(itemDescription, blobDescription, updatedBy);
 
             if(imageDimensions != null) {
-                itemControl.createItemImageDescription(itemDescription, itemImageType, imageDimensions.getHeight(), imageDimensions.getWidth(), Boolean.FALSE,
+                itemControl.createItemImageDescription(itemDescription, itemImageType, imageDimensions.getHeight(), imageDimensions.getWidth(), false,
                         updatedBy);
             }
 

@@ -77,7 +77,7 @@ public class FeedAction
         var forumName = request.getParameter(ParameterConstants.FORUM_NAME);
         
         commandForm.setForumName(forumName);
-        commandForm.setIncludeFutureForumThreads(Boolean.TRUE.toString());
+        commandForm.setIncludeFutureForumThreads(String.valueOf(true));
         
         Set<String> commandFormOptions = new HashSet<>();
         commandFormOptions.add(ForumOptions.ForumThreadIncludeForumMessages);

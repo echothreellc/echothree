@@ -45,7 +45,7 @@ public class AddActionForm
             var form = GeoUtil.getHome().getGetGeoCodeTypeChoicesForm();
 
             form.setDefaultGeoCodeTypeChoice(parentGeoCodeTypeChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = GeoUtil.getHome().getGeoCodeTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -115,7 +115,7 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        isDefault = Boolean.FALSE;
+        isDefault = false;
     }
 
 }

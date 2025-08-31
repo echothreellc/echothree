@@ -52,7 +52,7 @@ public class SetDefaultResponsibilityTypeCommand
         var responsibilityTypeDetailValue = employeeControl.getResponsibilityTypeDetailValueByNameForUpdate(responsibilityTypeName);
         
         if(responsibilityTypeDetailValue != null) {
-            responsibilityTypeDetailValue.setIsDefault(Boolean.TRUE);
+            responsibilityTypeDetailValue.setIsDefault(true);
             employeeControl.updateResponsibilityTypeFromValue(responsibilityTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownResponsibilityTypeName.name(), responsibilityTypeName);

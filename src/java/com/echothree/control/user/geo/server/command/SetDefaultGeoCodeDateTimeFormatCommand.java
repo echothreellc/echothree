@@ -76,7 +76,7 @@ public class SetDefaultGeoCodeDateTimeFormatCommand
                 var geoCodeDateTimeFormatValue = geoControl.getGeoCodeDateTimeFormatValueForUpdate(geoCode, dateTimeFormat);
                 
                 if(geoCodeDateTimeFormatValue != null) {
-                    geoCodeDateTimeFormatValue.setIsDefault(Boolean.TRUE);
+                    geoCodeDateTimeFormatValue.setIsDefault(true);
                     geoControl.updateGeoCodeDateTimeFormatFromValue(geoCodeDateTimeFormatValue, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownGeoCodeDateTimeFormat.name(), geoCodeName, dateTimeFormatName);

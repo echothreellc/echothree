@@ -2328,5 +2328,14 @@ public enum ExecutionErrors {
     DuplicateTransactionTimeTypeDescription,
     UnknownTransactionTimeTypeDescription,
     TransactionNotBalanced,
+    IncorrectUpcENumberSystem,
+    IncorrectUpcECharacter,
+    IncorrectUpcELength,
+    IncorrectEan13Checksum,
+    IncorrectEan13Character,
+    IncorrectEan13Length,
+    IncorrectBooklandEanPrefix,
+    IncorrectBooklandEanCharacter,
+    IncorrectBooklandEanLength,
 
 }

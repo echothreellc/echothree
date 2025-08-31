@@ -18,14 +18,13 @@ package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.edit.ItemEdit;
 import com.echothree.control.user.item.common.edit.ItemEditFactory;
-import com.echothree.control.user.item.common.form.EditItemForm;
 import com.echothree.control.user.item.common.result.EditItemResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.control.user.item.common.spec.ItemSpec;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
-import com.echothree.model.control.item.common.ItemConstants;
+import com.echothree.model.control.item.common.ItemTypes;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.returnpolicy.common.ReturnKinds;
@@ -38,7 +37,6 @@ import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPol
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemCategory;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategory;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -194,7 +192,7 @@ public class EditItemCommand
             if(itemCategory != null) {
                 var itemAccountingCategoryName = edit.getItemAccountingCategoryName();
 
-                isKit = itemTypeName.equals(ItemConstants.ItemType_KIT);
+                isKit = itemTypeName.equals(ItemTypes.KIT.name());
 
                 if(isKit) {
                     if(itemAccountingCategoryName != null) {

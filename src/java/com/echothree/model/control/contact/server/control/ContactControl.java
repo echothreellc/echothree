@@ -330,10 +330,10 @@ public class ContactControl
         if(defaultFound && isDefault) {
             var defaultContactMechanismAliasTypeDetailValue = getDefaultContactMechanismAliasTypeDetailValueForUpdate();
 
-            defaultContactMechanismAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultContactMechanismAliasTypeDetailValue.setIsDefault(false);
             updateContactMechanismAliasTypeFromValue(defaultContactMechanismAliasTypeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var contactMechanismAliasType = ContactMechanismAliasTypeFactory.getInstance().create();
@@ -578,11 +578,11 @@ public class ContactControl
                     // If I'm the default, and a default already existed...
                     var defaultContactMechanismAliasTypeDetailValue = getDefaultContactMechanismAliasTypeDetailValueForUpdate();
 
-                    defaultContactMechanismAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultContactMechanismAliasTypeDetailValue.setIsDefault(false);
                     updateContactMechanismAliasTypeFromValue(defaultContactMechanismAliasTypeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -621,7 +621,7 @@ public class ContactControl
                 }
                 var contactMechanismAliasTypeDetailValue = Objects.requireNonNull(defaultContactMechanismAliasType).getLastDetailForUpdate().getContactMechanismAliasTypeDetailValue().clone();
 
-                contactMechanismAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
+                contactMechanismAliasTypeDetailValue.setIsDefault(true);
                 updateContactMechanismAliasTypeFromValue(contactMechanismAliasTypeDetailValue, false, deletedBy);
             }
         }
@@ -2260,10 +2260,10 @@ public class ContactControl
         if(defaultFound && isDefault) {
             var defaultPartyContactMechanismDetailValue = getDefaultPartyContactMechanismDetailValueForUpdate(party);
             
-            defaultPartyContactMechanismDetailValue.setIsDefault(Boolean.FALSE);
+            defaultPartyContactMechanismDetailValue.setIsDefault(false);
             updatePartyContactMechanismFromValue(defaultPartyContactMechanismDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var partyContactMechanism = PartyContactMechanismFactory.getInstance().create();
@@ -2625,11 +2625,11 @@ public class ContactControl
                     // If I'm the default, and a default already existed...
                     var defaultPartyContactMechanismDetailValue = getDefaultPartyContactMechanismDetailValueForUpdate(party);
                     
-                    defaultPartyContactMechanismDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultPartyContactMechanismDetailValue.setIsDefault(false);
                     updatePartyContactMechanismFromValue(defaultPartyContactMechanismDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -2687,7 +2687,7 @@ public class ContactControl
                 }
                 var partyContactMechanismDetailValue = Objects.requireNonNull(defaultPartyContactMechanism).getLastDetailForUpdate().getPartyContactMechanismDetailValue().clone();
                 
-                partyContactMechanismDetailValue.setIsDefault(Boolean.TRUE);
+                partyContactMechanismDetailValue.setIsDefault(true);
                 updatePartyContactMechanismFromValue(partyContactMechanismDetailValue, false, deletedBy);
             }
         }
@@ -2969,10 +2969,10 @@ public class ContactControl
             var defaultPartyContactMechanismPurposeDetailValue = getDefaultPartyContactMechanismPurposeDetailValueForUpdate(partyContactMechanism,
                     contactMechanismPurpose);
             
-            defaultPartyContactMechanismPurposeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultPartyContactMechanismPurposeDetailValue.setIsDefault(false);
             updatePartyContactMechanismPurposeFromValue(defaultPartyContactMechanismPurposeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var partyContactMechanismPurpose = PartyContactMechanismPurposeFactory.getInstance().create();
@@ -3233,11 +3233,11 @@ public class ContactControl
                     // If I'm the default, and a default already existed...
                     var defaultPartyContactMechanismPurposeDetailValue = getDefaultPartyContactMechanismPurposeDetailValueForUpdate(partyContactMechanism, contactMechanismPurpose);
                     
-                    defaultPartyContactMechanismPurposeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultPartyContactMechanismPurposeDetailValue.setIsDefault(false);
                     updatePartyContactMechanismPurposeFromValue(defaultPartyContactMechanismPurposeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -3276,7 +3276,7 @@ public class ContactControl
                 }
                 var partyContactMechanismPurposeDetailValue = Objects.requireNonNull(defaultPartyContactMechanismPurpose).getLastDetailForUpdate().getPartyContactMechanismPurposeDetailValue().clone();
                 
-                partyContactMechanismPurposeDetailValue.setIsDefault(Boolean.TRUE);
+                partyContactMechanismPurposeDetailValue.setIsDefault(true);
                 updatePartyContactMechanismPurposeFromValue(partyContactMechanismPurposeDetailValue, false, deletedBy);
             }
         }
@@ -3609,10 +3609,10 @@ public class ContactControl
         if(defaultFound && isDefault) {
             var defaultPostalAddressFormatDetailValue = getDefaultPostalAddressFormatDetailValueForUpdate();
             
-            defaultPostalAddressFormatDetailValue.setIsDefault(Boolean.FALSE);
+            defaultPostalAddressFormatDetailValue.setIsDefault(false);
             updatePostalAddressFormatFromValue(defaultPostalAddressFormatDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var postalAddressFormat = PostalAddressFormatFactory.getInstance().create();
@@ -3808,11 +3808,11 @@ public class ContactControl
                     // If I'm the default, and a default already existed...
                     var defaultPostalAddressFormatDetailValue = getDefaultPostalAddressFormatDetailValueForUpdate();
                     
-                    defaultPostalAddressFormatDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultPostalAddressFormatDetailValue.setIsDefault(false);
                     updatePostalAddressFormatFromValue(defaultPostalAddressFormatDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -3851,7 +3851,7 @@ public class ContactControl
                 }
                 var postalAddressFormatDetailValue = Objects.requireNonNull(defaultPostalAddressFormat).getLastDetailForUpdate().getPostalAddressFormatDetailValue().clone();
                 
-                postalAddressFormatDetailValue.setIsDefault(Boolean.TRUE);
+                postalAddressFormatDetailValue.setIsDefault(true);
                 updatePostalAddressFormatFromValue(postalAddressFormatDetailValue, false, deletedBy);
             }
         }

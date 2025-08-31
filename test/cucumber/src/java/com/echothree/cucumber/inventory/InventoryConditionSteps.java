@@ -93,7 +93,7 @@ public class InventoryConditionSteps implements En {
                     persona.inventoryConditionSpec = InventoryUtil.getHome().getInventoryConditionUniversalSpec();
                 });
 
-        And("^the user begins editing the inventory condition",
+        When("^the user begins editing the inventory condition",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.inventoryConditionSpec;

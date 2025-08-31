@@ -64,7 +64,7 @@ public class SetDefaultItemUnitOfMeasureTypeCommand
                         unitOfMeasureType);
                 
                 if(itemUnitOfMeasureTypeValue != null) {
-                    itemUnitOfMeasureTypeValue.setIsDefault(Boolean.TRUE);
+                    itemUnitOfMeasureTypeValue.setIsDefault(true);
                     itemControl.updateItemUnitOfMeasureTypeFromValue(itemUnitOfMeasureTypeValue, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownItemUnitOfMeasureType.name());

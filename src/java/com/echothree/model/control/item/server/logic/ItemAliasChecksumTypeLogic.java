@@ -21,10 +21,16 @@ import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
-import com.echothree.model.control.item.common.ItemConstants;
+import com.echothree.model.control.item.common.ItemAliasChecksumTypes;
 import com.echothree.model.control.item.common.exception.UnknownDefaultItemAliasChecksumTypeException;
 import com.echothree.model.control.item.common.exception.UnknownItemAliasChecksumTypeNameException;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.item.server.logic.checksum.BooklandEanChecksumLogic;
+import com.echothree.model.control.item.server.logic.checksum.Ean13ChecksumLogic;
+import com.echothree.model.control.item.server.logic.checksum.Isbn10ChecksumLogic;
+import com.echothree.model.control.item.server.logic.checksum.Isbn13ChecksumLogic;
+import com.echothree.model.control.item.server.logic.checksum.UpcAChecksumLogic;
+import com.echothree.model.control.item.server.logic.checksum.UpcEChecksumLogic;
 import com.echothree.model.data.item.server.entity.ItemAliasChecksumType;
 import com.echothree.model.data.item.server.entity.ItemAliasType;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -76,7 +82,7 @@ public class ItemAliasChecksumTypeLogic
         var parameterCount = (itemAliasChecksumTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 0:
+            case 0 -> {
                 if(allowDefault) {
                     itemAliasChecksumType = itemControl.getDefaultItemAliasChecksumType(entityPermission);
 
@@ -86,8 +92,8 @@ public class ItemAliasChecksumTypeLogic
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if(itemAliasChecksumTypeName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemAliasChecksumType.name());
@@ -98,10 +104,9 @@ public class ItemAliasChecksumTypeLogic
                 } else {
                     itemAliasChecksumType = getItemAliasChecksumTypeByName(eea, itemAliasChecksumTypeName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return itemAliasChecksumType;
@@ -117,179 +122,21 @@ public class ItemAliasChecksumTypeLogic
         return getItemAliasChecksumTypeByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
     }
 
-    private int getDigit(String alias, int offset) {
-        var result = -1;
-        var digit = alias.charAt(offset);
-
-        if(digit >= '0' && digit <= '9') {
-            result = digit - '0';
-        }
-
-        return result;
-    }
-
-    private int getIsbn10CheckDigit(String alias, int offset) {
-        var result = -1;
-        var digit = alias.charAt(offset);
-
-        if(digit >= '0' && digit <= '9') {
-            result = digit - '0';
-        } else if(digit == 'X') {
-            result = 10;
-        }
-
-        return result;
-    }
-
-    private void checkIsbn10Checksum(final ExecutionErrorAccumulator eea, final String alias) {
-        if(alias.length() == 10) {
-            var hasCharacterError = false;
-            var runningTotal = 0;
-            var checksum = 0;
-            
-            for(var i = 0; i < 9; i++) {
-                var digit = getDigit(alias, i);
-
-                if(digit == -1) {
-                    hasCharacterError = true;
-                    break;
-                } else {
-                    runningTotal += digit;
-                    checksum += runningTotal;
-                }
-            }
-
-            if(!hasCharacterError) {
-                var checkDigit = getIsbn10CheckDigit(alias, 9);
-
-                hasCharacterError = checkDigit == -1;
-
-                if(!hasCharacterError) {
-                    runningTotal += checkDigit;
-                    checksum += runningTotal;
-                    
-                    if(checksum % 11 != 0) {
-                        eea.addExecutionError(ExecutionErrors.IncorrectIsbn10Checksum.name());
-                    }
-                }
-            }
-
-            if(hasCharacterError) {
-                eea.addExecutionError(ExecutionErrors.IncorrectIsbn10Character.name());
-            }
-        } else {
-            eea.addExecutionError(ExecutionErrors.IncorrectIsbn10Length.name());
-        }
-    }
-
-    private void checkIsbn13Checksum(final ExecutionErrorAccumulator eea, final String alias) {
-        if(alias.length() == 13) {
-            var hasCharacterError = false;
-            var checksum = 0;
-            for(var i = 0; i < 12; i += 2) {
-                var digit = getDigit(alias, i);
-
-                if(digit == -1) {
-                    hasCharacterError = true;
-                    break;
-                }
-
-                checksum += digit;
-            }
-
-            if(!hasCharacterError) {
-                for(var i = 1; i < 12; i += 2) {
-                    var digit = getDigit(alias, i);
-
-                    if(digit == -1) {
-                        hasCharacterError = true;
-                        break;
-                    }
-
-                    checksum += getDigit(alias, i) * 3;
-                }
-            }
-
-            if(!hasCharacterError) {
-                var checkDigit = getIsbn10CheckDigit(alias, 12);
-
-                hasCharacterError = checkDigit == -1;
-
-                if(!hasCharacterError) {
-                    checksum += checkDigit;
-
-                    if(!(checksum % 10 == 0)) {
-                        eea.addExecutionError(ExecutionErrors.IncorrectIsbn13Checksum.name());
-                    }
-                }
-            }
-
-            if(hasCharacterError) {
-                eea.addExecutionError(ExecutionErrors.IncorrectIsbn13Character.name());
-            }
-        } else {
-            eea.addExecutionError(ExecutionErrors.IncorrectIsbn13Length.name());
-        }
-    }
-
-    private void checkUpcAChecksum(final ExecutionErrorAccumulator eea, final String alias) {
-        if(alias.length() == 12) {
-            var hasCharacterError = false;
-            var totalA = 0;
-            var totalB = 0;
-
-            for(var i = 0; i < 11; i++) {
-                var digit = getDigit(alias, i);
-
-                if(digit == -1) {
-                    hasCharacterError = true;
-                    break;
-                } else {
-                    if(i % 2 == 0) {
-                        totalA += digit;
-                    } else {
-                        totalB += digit;
-                    }
-                }
-            }
-
-            if(!hasCharacterError) {
-                var checkDigit = getDigit(alias, 11);
-
-                hasCharacterError = checkDigit == -1;
-
-                if(!hasCharacterError) {
-                    var intermediate = (10 - (totalA * 3 + totalB) % 10) % 10;
-
-                    if(intermediate != checkDigit) {
-                        eea.addExecutionError(ExecutionErrors.IncorrectUpcAChecksum.name());
-                    }
-                }
-            }
-
-            if(hasCharacterError) {
-                eea.addExecutionError(ExecutionErrors.IncorrectUpcACharacter.name());
-            }
-        } else {
-            eea.addExecutionError(ExecutionErrors.IncorrectUpcALength.name());
-        }
-    }
 
     public void checkItemAliasChecksum(final ExecutionErrorAccumulator eea, final ItemAliasType itemAliasType, final String alias) {
         var itemAliasChecksumType = itemAliasType.getLastDetail().getItemAliasChecksumType();
 
         if(itemAliasChecksumType != null) {
-            var itemAliasChecksumTypeName = itemAliasChecksumType.getItemAliasChecksumTypeName();
-
-            if(itemAliasChecksumTypeName.equals(ItemConstants.ItemAliasChecksumType_ISBN_10)) {
-                checkIsbn10Checksum(eea, alias);
-            } else if(itemAliasChecksumTypeName.equals(ItemConstants.ItemAliasChecksumType_ISBN_13)) {
-                checkIsbn13Checksum(eea, alias);
-            } else if(itemAliasChecksumTypeName.equals(ItemConstants.ItemAliasChecksumType_UPC_A)) {
-                checkUpcAChecksum(eea, alias);
+            switch(ItemAliasChecksumTypes.valueOf(itemAliasChecksumType.getItemAliasChecksumTypeName())) {
+                case ISBN_10 -> Isbn10ChecksumLogic.getInstance().checkChecksum(eea, alias);
+                case ISBN_13 -> Isbn13ChecksumLogic.getInstance().checkChecksum(eea, alias);
+                case UPC_A -> UpcAChecksumLogic.getInstance().checkChecksum(eea, alias);
+                case UPC_E -> UpcEChecksumLogic.getInstance().checkChecksum(eea, alias);
+                case EAN_13 -> Ean13ChecksumLogic.getInstance().checkChecksum(eea, alias);
+                case BOOKLAND_EAN -> BooklandEanChecksumLogic.getInstance().checkChecksum(eea, alias);
+                case NONE -> {}
             }
         }
     }
-
 
 }

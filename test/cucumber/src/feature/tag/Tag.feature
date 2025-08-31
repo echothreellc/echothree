@@ -53,7 +53,7 @@ Feature: Employee tag
     When the user begins specifying a tag to edit
     And the user sets the tag's tag scope name to the last tag scope added
     And the user sets the tag's tag name to "CUCUMBER_TAG"
-    And the user begins editing the tag
+    When the user begins editing the tag
     Then no error should occur
     When the user sets the tag's new tag name to "CUCUMBER_TAG_EDITED"
     And the user finishes editing the tag

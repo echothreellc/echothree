@@ -43,7 +43,7 @@ public class AddActionForm
             var form = ForumUtil.getHome().getGetForumChoicesForm();
 
             form.setDefaultForumChoice(getForumChoice());
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = ForumUtil.getHome().getForumChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -94,7 +94,7 @@ public class AddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        setIsDefault(Boolean.FALSE);
+        setIsDefault(false);
     }
     
 }

@@ -66,7 +66,7 @@ public class SetDefaultGeoCodeCommand
         var geoCodeDetailValue = geoControl.getGeoCodeDetailValueByNameForUpdate(geoCodeName);
         
         if(geoCodeDetailValue != null) {
-            geoCodeDetailValue.setIsDefault(Boolean.TRUE);
+            geoCodeDetailValue.setIsDefault(true);
             geoControl.updateGeoCodeFromValue(geoCodeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownGeoCodeName.name(), geoCodeName);

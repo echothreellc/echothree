@@ -65,7 +65,7 @@ public class SetDefaultInventoryConditionCommand
         var inventoryConditionDetailValue = inventoryControl.getInventoryConditionDetailValueByNameForUpdate(inventoryConditionName);
         
         if(inventoryConditionDetailValue != null) {
-            inventoryConditionDetailValue.setIsDefault(Boolean.TRUE);
+            inventoryConditionDetailValue.setIsDefault(true);
             inventoryControl.updateInventoryConditionFromValue(inventoryConditionDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownInventoryConditionName.name(), inventoryConditionName);

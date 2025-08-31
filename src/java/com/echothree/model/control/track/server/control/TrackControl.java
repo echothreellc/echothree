@@ -102,10 +102,10 @@ public class TrackControl
         if(defaultFound && isDefault) {
             var defaultTrackDetailValue = getDefaultTrackDetailValueForUpdate();
 
-            defaultTrackDetailValue.setIsDefault(Boolean.FALSE);
+            defaultTrackDetailValue.setIsDefault(false);
             updateTrackFromValue(defaultTrackDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var track = TrackFactory.getInstance().create();
@@ -384,11 +384,11 @@ public class TrackControl
                     // If I'm the default, and a default already existed...
                     var defaultTrackDetailValue = getDefaultTrackDetailValueForUpdate();
 
-                    defaultTrackDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultTrackDetailValue.setIsDefault(false);
                     updateTrackFromValue(defaultTrackDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
 
@@ -430,7 +430,7 @@ public class TrackControl
                     }
                     var trackDetailValue = Objects.requireNonNull(defaultTrack).getLastDetailForUpdate().getTrackDetailValue().clone();
 
-                    trackDetailValue.setIsDefault(Boolean.TRUE);
+                    trackDetailValue.setIsDefault(true);
                     updateTrackFromValue(trackDetailValue, false, deletedBy);
                 }
             }

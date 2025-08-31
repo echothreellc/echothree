@@ -76,10 +76,10 @@ public class TagControl
         if(defaultFound && isDefault) {
             var defaultTagScopeDetailValue = getDefaultTagScopeDetailValueForUpdate();
             
-            defaultTagScopeDetailValue.setIsDefault(Boolean.FALSE);
+            defaultTagScopeDetailValue.setIsDefault(false);
             updateTagScopeFromValue(defaultTagScopeDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var tagScope = TagScopeFactory.getInstance().create();
@@ -356,11 +356,11 @@ public class TagControl
                     // If I'm the default, and a default already existed...
                     var defaultTagScopeDetailValue = getDefaultTagScopeDetailValueForUpdate();
                     
-                    defaultTagScopeDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultTagScopeDetailValue.setIsDefault(false);
                     updateTagScopeFromValue(defaultTagScopeDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -400,7 +400,7 @@ public class TagControl
                 }
                 var tagScopeDetailValue = Objects.requireNonNull(defaultTagScope).getLastDetailForUpdate().getTagScopeDetailValue().clone();
                 
-                tagScopeDetailValue.setIsDefault(Boolean.TRUE);
+                tagScopeDetailValue.setIsDefault(true);
                 updateTagScopeFromValue(tagScopeDetailValue, false, deletedBy);
             }
         }

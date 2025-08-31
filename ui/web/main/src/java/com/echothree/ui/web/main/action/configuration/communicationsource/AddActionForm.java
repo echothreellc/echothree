@@ -60,7 +60,7 @@ public class AddActionForm
             var form = CoreUtil.getHome().getGetServerChoicesForm();
 
             form.setDefaultServerChoice(serverChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = CoreUtil.getHome().getServerChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -80,7 +80,7 @@ public class AddActionForm
 
             form.setWorkEffortTypeName(ReceiveCustomerEmailConstants.WorkEffortType_RECEIVE_CUSTOMER_EMAIL);
             form.setDefaultWorkEffortScopeChoice(receiveWorkEffortScopeChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = WorkEffortUtil.getHome().getWorkEffortScopeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -100,7 +100,7 @@ public class AddActionForm
 
             form.setWorkEffortTypeName(SendCustomerEmailConstants.WorkEffortType_SEND_CUSTOMER_EMAIL);
             form.setDefaultWorkEffortScopeChoice(sendWorkEffortScopeChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = WorkEffortUtil.getHome().getWorkEffortScopeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -121,7 +121,7 @@ public class AddActionForm
             form.setSelectorKindName(SelectorKinds.EMPLOYEE.name());
             form.setSelectorTypeName(SelectorTypes.EMAIL_REVIEW.name());
             form.setDefaultSelectorChoice(reviewEmployeeSelectorChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

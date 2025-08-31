@@ -65,7 +65,7 @@ public class SetDefaultOrderTypeCommand
         var orderTypeDetailValue = orderTypeControl.getOrderTypeDetailValueByNameForUpdate(orderTypeName);
         
         if(orderTypeDetailValue != null) {
-            orderTypeDetailValue.setIsDefault(Boolean.TRUE);
+            orderTypeDetailValue.setIsDefault(true);
             orderTypeControl.updateOrderTypeFromValue(orderTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownOrderTypeName.name(), orderTypeName);

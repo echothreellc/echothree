@@ -102,10 +102,10 @@ public class EntityLockTransferCache
                 var lockedByEntityInstanceTransfer = entityInstanceControl.getEntityInstanceTransfer(userVisit, lockedByEntityInstance, false, false, false, false);
 
                 if(CoreDebugFlags.LogEntityLocks) {
-                    getLog().info("--- lockedByEntityInstancePK=" + lockedByEntityInstancePK);
-                    getLog().info("--- lockedByEntityInstance=" + lockedByEntityInstance);
-                    getLog().info("--- lockTargetEntityInstanceTransfer=" + lockTargetEntityInstanceTransfer);
-                    getLog().info("--- lockTargetEntityInstanceTransfer=" + lockTargetEntityInstanceTransfer);
+                    getLog().info("--- lockedByEntityInstancePK = " + lockedByEntityInstancePK);
+                    getLog().info("--- lockedByEntityInstance = " + lockedByEntityInstance);
+                    getLog().info("--- lockTargetEntityInstanceTransfer = " + lockTargetEntityInstanceTransfer.getEntityRef());
+                    getLog().info("--- lockTargetEntityInstanceTransfer = " + lockTargetEntityInstanceTransfer.getEntityRef());
                 }
 
                 var lockedTimeString = formatTypicalDateTime(lockedTime);

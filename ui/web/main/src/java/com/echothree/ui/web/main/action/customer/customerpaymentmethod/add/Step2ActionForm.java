@@ -69,7 +69,7 @@ public class Step2ActionForm
             var commandForm = PartyUtil.getHome().getGetPersonalTitleChoicesForm();
 
             commandForm.setDefaultPersonalTitleChoice(personalTitleChoice);
-            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = PartyUtil.getHome().getPersonalTitleChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -87,7 +87,7 @@ public class Step2ActionForm
             var commandForm = PartyUtil.getHome().getGetNameSuffixChoicesForm();
 
             commandForm.setDefaultNameSuffixChoice(nameSuffixChoice);
-            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = PartyUtil.getHome().getNameSuffixChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -107,7 +107,7 @@ public class Step2ActionForm
             commandForm.setPartyName(partyName);
             commandForm.setContactMechanismTypeName(ContactMechanismTypes.POSTAL_ADDRESS.name());
             commandForm.setDefaultContactMechanismChoice(billingContactMechanismChoice);
-            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = ContactUtil.getHome().getContactMechanismChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -128,7 +128,7 @@ public class Step2ActionForm
             commandForm.setPartyName(partyName);
             commandForm.setContactMechanismTypeName(ContactMechanismTypes.TELECOM_ADDRESS.name());
             commandForm.setDefaultContactMechanismChoice(issuerContactMechanismChoice);
-            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = ContactUtil.getHome().getContactMechanismChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
@@ -413,8 +413,8 @@ public class Step2ActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
 
-        setDeleteWhenUnused(Boolean.FALSE);
-        setIsDefault(Boolean.FALSE);
+        setDeleteWhenUnused(false);
+        setIsDefault(false);
     }
 
 }

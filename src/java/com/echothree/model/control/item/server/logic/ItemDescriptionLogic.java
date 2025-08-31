@@ -388,7 +388,7 @@ public class ItemDescriptionLogic
                                             try {
                                                 itemDescription = itemControl.createItemDescription(itemDescriptionType, item, language, preferredMimeType, createdBy);
                                                 itemControl.createItemImageDescription(itemDescription, originalItemImageType, scaledBufferedImage.getHeight(),
-                                                        scaledBufferedImage.getWidth(), Boolean.TRUE, createdBy);
+                                                        scaledBufferedImage.getWidth(), true, createdBy);
                                                 itemControl.createItemBlobDescription(itemDescription, new ByteArray(byteArrayOutputStream.toByteArray()), createdBy);
                                             } catch(PersistenceDatabaseException pde) {
                                                 if(PersistenceUtils.getInstance().isIntegrityConstraintViolation(pde)) {

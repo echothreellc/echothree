@@ -42,7 +42,7 @@ public class ContactEmailAddressStatusActionForm
 
             form.setContactMechanismName(contactMechanismName);
             form.setDefaultEmailAddressStatusChoice(emailAddressStatusChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = ContactUtil.getHome().getEmailAddressStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

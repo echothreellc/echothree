@@ -75,7 +75,7 @@ public class SetDefaultWorkflowDestinationCommand
                 var workflowDestinationDetailValue = workflowControl.getWorkflowDestinationDetailValueByNameForUpdate(workflowStep, workflowDestinationName);
                 
                 if(workflowDestinationDetailValue != null) {
-                    workflowDestinationDetailValue.setIsDefault(Boolean.TRUE);
+                    workflowDestinationDetailValue.setIsDefault(true);
                     workflowControl.updateWorkflowDestinationFromValue(workflowDestinationDetailValue, getUserVisitPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownWorkflowDestinationName.name(), workflowName, workflowStepName, workflowDestinationName);

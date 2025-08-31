@@ -71,7 +71,7 @@ public class SetDefaultInvoiceLineTypeCommand
                     invoiceLineTypeName);
             
             if(invoiceLineTypeDetailValue != null) {
-                invoiceLineTypeDetailValue.setIsDefault(Boolean.TRUE);
+                invoiceLineTypeDetailValue.setIsDefault(true);
                 invoiceControl.updateInvoiceLineTypeFromValue(invoiceLineTypeDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownInvoiceLineTypeName.name(), invoiceLineTypeName);

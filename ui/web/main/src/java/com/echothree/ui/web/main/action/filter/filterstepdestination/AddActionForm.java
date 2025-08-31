@@ -46,7 +46,7 @@ public class AddActionForm
             form.setFilterTypeName(filterTypeName);
             form.setFilterName(filterName);
             form.setDefaultFilterStepChoice(toFilterStepChoice);
-            form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setAllowNullChoice(String.valueOf(false));
 
             var commandResult = FilterUtil.getHome().getFilterStepChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

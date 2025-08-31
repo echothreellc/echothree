@@ -49,7 +49,7 @@ public abstract class BaseCurrencyFieldType
                     currency = validator.getAccountingControl().getCurrencyByIsoName(currencyIsoName);
                     
                     if(currency == null) {
-                        validationMessages.add(fieldName, new Message(Validator.ERROR_UNKOWN_CURRENCY_ISO_NAME, currencyIsoName));
+                        validationMessages.add(fieldName, new Message(Validator.ERROR_UNKNOWN_CURRENCY_ISO_NAME, currencyIsoName));
                     }
                 } else if(vendorName != null) {
                     var vendor = validator.getVendorControl().getVendorByName(vendorName);
@@ -57,7 +57,7 @@ public abstract class BaseCurrencyFieldType
                     if(vendor != null) {
                         currency = validator.getPartyControl().getPreferredCurrency(vendor.getParty());
                     } else {
-                        validationMessages.add(fieldName, new Message(Validator.ERROR_UNKOWN_VENDOR_NAME, vendorName));
+                        validationMessages.add(fieldName, new Message(Validator.ERROR_UNKNOWN_VENDOR_NAME, vendorName));
                     }
                 } else {
                     currency = validator.getAccountingControl().getDefaultCurrency();

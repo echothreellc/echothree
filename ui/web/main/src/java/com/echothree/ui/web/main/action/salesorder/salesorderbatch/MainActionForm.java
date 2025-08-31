@@ -60,7 +60,7 @@ public class MainActionForm
             var form = AccountingUtil.getHome().getGetCurrencyChoicesForm();
 
             form.setDefaultCurrencyChoice(currencyChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -79,7 +79,7 @@ public class MainActionForm
             var form = PaymentUtil.getHome().getGetPaymentMethodChoicesForm();
 
             form.setDefaultPaymentMethodChoice(paymentMethodChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = PaymentUtil.getHome().getPaymentMethodChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -98,7 +98,7 @@ public class MainActionForm
 
             form.setWorkflowName(SalesOrderBatchStatusConstants.Workflow_SALES_ORDER_BATCH_STATUS);
             form.setDefaultWorkflowStepChoice(salesOrderBatchStatusChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
@@ -118,7 +118,7 @@ public class MainActionForm
 
             form.setBatchTypeName(BatchConstants.BatchType_SALES_ORDER);
             form.setDefaultBatchAliasTypeChoice(batchAliasTypeChoice);
-            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setAllowNullChoice(String.valueOf(true));
 
             var commandResult = BatchUtil.getHome().getBatchAliasTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();

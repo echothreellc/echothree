@@ -52,7 +52,7 @@ public class SetDefaultUnitOfMeasureKindCommand
         var unitOfMeasureKindDetailValue = uomControl.getUnitOfMeasureKindDetailValueByNameForUpdate(unitOfMeasureKindName);
         
         if(unitOfMeasureKindDetailValue != null) {
-            unitOfMeasureKindDetailValue.setIsDefault(Boolean.TRUE);
+            unitOfMeasureKindDetailValue.setIsDefault(true);
             uomControl.updateUnitOfMeasureKindFromValue(unitOfMeasureKindDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownUnitOfMeasureKindName.name(), unitOfMeasureKindName);

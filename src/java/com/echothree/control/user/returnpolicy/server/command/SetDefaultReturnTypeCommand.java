@@ -71,7 +71,7 @@ public class SetDefaultReturnTypeCommand
                     returnTypeName);
             
             if(returnTypeDetailValue != null) {
-                returnTypeDetailValue.setIsDefault(Boolean.TRUE);
+                returnTypeDetailValue.setIsDefault(true);
                 returnPolicyControl.updateReturnTypeFromValue(returnTypeDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownReturnTypeName.name(), returnKindName, returnTypeName);

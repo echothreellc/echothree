@@ -66,7 +66,7 @@ public class ContactEmailAddressAddActionForm
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
-        setAllowSolicitation(Boolean.FALSE);
+        setAllowSolicitation(false);
     }
     
 }

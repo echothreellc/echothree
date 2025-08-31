@@ -65,7 +65,7 @@ public class SetDefaultUseTypeCommand
         var useTypeDetailValue = useTypeControl.getUseTypeDetailValueByNameForUpdate(useTypeName);
         
         if(useTypeDetailValue != null) {
-            useTypeDetailValue.setIsDefault(Boolean.TRUE);
+            useTypeDetailValue.setIsDefault(true);
             useTypeControl.updateUseTypeFromValue(useTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownUseTypeName.name(), useTypeName);

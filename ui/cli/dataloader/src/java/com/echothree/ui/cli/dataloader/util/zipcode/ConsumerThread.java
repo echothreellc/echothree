@@ -86,7 +86,7 @@ public class ConsumerThread
                 createZipCodeForm.setCountryGeoCodeName(zipCodeParser.getCountryGeoCodeName());
                 createZipCodeForm.setZipCodeName(zipCodeName);
                 createZipCodeForm.setSortOrder("1");
-                createZipCodeForm.setIsDefault(Boolean.FALSE.toString());
+                createZipCodeForm.setIsDefault(String.valueOf(false));
                 createZipCodeForm.setDescription(zipCodeName);
                 
                 commandResult = zipCodeParser.getGeoService().createZipCode(getUserVisit(), createZipCodeForm);

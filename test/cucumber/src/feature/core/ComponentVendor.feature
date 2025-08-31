@@ -20,7 +20,7 @@ Feature: Employee component vendor
     Then no error should occur
     When the user begins specifying a component vendor to edit
     And the user sets the component vendor's name to the last component vendor added
-    And the user begins editing the component vendor
+    When the user begins editing the component vendor
     Then no error should occur
     When the user sets the component vendor's description to "Test Edited Component Vendor"
     And the user finishes editing the component vendor

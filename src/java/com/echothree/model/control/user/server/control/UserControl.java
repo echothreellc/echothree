@@ -1277,10 +1277,10 @@ public class UserControl
         if(defaultFound && isDefault) {
             var defaultRecoveryQuestionDetailValue = getDefaultRecoveryQuestionDetailValueForUpdate();
             
-            defaultRecoveryQuestionDetailValue.setIsDefault(Boolean.FALSE);
+            defaultRecoveryQuestionDetailValue.setIsDefault(false);
             updateRecoveryQuestionFromValue(defaultRecoveryQuestionDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var recoveryQuestion = RecoveryQuestionFactory.getInstance().create();
@@ -1489,11 +1489,11 @@ public class UserControl
                     // If I'm the default, and a default already existed...
                     var defaultRecoveryQuestionDetailValue = getDefaultRecoveryQuestionDetailValueForUpdate();
                     
-                    defaultRecoveryQuestionDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultRecoveryQuestionDetailValue.setIsDefault(false);
                     updateRecoveryQuestionFromValue(defaultRecoveryQuestionDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -1532,7 +1532,7 @@ public class UserControl
                 }
                 var recoveryQuestionDetailValue = Objects.requireNonNull(defaultRecoveryQuestion).getLastDetailForUpdate().getRecoveryQuestionDetailValue().clone();
                 
-                recoveryQuestionDetailValue.setIsDefault(Boolean.TRUE);
+                recoveryQuestionDetailValue.setIsDefault(true);
                 updateRecoveryQuestionFromValue(recoveryQuestionDetailValue, false, deletedBy);
             }
         }
@@ -2466,7 +2466,7 @@ public class UserControl
     // --------------------------------------------------------------------------------
     
     public UserLoginStatus createUserLoginStatus(Party party) {
-        return UserLoginStatusFactory.getInstance().create(party, null, 0, null, null, 0, Boolean.FALSE);
+        return UserLoginStatusFactory.getInstance().create(party, null, 0, null, null, 0, false);
     }
     
     private UserLoginStatus getUserLoginStatus(Party party, EntityPermission entityPermission) {

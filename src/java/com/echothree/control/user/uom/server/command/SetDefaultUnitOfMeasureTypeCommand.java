@@ -59,7 +59,7 @@ public class SetDefaultUnitOfMeasureTypeCommand
                     unitOfMeasureTypeName);
             
             if(unitOfMeasureTypeDetailValue != null) {
-                unitOfMeasureTypeDetailValue.setIsDefault(Boolean.TRUE);
+                unitOfMeasureTypeDetailValue.setIsDefault(true);
                 uomControl.updateUnitOfMeasureTypeFromValue(unitOfMeasureTypeDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownUnitOfMeasureTypeName.name(), unitOfMeasureTypeName);

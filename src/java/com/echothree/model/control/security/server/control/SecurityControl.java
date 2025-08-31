@@ -128,10 +128,10 @@ public class SecurityControl
         if(defaultFound && isDefault) {
             var defaultSecurityRoleGroupDetailValue = getDefaultSecurityRoleGroupDetailValueForUpdate();
             
-            defaultSecurityRoleGroupDetailValue.setIsDefault(Boolean.FALSE);
+            defaultSecurityRoleGroupDetailValue.setIsDefault(false);
             updateSecurityRoleGroupFromValue(defaultSecurityRoleGroupDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var securityRoleGroup = SecurityRoleGroupFactory.getInstance().create();
@@ -427,11 +427,11 @@ public class SecurityControl
                     // If I'm the default, and a default already existed...
                     var defaultSecurityRoleGroupDetailValue = getDefaultSecurityRoleGroupDetailValueForUpdate();
                     
-                    defaultSecurityRoleGroupDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultSecurityRoleGroupDetailValue.setIsDefault(false);
                     updateSecurityRoleGroupFromValue(defaultSecurityRoleGroupDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -475,7 +475,7 @@ public class SecurityControl
                     }
                     var securityRoleGroupDetailValue = Objects.requireNonNull(defaultSecurityRoleGroup).getLastDetailForUpdate().getSecurityRoleGroupDetailValue().clone();
 
-                    securityRoleGroupDetailValue.setIsDefault(Boolean.TRUE);
+                    securityRoleGroupDetailValue.setIsDefault(true);
                     updateSecurityRoleGroupFromValue(securityRoleGroupDetailValue, false, deletedBy);
                 }
             }
@@ -677,10 +677,10 @@ public class SecurityControl
         if(defaultFound && isDefault) {
             var defaultSecurityRoleDetailValue = getDefaultSecurityRoleDetailValueForUpdate(securityRoleGroup);
             
-            defaultSecurityRoleDetailValue.setIsDefault(Boolean.FALSE);
+            defaultSecurityRoleDetailValue.setIsDefault(false);
             updateSecurityRoleFromValue(defaultSecurityRoleDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var securityRole = SecurityRoleFactory.getInstance().create();
@@ -947,11 +947,11 @@ public class SecurityControl
                     // If I'm the default, and a default already existed...
                     var defaultSecurityRoleDetailValue = getDefaultSecurityRoleDetailValueForUpdate(securityRoleGroup);
                     
-                    defaultSecurityRoleDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultSecurityRoleDetailValue.setIsDefault(false);
                     updateSecurityRoleFromValue(defaultSecurityRoleDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -994,7 +994,7 @@ public class SecurityControl
                 }
                 var securityRoleDetailValue = Objects.requireNonNull(defaultSecurityRole).getLastDetailForUpdate().getSecurityRoleDetailValue().clone();
                 
-                securityRoleDetailValue.setIsDefault(Boolean.TRUE);
+                securityRoleDetailValue.setIsDefault(true);
                 updateSecurityRoleFromValue(securityRoleDetailValue, false, deletedBy);
             }
         }
@@ -1364,10 +1364,10 @@ public class SecurityControl
         if(defaultFound && isDefault) {
             var defaultPartySecurityRoleTemplateDetailValue = getDefaultPartySecurityRoleTemplateDetailValueForUpdate();
             
-            defaultPartySecurityRoleTemplateDetailValue.setIsDefault(Boolean.FALSE);
+            defaultPartySecurityRoleTemplateDetailValue.setIsDefault(false);
             updatePartySecurityRoleTemplateFromValue(defaultPartySecurityRoleTemplateDetailValue, false, createdBy);
         } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
+            isDefault = true;
         }
 
         var partySecurityRoleTemplate = PartySecurityRoleTemplateFactory.getInstance().create();
@@ -1569,11 +1569,11 @@ public class SecurityControl
                     // If I'm the default, and a default already existed...
                     var defaultPartySecurityRoleTemplateDetailValue = getDefaultPartySecurityRoleTemplateDetailValueForUpdate();
                     
-                    defaultPartySecurityRoleTemplateDetailValue.setIsDefault(Boolean.FALSE);
+                    defaultPartySecurityRoleTemplateDetailValue.setIsDefault(false);
                     updatePartySecurityRoleTemplateFromValue(defaultPartySecurityRoleTemplateDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
+                    isDefault = true;
                 }
             }
             
@@ -1613,7 +1613,7 @@ public class SecurityControl
                 }
                 var partySecurityRoleTemplateDetailValue = Objects.requireNonNull(defaultPartySecurityRoleTemplate).getLastDetailForUpdate().getPartySecurityRoleTemplateDetailValue().clone();
                 
-                partySecurityRoleTemplateDetailValue.setIsDefault(Boolean.TRUE);
+                partySecurityRoleTemplateDetailValue.setIsDefault(true);
                 updatePartySecurityRoleTemplateFromValue(partySecurityRoleTemplateDetailValue, false, deletedBy);
             }
         }
