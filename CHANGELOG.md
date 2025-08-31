@@ -1,5 +1,15 @@
 # Changelog
 
+## 2025-08-31-01
+
+* Break Apart ItemConstants into Enums [1585](https://gitlab.echothree.com/echothree/echothree/-/issues/1585)
+* Add Item Alias Type for UPC-E [1586](https://gitlab.echothree.com/echothree/echothree/-/issues/1586)
+* Convert Item Alias Type EAN to EAN-13 and Add Checksum [1587](https://gitlab.echothree.com/echothree/echothree/-/issues/1587)
+* Add Checksum for ItemAlias Type BOOKLAND_EAN [1588](https://gitlab.echothree.com/echothree/echothree/-/issues/1588)
+* Caffeine 3.2.2 Upgrade [1589](https://gitlab.echothree.com/echothree/echothree/-/issues/1589)
+* cucumber-java8/cucumber-junit 7.27.2 Upgrade [1590](https://gitlab.echothree.com/echothree/echothree/-/issues/1590)
+* Remove Usage of Deprecated URL Constructor [1591](https://gitlab.echothree.com/echothree/echothree/-/issues/1591)
+
 ## 2025-08-17-01
 
 * ClassGraph 4.8.181 Upgrade [1581](https://gitlab.echothree.com/echothree/echothree/-/issues/1581)
