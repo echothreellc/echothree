@@ -27,6 +27,10 @@ import com.echothree.model.control.item.common.exception.UnknownItemAliasChecksu
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.checksum.BooklandEanChecksumLogic;
 import com.echothree.model.control.item.server.logic.checksum.Ean13ChecksumLogic;
+import com.echothree.model.control.item.server.logic.checksum.Gtin12ChecksumLogic;
+import com.echothree.model.control.item.server.logic.checksum.Gtin13ChecksumLogic;
+import com.echothree.model.control.item.server.logic.checksum.Gtin14ChecksumLogic;
+import com.echothree.model.control.item.server.logic.checksum.Gtin8ChecksumLogic;
 import com.echothree.model.control.item.server.logic.checksum.Isbn10ChecksumLogic;
 import com.echothree.model.control.item.server.logic.checksum.Isbn13ChecksumLogic;
 import com.echothree.model.control.item.server.logic.checksum.UpcAChecksumLogic;
@@ -134,6 +138,10 @@ public class ItemAliasChecksumTypeLogic
                 case UPC_E -> UpcEChecksumLogic.getInstance().checkChecksum(eea, alias);
                 case EAN_13 -> Ean13ChecksumLogic.getInstance().checkChecksum(eea, alias);
                 case BOOKLAND_EAN -> BooklandEanChecksumLogic.getInstance().checkChecksum(eea, alias);
+                case GTIN_8 -> Gtin8ChecksumLogic.getInstance().checkChecksum(eea, alias);
+                case GTIN_12 -> Gtin12ChecksumLogic.getInstance().checkChecksum(eea, alias);
+                case GTIN_13 -> Gtin13ChecksumLogic.getInstance().checkChecksum(eea, alias);
+                case GTIN_14 -> Gtin14ChecksumLogic.getInstance().checkChecksum(eea, alias);
                 case NONE -> {}
             }
         }
