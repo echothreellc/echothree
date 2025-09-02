@@ -55,6 +55,22 @@
                 <display:column titleKey="columnTitle.description">
                     <c:out value="${itemAliasType.description}" />
                 </display:column>
+                <display:column titleKey="columnTitle.validationPattern">
+                    <c:out value="${itemAliasType.validationPattern}" />
+                </display:column>
+                <display:column titleKey="columnTitle.itemAliasChecksumType">
+                    <c:out value="${itemAliasType.itemAliasChecksumType.description}" />
+                </display:column>
+                <display:column titleKey="columnTitle.allowMultiple">
+                    <c:choose>
+                        <c:when test="${itemAliasType.allowMultiple}">
+                            <fmt:message key="phrase.yes" />
+                        </c:when>
+                        <c:otherwise>
+                            <fmt:message key="phrase.no" />
+                        </c:otherwise>
+                    </c:choose>
+                </display:column>
                 <display:column property="sortOrder" titleKey="columnTitle.sortOrder" />
                 <display:column titleKey="columnTitle.default">
                     <c:choose>
