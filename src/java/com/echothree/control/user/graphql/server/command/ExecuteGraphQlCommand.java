@@ -38,7 +38,9 @@ import graphql.annotations.strategies.EnhancedExecutionStrategy;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ExecuteGraphQlCommand
         extends BaseSimpleCommand<ExecuteGraphQlForm> {
     
@@ -116,8 +118,8 @@ public class ExecuteGraphQlCommand
 
                 // Query form field takes priority of Json's query.
                 if(possibleQuery != null && query == null) {
-                    if(possibleQuery instanceof String) {
-                        query = (String)possibleQuery;
+                    if(possibleQuery instanceof String string) {
+                        query = string;
                     } else {
                         getLog().error("Discarding query, not an instance of String");
                     }
@@ -125,8 +127,8 @@ public class ExecuteGraphQlCommand
 
                 // OperationName form field takes priority of Json's operationName.
                 if(possibleOperationName != null && operationName == null) {
-                    if(possibleOperationName instanceof String) {
-                        operationName = (String)possibleOperationName;
+                    if(possibleOperationName instanceof String string) {
+                        operationName = string;
                     } else {
                         getLog().error("Discarding operationName, not an instance of String");
                     }
@@ -144,7 +146,8 @@ public class ExecuteGraphQlCommand
             
             // query MUST be present.
             if(query != null) {
-                var graphQlExecutionContext = new GraphQlExecutionContext(getUserVisitPK(), getUserVisit(), getUserSession(), form.getRemoteInet4Address());
+                var graphQlExecutionContext = new GraphQlExecutionContext(getUserVisitPK(), getUserVisit(),
+                        getUserSession(), form.getRemoteInet4Address());
                 var builder = ExecutionInput.newExecutionInput()
                         .query(query)
                         .operationName(operationName)
