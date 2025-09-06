@@ -24,6 +24,7 @@ import com.echothree.util.common.command.CommandResult;
 import javax.ejb.Asynchronous;
 import javax.ejb.Stateless;
 import java.util.concurrent.Future;
+import javax.enterprise.inject.spi.CDI;
 
 @Stateless
 public class GraphQlBean
@@ -46,7 +47,7 @@ public class GraphQlBean
     @Override
     @Asynchronous
     public Future<CommandResult> executeGraphQl(UserVisitPK userVisitPK, ExecuteGraphQlForm form) {
-        return new ExecuteGraphQlCommand().runAsync(userVisitPK, form);
+        return CDI.current().select(ExecuteGraphQlCommand.class).get().runAsync(userVisitPK, form);
     }
 
 }
