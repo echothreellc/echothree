@@ -123,6 +123,7 @@ import com.echothree.ui.cli.dataloader.util.data.handler.item.ItemInventoryTypes
 import com.echothree.ui.cli.dataloader.util.data.handler.item.ItemPriceTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.item.ItemTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.item.ItemUseTypesHandler;
+import com.echothree.ui.cli.dataloader.util.data.handler.item.ItemWeightTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.item.ItemsHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.item.RelatedItemTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.job.JobsHandler;
@@ -330,6 +331,8 @@ public class InitialDataHandler
             initialDataParser.pushHandler(new ItemAliasChecksumTypesHandler(initialDataParser, this));
         } else if(localName.equals("itemAliasTypes")) {
             initialDataParser.pushHandler(new ItemAliasTypesHandler(initialDataParser, this));
+        } else if(localName.equals("itemWeightTypes")) {
+            initialDataParser.pushHandler(new ItemWeightTypesHandler(initialDataParser, this));
         } else if(localName.equals("relatedItemTypes")) {
             initialDataParser.pushHandler(new RelatedItemTypesHandler(initialDataParser, this));
         } else if(localName.equals("itemCategories")) {

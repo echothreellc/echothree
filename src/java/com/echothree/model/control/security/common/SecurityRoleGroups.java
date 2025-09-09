@@ -185,6 +185,7 @@ public enum SecurityRoleGroups {
     ItemUnitPriceLimit,
     ItemVolume,
     ItemWeight,
+    ItemWeightType,
     GeoCode,
     GlAccount,
     GlAccountClass,

@@ -98,6 +98,7 @@ import com.echothree.control.user.item.common.result.CreateItemDescriptionTypeRe
 import com.echothree.control.user.item.common.result.CreateItemDescriptionTypeUseTypeResult;
 import com.echothree.control.user.item.common.result.CreateItemImageTypeResult;
 import com.echothree.control.user.item.common.result.CreateItemResult;
+import com.echothree.control.user.item.common.result.CreateItemWeightTypeResult;
 import com.echothree.control.user.item.common.result.CreateRelatedItemResult;
 import com.echothree.control.user.item.common.result.CreateRelatedItemTypeResult;
 import com.echothree.control.user.item.common.result.EditItemAliasResult;
@@ -110,6 +111,7 @@ import com.echothree.control.user.item.common.result.EditItemImageTypeResult;
 import com.echothree.control.user.item.common.result.EditItemPriceResult;
 import com.echothree.control.user.item.common.result.EditItemResult;
 import com.echothree.control.user.item.common.result.EditItemUnitOfMeasureTypeResult;
+import com.echothree.control.user.item.common.result.EditItemWeightTypeResult;
 import com.echothree.control.user.item.common.result.EditRelatedItemResult;
 import com.echothree.control.user.item.common.result.EditRelatedItemTypeResult;
 import com.echothree.control.user.offer.common.OfferUtil;
@@ -10793,6 +10795,114 @@ public interface GraphQlMutations {
             commandForm.setAlias(alias);
 
             mutationResultObject.setCommandResult(ItemUtil.getHome().deleteItemAlias(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject createItemWeightType(final DataFetchingEnvironment env,
+            @GraphQLName("itemWeightTypeName") @GraphQLNonNull final String itemWeightTypeName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = ItemUtil.getHome().getCreateItemWeightTypeForm();
+
+            commandForm.setItemWeightTypeName(itemWeightTypeName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = ItemUtil.getHome().createItemWeightType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateItemWeightTypeResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject editItemWeightType(final DataFetchingEnvironment env,
+            @GraphQLName("originalItemWeightTypeName") final String originalItemWeightTypeName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("itemWeightTypeName") final String itemWeightTypeName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = ItemUtil.getHome().getItemWeightTypeUniversalSpec();
+
+            spec.setItemWeightTypeName(originalItemWeightTypeName);
+            spec.setUuid(id);
+
+            var commandForm = ItemUtil.getHome().getEditItemWeightTypeForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = ItemUtil.getHome().editItemWeightType(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditItemWeightTypeResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getItemWeightType().getEntityInstance());
+
+                if(arguments.containsKey("itemWeightTypeName"))
+                    edit.setItemWeightTypeName(itemWeightTypeName);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = ItemUtil.getHome().editItemWeightType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteItemWeightType(final DataFetchingEnvironment env,
+            @GraphQLName("itemWeightTypeName") final String itemWeightTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = ItemUtil.getHome().getDeleteItemWeightTypeForm();
+
+            commandForm.setItemWeightTypeName(itemWeightTypeName);
+            commandForm.setUuid(id);
+
+            mutationResultObject.setCommandResult(ItemUtil.getHome().deleteItemWeightType(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }

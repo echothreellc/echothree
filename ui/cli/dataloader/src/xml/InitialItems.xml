@@ -213,6 +213,11 @@
             <itemAliasTypeDescription languageIsoName="en" description="GTIN-14 (Global Trade Item Number, 14 Digits)" />
         </itemAliasType>
     </itemAliasTypes>
+    <itemWeightTypes>
+        <itemWeightType itemWeightTypeName="EXAMPLE_ITEM_WEIGHT_TYPE" isDefault="true" sortOrder="0">
+            <itemWeightTypeDescription languageIsoName="en" description="Example Item Weight Type" />
+        </itemWeightType>
+    </itemWeightTypes>
     <itemPriceTypes>
         <itemPriceType itemPriceTypeName="FIXED" isDefault="true" sortOrder="0">
             <itemPriceTypeDescription languageIsoName="en" description="Fixed" />
