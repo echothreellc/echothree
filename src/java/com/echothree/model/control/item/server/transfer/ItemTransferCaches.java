@@ -48,6 +48,8 @@ public class ItemTransferCaches
     protected ItemDescriptionTypeUseTypeTransferCache itemDescriptionTypeUseTypeTransferCache;
     protected ItemDescriptionTypeUseTypeDescriptionTransferCache itemDescriptionTypeUseTypeDescriptionTransferCache;
     protected ItemDescriptionTypeUseTransferCache itemDescriptionTypeUseTransferCache;
+    protected ItemWeightTypeTransferCache itemWeightTypeTransferCache;
+    protected ItemWeightTypeDescriptionTransferCache itemWeightTypeDescriptionTransferCache;
     protected ItemWeightTransferCache itemWeightTransferCache;
     protected ItemCategoryDescriptionTransferCache itemCategoryDescriptionTransferCache;
     protected ItemCategoryTransferCache itemCategoryTransferCache;
@@ -259,14 +261,30 @@ public class ItemTransferCaches
         return itemDescriptionTypeUseTransferCache;
     }
 
+    public ItemWeightTypeTransferCache getItemWeightTypeTransferCache() {
+        if(itemWeightTypeTransferCache == null) {
+            itemWeightTypeTransferCache = new ItemWeightTypeTransferCache(userVisit, itemControl);
+        }
+
+        return itemWeightTypeTransferCache;
+    }
+
+    public ItemWeightTypeDescriptionTransferCache getItemWeightTypeDescriptionTransferCache() {
+        if(itemWeightTypeDescriptionTransferCache == null) {
+            itemWeightTypeDescriptionTransferCache = new ItemWeightTypeDescriptionTransferCache(userVisit, itemControl);
+        }
+
+        return itemWeightTypeDescriptionTransferCache;
+    }
+
     public ItemWeightTransferCache getItemWeightTransferCache() {
         if(itemWeightTransferCache == null) {
             itemWeightTransferCache = new ItemWeightTransferCache(userVisit, itemControl);
         }
-        
+
         return itemWeightTransferCache;
     }
-    
+
     public ItemCategoryDescriptionTransferCache getItemCategoryDescriptionTransferCache() {
         if(itemCategoryDescriptionTransferCache == null) {
             itemCategoryDescriptionTransferCache = new ItemCategoryDescriptionTransferCache(userVisit, itemControl);
