@@ -106,6 +106,8 @@ public enum ExecutionErrors {
     DuplicateIndexTypeName,
     DuplicateItemAliasTypeDescription,
     DuplicateItemAliasTypeName,
+    DuplicateItemWeightTypeDescription,
+    DuplicateItemWeightTypeName,
     DuplicateItemCategoryDescription,
     DuplicateItemCategoryName,
     DuplicateItemDescription,
@@ -1086,6 +1088,7 @@ public enum ExecutionErrors {
     DuplicateEntityBlobAttribute,
     DuplicateEntityClobAttribute,
     UnknownItemAliasTypeDescription,
+    UnknownItemWeightTypeDescription,
     UnknownShipmentTypeName,
     UnknownShipmentTypeShippingMethod,
     DuplicateShipmentTypeShippingMethod,
@@ -2349,5 +2352,7 @@ public enum ExecutionErrors {
     IncorrectBooklandEanPrefix,
     IncorrectBooklandEanCharacter,
     IncorrectBooklandEanLength,
+    UnknownItemWeightTypeName,
+    UnknownDefaultItemWeightType,
 
 }
