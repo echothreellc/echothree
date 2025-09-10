@@ -98,6 +98,7 @@ import com.echothree.control.user.item.common.result.CreateItemDescriptionTypeRe
 import com.echothree.control.user.item.common.result.CreateItemDescriptionTypeUseTypeResult;
 import com.echothree.control.user.item.common.result.CreateItemImageTypeResult;
 import com.echothree.control.user.item.common.result.CreateItemResult;
+import com.echothree.control.user.item.common.result.CreateItemVolumeTypeResult;
 import com.echothree.control.user.item.common.result.CreateItemWeightTypeResult;
 import com.echothree.control.user.item.common.result.CreateRelatedItemResult;
 import com.echothree.control.user.item.common.result.CreateRelatedItemTypeResult;
@@ -111,6 +112,7 @@ import com.echothree.control.user.item.common.result.EditItemImageTypeResult;
 import com.echothree.control.user.item.common.result.EditItemPriceResult;
 import com.echothree.control.user.item.common.result.EditItemResult;
 import com.echothree.control.user.item.common.result.EditItemUnitOfMeasureTypeResult;
+import com.echothree.control.user.item.common.result.EditItemVolumeTypeResult;
 import com.echothree.control.user.item.common.result.EditItemWeightTypeResult;
 import com.echothree.control.user.item.common.result.EditRelatedItemResult;
 import com.echothree.control.user.item.common.result.EditRelatedItemTypeResult;
@@ -10903,6 +10905,114 @@ public interface GraphQlMutations {
             commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(ItemUtil.getHome().deleteItemWeightType(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject createItemVolumeType(final DataFetchingEnvironment env,
+            @GraphQLName("itemVolumeTypeName") @GraphQLNonNull final String itemVolumeTypeName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = ItemUtil.getHome().getCreateItemVolumeTypeForm();
+
+            commandForm.setItemVolumeTypeName(itemVolumeTypeName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = ItemUtil.getHome().createItemVolumeType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateItemVolumeTypeResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject editItemVolumeType(final DataFetchingEnvironment env,
+            @GraphQLName("originalItemVolumeTypeName") final String originalItemVolumeTypeName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("itemVolumeTypeName") final String itemVolumeTypeName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = ItemUtil.getHome().getItemVolumeTypeUniversalSpec();
+
+            spec.setItemVolumeTypeName(originalItemVolumeTypeName);
+            spec.setUuid(id);
+
+            var commandForm = ItemUtil.getHome().getEditItemVolumeTypeForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = ItemUtil.getHome().editItemVolumeType(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditItemVolumeTypeResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getItemVolumeType().getEntityInstance());
+
+                if(arguments.containsKey("itemVolumeTypeName"))
+                    edit.setItemVolumeTypeName(itemVolumeTypeName);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = ItemUtil.getHome().editItemVolumeType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteItemVolumeType(final DataFetchingEnvironment env,
+            @GraphQLName("itemVolumeTypeName") final String itemVolumeTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = ItemUtil.getHome().getDeleteItemVolumeTypeForm();
+
+            commandForm.setItemVolumeTypeName(itemVolumeTypeName);
+            commandForm.setUuid(id);
+
+            mutationResultObject.setCommandResult(ItemUtil.getHome().deleteItemVolumeType(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }

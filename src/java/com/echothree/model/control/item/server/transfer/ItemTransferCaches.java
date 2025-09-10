@@ -36,6 +36,8 @@ public class ItemTransferCaches
     protected ItemTransferCache itemTransferCache;
     protected ItemUnitOfMeasureTypeTransferCache itemUnitOfMeasureTypeTransferCache;
     protected ItemPriceTransferCache itemPriceTransferCache;
+    protected ItemVolumeTypeTransferCache itemVolumeTypeTransferCache;
+    protected ItemVolumeTypeDescriptionTransferCache itemVolumeTypeDescriptionTransferCache;
     protected ItemVolumeTransferCache itemVolumeTransferCache;
     protected ItemShippingTimeTransferCache itemShippingTimeTransferCache;
     protected ItemAliasTransferCache itemAliasTransferCache;
@@ -164,7 +166,23 @@ public class ItemTransferCaches
         
         return itemPriceTransferCache;
     }
-    
+
+    public ItemVolumeTypeTransferCache getItemVolumeTypeTransferCache() {
+        if(itemVolumeTypeTransferCache == null) {
+            itemVolumeTypeTransferCache = new ItemVolumeTypeTransferCache(userVisit, itemControl);
+        }
+
+        return itemVolumeTypeTransferCache;
+    }
+
+    public ItemVolumeTypeDescriptionTransferCache getItemVolumeTypeDescriptionTransferCache() {
+        if(itemVolumeTypeDescriptionTransferCache == null) {
+            itemVolumeTypeDescriptionTransferCache = new ItemVolumeTypeDescriptionTransferCache(userVisit, itemControl);
+        }
+
+        return itemVolumeTypeDescriptionTransferCache;
+    }
+
     public ItemVolumeTransferCache getItemVolumeTransferCache() {
         if(itemVolumeTransferCache == null) {
             itemVolumeTransferCache = new ItemVolumeTransferCache(userVisit, itemControl);

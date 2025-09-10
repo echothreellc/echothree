@@ -218,6 +218,11 @@
             <itemWeightTypeDescription languageIsoName="en" description="Example Item Weight Type" />
         </itemWeightType>
     </itemWeightTypes>
+    <itemVolumeTypes>
+        <itemVolumeType itemVolumeTypeName="EXAMPLE_ITEM_VOLUME_TYPE" isDefault="true" sortOrder="0">
+            <itemVolumeTypeDescription languageIsoName="en" description="Example Item Volume Type" />
+        </itemVolumeType>
+    </itemVolumeTypes>
     <itemPriceTypes>
         <itemPriceType itemPriceTypeName="FIXED" isDefault="true" sortOrder="0">
             <itemPriceTypeDescription languageIsoName="en" description="Fixed" />

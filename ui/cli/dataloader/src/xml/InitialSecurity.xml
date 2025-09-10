@@ -1297,6 +1297,30 @@
                 <securityRoleDescription languageIsoName="en" description="Item Weight Type Description" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="ItemVolumeType" parentSecurityRoleGroupName="ItemComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Item Volume Type" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Item Volume Type Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Item Volume Type Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Item Volume Type Delete" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Item Volume Type List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Item Volume Type Review" />
+            </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Item Volume Type Choices" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Item Volume Type Description" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="ItemDescription" parentSecurityRoleGroupName="ItemComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Item Description" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
@@ -8220,6 +8244,13 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="ItemWeightType" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ItemWeightType" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ItemWeightType" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ItemVolumeType" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ItemVolumeType" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ItemVolumeType" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ItemVolumeType" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ItemVolumeType" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ItemVolumeType" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ItemVolumeType" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ItemDescription" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ItemDescription" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ItemDescription" securityRoleName="Delete" />
