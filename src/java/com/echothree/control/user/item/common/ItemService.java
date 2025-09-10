@@ -382,7 +382,39 @@ public interface ItemService
     CommandResult editItemPrice(UserVisitPK userVisitPK, EditItemPriceForm form);
     
     CommandResult deleteItemPrice(UserVisitPK userVisitPK, DeleteItemPriceForm form);
-    
+
+    // --------------------------------------------------------------------------------
+    //   Item Volume Types
+    // --------------------------------------------------------------------------------
+
+    CommandResult createItemVolumeType(UserVisitPK userVisitPK, CreateItemVolumeTypeForm form);
+
+    CommandResult getItemVolumeTypeChoices(UserVisitPK userVisitPK, GetItemVolumeTypeChoicesForm form);
+
+    CommandResult getItemVolumeType(UserVisitPK userVisitPK, GetItemVolumeTypeForm form);
+
+    CommandResult getItemVolumeTypes(UserVisitPK userVisitPK, GetItemVolumeTypesForm form);
+
+    CommandResult setDefaultItemVolumeType(UserVisitPK userVisitPK, SetDefaultItemVolumeTypeForm form);
+
+    CommandResult editItemVolumeType(UserVisitPK userVisitPK, EditItemVolumeTypeForm form);
+
+    CommandResult deleteItemVolumeType(UserVisitPK userVisitPK, DeleteItemVolumeTypeForm form);
+
+    // --------------------------------------------------------------------------------
+    //   Item Volume Type Descriptions
+    // --------------------------------------------------------------------------------
+
+    CommandResult createItemVolumeTypeDescription(UserVisitPK userVisitPK, CreateItemVolumeTypeDescriptionForm form);
+
+    CommandResult getItemVolumeTypeDescription(UserVisitPK userVisitPK, GetItemVolumeTypeDescriptionForm form);
+
+    CommandResult getItemVolumeTypeDescriptions(UserVisitPK userVisitPK, GetItemVolumeTypeDescriptionsForm form);
+
+    CommandResult editItemVolumeTypeDescription(UserVisitPK userVisitPK, EditItemVolumeTypeDescriptionForm form);
+
+    CommandResult deleteItemVolumeTypeDescription(UserVisitPK userVisitPK, DeleteItemVolumeTypeDescriptionForm form);
+
     // --------------------------------------------------------------------------------
     //   Item Volumes
     // --------------------------------------------------------------------------------
