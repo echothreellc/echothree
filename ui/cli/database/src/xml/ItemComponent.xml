@@ -361,6 +361,80 @@
                         </index>
                     </indexes>
                 </table>
+                <table namePlural="ItemVolumeTypes" nameSingular="ItemVolumeType" columnPrefix="ivolt">
+                    <columns>
+                        <column name="ItemVolumeTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ItemVolumeTypeDetails" destinationColumn="ItemVolumeTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ItemVolumeTypeDetails" destinationColumn="ItemVolumeTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemVolumeTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemVolumeTypeDetails" nameSingular="ItemVolumeTypeDetail" columnPrefix="ivoltdt">
+                    <columns>
+                        <column name="ItemVolumeTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="ItemVolumeTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemVolumeTypes" destinationColumn="ItemVolumeTypeId" />
+                        <column name="ItemVolumeTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemVolumeTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemVolumeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ItemVolumeTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemVolumeTypeDescriptions" nameSingular="ItemVolumeTypeDescription" columnPrefix="ivoltd">
+                    <columns>
+                        <column name="ItemVolumeTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ItemVolumeTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemVolumeTypes" destinationColumn="ItemVolumeTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemVolumeTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemVolumeTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ItemVolumeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
                 <table namePlural="ItemPriceTypes" nameSingular="ItemPriceType" columnPrefix="ipt">
                     <columns>
                         <column name="ItemPriceTypeId" type="EID" nullAllowed="false" />

@@ -36,6 +36,7 @@ import com.echothree.model.control.item.common.choice.ItemPriceTypeChoicesBean;
 import com.echothree.model.control.item.common.choice.ItemStatusChoicesBean;
 import com.echothree.model.control.item.common.choice.ItemTypeChoicesBean;
 import com.echothree.model.control.item.common.choice.ItemUseTypeChoicesBean;
+import com.echothree.model.control.item.common.choice.ItemVolumeTypeChoicesBean;
 import com.echothree.model.control.item.common.choice.ItemWeightTypeChoicesBean;
 import com.echothree.model.control.item.common.choice.RelatedItemTypeChoicesBean;
 import com.echothree.model.control.item.common.transfer.HarmonizedTariffScheduleCodeTransfer;
@@ -77,6 +78,8 @@ import com.echothree.model.control.item.common.transfer.ItemUnitOfMeasureTypeTra
 import com.echothree.model.control.item.common.transfer.ItemUnitPriceLimitTransfer;
 import com.echothree.model.control.item.common.transfer.ItemUseTypeTransfer;
 import com.echothree.model.control.item.common.transfer.ItemVolumeTransfer;
+import com.echothree.model.control.item.common.transfer.ItemVolumeTypeDescriptionTransfer;
+import com.echothree.model.control.item.common.transfer.ItemVolumeTypeTransfer;
 import com.echothree.model.control.item.common.transfer.ItemWeightTransfer;
 import com.echothree.model.control.item.common.transfer.ItemWeightTypeDescriptionTransfer;
 import com.echothree.model.control.item.common.transfer.ItemWeightTypeTransfer;
@@ -115,6 +118,7 @@ import com.echothree.model.data.item.common.pk.ItemPK;
 import com.echothree.model.data.item.common.pk.ItemPriceTypePK;
 import com.echothree.model.data.item.common.pk.ItemTypePK;
 import com.echothree.model.data.item.common.pk.ItemUseTypePK;
+import com.echothree.model.data.item.common.pk.ItemVolumeTypePK;
 import com.echothree.model.data.item.common.pk.ItemWeightTypePK;
 import com.echothree.model.data.item.common.pk.RelatedItemTypePK;
 import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCode;
@@ -169,6 +173,8 @@ import com.echothree.model.data.item.server.entity.ItemUseType;
 import com.echothree.model.data.item.server.entity.ItemUseTypeDescription;
 import com.echothree.model.data.item.server.entity.ItemVariablePrice;
 import com.echothree.model.data.item.server.entity.ItemVolume;
+import com.echothree.model.data.item.server.entity.ItemVolumeType;
+import com.echothree.model.data.item.server.entity.ItemVolumeTypeDescription;
 import com.echothree.model.data.item.server.entity.ItemWeight;
 import com.echothree.model.data.item.server.entity.ItemWeightType;
 import com.echothree.model.data.item.server.entity.ItemWeightTypeDescription;
@@ -238,6 +244,9 @@ import com.echothree.model.data.item.server.factory.ItemUseTypeDescriptionFactor
 import com.echothree.model.data.item.server.factory.ItemUseTypeFactory;
 import com.echothree.model.data.item.server.factory.ItemVariablePriceFactory;
 import com.echothree.model.data.item.server.factory.ItemVolumeFactory;
+import com.echothree.model.data.item.server.factory.ItemVolumeTypeDescriptionFactory;
+import com.echothree.model.data.item.server.factory.ItemVolumeTypeDetailFactory;
+import com.echothree.model.data.item.server.factory.ItemVolumeTypeFactory;
 import com.echothree.model.data.item.server.factory.ItemWeightFactory;
 import com.echothree.model.data.item.server.factory.ItemWeightTypeDescriptionFactory;
 import com.echothree.model.data.item.server.factory.ItemWeightTypeDetailFactory;
@@ -291,6 +300,8 @@ import com.echothree.model.data.item.server.value.ItemUnitOfMeasureTypeValue;
 import com.echothree.model.data.item.server.value.ItemUnitPriceLimitValue;
 import com.echothree.model.data.item.server.value.ItemUseTypeValue;
 import com.echothree.model.data.item.server.value.ItemVariablePriceValue;
+import com.echothree.model.data.item.server.value.ItemVolumeTypeDescriptionValue;
+import com.echothree.model.data.item.server.value.ItemVolumeTypeDetailValue;
 import com.echothree.model.data.item.server.value.ItemVolumeValue;
 import com.echothree.model.data.item.server.value.ItemWeightTypeDescriptionValue;
 import com.echothree.model.data.item.server.value.ItemWeightTypeDetailValue;
@@ -9216,7 +9227,466 @@ public class ItemControl
             deleteItemStringDescription(itemStringDescription, deletedBy);
         }
     }
-    
+
+    // --------------------------------------------------------------------------------
+    //   Item Volume Types
+    // --------------------------------------------------------------------------------
+
+    public ItemVolumeType createItemVolumeType(String itemVolumeTypeName, Boolean isDefault, Integer sortOrder,
+            BasePK createdBy) {
+        var defaultItemVolumeType = getDefaultItemVolumeType();
+        var defaultFound = defaultItemVolumeType != null;
+
+        if(defaultFound && isDefault) {
+            var defaultItemVolumeTypeDetailValue = getDefaultItemVolumeTypeDetailValueForUpdate();
+
+            defaultItemVolumeTypeDetailValue.setIsDefault(false);
+            updateItemVolumeTypeFromValue(defaultItemVolumeTypeDetailValue, false, createdBy);
+        } else if(!defaultFound) {
+            isDefault = true;
+        }
+
+        var itemVolumeType = ItemVolumeTypeFactory.getInstance().create();
+        var itemVolumeTypeDetail = ItemVolumeTypeDetailFactory.getInstance().create(session, itemVolumeType, itemVolumeTypeName,
+                isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+        // Convert to R/W
+        itemVolumeType = ItemVolumeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, itemVolumeType.getPrimaryKey());
+        itemVolumeType.setActiveDetail(itemVolumeTypeDetail);
+        itemVolumeType.setLastDetail(itemVolumeTypeDetail);
+        itemVolumeType.store();
+
+        sendEvent(itemVolumeType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+
+        return itemVolumeType;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ItemVolumeType */
+    public ItemVolumeType getItemVolumeTypeByEntityInstance(final EntityInstance entityInstance,
+            final EntityPermission entityPermission) {
+        var pk = new ItemVolumeTypePK(entityInstance.getEntityUniqueId());
+
+        return ItemVolumeTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ItemVolumeType getItemVolumeTypeByEntityInstance(final EntityInstance entityInstance) {
+        return getItemVolumeTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ItemVolumeType getItemVolumeTypeByEntityInstanceForUpdate(final EntityInstance entityInstance) {
+        return getItemVolumeTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public ItemVolumeType getItemVolumeTypeByPK(ItemVolumeTypePK pk) {
+        return ItemVolumeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+    }
+
+    public long countItemVolumeTypes() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM itemvolumetypes, itemvolumetypedetails " +
+                        "WHERE ivolt_activedetailid = ivoltdt_itemvolumetypedetailid");
+    }
+
+    public ItemVolumeType getItemVolumeTypeByName(String itemVolumeTypeName, EntityPermission entityPermission) {
+        ItemVolumeType itemVolumeType;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM itemvolumetypes, itemvolumetypedetails " +
+                        "WHERE ivolt_activedetailid = ivoltdt_itemvolumetypedetailid AND ivoltdt_itemvolumetypename = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM itemvolumetypes, itemvolumetypedetails " +
+                        "WHERE ivolt_activedetailid = ivoltdt_itemvolumetypedetailid AND ivoltdt_itemvolumetypename = ? " +
+                        "FOR UPDATE";
+            }
+
+            var ps = ItemVolumeTypeFactory.getInstance().prepareStatement(query);
+
+            ps.setString(1, itemVolumeTypeName);
+
+            itemVolumeType = ItemVolumeTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return itemVolumeType;
+    }
+
+    public ItemVolumeType getItemVolumeTypeByName(String itemVolumeTypeName) {
+        return getItemVolumeTypeByName(itemVolumeTypeName, EntityPermission.READ_ONLY);
+    }
+
+    public ItemVolumeType getItemVolumeTypeByNameForUpdate(String itemVolumeTypeName) {
+        return getItemVolumeTypeByName(itemVolumeTypeName, EntityPermission.READ_WRITE);
+    }
+
+    public ItemVolumeTypeDetailValue getItemVolumeTypeDetailValueForUpdate(ItemVolumeType itemVolumeType) {
+        return itemVolumeType == null? null: itemVolumeType.getLastDetailForUpdate().getItemVolumeTypeDetailValue().clone();
+    }
+
+    public ItemVolumeTypeDetailValue getItemVolumeTypeDetailValueByNameForUpdate(String itemVolumeTypeName) {
+        return getItemVolumeTypeDetailValueForUpdate(getItemVolumeTypeByNameForUpdate(itemVolumeTypeName));
+    }
+
+    public ItemVolumeType getDefaultItemVolumeType(EntityPermission entityPermission) {
+        String query = null;
+
+        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+            query = "SELECT _ALL_ " +
+                    "FROM itemvolumetypes, itemvolumetypedetails " +
+                    "WHERE ivolt_activedetailid = ivoltdt_itemvolumetypedetailid AND ivoltdt_isdefault = 1";
+        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+            query = "SELECT _ALL_ " +
+                    "FROM itemvolumetypes, itemvolumetypedetails " +
+                    "WHERE ivolt_activedetailid = ivoltdt_itemvolumetypedetailid AND ivoltdt_isdefault = 1 " +
+                    "FOR UPDATE";
+        }
+
+        var ps = ItemVolumeTypeFactory.getInstance().prepareStatement(query);
+
+        return ItemVolumeTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+    }
+
+    public ItemVolumeType getDefaultItemVolumeType() {
+        return getDefaultItemVolumeType(EntityPermission.READ_ONLY);
+    }
+
+    public ItemVolumeType getDefaultItemVolumeTypeForUpdate() {
+        return getDefaultItemVolumeType(EntityPermission.READ_WRITE);
+    }
+
+    public ItemVolumeTypeDetailValue getDefaultItemVolumeTypeDetailValueForUpdate() {
+        return getDefaultItemVolumeTypeForUpdate().getLastDetailForUpdate().getItemVolumeTypeDetailValue().clone();
+    }
+
+    private List<ItemVolumeType> getItemVolumeTypes(EntityPermission entityPermission) {
+        String query = null;
+
+        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+            query = "SELECT _ALL_ " +
+                    "FROM itemvolumetypes, itemvolumetypedetails " +
+                    "WHERE ivolt_activedetailid = ivoltdt_itemvolumetypedetailid " +
+                    "ORDER BY ivoltdt_sortorder, ivoltdt_itemvolumetypename";
+        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+            query = "SELECT _ALL_ " +
+                    "FROM itemvolumetypes, itemvolumetypedetails " +
+                    "WHERE ivolt_activedetailid = ivoltdt_itemvolumetypedetailid " +
+                    "FOR UPDATE";
+        }
+
+        var ps = ItemVolumeTypeFactory.getInstance().prepareStatement(query);
+
+        return ItemVolumeTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+    }
+
+    public List<ItemVolumeType> getItemVolumeTypes() {
+        return getItemVolumeTypes(EntityPermission.READ_ONLY);
+    }
+
+    public List<ItemVolumeType> getItemVolumeTypesForUpdate() {
+        return getItemVolumeTypes(EntityPermission.READ_WRITE);
+    }
+
+    public ItemVolumeTypeTransfer getItemVolumeTypeTransfer(UserVisit userVisit, ItemVolumeType itemVolumeType) {
+        return getItemTransferCaches(userVisit).getItemVolumeTypeTransferCache().getTransfer(itemVolumeType);
+    }
+
+    public List<ItemVolumeTypeTransfer> getItemVolumeTypeTransfers(UserVisit userVisit, Collection<ItemVolumeType> itemVolumeTypes) {
+        List<ItemVolumeTypeTransfer> itemVolumeTypeTransfers = new ArrayList<>(itemVolumeTypes.size());
+        var itemVolumeTypeTransferCache = getItemTransferCaches(userVisit).getItemVolumeTypeTransferCache();
+
+        itemVolumeTypes.forEach((itemVolumeType) ->
+                itemVolumeTypeTransfers.add(itemVolumeTypeTransferCache.getTransfer(itemVolumeType))
+        );
+
+        return itemVolumeTypeTransfers;
+    }
+
+    public List<ItemVolumeTypeTransfer> getItemVolumeTypeTransfers(UserVisit userVisit) {
+        return getItemVolumeTypeTransfers(userVisit, getItemVolumeTypes());
+    }
+
+    public ItemVolumeTypeChoicesBean getItemVolumeTypeChoices(String defaultItemVolumeTypeChoice, Language language,
+            boolean allowNullChoice) {
+        var itemVolumeTypes = getItemVolumeTypes();
+        var size = itemVolumeTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
+        String defaultValue = null;
+
+        if(allowNullChoice) {
+            labels.add("");
+            values.add("");
+
+            if(defaultItemVolumeTypeChoice == null) {
+                defaultValue = "";
+            }
+        }
+
+        for(var itemVolumeType : itemVolumeTypes) {
+            var itemVolumeTypeDetail = itemVolumeType.getLastDetail();
+
+            var label = getBestItemVolumeTypeDescription(itemVolumeType, language);
+            var value = itemVolumeTypeDetail.getItemVolumeTypeName();
+
+            labels.add(label == null? value: label);
+            values.add(value);
+
+            var usingDefaultChoice = defaultItemVolumeTypeChoice != null && defaultItemVolumeTypeChoice.equals(value);
+            if(usingDefaultChoice || (defaultValue == null && itemVolumeTypeDetail.getIsDefault())) {
+                defaultValue = value;
+            }
+        }
+
+        return new ItemVolumeTypeChoicesBean(labels, values, defaultValue);
+    }
+
+    private void updateItemVolumeTypeFromValue(final ItemVolumeTypeDetailValue itemVolumeTypeDetailValue, final boolean checkDefault,
+            final BasePK updatedBy) {
+        if(itemVolumeTypeDetailValue.hasBeenModified()) {
+            final var itemVolumeType = ItemVolumeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                    itemVolumeTypeDetailValue.getItemVolumeTypePK());
+            var itemVolumeTypeDetail = itemVolumeType.getActiveDetailForUpdate();
+
+            itemVolumeTypeDetail.setThruTime(session.START_TIME_LONG);
+            itemVolumeTypeDetail.store();
+
+            final var itemVolumeTypePK = itemVolumeTypeDetail.getItemVolumeTypePK();
+            final var itemVolumeTypeName = itemVolumeTypeDetailValue.getItemVolumeTypeName();
+            var isDefault = itemVolumeTypeDetailValue.getIsDefault();
+            final var sortOrder = itemVolumeTypeDetailValue.getSortOrder();
+
+            if(checkDefault) {
+                final var defaultItemVolumeType = getDefaultItemVolumeType();
+                final var defaultFound = defaultItemVolumeType != null && !defaultItemVolumeType.equals(itemVolumeType);
+
+                if(isDefault && defaultFound) {
+                    // If I'm the default, and a default already existed...
+                    final var defaultItemVolumeTypeDetailValue = getDefaultItemVolumeTypeDetailValueForUpdate();
+
+                    defaultItemVolumeTypeDetailValue.setIsDefault(false);
+                    updateItemVolumeTypeFromValue(defaultItemVolumeTypeDetailValue, false, updatedBy);
+                } else if(!isDefault && !defaultFound) {
+                    // If I'm not the default, and no other default exists...
+                    isDefault = true;
+                }
+            }
+
+            itemVolumeTypeDetail = ItemVolumeTypeDetailFactory.getInstance().create(itemVolumeTypePK, itemVolumeTypeName,
+                    isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+            itemVolumeType.setActiveDetail(itemVolumeTypeDetail);
+            itemVolumeType.setLastDetail(itemVolumeTypeDetail);
+
+            sendEvent(itemVolumeTypePK, EventTypes.MODIFY, null, null, updatedBy);
+        }
+    }
+
+    public void updateItemVolumeTypeFromValue(final ItemVolumeTypeDetailValue itemVolumeTypeDetailValue, final BasePK updatedBy) {
+        updateItemVolumeTypeFromValue(itemVolumeTypeDetailValue, true, updatedBy);
+    }
+
+    public void deleteItemVolumeType(ItemVolumeType itemVolumeType, BasePK deletedBy) {
+        deleteItemVolumeTypeDescriptionsByItemVolumeType(itemVolumeType, deletedBy);
+
+        var itemVolumeTypeDetail = itemVolumeType.getLastDetailForUpdate();
+        itemVolumeTypeDetail.setThruTime(session.START_TIME_LONG);
+        itemVolumeType.setActiveDetail(null);
+        itemVolumeType.store();
+
+        // Check for default, and pick one if necessary
+        var defaultItemVolumeType = getDefaultItemVolumeType();
+        if(defaultItemVolumeType == null) {
+            var itemVolumeTypes = getItemVolumeTypesForUpdate();
+
+            if(!itemVolumeTypes.isEmpty()) {
+                var iter = itemVolumeTypes.iterator();
+                if(iter.hasNext()) {
+                    defaultItemVolumeType = (ItemVolumeType)iter.next();
+                }
+                var itemVolumeTypeDetailValue = Objects.requireNonNull(defaultItemVolumeType).getLastDetailForUpdate().getItemVolumeTypeDetailValue().clone();
+
+                itemVolumeTypeDetailValue.setIsDefault(true);
+                updateItemVolumeTypeFromValue(itemVolumeTypeDetailValue, false, deletedBy);
+            }
+        }
+
+        sendEvent(itemVolumeType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Item Volume Type Descriptions
+    // --------------------------------------------------------------------------------
+
+    public ItemVolumeTypeDescription createItemVolumeTypeDescription(ItemVolumeType itemVolumeType, Language language,
+            String description, BasePK createdBy) {
+        var itemVolumeTypeDescription = ItemVolumeTypeDescriptionFactory.getInstance().create(session,
+                itemVolumeType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+        sendEvent(itemVolumeType.getPrimaryKey(), EventTypes.MODIFY, itemVolumeTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+
+        return itemVolumeTypeDescription;
+    }
+
+    private ItemVolumeTypeDescription getItemVolumeTypeDescription(ItemVolumeType itemVolumeType, Language language, EntityPermission entityPermission) {
+        ItemVolumeTypeDescription itemVolumeTypeDescription;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM itemvolumetypedescriptions " +
+                        "WHERE ivoltd_ivolt_itemvolumetypeid = ? AND ivoltd_lang_languageid = ? AND ivoltd_thrutime = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM itemvolumetypedescriptions " +
+                        "WHERE ivoltd_ivolt_itemvolumetypeid = ? AND ivoltd_lang_languageid = ? AND ivoltd_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+
+            var ps = ItemVolumeTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            ps.setLong(1, itemVolumeType.getPrimaryKey().getEntityId());
+            ps.setLong(2, language.getPrimaryKey().getEntityId());
+            ps.setLong(3, Session.MAX_TIME);
+
+            itemVolumeTypeDescription = ItemVolumeTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return itemVolumeTypeDescription;
+    }
+
+    public ItemVolumeTypeDescription getItemVolumeTypeDescription(ItemVolumeType itemVolumeType, Language language) {
+        return getItemVolumeTypeDescription(itemVolumeType, language, EntityPermission.READ_ONLY);
+    }
+
+    public ItemVolumeTypeDescription getItemVolumeTypeDescriptionForUpdate(ItemVolumeType itemVolumeType, Language language) {
+        return getItemVolumeTypeDescription(itemVolumeType, language, EntityPermission.READ_WRITE);
+    }
+
+    public ItemVolumeTypeDescriptionValue getItemVolumeTypeDescriptionValue(ItemVolumeTypeDescription itemVolumeTypeDescription) {
+        return itemVolumeTypeDescription == null? null: itemVolumeTypeDescription.getItemVolumeTypeDescriptionValue().clone();
+    }
+
+    public ItemVolumeTypeDescriptionValue getItemVolumeTypeDescriptionValueForUpdate(ItemVolumeType itemVolumeType, Language language) {
+        return getItemVolumeTypeDescriptionValue(getItemVolumeTypeDescriptionForUpdate(itemVolumeType, language));
+    }
+
+    private List<ItemVolumeTypeDescription> getItemVolumeTypeDescriptionsByItemVolumeType(ItemVolumeType itemVolumeType,
+            EntityPermission entityPermission) {
+        List<ItemVolumeTypeDescription> itemVolumeTypeDescriptions;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM itemvolumetypedescriptions, languages " +
+                        "WHERE ivoltd_ivolt_itemvolumetypeid = ? AND ivoltd_thrutime = ? AND ivoltd_lang_languageid = lang_languageid " +
+                        "ORDER BY lang_sortorder, lang_languageisoname";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM itemvolumetypedescriptions " +
+                        "WHERE ivoltd_ivolt_itemvolumetypeid = ? AND ivoltd_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+
+            var ps = ItemVolumeTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            ps.setLong(1, itemVolumeType.getPrimaryKey().getEntityId());
+            ps.setLong(2, Session.MAX_TIME);
+
+            itemVolumeTypeDescriptions = ItemVolumeTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return itemVolumeTypeDescriptions;
+    }
+
+    public List<ItemVolumeTypeDescription> getItemVolumeTypeDescriptionsByItemVolumeType(ItemVolumeType itemVolumeType) {
+        return getItemVolumeTypeDescriptionsByItemVolumeType(itemVolumeType, EntityPermission.READ_ONLY);
+    }
+
+    public List<ItemVolumeTypeDescription> getItemVolumeTypeDescriptionsByItemVolumeTypeForUpdate(ItemVolumeType itemVolumeType) {
+        return getItemVolumeTypeDescriptionsByItemVolumeType(itemVolumeType, EntityPermission.READ_WRITE);
+    }
+
+    public String getBestItemVolumeTypeDescription(ItemVolumeType itemVolumeType, Language language) {
+        String description;
+        var itemVolumeTypeDescription = getItemVolumeTypeDescription(itemVolumeType, language);
+
+        if(itemVolumeTypeDescription == null && !language.getIsDefault()) {
+            itemVolumeTypeDescription = getItemVolumeTypeDescription(itemVolumeType, getPartyControl().getDefaultLanguage());
+        }
+
+        if(itemVolumeTypeDescription == null) {
+            description = itemVolumeType.getLastDetail().getItemVolumeTypeName();
+        } else {
+            description = itemVolumeTypeDescription.getDescription();
+        }
+
+        return description;
+    }
+
+    public ItemVolumeTypeDescriptionTransfer getItemVolumeTypeDescriptionTransfer(UserVisit userVisit, ItemVolumeTypeDescription itemVolumeTypeDescription) {
+        return getItemTransferCaches(userVisit).getItemVolumeTypeDescriptionTransferCache().getTransfer(itemVolumeTypeDescription);
+    }
+
+    public List<ItemVolumeTypeDescriptionTransfer> getItemVolumeTypeDescriptionTransfersByItemVolumeType(UserVisit userVisit, ItemVolumeType itemVolumeType) {
+        var itemVolumeTypeDescriptions = getItemVolumeTypeDescriptionsByItemVolumeType(itemVolumeType);
+        List<ItemVolumeTypeDescriptionTransfer> itemVolumeTypeDescriptionTransfers = new ArrayList<>(itemVolumeTypeDescriptions.size());
+        var itemVolumeTypeDescriptionTransferCache = getItemTransferCaches(userVisit).getItemVolumeTypeDescriptionTransferCache();
+
+        itemVolumeTypeDescriptions.forEach((itemVolumeTypeDescription) ->
+                itemVolumeTypeDescriptionTransfers.add(itemVolumeTypeDescriptionTransferCache.getTransfer(itemVolumeTypeDescription))
+        );
+
+        return itemVolumeTypeDescriptionTransfers;
+    }
+
+    public void updateItemVolumeTypeDescriptionFromValue(ItemVolumeTypeDescriptionValue itemVolumeTypeDescriptionValue, BasePK updatedBy) {
+        if(itemVolumeTypeDescriptionValue.hasBeenModified()) {
+            var itemVolumeTypeDescription = ItemVolumeTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                    itemVolumeTypeDescriptionValue.getPrimaryKey());
+
+            itemVolumeTypeDescription.setThruTime(session.START_TIME_LONG);
+            itemVolumeTypeDescription.store();
+
+            var itemVolumeType = itemVolumeTypeDescription.getItemVolumeType();
+            var language = itemVolumeTypeDescription.getLanguage();
+            var description = itemVolumeTypeDescriptionValue.getDescription();
+
+            itemVolumeTypeDescription = ItemVolumeTypeDescriptionFactory.getInstance().create(itemVolumeType, language, description,
+                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+            sendEvent(itemVolumeType.getPrimaryKey(), EventTypes.MODIFY, itemVolumeTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+        }
+    }
+
+    public void deleteItemVolumeTypeDescription(ItemVolumeTypeDescription itemVolumeTypeDescription, BasePK deletedBy) {
+        itemVolumeTypeDescription.setThruTime(session.START_TIME_LONG);
+
+        sendEvent(itemVolumeTypeDescription.getItemVolumeTypePK(), EventTypes.MODIFY, itemVolumeTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+
+    }
+
+    public void deleteItemVolumeTypeDescriptionsByItemVolumeType(ItemVolumeType itemVolumeType, BasePK deletedBy) {
+        var itemVolumeTypeDescriptions = getItemVolumeTypeDescriptionsByItemVolumeTypeForUpdate(itemVolumeType);
+
+        itemVolumeTypeDescriptions.forEach((itemVolumeTypeDescription) ->
+                deleteItemVolumeTypeDescription(itemVolumeTypeDescription, deletedBy)
+        );
+    }
+
     // --------------------------------------------------------------------------------
     //   Item Volumes
     // --------------------------------------------------------------------------------

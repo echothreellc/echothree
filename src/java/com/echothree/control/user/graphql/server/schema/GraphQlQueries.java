@@ -188,6 +188,8 @@ import com.echothree.control.user.item.server.command.GetItemUnitOfMeasureTypeCo
 import com.echothree.control.user.item.server.command.GetItemUnitOfMeasureTypesCommand;
 import com.echothree.control.user.item.server.command.GetItemUseTypeCommand;
 import com.echothree.control.user.item.server.command.GetItemUseTypesCommand;
+import com.echothree.control.user.item.server.command.GetItemVolumeTypeCommand;
+import com.echothree.control.user.item.server.command.GetItemVolumeTypesCommand;
 import com.echothree.control.user.item.server.command.GetItemWeightTypeCommand;
 import com.echothree.control.user.item.server.command.GetItemWeightTypesCommand;
 import com.echothree.control.user.item.server.command.GetItemsCommand;
@@ -509,6 +511,7 @@ import com.echothree.model.control.item.server.graphql.ItemPriceTypeObject;
 import com.echothree.model.control.item.server.graphql.ItemTypeObject;
 import com.echothree.model.control.item.server.graphql.ItemUnitOfMeasureTypeObject;
 import com.echothree.model.control.item.server.graphql.ItemUseTypeObject;
+import com.echothree.model.control.item.server.graphql.ItemVolumeTypeObject;
 import com.echothree.model.control.item.server.graphql.ItemWeightTypeObject;
 import com.echothree.model.control.item.server.graphql.RelatedItemObject;
 import com.echothree.model.control.item.server.graphql.RelatedItemTypeObject;
@@ -763,6 +766,7 @@ import com.echothree.model.data.item.common.ItemInventoryTypeConstants;
 import com.echothree.model.data.item.common.ItemPriceTypeConstants;
 import com.echothree.model.data.item.common.ItemTypeConstants;
 import com.echothree.model.data.item.common.ItemUseTypeConstants;
+import com.echothree.model.data.item.common.ItemVolumeTypeConstants;
 import com.echothree.model.data.item.common.ItemWeightTypeConstants;
 import com.echothree.model.data.item.common.RelatedItemTypeConstants;
 import com.echothree.model.data.item.server.entity.Item;
@@ -782,6 +786,7 @@ import com.echothree.model.data.item.server.entity.ItemPriceType;
 import com.echothree.model.data.item.server.entity.ItemType;
 import com.echothree.model.data.item.server.entity.ItemUnitOfMeasureType;
 import com.echothree.model.data.item.server.entity.ItemUseType;
+import com.echothree.model.data.item.server.entity.ItemVolumeType;
 import com.echothree.model.data.item.server.entity.ItemWeightType;
 import com.echothree.model.data.item.server.entity.RelatedItem;
 import com.echothree.model.data.item.server.entity.RelatedItemType;
@@ -9460,6 +9465,57 @@ public interface GraphQlQueries {
                     var itemWeightTypes = entities.stream().map(ItemWeightTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, itemWeightTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("itemVolumeType")
+    static ItemVolumeTypeObject itemVolumeType(final DataFetchingEnvironment env,
+            @GraphQLName("itemVolumeTypeName") final String itemVolumeTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        ItemVolumeType itemVolumeType;
+
+        try {
+            var commandForm = ItemUtil.getHome().getGetItemVolumeTypeForm();
+
+            commandForm.setItemVolumeTypeName(itemVolumeTypeName);
+            commandForm.setUuid(id);
+
+            itemVolumeType = new GetItemVolumeTypeCommand().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return itemVolumeType == null ? null : new ItemVolumeTypeObject(itemVolumeType);
+    }
+
+    @GraphQLField
+    @GraphQLName("itemVolumeTypes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ItemVolumeTypeObject> itemVolumeTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<ItemVolumeTypeObject> data;
+
+        try {
+            var itemControl = Session.getModelController(ItemControl.class);
+            var totalCount = itemControl.countItemVolumeTypes();
+
+            try(var objectLimiter = new ObjectLimiter(env, ItemVolumeTypeConstants.COMPONENT_VENDOR_NAME, ItemVolumeTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = ItemUtil.getHome().getGetItemVolumeTypesForm();
+                var entities = new GetItemVolumeTypesCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var itemVolumeTypes = entities.stream().map(ItemVolumeTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, itemVolumeTypes);
                 }
             }
         } catch (NamingException ex) {
