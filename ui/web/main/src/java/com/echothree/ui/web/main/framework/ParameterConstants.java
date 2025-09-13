@@ -148,6 +148,7 @@ public interface ParameterConstants {
     String PRINTER_GROUP_JOB_NAME = "PrinterGroupJobName";
     String EMPLOYEE_NAME = "EmployeeName";
     String ITEM_ALIAS_TYPE_NAME = "ItemAliasTypeName";
+    String ITEM_WEIGHT_TYPE_NAME = "ItemWeightTypeName";
     String ITEM_CATEGORY_NAME = "ItemCategoryName";
     String FORUM_NAME = "ForumName";
     String FORUM_GROUP_NAME = "ForumGroupName";
@@ -265,6 +266,7 @@ public interface ParameterConstants {
     String RETURN_KIND_NAME = "ReturnKindName";
     String ORIGINAL_RETURN_KIND_NAME = "OriginalReturnKindName";
     String ORIGINAL_ITEM_ALIAS_TYPE_NAME = "OriginalItemAliasTypeName";
+    String ORIGINAL_ITEM_WEIGHT_TYPE_NAME = "OriginalItemWeightTypeName";
     String RETURN_REASON_NAME = "ReturnReasonName";
     String ORIGINAL_RETURN_REASON_NAME = "OriginalReturnReasonName";
     String RETURN_TYPE_NAME = "ReturnTypeName";
