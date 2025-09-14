@@ -25,7 +25,7 @@
         <%@ include file="../include/environment-b.jsp" %>
     </head>
     <%@ include file="../include/body-start-b.jsp" %>
-        <et:checkSecurityRoles securityRoles="Item.List:ItemCategory.List:ItemAliasType.List:ItemWeightType.List:ItemDescriptionType.List:ItemDescriptionTypeUseType.List:ItemImageType.List:RelatedItemType.List:HarmonizedTariffScheduleCodeUseType.List:HarmonizedTariffScheduleCodeUnit.List" />
+        <et:checkSecurityRoles securityRoles="Item.List:ItemCategory.List:ItemAliasType.List:ItemWeightType.List:ItemVolumeType.List:ItemDescriptionType.List:ItemDescriptionTypeUseType.List:ItemImageType.List:RelatedItemType.List:HarmonizedTariffScheduleCodeUseType.List:HarmonizedTariffScheduleCodeUnit.List" />
         <%@ include file="../include/breadcrumb/breadcrumbs-start.jsp" %>
             <jsp:include page="../include/breadcrumb/portal.jsp">
                 <jsp:param name="showAsLink" value="true"/>
@@ -45,6 +45,9 @@
     </et:hasSecurityRole>
     <et:hasSecurityRole securityRole="ItemWeightType.List">
         <a href="<c:url value="/action/Item/ItemWeightType/Main" />">Item Weight Types</a><br />
+    </et:hasSecurityRole>
+    <et:hasSecurityRole securityRole="ItemVolumeType.List">
+        <a href="<c:url value="/action/Item/ItemVolumeType/Main" />">Item Volume Types</a><br />
     </et:hasSecurityRole>
         <et:hasSecurityRole securityRole="ItemDescriptionType.List">
             <a href="<c:url value="/action/Item/ItemDescriptionType/Main" />">Item Description Types</a><br />
