@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.framework;
 
 public interface AttributeConstants {
-    
+
     String DEFAULT_COUNTRY = "defaultCountry";
     String CONTENT_CATEGORY_ITEM_COUNT = "contentCategoryItemCount";
     String CONTENT_CATEGORY_ITEMS = "contentCategoryItems";
@@ -625,6 +625,10 @@ public interface AttributeConstants {
     String ITEM_ALIAS_TYPES = "itemAliasTypes";
     String ITEM_ALIAS_TYPE_NAME = "itemAliasTypeName";
     String ITEM_ALIAS_TYPE_DESCRIPTIONS = "itemAliasTypeDescriptions";
+    String ITEM_WEIGHT_TYPE = "itemWeightType";
+    String ITEM_WEIGHT_TYPES = "itemWeightTypes";
+    String ITEM_WEIGHT_TYPE_NAME = "itemWeightTypeName";
+    String ITEM_WEIGHT_TYPE_DESCRIPTIONS = "itemWeightTypeDescriptions";
     String RETURN_REASON = "returnReason";
     String RETURN_REASON_NAME = "returnReasonName";
     String RETURN_REASON_DESCRIPTIONS = "returnReasonDescriptions";
@@ -823,6 +827,7 @@ public interface AttributeConstants {
     String WORK_EFFORT_TYPE_DESCRIPTION = "workEffortTypeDescription";
     String ITEM_DESCRIPTION_TYPE_DESCRIPTIONS = "itemDescriptionTypeDescriptions";
     String ITEM_ALIAS_TYPE_DESCRIPTION = "itemAliasTypeDescription";
+    String ITEM_WEIGHT_TYPE_DESCRIPTION = "itemWeightTypeDescription";
     String ITEM_CATEGORY_DESCRIPTION = "itemCategoryDescription";
     String ITEM_DESCRIPTION_TYPE_DESCRIPTION = "itemDescriptionTypeDescription";
     String ITEM_DESCRIPTION_TYPE_USE_TYPES = "itemDescriptionTypeUseTypes";
