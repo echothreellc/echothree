@@ -625,6 +625,10 @@ public interface AttributeConstants {
     String ITEM_ALIAS_TYPES = "itemAliasTypes";
     String ITEM_ALIAS_TYPE_NAME = "itemAliasTypeName";
     String ITEM_ALIAS_TYPE_DESCRIPTIONS = "itemAliasTypeDescriptions";
+    String ITEM_VOLUME_TYPE = "itemVolumeType";
+    String ITEM_VOLUME_TYPES = "itemVolumeTypes";
+    String ITEM_VOLUME_TYPE_NAME = "itemVolumeTypeName";
+    String ITEM_VOLUME_TYPE_DESCRIPTIONS = "itemVolumeTypeDescriptions";
     String ITEM_WEIGHT_TYPE = "itemWeightType";
     String ITEM_WEIGHT_TYPES = "itemWeightTypes";
     String ITEM_WEIGHT_TYPE_NAME = "itemWeightTypeName";
@@ -827,6 +831,7 @@ public interface AttributeConstants {
     String WORK_EFFORT_TYPE_DESCRIPTION = "workEffortTypeDescription";
     String ITEM_DESCRIPTION_TYPE_DESCRIPTIONS = "itemDescriptionTypeDescriptions";
     String ITEM_ALIAS_TYPE_DESCRIPTION = "itemAliasTypeDescription";
+    String ITEM_VOLUME_TYPE_DESCRIPTION = "itemVolumeTypeDescription";
     String ITEM_WEIGHT_TYPE_DESCRIPTION = "itemWeightTypeDescription";
     String ITEM_CATEGORY_DESCRIPTION = "itemCategoryDescription";
     String ITEM_DESCRIPTION_TYPE_DESCRIPTION = "itemDescriptionTypeDescription";
