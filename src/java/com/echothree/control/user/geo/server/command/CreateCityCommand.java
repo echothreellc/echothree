@@ -18,7 +18,8 @@ package com.echothree.control.user.geo.server.command;
 
 import com.echothree.control.user.geo.common.form.CreateCityForm;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
-import com.echothree.model.control.geo.common.GeoConstants;
+import com.echothree.model.control.geo.common.GeoCodeAliasTypes;
+import com.echothree.model.control.geo.common.GeoCodeTypes;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -27,7 +28,6 @@ import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.geo.server.entity.GeoCodeRelationship;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -80,11 +80,11 @@ public class CreateCityCommand
         var stateGeoCodeName = form.getStateGeoCodeName();
         var stateGeoCode = geoControl.getGeoCodeByName(stateGeoCodeName);
 
-        var stateGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(stateGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_POSTAL_2_LETTER);
+        var stateGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(stateGeoCode.getLastDetail().getGeoCodeType(), GeoCodeAliasTypes.POSTAL_2_LETTER.name());
         var stateGeoCodeAlias = geoControl.getGeoCodeAlias(stateGeoCode, stateGeoCodeAliasType);
         var statePostal2Letter = stateGeoCodeAlias.getAlias();
 
-        var countryGeoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_COUNTRY);
+        var countryGeoCodeType = geoControl.getGeoCodeTypeByName(GeoCodeTypes.COUNTRY.name());
         GeoCode countryGeoCode = null;
         Collection stateRelationships = geoControl.getGeoCodeRelationshipsByFromGeoCode(stateGeoCode);
         for(var iter = stateRelationships.iterator(); iter.hasNext();) {
@@ -96,7 +96,7 @@ public class CreateCityCommand
             }
         }
 
-        var countryGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
+        var countryGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoCodeAliasTypes.ISO_2_LETTER.name());
         var countryGeoCodeAlias = geoControl.getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
         var countryIso2Letter = countryGeoCodeAlias.getAlias();
 
@@ -106,8 +106,8 @@ public class CreateCityCommand
             geoCodeScope = geoControl.createGeoCodeScope(geoCodeScopeName, false, 0, getPartyPK());
         }
 
-        var geoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_CITY);
-        var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_CITY_NAME);
+        var geoCodeType = geoControl.getGeoCodeTypeByName(GeoCodeTypes.CITY.name());
+        var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoCodeAliasTypes.CITY_NAME.name());
         var cityName = form.getCityName();
         var geoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, cityName);
         

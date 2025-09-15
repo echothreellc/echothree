@@ -34,7 +34,7 @@ import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.common.transfer.PartyContactMechanismTransfer;
 import com.echothree.model.control.customer.common.transfer.CustomerResultTransfer;
-import com.echothree.model.control.geo.common.GeoConstants;
+import com.echothree.model.control.geo.common.GeoCodeAliasTypes;
 import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.model.control.sales.common.workflow.SalesOrderBatchStatusConstants;
 import com.echothree.model.control.sales.common.workflow.SalesOrderStatusConstants;
@@ -383,7 +383,7 @@ public class EnterOrders {
                                         && ((city == null && amazonOrderShipmentGroup.getShipCity() == null) || (city != null && city.equalsIgnoreCase(amazonOrderShipmentGroup.getShipCity())))
                                         && ((state == null && amazonOrderShipmentGroup.getShipState() == null) || (state != null && state.equalsIgnoreCase(amazonOrderShipmentGroup.getShipState())))
                                         && ((postalCode == null && amazonOrderShipmentGroup.getShipZip() == null) || (postalCode != null && postalCode.equalsIgnoreCase(amazonOrderShipmentGroup.getShipZip())))
-                                        && countryGeoCode.getGeoCodeAliases().getMap().get(GeoConstants.GeoCodeAliasType_ISO_2_LETTER).getAlias().equals(amazonOrderShipmentGroup.getShipCountry())) {
+                                        && countryGeoCode.getGeoCodeAliases().getMap().get(GeoCodeAliasTypes.ISO_2_LETTER.name()).getAlias().equals(amazonOrderShipmentGroup.getShipCountry())) {
 
                                     amazonOrderShipmentGroup.setContactMechanismName(contactMechanism.getContactMechanismName());
                                     matchesRemaining--;

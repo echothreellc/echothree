@@ -20,7 +20,7 @@ import com.echothree.model.control.contact.common.ContactOptions;
 import com.echothree.model.control.contact.common.PostalAddressElementTypes;
 import com.echothree.model.control.contact.common.transfer.ContactPostalAddressTransfer;
 import com.echothree.model.control.contact.common.transfer.PostalAddressLineTransfer;
-import com.echothree.model.control.geo.common.GeoConstants;
+import com.echothree.model.control.geo.common.GeoCodeAliasTypes;
 import com.echothree.model.control.geo.common.GeoOptions;
 import java.util.ArrayList;
 import java.util.List;
@@ -130,7 +130,7 @@ public class ContactPostalAddressUtils {
                 if(geoCodeAliases == null) {
                     throw new IllegalArgumentException("StateIncludeAliases is a required Option to format ContactPostalAddress TO");
                 } else {
-                    var geoCodeAlias = geoCodeAliases.getMap().get(GeoConstants.GeoCodeAliasType_POSTAL_2_LETTER);
+                    var geoCodeAlias = geoCodeAliases.getMap().get(GeoCodeAliasTypes.POSTAL_2_LETTER.name());
                     
                     if(geoCodeAlias == null) {
                         throw new IllegalArgumentException("STATE_POSTAL_2_LETTER Alias is not available on ContactPostalAddress TO");
@@ -146,11 +146,11 @@ public class ContactPostalAddressUtils {
         } else if(postalAddressElementTypeName.equals(PostalAddressElementTypes.COUNTRY.name())) {
             addition = contactPostalAddress.getCountryGeoCode().getDescription();
         } else if(postalAddressElementTypeName.equals(PostalAddressElementTypes.COUNTRY_ISO_3_NUMBER.name())) {
-            addition = getCountryAlias(GeoConstants.GeoCodeAliasType_ISO_3_NUMBER, contactPostalAddress);
+            addition = getCountryAlias(GeoCodeAliasTypes.ISO_3_NUMBER.name(), contactPostalAddress);
         } else if(postalAddressElementTypeName.equals(PostalAddressElementTypes.COUNTRY_ISO_3_LETTER.name())) {
-            addition = getCountryAlias(GeoConstants.GeoCodeAliasType_ISO_3_LETTER, contactPostalAddress);
+            addition = getCountryAlias(GeoCodeAliasTypes.ISO_3_LETTER.name(), contactPostalAddress);
         } else if(postalAddressElementTypeName.equals(PostalAddressElementTypes.COUNTRY_ISO_2_LETTER.name())) {
-            addition = getCountryAlias(GeoConstants.GeoCodeAliasType_ISO_2_LETTER, contactPostalAddress);
+            addition = getCountryAlias(GeoCodeAliasTypes.ISO_2_LETTER.name(), contactPostalAddress);
         }
         
         return addition == null? "": addition;

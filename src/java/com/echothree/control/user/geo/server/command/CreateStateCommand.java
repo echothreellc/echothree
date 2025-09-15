@@ -18,7 +18,8 @@ package com.echothree.control.user.geo.server.command;
 
 import com.echothree.control.user.geo.common.form.CreateStateForm;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
-import com.echothree.model.control.geo.common.GeoConstants;
+import com.echothree.model.control.geo.common.GeoCodeAliasTypes;
+import com.echothree.model.control.geo.common.GeoCodeTypes;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -26,7 +27,6 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.geo.server.entity.GeoCode;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -78,7 +78,7 @@ public class CreateStateCommand
         var countryGeoCodeName = form.getCountryGeoCodeName();
         var countryGeoCode = geoControl.getGeoCodeByName(countryGeoCodeName);
 
-        var countryGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
+        var countryGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoCodeAliasTypes.ISO_2_LETTER.name());
         var countryGeoCodeAlias = geoControl.getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
         var countryIso2Letter = countryGeoCodeAlias.getAlias();
 
@@ -86,8 +86,8 @@ public class CreateStateCommand
         var geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
         
         if(geoCodeScope != null) {
-            var geoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_STATE);
-            var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_POSTAL_2_LETTER);
+            var geoCodeType = geoControl.getGeoCodeTypeByName(GeoCodeTypes.STATE.name());
+            var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoCodeAliasTypes.POSTAL_2_LETTER.name());
             var postal2Letter = form.getPostal2Letter();
             var geoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, postal2Letter);
             
@@ -102,7 +102,7 @@ public class CreateStateCommand
                 geoCode = geoControl.createGeoCode(geoCodeName, geoCodeType, geoCodeScope, isDefault, sortOrder, createdBy);
                 geoControl.createGeoCodeRelationship(geoCode, countryGeoCode, createdBy);
                 geoControl.createGeoCodeAlias(geoCode, geoCodeAliasType, postal2Letter, createdBy);
-                geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_STATE_NAME);
+                geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoCodeAliasTypes.STATE_NAME.name());
                 geoControl.createGeoCodeAlias(geoCode, geoCodeAliasType, stateName, createdBy);
                 
                 if(description != null) {

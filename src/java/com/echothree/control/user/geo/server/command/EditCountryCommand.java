@@ -18,12 +18,13 @@ package com.echothree.control.user.geo.server.command;
 
 import com.echothree.control.user.geo.common.edit.CountryEdit;
 import com.echothree.control.user.geo.common.edit.GeoEditFactory;
-import com.echothree.control.user.geo.common.form.EditCountryForm;
 import com.echothree.control.user.geo.common.result.EditCountryResult;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
 import com.echothree.control.user.geo.common.spec.GeoCodeSpec;
 import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.control.geo.common.GeoConstants;
+import com.echothree.model.control.geo.common.GeoCodeAliasTypes;
+import com.echothree.model.control.geo.common.GeoCodeScopes;
+import com.echothree.model.control.geo.common.GeoCodeTypes;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.geo.server.logic.GeoCodeAliasLogic;
 import com.echothree.model.control.geo.server.logic.GeoCodeLogic;
@@ -34,7 +35,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.contact.server.entity.PostalAddressFormat;
 import com.echothree.model.data.geo.server.entity.GeoCode;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -125,7 +125,7 @@ public class EditCountryCommand
         if(geoCode != null) {
             var geoCodeTypeName = geoCode.getLastDetail().getGeoCodeType().getLastDetail().getGeoCodeTypeName();
             
-            if(!geoCodeTypeName.equals(GeoConstants.GeoCodeType_COUNTRY)) {
+            if(!geoCodeTypeName.equals(GeoCodeTypes.COUNTRY.name())) {
                 addExecutionError(ExecutionErrors.InvalidGeoCodeType.name(), geoCodeTypeName);
             }
         } else {
@@ -157,16 +157,16 @@ public class EditCountryCommand
         var postalCodeLength = geoCodeCountry.getPostalCodeGeoCodeLength();
         var postalCodeGeoCodeLength = geoCodeCountry.getPostalCodeGeoCodeLength();
 
-        var geoCodeAlias = geoCodeAliasLogic.getGeoCodeAliasUsingNames(null, geoCode, GeoConstants.GeoCodeAliasType_COUNTRY_NAME);
+        var geoCodeAlias = geoCodeAliasLogic.getGeoCodeAliasUsingNames(null, geoCode, GeoCodeAliasTypes.COUNTRY_NAME.name());
         edit.setCountryName(geoCodeAlias.getAlias());
 
-        geoCodeAlias = geoCodeAliasLogic.getGeoCodeAliasUsingNames(null, geoCode, GeoConstants.GeoCodeAliasType_ISO_3_NUMBER);
+        geoCodeAlias = geoCodeAliasLogic.getGeoCodeAliasUsingNames(null, geoCode, GeoCodeAliasTypes.ISO_3_NUMBER.name());
         edit.setIso3Number(geoCodeAlias.getAlias());
 
-        geoCodeAlias = geoCodeAliasLogic.getGeoCodeAliasUsingNames(null, geoCode, GeoConstants.GeoCodeAliasType_ISO_3_LETTER);
+        geoCodeAlias = geoCodeAliasLogic.getGeoCodeAliasUsingNames(null, geoCode, GeoCodeAliasTypes.ISO_3_LETTER.name());
         edit.setIso3Letter(geoCodeAlias.getAlias());
 
-        geoCodeAlias = geoCodeAliasLogic.getGeoCodeAliasUsingNames(null, geoCode, GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
+        geoCodeAlias = geoCodeAliasLogic.getGeoCodeAliasUsingNames(null, geoCode, GeoCodeAliasTypes.ISO_2_LETTER.name());
         edit.setIso2Letter(geoCodeAlias.getAlias());
 
         edit.setTelephoneCode(geoCodeCountry.getTelephoneCode());
@@ -199,31 +199,31 @@ public class EditCountryCommand
     @Override
     public void canUpdate(GeoCode geoCode) {
         var geoCodeTypeLogic = GeoCodeTypeLogic.getInstance();
-        var geoCodeType = geoCodeTypeLogic.getGeoCodeTypeByName(this, GeoConstants.GeoCodeType_COUNTRY);
+        var geoCodeType = geoCodeTypeLogic.getGeoCodeTypeByName(this, GeoCodeTypes.COUNTRY.name());
 
         if(!hasExecutionErrors()) {
             var geoCodeScopeLogic = GeoCodeScopeLogic.getInstance();
-            var geoCodeScope = geoCodeScopeLogic.getGeoCodeScopeByName(this, GeoConstants.GeoCodeScope_COUNTRIES);
+            var geoCodeScope = geoCodeScopeLogic.getGeoCodeScopeByName(this, GeoCodeScopes.COUNTRIES.name());
 
             if(!hasExecutionErrors()) {
                 var geoCodeLogic = GeoCodeLogic.getInstance();
                 var iso3Number = edit.getIso3Number();
-                var duplicateGeoCode = geoCodeLogic.getGeoCodeByAlias(this, geoCodeType, geoCodeScope, GeoConstants.GeoCodeAliasType_ISO_3_NUMBER, iso3Number);
+                var duplicateGeoCode = geoCodeLogic.getGeoCodeByAlias(this, geoCodeType, geoCodeScope, GeoCodeAliasTypes.ISO_3_NUMBER.name(), iso3Number);
 
                 if((duplicateGeoCode == null || duplicateGeoCode.equals(geoCode)) && !hasExecutionErrors()) {
                     var iso3Letter = edit.getIso3Letter();
 
-                    duplicateGeoCode = geoCodeLogic.getGeoCodeByAlias(this, geoCodeType, geoCodeScope, GeoConstants.GeoCodeAliasType_ISO_3_LETTER, iso3Letter);
+                    duplicateGeoCode = geoCodeLogic.getGeoCodeByAlias(this, geoCodeType, geoCodeScope, GeoCodeAliasTypes.ISO_3_LETTER.name(), iso3Letter);
 
                     if((duplicateGeoCode == null || duplicateGeoCode.equals(geoCode)) && !hasExecutionErrors()) {
                         var iso2Letter = edit.getIso2Letter();
 
-                        duplicateGeoCode = geoCodeLogic.getGeoCodeByAlias(this, geoCodeType, geoCodeScope, GeoConstants.GeoCodeAliasType_ISO_2_LETTER, iso2Letter);
+                        duplicateGeoCode = geoCodeLogic.getGeoCodeByAlias(this, geoCodeType, geoCodeScope, GeoCodeAliasTypes.ISO_2_LETTER.name(), iso2Letter);
 
                         if((duplicateGeoCode == null || duplicateGeoCode.equals(geoCode)) && !hasExecutionErrors()) {
                             var countryName = edit.getCountryName();
 
-                            duplicateGeoCode = geoCodeLogic.getGeoCodeByAlias(this, geoCodeType, geoCodeScope, GeoConstants.GeoCodeAliasType_COUNTRY_NAME, countryName);
+                            duplicateGeoCode = geoCodeLogic.getGeoCodeByAlias(this, geoCodeType, geoCodeScope, GeoCodeAliasTypes.COUNTRY_NAME.name(), countryName);
 
                             if((duplicateGeoCode == null || duplicateGeoCode.equals(geoCode)) && !hasExecutionErrors()) {
                                 var contactControl = Session.getModelController(ContactControl.class);
@@ -272,19 +272,19 @@ public class EditCountryCommand
         var postalCodeGeoCodeLength = strPostalCodeGeoCodeLength == null ? null : Integer.valueOf(strPostalCodeGeoCodeLength);
         var description = edit.getDescription();
 
-        var geoCodeAliasValue = geoCodeAliasLogic.getGeoCodeAliasValueUsingNames(null, geoCode, GeoConstants.GeoCodeAliasType_COUNTRY_NAME);
+        var geoCodeAliasValue = geoCodeAliasLogic.getGeoCodeAliasValueUsingNames(null, geoCode, GeoCodeAliasTypes.COUNTRY_NAME.name());
         geoCodeAliasValue.setAlias(edit.getCountryName());
         geoControl.updateGeoCodeAliasFromValue(geoCodeAliasValue, partyPK);
 
-        geoCodeAliasValue = geoCodeAliasLogic.getGeoCodeAliasValueUsingNames(null, geoCode, GeoConstants.GeoCodeAliasType_ISO_3_NUMBER);
+        geoCodeAliasValue = geoCodeAliasLogic.getGeoCodeAliasValueUsingNames(null, geoCode, GeoCodeAliasTypes.ISO_3_NUMBER.name());
         geoCodeAliasValue.setAlias(edit.getIso3Number());
         geoControl.updateGeoCodeAliasFromValue(geoCodeAliasValue, partyPK);
 
-        geoCodeAliasValue = geoCodeAliasLogic.getGeoCodeAliasValueUsingNames(null, geoCode, GeoConstants.GeoCodeAliasType_ISO_3_LETTER);
+        geoCodeAliasValue = geoCodeAliasLogic.getGeoCodeAliasValueUsingNames(null, geoCode, GeoCodeAliasTypes.ISO_3_LETTER.name());
         geoCodeAliasValue.setAlias(edit.getIso3Letter());
         geoControl.updateGeoCodeAliasFromValue(geoCodeAliasValue, partyPK);
 
-        geoCodeAliasValue = geoCodeAliasLogic.getGeoCodeAliasValueUsingNames(null, geoCode, GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
+        geoCodeAliasValue = geoCodeAliasLogic.getGeoCodeAliasValueUsingNames(null, geoCode, GeoCodeAliasTypes.ISO_2_LETTER.name());
         geoCodeAliasValue.setAlias(edit.getIso2Letter());
         geoControl.updateGeoCodeAliasFromValue(geoCodeAliasValue, partyPK);
 

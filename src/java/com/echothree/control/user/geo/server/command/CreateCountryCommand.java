@@ -19,7 +19,9 @@ package com.echothree.control.user.geo.server.command;
 import com.echothree.control.user.geo.common.form.CreateCountryForm;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
 import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.control.geo.common.GeoConstants;
+import com.echothree.model.control.geo.common.GeoCodeAliasTypes;
+import com.echothree.model.control.geo.common.GeoCodeScopes;
+import com.echothree.model.control.geo.common.GeoCodeTypes;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.geo.server.logic.GeoCodeLogic;
 import com.echothree.model.control.geo.server.logic.GeoCodeScopeLogic;
@@ -30,7 +32,6 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.geo.server.entity.GeoCode;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -98,32 +99,32 @@ public class CreateCountryCommand
         var result = GeoResultFactory.getCreateCountryResult();
         var geoControl = Session.getModelController(GeoControl.class);
         GeoCode geoCode = null;
-        var geoCodeType = geoCodeTypeLogic.getGeoCodeTypeByName(this, GeoConstants.GeoCodeType_COUNTRY);
+        var geoCodeType = geoCodeTypeLogic.getGeoCodeTypeByName(this, GeoCodeTypes.COUNTRY.name());
 
         if(!hasExecutionErrors()) {
             var geoCodeScopeLogic = GeoCodeScopeLogic.getInstance();
-            var geoCodeScope = geoCodeScopeLogic.getGeoCodeScopeByName(this, GeoConstants.GeoCodeScope_COUNTRIES);
+            var geoCodeScope = geoCodeScopeLogic.getGeoCodeScopeByName(this, GeoCodeScopes.COUNTRIES.name());
 
             if(!hasExecutionErrors()) {
                 var geoCodeLogic = GeoCodeLogic.getInstance();
                 var iso3Number = form.getIso3Number();
 
-                geoCode = geoCodeLogic.getGeoCodeByAlias(this, geoCodeType, geoCodeScope, GeoConstants.GeoCodeAliasType_ISO_3_NUMBER, iso3Number);
+                geoCode = geoCodeLogic.getGeoCodeByAlias(this, geoCodeType, geoCodeScope, GeoCodeAliasTypes.ISO_3_NUMBER.name(), iso3Number);
 
                 if(geoCode == null && !hasExecutionErrors()) {
                     var iso3Letter = form.getIso3Letter();
 
-                    geoCode = geoCodeLogic.getGeoCodeByAlias(this, geoCodeType, geoCodeScope, GeoConstants.GeoCodeAliasType_ISO_3_LETTER, iso3Letter);
+                    geoCode = geoCodeLogic.getGeoCodeByAlias(this, geoCodeType, geoCodeScope, GeoCodeAliasTypes.ISO_3_LETTER.name(), iso3Letter);
 
                     if(geoCode == null && !hasExecutionErrors()) {
                         var iso2Letter = form.getIso2Letter();
 
-                        geoCode = geoCodeLogic.getGeoCodeByAlias(this, geoCodeType, geoCodeScope, GeoConstants.GeoCodeAliasType_ISO_2_LETTER, iso2Letter);
+                        geoCode = geoCodeLogic.getGeoCodeByAlias(this, geoCodeType, geoCodeScope, GeoCodeAliasTypes.ISO_2_LETTER.name(), iso2Letter);
 
                         if(geoCode == null && !hasExecutionErrors()) {
                             var countryName = form.getCountryName();
 
-                            geoCode = geoCodeLogic.getGeoCodeByAlias(this, geoCodeType, geoCodeScope, GeoConstants.GeoCodeAliasType_COUNTRY_NAME, countryName);
+                            geoCode = geoCodeLogic.getGeoCodeByAlias(this, geoCodeType, geoCodeScope, GeoCodeAliasTypes.COUNTRY_NAME.name(), countryName);
 
                             if(geoCode == null && !hasExecutionErrors()) {
                                 var contactControl = Session.getModelController(ContactControl.class);
@@ -161,13 +162,13 @@ public class CreateCountryCommand
                                             stateRequired, stateGeoCodeRequired, postalCodePattern, postalCodeRequired, postalCodeGeoCodeRequired,
                                             postalCodeLength, postalCodeGeoCodeLength, postalCodeExample, createdBy);
 
-                                    var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_ISO_3_NUMBER);
+                                    var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoCodeAliasTypes.ISO_3_NUMBER.name());
                                     geoControl.createGeoCodeAlias(geoCode, geoCodeAliasType, iso3Number, createdBy);
-                                    geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_ISO_3_LETTER);
+                                    geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoCodeAliasTypes.ISO_3_LETTER.name());
                                     geoControl.createGeoCodeAlias(geoCode, geoCodeAliasType, iso3Letter, createdBy);
-                                    geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
+                                    geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoCodeAliasTypes.ISO_2_LETTER.name());
                                     geoControl.createGeoCodeAlias(geoCode, geoCodeAliasType, iso2Letter, createdBy);
-                                    geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_COUNTRY_NAME);
+                                    geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoCodeAliasTypes.COUNTRY_NAME.name());
                                     geoControl.createGeoCodeAlias(geoCode, geoCodeAliasType, countryName, createdBy);
 
                                     if(description != null) {

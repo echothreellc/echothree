@@ -20,14 +20,15 @@ import com.echothree.control.user.geo.common.form.GetCountryForm;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
 import com.echothree.control.user.geo.server.GeoDebugFlags;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.geo.common.GeoConstants;
+import com.echothree.model.control.geo.common.GeoCodeAliasTypes;
+import com.echothree.model.control.geo.common.GeoCodeScopes;
+import com.echothree.model.control.geo.common.GeoCodeTypes;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.geo.server.entity.GeoCodeAlias;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -97,12 +98,12 @@ public class GetCountryCommand
 
         if(parameterCount < 2) {
             var geoControl = Session.getModelController(GeoControl.class);
-            var geoCodeScope = geoControl.getGeoCodeScopeByName(GeoConstants.GeoCodeScope_COUNTRIES);
+            var geoCodeScope = geoControl.getGeoCodeScopeByName(GeoCodeScopes.COUNTRIES.name());
 
             if(parameterCount == 0) {
                 geoCode = geoControl.getDefaultGeoCode(geoCodeScope);
             } else {
-                var geoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_COUNTRY);
+                var geoCodeType = geoControl.getGeoCodeTypeByName(GeoCodeTypes.COUNTRY.name());
 
                 if(geoCodeName != null) {
                     if(GeoDebugFlags.GetCountryCommand) {
@@ -144,7 +145,7 @@ public class GetCountryCommand
                             log.info("lookup will be by countryName");
                         }
 
-                        var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_COUNTRY_NAME);
+                        var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoCodeAliasTypes.COUNTRY_NAME.name());
                         geoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, countryName);
 
                         if(geoCodeAlias == null) {
@@ -155,7 +156,7 @@ public class GetCountryCommand
                             log.info("lookup will be by iso3Number");
                         }
 
-                        var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_ISO_3_NUMBER);
+                        var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoCodeAliasTypes.ISO_3_NUMBER.name());
                         geoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, iso3Number);
 
                         if(geoCodeAlias == null) {
@@ -166,7 +167,7 @@ public class GetCountryCommand
                             log.info("lookup will be by iso3Letter");
                         }
 
-                        var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_ISO_3_LETTER);
+                        var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoCodeAliasTypes.ISO_3_LETTER.name());
                         geoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, iso3Letter);
 
                         if(geoCodeAlias == null) {
@@ -177,7 +178,7 @@ public class GetCountryCommand
                             log.info("lookup will be by iso2Letter");
                         }
 
-                        var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
+                        var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoCodeAliasTypes.ISO_2_LETTER.name());
                         geoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, iso2Letter);
 
                         if(geoCodeAlias == null) {

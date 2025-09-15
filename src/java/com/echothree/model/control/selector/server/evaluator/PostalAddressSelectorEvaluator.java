@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.selector.server.evaluator;
 
-import com.echothree.model.control.geo.common.GeoConstants;
+import com.echothree.model.control.geo.common.GeoCodeTypes;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.selector.common.SelectorNodeTypes;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
@@ -43,21 +43,21 @@ public class PostalAddressSelectorEvaluator
         var geoCodeTypeName = gc.getLastDetail().getGeoCodeType().getLastDetail().getGeoCodeTypeName();
         boolean result;
         
-        if(geoCodeTypeName.equals(GeoConstants.GeoCodeType_COUNTRY)) {
+        if(geoCodeTypeName.equals(GeoCodeTypes.COUNTRY.name())) {
             result = contactPostalAddress.getCountryGeoCode().equals(gc);
-        } else if(geoCodeTypeName.equals(GeoConstants.GeoCodeType_STATE)) {
+        } else if(geoCodeTypeName.equals(GeoCodeTypes.STATE.name())) {
             var cpagc = contactPostalAddress.getStateGeoCode();
             
             result = cpagc == null? false: cpagc.equals(gc);
-        } else if(geoCodeTypeName.equals(GeoConstants.GeoCodeType_COUNTY)) {
+        } else if(geoCodeTypeName.equals(GeoCodeTypes.COUNTY.name())) {
             var cpagc = contactPostalAddress.getCountyGeoCode();
             
             result = cpagc == null? false: cpagc.equals(gc);
-        } else if(geoCodeTypeName.equals(GeoConstants.GeoCodeType_CITY)) {
+        } else if(geoCodeTypeName.equals(GeoCodeTypes.CITY.name())) {
             var cpagc = contactPostalAddress.getCityGeoCode();
             
             result = cpagc == null? false: cpagc.equals(gc);
-        } else if(geoCodeTypeName.equals(GeoConstants.GeoCodeType_ZIP_CODE)) {
+        } else if(geoCodeTypeName.equals(GeoCodeTypes.ZIP_CODE.name())) {
             var cpagc = contactPostalAddress.getPostalCodeGeoCode();
             
             result = cpagc == null? false: cpagc.equals(gc);

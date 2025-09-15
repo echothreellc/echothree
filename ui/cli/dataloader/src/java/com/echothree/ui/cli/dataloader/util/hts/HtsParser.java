@@ -24,7 +24,8 @@ import com.echothree.control.user.geo.common.form.GeoFormFactory;
 import com.echothree.control.user.geo.common.result.GetCountryResult;
 import com.echothree.control.user.item.common.ItemService;
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.model.control.geo.common.GeoConstants;
+import com.echothree.model.control.geo.common.Countries;
+import com.echothree.model.control.geo.common.GeoCodeAliasTypes;
 import com.echothree.model.control.geo.common.GeoOptions;
 import com.echothree.model.control.geo.common.transfer.CountryTransfer;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -119,7 +120,7 @@ public class HtsParser {
 
     static {
         htsCountryParsers = Map.of(
-                GeoConstants.CountryName_UNITED_STATES, new HtsUnitedStatesParser()
+                Countries.UNITED_STATES.name(), new HtsUnitedStatesParser()
         );
     }
     
@@ -131,7 +132,7 @@ public class HtsParser {
                 var country = getCountry(countryDirectory.toUpperCase(Locale.getDefault()));
 
                 if(country != null) {
-                    var countryName = country.getGeoCodeAliases().getMap().get(GeoConstants.GeoCodeAliasType_COUNTRY_NAME).getAlias();
+                    var countryName = country.getGeoCodeAliases().getMap().get(GeoCodeAliasTypes.COUNTRY_NAME.name()).getAlias();
 
                     try {
                         htsCountryParsers.get(countryName).execute(userVisitPK, geoService, itemService, country);
