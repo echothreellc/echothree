@@ -17,18 +17,18 @@
 package com.echothree.control.user.geo.server.command;
 
 import com.echothree.control.user.geo.common.form.AddZipCodeToCityForm;
-import com.echothree.model.control.geo.common.GeoConstants;
+import com.echothree.model.control.geo.common.GeoCodeAliasTypes;
+import com.echothree.model.control.geo.common.GeoCodeTypes;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.geo.server.entity.GeoCodeRelationship;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -73,7 +73,7 @@ public class AddZipCodeToCityCommand
         
         if(parameterCount == 1) {
             var geoControl = Session.getModelController(GeoControl.class);
-            var geoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_ZIP_CODE);
+            var geoCodeType = geoControl.getGeoCodeTypeByName(GeoCodeTypes.ZIP_CODE.name());
             var cityGeoCodeName = form.getCityGeoCodeName();
             var cityGeoCode = geoControl.getGeoCodeByName(cityGeoCodeName);
             GeoCode zipCodeGeoCode = null;
@@ -89,7 +89,7 @@ public class AddZipCodeToCityCommand
                     addExecutionError(ExecutionErrors.UnknownZipCodeGeoCodeName.name(), zipCodeGeoCodeName);
                 }
             } else if(zipCodeName != null) {
-                var stateGeoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_STATE);
+                var stateGeoCodeType = geoControl.getGeoCodeTypeByName(GeoCodeTypes.STATE.name());
                 GeoCode stateGeoCode = null;
                 Collection cityRelationships = geoControl.getGeoCodeRelationshipsByFromGeoCode(cityGeoCode);
                 for(var iter = cityRelationships.iterator(); iter.hasNext();) {
@@ -101,7 +101,7 @@ public class AddZipCodeToCityCommand
                     }
                 }
 
-                var countryGeoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_COUNTRY);
+                var countryGeoCodeType = geoControl.getGeoCodeTypeByName(GeoCodeTypes.COUNTRY.name());
                 GeoCode countryGeoCode = null;
                 Collection stateRelationships = geoControl.getGeoCodeRelationshipsByFromGeoCode(stateGeoCode);
                 for(var iter = stateRelationships.iterator(); iter.hasNext();) {
@@ -113,14 +113,14 @@ public class AddZipCodeToCityCommand
                     }
                 }
 
-                var countryGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
+                var countryGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoCodeAliasTypes.ISO_2_LETTER.name());
                 var countryGeoCodeAlias = geoControl.getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
                 var countryIso2Letter = countryGeoCodeAlias.getAlias();
 
                 var geoCodeScopeName = countryIso2Letter + "_ZIP_CODES";
                 var geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
 
-                var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_ZIP_CODE);
+                var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoCodeAliasTypes.ZIP_CODE.name());
                 var geoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, zipCodeName);
                 zipCodeGeoCode = geoCodeAlias.getGeoCode();
                 

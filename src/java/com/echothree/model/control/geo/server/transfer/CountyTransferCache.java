@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.geo.server.transfer;
 
-import com.echothree.model.control.geo.common.GeoConstants;
+import com.echothree.model.control.geo.common.GeoCodeTypes;
 import com.echothree.model.control.geo.common.GeoOptions;
 import com.echothree.model.control.geo.common.transfer.CountyTransfer;
 import com.echothree.model.control.geo.server.control.GeoControl;
@@ -52,12 +52,12 @@ public class CountyTransferCache
             var sortOrder = geoCodeDetail.getSortOrder();
             var description = geoControl.getBestGeoCodeDescription(geoCode, getLanguage());
 
-            var stateGeoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_STATE);
+            var stateGeoCodeType = geoControl.getGeoCodeTypeByName(GeoCodeTypes.STATE.name());
             var geoCodeRelationships = geoControl.getGeoCodeRelationshipsByFromGeoCodeAndGeoCodeType(geoCode, stateGeoCodeType);
             if(geoCodeRelationships.size() != 1) {
                 getLog().error("non-1 geoCodeRelationships.size()");
             }
-            var state = geoControl.getStateTransfer(userVisit, geoCodeRelationships.iterator().next().getToGeoCode());
+            var state = geoControl.getStateTransfer(userVisit, geoCodeRelationships.getFirst().getToGeoCode());
             
             countyTransfer = new CountyTransfer(state, geoCodeName, geoCodeType, geoCodeScope, isDefault, sortOrder, description);
             put(geoCode, countyTransfer);

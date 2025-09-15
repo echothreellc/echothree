@@ -17,7 +17,9 @@
 package com.echothree.model.control.geo.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.geo.common.GeoConstants;
+import com.echothree.model.control.geo.common.GeoCodeAliasTypes;
+import com.echothree.model.control.geo.common.GeoCodeScopes;
+import com.echothree.model.control.geo.common.GeoCodeTypes;
 import com.echothree.model.control.geo.common.choice.CountryChoicesBean;
 import com.echothree.model.control.geo.common.choice.GeoCodeAliasTypeChoicesBean;
 import com.echothree.model.control.geo.common.choice.GeoCodeScopeChoicesBean;
@@ -160,7 +162,7 @@ public class GeoControl
     }
     
     public List<GeoCode> getCountries() {
-        var geoCodeScope = getGeoCodeScopeByName(GeoConstants.GeoCodeScope_COUNTRIES);
+        var geoCodeScope = getGeoCodeScopeByName(GeoCodeScopes.COUNTRIES.name());
         
         return getGeoCodesByGeoCodeScope(geoCodeScope);
     }
@@ -181,7 +183,7 @@ public class GeoControl
     }
     
     public List<GeoCode> getStatesByCountry(GeoCode countryGeoCode) {
-        var countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
+        var countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoCodeAliasTypes.ISO_2_LETTER.name());
         var countryGeoCodeAlias = getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
         var countryIso2Letter = countryGeoCodeAlias.getAlias();
         var geoCodeScopeName = countryIso2Letter + "_STATES";
@@ -213,11 +215,11 @@ public class GeoControl
     }
     
     public List<GeoCode> getCountiesByState(GeoCode stateGeoCode) {
-        var stateGeoCodeAliasType = getGeoCodeAliasTypeByName(stateGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_POSTAL_2_LETTER);
+        var stateGeoCodeAliasType = getGeoCodeAliasTypeByName(stateGeoCode.getLastDetail().getGeoCodeType(), GeoCodeAliasTypes.POSTAL_2_LETTER.name());
         var stateGeoCodeAlias = getGeoCodeAlias(stateGeoCode, stateGeoCodeAliasType);
         var statePostal2Letter = stateGeoCodeAlias.getAlias();
         
-        var countryGeoCodeType = getGeoCodeTypeByName(GeoConstants.GeoCodeType_COUNTRY);
+        var countryGeoCodeType = getGeoCodeTypeByName(GeoCodeTypes.COUNTRY.name());
         var stateRelationships = getGeoCodeRelationshipsByFromGeoCode(stateGeoCode);
         GeoCode countryGeoCode = null;
         for(var geoCodeRelationship : stateRelationships) {
@@ -229,7 +231,7 @@ public class GeoControl
             }
         }
         
-        var countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
+        var countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoCodeAliasTypes.ISO_2_LETTER.name());
         var countryGeoCodeAlias = getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
         var countryIso2Letter = countryGeoCodeAlias.getAlias();
         
@@ -262,11 +264,11 @@ public class GeoControl
     }
     
     public List<GeoCode> getCitiesByState(GeoCode stateGeoCode) {
-        var stateGeoCodeAliasType = getGeoCodeAliasTypeByName(stateGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_POSTAL_2_LETTER);
+        var stateGeoCodeAliasType = getGeoCodeAliasTypeByName(stateGeoCode.getLastDetail().getGeoCodeType(), GeoCodeAliasTypes.POSTAL_2_LETTER.name());
         var stateGeoCodeAlias = getGeoCodeAlias(stateGeoCode, stateGeoCodeAliasType);
         var statePostal2Letter = stateGeoCodeAlias.getAlias();
         
-        var countryGeoCodeType = getGeoCodeTypeByName(GeoConstants.GeoCodeType_COUNTRY);
+        var countryGeoCodeType = getGeoCodeTypeByName(GeoCodeTypes.COUNTRY.name());
         var stateRelationships = getGeoCodeRelationshipsByFromGeoCode(stateGeoCode);
         GeoCode countryGeoCode = null;
         for(var geoCodeRelationship : stateRelationships) {
@@ -278,7 +280,7 @@ public class GeoControl
             }
         }
         
-        var countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
+        var countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoCodeAliasTypes.ISO_2_LETTER.name());
         var countryGeoCodeAlias = getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
         var countryIso2Letter = countryGeoCodeAlias.getAlias();
         
@@ -311,7 +313,7 @@ public class GeoControl
     }
     
     public List<GeoCode> getPostalCodesByCountry(GeoCode countryGeoCode) {
-        var countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
+        var countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoCodeAliasTypes.ISO_2_LETTER.name());
         var countryGeoCodeAlias = getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
         var countryIso2Letter = countryGeoCodeAlias.getAlias();
         var geoCodeScopeName = countryIso2Letter + "_ZIP_CODES";
@@ -332,9 +334,9 @@ public class GeoControl
     // --------------------------------------------------------------------------------
     
     public CountryChoicesBean getCountryChoices(String defaultCountryChoice, Language language, boolean allowNullChoice) {
-        var geoCodeType = getGeoCodeTypeByName(GeoConstants.GeoCodeType_COUNTRY);
+        var geoCodeType = getGeoCodeTypeByName(GeoCodeTypes.COUNTRY.name());
         var geoCodeAliasType = getDefaultGeoCodeAliasType(geoCodeType);
-        var geoCodeScope = getGeoCodeScopeByName(GeoConstants.GeoCodeScope_COUNTRIES);
+        var geoCodeScope = getGeoCodeScopeByName(GeoCodeScopes.COUNTRIES.name());
         var geoCodes = getGeoCodesByGeoCodeScope(geoCodeScope);
         var size = geoCodes.size();
         var labels = new ArrayList<String>(size);
@@ -2120,7 +2122,7 @@ public class GeoControl
         deleteGeoCodeTimeZonesByGeoCode(geoCode, deletedBy);
         deleteGeoCodeDateTimeFormatsByGeoCode(geoCode, deletedBy);
 
-        if(geoCodeDetail.getGeoCodeType().getLastDetail().getGeoCodeTypeName().equals(GeoConstants.GeoCodeType_COUNTRY)) {
+        if(geoCodeDetail.getGeoCodeType().getLastDetail().getGeoCodeTypeName().equals(GeoCodeTypes.COUNTRY.name())) {
             var itemControl = Session.getModelController(ItemControl.class);
             
             itemControl.deleteHarmonizedTariffScheduleCodesByCountryGeoCode(geoCode, deletedBy);
@@ -4115,7 +4117,7 @@ public class GeoControl
      * @return GeoCode, if a match was found, otherwise null
      */
     public GeoCode getCountryByAlias(String countryAlias) {
-        return getGeoCodeByTypeScopeAndAlias(GeoConstants.GeoCodeType_COUNTRY, GeoConstants.GeoCodeScope_COUNTRIES, countryAlias);
+        return getGeoCodeByTypeScopeAndAlias(GeoCodeTypes.COUNTRY.name(), GeoCodeScopes.COUNTRIES.name(), countryAlias);
     }
     
     private String getAliasForCountry(GeoCode countryGeoCode, GeoCodeType geoCodeType, GeoCodeAliasType geoCodeAliasType) {
@@ -4147,12 +4149,12 @@ public class GeoControl
     
     public GeoCode getPostalCodeByAlias(GeoCode countryGeoCode, String postalCodeAlias) {
         var countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(),
-                GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
+                GeoCodeAliasTypes.ISO_2_LETTER.name());
         var countryGeoCodeAlias = getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
         var countryIso2Letter = countryGeoCodeAlias.getAlias();
         var geoCodeScopeName = countryIso2Letter + "_ZIP_CODES";
         
-        return getGeoCodeByTypeScopeAndAlias(GeoConstants.GeoCodeType_ZIP_CODE, geoCodeScopeName, postalCodeAlias);
+        return getGeoCodeByTypeScopeAndAlias(GeoCodeTypes.ZIP_CODE.name(), geoCodeScopeName, postalCodeAlias);
     }
     
     public String getAliasForPostalCode(GeoCode postalCodeGeoCode) {
@@ -4179,12 +4181,12 @@ public class GeoControl
     
     public GeoCode getStateByAlias(GeoCode countryGeoCode, String stateAlias) {
         var countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(),
-                GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
+                GeoCodeAliasTypes.ISO_2_LETTER.name());
         var countryGeoCodeAlias = getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
         var countryIso2Letter = countryGeoCodeAlias.getAlias();
         var geoCodeScopeName = countryIso2Letter + "_STATES";
         
-        return getGeoCodeByTypeScopeAndAlias(GeoConstants.GeoCodeType_STATE, geoCodeScopeName, stateAlias);
+        return getGeoCodeByTypeScopeAndAlias(GeoCodeTypes.STATE.name(), geoCodeScopeName, stateAlias);
     }
     
     public String getAliasForState(GeoCode stateGeoCode) {
@@ -4211,11 +4213,11 @@ public class GeoControl
     
     public GeoCode getCityByAlias(GeoCode stateGeoCode, String cityAlias) {
         var stateGeoCodeAliasType = getGeoCodeAliasTypeByName(stateGeoCode.getLastDetail().getGeoCodeType(),
-                GeoConstants.GeoCodeAliasType_POSTAL_2_LETTER);
+                GeoCodeAliasTypes.POSTAL_2_LETTER.name());
         var stateGeoCodeAlias = getGeoCodeAlias(stateGeoCode, stateGeoCodeAliasType);
         var statePostal2Letter = stateGeoCodeAlias.getAlias();
 
-        var countryGeoCodeType = getGeoCodeTypeByName(GeoConstants.GeoCodeType_COUNTRY);
+        var countryGeoCodeType = getGeoCodeTypeByName(GeoCodeTypes.COUNTRY.name());
         var stateRelationships = getGeoCodeRelationshipsByFromGeoCodeAndGeoCodeType(stateGeoCode, countryGeoCodeType);
         if(stateRelationships.size() != 1) {
             getLog().error("non-1 stateRelationships.size()");
@@ -4223,13 +4225,13 @@ public class GeoControl
         var countryGeoCode = stateRelationships.iterator().next().getToGeoCode();
 
         var countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(),
-                GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
+                GeoCodeAliasTypes.ISO_2_LETTER.name());
         var countryGeoCodeAlias = getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
         var countryIso2Letter = countryGeoCodeAlias.getAlias();
 
         var geoCodeScopeName = countryIso2Letter + "_" + statePostal2Letter + "_CITIES";
         
-        return getGeoCodeByTypeScopeAndAlias(GeoConstants.GeoCodeType_CITY, geoCodeScopeName, cityAlias);
+        return getGeoCodeByTypeScopeAndAlias(GeoCodeTypes.CITY.name(), geoCodeScopeName, cityAlias);
     }
     
     public String getAliasForCity(GeoCode cityGeoCode) {

@@ -18,7 +18,8 @@ package com.echothree.control.user.geo.server.command;
 
 import com.echothree.control.user.geo.common.form.CreateZipCodeForm;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
-import com.echothree.model.control.geo.common.GeoConstants;
+import com.echothree.model.control.geo.common.GeoCodeAliasTypes;
+import com.echothree.model.control.geo.common.GeoCodeTypes;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -26,7 +27,6 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.geo.server.entity.GeoCode;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -77,7 +77,7 @@ public class CreateZipCodeCommand
         var countryGeoCodeName = form.getCountryGeoCodeName();
         var countryGeoCode = geoControl.getGeoCodeByName(countryGeoCodeName);
 
-        var countryGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
+        var countryGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoCodeAliasTypes.ISO_2_LETTER.name());
         var countryGeoCodeAlias = geoControl.getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
         var countryIso2Letter = countryGeoCodeAlias.getAlias();
 
@@ -85,8 +85,8 @@ public class CreateZipCodeCommand
         var geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
         
         if(geoCodeScope != null) {
-            var geoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_ZIP_CODE);
-            var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_ZIP_CODE);
+            var geoCodeType = geoControl.getGeoCodeTypeByName(GeoCodeTypes.ZIP_CODE.name());
+            var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoCodeAliasTypes.ZIP_CODE.name());
             var zipCodeName = form.getZipCodeName();
             var geoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, zipCodeName);
             
