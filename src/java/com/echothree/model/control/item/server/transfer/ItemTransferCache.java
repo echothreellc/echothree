@@ -20,14 +20,14 @@ import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
-import com.echothree.model.control.geo.common.GeoConstants;
+import com.echothree.model.control.geo.common.GeoCodeAliasTypes;
 import com.echothree.model.control.geo.common.GeoOptions;
+import com.echothree.model.control.item.common.ItemDescriptionTypes;
 import com.echothree.model.control.item.common.ItemOptions;
 import com.echothree.model.control.item.common.ItemProperties;
 import com.echothree.model.control.item.common.transfer.ItemCountryOfOriginTransfer;
 import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.model.control.item.common.transfer.RelatedItemTransfer;
-import com.echothree.model.control.item.common.ItemDescriptionTypes;
 import com.echothree.model.control.item.common.workflow.ItemStatusConstants;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
@@ -307,7 +307,7 @@ public class ItemTransferCache
                 var itemCountryOfOrigins = new MapWrapper<ItemCountryOfOriginTransfer>();
 
                 itemCountryOfOriginTransfers.forEach((itemCountryOfOriginTransfer) -> {
-                    itemCountryOfOrigins.put(itemCountryOfOriginTransfer.getCountryGeoCode().getGeoCodeAliases().getMap().get(GeoConstants.GeoCodeAliasType_COUNTRY_NAME).getAlias(), itemCountryOfOriginTransfer);
+                    itemCountryOfOrigins.put(itemCountryOfOriginTransfer.getCountryGeoCode().getGeoCodeAliases().getMap().get(GeoCodeAliasTypes.COUNTRY_NAME.name()).getAlias(), itemCountryOfOriginTransfer);
                 });
 
                 itemTransfer.setItemCountryOfOrigins(itemCountryOfOrigins);
