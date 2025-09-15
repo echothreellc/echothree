@@ -1,5 +1,17 @@
 # Changelog
 
+## 2025-09-14-01
+
+* Add Item Alias Type for GTIN-8, GTIN-12, GTIN-13, and GTIN-14 [1592](https://gitlab.echothree.com/echothree/echothree/-/issues/1592)
+* Add Item Weight Types [1593](https://gitlab.echothree.com/echothree/echothree/-/issues/1593)
+* Add Item Volume Types [1594](https://gitlab.echothree.com/echothree/echothree/-/issues/1594)
+* Add Validation Pattern and Item Alias Checksum Type to Item Alias Type List [1597](https://gitlab.echothree.com/echothree/echothree/-/issues/1597)
+* Use CDI for ExecuteGraphQl UC [1598](https://gitlab.echothree.com/echothree/echothree/-/issues/1598)
+* Add UI for Maintaining Item Weight Types [1599](https://gitlab.echothree.com/echothree/echothree/-/issues/1599)
+* Add UI for Maintaining Item Volume Types [1600](https://gitlab.echothree.com/echothree/echothree/-/issues/1600)
+* Apache Lucene 10.3.0 Upgrade [1601](https://gitlab.echothree.com/echothree/echothree/-/issues/1601)
+* jOOQ 3.20.7 Upgrade [1602](https://gitlab.echothree.com/echothree/echothree/-/issues/1602)
+
 ## 2025-08-31-01
 
 * Break Apart ItemConstants into Enums [1585](https://gitlab.echothree.com/echothree/echothree/-/issues/1585)
