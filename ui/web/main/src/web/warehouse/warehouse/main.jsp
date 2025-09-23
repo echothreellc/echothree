@@ -92,7 +92,7 @@
                         <display:column titleKey="columnTitle.description" media="html" sortable="true" sortProperty="partyGroup.name">
                             <et:appearance appearance="${warehouse.entityInstance.entityAppearance.appearance}"><c:out value="${warehouse.partyGroup.name}" /></et:appearance>
                         </display:column>
-                        <display:column titleKey="columnTitle.type" media="html" sortable="true" sortProperty="warehouse.warehouseType.description">
+                        <display:column titleKey="columnTitle.type" media="html" sortable="true" sortProperty="warehouseType.description">
                             <c:choose>
                                 <c:when test="${includeWarehouseTypeReviewUrl}">
                                     <c:url var="reviewUrl" value="/action/Warehouse/WarehouseType/Review">
