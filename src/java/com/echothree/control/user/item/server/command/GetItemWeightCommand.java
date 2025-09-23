@@ -19,6 +19,7 @@ package com.echothree.control.user.item.server.command;
 import com.echothree.control.user.item.common.form.GetItemWeightForm;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.item.server.logic.ItemWeightTypeLogic;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -39,7 +40,8 @@ public class GetItemWeightCommand
     static {
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
             new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null)
+            new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null),
+            new FieldDefinition("ItemWeightTypeName", FieldType.ENTITY_NAME, true, null, null)
         ));
     }
     
@@ -62,12 +64,18 @@ public class GetItemWeightCommand
             var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
             
             if(unitOfMeasureType != null) {
-                var itemWeight = itemControl.getItemWeight(item, unitOfMeasureType);
-                
-                if(itemWeight != null) {
-                    result.setItemWeight(itemControl.getItemWeightTransfer(getUserVisit(), itemWeight));
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownItemWeight.name(), itemName, unitOfMeasureTypeName);
+                var itemWeightType = ItemWeightTypeLogic.getInstance().getItemWeightTypeByName(this, form.getItemWeightTypeName());
+
+                if(!hasExecutionErrors()) {
+                    var itemWeight = itemControl.getItemWeight(item, unitOfMeasureType, itemWeightType);
+
+                    if(itemWeight != null) {
+                        result.setItemWeight(itemControl.getItemWeightTransfer(getUserVisit(), itemWeight));
+                    } else {
+                        addExecutionError(ExecutionErrors.UnknownItemWeight.name(), item.getLastDetail().getItemName(),
+                                unitOfMeasureType.getLastDetail().getUnitOfMeasureTypeName(),
+                                itemWeightType.getLastDetail().getItemWeightTypeName());
+                    }
                 }
             } else {
                 addExecutionError(ExecutionErrors.UnknownUnitOfMeasureTypeName.name(), unitOfMeasureKind.getLastDetail().getUnitOfMeasureKindName(), unitOfMeasureTypeName);
