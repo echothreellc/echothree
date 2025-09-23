@@ -24,15 +24,15 @@ public class ItemWeightTransfer
     
     private ItemTransfer item;
     private UnitOfMeasureTypeTransfer unitOfMeasureType;
-    private ItemWeightTypeTransfer itemWeightTypeTransfer;
+    private ItemWeightTypeTransfer itemWeightType;
     private String weight;
     
     /** Creates a new instance of ItemWeightTransfer */
     public ItemWeightTransfer(ItemTransfer item, UnitOfMeasureTypeTransfer unitOfMeasureType,
-            ItemWeightTypeTransfer itemWeightTypeTransfer, String weight) {
+            ItemWeightTypeTransfer itemWeightType, String weight) {
         this.item = item;
         this.unitOfMeasureType = unitOfMeasureType;
-        this.itemWeightTypeTransfer = itemWeightTypeTransfer;
+        this.itemWeightType = itemWeightType;
         this.weight = weight;
     }
     
@@ -52,12 +52,12 @@ public class ItemWeightTransfer
         this.unitOfMeasureType = unitOfMeasureType;
     }
 
-    public ItemWeightTypeTransfer getItemWeightTypeTransfer() {
-        return itemWeightTypeTransfer;
+    public ItemWeightTypeTransfer getItemWeightType() {
+        return itemWeightType;
     }
 
-    public void setItemWeightTypeTransfer(final ItemWeightTypeTransfer itemWeightTypeTransfer) {
-        this.itemWeightTypeTransfer = itemWeightTypeTransfer;
+    public void setItemWeightType(final ItemWeightTypeTransfer itemWeightType) {
+        this.itemWeightType = itemWeightType;
     }
 
     public String getWeight() {

@@ -16,8 +16,11 @@
 
 package com.echothree.ui.web.main.action.item.itemweight;
 
+import com.echothree.control.user.item.common.ItemUtil;
+import com.echothree.control.user.item.common.result.GetItemWeightTypeChoicesResult;
 import com.echothree.control.user.uom.common.UomUtil;
 import com.echothree.control.user.uom.common.result.GetUnitOfMeasureTypeChoicesResult;
+import com.echothree.model.control.item.common.choice.ItemWeightTypeChoicesBean;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.common.choice.UnitOfMeasureTypeChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
@@ -31,13 +34,15 @@ public class AddActionForm
         extends BaseActionForm {
     
     private UnitOfMeasureTypeChoicesBean unitOfMeasureTypeChoices;
+    private ItemWeightTypeChoicesBean itemWeightTypeChoices;
     private UnitOfMeasureTypeChoicesBean weightUnitOfMeasureTypeChoices;
     
     private String itemName;
     private String unitOfMeasureTypeChoice;
+    private String itemWeightTypeChoice;
     private String weight;
     private String weightUnitOfMeasureTypeChoice;
-    
+
     private void setupUnitOfMeasureTypeChoices()
             throws NamingException {
         if(unitOfMeasureTypeChoices == null) {
@@ -57,7 +62,26 @@ public class AddActionForm
             }
         }
     }
-    
+
+    private void setupItemWeightTypeChoices()
+            throws NamingException {
+        if(itemWeightTypeChoices == null) {
+            var form = ItemUtil.getHome().getGetItemWeightTypeChoicesForm();
+
+            form.setDefaultItemWeightTypeChoice(itemWeightTypeChoice);
+            form.setAllowNullChoice(String.valueOf(false));
+
+            var commandResult = ItemUtil.getHome().getItemWeightTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemWeightTypeChoicesResult)executionResult.getResult();
+            itemWeightTypeChoices = result.getItemWeightTypeChoices();
+
+            if(itemWeightTypeChoice == null) {
+                itemWeightTypeChoice = itemWeightTypeChoices.getDefaultValue();
+            }
+        }
+    }
+
     private void setupWeightUnitOfMeasureTypeChoices()
             throws NamingException {
         if(weightUnitOfMeasureTypeChoices == null) {
@@ -85,30 +109,53 @@ public class AddActionForm
     public void setItemName(String itemName) {
         this.itemName = itemName;
     }
-    
+
     public String getUnitOfMeasureTypeChoice()
             throws NamingException {
         setupUnitOfMeasureTypeChoices();
-        
+
         return unitOfMeasureTypeChoice;
     }
-    
+
     public void setUnitOfMeasureTypeChoice(String unitOfMeasureTypeChoice) {
         this.unitOfMeasureTypeChoice = unitOfMeasureTypeChoice;
     }
-    
+
     public List<LabelValueBean> getUnitOfMeasureTypeChoices()
             throws NamingException {
         List<LabelValueBean> choices = null;
-        
+
         setupUnitOfMeasureTypeChoices();
         if(unitOfMeasureTypeChoices != null) {
             choices = convertChoices(unitOfMeasureTypeChoices);
         }
-        
+
         return choices;
     }
-    
+
+    public String getItemWeightTypeChoice()
+            throws NamingException {
+        setupItemWeightTypeChoices();
+
+        return itemWeightTypeChoice;
+    }
+
+    public void setItemWeightTypeChoice(String itemWeightTypeChoice) {
+        this.itemWeightTypeChoice = itemWeightTypeChoice;
+    }
+
+    public List<LabelValueBean> getItemWeightTypeChoices()
+            throws NamingException {
+        List<LabelValueBean> choices = null;
+
+        setupItemWeightTypeChoices();
+        if(itemWeightTypeChoices != null) {
+            choices = convertChoices(itemWeightTypeChoices);
+        }
+
+        return choices;
+    }
+
     public String getWeight() {
         return weight;
     }
