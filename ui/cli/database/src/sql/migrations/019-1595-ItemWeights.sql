@@ -1,0 +1,3 @@
+BEGIN;
+DELETE FROM itemweights;
+COMMIT;

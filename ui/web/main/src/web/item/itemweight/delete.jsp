@@ -67,6 +67,7 @@
                 <html:submit value="Delete" onclick="onSubmitDisable(this);" />&nbsp;<html:cancel onclick="onSubmitDisable(this);" /><html:hidden property="submitButton" />
                 <html:hidden property="itemName" />
                 <html:hidden property="unitOfMeasureTypeName" />
+                <html:hidden property="itemWeightTypeName" />
             </html:form>
         </div>
         <jsp:include page="../../include/userSession.jsp" />

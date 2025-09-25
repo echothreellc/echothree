@@ -55,6 +55,7 @@ public class EditAction
 
         spec.setItemName(findParameter(request, ParameterConstants.ITEM_NAME, actionForm.getItemName()));
         spec.setUnitOfMeasureTypeName(findParameter(request, ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME, actionForm.getUnitOfMeasureTypeName()));
+        spec.setItemWeightTypeName(findParameter(request, ParameterConstants.ITEM_WEIGHT_TYPE_NAME, actionForm.getItemWeightTypeName()));
 
         return spec;
     }
@@ -80,6 +81,7 @@ public class EditAction
     protected void setupActionForm(HttpServletRequest request, EditActionForm actionForm, EditItemWeightResult result, ItemWeightSpec spec, ItemWeightEdit edit) {
         actionForm.setItemName(spec.getItemName());
         actionForm.setUnitOfMeasureTypeName(spec.getUnitOfMeasureTypeName());
+        actionForm.setItemWeightTypeName(spec.getItemWeightTypeName());
         actionForm.setWeightUnitOfMeasureTypeChoice(edit.getWeightUnitOfMeasureTypeName());
         actionForm.setWeight(edit.getWeight());
     }

@@ -17,7 +17,7 @@
 package com.echothree.control.user.item.common.spec;
 
 public interface ItemWeightSpec
-        extends ItemSpec {
+        extends ItemSpec, ItemWeightTypeSpec {
     
     String getUnitOfMeasureTypeName();
     void setUnitOfMeasureTypeName(String unitOfMeasureTypeName);

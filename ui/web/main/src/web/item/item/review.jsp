@@ -38,13 +38,14 @@
             </h2>
         </div>
         <div id="Content">
-            <et:checkSecurityRoles securityRoles="Item.Edit:ItemStatus.Choices:Company.Review:ItemCategory.Review:ItemAccountingCategory.Review:ItemPurchasingCategory.Review:UnitOfMeasureKind.Review:CancellationPolicy.Review:ReturnPolicy.Review:ItemDescription.Create:ItemImageType.Review:ItemUnitOfMeasureType.List:ItemUnitOfMeasureType.Create:ItemUnitOfMeasureType.Edit:ItemUnitOfMeasureType.Delete:ItemPrice.List:ItemPrice.Create:ItemPrice.Edit:ItemPrice.Delete:ItemPrice.History:ItemUnitPriceLimit.List:ItemUnitPriceLimit.Create:ItemUnitPriceLimit.Edit:ItemUnitPriceLimit.Delete:ItemKitMember.List:ItemUnitLimit.List:ItemUnitLimit.Create:ItemUnitLimit.Edit:ItemUnitLimit.Delete:ItemUnitCustomerTypeLimit.List:ItemUnitCustomerTypeLimit.Create:ItemUnitCustomerTypeLimit.Edit:ItemUnitCustomerTypeLimit.Delete:ItemDescription.List:ItemAlias.List:ItemAlias.Create:ItemAlias.Edit:ItemAlias.Delete:ItemShippingTime.List:ItemPackCheckRequirement.List:ItemPackCheckRequirement.Create:ItemPackCheckRequirement.Edit:ItemPackCheckRequirement.Delete:ItemWeight.List:ItemVolume.List:ItemCountryOfOrigin.List:ItemHarmonizedTariffScheduleCode.List:ItemHarmonizedTariffScheduleCode.Create:ItemHarmonizedTariffScheduleCode.Review:ItemHarmonizedTariffScheduleCode.Edit:ItemHarmonizedTariffScheduleCode.Delete:Country.Review:HarmonizedTariffScheduleCodeUseType.Review:HarmonizedTariffScheduleCode.Review:OfferItem.List:Vendor.Review:VendorItem.Review:VendorItem.List:VendorItemStatus.Choices:Offer.Review:OfferItemPrice.List:OfferItem.Delete:UnitOfMeasureType.Review:Currency.Review:InventoryCondition.Review:CustomerType.Review:Event.List" />
+            <et:checkSecurityRoles securityRoles="Item.Edit:ItemStatus.Choices:Company.Review:ItemCategory.Review:ItemAccountingCategory.Review:ItemPurchasingCategory.Review:UnitOfMeasureKind.Review:CancellationPolicy.Review:ReturnPolicy.Review:ItemDescription.Create:ItemImageType.Review:ItemUnitOfMeasureType.List:ItemUnitOfMeasureType.Create:ItemUnitOfMeasureType.Edit:ItemUnitOfMeasureType.Delete:ItemPrice.List:ItemPrice.Create:ItemPrice.Edit:ItemPrice.Delete:ItemPrice.History:ItemUnitPriceLimit.List:ItemUnitPriceLimit.Create:ItemUnitPriceLimit.Edit:ItemUnitPriceLimit.Delete:ItemKitMember.List:ItemUnitLimit.List:ItemUnitLimit.Create:ItemUnitLimit.Edit:ItemUnitLimit.Delete:ItemUnitCustomerTypeLimit.List:ItemUnitCustomerTypeLimit.Create:ItemUnitCustomerTypeLimit.Edit:ItemUnitCustomerTypeLimit.Delete:ItemDescription.List:ItemAlias.List:ItemAlias.Create:ItemAlias.Edit:ItemAlias.Delete:ItemShippingTime.List:ItemPackCheckRequirement.List:ItemPackCheckRequirement.Create:ItemPackCheckRequirement.Edit:ItemPackCheckRequirement.Delete:ItemWeight.List:ItemWeightType.Review:ItemVolume.List:ItemCountryOfOrigin.List:ItemHarmonizedTariffScheduleCode.List:ItemHarmonizedTariffScheduleCode.Create:ItemHarmonizedTariffScheduleCode.Review:ItemHarmonizedTariffScheduleCode.Edit:ItemHarmonizedTariffScheduleCode.Delete:Country.Review:HarmonizedTariffScheduleCodeUseType.Review:HarmonizedTariffScheduleCode.Review:OfferItem.List:Vendor.Review:VendorItem.Review:VendorItem.List:VendorItemStatus.Choices:Offer.Review:OfferItemPrice.List:OfferItem.Delete:UnitOfMeasureType.Review:Currency.Review:InventoryCondition.Review:CustomerType.Review:Event.List" />
             <et:hasSecurityRole securityRole="Company.Review" var="includeCompanyUrl" />
             <et:hasSecurityRole securityRole="ItemCategory.Review" var="includeItemCategoryUrl" />
             <et:hasSecurityRole securityRole="ItemAccountingCategory.Review" var="includeItemAccountingCategoryUrl" />
             <et:hasSecurityRole securityRole="ItemPurchasingCategory.Review" var="includeItemPurchasingCategoryUrl" />
             <et:hasSecurityRole securityRole="UnitOfMeasureKind.Review" var="includeUnitOfMeasureKindUrl" />
             <et:hasSecurityRole securityRole="UnitOfMeasureType.Review" var="includeUnitOfMeasureTypeUrl" />
+            <et:hasSecurityRole securityRole="ItemWeightType.Review" var="includeItemWeightTypeReviewUrl" />
             <et:hasSecurityRole securityRole="Currency.Review" var="includeCurrencyUrl" />
             <et:hasSecurityRole securityRole="InventoryCondition.Review" var="includeInventoryConditionUrl" />
             <et:hasSecurityRole securityRole="CustomerType.Review" var="includeCustomerTypeUrl" />
@@ -1023,18 +1024,33 @@
                         <display:column titleKey="columnTitle.unitOfMeasureType">
                             <c:out value="${itemWeight.unitOfMeasureType.description}" />
                         </display:column>
+                        <display:column titleKey="columnTitle.type">
+                            <c:choose>
+                                <c:when test="${includeItemWeightTypeReviewUrl}">
+                                    <c:url var="reviewUrl" value="/action/Item/ItemWeightType/Review">
+                                        <c:param name="ItemWeightTypeTypeName" value="${itemWeight.itemWeightType.itemWeightTypeName}" />
+                                    </c:url>
+                                    <a href="${reviewUrl}"><et:appearance appearance="${itemWeight.itemWeightType.entityInstance.entityAppearance.appearance}"><c:out value="${itemWeight.itemWeightType.description}" /></et:appearance></a>
+                                </c:when>
+                                <c:otherwise>
+                                    <et:appearance appearance="${itemWeight.itemWeightType.entityInstance.entityAppearance.appearance}"><c:out value="${itemWeight.itemWeightType.description}" /></et:appearance>
+                                </c:otherwise>
+                            </c:choose>
+                        </display:column>
                         <display:column titleKey="columnTitle.weight">
                             <c:out value="${itemWeight.weight}" />
                         </display:column>
                         <display:column>
-                            <c:url var="editUrl" value="/action/Item/Item/ItemWeightEdit">
+                            <c:url var="editUrl" value="/action/Item/ItemWeight/Edit">
                                 <c:param name="ItemName" value="${itemWeight.item.itemName}" />
                                 <c:param name="UnitOfMeasureTypeName" value="${itemWeight.unitOfMeasureType.unitOfMeasureTypeName}" />
+                                <c:param name="ItemWeightTypeName" value="${itemWeight.itemWeightType.itemWeightTypeName}" />
                             </c:url>
                             <a href="${editUrl}">Edit</a>
-                            <c:url var="deleteUrl" value="/action/Item/Item/ItemWeightDelete">
+                            <c:url var="deleteUrl" value="/action/Item/ItemWeight/Delete">
                                 <c:param name="ItemName" value="${itemWeight.item.itemName}" />
                                 <c:param name="UnitOfMeasureTypeName" value="${itemWeight.unitOfMeasureType.unitOfMeasureTypeName}" />
+                                <c:param name="ItemWeightTypeName" value="${itemWeight.itemWeightType.itemWeightTypeName}" />
                             </c:url>
                             <a href="${deleteUrl}">Delete</a>
                         </display:column>

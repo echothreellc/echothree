@@ -64,6 +64,7 @@ public class AddAction
             
             commandForm.setItemName(itemName);
             commandForm.setUnitOfMeasureTypeName(form.getUnitOfMeasureTypeChoice());
+            commandForm.setItemWeightTypeName(form.getItemWeightTypeChoice());
             commandForm.setWeight(form.getWeight());
             commandForm.setWeightUnitOfMeasureTypeName(form.getWeightUnitOfMeasureTypeChoice());
 
