@@ -63,6 +63,17 @@
                         </td>
                     </tr>
                     <tr>
+                        <td align=right><fmt:message key="label.itemWeightTypeChoice" />:</td>
+                        <td>
+                            <html:select property="itemWeightTypeChoice">
+                                <html:optionsCollection property="itemWeightTypeChoices" />
+                            </html:select>
+                            <et:validationErrors id="errorMessage" property="ItemWeightTypeName">
+                                <p><c:out value="${errorMessage}" /></p>
+                            </et:validationErrors>
+                        </td>
+                    </tr>
+                    <tr>
                         <td align=right><fmt:message key="label.weight" />:</td>
                         <td>
                             <html:text property="weight" size="12" maxlength="12" />

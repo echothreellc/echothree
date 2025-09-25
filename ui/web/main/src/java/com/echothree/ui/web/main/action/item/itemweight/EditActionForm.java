@@ -34,6 +34,7 @@ public class EditActionForm
     
     private String itemName;
     private String unitOfMeasureTypeName;
+    private String itemWeightTypeName;
     private String weight;
     private String weightUnitOfMeasureTypeChoice;
     
@@ -56,7 +57,7 @@ public class EditActionForm
             }
         }
     }
-    
+
     public String getItemName() {
         return itemName;
     }
@@ -72,7 +73,15 @@ public class EditActionForm
     public void setUnitOfMeasureTypeName(String unitOfMeasureTypeName) {
         this.unitOfMeasureTypeName = unitOfMeasureTypeName;
     }
-    
+
+    public String getItemWeightTypeName() {
+        return itemWeightTypeName;
+    }
+
+    public void setItemWeightTypeName(final String itemWeightTypeName) {
+        this.itemWeightTypeName = itemWeightTypeName;
+    }
+
     public String getWeight() {
         return weight;
     }

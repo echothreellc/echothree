@@ -1718,6 +1718,7 @@
                         <column name="ItemWeightId" type="EID" nullAllowed="false" />
                         <column name="ItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
                         <column name="UnitOfMeasureTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
+                        <column name="ItemWeightTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemWeightTypes" destinationColumn="ItemWeightTypeId" />
                         <column name="Weight" type="Measurement" nullAllowed="false" />
                         <column name="FromTime" type="Time" nullAllowed="false" />
                         <column name="ThruTime" type="Time" nullAllowed="false" />
@@ -1729,14 +1730,24 @@
                         <index type="Unique" name="Index1">
                             <indexColumn name="ItemId" />
                             <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ItemWeightTypeId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index2">
                             <indexColumn name="ItemId" />
+                            <indexColumn name="UnitOfMeasureTypeId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index3">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
                             <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="ItemWeightTypeId" />
                             <indexColumn name="ThruTime" />
                         </index>
                     </indexes>

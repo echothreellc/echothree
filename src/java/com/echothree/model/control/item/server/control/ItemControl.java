@@ -10116,6 +10116,7 @@ public class ItemControl
     }
 
     public void deleteItemWeightType(ItemWeightType itemWeightType, BasePK deletedBy) {
+        deleteItemWeightsByItemWeightType(itemWeightType, deletedBy);
         deleteItemWeightTypeDescriptionsByItemWeightType(itemWeightType, deletedBy);
 
         var itemWeightTypeDetail = itemWeightType.getLastDetailForUpdate();
@@ -10315,8 +10316,9 @@ public class ItemControl
     //   Item Weights
     // --------------------------------------------------------------------------------
     
-    public ItemWeight createItemWeight(Item item, UnitOfMeasureType unitOfMeasureType, Long weight, BasePK createdBy) {
-        var itemWeight = ItemWeightFactory.getInstance().create(item, unitOfMeasureType, weight,
+    public ItemWeight createItemWeight(Item item, UnitOfMeasureType unitOfMeasureType, ItemWeightType itemWeightType,
+            Long weight, BasePK createdBy) {
+        var itemWeight = ItemWeightFactory.getInstance().create(item, unitOfMeasureType, itemWeightType, weight,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(item.getPrimaryKey(), EventTypes.MODIFY, itemWeight.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -10324,7 +10326,8 @@ public class ItemControl
         return itemWeight;
     }
     
-    private ItemWeight getItemWeight(Item item, UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
+    private ItemWeight getItemWeight(Item item, UnitOfMeasureType unitOfMeasureType, ItemWeightType itemWeightType,
+            EntityPermission entityPermission) {
         ItemWeight itemWeight;
         
         try {
@@ -10333,11 +10336,11 @@ public class ItemControl
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
                         "FROM itemweights " +
-                        "WHERE iwght_itm_itemid = ? AND iwght_uomt_unitofmeasuretypeid = ? AND iwght_thrutime = ?";
+                        "WHERE iwght_itm_itemid = ? AND iwght_uomt_unitofmeasuretypeid = ? AND iwght_iwghtt_itemweighttypeid = ? AND iwght_thrutime = ?";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM itemweights " +
-                        "WHERE iwght_itm_itemid = ? AND iwght_uomt_unitofmeasuretypeid = ? AND iwght_thrutime = ? " +
+                        "WHERE iwght_itm_itemid = ? AND iwght_uomt_unitofmeasuretypeid = ? AND iwght_iwghtt_itemweighttypeid = ? AND iwght_thrutime = ? " +
                         "FOR UPDATE";
             }
 
@@ -10345,7 +10348,8 @@ public class ItemControl
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
+            ps.setLong(3, itemWeightType.getPrimaryKey().getEntityId());
+            ps.setLong(4, Session.MAX_TIME);
             
             itemWeight = ItemWeightFactory.getInstance().getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
@@ -10355,35 +10359,79 @@ public class ItemControl
         return itemWeight;
     }
     
-    public ItemWeight getItemWeight(Item item, UnitOfMeasureType unitOfMeasureType) {
-        return getItemWeight(item, unitOfMeasureType, EntityPermission.READ_ONLY);
+    public ItemWeight getItemWeight(Item item, UnitOfMeasureType unitOfMeasureType, ItemWeightType itemWeightType) {
+        return getItemWeight(item, unitOfMeasureType, itemWeightType, EntityPermission.READ_ONLY);
     }
     
-    public ItemWeight getItemWeightForUpdate(Item item, UnitOfMeasureType unitOfMeasureType) {
-        return getItemWeight(item, unitOfMeasureType, EntityPermission.READ_WRITE);
+    public ItemWeight getItemWeightForUpdate(Item item, UnitOfMeasureType unitOfMeasureType, ItemWeightType itemWeightType) {
+        return getItemWeight(item, unitOfMeasureType, itemWeightType, EntityPermission.READ_WRITE);
     }
     
     public ItemWeightValue getItemWeightValue(ItemWeight itemWeight) {
         return itemWeight == null? null: itemWeight.getItemWeightValue().clone();
     }
 
-    public ItemWeightValue getItemWeightValueForUpdate(Item item, UnitOfMeasureType unitOfMeasureType) {
-        return getItemWeightForUpdate(item, unitOfMeasureType).getItemWeightValue().clone();
+    public ItemWeightValue getItemWeightValueForUpdate(Item item, UnitOfMeasureType unitOfMeasureType, ItemWeightType itemWeightType) {
+        return getItemWeightForUpdate(item, unitOfMeasureType, itemWeightType).getItemWeightValue().clone();
     }
-    
-    private List<ItemWeight> getItemWeightsByItem(Item item, EntityPermission entityPermission) {
+
+    private List<ItemWeight> getItemWeights(Item item, UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
         List<ItemWeight> itemWeights;
-        
+
         try {
             String query = null;
-            
+
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
-                        "FROM itemweights, unitofmeasuretypes, unitofmeasuretypedetails " +
+                        "FROM itemweights " +
+                        "JOIN itemweighttypes ON iwght_iwghtt_itemweighttypeid = iwghtt_itemweighttypeid " +
+                        "JOIN itemweighttypedetails ON iwghtt_lastdetailid = iwghttdt_itemweighttypedetailid " +
+                        "WHERE iwght_itm_itemid = ? AND iwght_uomt_unitofmeasuretypeid = ? AND iwght_thrutime = ? " +
+                        "ORDER BY iwghttdt_sortorder, iwghttdt_itemweighttypename";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM itemweights " +
+                        "WHERE iwght_itm_itemid = ? AND iwght_uomt_unitofmeasuretypeid = ? AND iwght_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+
+            var ps = ItemWeightFactory.getInstance().prepareStatement(query);
+
+            ps.setLong(1, item.getPrimaryKey().getEntityId());
+            ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
+            ps.setLong(3, Session.MAX_TIME);
+
+            itemWeights = ItemWeightFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return itemWeights;
+    }
+
+    public List<ItemWeight> getItemWeights(Item item, UnitOfMeasureType unitOfMeasureType) {
+        return getItemWeights(item, unitOfMeasureType, EntityPermission.READ_ONLY);
+    }
+
+    public List<ItemWeight> getItemWeightsForUpdate(Item item, UnitOfMeasureType unitOfMeasureType) {
+        return getItemWeights(item, unitOfMeasureType, EntityPermission.READ_WRITE);
+    }
+
+    private List<ItemWeight> getItemWeightsByItem(Item item, EntityPermission entityPermission) {
+        List<ItemWeight> itemWeights;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM itemweights " +
+                        "JOIN unitofmeasuretypes ON iwght_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid " +
+                        "JOIN unitofmeasuretypedetails ON uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid " +
+                        "JOIN itemweighttypes ON iwght_iwghtt_itemweighttypeid = iwghtt_itemweighttypeid " +
+                        "JOIN itemweighttypedetails ON iwghtt_lastdetailid = iwghttdt_itemweighttypedetailid " +
                         "WHERE iwght_itm_itemid = ? AND iwght_thrutime = ? " +
-                        "AND iwght_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid " +
-                        "AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid " +
-                        "ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename";
+                        "ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename, iwghttdt_sortorder, iwghttdt_itemweighttypename";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM itemweights " +
@@ -10392,26 +10440,69 @@ public class ItemControl
             }
 
             var ps = ItemWeightFactory.getInstance().prepareStatement(query);
-            
+
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
-            
+
             itemWeights = ItemWeightFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
-        
+
         return itemWeights;
     }
-    
+
     public List<ItemWeight> getItemWeightsByItem(Item item) {
         return getItemWeightsByItem(item, EntityPermission.READ_ONLY);
     }
-    
+
     public List<ItemWeight> getItemWeightsByItemForUpdate(Item item) {
         return getItemWeightsByItem(item, EntityPermission.READ_WRITE);
     }
-    
+
+    private List<ItemWeight> getItemWeightsByItemWeightType(ItemWeightType itemWeightType, EntityPermission entityPermission) {
+        List<ItemWeight> itemWeights;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM itemweights " +
+                        "JOIN items ON iwght_itm_itemid = itm_itemid " +
+                        "JOIN itemdetails ON itm_lastdetailid = itmdt_itemdetailid " +
+                        "JOIN unitofmeasuretypes ON iwght_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid " +
+                        "JOIN unitofmeasuretypedetails ON uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid " +
+                        "WHERE iwght_uomt_unitofmeasuretypeid = ? AND iwght_thrutime = ? " +
+                        "ORDER BY itmdt_itemname, uomtdt_sortorder, uomtdt_unitofmeasuretypename";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM itemweights " +
+                        "WHERE iwght_itm_itemid = ? AND iwght_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+
+            var ps = ItemWeightFactory.getInstance().prepareStatement(query);
+
+            ps.setLong(1, itemWeightType.getPrimaryKey().getEntityId());
+            ps.setLong(2, Session.MAX_TIME);
+
+            itemWeights = ItemWeightFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return itemWeights;
+    }
+
+    public List<ItemWeight> getItemWeightsByItemWeightType(ItemWeightType itemWeightType) {
+        return getItemWeightsByItemWeightType(itemWeightType, EntityPermission.READ_ONLY);
+    }
+
+    public List<ItemWeight> getItemWeightsByItemWeightTypeForUpdate(ItemWeightType itemWeightType) {
+        return getItemWeightsByItemWeightType(itemWeightType, EntityPermission.READ_WRITE);
+    }
+
     public void updateItemWeightFromValue(ItemWeightValue itemWeightValue, BasePK updatedBy) {
         if(itemWeightValue.hasBeenModified()) {
             var itemWeight = ItemWeightFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -10422,10 +10513,11 @@ public class ItemControl
 
             var itemPK = itemWeight.getItemPK();
             var unitOfMeasureTypePK = itemWeight.getUnitOfMeasureTypePK();
+            var itemWeightTypePK = itemWeight.getItemWeightTypePK();
             var weight = itemWeightValue.getWeight();
             
-            itemWeight = ItemWeightFactory.getInstance().create(itemPK, unitOfMeasureTypePK, weight, session.START_TIME_LONG,
-                    Session.MAX_TIME_LONG);
+            itemWeight = ItemWeightFactory.getInstance().create(itemPK, unitOfMeasureTypePK, itemWeightTypePK, weight,
+                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
             sendEvent(itemPK, EventTypes.MODIFY, itemWeight.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -10435,8 +10527,9 @@ public class ItemControl
         return itemWeight == null? null: getItemTransferCaches(userVisit).getItemWeightTransferCache().getTransfer(itemWeight);
     }
     
-    public ItemWeightTransfer getItemWeightTransfer(UserVisit userVisit, Item item, UnitOfMeasureType unitOfMeasureType) {
-        return getItemWeightTransfer(userVisit, getItemWeight(item, unitOfMeasureType));
+    public ItemWeightTransfer getItemWeightTransfer(UserVisit userVisit, Item item, UnitOfMeasureType unitOfMeasureType,
+            ItemWeightType itemWeightType) {
+        return getItemWeightTransfer(userVisit, getItemWeight(item, unitOfMeasureType, itemWeightType));
     }
     
     public List<ItemWeightTransfer> getItemWeightTransfersByItem(UserVisit userVisit, Item item) {
@@ -10456,23 +10549,25 @@ public class ItemControl
         
         sendEvent(itemWeight.getItemPK(), EventTypes.MODIFY, itemWeight.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
-    
-    public void deleteItemWeightsByItem(Item item, BasePK deletedBy) {
-        var itemWeights = getItemWeightsByItemForUpdate(item);
-        
-        itemWeights.forEach((itemWeight) -> 
+
+    public void deleteItemWeights(Collection<ItemWeight> itemWeights, BasePK deletedBy) {
+        itemWeights.forEach((itemWeight) ->
                 deleteItemWeight(itemWeight, deletedBy)
         );
     }
-    
-    public void deleteItemWeightByItemAndUnitOfMeasureType(Item item, UnitOfMeasureType unitOfMeasureType, BasePK deletedBy) {
-        var itemWeight = getItemWeightForUpdate(item, unitOfMeasureType);
-        
-        if(itemWeight!= null) {
-            deleteItemWeight(itemWeight, deletedBy);
-        }
+
+    public void deleteItemWeightsByItem(Item item, BasePK deletedBy) {
+        deleteItemWeights(getItemWeightsByItemForUpdate(item), deletedBy);
     }
-    
+
+    public void deleteItemWeightByItemAndUnitOfMeasureType(Item item, UnitOfMeasureType unitOfMeasureType, BasePK deletedBy) {
+        deleteItemWeights(getItemWeightsForUpdate(item, unitOfMeasureType), deletedBy);
+    }
+
+    public void deleteItemWeightsByItemWeightType(ItemWeightType itemWeightType, BasePK deletedBy) {
+        deleteItemWeights(getItemWeightsByItemWeightTypeForUpdate(itemWeightType), deletedBy);
+    }
+
     // --------------------------------------------------------------------------------
     //   Related Item Types
     // --------------------------------------------------------------------------------

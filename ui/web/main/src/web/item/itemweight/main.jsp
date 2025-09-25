@@ -42,6 +42,8 @@
             </h2>
         </div>
         <div id="Content">
+            <et:checkSecurityRoles securityRoles="ItemWeightType.Review" />
+            <et:hasSecurityRole securityRole="ItemWeightType.Review" var="includeItemWeightTypeReviewUrl" />
             <c:url var="addUrl" value="/action/Item/ItemWeight/Add">
                 <c:param name="ItemName" value="${item.itemName}" />
             </c:url>
@@ -50,6 +52,19 @@
                 <display:column titleKey="columnTitle.unitOfMeasureType">
                     <c:out value="${itemWeight.unitOfMeasureType.description}" />
                 </display:column>
+                <display:column titleKey="columnTitle.type">
+                    <c:choose>
+                        <c:when test="${includeItemWeightTypeReviewUrl}">
+                            <c:url var="reviewUrl" value="/action/Item/ItemWeightType/Review">
+                                <c:param name="ItemWeightTypeTypeName" value="${itemWeight.itemWeightType.itemWeightTypeName}" />
+                            </c:url>
+                            <a href="${reviewUrl}"><et:appearance appearance="${itemWeight.itemWeightType.entityInstance.entityAppearance.appearance}"><c:out value="${itemWeight.itemWeightType.description}" /></et:appearance></a>
+                        </c:when>
+                        <c:otherwise>
+                            <et:appearance appearance="${itemWeight.itemWeightType.entityInstance.entityAppearance.appearance}"><c:out value="${itemWeight.itemWeightType.description}" /></et:appearance>
+                        </c:otherwise>
+                    </c:choose>
+                </display:column>
                 <display:column titleKey="columnTitle.weight">
                     <c:out value="${itemWeight.weight}" />
                 </display:column>
@@ -57,11 +72,13 @@
                     <c:url var="editUrl" value="/action/Item/ItemWeight/Edit">
                         <c:param name="ItemName" value="${itemWeight.item.itemName}" />
                         <c:param name="UnitOfMeasureTypeName" value="${itemWeight.unitOfMeasureType.unitOfMeasureTypeName}" />
+                        <c:param name="ItemWeightTypeName" value="${itemWeight.itemWeightType.itemWeightTypeName}" />
                     </c:url>
                     <a href="${editUrl}">Edit</a>
                     <c:url var="deleteUrl" value="/action/Item/ItemWeight/Delete">
                         <c:param name="ItemName" value="${itemWeight.item.itemName}" />
                         <c:param name="UnitOfMeasureTypeName" value="${itemWeight.unitOfMeasureType.unitOfMeasureTypeName}" />
+                        <c:param name="ItemWeightTypeName" value="${itemWeight.itemWeightType.itemWeightTypeName}" />
                     </c:url>
                     <a href="${deleteUrl}">Delete</a>
                 </display:column>

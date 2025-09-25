@@ -1,5 +1,5 @@
 Feature: Employee item weight type
-  An employee wants to add, edit, and delete a item weight type
+  An employee wants to add, edit, and delete an item weight type
 
   Background:
     Given the employee Test begins using the application

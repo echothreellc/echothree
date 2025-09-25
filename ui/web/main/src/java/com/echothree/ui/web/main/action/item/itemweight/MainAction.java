@@ -18,6 +18,7 @@ package com.echothree.ui.web.main.action.item.itemweight;
 
 import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.result.GetItemWeightsResult;
+import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -26,6 +27,8 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
+import java.util.HashSet;
+import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -50,8 +53,14 @@ public class MainAction
             throws Exception {
         var commandForm = ItemUtil.getHome().getGetItemWeightsForm();
         var itemName = request.getParameter(ParameterConstants.ITEM_NAME);
-        
+
         commandForm.setItemName(itemName);
+
+        Set<String> options = new HashSet<>();
+        options.add(CoreOptions.EntityInstanceIncludeEntityAppearance);
+        options.add(CoreOptions.AppearanceIncludeTextDecorations);
+        options.add(CoreOptions.AppearanceIncludeTextTransformations);
+        commandForm.setOptions(options);
 
         var commandResult = ItemUtil.getHome().getItemWeights(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
