@@ -49,6 +49,7 @@
             <p>You are about to delete the <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" />:</p>
             &nbsp;&nbsp;&nbsp;&nbsp;Item: <c:out value="${itemVolume.item.description}" /><br />
             &nbsp;&nbsp;&nbsp;&nbsp;Unit of Measure Type: <c:out value="${itemVolume.unitOfMeasureType.description}" /><br />
+            &nbsp;&nbsp;&nbsp;&nbsp;Item Volume Type: <c:out value="${itemVolume.itemVolumeType.description}" /><br />
             <et:executionErrors id="errorMessage">
                 <p class="executionErrors"><c:out value="${errorMessage}" /></p><br />
             </et:executionErrors>
@@ -67,6 +68,7 @@
                 <html:submit value="Delete" onclick="onSubmitDisable(this);" />&nbsp;<html:cancel onclick="onSubmitDisable(this);" /><html:hidden property="submitButton" />
                 <html:hidden property="itemName" />
                 <html:hidden property="unitOfMeasureTypeName" />
+                <html:hidden property="itemVolumeTypeName" />
             </html:form>
         </div>
         <jsp:include page="../../include/userSession.jsp" />

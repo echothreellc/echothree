@@ -9690,27 +9690,79 @@ public class ItemControl
     // --------------------------------------------------------------------------------
     //   Item Volumes
     // --------------------------------------------------------------------------------
-    
-    public ItemVolume createItemVolume(Item item, UnitOfMeasureType unitOfMeasureType, Long height, Long width, Long depth,
-            BasePK createdBy) {
-        var itemVolume = ItemVolumeFactory.getInstance().create(item, unitOfMeasureType, height, width, depth,
+
+    public ItemVolume createItemVolume(Item item, UnitOfMeasureType unitOfMeasureType, ItemVolumeType itemVolumeType,
+            Long height, Long width, Long depth, BasePK createdBy) {
+        var itemVolume = ItemVolumeFactory.getInstance().create(item, unitOfMeasureType, itemVolumeType, height, width, depth,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
-        
+
         sendEvent(item.getPrimaryKey(), EventTypes.MODIFY, itemVolume.getPrimaryKey(), EventTypes.CREATE, createdBy);
-        
+
         return itemVolume;
     }
-    
-    private ItemVolume getItemVolume(Item item, UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
+
+    private ItemVolume getItemVolume(Item item, UnitOfMeasureType unitOfMeasureType, ItemVolumeType itemVolumeType,
+            EntityPermission entityPermission) {
         ItemVolume itemVolume;
-        
+
         try {
             String query = null;
-            
+
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
                         "FROM itemvolumes " +
-                        "WHERE ivol_itm_itemid = ? AND ivol_uomt_unitofmeasuretypeid = ? AND ivol_thrutime = ?";
+                        "WHERE ivol_itm_itemid = ? AND ivol_uomt_unitofmeasuretypeid = ? AND ivol_ivolt_itemvolumetypeid = ? AND ivol_thrutime = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM itemvolumes " +
+                        "WHERE ivol_itm_itemid = ? AND ivol_uomt_unitofmeasuretypeid = ? AND ivol_ivolt_itemvolumetypeid = ? AND ivol_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+
+            var ps = ItemVolumeFactory.getInstance().prepareStatement(query);
+
+            ps.setLong(1, item.getPrimaryKey().getEntityId());
+            ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
+            ps.setLong(3, itemVolumeType.getPrimaryKey().getEntityId());
+            ps.setLong(4, Session.MAX_TIME);
+
+            itemVolume = ItemVolumeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return itemVolume;
+    }
+
+    public ItemVolume getItemVolume(Item item, UnitOfMeasureType unitOfMeasureType, ItemVolumeType itemVolumeType) {
+        return getItemVolume(item, unitOfMeasureType, itemVolumeType, EntityPermission.READ_ONLY);
+    }
+
+    public ItemVolume getItemVolumeForUpdate(Item item, UnitOfMeasureType unitOfMeasureType, ItemVolumeType itemVolumeType) {
+        return getItemVolume(item, unitOfMeasureType, itemVolumeType, EntityPermission.READ_WRITE);
+    }
+
+    public ItemVolumeValue getItemVolumeValue(ItemVolume itemVolume) {
+        return itemVolume == null? null: itemVolume.getItemVolumeValue().clone();
+    }
+
+    public ItemVolumeValue getItemVolumeValueForUpdate(Item item, UnitOfMeasureType unitOfMeasureType, ItemVolumeType itemVolumeType) {
+        return getItemVolumeForUpdate(item, unitOfMeasureType, itemVolumeType).getItemVolumeValue().clone();
+    }
+
+    private List<ItemVolume> getItemVolumes(Item item, UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
+        List<ItemVolume> itemVolumes;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM itemvolumes " +
+                        "JOIN itemvolumetypes ON ivol_ivolt_itemvolumetypeid = ivolt_itemvolumetypeid " +
+                        "JOIN itemvolumetypedetails ON ivolt_lastdetailid = ivoltdt_itemvolumetypedetailid " +
+                        "WHERE ivol_itm_itemid = ? AND ivol_uomt_unitofmeasuretypeid = ? AND ivol_thrutime = ? " +
+                        "ORDER BY ivoltdt_sortorder, ivoltdt_itemvolumetypename";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM itemvolumes " +
@@ -9719,48 +9771,42 @@ public class ItemControl
             }
 
             var ps = ItemVolumeFactory.getInstance().prepareStatement(query);
-            
+
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
-            
-            itemVolume = ItemVolumeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+
+            itemVolumes = ItemVolumeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
-        
-        return itemVolume;
-    }
-    
-    public ItemVolume getItemVolume(Item item, UnitOfMeasureType unitOfMeasureType) {
-        return getItemVolume(item, unitOfMeasureType, EntityPermission.READ_ONLY);
-    }
-    
-    public ItemVolume getItemVolumeForUpdate(Item item, UnitOfMeasureType unitOfMeasureType) {
-        return getItemVolume(item, unitOfMeasureType, EntityPermission.READ_WRITE);
-    }
-    
-    public ItemVolumeValue getItemVolumeValue(ItemVolume itemVolume) {
-        return itemVolume == null? null: itemVolume.getItemVolumeValue().clone();
+
+        return itemVolumes;
     }
 
-    public ItemVolumeValue getItemVolumeValueForUpdate(Item item, UnitOfMeasureType unitOfMeasureType) {
-        return getItemVolumeForUpdate(item, unitOfMeasureType).getItemVolumeValue().clone();
+    public List<ItemVolume> getItemVolumes(Item item, UnitOfMeasureType unitOfMeasureType) {
+        return getItemVolumes(item, unitOfMeasureType, EntityPermission.READ_ONLY);
     }
-    
+
+    public List<ItemVolume> getItemVolumesForUpdate(Item item, UnitOfMeasureType unitOfMeasureType) {
+        return getItemVolumes(item, unitOfMeasureType, EntityPermission.READ_WRITE);
+    }
+
     private List<ItemVolume> getItemVolumesByItem(Item item, EntityPermission entityPermission) {
         List<ItemVolume> itemVolumes;
-        
+
         try {
             String query = null;
-            
+
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
-                        "FROM itemvolumes, unitofmeasuretypes, unitofmeasuretypedetails " +
+                        "FROM itemvolumes " +
+                        "JOIN unitofmeasuretypes ON ivol_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid " +
+                        "JOIN unitofmeasuretypedetails ON uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid " +
+                        "JOIN itemvolumetypes ON ivol_ivolt_itemvolumetypeid = ivolt_itemvolumetypeid " +
+                        "JOIN itemvolumetypedetails ON ivolt_lastdetailid = ivoltdt_itemvolumetypedetailid " +
                         "WHERE ivol_itm_itemid = ? AND ivol_thrutime = ? " +
-                        "AND ivol_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid " +
-                        "AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid " +
-                        "ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename";
+                        "ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename, ivoltdt_sortorder, ivoltdt_itemvolumetypename";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM itemvolumes " +
@@ -9769,89 +9815,136 @@ public class ItemControl
             }
 
             var ps = ItemVolumeFactory.getInstance().prepareStatement(query);
-            
+
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
-            
+
             itemVolumes = ItemVolumeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
-        
+
         return itemVolumes;
     }
-    
+
     public List<ItemVolume> getItemVolumesByItem(Item item) {
         return getItemVolumesByItem(item, EntityPermission.READ_ONLY);
     }
-    
+
     public List<ItemVolume> getItemVolumesByItemForUpdate(Item item) {
         return getItemVolumesByItem(item, EntityPermission.READ_WRITE);
     }
-    
+
+    private List<ItemVolume> getItemVolumesByItemVolumeType(ItemVolumeType itemVolumeType, EntityPermission entityPermission) {
+        List<ItemVolume> itemVolumes;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM itemvolumes " +
+                        "JOIN items ON ivol_itm_itemid = itm_itemid " +
+                        "JOIN itemdetails ON itm_lastdetailid = itmdt_itemdetailid " +
+                        "JOIN unitofmeasuretypes ON ivol_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid " +
+                        "JOIN unitofmeasuretypedetails ON uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid " +
+                        "WHERE ivol_uomt_unitofmeasuretypeid = ? AND ivol_thrutime = ? " +
+                        "ORDER BY itmdt_itemname, uomtdt_sortorder, uomtdt_unitofmeasuretypename";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM itemvolumes " +
+                        "WHERE ivol_itm_itemid = ? AND ivol_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+
+            var ps = ItemVolumeFactory.getInstance().prepareStatement(query);
+
+            ps.setLong(1, itemVolumeType.getPrimaryKey().getEntityId());
+            ps.setLong(2, Session.MAX_TIME);
+
+            itemVolumes = ItemVolumeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return itemVolumes;
+    }
+
+    public List<ItemVolume> getItemVolumesByItemVolumeType(ItemVolumeType itemVolumeType) {
+        return getItemVolumesByItemVolumeType(itemVolumeType, EntityPermission.READ_ONLY);
+    }
+
+    public List<ItemVolume> getItemVolumesByItemVolumeTypeForUpdate(ItemVolumeType itemVolumeType) {
+        return getItemVolumesByItemVolumeType(itemVolumeType, EntityPermission.READ_WRITE);
+    }
+
     public void updateItemVolumeFromValue(ItemVolumeValue itemVolumeValue, BasePK updatedBy) {
         if(itemVolumeValue.hasBeenModified()) {
             var itemVolume = ItemVolumeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     itemVolumeValue.getPrimaryKey());
-            
+
             itemVolume.setThruTime(session.START_TIME_LONG);
             itemVolume.store();
 
             var itemPK = itemVolume.getItemPK();
             var unitOfMeasureTypePK = itemVolume.getUnitOfMeasureTypePK();
+            var itemVolumeTypePK = itemVolume.getItemVolumeTypePK();
             var height = itemVolumeValue.getHeight();
             var width = itemVolumeValue.getWidth();
             var depth = itemVolumeValue.getDepth();
-            
-            itemVolume = ItemVolumeFactory.getInstance().create(itemPK, unitOfMeasureTypePK, height, width, depth,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
-            
+
+            itemVolume = ItemVolumeFactory.getInstance().create(itemPK, unitOfMeasureTypePK, itemVolumeTypePK, height,
+                    width, depth, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
             sendEvent(itemPK, EventTypes.MODIFY, itemVolume.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
-    
+
     public ItemVolumeTransfer getItemVolumeTransfer(UserVisit userVisit, ItemVolume itemVolume) {
         return itemVolume == null? null: getItemTransferCaches(userVisit).getItemVolumeTransferCache().getTransfer(itemVolume);
     }
-    
-    public ItemVolumeTransfer getItemVolumeTransfer(UserVisit userVisit, Item item, UnitOfMeasureType unitOfMeasureType) {
-        return getItemVolumeTransfer(userVisit, getItemVolume(item, unitOfMeasureType));
+
+    public ItemVolumeTransfer getItemVolumeTransfer(UserVisit userVisit, Item item, UnitOfMeasureType unitOfMeasureType,
+            ItemVolumeType itemVolumeType) {
+        return getItemVolumeTransfer(userVisit, getItemVolume(item, unitOfMeasureType, itemVolumeType));
     }
-    
+
     public List<ItemVolumeTransfer> getItemVolumeTransfersByItem(UserVisit userVisit, Item item) {
         var itemVolumes = getItemVolumesByItem(item);
         List<ItemVolumeTransfer> itemVolumeTransfers = new ArrayList<>(itemVolumes.size());
         var itemVolumeTransferCache = getItemTransferCaches(userVisit).getItemVolumeTransferCache();
-        
+
         itemVolumes.forEach((itemVolume) ->
                 itemVolumeTransfers.add(itemVolumeTransferCache.getTransfer(itemVolume))
         );
-        
+
         return itemVolumeTransfers;
     }
-    
+
     public void deleteItemVolume(ItemVolume itemVolume, BasePK deletedBy) {
         itemVolume.setThruTime(session.START_TIME_LONG);
-        
+
         sendEvent(itemVolume.getItemPK(), EventTypes.MODIFY, itemVolume.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
-    
-    public void deleteItemVolumesByItem(Item item, BasePK deletedBy) {
-        var itemVolumes = getItemVolumesByItemForUpdate(item);
-        
-        itemVolumes.forEach((itemVolume) -> 
+
+    public void deleteItemVolumes(Collection<ItemVolume> itemVolumes, BasePK deletedBy) {
+        itemVolumes.forEach((itemVolume) ->
                 deleteItemVolume(itemVolume, deletedBy)
         );
     }
-    
-    public void deleteItemVolumeByItemAndUnitOfMeasureType(Item item, UnitOfMeasureType unitOfMeasureType, BasePK deletedBy) {
-        var itemVolume = getItemVolumeForUpdate(item, unitOfMeasureType);
-        
-        if(itemVolume!= null) {
-            deleteItemVolume(itemVolume, deletedBy);
-        }
+
+    public void deleteItemVolumesByItem(Item item, BasePK deletedBy) {
+        deleteItemVolumes(getItemVolumesByItemForUpdate(item), deletedBy);
     }
 
+    public void deleteItemVolumeByItemAndUnitOfMeasureType(Item item, UnitOfMeasureType unitOfMeasureType, BasePK deletedBy) {
+        deleteItemVolumes(getItemVolumesForUpdate(item, unitOfMeasureType), deletedBy);
+    }
+
+    public void deleteItemVolumesByItemVolumeType(ItemVolumeType itemVolumeType, BasePK deletedBy) {
+        deleteItemVolumes(getItemVolumesByItemVolumeTypeForUpdate(itemVolumeType), deletedBy);
+    }
+    
     // --------------------------------------------------------------------------------
     //   Item Weight Types
     // --------------------------------------------------------------------------------

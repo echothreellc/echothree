@@ -49,6 +49,7 @@
             <p>You are about to delete the <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" />:</p>
             &nbsp;&nbsp;&nbsp;&nbsp;Item: <c:out value="${itemWeight.item.description}" /><br />
             &nbsp;&nbsp;&nbsp;&nbsp;Unit of Measure Type: <c:out value="${itemWeight.unitOfMeasureType.description}" /><br />
+            &nbsp;&nbsp;&nbsp;&nbsp;Item Weight Type: <c:out value="${itemWeight.itemWeightType.description}" /><br />
             <et:executionErrors id="errorMessage">
                 <p class="executionErrors"><c:out value="${errorMessage}" /></p><br />
             </et:executionErrors>

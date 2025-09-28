@@ -25,7 +25,8 @@ public class DeleteActionForm
     
     private String itemName;
     private String unitOfMeasureTypeName;
-    
+    private String itemVolumeTypeName;
+
     public String getItemName() {
         return itemName;
     }
@@ -41,5 +42,14 @@ public class DeleteActionForm
     public void setUnitOfMeasureTypeName(String unitOfMeasureTypeName) {
         this.unitOfMeasureTypeName = unitOfMeasureTypeName;
     }
-    
+
+
+    public String getItemVolumeTypeName() {
+        return itemVolumeTypeName;
+    }
+
+    public void setItemVolumeTypeName(final String itemVolumeTypeName) {
+        this.itemVolumeTypeName = itemVolumeTypeName;
+    }
+
 }

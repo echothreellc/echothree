@@ -24,58 +24,68 @@ public class ItemVolumeTransfer
     
     private ItemTransfer item;
     private UnitOfMeasureTypeTransfer unitOfMeasureType;
+    private ItemVolumeTypeTransfer itemVolumeType;
     private String height;
     private String width;
     private String depth;
-    
+
     /** Creates a new instance of ItemVolumeTransfer */
-    public ItemVolumeTransfer(ItemTransfer item, UnitOfMeasureTypeTransfer unitOfMeasureType, String height, String width,
-            String depth) {
+    public ItemVolumeTransfer(final ItemTransfer item, final UnitOfMeasureTypeTransfer unitOfMeasureType,
+            final ItemVolumeTypeTransfer itemVolumeType, final String height, final String width, final String depth) {
         this.item = item;
         this.unitOfMeasureType = unitOfMeasureType;
+        this.itemVolumeType = itemVolumeType;
         this.height = height;
         this.width = width;
         this.depth = depth;
     }
-    
+
     public ItemTransfer getItem() {
         return item;
     }
-    
-    public void setItem(ItemTransfer item) {
+
+    public void setItem(final ItemTransfer item) {
         this.item = item;
     }
-    
+
     public UnitOfMeasureTypeTransfer getUnitOfMeasureType() {
         return unitOfMeasureType;
     }
-    
-    public void setUnitOfMeasureType(UnitOfMeasureTypeTransfer unitOfMeasureType) {
+
+    public void setUnitOfMeasureType(final UnitOfMeasureTypeTransfer unitOfMeasureType) {
         this.unitOfMeasureType = unitOfMeasureType;
     }
-    
+
+    public ItemVolumeTypeTransfer getItemVolumeType() {
+        return itemVolumeType;
+    }
+
+    public void setItemVolumeType(final ItemVolumeTypeTransfer itemVolumeType) {
+        this.itemVolumeType = itemVolumeType;
+    }
+
     public String getHeight() {
         return height;
     }
-    
-    public void setHeight(String height) {
+
+    public void setHeight(final String height) {
         this.height = height;
     }
-    
+
     public String getWidth() {
         return width;
     }
-    
-    public void setWidth(String width) {
+
+    public void setWidth(final String width) {
         this.width = width;
     }
-    
+
     public String getDepth() {
         return depth;
     }
-    
-    public void setDepth(String depth) {
+
+    public void setDepth(final String depth) {
         this.depth = depth;
     }
-    
+
 }

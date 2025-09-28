@@ -107,6 +107,7 @@
                                 <td>
                                     <html:hidden property="itemName" />
                                     <html:hidden property="unitOfMeasureTypeName" />
+                                    <html:hidden property="itemVolumeTypeName" />
                                 </td>
                                 <td><html:submit onclick="onSubmitDisable(this);" />&nbsp;<html:cancel onclick="onSubmitDisable(this);" />&nbsp;<html:reset /><html:hidden property="submitButton" /></td>
                             </tr>

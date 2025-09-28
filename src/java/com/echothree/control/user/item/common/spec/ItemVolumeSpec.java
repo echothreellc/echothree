@@ -17,7 +17,7 @@
 package com.echothree.control.user.item.common.spec;
 
 public interface ItemVolumeSpec
-        extends ItemSpec {
+        extends ItemSpec, ItemVolumeTypeSpec {
     
     String getUnitOfMeasureTypeName();
     void setUnitOfMeasureTypeName(String unitOfMeasureTypeName);

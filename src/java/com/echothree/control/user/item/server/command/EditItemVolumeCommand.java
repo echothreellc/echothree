@@ -18,11 +18,14 @@ package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.edit.ItemEditFactory;
 import com.echothree.control.user.item.common.edit.ItemVolumeEdit;
-import com.echothree.control.user.item.common.form.EditItemVolumeForm;
 import com.echothree.control.user.item.common.result.EditItemVolumeResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.control.user.item.common.spec.ItemVolumeSpec;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.item.server.logic.ItemVolumeTypeLogic;
+import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.uom.server.util.Conversion;
@@ -30,42 +33,51 @@ import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemVolume;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class EditItemVolumeCommand
         extends BaseAbstractEditCommand<ItemVolumeSpec, ItemVolumeEdit, EditItemVolumeResult, ItemVolume, Item> {
-    
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
     
     static {
-        SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.ItemVolume.name(), SecurityRoles.Edit.name())
+                ))
+        ));
+
+        SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+                new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("ItemVolumeTypeName", FieldType.ENTITY_NAME, true, null, null)
+        );
         
-        EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("HeightUnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Height", FieldType.UNSIGNED_LONG, true, null, null),
                 new FieldDefinition("WidthUnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Width", FieldType.UNSIGNED_LONG, true, null, null),
                 new FieldDefinition("DepthUnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Depth", FieldType.UNSIGNED_LONG, true, null, null)
-                ));
+        );
     }
     
     /** Creates a new instance of EditItemVolumeCommand */
     public EditItemVolumeCommand() {
-        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override
@@ -93,14 +105,18 @@ public class EditItemVolumeCommand
             var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(item.getLastDetail().getUnitOfMeasureKind(), unitOfMeasureTypeName);
 
             if(unitOfMeasureType != null) {
-                if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    itemVolume = itemControl.getItemVolume(item, unitOfMeasureType);
-                } else { // EditMode.UPDATE
-                    itemVolume = itemControl.getItemVolumeForUpdate(item, unitOfMeasureType);
-                }
+                var itemVolumeType = ItemVolumeTypeLogic.getInstance().getItemVolumeTypeByName(this, spec.getItemVolumeTypeName());
 
-                if(itemVolume == null) {
-                    addExecutionError(ExecutionErrors.UnknownItemVolume.name(), itemName, unitOfMeasureTypeName);
+                if(!hasExecutionErrors()) {
+                    if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
+                        itemVolume = itemControl.getItemVolume(item, unitOfMeasureType, itemVolumeType);
+                    } else { // EditMode.UPDATE
+                        itemVolume = itemControl.getItemVolumeForUpdate(item, unitOfMeasureType, itemVolumeType);
+                    }
+    
+                    if(itemVolume == null) {
+                        addExecutionError(ExecutionErrors.UnknownItemVolume.name(), itemName, unitOfMeasureTypeName);
+                    }
                 }
             } else {
                 addExecutionError(ExecutionErrors.UnknownUnitOfMeasureTypeName.name(), unitOfMeasureTypeName);

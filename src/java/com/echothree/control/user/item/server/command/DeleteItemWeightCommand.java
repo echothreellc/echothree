@@ -44,7 +44,7 @@ public class DeleteItemWeightCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                        new SecurityRoleDefinition(SecurityRoleGroups.ItemWeight.name(), SecurityRoles.Create.name())
+                        new SecurityRoleDefinition(SecurityRoleGroups.ItemWeight.name(), SecurityRoles.Delete.name())
                 ))
         ));
 

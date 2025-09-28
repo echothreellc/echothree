@@ -129,6 +129,7 @@ import com.echothree.control.user.item.common.edit.ItemEdit;
 import com.echothree.control.user.item.common.edit.ItemImageTypeEdit;
 import com.echothree.control.user.item.common.edit.ItemPriceEdit;
 import com.echothree.control.user.item.common.edit.ItemUnitOfMeasureTypeEdit;
+import com.echothree.control.user.item.common.edit.ItemVolumeEdit;
 import com.echothree.control.user.item.common.edit.ItemVolumeTypeEdit;
 import com.echothree.control.user.item.common.edit.ItemWeightEdit;
 import com.echothree.control.user.item.common.edit.ItemWeightTypeEdit;
@@ -139,6 +140,7 @@ import com.echothree.control.user.item.common.form.CreateItemForm;
 import com.echothree.control.user.item.common.form.CreateItemImageTypeForm;
 import com.echothree.control.user.item.common.form.CreateItemPriceForm;
 import com.echothree.control.user.item.common.form.CreateItemUnitOfMeasureTypeForm;
+import com.echothree.control.user.item.common.form.CreateItemVolumeForm;
 import com.echothree.control.user.item.common.form.CreateItemVolumeTypeForm;
 import com.echothree.control.user.item.common.form.CreateItemWeightForm;
 import com.echothree.control.user.item.common.form.CreateItemWeightTypeForm;
@@ -148,6 +150,7 @@ import com.echothree.control.user.item.common.form.DeleteItemDescriptionTypeUseT
 import com.echothree.control.user.item.common.form.DeleteItemImageTypeForm;
 import com.echothree.control.user.item.common.form.DeleteItemPriceForm;
 import com.echothree.control.user.item.common.form.DeleteItemUnitOfMeasureTypeForm;
+import com.echothree.control.user.item.common.form.DeleteItemVolumeForm;
 import com.echothree.control.user.item.common.form.DeleteItemVolumeTypeForm;
 import com.echothree.control.user.item.common.form.DeleteItemWeightForm;
 import com.echothree.control.user.item.common.form.DeleteItemWeightTypeForm;
@@ -158,6 +161,7 @@ import com.echothree.control.user.item.common.spec.ItemImageTypeUniversalSpec;
 import com.echothree.control.user.item.common.spec.ItemPriceSpec;
 import com.echothree.control.user.item.common.spec.ItemSpec;
 import com.echothree.control.user.item.common.spec.ItemUnitOfMeasureTypeSpec;
+import com.echothree.control.user.item.common.spec.ItemVolumeSpec;
 import com.echothree.control.user.item.common.spec.ItemVolumeTypeUniversalSpec;
 import com.echothree.control.user.item.common.spec.ItemWeightSpec;
 import com.echothree.control.user.item.common.spec.ItemWeightTypeUniversalSpec;
@@ -546,6 +550,11 @@ public class BasePersona {
     public DeleteItemVolumeTypeForm deleteItemVolumeTypeForm;
     public ItemVolumeTypeUniversalSpec itemVolumeTypeSpec;
     public ItemVolumeTypeEdit itemVolumeTypeEdit;
+
+    public CreateItemVolumeForm createItemVolumeForm;
+    public DeleteItemVolumeForm deleteItemVolumeForm;
+    public ItemVolumeSpec itemVolumeSpec;
+    public ItemVolumeEdit itemVolumeEdit;
 
     public String lastItemName;
     public String lastItemImageTypeName;
