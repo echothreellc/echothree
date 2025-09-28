@@ -42,12 +42,13 @@ public class ItemVolumeTransferCache
             var itemTransfer = itemControl.getItemTransfer(userVisit, itemVolume.getItem());
             var unitOfMeasureTypeTransfer = uomControl.getUnitOfMeasureTypeTransfer(userVisit,
                     itemVolume.getUnitOfMeasureType());
+            var itemVolumeType = itemControl.getItemVolumeTypeTransfer(userVisit, itemVolume.getItemVolumeType());
             var volumeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_VOLUME);
             var height = formatUnitOfMeasure(volumeUnitOfMeasureKind, itemVolume.getHeight());
             var width = formatUnitOfMeasure(volumeUnitOfMeasureKind, itemVolume.getWidth());
             var depth = formatUnitOfMeasure(volumeUnitOfMeasureKind, itemVolume.getDepth());
-            
-            itemVolumeTransfer = new ItemVolumeTransfer(itemTransfer, unitOfMeasureTypeTransfer, height, width, depth);
+
+            itemVolumeTransfer = new ItemVolumeTransfer(itemTransfer, unitOfMeasureTypeTransfer, itemVolumeType, height, width, depth);
             put(itemVolume, itemVolumeTransfer);
         }
         

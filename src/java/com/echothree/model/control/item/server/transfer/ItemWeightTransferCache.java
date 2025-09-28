@@ -41,8 +41,8 @@ public class ItemWeightTransferCache
         if(itemWeightTransfer == null) {
             var itemTransfer = itemControl.getItemTransfer(userVisit, itemWeight.getItem());
             var unitOfMeasureTypeTransfer = uomControl.getUnitOfMeasureTypeTransfer(userVisit, itemWeight.getUnitOfMeasureType());
-            var weightUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_WEIGHT);
             var itemWeightType = itemControl.getItemWeightTypeTransfer(userVisit, itemWeight.getItemWeightType());
+            var weightUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_WEIGHT);
             var weight = formatUnitOfMeasure(weightUnitOfMeasureKind, itemWeight.getWeight());
             
             itemWeightTransfer = new ItemWeightTransfer(itemTransfer, unitOfMeasureTypeTransfer, itemWeightType, weight);

@@ -439,9 +439,11 @@
                 ]]>
             </itemDescription>
             <itemPrice inventoryConditionName="GOOD" unitOfMeasureTypeName="EACH" currencyIsoName="USD" unitPrice="14.95" />
-            <itemWeight unitOfMeasureTypeName="EACH" itemWeightTypeName="EXAMPLE_ITEM_WEIGHT_TYPE" weightUnitOfMeasureTypeName="POUND" weight="5" />
-            <itemVolume unitOfMeasureTypeName="EACH" heightUnitOfMeasureTypeName="INCH" height="1"
-            widthUnitOfMeasureTypeName="INCH" width="1" depthUnitOfMeasureTypeName="INCH" depth="1" />
+            <itemWeight unitOfMeasureTypeName="EACH" itemWeightTypeName="EXAMPLE_ITEM_WEIGHT_TYPE"
+                        weightUnitOfMeasureTypeName="POUND" weight="5" />
+            <itemVolume unitOfMeasureTypeName="EACH" itemVolumeTypeName="EXAMPLE_ITEM_VOLUME_TYPE"
+                        heightUnitOfMeasureTypeName="INCH" height="1" widthUnitOfMeasureTypeName="INCH" width="1"
+                        depthUnitOfMeasureTypeName="INCH" depth="1" />
             <itemCountryOfOrigin countryName="UNITED_STATES" percent="50%" />
             <itemCountryOfOrigin countryName="CANADA" percent="50%" />
             <itemUnitLimit inventoryConditionName="GOOD" unitOfMeasureTypeName="EACH" minimumQuantity="1" maximumQuantity="5" />

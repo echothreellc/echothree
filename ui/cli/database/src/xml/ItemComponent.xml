@@ -1688,6 +1688,7 @@
                         <column name="ItemVolumeId" type="EID" nullAllowed="false" />
                         <column name="ItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
                         <column name="UnitOfMeasureTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
+                        <column name="ItemVolumeTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemVolumeTypes" destinationColumn="ItemVolumeTypeId" />
                         <column name="Height" type="Measurement" nullAllowed="false" />
                         <column name="Width" type="Measurement" nullAllowed="false" />
                         <column name="Depth" type="Measurement" nullAllowed="false" />
@@ -1701,14 +1702,24 @@
                         <index type="Unique" name="Index1">
                             <indexColumn name="ItemId" />
                             <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ItemVolumeTypeId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index2">
                             <indexColumn name="ItemId" />
+                            <indexColumn name="UnitOfMeasureTypeId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index3">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
                             <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="ItemVolumeTypeId" />
                             <indexColumn name="ThruTime" />
                         </index>
                     </indexes>
