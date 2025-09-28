@@ -55,6 +55,7 @@ public class DeleteAction
     public void setupParameters(DeleteActionForm actionForm, HttpServletRequest request) {
         actionForm.setItemName(findParameter(request, ParameterConstants.ITEM_NAME, actionForm.getItemName()));
         actionForm.setUnitOfMeasureTypeName(findParameter(request, ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME, actionForm.getUnitOfMeasureTypeName()));
+        actionForm.setItemVolumeTypeName(findParameter(request, ParameterConstants.ITEM_VOLUME_TYPE_NAME, actionForm.getItemVolumeTypeName()));
     }
 
     @Override
@@ -64,6 +65,7 @@ public class DeleteAction
 
         commandForm.setItemName(actionForm.getItemName());
         commandForm.setUnitOfMeasureTypeName(actionForm.getUnitOfMeasureTypeName());
+        commandForm.setItemVolumeTypeName(actionForm.getItemVolumeTypeName());
 
         var commandResult = ItemUtil.getHome().getItemVolume(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
@@ -79,6 +81,7 @@ public class DeleteAction
 
         commandForm.setItemName(actionForm.getItemName());
         commandForm.setUnitOfMeasureTypeName(actionForm.getUnitOfMeasureTypeName());
+        commandForm.setItemVolumeTypeName(actionForm.getItemVolumeTypeName());
 
         return ItemUtil.getHome().deleteItemVolume(getUserVisitPK(request), commandForm);
     }

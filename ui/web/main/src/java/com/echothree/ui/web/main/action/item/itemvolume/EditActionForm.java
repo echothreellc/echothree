@@ -36,6 +36,7 @@ public class EditActionForm
     
     private String itemName;
     private String unitOfMeasureTypeName;
+    private String itemVolumeTypeName;
     private String height;
     private String heightUnitOfMeasureTypeChoice;
     private String width;
@@ -118,7 +119,15 @@ public class EditActionForm
     public void setUnitOfMeasureTypeName(String unitOfMeasureTypeName) {
         this.unitOfMeasureTypeName = unitOfMeasureTypeName;
     }
-    
+
+    public String getItemVolumeTypeName() {
+        return itemVolumeTypeName;
+    }
+
+    public void setItemVolumeTypeName(final String itemVolumeTypeName) {
+        this.itemVolumeTypeName = itemVolumeTypeName;
+    }
+
     public String getHeight() {
         return height;
     }

@@ -42,6 +42,8 @@
             </h2>
         </div>
         <div id="Content">
+            <et:checkSecurityRoles securityRoles="ItemVolumeType.Review" />
+            <et:hasSecurityRole securityRole="ItemVolumeType.Review" var="includeItemVolumeTypeReviewUrl" />
             <c:url var="addUrl" value="/action/Item/ItemVolume/Add">
                 <c:param name="ItemName" value="${item.itemName}" />
             </c:url>
@@ -49,6 +51,19 @@
             <display:table name="itemVolumes" id="itemVolume" class="displaytag">
                 <display:column titleKey="columnTitle.unitOfMeasureType">
                     <c:out value="${itemVolume.unitOfMeasureType.description}" />
+                </display:column>
+                <display:column titleKey="columnTitle.type">
+                    <c:choose>
+                        <c:when test="${includeItemVolumeTypeReviewUrl}">
+                            <c:url var="reviewUrl" value="/action/Item/ItemVolumeType/Review">
+                                <c:param name="ItemVolumeTypeTypeName" value="${itemVolume.itemVolumeType.itemVolumeTypeName}" />
+                            </c:url>
+                            <a href="${reviewUrl}"><et:appearance appearance="${itemVolume.itemVolumeType.entityInstance.entityAppearance.appearance}"><c:out value="${itemVolume.itemVolumeType.description}" /></et:appearance></a>
+                        </c:when>
+                        <c:otherwise>
+                            <et:appearance appearance="${itemVolume.itemVolumeType.entityInstance.entityAppearance.appearance}"><c:out value="${itemVolume.itemVolumeType.description}" /></et:appearance>
+                        </c:otherwise>
+                    </c:choose>
                 </display:column>
                 <display:column titleKey="columnTitle.volume">
                     H: <c:out value="${itemVolume.height}" />,
@@ -59,11 +74,13 @@
                     <c:url var="editUrl" value="/action/Item/ItemVolume/Edit">
                         <c:param name="ItemName" value="${itemVolume.item.itemName}" />
                         <c:param name="UnitOfMeasureTypeName" value="${itemVolume.unitOfMeasureType.unitOfMeasureTypeName}" />
+                        <c:param name="ItemVolumeTypeName" value="${itemVolume.itemVolumeType.itemVolumeTypeName}" />
                     </c:url>
                     <a href="${editUrl}">Edit</a>
                     <c:url var="deleteUrl" value="/action/Item/ItemVolume/Delete">
                         <c:param name="ItemName" value="${itemVolume.item.itemName}" />
                         <c:param name="UnitOfMeasureTypeName" value="${itemVolume.unitOfMeasureType.unitOfMeasureTypeName}" />
+                        <c:param name="ItemVolumeTypeName" value="${itemVolume.itemVolumeType.itemVolumeTypeName}" />
                     </c:url>
                     <a href="${deleteUrl}">Delete</a>
                 </display:column>

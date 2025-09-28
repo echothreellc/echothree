@@ -64,6 +64,7 @@ public class AddAction
             
             commandForm.setItemName(itemName);
             commandForm.setUnitOfMeasureTypeName(form.getUnitOfMeasureTypeChoice());
+            commandForm.setItemVolumeTypeName(form.getItemVolumeTypeChoice());
             commandForm.setHeight(form.getHeight());
             commandForm.setHeightUnitOfMeasureTypeName(form.getHeightUnitOfMeasureTypeChoice());
             commandForm.setWidth(form.getWidth());
