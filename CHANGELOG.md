@@ -1,5 +1,13 @@
 # Changelog
 
+## 2025-09-28-01
+
+* Integrate Item Weight Types Into Item Weights [1595](https://gitlab.echothree.com/echothree/echothree/-/issues/1595)
+* Integrate Item Volume Types Into Item Volumes [1596](https://gitlab.echothree.com/echothree/echothree/-/issues/1596)
+* Break Apart GeoConstants into Enums [1603](https://gitlab.echothree.com/echothree/echothree/-/issues/1603)
+* Attempting to Sort by Warehouse Type Column Results in Error [1604](https://gitlab.echothree.com/echothree/echothree/-/issues/1604)
+* createOfferItem Mutation Not Returning id [1605](https://gitlab.echothree.com/echothree/echothree/-/issues/1605)
+
 ## 2025-09-14-01
 
 * Add Item Alias Type for GTIN-8, GTIN-12, GTIN-13, and GTIN-14 [1592](https://gitlab.echothree.com/echothree/echothree/-/issues/1592)
