@@ -110,7 +110,7 @@ public class OfferItemLogic
                 offerItem = offerItemControl.getOfferItem(offer, item);
 
                 if(offerItem == null) {
-                    createOfferItem(offer, item, createdBy);
+                    offerItem = createOfferItem(offer, item, createdBy);
                 } else {
                     handleExecutionError(DuplicateOfferItemException.class, eea, ExecutionErrors.DuplicateOfferItem.name(),
                             offerDetail.getOfferName(), item.getLastDetail().getItemName());
