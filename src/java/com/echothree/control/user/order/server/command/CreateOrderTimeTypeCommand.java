@@ -81,7 +81,7 @@ public class CreateOrderTimeTypeCommand
         }
 
         if(orderTimeType != null) {
-            result.setEntityRef(orderType.getPrimaryKey().getEntityRef());
+            result.setEntityRef(orderTimeType.getPrimaryKey().getEntityRef());
             result.setOrderTypeName(orderType.getLastDetail().getOrderTypeName());
             result.setOrderTimeTypeName(orderTimeType.getLastDetail().getOrderTimeTypeName());
         }
