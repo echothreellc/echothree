@@ -33,6 +33,7 @@
     <path id="shared.class.path">
         <fileset dir="${lib.dir}">
             <include name="**/*.jar" />
+            <exclude name="pmd/lib/*.jar" />
         </fileset>
         <pathelement path="${java.class.path}" />
     </path>
