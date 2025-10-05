@@ -27,6 +27,7 @@
     <path id="build.classpath">
         <fileset dir="${lib.dir}">
             <include name="**/*.jar" />
+            <exclude name="pmd/lib/*.jar" />
         </fileset>
         <fileset dir="${build.lib.dir}">
             <include name="**/*.jar" />
@@ -37,6 +38,7 @@
     <path id="shared.class.path">
         <fileset dir="${lib.dir}">
             <include name="**/*.jar" />
+            <exclude name="pmd/lib/*.jar" />
         </fileset>
         <pathelement path="${java.class.path}" />
     </path>
