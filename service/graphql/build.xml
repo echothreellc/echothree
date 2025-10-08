@@ -31,14 +31,6 @@
         <pathelement location="${build.dir}/jars/echothree-client.jar" />
     </path>
 
-    <path id="shared.class.path">
-        <fileset dir="${lib.dir}">
-            <include name="**/*.jar" />
-            <exclude name="pmd/lib/*.jar" />
-        </fileset>
-        <pathelement path="${java.class.path}" />
-    </path>
-
     <target name="prepare">
         <mkdir dir="${service.graphql.classbindir}" />
         <mkdir dir="${service.graphql.wardir}" />
