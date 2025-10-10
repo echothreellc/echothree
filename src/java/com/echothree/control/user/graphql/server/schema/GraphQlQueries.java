@@ -1398,12 +1398,16 @@ public interface GraphQlQueries {
     @GraphQLName("workflows")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    static CountingPaginatedData<WorkflowObject> workflows(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<WorkflowObject> workflows(final DataFetchingEnvironment env,
+            @GraphQLName("selectorKindName") final String selectorKindName) {
         CountingPaginatedData<WorkflowObject> data;
 
         try {
             var commandForm = WorkflowUtil.getHome().getGetWorkflowsForm();
             var command = new GetWorkflowsCommand();
+
+            commandForm.setSelectorKindName(selectorKindName);
+
             var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
             if(totalEntities == null) {
                 data = Connections.emptyConnection();
