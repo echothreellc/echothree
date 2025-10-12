@@ -53,7 +53,7 @@ public class GetLotAliasesCommand
 
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("LotName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("LotIdentifier", FieldType.STRING, true, 1L, 40L)
                 ));
     }
     
