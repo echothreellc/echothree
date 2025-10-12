@@ -621,9 +621,11 @@
                 <table namePlural="InventoryLocationAssignments" nameSingular="InventoryLocationAssignment" columnPrefix="invlocasgn">
                     <columns>
                         <column name="InventoryLocationAssignmentId" type="EID" nullAllowed="false" />
-                        <column name="LotId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Lots" destinationColumn="LotId" />
                         <column name="LocationId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Locations" destinationColumn="LocationId" />
-                        <column name="Quantity" type="Measurement" nullAllowed="false" />
+                        <column name="OwnerPartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="ItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
+                        <column name="UnitOfMeasureTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
+                        <column name="InventoryConditionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryConditions" destinationColumn="InventoryConditionId" />
                         <column name="FromTime" type="Time" nullAllowed="false" />
                         <column name="ThruTime" type="Time" nullAllowed="false" />
                     </columns>
@@ -632,16 +634,28 @@
                             <indexColumn name="InventoryLocationAssignmentId" />
                         </index>
                         <index type="Unique" name="Index1">
-                            <indexColumn name="LotId" />
                             <indexColumn name="LocationId" />
+                            <indexColumn name="ItemId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index2">
-                            <indexColumn name="LotId" />
+                            <indexColumn name="LocationId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index3">
-                            <indexColumn name="LocationId" />
+                            <indexColumn name="OwnerPartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="InventoryConditionId" />
                             <indexColumn name="ThruTime" />
                         </index>
                     </indexes>
