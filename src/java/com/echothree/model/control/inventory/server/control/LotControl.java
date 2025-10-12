@@ -30,6 +30,7 @@ import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -50,13 +51,11 @@ public class LotControl
     //   Lots
     // --------------------------------------------------------------------------------
 
-    public Lot createLot(final String lotName, final Party ownerParty, final Item item, final UnitOfMeasureType unitOfMeasureType,
-            final InventoryCondition inventoryCondition, final Long quantity, final Currency currency, final Long unitCost,
-            final BasePK createdBy) {
+    public Lot createLot(final Item item, final String lotIdentifier, final BasePK createdBy) {
 
         var lot = LotFactory.getInstance().create();
-        var lotDetail = LotDetailFactory.getInstance().create(session, lot, lotName, ownerParty, item, unitOfMeasureType,
-                inventoryCondition, quantity, currency, unitCost, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var lotDetail = LotDetailFactory.getInstance().create(session, lot, item, lotIdentifier, session.START_TIME_LONG,
+                Session.MAX_TIME_LONG);
 
         // Convert to R/W
         lot = LotFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, lot.getPrimaryKey());
@@ -88,116 +87,72 @@ public class LotControl
     public long countLots() {
         return session.queryForLong(
                 "SELECT COUNT(*) " +
-                "FROM lots, lotdetails " +
-                "WHERE lt_activedetailid = ltdt_lotdetailid");
+                "FROM lots " +
+                "JOIN lotdetails ON lt_activedetailid = ltdt_lotdetailid ");
     }
 
-    private static final Map<EntityPermission, String> getLotByNameQueries = Map.of(
+    public long countLotsByItem(Item item) {
+        return session.queryForLong(
+            "SELECT COUNT(*) " +
+                "FROM lots " +
+                "JOIN lotdetails ON lt_activedetailid = ltdt_lotdetailid " +
+                "WHERE ltdt_itm_itemid = ?",
+                item);
+    }
+
+    private static final Map<EntityPermission, String> getLotByIdentifierQueries = Map.of(
             EntityPermission.READ_ONLY,
             "SELECT _ALL_ " +
-                    "FROM lots, lotdetails " +
-                    "WHERE lt_activedetailid = ltdt_lotdetailid " +
-                    "AND ltdt_lotname = ?",
+                    "FROM lots " +
+                    "JOIN lotdetails ON lt_activedetailid = ltdt_lotdetailid " +
+                    "WHERE ltdt_itm_itemid = ? AND ltdt_lotidentifier = ?",
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " + "FROM lots, lotdetails " +
-                    "WHERE lt_activedetailid = ltdt_lotdetailid " +
-                    "AND ltdt_lotname = ? " +
+            "SELECT _ALL_ " +
+                    "FROM lots " +
+                    "JOIN lotdetails ON lt_activedetailid = ltdt_lotdetailid " +
+                    "WHERE ltdt_itm_itemid = ? AND ltdt_lotidentifier = ? " +
                     "FOR UPDATE");
 
-    public Lot getLotByName(final String lotName, final EntityPermission entityPermission) {
-        return LotFactory.getInstance().getEntityFromQuery(entityPermission, getLotByNameQueries,
-                lotName);
+    public Lot getLotByIdentifier(final Item item, final String lotIdentifier, final EntityPermission entityPermission) {
+        return LotFactory.getInstance().getEntityFromQuery(entityPermission, getLotByIdentifierQueries,
+                item, lotIdentifier);
     }
 
-    public Lot getLotByName(final String lotName) {
-        return getLotByName(lotName, EntityPermission.READ_ONLY);
+    public Lot getLotByIdentifier(final Item item, final String lotIdentifier) {
+        return getLotByIdentifier(item, lotIdentifier, EntityPermission.READ_ONLY);
     }
 
-    public Lot getLotByNameForUpdate(final String lotName) {
-        return getLotByName(lotName, EntityPermission.READ_WRITE);
+    public Lot getLotByIdentifierForUpdate(final Item item, final String lotIdentifier) {
+        return getLotByIdentifier(item, lotIdentifier, EntityPermission.READ_WRITE);
     }
 
     public LotDetailValue getLotDetailValueForUpdate(final Lot lot) {
         return lot == null ? null: lot.getLastDetailForUpdate().getLotDetailValue().clone();
     }
 
-    public LotDetailValue getLotDetailValueByNameForUpdate(final String lotName) {
-        return getLotDetailValueForUpdate(getLotByNameForUpdate(lotName));
-    }
-
-    private static final Map<EntityPermission, String> getLotsQueries = Map.of(
-            EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM lots, lotdetails " +
-                    "WHERE lt_activedetailid = ltdt_lotdetailid " +
-                    "ORDER BY ltdt_lotname " +
-                    "_LIMIT_",
-            EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM lots, lotdetails " +
-                    "WHERE lt_activedetailid = ltdt_lotdetailid " +
-                    "FOR UPDATE");
-
-    private List<Lot> getLots(final EntityPermission entityPermission) {
-        return LotFactory.getInstance().getEntitiesFromQuery(entityPermission, getLotsQueries);
-    }
-
-    public List<Lot> getLots() {
-        return getLots(EntityPermission.READ_ONLY);
-    }
-
-    public List<Lot> getLotsForUpdate() {
-        return getLots(EntityPermission.READ_WRITE);
-    }
-
-    private static final Map<EntityPermission, String> getLotsByOwnerPartyQueries = Map.of(
-            EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM lots, lotdetails " +
-                    "WHERE lt_activedetailid = ltdt_lotdetailid " +
-                    "AND ltdt_ownerpartyid = ? " +
-                    "ORDER BY ltdt_lotname " +
-                    "_LIMIT_",
-            EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM lots, lotdetails " +
-                    "WHERE lt_activedetailid = ltdt_lotdetailid " +
-                    "AND ltdt_ownerpartyid = ? " +
-                    "FOR UPDATE");
-
-    private List<Lot> getLotsByOwnerParty(final Party ownerParty,
-            final EntityPermission entityPermission) {
-        return LotFactory.getInstance().getEntitiesFromQuery(entityPermission, getLotsByOwnerPartyQueries,
-                ownerParty, Session.MAX_TIME);
-    }
-
-    public List<Lot> getLotsByOwnerParty(final Party ownerParty) {
-        return getLotsByOwnerParty(ownerParty, EntityPermission.READ_ONLY);
-    }
-
-    public List<Lot> getLotsByOwnerPartyForUpdate(final Party ownerParty) {
-        return getLotsByOwnerParty(ownerParty, EntityPermission.READ_WRITE);
+    public LotDetailValue getLotDetailValueByIdentifierForUpdate(final Item item, final String lotIdentifier) {
+        return getLotDetailValueForUpdate(getLotByIdentifierForUpdate(item, lotIdentifier));
     }
 
     private static final Map<EntityPermission, String> getLotsByItemQueries = Map.of(
             EntityPermission.READ_ONLY,
             "SELECT _ALL_ " +
-                    "FROM lots, lotdetails " +
-                    "WHERE lt_activedetailid = ltdt_lotdetailid " +
-                    "AND ltdt_itm_itemid = ? " +
-                    "ORDER BY ltdt_lotname " +
+                    "FROM lots " +
+                    "JOIN lotdetails ON lt_activedetailid = ltdt_lotdetailid " +
+                    "WHERE ltdt_itm_itemid = ? " +
+                    "ORDER BY ltdt_lotidentifier " +
                     "_LIMIT_",
             EntityPermission.READ_WRITE,
             "SELECT _ALL_ " +
-                    "FROM lots, lotdetails " +
-                    "WHERE lt_activedetailid = ltdt_lotdetailid " +
-                    "AND ltdt_itm_itemid = ? " +
+                    "FROM lots " +
+                    "JOIN lotdetails ON lt_activedetailid = ltdt_lotdetailid " +
+                    "WHERE ltdt_itm_itemid = ? " +
                     "FOR UPDATE");
 
     private List<Lot> getLotsByItem(final Item item,
             final EntityPermission entityPermission) {
         return LotFactory.getInstance().getEntitiesFromQuery(entityPermission, getLotsByItemQueries,
-                item, Session.MAX_TIME);
+                item);
     }
 
     public List<Lot> getLotsByItem(final Item item) {
@@ -208,100 +163,12 @@ public class LotControl
         return getLotsByItem(item, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getLotsByUnitOfMeasureTypeQueries = Map.of(
-            EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM lots, lotdetails " +
-                    "WHERE lt_activedetailid = ltdt_lotdetailid " +
-                    "AND ltdt_uomt_unitofmeasuretypeid = ? " +
-                    "ORDER BY ltdt_lotname " +
-                    "_LIMIT_",
-            EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM lots, lotdetails " +
-                    "WHERE lt_activedetailid = ltdt_lotdetailid " +
-                    "AND ltdt_uomt_unitofmeasuretypeid = ? " +
-                    "FOR UPDATE");
-
-    private List<Lot> getLotsByUnitOfMeasureType(final UnitOfMeasureType unitOfMeasureType,
-            final EntityPermission entityPermission) {
-        return LotFactory.getInstance().getEntitiesFromQuery(entityPermission, getLotsByUnitOfMeasureTypeQueries,
-                unitOfMeasureType, Session.MAX_TIME);
-    }
-
-    public List<Lot> getLotsByUnitOfMeasureType(final UnitOfMeasureType unitOfMeasureType) {
-        return getLotsByUnitOfMeasureType(unitOfMeasureType, EntityPermission.READ_ONLY);
-    }
-
-    public List<Lot> getLotsByUnitOfMeasureTypeForUpdate(final UnitOfMeasureType unitOfMeasureType) {
-        return getLotsByUnitOfMeasureType(unitOfMeasureType, EntityPermission.READ_WRITE);
-    }
-
-    private static final Map<EntityPermission, String> getLotsByInventoryConditionQueries = Map.of(
-            EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM lots, lotdetails " +
-                    "WHERE lt_activedetailid = ltdt_lotdetailid " +
-                    "AND ltdt_invcon_inventoryconditionid = ? " +
-                    "ORDER BY ltdt_lotname " +
-                    "_LIMIT_",
-            EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM lots, lotdetails " +
-                    "WHERE lt_activedetailid = ltdt_lotdetailid " +
-                    "AND ltdt_invcon_inventoryconditionid = ? " +
-                    "FOR UPDATE");
-
-    private List<Lot> getLotsByInventoryCondition(final InventoryCondition inventoryCondition,
-            final EntityPermission entityPermission) {
-        return LotFactory.getInstance().getEntitiesFromQuery(entityPermission, getLotsByInventoryConditionQueries,
-                inventoryCondition, Session.MAX_TIME);
-    }
-
-    public List<Lot> getLotsByInventoryCondition(final InventoryCondition inventoryCondition) {
-        return getLotsByInventoryCondition(inventoryCondition, EntityPermission.READ_ONLY);
-    }
-
-    public List<Lot> getLotsByInventoryConditionForUpdate(final InventoryCondition inventoryCondition) {
-        return getLotsByInventoryCondition(inventoryCondition, EntityPermission.READ_WRITE);
-    }
-
-    private static final Map<EntityPermission, String> getLotsByCurrencyQueries = Map.of(
-            EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM lots, lotdetails " +
-                    "WHERE lt_activedetailid = ltdt_lotdetailid " +
-                    "AND ltdt_cur_currencyid = ? " +
-                    "ORDER BY ltdt_lotname " +
-                    "_LIMIT_",
-            EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM lots, lotdetails " +
-                    "WHERE lt_activedetailid = ltdt_lotdetailid " +
-                    "AND ltdt_cur_currencyid = ? " +
-                    "FOR UPDATE");
-
-    private List<Lot> getLotsByCurrency(final Currency currency,
-            final EntityPermission entityPermission) {
-        return LotFactory.getInstance().getEntitiesFromQuery(entityPermission, getLotsByCurrencyQueries,
-                currency, Session.MAX_TIME);
-    }
-
-    public List<Lot> getLotsByCurrency(final Currency currency) {
-        return getLotsByCurrency(currency, EntityPermission.READ_ONLY);
-    }
-
-    public List<Lot> getLotsByCurrencyForUpdate(final Currency currency) {
-        return getLotsByCurrency(currency, EntityPermission.READ_WRITE);
-    }
-
     public LotTransfer getLotTransfer(final UserVisit userVisit,
             final Lot lot) {
         return getInventoryTransferCaches(userVisit).getLotTransferCache().getTransfer(lot);
     }
 
-    public List<LotTransfer> getLotTransfers(final UserVisit userVisit,
-            final Collection<Lot> lots) {
+    public List<LotTransfer> getLotTransfers(final UserVisit userVisit, final Collection<Lot> lots) {
         var lotTransfers = new ArrayList<LotTransfer>(lots.size());
         var lotTransferCache = getInventoryTransferCaches(userVisit).getLotTransferCache();
 
@@ -312,8 +179,8 @@ public class LotControl
         return lotTransfers;
     }
 
-    public List<LotTransfer> getLotTransfers(final UserVisit userVisit) {
-        return getLotTransfers(userVisit, getLots());
+    public List<LotTransfer> getLotTransfersByItem(final UserVisit userVisit, final Item item) {
+        return getLotTransfers(userVisit, getLotsByItem(item));
     }
 
     public void updateLotFromValue(final LotDetailValue lotDetailValue,
@@ -327,17 +194,11 @@ public class LotControl
             lotDetail.store();
 
             var lotPK = lotDetail.getLotPK(); // R/O
-            var lotName = lotDetailValue.getLotName(); // R/W
-            var ownerPartyPK = lotDetailValue.getOwnerPartyPK(); // R/W
-            var itemPK = lotDetailValue.getItemPK(); // R/W
-            var unitOfMeasureTypePK = lotDetailValue.getUnitOfMeasureTypePK(); // R/W
-            var inventoryConditionPK = lotDetailValue.getInventoryConditionPK(); // R/W
-            var quantity = lotDetailValue.getQuantity(); // R/W
-            var currencyPK = lotDetailValue.getCurrencyPK(); // R/W
-            var unitCost = lotDetailValue.getUnitCost(); // R/W
+            var itemPK = lotDetailValue.getItemPK(); // R/O
+            var lotIdentifier = lotDetailValue.getLotIdentifier(); // R/W
 
-            lotDetail = LotDetailFactory.getInstance().create(lotPK, lotName, ownerPartyPK, itemPK, unitOfMeasureTypePK,
-                    inventoryConditionPK, quantity, currencyPK, unitCost, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            lotDetail = LotDetailFactory.getInstance().create(lotPK, itemPK, lotIdentifier, session.START_TIME_LONG,
+                    Session.MAX_TIME_LONG);
 
             lot.setActiveDetail(lotDetail);
             lot.setLastDetail(lotDetail);
@@ -359,24 +220,8 @@ public class LotControl
         lots.forEach(lot -> deleteLot(lot, deletedBy));
     }
 
-    public void deleteLotsByOwnerParty(final Party ownerParty, final BasePK deletedBy) {
-        deleteLots(getLotsByOwnerPartyForUpdate(ownerParty), deletedBy);
-    }
-
     public void deleteLotsByItem(final Item item, final BasePK deletedBy) {
         deleteLots(getLotsByItemForUpdate(item), deletedBy);
-    }
-
-    public void deleteLotsByUnitOfMeasureType(final UnitOfMeasureType unitOfMeasureType, final BasePK deletedBy) {
-        deleteLots(getLotsByUnitOfMeasureTypeForUpdate(unitOfMeasureType), deletedBy);
-    }
-
-    public void deleteLotsByInventoryCondition(final InventoryCondition inventoryCondition, final BasePK deletedBy) {
-        deleteLots(getLotsByInventoryConditionForUpdate(inventoryCondition), deletedBy);
-    }
-
-    public void deleteLotsByCurrency(final Currency currency, final BasePK deletedBy) {
-        deleteLots(getLotsByCurrencyForUpdate(currency), deletedBy);
     }
 
 }

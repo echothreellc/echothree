@@ -26,47 +26,15 @@ import com.echothree.util.common.transfer.MapWrapper;
 public class LotTransfer
         extends BaseTransfer {
 
-    private String lotName;
-    private PartyTransfer ownerParty;
     private ItemTransfer item;
-    private InventoryConditionTransfer inventoryCondition;
-    private UnitOfMeasureTypeTransfer unitOfMeasureType;
-    private Long quantity;
-    private CurrencyTransfer currency;
-    private Long unformattedUnitCost;
-    private String unitCost;
+    private String lotIdentifier;
 
     private MapWrapper<LotAliasTransfer> lotAliases;
     private MapWrapper<LotTimeTransfer> lotTimes;
 
-    public LotTransfer(final String lotName, final PartyTransfer ownerParty, final ItemTransfer item,
-            final InventoryConditionTransfer inventoryCondition, final UnitOfMeasureTypeTransfer unitOfMeasureType,
-            final Long quantity, final CurrencyTransfer currency, final Long unformattedUnitCost, final String unitCost) {
-        this.lotName = lotName;
-        this.ownerParty = ownerParty;
+    public LotTransfer(final ItemTransfer item, final String lotIdentifier) {
         this.item = item;
-        this.inventoryCondition = inventoryCondition;
-        this.unitOfMeasureType = unitOfMeasureType;
-        this.quantity = quantity;
-        this.currency = currency;
-        this.unformattedUnitCost = unformattedUnitCost;
-        this.unitCost = unitCost;
-    }
-
-    public String getLotName() {
-        return lotName;
-    }
-
-    public void setLotName(final String lotName) {
-        this.lotName = lotName;
-    }
-
-    public PartyTransfer getOwnerParty() {
-        return ownerParty;
-    }
-
-    public void setOwnerParty(final PartyTransfer ownerParty) {
-        this.ownerParty = ownerParty;
+        this.lotIdentifier = lotIdentifier;
     }
 
     public ItemTransfer getItem() {
@@ -77,52 +45,12 @@ public class LotTransfer
         this.item = item;
     }
 
-    public InventoryConditionTransfer getInventoryCondition() {
-        return inventoryCondition;
+    public String getLotIdentifier() {
+        return lotIdentifier;
     }
 
-    public void setInventoryCondition(final InventoryConditionTransfer inventoryCondition) {
-        this.inventoryCondition = inventoryCondition;
-    }
-
-    public UnitOfMeasureTypeTransfer getUnitOfMeasureType() {
-        return unitOfMeasureType;
-    }
-
-    public void setUnitOfMeasureType(final UnitOfMeasureTypeTransfer unitOfMeasureType) {
-        this.unitOfMeasureType = unitOfMeasureType;
-    }
-
-    public Long getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(final Long quantity) {
-        this.quantity = quantity;
-    }
-
-    public CurrencyTransfer getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(final CurrencyTransfer currency) {
-        this.currency = currency;
-    }
-
-    public Long getUnformattedUnitCost() {
-        return unformattedUnitCost;
-    }
-
-    public void setUnformattedUnitCost(final Long unformattedUnitCost) {
-        this.unformattedUnitCost = unformattedUnitCost;
-    }
-
-    public String getUnitCost() {
-        return unitCost;
-    }
-
-    public void setUnitCost(final String unitCost) {
-        this.unitCost = unitCost;
+    public void setLotIdentifier(final String lotIdentifier) {
+        this.lotIdentifier = lotIdentifier;
     }
 
     public MapWrapper<LotAliasTransfer> getLotAliases() {

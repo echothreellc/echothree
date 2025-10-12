@@ -21,17 +21,14 @@ import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
-import com.echothree.model.control.inventory.common.exception.DuplicateLotNameException;
-import com.echothree.model.control.inventory.common.exception.UnknownLotNameException;
+import com.echothree.model.control.inventory.common.exception.DuplicateLotIdentifierException;
+import com.echothree.model.control.inventory.common.exception.UnknownLotIdentifierException;
 import com.echothree.model.control.inventory.server.control.LotControl;
+import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
-import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.inventory.server.entity.Lot;
 import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
@@ -54,60 +51,62 @@ public class LotLogic
         return LotTimeLogicHolder.instance;
     }
 
-    public Lot createLot(final ExecutionErrorAccumulator eea, String lotName, final Party ownerParty, final Item item,
-            final UnitOfMeasureType unitOfMeasureType, final InventoryCondition inventoryCondition, final Long quantity,
-            final Currency currency, final Long unitCost, final BasePK createdBy) {
+    public Lot createLot(final ExecutionErrorAccumulator eea, final Item item, String lotIdentifier,
+            final BasePK createdBy) {
         Lot lot = null;
 
-        if(lotName == null) {
-            lotName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(eea, SequenceTypes.LOT.name());
+        if(lotIdentifier == null) {
+            lotIdentifier = SequenceGeneratorLogic.getInstance().getNextSequenceValue(eea, SequenceTypes.LOT.name());
         }
 
         if(!eea.hasExecutionErrors()) {
             var lotControl = Session.getModelController(LotControl.class);
 
-            lot = lotControl.getLotByName(lotName);
+            lot = lotControl.getLotByIdentifier(item, lotIdentifier);
             if(lot == null) {
-                lot = lotControl.createLot(lotName, ownerParty, item, unitOfMeasureType, inventoryCondition, quantity,
-                        currency, unitCost, createdBy);
+                lot = lotControl.createLot(item, lotIdentifier, createdBy);
             } else {
-                handleExecutionError(DuplicateLotNameException.class, eea, ExecutionErrors.DuplicateLotName.name(), lotName);
+                handleExecutionError(DuplicateLotIdentifierException.class, eea, ExecutionErrors.DuplicateLotIdentifier.name(),
+                        item.getLastDetail().getItemName(), lotIdentifier);
             }
         }
 
         return lot;
     }
 
-    public Lot getLotByName(final ExecutionErrorAccumulator eea, final String lotName,
+    public Lot getLotByIdentifier(final ExecutionErrorAccumulator eea, final Item item, final String lotIdentifier,
             final EntityPermission entityPermission) {
         var lotControl = Session.getModelController(LotControl.class);
-        var lot = lotControl.getLotByName(lotName, entityPermission);
+        var lot = lotControl.getLotByIdentifier(item, lotIdentifier, entityPermission);
 
         if(lot == null) {
-            handleExecutionError(UnknownLotNameException.class, eea, ExecutionErrors.UnknownLotName.name(), lotName);
+            handleExecutionError(UnknownLotIdentifierException.class, eea, ExecutionErrors.UnknownLotIdentifier.name(),
+                    item.getLastDetail().getItemName(), lotIdentifier);
         }
 
         return lot;
     }
 
-    public Lot getLotByName(final ExecutionErrorAccumulator eea, final String lotName) {
-        return getLotByName(eea, lotName, EntityPermission.READ_ONLY);
+    public Lot getLotByIdentifier(final ExecutionErrorAccumulator eea, final Item item, final String lotIdentifier) {
+        return getLotByIdentifier(eea, item, lotIdentifier, EntityPermission.READ_ONLY);
     }
 
-    public Lot getLotByNameForUpdate(final ExecutionErrorAccumulator eea, final String lotName) {
-        return getLotByName(eea, lotName, EntityPermission.READ_WRITE);
+    public Lot getLotByIdentifierForUpdate(final ExecutionErrorAccumulator eea, final Item item, final String lotIdentifier) {
+        return getLotByIdentifier(eea, item, lotIdentifier, EntityPermission.READ_WRITE);
     }
 
     public Lot getLotByUniversalSpec(final ExecutionErrorAccumulator eea, final LotUniversalSpec universalSpec,
             final EntityPermission entityPermission) {
         Lot lot = null;
         var lotControl = Session.getModelController(LotControl.class);
-        var lotName = universalSpec.getLotName();
-        var parameterCount = (lotName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var itemName = universalSpec.getItemName();
+        var lotIdentifier = universalSpec.getLotIdentifier();
+        var parameterCount = (itemName != null && lotIdentifier != null ? 1 : 0)
+                + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 1:
-                if(lotName == null) {
+            case 1 -> {
+                if(lotIdentifier == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.Lot.name());
 
@@ -115,12 +114,15 @@ public class LotLogic
                         lot = lotControl.getLotByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
-                    lot = getLotByName(eea, lotName, entityPermission);
+                    var item = ItemLogic.getInstance().getItemByName(eea, itemName);
+
+                    if(!eea.hasExecutionErrors()) {
+                        lot = getLotByIdentifier(eea, item, lotIdentifier, entityPermission);
+                    }
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return lot;

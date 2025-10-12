@@ -18,26 +18,26 @@ package com.echothree.model.control.inventory.common.exception;
 
 import com.echothree.util.common.message.Message;
 
-public class UnknownLotNameException
+public class UnknownLotIdentifierException
         extends BaseInventoryException {
     
-    /** Creates a new instance of UnknownLotNameException */
-    public UnknownLotNameException() {
+    /** Creates a new instance of UnknownLotIdentifierException */
+    public UnknownLotIdentifierException() {
         super();
     }
     
-    /** Creates a new instance of UnknownLotNameException */
-    public UnknownLotNameException(String message) {
+    /** Creates a new instance of UnknownLotIdentifierException */
+    public UnknownLotIdentifierException(String message) {
         super(message);
     }
     
-    /** Creates a new instance of UnknownLotNameException */
-    public UnknownLotNameException(Throwable cause) {
+    /** Creates a new instance of UnknownLotIdentifierException */
+    public UnknownLotIdentifierException(Throwable cause) {
         super(cause);
     }
     
-    /** Creates a new instance of UnknownLotNameException */
-    public UnknownLotNameException(Message message) {
+    /** Creates a new instance of UnknownLotIdentifierException */
+    public UnknownLotIdentifierException(Message message) {
         super(message);
     }
 

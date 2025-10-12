@@ -18,11 +18,11 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.CreateLotAliasForm;
 import com.echothree.model.control.inventory.server.control.LotAliasControl;
-import com.echothree.model.control.inventory.server.control.LotControl;
+import com.echothree.model.control.inventory.server.logic.LotLogic;
+import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -52,7 +52,8 @@ public class CreateLotAliasCommand
         )));
 
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("LotName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("LotIdentifier", FieldType.STRING, true, 1L, 40L),
                 new FieldDefinition("LotAliasTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Alias", FieldType.ENTITY_NAME, true, null, null)
                 ));
@@ -65,41 +66,42 @@ public class CreateLotAliasCommand
 
     @Override
     protected BaseResult execute() {
-        var lotControl = Session.getModelController(LotControl.class);
-        var lotName = form.getLotName();
-        var lot = lotControl.getLotByName(lotName);
+        var item = ItemLogic.getInstance().getItemByName(this, form.getItemName());
 
-        if(lot != null) {
-            var lotAliasControl = Session.getModelController(LotAliasControl.class);
-            var lotAliasTypeName = form.getLotAliasTypeName();
-            var lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
+        if(!hasExecutionErrors()) {
+            var lotIdentifier = form.getLotIdentifier();
+            var lot = LotLogic.getInstance().getLotByIdentifier(this, item, lotIdentifier);
 
-            if(lotAliasType != null) {
-                var lotAliasTypeDetail = lotAliasType.getLastDetail();
-                var validationPattern = lotAliasTypeDetail.getValidationPattern();
-                var alias = form.getAlias();
+            if(!hasExecutionErrors()) {
+                var lotAliasControl = Session.getModelController(LotAliasControl.class);
+                var lotAliasTypeName = form.getLotAliasTypeName();
+                var lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
 
-                if(validationPattern != null) {
-                    var pattern = Pattern.compile(validationPattern);
-                    var m = pattern.matcher(alias);
+                if(lotAliasType != null) {
+                    var lotAliasTypeDetail = lotAliasType.getLastDetail();
+                    var validationPattern = lotAliasTypeDetail.getValidationPattern();
+                    var alias = form.getAlias();
 
-                    if(!m.matches()) {
-                        addExecutionError(ExecutionErrors.InvalidAlias.name(), alias);
+                    if(validationPattern != null) {
+                        var pattern = Pattern.compile(validationPattern);
+                        var m = pattern.matcher(alias);
+
+                        if(!m.matches()) {
+                            addExecutionError(ExecutionErrors.InvalidAlias.name(), alias);
+                        }
                     }
-                }
 
-                if(!hasExecutionErrors()) {
-                    if(lotAliasControl.getLotAlias(lot, lotAliasType) == null && lotAliasControl.getLotAliasByAlias(lotAliasType, alias) == null) {
-                        lotAliasControl.createLotAlias(lot, lotAliasType, alias, getPartyPK());
-                    } else {
-                        addExecutionError(ExecutionErrors.DuplicateLotAlias.name(), lotName, lotAliasTypeName, alias);
+                    if(!hasExecutionErrors()) {
+                        if(lotAliasControl.getLotAlias(lot, lotAliasType) == null && lotAliasControl.getLotAliasByAlias(lotAliasType, alias) == null) {
+                            lotAliasControl.createLotAlias(lot, lotAliasType, alias, getPartyPK());
+                        } else {
+                            addExecutionError(ExecutionErrors.DuplicateLotAlias.name(), lotIdentifier, lotAliasTypeName, alias);
+                        }
                     }
+                } else {
+                    addExecutionError(ExecutionErrors.UnknownLotAliasTypeName.name(), lotAliasTypeName);
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownLotAliasTypeName.name(), lotAliasTypeName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownLotName.name(), lotName);
         }
 
         return null;
