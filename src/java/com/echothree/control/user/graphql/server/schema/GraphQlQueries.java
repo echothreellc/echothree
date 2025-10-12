@@ -489,7 +489,6 @@ import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import static com.echothree.model.control.graphql.server.util.BaseGraphQl.getUserVisitPK;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
-import com.echothree.model.control.inventory.server.control.LotControl;
 import com.echothree.model.control.inventory.server.graphql.AllocationPriorityObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryConditionObject;
 import com.echothree.model.control.inventory.server.graphql.LotObject;
@@ -4684,14 +4683,16 @@ public interface GraphQlQueries {
     @GraphQLField
     @GraphQLName("lot")
     static LotObject lot(final DataFetchingEnvironment env,
-            @GraphQLName("lotName") final String lotName,
+            @GraphQLName("itemName") final String itemName,
+            @GraphQLName("lotIdentifier") final String lotIdentifier,
             @GraphQLName("id") @GraphQLID final String id) {
         Lot lot;
 
         try {
             var commandForm = InventoryUtil.getHome().getGetLotForm();
 
-            commandForm.setLotName(lotName);
+            commandForm.setItemName(itemName);
+            commandForm.setLotIdentifier(lotIdentifier);
             commandForm.setUuid(id);
 
             lot = new GetLotCommand().getEntityForGraphQl(getUserVisitPK(env), commandForm);
@@ -4706,20 +4707,23 @@ public interface GraphQlQueries {
     @GraphQLName("lots")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    static CountingPaginatedData<LotObject> lots(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<LotObject> lots(final DataFetchingEnvironment env,
+            @GraphQLName("itemName") @GraphQLNonNull final String itemName) {
         CountingPaginatedData<LotObject> data;
 
         try {
-            var lotControl = Session.getModelController(LotControl.class);
-            var totalCount = lotControl.countLots();
+            var commandForm = InventoryUtil.getHome().getGetLotsForm();
+            var command = new GetLotsCommand();
 
-            try(var objectLimiter = new ObjectLimiter(env, LotConstants.COMPONENT_VENDOR_NAME, LotConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = InventoryUtil.getHome().getGetLotsForm();
-                var entities = new GetLotsCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            commandForm.setItemName(itemName);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, LotConstants.COMPONENT_VENDOR_NAME, LotConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
                     var lots = entities.stream()
                             .map(LotObject::new)
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));

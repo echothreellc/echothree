@@ -18,26 +18,26 @@ package com.echothree.model.control.inventory.common.exception;
 
 import com.echothree.util.common.message.Message;
 
-public class DuplicateLotNameException
+public class DuplicateLotIdentifierException
         extends BaseInventoryException {
     
-    /** Creates a new instance of DuplicateLotNameException */
-    public DuplicateLotNameException() {
+    /** Creates a new instance of DuplicateLotIdentifierException */
+    public DuplicateLotIdentifierException() {
         super();
     }
     
-    /** Creates a new instance of DuplicateLotNameException */
-    public DuplicateLotNameException(String message) {
+    /** Creates a new instance of DuplicateLotIdentifierException */
+    public DuplicateLotIdentifierException(String message) {
         super(message);
     }
     
-    /** Creates a new instance of DuplicateLotNameException */
-    public DuplicateLotNameException(Throwable cause) {
+    /** Creates a new instance of DuplicateLotIdentifierException */
+    public DuplicateLotIdentifierException(Throwable cause) {
         super(cause);
     }
     
-    /** Creates a new instance of DuplicateLotNameException */
-    public DuplicateLotNameException(Message message) {
+    /** Creates a new instance of DuplicateLotIdentifierException */
+    public DuplicateLotIdentifierException(Message message) {
         super(message);
     }
 

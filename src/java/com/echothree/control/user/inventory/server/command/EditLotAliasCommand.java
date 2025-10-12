@@ -24,6 +24,8 @@ import com.echothree.control.user.inventory.common.result.InventoryResultFactory
 import com.echothree.control.user.inventory.common.spec.LotAliasSpec;
 import com.echothree.model.control.inventory.server.control.LotAliasControl;
 import com.echothree.model.control.inventory.server.control.LotControl;
+import com.echothree.model.control.inventory.server.logic.LotLogic;
+import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -59,6 +61,7 @@ public class EditLotAliasCommand
         )));
 
         SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LotName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LotAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
                 ));
@@ -87,34 +90,36 @@ public class EditLotAliasCommand
     
     @Override
     public LotAlias getEntity(EditLotAliasResult result) {
-        var lotControl = Session.getModelController(LotControl.class);
         LotAlias lotAlias = null;
-        var lotName = spec.getLotName();
-        var lot = lotControl.getLotByName(lotName);
+        var item = ItemLogic.getInstance().getItemByName(this, spec.getItemName());
 
-        if(lot != null) {
-            var lotAliasControl = Session.getModelController(LotAliasControl.class);
-            var lotAliasTypeName = spec.getLotAliasTypeName();
+        if(!hasExecutionErrors()) {
+            var lotIdentifier = spec.getLotIdentifier();
+            var lot = LotLogic.getInstance().getLotByIdentifier(this, item, lotIdentifier);
 
-            lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
+            if(!hasExecutionErrors()) {
+                var lotAliasControl = Session.getModelController(LotAliasControl.class);
+                var lotAliasTypeName = spec.getLotAliasTypeName();
 
-            if(lotAliasType != null) {
-                if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    lotAlias = lotAliasControl.getLotAlias(lot, lotAliasType);
-                } else { // EditMode.UPDATE
-                    lotAlias = lotAliasControl.getLotAliasForUpdate(lot, lotAliasType);
-                }
+                lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
 
-                if(lotAlias != null) {
-                    result.setLotAlias(lotAliasControl.getLotAliasTransfer(getUserVisit(), lotAlias));
+                if(lotAliasType != null) {
+                    if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
+                        lotAlias = lotAliasControl.getLotAlias(lot, lotAliasType);
+                    } else { // EditMode.UPDATE
+                        lotAlias = lotAliasControl.getLotAliasForUpdate(lot, lotAliasType);
+                    }
+
+                    if(lotAlias != null) {
+                        result.setLotAlias(lotAliasControl.getLotAliasTransfer(getUserVisit(), lotAlias));
+                    } else {
+                        addExecutionError(ExecutionErrors.UnknownLotAlias.name(), item.getLastDetail().getItemName(),
+                                lot.getLastDetail().getLotIdentifier(), lotAliasTypeName);
+                    }
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownLotAlias.name(), lotName, lotAliasTypeName);
+                    addExecutionError(ExecutionErrors.UnknownLotAliasTypeName.name(), lotAliasTypeName);
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownLotAliasTypeName.name(), lotAliasTypeName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownLotName.name(), lotName);
         }
 
         return lotAlias;

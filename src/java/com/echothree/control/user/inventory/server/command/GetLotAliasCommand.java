@@ -20,6 +20,8 @@ import com.echothree.control.user.inventory.common.form.GetLotAliasForm;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.model.control.inventory.server.control.LotAliasControl;
 import com.echothree.model.control.inventory.server.control.LotControl;
+import com.echothree.model.control.inventory.server.logic.LotLogic;
+import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -52,6 +54,7 @@ public class GetLotAliasCommand
         )));
 
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LotName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LotAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
                 ));
@@ -64,29 +67,31 @@ public class GetLotAliasCommand
     
     @Override
     protected BaseResult execute() {
-        var lotControl = Session.getModelController(LotControl.class);
         var result = InventoryResultFactory.getGetLotAliasResult();
-        var lotName = form.getLotName();
-        var lot = lotControl.getLotByName(lotName);
+        var item = ItemLogic.getInstance().getItemByName(this, form.getItemName());
 
-        if(lot != null) {
-            var lotAliasControl = Session.getModelController(LotAliasControl.class);
-            var lotAliasTypeName = form.getLotAliasTypeName();
-            var lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
+        if(!hasExecutionErrors()) {
+            var lotIdentifier = form.getLotIdentifier();
+            var lot = LotLogic.getInstance().getLotByIdentifier(this, item, lotIdentifier);
 
-            if(lotAliasType != null) {
-                var lotAlias = lotAliasControl.getLotAlias(lot, lotAliasType);
+            if(!hasExecutionErrors()) {
+                var lotAliasControl = Session.getModelController(LotAliasControl.class);
+                var lotAliasTypeName = form.getLotAliasTypeName();
+                var lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
 
-                if(lotAlias != null) {
-                    result.setLotAlias(lotAliasControl.getLotAliasTransfer(getUserVisit(), lotAlias));
+                if(lotAliasType != null) {
+                    var lotAlias = lotAliasControl.getLotAlias(lot, lotAliasType);
+
+                    if(lotAlias != null) {
+                        result.setLotAlias(lotAliasControl.getLotAliasTransfer(getUserVisit(), lotAlias));
+                    } else {
+                        addExecutionError(ExecutionErrors.UnknownLotAlias.name(), item.getLastDetail().getItemName(),
+                                lot.getLastDetail().getLotIdentifier(), lotAliasType.getLastDetail().getLotAliasTypeName());
+                    }
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownLotAlias.name(), lotName, lotAliasTypeName);
+                    addExecutionError(ExecutionErrors.UnknownLotAliasTypeName.name(), lotAliasTypeName);
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownLotAliasTypeName.name(), lotAliasTypeName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownLotName.name(), lotName);
         }
 
         return result;

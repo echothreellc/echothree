@@ -31,15 +31,11 @@ import com.echothree.model.data.inventory.server.entity.Lot;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.Session;
-import com.echothree.util.server.string.AmountUtils;
 
 public class LotTransferCache
         extends BaseInventoryTransferCache<Lot, LotTransfer> {
 
-    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
     ItemControl itemControl = Session.getModelController(ItemControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
-    UomControl uomControl = Session.getModelController(UomControl.class);
     LotAliasControl lotAliasControl = Session.getModelController(LotAliasControl.class);
     LotTimeControl lotTimeControl = Session.getModelController(LotTimeControl.class);
 
@@ -67,19 +63,10 @@ public class LotTransferCache
         if(lotTransfer == null) {
             var lotDetail = lot.getLastDetail();
 
-            var lotName = lotDetail.getLotName();
-            var ownerParty = partyControl.getPartyTransfer(userVisit, lotDetail.getOwnerParty());
             var item = itemControl.getItemTransfer(userVisit, lotDetail.getItem());
-            var inventoryCondition = inventoryControl.getInventoryConditionTransfer(userVisit, lotDetail.getInventoryCondition());
-            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, lotDetail.getUnitOfMeasureType());
-            var quantity = lotDetail.getQuantity();
-            var currency = lotDetail.getCurrency();
-            var currencyTransfer = currency == null ? null : accountingControl.getCurrencyTransfer(userVisit, currency);
-            var unformattedUnitCost = lotDetail.getUnitCost();
-            var unitCost = currency == null || unformattedUnitCost == null ? null : AmountUtils.getInstance().formatCostUnit(currency, unformattedUnitCost);
+            var lotIdentifier = lotDetail.getLotIdentifier();
 
-            lotTransfer = new LotTransfer(lotName, ownerParty, item, inventoryCondition, unitOfMeasureType, quantity,
-                    currencyTransfer, unformattedUnitCost, unitCost);
+            lotTransfer = new LotTransfer(item, lotIdentifier);
             put(lot, lotTransfer);
 
             if(includeLotAliases) {

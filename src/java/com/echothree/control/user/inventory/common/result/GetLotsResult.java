@@ -17,12 +17,17 @@
 package com.echothree.control.user.inventory.common.result;
 
 import com.echothree.model.control.inventory.common.transfer.LotTransfer;
+import com.echothree.model.control.item.common.transfer.ItemTransfer;
+import com.echothree.model.data.inventory.server.entity.LotDetail;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
 
 public interface GetLotsResult
         extends BaseResult {
-    
+
+    ItemTransfer getItem();
+    void setItem(ItemTransfer item);
+
     List<LotTransfer> getLots();
     void setLots(List<LotTransfer> lots);
     

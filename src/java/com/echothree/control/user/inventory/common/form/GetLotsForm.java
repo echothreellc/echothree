@@ -16,10 +16,10 @@
 
 package com.echothree.control.user.inventory.common.form;
 
-import com.echothree.util.common.form.BaseForm;
+import com.echothree.control.user.item.common.spec.ItemSpec;
 
 public interface GetLotsForm
-        extends BaseForm {
+        extends ItemSpec {
     
     // Nothing additional beyond BaseForm
     

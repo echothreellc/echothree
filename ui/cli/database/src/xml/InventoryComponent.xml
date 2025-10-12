@@ -538,14 +538,8 @@
                     <columns>
                         <column name="LotDetailId" type="EID" nullAllowed="false" />
                         <column name="LotId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Lots" destinationColumn="LotId" />
-                        <column name="LotName" type="Name" nullAllowed="false" />
-                        <column name="OwnerPartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
                         <column name="ItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
-                        <column name="UnitOfMeasureTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
-                        <column name="InventoryConditionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryConditions" destinationColumn="InventoryConditionId" />
-                        <column name="Quantity" type="Measurement" nullAllowed="false" />
-                        <column name="CurrencyId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Currencies" destinationColumn="CurrencyId" />
-                        <column name="UnitCost" type="Currency" nullAllowed="true" />
+                        <column name="LotIdentifier" type="Identifier" nullAllowed="false" />
                         <column name="FromTime" type="Time" nullAllowed="false" />
                         <column name="ThruTime" type="Time" nullAllowed="false" />
                     </columns>
@@ -558,34 +552,12 @@
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Unique" name="Index2">
-                            <indexColumn name="LotName" />
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="LotIdentifier" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index3">
-                            <indexColumn name="OwnerPartyId" />
                             <indexColumn name="ItemId" />
-                            <indexColumn name="UnitOfMeasureTypeId" />
-                            <indexColumn name="InventoryConditionId" />
-                            <indexColumn name="ThruTime" />
-                        </index>
-                        <index type="Multiple" name="Index4">
-                            <indexColumn name="OwnerPartyId" />
-                            <indexColumn name="ThruTime" />
-                        </index>
-                        <index type="Multiple" name="Index5">
-                            <indexColumn name="ItemId" />
-                            <indexColumn name="ThruTime" />
-                        </index>
-                        <index type="Multiple" name="Index6">
-                            <indexColumn name="UnitOfMeasureTypeId" />
-                            <indexColumn name="ThruTime" />
-                        </index>
-                        <index type="Multiple" name="Index7">
-                            <indexColumn name="InventoryConditionId" />
-                            <indexColumn name="ThruTime" />
-                        </index>
-                        <index type="Multiple" name="Index8">
-                            <indexColumn name="CurrencyId" />
                             <indexColumn name="ThruTime" />
                         </index>
                     </indexes>
