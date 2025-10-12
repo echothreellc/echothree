@@ -1,5 +1,17 @@
 # Changelog
 
+## 2025-10-12-01
+
+* Gson 2.13.2 Upgrade [1606](https://gitlab.echothree.com/echothree/echothree/-/issues/1606)
+* Error Prone 2.42.0 Upgrade [1607](https://gitlab.echothree.com/echothree/echothree/-/issues/1607)
+* PMD 7.17.0 Upgrade [1608](https://gitlab.echothree.com/echothree/echothree/-/issues/1608)
+* jOOQ 3.20.8 Upgrade [1609](https://gitlab.echothree.com/echothree/echothree/-/issues/1609)
+* CreateOrderTimeType UC Returning Incorrect EntityRef [1610](https://gitlab.echothree.com/echothree/echothree/-/issues/1610)
+* Remove shared.class.path from UI and Service Components [1611](https://gitlab.echothree.com/echothree/echothree/-/issues/1611)
+* Add selectorKindName Parameter to workflows Query [1612](https://gitlab.echothree.com/echothree/echothree/-/issues/1612)
+* Remove Lots from Inventory Location Assignments [1613](https://gitlab.echothree.com/echothree/echothree/-/issues/1613)
+* Simplify Lots [1614](https://gitlab.echothree.com/echothree/echothree/-/issues/1614)
+
 ## 2025-09-28-01
 
 * Integrate Item Weight Types Into Item Weights [1595](https://gitlab.echothree.com/echothree/echothree/-/issues/1595)
