@@ -10162,17 +10162,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<NameSuffixObject> data;
 
         try {
-            var partyControl = Session.getModelController(PartyControl.class);
-            var totalCount = partyControl.countNameSuffixes();
+            var commandForm = PartyUtil.getHome().getGetNameSuffixesForm();
+            var command = new GetNameSuffixesCommand();
 
-            try(var objectLimiter = new ObjectLimiter(env, NameSuffixConstants.COMPONENT_VENDOR_NAME, NameSuffixConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = PartyUtil.getHome().getGetNameSuffixesForm();
-                var entities = new GetNameSuffixesCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, NameSuffixConstants.COMPONENT_VENDOR_NAME, NameSuffixConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var nameSuffixes = entities.stream().map(NameSuffixObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var nameSuffixes = entities.stream()
+                            .map(NameSuffixObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, nameSuffixes);
                 }
