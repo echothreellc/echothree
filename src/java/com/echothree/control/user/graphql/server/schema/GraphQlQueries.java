@@ -10132,17 +10132,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<PersonalTitleObject> data;
 
         try {
-            var partyControl = Session.getModelController(PartyControl.class);
-            var totalCount = partyControl.countPersonalTitles();
+            var commandForm = PartyUtil.getHome().getGetPersonalTitlesForm();
+            var command = new GetPersonalTitlesCommand();
 
-            try(var objectLimiter = new ObjectLimiter(env, PersonalTitleConstants.COMPONENT_VENDOR_NAME, PersonalTitleConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = PartyUtil.getHome().getGetPersonalTitlesForm();
-                var entities = new GetPersonalTitlesCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, PersonalTitleConstants.COMPONENT_VENDOR_NAME, PersonalTitleConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var personalTitles = entities.stream().map(PersonalTitleObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var personalTitles = entities.stream()
+                            .map(PersonalTitleObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, personalTitles);
                 }
