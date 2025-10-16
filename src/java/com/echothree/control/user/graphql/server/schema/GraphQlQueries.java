@@ -9822,7 +9822,7 @@ public interface GraphQlQueries {
 
         return wishlistType == null ? null : new WishlistTypeObject(wishlistType);
     }
-
+    
     @GraphQLField
     @GraphQLName("wishlistTypes")
     @GraphQLNonNull
@@ -9831,16 +9831,16 @@ public interface GraphQlQueries {
         CountingPaginatedData<WishlistTypeObject> data;
 
         try {
-            var wishlistControl = Session.getModelController(WishlistControl.class);
-            var totalCount = wishlistControl.countWishlistTypes();
+            var commandForm = WishlistUtil.getHome().getGetWishlistTypesForm();
+            var command = new GetWishlistTypesCommand();
 
-            try(var objectLimiter = new ObjectLimiter(env, WishlistTypeConstants.COMPONENT_VENDOR_NAME, WishlistTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = WishlistUtil.getHome().getGetWishlistTypesForm();
-                var entities = new GetWishlistTypesCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, WishlistTypeConstants.COMPONENT_VENDOR_NAME, WishlistTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
                     var wishlistTypes = entities.stream()
                             .map(WishlistTypeObject::new)
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
