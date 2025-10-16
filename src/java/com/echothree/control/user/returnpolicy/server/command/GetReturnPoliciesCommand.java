@@ -20,16 +20,16 @@ import com.echothree.control.user.returnpolicy.common.form.GetReturnPoliciesForm
 import com.echothree.control.user.returnpolicy.common.result.ReturnPolicyResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
+import com.echothree.model.control.returnpolicy.server.logic.ReturnKindLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.returnpolicy.server.factory.ReturnPolicyFactory;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,7 +38,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class GetReturnPoliciesCommand
-        extends BaseMultipleEntitiesCommand<ReturnPolicy, GetReturnPoliciesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<ReturnPolicy, GetReturnPoliciesForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -64,20 +64,31 @@ public class GetReturnPoliciesCommand
     ReturnKind returnKind;
 
     @Override
-    protected Collection<ReturnPolicy> getEntities() {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
+    protected void handleForm() {
         var returnKindName = form.getReturnKindName();
-        Collection<ReturnPolicy> entities = null;
 
-        returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
+        returnKind = ReturnKindLogic.getInstance().getReturnKindByName(this, returnKindName);
+    }
 
-        if(returnKind != null) {
-            entities = returnPolicyControl.getReturnPolicies(returnKind);
-        } else {
-            addExecutionError(ExecutionErrors.UnknownReturnKindName.name(), returnKindName);
+    @Override
+    protected Long getTotalEntities() {
+        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
+
+        return hasExecutionErrors() ? null :
+                returnPolicyControl.countReturnPoliciesByReturnKind(returnKind);
+    }
+
+    @Override
+    protected Collection<ReturnPolicy> getEntities() {
+        Collection<ReturnPolicy> returnPolicies = null;
+
+        if(!hasExecutionErrors()) {
+            var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
+
+            returnPolicies = returnPolicyControl.getReturnPolicies(returnKind);
         }
 
-        return entities;
+        return returnPolicies;
     }
 
     @Override
@@ -86,9 +97,14 @@ public class GetReturnPoliciesCommand
 
         if(entities != null) {
             var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
+            var userVisit = getUserVisit();
 
-            result.setReturnKind(returnPolicyControl.getReturnKindTransfer(getUserVisit(), returnKind));
-            result.setReturnPolicies(returnPolicyControl.getReturnPolicyTransfers(getUserVisit(), entities));
+            if(session.hasLimit(ReturnPolicyFactory.class)) {
+                result.setReturnPolicyCount(getTotalEntities());
+            }
+
+            result.setReturnKind(returnPolicyControl.getReturnKindTransfer(userVisit, returnKind));
+            result.setReturnPolicies(returnPolicyControl.getReturnPolicyTransfersByReturnKind(userVisit, returnKind));
         }
 
         return result;
