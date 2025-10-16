@@ -18,16 +18,15 @@ package com.echothree.control.user.returnpolicy.server.command;
 
 import com.echothree.control.user.returnpolicy.common.form.GetReturnKindsForm;
 import com.echothree.control.user.returnpolicy.common.result.ReturnPolicyResultFactory;
-import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
 import com.echothree.model.data.returnpolicy.server.factory.ReturnKindFactory;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -36,7 +35,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class GetReturnKindsCommand
-        extends BaseMultipleEntitiesCommand<ReturnKind, GetReturnKindsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<ReturnKind, GetReturnKindsForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -56,6 +55,18 @@ public class GetReturnKindsCommand
     /** Creates a new instance of GetReturnKindsCommand */
     public GetReturnKindsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
+
+    @Override
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var returnControl = Session.getModelController(ReturnPolicyControl.class);
+
+        return returnControl.countReturnKinds();
     }
 
     @Override
