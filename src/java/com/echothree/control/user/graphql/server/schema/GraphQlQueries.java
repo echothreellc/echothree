@@ -429,7 +429,6 @@ import com.echothree.model.control.accounting.server.graphql.TransactionGroupObj
 import com.echothree.model.control.accounting.server.graphql.TransactionObject;
 import com.echothree.model.control.accounting.server.graphql.TransactionTimeTypeObject;
 import com.echothree.model.control.accounting.server.graphql.TransactionTypeObject;
-import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationKindObject;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicyObject;
 import com.echothree.model.control.content.server.graphql.ContentCatalogItemObject;
@@ -549,7 +548,6 @@ import com.echothree.model.control.payment.server.graphql.PaymentProcessorTypeCo
 import com.echothree.model.control.payment.server.graphql.PaymentProcessorTypeCodeTypeObject;
 import com.echothree.model.control.payment.server.graphql.PaymentProcessorTypeObject;
 import com.echothree.model.control.queue.server.graphql.QueueTypeObject;
-import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.control.returnpolicy.server.graphql.ReturnKindObject;
 import com.echothree.model.control.returnpolicy.server.graphql.ReturnPolicyObject;
 import com.echothree.model.control.search.server.control.SearchControl;
@@ -7994,17 +7992,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<CancellationKindObject> data;
 
         try {
-            var cancellationKindControl = Session.getModelController(CancellationPolicyControl.class);
-            var totalCount = cancellationKindControl.countCancellationKinds();
+            var commandForm = CancellationPolicyUtil.getHome().getGetCancellationKindsForm();
+            var command = new GetCancellationKindsCommand();
 
-            try(var objectLimiter = new ObjectLimiter(env, CancellationKindConstants.COMPONENT_VENDOR_NAME, CancellationKindConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = CancellationPolicyUtil.getHome().getGetCancellationKindsForm();
-                var entities = new GetCancellationKindsCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, CancellationKindConstants.COMPONENT_VENDOR_NAME, CancellationKindConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var cancellationKinds = entities.stream().map(CancellationKindObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var cancellationKinds = entities.stream()
+                            .map(CancellationKindObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, cancellationKinds);
                 }
