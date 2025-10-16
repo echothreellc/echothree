@@ -19,40 +19,41 @@ package com.echothree.control.user.cancellationpolicy.server.command;
 import com.echothree.control.user.cancellationpolicy.common.form.GetCancellationTypesForm;
 import com.echothree.control.user.cancellationpolicy.common.result.CancellationPolicyResultFactory;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
+import com.echothree.model.control.cancellationpolicy.server.logic.CancellationKindLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
+import com.echothree.model.data.cancellationpolicy.server.entity.CancellationType;
+import com.echothree.model.data.cancellationpolicy.server.factory.CancellationTypeFactory;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.List;
 
 public class GetCancellationTypesCommand
-        extends BaseSimpleCommand<GetCancellationTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<CancellationType, GetCancellationTypesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.CancellationType.name(), SecurityRoles.List.name())
-                        )))
-                )));
+                ))
+        ));
         
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CancellationKindName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+        );
     }
     
     /** Creates a new instance of GetCancellationTypesCommand */
@@ -60,18 +61,50 @@ public class GetCancellationTypesCommand
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
+    CancellationKind cancellationKind;
+    
     @Override
-    protected BaseResult execute() {
-        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-        var result = CancellationPolicyResultFactory.getGetCancellationTypesResult();
+    protected void handleForm() {
         var cancellationKindName = form.getCancellationKindName();
-        var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
         
-        if(cancellationKind != null) {
-            result.setCancellationKind(cancellationPolicyControl.getCancellationKindTransfer(getUserVisit(), cancellationKind));
-            result.setCancellationTypes(cancellationPolicyControl.getCancellationTypeTransfersByCancellationKind(getUserVisit(), cancellationKind));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownCancellationKindName.name(), cancellationKindName);
+        cancellationKind = CancellationKindLogic.getInstance().getCancellationKindByName(this, cancellationKindName);
+    }
+    
+    @Override
+    protected Long getTotalEntities() {
+        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
+        
+        return hasExecutionErrors() ? null :
+                cancellationPolicyControl.countCancellationTypesByCancellationKind(cancellationKind);
+    }
+    
+    @Override
+    protected Collection<CancellationType> getEntities() {
+        Collection<CancellationType> cancellationTypes = null;
+        
+        if(!hasExecutionErrors()) {
+            var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
+            
+            cancellationTypes = cancellationPolicyControl.getCancellationTypes(cancellationKind);
+        }
+        
+        return cancellationTypes;
+    }
+    
+    @Override
+    protected BaseResult getResult(Collection<CancellationType> entities) {
+        var result = CancellationPolicyResultFactory.getGetCancellationTypesResult();
+        
+        if(entities != null) {
+            var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
+            var userVisit = getUserVisit();
+            
+            if(session.hasLimit(CancellationTypeFactory.class)) {
+                result.setCancellationTypeCount(getTotalEntities());
+            }
+            
+            result.setCancellationKind(cancellationPolicyControl.getCancellationKindTransfer(userVisit, cancellationKind));
+            result.setCancellationTypes(cancellationPolicyControl.getCancellationTypeTransfersByCancellationKind(userVisit, cancellationKind));
         }
         
         return result;

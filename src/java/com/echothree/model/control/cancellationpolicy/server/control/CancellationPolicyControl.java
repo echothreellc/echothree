@@ -36,6 +36,7 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.cancellationpolicy.common.pk.CancellationKindPK;
 import com.echothree.model.data.cancellationpolicy.common.pk.CancellationPolicyPK;
+import com.echothree.model.data.cancellationpolicy.common.pk.CancellationTypePK;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKindDescription;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
@@ -2333,7 +2334,31 @@ public class CancellationPolicyControl
         
         return cancellationType;
     }
-    
+
+    public long countCancellationTypesByCancellationKind(CancellationKind cancellationKind) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM cancellationtypes
+                        JOIN cancellationtypedetails ON cncltyp_activedetailid = cncltypdt_cancellationtypedetailid
+                        WHERE cncltypdt_cnclk_cancellationkindid = ?
+                        """, cancellationKind);
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.CancellationType */
+    public CancellationType getCancellationTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new CancellationTypePK(entityInstance.getEntityUniqueId());
+
+        return CancellationTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public CancellationType getCancellationTypeByEntityInstance(EntityInstance entityInstance) {
+        return getCancellationTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public CancellationType getCancellationTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getCancellationTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private List<CancellationType> getCancellationTypes(CancellationKind cancellationKind, EntityPermission entityPermission) {
         List<CancellationType> cancellationTypes;
         
