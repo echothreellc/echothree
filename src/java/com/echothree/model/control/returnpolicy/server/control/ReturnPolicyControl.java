@@ -41,6 +41,7 @@ import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.returnpolicy.common.pk.ReturnKindPK;
 import com.echothree.model.data.returnpolicy.common.pk.ReturnPolicyPK;
+import com.echothree.model.data.returnpolicy.common.pk.ReturnTypePK;
 import com.echothree.model.data.returnpolicy.server.entity.PartyReturnPolicy;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnKindDescription;
@@ -85,6 +86,10 @@ import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.model.data.workflow.common.pk.WorkflowStepPK;
+import com.echothree.model.data.workflow.server.entity.Workflow;
+import com.echothree.model.data.workflow.server.entity.WorkflowStep;
+import com.echothree.model.data.workflow.server.factory.WorkflowStepFactory;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
@@ -2316,6 +2321,30 @@ public class ReturnPolicyControl
         sendEvent(returnType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return returnType;
+    }
+
+    public long countReturnTypesByReturnKind(ReturnKind returnKind) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM returntypes
+                        JOIN returntypedetails ON rtntyp_activedetailid = rtntypdt_returntypedetailid
+                        WHERE rtntypdt_rtnk_returnkindid = ?
+                        """, returnKind);
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ReturnType */
+    public ReturnType getReturnTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ReturnTypePK(entityInstance.getEntityUniqueId());
+
+        return ReturnTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ReturnType getReturnTypeByEntityInstance(EntityInstance entityInstance) {
+        return getReturnTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ReturnType getReturnTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getReturnTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
     private static final Map<EntityPermission, String> getReturnTypesQueries;

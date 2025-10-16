@@ -26,7 +26,10 @@ public interface GetReturnTypesResult
     
     ReturnKindTransfer getReturnKind();
     void setReturnKind(ReturnKindTransfer returnKind);
-    
+
+    Long getReturnTypeCount();
+    void setReturnTypeCount(Long returnTypeCount);
+
     List<ReturnTypeTransfer> getReturnTypes();
     void setReturnTypes(List<ReturnTypeTransfer> returnTypes);
     
