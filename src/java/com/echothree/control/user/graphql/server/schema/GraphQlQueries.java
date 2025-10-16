@@ -832,6 +832,7 @@ import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCodeTy
 import com.echothree.model.data.queue.common.QueueTypeConstants;
 import com.echothree.model.data.queue.server.entity.QueueType;
 import com.echothree.model.data.returnpolicy.common.ReturnKindConstants;
+import com.echothree.model.data.returnpolicy.common.ReturnPolicyConstants;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.search.common.SearchCheckSpellingActionTypeConstants;
@@ -8147,32 +8148,37 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("returnPolicies")
-    static Collection<ReturnPolicyObject> returnPolicies(final DataFetchingEnvironment env,
-            @GraphQLName("returnKindName") @GraphQLNonNull final String returnKindName) {
-        Collection<ReturnPolicy> returnPolicies;
-        Collection<ReturnPolicyObject> returnPolicyObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ReturnPolicyObject> returnPolicies(final DataFetchingEnvironment env,
+            @GraphQLName("returnKindName") final String returnKindName) {
+        CountingPaginatedData<ReturnPolicyObject> data;
 
         try {
             var commandForm = ReturnPolicyUtil.getHome().getGetReturnPoliciesForm();
+            var command = new GetReturnPoliciesCommand();
 
             commandForm.setReturnKindName(returnKindName);
 
-            returnPolicies = new GetReturnPoliciesCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
-        } catch (NamingException ex) {
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ReturnPolicyConstants.COMPONENT_VENDOR_NAME, ReturnPolicyConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var returnPolicies = entities.stream()
+                            .map(ReturnPolicyObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, returnPolicies);
+                }
+            }
+        } catch(NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(returnPolicies == null) {
-            returnPolicyObjects = emptyList();
-        } else {
-            returnPolicyObjects = new ArrayList<>(returnPolicies.size());
-
-            returnPolicies.stream()
-                    .map(ReturnPolicyObject::new)
-                    .forEachOrdered(returnPolicyObjects::add);
-        }
-
-        return returnPolicyObjects;
+        return data;
     }
 
     @GraphQLField
