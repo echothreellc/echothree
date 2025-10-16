@@ -19,17 +19,17 @@ package com.echothree.control.user.cancellationpolicy.server.command;
 import com.echothree.control.user.cancellationpolicy.common.form.GetCancellationPoliciesForm;
 import com.echothree.control.user.cancellationpolicy.common.result.CancellationPolicyResultFactory;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
+import com.echothree.model.control.cancellationpolicy.server.logic.CancellationKindLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.cancellationpolicy.server.factory.CancellationPolicyFactory;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,7 +38,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class GetCancellationPoliciesCommand
-        extends BaseMultipleEntitiesCommand<CancellationPolicy, GetCancellationPoliciesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<CancellationPolicy, GetCancellationPoliciesForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -64,20 +64,31 @@ public class GetCancellationPoliciesCommand
     CancellationKind cancellationKind;
 
     @Override
-    protected Collection<CancellationPolicy> getEntities() {
-        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
+    protected void handleForm() {
         var cancellationKindName = form.getCancellationKindName();
-        Collection<CancellationPolicy> entities = null;
 
-        cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
+        cancellationKind = CancellationKindLogic.getInstance().getCancellationKindByName(this, cancellationKindName);
+    }
 
-        if(cancellationKind != null) {
-            entities = cancellationPolicyControl.getCancellationPolicies(cancellationKind);
-        } else {
-            addExecutionError(ExecutionErrors.UnknownCancellationKindName.name(), cancellationKindName);
+    @Override
+    protected Long getTotalEntities() {
+        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
+
+        return hasExecutionErrors() ? null :
+                cancellationPolicyControl.countCancellationPoliciesByCancellationKind(cancellationKind);
+    }
+
+    @Override
+    protected Collection<CancellationPolicy> getEntities() {
+        Collection<CancellationPolicy> cancellationPolicies = null;
+
+        if(!hasExecutionErrors()) {
+            var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
+
+            cancellationPolicies = cancellationPolicyControl.getCancellationPolicies(cancellationKind);
         }
 
-        return entities;
+        return cancellationPolicies;
     }
 
     @Override
@@ -86,9 +97,14 @@ public class GetCancellationPoliciesCommand
 
         if(entities != null) {
             var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
+            var userVisit = getUserVisit();
 
-            result.setCancellationKind(cancellationPolicyControl.getCancellationKindTransfer(getUserVisit(), cancellationKind));
-            result.setCancellationPolicies(cancellationPolicyControl.getCancellationPolicyTransfers(getUserVisit(), entities));
+            if(session.hasLimit(CancellationPolicyFactory.class)) {
+                result.setCancellationPolicyCount(getTotalEntities());
+            }
+
+            result.setCancellationKind(cancellationPolicyControl.getCancellationKindTransfer(userVisit, cancellationKind));
+            result.setCancellationPolicies(cancellationPolicyControl.getCancellationPolicyTransfersByCancellationKind(userVisit, cancellationKind));
         }
 
         return result;

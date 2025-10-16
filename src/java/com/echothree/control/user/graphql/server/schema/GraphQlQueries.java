@@ -664,6 +664,7 @@ import com.echothree.model.data.accounting.server.entity.TransactionGroup;
 import com.echothree.model.data.accounting.server.entity.TransactionTimeType;
 import com.echothree.model.data.accounting.server.entity.TransactionType;
 import com.echothree.model.data.cancellationpolicy.common.CancellationKindConstants;
+import com.echothree.model.data.cancellationpolicy.common.CancellationPolicyConstants;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
 import com.echothree.model.data.content.common.ContentCatalogConstants;
@@ -8042,32 +8043,37 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("cancellationPolicies")
-    static Collection<CancellationPolicyObject> cancellationPolicies(final DataFetchingEnvironment env,
-            @GraphQLName("cancellationKindName") @GraphQLNonNull final String cancellationKindName) {
-        Collection<CancellationPolicy> cancellationPolicies;
-        Collection<CancellationPolicyObject> cancellationPolicyObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<CancellationPolicyObject> cancellationPolicies(final DataFetchingEnvironment env,
+            @GraphQLName("cancellationKindName") final String cancellationKindName) {
+        CountingPaginatedData<CancellationPolicyObject> data;
 
         try {
             var commandForm = CancellationPolicyUtil.getHome().getGetCancellationPoliciesForm();
+            var command = new GetCancellationPoliciesCommand();
 
             commandForm.setCancellationKindName(cancellationKindName);
 
-            cancellationPolicies = new GetCancellationPoliciesCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, CancellationPolicyConstants.COMPONENT_VENDOR_NAME, CancellationPolicyConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var cancellationPolicies = entities.stream()
+                            .map(CancellationPolicyObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, cancellationPolicies);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(cancellationPolicies == null) {
-            cancellationPolicyObjects = emptyList();
-        } else {
-            cancellationPolicyObjects = new ArrayList<>(cancellationPolicies.size());
-
-            cancellationPolicies.stream()
-                    .map(CancellationPolicyObject::new)
-                    .forEachOrdered(cancellationPolicyObjects::add);
-        }
-
-        return cancellationPolicyObjects;
+        return data;
     }
 
     @GraphQLField
