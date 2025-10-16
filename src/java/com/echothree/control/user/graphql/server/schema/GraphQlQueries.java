@@ -8098,17 +8098,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<ReturnKindObject> data;
 
         try {
-            var returnKindControl = Session.getModelController(ReturnPolicyControl.class);
-            var totalCount = returnKindControl.countReturnKinds();
+            var commandForm = ReturnPolicyUtil.getHome().getGetReturnKindsForm();
+            var command = new GetReturnKindsCommand();
 
-            try(var objectLimiter = new ObjectLimiter(env, ReturnKindConstants.COMPONENT_VENDOR_NAME, ReturnKindConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = ReturnPolicyUtil.getHome().getGetReturnKindsForm();
-                var entities = new GetReturnKindsCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ReturnKindConstants.COMPONENT_VENDOR_NAME, ReturnKindConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var returnKinds = entities.stream().map(ReturnKindObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var returnKinds = entities.stream()
+                            .map(ReturnKindObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, returnKinds);
                 }
