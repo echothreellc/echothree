@@ -619,7 +619,6 @@ import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.control.warehouse.server.graphql.LocationUseTypeObject;
 import com.echothree.model.control.warehouse.server.graphql.WarehouseObject;
 import com.echothree.model.control.warehouse.server.graphql.WarehouseTypeObject;
-import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.control.wishlist.server.graphql.WishlistPriorityObject;
 import com.echothree.model.control.wishlist.server.graphql.WishlistTypeObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowDestinationObject;
@@ -903,6 +902,7 @@ import com.echothree.model.data.warehouse.common.WarehouseTypeConstants;
 import com.echothree.model.data.warehouse.server.entity.LocationUseType;
 import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.model.data.warehouse.server.entity.WarehouseType;
+import com.echothree.model.data.wishlist.common.WishlistPriorityConstants;
 import com.echothree.model.data.wishlist.common.WishlistTypeConstants;
 import com.echothree.model.data.wishlist.server.entity.WishlistPriority;
 import com.echothree.model.data.wishlist.server.entity.WishlistType;
@@ -9822,7 +9822,7 @@ public interface GraphQlQueries {
 
         return wishlistType == null ? null : new WishlistTypeObject(wishlistType);
     }
-    
+
     @GraphQLField
     @GraphQLName("wishlistTypes")
     @GraphQLNonNull
@@ -9880,32 +9880,37 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("wishlistPriorities")
-    static Collection<WishlistPriorityObject> wishlistPriorities(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<WishlistPriorityObject> wishlistPriorities(final DataFetchingEnvironment env,
             @GraphQLName("wishlistTypeName") @GraphQLNonNull final String wishlistTypeName) {
-        Collection<WishlistPriority> wishlistPriorities;
-        Collection<WishlistPriorityObject> wishlistPriorityObjects;
+        CountingPaginatedData<WishlistPriorityObject> data;
 
         try {
             var commandForm = WishlistUtil.getHome().getGetWishlistPrioritiesForm();
+            var command = new GetWishlistPrioritiesCommand();
 
             commandForm.setWishlistTypeName(wishlistTypeName);
 
-            wishlistPriorities = new GetWishlistPrioritiesCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, WishlistPriorityConstants.COMPONENT_VENDOR_NAME, WishlistPriorityConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var wishlistPriorities = entities.stream()
+                            .map(WishlistPriorityObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, wishlistPriorities);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(wishlistPriorities == null) {
-            wishlistPriorityObjects = emptyList();
-        } else {
-            wishlistPriorityObjects = new ArrayList<>(wishlistPriorities.size());
-
-            wishlistPriorities.stream()
-                    .map(WishlistPriorityObject::new)
-                    .forEachOrdered(wishlistPriorityObjects::add);
-        }
-
-        return wishlistPriorityObjects;
+        return data;
     }
 
     @GraphQLField
