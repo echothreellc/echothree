@@ -7138,17 +7138,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<EmployeeObject> data;
 
         try {
-            var employeeControl = Session.getModelController(EmployeeControl.class);
-            var totalCount = employeeControl.countPartyEmployees();
+            var commandForm = EmployeeUtil.getHome().getGetEmployeesForm();
+            var command = new GetEmployeesCommand();
 
-            try(var objectLimiter = new ObjectLimiter(env, PartyEmployeeConstants.COMPONENT_VENDOR_NAME, PartyEmployeeConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = EmployeeUtil.getHome().getGetEmployeesForm();
-                var entities = new GetEmployeesCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, PartyEmployeeConstants.COMPONENT_VENDOR_NAME, PartyEmployeeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var employees = entities.stream().map(EmployeeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var employees = entities.stream()
+                            .map(EmployeeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, employees);
                 }

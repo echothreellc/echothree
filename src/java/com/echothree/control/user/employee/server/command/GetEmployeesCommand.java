@@ -24,10 +24,9 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.employee.server.entity.PartyEmployee;
 import com.echothree.model.data.employee.server.factory.PartyEmployeeFactory;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -36,7 +35,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class GetEmployeesCommand
-        extends BaseMultipleEntitiesCommand<PartyEmployee, GetEmployeesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<PartyEmployee, GetEmployeesForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -58,6 +57,18 @@ public class GetEmployeesCommand
     }
 
     @Override
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var employeeControl = Session.getModelController(EmployeeControl.class);
+
+        return employeeControl.countPartyEmployees();
+    }
+
+    @Override
     protected Collection<PartyEmployee> getEntities() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
 
@@ -72,7 +83,7 @@ public class GetEmployeesCommand
             var employeeControl = Session.getModelController(EmployeeControl.class);
 
             if(session.hasLimit(PartyEmployeeFactory.class)) {
-                result.setEmployeeCount(employeeControl.countPartyEmployees());
+                result.setEmployeeCount(getTotalEntities());
             }
 
             result.setEmployees(employeeControl.getEmployeeTransfers(getUserVisit(), entities));
