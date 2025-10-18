@@ -22,12 +22,11 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.vendor.server.control.VendorControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.vendor.server.entity.VendorType;
 import com.echothree.model.data.vendor.server.factory.VendorTypeFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -36,7 +35,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class GetVendorTypesCommand
-        extends BaseMultipleEntitiesCommand<VendorType, GetVendorTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<VendorType, GetVendorTypesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -58,6 +57,18 @@ public class GetVendorTypesCommand
     }
 
     @Override
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var vendorControl = Session.getModelController(VendorControl.class);
+
+        return vendorControl.countVendorTypes();
+    }
+
+    @Override
     protected Collection<VendorType> getEntities() {
         var vendorControl = Session.getModelController(VendorControl.class);
 
@@ -72,7 +83,7 @@ public class GetVendorTypesCommand
             var vendorControl = Session.getModelController(VendorControl.class);
 
             if(session.hasLimit(VendorTypeFactory.class)) {
-                result.setVendorTypeCount(vendorControl.countVendorTypes());
+                result.setVendorTypeCount(getTotalEntities());
             }
 
             result.setVendorTypes(vendorControl.getVendorTypeTransfers(getUserVisit(), entities));

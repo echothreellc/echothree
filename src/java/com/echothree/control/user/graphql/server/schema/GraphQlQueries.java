@@ -7189,17 +7189,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<VendorTypeObject> data;
 
         try {
-            var vendorControl = Session.getModelController(VendorControl.class);
-            var totalCount = vendorControl.countVendorTypes();
+            var commandForm = VendorUtil.getHome().getGetVendorTypesForm();
+            var command = new GetVendorTypesCommand();
 
-            try(var objectLimiter = new ObjectLimiter(env, VendorTypeConstants.COMPONENT_VENDOR_NAME, VendorTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = VendorUtil.getHome().getGetVendorTypesForm();
-                var entities = new GetVendorTypesCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, VendorTypeConstants.COMPONENT_VENDOR_NAME, VendorTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var vendorTypes = entities.stream().map(VendorTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var vendorTypes = entities.stream()
+                            .map(VendorTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, vendorTypes);
                 }
