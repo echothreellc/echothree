@@ -23,40 +23,49 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.data.tag.server.entity.TagScope;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.tag.server.factory.TagScopeFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class GetTagScopesCommand
-        extends BaseMultipleEntitiesCommand<TagScope, GetTagScopesForm> {
-    
+        extends BasePaginatedMultipleEntitiesCommand<TagScope, GetTagScopesForm> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.TagScope.name(), SecurityRoles.List.name())
-                        )))
-                )));
-        
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                ));
+                ))
+        ));
+
+        FORM_FIELD_DEFINITIONS = List.of();
     }
-    
+
     /** Creates a new instance of GetTagScopesCommand */
     public GetTagScopesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
+
+    @Override
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var tagControl = Session.getModelController(TagControl.class);
+
+        return tagControl.countTagScopes();
     }
 
     @Override
@@ -69,11 +78,18 @@ public class GetTagScopesCommand
     @Override
     protected BaseResult getResult(Collection<TagScope> entities) {
         var result = TagResultFactory.getGetTagScopesResult();
-        var tagControl = Session.getModelController(TagControl.class);
 
-        result.setTagScopes(tagControl.getTagScopeTransfers(getUserVisit(), entities));
+        if(entities != null) {
+            var tagControl = Session.getModelController(TagControl.class);
+
+            if(session.hasLimit(TagScopeFactory.class)) {
+                result.setTagScopeCount(getTotalEntities());
+            }
+
+            result.setTagScopes(tagControl.getTagScopeTransfers(getUserVisit(), entities));
+        }
 
         return result;
     }
-    
+
 }

@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetTagScopesResult
         extends BaseResult {
-    
+
+    Long getTagScopeCount();
+    void setTagScopeCount(Long tagScopeCount);
+
     List<TagScopeTransfer> getTagScopes();
     void setTagScopes(List<TagScopeTransfer> tagScopes);
     
