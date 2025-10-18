@@ -7846,17 +7846,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<WarehouseTypeObject> data;
 
         try {
-            var warehouseControl = Session.getModelController(WarehouseControl.class);
-            var totalCount = warehouseControl.countWarehouseTypes();
+            var commandForm = WarehouseUtil.getHome().getGetWarehouseTypesForm();
+            var command = new GetWarehouseTypesCommand();
 
-            try(var objectLimiter = new ObjectLimiter(env, WarehouseTypeConstants.COMPONENT_VENDOR_NAME, WarehouseTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = WarehouseUtil.getHome().getGetWarehouseTypesForm();
-                var entities = new GetWarehouseTypesCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, WarehouseTypeConstants.COMPONENT_VENDOR_NAME, WarehouseTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var warehouseTypes = entities.stream().map(WarehouseTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var warehouseTypes = entities.stream()
+                            .map(WarehouseTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, warehouseTypes);
                 }
