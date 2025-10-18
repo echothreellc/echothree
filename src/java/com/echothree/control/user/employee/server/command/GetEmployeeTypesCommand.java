@@ -22,34 +22,34 @@ import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.model.data.customer.server.factory.CustomerTypeFactory;
+import com.echothree.model.data.employee.server.entity.EmployeeType;
+import com.echothree.model.data.employee.server.factory.EmployeeTypeFactory;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.List;
 
 public class GetEmployeeTypesCommand
-        extends BaseSimpleCommand<GetEmployeeTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<EmployeeType, GetEmployeeTypesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.EmployeeType.name(), SecurityRoles.List.name())
-                        )))
-                )));
+                ))
+        ));
         
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                ));
+        FORM_FIELD_DEFINITIONS = List.of();
     }
     
     /** Creates a new instance of GetEmployeeTypesCommand */
@@ -58,11 +58,37 @@ public class GetEmployeeTypesCommand
     }
     
     @Override
-    protected BaseResult execute() {
+    protected void handleForm() {
+        // No form fields.
+    }
+    
+    @Override
+    protected Long getTotalEntities() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
+
+        return employeeControl.countEmployeeTypes();
+    }
+    
+    @Override
+    protected Collection<EmployeeType> getEntities() {
+        var employeeControl = Session.getModelController(EmployeeControl.class);
+        
+        return employeeControl.getEmployeeTypes();
+    }
+    
+    @Override
+    protected BaseResult getResult(Collection<EmployeeType> entities) {
         var result = EmployeeResultFactory.getGetEmployeeTypesResult();
         
-        result.setEmployeeTypes(employeeControl.getEmployeeTypeTransfers(getUserVisit()));
+        if(entities != null) {
+            var employeeControl = Session.getModelController(EmployeeControl.class);
+
+            if(session.hasLimit(CustomerTypeFactory.class)) {
+                result.setEmployeeTypeCount(getTotalEntities());
+            }
+
+            result.setEmployeeTypes(employeeControl.getEmployeeTypeTransfers(getUserVisit()));
+        }
         
         return result;
     }
