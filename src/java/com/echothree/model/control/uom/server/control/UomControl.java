@@ -166,7 +166,8 @@ public class UomControl
             query = "SELECT _ALL_ " +
                     "FROM unitofmeasurekinds, unitofmeasurekinddetails " +
                     "WHERE uomk_activedetailid = uomkdt_unitofmeasurekinddetailid " +
-                    "ORDER BY uomkdt_sortorder, uomkdt_unitofmeasurekindname";
+                    "ORDER BY uomkdt_sortorder, uomkdt_unitofmeasurekindname " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM unitofmeasurekinds, unitofmeasurekinddetails " +
@@ -196,7 +197,8 @@ public class UomControl
                     "FROM unitofmeasurekinds, unitofmeasurekinddetails, unitofmeasurekinduses " +
                     "WHERE uomk_unitofmeasurekindid = uomkdt_uomk_unitofmeasurekindid AND uomkdt_thrutime = ? " +
                     "AND uomk_unitofmeasurekindid = uomku_uomk_unitofmeasurekindid AND uomku_uomkut_unitofmeasurekindusetypeid = ? AND uomku_thrutime = ? " +
-                    "ORDER BY uomkdt_sortorder, uomkdt_unitofmeasurekindname");
+                    "ORDER BY uomkdt_sortorder, uomkdt_unitofmeasurekindname " +
+                    "_LIMIT_");
             
             ps.setLong(1, Session.MAX_TIME);
             ps.setLong(2, unitOfMeasureKindUseType.getPrimaryKey().getEntityId());
@@ -546,7 +548,8 @@ public class UomControl
                 query = "SELECT _ALL_ " +
                         "FROM unitofmeasurekinddescriptions, languages " +
                         "WHERE uomkd_uomk_unitofmeasurekindid = ? AND uomkd_thrutime = ? AND uomkd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM unitofmeasurekinddescriptions " +
@@ -710,7 +713,8 @@ public class UomControl
                         "FROM unitofmeasuretypes, unitofmeasuretypedetails " +
                         "WHERE uomt_unitofmeasuretypeid = uomtdt_uomt_unitofmeasuretypeid AND uomtdt_uomk_unitofmeasurekindid = ? " +
                         "AND uomtdt_thrutime = ? " +
-                        "ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename";
+                        "ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM unitofmeasuretypes, unitofmeasuretypedetails " +
@@ -1055,7 +1059,8 @@ public class UomControl
                 query = "SELECT _ALL_ " +
                         "FROM unitofmeasuretypedescriptions, languages " +
                         "WHERE uomtd_uomt_unitofmeasuretypeid = ? AND uomtd_thrutime = ? AND uomtd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM unitofmeasuretypedescriptions " +
@@ -1466,7 +1471,8 @@ public class UomControl
                         "AND uomeq_fromunitofmeasuretypeid = uomtdt_uomt_unitofmeasuretypeid AND uomtdt_thrutime = ? " +
                         "AND uomtdt_uomk_unitofmeasurekindid = uomkdt_uomk_unitofmeasurekindid AND uomkdt_thrutime = ? " +
                         "AND uomkdt_uomk_unitofmeasurekindid = ? " +
-                        "ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename";
+                        "ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM unitofmeasureequivalents, unitofmeasuretypedetails, unitofmeasurekinddetails " +
@@ -1512,7 +1518,8 @@ public class UomControl
                         "FROM unitofmeasureequivalents, unitofmeasuretypedetails " +
                         "WHERE uomeq_fromunitofmeasuretypeid = ? AND uomeq_thrutime = ? " +
                         "AND uomeq_fromunitofmeasuretypeid = uomtdt_uomt_unitofmeasuretypeid AND uomtdt_thrutime = ? " +
-                        "ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename";
+                        "ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM unitofmeasureequivalents " +
@@ -1556,7 +1563,8 @@ public class UomControl
                         "FROM unitofmeasureequivalents, unitofmeasuretypedetails " +
                         "WHERE uomeq_tounitofmeasuretypeid = ? AND uomeq_thrutime = ? " +
                         "AND uomeq_fromunitofmeasuretypeid = uomtdt_uomt_unitofmeasuretypeid AND uomtdt_thrutime = ? " +
-                        "ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename";
+                        "ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM unitofmeasureequivalents " +
@@ -1695,7 +1703,8 @@ public class UomControl
         var ps = UnitOfMeasureKindUseTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM unitofmeasurekindusetypes " +
-                "ORDER BY uomkut_sortorder, uomkut_unitofmeasurekindusetypename");
+                "ORDER BY uomkut_sortorder, uomkut_unitofmeasurekindusetypename " +
+                "_LIMIT_");
         
         return UnitOfMeasureKindUseTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -1975,7 +1984,8 @@ public class UomControl
                         "FROM unitofmeasurekinduses, unitofmeasurekindusetypes " +
                         "WHERE uomku_uomk_unitofmeasurekindid = ? AND uomku_thrutime = ? " +
                         "AND uomku_uomkut_unitofmeasurekindusetypeid = uomkut_unitofmeasurekindusetypeid " +
-                        "ORDER BY uomku_sortorder, uomkut_sortorder, uomkut_unitofmeasurekindusetypename";
+                        "ORDER BY uomku_sortorder, uomkut_sortorder, uomkut_unitofmeasurekindusetypename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM unitofmeasurekinduses " +
@@ -2019,7 +2029,8 @@ public class UomControl
                         "FROM unitofmeasurekinduses, unitofmeasurekinddetails " +
                         "WHERE uomku_uomkut_unitofmeasurekindusetypeid = ? AND uomku_thrutime = ? " +
                         "AND uomku_uomk_unitofmeasurekindid = uomkdt_uomk_unitofmeasurekindid AND uomkdt_thrutime = ? " +
-                        "ORDER BY uomku_sortorder, uomkdt_sortorder, uomkdt_unitofmeasurekindname";
+                        "ORDER BY uomku_sortorder, uomkdt_sortorder, uomkdt_unitofmeasurekindname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM unitofmeasurekinduses, unitofmeasurekinddetails " +

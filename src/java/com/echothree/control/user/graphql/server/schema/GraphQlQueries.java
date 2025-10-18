@@ -5872,17 +5872,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<UnitOfMeasureKindObject> data;
 
         try {
-            var uomControl = Session.getModelController(UomControl.class);
-            var totalCount = uomControl.countUnitOfMeasureKinds();
+            var commandForm = UomUtil.getHome().getGetUnitOfMeasureKindsForm();
+            var command = new GetUnitOfMeasureKindsCommand();
 
-            try(var objectLimiter = new ObjectLimiter(env, UnitOfMeasureKindConstants.COMPONENT_VENDOR_NAME, UnitOfMeasureKindConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = UomUtil.getHome().getGetUnitOfMeasureKindsForm();
-                var entities = new GetUnitOfMeasureKindsCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, UnitOfMeasureKindConstants.COMPONENT_VENDOR_NAME, UnitOfMeasureKindConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var unitOfMeasureKinds = entities.stream().map(UnitOfMeasureKindObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var unitOfMeasureKinds = entities.stream()
+                            .map(UnitOfMeasureKindObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, unitOfMeasureKinds);
                 }
