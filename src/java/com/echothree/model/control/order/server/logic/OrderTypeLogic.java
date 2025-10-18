@@ -54,14 +54,14 @@ public class OrderTypeLogic
     }
 
     public OrderType createOrderType(final ExecutionErrorAccumulator eea, final String orderTypeName,
-            final OrderType parentOrderType, final SequenceType orderSequenceType, final Workflow orderWorkflow,
+            final SequenceType orderSequenceType, final Workflow orderWorkflow,
             final WorkflowEntrance orderWorkflowEntrance, final Boolean isDefault, final Integer sortOrder,
             final Language language, final String description, final BasePK createdBy) {
         var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType == null) {
-            orderType = orderTypeControl.createOrderType(orderTypeName, parentOrderType, orderSequenceType, orderWorkflow,
+            orderType = orderTypeControl.createOrderType(orderTypeName, orderSequenceType, orderWorkflow,
                     orderWorkflowEntrance, isDefault, sortOrder, createdBy);
 
             if(description != null) {

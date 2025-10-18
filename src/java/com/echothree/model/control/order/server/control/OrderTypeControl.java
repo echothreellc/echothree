@@ -41,11 +41,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 public class OrderTypeControl
         extends BaseOrderControl {
@@ -59,7 +57,7 @@ public class OrderTypeControl
     //   Order Types
     // --------------------------------------------------------------------------------
 
-    public OrderType createOrderType(String orderTypeName, OrderType parentOrderType, SequenceType orderSequenceType, Workflow orderWorkflow,
+    public OrderType createOrderType(String orderTypeName, SequenceType orderSequenceType, Workflow orderWorkflow,
             WorkflowEntrance orderWorkflowEntrance, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultOrderType = getDefaultOrderType();
         var defaultFound = defaultOrderType != null;
@@ -74,7 +72,7 @@ public class OrderTypeControl
         }
 
         var orderType = OrderTypeFactory.getInstance().create();
-        var orderTypeDetail = OrderTypeDetailFactory.getInstance().create(orderType, orderTypeName, parentOrderType, orderSequenceType,
+        var orderTypeDetail = OrderTypeDetailFactory.getInstance().create(orderType, orderTypeName, orderSequenceType,
                 orderWorkflow, orderWorkflowEntrance, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
@@ -222,39 +220,6 @@ public class OrderTypeControl
         return getOrderTypes(EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getOrderTypesByParentOrderTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM ordertypes, ordertypedetails " +
-                "WHERE ordtyp_activedetailid = ordtypdt_ordertypedetailid AND ordtypdt_parentordertypeid = ? " +
-                "ORDER BY ordtypdt_sortorder, ordtypdt_ordertypename " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM ordertypes, ordertypedetails " +
-                "WHERE ordtyp_activedetailid = ordtypdt_ordertypedetailid AND ordtypdt_parentordertypeid = ? " +
-                "FOR UPDATE");
-        getOrderTypesByParentOrderTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    private List<OrderType> getOrderTypesByParentOrderType(OrderType parentOrderType,
-            EntityPermission entityPermission) {
-        return OrderTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getOrderTypesByParentOrderTypeQueries,
-                parentOrderType);
-    }
-
-    public List<OrderType> getOrderTypesByParentOrderType(OrderType parentOrderType) {
-        return getOrderTypesByParentOrderType(parentOrderType, EntityPermission.READ_ONLY);
-    }
-
-    public List<OrderType> getOrderTypesByParentOrderTypeForUpdate(OrderType parentOrderType) {
-        return getOrderTypesByParentOrderType(parentOrderType, EntityPermission.READ_WRITE);
-    }
-
     public OrderTypeTransfer getOrderTypeTransfer(UserVisit userVisit, OrderType orderType) {
         return getOrderTransferCaches(userVisit).getOrderTypeTransferCache().getOrderTypeTransfer(orderType);
     }
@@ -309,28 +274,6 @@ public class OrderTypeControl
         return new OrderTypeChoicesBean(labels, values, defaultValue);
     }
 
-    public boolean isParentOrderTypeSafe(OrderType orderType,
-            OrderType parentOrderType) {
-        var safe = true;
-
-        if(parentOrderType != null) {
-            Set<OrderType> parentOrderTypes = new HashSet<>();
-
-            parentOrderTypes.add(orderType);
-            do {
-                if(parentOrderTypes.contains(parentOrderType)) {
-                    safe = false;
-                    break;
-                }
-
-                parentOrderTypes.add(parentOrderType);
-                parentOrderType = parentOrderType.getLastDetail().getParentOrderType();
-            } while(parentOrderType != null);
-        }
-
-        return safe;
-    }
-
     private void updateOrderTypeFromValue(OrderTypeDetailValue orderTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(orderTypeDetailValue.hasBeenModified()) {
@@ -343,7 +286,6 @@ public class OrderTypeControl
 
             var orderTypePK = orderTypeDetail.getOrderTypePK(); // Not updated
             var orderTypeName = orderTypeDetailValue.getOrderTypeName();
-            var parentOrderTypePK = orderTypeDetailValue.getParentOrderTypePK();
             var orderSequenceTypePK = orderTypeDetailValue.getOrderSequenceTypePK();
             var orderWorkflowPK = orderTypeDetailValue.getOrderWorkflowPK();
             var orderWorkflowEntrancePK = orderTypeDetailValue.getOrderWorkflowEntrancePK();
@@ -366,7 +308,7 @@ public class OrderTypeControl
                 }
             }
 
-            orderTypeDetail = OrderTypeDetailFactory.getInstance().create(orderTypePK, orderTypeName, parentOrderTypePK, orderSequenceTypePK,
+            orderTypeDetail = OrderTypeDetailFactory.getInstance().create(orderTypePK, orderTypeName, orderSequenceTypePK,
                     orderWorkflowPK, orderWorkflowEntrancePK, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
             orderType.setActiveDetail(orderTypeDetail);
@@ -384,7 +326,6 @@ public class OrderTypeControl
         var orderAliasControl = Session.getModelController(OrderAliasControl.class);
         var orderTypeDetail = orderType.getLastDetailForUpdate();
 
-        deleteOrderTypesByParentOrderType(orderType, deletedBy);
         deleteOrderTypeDescriptionsByOrderType(orderType, deletedBy);
         orderAliasControl.deleteOrderAliasTypesByOrderType(orderType, deletedBy);
         // TODO: deleteOrdersByOrderType(orderType, deletedBy);
@@ -425,10 +366,6 @@ public class OrderTypeControl
 
     public void deleteOrderTypes(List<OrderType> orderTypes, BasePK deletedBy) {
         deleteOrderTypes(orderTypes, true, deletedBy);
-    }
-
-    private void deleteOrderTypesByParentOrderType(OrderType parentOrderType, BasePK deletedBy) {
-        deleteOrderTypes(getOrderTypesByParentOrderTypeForUpdate(parentOrderType), false, deletedBy);
     }
 
     // --------------------------------------------------------------------------------

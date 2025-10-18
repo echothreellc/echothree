@@ -25,7 +25,6 @@ public class OrderTypeTransfer
         extends BaseTransfer {
     
     private String orderTypeName;
-    private OrderTypeTransfer parentOrderType;
     private SequenceTypeTransfer orderSequenceType;
     private WorkflowTransfer orderWorkflow;
     private WorkflowEntranceTransfer orderWorkflowEntrance;
@@ -34,11 +33,10 @@ public class OrderTypeTransfer
     private String description;
     
     /** Creates a new instance of OrderTypeTransfer */
-    public OrderTypeTransfer(String orderTypeName, OrderTypeTransfer parentOrderType, SequenceTypeTransfer orderSequenceType,
+    public OrderTypeTransfer(String orderTypeName, SequenceTypeTransfer orderSequenceType,
             WorkflowTransfer orderWorkflow, WorkflowEntranceTransfer orderWorkflowEntrance, Boolean isDefault, Integer sortOrder,
             String description) {
         this.orderTypeName = orderTypeName;
-        this.parentOrderType = parentOrderType;
         this.orderSequenceType = orderSequenceType;
         this.orderWorkflow = orderWorkflow;
         this.orderWorkflowEntrance = orderWorkflowEntrance;
@@ -53,14 +51,6 @@ public class OrderTypeTransfer
 
     public void setOrderTypeName(String orderTypeName) {
         this.orderTypeName = orderTypeName;
-    }
-
-    public OrderTypeTransfer getParentOrderType() {
-        return parentOrderType;
-    }
-
-    public void setParentOrderType(OrderTypeTransfer parentOrderType) {
-        this.parentOrderType = parentOrderType;
     }
 
     public SequenceTypeTransfer getOrderSequenceType() {

@@ -18,7 +18,6 @@ package com.echothree.control.user.order.server.command;
 
 import com.echothree.control.user.order.common.edit.OrderEditFactory;
 import com.echothree.control.user.order.common.edit.OrderTypeEdit;
-import com.echothree.control.user.order.common.form.EditOrderTypeForm;
 import com.echothree.control.user.order.common.result.EditOrderTypeResult;
 import com.echothree.control.user.order.common.result.OrderResultFactory;
 import com.echothree.control.user.order.common.spec.OrderTypeUniversalSpec;
@@ -31,7 +30,6 @@ import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.command.EditMode;
@@ -70,7 +68,6 @@ public class EditOrderTypeCommand
         
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("OrderTypeName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("ParentOrderTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("OrderSequenceTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("OrderWorkflowName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("OrderWorkflowEntranceName", FieldType.ENTITY_NAME, false, null, null),
@@ -128,7 +125,6 @@ public class EditOrderTypeCommand
         result.setOrderType(orderTypeControl.getOrderTypeTransfer(getUserVisit(), orderType));
     }
 
-    OrderType parentOrderType = null;
     SequenceType orderSequenceType = null;
     Workflow orderWorkflow = null;
     WorkflowEntrance orderWorkflowEntrance = null;
@@ -139,13 +135,11 @@ public class EditOrderTypeCommand
         var orderTypeDescription = orderTypeControl.getOrderTypeDescription(orderType, getPreferredLanguage());
         var orderTypeDetail = orderType.getLastDetail();
 
-        parentOrderType = orderTypeDetail.getParentOrderType();
         orderSequenceType = orderTypeDetail.getOrderSequenceType();
         orderWorkflow = orderTypeDetail.getOrderWorkflow();
         orderWorkflowEntrance = orderTypeDetail.getOrderWorkflowEntrance();
 
         edit.setOrderTypeName(orderTypeDetail.getOrderTypeName());
-        edit.setParentOrderTypeName(parentOrderType == null ? null : parentOrderType.getLastDetail().getOrderTypeName());
         edit.setOrderSequenceTypeName(orderSequenceType == null ? null : orderSequenceType.getLastDetail().getSequenceTypeName());
         edit.setOrderWorkflowName(orderWorkflow == null ? null : orderWorkflow.getLastDetail().getWorkflowName());
         edit.setOrderWorkflowEntranceName(orderWorkflowEntrance == null ? null : orderWorkflowEntrance.getLastDetail().getWorkflowEntranceName());
@@ -164,48 +158,34 @@ public class EditOrderTypeCommand
         var duplicateOrderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(duplicateOrderType == null || orderType.equals(duplicateOrderType)) {
-            var parentOrderTypeName = edit.getParentOrderTypeName();
+            var sequenceControl = Session.getModelController(SequenceControl.class);
+            var orderSequenceTypeName = edit.getOrderSequenceTypeName();
 
-            if(parentOrderTypeName != null) {
-                parentOrderType = orderTypeControl.getOrderTypeByName(parentOrderTypeName);
-            }
+            orderSequenceType = sequenceControl.getSequenceTypeByName(orderSequenceTypeName);
 
-            if(parentOrderTypeName == null || parentOrderType != null) {
-                if(orderTypeControl.isParentOrderTypeSafe(orderType, parentOrderType)) {
-                    var sequenceControl = Session.getModelController(SequenceControl.class);
-                    var orderSequenceTypeName = edit.getOrderSequenceTypeName();
+            if(orderSequenceTypeName == null || orderSequenceType != null) {
+                var workflowControl = Session.getModelController(WorkflowControl.class);
+                var orderWorkflowName = edit.getOrderWorkflowName();
 
-                    orderSequenceType = sequenceControl.getSequenceTypeByName(orderSequenceTypeName);
+                orderWorkflow = orderWorkflowName == null ? null : workflowControl.getWorkflowByName(orderWorkflowName);
 
-                    if(orderSequenceTypeName == null || orderSequenceType != null) {
-                        var workflowControl = Session.getModelController(WorkflowControl.class);
-                        var orderWorkflowName = edit.getOrderWorkflowName();
+                if(orderWorkflowName == null || orderWorkflow != null) {
+                    var orderWorkflowEntranceName = edit.getOrderWorkflowEntranceName();
 
-                        orderWorkflow = orderWorkflowName == null ? null : workflowControl.getWorkflowByName(orderWorkflowName);
+                    if(orderWorkflowEntranceName == null || (orderWorkflow != null && orderWorkflowEntranceName != null)) {
+                        orderWorkflowEntrance = orderWorkflowEntranceName == null ? null : workflowControl.getWorkflowEntranceByName(orderWorkflow, orderWorkflowEntranceName);
 
-                        if(orderWorkflowName == null || orderWorkflow != null) {
-                            var orderWorkflowEntranceName = edit.getOrderWorkflowEntranceName();
-
-                            if(orderWorkflowEntranceName == null || (orderWorkflow != null && orderWorkflowEntranceName != null)) {
-                                orderWorkflowEntrance = orderWorkflowEntranceName == null ? null : workflowControl.getWorkflowEntranceByName(orderWorkflow, orderWorkflowEntranceName);
-
-                                if(orderWorkflowEntranceName != null && orderWorkflowEntrance == null) {
-                                    addExecutionError(ExecutionErrors.UnknownOrderWorkflowEntranceName.name(), orderWorkflowName, orderWorkflowEntranceName);
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.MissingRequiredOrderWorkflowName.name());
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownOrderWorkflowName.name(), orderWorkflowName);
+                        if(orderWorkflowEntranceName != null && orderWorkflowEntrance == null) {
+                            addExecutionError(ExecutionErrors.UnknownOrderWorkflowEntranceName.name(), orderWorkflowName, orderWorkflowEntranceName);
                         }
                     } else {
-                        addExecutionError(ExecutionErrors.UnknownOrderSequenceTypeName.name(), orderSequenceTypeName);
+                        addExecutionError(ExecutionErrors.MissingRequiredOrderWorkflowName.name());
                     }
                 } else {
-                    addExecutionError(ExecutionErrors.InvalidParentOrderType.name());
+                    addExecutionError(ExecutionErrors.UnknownOrderWorkflowName.name(), orderWorkflowName);
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownParentOrderTypeName.name(), parentOrderTypeName);
+                addExecutionError(ExecutionErrors.UnknownOrderSequenceTypeName.name(), orderSequenceTypeName);
             }
         } else {
             addExecutionError(ExecutionErrors.DuplicateOrderTypeName.name(), orderTypeName);
@@ -221,7 +201,6 @@ public class EditOrderTypeCommand
         var description = edit.getDescription();
 
         orderTypeDetailValue.setOrderTypeName(edit.getOrderTypeName());
-        orderTypeDetailValue.setParentOrderTypePK(parentOrderType == null ? null : parentOrderType.getPrimaryKey());
         orderTypeDetailValue.setOrderSequenceTypePK(orderSequenceType == null ? null : orderSequenceType.getPrimaryKey());
         orderTypeDetailValue.setOrderWorkflowPK(orderWorkflow == null ? null : orderWorkflow.getPrimaryKey());
         orderTypeDetailValue.setOrderWorkflowEntrancePK(orderWorkflow == null ? null : orderWorkflowEntrance.getPrimaryKey());
