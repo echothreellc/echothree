@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetOrderTypesResult
         extends BaseResult {
-    
+
+    Long getOrderTypeCount();
+    void setOrderTypeCount(Long orderTypeCount);
+
     List<OrderTypeTransfer> getOrderTypes();
     void setOrderTypes(List<OrderTypeTransfer> orderTypes);
     
