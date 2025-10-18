@@ -75,14 +75,6 @@ public class OrderTypeObject
     }
 
     @GraphQLField
-    @GraphQLDescription("parent order type")
-    public OrderTypeObject getParentOrderType(final DataFetchingEnvironment env) {
-        var parentOrderType = getOrderTypeDetail().getParentOrderType();
-
-        return parentOrderType == null ? null : (OrderSecurityUtils.getHasOrderTypeAccess(env) ? new OrderTypeObject(parentOrderType) : null);
-    }
-
-    @GraphQLField
     @GraphQLDescription("order sequence type")
     public SequenceTypeObject getOrderSequenceType(final DataFetchingEnvironment env) {
         var orderSequenceType = getOrderTypeDetail().getOrderSequenceType();
