@@ -519,7 +519,6 @@ import com.echothree.model.control.offer.server.graphql.OfferUseObject;
 import com.echothree.model.control.offer.server.graphql.UseNameElementObject;
 import com.echothree.model.control.offer.server.graphql.UseObject;
 import com.echothree.model.control.offer.server.graphql.UseTypeObject;
-import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.order.server.graphql.OrderPriorityObject;
 import com.echothree.model.control.order.server.graphql.OrderTimeTypeObject;
 import com.echothree.model.control.order.server.graphql.OrderTypeObject;
@@ -592,7 +591,6 @@ import com.echothree.model.control.tag.server.graphql.TagScopeObject;
 import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.control.term.server.graphql.TermObject;
 import com.echothree.model.control.term.server.graphql.TermTypeObject;
-import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindUseObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindUseTypeObject;
@@ -9702,16 +9700,16 @@ public interface GraphQlQueries {
         CountingPaginatedData<OrderTypeObject> data;
 
         try {
-            var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-            var totalCount = orderTypeControl.countOrderTypes();
+            var commandForm = OrderUtil.getHome().getGetOrderTypesForm();
+            var command = new GetOrderTypesCommand();
 
-            try(var objectLimiter = new ObjectLimiter(env, OrderTypeConstants.COMPONENT_VENDOR_NAME, OrderTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = OrderUtil.getHome().getGetOrderTypesForm();
-                var entities = new GetOrderTypesCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, OrderTypeConstants.COMPONENT_VENDOR_NAME, OrderTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
                     var orderTypes = entities.stream()
                             .map(OrderTypeObject::new)
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
