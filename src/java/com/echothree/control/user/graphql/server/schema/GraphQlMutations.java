@@ -11751,7 +11751,6 @@ public interface GraphQlMutations {
     @GraphQLRelayMutation
     static MutationResultWithIdObject createOrderType(final DataFetchingEnvironment env,
             @GraphQLName("orderTypeName") @GraphQLNonNull final String orderTypeName,
-            @GraphQLName("parentOrderTypeName") final String parentOrderTypeName,
             @GraphQLName("orderSequenceTypeName") final String orderSequenceTypeName,
             @GraphQLName("orderWorkflowName") final String orderWorkflowName,
             @GraphQLName("orderWorkflowEntranceName") final String orderWorkflowEntranceName,
@@ -11764,7 +11763,6 @@ public interface GraphQlMutations {
             var commandForm = OrderUtil.getHome().getCreateOrderTypeForm();
 
             commandForm.setOrderTypeName(orderTypeName);
-            commandForm.setParentOrderTypeName(parentOrderTypeName);
             commandForm.setOrderSequenceTypeName(orderSequenceTypeName);
             commandForm.setOrderWorkflowName(orderWorkflowName);
             commandForm.setOrderWorkflowEntranceName(orderWorkflowEntranceName);
@@ -11793,7 +11791,6 @@ public interface GraphQlMutations {
             @GraphQLName("originalOrderTypeName") final String originalOrderTypeName,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("orderTypeName") final String orderTypeName,
-            @GraphQLName("parentOrderTypeName") final String parentOrderTypeName,
             @GraphQLName("orderSequenceTypeName") final String orderSequenceTypeName,
             @GraphQLName("orderWorkflowName") final String orderWorkflowName,
             @GraphQLName("orderWorkflowEntranceName") final String orderWorkflowEntranceName,
@@ -11825,8 +11822,6 @@ public interface GraphQlMutations {
 
                 if(arguments.containsKey("orderTypeName"))
                     edit.setOrderTypeName(orderTypeName);
-                if(arguments.containsKey("parentOrderTypeName"))
-                    edit.setParentOrderTypeName(parentOrderTypeName);
                 if(arguments.containsKey("orderSequenceTypeName"))
                     edit.setOrderSequenceTypeName(orderSequenceTypeName);
                 if(arguments.containsKey("orderWorkflowName"))

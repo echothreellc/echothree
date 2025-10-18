@@ -26,7 +26,6 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.order.server.entity.OrderType;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -56,7 +55,6 @@ public class CreateOrderTypeCommand
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("OrderTypeName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("ParentOrderTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("OrderSequenceTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("OrderWorkflowName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("OrderWorkflowEntranceName", FieldType.ENTITY_NAME, false, null, null),
@@ -75,15 +73,8 @@ public class CreateOrderTypeCommand
     protected BaseResult execute() {
         var result = OrderResultFactory.getCreateOrderTypeResult();
         var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-        var parentOrderTypeName = form.getParentOrderTypeName();
-        OrderType parentOrderType = null;
         OrderType orderType = null;
 
-        if(parentOrderTypeName != null) {
-            parentOrderType = orderTypeControl.getOrderTypeByName(parentOrderTypeName);
-        }
-
-        if(parentOrderTypeName == null || parentOrderType != null) {
             var sequenceControl = Session.getModelController(SequenceControl.class);
             var orderSequenceTypeName = form.getOrderSequenceTypeName();
             var orderSequenceType = sequenceControl.getSequenceTypeByName(orderSequenceTypeName);
@@ -106,7 +97,7 @@ public class CreateOrderTypeCommand
                             var description = form.getDescription();
                             var partyPK = getPartyPK();
 
-                            orderType = OrderTypeLogic.getInstance().createOrderType(this, orderTypeName, parentOrderType, orderSequenceType, orderWorkflow,
+                            orderType = OrderTypeLogic.getInstance().createOrderType(this, orderTypeName, orderSequenceType, orderWorkflow,
                                     orderWorkflowEntrance, isDefault, sortOrder, getPreferredLanguage(), description, partyPK);
                         } else {
                             addExecutionError(ExecutionErrors.UnknownOrderWorkflowEntranceName.name(), orderWorkflowName, orderWorkflowEntranceName);
@@ -120,9 +111,6 @@ public class CreateOrderTypeCommand
             } else {
                 addExecutionError(ExecutionErrors.UnknownOrderSequenceTypeName.name(), orderSequenceTypeName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownParentOrderTypeName.name(), parentOrderTypeName);
-        }
 
         if(orderType != null) {
             result.setEntityRef(orderType.getPrimaryKey().getEntityRef());

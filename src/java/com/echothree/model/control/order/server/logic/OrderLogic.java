@@ -20,14 +20,12 @@ import com.echothree.model.control.order.common.exception.CannotSpecifyPartyPaym
 import com.echothree.model.control.order.common.exception.CannotSpecifyPaymentMethodAndPartyPaymentMethodException;
 import com.echothree.model.control.order.common.exception.CannotSpecifyWasPresentException;
 import com.echothree.model.control.order.common.exception.DuplicateOrderPaymentPreferenceSequenceException;
-import com.echothree.model.control.order.common.exception.DuplicateOrderShipmentGroupSequenceException;
 import com.echothree.model.control.order.common.exception.MustSpecifyPartyPaymentMethodException;
 import com.echothree.model.control.order.common.exception.MustSpecifyPaymentMethodOrPartyPaymentMethodException;
 import com.echothree.model.control.order.common.exception.MustSpecifyWasPresentException;
 import com.echothree.model.control.order.common.exception.UnknownOrderAliasTypeNameException;
 import com.echothree.model.control.order.common.exception.UnknownOrderNameException;
 import com.echothree.model.control.order.common.exception.UnknownOrderPaymentPreferenceSequenceException;
-import com.echothree.model.control.order.common.exception.UnknownOrderPriorityNameException;
 import com.echothree.model.control.order.common.exception.UnknownOrderRoleTypeNameException;
 import com.echothree.model.control.order.common.exception.UnknownOrderSequenceException;
 import com.echothree.model.control.order.common.exception.UnknownOrderSequenceTypeException;
@@ -36,9 +34,7 @@ import com.echothree.model.control.order.server.control.OrderAliasControl;
 import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.order.server.control.OrderLineControl;
 import com.echothree.model.control.order.server.control.OrderPaymentPreferenceControl;
-import com.echothree.model.control.order.server.control.OrderPriorityControl;
 import com.echothree.model.control.order.server.control.OrderRoleControl;
-import com.echothree.model.control.order.server.control.OrderShipmentGroupControl;
 import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.payment.common.PaymentMethodTypes;
 import com.echothree.model.control.payment.server.logic.PaymentMethodLogic;
@@ -47,9 +43,7 @@ import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.shipping.server.logic.ShippingMethodLogic;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
-import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.item.server.entity.ItemDeliveryType;
 import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.order.server.entity.OrderAliasType;
 import com.echothree.model.data.order.server.entity.OrderPaymentPreference;
@@ -63,7 +57,6 @@ import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
-import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -116,20 +109,8 @@ public class OrderLogic
     }
 
     public SequenceType getOrderSequenceType(final ExecutionErrorAccumulator eea, final OrderType orderType) {
-        var parentOrderType = orderType;
-        SequenceType sequenceType;
-
-        do {
-            var orderTypeDetail = parentOrderType.getLastDetail();
-
-            sequenceType = orderTypeDetail.getOrderSequenceType();
-
-            if(sequenceType == null) {
-                parentOrderType = orderTypeDetail.getParentOrderType();
-            } else {
-                break;
-            }
-        } while(parentOrderType != null);
+        var orderTypeDetail = orderType.getLastDetail();
+        var sequenceType = orderTypeDetail.getOrderSequenceType();
 
         if(sequenceType == null) {
             var sequenceControl = Session.getModelController(SequenceControl.class);
