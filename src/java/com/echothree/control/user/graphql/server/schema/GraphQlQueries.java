@@ -7085,17 +7085,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<CustomerObject> data;
 
         try {
-            var customerControl = Session.getModelController(CustomerControl.class);
-            var totalCount = customerControl.countCustomers();
+            var commandForm = CustomerUtil.getHome().getGetCustomersForm();
+            var command = new GetCustomersCommand();
 
-            try(var objectLimiter = new ObjectLimiter(env, CustomerConstants.COMPONENT_VENDOR_NAME, CustomerConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = CustomerUtil.getHome().getGetCustomersForm();
-                var entities = new GetCustomersCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, CustomerConstants.COMPONENT_VENDOR_NAME, CustomerConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var customers = entities.stream().map(CustomerObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var customers = entities.stream()
+                            .map(CustomerObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, customers);
                 }
