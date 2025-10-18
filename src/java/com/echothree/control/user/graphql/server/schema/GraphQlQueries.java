@@ -7030,17 +7030,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<CustomerTypeObject> data;
 
         try {
-            var customerControl = Session.getModelController(CustomerControl.class);
-            var totalCount = customerControl.countCustomerTypes();
+            var commandForm = CustomerUtil.getHome().getGetCustomerTypesForm();
+            var command = new GetCustomerTypesCommand();
 
-            try(var objectLimiter = new ObjectLimiter(env, CustomerTypeConstants.COMPONENT_VENDOR_NAME, CustomerTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = CustomerUtil.getHome().getGetCustomerTypesForm();
-                var entities = new GetCustomerTypesCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, CustomerTypeConstants.COMPONENT_VENDOR_NAME, CustomerTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var customerTypes = entities.stream().map(CustomerTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var customerTypes = entities.stream()
+                            .map(CustomerTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, customerTypes);
                 }
