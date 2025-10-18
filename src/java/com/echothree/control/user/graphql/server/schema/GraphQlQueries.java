@@ -587,7 +587,6 @@ import com.echothree.model.control.sequence.server.graphql.SequenceTypeObject;
 import com.echothree.model.control.shipment.server.graphql.FreeOnBoardObject;
 import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.control.shipping.server.graphql.ShippingMethodObject;
-import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.control.tag.server.graphql.EntityTagObject;
 import com.echothree.model.control.tag.server.graphql.TagObject;
 import com.echothree.model.control.tag.server.graphql.TagScopeEntityTypeObject;
@@ -10240,23 +10239,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<TagScopeObject> data;
 
         try {
-            var tagControl = Session.getModelController(TagControl.class);
-            var totalCount = tagControl.countTagScopes();
+            var commandForm = TagUtil.getHome().getGetTagScopesForm();
+            var command = new GetTagScopesCommand();
 
-            try(var objectLimiter = new ObjectLimiter(env, TagScopeConstants.COMPONENT_VENDOR_NAME, TagScopeConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = TagUtil.getHome().getGetTagScopesForm();
-                var entities = new GetTagScopesCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, TagScopeConstants.COMPONENT_VENDOR_NAME, TagScopeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var tagScopes = new ArrayList<TagScopeObject>(entities.size());
-
-                    for(var entity : entities) {
-                        var tagScopeObject = new TagScopeObject(entity, null);
-
-                        tagScopes.add(tagScopeObject);
-                    }
+                    var tagScopes = entities.stream()
+                            .map(TagScopeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, tagScopes);
                 }
