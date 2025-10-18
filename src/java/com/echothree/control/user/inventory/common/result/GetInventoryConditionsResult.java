@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetInventoryConditionsResult
         extends BaseResult {
-    
+
+    Long getInventoryConditionCount();
+    void setInventoryConditionCount(Long inventoryConditionCount);
+
     List<InventoryConditionTransfer> getInventoryConditions();
     void setInventoryConditions(List<InventoryConditionTransfer> inventoryConditions);
     
