@@ -24,10 +24,9 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.vendor.server.entity.Vendor;
 import com.echothree.model.data.vendor.server.factory.VendorFactory;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -36,7 +35,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class GetVendorsCommand
-        extends BaseMultipleEntitiesCommand<Vendor, GetVendorsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<Vendor, GetVendorsForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -58,6 +57,18 @@ public class GetVendorsCommand
     }
 
     @Override
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var vendorControl = Session.getModelController(VendorControl.class);
+
+        return vendorControl.countVendors();
+    }
+
+    @Override
     protected Collection<Vendor> getEntities() {
         var vendorControl = Session.getModelController(VendorControl.class);
 
@@ -72,7 +83,7 @@ public class GetVendorsCommand
             var vendorControl = Session.getModelController(VendorControl.class);
 
             if(session.hasLimit(VendorFactory.class)) {
-                result.setVendorCount(vendorControl.countVendors());
+                result.setVendorCount(getTotalEntities());
             }
 
             result.setVendors(vendorControl.getVendorTransfers(getUserVisit(), entities));
