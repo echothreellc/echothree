@@ -608,7 +608,6 @@ import com.echothree.model.control.vendor.server.graphql.VendorItemObject;
 import com.echothree.model.control.vendor.server.graphql.VendorObject;
 import com.echothree.model.control.vendor.server.graphql.VendorTypeObject;
 import com.echothree.model.control.warehouse.server.control.LocationUseTypeControl;
-import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.control.warehouse.server.graphql.LocationUseTypeObject;
 import com.echothree.model.control.warehouse.server.graphql.WarehouseObject;
 import com.echothree.model.control.warehouse.server.graphql.WarehouseTypeObject;
@@ -7903,17 +7902,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<WarehouseObject> data;
 
         try {
-            var warehouseControl = Session.getModelController(WarehouseControl.class);
-            var totalCount = warehouseControl.countWarehouses();
+            var commandForm = WarehouseUtil.getHome().getGetWarehousesForm();
+            var command = new GetWarehousesCommand();
 
-            try(var objectLimiter = new ObjectLimiter(env, WarehouseConstants.COMPONENT_VENDOR_NAME, WarehouseConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = WarehouseUtil.getHome().getGetWarehousesForm();
-                var entities = new GetWarehousesCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, WarehouseConstants.COMPONENT_VENDOR_NAME, WarehouseConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var warehouses = entities.stream().map(WarehouseObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var warehouses = entities.stream()
+                            .map(WarehouseObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, warehouses);
                 }
