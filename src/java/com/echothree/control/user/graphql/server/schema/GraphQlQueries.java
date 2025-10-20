@@ -793,6 +793,7 @@ import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.model.data.offer.server.entity.Use;
 import com.echothree.model.data.offer.server.entity.UseNameElement;
 import com.echothree.model.data.offer.server.entity.UseType;
+import com.echothree.model.data.order.common.OrderTimeTypeConstants;
 import com.echothree.model.data.order.common.OrderTypeConstants;
 import com.echothree.model.data.order.server.entity.OrderPriority;
 import com.echothree.model.data.order.server.entity.OrderTimeType;
@@ -9802,32 +9803,37 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("orderTimeTypes")
-    static Collection<OrderTimeTypeObject> orderTimeTypes(final DataFetchingEnvironment env,
-            @GraphQLName("orderTypeName") @GraphQLNonNull final String orderTypeName) {
-        Collection<OrderTimeType> orderTimeTypes;
-        Collection<OrderTimeTypeObject> orderTimeTypeObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<OrderTimeTypeObject> orderTimeTypes(final DataFetchingEnvironment env,
+            @GraphQLName("orderTypeName") final String orderTypeName) {
+        CountingPaginatedData<OrderTimeTypeObject> data;
 
         try {
             var commandForm = OrderUtil.getHome().getGetOrderTimeTypesForm();
+            var command = new GetOrderTimeTypesCommand();
 
             commandForm.setOrderTypeName(orderTypeName);
 
-            orderTimeTypes = new GetOrderTimeTypesCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, OrderTimeTypeConstants.COMPONENT_VENDOR_NAME, OrderTimeTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var orderTimeTypes = entities.stream()
+                            .map(OrderTimeTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, orderTimeTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(orderTimeTypes == null) {
-            orderTimeTypeObjects = emptyList();
-        } else {
-            orderTimeTypeObjects = new ArrayList<>(orderTimeTypes.size());
-
-            orderTimeTypes.stream()
-                    .map(OrderTimeTypeObject::new)
-                    .forEachOrdered(orderTimeTypeObjects::add);
-        }
-
-        return orderTimeTypeObjects;
+        return data;
     }
 
     @GraphQLField
