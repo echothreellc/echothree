@@ -793,6 +793,7 @@ import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.model.data.offer.server.entity.Use;
 import com.echothree.model.data.offer.server.entity.UseNameElement;
 import com.echothree.model.data.offer.server.entity.UseType;
+import com.echothree.model.data.order.common.OrderPriorityConstants;
 import com.echothree.model.data.order.common.OrderTimeTypeConstants;
 import com.echothree.model.data.order.common.OrderTypeConstants;
 import com.echothree.model.data.order.server.entity.OrderPriority;
@@ -9750,32 +9751,37 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("orderPriorities")
-    static Collection<OrderPriorityObject> orderPriorities(final DataFetchingEnvironment env,
-            @GraphQLName("orderTypeName") @GraphQLNonNull final String orderTypeName) {
-        Collection<OrderPriority> orderPriorities;
-        Collection<OrderPriorityObject> orderPriorityObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<OrderPriorityObject> orderPriorities(final DataFetchingEnvironment env,
+            @GraphQLName("orderTypeName") final String orderTypeName) {
+        CountingPaginatedData<OrderPriorityObject> data;
 
         try {
             var commandForm = OrderUtil.getHome().getGetOrderPrioritiesForm();
+            var command = new GetOrderPrioritiesCommand();
 
             commandForm.setOrderTypeName(orderTypeName);
 
-            orderPriorities = new GetOrderPrioritiesCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, OrderPriorityConstants.COMPONENT_VENDOR_NAME, OrderPriorityConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var orderPriorities = entities.stream()
+                            .map(OrderPriorityObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, orderPriorities);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(orderPriorities == null) {
-            orderPriorityObjects = emptyList();
-        } else {
-            orderPriorityObjects = new ArrayList<>(orderPriorities.size());
-
-            orderPriorities.stream()
-                    .map(OrderPriorityObject::new)
-                    .forEachOrdered(orderPriorityObjects::add);
-        }
-
-        return orderPriorityObjects;
+        return data;
     }
 
     @GraphQLField

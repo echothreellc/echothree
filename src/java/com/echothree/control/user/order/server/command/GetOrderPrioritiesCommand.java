@@ -27,37 +27,34 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.order.server.entity.OrderPriority;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.order.server.factory.OrderPriorityFactory;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class GetOrderPrioritiesCommand
-        extends BaseMultipleEntitiesCommand<OrderPriority, GetOrderPrioritiesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<OrderPriority, GetOrderPrioritiesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.OrderPriority.name(), SecurityRoles.List.name())
-                        )))
-                )));
+                ))
+        ));
 
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OrderTypeName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+        );
     }
     
     /** Creates a new instance of GetOrderPrioritiesCommand */
@@ -68,12 +65,30 @@ public class GetOrderPrioritiesCommand
     OrderType orderType;
 
     @Override
-    protected Collection<OrderPriority> getEntities() {
+    protected void handleForm() {
+        var orderTypeName = form.getOrderTypeName();
+
+        orderType = OrderTypeLogic.getInstance().getOrderTypeByName(this, orderTypeName);
+    }
+
+    @Override
+    protected Long getTotalEntities() {
         var orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
 
-        orderType = OrderTypeLogic.getInstance().getOrderTypeByName(this, form.getOrderTypeName());
+        return hasExecutionErrors() ? null : orderPriorityControl.countOrderPriorities(orderType);
+    }
 
-        return hasExecutionErrors() ? null : orderPriorityControl.getOrderPriorities(orderType);
+    @Override
+    protected Collection<OrderPriority> getEntities() {
+        Collection<OrderPriority> orderPriorities = null;
+
+        if(!hasExecutionErrors()) {
+            var orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
+
+            orderPriorities = orderPriorityControl.getOrderPriorities(orderType);
+        }
+
+        return orderPriorities;
     }
 
     @Override
@@ -83,13 +98,14 @@ public class GetOrderPrioritiesCommand
         if(entities != null) {
             var orderTypeControl = Session.getModelController(OrderTypeControl.class);
             var orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
+            var userVisit = getUserVisit();
 
             if(session.hasLimit(OrderPriorityFactory.class)) {
-                result.setOrderPriorityCount(orderPriorityControl.countOrderPriorities(orderType));
+                result.setOrderPriorityCount(getTotalEntities());
             }
 
-            result.setOrderType(orderTypeControl.getOrderTypeTransfer(getUserVisit(), orderType));
-            result.setOrderPriorities(orderPriorityControl.getOrderPriorityTransfers(getUserVisit(), entities));
+            result.setOrderType(orderTypeControl.getOrderTypeTransfer(userVisit, orderType));
+            result.setOrderPriorities(orderPriorityControl.getOrderPriorityTransfers(userVisit, entities));
         }
 
         return result;
