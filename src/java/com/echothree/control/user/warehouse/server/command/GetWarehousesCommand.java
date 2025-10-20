@@ -22,12 +22,11 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.model.data.warehouse.server.factory.WarehouseFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -36,7 +35,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class GetWarehousesCommand
-        extends BaseMultipleEntitiesCommand<Warehouse, GetWarehousesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<Warehouse, GetWarehousesForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -58,6 +57,18 @@ public class GetWarehousesCommand
     }
 
     @Override
+    protected void handleForm() {
+        // no fields
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var warehouseControl = Session.getModelController(WarehouseControl.class);
+
+        return warehouseControl.countWarehouses();
+    }
+
+    @Override
     protected Collection<Warehouse> getEntities() {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
 
@@ -72,7 +83,7 @@ public class GetWarehousesCommand
             var warehouseControl = Session.getModelController(WarehouseControl.class);
 
             if(session.hasLimit(WarehouseFactory.class)) {
-                result.setWarehouseCount(warehouseControl.countWarehouses());
+                result.setWarehouseCount(getTotalEntities());
             }
 
             result.setWarehouses(warehouseControl.getWarehouseTransfers(getUserVisit(), entities));
