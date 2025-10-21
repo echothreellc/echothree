@@ -3488,7 +3488,7 @@ public class EmployeeControl
         return getDefaultEmployeeTypeForUpdate().getLastDetailForUpdate().getEmployeeTypeDetailValue().clone();
     }
     
-    private EmployeeType getEmployeeTypeByName(String employeeTypeName, EntityPermission entityPermission) {
+    public EmployeeType getEmployeeTypeByName(String employeeTypeName, EntityPermission entityPermission) {
         EmployeeType employeeType;
         
         try {
