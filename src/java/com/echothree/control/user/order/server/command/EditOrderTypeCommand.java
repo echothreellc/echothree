@@ -21,18 +21,20 @@ import com.echothree.control.user.order.common.edit.OrderTypeEdit;
 import com.echothree.control.user.order.common.result.EditOrderTypeResult;
 import com.echothree.control.user.order.common.result.OrderResultFactory;
 import com.echothree.control.user.order.common.spec.OrderTypeUniversalSpec;
+import com.echothree.model.control.order.common.exception.UnknownOrderWorkflowEntranceNameException;
+import com.echothree.model.control.order.common.exception.UnknownOrderWorkflowNameException;
 import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.order.server.logic.OrderTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.sequence.server.control.SequenceControl;
-import com.echothree.model.control.workflow.server.control.WorkflowControl;
+import com.echothree.model.control.sequence.server.logic.SequenceTypeLogic;
+import com.echothree.model.control.workflow.server.logic.WorkflowEntranceLogic;
+import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -40,6 +42,7 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
@@ -95,14 +98,9 @@ public class EditOrderTypeCommand
     @Override
     public OrderType getEntity(EditOrderTypeResult result) {
         var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-        OrderType orderType;
         var orderTypeName = spec.getOrderTypeName();
-
-        if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            orderType = OrderTypeLogic.getInstance().getOrderTypeByUniversalSpec(this, spec, false);
-        } else { // EditMode.UPDATE
-            orderType = OrderTypeLogic.getInstance().getOrderTypeByUniversalSpecForUpdate(this, spec, false);
-        }
+        var orderType = OrderTypeLogic.getInstance().getOrderTypeByUniversalSpec(this, spec, false,
+                editModeToEntityPermission(editMode));
 
         if(orderType != null) {
             result.setOrderType(orderTypeControl.getOrderTypeTransfer(getUserVisit(), orderType));
@@ -158,37 +156,30 @@ public class EditOrderTypeCommand
         var duplicateOrderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(duplicateOrderType == null || orderType.equals(duplicateOrderType)) {
-            var sequenceControl = Session.getModelController(SequenceControl.class);
             var orderSequenceTypeName = edit.getOrderSequenceTypeName();
 
-            orderSequenceType = sequenceControl.getSequenceTypeByName(orderSequenceTypeName);
+            orderSequenceType = orderSequenceTypeName == null ? null :
+                    SequenceTypeLogic.getInstance().getSequenceTypeByName(this, orderSequenceTypeName);
 
-            if(orderSequenceTypeName == null || orderSequenceType != null) {
-                var workflowControl = Session.getModelController(WorkflowControl.class);
+            if(!hasExecutionErrors()) {
                 var orderWorkflowName = edit.getOrderWorkflowName();
 
-                orderWorkflow = orderWorkflowName == null ? null : workflowControl.getWorkflowByName(orderWorkflowName);
+                orderWorkflow = orderWorkflowName == null ? null : WorkflowLogic.getInstance().getWorkflowByName(
+                        UnknownOrderWorkflowNameException.class, ExecutionErrors.UnknownOrderWorkflowName, this,
+                        orderWorkflowName, EntityPermission.READ_ONLY);
 
-                if(orderWorkflowName == null || orderWorkflow != null) {
+                if(!hasExecutionErrors()) {
                     var orderWorkflowEntranceName = edit.getOrderWorkflowEntranceName();
 
-                    if(orderWorkflowEntranceName == null || (orderWorkflow != null && orderWorkflowEntranceName != null)) {
-                        orderWorkflowEntrance = orderWorkflowEntranceName == null ? null : workflowControl.getWorkflowEntranceByName(orderWorkflow, orderWorkflowEntranceName);
-
-                        if(orderWorkflowEntranceName != null && orderWorkflowEntrance == null) {
-                            addExecutionError(ExecutionErrors.UnknownOrderWorkflowEntranceName.name(), orderWorkflowName, orderWorkflowEntranceName);
-                        }
+                    if(orderWorkflowEntranceName == null || orderWorkflow != null) {
+                            orderWorkflowEntrance = orderWorkflowEntranceName == null ? null : WorkflowEntranceLogic.getInstance().getWorkflowEntranceByName(
+                                    UnknownOrderWorkflowEntranceNameException.class, ExecutionErrors.UnknownOrderWorkflowEntranceName, this,
+                                    orderWorkflow, orderWorkflowEntranceName);
                     } else {
                         addExecutionError(ExecutionErrors.MissingRequiredOrderWorkflowName.name());
                     }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownOrderWorkflowName.name(), orderWorkflowName);
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownOrderSequenceTypeName.name(), orderSequenceTypeName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.DuplicateOrderTypeName.name(), orderTypeName);
         }
     }
 
