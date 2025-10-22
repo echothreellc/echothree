@@ -23,10 +23,10 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.inventory.server.entity.AllocationPriority;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.inventory.server.factory.AllocationPriorityFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -35,7 +35,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class GetAllocationPrioritiesCommand
-        extends BaseMultipleEntitiesCommand<AllocationPriority, GetAllocationPrioritiesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<AllocationPriority, GetAllocationPrioritiesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -57,6 +57,18 @@ public class GetAllocationPrioritiesCommand
     }
 
     @Override
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var inventoryControl = Session.getModelController(InventoryControl.class);
+
+        return inventoryControl.countAllocationPriorities();
+    }
+
+    @Override
     protected Collection<AllocationPriority> getEntities() {
         var inventoryControl = Session.getModelController(InventoryControl.class);
 
@@ -69,6 +81,10 @@ public class GetAllocationPrioritiesCommand
 
         if(entities != null) {
             var inventoryControl = Session.getModelController(InventoryControl.class);
+
+            if(session.hasLimit(AllocationPriorityFactory.class)) {
+                result.setAllocationPriorityCount(getTotalEntities());
+            }
 
             result.setAllocationPriorities(inventoryControl.getAllocationPriorityTransfers(getUserVisit(), entities));
         }
