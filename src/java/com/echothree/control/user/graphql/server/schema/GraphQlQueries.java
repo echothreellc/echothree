@@ -4652,16 +4652,16 @@ public interface GraphQlQueries {
         CountingPaginatedData<AllocationPriorityObject> data;
 
         try {
-            var inventoryControl = Session.getModelController(InventoryControl.class);
-            var totalCount = inventoryControl.countAllocationPriorities();
+            var commandForm = InventoryUtil.getHome().getGetAllocationPrioritiesForm();
+            var command = new GetAllocationPrioritiesCommand();
 
-            try(var objectLimiter = new ObjectLimiter(env, AllocationPriorityConstants.COMPONENT_VENDOR_NAME, AllocationPriorityConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = InventoryUtil.getHome().getGetAllocationPrioritiesForm();
-                var entities = new GetAllocationPrioritiesCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, AllocationPriorityConstants.COMPONENT_VENDOR_NAME, AllocationPriorityConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
                     var allocationPriorities = entities.stream()
                             .map(AllocationPriorityObject::new)
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
