@@ -88,8 +88,10 @@ import com.echothree.control.user.filter.common.result.EditFilterStepResult;
 import com.echothree.control.user.inventory.common.InventoryUtil;
 import com.echothree.control.user.inventory.common.result.CreateAllocationPriorityResult;
 import com.echothree.control.user.inventory.common.result.CreateInventoryConditionResult;
+import com.echothree.control.user.inventory.common.result.CreateInventoryTransactionTypeResult;
 import com.echothree.control.user.inventory.common.result.EditAllocationPriorityResult;
 import com.echothree.control.user.inventory.common.result.EditInventoryConditionResult;
+import com.echothree.control.user.inventory.common.result.EditInventoryTransactionTypeResult;
 import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.result.CreateItemAliasTypeResult;
 import com.echothree.control.user.item.common.result.CreateItemCategoryResult;
@@ -3716,6 +3718,129 @@ public interface GraphQlMutations {
             }
 
             mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject createInventoryTransactionType(final DataFetchingEnvironment env,
+            @GraphQLName("inventoryTransactionTypeName") @GraphQLNonNull final String inventoryTransactionTypeName,
+            @GraphQLName("inventoryTransactionSequenceTypeName") final String inventoryTransactionSequenceTypeName,
+            @GraphQLName("inventoryTransactionWorkflowName") final String inventoryTransactionWorkflowName,
+            @GraphQLName("inventoryTransactionWorkflowEntranceName") final String inventoryTransactionWorkflowEntranceName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = InventoryUtil.getHome().getCreateInventoryTransactionTypeForm();
+
+            commandForm.setInventoryTransactionTypeName(inventoryTransactionTypeName);
+            commandForm.setInventoryTransactionSequenceTypeName(inventoryTransactionSequenceTypeName);
+            commandForm.setInventoryTransactionWorkflowName(inventoryTransactionWorkflowName);
+            commandForm.setInventoryTransactionWorkflowEntranceName(inventoryTransactionWorkflowEntranceName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = InventoryUtil.getHome().createInventoryTransactionType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateInventoryTransactionTypeResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject editInventoryTransactionType(final DataFetchingEnvironment env,
+            @GraphQLName("originalInventoryTransactionTypeName") final String originalInventoryTransactionTypeName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("inventoryTransactionTypeName") final String inventoryTransactionTypeName,
+            @GraphQLName("inventoryTransactionSequenceTypeName") final String inventoryTransactionSequenceTypeName,
+            @GraphQLName("inventoryTransactionWorkflowName") final String inventoryTransactionWorkflowName,
+            @GraphQLName("inventoryTransactionWorkflowEntranceName") final String inventoryTransactionWorkflowEntranceName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = InventoryUtil.getHome().getInventoryTransactionTypeUniversalSpec();
+
+            spec.setInventoryTransactionTypeName(originalInventoryTransactionTypeName);
+            spec.setUuid(id);
+
+            var commandForm = InventoryUtil.getHome().getEditInventoryTransactionTypeForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = InventoryUtil.getHome().editInventoryTransactionType(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditInventoryTransactionTypeResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getInventoryTransactionType().getEntityInstance());
+
+                if(arguments.containsKey("inventoryTransactionTypeName"))
+                    edit.setInventoryTransactionTypeName(inventoryTransactionTypeName);
+                if(arguments.containsKey("inventoryTransactionSequenceTypeName"))
+                    edit.setInventoryTransactionSequenceTypeName(inventoryTransactionSequenceTypeName);
+                if(arguments.containsKey("inventoryTransactionWorkflowName"))
+                    edit.setInventoryTransactionWorkflowName(inventoryTransactionWorkflowName);
+                if(arguments.containsKey("inventoryTransactionWorkflowEntranceName"))
+                    edit.setInventoryTransactionWorkflowEntranceName(inventoryTransactionWorkflowEntranceName);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = InventoryUtil.getHome().editInventoryTransactionType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteInventoryTransactionType(final DataFetchingEnvironment env,
+            @GraphQLName("inventoryTransactionTypeName") final String inventoryTransactionTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = InventoryUtil.getHome().getDeleteInventoryTransactionTypeForm();
+
+            commandForm.setInventoryTransactionTypeName(inventoryTransactionTypeName);
+            commandForm.setUuid(id);
+
+            mutationResultObject.setCommandResult(InventoryUtil.getHome().deleteInventoryTransactionType(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }

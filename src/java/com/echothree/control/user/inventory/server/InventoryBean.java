@@ -544,4 +544,67 @@ public class InventoryBean
         return new DeleteAllocationPriorityDescriptionCommand().run(userVisitPK, form);
     }
 
+    // -------------------------------------------------------------------------
+    //   Inventory Transaction Types
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createInventoryTransactionType(UserVisitPK userVisitPK, CreateInventoryTransactionTypeForm form) {
+        return new CreateInventoryTransactionTypeCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult getInventoryTransactionTypes(UserVisitPK userVisitPK, GetInventoryTransactionTypesForm form) {
+        return new GetInventoryTransactionTypesCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult getInventoryTransactionType(UserVisitPK userVisitPK, GetInventoryTransactionTypeForm form) {
+        return new GetInventoryTransactionTypeCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult getInventoryTransactionTypeChoices(UserVisitPK userVisitPK, GetInventoryTransactionTypeChoicesForm form) {
+        return new GetInventoryTransactionTypeChoicesCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult setDefaultInventoryTransactionType(UserVisitPK userVisitPK, SetDefaultInventoryTransactionTypeForm form) {
+        return new SetDefaultInventoryTransactionTypeCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult editInventoryTransactionType(UserVisitPK userVisitPK, EditInventoryTransactionTypeForm form) {
+        return new EditInventoryTransactionTypeCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult deleteInventoryTransactionType(UserVisitPK userVisitPK, DeleteInventoryTransactionTypeForm form) {
+        return new DeleteInventoryTransactionTypeCommand().run(userVisitPK, form);
+    }
+
+    // -------------------------------------------------------------------------
+    //   Inventory Transaction Type Descriptions
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createInventoryTransactionTypeDescription(UserVisitPK userVisitPK, CreateInventoryTransactionTypeDescriptionForm form) {
+        return new CreateInventoryTransactionTypeDescriptionCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult getInventoryTransactionTypeDescriptions(UserVisitPK userVisitPK, GetInventoryTransactionTypeDescriptionsForm form) {
+        return new GetInventoryTransactionTypeDescriptionsCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult editInventoryTransactionTypeDescription(UserVisitPK userVisitPK, EditInventoryTransactionTypeDescriptionForm form) {
+        return new EditInventoryTransactionTypeDescriptionCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult deleteInventoryTransactionTypeDescription(UserVisitPK userVisitPK, DeleteInventoryTransactionTypeDescriptionForm form) {
+        return new DeleteInventoryTransactionTypeDescriptionCommand().run(userVisitPK, form);
+    }
+
 }

@@ -39,6 +39,11 @@
             <allocationPriorityDescription languageIsoName="en" description="High" />
         </allocationPriority>
     </allocationPriorities>
+    <inventoryTransactionTypes>
+        <inventoryTransactionType inventoryTransactionTypeName="TEST_INVENTORY_TRANSACTION_TYPE" isDefault="true" sortOrder="0">
+            <inventoryTransactionTypeDescription languageIsoName="en" description="Test Inventory Transaction Type" />
+        </inventoryTransactionType>
+    </inventoryTransactionTypes>
     <lotAliasTypes>
         <lotAliasType lotAliasTypeName="TEST_LOT_ALIAS_TYPE_1" isDefault="true" sortOrder="0">
             <lotAliasTypeDescription languageIsoName="en" description="Test Lot Alias Type 1" />

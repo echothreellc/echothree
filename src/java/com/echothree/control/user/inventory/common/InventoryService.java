@@ -275,4 +275,34 @@ public interface InventoryService
 
     CommandResult deleteAllocationPriorityDescription(UserVisitPK userVisitPK, DeleteAllocationPriorityDescriptionForm form);
 
+    // -------------------------------------------------------------------------
+    //   Inventory Transaction Types
+    // -------------------------------------------------------------------------
+
+    CommandResult createInventoryTransactionType(UserVisitPK userVisitPK, CreateInventoryTransactionTypeForm form);
+
+    CommandResult getInventoryTransactionTypes(UserVisitPK userVisitPK, GetInventoryTransactionTypesForm form);
+
+    CommandResult getInventoryTransactionType(UserVisitPK userVisitPK, GetInventoryTransactionTypeForm form);
+
+    CommandResult getInventoryTransactionTypeChoices(UserVisitPK userVisitPK, GetInventoryTransactionTypeChoicesForm form);
+
+    CommandResult setDefaultInventoryTransactionType(UserVisitPK userVisitPK, SetDefaultInventoryTransactionTypeForm form);
+
+    CommandResult editInventoryTransactionType(UserVisitPK userVisitPK, EditInventoryTransactionTypeForm form);
+
+    CommandResult deleteInventoryTransactionType(UserVisitPK userVisitPK, DeleteInventoryTransactionTypeForm form);
+
+    // -------------------------------------------------------------------------
+    //   Inventory Transaction Type Descriptions
+    // -------------------------------------------------------------------------
+
+    CommandResult createInventoryTransactionTypeDescription(UserVisitPK userVisitPK, CreateInventoryTransactionTypeDescriptionForm form);
+
+    CommandResult getInventoryTransactionTypeDescriptions(UserVisitPK userVisitPK, GetInventoryTransactionTypeDescriptionsForm form);
+
+    CommandResult editInventoryTransactionTypeDescription(UserVisitPK userVisitPK, EditInventoryTransactionTypeDescriptionForm form);
+
+    CommandResult deleteInventoryTransactionTypeDescription(UserVisitPK userVisitPK, DeleteInventoryTransactionTypeDescriptionForm form);
+
 }

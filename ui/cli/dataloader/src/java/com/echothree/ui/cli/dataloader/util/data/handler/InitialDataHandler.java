@@ -105,6 +105,7 @@ import com.echothree.ui.cli.dataloader.util.data.handler.index.IndexesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.inventory.AllocationPrioritiesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.inventory.InventoryConditionUseTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.inventory.InventoryConditionsHandler;
+import com.echothree.ui.cli.dataloader.util.data.handler.inventory.InventoryTransactionTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.inventory.LotAliasTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.inventory.LotTimeTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.invoice.InvoiceLineUseTypesHandler;
@@ -434,6 +435,8 @@ public class InitialDataHandler
             initialDataParser.pushHandler(new WarehousesHandler(initialDataParser, this));
         } else if(localName.equals("inventoryConditions")) {
             initialDataParser.pushHandler(new InventoryConditionsHandler(initialDataParser, this));
+        } else if(localName.equals("inventoryTransactionTypes")) {
+            initialDataParser.pushHandler(new InventoryTransactionTypesHandler(initialDataParser, this));
         } else if(localName.equals("allocationPriorities")) {
             initialDataParser.pushHandler(new AllocationPrioritiesHandler(initialDataParser, this));
         } else if(localName.equals("wishlistTypes")) {
