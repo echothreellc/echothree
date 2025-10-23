@@ -20,6 +20,8 @@ import com.echothree.control.user.inventory.server.command.GetAllocationPrioriti
 import com.echothree.control.user.inventory.server.command.GetAllocationPriorityCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryConditionCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryConditionsCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryTransactionTypeCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryTransactionTypesCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
@@ -39,6 +41,14 @@ public interface InventorySecurityUtils {
 
     static boolean getHasAllocationPrioritiesAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetAllocationPrioritiesCommand.class);
+    }
+
+    static boolean getHasInventoryTransactionTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetInventoryTransactionTypeCommand.class);
+    }
+
+    static boolean getHasInventoryTransactionTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetInventoryTransactionTypesCommand.class);
     }
 
 }

@@ -2357,5 +2357,13 @@ public enum ExecutionErrors {
     UnknownDefaultItemWeightType,
     UnknownItemVolumeTypeName,
     UnknownDefaultItemVolumeType,
+    UnknownInventoryTransactionWorkflowName,
+    UnknownInventoryTransactionWorkflowEntranceName,
+    MissingRequiredInventoryTransactionWorkflowName,
+    DuplicateInventoryTransactionTypeName,
+    UnknownInventoryTransactionTypeName,
+    UnknownDefaultInventoryTransactionType,
+    UnknownInventoryTransactionTypeDescription,
+    DuplicateInventoryTransactionTypeDescription,
 
 }

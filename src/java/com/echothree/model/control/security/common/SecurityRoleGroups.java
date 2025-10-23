@@ -152,6 +152,7 @@ public enum SecurityRoleGroups {
     IndexField,
     IndexType,
     InventoryCondition,
+    InventoryTransactionType,
     InvoiceAliasType,
     InvoiceLineType,
     InvoiceLineUseType,
