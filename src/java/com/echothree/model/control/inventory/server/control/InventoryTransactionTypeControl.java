@@ -54,7 +54,7 @@ public class InventoryTransactionTypeControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Inventory Types
+    //   Inventory Transaction Types
     // --------------------------------------------------------------------------------
 
     public InventoryTransactionType createInventoryTransactionType(String inventoryTransactionTypeName, SequenceType inventoryTransactionSequenceType, Workflow inventoryTransactionWorkflow,
@@ -367,7 +367,7 @@ public class InventoryTransactionTypeControl
     }
 
     // --------------------------------------------------------------------------------
-    //   Inventory Type Descriptions
+    //   Inventory Transaction Type Descriptions
     // --------------------------------------------------------------------------------
 
     public InventoryTransactionTypeDescription createInventoryTransactionTypeDescription(InventoryTransactionType inventoryTransactionType, Language language, String description, BasePK createdBy) {
