@@ -23,9 +23,9 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowStep;
+import com.echothree.model.data.workflow.server.factory.WorkflowStepFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -98,6 +98,10 @@ public class GetWorkflowStepsCommand
         if(entities != null) {
             var workflowControl = Session.getModelController(WorkflowControl.class);
             var userVisit = getUserVisit();
+
+            if(session.hasLimit(WorkflowStepFactory.class)) {
+                result.setWorkflowStepCount(getTotalEntities());
+            }
 
             result.setWorkflow(workflowControl.getWorkflowTransfer(userVisit, workflow));
             result.setWorkflowSteps(workflowControl.getWorkflowStepTransfers(getUserVisit(), entities));
