@@ -487,7 +487,6 @@ import com.echothree.model.control.graphql.server.graphql.count.CountingPaginate
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import static com.echothree.model.control.graphql.server.util.BaseGraphQl.getUserVisitPK;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.inventory.server.graphql.AllocationPriorityObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryConditionObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryTransactionTypeObject;
@@ -868,6 +867,7 @@ import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceChecksumType;
 import com.echothree.model.data.sequence.server.entity.SequenceEncoderType;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
+import com.echothree.model.data.shipment.common.FreeOnBoardConstants;
 import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
 import com.echothree.model.data.shipping.common.ShippingMethodConstants;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;
@@ -3674,29 +3674,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("freeOnBoards")
-    static Collection<FreeOnBoardObject> freeOnBoards(final DataFetchingEnvironment env) {
-        Collection<FreeOnBoard> freeOnBoards;
-        Collection<FreeOnBoardObject> freeOnBoardObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<FreeOnBoardObject> freeOnBoards(final DataFetchingEnvironment env) {
+        CountingPaginatedData<FreeOnBoardObject> data;
 
         try {
             var commandForm = ShipmentUtil.getHome().getGetFreeOnBoardsForm();
+            var command = new GetFreeOnBoardsCommand();
 
-            freeOnBoards = new GetFreeOnBoardsCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, FreeOnBoardConstants.COMPONENT_VENDOR_NAME, FreeOnBoardConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var freeOnBoards = entities.stream()
+                            .map(FreeOnBoardObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, freeOnBoards);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(freeOnBoards == null) {
-            freeOnBoardObjects = emptyList();
-        } else {
-            freeOnBoardObjects = new ArrayList<>(freeOnBoards.size());
-
-            freeOnBoards.stream()
-                    .map(FreeOnBoardObject::new)
-                    .forEachOrdered(freeOnBoardObjects::add);
-        }
-
-        return freeOnBoardObjects;
+        return data;
     }
 
     @GraphQLField
