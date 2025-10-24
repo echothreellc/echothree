@@ -496,6 +496,7 @@ import com.echothree.model.control.item.server.graphql.ItemAliasChecksumTypeObje
 import com.echothree.model.control.item.server.graphql.ItemAliasObject;
 import com.echothree.model.control.item.server.graphql.ItemAliasTypeObject;
 import com.echothree.model.control.item.server.graphql.ItemCategoryObject;
+import com.echothree.model.data.item.common.ItemCategoryConstants;
 import com.echothree.model.control.item.server.graphql.ItemDeliveryTypeObject;
 import com.echothree.model.control.item.server.graphql.ItemDescriptionObject;
 import com.echothree.model.control.item.server.graphql.ItemDescriptionTypeObject;
@@ -8868,32 +8869,37 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("itemCategories")
-    static Collection<ItemCategoryObject> itemCategories(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ItemCategoryObject> itemCategories(final DataFetchingEnvironment env,
             @GraphQLName("parentItemCategoryName") final String parentItemCategoryName) {
-        Collection<ItemCategory> itemCategories;
-        Collection<ItemCategoryObject> itemCategoryObjects;
+        CountingPaginatedData<ItemCategoryObject> data;
 
         try {
             var commandForm = ItemUtil.getHome().getGetItemCategoriesForm();
+            var command = new GetItemCategoriesCommand();
 
             commandForm.setParentItemCategoryName(parentItemCategoryName);
 
-            itemCategories = new GetItemCategoriesCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ItemCategoryConstants.COMPONENT_VENDOR_NAME, ItemCategoryConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var itemCategories = entities.stream()
+                            .map(ItemCategoryObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, itemCategories);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(itemCategories == null) {
-            itemCategoryObjects = emptyList();
-        } else {
-            itemCategoryObjects = new ArrayList<>(itemCategories.size());
-
-            itemCategories.stream()
-                    .map(ItemCategoryObject::new)
-                    .forEachOrdered(itemCategoryObjects::add);
-        }
-
-        return itemCategoryObjects;
+        return data;
     }
 
     @GraphQLField

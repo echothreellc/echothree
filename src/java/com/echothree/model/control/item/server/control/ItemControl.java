@@ -1251,7 +1251,38 @@ public class ItemControl
         
         return itemCategory;
     }
-    
+
+    public long countItemCategories() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM itemcategories, itemcategorydetails " +
+                        "WHERE ic_activedetailid = icdt_itemcategorydetailid");
+    }
+
+    public long countItemCategoriesByParentItemCategory(ItemCategory parentItemCategory) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM itemcategories, itemcategorydetails " +
+                        "WHERE ic_activedetailid = icdt_itemcategorydetailid " +
+                        "AND icdt_parentitemcategoryid = ?",
+                parentItemCategory);
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ItemCategory */
+    public ItemCategory getItemCategoryByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ItemCategoryPK(entityInstance.getEntityUniqueId());
+
+        return ItemCategoryFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ItemCategory getItemCategoryByEntityInstance(EntityInstance entityInstance) {
+        return getItemCategoryByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ItemCategory getItemCategoryByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getItemCategoryByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     public ItemCategory getItemCategoryByName(String itemCategoryName, EntityPermission entityPermission) {
         ItemCategory itemCategory;
         
@@ -1417,21 +1448,6 @@ public class ItemControl
     public List<ItemCategoryTransfer> getItemCategoryTransfersByParentItemCategory(UserVisit userVisit,
             ItemCategory parentItemCategory) {
         return getItemCategoryTransfers(userVisit, getItemCategoriesByParentItemCategory(parentItemCategory));
-    }
-
-    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ItemCategory */
-    public ItemCategory getItemCategoryByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        var pk = new ItemCategoryPK(entityInstance.getEntityUniqueId());
-
-        return ItemCategoryFactory.getInstance().getEntityFromPK(entityPermission, pk);
-    }
-
-    public ItemCategory getItemCategoryByEntityInstance(EntityInstance entityInstance) {
-        return getItemCategoryByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
-    }
-
-    public ItemCategory getItemCategoryByEntityInstanceForUpdate(EntityInstance entityInstance) {
-        return getItemCategoryByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
     public ItemCategoryChoicesBean getItemCategoryChoices(String defaultItemCategoryChoice, Language language,
