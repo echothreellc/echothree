@@ -26,7 +26,10 @@ public interface GetWorkflowStepsResult
     
     WorkflowTransfer getWorkflow();
     void setWorkflow(WorkflowTransfer workflow);
-    
+
+    Long getWorkflowStepCount();
+    void setWorkflowStepCount(Long workflowStepCount);
+
     List<WorkflowStepTransfer> getWorkflowSteps();
     void setWorkflowSteps(List<WorkflowStepTransfer> workflowSteps);
     
