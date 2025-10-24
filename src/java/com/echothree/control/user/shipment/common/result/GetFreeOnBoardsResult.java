@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetFreeOnBoardsResult
         extends BaseResult {
-    
+
+    Long getFreeOnBoardCount();
+    void setFreeOnBoardCount(Long freeOnBoardCount);
+
     List<FreeOnBoardTransfer> getFreeOnBoards();
     void setFreeOnBoards(List<FreeOnBoardTransfer> freeOnBoards);
     

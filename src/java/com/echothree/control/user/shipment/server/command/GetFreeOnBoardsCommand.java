@@ -20,47 +20,63 @@ import com.echothree.control.user.shipment.common.form.GetFreeOnBoardsForm;
 import com.echothree.control.user.shipment.common.result.ShipmentResultFactory;
 import com.echothree.model.control.shipment.server.control.FreeOnBoardControl;
 import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.model.data.shipment.server.factory.FreeOnBoardFactory;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class GetFreeOnBoardsCommand
-        extends BaseMultipleEntitiesCommand<FreeOnBoard, GetFreeOnBoardsForm> {
-    
+        extends BasePaginatedMultipleEntitiesCommand<FreeOnBoard, GetFreeOnBoardsForm> {
+
     // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                ));
+        FORM_FIELD_DEFINITIONS = List.of();
     }
-    
+
     /** Creates a new instance of GetFreeOnBoardsCommand */
     public GetFreeOnBoardsCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    @Override
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
+
+        return freeOnBoardControl.countFreeOnBoards();
+    }
+
     @Override
     protected Collection<FreeOnBoard> getEntities() {
         var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
-        
+
         return freeOnBoardControl.getFreeOnBoards();
     }
-    
+
     @Override
     protected BaseResult getResult(Collection<FreeOnBoard> entities) {
         var result = ShipmentResultFactory.getGetFreeOnBoardsResult();
-        var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
-        
-        result.setFreeOnBoards(freeOnBoardControl.getFreeOnBoardTransfers(getUserVisit(), entities));
-        
+
+        if(entities != null) {
+            var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
+
+            if(session.hasLimit(FreeOnBoardFactory.class)) {
+                result.setFreeOnBoardCount(getTotalEntities());
+            }
+
+            result.setFreeOnBoards(freeOnBoardControl.getFreeOnBoardTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
-    
+
 }
