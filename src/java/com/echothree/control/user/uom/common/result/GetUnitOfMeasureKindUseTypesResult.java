@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetUnitOfMeasureKindUseTypesResult
         extends BaseResult {
-    
+
+    Long getUnitOfMeasureKindUseTypeCount();
+    void setUnitOfMeasureKindUseTypeCount(Long unitOfMeasureKindUseTypeCount);
+
     List<UnitOfMeasureKindUseTypeTransfer> getUnitOfMeasureKindUseTypes();
     void setUnitOfMeasureKindUseTypes(List<UnitOfMeasureKindUseTypeTransfer> unitOfMeasureKindUseTypes);
     
