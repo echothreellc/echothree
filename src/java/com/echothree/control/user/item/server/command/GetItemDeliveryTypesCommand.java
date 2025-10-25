@@ -20,28 +20,39 @@ import com.echothree.control.user.item.common.form.GetItemDeliveryTypesForm;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemDeliveryType;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.item.server.factory.ItemDeliveryTypeFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 
 public class GetItemDeliveryTypesCommand
-        extends BaseMultipleEntitiesCommand<ItemDeliveryType, GetItemDeliveryTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<ItemDeliveryType, GetItemDeliveryTypesForm> {
 
     // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        FORM_FIELD_DEFINITIONS = List.of(
-        );
+        FORM_FIELD_DEFINITIONS = List.of();
     }
 
     /** Creates a new instance of GetItemDeliveryTypesCommand */
     public GetItemDeliveryTypesCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
+    }
+
+    @Override
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var itemControl = Session.getModelController(ItemControl.class);
+
+        return itemControl.countItemDeliveryTypes();
     }
 
     @Override
@@ -54,10 +65,16 @@ public class GetItemDeliveryTypesCommand
     @Override
     protected BaseResult getResult(Collection<ItemDeliveryType> entities) {
         var result = ItemResultFactory.getGetItemDeliveryTypesResult();
-        var itemControl = Session.getModelController(ItemControl.class);
-        var userVisit = getUserVisit();
 
-        result.setItemDeliveryTypes(itemControl.getItemDeliveryTypeTransfers(userVisit, entities));
+        if(entities != null) {
+            var itemControl = Session.getModelController(ItemControl.class);
+
+            if(session.hasLimit(ItemDeliveryTypeFactory.class)) {
+                result.setItemDeliveryTypeCount(getTotalEntities());
+            }
+
+            result.setItemDeliveryTypes(itemControl.getItemDeliveryTypeTransfers(getUserVisit(), entities));
+        }
 
         return result;
     }
