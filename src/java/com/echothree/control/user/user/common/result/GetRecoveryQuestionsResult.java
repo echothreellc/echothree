@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetRecoveryQuestionsResult
         extends BaseResult {
-    
+
+    Long getRecoveryQuestionCount();
+    void setRecoveryQuestionCount(Long recoveryQuestionCount);
+
     List<RecoveryQuestionTransfer> getRecoveryQuestions();
     void setRecoveryQuestions(List<RecoveryQuestionTransfer> recoveryQuestions);
     

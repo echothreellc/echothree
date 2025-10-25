@@ -18,47 +18,66 @@ package com.echothree.control.user.user.server.command;
 
 import com.echothree.control.user.user.common.form.GetRecoveryQuestionsForm;
 import com.echothree.control.user.user.common.result.UserResultFactory;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.server.entity.RecoveryQuestion;
-import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.model.data.user.server.factory.RecoveryQuestionFactory;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
-import java.util.Arrays;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
+import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class GetRecoveryQuestionsCommand
-        extends BaseMultipleEntitiesCommand<RecoveryQuestion, GetRecoveryQuestionsForm> {
-    
+        extends BasePaginatedMultipleEntitiesCommand<RecoveryQuestion, GetRecoveryQuestionsForm> {
+
     // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                ));
+        FORM_FIELD_DEFINITIONS = List.of();
     }
-    
+
     /** Creates a new instance of GetRecoveryQuestionsCommand */
     public GetRecoveryQuestionsCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    @Override
+    protected void handleForm() {
+        // no fields to handle
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var userControl = Session.getModelController(UserControl.class);
+
+        return userControl.countRecoveryQuestions();
+    }
+
     @Override
     protected Collection<RecoveryQuestion> getEntities() {
-        var userControl = getUserControl();
-        
+        var userControl = Session.getModelController(UserControl.class);
+
         return userControl.getRecoveryQuestions();
     }
-    
+
     @Override
     protected BaseResult getResult(Collection<RecoveryQuestion> entities) {
         var result = UserResultFactory.getGetRecoveryQuestionsResult();
-        var userControl = getUserControl();
-        
-        result.setRecoveryQuestions(userControl.getRecoveryQuestionTransfers(getUserVisit(), entities));
-        
+
+        if(entities != null) {
+            var userControl = Session.getModelController(UserControl.class);
+            var userVisit = getUserVisit();
+
+            if(session.hasLimit(RecoveryQuestionFactory.class)) {
+                result.setRecoveryQuestionCount(getTotalEntities());
+            }
+
+            result.setRecoveryQuestions(userControl.getRecoveryQuestionTransfers(userVisit, entities));
+        }
+
         return result;
     }
-    
+
 }
