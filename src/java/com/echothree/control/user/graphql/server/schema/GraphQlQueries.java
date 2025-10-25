@@ -593,12 +593,11 @@ import com.echothree.model.control.tag.server.graphql.TagScopeObject;
 import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.control.term.server.graphql.TermObject;
 import com.echothree.model.control.term.server.graphql.TermTypeObject;
+import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindUseObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindUseTypeObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureTypeObject;
-import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.data.uom.common.UnitOfMeasureKindUseTypeConstants;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.user.server.graphql.RecoveryQuestionObject;
 import com.echothree.model.control.user.server.graphql.UserLoginObject;
@@ -872,6 +871,7 @@ import com.echothree.model.data.shipment.common.FreeOnBoardConstants;
 import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
 import com.echothree.model.data.shipping.common.ShippingMethodConstants;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;
+import com.echothree.model.data.tag.common.TagConstants;
 import com.echothree.model.data.tag.common.TagScopeConstants;
 import com.echothree.model.data.tag.server.entity.EntityTag;
 import com.echothree.model.data.tag.server.entity.Tag;
@@ -882,6 +882,7 @@ import com.echothree.model.data.term.common.TermTypeConstants;
 import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.term.server.entity.TermType;
 import com.echothree.model.data.uom.common.UnitOfMeasureKindConstants;
+import com.echothree.model.data.uom.common.UnitOfMeasureKindUseTypeConstants;
 import com.echothree.model.data.uom.common.UnitOfMeasureTypeConstants;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUse;
@@ -10451,30 +10452,37 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("tags")
-    static Collection<TagObject> tags(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<TagObject> tags(final DataFetchingEnvironment env,
             @GraphQLName("tagScopeName") @GraphQLNonNull final String tagScopeName) {
-        Collection<Tag> tags;
-        Collection<TagObject> tagObjects;
+        CountingPaginatedData<TagObject> data;
 
         try {
             var commandForm = TagUtil.getHome().getGetTagsForm();
+            var command = new GetTagsCommand();
 
             commandForm.setTagScopeName(tagScopeName);
 
-            tags = new GetTagsCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, TagConstants.COMPONENT_VENDOR_NAME, TagConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var tagObjects = entities.stream()
+                            .map(TagObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, tagObjects);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(tags == null) {
-            tagObjects = emptyList();
-        } else {
-            tagObjects = new ArrayList<>(tags.size());
-
-            tags.stream().map(TagObject::new).forEachOrdered(tagObjects::add);
-        }
-
-        return tagObjects;
+        return data;
     }
 
     @GraphQLField
