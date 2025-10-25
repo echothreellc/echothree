@@ -1298,7 +1298,29 @@ public class UserControl
         
         return recoveryQuestion;
     }
-    
+
+    public long countRecoveryQuestions() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM recoveryquestions, recoveryquestiondetails " +
+                        "WHERE rqus_activedetailid = rqusdt_recoveryquestiondetailid");
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.RecoveryQuestion */
+    public RecoveryQuestion getRecoveryQuestionByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new RecoveryQuestionPK(entityInstance.getEntityUniqueId());
+
+        return RecoveryQuestionFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public RecoveryQuestion getRecoveryQuestionByEntityInstance(EntityInstance entityInstance) {
+        return getRecoveryQuestionByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public RecoveryQuestion getRecoveryQuestionByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getRecoveryQuestionByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private List<RecoveryQuestion> getRecoveryQuestions(EntityPermission entityPermission) {
         String query = null;
         
@@ -1306,7 +1328,8 @@ public class UserControl
             query = "SELECT _ALL_ " +
                     "FROM recoveryquestions, recoveryquestiondetails " +
                     "WHERE rqus_activedetailid = rqusdt_recoveryquestiondetailid " +
-                    "ORDER BY rqusdt_sortorder, rqusdt_recoveryquestionname";
+                    "ORDER BY rqusdt_sortorder, rqusdt_recoveryquestionname " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM recoveryquestions, recoveryquestiondetails " +
@@ -1401,21 +1424,6 @@ public class UserControl
     
     public RecoveryQuestionDetailValue getRecoveryQuestionDetailValueByNameForUpdate(String recoveryQuestionName) {
         return getRecoveryQuestionDetailValueForUpdate(getRecoveryQuestionByNameForUpdate(recoveryQuestionName));
-    }
-    
-    /** Assume that the entityInstance passed to this function is a ECHO_THREE.RecoveryQuestion */
-    public RecoveryQuestion getRecoveryQuestionByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        var pk = new RecoveryQuestionPK(entityInstance.getEntityUniqueId());
-
-        return RecoveryQuestionFactory.getInstance().getEntityFromPK(entityPermission, pk);
-    }
-
-    public RecoveryQuestion getRecoveryQuestionByEntityInstance(EntityInstance entityInstance) {
-        return getRecoveryQuestionByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
-    }
-
-    public RecoveryQuestion getRecoveryQuestionByEntityInstanceForUpdate(EntityInstance entityInstance) {
-        return getRecoveryQuestionByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
     
     public RecoveryQuestionChoicesBean getRecoveryQuestionChoices(String defaultRecoveryQuestionChoice, Language language,
