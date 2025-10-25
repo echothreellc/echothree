@@ -26,7 +26,10 @@ public interface GetTagsResult
     
     TagScopeTransfer getTagScope();
     void setTagScope(TagScopeTransfer tagScope);
-    
+
+    Long getTagCount();
+    void setTagCount(Long tagCount);
+
     List<TagTransfer> getTags();
     void setTags(List<TagTransfer> tags);
     
