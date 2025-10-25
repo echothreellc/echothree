@@ -1683,7 +1683,14 @@ public class UomControl
             Boolean isDefault, Integer sortOrder) {
         return UnitOfMeasureKindUseTypeFactory.getInstance().create(unitOfMeasureKindUseTypeName, allowMultiple, allowFractionDigits, isDefault, sortOrder);
     }
-    
+
+    public long countUnitOfMeasureKindUseType() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM unitofmeasurekindusetypes
+                """);
+    }
+
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.UnitOfMeasureKindUseType */
     public UnitOfMeasureKindUseType getUnitOfMeasureKindUseTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new UnitOfMeasureKindUseTypePK(entityInstance.getEntityUniqueId());
