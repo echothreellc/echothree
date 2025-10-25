@@ -496,7 +496,6 @@ import com.echothree.model.control.item.server.graphql.ItemAliasChecksumTypeObje
 import com.echothree.model.control.item.server.graphql.ItemAliasObject;
 import com.echothree.model.control.item.server.graphql.ItemAliasTypeObject;
 import com.echothree.model.control.item.server.graphql.ItemCategoryObject;
-import com.echothree.model.data.item.common.ItemCategoryConstants;
 import com.echothree.model.control.item.server.graphql.ItemDeliveryTypeObject;
 import com.echothree.model.control.item.server.graphql.ItemDescriptionObject;
 import com.echothree.model.control.item.server.graphql.ItemDescriptionTypeObject;
@@ -754,6 +753,7 @@ import com.echothree.model.data.inventory.server.entity.InventoryTransactionType
 import com.echothree.model.data.inventory.server.entity.Lot;
 import com.echothree.model.data.item.common.ItemAliasChecksumTypeConstants;
 import com.echothree.model.data.item.common.ItemAliasTypeConstants;
+import com.echothree.model.data.item.common.ItemCategoryConstants;
 import com.echothree.model.data.item.common.ItemConstants;
 import com.echothree.model.data.item.common.ItemDeliveryTypeConstants;
 import com.echothree.model.data.item.common.ItemDescriptionTypeUseTypeConstants;
@@ -882,6 +882,7 @@ import com.echothree.model.data.term.common.TermTypeConstants;
 import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.term.server.entity.TermType;
 import com.echothree.model.data.uom.common.UnitOfMeasureKindConstants;
+import com.echothree.model.data.uom.common.UnitOfMeasureTypeConstants;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUse;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUseType;
@@ -5880,32 +5881,37 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("unitOfMeasureTypes")
-    static Collection<UnitOfMeasureTypeObject> unitOfMeasureTypes(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<UnitOfMeasureTypeObject> unitOfMeasureTypes(final DataFetchingEnvironment env,
             @GraphQLName("unitOfMeasureKindName") @GraphQLNonNull final String unitOfMeasureKindName) {
-        Collection<UnitOfMeasureType> unitOfMeasureTypes;
-        Collection<UnitOfMeasureTypeObject> unitOfMeasureTypeObjects;
+        CountingPaginatedData<UnitOfMeasureTypeObject> data;
 
         try {
             var commandForm = UomUtil.getHome().getGetUnitOfMeasureTypesForm();
+            var command = new GetUnitOfMeasureTypesCommand();
 
             commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
 
-            unitOfMeasureTypes = new GetUnitOfMeasureTypesCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, UnitOfMeasureTypeConstants.COMPONENT_VENDOR_NAME, UnitOfMeasureTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var unitOfMeasureTypes = entities.stream()
+                            .map(UnitOfMeasureTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, unitOfMeasureTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(unitOfMeasureTypes == null) {
-            unitOfMeasureTypeObjects = emptyList();
-        } else {
-            unitOfMeasureTypeObjects = new ArrayList<>(unitOfMeasureTypes.size());
-
-            unitOfMeasureTypes.stream()
-                    .map(UnitOfMeasureTypeObject::new)
-                    .forEachOrdered(unitOfMeasureTypeObjects::add);
-        }
-
-        return unitOfMeasureTypeObjects;
+        return data;
     }
 
     @GraphQLField
