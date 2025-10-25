@@ -1303,17 +1303,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<SearchResultActionTypeObject> data;
 
         try {
-            var searchControl = Session.getModelController(SearchControl.class);
-            var totalCount = searchControl.countSearchResultActionTypes();
+            var commandForm = SearchUtil.getHome().getGetSearchResultActionTypesForm();
+            var command = new GetSearchResultActionTypesCommand();
 
-            try(var objectLimiter = new ObjectLimiter(env, SearchResultActionTypeConstants.COMPONENT_VENDOR_NAME, SearchResultActionTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = SearchUtil.getHome().getGetSearchResultActionTypesForm();
-                var entities = new GetSearchResultActionTypesCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, SearchResultActionTypeConstants.COMPONENT_VENDOR_NAME, SearchResultActionTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var searchResultActionTypes = entities.stream().map(SearchResultActionTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var searchResultActionTypes = entities.stream()
+                            .map(SearchResultActionTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, searchResultActionTypes);
                 }
