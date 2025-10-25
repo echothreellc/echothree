@@ -593,12 +593,11 @@ import com.echothree.model.control.tag.server.graphql.TagScopeObject;
 import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.control.term.server.graphql.TermObject;
 import com.echothree.model.control.term.server.graphql.TermTypeObject;
+import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindUseObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindUseTypeObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureTypeObject;
-import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.data.uom.common.UnitOfMeasureKindUseTypeConstants;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.user.server.graphql.RecoveryQuestionObject;
 import com.echothree.model.control.user.server.graphql.UserLoginObject;
@@ -882,11 +881,13 @@ import com.echothree.model.data.term.common.TermTypeConstants;
 import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.term.server.entity.TermType;
 import com.echothree.model.data.uom.common.UnitOfMeasureKindConstants;
+import com.echothree.model.data.uom.common.UnitOfMeasureKindUseTypeConstants;
 import com.echothree.model.data.uom.common.UnitOfMeasureTypeConstants;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUse;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUseType;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
+import com.echothree.model.data.user.common.RecoveryQuestionConstants;
 import com.echothree.model.data.user.common.UserVisitGroupConstants;
 import com.echothree.model.data.user.server.entity.RecoveryQuestion;
 import com.echothree.model.data.user.server.entity.UserLogin;
@@ -6723,29 +6724,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("recoveryQuestions")
-    static Collection<RecoveryQuestionObject> recoveryQuestions(final DataFetchingEnvironment env) {
-        Collection<RecoveryQuestion> recoveryQuestions;
-        Collection<RecoveryQuestionObject> recoveryQuestionObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<RecoveryQuestionObject> recoveryQuestions(final DataFetchingEnvironment env) {
+        CountingPaginatedData<RecoveryQuestionObject> data;
 
         try {
             var commandForm = UserUtil.getHome().getGetRecoveryQuestionsForm();
+            var command = new GetRecoveryQuestionsCommand();
 
-            recoveryQuestions = new GetRecoveryQuestionsCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, RecoveryQuestionConstants.COMPONENT_VENDOR_NAME, RecoveryQuestionConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var recoveryQuestions = entities.stream()
+                            .map(RecoveryQuestionObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, recoveryQuestions);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(recoveryQuestions == null) {
-            recoveryQuestionObjects = emptyList();
-        } else {
-            recoveryQuestionObjects = new ArrayList<>(recoveryQuestions.size());
-
-            recoveryQuestions.stream()
-                    .map(RecoveryQuestionObject::new)
-                    .forEachOrdered(recoveryQuestionObjects::add);
-        }
-
-        return recoveryQuestionObjects;
+        return data;
     }
 
     @GraphQLField
