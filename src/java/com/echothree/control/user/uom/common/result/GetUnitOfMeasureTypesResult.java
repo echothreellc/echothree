@@ -26,7 +26,10 @@ public interface GetUnitOfMeasureTypesResult
     
     UnitOfMeasureKindTransfer getUnitOfMeasureKind();
     void setUnitOfMeasureKind(UnitOfMeasureKindTransfer unitOfMeasureKind);
-    
+
+    Long getUnitOfMeasureTypeCount();
+    void setUnitOfMeasureTypeCount(Long unitOfMeasureTypeCount);
+
     List<UnitOfMeasureTypeTransfer> getUnitOfMeasureTypes();
     void setUnitOfMeasureTypes(List<UnitOfMeasureTypeTransfer> unitOfMeasureTypes);
     
