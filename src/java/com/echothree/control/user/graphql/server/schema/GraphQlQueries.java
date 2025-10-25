@@ -609,7 +609,6 @@ import com.echothree.model.control.vendor.server.graphql.VendorItemCostObject;
 import com.echothree.model.control.vendor.server.graphql.VendorItemObject;
 import com.echothree.model.control.vendor.server.graphql.VendorObject;
 import com.echothree.model.control.vendor.server.graphql.VendorTypeObject;
-import com.echothree.model.control.warehouse.server.control.LocationUseTypeControl;
 import com.echothree.model.control.warehouse.server.graphql.LocationUseTypeObject;
 import com.echothree.model.control.warehouse.server.graphql.WarehouseObject;
 import com.echothree.model.control.warehouse.server.graphql.WarehouseTypeObject;
@@ -8025,17 +8024,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<LocationUseTypeObject> data;
 
         try {
-            var locationUseTypeControl = Session.getModelController(LocationUseTypeControl.class);
-            var totalCount = locationUseTypeControl.countLocationUseTypes();
+            var commandForm = WarehouseUtil.getHome().getGetLocationUseTypesForm();
+            var command = new GetLocationUseTypesCommand();
 
-            try(var objectLimiter = new ObjectLimiter(env, LocationUseTypeConstants.COMPONENT_VENDOR_NAME, LocationUseTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = WarehouseUtil.getHome().getGetLocationUseTypesForm();
-                var entities = new GetLocationUseTypesCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, LocationUseTypeConstants.COMPONENT_VENDOR_NAME, LocationUseTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var locationUseTypes = entities.stream().map(LocationUseTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var locationUseTypes = entities.stream()
+                            .map(LocationUseTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, locationUseTypes);
                 }
