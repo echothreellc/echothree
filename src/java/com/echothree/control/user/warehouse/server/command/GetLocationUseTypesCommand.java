@@ -22,12 +22,11 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.warehouse.server.control.LocationUseTypeControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.warehouse.server.entity.LocationUseType;
 import com.echothree.model.data.warehouse.server.factory.LocationUseTypeFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -36,7 +35,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class GetLocationUseTypesCommand
-        extends BaseMultipleEntitiesCommand<LocationUseType, GetLocationUseTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<LocationUseType, GetLocationUseTypesForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -58,6 +57,18 @@ public class GetLocationUseTypesCommand
     }
 
     @Override
+    protected void handleForm() {
+        // No form fields to handle.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var locationUseTypeControl = Session.getModelController(LocationUseTypeControl.class);
+
+        return locationUseTypeControl.countLocationUseTypes();
+    }
+
+    @Override
     protected Collection<LocationUseType> getEntities() {
         var locationUseTypeControl = Session.getModelController(LocationUseTypeControl.class);
 
@@ -72,7 +83,7 @@ public class GetLocationUseTypesCommand
             var locationUseTypeControl = Session.getModelController(LocationUseTypeControl.class);
 
             if(session.hasLimit(LocationUseTypeFactory.class)) {
-                result.setLocationUseTypeCount(locationUseTypeControl.countLocationUseTypes());
+                result.setLocationUseTypeCount(getTotalEntities());
             }
 
             result.setLocationUseTypes(locationUseTypeControl.getLocationUseTypeTransfers(getUserVisit(), entities));
