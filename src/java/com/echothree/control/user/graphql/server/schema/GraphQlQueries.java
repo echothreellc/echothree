@@ -603,7 +603,6 @@ import com.echothree.model.control.user.server.graphql.UserLoginObject;
 import com.echothree.model.control.user.server.graphql.UserSessionObject;
 import com.echothree.model.control.user.server.graphql.UserVisitGroupObject;
 import com.echothree.model.control.user.server.graphql.UserVisitObject;
-import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.control.vendor.server.graphql.ItemPurchasingCategoryObject;
 import com.echothree.model.control.vendor.server.graphql.VendorItemCostObject;
 import com.echothree.model.control.vendor.server.graphql.VendorItemObject;
@@ -9258,17 +9257,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<ItemPurchasingCategoryObject> data;
 
         try {
-            var vendorControl = Session.getModelController(VendorControl.class);
-            var totalCount = vendorControl.countItemPurchasingCategories();
+            var commandForm = VendorUtil.getHome().getGetItemPurchasingCategoriesForm();
+            var command = new GetItemPurchasingCategoriesCommand();
 
-            try(var objectLimiter = new ObjectLimiter(env, ItemPurchasingCategoryConstants.COMPONENT_VENDOR_NAME, ItemPurchasingCategoryConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = VendorUtil.getHome().getGetItemPurchasingCategoriesForm();
-                var entities = new GetItemPurchasingCategoriesCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ItemPurchasingCategoryConstants.COMPONENT_VENDOR_NAME, ItemPurchasingCategoryConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var itemPurchasingCategories = entities.stream().map(ItemPurchasingCategoryObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var itemPurchasingCategories = entities.stream()
+                            .map(ItemPurchasingCategoryObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, itemPurchasingCategories);
                 }
