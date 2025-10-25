@@ -597,6 +597,8 @@ import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindUseObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindUseTypeObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureTypeObject;
+import com.echothree.model.control.uom.server.control.UomControl;
+import com.echothree.model.data.uom.common.UnitOfMeasureKindUseTypeConstants;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.user.server.graphql.RecoveryQuestionObject;
 import com.echothree.model.control.user.server.graphql.UserLoginObject;
@@ -5985,29 +5987,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("unitOfMeasureKindUseTypes")
-    static Collection<UnitOfMeasureKindUseTypeObject> unitOfMeasureKindUseTypes(final DataFetchingEnvironment env) {
-        Collection<UnitOfMeasureKindUseType> unitOfMeasureKindUseTypes;
-        Collection<UnitOfMeasureKindUseTypeObject> unitOfMeasureKindUseTypeObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<UnitOfMeasureKindUseTypeObject> unitOfMeasureKindUseTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<UnitOfMeasureKindUseTypeObject> data;
 
         try {
-            var commandForm = UomUtil.getHome().getGetUnitOfMeasureKindUseTypesForm();
+            var uomControl = Session.getModelController(UomControl.class);
+            var totalCount = uomControl.countUnitOfMeasureKindUseType();
 
-            unitOfMeasureKindUseTypes = new GetUnitOfMeasureKindUseTypesCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            try(var objectLimiter = new ObjectLimiter(env, UnitOfMeasureKindUseTypeConstants.COMPONENT_VENDOR_NAME, UnitOfMeasureKindUseTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = UomUtil.getHome().getGetUnitOfMeasureKindUseTypesForm();
+                var entities = new GetUnitOfMeasureKindUseTypesCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var objects = entities.stream()
+                            .map(UnitOfMeasureKindUseTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, objects);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(unitOfMeasureKindUseTypes == null) {
-            unitOfMeasureKindUseTypeObjects = emptyList();
-        } else {
-            unitOfMeasureKindUseTypeObjects = new ArrayList<>(unitOfMeasureKindUseTypes.size());
-
-            unitOfMeasureKindUseTypes.stream()
-                    .map(UnitOfMeasureKindUseTypeObject::new)
-                    .forEachOrdered(unitOfMeasureKindUseTypeObjects::add);
-        }
-
-        return unitOfMeasureKindUseTypeObjects;
+        return data;
     }
 
     @GraphQLField
