@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetSearchResultActionTypesResult
         extends BaseResult {
-    
+
+    Long getSearchResultActionTypeCount();
+    void setSearchResultActionTypeCount(Long searchResultActionTypeCount);
+
     List<SearchResultActionTypeTransfer> getSearchResultActionTypes();
     void setSearchResultActionTypes(List<SearchResultActionTypeTransfer> searchResultActionTypes);
     
