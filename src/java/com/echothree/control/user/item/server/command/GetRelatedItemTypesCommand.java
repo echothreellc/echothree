@@ -20,30 +20,39 @@ import com.echothree.control.user.item.common.form.GetRelatedItemTypesForm;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.RelatedItemType;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.item.server.factory.RelatedItemTypeFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class GetRelatedItemTypesCommand
-        extends BaseMultipleEntitiesCommand<RelatedItemType, GetRelatedItemTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<RelatedItemType, GetRelatedItemTypesForm> {
 
     // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                ));
+        FORM_FIELD_DEFINITIONS = List.of();
     }
     
     /** Creates a new instance of GetRelatedItemTypesCommand */
     public GetRelatedItemTypesCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
+    }
+
+    @Override
+    protected void handleForm() {
+        // no form fields to handle
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var itemControl = Session.getModelController(ItemControl.class);
+
+        return itemControl.countRelatedItemTypes();
     }
 
     @Override
@@ -59,8 +68,13 @@ public class GetRelatedItemTypesCommand
 
         if(entities != null) {
             var itemControl = Session.getModelController(ItemControl.class);
+            var userVisit = getUserVisit();
 
-            result.setRelatedItemTypes(itemControl.getRelatedItemTypeTransfers(getUserVisit(), entities));
+            if(session.hasLimit(RelatedItemTypeFactory.class)) {
+                result.setRelatedItemTypeCount(getTotalEntities());
+            }
+
+            result.setRelatedItemTypes(itemControl.getRelatedItemTypeTransfers(userVisit, entities));
         }
 
         return result;
