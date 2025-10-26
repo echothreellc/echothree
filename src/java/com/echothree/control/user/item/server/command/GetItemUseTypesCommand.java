@@ -20,28 +20,39 @@ import com.echothree.control.user.item.common.form.GetItemUseTypesForm;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemUseType;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.item.server.factory.ItemUseTypeFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 
 public class GetItemUseTypesCommand
-        extends BaseMultipleEntitiesCommand<ItemUseType, GetItemUseTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<ItemUseType, GetItemUseTypesForm> {
 
     // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        FORM_FIELD_DEFINITIONS = List.of(
-        );
+        FORM_FIELD_DEFINITIONS = List.of();
     }
 
     /** Creates a new instance of GetItemUseTypesCommand */
     public GetItemUseTypesCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
+    }
+
+    @Override
+    protected void handleForm() {
+        // No fields in form currently.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var itemControl = Session.getModelController(ItemControl.class);
+
+        return itemControl.countItemUseTypes();
     }
 
     @Override
@@ -54,10 +65,17 @@ public class GetItemUseTypesCommand
     @Override
     protected BaseResult getResult(Collection<ItemUseType> entities) {
         var result = ItemResultFactory.getGetItemUseTypesResult();
-        var itemControl = Session.getModelController(ItemControl.class);
-        var userVisit = getUserVisit();
 
-        result.setItemUseTypes(itemControl.getItemUseTypeTransfers(userVisit, entities));
+        if(entities != null) {
+            var itemControl = Session.getModelController(ItemControl.class);
+            var userVisit = getUserVisit();
+
+            if(session.hasLimit(ItemUseTypeFactory.class)) {
+                result.setItemUseType(itemControl.countItemUseTypes());
+            }
+
+            result.setItemUseTypes(itemControl.getItemUseTypeTransfers(userVisit, entities));
+        }
 
         return result;
     }
