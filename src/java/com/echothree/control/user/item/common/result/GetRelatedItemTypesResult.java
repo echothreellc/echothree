@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetRelatedItemTypesResult
         extends BaseResult {
-    
+
+    Long getRelatedItemTypeCount();
+    void setRelatedItemTypeCount(Long relatedItemTypeCount);
+
     List<RelatedItemTypeTransfer> getRelatedItemTypes();
     void setRelatedItemTypes(List<RelatedItemTypeTransfer> relatedItemTypes);
     
