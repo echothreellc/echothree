@@ -1357,17 +1357,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<SearchCheckSpellingActionTypeObject> data;
 
         try {
-            var searchControl = Session.getModelController(SearchControl.class);
-            var totalCount = searchControl.countSearchCheckSpellingActionTypes();
+            var commandForm = SearchUtil.getHome().getGetSearchCheckSpellingActionTypesForm();
+            var command = new GetSearchCheckSpellingActionTypesCommand();
 
-            try(var objectLimiter = new ObjectLimiter(env, SearchCheckSpellingActionTypeConstants.COMPONENT_VENDOR_NAME, SearchCheckSpellingActionTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = SearchUtil.getHome().getGetSearchCheckSpellingActionTypesForm();
-                var entities = new GetSearchCheckSpellingActionTypesCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, SearchCheckSpellingActionTypeConstants.COMPONENT_VENDOR_NAME, SearchCheckSpellingActionTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var searchCheckSpellingActionTypes = entities.stream().map(SearchCheckSpellingActionTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var searchCheckSpellingActionTypes = entities.stream()
+                            .map(SearchCheckSpellingActionTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, searchCheckSpellingActionTypes);
                 }
