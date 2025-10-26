@@ -9541,17 +9541,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<ItemAliasTypeObject> data;
 
         try {
-            var itemControl = Session.getModelController(ItemControl.class);
-            var totalCount = itemControl.countItemAliasTypes();
+            var commandForm = ItemUtil.getHome().getGetItemAliasTypesForm();
+            var command = new GetItemAliasTypesCommand();
 
-            try(var objectLimiter = new ObjectLimiter(env, ItemAliasTypeConstants.COMPONENT_VENDOR_NAME, ItemAliasTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = ItemUtil.getHome().getGetItemAliasTypesForm();
-                var entities = new GetItemAliasTypesCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ItemAliasTypeConstants.COMPONENT_VENDOR_NAME, ItemAliasTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var itemAliasTypes = entities.stream().map(ItemAliasTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var itemAliasTypes = entities.stream()
+                            .map(ItemAliasTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, itemAliasTypes);
                 }
