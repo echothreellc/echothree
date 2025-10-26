@@ -71,7 +71,7 @@ public class GetItemUseTypesCommand
             var userVisit = getUserVisit();
 
             if(session.hasLimit(ItemUseTypeFactory.class)) {
-                result.setItemUseType(itemControl.countItemUseTypes());
+                result.setItemUseTypeCount(itemControl.countItemUseTypes());
             }
 
             result.setItemUseTypes(itemControl.getItemUseTypeTransfers(userVisit, entities));
