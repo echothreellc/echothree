@@ -26,7 +26,10 @@ public interface GetReturnPoliciesResult
     
     ReturnKindTransfer getReturnKind();
     void setReturnKind(ReturnKindTransfer returnKind);
-    
+
+    Long getReturnPolicyCount();
+    void setReturnPolicyCount(Long returnPolicyCount);
+
     List<ReturnPolicyTransfer> getReturnPolicies();
     void setReturnPolicies(List<ReturnPolicyTransfer> returnPolicies);
     

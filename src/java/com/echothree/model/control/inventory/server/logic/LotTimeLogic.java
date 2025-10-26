@@ -80,7 +80,7 @@ public class LotTimeLogic {
 
             if(lotTime == null) {
                 if(ema != null) {
-                    ema.addExecutionError(ExecutionErrors.UnknownLotTime.name(), lotDetail.getLotName(), lotTimeTypeName);
+                    ema.addExecutionError(ExecutionErrors.UnknownLotTime.name(), lotDetail.getLotIdentifier(), lotTimeTypeName);
                 }
             } else {
                 result = lotTime.getTime();
@@ -104,7 +104,7 @@ public class LotTimeLogic {
 
             if(lotTime == null) {
                 if(ema != null) {
-                    ema.addExecutionError(ExecutionErrors.UnknownLotTime.name(), lotDetail.getLotName(), lotTimeTypeName);
+                    ema.addExecutionError(ExecutionErrors.UnknownLotTime.name(), lotDetail.getLotIdentifier(), lotTimeTypeName);
                 }
             } else {
                 lotTimeControl.deleteLotTime(lotTime, deletedBy);

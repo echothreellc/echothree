@@ -382,7 +382,39 @@ public interface ItemService
     CommandResult editItemPrice(UserVisitPK userVisitPK, EditItemPriceForm form);
     
     CommandResult deleteItemPrice(UserVisitPK userVisitPK, DeleteItemPriceForm form);
-    
+
+    // --------------------------------------------------------------------------------
+    //   Item Volume Types
+    // --------------------------------------------------------------------------------
+
+    CommandResult createItemVolumeType(UserVisitPK userVisitPK, CreateItemVolumeTypeForm form);
+
+    CommandResult getItemVolumeTypeChoices(UserVisitPK userVisitPK, GetItemVolumeTypeChoicesForm form);
+
+    CommandResult getItemVolumeType(UserVisitPK userVisitPK, GetItemVolumeTypeForm form);
+
+    CommandResult getItemVolumeTypes(UserVisitPK userVisitPK, GetItemVolumeTypesForm form);
+
+    CommandResult setDefaultItemVolumeType(UserVisitPK userVisitPK, SetDefaultItemVolumeTypeForm form);
+
+    CommandResult editItemVolumeType(UserVisitPK userVisitPK, EditItemVolumeTypeForm form);
+
+    CommandResult deleteItemVolumeType(UserVisitPK userVisitPK, DeleteItemVolumeTypeForm form);
+
+    // --------------------------------------------------------------------------------
+    //   Item Volume Type Descriptions
+    // --------------------------------------------------------------------------------
+
+    CommandResult createItemVolumeTypeDescription(UserVisitPK userVisitPK, CreateItemVolumeTypeDescriptionForm form);
+
+    CommandResult getItemVolumeTypeDescription(UserVisitPK userVisitPK, GetItemVolumeTypeDescriptionForm form);
+
+    CommandResult getItemVolumeTypeDescriptions(UserVisitPK userVisitPK, GetItemVolumeTypeDescriptionsForm form);
+
+    CommandResult editItemVolumeTypeDescription(UserVisitPK userVisitPK, EditItemVolumeTypeDescriptionForm form);
+
+    CommandResult deleteItemVolumeTypeDescription(UserVisitPK userVisitPK, DeleteItemVolumeTypeDescriptionForm form);
+
     // --------------------------------------------------------------------------------
     //   Item Volumes
     // --------------------------------------------------------------------------------
@@ -396,7 +428,39 @@ public interface ItemService
     CommandResult editItemVolume(UserVisitPK userVisitPK, EditItemVolumeForm form);
     
     CommandResult deleteItemVolume(UserVisitPK userVisitPK, DeleteItemVolumeForm form);
-    
+
+    // --------------------------------------------------------------------------------
+    //   Item Weight Types
+    // --------------------------------------------------------------------------------
+
+    CommandResult createItemWeightType(UserVisitPK userVisitPK, CreateItemWeightTypeForm form);
+
+    CommandResult getItemWeightTypeChoices(UserVisitPK userVisitPK, GetItemWeightTypeChoicesForm form);
+
+    CommandResult getItemWeightType(UserVisitPK userVisitPK, GetItemWeightTypeForm form);
+
+    CommandResult getItemWeightTypes(UserVisitPK userVisitPK, GetItemWeightTypesForm form);
+
+    CommandResult setDefaultItemWeightType(UserVisitPK userVisitPK, SetDefaultItemWeightTypeForm form);
+
+    CommandResult editItemWeightType(UserVisitPK userVisitPK, EditItemWeightTypeForm form);
+
+    CommandResult deleteItemWeightType(UserVisitPK userVisitPK, DeleteItemWeightTypeForm form);
+
+    // --------------------------------------------------------------------------------
+    //   Item Weight Type Descriptions
+    // --------------------------------------------------------------------------------
+
+    CommandResult createItemWeightTypeDescription(UserVisitPK userVisitPK, CreateItemWeightTypeDescriptionForm form);
+
+    CommandResult getItemWeightTypeDescription(UserVisitPK userVisitPK, GetItemWeightTypeDescriptionForm form);
+
+    CommandResult getItemWeightTypeDescriptions(UserVisitPK userVisitPK, GetItemWeightTypeDescriptionsForm form);
+
+    CommandResult editItemWeightTypeDescription(UserVisitPK userVisitPK, EditItemWeightTypeDescriptionForm form);
+
+    CommandResult deleteItemWeightTypeDescription(UserVisitPK userVisitPK, DeleteItemWeightTypeDescriptionForm form);
+
     // --------------------------------------------------------------------------------
     //   Item Weights
     // --------------------------------------------------------------------------------

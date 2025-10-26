@@ -22,10 +22,10 @@ import java.util.List;
 
 public interface GetItemAliasTypesResult
         extends BaseResult {
-    
-    ItemAliasTypeTransfer getParentItemAliasType();
-    void setParentItemAliasType(ItemAliasTypeTransfer parentItemAliasType);
-    
+
+    Long getItemAliasTypeCount();
+    void setItemAliasTypeCount(Long itemAliasTypeCount);
+
     List<ItemAliasTypeTransfer> getItemAliasTypes();
     void setItemAliasTypes(List<ItemAliasTypeTransfer> itemAliasTypes);
     

@@ -18,15 +18,16 @@ package com.echothree.control.user.order.server.command;
 
 import com.echothree.control.user.order.common.form.CreateOrderTypeForm;
 import com.echothree.control.user.order.common.result.OrderResultFactory;
-import com.echothree.model.control.order.server.control.OrderTypeControl;
+import com.echothree.model.control.order.common.exception.UnknownOrderWorkflowEntranceNameException;
+import com.echothree.model.control.order.common.exception.UnknownOrderWorkflowNameException;
 import com.echothree.model.control.order.server.logic.OrderTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.sequence.server.control.SequenceControl;
-import com.echothree.model.control.workflow.server.control.WorkflowControl;
+import com.echothree.model.control.sequence.server.logic.SequenceTypeLogic;
+import com.echothree.model.control.workflow.server.logic.WorkflowEntranceLogic;
+import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
 import com.echothree.model.data.order.server.entity.OrderType;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -35,7 +36,7 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.persistence.EntityPermission;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -56,7 +57,6 @@ public class CreateOrderTypeCommand
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("OrderTypeName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("ParentOrderTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("OrderSequenceTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("OrderWorkflowName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("OrderWorkflowEntranceName", FieldType.ENTITY_NAME, false, null, null),
@@ -74,54 +74,38 @@ public class CreateOrderTypeCommand
     @Override
     protected BaseResult execute() {
         var result = OrderResultFactory.getCreateOrderTypeResult();
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-        var parentOrderTypeName = form.getParentOrderTypeName();
-        OrderType parentOrderType = null;
+        var orderSequenceTypeName = form.getOrderSequenceTypeName();
+        var orderSequenceType = orderSequenceTypeName == null ? null : SequenceTypeLogic.getInstance().getSequenceTypeByName(this, orderSequenceTypeName);
         OrderType orderType = null;
 
-        if(parentOrderTypeName != null) {
-            parentOrderType = orderTypeControl.getOrderTypeByName(parentOrderTypeName);
-        }
+        if(!hasExecutionErrors()) {
+            var orderWorkflowName = form.getOrderWorkflowName();
+            var orderWorkflow = orderWorkflowName == null ? null : WorkflowLogic.getInstance().getWorkflowByName(
+                    UnknownOrderWorkflowNameException.class, ExecutionErrors.UnknownOrderWorkflowName, this,
+                    orderWorkflowName, EntityPermission.READ_ONLY);
 
-        if(parentOrderTypeName == null || parentOrderType != null) {
-            var sequenceControl = Session.getModelController(SequenceControl.class);
-            var orderSequenceTypeName = form.getOrderSequenceTypeName();
-            var orderSequenceType = sequenceControl.getSequenceTypeByName(orderSequenceTypeName);
+            if(!hasExecutionErrors()) {
+                var orderWorkflowEntranceName = form.getOrderWorkflowEntranceName();
 
-            if(orderSequenceTypeName == null || orderSequenceType != null) {
-                var workflowControl = Session.getModelController(WorkflowControl.class);
-                var orderWorkflowName = form.getOrderWorkflowName();
-                var orderWorkflow = orderWorkflowName == null ? null : workflowControl.getWorkflowByName(orderWorkflowName);
+                if(orderWorkflowEntranceName == null || orderWorkflow != null) {
+                    var orderWorkflowEntrance = orderWorkflowEntranceName == null ? null : WorkflowEntranceLogic.getInstance().getWorkflowEntranceByName(
+                            UnknownOrderWorkflowEntranceNameException.class, ExecutionErrors.UnknownOrderWorkflowEntranceName, this,
+                            orderWorkflow, orderWorkflowEntranceName);
 
-                if(orderWorkflowName == null || orderWorkflow != null) {
-                    var orderWorkflowEntranceName = form.getOrderWorkflowEntranceName();
+                    if(!hasExecutionErrors()) {
+                        var orderTypeName = form.getOrderTypeName();
+                        var isDefault = Boolean.valueOf(form.getIsDefault());
+                        var sortOrder = Integer.valueOf(form.getSortOrder());
+                        var description = form.getDescription();
+                        var partyPK = getPartyPK();
 
-                    if(orderWorkflowEntranceName == null || (orderWorkflow != null && orderWorkflowEntranceName != null)) {
-                        var orderWorkflowEntrance = orderWorkflowEntranceName == null ? null : workflowControl.getWorkflowEntranceByName(orderWorkflow, orderWorkflowEntranceName);
-
-                        if(orderWorkflowEntranceName == null || orderWorkflowEntrance != null) {
-                            var orderTypeName = form.getOrderTypeName();
-                            var isDefault = Boolean.valueOf(form.getIsDefault());
-                            var sortOrder = Integer.valueOf(form.getSortOrder());
-                            var description = form.getDescription();
-                            var partyPK = getPartyPK();
-
-                            orderType = OrderTypeLogic.getInstance().createOrderType(this, orderTypeName, parentOrderType, orderSequenceType, orderWorkflow,
-                                    orderWorkflowEntrance, isDefault, sortOrder, getPreferredLanguage(), description, partyPK);
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownOrderWorkflowEntranceName.name(), orderWorkflowName, orderWorkflowEntranceName);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.MissingRequiredOrderWorkflowName.name());
+                        orderType = OrderTypeLogic.getInstance().createOrderType(this, orderTypeName, orderSequenceType, orderWorkflow,
+                                orderWorkflowEntrance, isDefault, sortOrder, getPreferredLanguage(), description, partyPK);
                     }
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownOrderWorkflowName.name(), orderWorkflowName);
+                    addExecutionError(ExecutionErrors.MissingRequiredOrderWorkflowName.name());
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownOrderSequenceTypeName.name(), orderSequenceTypeName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownParentOrderTypeName.name(), parentOrderTypeName);
         }
 
         if(orderType != null) {

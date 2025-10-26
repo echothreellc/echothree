@@ -24,32 +24,29 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.item.server.entity.ItemAliasChecksumType;
 import com.echothree.model.data.item.server.factory.ItemAliasChecksumTypeFactory;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class GetItemAliasChecksumTypesCommand
-        extends BaseMultipleEntitiesCommand<ItemAliasChecksumType, GetItemAliasChecksumTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<ItemAliasChecksumType, GetItemAliasChecksumTypesForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ItemAliasChecksumType.name(), SecurityRoles.List.name())
-                )))
-        )));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
         );
@@ -58,6 +55,18 @@ public class GetItemAliasChecksumTypesCommand
     /** Creates a new instance of GetItemAliasChecksumTypesCommand */
     public GetItemAliasChecksumTypesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
+
+    @Override
+    protected void handleForm() {
+        // No form fields to handle.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var itemControl = Session.getModelController(ItemControl.class);
+
+        return itemControl.countItemAliasChecksumTypes();
     }
 
     @Override
@@ -70,13 +79,16 @@ public class GetItemAliasChecksumTypesCommand
     @Override
     protected BaseResult getResult(Collection<ItemAliasChecksumType> entities) {
         var result = ItemResultFactory.getGetItemAliasChecksumTypesResult();
-        var itemControl = Session.getModelController(ItemControl.class);
 
-        if(session.hasLimit(ItemAliasChecksumTypeFactory.class)) {
-            result.setItemAliasChecksumTypeCount(itemControl.countItemAliasChecksumTypes());
+        if(entities != null) {
+            var itemControl = Session.getModelController(ItemControl.class);
+
+            if(session.hasLimit(ItemAliasChecksumTypeFactory.class)) {
+                result.setItemAliasChecksumTypeCount(getTotalEntities());
+            }
+
+            result.setItemAliasChecksumTypes(itemControl.getItemAliasChecksumTypeTransfers(getUserVisit(), entities));
         }
-
-        result.setItemAliasChecksumTypes(itemControl.getItemAliasChecksumTypeTransfers(getUserVisit(), entities));
 
         return result;
     }

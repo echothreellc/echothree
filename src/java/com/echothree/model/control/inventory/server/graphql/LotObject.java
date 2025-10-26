@@ -56,21 +56,6 @@ public class LotObject
         
         return lotDetail;
     }
-    
-    @GraphQLField
-    @GraphQLDescription("lot name")
-    @GraphQLNonNull
-    public String getLotName() {
-        return getLotDetail().getLotName();
-    }
-
-    @GraphQLField
-    @GraphQLDescription("owner party")
-    public PartyObject getOwnerParty(final DataFetchingEnvironment env) {
-        var ownerParty = getLotDetail().getOwnerParty();
-
-        return PartySecurityUtils.getHasPartyAccess(env, ownerParty) ? new PartyObject(ownerParty) : null;
-    }
 
     @GraphQLField
     @GraphQLDescription("item")
@@ -79,33 +64,10 @@ public class LotObject
     }
 
     @GraphQLField
-    @GraphQLDescription("inventory condition")
-    public InventoryConditionObject getInventoryCondition(final DataFetchingEnvironment env) {
-        return InventorySecurityUtils.getHasInventoryConditionAccess(env) ? new InventoryConditionObject(getLotDetail().getInventoryCondition()) : null;
-    }
-
-    @GraphQLField
-    @GraphQLDescription("unit of measure type")
-    public UnitOfMeasureTypeObject getUnitOfMeasureType(final DataFetchingEnvironment env) {
-        return UomSecurityUtils.getHasUnitOfMeasureTypeAccess(env) ? new UnitOfMeasureTypeObject(getLotDetail().getUnitOfMeasureType()) : null;
-    }
-
-    @GraphQLField
-    @GraphQLDescription("quantity")
-    public Long getQuantity() {
-        return getLotDetail().getQuantity();
-    }
-
-    @GraphQLField
-    @GraphQLDescription("currency")
-    public CurrencyObject getCurrency(final DataFetchingEnvironment env) {
-        return AccountingSecurityUtils.getHasCurrencyAccess(env) ? new CurrencyObject(getLotDetail().getCurrency()) : null;
-    }
-
-    @GraphQLField
-    @GraphQLDescription("unit cost")
-    public UnitCostObject getUnitCost() {
-        return new UnitCostObject(getLotDetail().getCurrency(), getLotDetail().getUnitCost());
+    @GraphQLDescription("lot identifier")
+    @GraphQLNonNull
+    public String getLotIdentifier() {
+        return getLotDetail().getLotIdentifier();
     }
 
 }

@@ -25,7 +25,10 @@ public interface GetItemCategoriesResult
     
     ItemCategoryTransfer getParentItemCategory();
     void setParentItemCategory(ItemCategoryTransfer parentItemCategory);
-    
+
+    Long getItemCategoryCount();
+    void setItemCategoryCount(Long itemCategoryCount);
+
     List<ItemCategoryTransfer> getItemCategories();
     void setItemCategories(List<ItemCategoryTransfer> itemCategories);
     

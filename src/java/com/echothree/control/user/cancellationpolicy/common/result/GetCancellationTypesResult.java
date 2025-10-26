@@ -26,7 +26,10 @@ public interface GetCancellationTypesResult
     
     CancellationKindTransfer getCancellationKind();
     void setCancellationKind(CancellationKindTransfer cancellationKind);
-    
+
+    Long getCancellationTypeCount();
+    void setCancellationTypeCount(Long cancellationTypeCount);
+
     List<CancellationTypeTransfer> getCancellationTypes();
     void setCancellationTypes(List<CancellationTypeTransfer> cancellationTypes);
     

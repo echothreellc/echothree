@@ -129,6 +129,10 @@ import com.echothree.control.user.item.common.edit.ItemEdit;
 import com.echothree.control.user.item.common.edit.ItemImageTypeEdit;
 import com.echothree.control.user.item.common.edit.ItemPriceEdit;
 import com.echothree.control.user.item.common.edit.ItemUnitOfMeasureTypeEdit;
+import com.echothree.control.user.item.common.edit.ItemVolumeEdit;
+import com.echothree.control.user.item.common.edit.ItemVolumeTypeEdit;
+import com.echothree.control.user.item.common.edit.ItemWeightEdit;
+import com.echothree.control.user.item.common.edit.ItemWeightTypeEdit;
 import com.echothree.control.user.item.common.form.CreateItemAliasForm;
 import com.echothree.control.user.item.common.form.CreateItemAliasTypeForm;
 import com.echothree.control.user.item.common.form.CreateItemDescriptionTypeUseTypeForm;
@@ -136,12 +140,20 @@ import com.echothree.control.user.item.common.form.CreateItemForm;
 import com.echothree.control.user.item.common.form.CreateItemImageTypeForm;
 import com.echothree.control.user.item.common.form.CreateItemPriceForm;
 import com.echothree.control.user.item.common.form.CreateItemUnitOfMeasureTypeForm;
+import com.echothree.control.user.item.common.form.CreateItemVolumeForm;
+import com.echothree.control.user.item.common.form.CreateItemVolumeTypeForm;
+import com.echothree.control.user.item.common.form.CreateItemWeightForm;
+import com.echothree.control.user.item.common.form.CreateItemWeightTypeForm;
 import com.echothree.control.user.item.common.form.DeleteItemAliasForm;
 import com.echothree.control.user.item.common.form.DeleteItemAliasTypeForm;
 import com.echothree.control.user.item.common.form.DeleteItemDescriptionTypeUseTypeForm;
 import com.echothree.control.user.item.common.form.DeleteItemImageTypeForm;
 import com.echothree.control.user.item.common.form.DeleteItemPriceForm;
 import com.echothree.control.user.item.common.form.DeleteItemUnitOfMeasureTypeForm;
+import com.echothree.control.user.item.common.form.DeleteItemVolumeForm;
+import com.echothree.control.user.item.common.form.DeleteItemVolumeTypeForm;
+import com.echothree.control.user.item.common.form.DeleteItemWeightForm;
+import com.echothree.control.user.item.common.form.DeleteItemWeightTypeForm;
 import com.echothree.control.user.item.common.spec.ItemAliasSpec;
 import com.echothree.control.user.item.common.spec.ItemAliasTypeUniversalSpec;
 import com.echothree.control.user.item.common.spec.ItemDescriptionTypeUseTypeUniversalSpec;
@@ -149,6 +161,10 @@ import com.echothree.control.user.item.common.spec.ItemImageTypeUniversalSpec;
 import com.echothree.control.user.item.common.spec.ItemPriceSpec;
 import com.echothree.control.user.item.common.spec.ItemSpec;
 import com.echothree.control.user.item.common.spec.ItemUnitOfMeasureTypeSpec;
+import com.echothree.control.user.item.common.spec.ItemVolumeSpec;
+import com.echothree.control.user.item.common.spec.ItemVolumeTypeUniversalSpec;
+import com.echothree.control.user.item.common.spec.ItemWeightSpec;
+import com.echothree.control.user.item.common.spec.ItemWeightTypeUniversalSpec;
 import com.echothree.control.user.message.common.edit.MessageTypeEdit;
 import com.echothree.control.user.message.common.form.CreateMessageTypeForm;
 import com.echothree.control.user.message.common.form.DeleteMessageTypeForm;
@@ -520,10 +536,32 @@ public class BasePersona {
     public ItemAliasSpec itemAliasSpec;
     public ItemAliasEdit itemAliasEdit;
 
+    public CreateItemWeightTypeForm createItemWeightTypeForm;
+    public DeleteItemWeightTypeForm deleteItemWeightTypeForm;
+    public ItemWeightTypeUniversalSpec itemWeightTypeSpec;
+    public ItemWeightTypeEdit itemWeightTypeEdit;
+
+    public CreateItemWeightForm createItemWeightForm;
+    public DeleteItemWeightForm deleteItemWeightForm;
+    public ItemWeightSpec itemWeightSpec;
+    public ItemWeightEdit itemWeightEdit;
+
+    public CreateItemVolumeTypeForm createItemVolumeTypeForm;
+    public DeleteItemVolumeTypeForm deleteItemVolumeTypeForm;
+    public ItemVolumeTypeUniversalSpec itemVolumeTypeSpec;
+    public ItemVolumeTypeEdit itemVolumeTypeEdit;
+
+    public CreateItemVolumeForm createItemVolumeForm;
+    public DeleteItemVolumeForm deleteItemVolumeForm;
+    public ItemVolumeSpec itemVolumeSpec;
+    public ItemVolumeEdit itemVolumeEdit;
+
     public String lastItemName;
     public String lastItemImageTypeName;
     public String lastItemDescriptionTypeUseTypeName;
     public String lastItemAliasTypeName;
+    public String lastItemWeightTypeName;
+    public String lastItemVolumeTypeName;
     public String lastAlias;
 
     // Message

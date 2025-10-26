@@ -20,32 +20,29 @@ import com.echothree.control.user.wishlist.common.form.GetWishlistPrioritiesForm
 import com.echothree.control.user.wishlist.common.result.WishlistResultFactory;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.control.wishlist.server.logic.WishlistTypeLogic;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.wishlist.server.entity.WishlistType;
 import com.echothree.model.data.wishlist.server.entity.WishlistPriority;
+import com.echothree.model.data.wishlist.server.entity.WishlistType;
 import com.echothree.model.data.wishlist.server.factory.WishlistPriorityFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class GetWishlistPrioritiesCommand
-        extends BaseMultipleEntitiesCommand<WishlistPriority, GetWishlistPrioritiesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<WishlistPriority, GetWishlistPrioritiesForm> {
 
     // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("WishlistTypeName", FieldType.ENTITY_NAME, true, null, null)
-        ));
+        FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("WishlistTypeName", FieldType.ENTITY_NAME, true, null, null)
+        );
     }
-    
+
     /** Creates a new instance of GetWishlistPrioritiesCommand */
     public GetWishlistPrioritiesCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
@@ -54,12 +51,31 @@ public class GetWishlistPrioritiesCommand
     WishlistType wishlistType;
 
     @Override
-    protected Collection<WishlistPriority> getEntities() {
+    protected void handleForm() {
+        var wishlistTypeName = form.getWishlistTypeName();
+
+        wishlistType = WishlistTypeLogic.getInstance().getWishlistTypeByName(this, wishlistTypeName);
+    }
+
+    @Override
+    protected Long getTotalEntities() {
         var wishlistControl = Session.getModelController(WishlistControl.class);
 
-        wishlistType = WishlistTypeLogic.getInstance().getWishlistTypeByName(this, form.getWishlistTypeName());
+        return hasExecutionErrors() ? null :
+                wishlistControl.countWishlistPrioritiesByWishlistType(wishlistType);
+    }
 
-        return hasExecutionErrors() ? null : wishlistControl.getWishlistPriorities(wishlistType);
+    @Override
+    protected Collection<WishlistPriority> getEntities() {
+        Collection<WishlistPriority> wishlistPriorities = null;
+
+        if(!hasExecutionErrors()) {
+            var wishlistControl = Session.getModelController(WishlistControl.class);
+
+            wishlistPriorities = wishlistControl.getWishlistPriorities(wishlistType);
+        }
+
+        return wishlistPriorities;
     }
 
     @Override
@@ -68,16 +84,16 @@ public class GetWishlistPrioritiesCommand
 
         if(entities != null) {
             var wishlistControl = Session.getModelController(WishlistControl.class);
+            var userVisit = getUserVisit();
 
             if(session.hasLimit(WishlistPriorityFactory.class)) {
                 result.setWishlistPriorityCount(wishlistControl.countWishlistPrioritiesByWishlistType(wishlistType));
             }
 
-            result.setWishlistType(wishlistControl.getWishlistTypeTransfer(getUserVisit(), wishlistType));
-            result.setWishlistPriorities(wishlistControl.getWishlistPriorityTransfers(getUserVisit(), entities));
+            result.setWishlistType(wishlistControl.getWishlistTypeTransfer(userVisit, wishlistType));
+            result.setWishlistPriorities(wishlistControl.getWishlistPriorityTransfers(userVisit, entities));
         }
 
         return result;
     }
-    
 }

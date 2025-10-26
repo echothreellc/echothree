@@ -165,6 +165,18 @@
         <itemAliasChecksumType itemAliasChecksumTypeName="BOOKLAND_EAN" isDefault="false" sortOrder="1">
             <itemAliasChecksumTypeDescription languageIsoName="en" description="Bookland EAN" />
         </itemAliasChecksumType>
+        <itemAliasChecksumType itemAliasChecksumTypeName="GTIN_8" isDefault="false" sortOrder="1">
+            <itemAliasChecksumTypeDescription languageIsoName="en" description="GTIN-8" />
+        </itemAliasChecksumType>
+        <itemAliasChecksumType itemAliasChecksumTypeName="GTIN_12" isDefault="false" sortOrder="1">
+            <itemAliasChecksumTypeDescription languageIsoName="en" description="GTIN-12" />
+        </itemAliasChecksumType>
+        <itemAliasChecksumType itemAliasChecksumTypeName="GTIN_13" isDefault="false" sortOrder="1">
+            <itemAliasChecksumTypeDescription languageIsoName="en" description="GTIN-13" />
+        </itemAliasChecksumType>
+        <itemAliasChecksumType itemAliasChecksumTypeName="GTIN_14" isDefault="false" sortOrder="1">
+            <itemAliasChecksumTypeDescription languageIsoName="en" description="GTIN-14" />
+        </itemAliasChecksumType>
     </itemAliasChecksumTypes>
     <itemAliasTypes>
         <itemAliasType itemAliasTypeName="ADDTL_ITEM_NAME" itemAliasChecksumTypeName="NONE" allowMultiple="true" isDefault="true" sortOrder="0">
@@ -188,7 +200,29 @@
         <itemAliasType itemAliasTypeName="BOOKLAND_EAN" itemAliasChecksumTypeName="BOOKLAND_EAN" allowMultiple="false" isDefault="false" sortOrder="0">
             <itemAliasTypeDescription languageIsoName="en" description="Bookland EAN (European Article Number)" />
         </itemAliasType>
+        <itemAliasType itemAliasTypeName="GTIN_8" itemAliasChecksumTypeName="GTIN_8" allowMultiple="false" isDefault="false" sortOrder="0">
+            <itemAliasTypeDescription languageIsoName="en" description="GTIN-8 (Global Trade Item Number, 8 Digits)" />
+        </itemAliasType>
+        <itemAliasType itemAliasTypeName="GTIN_12" itemAliasChecksumTypeName="GTIN_12" allowMultiple="false" isDefault="false" sortOrder="0">
+            <itemAliasTypeDescription languageIsoName="en" description="GTIN-12 (Global Trade Item Number, 12 Digits)" />
+        </itemAliasType>
+        <itemAliasType itemAliasTypeName="GTIN_13" itemAliasChecksumTypeName="GTIN_13" allowMultiple="false" isDefault="false" sortOrder="0">
+            <itemAliasTypeDescription languageIsoName="en" description="GTIN-13 (Global Trade Item Number, 13 Digits)" />
+        </itemAliasType>
+        <itemAliasType itemAliasTypeName="GTIN_14" itemAliasChecksumTypeName="GTIN_14" allowMultiple="false" isDefault="false" sortOrder="0">
+            <itemAliasTypeDescription languageIsoName="en" description="GTIN-14 (Global Trade Item Number, 14 Digits)" />
+        </itemAliasType>
     </itemAliasTypes>
+    <itemWeightTypes>
+        <itemWeightType itemWeightTypeName="EXAMPLE_ITEM_WEIGHT_TYPE" isDefault="true" sortOrder="0">
+            <itemWeightTypeDescription languageIsoName="en" description="Example Item Weight Type" />
+        </itemWeightType>
+    </itemWeightTypes>
+    <itemVolumeTypes>
+        <itemVolumeType itemVolumeTypeName="EXAMPLE_ITEM_VOLUME_TYPE" isDefault="true" sortOrder="0">
+            <itemVolumeTypeDescription languageIsoName="en" description="Example Item Volume Type" />
+        </itemVolumeType>
+    </itemVolumeTypes>
     <itemPriceTypes>
         <itemPriceType itemPriceTypeName="FIXED" isDefault="true" sortOrder="0">
             <itemPriceTypeDescription languageIsoName="en" description="Fixed" />
@@ -405,9 +439,11 @@
                 ]]>
             </itemDescription>
             <itemPrice inventoryConditionName="GOOD" unitOfMeasureTypeName="EACH" currencyIsoName="USD" unitPrice="14.95" />
-            <itemWeight unitOfMeasureTypeName="EACH" weightUnitOfMeasureTypeName="POUND" weight="5" />
-            <itemVolume unitOfMeasureTypeName="EACH" heightUnitOfMeasureTypeName="INCH" height="1"
-            widthUnitOfMeasureTypeName="INCH" width="1" depthUnitOfMeasureTypeName="INCH" depth="1" />
+            <itemWeight unitOfMeasureTypeName="EACH" itemWeightTypeName="EXAMPLE_ITEM_WEIGHT_TYPE"
+                        weightUnitOfMeasureTypeName="POUND" weight="5" />
+            <itemVolume unitOfMeasureTypeName="EACH" itemVolumeTypeName="EXAMPLE_ITEM_VOLUME_TYPE"
+                        heightUnitOfMeasureTypeName="INCH" height="1" widthUnitOfMeasureTypeName="INCH" width="1"
+                        depthUnitOfMeasureTypeName="INCH" depth="1" />
             <itemCountryOfOrigin countryName="UNITED_STATES" percent="50%" />
             <itemCountryOfOrigin countryName="CANADA" percent="50%" />
             <itemUnitLimit inventoryConditionName="GOOD" unitOfMeasureTypeName="EACH" minimumQuantity="1" maximumQuantity="5" />

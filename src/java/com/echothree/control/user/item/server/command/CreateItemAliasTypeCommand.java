@@ -83,7 +83,6 @@ public class CreateItemAliasTypeCommand
             itemAliasType = ItemAliasTypeLogic.getInstance().createItemAliasType(this, itemAliasTypeName, validationPattern,
                     itemAliasChecksumType, allowMultiple, isDefault, sortOrder, getPreferredLanguage(), description,
                     getPartyPK());
-
         }
 
         if(itemAliasType != null) {

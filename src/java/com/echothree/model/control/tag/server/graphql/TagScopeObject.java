@@ -17,11 +17,11 @@
 package com.echothree.model.control.tag.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.control.user.server.control.UserControl;
@@ -45,14 +45,24 @@ import java.util.stream.Collectors;
 public class TagScopeObject
         extends BaseEntityInstanceObject {
 
-    private final TagScope tagScope; // Always Present
-    private final EntityInstance entityInstance; // Optional
+    private TagScope tagScope; // Always Present
+    private EntityInstance entityInstance; // Optional
+
+    private void init(final TagScope tagScope, final EntityInstance entityInstance) {
+        this.tagScope = tagScope;
+        this.entityInstance = entityInstance;
+    }
+
+    public TagScopeObject(final TagScope tagScope) {
+        super(tagScope.getPrimaryKey());
+
+        init(tagScope, null);
+    }
 
     public TagScopeObject(final TagScope tagScope, final EntityInstance entityInstance) {
         super(tagScope.getPrimaryKey());
 
-        this.tagScope = tagScope;
-        this.entityInstance = entityInstance;
+        init(tagScope, entityInstance);
     }
 
     private TagScopeDetail tagScopeDetail; // Optional, use getTagScopeDetail()

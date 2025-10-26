@@ -97,6 +97,13 @@ public class FreeOnBoardControl
         return getFreeOnBoardByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
+    public long countFreeOnBoards() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM freeonboards, freeonboarddetails " +
+                        "WHERE fob_activedetailid = fobdt_freeonboarddetailid");
+    }
+
     private static final Map<EntityPermission, String> getFreeOnBoardByNameQueries = Map.of(
             EntityPermission.READ_ONLY,
             "SELECT _ALL_ " +

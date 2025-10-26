@@ -7,7 +7,7 @@ Jaxen 1.1.1 (used by PMD)
 jQuery 3.7.1
 log4j 1.2.8
 logkit 1.2
-PMD 7.9.0
+PMD 7.17.0
 Popper.js 2.6.0
 Prism 1.6.0
 Prototype 1.6.0.3

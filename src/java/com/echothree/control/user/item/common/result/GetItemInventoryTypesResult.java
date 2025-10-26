@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetItemInventoryTypesResult
         extends BaseResult {
-    
+
+    Long getItemInventoryTypeCount();
+    void setItemInventoryTypeCount(Long itemInventoryTypeCount);
+
     List<ItemInventoryTypeTransfer> getItemInventoryTypes();
     void setItemInventoryTypes(List<ItemInventoryTypeTransfer> itemInventoryTypes);
     

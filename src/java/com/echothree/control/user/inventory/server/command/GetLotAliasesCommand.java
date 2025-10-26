@@ -20,12 +20,12 @@ import com.echothree.control.user.inventory.common.form.GetLotAliasesForm;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.model.control.inventory.server.control.LotAliasControl;
 import com.echothree.model.control.inventory.server.control.LotControl;
+import com.echothree.model.control.inventory.server.logic.LotLogic;
+import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
@@ -52,7 +52,8 @@ public class GetLotAliasesCommand
         )));
 
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("LotName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("LotIdentifier", FieldType.STRING, true, 1L, 40L)
                 ));
     }
     
@@ -63,19 +64,21 @@ public class GetLotAliasesCommand
     
     @Override
     protected BaseResult execute() {
-        var lotControl = Session.getModelController(LotControl.class);
         var result = InventoryResultFactory.getGetLotAliasesResult();
-        var lotName = form.getLotName();
-        var lot = lotControl.getLotByName(lotName);
+        var item = ItemLogic.getInstance().getItemByName(this, form.getItemName());
 
-        if(lot != null) {
-            var lotAliasControl = Session.getModelController(LotAliasControl.class);
-            var userVisit = getUserVisit();
+        if(!hasExecutionErrors()) {
+            var lotIdentifier = form.getLotIdentifier();
+            var lot = LotLogic.getInstance().getLotByIdentifier(this, item, lotIdentifier);
 
-            result.setLot(lotControl.getLotTransfer(userVisit, lot));
-            result.setLotAliases(lotAliasControl.getLotAliasTransfersByLot(userVisit, lot));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownLotName.name(), lotName);
+            if(!hasExecutionErrors()) {
+                var lotControl = Session.getModelController(LotControl.class);
+                var lotAliasControl = Session.getModelController(LotAliasControl.class);
+                var userVisit = getUserVisit();
+
+                result.setLot(lotControl.getLotTransfer(userVisit, lot));
+                result.setLotAliases(lotAliasControl.getLotAliasTransfersByLot(userVisit, lot));
+            }
         }
 
         return result;

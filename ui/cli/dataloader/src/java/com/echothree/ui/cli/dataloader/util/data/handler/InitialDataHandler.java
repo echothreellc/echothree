@@ -105,6 +105,7 @@ import com.echothree.ui.cli.dataloader.util.data.handler.index.IndexesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.inventory.AllocationPrioritiesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.inventory.InventoryConditionUseTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.inventory.InventoryConditionsHandler;
+import com.echothree.ui.cli.dataloader.util.data.handler.inventory.InventoryTransactionTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.inventory.LotAliasTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.inventory.LotTimeTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.invoice.InvoiceLineUseTypesHandler;
@@ -123,6 +124,8 @@ import com.echothree.ui.cli.dataloader.util.data.handler.item.ItemInventoryTypes
 import com.echothree.ui.cli.dataloader.util.data.handler.item.ItemPriceTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.item.ItemTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.item.ItemUseTypesHandler;
+import com.echothree.ui.cli.dataloader.util.data.handler.item.ItemVolumeTypesHandler;
+import com.echothree.ui.cli.dataloader.util.data.handler.item.ItemWeightTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.item.ItemsHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.item.RelatedItemTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.job.JobsHandler;
@@ -330,6 +333,10 @@ public class InitialDataHandler
             initialDataParser.pushHandler(new ItemAliasChecksumTypesHandler(initialDataParser, this));
         } else if(localName.equals("itemAliasTypes")) {
             initialDataParser.pushHandler(new ItemAliasTypesHandler(initialDataParser, this));
+        } else if(localName.equals("itemWeightTypes")) {
+            initialDataParser.pushHandler(new ItemWeightTypesHandler(initialDataParser, this));
+        } else if(localName.equals("itemVolumeTypes")) {
+            initialDataParser.pushHandler(new ItemVolumeTypesHandler(initialDataParser, this));
         } else if(localName.equals("relatedItemTypes")) {
             initialDataParser.pushHandler(new RelatedItemTypesHandler(initialDataParser, this));
         } else if(localName.equals("itemCategories")) {
@@ -428,6 +435,8 @@ public class InitialDataHandler
             initialDataParser.pushHandler(new WarehousesHandler(initialDataParser, this));
         } else if(localName.equals("inventoryConditions")) {
             initialDataParser.pushHandler(new InventoryConditionsHandler(initialDataParser, this));
+        } else if(localName.equals("inventoryTransactionTypes")) {
+            initialDataParser.pushHandler(new InventoryTransactionTypesHandler(initialDataParser, this));
         } else if(localName.equals("allocationPriorities")) {
             initialDataParser.pushHandler(new AllocationPrioritiesHandler(initialDataParser, this));
         } else if(localName.equals("wishlistTypes")) {

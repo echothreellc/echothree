@@ -23,38 +23,36 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.item.server.entity.ItemCategory;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.item.server.factory.ItemCategoryFactory;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class GetItemCategoriesCommand
-        extends BaseMultipleEntitiesCommand<ItemCategory, GetItemCategoriesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<ItemCategory, GetItemCategoriesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ItemCategory.name(), SecurityRoles.List.name())
-                        )))
-                )));
+                ))
+        ));
         
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ParentItemCategoryName", FieldType.ENTITY_NAME, false, null, null)
-                ));
+        );
     }
     
     /** Creates a new instance of GetItemCategoriesCommand */
@@ -65,18 +63,38 @@ public class GetItemCategoriesCommand
     private ItemCategory parentItemCategory;
     
     @Override
-    protected Collection<ItemCategory> getEntities() {
+    protected void handleForm() {
         var itemControl = Session.getModelController(ItemControl.class);
         var parentItemCategoryName = form.getParentItemCategoryName();
+
+        parentItemCategory = parentItemCategoryName == null ? null : itemControl.getItemCategoryByName(parentItemCategoryName);
+
+        if(parentItemCategoryName != null && parentItemCategory == null) {
+            addExecutionError(ExecutionErrors.UnknownParentItemCategoryName.name(), parentItemCategoryName);
+        }
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        if(hasExecutionErrors())
+            return null;
+
+        var itemControl = Session.getModelController(ItemControl.class);
+        
+        return parentItemCategory == null
+                ? itemControl.countItemCategories()
+                : itemControl.countItemCategoriesByParentItemCategory(parentItemCategory);
+    }
+    
+    @Override
+    protected Collection<ItemCategory> getEntities() {
         Collection<ItemCategory> itemCategories = null;
         
-        parentItemCategory = parentItemCategoryName == null? null: itemControl.getItemCategoryByName(parentItemCategoryName);
-
-        if(parentItemCategoryName == null || parentItemCategory != null) {
+        if(!hasExecutionErrors()) {
+            var itemControl = Session.getModelController(ItemControl.class);
+            
             itemCategories = parentItemCategory == null ? itemControl.getItemCategories()
                     : itemControl.getItemCategoriesByParentItemCategory(parentItemCategory);
-        } else {
-            addExecutionError(ExecutionErrors.UnknownParentItemCategoryName.name(), parentItemCategoryName);
         }
         
         return itemCategories;
@@ -85,11 +103,18 @@ public class GetItemCategoriesCommand
     @Override
     protected BaseResult getResult(Collection<ItemCategory> entities) {
         var result = ItemResultFactory.getGetItemCategoriesResult();
-        var itemControl = Session.getModelController(ItemControl.class);
-        var userVisit = getUserVisit();
-        
-        result.setParentItemCategory(parentItemCategory == null ? null : itemControl.getItemCategoryTransfer(userVisit, parentItemCategory));
-        result.setItemCategories(itemControl.getItemCategoryTransfers(userVisit, entities));
+
+        if(entities != null) {
+            var itemControl = Session.getModelController(ItemControl.class);
+            var userVisit = getUserVisit();
+
+            if(session.hasLimit(ItemCategoryFactory.class)) {
+                result.setItemCategoryCount(getTotalEntities());
+            }
+            
+            result.setParentItemCategory(parentItemCategory == null ? null : itemControl.getItemCategoryTransfer(userVisit, parentItemCategory));
+            result.setItemCategories(itemControl.getItemCategoryTransfers(userVisit, entities));
+        }
         
         return result;
     }

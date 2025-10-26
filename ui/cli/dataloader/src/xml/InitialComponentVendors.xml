@@ -496,6 +496,18 @@
             <entityType entityTypeName="ItemAliasTypeDescription" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Item Alias Type Description" />
             </entityType>
+            <entityType entityTypeName="ItemWeightType" keepAllHistory="false" isExtensible="true" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Weight Type" />
+            </entityType>
+            <entityType entityTypeName="ItemWeightTypeDescription" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Weight Type Description" />
+            </entityType>
+            <entityType entityTypeName="ItemVolumeType" keepAllHistory="false" isExtensible="true" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Volume Type" />
+            </entityType>
+            <entityType entityTypeName="ItemVolumeTypeDescription" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Volume Type Description" />
+            </entityType>
             <entityType entityTypeName="ItemDescription" keepAllHistory="false" isExtensible="true" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Item Description" />
             </entityType>
@@ -975,6 +987,12 @@
             </entityType>
             <entityType entityTypeName="InventoryConditionUse" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Inventory Condition Use" />
+            </entityType>
+            <entityType entityTypeName="InventoryTransactionType" keepAllHistory="false" isExtensible="true" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Inventory Transaction Type" />
+            </entityType>
+            <entityType entityTypeName="InventoryTransactionTypeDescription" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Inventory Transaction Type Description" />
             </entityType>
             <entityType entityTypeName="InventoryLocationGroup" keepAllHistory="false" isExtensible="true" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Inventory Location Group" />

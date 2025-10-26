@@ -55,6 +55,7 @@ public class EditAction
 
         spec.setItemName(findParameter(request, ParameterConstants.ITEM_NAME, actionForm.getItemName()));
         spec.setUnitOfMeasureTypeName(findParameter(request, ParameterConstants.UNIT_OF_MEASURE_TYPE_NAME, actionForm.getUnitOfMeasureTypeName()));
+        spec.setItemVolumeTypeName(findParameter(request, ParameterConstants.ITEM_VOLUME_TYPE_NAME, actionForm.getItemVolumeTypeName()));
 
         return spec;
     }
@@ -84,6 +85,7 @@ public class EditAction
     protected void setupActionForm(HttpServletRequest request, EditActionForm actionForm, EditItemVolumeResult result, ItemVolumeSpec spec, ItemVolumeEdit edit) {
         actionForm.setItemName(spec.getItemName());
         actionForm.setUnitOfMeasureTypeName(spec.getUnitOfMeasureTypeName());
+        actionForm.setItemVolumeTypeName(spec.getItemVolumeTypeName());
         actionForm.setHeightUnitOfMeasureTypeChoice(edit.getHeightUnitOfMeasureTypeName());
         actionForm.setHeight(edit.getHeight());
         actionForm.setWidthUnitOfMeasureTypeChoice(edit.getWidthUnitOfMeasureTypeName());

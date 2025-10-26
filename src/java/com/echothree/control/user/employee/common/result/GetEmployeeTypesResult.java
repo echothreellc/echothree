@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetEmployeeTypesResult
         extends BaseResult {
-    
+
+    Long getEmployeeTypeCount();
+    void setEmployeeTypeCount(Long employeeTypesCount);
+
     List<EmployeeTypeTransfer> getEmployeeTypes();
     void setEmployeeTypes(List<EmployeeTypeTransfer> employeeTypes);
     

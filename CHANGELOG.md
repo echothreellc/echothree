@@ -1,5 +1,87 @@
 # Changelog
 
+## 2025-10-26-01
+
+* Provide Access to GeoCodeCountry Using GraphQL Union [1615](https://gitlab.echothree.com/echothree/echothree/-/issues/1615)
+* Remove Parent Order Type from Order Types [1619](https://gitlab.echothree.com/echothree/echothree/-/issues/1619)
+* Add Inventory Transaction Types [1620](https://gitlab.echothree.com/echothree/echothree/-/issues/1620)
+* Convert EditEmployeeType UC to Use BaseAbstractEditCommand [1023](https://gitlab.echothree.com/echothree/echothree/-/issues/1023)
+* Convert GetOrderPriorities UC to Use BasePaginatedMultipleEntitiesCommand [1123](https://gitlab.echothree.com/echothree/echothree/-/issues/1123)
+* Convert GetOrderTypes UC to Use BasePaginatedMultipleEntitiesCommand [1124](https://gitlab.echothree.com/echothree/echothree/-/issues/1124)
+* Convert GetOrderTimeTypes UC to Use BasePaginatedMultipleEntitiesCommand [1125](https://gitlab.echothree.com/echothree/echothree/-/issues/1125)
+* Convert GetPersonalTitles UC to Use BasePaginatedMultipleEntitiesCommand [1156](https://gitlab.echothree.com/echothree/echothree/-/issues/1156)
+* Convert GetNameSuffixes UC to Use BasePaginatedMultipleEntitiesCommand [1160](https://gitlab.echothree.com/echothree/echothree/-/issues/1160)
+* Convert GetRecoveryQuestions UC to Use BasePaginatedMultipleEntitiesCommand [1199](https://gitlab.echothree.com/echothree/echothree/-/issues/1199)
+* Convert GetSearchResultActionTypes UC to Use BasePaginatedMultipleEntitiesCommand [1200](https://gitlab.echothree.com/echothree/echothree/-/issues/1200)
+* Convert GetSearchCheckSpellingActionTypes UC to Use BasePaginatedMultipleEntitiesCommand [1201](https://gitlab.echothree.com/echothree/echothree/-/issues/1201)
+* Convert GetReturnKinds UC to Use BasePaginatedMultipleEntitiesCommand [1202](https://gitlab.echothree.com/echothree/echothree/-/issues/1202)
+* Convert GetReturnPolicies UC to Use BasePaginatedMultipleEntitiesCommand [1203](https://gitlab.echothree.com/echothree/echothree/-/issues/1203)
+* Convert GetItemAliasChecksumTypes UC to Use BasePaginatedMultipleEntitiesCommand [1204](https://gitlab.echothree.com/echothree/echothree/-/issues/1204)
+* Convert GetItemUseTypes UC to Use BasePaginatedMultipleEntitiesCommand [1205](https://gitlab.echothree.com/echothree/echothree/-/issues/1205)
+* Convert GetItemAliasTypes UC to Use BasePaginatedMultipleEntitiesCommand [1206](https://gitlab.echothree.com/echothree/echothree/-/issues/1206)
+* Convert GetItemInventoryTypes UC to Use BasePaginatedMultipleEntitiesCommand [1209](https://gitlab.echothree.com/echothree/echothree/-/issues/1209)
+* Convert GetItemDeliveryTypes UC to Use BasePaginatedMultipleEntitiesCommand [1212](https://gitlab.echothree.com/echothree/echothree/-/issues/1212)
+* Convert GetRelatedItemTypes UC to Use BasePaginatedMultipleEntitiesCommand [1214](https://gitlab.echothree.com/echothree/echothree/-/issues/1214)
+* Convert GetItemPriceTypes UC to Use BasePaginatedMultipleEntitiesCommand [1216](https://gitlab.echothree.com/echothree/echothree/-/issues/1216)
+* Convert GetItemCategories UC to Use BasePaginatedMultipleEntitiesCommand [1219](https://gitlab.echothree.com/echothree/echothree/-/issues/1219)
+* Convert GetItemTypes UC to Use BasePaginatedMultipleEntitiesCommand [1222](https://gitlab.echothree.com/echothree/echothree/-/issues/1222)
+* Convert GetAllocationPriorities UC to Use BasePaginatedMultipleEntitiesCommand [1223](https://gitlab.echothree.com/echothree/echothree/-/issues/1223)
+* Convert GetInventoryConditions UC to Use BasePaginatedMultipleEntitiesCommand [1225](https://gitlab.echothree.com/echothree/echothree/-/issues/1225)
+* Convert GetFreeOnBoards UC to Use BasePaginatedMultipleEntitiesCommand [1253](https://gitlab.echothree.com/echothree/echothree/-/issues/1253)
+* Convert GetLocationUseTypes UC to Use BasePaginatedMultipleEntitiesCommand [1258](https://gitlab.echothree.com/echothree/echothree/-/issues/1258)
+* Convert GetWarehouses UC to Use BasePaginatedMultipleEntitiesCommand [1259](https://gitlab.echothree.com/echothree/echothree/-/issues/1259)
+* Convert GetWarehouseTypes UC to Use BasePaginatedMultipleEntitiesCommand [1260](https://gitlab.echothree.com/echothree/echothree/-/issues/1260)
+* Convert GetUnitOfMeasureTypes UC to Use BasePaginatedMultipleEntitiesCommand [1262](https://gitlab.echothree.com/echothree/echothree/-/issues/1262)
+* Convert GetUnitOfMeasureKinds UC to Use BasePaginatedMultipleEntitiesCommand [1263](https://gitlab.echothree.com/echothree/echothree/-/issues/1263)
+* Convert GetUnitOfMeasureKindUseTypes UC to Use BasePaginatedMultipleEntitiesCommand [1264](https://gitlab.echothree.com/echothree/echothree/-/issues/1264)
+* Convert GetEmployees UC to Use BasePaginatedMultipleEntitiesCommand [1265](https://gitlab.echothree.com/echothree/echothree/-/issues/1265)
+* Convert GetTagScopes UC to Use BasePaginatedMultipleEntitiesCommand [1266](https://gitlab.echothree.com/echothree/echothree/-/issues/1266)
+* Convert GetTags UC to Use BasePaginatedMultipleEntitiesCommand [1268](https://gitlab.echothree.com/echothree/echothree/-/issues/1268)
+* Convert GetCustomers UC to Use BasePaginatedMultipleEntitiesCommand [1270](https://gitlab.echothree.com/echothree/echothree/-/issues/1270)
+* Convert GetCustomerTypes UC to Use BasePaginatedMultipleEntitiesCommand [1271](https://gitlab.echothree.com/echothree/echothree/-/issues/1271)
+* Convert GetVendors UC to Use BasePaginatedMultipleEntitiesCommand [1272](https://gitlab.echothree.com/echothree/echothree/-/issues/1272)
+* Convert GetItemPurchasingCategories UC to Use BasePaginatedMultipleEntitiesCommand [1273](https://gitlab.echothree.com/echothree/echothree/-/issues/1273)
+* Convert GetVendorTypes UC to Use BasePaginatedMultipleEntitiesCommand [1275](https://gitlab.echothree.com/echothree/echothree/-/issues/1275)
+* Convert GetCancellationKinds UC to Use BasePaginatedMultipleEntitiesCommand [1277](https://gitlab.echothree.com/echothree/echothree/-/issues/1277)
+* Convert GetCancellationPolicies UC to Use BasePaginatedMultipleEntitiesCommand [1278](https://gitlab.echothree.com/echothree/echothree/-/issues/1278)
+* Convert GetWishlistPriorities UC to Use BasePaginatedMultipleEntitiesCommand [1279](https://gitlab.echothree.com/echothree/echothree/-/issues/1279)
+* Convert GetWishlistTypes UC to Use BasePaginatedMultipleEntitiesCommand [1280](https://gitlab.echothree.com/echothree/echothree/-/issues/1280)
+* Convert GetCancellationTypes UC to Use BasePaginatedMultipleEntitiesCommand [1616](https://gitlab.echothree.com/echothree/echothree/-/issues/1616)
+* Convert GetReturnTypes UC to Use BasePaginatedMultipleEntitiesCommand [1617](https://gitlab.echothree.com/echothree/echothree/-/issues/1617)
+* Convert GetEmployeeTypes UC to Use BasePaginatedMultipleEntitiesCommand [1618](https://gitlab.echothree.com/echothree/echothree/-/issues/1618)
+
+## 2025-10-12-01
+
+* Gson 2.13.2 Upgrade [1606](https://gitlab.echothree.com/echothree/echothree/-/issues/1606)
+* Error Prone 2.42.0 Upgrade [1607](https://gitlab.echothree.com/echothree/echothree/-/issues/1607)
+* PMD 7.17.0 Upgrade [1608](https://gitlab.echothree.com/echothree/echothree/-/issues/1608)
+* jOOQ 3.20.8 Upgrade [1609](https://gitlab.echothree.com/echothree/echothree/-/issues/1609)
+* CreateOrderTimeType UC Returning Incorrect EntityRef [1610](https://gitlab.echothree.com/echothree/echothree/-/issues/1610)
+* Remove shared.class.path from UI and Service Components [1611](https://gitlab.echothree.com/echothree/echothree/-/issues/1611)
+* Add selectorKindName Parameter to workflows Query [1612](https://gitlab.echothree.com/echothree/echothree/-/issues/1612)
+* Remove Lots from Inventory Location Assignments [1613](https://gitlab.echothree.com/echothree/echothree/-/issues/1613)
+* Simplify Lots [1614](https://gitlab.echothree.com/echothree/echothree/-/issues/1614)
+
+## 2025-09-28-01
+
+* Integrate Item Weight Types Into Item Weights [1595](https://gitlab.echothree.com/echothree/echothree/-/issues/1595)
+* Integrate Item Volume Types Into Item Volumes [1596](https://gitlab.echothree.com/echothree/echothree/-/issues/1596)
+* Break Apart GeoConstants into Enums [1603](https://gitlab.echothree.com/echothree/echothree/-/issues/1603)
+* Attempting to Sort by Warehouse Type Column Results in Error [1604](https://gitlab.echothree.com/echothree/echothree/-/issues/1604)
+* createOfferItem Mutation Not Returning id [1605](https://gitlab.echothree.com/echothree/echothree/-/issues/1605)
+
+## 2025-09-14-01
+
+* Add Item Alias Type for GTIN-8, GTIN-12, GTIN-13, and GTIN-14 [1592](https://gitlab.echothree.com/echothree/echothree/-/issues/1592)
+* Add Item Weight Types [1593](https://gitlab.echothree.com/echothree/echothree/-/issues/1593)
+* Add Item Volume Types [1594](https://gitlab.echothree.com/echothree/echothree/-/issues/1594)
+* Add Validation Pattern and Item Alias Checksum Type to Item Alias Type List [1597](https://gitlab.echothree.com/echothree/echothree/-/issues/1597)
+* Use CDI for ExecuteGraphQl UC [1598](https://gitlab.echothree.com/echothree/echothree/-/issues/1598)
+* Add UI for Maintaining Item Weight Types [1599](https://gitlab.echothree.com/echothree/echothree/-/issues/1599)
+* Add UI for Maintaining Item Volume Types [1600](https://gitlab.echothree.com/echothree/echothree/-/issues/1600)
+* Apache Lucene 10.3.0 Upgrade [1601](https://gitlab.echothree.com/echothree/echothree/-/issues/1601)
+* jOOQ 3.20.7 Upgrade [1602](https://gitlab.echothree.com/echothree/echothree/-/issues/1602)
+
 ## 2025-08-31-01
 
 * Break Apart ItemConstants into Enums [1585](https://gitlab.echothree.com/echothree/echothree/-/issues/1585)

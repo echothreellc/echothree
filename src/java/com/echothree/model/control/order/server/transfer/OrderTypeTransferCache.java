@@ -44,8 +44,6 @@ public class OrderTypeTransferCache
         if(orderTypeTransfer == null) {
             var orderTypeDetail = orderType.getLastDetail();
             var orderTypeName = orderTypeDetail.getOrderTypeName();
-            var parentOrderType = orderTypeDetail.getParentOrderType();
-            var parentOrderTypeTransfer = parentOrderType == null? null: getOrderTypeTransfer(parentOrderType);
             var orderSequenceType = orderTypeDetail.getOrderSequenceType();
             var orderSequenceTypeTransfer = orderSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, orderSequenceType);
             var orderWorkflow = orderTypeDetail.getOrderWorkflow();
@@ -56,7 +54,7 @@ public class OrderTypeTransferCache
             var sortOrder = orderTypeDetail.getSortOrder();
             var description = orderTypeControl.getBestOrderTypeDescription(orderType, getLanguage());
             
-            orderTypeTransfer = new OrderTypeTransfer(orderTypeName, parentOrderTypeTransfer, orderSequenceTypeTransfer, orderWorkflowTransfer,
+            orderTypeTransfer = new OrderTypeTransfer(orderTypeName, orderSequenceTypeTransfer, orderWorkflowTransfer,
                     orderWorkflowEntranceTransfer, isDefault, sortOrder, description);
             put(orderType, orderTypeTransfer);
         }

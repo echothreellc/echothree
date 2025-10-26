@@ -59,6 +59,8 @@ import static com.echothree.model.control.search.server.control.SearchControl.EN
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
+import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.data.employee.common.pk.EmployeeTypePK;
 import com.echothree.model.data.employee.server.entity.EmployeeType;
 import com.echothree.model.data.employee.server.entity.EmployeeTypeDescription;
 import com.echothree.model.data.employee.server.entity.Employment;
@@ -3403,7 +3405,29 @@ public class EmployeeControl
         
         return employeeType;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.EmployeeType */
+    public EmployeeType getEmployeeTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new EmployeeTypePK(entityInstance.getEntityUniqueId());
+
+        return EmployeeTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public EmployeeType getEmployeeTypeByEntityInstance(EntityInstance entityInstance) {
+        return getEmployeeTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public EmployeeType getEmployeeTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getEmployeeTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countEmployeeTypes() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM employeetypes, employeetypedetails " +
+                        "WHERE empty_activedetailid = emptydt_employeetypedetailid");
+    }
+
     private List<EmployeeType> getEmployeeTypes(EntityPermission entityPermission) {
         String query = null;
         
@@ -3411,7 +3435,8 @@ public class EmployeeControl
             query = "SELECT _ALL_ " +
                     "FROM employeetypes, employeetypedetails " +
                     "WHERE empty_activedetailid = emptydt_employeetypedetailid " +
-                    "ORDER BY emptydt_sortorder, emptydt_employeetypename";
+                    "ORDER BY emptydt_sortorder, emptydt_employeetypename " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM employeetypes, employeetypedetails " +
@@ -3463,7 +3488,7 @@ public class EmployeeControl
         return getDefaultEmployeeTypeForUpdate().getLastDetailForUpdate().getEmployeeTypeDetailValue().clone();
     }
     
-    private EmployeeType getEmployeeTypeByName(String employeeTypeName, EntityPermission entityPermission) {
+    public EmployeeType getEmployeeTypeByName(String employeeTypeName, EntityPermission entityPermission) {
         EmployeeType employeeType;
         
         try {

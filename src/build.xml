@@ -88,6 +88,7 @@
     <path id="shared.class.path">
         <fileset dir="${dir.lib}">
             <include name="**/*.jar" />
+            <exclude name="pmd/lib/*.jar" />
         </fileset>
 
         <fileset dir="${dir.build.lib}">

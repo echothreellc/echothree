@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.inventory.common.spec;
 
-import com.echothree.util.common.form.BaseSpec;
+import com.echothree.control.user.item.common.spec.ItemSpec;
 
 public interface LotSpec
-        extends BaseSpec {
+        extends ItemSpec {
     
-    String getLotName();
-    void setLotName(String lotName);
+    String getLotIdentifier();
+    void setLotIdentifier(String lotIdentifier);
     
 }

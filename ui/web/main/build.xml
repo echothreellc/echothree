@@ -27,18 +27,12 @@
     <path id="build.classpath">
         <fileset dir="${lib.dir}">
             <include name="**/*.jar" />
+            <exclude name="pmd/lib/*.jar" />
         </fileset>
         <fileset dir="${build.lib.dir}">
             <include name="**/*.jar" />
         </fileset>
         <pathelement location="${build.dir}/jars/echothree-client.jar"/>
-    </path>
-
-    <path id="shared.class.path">
-        <fileset dir="${lib.dir}">
-            <include name="**/*.jar" />
-        </fileset>
-        <pathelement path="${java.class.path}" />
     </path>
 
     <target name="prepare">

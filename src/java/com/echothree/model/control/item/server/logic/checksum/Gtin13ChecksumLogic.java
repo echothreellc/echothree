@@ -1,0 +1,78 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2025 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.model.control.item.server.logic.checksum;
+
+import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.server.message.ExecutionErrorAccumulator;
+
+public class Gtin13ChecksumLogic
+        extends BaseChecksumLogic
+        implements ItemAliasChecksumInterface {
+
+    private Gtin13ChecksumLogic() {
+        super();
+    }
+
+    private static class Gtin13ChecksumLogicHolder {
+        static Gtin13ChecksumLogic instance = new Gtin13ChecksumLogic();
+    }
+
+    public static Gtin13ChecksumLogic getInstance() {
+        return Gtin13ChecksumLogicHolder.instance;
+    }
+
+    @Override
+    public void checkChecksum(final ExecutionErrorAccumulator eea, final String alias) {
+        if(alias.length() == 13) {
+            var hasCharacterError = false;
+            var checksum = 0;
+
+            for(int i = 0; i < 12; i++) {
+                int d = getDigit(alias, i);
+
+                if(d == -1) {
+                    hasCharacterError = true;
+                    break;
+                }
+
+                // https://www.gs1.org/services/how-calculate-check-digit-manually
+                checksum += i % 2 == 0 ? d : (3 * d);
+            }
+
+            if(!hasCharacterError) {
+                var checkDigit = getDigit(alias, 12);
+
+                hasCharacterError = checkDigit == -1;
+
+                if(!hasCharacterError) {
+                    var intermediate = (10 - (checksum % 10)) % 10;
+
+                    if(intermediate != checkDigit) {
+                        eea.addExecutionError(ExecutionErrors.IncorrectGtin13Checksum.name(), alias);
+                    }
+                }
+            }
+
+            if(hasCharacterError) {
+                eea.addExecutionError(ExecutionErrors.IncorrectGtin13Character.name(), alias);
+            }
+        } else {
+            eea.addExecutionError(ExecutionErrors.IncorrectGtin13Length.name(), alias);
+        }
+    }
+
+}

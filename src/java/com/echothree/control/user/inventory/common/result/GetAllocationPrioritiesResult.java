@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetAllocationPrioritiesResult
         extends BaseResult {
-    
+
+    Long getAllocationPriorityCount();
+    void setAllocationPriorityCount(Long allocationPriorityCount);
+
     List<AllocationPriorityTransfer> getAllocationPriorities();
     void setAllocationPriorities(List<AllocationPriorityTransfer> allocationPriorities);
     

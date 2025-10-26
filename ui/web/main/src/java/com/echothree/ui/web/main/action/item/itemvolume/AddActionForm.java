@@ -16,8 +16,11 @@
 
 package com.echothree.ui.web.main.action.item.itemvolume;
 
+import com.echothree.control.user.item.common.ItemUtil;
+import com.echothree.control.user.item.common.result.GetItemVolumeTypeChoicesResult;
 import com.echothree.control.user.uom.common.UomUtil;
 import com.echothree.control.user.uom.common.result.GetUnitOfMeasureTypeChoicesResult;
+import com.echothree.model.control.item.common.choice.ItemVolumeTypeChoicesBean;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.common.choice.UnitOfMeasureTypeChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
@@ -31,12 +34,14 @@ public class AddActionForm
         extends BaseActionForm {
     
     private UnitOfMeasureTypeChoicesBean unitOfMeasureTypeChoices;
+    private ItemVolumeTypeChoicesBean itemVolumeTypeChoices;
     private UnitOfMeasureTypeChoicesBean heightUnitOfMeasureTypeChoices;
     private UnitOfMeasureTypeChoicesBean widthUnitOfMeasureTypeChoices;
     private UnitOfMeasureTypeChoicesBean depthUnitOfMeasureTypeChoices;
     
     private String itemName;
     private String unitOfMeasureTypeChoice;
+    private String itemVolumeTypeChoice;
     private String height;
     private String heightUnitOfMeasureTypeChoice;
     private String width;
@@ -63,7 +68,26 @@ public class AddActionForm
             }
         }
     }
-    
+
+    private void setupItemVolumeTypeChoices()
+            throws NamingException {
+        if(itemVolumeTypeChoices == null) {
+            var form = ItemUtil.getHome().getGetItemVolumeTypeChoicesForm();
+
+            form.setDefaultItemVolumeTypeChoice(itemVolumeTypeChoice);
+            form.setAllowNullChoice(String.valueOf(false));
+
+            var commandResult = ItemUtil.getHome().getItemVolumeTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetItemVolumeTypeChoicesResult)executionResult.getResult();
+            itemVolumeTypeChoices = result.getItemVolumeTypeChoices();
+
+            if(itemVolumeTypeChoice == null) {
+                itemVolumeTypeChoice = itemVolumeTypeChoices.getDefaultValue();
+            }
+        }
+    }
+
     private void setupHeightUnitOfMeasureTypeChoices()
             throws NamingException {
         if(heightUnitOfMeasureTypeChoices == null) {
@@ -154,7 +178,30 @@ public class AddActionForm
         
         return choices;
     }
-    
+
+    public String getItemVolumeTypeChoice()
+            throws NamingException {
+        setupItemVolumeTypeChoices();
+
+        return itemVolumeTypeChoice;
+    }
+
+    public void setItemVolumeTypeChoice(String itemVolumeTypeChoice) {
+        this.itemVolumeTypeChoice = itemVolumeTypeChoice;
+    }
+
+    public List<LabelValueBean> getItemVolumeTypeChoices()
+            throws NamingException {
+        List<LabelValueBean> choices = null;
+
+        setupItemVolumeTypeChoices();
+        if(itemVolumeTypeChoices != null) {
+            choices = convertChoices(itemVolumeTypeChoices);
+        }
+
+        return choices;
+    }
+
     public String getHeight() {
         return height;
     }

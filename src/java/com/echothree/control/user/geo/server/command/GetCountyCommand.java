@@ -19,14 +19,14 @@ package com.echothree.control.user.geo.server.command;
 import com.echothree.control.user.geo.common.form.GetCountyForm;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.geo.common.GeoConstants;
+import com.echothree.model.control.geo.common.GeoCodeAliasTypes;
+import com.echothree.model.control.geo.common.GeoCodeTypes;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.geo.server.entity.GeoCodeAlias;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -82,11 +82,11 @@ public class GetCountyCommand
             var stateGeoCodeName = form.getStateGeoCodeName();
             var stateGeoCode = geoControl.getGeoCodeByName(stateGeoCodeName);
 
-            var stateGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(stateGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_POSTAL_2_LETTER);
+            var stateGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(stateGeoCode.getLastDetail().getGeoCodeType(), GeoCodeAliasTypes.POSTAL_2_LETTER.name());
             var stateGeoCodeAlias = geoControl.getGeoCodeAlias(stateGeoCode, stateGeoCodeAliasType);
             var statePostal2Letter = stateGeoCodeAlias.getAlias();
 
-            var countryGeoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_COUNTRY);
+            var countryGeoCodeType = geoControl.getGeoCodeTypeByName(GeoCodeTypes.COUNTRY.name());
             GeoCode countryGeoCode = null;
             var stateRelationships = geoControl.getGeoCodeRelationshipsByFromGeoCode(stateGeoCode);
             for(var geoCodeRelationship : stateRelationships) {
@@ -97,7 +97,7 @@ public class GetCountyCommand
                 }
             }
 
-            var countryGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
+            var countryGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoCodeAliasTypes.ISO_2_LETTER.name());
             var countryGeoCodeAlias = geoControl.getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
             var countryIso2Letter = countryGeoCodeAlias.getAlias();
 
@@ -108,18 +108,18 @@ public class GetCountyCommand
             }
 
             if(geoCodeScope != null) {
-                var geoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_COUNTY);
+                var geoCodeType = geoControl.getGeoCodeTypeByName(GeoCodeTypes.COUNTY.name());
                 GeoCodeAlias geoCodeAlias;
 
                 if(countyName != null) {
-                    var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_COUNTY_NAME);
+                    var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoCodeAliasTypes.COUNTY_NAME.name());
                     geoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, countyName);
 
                     if(geoCodeAlias == null) {
                         addExecutionError(ExecutionErrors.UnknownCountyName.name(), countyName);
                     }
                 } else {
-                    var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_COUNTY_NUMBER);
+                    var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoCodeAliasTypes.COUNTY_NUMBER.name());
                     geoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, countyNumber);
 
                     if(geoCodeAlias == null) {

@@ -24,10 +24,9 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.customer.server.factory.CustomerTypeFactory;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -36,7 +35,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class GetCustomerTypesCommand
-        extends BaseMultipleEntitiesCommand<CustomerType, GetCustomerTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<CustomerType, GetCustomerTypesForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -58,6 +57,18 @@ public class GetCustomerTypesCommand
     }
 
     @Override
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var customerControl = Session.getModelController(CustomerControl.class);
+
+        return customerControl.countCustomerTypes();
+    }
+
+    @Override
     protected Collection<CustomerType> getEntities() {
         var customerControl = Session.getModelController(CustomerControl.class);
 
@@ -72,7 +83,7 @@ public class GetCustomerTypesCommand
             var customerControl = Session.getModelController(CustomerControl.class);
 
             if(session.hasLimit(CustomerTypeFactory.class)) {
-                result.setCustomerTypeCount(customerControl.countCustomerTypes());
+                result.setCustomerTypeCount(getTotalEntities());
             }
 
             result.setCustomerTypes(customerControl.getCustomerTypeTransfers(getUserVisit(), entities));

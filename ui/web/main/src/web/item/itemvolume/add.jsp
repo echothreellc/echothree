@@ -63,6 +63,17 @@
                         </td>
                     </tr>
                     <tr>
+                        <td align=right><fmt:message key="label.itemVolumeTypeChoice" />:</td>
+                        <td>
+                            <html:select property="itemVolumeTypeChoice">
+                                <html:optionsCollection property="itemVolumeTypeChoices" />
+                            </html:select>
+                            <et:validationErrors id="errorMessage" property="ItemVolumeTypeName">
+                                <p><c:out value="${errorMessage}" /></p>
+                            </et:validationErrors>
+                        </td>
+                    </tr>
+                    <tr>
                         <td align=right><fmt:message key="label.height" />:</td>
                         <td>
                             <html:text property="height" size="12" maxlength="12" />

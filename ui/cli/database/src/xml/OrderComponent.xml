@@ -77,7 +77,6 @@
                         <column name="OrderTypeDetailId" type="EID" nullAllowed="false" />
                         <column name="OrderTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="OrderTypes" destinationColumn="OrderTypeId" />
                         <column name="OrderTypeName" type="Name" nullAllowed="false" />
-                        <column name="ParentOrderTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="OrderTypes" destinationColumn="OrderTypeId" />
                         <column name="OrderSequenceTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="SequenceTypes" destinationColumn="SequenceTypeId" />
                         <column name="OrderWorkflowId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Workflows" destinationColumn="WorkflowId" />
                         <column name="OrderWorkflowEntranceId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkflowEntrances" destinationColumn="WorkflowEntranceId" />
@@ -99,22 +98,18 @@
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index3">
-                            <indexColumn name="ParentOrderTypeId" />
-                            <indexColumn name="ThruTime" />
-                        </index>
-                        <index type="Multiple" name="Index4">
                             <indexColumn name="OrderSequenceTypeId" />
                             <indexColumn name="ThruTime" />
                         </index>
-                        <index type="Multiple" name="Index5">
+                        <index type="Multiple" name="Index4">
                             <indexColumn name="OrderWorkflowId" />
                             <indexColumn name="ThruTime" />
                         </index>
-                        <index type="Multiple" name="Index6">
+                        <index type="Multiple" name="Index5">
                             <indexColumn name="OrderWorkflowEntranceId" />
                             <indexColumn name="ThruTime" />
                         </index>
-                        <index type="Multiple" name="Index7">
+                        <index type="Multiple" name="Index6">
                             <indexColumn name="IsDefault" />
                             <indexColumn name="ThruTime" />
                         </index>

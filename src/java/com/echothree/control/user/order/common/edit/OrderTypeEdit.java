@@ -21,9 +21,6 @@ import com.echothree.control.user.order.common.spec.OrderTypeSpec;
 public interface OrderTypeEdit
         extends OrderTypeSpec, OrderTypeDescriptionEdit {
     
-    String getParentOrderTypeName();
-    void setParentOrderTypeName(String parentOrderTypeName);
-    
     String getOrderSequenceTypeName();
     void setOrderSequenceTypeName(String orderSequenceTypeName);
 

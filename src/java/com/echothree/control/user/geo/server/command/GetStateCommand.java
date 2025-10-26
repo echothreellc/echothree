@@ -20,14 +20,14 @@ import com.echothree.control.user.geo.common.form.GetStateForm;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
 import com.echothree.control.user.geo.server.GeoDebugFlags;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.geo.common.GeoConstants;
+import com.echothree.model.control.geo.common.GeoCodeAliasTypes;
+import com.echothree.model.control.geo.common.GeoCodeTypes;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.geo.server.entity.GeoCodeAlias;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -93,7 +93,7 @@ public class GetStateCommand
             var countryGeoCodeName = form.getCountryGeoCodeName();
             var countryGeoCode = geoControl.getGeoCodeByName(countryGeoCodeName);
 
-            var countryGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
+            var countryGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoCodeAliasTypes.ISO_2_LETTER.name());
             var countryGeoCodeAlias = geoControl.getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
             var countryIso2Letter = countryGeoCodeAlias.getAlias();
 
@@ -101,7 +101,7 @@ public class GetStateCommand
             var geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
 
             if(geoCodeScope != null) {
-                var geoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_STATE);
+                var geoCodeType = geoControl.getGeoCodeTypeByName(GeoCodeTypes.STATE.name());
                 GeoCodeAlias geoCodeAlias;
 
                 if(stateName != null) {
@@ -109,7 +109,7 @@ public class GetStateCommand
                         log.info("lookup will be by stateName");
                     }
 
-                    var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_STATE_NAME);
+                    var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoCodeAliasTypes.STATE_NAME.name());
                     geoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, stateName);
 
                     if(geoCodeAlias == null) {
@@ -120,7 +120,7 @@ public class GetStateCommand
                         log.info("lookup will be by postal2Letter");
                     }
 
-                    var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_POSTAL_2_LETTER);
+                    var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoCodeAliasTypes.POSTAL_2_LETTER.name());
                     geoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, postal2Letter);
 
                     if(geoCodeAlias == null) {

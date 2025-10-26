@@ -34,11 +34,11 @@ import com.echothree.control.user.item.common.result.GetHarmonizedTariffSchedule
 import com.echothree.control.user.item.common.result.GetHarmonizedTariffScheduleCodesResult;
 import com.echothree.control.user.item.common.spec.HarmonizedTariffScheduleCodeSpec;
 import com.echothree.control.user.item.common.spec.ItemSpecFactory;
-import com.echothree.model.control.geo.common.GeoConstants;
+import com.echothree.model.control.geo.common.GeoCodeAliasTypes;
 import com.echothree.model.control.geo.common.transfer.CountryTransfer;
+import com.echothree.model.control.item.common.HarmonizedTariffScheduleCodeUseTypes;
 import com.echothree.model.control.item.common.ItemOptions;
 import com.echothree.model.control.item.common.transfer.HarmonizedTariffScheduleCodeTransfer;
-import com.echothree.model.control.item.common.HarmonizedTariffScheduleCodeUseTypes;
 import com.echothree.model.control.party.common.Languages;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.EditMode;
@@ -71,7 +71,7 @@ public abstract class HtsCountryParser<H> {
         this.itemService = itemService;
         this.country = country;
         
-        countryName = country.getGeoCodeAliases().getMap().get(GeoConstants.GeoCodeAliasType_COUNTRY_NAME).getAlias();
+        countryName = country.getGeoCodeAliases().getMap().get(GeoCodeAliasTypes.COUNTRY_NAME.name()).getAlias();
     }
     
     public Map<String, HarmonizedTariffScheduleCodeTransfer> convertHtsListToMap(List<HarmonizedTariffScheduleCodeTransfer> harmonizedTariffScheduleCodes) {

@@ -20,46 +20,63 @@ import com.echothree.control.user.uom.common.form.GetUnitOfMeasureKindsForm;
 import com.echothree.control.user.uom.common.result.UomResultFactory;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.model.data.uom.server.factory.UnitOfMeasureKindFactory;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class GetUnitOfMeasureKindsCommand
-        extends BaseMultipleEntitiesCommand<UnitOfMeasureKind, GetUnitOfMeasureKindsForm> {
-    
+        extends BasePaginatedMultipleEntitiesCommand<UnitOfMeasureKind, GetUnitOfMeasureKindsForm> {
+
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                ));
+        FORM_FIELD_DEFINITIONS = List.of();
     }
-    
+
     /** Creates a new instance of GetUnitOfMeasureKindsCommand */
     public GetUnitOfMeasureKindsCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    @Override
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var uomControl = Session.getModelController(UomControl.class);
+
+        return uomControl.countUnitOfMeasureKinds();
+    }
+
     @Override
     protected Collection<UnitOfMeasureKind> getEntities() {
         var uomControl = Session.getModelController(UomControl.class);
-        
+
         return uomControl.getUnitOfMeasureKinds();
     }
-    
+
     @Override
     protected BaseResult getResult(Collection<UnitOfMeasureKind> entities) {
         var result = UomResultFactory.getGetUnitOfMeasureKindsResult();
-        var uomControl = Session.getModelController(UomControl.class);
-        
-        result.setUnitOfMeasureKinds(uomControl.getUnitOfMeasureKindTransfers(getUserVisit(), entities));
-        
+
+        if(entities != null) {
+            var uomControl = Session.getModelController(UomControl.class);
+
+            if(session.hasLimit(UnitOfMeasureKindFactory.class)) {
+                result.setUnitOfMeasureKindCount(getTotalEntities());
+            }
+
+            result.setUnitOfMeasureKinds(uomControl.getUnitOfMeasureKindTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
-    
+
 }

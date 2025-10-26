@@ -753,7 +753,75 @@ public class ItemBean
     public CommandResult deleteItemPrice(UserVisitPK userVisitPK, DeleteItemPriceForm form) {
         return new DeleteItemPriceCommand().run(userVisitPK, form);
     }
-    
+
+    // --------------------------------------------------------------------------------
+    //   Item Volume Types
+    // --------------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createItemVolumeType(UserVisitPK userVisitPK, CreateItemVolumeTypeForm form) {
+        return new CreateItemVolumeTypeCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult getItemVolumeTypeChoices(UserVisitPK userVisitPK, GetItemVolumeTypeChoicesForm form) {
+        return new GetItemVolumeTypeChoicesCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult getItemVolumeType(UserVisitPK userVisitPK, GetItemVolumeTypeForm form) {
+        return new GetItemVolumeTypeCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult getItemVolumeTypes(UserVisitPK userVisitPK, GetItemVolumeTypesForm form) {
+        return new GetItemVolumeTypesCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult setDefaultItemVolumeType(UserVisitPK userVisitPK, SetDefaultItemVolumeTypeForm form) {
+        return new SetDefaultItemVolumeTypeCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult editItemVolumeType(UserVisitPK userVisitPK, EditItemVolumeTypeForm form) {
+        return new EditItemVolumeTypeCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult deleteItemVolumeType(UserVisitPK userVisitPK, DeleteItemVolumeTypeForm form) {
+        return new DeleteItemVolumeTypeCommand().run(userVisitPK, form);
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Item Volume Type Descriptions
+    // --------------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createItemVolumeTypeDescription(UserVisitPK userVisitPK, CreateItemVolumeTypeDescriptionForm form) {
+        return new CreateItemVolumeTypeDescriptionCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult getItemVolumeTypeDescription(UserVisitPK userVisitPK, GetItemVolumeTypeDescriptionForm form) {
+        return new GetItemVolumeTypeDescriptionCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult getItemVolumeTypeDescriptions(UserVisitPK userVisitPK, GetItemVolumeTypeDescriptionsForm form) {
+        return new GetItemVolumeTypeDescriptionsCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult editItemVolumeTypeDescription(UserVisitPK userVisitPK, EditItemVolumeTypeDescriptionForm form) {
+        return new EditItemVolumeTypeDescriptionCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult deleteItemVolumeTypeDescription(UserVisitPK userVisitPK, DeleteItemVolumeTypeDescriptionForm form) {
+        return new DeleteItemVolumeTypeDescriptionCommand().run(userVisitPK, form);
+    }
+
     // --------------------------------------------------------------------------------
     //   Item Volumes
     // --------------------------------------------------------------------------------
@@ -782,7 +850,75 @@ public class ItemBean
     public CommandResult deleteItemVolume(UserVisitPK userVisitPK, DeleteItemVolumeForm form) {
         return new DeleteItemVolumeCommand().run(userVisitPK, form);
     }
-    
+
+    // --------------------------------------------------------------------------------
+    //   Item Weight Types
+    // --------------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createItemWeightType(UserVisitPK userVisitPK, CreateItemWeightTypeForm form) {
+        return new CreateItemWeightTypeCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult getItemWeightTypeChoices(UserVisitPK userVisitPK, GetItemWeightTypeChoicesForm form) {
+        return new GetItemWeightTypeChoicesCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult getItemWeightType(UserVisitPK userVisitPK, GetItemWeightTypeForm form) {
+        return new GetItemWeightTypeCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult getItemWeightTypes(UserVisitPK userVisitPK, GetItemWeightTypesForm form) {
+        return new GetItemWeightTypesCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult setDefaultItemWeightType(UserVisitPK userVisitPK, SetDefaultItemWeightTypeForm form) {
+        return new SetDefaultItemWeightTypeCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult editItemWeightType(UserVisitPK userVisitPK, EditItemWeightTypeForm form) {
+        return new EditItemWeightTypeCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult deleteItemWeightType(UserVisitPK userVisitPK, DeleteItemWeightTypeForm form) {
+        return new DeleteItemWeightTypeCommand().run(userVisitPK, form);
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Item Weight Type Descriptions
+    // --------------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createItemWeightTypeDescription(UserVisitPK userVisitPK, CreateItemWeightTypeDescriptionForm form) {
+        return new CreateItemWeightTypeDescriptionCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult getItemWeightTypeDescription(UserVisitPK userVisitPK, GetItemWeightTypeDescriptionForm form) {
+        return new GetItemWeightTypeDescriptionCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult getItemWeightTypeDescriptions(UserVisitPK userVisitPK, GetItemWeightTypeDescriptionsForm form) {
+        return new GetItemWeightTypeDescriptionsCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult editItemWeightTypeDescription(UserVisitPK userVisitPK, EditItemWeightTypeDescriptionForm form) {
+        return new EditItemWeightTypeDescriptionCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult deleteItemWeightTypeDescription(UserVisitPK userVisitPK, DeleteItemWeightTypeDescriptionForm form) {
+        return new DeleteItemWeightTypeDescriptionCommand().run(userVisitPK, form);
+    }
+
     // --------------------------------------------------------------------------------
     //   Item Weights
     // --------------------------------------------------------------------------------

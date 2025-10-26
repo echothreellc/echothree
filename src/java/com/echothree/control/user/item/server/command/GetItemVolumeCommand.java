@@ -19,12 +19,12 @@ package com.echothree.control.user.item.server.command;
 import com.echothree.control.user.item.common.form.GetItemVolumeForm;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.item.server.logic.ItemVolumeTypeLogic;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -33,14 +33,16 @@ import java.util.List;
 
 public class GetItemVolumeCommand
         extends BaseSimpleCommand<GetItemVolumeForm> {
-    
+
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null)
-        ));
+        FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("ItemVolumeTypeName", FieldType.ENTITY_NAME, true, null, null)
+        );
     }
     
     /** Creates a new instance of GetItemVolumeCommand */
@@ -62,12 +64,18 @@ public class GetItemVolumeCommand
             var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
             
             if(unitOfMeasureType != null) {
-                var itemVolume = itemControl.getItemVolume(item, unitOfMeasureType);
-                
-                if(itemVolume != null) {
-                    result.setItemVolume(itemControl.getItemVolumeTransfer(getUserVisit(), itemVolume));
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownItemVolume.name(), itemName, unitOfMeasureTypeName);
+                var itemVolumeType = ItemVolumeTypeLogic.getInstance().getItemVolumeTypeByName(this, form.getItemVolumeTypeName());
+
+                if(!hasExecutionErrors()) {
+                    var itemVolume = itemControl.getItemVolume(item, unitOfMeasureType, itemVolumeType);
+
+                    if(itemVolume != null) {
+                        result.setItemVolume(itemControl.getItemVolumeTransfer(getUserVisit(), itemVolume));
+                    } else {
+                        addExecutionError(ExecutionErrors.UnknownItemVolume.name(), item.getLastDetail().getItemName(),
+                                unitOfMeasureType.getLastDetail().getUnitOfMeasureTypeName(),
+                                itemVolumeType.getLastDetail().getItemVolumeTypeName());
+                    }
                 }
             } else {
                 addExecutionError(ExecutionErrors.UnknownUnitOfMeasureTypeName.name(), unitOfMeasureKind.getLastDetail().getUnitOfMeasureKindName(), unitOfMeasureTypeName);
