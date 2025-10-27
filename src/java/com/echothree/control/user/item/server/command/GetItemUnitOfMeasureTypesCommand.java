@@ -26,16 +26,15 @@ import com.echothree.model.data.item.server.factory.ItemUnitOfMeasureTypeFactory
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class GetItemUnitOfMeasureTypesCommand
-        extends BaseMultipleEntitiesCommand<ItemUnitOfMeasureType, GetItemUnitOfMeasureTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<ItemUnitOfMeasureType, GetItemUnitOfMeasureTypesForm> {
 
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
@@ -52,10 +51,23 @@ public class GetItemUnitOfMeasureTypesCommand
     Item item;
 
     @Override
+    protected void handleForm() {
+        var itemName = form.getItemName();
+
+        item = ItemLogic.getInstance().getItemByName(this, itemName);
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var itemControl = Session.getModelController(ItemControl.class);
+
+        return hasExecutionErrors() ? null :
+                itemControl.countItemUnitOfMeasureTypesByItem(item);
+    }
+
+    @Override
     protected Collection<ItemUnitOfMeasureType> getEntities() {
         Collection<ItemUnitOfMeasureType> entities = null;
-
-        item = ItemLogic.getInstance().getItemByName(this, form.getItemName());
 
         if(!hasExecutionErrors()) {
             var itemControl = Session.getModelController(ItemControl.class);
@@ -75,7 +87,7 @@ public class GetItemUnitOfMeasureTypesCommand
             var userVisit = getUserVisit();
 
             if(session.hasLimit(ItemUnitOfMeasureTypeFactory.class)) {
-                result.setItemUnitOfMeasureTypeCount(itemControl.countItemUnitOfMeasureTypesByItem(item));
+                result.setItemUnitOfMeasureTypeCount(getTotalEntities());
             }
 
             result.setItem(itemControl.getItemTransfer(userVisit, item));
