@@ -8364,8 +8364,7 @@ public interface GraphQlQueries {
     @GraphQLField
     @GraphQLName("itemUnitOfMeasureTypes")
     static Collection<ItemUnitOfMeasureTypeObject> itemUnitOfMeasureTypes(final DataFetchingEnvironment env,
-            @GraphQLName("itemName") @GraphQLNonNull final String itemName,
-            @GraphQLName("unitOfMeasureTypeName") final String unitOfMeasureTypeName) {
+            @GraphQLName("itemName") @GraphQLNonNull final String itemName) {
         Collection<ItemUnitOfMeasureType> itemUnitOfMeasureType;
         Collection<ItemUnitOfMeasureTypeObject> itemUnitOfMeasureTypeObjects;
 
@@ -8373,7 +8372,6 @@ public interface GraphQlQueries {
             var commandForm = ItemUtil.getHome().getGetItemUnitOfMeasureTypesForm();
 
             commandForm.setItemName(itemName);
-            commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
 
             itemUnitOfMeasureType = new GetItemUnitOfMeasureTypesCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
         } catch (NamingException ex) {
