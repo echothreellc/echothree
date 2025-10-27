@@ -6715,6 +6715,15 @@ public class ItemControl
                     "WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid");
     }
 
+    public long countItemDescriptionTypesByParentItemDescriptionType(ItemDescriptionType parentItemDescriptionType) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM itemdescriptiontypes, itemdescriptiontypedetails " +
+                        "WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid " +
+                        "AND idtdt_parentitemdescriptiontypeid = ?",
+                parentItemDescriptionType);
+    }
+
     private static final Map<EntityPermission, String> getItemDescriptionTypeByNameQueries;
 
     static {

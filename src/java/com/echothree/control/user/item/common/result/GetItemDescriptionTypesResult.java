@@ -25,7 +25,10 @@ public interface GetItemDescriptionTypesResult
     
     ItemDescriptionTypeTransfer getParentItemDescriptionType();
     void setParentItemDescriptionType(ItemDescriptionTypeTransfer parentItemDescriptionType);
-    
+
+    Long getItemDescriptionTypeCount();
+    void setItemDescriptionTypeCount(Long itemDescriptionTypeCount);
+
     List<ItemDescriptionTypeTransfer> getItemDescriptionTypes();
     void setItemDescriptionTypes(List<ItemDescriptionTypeTransfer> itemDescriptionTypes);
     
