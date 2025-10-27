@@ -755,6 +755,7 @@ import com.echothree.model.data.item.common.ItemAliasTypeConstants;
 import com.echothree.model.data.item.common.ItemCategoryConstants;
 import com.echothree.model.data.item.common.ItemConstants;
 import com.echothree.model.data.item.common.ItemDeliveryTypeConstants;
+import com.echothree.model.data.item.common.ItemDescriptionTypeConstants;
 import com.echothree.model.data.item.common.ItemDescriptionTypeUseTypeConstants;
 import com.echothree.model.data.item.common.ItemImageTypeConstants;
 import com.echothree.model.data.item.common.ItemInventoryTypeConstants;
@@ -9331,32 +9332,37 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("itemDescriptionTypes")
-    static Collection<ItemDescriptionTypeObject> itemDescriptionTypes(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ItemDescriptionTypeObject> itemDescriptionTypes(final DataFetchingEnvironment env,
             @GraphQLName("parentItemDescriptionTypeName") final String parentItemDescriptionTypeName) {
-        Collection<ItemDescriptionType> itemDescriptionTypes;
-        Collection<ItemDescriptionTypeObject> itemDescriptionTypeObjects;
+        CountingPaginatedData<ItemDescriptionTypeObject> data;
 
         try {
             var commandForm = ItemUtil.getHome().getGetItemDescriptionTypesForm();
+            var command = new GetItemDescriptionTypesCommand();
 
             commandForm.setParentItemDescriptionTypeName(parentItemDescriptionTypeName);
 
-            itemDescriptionTypes = new GetItemDescriptionTypesCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ItemDescriptionTypeConstants.COMPONENT_VENDOR_NAME, ItemDescriptionTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var itemDescriptionTypes = entities.stream()
+                            .map(ItemDescriptionTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, itemDescriptionTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(itemDescriptionTypes == null) {
-            itemDescriptionTypeObjects = emptyList();
-        } else {
-            itemDescriptionTypeObjects = new ArrayList<>(itemDescriptionTypes.size());
-
-            itemDescriptionTypes.stream()
-                    .map(ItemDescriptionTypeObject::new)
-                    .forEachOrdered(itemDescriptionTypeObjects::add);
-        }
-
-        return itemDescriptionTypeObjects;
+        return data;
     }
 
     @GraphQLField
