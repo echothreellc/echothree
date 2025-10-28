@@ -32,7 +32,8 @@ public class InventoryTransactionTypeDescriptionTransferCache
     public InventoryTransactionTypeDescriptionTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
         super(userVisit, inventoryControl);
     }
-    
+
+    @Override
     public InventoryTransactionTypeDescriptionTransfer getTransfer(InventoryTransactionTypeDescription inventoryTransactionTypeDescription) {
         var inventoryTransactionTypeDescriptionTransfer = get(inventoryTransactionTypeDescription);
         
