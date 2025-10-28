@@ -8319,17 +8319,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<ItemObject> data;
 
         try {
-            var itemControl = Session.getModelController(ItemControl.class);
-            var totalCount = itemControl.countItems();
+            var commandForm = ItemUtil.getHome().getGetItemsForm();
+            var command = new GetItemsCommand();
 
-            try(var objectLimiter = new ObjectLimiter(env, ItemConstants.COMPONENT_VENDOR_NAME, ItemConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = ItemUtil.getHome().getGetItemsForm();
-                var entities = new GetItemsCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ItemConstants.COMPONENT_VENDOR_NAME, ItemConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var items = entities.stream().map(ItemObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var items = entities.stream()
+                            .map(ItemObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, items);
                 }
