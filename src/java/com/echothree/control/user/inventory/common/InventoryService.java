@@ -276,6 +276,36 @@ public interface InventoryService
     CommandResult deleteAllocationPriorityDescription(UserVisitPK userVisitPK, DeleteAllocationPriorityDescriptionForm form);
 
     // -------------------------------------------------------------------------
+    //   Inventory Adjustment Types
+    // -------------------------------------------------------------------------
+
+    CommandResult createInventoryAdjustmentType(UserVisitPK userVisitPK, CreateInventoryAdjustmentTypeForm form);
+
+    CommandResult getInventoryAdjustmentTypes(UserVisitPK userVisitPK, GetInventoryAdjustmentTypesForm form);
+
+    CommandResult getInventoryAdjustmentType(UserVisitPK userVisitPK, GetInventoryAdjustmentTypeForm form);
+
+    CommandResult getInventoryAdjustmentTypeChoices(UserVisitPK userVisitPK, GetInventoryAdjustmentTypeChoicesForm form);
+
+    CommandResult setDefaultInventoryAdjustmentType(UserVisitPK userVisitPK, SetDefaultInventoryAdjustmentTypeForm form);
+
+    CommandResult editInventoryAdjustmentType(UserVisitPK userVisitPK, EditInventoryAdjustmentTypeForm form);
+
+    CommandResult deleteInventoryAdjustmentType(UserVisitPK userVisitPK, DeleteInventoryAdjustmentTypeForm form);
+
+    // -------------------------------------------------------------------------
+    //   Inventory Adjustment Type Descriptions
+    // -------------------------------------------------------------------------
+
+    CommandResult createInventoryAdjustmentTypeDescription(UserVisitPK userVisitPK, CreateInventoryAdjustmentTypeDescriptionForm form);
+
+    CommandResult getInventoryAdjustmentTypeDescriptions(UserVisitPK userVisitPK, GetInventoryAdjustmentTypeDescriptionsForm form);
+
+    CommandResult editInventoryAdjustmentTypeDescription(UserVisitPK userVisitPK, EditInventoryAdjustmentTypeDescriptionForm form);
+
+    CommandResult deleteInventoryAdjustmentTypeDescription(UserVisitPK userVisitPK, DeleteInventoryAdjustmentTypeDescriptionForm form);
+    
+    // -------------------------------------------------------------------------
     //   Inventory Transaction Types
     // -------------------------------------------------------------------------
 

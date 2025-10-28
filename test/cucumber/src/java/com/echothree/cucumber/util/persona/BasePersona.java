@@ -110,16 +110,20 @@ import com.echothree.control.user.filter.common.spec.FilterSpec;
 import com.echothree.control.user.filter.common.spec.FilterStepSpec;
 import com.echothree.control.user.filter.common.spec.FilterTypeSpec;
 import com.echothree.control.user.inventory.common.edit.AllocationPriorityEdit;
+import com.echothree.control.user.inventory.common.edit.InventoryAdjustmentTypeEdit;
 import com.echothree.control.user.inventory.common.edit.InventoryConditionEdit;
 import com.echothree.control.user.inventory.common.edit.InventoryLocationGroupEdit;
 import com.echothree.control.user.inventory.common.form.CreateAllocationPriorityForm;
+import com.echothree.control.user.inventory.common.form.CreateInventoryAdjustmentTypeForm;
 import com.echothree.control.user.inventory.common.form.CreateInventoryConditionForm;
 import com.echothree.control.user.inventory.common.form.CreateInventoryLocationGroupForm;
 import com.echothree.control.user.inventory.common.form.DeleteAllocationPriorityForm;
+import com.echothree.control.user.inventory.common.form.DeleteInventoryAdjustmentTypeForm;
 import com.echothree.control.user.inventory.common.form.DeleteInventoryConditionForm;
 import com.echothree.control.user.inventory.common.form.DeleteInventoryLocationGroupForm;
 import com.echothree.control.user.inventory.common.form.SetInventoryLocationGroupStatusForm;
 import com.echothree.control.user.inventory.common.spec.AllocationPriorityUniversalSpec;
+import com.echothree.control.user.inventory.common.spec.InventoryAdjustmentTypeUniversalSpec;
 import com.echothree.control.user.inventory.common.spec.InventoryConditionUniversalSpec;
 import com.echothree.control.user.inventory.common.spec.InventoryLocationGroupSpec;
 import com.echothree.control.user.item.common.edit.ItemAliasEdit;
@@ -497,9 +501,15 @@ public class BasePersona {
     public AllocationPriorityUniversalSpec allocationPrioritySpec;
     public AllocationPriorityEdit allocationPriorityEdit;
 
+    public CreateInventoryAdjustmentTypeForm createInventoryAdjustmentTypeForm;
+    public DeleteInventoryAdjustmentTypeForm deleteInventoryAdjustmentTypeForm;
+    public InventoryAdjustmentTypeUniversalSpec inventoryAdjustmentTypeSpec;
+    public InventoryAdjustmentTypeEdit inventoryAdjustmentTypeEdit;
+
     public String lastInventoryLocationGroupName;
     public String lastInventoryConditionName;
     public String lastAllocationPriorityName;
+    public String lastInventoryAdjustmentTypeName;
 
     // Item
     public CreateItemForm createItemForm;

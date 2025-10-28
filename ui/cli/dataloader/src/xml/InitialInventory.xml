@@ -39,6 +39,17 @@
             <allocationPriorityDescription languageIsoName="en" description="High" />
         </allocationPriority>
     </allocationPriorities>
+    <inventoryAdjustmentTypes>
+        <inventoryAdjustmentType inventoryAdjustmentTypeName="SET" isDefault="true" sortOrder="20">
+            <inventoryAdjustmentTypeDescription languageIsoName="en" description="Set" />
+        </inventoryAdjustmentType>
+        <inventoryAdjustmentType inventoryAdjustmentTypeName="PLUS" isDefault="false" sortOrder="10">
+            <inventoryAdjustmentTypeDescription languageIsoName="en" description="Plus" />
+        </inventoryAdjustmentType>
+        <inventoryAdjustmentType inventoryAdjustmentTypeName="MINUS" isDefault="false" sortOrder="30">
+            <inventoryAdjustmentTypeDescription languageIsoName="en" description="Minus" />
+        </inventoryAdjustmentType>
+    </inventoryAdjustmentTypes>
     <inventoryTransactionTypes>
         <inventoryTransactionType inventoryTransactionTypeName="TEST_INVENTORY_TRANSACTION_TYPE" isDefault="true" sortOrder="0">
             <inventoryTransactionTypeDescription languageIsoName="en" description="Test Inventory Transaction Type" />

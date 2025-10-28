@@ -545,6 +545,69 @@ public class InventoryBean
     }
 
     // -------------------------------------------------------------------------
+    //   Inventory Adjustment Types
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createInventoryAdjustmentType(UserVisitPK userVisitPK, CreateInventoryAdjustmentTypeForm form) {
+        return new CreateInventoryAdjustmentTypeCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult getInventoryAdjustmentTypes(UserVisitPK userVisitPK, GetInventoryAdjustmentTypesForm form) {
+        return new GetInventoryAdjustmentTypesCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult getInventoryAdjustmentType(UserVisitPK userVisitPK, GetInventoryAdjustmentTypeForm form) {
+        return new GetInventoryAdjustmentTypeCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult getInventoryAdjustmentTypeChoices(UserVisitPK userVisitPK, GetInventoryAdjustmentTypeChoicesForm form) {
+        return new GetInventoryAdjustmentTypeChoicesCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult setDefaultInventoryAdjustmentType(UserVisitPK userVisitPK, SetDefaultInventoryAdjustmentTypeForm form) {
+        return new SetDefaultInventoryAdjustmentTypeCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult editInventoryAdjustmentType(UserVisitPK userVisitPK, EditInventoryAdjustmentTypeForm form) {
+        return new EditInventoryAdjustmentTypeCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult deleteInventoryAdjustmentType(UserVisitPK userVisitPK, DeleteInventoryAdjustmentTypeForm form) {
+        return new DeleteInventoryAdjustmentTypeCommand().run(userVisitPK, form);
+    }
+
+    // -------------------------------------------------------------------------
+    //   Inventory Adjustment Type Descriptions
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createInventoryAdjustmentTypeDescription(UserVisitPK userVisitPK, CreateInventoryAdjustmentTypeDescriptionForm form) {
+        return new CreateInventoryAdjustmentTypeDescriptionCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult getInventoryAdjustmentTypeDescriptions(UserVisitPK userVisitPK, GetInventoryAdjustmentTypeDescriptionsForm form) {
+        return new GetInventoryAdjustmentTypeDescriptionsCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult editInventoryAdjustmentTypeDescription(UserVisitPK userVisitPK, EditInventoryAdjustmentTypeDescriptionForm form) {
+        return new EditInventoryAdjustmentTypeDescriptionCommand().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult deleteInventoryAdjustmentTypeDescription(UserVisitPK userVisitPK, DeleteInventoryAdjustmentTypeDescriptionForm form) {
+        return new DeleteInventoryAdjustmentTypeDescriptionCommand().run(userVisitPK, form);
+    }
+
+    // -------------------------------------------------------------------------
     //   Inventory Transaction Types
     // -------------------------------------------------------------------------
 

@@ -46,6 +46,8 @@ public class InventoryTransferCaches
     protected LotTransferCache lotTransferCache;
     protected InventoryTransactionTypeTransferCache inventoryTransactionTypeTransferCache;
     protected InventoryTransactionTypeDescriptionTransferCache inventoryTransactionTypeDescriptionTransferCache;
+    protected InventoryAdjustmentTypeTransferCache inventoryAdjustmentTypeTransferCache;
+    protected InventoryAdjustmentTypeDescriptionTransferCache inventoryAdjustmentTypeDescriptionTransferCache;
 
     /** Creates a new instance of InventoryTransferCaches */
     public InventoryTransferCaches(UserVisit userVisit, InventoryControl inventoryControl) {
@@ -199,6 +201,20 @@ public class InventoryTransferCaches
             inventoryTransactionTypeDescriptionTransferCache = new InventoryTransactionTypeDescriptionTransferCache(userVisit, inventoryControl);
 
         return inventoryTransactionTypeDescriptionTransferCache;
+    }
+
+    public InventoryAdjustmentTypeTransferCache getInventoryAdjustmentTypeTransferCache() {
+        if(inventoryAdjustmentTypeTransferCache == null)
+            inventoryAdjustmentTypeTransferCache = new InventoryAdjustmentTypeTransferCache(userVisit, inventoryControl);
+
+        return inventoryAdjustmentTypeTransferCache;
+    }
+
+    public InventoryAdjustmentTypeDescriptionTransferCache getInventoryAdjustmentTypeDescriptionTransferCache() {
+        if(inventoryAdjustmentTypeDescriptionTransferCache == null)
+            inventoryAdjustmentTypeDescriptionTransferCache = new InventoryAdjustmentTypeDescriptionTransferCache(userVisit, inventoryControl);
+
+        return inventoryAdjustmentTypeDescriptionTransferCache;
     }
 
 }
