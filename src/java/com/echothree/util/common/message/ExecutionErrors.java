@@ -2365,5 +2365,10 @@ public enum ExecutionErrors {
     UnknownDefaultInventoryTransactionType,
     UnknownInventoryTransactionTypeDescription,
     DuplicateInventoryTransactionTypeDescription,
+    DuplicateInventoryAdjustmentTypeName,
+    UnknownInventoryAdjustmentTypeName,
+    DuplicateInventoryAdjustmentTypeDescription,
+    UnknownInventoryAdjustmentTypeDescription,
+    UnknownDefaultInventoryAdjustmentType,
 
 }

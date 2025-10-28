@@ -38,7 +38,8 @@ public class InventoryTransactionTypeTransferCache
         
         setIncludeEntityInstance(true);
     }
-    
+
+    @Override
     public InventoryTransactionTypeTransfer getTransfer(InventoryTransactionType inventoryTransactionType) {
         var inventoryTransactionTypeTransfer = get(inventoryTransactionType);
         

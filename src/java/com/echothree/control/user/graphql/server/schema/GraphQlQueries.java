@@ -150,6 +150,8 @@ import com.echothree.control.user.geo.server.command.GetGeoCodeTypesCommand;
 import com.echothree.control.user.inventory.common.InventoryUtil;
 import com.echothree.control.user.inventory.server.command.GetAllocationPrioritiesCommand;
 import com.echothree.control.user.inventory.server.command.GetAllocationPriorityCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryAdjustmentTypeCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryAdjustmentTypesCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryConditionCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryConditionsCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryTransactionTypeCommand;
@@ -488,6 +490,7 @@ import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import static com.echothree.model.control.graphql.server.util.BaseGraphQl.getUserVisitPK;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.inventory.server.graphql.AllocationPriorityObject;
+import com.echothree.model.control.inventory.server.graphql.InventoryAdjustmentTypeObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryConditionObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryTransactionTypeObject;
 import com.echothree.model.control.inventory.server.graphql.LotObject;
@@ -743,10 +746,12 @@ import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.geo.server.entity.GeoCodeScope;
 import com.echothree.model.data.geo.server.entity.GeoCodeType;
 import com.echothree.model.data.inventory.common.AllocationPriorityConstants;
+import com.echothree.model.data.inventory.common.InventoryAdjustmentTypeConstants;
 import com.echothree.model.data.inventory.common.InventoryConditionConstants;
 import com.echothree.model.data.inventory.common.InventoryTransactionTypeConstants;
 import com.echothree.model.data.inventory.common.LotConstants;
 import com.echothree.model.data.inventory.server.entity.AllocationPriority;
+import com.echothree.model.data.inventory.server.entity.InventoryAdjustmentType;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionType;
 import com.echothree.model.data.inventory.server.entity.Lot;
@@ -4715,6 +4720,59 @@ public interface GraphQlQueries {
         }
 
         return inventoryTransactionType == null ? null : new InventoryTransactionTypeObject(inventoryTransactionType);
+    }
+
+    @GraphQLField
+    @GraphQLName("inventoryAdjustmentType")
+    static InventoryAdjustmentTypeObject inventoryAdjustmentType(final DataFetchingEnvironment env,
+            @GraphQLName("inventoryAdjustmentTypeName") final String inventoryAdjustmentTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        InventoryAdjustmentType inventoryAdjustmentType;
+
+        try {
+            var commandForm = InventoryUtil.getHome().getGetInventoryAdjustmentTypeForm();
+
+            commandForm.setInventoryAdjustmentTypeName(inventoryAdjustmentTypeName);
+            commandForm.setUuid(id);
+
+            inventoryAdjustmentType = new GetInventoryAdjustmentTypeCommand().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return inventoryAdjustmentType == null ? null : new InventoryAdjustmentTypeObject(inventoryAdjustmentType);
+    }
+
+    @GraphQLField
+    @GraphQLName("inventoryAdjustmentTypes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<InventoryAdjustmentTypeObject> inventoryAdjustmentTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<InventoryAdjustmentTypeObject> data;
+
+        try {
+            var commandForm = InventoryUtil.getHome().getGetInventoryAdjustmentTypesForm();
+            var command = new GetInventoryAdjustmentTypesCommand();
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, InventoryAdjustmentTypeConstants.COMPONENT_VENDOR_NAME, InventoryAdjustmentTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var inventoryAdjustmentTypes = entities.stream()
+                            .map(InventoryAdjustmentTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, inventoryAdjustmentTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
     }
 
     @GraphQLField
