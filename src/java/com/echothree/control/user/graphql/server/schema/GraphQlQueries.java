@@ -9445,17 +9445,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<ItemDescriptionTypeUseTypeObject> data;
 
         try {
-            var itemControl = Session.getModelController(ItemControl.class);
-            var totalCount = itemControl.countItemDescriptionTypeUseTypes();
+            var commandForm = ItemUtil.getHome().getGetItemDescriptionTypeUseTypesForm();
+            var command = new GetItemDescriptionTypeUseTypesCommand();
 
-            try(var objectLimiter = new ObjectLimiter(env, ItemDescriptionTypeUseTypeConstants.COMPONENT_VENDOR_NAME, ItemDescriptionTypeUseTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = ItemUtil.getHome().getGetItemDescriptionTypeUseTypesForm();
-                var entities = new GetItemDescriptionTypeUseTypesCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ItemDescriptionTypeUseTypeConstants.COMPONENT_VENDOR_NAME, ItemDescriptionTypeUseTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var itemDescriptionTypeUseTypes = entities.stream().map(ItemDescriptionTypeUseTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var itemDescriptionTypeUseTypes = entities.stream()
+                            .map(ItemDescriptionTypeUseTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, itemDescriptionTypeUseTypes);
                 }

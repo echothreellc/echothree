@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetItemDescriptionTypeUseTypesResult
         extends BaseResult {
-    
+
+    Long getItemDescriptionTypeUseTypeCount();
+    void setItemDescriptionTypeUseTypeCount(Long itemDescriptionTypeUseTypeCount);
+
     List<ItemDescriptionTypeUseTypeTransfer> getItemDescriptionTypeUseTypes();
     void setItemDescriptionTypeUseTypes(List<ItemDescriptionTypeUseTypeTransfer> itemDescriptionTypeUseTypes);
     
