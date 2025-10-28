@@ -23,10 +23,10 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.item.server.entity.ItemImageType;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.item.server.factory.ItemImageTypeFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -35,7 +35,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class GetItemImageTypesCommand
-        extends BaseMultipleEntitiesCommand<ItemImageType, GetItemImageTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<ItemImageType, GetItemImageTypesForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -44,18 +44,28 @@ public class GetItemImageTypesCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                        new SecurityRoleDefinition(SecurityRoleGroups.ItemImageType.name(), SecurityRoles.List.name()
-                        )
+                        new SecurityRoleDefinition(SecurityRoleGroups.ItemImageType.name(), SecurityRoles.List.name())
                 ))
         ));
 
-        FORM_FIELD_DEFINITIONS = List.of(
-        );
+        FORM_FIELD_DEFINITIONS = List.of();
     }
 
     /** Creates a new instance of GetItemImageTypesCommand */
     public GetItemImageTypesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
+
+    @Override
+    protected void handleForm() {
+        // No fields in the form to handle for this command.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var itemControl = Session.getModelController(ItemControl.class);
+
+        return itemControl.countItemImageTypes();
     }
 
     @Override
@@ -71,6 +81,10 @@ public class GetItemImageTypesCommand
 
         if(entities != null) {
             var itemControl = Session.getModelController(ItemControl.class);
+
+            if(session.hasLimit(ItemImageTypeFactory.class)) {
+                result.setItemImageTypeCount(getTotalEntities());
+            }
 
             result.setItemImageTypes(itemControl.getItemImageTypeTransfers(getUserVisit(), entities));
         }

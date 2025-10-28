@@ -9394,17 +9394,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<ItemImageTypeObject> data;
 
         try {
-            var itemControl = Session.getModelController(ItemControl.class);
-            var totalCount = itemControl.countItemImageTypes();
+            var commandForm = ItemUtil.getHome().getGetItemImageTypesForm();
+            var command = new GetItemImageTypesCommand();
 
-            try(var objectLimiter = new ObjectLimiter(env, ItemImageTypeConstants.COMPONENT_VENDOR_NAME, ItemImageTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = ItemUtil.getHome().getGetItemImageTypesForm();
-                var entities = new GetItemImageTypesCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ItemImageTypeConstants.COMPONENT_VENDOR_NAME, ItemImageTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var itemImageTypes = entities.stream().map(ItemImageTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var itemImageTypes = entities.stream()
+                            .map(ItemImageTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, itemImageTypes);
                 }
