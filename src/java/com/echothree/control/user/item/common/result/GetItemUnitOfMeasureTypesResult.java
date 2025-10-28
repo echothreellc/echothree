@@ -27,10 +27,10 @@ public interface GetItemUnitOfMeasureTypesResult
     
     ItemTransfer getItem();
     void setItem(ItemTransfer item);
-    
-    UnitOfMeasureTypeTransfer getUnitOfMeasureType();
-    void setUnitOfMeasureType(UnitOfMeasureTypeTransfer unitOfMeasureType);
-    
+
+    Long getItemUnitOfMeasureTypeCount();
+    void setItemUnitOfMeasureTypeCount(Long itemUnitOfMeasureTypeCount);
+
     List<ItemUnitOfMeasureTypeTransfer> getItemUnitOfMeasureTypes();
     void setItemUnitOfMeasureTypes(List<ItemUnitOfMeasureTypeTransfer> itemUnitOfMeasureTypes);
     
