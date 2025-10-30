@@ -26,7 +26,9 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GetWishlistTypesCommand
         extends BasePaginatedMultipleEntitiesCommand<WishlistType, GetWishlistTypesForm> {
 

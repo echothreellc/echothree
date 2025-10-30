@@ -51,7 +51,7 @@ public class AuthenticationBean
     
     @Override
     public CommandResult getJobUserVisit(GetJobUserVisitForm form) {
-        return new GetJobUserVisitCommand().run(null, form);
+        return CDI.current().select(GetJobUserVisitCommand.class).get().run(null, form);
     }
     
     @Override
@@ -93,32 +93,32 @@ public class AuthenticationBean
     
     @Override
     public CommandResult getUserVisit(GetUserVisitForm form) {
-        return new GetUserVisitCommand().run(null, form);
+        return CDI.current().select(GetUserVisitCommand.class).get().run(null, form);
     }
     
     @Override
     public void invalidateUserSession(UserVisitPK userVisitPK) {
-        new InvalidateUserSessionCommand().run(userVisitPK);
+        CDI.current().select(InvalidateUserSessionCommand.class).get().run(userVisitPK);
     }
     
     @Override
     public void invalidateUserVisit(UserVisitPK userVisitPK) {
-        new InvalidateUserVisitCommand().run(userVisitPK);
+        CDI.current().select(InvalidateUserVisitCommand.class).get().run(userVisitPK);
     }
     
     @Override
     public CommandResult invalidateAbandonedUserVisits(UserVisitPK userVisitPK, InvalidateAbandonedUserVisitsForm form) {
-        return new InvalidateAbandonedUserVisitsCommand().run(userVisitPK, form);
+        return CDI.current().select(InvalidateAbandonedUserVisitsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult removeInactiveUserKeys(UserVisitPK userVisitPK, RemoveInactiveUserKeysForm form) {
-        return new RemoveInactiveUserKeysCommand().run(userVisitPK, form);
+        return CDI.current().select(RemoveInactiveUserKeysCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult removeInvalidatedUserVisits(UserVisitPK userVisitPK) {
-        return new RemoveInvalidatedUserVisitsCommand().run(userVisitPK);
+        return CDI.current().select(RemoveInvalidatedUserVisitsCommand.class).get().run(userVisitPK);
     }
     
     // -------------------------------------------------------------------------

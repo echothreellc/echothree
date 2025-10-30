@@ -37,7 +37,9 @@ import com.echothree.util.server.string.PercentUtils;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EditItemCountryOfOriginCommand
         extends BaseAbstractEditCommand<ItemCountryOfOriginSpec, ItemCountryOfOriginEdit, EditItemCountryOfOriginResult, ItemCountryOfOrigin, Item> {
     

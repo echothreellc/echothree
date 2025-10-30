@@ -22,6 +22,7 @@ import com.echothree.control.user.returnpolicy.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 import javax.ejb.Stateless;
+import javax.enterprise.inject.spi.CDI;
 
 @Stateless
 public class ReturnPolicyBean
@@ -43,27 +44,27 @@ public class ReturnPolicyBean
 
     @Override
     public CommandResult getPartyReturnPolicy(UserVisitPK userVisitPK, GetPartyReturnPolicyForm form) {
-        return new GetPartyReturnPolicyCommand().run(userVisitPK, form);
+        return CDI.current().select(GetPartyReturnPolicyCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPartyReturnPolicies(UserVisitPK userVisitPK, GetPartyReturnPoliciesForm form) {
-        return new GetPartyReturnPoliciesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetPartyReturnPoliciesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPartyReturnPolicyStatusChoices(UserVisitPK userVisitPK, GetPartyReturnPolicyStatusChoicesForm form) {
-        return new GetPartyReturnPolicyStatusChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetPartyReturnPolicyStatusChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setPartyReturnPolicyStatus(UserVisitPK userVisitPK, SetPartyReturnPolicyStatusForm form) {
-        return new SetPartyReturnPolicyStatusCommand().run(userVisitPK, form);
+        return CDI.current().select(SetPartyReturnPolicyStatusCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deletePartyReturnPolicy(UserVisitPK userVisitPK, DeletePartyReturnPolicyForm form) {
-        return new DeletePartyReturnPolicyCommand().run(userVisitPK, form);
+        return CDI.current().select(DeletePartyReturnPolicyCommand.class).get().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -72,37 +73,37 @@ public class ReturnPolicyBean
     
     @Override
     public CommandResult createReturnKind(UserVisitPK userVisitPK, CreateReturnKindForm form) {
-        return new CreateReturnKindCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateReturnKindCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getReturnKinds(UserVisitPK userVisitPK, GetReturnKindsForm form) {
-        return new GetReturnKindsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetReturnKindsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getReturnKind(UserVisitPK userVisitPK, GetReturnKindForm form) {
-        return new GetReturnKindCommand().run(userVisitPK, form);
+        return CDI.current().select(GetReturnKindCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getReturnKindChoices(UserVisitPK userVisitPK, GetReturnKindChoicesForm form) {
-        return new GetReturnKindChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetReturnKindChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultReturnKind(UserVisitPK userVisitPK, SetDefaultReturnKindForm form) {
-        return new SetDefaultReturnKindCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultReturnKindCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editReturnKind(UserVisitPK userVisitPK, EditReturnKindForm form) {
-        return new EditReturnKindCommand().run(userVisitPK, form);
+        return CDI.current().select(EditReturnKindCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteReturnKind(UserVisitPK userVisitPK, DeleteReturnKindForm form) {
-        return new DeleteReturnKindCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteReturnKindCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -111,27 +112,27 @@ public class ReturnPolicyBean
     
     @Override
     public CommandResult createReturnKindDescription(UserVisitPK userVisitPK, CreateReturnKindDescriptionForm form) {
-        return new CreateReturnKindDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateReturnKindDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getReturnKindDescriptions(UserVisitPK userVisitPK, GetReturnKindDescriptionsForm form) {
-        return new GetReturnKindDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetReturnKindDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getReturnKindDescription(UserVisitPK userVisitPK, GetReturnKindDescriptionForm form) {
-        return new GetReturnKindDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(GetReturnKindDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editReturnKindDescription(UserVisitPK userVisitPK, EditReturnKindDescriptionForm form) {
-        return new EditReturnKindDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditReturnKindDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteReturnKindDescription(UserVisitPK userVisitPK, DeleteReturnKindDescriptionForm form) {
-        return new DeleteReturnKindDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteReturnKindDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -140,37 +141,37 @@ public class ReturnPolicyBean
     
     @Override
     public CommandResult createReturnPolicy(UserVisitPK userVisitPK, CreateReturnPolicyForm form) {
-        return new CreateReturnPolicyCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateReturnPolicyCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getReturnPolicies(UserVisitPK userVisitPK, GetReturnPoliciesForm form) {
-        return new GetReturnPoliciesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetReturnPoliciesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getReturnPolicy(UserVisitPK userVisitPK, GetReturnPolicyForm form) {
-        return new GetReturnPolicyCommand().run(userVisitPK, form);
+        return CDI.current().select(GetReturnPolicyCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getReturnPolicyChoices(UserVisitPK userVisitPK, GetReturnPolicyChoicesForm form) {
-        return new GetReturnPolicyChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetReturnPolicyChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultReturnPolicy(UserVisitPK userVisitPK, SetDefaultReturnPolicyForm form) {
-        return new SetDefaultReturnPolicyCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultReturnPolicyCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editReturnPolicy(UserVisitPK userVisitPK, EditReturnPolicyForm form) {
-        return new EditReturnPolicyCommand().run(userVisitPK, form);
+        return CDI.current().select(EditReturnPolicyCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteReturnPolicy(UserVisitPK userVisitPK, DeleteReturnPolicyForm form) {
-        return new DeleteReturnPolicyCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteReturnPolicyCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -179,27 +180,27 @@ public class ReturnPolicyBean
     
     @Override
     public CommandResult createReturnPolicyTranslation(UserVisitPK userVisitPK, CreateReturnPolicyTranslationForm form) {
-        return new CreateReturnPolicyTranslationCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateReturnPolicyTranslationCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getReturnPolicyTranslation(UserVisitPK userVisitPK, GetReturnPolicyTranslationForm form) {
-        return new GetReturnPolicyTranslationCommand().run(userVisitPK, form);
+        return CDI.current().select(GetReturnPolicyTranslationCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getReturnPolicyTranslations(UserVisitPK userVisitPK, GetReturnPolicyTranslationsForm form) {
-        return new GetReturnPolicyTranslationsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetReturnPolicyTranslationsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editReturnPolicyTranslation(UserVisitPK userVisitPK, EditReturnPolicyTranslationForm form) {
-        return new EditReturnPolicyTranslationCommand().run(userVisitPK, form);
+        return CDI.current().select(EditReturnPolicyTranslationCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteReturnPolicyTranslation(UserVisitPK userVisitPK, DeleteReturnPolicyTranslationForm form) {
-        return new DeleteReturnPolicyTranslationCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteReturnPolicyTranslationCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -208,27 +209,27 @@ public class ReturnPolicyBean
     
     @Override
     public CommandResult createReturnPolicyReason(UserVisitPK userVisitPK, CreateReturnPolicyReasonForm form) {
-        return new CreateReturnPolicyReasonCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateReturnPolicyReasonCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getReturnPolicyReasons(UserVisitPK userVisitPK, GetReturnPolicyReasonsForm form) {
-        return new GetReturnPolicyReasonsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetReturnPolicyReasonsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultReturnPolicyReason(UserVisitPK userVisitPK, SetDefaultReturnPolicyReasonForm form) {
-        return new SetDefaultReturnPolicyReasonCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultReturnPolicyReasonCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editReturnPolicyReason(UserVisitPK userVisitPK, EditReturnPolicyReasonForm form) {
-        return new EditReturnPolicyReasonCommand().run(userVisitPK, form);
+        return CDI.current().select(EditReturnPolicyReasonCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteReturnPolicyReason(UserVisitPK userVisitPK, DeleteReturnPolicyReasonForm form) {
-        return new DeleteReturnPolicyReasonCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteReturnPolicyReasonCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -237,37 +238,37 @@ public class ReturnPolicyBean
     
     @Override
     public CommandResult createReturnReason(UserVisitPK userVisitPK, CreateReturnReasonForm form) {
-        return new CreateReturnReasonCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateReturnReasonCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getReturnReasons(UserVisitPK userVisitPK, GetReturnReasonsForm form) {
-        return new GetReturnReasonsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetReturnReasonsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getReturnReason(UserVisitPK userVisitPK, GetReturnReasonForm form) {
-        return new GetReturnReasonCommand().run(userVisitPK, form);
+        return CDI.current().select(GetReturnReasonCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getReturnReasonChoices(UserVisitPK userVisitPK, GetReturnReasonChoicesForm form) {
-        return new GetReturnReasonChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetReturnReasonChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultReturnReason(UserVisitPK userVisitPK, SetDefaultReturnReasonForm form) {
-        return new SetDefaultReturnReasonCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultReturnReasonCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editReturnReason(UserVisitPK userVisitPK, EditReturnReasonForm form) {
-        return new EditReturnReasonCommand().run(userVisitPK, form);
+        return CDI.current().select(EditReturnReasonCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteReturnReason(UserVisitPK userVisitPK, DeleteReturnReasonForm form) {
-        return new DeleteReturnReasonCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteReturnReasonCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -276,22 +277,22 @@ public class ReturnPolicyBean
     
     @Override
     public CommandResult createReturnReasonDescription(UserVisitPK userVisitPK, CreateReturnReasonDescriptionForm form) {
-        return new CreateReturnReasonDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateReturnReasonDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getReturnReasonDescriptions(UserVisitPK userVisitPK, GetReturnReasonDescriptionsForm form) {
-        return new GetReturnReasonDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetReturnReasonDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editReturnReasonDescription(UserVisitPK userVisitPK, EditReturnReasonDescriptionForm form) {
-        return new EditReturnReasonDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditReturnReasonDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteReturnReasonDescription(UserVisitPK userVisitPK, DeleteReturnReasonDescriptionForm form) {
-        return new DeleteReturnReasonDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteReturnReasonDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -300,27 +301,27 @@ public class ReturnPolicyBean
     
     @Override
     public CommandResult createReturnReasonType(UserVisitPK userVisitPK, CreateReturnReasonTypeForm form) {
-        return new CreateReturnReasonTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateReturnReasonTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getReturnReasonTypes(UserVisitPK userVisitPK, GetReturnReasonTypesForm form) {
-        return new GetReturnReasonTypesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetReturnReasonTypesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultReturnReasonType(UserVisitPK userVisitPK, SetDefaultReturnReasonTypeForm form) {
-        return new SetDefaultReturnReasonTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultReturnReasonTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editReturnReasonType(UserVisitPK userVisitPK, EditReturnReasonTypeForm form) {
-        return new EditReturnReasonTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(EditReturnReasonTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteReturnReasonType(UserVisitPK userVisitPK, DeleteReturnReasonTypeForm form) {
-        return new DeleteReturnReasonTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteReturnReasonTypeCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -329,37 +330,37 @@ public class ReturnPolicyBean
     
     @Override
     public CommandResult createReturnType(UserVisitPK userVisitPK, CreateReturnTypeForm form) {
-        return new CreateReturnTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateReturnTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getReturnTypes(UserVisitPK userVisitPK, GetReturnTypesForm form) {
-        return new GetReturnTypesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetReturnTypesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getReturnType(UserVisitPK userVisitPK, GetReturnTypeForm form) {
-        return new GetReturnTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(GetReturnTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getReturnTypeChoices(UserVisitPK userVisitPK, GetReturnTypeChoicesForm form) {
-        return new GetReturnTypeChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetReturnTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultReturnType(UserVisitPK userVisitPK, SetDefaultReturnTypeForm form) {
-        return new SetDefaultReturnTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultReturnTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editReturnType(UserVisitPK userVisitPK, EditReturnTypeForm form) {
-        return new EditReturnTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(EditReturnTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteReturnType(UserVisitPK userVisitPK, DeleteReturnTypeForm form) {
-        return new DeleteReturnTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteReturnTypeCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -368,27 +369,27 @@ public class ReturnPolicyBean
     
     @Override
     public CommandResult createReturnTypeDescription(UserVisitPK userVisitPK, CreateReturnTypeDescriptionForm form) {
-        return new CreateReturnTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateReturnTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getReturnTypeDescriptions(UserVisitPK userVisitPK, GetReturnTypeDescriptionsForm form) {
-        return new GetReturnTypeDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetReturnTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getReturnTypeDescription(UserVisitPK userVisitPK, GetReturnTypeDescriptionForm form) {
-        return new GetReturnTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(GetReturnTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editReturnTypeDescription(UserVisitPK userVisitPK, EditReturnTypeDescriptionForm form) {
-        return new EditReturnTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditReturnTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteReturnTypeDescription(UserVisitPK userVisitPK, DeleteReturnTypeDescriptionForm form) {
-        return new DeleteReturnTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteReturnTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -397,27 +398,27 @@ public class ReturnPolicyBean
     
     @Override
     public CommandResult createReturnTypeShippingMethod(UserVisitPK userVisitPK, CreateReturnTypeShippingMethodForm form) {
-        return new CreateReturnTypeShippingMethodCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateReturnTypeShippingMethodCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getReturnTypeShippingMethods(UserVisitPK userVisitPK, GetReturnTypeShippingMethodsForm form) {
-        return new GetReturnTypeShippingMethodsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetReturnTypeShippingMethodsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultReturnTypeShippingMethod(UserVisitPK userVisitPK, SetDefaultReturnTypeShippingMethodForm form) {
-        return new SetDefaultReturnTypeShippingMethodCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultReturnTypeShippingMethodCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editReturnTypeShippingMethod(UserVisitPK userVisitPK, EditReturnTypeShippingMethodForm form) {
-        return new EditReturnTypeShippingMethodCommand().run(userVisitPK, form);
+        return CDI.current().select(EditReturnTypeShippingMethodCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteReturnTypeShippingMethod(UserVisitPK userVisitPK, DeleteReturnTypeShippingMethodForm form) {
-        return new DeleteReturnTypeShippingMethodCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteReturnTypeShippingMethodCommand.class).get().run(userVisitPK, form);
     }
     
 }

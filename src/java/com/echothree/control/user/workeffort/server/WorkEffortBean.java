@@ -22,6 +22,7 @@ import com.echothree.control.user.workeffort.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 import javax.ejb.Stateless;
+import javax.enterprise.inject.spi.CDI;
 
 @Stateless
 public class WorkEffortBean
@@ -43,22 +44,22 @@ public class WorkEffortBean
     
     @Override
     public CommandResult createWorkEffortType(UserVisitPK userVisitPK, CreateWorkEffortTypeForm form) {
-        return new CreateWorkEffortTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateWorkEffortTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkEffortTypes(UserVisitPK userVisitPK, GetWorkEffortTypesForm form) {
-        return new GetWorkEffortTypesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetWorkEffortTypesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkEffortType(UserVisitPK userVisitPK, GetWorkEffortTypeForm form) {
-        return new GetWorkEffortTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(GetWorkEffortTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteWorkEffortType(UserVisitPK userVisitPK, DeleteWorkEffortTypeForm form) {
-        return new DeleteWorkEffortTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteWorkEffortTypeCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -67,22 +68,22 @@ public class WorkEffortBean
 
     @Override
     public CommandResult createWorkEffortTypeDescription(UserVisitPK userVisitPK, CreateWorkEffortTypeDescriptionForm form) {
-        return new CreateWorkEffortTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateWorkEffortTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getWorkEffortTypeDescriptions(UserVisitPK userVisitPK, GetWorkEffortTypeDescriptionsForm form) {
-        return new GetWorkEffortTypeDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetWorkEffortTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editWorkEffortTypeDescription(UserVisitPK userVisitPK, EditWorkEffortTypeDescriptionForm form) {
-        return new EditWorkEffortTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditWorkEffortTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteWorkEffortTypeDescription(UserVisitPK userVisitPK, DeleteWorkEffortTypeDescriptionForm form) {
-        return new DeleteWorkEffortTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteWorkEffortTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -91,37 +92,37 @@ public class WorkEffortBean
     
     @Override
     public CommandResult createWorkEffortScope(UserVisitPK userVisitPK, CreateWorkEffortScopeForm form) {
-        return new CreateWorkEffortScopeCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateWorkEffortScopeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkEffortScopes(UserVisitPK userVisitPK, GetWorkEffortScopesForm form) {
-        return new GetWorkEffortScopesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetWorkEffortScopesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkEffortScope(UserVisitPK userVisitPK, GetWorkEffortScopeForm form) {
-        return new GetWorkEffortScopeCommand().run(userVisitPK, form);
+        return CDI.current().select(GetWorkEffortScopeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkEffortScopeChoices(UserVisitPK userVisitPK, GetWorkEffortScopeChoicesForm form) {
-        return new GetWorkEffortScopeChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetWorkEffortScopeChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultWorkEffortScope(UserVisitPK userVisitPK, SetDefaultWorkEffortScopeForm form) {
-        return new SetDefaultWorkEffortScopeCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultWorkEffortScopeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editWorkEffortScope(UserVisitPK userVisitPK, EditWorkEffortScopeForm form) {
-        return new EditWorkEffortScopeCommand().run(userVisitPK, form);
+        return CDI.current().select(EditWorkEffortScopeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteWorkEffortScope(UserVisitPK userVisitPK, DeleteWorkEffortScopeForm form) {
-        return new DeleteWorkEffortScopeCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteWorkEffortScopeCommand.class).get().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -130,27 +131,27 @@ public class WorkEffortBean
     
     @Override
     public CommandResult createWorkEffortScopeDescription(UserVisitPK userVisitPK, CreateWorkEffortScopeDescriptionForm form) {
-        return new CreateWorkEffortScopeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateWorkEffortScopeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkEffortScopeDescription(UserVisitPK userVisitPK, GetWorkEffortScopeDescriptionForm form) {
-        return new GetWorkEffortScopeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(GetWorkEffortScopeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getWorkEffortScopeDescriptions(UserVisitPK userVisitPK, GetWorkEffortScopeDescriptionsForm form) {
-        return new GetWorkEffortScopeDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetWorkEffortScopeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editWorkEffortScopeDescription(UserVisitPK userVisitPK, EditWorkEffortScopeDescriptionForm form) {
-        return new EditWorkEffortScopeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditWorkEffortScopeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteWorkEffortScopeDescription(UserVisitPK userVisitPK, DeleteWorkEffortScopeDescriptionForm form) {
-        return new DeleteWorkEffortScopeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteWorkEffortScopeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -159,7 +160,7 @@ public class WorkEffortBean
     
     @Override
     public CommandResult getWorkEffort(UserVisitPK userVisitPK, GetWorkEffortForm form) {
-        return new GetWorkEffortCommand().run(userVisitPK, form);
+        return CDI.current().select(GetWorkEffortCommand.class).get().run(userVisitPK, form);
     }
     
 }

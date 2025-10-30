@@ -41,7 +41,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.apache.commons.logging.Log;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GetStateCommand
         extends BaseSingleEntityCommand<GeoCode, GetStateForm> {
     

@@ -22,6 +22,7 @@ import com.echothree.control.user.workrequirement.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 import javax.ejb.Stateless;
+import javax.enterprise.inject.spi.CDI;
 
 @Stateless
 public class WorkRequirementBean
@@ -43,22 +44,22 @@ public class WorkRequirementBean
     
     @Override
     public CommandResult createWorkRequirementType(UserVisitPK userVisitPK, CreateWorkRequirementTypeForm form) {
-        return new CreateWorkRequirementTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateWorkRequirementTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkRequirementTypes(UserVisitPK userVisitPK, GetWorkRequirementTypesForm form) {
-        return new GetWorkRequirementTypesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetWorkRequirementTypesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkRequirementType(UserVisitPK userVisitPK, GetWorkRequirementTypeForm form) {
-        return new GetWorkRequirementTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(GetWorkRequirementTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteWorkRequirementType(UserVisitPK userVisitPK, DeleteWorkRequirementTypeForm form) {
-        return new DeleteWorkRequirementTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteWorkRequirementTypeCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -67,22 +68,22 @@ public class WorkRequirementBean
     
     @Override
     public CommandResult createWorkRequirementTypeDescription(UserVisitPK userVisitPK, CreateWorkRequirementTypeDescriptionForm form) {
-        return new CreateWorkRequirementTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateWorkRequirementTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkRequirementTypeDescriptions(UserVisitPK userVisitPK, GetWorkRequirementTypeDescriptionsForm form) {
-        return new GetWorkRequirementTypeDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetWorkRequirementTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editWorkRequirementTypeDescription(UserVisitPK userVisitPK, EditWorkRequirementTypeDescriptionForm form) {
-        return new EditWorkRequirementTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditWorkRequirementTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteWorkRequirementTypeDescription(UserVisitPK userVisitPK, DeleteWorkRequirementTypeDescriptionForm form) {
-        return new DeleteWorkRequirementTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteWorkRequirementTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -91,12 +92,12 @@ public class WorkRequirementBean
     
     @Override
     public CommandResult getWorkRequirementScopes(UserVisitPK userVisitPK, GetWorkRequirementScopesForm form) {
-        return new GetWorkRequirementScopesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetWorkRequirementScopesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWorkRequirementScope(UserVisitPK userVisitPK, GetWorkRequirementScopeForm form) {
-        return new GetWorkRequirementScopeCommand().run(userVisitPK, form);
+        return CDI.current().select(GetWorkRequirementScopeCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -105,7 +106,7 @@ public class WorkRequirementBean
 
     @Override
     public CommandResult getWorkRequirement(UserVisitPK userVisitPK, GetWorkRequirementForm form) {
-        return new GetWorkRequirementCommand().run(userVisitPK, form);
+        return CDI.current().select(GetWorkRequirementCommand.class).get().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -114,7 +115,7 @@ public class WorkRequirementBean
 
     @Override
     public CommandResult getWorkAssignments(UserVisitPK userVisitPK, GetWorkAssignmentsForm form) {
-        return new GetWorkAssignmentsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetWorkAssignmentsCommand.class).get().run(userVisitPK, form);
     }
 
 }

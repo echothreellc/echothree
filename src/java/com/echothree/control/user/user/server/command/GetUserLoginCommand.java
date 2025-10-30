@@ -45,7 +45,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GetUserLoginCommand
         extends BaseSingleEntityCommand<UserLogin, GetUserLoginForm> {
     
@@ -66,7 +68,7 @@ public class GetUserLoginCommand
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
-    public UserLogin foundByUsernameUserLogin = null;
+    UserLogin foundByUsernameUserLogin;
 
     @Override
     protected UserLogin getEntity() {

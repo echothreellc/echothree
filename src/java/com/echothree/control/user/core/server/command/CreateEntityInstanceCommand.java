@@ -34,7 +34,9 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CreateEntityInstanceCommand
         extends BaseSimpleCommand<CreateEntityInstanceForm> {
 

@@ -20,7 +20,9 @@ import com.echothree.model.control.user.server.logic.UserVisitLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class InvalidateUserVisitCommand
         extends BaseSimpleCommand {
     

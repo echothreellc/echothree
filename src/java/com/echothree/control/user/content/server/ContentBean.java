@@ -22,6 +22,7 @@ import com.echothree.control.user.content.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 import javax.ejb.Stateless;
+import javax.enterprise.inject.spi.CDI;
 
 @Stateless
 public class ContentBean
@@ -43,7 +44,7 @@ public class ContentBean
     
     @Override
     public CommandResult createContentPageAreaType(UserVisitPK userVisitPK, CreateContentPageAreaTypeForm form) {
-        return new CreateContentPageAreaTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateContentPageAreaTypeCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -52,22 +53,22 @@ public class ContentBean
     
     @Override
     public CommandResult createContentPageAreaTypeDescription(UserVisitPK userVisitPK, CreateContentPageAreaTypeDescriptionForm form) {
-        return new CreateContentPageAreaTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateContentPageAreaTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContentPageAreaTypeChoices(UserVisitPK userVisitPK, GetContentPageAreaTypeChoicesForm form) {
-        return new GetContentPageAreaTypeChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentPageAreaTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContentPageAreaType(UserVisitPK userVisitPK, GetContentPageAreaTypeForm form) {
-        return new GetContentPageAreaTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentPageAreaTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContentPageAreaTypes(UserVisitPK userVisitPK, GetContentPageAreaTypesForm form) {
-        return new GetContentPageAreaTypesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentPageAreaTypesCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -76,37 +77,37 @@ public class ContentBean
     
     @Override
     public CommandResult createContentPageLayout(UserVisitPK userVisitPK, CreateContentPageLayoutForm form) {
-        return new CreateContentPageLayoutCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateContentPageLayoutCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContentPageLayoutChoices(UserVisitPK userVisitPK, GetContentPageLayoutChoicesForm form) {
-        return new GetContentPageLayoutChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentPageLayoutChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContentPageLayout(UserVisitPK userVisitPK, GetContentPageLayoutForm form) {
-        return new GetContentPageLayoutCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentPageLayoutCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContentPageLayouts(UserVisitPK userVisitPK, GetContentPageLayoutsForm form) {
-        return new GetContentPageLayoutsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentPageLayoutsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultContentPageLayout(UserVisitPK userVisitPK, SetDefaultContentPageLayoutForm form) {
-        return new SetDefaultContentPageLayoutCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultContentPageLayoutCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editContentPageLayout(UserVisitPK userVisitPK, EditContentPageLayoutForm form) {
-        return new EditContentPageLayoutCommand().run(userVisitPK, form);
+        return CDI.current().select(EditContentPageLayoutCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteContentPageLayout(UserVisitPK userVisitPK, DeleteContentPageLayoutForm form) {
-        return new DeleteContentPageLayoutCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteContentPageLayoutCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -115,27 +116,27 @@ public class ContentBean
     
     @Override
     public CommandResult createContentPageLayoutDescription(UserVisitPK userVisitPK, CreateContentPageLayoutDescriptionForm form) {
-        return new CreateContentPageLayoutDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateContentPageLayoutDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContentPageLayoutDescription(UserVisitPK userVisitPK, GetContentPageLayoutDescriptionForm form) {
-        return new GetContentPageLayoutDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentPageLayoutDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContentPageLayoutDescriptions(UserVisitPK userVisitPK, GetContentPageLayoutDescriptionsForm form) {
-        return new GetContentPageLayoutDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentPageLayoutDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editContentPageLayoutDescription(UserVisitPK userVisitPK, EditContentPageLayoutDescriptionForm form) {
-        return new EditContentPageLayoutDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditContentPageLayoutDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteContentPageLayoutDescription(UserVisitPK userVisitPK, DeleteContentPageLayoutDescriptionForm form) {
-        return new DeleteContentPageLayoutDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteContentPageLayoutDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -144,17 +145,17 @@ public class ContentBean
     
     @Override
     public CommandResult createContentPageLayoutArea(UserVisitPK userVisitPK, CreateContentPageLayoutAreaForm form) {
-        return new CreateContentPageLayoutAreaCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateContentPageLayoutAreaCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getContentPageLayoutArea(UserVisitPK userVisitPK, GetContentPageLayoutAreaForm form) {
-        return new GetContentPageLayoutAreaCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentPageLayoutAreaCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getContentPageLayoutAreas(UserVisitPK userVisitPK, GetContentPageLayoutAreasForm form) {
-        return new GetContentPageLayoutAreasCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentPageLayoutAreasCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -163,7 +164,7 @@ public class ContentBean
     
     @Override
     public CommandResult createContentPageLayoutAreaDescription(UserVisitPK userVisitPK, CreateContentPageLayoutAreaDescriptionForm form) {
-        return new CreateContentPageLayoutAreaDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateContentPageLayoutAreaDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -172,32 +173,32 @@ public class ContentBean
     
     @Override
     public CommandResult createContentCollection(UserVisitPK userVisitPK, CreateContentCollectionForm form) {
-        return new CreateContentCollectionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateContentCollectionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getContentCollection(UserVisitPK userVisitPK, GetContentCollectionForm form) {
-        return new GetContentCollectionCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentCollectionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getContentCollections(UserVisitPK userVisitPK, GetContentCollectionsForm form) {
-        return new GetContentCollectionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentCollectionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editContentCollection(UserVisitPK userVisitPK, EditContentCollectionForm form) {
-        return new EditContentCollectionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditContentCollectionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteContentCollection(UserVisitPK userVisitPK, DeleteContentCollectionForm form) {
-        return new DeleteContentCollectionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteContentCollectionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getContentCollectionChoices(UserVisitPK userVisitPK, GetContentCollectionChoicesForm form) {
-        return new GetContentCollectionChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentCollectionChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -206,28 +207,28 @@ public class ContentBean
     
     @Override
     public CommandResult createContentCollectionDescription(UserVisitPK userVisitPK, CreateContentCollectionDescriptionForm form) {
-        return new CreateContentCollectionDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateContentCollectionDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContentCollectionDescription(UserVisitPK userVisitPK, GetContentCollectionDescriptionForm form) {
-        return new GetContentCollectionDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentCollectionDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContentCollectionDescriptions(UserVisitPK userVisitPK, GetContentCollectionDescriptionsForm form) {
-        return new GetContentCollectionDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentCollectionDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editContentCollectionDescription(UserVisitPK userVisitPK, EditContentCollectionDescriptionForm form) {
-        return new EditContentCollectionDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditContentCollectionDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     
     @Override
     public CommandResult deleteContentCollectionDescription(UserVisitPK userVisitPK, DeleteContentCollectionDescriptionForm form) {
-        return new DeleteContentCollectionDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteContentCollectionDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -236,37 +237,37 @@ public class ContentBean
     
     @Override
     public CommandResult createContentSection(UserVisitPK userVisitPK, CreateContentSectionForm form) {
-        return new CreateContentSectionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateContentSectionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getContentSection(UserVisitPK userVisitPK, GetContentSectionForm form) {
-        return new GetContentSectionCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentSectionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getContentSections(UserVisitPK userVisitPK, GetContentSectionsForm form) {
-        return new GetContentSectionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentSectionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultContentSection(UserVisitPK userVisitPK, SetDefaultContentSectionForm form) {
-        return new SetDefaultContentSectionCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultContentSectionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editContentSection(UserVisitPK userVisitPK, EditContentSectionForm form) {
-        return new EditContentSectionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditContentSectionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteContentSection(UserVisitPK userVisitPK, DeleteContentSectionForm form) {
-        return new DeleteContentSectionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteContentSectionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getContentSectionChoices(UserVisitPK userVisitPK, GetContentSectionChoicesForm form) {
-        return new GetContentSectionChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentSectionChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -275,27 +276,27 @@ public class ContentBean
     
     @Override
     public CommandResult createContentSectionDescription(UserVisitPK userVisitPK, CreateContentSectionDescriptionForm form) {
-        return new CreateContentSectionDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateContentSectionDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getContentSectionDescription(UserVisitPK userVisitPK, GetContentSectionDescriptionForm form) {
-        return new GetContentSectionDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentSectionDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContentSectionDescriptions(UserVisitPK userVisitPK, GetContentSectionDescriptionsForm form) {
-        return new GetContentSectionDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentSectionDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editContentSectionDescription(UserVisitPK userVisitPK, EditContentSectionDescriptionForm form) {
-        return new EditContentSectionDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditContentSectionDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteContentSectionDescription(UserVisitPK userVisitPK, DeleteContentSectionDescriptionForm form) {
-        return new DeleteContentSectionDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteContentSectionDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -304,32 +305,32 @@ public class ContentBean
     
     @Override
     public CommandResult createContentPage(UserVisitPK userVisitPK, CreateContentPageForm form) {
-        return new CreateContentPageCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateContentPageCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getContentPage(UserVisitPK userVisitPK, GetContentPageForm form) {
-        return new GetContentPageCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentPageCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getContentPages(UserVisitPK userVisitPK, GetContentPagesForm form) {
-        return new GetContentPagesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentPagesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultContentPage(UserVisitPK userVisitPK, SetDefaultContentPageForm form) {
-        return new SetDefaultContentPageCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultContentPageCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editContentPage(UserVisitPK userVisitPK, EditContentPageForm form) {
-        return new EditContentPageCommand().run(userVisitPK, form);
+        return CDI.current().select(EditContentPageCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteContentPage(UserVisitPK userVisitPK, DeleteContentPageForm form) {
-        return new DeleteContentPageCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteContentPageCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -338,27 +339,27 @@ public class ContentBean
     
     @Override
     public CommandResult createContentPageDescription(UserVisitPK userVisitPK, CreateContentPageDescriptionForm form) {
-        return new CreateContentPageDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateContentPageDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getContentPageDescription(UserVisitPK userVisitPK, GetContentPageDescriptionForm form) {
-        return new GetContentPageDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentPageDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContentPageDescriptions(UserVisitPK userVisitPK, GetContentPageDescriptionsForm form) {
-        return new GetContentPageDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentPageDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editContentPageDescription(UserVisitPK userVisitPK, EditContentPageDescriptionForm form) {
-        return new EditContentPageDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditContentPageDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteContentPageDescription(UserVisitPK userVisitPK, DeleteContentPageDescriptionForm form) {
-        return new DeleteContentPageDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteContentPageDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -367,32 +368,32 @@ public class ContentBean
     
     @Override
     public CommandResult createContentCatalog(UserVisitPK userVisitPK, CreateContentCatalogForm form) {
-        return new CreateContentCatalogCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateContentCatalogCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getContentCatalog(UserVisitPK userVisitPK, GetContentCatalogForm form) {
-        return new GetContentCatalogCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentCatalogCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getContentCatalogs(UserVisitPK userVisitPK, GetContentCatalogsForm form) {
-        return new GetContentCatalogsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentCatalogsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultContentCatalog(UserVisitPK userVisitPK, SetDefaultContentCatalogForm form) {
-        return new SetDefaultContentCatalogCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultContentCatalogCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editContentCatalog(UserVisitPK userVisitPK, EditContentCatalogForm form) {
-        return new EditContentCatalogCommand().run(userVisitPK, form);
+        return CDI.current().select(EditContentCatalogCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteContentCatalog(UserVisitPK userVisitPK, DeleteContentCatalogForm form) {
-        return new DeleteContentCatalogCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteContentCatalogCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -401,27 +402,27 @@ public class ContentBean
     
     @Override
     public CommandResult createContentCatalogDescription(UserVisitPK userVisitPK, CreateContentCatalogDescriptionForm form) {
-        return new CreateContentCatalogDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateContentCatalogDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getContentCatalogDescription(UserVisitPK userVisitPK, GetContentCatalogDescriptionForm form) {
-        return new GetContentCatalogDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentCatalogDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContentCatalogDescriptions(UserVisitPK userVisitPK, GetContentCatalogDescriptionsForm form) {
-        return new GetContentCatalogDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentCatalogDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editContentCatalogDescription(UserVisitPK userVisitPK, EditContentCatalogDescriptionForm form) {
-        return new EditContentCatalogDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditContentCatalogDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteContentCatalogDescription(UserVisitPK userVisitPK, DeleteContentCatalogDescriptionForm form) {
-        return new DeleteContentCatalogDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteContentCatalogDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -430,12 +431,12 @@ public class ContentBean
 
     @Override
     public CommandResult getContentCatalogItem(UserVisitPK userVisitPK, GetContentCatalogItemForm form) {
-        return new GetContentCatalogItemCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentCatalogItemCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContentCatalogItems(UserVisitPK userVisitPK, GetContentCatalogItemsForm form) {
-        return new GetContentCatalogItemsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentCatalogItemsCommand.class).get().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -444,37 +445,37 @@ public class ContentBean
     
     @Override
     public CommandResult createContentCategory(UserVisitPK userVisitPK, CreateContentCategoryForm form) {
-        return new CreateContentCategoryCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateContentCategoryCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getContentCategory(UserVisitPK userVisitPK, GetContentCategoryForm form) {
-        return new GetContentCategoryCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentCategoryCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getContentCategories(UserVisitPK userVisitPK, GetContentCategoriesForm form) {
-        return new GetContentCategoriesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentCategoriesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultContentCategory(UserVisitPK userVisitPK, SetDefaultContentCategoryForm form) {
-        return new SetDefaultContentCategoryCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultContentCategoryCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editContentCategory(UserVisitPK userVisitPK, EditContentCategoryForm form) {
-        return new EditContentCategoryCommand().run(userVisitPK, form);
+        return CDI.current().select(EditContentCategoryCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteContentCategory(UserVisitPK userVisitPK, DeleteContentCategoryForm form) {
-        return new DeleteContentCategoryCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteContentCategoryCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getContentCategoryChoices(UserVisitPK userVisitPK, GetContentCategoryChoicesForm form) {
-        return new GetContentCategoryChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentCategoryChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -483,27 +484,27 @@ public class ContentBean
     
     @Override
     public CommandResult createContentCategoryDescription(UserVisitPK userVisitPK, CreateContentCategoryDescriptionForm form) {
-        return new CreateContentCategoryDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateContentCategoryDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getContentCategoryDescription(UserVisitPK userVisitPK, GetContentCategoryDescriptionForm form) {
-        return new GetContentCategoryDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentCategoryDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContentCategoryDescriptions(UserVisitPK userVisitPK, GetContentCategoryDescriptionsForm form) {
-        return new GetContentCategoryDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentCategoryDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editContentCategoryDescription(UserVisitPK userVisitPK, EditContentCategoryDescriptionForm form) {
-        return new EditContentCategoryDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditContentCategoryDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteContentCategoryDescription(UserVisitPK userVisitPK, DeleteContentCategoryDescriptionForm form) {
-        return new DeleteContentCategoryDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteContentCategoryDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -512,32 +513,32 @@ public class ContentBean
     
     @Override
     public CommandResult createContentCategoryItem(UserVisitPK userVisitPK, CreateContentCategoryItemForm form) {
-        return new CreateContentCategoryItemCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateContentCategoryItemCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getContentCategoryItem(UserVisitPK userVisitPK, GetContentCategoryItemForm form) {
-        return new GetContentCategoryItemCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentCategoryItemCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getContentCategoryItems(UserVisitPK userVisitPK, GetContentCategoryItemsForm form) {
-        return new GetContentCategoryItemsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentCategoryItemsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultContentCategoryItem(UserVisitPK userVisitPK, SetDefaultContentCategoryItemForm form) {
-        return new SetDefaultContentCategoryItemCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultContentCategoryItemCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editContentCategoryItem(UserVisitPK userVisitPK, EditContentCategoryItemForm form) {
-        return new EditContentCategoryItemCommand().run(userVisitPK, form);
+        return CDI.current().select(EditContentCategoryItemCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteContentCategoryItem(UserVisitPK userVisitPK, DeleteContentCategoryItemForm form) {
-        return new DeleteContentCategoryItemCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteContentCategoryItemCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -546,27 +547,27 @@ public class ContentBean
     
     @Override
     public CommandResult createContentForum(UserVisitPK userVisitPK, CreateContentForumForm form) {
-        return new CreateContentForumCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateContentForumCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getContentForum(UserVisitPK userVisitPK, GetContentForumForm form) {
-        return new GetContentForumCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentForumCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getContentForums(UserVisitPK userVisitPK, GetContentForumsForm form) {
-        return new GetContentForumsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentForumsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultContentForum(UserVisitPK userVisitPK, SetDefaultContentForumForm form) {
-        return new SetDefaultContentForumCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultContentForumCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteContentForum(UserVisitPK userVisitPK, DeleteContentForumForm form) {
-        return new DeleteContentForumCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteContentForumCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -575,27 +576,27 @@ public class ContentBean
     
     @Override
     public CommandResult createContentWebAddress(UserVisitPK userVisitPK, CreateContentWebAddressForm form) {
-        return new CreateContentWebAddressCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateContentWebAddressCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getContentWebAddress(UserVisitPK userVisitPK, GetContentWebAddressForm form) {
-        return new GetContentWebAddressCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentWebAddressCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getContentWebAddresses(UserVisitPK userVisitPK, GetContentWebAddressesForm form) {
-        return new GetContentWebAddressesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentWebAddressesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editContentWebAddress(UserVisitPK userVisitPK, EditContentWebAddressForm form) {
-        return new EditContentWebAddressCommand().run(userVisitPK, form);
+        return CDI.current().select(EditContentWebAddressCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteContentWebAddress(UserVisitPK userVisitPK, DeleteContentWebAddressForm form) {
-        return new DeleteContentWebAddressCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteContentWebAddressCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -604,27 +605,27 @@ public class ContentBean
     
     @Override
     public CommandResult createContentWebAddressDescription(UserVisitPK userVisitPK, CreateContentWebAddressDescriptionForm form) {
-        return new CreateContentWebAddressDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateContentWebAddressDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getContentWebAddressDescription(UserVisitPK userVisitPK, GetContentWebAddressDescriptionForm form) {
-        return new GetContentWebAddressDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentWebAddressDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContentWebAddressDescriptions(UserVisitPK userVisitPK, GetContentWebAddressDescriptionsForm form) {
-        return new GetContentWebAddressDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentWebAddressDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editContentWebAddressDescription(UserVisitPK userVisitPK, EditContentWebAddressDescriptionForm form) {
-        return new EditContentWebAddressDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditContentWebAddressDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteContentWebAddressDescription(UserVisitPK userVisitPK, DeleteContentWebAddressDescriptionForm form) {
-        return new DeleteContentWebAddressDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteContentWebAddressDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -633,7 +634,7 @@ public class ContentBean
     
     @Override
     public CommandResult createContentWebAddressServer(UserVisitPK userVisitPK, CreateContentWebAddressServerForm form) {
-        return new CreateContentWebAddressServerCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateContentWebAddressServerCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -642,27 +643,27 @@ public class ContentBean
     
     @Override
     public CommandResult createContentPageArea(UserVisitPK userVisitPK, CreateContentPageAreaForm form) {
-        return new CreateContentPageAreaCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateContentPageAreaCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getContentPageArea(UserVisitPK userVisitPK, GetContentPageAreaForm form) {
-        return new GetContentPageAreaCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentPageAreaCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getContentPageAreas(UserVisitPK userVisitPK, GetContentPageAreasForm form) {
-        return new GetContentPageAreasCommand().run(userVisitPK, form);
+        return CDI.current().select(GetContentPageAreasCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editContentPageArea(UserVisitPK userVisitPK, EditContentPageAreaForm form) {
-        return new EditContentPageAreaCommand().run(userVisitPK, form);
+        return CDI.current().select(EditContentPageAreaCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteContentPageArea(UserVisitPK userVisitPK, DeleteContentPageAreaForm form) {
-        return new DeleteContentPageAreaCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteContentPageAreaCommand.class).get().run(userVisitPK, form);
     }
     
 }
