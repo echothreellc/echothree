@@ -11364,12 +11364,12 @@ public class ItemControl
 
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ " +
-                "FROM relateditems, relateditemdetails, relateditemtypes, items, itemdetails " +
+                "FROM relateditems, relateditemdetails, relateditemtypes, relateditemtypedetails, items, itemdetails " +
                 "WHERE rlti_activedetailid = rltidt_relateditemdetailid " +
                 "AND rltidt_fromitemid = ? " +
-                "AND rltidt_rltityp_relateditemtypeid = rltityp_relateditemtypeid " +
+                "AND rltidt_rltityp_relateditemtypeid = rltityp_relateditemtypeid AND rltityp_lastdetailid = rltitypdt_relateditemtypedetailid " +
                 "AND rltidt_fromitemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid " +
-                "ORDER BY rltityp_sortorder, rltityp_relateditemtypename, rltidt_sortorder, itmdt_itemname " +
+                "ORDER BY rltitypdt_sortorder, rltitypdt_relateditemtypename, rltidt_sortorder, itmdt_itemname " +
                 "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
@@ -11408,12 +11408,12 @@ public class ItemControl
 
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ " +
-                "FROM relateditems, relateditemdetails, relateditemtypes, items, itemdetails " +
+                "FROM relateditems, relateditemdetails, relateditemtypes, relateditemtypedetails, items, itemdetails " +
                 "WHERE rlti_activedetailid = rltidt_relateditemdetailid " +
                 "AND rltidt_toitemid = ? " +
-                "AND rltidt_rltityp_relateditemtypeid = rltityp_relateditemtypeid " +
+                "AND rltidt_rltityp_relateditemtypeid = rltityp_relateditemtypeid AND rltityp_lastdetailid = rltitypdt_relateditemtypedetailid " +
                 "AND rltidt_toitemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid " +
-                "ORDER BY rltityp_sortorder, rltityp_relateditemtypename, rltidt_sortorder, itmdt_itemname " +
+                "ORDER BY rltitypdt_sortorder, rltitypdt_relateditemtypename, rltidt_sortorder, itmdt_itemname " +
                 "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
