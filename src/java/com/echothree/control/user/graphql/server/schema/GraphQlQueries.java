@@ -770,6 +770,7 @@ import com.echothree.model.data.item.common.ItemUnitOfMeasureTypeConstants;
 import com.echothree.model.data.item.common.ItemUseTypeConstants;
 import com.echothree.model.data.item.common.ItemVolumeTypeConstants;
 import com.echothree.model.data.item.common.ItemWeightTypeConstants;
+import com.echothree.model.data.item.common.RelatedItemConstants;
 import com.echothree.model.data.item.common.RelatedItemTypeConstants;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemAlias;
@@ -9821,36 +9822,41 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("relatedItems")
-    static Collection<RelatedItemObject> relatedItems(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<RelatedItemObject> relatedItems(final DataFetchingEnvironment env,
             @GraphQLName("relatedItemTypeName") final String relatedItemTypeName,
             @GraphQLName("fromItemName") final String fromItemName,
             @GraphQLName("toItemName") final String toItemName) {
-        Collection<RelatedItem> relatedItems;
-        Collection<RelatedItemObject> relatedItemObjects;
+        CountingPaginatedData<RelatedItemObject> data;
 
         try {
             var commandForm = ItemUtil.getHome().getGetRelatedItemsForm();
+            var command = new GetRelatedItemsCommand();
 
             commandForm.setRelatedItemTypeName(relatedItemTypeName);
             commandForm.setFromItemName(fromItemName);
             commandForm.setToItemName(toItemName);
 
-            relatedItems = new GetRelatedItemsCommand().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, RelatedItemConstants.COMPONENT_VENDOR_NAME, RelatedItemConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var relatedItemObjects = entities.stream()
+                            .map(RelatedItemObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, relatedItemObjects);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(relatedItems == null) {
-            relatedItemObjects = emptyList();
-        } else {
-            relatedItemObjects = new ArrayList<>(relatedItems.size());
-
-            relatedItems.stream()
-                    .map(RelatedItemObject::new)
-                    .forEachOrdered(relatedItemObjects::add);
-        }
-
-        return relatedItemObjects;
+        return data;
     }
 
     @GraphQLField
