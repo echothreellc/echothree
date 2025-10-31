@@ -76,7 +76,8 @@ public class GetUserLoginCommand
 
         if(parameterCount == 1) {
             Party party = null;
-            
+
+            // 1) Attempt to map whatever we're given as input to a Party
             if(username != null) {
                 var foundByUsernameUserLogin = UserLoginLogic.getInstance().getUserLoginByUsername(this, username);
                 
@@ -94,7 +95,8 @@ public class GetUserLoginCommand
                     party = partyControl.getPartyByEntityInstance(entityInstance);
                 }
             }
-            
+
+            // 2) Based on the PartyType, check the SecurityRoles and return the UserLogin if permitted and it exists.
             if(!hasExecutionErrors()) {
                 var partyType = party.getLastDetail().getPartyType();
                 String securityRoleGroupName = null;
@@ -108,12 +110,15 @@ public class GetUserLoginCommand
                     securityRoleGroupName = Vendor.name();
                 }
 
+                // 2A) SecurityRole check.
                 if(securityRoleGroupName != null 
                         && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, getParty(), securityRoleGroupName, UserLogin.name())) {
                     if(!hasExecutionErrors()) {
+                        // 2B) Does the PartyType allow UserLogins for it?
                         if(partyType.getAllowUserLogins()) {
                             var userControl = getUserControl();
-                            
+
+                            // 2C) Map Party to a UserLogin if it exists.
                             userLogin = userControl.getUserLogin(party);
 
                             if(userLogin == null) {
