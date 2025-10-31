@@ -46,7 +46,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EditTaxClassificationTranslationCommand
         extends BaseAbstractEditCommand<TaxClassificationTranslationSpec, TaxClassificationTranslationEdit, EditTaxClassificationTranslationResult, TaxClassificationTranslation, TaxClassification> {
 

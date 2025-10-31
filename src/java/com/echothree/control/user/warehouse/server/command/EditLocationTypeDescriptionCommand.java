@@ -40,7 +40,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EditLocationTypeDescriptionCommand
         extends BaseEditCommand<LocationTypeDescriptionSpec, LocationTypeDescriptionEdit> {
 

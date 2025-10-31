@@ -22,6 +22,7 @@ import com.echothree.control.user.customer.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 import javax.ejb.Stateless;
+import javax.enterprise.inject.spi.CDI;
 
 @Stateless
 public class CustomerBean
@@ -43,37 +44,37 @@ public class CustomerBean
 
     @Override
     public CommandResult getCustomers(UserVisitPK userVisitPK, GetCustomersForm form) {
-        return new GetCustomersCommand().run(userVisitPK, form);
+        return CDI.current().select(GetCustomersCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getCustomer(UserVisitPK userVisitPK, GetCustomerForm form) {
-        return new GetCustomerCommand().run(userVisitPK, form);
+        return CDI.current().select(GetCustomerCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editCustomer(UserVisitPK userVisitPK, EditCustomerForm form) {
-        return new EditCustomerCommand().run(userVisitPK, form);
+        return CDI.current().select(EditCustomerCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCustomerStatusChoices(UserVisitPK userVisitPK, GetCustomerStatusChoicesForm form) {
-        return new GetCustomerStatusChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetCustomerStatusChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setCustomerStatus(UserVisitPK userVisitPK, SetCustomerStatusForm form) {
-        return new SetCustomerStatusCommand().run(userVisitPK, form);
+        return CDI.current().select(SetCustomerStatusCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCustomerCreditStatusChoices(UserVisitPK userVisitPK, GetCustomerCreditStatusChoicesForm form) {
-        return new GetCustomerCreditStatusChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetCustomerCreditStatusChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setCustomerCreditStatus(UserVisitPK userVisitPK, SetCustomerCreditStatusForm form) {
-        return new SetCustomerCreditStatusCommand().run(userVisitPK, form);
+        return CDI.current().select(SetCustomerCreditStatusCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -82,37 +83,37 @@ public class CustomerBean
     
     @Override
     public CommandResult createCustomerType(UserVisitPK userVisitPK, CreateCustomerTypeForm form) {
-        return new CreateCustomerTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateCustomerTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCustomerTypes(UserVisitPK userVisitPK, GetCustomerTypesForm form) {
-        return new GetCustomerTypesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetCustomerTypesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCustomerType(UserVisitPK userVisitPK, GetCustomerTypeForm form) {
-        return new GetCustomerTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(GetCustomerTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCustomerTypeChoices(UserVisitPK userVisitPK, GetCustomerTypeChoicesForm form) {
-        return new GetCustomerTypeChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetCustomerTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultCustomerType(UserVisitPK userVisitPK, SetDefaultCustomerTypeForm form) {
-        return new SetDefaultCustomerTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultCustomerTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editCustomerType(UserVisitPK userVisitPK, EditCustomerTypeForm form) {
-        return new EditCustomerTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(EditCustomerTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCustomerType(UserVisitPK userVisitPK, DeleteCustomerTypeForm form) {
-        return new DeleteCustomerTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteCustomerTypeCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -121,22 +122,22 @@ public class CustomerBean
     
     @Override
     public CommandResult createCustomerTypeDescription(UserVisitPK userVisitPK, CreateCustomerTypeDescriptionForm form) {
-        return new CreateCustomerTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateCustomerTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCustomerTypeDescriptions(UserVisitPK userVisitPK, GetCustomerTypeDescriptionsForm form) {
-        return new GetCustomerTypeDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetCustomerTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editCustomerTypeDescription(UserVisitPK userVisitPK, EditCustomerTypeDescriptionForm form) {
-        return new EditCustomerTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditCustomerTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCustomerTypeDescription(UserVisitPK userVisitPK, DeleteCustomerTypeDescriptionForm form) {
-        return new DeleteCustomerTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteCustomerTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -145,32 +146,32 @@ public class CustomerBean
     
     @Override
     public CommandResult createCustomerTypePaymentMethod(UserVisitPK userVisitPK, CreateCustomerTypePaymentMethodForm form) {
-        return new CreateCustomerTypePaymentMethodCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateCustomerTypePaymentMethodCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCustomerTypePaymentMethod(UserVisitPK userVisitPK, GetCustomerTypePaymentMethodForm form) {
-        return new GetCustomerTypePaymentMethodCommand().run(userVisitPK, form);
+        return CDI.current().select(GetCustomerTypePaymentMethodCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCustomerTypePaymentMethods(UserVisitPK userVisitPK, GetCustomerTypePaymentMethodsForm form) {
-        return new GetCustomerTypePaymentMethodsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetCustomerTypePaymentMethodsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultCustomerTypePaymentMethod(UserVisitPK userVisitPK, SetDefaultCustomerTypePaymentMethodForm form) {
-        return new SetDefaultCustomerTypePaymentMethodCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultCustomerTypePaymentMethodCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editCustomerTypePaymentMethod(UserVisitPK userVisitPK, EditCustomerTypePaymentMethodForm form) {
-        return new EditCustomerTypePaymentMethodCommand().run(userVisitPK, form);
+        return CDI.current().select(EditCustomerTypePaymentMethodCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCustomerTypePaymentMethod(UserVisitPK userVisitPK, DeleteCustomerTypePaymentMethodForm form) {
-        return new DeleteCustomerTypePaymentMethodCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteCustomerTypePaymentMethodCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -179,32 +180,32 @@ public class CustomerBean
     
     @Override
     public CommandResult createCustomerTypeShippingMethod(UserVisitPK userVisitPK, CreateCustomerTypeShippingMethodForm form) {
-        return new CreateCustomerTypeShippingMethodCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateCustomerTypeShippingMethodCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCustomerTypeShippingMethod(UserVisitPK userVisitPK, GetCustomerTypeShippingMethodForm form) {
-        return new GetCustomerTypeShippingMethodCommand().run(userVisitPK, form);
+        return CDI.current().select(GetCustomerTypeShippingMethodCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCustomerTypeShippingMethods(UserVisitPK userVisitPK, GetCustomerTypeShippingMethodsForm form) {
-        return new GetCustomerTypeShippingMethodsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetCustomerTypeShippingMethodsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultCustomerTypeShippingMethod(UserVisitPK userVisitPK, SetDefaultCustomerTypeShippingMethodForm form) {
-        return new SetDefaultCustomerTypeShippingMethodCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultCustomerTypeShippingMethodCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editCustomerTypeShippingMethod(UserVisitPK userVisitPK, EditCustomerTypeShippingMethodForm form) {
-        return new EditCustomerTypeShippingMethodCommand().run(userVisitPK, form);
+        return CDI.current().select(EditCustomerTypeShippingMethodCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCustomerTypeShippingMethod(UserVisitPK userVisitPK, DeleteCustomerTypeShippingMethodForm form) {
-        return new DeleteCustomerTypeShippingMethodCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteCustomerTypeShippingMethodCommand.class).get().run(userVisitPK, form);
     }
     
 }

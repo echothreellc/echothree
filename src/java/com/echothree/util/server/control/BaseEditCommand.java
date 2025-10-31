@@ -68,7 +68,7 @@ public abstract class BaseEditCommand<S extends BaseSpec, E extends BaseEdit>
         return super.runAsync(userVisitPK);
     }
 
-    public final CommandResult run(UserVisitPK userVisitPK, BaseEditForm<S, E> editForm) {
+    public CommandResult run(UserVisitPK userVisitPK, BaseEditForm<S, E> editForm) {
         initForRun(editForm);
 
         return super.run(userVisitPK);

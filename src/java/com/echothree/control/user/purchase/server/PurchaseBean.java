@@ -22,6 +22,7 @@ import com.echothree.control.user.purchase.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 import javax.ejb.Stateless;
+import javax.enterprise.inject.spi.CDI;
 
 @Stateless
 public class PurchaseBean
@@ -43,17 +44,17 @@ public class PurchaseBean
 
     @Override
     public CommandResult createPurchaseOrder(UserVisitPK userVisitPK, CreatePurchaseOrderForm form) {
-        return new CreatePurchaseOrderCommand().run(userVisitPK, form);
+        return CDI.current().select(CreatePurchaseOrderCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPurchaseOrderStatusChoices(UserVisitPK userVisitPK, GetPurchaseOrderStatusChoicesForm form) {
-        return new GetPurchaseOrderStatusChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetPurchaseOrderStatusChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setPurchaseOrderStatus(UserVisitPK userVisitPK, SetPurchaseOrderStatusForm form) {
-        return new SetPurchaseOrderStatusCommand().run(userVisitPK, form);
+        return CDI.current().select(SetPurchaseOrderStatusCommand.class).get().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -62,17 +63,17 @@ public class PurchaseBean
 
     @Override
     public CommandResult createPurchaseInvoice(UserVisitPK userVisitPK, CreatePurchaseInvoiceForm form) {
-        return new CreatePurchaseInvoiceCommand().run(userVisitPK, form);
+        return CDI.current().select(CreatePurchaseInvoiceCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPurchaseInvoiceStatusChoices(UserVisitPK userVisitPK, GetPurchaseInvoiceStatusChoicesForm form) {
-        return new GetPurchaseInvoiceStatusChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetPurchaseInvoiceStatusChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setPurchaseInvoiceStatus(UserVisitPK userVisitPK, SetPurchaseInvoiceStatusForm form) {
-        return new SetPurchaseInvoiceStatusCommand().run(userVisitPK, form);
+        return CDI.current().select(SetPurchaseInvoiceStatusCommand.class).get().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -81,7 +82,7 @@ public class PurchaseBean
     
     @Override
     public CommandResult createPurchaseInvoiceLine(UserVisitPK userVisitPK, CreatePurchaseInvoiceLineForm form) {
-        return new CreatePurchaseInvoiceLineCommand().run(userVisitPK, form);
+        return CDI.current().select(CreatePurchaseInvoiceLineCommand.class).get().run(userVisitPK, form);
     }
 
 }

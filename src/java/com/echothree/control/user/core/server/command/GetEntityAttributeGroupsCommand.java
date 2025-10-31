@@ -31,7 +31,9 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.Collection;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GetEntityAttributeGroupsCommand
         extends BasePaginatedMultipleEntitiesCommand<EntityAttributeGroup, GetEntityAttributeGroupsForm> {
     

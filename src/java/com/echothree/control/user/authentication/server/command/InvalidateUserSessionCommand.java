@@ -20,7 +20,9 @@ import com.echothree.model.control.user.server.logic.UserSessionLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class InvalidateUserSessionCommand
         extends BaseSimpleCommand {
     
