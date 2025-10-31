@@ -48,7 +48,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CreateContactTelephoneCommand
         extends BaseSimpleCommand<CreateContactTelephoneForm> {
 

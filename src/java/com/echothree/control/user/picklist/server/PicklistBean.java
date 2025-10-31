@@ -22,6 +22,7 @@ import com.echothree.control.user.picklist.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 import javax.ejb.Stateless;
+import javax.enterprise.inject.spi.CDI;
 
 @Stateless
 public class PicklistBean
@@ -43,37 +44,37 @@ public class PicklistBean
 
     @Override
     public CommandResult createPicklistType(UserVisitPK userVisitPK, CreatePicklistTypeForm form) {
-        return new CreatePicklistTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(CreatePicklistTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPicklistTypeChoices(UserVisitPK userVisitPK, GetPicklistTypeChoicesForm form) {
-        return new GetPicklistTypeChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetPicklistTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPicklistType(UserVisitPK userVisitPK, GetPicklistTypeForm form) {
-        return new GetPicklistTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(GetPicklistTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPicklistTypes(UserVisitPK userVisitPK, GetPicklistTypesForm form) {
-        return new GetPicklistTypesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetPicklistTypesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultPicklistType(UserVisitPK userVisitPK, SetDefaultPicklistTypeForm form) {
-        return new SetDefaultPicklistTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultPicklistTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editPicklistType(UserVisitPK userVisitPK, EditPicklistTypeForm form) {
-        return new EditPicklistTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(EditPicklistTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deletePicklistType(UserVisitPK userVisitPK, DeletePicklistTypeForm form) {
-        return new DeletePicklistTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(DeletePicklistTypeCommand.class).get().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -82,27 +83,27 @@ public class PicklistBean
 
     @Override
     public CommandResult createPicklistTypeDescription(UserVisitPK userVisitPK, CreatePicklistTypeDescriptionForm form) {
-        return new CreatePicklistTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreatePicklistTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPicklistTypeDescription(UserVisitPK userVisitPK, GetPicklistTypeDescriptionForm form) {
-        return new GetPicklistTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(GetPicklistTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPicklistTypeDescriptions(UserVisitPK userVisitPK, GetPicklistTypeDescriptionsForm form) {
-        return new GetPicklistTypeDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetPicklistTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editPicklistTypeDescription(UserVisitPK userVisitPK, EditPicklistTypeDescriptionForm form) {
-        return new EditPicklistTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditPicklistTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deletePicklistTypeDescription(UserVisitPK userVisitPK, DeletePicklistTypeDescriptionForm form) {
-        return new DeletePicklistTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeletePicklistTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -111,37 +112,37 @@ public class PicklistBean
 
     @Override
     public CommandResult createPicklistTimeType(UserVisitPK userVisitPK, CreatePicklistTimeTypeForm form) {
-        return new CreatePicklistTimeTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(CreatePicklistTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPicklistTimeTypeChoices(UserVisitPK userVisitPK, GetPicklistTimeTypeChoicesForm form) {
-        return new GetPicklistTimeTypeChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetPicklistTimeTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPicklistTimeType(UserVisitPK userVisitPK, GetPicklistTimeTypeForm form) {
-        return new GetPicklistTimeTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(GetPicklistTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPicklistTimeTypes(UserVisitPK userVisitPK, GetPicklistTimeTypesForm form) {
-        return new GetPicklistTimeTypesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetPicklistTimeTypesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultPicklistTimeType(UserVisitPK userVisitPK, SetDefaultPicklistTimeTypeForm form) {
-        return new SetDefaultPicklistTimeTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultPicklistTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editPicklistTimeType(UserVisitPK userVisitPK, EditPicklistTimeTypeForm form) {
-        return new EditPicklistTimeTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(EditPicklistTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deletePicklistTimeType(UserVisitPK userVisitPK, DeletePicklistTimeTypeForm form) {
-        return new DeletePicklistTimeTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(DeletePicklistTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -150,27 +151,27 @@ public class PicklistBean
 
     @Override
     public CommandResult createPicklistTimeTypeDescription(UserVisitPK userVisitPK, CreatePicklistTimeTypeDescriptionForm form) {
-        return new CreatePicklistTimeTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreatePicklistTimeTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPicklistTimeTypeDescription(UserVisitPK userVisitPK, GetPicklistTimeTypeDescriptionForm form) {
-        return new GetPicklistTimeTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(GetPicklistTimeTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPicklistTimeTypeDescriptions(UserVisitPK userVisitPK, GetPicklistTimeTypeDescriptionsForm form) {
-        return new GetPicklistTimeTypeDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetPicklistTimeTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editPicklistTimeTypeDescription(UserVisitPK userVisitPK, EditPicklistTimeTypeDescriptionForm form) {
-        return new EditPicklistTimeTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditPicklistTimeTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deletePicklistTimeTypeDescription(UserVisitPK userVisitPK, DeletePicklistTimeTypeDescriptionForm form) {
-        return new DeletePicklistTimeTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeletePicklistTimeTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -179,37 +180,37 @@ public class PicklistBean
 
     @Override
     public CommandResult createPicklistAliasType(UserVisitPK userVisitPK, CreatePicklistAliasTypeForm form) {
-        return new CreatePicklistAliasTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(CreatePicklistAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPicklistAliasTypeChoices(UserVisitPK userVisitPK, GetPicklistAliasTypeChoicesForm form) {
-        return new GetPicklistAliasTypeChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetPicklistAliasTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPicklistAliasType(UserVisitPK userVisitPK, GetPicklistAliasTypeForm form) {
-        return new GetPicklistAliasTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(GetPicklistAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPicklistAliasTypes(UserVisitPK userVisitPK, GetPicklistAliasTypesForm form) {
-        return new GetPicklistAliasTypesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetPicklistAliasTypesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultPicklistAliasType(UserVisitPK userVisitPK, SetDefaultPicklistAliasTypeForm form) {
-        return new SetDefaultPicklistAliasTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultPicklistAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editPicklistAliasType(UserVisitPK userVisitPK, EditPicklistAliasTypeForm form) {
-        return new EditPicklistAliasTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(EditPicklistAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deletePicklistAliasType(UserVisitPK userVisitPK, DeletePicklistAliasTypeForm form) {
-        return new DeletePicklistAliasTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(DeletePicklistAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -218,27 +219,27 @@ public class PicklistBean
 
     @Override
     public CommandResult createPicklistAliasTypeDescription(UserVisitPK userVisitPK, CreatePicklistAliasTypeDescriptionForm form) {
-        return new CreatePicklistAliasTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreatePicklistAliasTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPicklistAliasTypeDescription(UserVisitPK userVisitPK, GetPicklistAliasTypeDescriptionForm form) {
-        return new GetPicklistAliasTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(GetPicklistAliasTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPicklistAliasTypeDescriptions(UserVisitPK userVisitPK, GetPicklistAliasTypeDescriptionsForm form) {
-        return new GetPicklistAliasTypeDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetPicklistAliasTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editPicklistAliasTypeDescription(UserVisitPK userVisitPK, EditPicklistAliasTypeDescriptionForm form) {
-        return new EditPicklistAliasTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditPicklistAliasTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deletePicklistAliasTypeDescription(UserVisitPK userVisitPK, DeletePicklistAliasTypeDescriptionForm form) {
-        return new DeletePicklistAliasTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeletePicklistAliasTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -247,27 +248,27 @@ public class PicklistBean
 
     @Override
     public CommandResult createPicklistAlias(UserVisitPK userVisitPK, CreatePicklistAliasForm form) {
-        return new CreatePicklistAliasCommand().run(userVisitPK, form);
+        return CDI.current().select(CreatePicklistAliasCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPicklistAlias(UserVisitPK userVisitPK, GetPicklistAliasForm form) {
-        return new GetPicklistAliasCommand().run(userVisitPK, form);
+        return CDI.current().select(GetPicklistAliasCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPicklistAliases(UserVisitPK userVisitPK, GetPicklistAliasesForm form) {
-        return new GetPicklistAliasesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetPicklistAliasesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editPicklistAlias(UserVisitPK userVisitPK, EditPicklistAliasForm form) {
-        return new EditPicklistAliasCommand().run(userVisitPK, form);
+        return CDI.current().select(EditPicklistAliasCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deletePicklistAlias(UserVisitPK userVisitPK, DeletePicklistAliasForm form) {
-        return new DeletePicklistAliasCommand().run(userVisitPK, form);
+        return CDI.current().select(DeletePicklistAliasCommand.class).get().run(userVisitPK, form);
     }
 
 }

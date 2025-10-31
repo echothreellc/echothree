@@ -35,7 +35,9 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GetGlResourceTypeCommand
         extends BaseSingleEntityCommand<GlResourceType, GetGlResourceTypeForm> {
 

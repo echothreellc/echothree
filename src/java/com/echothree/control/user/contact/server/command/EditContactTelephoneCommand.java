@@ -49,7 +49,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EditContactTelephoneCommand
         extends BaseAbstractEditCommand<PartyContactMechanismSpec, ContactTelephoneEdit, EditContactTelephoneResult, PartyContactMechanism, ContactMechanism> {
     

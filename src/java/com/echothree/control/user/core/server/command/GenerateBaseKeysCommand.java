@@ -25,7 +25,9 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.persistence.EncryptionUtils;
 import java.util.Arrays;
 import java.util.Collections;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GenerateBaseKeysCommand
         extends BaseSimpleCommand {
     

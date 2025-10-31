@@ -22,6 +22,7 @@ import com.echothree.control.user.track.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 import javax.ejb.Stateless;
+import javax.enterprise.inject.spi.CDI;
 
 @Stateless
 public class TrackBean
@@ -43,47 +44,47 @@ public class TrackBean
     
     @Override
     public CommandResult createTrack(UserVisitPK userVisitPK, CreateTrackForm form) {
-        return new CreateTrackCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateTrackCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTrackChoices(UserVisitPK userVisitPK, GetTrackChoicesForm form) {
-        return new GetTrackChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetTrackChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTrack(UserVisitPK userVisitPK, GetTrackForm form) {
-        return new GetTrackCommand().run(userVisitPK, form);
+        return CDI.current().select(GetTrackCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTracks(UserVisitPK userVisitPK, GetTracksForm form) {
-        return new GetTracksCommand().run(userVisitPK, form);
+        return CDI.current().select(GetTracksCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultTrack(UserVisitPK userVisitPK, SetDefaultTrackForm form) {
-        return new SetDefaultTrackCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultTrackCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTrackStatusChoices(UserVisitPK userVisitPK, GetTrackStatusChoicesForm form) {
-        return new GetTrackStatusChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetTrackStatusChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setTrackStatus(UserVisitPK userVisitPK, SetTrackStatusForm form) {
-        return new SetTrackStatusCommand().run(userVisitPK, form);
+        return CDI.current().select(SetTrackStatusCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editTrack(UserVisitPK userVisitPK, EditTrackForm form) {
-        return new EditTrackCommand().run(userVisitPK, form);
+        return CDI.current().select(EditTrackCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteTrack(UserVisitPK userVisitPK, DeleteTrackForm form) {
-        return new DeleteTrackCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteTrackCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -92,27 +93,27 @@ public class TrackBean
     
     @Override
     public CommandResult createTrackDescription(UserVisitPK userVisitPK, CreateTrackDescriptionForm form) {
-        return new CreateTrackDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateTrackDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTrackDescription(UserVisitPK userVisitPK, GetTrackDescriptionForm form) {
-        return new GetTrackDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(GetTrackDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTrackDescriptions(UserVisitPK userVisitPK, GetTrackDescriptionsForm form) {
-        return new GetTrackDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetTrackDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editTrackDescription(UserVisitPK userVisitPK, EditTrackDescriptionForm form) {
-        return new EditTrackDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditTrackDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteTrackDescription(UserVisitPK userVisitPK, DeleteTrackDescriptionForm form) {
-        return new DeleteTrackDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteTrackDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -121,7 +122,7 @@ public class TrackBean
     
     @Override
     public CommandResult createUserVisitTrack(UserVisitPK userVisitPK, CreateUserVisitTrackForm form) {
-        return new CreateUserVisitTrackCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateUserVisitTrackCommand.class).get().run(userVisitPK, form);
     }
     
 }

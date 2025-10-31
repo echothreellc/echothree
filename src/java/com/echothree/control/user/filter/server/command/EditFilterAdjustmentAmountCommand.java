@@ -45,7 +45,9 @@ import com.echothree.util.server.string.AmountUtils;
 import com.echothree.util.server.validation.Validator;
 import com.google.common.base.Splitter;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EditFilterAdjustmentAmountCommand
         extends BaseEditCommand<FilterAdjustmentAmountSpec, FilterAdjustmentAmountEdit> {
 

@@ -28,7 +28,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GetUserSessionCommand
         extends BaseSimpleCommand<GetUserSessionForm> {
     

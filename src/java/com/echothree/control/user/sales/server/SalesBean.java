@@ -22,6 +22,7 @@ import com.echothree.control.user.sales.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 import javax.ejb.Stateless;
+import javax.enterprise.inject.spi.CDI;
 
 @Stateless
 public class SalesBean
@@ -43,37 +44,37 @@ public class SalesBean
     
     @Override
     public CommandResult createSalesOrderBatch(UserVisitPK userVisitPK, CreateSalesOrderBatchForm form) {
-        return new CreateSalesOrderBatchCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateSalesOrderBatchCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSalesOrderBatch(UserVisitPK userVisitPK, GetSalesOrderBatchForm form) {
-        return new GetSalesOrderBatchCommand().run(userVisitPK, form);
+        return CDI.current().select(GetSalesOrderBatchCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getSalesOrderBatches(UserVisitPK userVisitPK, GetSalesOrderBatchesForm form) {
-        return new GetSalesOrderBatchesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetSalesOrderBatchesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSalesOrderBatchStatusChoices(UserVisitPK userVisitPK, GetSalesOrderBatchStatusChoicesForm form) {
-        return new GetSalesOrderBatchStatusChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetSalesOrderBatchStatusChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setSalesOrderBatchStatus(UserVisitPK userVisitPK, SetSalesOrderBatchStatusForm form) {
-        return new SetSalesOrderBatchStatusCommand().run(userVisitPK, form);
+        return CDI.current().select(SetSalesOrderBatchStatusCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editSalesOrderBatch(UserVisitPK userVisitPK, EditSalesOrderBatchForm form) {
-        return new EditSalesOrderBatchCommand().run(userVisitPK, form);
+        return CDI.current().select(EditSalesOrderBatchCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteSalesOrderBatch(UserVisitPK userVisitPK, DeleteSalesOrderBatchForm form) {
-        return new DeleteSalesOrderBatchCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteSalesOrderBatchCommand.class).get().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -82,17 +83,17 @@ public class SalesBean
     
     @Override
     public CommandResult createSalesOrder(UserVisitPK userVisitPK, CreateSalesOrderForm form) {
-        return new CreateSalesOrderCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateSalesOrderCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSalesOrderStatusChoices(UserVisitPK userVisitPK, GetSalesOrderStatusChoicesForm form) {
-        return new GetSalesOrderStatusChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetSalesOrderStatusChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setSalesOrderStatus(UserVisitPK userVisitPK, SetSalesOrderStatusForm form) {
-        return new SetSalesOrderStatusCommand().run(userVisitPK, form);
+        return CDI.current().select(SetSalesOrderStatusCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -101,7 +102,7 @@ public class SalesBean
     
     @Override
     public CommandResult createSalesOrderPaymentPreference(UserVisitPK userVisitPK, CreateSalesOrderPaymentPreferenceForm form) {
-        return new CreateSalesOrderPaymentPreferenceCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateSalesOrderPaymentPreferenceCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -110,27 +111,27 @@ public class SalesBean
     
     @Override
     public CommandResult createSalesOrderTime(UserVisitPK userVisitPK, CreateSalesOrderTimeForm form) {
-        return new CreateSalesOrderTimeCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateSalesOrderTimeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSalesOrderTime(UserVisitPK userVisitPK, GetSalesOrderTimeForm form) {
-        return new GetSalesOrderTimeCommand().run(userVisitPK, form);
+        return CDI.current().select(GetSalesOrderTimeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getSalesOrderTimes(UserVisitPK userVisitPK, GetSalesOrderTimesForm form) {
-        return new GetSalesOrderTimesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetSalesOrderTimesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editSalesOrderTime(UserVisitPK userVisitPK, EditSalesOrderTimeForm form) {
-        return new EditSalesOrderTimeCommand().run(userVisitPK, form);
+        return CDI.current().select(EditSalesOrderTimeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteSalesOrderTime(UserVisitPK userVisitPK, DeleteSalesOrderTimeForm form) {
-        return new DeleteSalesOrderTimeCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteSalesOrderTimeCommand.class).get().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -139,7 +140,7 @@ public class SalesBean
 
     @Override
     public CommandResult createSalesOrderLine(UserVisitPK userVisitPK, CreateSalesOrderLineForm form) {
-        return new CreateSalesOrderLineCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateSalesOrderLineCommand.class).get().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -148,7 +149,7 @@ public class SalesBean
 
     @Override
     public CommandResult editSalesOrderShipmentGroup(UserVisitPK userVisitPK, EditSalesOrderShipmentGroupForm form) {
-        return new EditSalesOrderShipmentGroupCommand().run(userVisitPK, form);
+        return CDI.current().select(EditSalesOrderShipmentGroupCommand.class).get().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -157,27 +158,27 @@ public class SalesBean
     
     @Override
     public CommandResult createSalesOrderLineTime(UserVisitPK userVisitPK, CreateSalesOrderLineTimeForm form) {
-        return new CreateSalesOrderLineTimeCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateSalesOrderLineTimeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSalesOrderLineTime(UserVisitPK userVisitPK, GetSalesOrderLineTimeForm form) {
-        return new GetSalesOrderLineTimeCommand().run(userVisitPK, form);
+        return CDI.current().select(GetSalesOrderLineTimeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getSalesOrderLineTimes(UserVisitPK userVisitPK, GetSalesOrderLineTimesForm form) {
-        return new GetSalesOrderLineTimesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetSalesOrderLineTimesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editSalesOrderLineTime(UserVisitPK userVisitPK, EditSalesOrderLineTimeForm form) {
-        return new EditSalesOrderLineTimeCommand().run(userVisitPK, form);
+        return CDI.current().select(EditSalesOrderLineTimeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteSalesOrderLineTime(UserVisitPK userVisitPK, DeleteSalesOrderLineTimeForm form) {
-        return new DeleteSalesOrderLineTimeCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteSalesOrderLineTimeCommand.class).get().run(userVisitPK, form);
     }
 
 }

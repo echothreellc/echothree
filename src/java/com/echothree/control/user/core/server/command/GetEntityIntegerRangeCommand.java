@@ -27,7 +27,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GetEntityIntegerRangeCommand
         extends BaseSingleEntityCommand<EntityIntegerRange, GetEntityIntegerRangeForm> {
 

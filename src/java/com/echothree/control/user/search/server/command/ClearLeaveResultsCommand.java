@@ -28,7 +28,9 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.Arrays;
 import java.util.Collections;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ClearLeaveResultsCommand
         extends BaseClearResultsCommand<ClearLeaveResultsForm> {
     

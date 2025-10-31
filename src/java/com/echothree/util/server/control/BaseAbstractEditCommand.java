@@ -81,7 +81,7 @@ public abstract class BaseAbstractEditCommand<S extends BaseSpec, E extends Base
     protected abstract void doUpdate(BE baseEntity);
     
     @Override
-    protected final BaseResult execute() {
+    protected BaseResult execute() {
         var result = getResult();
         var baseEntity = getEntity(result);
         

@@ -22,6 +22,7 @@ import com.echothree.control.user.subscription.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 import javax.ejb.Stateless;
+import javax.enterprise.inject.spi.CDI;
 
 @Stateless
 public class SubscriptionBean
@@ -43,37 +44,37 @@ public class SubscriptionBean
 
     @Override
     public CommandResult createSubscriptionKind(UserVisitPK userVisitPK, CreateSubscriptionKindForm form) {
-        return new CreateSubscriptionKindCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateSubscriptionKindCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getSubscriptionKinds(UserVisitPK userVisitPK, GetSubscriptionKindsForm form) {
-        return new GetSubscriptionKindsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetSubscriptionKindsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getSubscriptionKind(UserVisitPK userVisitPK, GetSubscriptionKindForm form) {
-        return new GetSubscriptionKindCommand().run(userVisitPK, form);
+        return CDI.current().select(GetSubscriptionKindCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getSubscriptionKindChoices(UserVisitPK userVisitPK, GetSubscriptionKindChoicesForm form) {
-        return new GetSubscriptionKindChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetSubscriptionKindChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultSubscriptionKind(UserVisitPK userVisitPK, SetDefaultSubscriptionKindForm form) {
-        return new SetDefaultSubscriptionKindCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultSubscriptionKindCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editSubscriptionKind(UserVisitPK userVisitPK, EditSubscriptionKindForm form) {
-        return new EditSubscriptionKindCommand().run(userVisitPK, form);
+        return CDI.current().select(EditSubscriptionKindCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteSubscriptionKind(UserVisitPK userVisitPK, DeleteSubscriptionKindForm form) {
-        return new DeleteSubscriptionKindCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteSubscriptionKindCommand.class).get().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -82,27 +83,27 @@ public class SubscriptionBean
 
     @Override
     public CommandResult createSubscriptionKindDescription(UserVisitPK userVisitPK, CreateSubscriptionKindDescriptionForm form) {
-        return new CreateSubscriptionKindDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateSubscriptionKindDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getSubscriptionKindDescriptions(UserVisitPK userVisitPK, GetSubscriptionKindDescriptionsForm form) {
-        return new GetSubscriptionKindDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetSubscriptionKindDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getSubscriptionKindDescription(UserVisitPK userVisitPK, GetSubscriptionKindDescriptionForm form) {
-        return new GetSubscriptionKindDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(GetSubscriptionKindDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editSubscriptionKindDescription(UserVisitPK userVisitPK, EditSubscriptionKindDescriptionForm form) {
-        return new EditSubscriptionKindDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditSubscriptionKindDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteSubscriptionKindDescription(UserVisitPK userVisitPK, DeleteSubscriptionKindDescriptionForm form) {
-        return new DeleteSubscriptionKindDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteSubscriptionKindDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -111,37 +112,37 @@ public class SubscriptionBean
     
     @Override
     public CommandResult createSubscriptionType(UserVisitPK userVisitPK, CreateSubscriptionTypeForm form) {
-        return new CreateSubscriptionTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateSubscriptionTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSubscriptionTypes(UserVisitPK userVisitPK, GetSubscriptionTypesForm form) {
-        return new GetSubscriptionTypesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetSubscriptionTypesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSubscriptionType(UserVisitPK userVisitPK, GetSubscriptionTypeForm form) {
-        return new GetSubscriptionTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(GetSubscriptionTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSubscriptionTypeChoices(UserVisitPK userVisitPK, GetSubscriptionTypeChoicesForm form) {
-        return new GetSubscriptionTypeChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetSubscriptionTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultSubscriptionType(UserVisitPK userVisitPK, SetDefaultSubscriptionTypeForm form) {
-        return new SetDefaultSubscriptionTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultSubscriptionTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editSubscriptionType(UserVisitPK userVisitPK, EditSubscriptionTypeForm form) {
-        return new EditSubscriptionTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(EditSubscriptionTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteSubscriptionType(UserVisitPK userVisitPK, DeleteSubscriptionTypeForm form) {
-        return new DeleteSubscriptionTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteSubscriptionTypeCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -150,22 +151,22 @@ public class SubscriptionBean
     
     @Override
     public CommandResult createSubscriptionTypeDescription(UserVisitPK userVisitPK, CreateSubscriptionTypeDescriptionForm form) {
-        return new CreateSubscriptionTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateSubscriptionTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSubscriptionTypeDescriptions(UserVisitPK userVisitPK, GetSubscriptionTypeDescriptionsForm form) {
-        return new GetSubscriptionTypeDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetSubscriptionTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editSubscriptionTypeDescription(UserVisitPK userVisitPK, EditSubscriptionTypeDescriptionForm form) {
-        return new EditSubscriptionTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditSubscriptionTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteSubscriptionTypeDescription(UserVisitPK userVisitPK, DeleteSubscriptionTypeDescriptionForm form) {
-        return new DeleteSubscriptionTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteSubscriptionTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -174,17 +175,17 @@ public class SubscriptionBean
     
     @Override
     public CommandResult createSubscriptionTypeChain(UserVisitPK userVisitPK, CreateSubscriptionTypeChainForm form) {
-        return new CreateSubscriptionTypeChainCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateSubscriptionTypeChainCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSubscriptionTypeChains(UserVisitPK userVisitPK, GetSubscriptionTypeChainsForm form) {
-        return new GetSubscriptionTypeChainsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetSubscriptionTypeChainsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteSubscriptionTypeChain(UserVisitPK userVisitPK, DeleteSubscriptionTypeChainForm form) {
-        return new DeleteSubscriptionTypeChainCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteSubscriptionTypeChainCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -193,22 +194,22 @@ public class SubscriptionBean
     
     @Override
     public CommandResult createSubscription(UserVisitPK userVisitPK, CreateSubscriptionForm form) {
-        return new CreateSubscriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateSubscriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSubscriptions(UserVisitPK userVisitPK, GetSubscriptionsForm form) {
-        return new GetSubscriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetSubscriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSubscription(UserVisitPK userVisitPK, GetSubscriptionForm form) {
-        return new GetSubscriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(GetSubscriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteSubscription(UserVisitPK userVisitPK, DeleteSubscriptionForm form) {
-        return new DeleteSubscriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteSubscriptionCommand.class).get().run(userVisitPK, form);
     }
     
 }

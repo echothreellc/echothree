@@ -36,7 +36,9 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SetEntityWorkflowAttributeStatusCommand
         extends BaseSimpleCommand<SetEntityWorkflowAttributeStatusForm> {
 

@@ -34,7 +34,9 @@ import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EditEntityListItemDefaultCommand
         extends BaseEditCommand<EntityListItemDefaultSpec, EntityListItemAttributeEdit> {
 

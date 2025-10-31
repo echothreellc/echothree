@@ -24,7 +24,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.validation.Validator;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ValidateCommand
         extends BaseSimpleCommand<ValidateForm> {
     

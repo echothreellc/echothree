@@ -20,25 +20,21 @@ import com.echothree.model.data.user.server.entity.UserLogin;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.annotations.annotationTypes.GraphQLNonNull;
 
 @GraphQLDescription("user login object")
 @GraphQLName("UserLogin")
 public class UserLoginObject {
     
     private final UserLogin userLogin; // Always Present
-    private final UserLogin foundByUsernameUserLogin;
-    
-    public UserLoginObject(UserLogin userLogin, UserLogin foundByUsernameUserLogin) {
+
+    public UserLoginObject(UserLogin userLogin) {
         this.userLogin = userLogin;
-        this.foundByUsernameUserLogin = foundByUsernameUserLogin;
     }
 
     @GraphQLField
     @GraphQLDescription("username")
-    @GraphQLNonNull
     public String getUsername() {
-        return foundByUsernameUserLogin == null ? userLogin.getUsername() : foundByUsernameUserLogin.getUsername();
+        return userLogin == null ? null : userLogin.getUsername();
     }
     
 }

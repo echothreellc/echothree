@@ -22,6 +22,7 @@ import com.echothree.control.user.club.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 import javax.ejb.Stateless;
+import javax.enterprise.inject.spi.CDI;
 
 @Stateless
 public class ClubBean
@@ -43,27 +44,27 @@ public class ClubBean
     
     @Override
     public CommandResult createClub(UserVisitPK userVisitPK, CreateClubForm form) {
-        return new CreateClubCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateClubCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getClubs(UserVisitPK userVisitPK, GetClubsForm form) {
-        return new GetClubsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetClubsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getClub(UserVisitPK userVisitPK, GetClubForm form) {
-        return new GetClubCommand().run(userVisitPK, form);
+        return CDI.current().select(GetClubCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultClub(UserVisitPK userVisitPK, SetDefaultClubForm form) {
-        return new SetDefaultClubCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultClubCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteClub(UserVisitPK userVisitPK, DeleteClubForm form) {
-        return new DeleteClubCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteClubCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -72,22 +73,22 @@ public class ClubBean
     
     @Override
     public CommandResult createClubDescription(UserVisitPK userVisitPK, CreateClubDescriptionForm form) {
-        return new CreateClubDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateClubDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getClubDescriptions(UserVisitPK userVisitPK, GetClubDescriptionsForm form) {
-        return new GetClubDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetClubDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editClubDescription(UserVisitPK userVisitPK, EditClubDescriptionForm form) {
-        return new EditClubDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditClubDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteClubDescription(UserVisitPK userVisitPK, DeleteClubDescriptionForm form) {
-        return new DeleteClubDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteClubDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -96,12 +97,12 @@ public class ClubBean
     
     @Override
     public CommandResult createClubItemType(UserVisitPK userVisitPK, CreateClubItemTypeForm form) {
-        return new CreateClubItemTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateClubItemTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getClubItemTypeChoices(UserVisitPK userVisitPK, GetClubItemTypeChoicesForm form) {
-        return new GetClubItemTypeChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetClubItemTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -110,7 +111,7 @@ public class ClubBean
     
     @Override
     public CommandResult createClubItemTypeDescription(UserVisitPK userVisitPK, CreateClubItemTypeDescriptionForm form) {
-        return new CreateClubItemTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateClubItemTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -119,22 +120,22 @@ public class ClubBean
     
     @Override
     public CommandResult createClubItem(UserVisitPK userVisitPK, CreateClubItemForm form) {
-        return new CreateClubItemCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateClubItemCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getClubItems(UserVisitPK userVisitPK, GetClubItemsForm form) {
-        return new GetClubItemsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetClubItemsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editClub(UserVisitPK userVisitPK, EditClubForm form) {
-        return new EditClubCommand().run(userVisitPK, form);
+        return CDI.current().select(EditClubCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteClubItem(UserVisitPK userVisitPK, DeleteClubItemForm form) {
-        return new DeleteClubItemCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteClubItemCommand.class).get().run(userVisitPK, form);
     }
     
 }

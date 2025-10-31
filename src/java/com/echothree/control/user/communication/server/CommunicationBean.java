@@ -22,6 +22,7 @@ import com.echothree.control.user.communication.server.server.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 import javax.ejb.Stateless;
+import javax.enterprise.inject.spi.CDI;
 
 @Stateless
 public class CommunicationBean
@@ -43,7 +44,7 @@ public class CommunicationBean
     
     @Override
     public CommandResult createCommunicationEventRoleType(UserVisitPK userVisitPK, CreateCommunicationEventRoleTypeForm form) {
-        return new CreateCommunicationEventRoleTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateCommunicationEventRoleTypeCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -52,7 +53,7 @@ public class CommunicationBean
     
     @Override
     public CommandResult createCommunicationEventRoleTypeDescription(UserVisitPK userVisitPK, CreateCommunicationEventRoleTypeDescriptionForm form) {
-        return new CreateCommunicationEventRoleTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateCommunicationEventRoleTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -61,7 +62,7 @@ public class CommunicationBean
     
     @Override
     public CommandResult createCommunicationEventType(UserVisitPK userVisitPK, CreateCommunicationEventTypeForm form) {
-        return new CreateCommunicationEventTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateCommunicationEventTypeCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -70,7 +71,7 @@ public class CommunicationBean
     
     @Override
     public CommandResult createCommunicationEventTypeDescription(UserVisitPK userVisitPK, CreateCommunicationEventTypeDescriptionForm form) {
-        return new CreateCommunicationEventTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateCommunicationEventTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -79,37 +80,37 @@ public class CommunicationBean
     
     @Override
     public CommandResult createCommunicationEventPurpose(UserVisitPK userVisitPK, CreateCommunicationEventPurposeForm form) {
-        return new CreateCommunicationEventPurposeCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateCommunicationEventPurposeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCommunicationEventPurposes(UserVisitPK userVisitPK, GetCommunicationEventPurposesForm form) {
-        return new GetCommunicationEventPurposesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetCommunicationEventPurposesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCommunicationEventPurpose(UserVisitPK userVisitPK, GetCommunicationEventPurposeForm form) {
-        return new GetCommunicationEventPurposeCommand().run(userVisitPK, form);
+        return CDI.current().select(GetCommunicationEventPurposeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCommunicationEventPurposeChoices(UserVisitPK userVisitPK, GetCommunicationEventPurposeChoicesForm form) {
-        return new GetCommunicationEventPurposeChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetCommunicationEventPurposeChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultCommunicationEventPurpose(UserVisitPK userVisitPK, SetDefaultCommunicationEventPurposeForm form) {
-        return new SetDefaultCommunicationEventPurposeCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultCommunicationEventPurposeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editCommunicationEventPurpose(UserVisitPK userVisitPK, EditCommunicationEventPurposeForm form) {
-        return new EditCommunicationEventPurposeCommand().run(userVisitPK, form);
+        return CDI.current().select(EditCommunicationEventPurposeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCommunicationEventPurpose(UserVisitPK userVisitPK, DeleteCommunicationEventPurposeForm form) {
-        return new DeleteCommunicationEventPurposeCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteCommunicationEventPurposeCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -118,22 +119,22 @@ public class CommunicationBean
     
     @Override
     public CommandResult createCommunicationEventPurposeDescription(UserVisitPK userVisitPK, CreateCommunicationEventPurposeDescriptionForm form) {
-        return new CreateCommunicationEventPurposeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateCommunicationEventPurposeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCommunicationEventPurposeDescriptions(UserVisitPK userVisitPK, GetCommunicationEventPurposeDescriptionsForm form) {
-        return new GetCommunicationEventPurposeDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetCommunicationEventPurposeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editCommunicationEventPurposeDescription(UserVisitPK userVisitPK, EditCommunicationEventPurposeDescriptionForm form) {
-        return new EditCommunicationEventPurposeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditCommunicationEventPurposeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCommunicationEventPurposeDescription(UserVisitPK userVisitPK, DeleteCommunicationEventPurposeDescriptionForm form) {
-        return new DeleteCommunicationEventPurposeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteCommunicationEventPurposeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -142,7 +143,7 @@ public class CommunicationBean
     
     @Override
     public CommandResult createCommunicationSourceType(UserVisitPK userVisitPK, CreateCommunicationSourceTypeForm form) {
-        return new CreateCommunicationSourceTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateCommunicationSourceTypeCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -151,7 +152,7 @@ public class CommunicationBean
     
     @Override
     public CommandResult createCommunicationSourceTypeDescription(UserVisitPK userVisitPK, CreateCommunicationSourceTypeDescriptionForm form) {
-        return new CreateCommunicationSourceTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateCommunicationSourceTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -160,22 +161,22 @@ public class CommunicationBean
     
     @Override
     public CommandResult createCommunicationSource(UserVisitPK userVisitPK, CreateCommunicationSourceForm form) {
-        return new CreateCommunicationSourceCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateCommunicationSourceCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCommunicationSources(UserVisitPK userVisitPK, GetCommunicationSourcesForm form) {
-        return new GetCommunicationSourcesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetCommunicationSourcesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCommunicationSource(UserVisitPK userVisitPK, GetCommunicationSourceForm form) {
-        return new GetCommunicationSourceCommand().run(userVisitPK, form);
+        return CDI.current().select(GetCommunicationSourceCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCommunicationSource(UserVisitPK userVisitPK, DeleteCommunicationSourceForm form) {
-        return new DeleteCommunicationSourceCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteCommunicationSourceCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -184,22 +185,22 @@ public class CommunicationBean
     
     @Override
     public CommandResult createCommunicationSourceDescription(UserVisitPK userVisitPK, CreateCommunicationSourceDescriptionForm form) {
-        return new CreateCommunicationSourceDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateCommunicationSourceDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCommunicationSourceDescriptions(UserVisitPK userVisitPK, GetCommunicationSourceDescriptionsForm form) {
-        return new GetCommunicationSourceDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetCommunicationSourceDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editCommunicationSourceDescription(UserVisitPK userVisitPK, EditCommunicationSourceDescriptionForm form) {
-        return new EditCommunicationSourceDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditCommunicationSourceDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteCommunicationSourceDescription(UserVisitPK userVisitPK, DeleteCommunicationSourceDescriptionForm form) {
-        return new DeleteCommunicationSourceDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteCommunicationSourceDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -208,12 +209,12 @@ public class CommunicationBean
     
     @Override
     public CommandResult createCommunicationEvent(UserVisitPK userVisitPK, CreateCommunicationEventForm form) {
-        return new CreateCommunicationEventCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateCommunicationEventCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCommunicationEvent(UserVisitPK userVisitPK, GetCommunicationEventForm form) {
-        return new GetCommunicationEventCommand().run(userVisitPK, form);
+        return CDI.current().select(GetCommunicationEventCommand.class).get().run(userVisitPK, form);
     }
     
 }

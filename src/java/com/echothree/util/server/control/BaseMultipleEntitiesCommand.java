@@ -56,7 +56,7 @@ public abstract class BaseMultipleEntitiesCommand<BE extends BaseEntity, F exten
     }
 
     @Override
-    protected final BaseResult execute() {
+    protected BaseResult execute() {
         var entities = getEntities();
         
         return getResult(entities);

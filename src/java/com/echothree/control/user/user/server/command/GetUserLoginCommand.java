@@ -33,7 +33,6 @@ import static com.echothree.model.control.security.common.SecurityRoles.UserLogi
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.user.server.logic.UserLoginLogic;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserLogin;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -45,11 +44,13 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GetUserLoginCommand
         extends BaseSingleEntityCommand<UserLogin, GetUserLoginForm> {
     
-    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
+    // No COMMAND_SECURITY_DEFINITION, security is enforced below by PartyType.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
@@ -66,8 +67,6 @@ public class GetUserLoginCommand
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
-    public UserLogin foundByUsernameUserLogin = null;
-
     @Override
     protected UserLogin getEntity() {
         UserLogin userLogin = null;
@@ -77,9 +76,10 @@ public class GetUserLoginCommand
 
         if(parameterCount == 1) {
             Party party = null;
-            
+
+            // 1) Attempt to map whatever we're given as input to a Party
             if(username != null) {
-                foundByUsernameUserLogin = UserLoginLogic.getInstance().getUserLoginByUsername(this, username);
+                var foundByUsernameUserLogin = UserLoginLogic.getInstance().getUserLoginByUsername(this, username);
                 
                 if(foundByUsernameUserLogin != null) {
                     party = foundByUsernameUserLogin.getParty();
@@ -95,7 +95,8 @@ public class GetUserLoginCommand
                     party = partyControl.getPartyByEntityInstance(entityInstance);
                 }
             }
-            
+
+            // 2) Based on the PartyType, check the SecurityRoles and return the UserLogin if permitted and it exists.
             if(!hasExecutionErrors()) {
                 var partyType = party.getLastDetail().getPartyType();
                 String securityRoleGroupName = null;
@@ -109,12 +110,15 @@ public class GetUserLoginCommand
                     securityRoleGroupName = Vendor.name();
                 }
 
+                // 2A) SecurityRole check.
                 if(securityRoleGroupName != null 
                         && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, getParty(), securityRoleGroupName, UserLogin.name())) {
                     if(!hasExecutionErrors()) {
+                        // 2B) Does the PartyType allow UserLogins for it?
                         if(partyType.getAllowUserLogins()) {
                             var userControl = getUserControl();
-                            
+
+                            // 2C) Map Party to a UserLogin if it exists.
                             userLogin = userControl.getUserLogin(party);
 
                             if(userLogin == null) {

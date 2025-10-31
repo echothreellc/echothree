@@ -40,7 +40,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SearchItemsCommand
         extends BaseSearchCommand<SearchItemsForm, SearchItemsResult> {
     

@@ -22,6 +22,7 @@ import com.echothree.control.user.license.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 import javax.ejb.Stateless;
+import javax.enterprise.inject.spi.CDI;
 
 @Stateless
 public class LicenseBean
@@ -43,37 +44,37 @@ public class LicenseBean
     
     @Override
     public CommandResult createLicenseType(UserVisitPK userVisitPK, CreateLicenseTypeForm form) {
-        return new CreateLicenseTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateLicenseTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getLicenseTypeChoices(UserVisitPK userVisitPK, GetLicenseTypeChoicesForm form) {
-        return new GetLicenseTypeChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetLicenseTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getLicenseType(UserVisitPK userVisitPK, GetLicenseTypeForm form) {
-        return new GetLicenseTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(GetLicenseTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getLicenseTypes(UserVisitPK userVisitPK, GetLicenseTypesForm form) {
-        return new GetLicenseTypesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetLicenseTypesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultLicenseType(UserVisitPK userVisitPK, SetDefaultLicenseTypeForm form) {
-        return new SetDefaultLicenseTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultLicenseTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editLicenseType(UserVisitPK userVisitPK, EditLicenseTypeForm form) {
-        return new EditLicenseTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(EditLicenseTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteLicenseType(UserVisitPK userVisitPK, DeleteLicenseTypeForm form) {
-        return new DeleteLicenseTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteLicenseTypeCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -82,27 +83,27 @@ public class LicenseBean
     
     @Override
     public CommandResult createLicenseTypeDescription(UserVisitPK userVisitPK, CreateLicenseTypeDescriptionForm form) {
-        return new CreateLicenseTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateLicenseTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getLicenseTypeDescription(UserVisitPK userVisitPK, GetLicenseTypeDescriptionForm form) {
-        return new GetLicenseTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(GetLicenseTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getLicenseTypeDescriptions(UserVisitPK userVisitPK, GetLicenseTypeDescriptionsForm form) {
-        return new GetLicenseTypeDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetLicenseTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editLicenseTypeDescription(UserVisitPK userVisitPK, EditLicenseTypeDescriptionForm form) {
-        return new EditLicenseTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditLicenseTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteLicenseTypeDescription(UserVisitPK userVisitPK, DeleteLicenseTypeDescriptionForm form) {
-        return new DeleteLicenseTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteLicenseTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -111,7 +112,7 @@ public class LicenseBean
     
     @Override
     public CommandResult updateLicense(UserVisitPK userVisitPK) {
-        return new UpdateLicenseCommand().run(userVisitPK);
+        return CDI.current().select(UpdateLicenseCommand.class).get().run(userVisitPK);
     }
     
 }

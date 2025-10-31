@@ -36,7 +36,9 @@ import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import com.google.common.base.Splitter;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class DeleteFilterAdjustmentFixedAmountCommand
         extends BaseSimpleCommand<DeleteFilterAdjustmentFixedAmountForm> {
 

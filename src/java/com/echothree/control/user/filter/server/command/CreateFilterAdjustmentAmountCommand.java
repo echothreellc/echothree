@@ -39,7 +39,9 @@ import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CreateFilterAdjustmentAmountCommand
         extends BaseSimpleCommand<CreateFilterAdjustmentAmountForm> {
 

@@ -22,6 +22,7 @@ import com.echothree.control.user.rating.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 import javax.ejb.Stateless;
+import javax.enterprise.inject.spi.CDI;
 
 @Stateless
 public class RatingBean
@@ -43,27 +44,27 @@ public class RatingBean
     
     @Override
     public CommandResult createRatingType(UserVisitPK userVisitPK, CreateRatingTypeForm form) {
-        return new CreateRatingTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateRatingTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getRatingType(UserVisitPK userVisitPK, GetRatingTypeForm form) {
-        return new GetRatingTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(GetRatingTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getRatingTypes(UserVisitPK userVisitPK, GetRatingTypesForm form) {
-        return new GetRatingTypesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetRatingTypesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editRatingType(UserVisitPK userVisitPK, EditRatingTypeForm form) {
-        return new EditRatingTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(EditRatingTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteRatingType(UserVisitPK userVisitPK, DeleteRatingTypeForm form) {
-        return new DeleteRatingTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteRatingTypeCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -72,27 +73,27 @@ public class RatingBean
     
     @Override
     public CommandResult createRatingTypeDescription(UserVisitPK userVisitPK, CreateRatingTypeDescriptionForm form) {
-        return new CreateRatingTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateRatingTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getRatingTypeDescription(UserVisitPK userVisitPK, GetRatingTypeDescriptionForm form) {
-        return new GetRatingTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(GetRatingTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getRatingTypeDescriptions(UserVisitPK userVisitPK, GetRatingTypeDescriptionsForm form) {
-        return new GetRatingTypeDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetRatingTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editRatingTypeDescription(UserVisitPK userVisitPK, EditRatingTypeDescriptionForm form) {
-        return new EditRatingTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditRatingTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteRatingTypeDescription(UserVisitPK userVisitPK, DeleteRatingTypeDescriptionForm form) {
-        return new DeleteRatingTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteRatingTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -101,37 +102,37 @@ public class RatingBean
     
     @Override
     public CommandResult createRatingTypeListItem(UserVisitPK userVisitPK, CreateRatingTypeListItemForm form) {
-        return new CreateRatingTypeListItemCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateRatingTypeListItemCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getRatingTypeListItem(UserVisitPK userVisitPK, GetRatingTypeListItemForm form) {
-        return new GetRatingTypeListItemCommand().run(userVisitPK, form);
+        return CDI.current().select(GetRatingTypeListItemCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getRatingTypeListItems(UserVisitPK userVisitPK, GetRatingTypeListItemsForm form) {
-        return new GetRatingTypeListItemsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetRatingTypeListItemsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getRatingTypeListItemChoices(UserVisitPK userVisitPK, GetRatingTypeListItemChoicesForm form) {
-        return new GetRatingTypeListItemChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetRatingTypeListItemChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultRatingTypeListItem(UserVisitPK userVisitPK, SetDefaultRatingTypeListItemForm form) {
-        return new SetDefaultRatingTypeListItemCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultRatingTypeListItemCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editRatingTypeListItem(UserVisitPK userVisitPK, EditRatingTypeListItemForm form) {
-        return new EditRatingTypeListItemCommand().run(userVisitPK, form);
+        return CDI.current().select(EditRatingTypeListItemCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteRatingTypeListItem(UserVisitPK userVisitPK, DeleteRatingTypeListItemForm form) {
-        return new DeleteRatingTypeListItemCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteRatingTypeListItemCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -140,27 +141,27 @@ public class RatingBean
     
     @Override
     public CommandResult createRatingTypeListItemDescription(UserVisitPK userVisitPK, CreateRatingTypeListItemDescriptionForm form) {
-        return new CreateRatingTypeListItemDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateRatingTypeListItemDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getRatingTypeListItemDescription(UserVisitPK userVisitPK, GetRatingTypeListItemDescriptionForm form) {
-        return new GetRatingTypeListItemDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(GetRatingTypeListItemDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getRatingTypeListItemDescriptions(UserVisitPK userVisitPK, GetRatingTypeListItemDescriptionsForm form) {
-        return new GetRatingTypeListItemDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetRatingTypeListItemDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editRatingTypeListItemDescription(UserVisitPK userVisitPK, EditRatingTypeListItemDescriptionForm form) {
-        return new EditRatingTypeListItemDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditRatingTypeListItemDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteRatingTypeListItemDescription(UserVisitPK userVisitPK, DeleteRatingTypeListItemDescriptionForm form) {
-        return new DeleteRatingTypeListItemDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteRatingTypeListItemDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -169,22 +170,22 @@ public class RatingBean
     
     @Override
     public CommandResult createRating(UserVisitPK userVisitPK, CreateRatingForm form) {
-        return new CreateRatingCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateRatingCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getRating(UserVisitPK userVisitPK, GetRatingForm form) {
-        return new GetRatingCommand().run(userVisitPK, form);
+        return CDI.current().select(GetRatingCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editRating(UserVisitPK userVisitPK, EditRatingForm form) {
-        return new EditRatingCommand().run(userVisitPK, form);
+        return CDI.current().select(EditRatingCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteRating(UserVisitPK userVisitPK, DeleteRatingForm form) {
-        return new DeleteRatingCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteRatingCommand.class).get().run(userVisitPK, form);
     }
     
 }

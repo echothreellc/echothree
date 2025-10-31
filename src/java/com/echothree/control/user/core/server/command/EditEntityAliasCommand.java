@@ -42,7 +42,9 @@ import com.echothree.util.server.persistence.PersistenceUtils;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import java.util.regex.Pattern;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EditEntityAliasCommand
         extends BaseEditCommand<EntityAliasSpec, EntityAliasEdit> {
 

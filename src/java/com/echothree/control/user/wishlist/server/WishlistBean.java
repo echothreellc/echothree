@@ -22,6 +22,7 @@ import com.echothree.control.user.wishlist.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 import javax.ejb.Stateless;
+import javax.enterprise.inject.spi.CDI;
 
 @Stateless
 public class WishlistBean
@@ -43,37 +44,37 @@ public class WishlistBean
     
     @Override
     public CommandResult createWishlistType(UserVisitPK userVisitPK, CreateWishlistTypeForm form) {
-        return new CreateWishlistTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateWishlistTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWishlistType(UserVisitPK userVisitPK, GetWishlistTypeForm form) {
-        return new GetWishlistTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(GetWishlistTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWishlistTypes(UserVisitPK userVisitPK, GetWishlistTypesForm form) {
-        return new GetWishlistTypesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetWishlistTypesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWishlistTypeChoices(UserVisitPK userVisitPK, GetWishlistTypeChoicesForm form) {
-        return new GetWishlistTypeChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetWishlistTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultWishlistType(UserVisitPK userVisitPK, SetDefaultWishlistTypeForm form) {
-        return new SetDefaultWishlistTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultWishlistTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editWishlistType(UserVisitPK userVisitPK, EditWishlistTypeForm form) {
-        return new EditWishlistTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(EditWishlistTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteWishlistType(UserVisitPK userVisitPK, DeleteWishlistTypeForm form) {
-        return new DeleteWishlistTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteWishlistTypeCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -82,22 +83,22 @@ public class WishlistBean
     
     @Override
     public CommandResult createWishlistTypeDescription(UserVisitPK userVisitPK, CreateWishlistTypeDescriptionForm form) {
-        return new CreateWishlistTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateWishlistTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWishlistTypeDescriptions(UserVisitPK userVisitPK, GetWishlistTypeDescriptionsForm form) {
-        return new GetWishlistTypeDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetWishlistTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editWishlistTypeDescription(UserVisitPK userVisitPK, EditWishlistTypeDescriptionForm form) {
-        return new EditWishlistTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditWishlistTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteWishlistTypeDescription(UserVisitPK userVisitPK, DeleteWishlistTypeDescriptionForm form) {
-        return new DeleteWishlistTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteWishlistTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -106,37 +107,37 @@ public class WishlistBean
     
     @Override
     public CommandResult createWishlistPriority(UserVisitPK userVisitPK, CreateWishlistPriorityForm form) {
-        return new CreateWishlistPriorityCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateWishlistPriorityCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWishlistPriority(UserVisitPK userVisitPK, GetWishlistPriorityForm form) {
-        return new GetWishlistPriorityCommand().run(userVisitPK, form);
+        return CDI.current().select(GetWishlistPriorityCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWishlistPriorities(UserVisitPK userVisitPK, GetWishlistPrioritiesForm form) {
-        return new GetWishlistPrioritiesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetWishlistPrioritiesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWishlistPriorityChoices(UserVisitPK userVisitPK, GetWishlistPriorityChoicesForm form) {
-        return new GetWishlistPriorityChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetWishlistPriorityChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultWishlistPriority(UserVisitPK userVisitPK, SetDefaultWishlistPriorityForm form) {
-        return new SetDefaultWishlistPriorityCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultWishlistPriorityCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editWishlistPriority(UserVisitPK userVisitPK, EditWishlistPriorityForm form) {
-        return new EditWishlistPriorityCommand().run(userVisitPK, form);
+        return CDI.current().select(EditWishlistPriorityCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteWishlistPriority(UserVisitPK userVisitPK, DeleteWishlistPriorityForm form) {
-        return new DeleteWishlistPriorityCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteWishlistPriorityCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -145,22 +146,22 @@ public class WishlistBean
     
     @Override
     public CommandResult createWishlistPriorityDescription(UserVisitPK userVisitPK, CreateWishlistPriorityDescriptionForm form) {
-        return new CreateWishlistPriorityDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateWishlistPriorityDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWishlistPriorityDescriptions(UserVisitPK userVisitPK, GetWishlistPriorityDescriptionsForm form) {
-        return new GetWishlistPriorityDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetWishlistPriorityDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editWishlistPriorityDescription(UserVisitPK userVisitPK, EditWishlistPriorityDescriptionForm form) {
-        return new EditWishlistPriorityDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditWishlistPriorityDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteWishlistPriorityDescription(UserVisitPK userVisitPK, DeleteWishlistPriorityDescriptionForm form) {
-        return new DeleteWishlistPriorityDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteWishlistPriorityDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -169,12 +170,12 @@ public class WishlistBean
     
     @Override
     public CommandResult createWishlistLine(UserVisitPK userVisitPK, CreateWishlistLineForm form) {
-        return new CreateWishlistLineCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateWishlistLineCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getWishlistLines(UserVisitPK userVisitPK, GetWishlistLinesForm form) {
-        return new GetWishlistLinesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetWishlistLinesCommand.class).get().run(userVisitPK, form);
     }
     
 }

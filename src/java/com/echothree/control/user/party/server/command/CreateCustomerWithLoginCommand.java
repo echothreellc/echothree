@@ -62,7 +62,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.apache.commons.codec.language.Soundex;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CreateCustomerWithLoginCommand
         extends BaseSimpleCommand<CreateCustomerWithLoginForm> {
     

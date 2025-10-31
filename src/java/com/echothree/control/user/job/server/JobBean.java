@@ -22,6 +22,7 @@ import com.echothree.control.user.job.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 import javax.ejb.Stateless;
+import javax.enterprise.inject.spi.CDI;
 
 @Stateless
 public class JobBean
@@ -43,47 +44,47 @@ public class JobBean
     
     @Override
     public CommandResult createJob(UserVisitPK userVisitPK, CreateJobForm form) {
-        return new CreateJobCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateJobCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getJob(UserVisitPK userVisitPK, GetJobForm form) {
-        return new GetJobCommand().run(userVisitPK, form);
+        return CDI.current().select(GetJobCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getJobs(UserVisitPK userVisitPK, GetJobsForm form) {
-        return new GetJobsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetJobsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getJobStatusChoices(UserVisitPK userVisitPK, GetJobStatusChoicesForm form) {
-        return new GetJobStatusChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetJobStatusChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setJobStatus(UserVisitPK userVisitPK, SetJobStatusForm form) {
-        return new SetJobStatusCommand().run(userVisitPK, form);
+        return CDI.current().select(SetJobStatusCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editJob(UserVisitPK userVisitPK, EditJobForm form) {
-        return new EditJobCommand().run(userVisitPK, form);
+        return CDI.current().select(EditJobCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteJob(UserVisitPK userVisitPK, DeleteJobForm form) {
-        return new DeleteJobCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteJobCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult startJob(UserVisitPK userVisitPK, StartJobForm form) {
-        return new StartJobCommand().run(userVisitPK, form);
+        return CDI.current().select(StartJobCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult endJob(UserVisitPK userVisitPK, EndJobForm form) {
-        return new EndJobCommand().run(userVisitPK, form);
+        return CDI.current().select(EndJobCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -92,22 +93,22 @@ public class JobBean
     
     @Override
     public CommandResult createJobDescription(UserVisitPK userVisitPK, CreateJobDescriptionForm form) {
-        return new CreateJobDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateJobDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getJobDescriptions(UserVisitPK userVisitPK, GetJobDescriptionsForm form) {
-        return new GetJobDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetJobDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editJobDescription(UserVisitPK userVisitPK, EditJobDescriptionForm form) {
-        return new EditJobDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditJobDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteJobDescription(UserVisitPK userVisitPK, DeleteJobDescriptionForm form) {
-        return new DeleteJobDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteJobDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
 }

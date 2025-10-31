@@ -46,6 +46,7 @@ import com.echothree.control.user.order.server.command.SetDefaultOrderTimeTypeCo
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 import javax.ejb.Stateless;
+import javax.enterprise.inject.spi.CDI;
 
 @Stateless
 public class AccountingBean
@@ -67,32 +68,32 @@ public class AccountingBean
     
     @Override
     public CommandResult createCurrency(UserVisitPK userVisitPK, CreateCurrencyForm form) {
-        return new CreateCurrencyCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateCurrencyCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultCurrency(UserVisitPK userVisitPK, SetDefaultCurrencyForm form) {
-        return new SetDefaultCurrencyCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultCurrencyCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCurrencyChoices(UserVisitPK userVisitPK, GetCurrencyChoicesForm form) {
-        return new GetCurrencyChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetCurrencyChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCurrencies(UserVisitPK userVisitPK, GetCurrenciesForm form) {
-        return new GetCurrenciesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetCurrenciesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCurrency(UserVisitPK userVisitPK, GetCurrencyForm form) {
-        return new GetCurrencyCommand().run(userVisitPK, form);
+        return CDI.current().select(GetCurrencyCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getPreferredCurrency(UserVisitPK userVisitPK, GetPreferredCurrencyForm form) {
-        return new GetPreferredCurrencyCommand().run(userVisitPK, form);
+        return CDI.current().select(GetPreferredCurrencyCommand.class).get().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
@@ -101,12 +102,12 @@ public class AccountingBean
     
     @Override
     public CommandResult createCurrencyDescription(UserVisitPK userVisitPK, CreateCurrencyDescriptionForm form) {
-        return new CreateCurrencyDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateCurrencyDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getCurrencyDescriptions(UserVisitPK userVisitPK, GetCurrencyDescriptionsForm form) {
-        return new GetCurrencyDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetCurrencyDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -115,37 +116,37 @@ public class AccountingBean
     
     @Override
     public CommandResult createItemAccountingCategory(UserVisitPK userVisitPK, CreateItemAccountingCategoryForm form) {
-        return new CreateItemAccountingCategoryCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateItemAccountingCategoryCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemAccountingCategoryChoices(UserVisitPK userVisitPK, GetItemAccountingCategoryChoicesForm form) {
-        return new GetItemAccountingCategoryChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetItemAccountingCategoryChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemAccountingCategory(UserVisitPK userVisitPK, GetItemAccountingCategoryForm form) {
-        return new GetItemAccountingCategoryCommand().run(userVisitPK, form);
+        return CDI.current().select(GetItemAccountingCategoryCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemAccountingCategories(UserVisitPK userVisitPK, GetItemAccountingCategoriesForm form) {
-        return new GetItemAccountingCategoriesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetItemAccountingCategoriesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultItemAccountingCategory(UserVisitPK userVisitPK, SetDefaultItemAccountingCategoryForm form) {
-        return new SetDefaultItemAccountingCategoryCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultItemAccountingCategoryCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editItemAccountingCategory(UserVisitPK userVisitPK, EditItemAccountingCategoryForm form) {
-        return new EditItemAccountingCategoryCommand().run(userVisitPK, form);
+        return CDI.current().select(EditItemAccountingCategoryCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteItemAccountingCategory(UserVisitPK userVisitPK, DeleteItemAccountingCategoryForm form) {
-        return new DeleteItemAccountingCategoryCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteItemAccountingCategoryCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -154,27 +155,27 @@ public class AccountingBean
     
     @Override
     public CommandResult createItemAccountingCategoryDescription(UserVisitPK userVisitPK, CreateItemAccountingCategoryDescriptionForm form) {
-        return new CreateItemAccountingCategoryDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateItemAccountingCategoryDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemAccountingCategoryDescription(UserVisitPK userVisitPK, GetItemAccountingCategoryDescriptionForm form) {
-        return new GetItemAccountingCategoryDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(GetItemAccountingCategoryDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getItemAccountingCategoryDescriptions(UserVisitPK userVisitPK, GetItemAccountingCategoryDescriptionsForm form) {
-        return new GetItemAccountingCategoryDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetItemAccountingCategoryDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editItemAccountingCategoryDescription(UserVisitPK userVisitPK, EditItemAccountingCategoryDescriptionForm form) {
-        return new EditItemAccountingCategoryDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditItemAccountingCategoryDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteItemAccountingCategoryDescription(UserVisitPK userVisitPK, DeleteItemAccountingCategoryDescriptionForm form) {
-        return new DeleteItemAccountingCategoryDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteItemAccountingCategoryDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -183,22 +184,22 @@ public class AccountingBean
     
     @Override
     public CommandResult createGlAccountType(UserVisitPK userVisitPK, CreateGlAccountTypeForm form) {
-        return new CreateGlAccountTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateGlAccountTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getGlAccountType(UserVisitPK userVisitPK, GetGlAccountTypeForm form) {
-        return new GetGlAccountTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(GetGlAccountTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getGlAccountTypes(UserVisitPK userVisitPK, GetGlAccountTypesForm form) {
-        return new GetGlAccountTypesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetGlAccountTypesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getGlAccountTypeChoices(UserVisitPK userVisitPK, GetGlAccountTypeChoicesForm form) {
-        return new GetGlAccountTypeChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetGlAccountTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -207,7 +208,7 @@ public class AccountingBean
     
     @Override
     public CommandResult createGlAccountTypeDescription(UserVisitPK userVisitPK, CreateGlAccountTypeDescriptionForm form) {
-        return new CreateGlAccountTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateGlAccountTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -216,37 +217,37 @@ public class AccountingBean
     
     @Override
     public CommandResult createGlAccountClass(UserVisitPK userVisitPK, CreateGlAccountClassForm form) {
-        return new CreateGlAccountClassCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateGlAccountClassCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getGlAccountClassChoices(UserVisitPK userVisitPK, GetGlAccountClassChoicesForm form) {
-        return new GetGlAccountClassChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetGlAccountClassChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getGlAccountClass(UserVisitPK userVisitPK, GetGlAccountClassForm form) {
-        return new GetGlAccountClassCommand().run(userVisitPK, form);
+        return CDI.current().select(GetGlAccountClassCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getGlAccountClasses(UserVisitPK userVisitPK, GetGlAccountClassesForm form) {
-        return new GetGlAccountClassesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetGlAccountClassesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultGlAccountClass(UserVisitPK userVisitPK, SetDefaultGlAccountClassForm form) {
-        return new SetDefaultGlAccountClassCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultGlAccountClassCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editGlAccountClass(UserVisitPK userVisitPK, EditGlAccountClassForm form) {
-        return new EditGlAccountClassCommand().run(userVisitPK, form);
+        return CDI.current().select(EditGlAccountClassCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteGlAccountClass(UserVisitPK userVisitPK, DeleteGlAccountClassForm form) {
-        return new DeleteGlAccountClassCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteGlAccountClassCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -255,27 +256,27 @@ public class AccountingBean
     
     @Override
     public CommandResult createGlAccountClassDescription(UserVisitPK userVisitPK, CreateGlAccountClassDescriptionForm form) {
-        return new CreateGlAccountClassDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateGlAccountClassDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getGlAccountClassDescription(UserVisitPK userVisitPK, GetGlAccountClassDescriptionForm form) {
-        return new GetGlAccountClassDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(GetGlAccountClassDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getGlAccountClassDescriptions(UserVisitPK userVisitPK, GetGlAccountClassDescriptionsForm form) {
-        return new GetGlAccountClassDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetGlAccountClassDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editGlAccountClassDescription(UserVisitPK userVisitPK, EditGlAccountClassDescriptionForm form) {
-        return new EditGlAccountClassDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditGlAccountClassDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteGlAccountClassDescription(UserVisitPK userVisitPK, DeleteGlAccountClassDescriptionForm form) {
-        return new DeleteGlAccountClassDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteGlAccountClassDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -284,37 +285,37 @@ public class AccountingBean
     
     @Override
     public CommandResult createGlAccountCategory(UserVisitPK userVisitPK, CreateGlAccountCategoryForm form) {
-        return new CreateGlAccountCategoryCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateGlAccountCategoryCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getGlAccountCategoryChoices(UserVisitPK userVisitPK, GetGlAccountCategoryChoicesForm form) {
-        return new GetGlAccountCategoryChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetGlAccountCategoryChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getGlAccountCategory(UserVisitPK userVisitPK, GetGlAccountCategoryForm form) {
-        return new GetGlAccountCategoryCommand().run(userVisitPK, form);
+        return CDI.current().select(GetGlAccountCategoryCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getGlAccountCategories(UserVisitPK userVisitPK, GetGlAccountCategoriesForm form) {
-        return new GetGlAccountCategoriesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetGlAccountCategoriesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultGlAccountCategory(UserVisitPK userVisitPK, SetDefaultGlAccountCategoryForm form) {
-        return new SetDefaultGlAccountCategoryCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultGlAccountCategoryCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editGlAccountCategory(UserVisitPK userVisitPK, EditGlAccountCategoryForm form) {
-        return new EditGlAccountCategoryCommand().run(userVisitPK, form);
+        return CDI.current().select(EditGlAccountCategoryCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteGlAccountCategory(UserVisitPK userVisitPK, DeleteGlAccountCategoryForm form) {
-        return new DeleteGlAccountCategoryCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteGlAccountCategoryCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -323,27 +324,27 @@ public class AccountingBean
     
     @Override
     public CommandResult createGlAccountCategoryDescription(UserVisitPK userVisitPK, CreateGlAccountCategoryDescriptionForm form) {
-        return new CreateGlAccountCategoryDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateGlAccountCategoryDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getGlAccountCategoryDescription(UserVisitPK userVisitPK, GetGlAccountCategoryDescriptionForm form) {
-        return new GetGlAccountCategoryDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(GetGlAccountCategoryDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getGlAccountCategoryDescriptions(UserVisitPK userVisitPK, GetGlAccountCategoryDescriptionsForm form) {
-        return new GetGlAccountCategoryDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetGlAccountCategoryDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editGlAccountCategoryDescription(UserVisitPK userVisitPK, EditGlAccountCategoryDescriptionForm form) {
-        return new EditGlAccountCategoryDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditGlAccountCategoryDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteGlAccountCategoryDescription(UserVisitPK userVisitPK, DeleteGlAccountCategoryDescriptionForm form) {
-        return new DeleteGlAccountCategoryDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteGlAccountCategoryDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -352,37 +353,37 @@ public class AccountingBean
     
     @Override
     public CommandResult createGlResourceType(UserVisitPK userVisitPK, CreateGlResourceTypeForm form) {
-        return new CreateGlResourceTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateGlResourceTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getGlResourceTypeChoices(UserVisitPK userVisitPK, GetGlResourceTypeChoicesForm form) {
-        return new GetGlResourceTypeChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetGlResourceTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getGlResourceType(UserVisitPK userVisitPK, GetGlResourceTypeForm form) {
-        return new GetGlResourceTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(GetGlResourceTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getGlResourceTypes(UserVisitPK userVisitPK, GetGlResourceTypesForm form) {
-        return new GetGlResourceTypesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetGlResourceTypesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultGlResourceType(UserVisitPK userVisitPK, SetDefaultGlResourceTypeForm form) {
-        return new SetDefaultGlResourceTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultGlResourceTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editGlResourceType(UserVisitPK userVisitPK, EditGlResourceTypeForm form) {
-        return new EditGlResourceTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(EditGlResourceTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteGlResourceType(UserVisitPK userVisitPK, DeleteGlResourceTypeForm form) {
-        return new DeleteGlResourceTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteGlResourceTypeCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -391,27 +392,27 @@ public class AccountingBean
     
     @Override
     public CommandResult createGlResourceTypeDescription(UserVisitPK userVisitPK, CreateGlResourceTypeDescriptionForm form) {
-        return new CreateGlResourceTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateGlResourceTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getGlResourceTypeDescription(UserVisitPK userVisitPK, GetGlResourceTypeDescriptionForm form) {
-        return new GetGlResourceTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(GetGlResourceTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getGlResourceTypeDescriptions(UserVisitPK userVisitPK, GetGlResourceTypeDescriptionsForm form) {
-        return new GetGlResourceTypeDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetGlResourceTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editGlResourceTypeDescription(UserVisitPK userVisitPK, EditGlResourceTypeDescriptionForm form) {
-        return new EditGlResourceTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditGlResourceTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteGlResourceTypeDescription(UserVisitPK userVisitPK, DeleteGlResourceTypeDescriptionForm form) {
-        return new DeleteGlResourceTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteGlResourceTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -420,32 +421,32 @@ public class AccountingBean
     
     @Override
     public CommandResult createGlAccount(UserVisitPK userVisitPK, CreateGlAccountForm form) {
-        return new CreateGlAccountCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateGlAccountCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getGlAccountChoices(UserVisitPK userVisitPK, GetGlAccountChoicesForm form) {
-        return new GetGlAccountChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetGlAccountChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getGlAccount(UserVisitPK userVisitPK, GetGlAccountForm form) {
-        return new GetGlAccountCommand().run(userVisitPK, form);
+        return CDI.current().select(GetGlAccountCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getGlAccounts(UserVisitPK userVisitPK, GetGlAccountsForm form) {
-        return new GetGlAccountsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetGlAccountsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editGlAccount(UserVisitPK userVisitPK, EditGlAccountForm form) {
-        return new EditGlAccountCommand().run(userVisitPK, form);
+        return CDI.current().select(EditGlAccountCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteGlAccount(UserVisitPK userVisitPK, DeleteGlAccountForm form) {
-        return new DeleteGlAccountCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteGlAccountCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -454,27 +455,27 @@ public class AccountingBean
     
     @Override
     public CommandResult createGlAccountDescription(UserVisitPK userVisitPK, CreateGlAccountDescriptionForm form) {
-        return new CreateGlAccountDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateGlAccountDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getGlAccountDescription(UserVisitPK userVisitPK, GetGlAccountDescriptionForm form) {
-        return new GetGlAccountDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(GetGlAccountDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getGlAccountDescriptions(UserVisitPK userVisitPK, GetGlAccountDescriptionsForm form) {
-        return new GetGlAccountDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetGlAccountDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editGlAccountDescription(UserVisitPK userVisitPK, EditGlAccountDescriptionForm form) {
-        return new EditGlAccountDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditGlAccountDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteGlAccountDescription(UserVisitPK userVisitPK, DeleteGlAccountDescriptionForm form) {
-        return new DeleteGlAccountDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteGlAccountDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -483,37 +484,37 @@ public class AccountingBean
 
     @Override
     public CommandResult createTransactionTimeType(UserVisitPK userVisitPK, CreateTransactionTimeTypeForm form) {
-        return new CreateTransactionTimeTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateTransactionTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getTransactionTimeTypeChoices(UserVisitPK userVisitPK, GetTransactionTimeTypeChoicesForm form) {
-        return new GetTransactionTimeTypeChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetTransactionTimeTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getTransactionTimeType(UserVisitPK userVisitPK, GetTransactionTimeTypeForm form) {
-        return new GetTransactionTimeTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(GetTransactionTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getTransactionTimeTypes(UserVisitPK userVisitPK, GetTransactionTimeTypesForm form) {
-        return new GetTransactionTimeTypesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetTransactionTimeTypesCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult setDefaultTransactionTimeType(UserVisitPK userVisitPK, SetDefaultTransactionTimeTypeForm form) {
-        return new SetDefaultTransactionTimeTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultTransactionTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editTransactionTimeType(UserVisitPK userVisitPK, EditTransactionTimeTypeForm form) {
-        return new EditTransactionTimeTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(EditTransactionTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteTransactionTimeType(UserVisitPK userVisitPK, DeleteTransactionTimeTypeForm form) {
-        return new DeleteTransactionTimeTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteTransactionTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -522,27 +523,27 @@ public class AccountingBean
 
     @Override
     public CommandResult createTransactionTimeTypeDescription(UserVisitPK userVisitPK, CreateTransactionTimeTypeDescriptionForm form) {
-        return new CreateTransactionTimeTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateTransactionTimeTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getTransactionTimeTypeDescription(UserVisitPK userVisitPK, GetTransactionTimeTypeDescriptionForm form) {
-        return new GetTransactionTimeTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(GetTransactionTimeTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult getTransactionTimeTypeDescriptions(UserVisitPK userVisitPK, GetTransactionTimeTypeDescriptionsForm form) {
-        return new GetTransactionTimeTypeDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetTransactionTimeTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult editTransactionTimeTypeDescription(UserVisitPK userVisitPK, EditTransactionTimeTypeDescriptionForm form) {
-        return new EditTransactionTimeTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditTransactionTimeTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     @Override
     public CommandResult deleteTransactionTimeTypeDescription(UserVisitPK userVisitPK, DeleteTransactionTimeTypeDescriptionForm form) {
-        return new DeleteTransactionTimeTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteTransactionTimeTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
     // --------------------------------------------------------------------------------
@@ -551,27 +552,27 @@ public class AccountingBean
     
     @Override
     public CommandResult createTransactionType(UserVisitPK userVisitPK, CreateTransactionTypeForm form) {
-        return new CreateTransactionTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateTransactionTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTransactionType(UserVisitPK userVisitPK, GetTransactionTypeForm form) {
-        return new GetTransactionTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(GetTransactionTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTransactionTypes(UserVisitPK userVisitPK, GetTransactionTypesForm form) {
-        return new GetTransactionTypesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetTransactionTypesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editTransactionType(UserVisitPK userVisitPK, EditTransactionTypeForm form) {
-        return new EditTransactionTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(EditTransactionTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteTransactionType(UserVisitPK userVisitPK, DeleteTransactionTypeForm form) {
-        return new DeleteTransactionTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteTransactionTypeCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -580,27 +581,27 @@ public class AccountingBean
     
     @Override
     public CommandResult createTransactionTypeDescription(UserVisitPK userVisitPK, CreateTransactionTypeDescriptionForm form) {
-        return new CreateTransactionTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateTransactionTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTransactionTypeDescription(UserVisitPK userVisitPK, GetTransactionTypeDescriptionForm form) {
-        return new GetTransactionTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(GetTransactionTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTransactionTypeDescriptions(UserVisitPK userVisitPK, GetTransactionTypeDescriptionsForm form) {
-        return new GetTransactionTypeDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetTransactionTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editTransactionTypeDescription(UserVisitPK userVisitPK, EditTransactionTypeDescriptionForm form) {
-        return new EditTransactionTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditTransactionTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteTransactionTypeDescription(UserVisitPK userVisitPK, DeleteTransactionTypeDescriptionForm form) {
-        return new DeleteTransactionTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteTransactionTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -609,27 +610,27 @@ public class AccountingBean
     
     @Override
     public CommandResult createTransactionGlAccountCategory(UserVisitPK userVisitPK, CreateTransactionGlAccountCategoryForm form) {
-        return new CreateTransactionGlAccountCategoryCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateTransactionGlAccountCategoryCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTransactionGlAccountCategory(UserVisitPK userVisitPK, GetTransactionGlAccountCategoryForm form) {
-        return new GetTransactionGlAccountCategoryCommand().run(userVisitPK, form);
+        return CDI.current().select(GetTransactionGlAccountCategoryCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTransactionGlAccountCategories(UserVisitPK userVisitPK, GetTransactionGlAccountCategoriesForm form) {
-        return new GetTransactionGlAccountCategoriesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetTransactionGlAccountCategoriesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editTransactionGlAccountCategory(UserVisitPK userVisitPK, EditTransactionGlAccountCategoryForm form) {
-        return new EditTransactionGlAccountCategoryCommand().run(userVisitPK, form);
+        return CDI.current().select(EditTransactionGlAccountCategoryCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteTransactionGlAccountCategory(UserVisitPK userVisitPK, DeleteTransactionGlAccountCategoryForm form) {
-        return new DeleteTransactionGlAccountCategoryCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteTransactionGlAccountCategoryCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -638,27 +639,27 @@ public class AccountingBean
     
     @Override
     public CommandResult createTransactionGlAccountCategoryDescription(UserVisitPK userVisitPK, CreateTransactionGlAccountCategoryDescriptionForm form) {
-        return new CreateTransactionGlAccountCategoryDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateTransactionGlAccountCategoryDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTransactionGlAccountCategoryDescription(UserVisitPK userVisitPK, GetTransactionGlAccountCategoryDescriptionForm form) {
-        return new GetTransactionGlAccountCategoryDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(GetTransactionGlAccountCategoryDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTransactionGlAccountCategoryDescriptions(UserVisitPK userVisitPK, GetTransactionGlAccountCategoryDescriptionsForm form) {
-        return new GetTransactionGlAccountCategoryDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetTransactionGlAccountCategoryDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editTransactionGlAccountCategoryDescription(UserVisitPK userVisitPK, EditTransactionGlAccountCategoryDescriptionForm form) {
-        return new EditTransactionGlAccountCategoryDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditTransactionGlAccountCategoryDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteTransactionGlAccountCategoryDescription(UserVisitPK userVisitPK, DeleteTransactionGlAccountCategoryDescriptionForm form) {
-        return new DeleteTransactionGlAccountCategoryDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteTransactionGlAccountCategoryDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -667,26 +668,26 @@ public class AccountingBean
     
     @Override
     public CommandResult createTransactionEntityRoleType(UserVisitPK userVisitPK, CreateTransactionEntityRoleTypeForm form) {
-        return new CreateTransactionEntityRoleTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateTransactionEntityRoleTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTransactionEntityRoleType(UserVisitPK userVisitPK, GetTransactionEntityRoleTypeForm form) {
-        return new GetTransactionEntityRoleTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(GetTransactionEntityRoleTypeCommand.class).get().run(userVisitPK, form);
     }
     @Override
     public CommandResult getTransactionEntityRoleTypes(UserVisitPK userVisitPK, GetTransactionEntityRoleTypesForm form) {
-        return new GetTransactionEntityRoleTypesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetTransactionEntityRoleTypesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editTransactionEntityRoleType(UserVisitPK userVisitPK, EditTransactionEntityRoleTypeForm form) {
-        return new EditTransactionEntityRoleTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(EditTransactionEntityRoleTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteTransactionEntityRoleType(UserVisitPK userVisitPK, DeleteTransactionEntityRoleTypeForm form) {
-        return new DeleteTransactionEntityRoleTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteTransactionEntityRoleTypeCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -695,27 +696,27 @@ public class AccountingBean
     
     @Override
     public CommandResult createTransactionEntityRoleTypeDescription(UserVisitPK userVisitPK, CreateTransactionEntityRoleTypeDescriptionForm form) {
-        return new CreateTransactionEntityRoleTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateTransactionEntityRoleTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTransactionEntityRoleTypeDescription(UserVisitPK userVisitPK, GetTransactionEntityRoleTypeDescriptionForm form) {
-        return new GetTransactionEntityRoleTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(GetTransactionEntityRoleTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTransactionEntityRoleTypeDescriptions(UserVisitPK userVisitPK, GetTransactionEntityRoleTypeDescriptionsForm form) {
-        return new GetTransactionEntityRoleTypeDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetTransactionEntityRoleTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editTransactionEntityRoleTypeDescription(UserVisitPK userVisitPK, EditTransactionEntityRoleTypeDescriptionForm form) {
-        return new EditTransactionEntityRoleTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditTransactionEntityRoleTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteTransactionEntityRoleTypeDescription(UserVisitPK userVisitPK, DeleteTransactionEntityRoleTypeDescriptionForm form) {
-        return new DeleteTransactionEntityRoleTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteTransactionEntityRoleTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -724,22 +725,22 @@ public class AccountingBean
     
     @Override
     public CommandResult getTransactionGroup(UserVisitPK userVisitPK, GetTransactionGroupForm form) {
-        return new GetTransactionGroupCommand().run(userVisitPK, form);
+        return CDI.current().select(GetTransactionGroupCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTransactionGroups(UserVisitPK userVisitPK, GetTransactionGroupsForm form) {
-        return new GetTransactionGroupsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetTransactionGroupsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTransactionGroupStatusChoices(UserVisitPK userVisitPK, GetTransactionGroupStatusChoicesForm form) {
-        return new GetTransactionGroupStatusChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetTransactionGroupStatusChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setTransactionGroupStatus(UserVisitPK userVisitPK, SetTransactionGroupStatusForm form) {
-        return new SetTransactionGroupStatusCommand().run(userVisitPK, form);
+        return CDI.current().select(SetTransactionGroupStatusCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -748,12 +749,12 @@ public class AccountingBean
     
     @Override
     public CommandResult getTransactions(UserVisitPK userVisitPK, GetTransactionsForm form) {
-        return new GetTransactionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetTransactionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getTransaction(UserVisitPK userVisitPK, GetTransactionForm form) {
-        return new GetTransactionCommand().run(userVisitPK, form);
+        return CDI.current().select(GetTransactionCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -762,37 +763,37 @@ public class AccountingBean
     
     @Override
     public CommandResult createSymbolPosition(UserVisitPK userVisitPK, CreateSymbolPositionForm form) {
-        return new CreateSymbolPositionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateSymbolPositionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSymbolPositionChoices(UserVisitPK userVisitPK, GetSymbolPositionChoicesForm form) {
-        return new GetSymbolPositionChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetSymbolPositionChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSymbolPosition(UserVisitPK userVisitPK, GetSymbolPositionForm form) {
-        return new GetSymbolPositionCommand().run(userVisitPK, form);
+        return CDI.current().select(GetSymbolPositionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSymbolPositions(UserVisitPK userVisitPK, GetSymbolPositionsForm form) {
-        return new GetSymbolPositionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetSymbolPositionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultSymbolPosition(UserVisitPK userVisitPK, SetDefaultSymbolPositionForm form) {
-        return new SetDefaultSymbolPositionCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultSymbolPositionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editSymbolPosition(UserVisitPK userVisitPK, EditSymbolPositionForm form) {
-        return new EditSymbolPositionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditSymbolPositionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteSymbolPosition(UserVisitPK userVisitPK, DeleteSymbolPositionForm form) {
-        return new DeleteSymbolPositionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteSymbolPositionCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -801,27 +802,27 @@ public class AccountingBean
     
     @Override
     public CommandResult createSymbolPositionDescription(UserVisitPK userVisitPK, CreateSymbolPositionDescriptionForm form) {
-        return new CreateSymbolPositionDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateSymbolPositionDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSymbolPositionDescription(UserVisitPK userVisitPK, GetSymbolPositionDescriptionForm form) {
-        return new GetSymbolPositionDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(GetSymbolPositionDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getSymbolPositionDescriptions(UserVisitPK userVisitPK, GetSymbolPositionDescriptionsForm form) {
-        return new GetSymbolPositionDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetSymbolPositionDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editSymbolPositionDescription(UserVisitPK userVisitPK, EditSymbolPositionDescriptionForm form) {
-        return new EditSymbolPositionDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditSymbolPositionDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteSymbolPositionDescription(UserVisitPK userVisitPK, DeleteSymbolPositionDescriptionForm form) {
-        return new DeleteSymbolPositionDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteSymbolPositionDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
 }

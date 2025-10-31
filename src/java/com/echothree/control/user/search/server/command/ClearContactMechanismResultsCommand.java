@@ -20,7 +20,9 @@ import com.echothree.control.user.search.common.form.ClearContactMechanismResult
 import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ClearContactMechanismResultsCommand
         extends BaseClearResultsCommand<ClearContactMechanismResultsForm> {
     

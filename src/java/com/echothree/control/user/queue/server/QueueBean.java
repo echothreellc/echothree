@@ -22,6 +22,7 @@ import com.echothree.control.user.queue.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 import javax.ejb.Stateless;
+import javax.enterprise.inject.spi.CDI;
 
 @Stateless
 public class QueueBean
@@ -43,37 +44,37 @@ public class QueueBean
     
     @Override
     public CommandResult createQueueType(UserVisitPK userVisitPK, CreateQueueTypeForm form) {
-        return new CreateQueueTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateQueueTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getQueueTypeChoices(UserVisitPK userVisitPK, GetQueueTypeChoicesForm form) {
-        return new GetQueueTypeChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetQueueTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getQueueType(UserVisitPK userVisitPK, GetQueueTypeForm form) {
-        return new GetQueueTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(GetQueueTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getQueueTypes(UserVisitPK userVisitPK, GetQueueTypesForm form) {
-        return new GetQueueTypesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetQueueTypesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultQueueType(UserVisitPK userVisitPK, SetDefaultQueueTypeForm form) {
-        return new SetDefaultQueueTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultQueueTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editQueueType(UserVisitPK userVisitPK, EditQueueTypeForm form) {
-        return new EditQueueTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(EditQueueTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteQueueType(UserVisitPK userVisitPK, DeleteQueueTypeForm form) {
-        return new DeleteQueueTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteQueueTypeCommand.class).get().run(userVisitPK, form);
     }
     
     // --------------------------------------------------------------------------------
@@ -82,27 +83,27 @@ public class QueueBean
     
     @Override
     public CommandResult createQueueTypeDescription(UserVisitPK userVisitPK, CreateQueueTypeDescriptionForm form) {
-        return new CreateQueueTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateQueueTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getQueueTypeDescription(UserVisitPK userVisitPK, GetQueueTypeDescriptionForm form) {
-        return new GetQueueTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(GetQueueTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getQueueTypeDescriptions(UserVisitPK userVisitPK, GetQueueTypeDescriptionsForm form) {
-        return new GetQueueTypeDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetQueueTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editQueueTypeDescription(UserVisitPK userVisitPK, EditQueueTypeDescriptionForm form) {
-        return new EditQueueTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditQueueTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deleteQueueTypeDescription(UserVisitPK userVisitPK, DeleteQueueTypeDescriptionForm form) {
-        return new DeleteQueueTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeleteQueueTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
 }
