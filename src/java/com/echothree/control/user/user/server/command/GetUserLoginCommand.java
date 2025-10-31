@@ -33,7 +33,6 @@ import static com.echothree.model.control.security.common.SecurityRoles.UserLogi
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.user.server.logic.UserLoginLogic;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserLogin;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -51,7 +50,7 @@ import javax.enterprise.context.RequestScoped;
 public class GetUserLoginCommand
         extends BaseSingleEntityCommand<UserLogin, GetUserLoginForm> {
     
-    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
+    // No COMMAND_SECURITY_DEFINITION, security is enforced below by PartyType.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
@@ -68,8 +67,6 @@ public class GetUserLoginCommand
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
-    UserLogin foundByUsernameUserLogin;
-
     @Override
     protected UserLogin getEntity() {
         UserLogin userLogin = null;
@@ -81,7 +78,7 @@ public class GetUserLoginCommand
             Party party = null;
             
             if(username != null) {
-                foundByUsernameUserLogin = UserLoginLogic.getInstance().getUserLoginByUsername(this, username);
+                var foundByUsernameUserLogin = UserLoginLogic.getInstance().getUserLoginByUsername(this, username);
                 
                 if(foundByUsernameUserLogin != null) {
                     party = foundByUsernameUserLogin.getParty();

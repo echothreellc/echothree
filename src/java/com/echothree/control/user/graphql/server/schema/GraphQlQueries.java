@@ -6748,7 +6748,6 @@ public interface GraphQlQueries {
             @GraphQLName("username") final String username,
             @GraphQLName("id") @GraphQLID final String id) {
         UserLogin userLogin;
-        UserLogin foundByUsernameUserLogin;
 
         try {
             var commandForm = UserUtil.getHome().getGetUserLoginForm();
@@ -6758,12 +6757,11 @@ public interface GraphQlQueries {
 
             var getUserLoginCommand = CDI.current().select(GetUserLoginCommand.class).get();
             userLogin = getUserLoginCommand.getEntityForGraphQl(getUserVisitPK(env), commandForm);
-            foundByUsernameUserLogin = getUserLoginCommand.foundByUsernameUserLogin;
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return userLogin == null && foundByUsernameUserLogin == null? null : new UserLoginObject(userLogin, foundByUsernameUserLogin);
+        return userLogin == null ? null : new UserLoginObject(userLogin);
     }
 
     @GraphQLField
