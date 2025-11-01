@@ -26,10 +26,9 @@ import com.echothree.model.control.search.common.exception.UnknownDefaultSearchK
 import com.echothree.model.control.search.common.exception.UnknownDefaultSearchTypeException;
 import com.echothree.model.control.search.common.exception.UnknownSearchTypeNameException;
 import com.echothree.model.control.search.server.control.SearchControl;
-import com.echothree.model.control.search.server.logic.SearchKindLogic;
+import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.search.server.entity.SearchKind;
 import com.echothree.model.data.search.server.entity.SearchType;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
@@ -37,20 +36,19 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class SearchTypeLogic
         extends BaseLogic {
 
-    private SearchTypeLogic() {
+    protected SearchTypeLogic() {
         super();
     }
 
-    private static class SearchTypeLogicHolder {
-        static SearchTypeLogic instance = new SearchTypeLogic();
-    }
-
     public static SearchTypeLogic getInstance() {
-        return SearchTypeLogic.SearchTypeLogicHolder.instance;
+        return CDI.current().select(SearchTypeLogic.class).get();
     }
 
     public SearchType createSearchType(final ExecutionErrorAccumulator eea, final String searchKindName, final String searchTypeName,

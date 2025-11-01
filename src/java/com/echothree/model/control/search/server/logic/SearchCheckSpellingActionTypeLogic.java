@@ -32,20 +32,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class SearchCheckSpellingActionTypeLogic
         extends BaseLogic {
-    
-    private SearchCheckSpellingActionTypeLogic() {
+
+    protected SearchCheckSpellingActionTypeLogic() {
         super();
     }
-    
-    private static class SearchCheckSpellingActionTypeLogicHolder {
-        static SearchCheckSpellingActionTypeLogic instance = new SearchCheckSpellingActionTypeLogic();
-    }
-    
+
     public static SearchCheckSpellingActionTypeLogic getInstance() {
-        return SearchCheckSpellingActionTypeLogicHolder.instance;
+        return CDI.current().select(SearchCheckSpellingActionTypeLogic.class).get();
     }
 
     public SearchCheckSpellingActionType getSearchCheckSpellingActionTypeByName(final Class<? extends BaseException> unknownException, final ExecutionErrors unknownExecutionError,

@@ -36,20 +36,19 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class SearchSortOrderLogic
         extends BaseLogic {
 
-    private SearchSortOrderLogic() {
+    protected SearchSortOrderLogic() {
         super();
     }
 
-    private static class SearchSortOrderLogicHolder {
-        static SearchSortOrderLogic instance = new SearchSortOrderLogic();
-    }
-
     public static SearchSortOrderLogic getInstance() {
-        return SearchSortOrderLogic.SearchSortOrderLogicHolder.instance;
+        return CDI.current().select(SearchSortOrderLogic.class).get();
     }
 
     public SearchSortOrder createSearchSortOrder(final ExecutionErrorAccumulator eea, final String searchKindName, final String searchSortOrderName,
