@@ -40,20 +40,19 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class IndexLogic
         extends BaseLogic {
 
-    private IndexLogic() {
+    protected IndexLogic() {
         super();
     }
 
-    private static class IndexLogicHolder {
-        static IndexLogic instance = new IndexLogic();
-    }
-
     public static IndexLogic getInstance() {
-        return IndexLogicHolder.instance;
+        return CDI.current().select(IndexLogic.class).get();
     }
     
     public Index getIndexByName(final ExecutionErrorAccumulator eea, final String indexName) {
