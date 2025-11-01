@@ -28,19 +28,18 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class WorkEffortLogic {
-    
-    private WorkEffortLogic() {
+
+    protected WorkEffortLogic() {
         super();
     }
-    
-    private static class WorkEffortLogicHolder {
-        static WorkEffortLogic instance = new WorkEffortLogic();
-    }
-    
+
     public static WorkEffortLogic getInstance() {
-        return WorkEffortLogicHolder.instance;
+        return CDI.current().select(WorkEffortLogic.class).get();
     }
 
     public static class PreparedWorkEffort {
