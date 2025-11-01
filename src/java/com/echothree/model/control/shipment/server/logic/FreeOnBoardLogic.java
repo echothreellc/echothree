@@ -33,20 +33,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class FreeOnBoardLogic
         extends BaseLogic {
-    
-    private FreeOnBoardLogic() {
+
+    protected FreeOnBoardLogic() {
         super();
     }
-    
-    private static class FreeOnBoardLogicHolder {
-        static FreeOnBoardLogic instance = new FreeOnBoardLogic();
-    }
-    
+
     public static FreeOnBoardLogic getInstance() {
-        return FreeOnBoardLogicHolder.instance;
+        return CDI.current().select(FreeOnBoardLogic.class).get();
     }
 
     public FreeOnBoard createFreeOnBoard(final ExecutionErrorAccumulator eea, final String freeOnBoardName,
