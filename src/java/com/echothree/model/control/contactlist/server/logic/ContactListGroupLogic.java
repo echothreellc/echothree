@@ -23,20 +23,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class ContactListGroupLogic
     extends BaseLogic {
-    
-    private ContactListGroupLogic() {
+
+    protected ContactListGroupLogic() {
         super();
     }
-    
-    private static class ContactListLogicHolder {
-        static ContactListGroupLogic instance = new ContactListGroupLogic();
-    }
-    
+
     public static ContactListGroupLogic getInstance() {
-        return ContactListLogicHolder.instance;
+        return CDI.current().select(ContactListGroupLogic.class).get();
     }
     
     public ContactListGroup getContactListGroupByName(final ExecutionErrorAccumulator eea, final String contactListGroupName) {

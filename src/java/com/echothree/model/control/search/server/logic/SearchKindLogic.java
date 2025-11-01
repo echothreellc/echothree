@@ -33,20 +33,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class SearchKindLogic
         extends BaseLogic {
 
-    private SearchKindLogic() {
+    protected SearchKindLogic() {
         super();
     }
 
-    private static class SearchKindLogicHolder {
-        static SearchKindLogic instance = new SearchKindLogic();
-    }
-
     public static SearchKindLogic getInstance() {
-        return SearchKindLogic.SearchKindLogicHolder.instance;
+        return CDI.current().select(SearchKindLogic.class).get();
     }
 
     public SearchKind createSearchKind(final ExecutionErrorAccumulator eea, final String searchKindName,

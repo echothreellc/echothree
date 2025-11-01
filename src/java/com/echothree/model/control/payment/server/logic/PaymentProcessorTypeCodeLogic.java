@@ -28,29 +28,28 @@ import com.echothree.model.control.payment.common.exception.UnknownDefaultPaymen
 import com.echothree.model.control.payment.common.exception.UnknownPaymentProcessorTypeCodeNameException;
 import com.echothree.model.control.payment.server.control.PaymentProcessorTypeCodeControl;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCodeType;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCode;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCodeDescription;
+import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCodeType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class PaymentProcessorTypeCodeLogic
     extends BaseLogic {
-    
-    private PaymentProcessorTypeCodeLogic() {
+
+    protected PaymentProcessorTypeCodeLogic() {
         super();
     }
-    
-    private static class PaymentProcessorTypeCodeLogicHolder {
-        static PaymentProcessorTypeCodeLogic instance = new PaymentProcessorTypeCodeLogic();
-    }
-    
+
     public static PaymentProcessorTypeCodeLogic getInstance() {
-        return PaymentProcessorTypeCodeLogicHolder.instance;
+        return CDI.current().select(PaymentProcessorTypeCodeLogic.class).get();
     }
 
     public PaymentProcessorTypeCode createPaymentProcessorTypeCode(final ExecutionErrorAccumulator eea,

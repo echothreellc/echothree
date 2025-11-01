@@ -38,20 +38,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class GeoCodeLogic
         extends BaseLogic {
 
-    private GeoCodeLogic() {
+    protected GeoCodeLogic() {
         super();
     }
 
-    private static class GeoCodeLogicHolder {
-        static GeoCodeLogic instance = new GeoCodeLogic();
-    }
-
     public static GeoCodeLogic getInstance() {
-        return GeoCodeLogicHolder.instance;
+        return CDI.current().select(GeoCodeLogic.class).get();
     }
 
     public GeoCode getGeoCodeByName(final ExecutionErrorAccumulator eea, final String geoCodeName,

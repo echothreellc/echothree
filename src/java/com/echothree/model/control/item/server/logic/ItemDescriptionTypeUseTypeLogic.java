@@ -34,20 +34,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class ItemDescriptionTypeUseTypeLogic
     extends BaseLogic {
 
-    private ItemDescriptionTypeUseTypeLogic() {
+    protected ItemDescriptionTypeUseTypeLogic() {
         super();
     }
 
-    private static class ItemDescriptionTypeUseTypeLogicHolder {
-        static ItemDescriptionTypeUseTypeLogic instance = new ItemDescriptionTypeUseTypeLogic();
-    }
-
     public static ItemDescriptionTypeUseTypeLogic getInstance() {
-        return ItemDescriptionTypeUseTypeLogicHolder.instance;
+        return CDI.current().select(ItemDescriptionTypeUseTypeLogic.class).get();
     }
 
     public ItemDescriptionTypeUseType createItemDescriptionTypeUseType(final ExecutionErrorAccumulator eea, final String itemDescriptionTypeUseTypeName,

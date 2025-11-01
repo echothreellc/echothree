@@ -34,20 +34,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class PaymentProcessorTypeActionLogic
     extends BaseLogic {
-    
-    private PaymentProcessorTypeActionLogic() {
+
+    protected PaymentProcessorTypeActionLogic() {
         super();
     }
-    
-    private static class PaymentProcessorTypeActionLogicHolder {
-        static PaymentProcessorTypeActionLogic instance = new PaymentProcessorTypeActionLogic();
-    }
-    
+
     public static PaymentProcessorTypeActionLogic getInstance() {
-        return PaymentProcessorTypeActionLogicHolder.instance;
+        return CDI.current().select(PaymentProcessorTypeActionLogic.class).get();
     }
 
     public PaymentProcessorTypeAction createPaymentProcessorTypeAction(final ExecutionErrorAccumulator eea,

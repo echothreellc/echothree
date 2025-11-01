@@ -32,6 +32,8 @@ import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.client.config.RequestConfig;
@@ -39,6 +41,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
+@ApplicationScoped
 public class LicenseCheckLogic
         extends BaseLogic {
 
@@ -51,19 +54,15 @@ public class LicenseCheckLogic
     final private AtomicLong licenseValidUntilTime;
     private Long lastLicenseAttempt;
     
-    private LicenseCheckLogic() {
+    protected LicenseCheckLogic() {
         var initializedTime = System.currentTimeMillis();
 
         licenseValidUntilTime = new AtomicLong(initializedTime + DEMO_LICENSE_DURATION);
         log.info("Demo license installed for this instance.");
     }
 
-    private static class LicenseCheckLogicLogicHolder {
-        static LicenseCheckLogic instance = new LicenseCheckLogic();
-    }
-
     public static LicenseCheckLogic getInstance() {
-        return LicenseCheckLogicLogicHolder.instance;
+        return CDI.current().select(LicenseCheckLogic.class).get();
     }
 
     public List<String> getFoundServerNames() {

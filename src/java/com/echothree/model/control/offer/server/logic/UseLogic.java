@@ -37,20 +37,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class UseLogic
         extends BaseLogic {
 
-    private UseLogic() {
+    protected UseLogic() {
         super();
     }
 
-    private static class UseLogicHolder {
-        static UseLogic instance = new UseLogic();
-    }
-
     public static UseLogic getInstance() {
-        return UseLogicHolder.instance;
+        return CDI.current().select(UseLogic.class).get();
     }
 
     public Use createUse(final ExecutionErrorAccumulator eea, final String useName, final UseType useType,

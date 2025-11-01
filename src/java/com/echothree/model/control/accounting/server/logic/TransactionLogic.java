@@ -47,20 +47,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class TransactionLogic
         extends BaseLogic {
 
-    private TransactionLogic() {
+    protected TransactionLogic() {
         super();
     }
 
-    private static class TransactionLogicHolder {
-        static TransactionLogic instance = new TransactionLogic();
-    }
-
     public static TransactionLogic getInstance() {
-        return TransactionLogicHolder.instance;
+        return CDI.current().select(TransactionLogic.class).get();
     }
     
     public Transaction createTransactionUsingNames(final Session session, final Party groupParty, final String transactionTypeName,

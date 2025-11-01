@@ -24,19 +24,18 @@ import com.echothree.model.data.user.server.factory.UserKeyFactory;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class UserKeyLogic {
-    
-    private UserKeyLogic() {
+
+    protected UserKeyLogic() {
         super();
     }
-    
-    private static class UserKeyLogicHolder {
-        static UserKeyLogic instance = new UserKeyLogic();
-    }
-    
+
     public static UserKeyLogic getInstance() {
-        return UserKeyLogicHolder.instance;
+        return CDI.current().select(UserKeyLogic.class).get();
     }
     
     public void removeInactiveUserKeys(final Long remainingTime, final Long inactiveTime) {

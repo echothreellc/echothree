@@ -23,19 +23,18 @@ import com.echothree.model.data.subscription.server.entity.SubscriptionType;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class SubscriptionLogic {
-    
-    private SubscriptionLogic() {
+
+    protected SubscriptionLogic() {
         super();
     }
-    
-    private static class SubscriptionLogicHolder {
-        static SubscriptionLogic instance = new SubscriptionLogic();
-    }
-    
+
     public static SubscriptionLogic getInstance() {
-        return SubscriptionLogicHolder.instance;
+        return CDI.current().select(SubscriptionLogic.class).get();
     }
     
     public Subscription createSubscription(final ExecutionErrorAccumulator eea, final Session session, final SubscriptionType subscriptionType, final Party party,

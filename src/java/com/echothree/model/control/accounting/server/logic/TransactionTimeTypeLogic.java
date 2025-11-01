@@ -35,20 +35,19 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class TransactionTimeTypeLogic
         extends BaseLogic {
 
-    private TransactionTimeTypeLogic() {
+    protected TransactionTimeTypeLogic() {
         super();
     }
 
-    private static class TransactionTimeTypeLogicHolder {
-        static TransactionTimeTypeLogic instance = new TransactionTimeTypeLogic();
-    }
-
     public static TransactionTimeTypeLogic getInstance() {
-        return TransactionTimeTypeLogicHolder.instance;
+        return CDI.current().select(TransactionTimeTypeLogic.class).get();
     }
 
     public TransactionTimeType createTransactionTimeType(final ExecutionErrorAccumulator eea, final String transactionTimeTypeName,

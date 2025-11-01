@@ -52,20 +52,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class ItemLogic
         extends BaseLogic {
 
-    private ItemLogic() {
+    protected ItemLogic() {
         super();
     }
 
-    private static class ItemLogicHolder {
-        static ItemLogic instance = new ItemLogic();
-    }
-
     public static ItemLogic getInstance() {
-        return ItemLogicHolder.instance;
+        return CDI.current().select(ItemLogic.class).get();
     }
     
     public ItemType getItemTypeByName(final ExecutionErrorAccumulator eea, final String itemTypeName) {

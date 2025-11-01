@@ -32,20 +32,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class DivisionLogic
         extends BaseLogic {
-    
-    private DivisionLogic() {
+
+    protected DivisionLogic() {
         super();
     }
-    
-    private static class DivisionLogicHolder {
-        static DivisionLogic instance = new DivisionLogic();
-    }
-    
+
     public static DivisionLogic getInstance() {
-        return DivisionLogicHolder.instance;
+        return CDI.current().select(DivisionLogic.class).get();
     }
 
     public PartyDivision getPartyDivisionByName(final ExecutionErrorAccumulator eea, final String companyName,

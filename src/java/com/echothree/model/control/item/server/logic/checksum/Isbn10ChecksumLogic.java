@@ -18,21 +18,20 @@ package com.echothree.model.control.item.server.logic.checksum;
 
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class Isbn10ChecksumLogic
         extends BaseChecksumLogic
         implements ItemAliasChecksumInterface {
 
-    private Isbn10ChecksumLogic() {
+    protected Isbn10ChecksumLogic() {
         super();
     }
-    
-    private static class Isbn10ChecksumLogicHolder {
-        static Isbn10ChecksumLogic instance = new Isbn10ChecksumLogic();
-    }
-    
+
     public static Isbn10ChecksumLogic getInstance() {
-        return Isbn10ChecksumLogicHolder.instance;
+        return CDI.current().select(Isbn10ChecksumLogic.class).get();
     }
 
     private int getIsbn10CheckDigit(String alias, int offset) {

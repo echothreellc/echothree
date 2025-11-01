@@ -25,29 +25,28 @@ import com.echothree.model.control.wishlist.common.exception.DuplicateWishlistTy
 import com.echothree.model.control.wishlist.common.exception.UnknownDefaultWishlistTypeException;
 import com.echothree.model.control.wishlist.common.exception.UnknownWishlistTypeNameException;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
+import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.wishlist.server.entity.WishlistType;
 import com.echothree.model.data.wishlist.server.value.WishlistTypeDetailValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class WishlistTypeLogic
     extends BaseLogic {
 
-    private WishlistTypeLogic() {
+    protected WishlistTypeLogic() {
         super();
     }
 
-    private static class WishlistTypeLogicHolder {
-        static WishlistTypeLogic instance = new WishlistTypeLogic();
-    }
-
     public static WishlistTypeLogic getInstance() {
-        return WishlistTypeLogicHolder.instance;
+        return CDI.current().select(WishlistTypeLogic.class).get();
     }
 
     public WishlistType createWishlistType(final ExecutionErrorAccumulator eea, final String wishlistTypeName,

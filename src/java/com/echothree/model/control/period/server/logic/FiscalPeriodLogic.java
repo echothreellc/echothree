@@ -30,19 +30,18 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Formatter;
 import java.util.Locale;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class FiscalPeriodLogic {
 
-    private FiscalPeriodLogic() {
+    protected FiscalPeriodLogic() {
         super();
     }
 
-    private static class FiscalPeriodLogicHolder {
-        static FiscalPeriodLogic instance = new FiscalPeriodLogic();
-    }
-
     public static FiscalPeriodLogic getInstance() {
-        return FiscalPeriodLogicHolder.instance;
+        return CDI.current().select(FiscalPeriodLogic.class).get();
     }
     
     private void createMonth(final PeriodKind periodKind, final Period quarterPeriod, final ZonedDateTime yearStart, final int month,

@@ -32,20 +32,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class DepartmentLogic
         extends BaseLogic {
-    
-    private DepartmentLogic() {
+
+    protected DepartmentLogic() {
         super();
     }
-    
-    private static class DepartmentLogicHolder {
-        static DepartmentLogic instance = new DepartmentLogic();
-    }
-    
+
     public static DepartmentLogic getInstance() {
-        return DepartmentLogicHolder.instance;
+        return CDI.current().select(DepartmentLogic.class).get();
     }
 
     public PartyDepartment getPartyDepartmentByName(final ExecutionErrorAccumulator eea, final String companyName,

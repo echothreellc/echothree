@@ -34,20 +34,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class SearchResultActionTypeLogic
     extends BaseLogic {
 
-    private SearchResultActionTypeLogic() {
+    protected SearchResultActionTypeLogic() {
         super();
     }
 
-    private static class SearchResultActionTypeLogicHolder {
-        static SearchResultActionTypeLogic instance = new SearchResultActionTypeLogic();
-    }
-
     public static SearchResultActionTypeLogic getInstance() {
-        return SearchResultActionTypeLogicHolder.instance;
+        return CDI.current().select(SearchResultActionTypeLogic.class).get();
     }
 
     public SearchResultActionType createSearchResultActionType(final ExecutionErrorAccumulator eea, final String searchResultActionTypeName,

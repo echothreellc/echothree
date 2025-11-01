@@ -33,20 +33,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class ContentPageLayoutLogic
     extends BaseLogic {
-    
-    private ContentPageLayoutLogic() {
+
+    protected ContentPageLayoutLogic() {
         super();
     }
-    
-    private static class ContentPageLayoutLogicHolder {
-        static ContentPageLayoutLogic instance = new ContentPageLayoutLogic();
-    }
-    
+
     public static ContentPageLayoutLogic getInstance() {
-        return ContentPageLayoutLogicHolder.instance;
+        return CDI.current().select(ContentPageLayoutLogic.class).get();
     }
 
     public ContentPageLayout createContentPageLayout(final ExecutionErrorAccumulator eea, final String contentPageLayoutName,

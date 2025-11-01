@@ -45,22 +45,20 @@ import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.regex.Pattern;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class SequenceGeneratorLogic
         extends BaseLogic {
 
-    private SequenceGeneratorLogic() {
+    protected SequenceGeneratorLogic() {
         super();
     }
-    
-    private static class SequenceGeneratorLogicHolder {
-        static SequenceGeneratorLogic instance = new SequenceGeneratorLogic();
-    }
-    
-    public static SequenceGeneratorLogic getInstance() {
-        return SequenceGeneratorLogicHolder.instance;
-    }
 
+    public static SequenceGeneratorLogic getInstance() {
+        return CDI.current().select(SequenceGeneratorLogic.class).get();
+    }
 
     // --------------------------------------------------------------------------------
     //   Generation

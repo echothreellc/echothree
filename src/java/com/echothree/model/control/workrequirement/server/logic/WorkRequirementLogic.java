@@ -36,19 +36,18 @@ import com.echothree.model.data.workrequirement.server.entity.WorkRequirementSco
 import com.echothree.model.data.workrequirement.server.entity.WorkTime;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class WorkRequirementLogic {
-    
-    private WorkRequirementLogic() {
+
+    protected WorkRequirementLogic() {
         super();
     }
-    
-    private static class WorkRequirementLogicHolder {
-        static WorkRequirementLogic instance = new WorkRequirementLogic();
-    }
-    
+
     public static WorkRequirementLogic getInstance() {
-        return WorkRequirementLogicHolder.instance;
+        return CDI.current().select(WorkRequirementLogic.class).get();
     }
 
     public WorkRequirement createWorkRequirementUsingNames(final Session session, final WorkEffort workEffort, final String workRequirementTypeName,

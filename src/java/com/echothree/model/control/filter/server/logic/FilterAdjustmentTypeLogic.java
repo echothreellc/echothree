@@ -25,20 +25,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class FilterAdjustmentTypeLogic
         extends BaseLogic {
 
-    private FilterAdjustmentTypeLogic() {
+    protected FilterAdjustmentTypeLogic() {
         super();
     }
 
-    private static class FilterAdjustmentTypeLogicHolder {
-        static FilterAdjustmentTypeLogic instance = new FilterAdjustmentTypeLogic();
-    }
-
     public static FilterAdjustmentTypeLogic getInstance() {
-        return FilterAdjustmentTypeLogic.FilterAdjustmentTypeLogicHolder.instance;
+        return CDI.current().select(FilterAdjustmentTypeLogic.class).get();
     }
 
     public FilterAdjustmentType createFilterAdjustmentType(final ExecutionErrorAccumulator eea, final String filterAdjustmentTypeName,

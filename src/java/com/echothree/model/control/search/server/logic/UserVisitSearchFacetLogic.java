@@ -42,20 +42,19 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.List;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class UserVisitSearchFacetLogic
         extends BaseLogic {
 
-    private UserVisitSearchFacetLogic() {
+    protected UserVisitSearchFacetLogic() {
         super();
     }
 
-    private static class UserVisitSearchFacetLogicHolder {
-        static UserVisitSearchFacetLogic instance = new UserVisitSearchFacetLogic();
-    }
-
     public static UserVisitSearchFacetLogic getInstance() {
-        return UserVisitSearchFacetLogicHolder.instance;
+        return CDI.current().select(UserVisitSearchFacetLogic.class).get();
     }
     
     private List<EntityIntegerRangeDetail> getEntityIntegerRangeDetails(final EntityAttribute entityAttribute) {

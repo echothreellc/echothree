@@ -24,20 +24,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class PartyFreeOnBoardLogic
         extends BaseLogic {
 
-    private PartyFreeOnBoardLogic() {
+    protected PartyFreeOnBoardLogic() {
         super();
     }
 
-    private static class FreeOnBoardLogicHolder {
-        static PartyFreeOnBoardLogic instance = new PartyFreeOnBoardLogic();
-    }
-
     public static PartyFreeOnBoardLogic getInstance() {
-        return FreeOnBoardLogicHolder.instance;
+        return CDI.current().select(PartyFreeOnBoardLogic.class).get();
     }
     
     public PartyFreeOnBoard getPartyFreeOnBoard(final ExecutionErrorAccumulator eea, final Party party) {

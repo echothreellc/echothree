@@ -52,20 +52,19 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class EntityAliasTypeLogic
         extends BaseLogic {
-    
-    private EntityAliasTypeLogic() {
+
+    protected EntityAliasTypeLogic() {
         super();
     }
-    
-    private static class EntityAliasTypeLogicHolder {
-        static EntityAliasTypeLogic instance = new EntityAliasTypeLogic();
-    }
-    
+
     public static EntityAliasTypeLogic getInstance() {
-        return EntityAliasTypeLogicHolder.instance;
+        return CDI.current().select(EntityAliasTypeLogic.class).get();
     }
 
     public EntityAliasType createEntityAliasType(final ExecutionErrorAccumulator eea, final EntityType entityType,

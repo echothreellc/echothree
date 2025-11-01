@@ -18,29 +18,24 @@ package com.echothree.model.control.accounting.server.logic;
 
 import com.echothree.model.control.accounting.common.exception.UnknownSymbolPositionNameException;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.core.common.ComponentVendors;
-import com.echothree.model.control.core.common.EntityTypes;
-import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.data.accounting.server.entity.SymbolPosition;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class SymbolPositionLogic
     extends BaseLogic {
-    
-    private SymbolPositionLogic() {
+
+    protected SymbolPositionLogic() {
         super();
     }
-    
-    private static class SymbolPositionLogicHolder {
-        static SymbolPositionLogic instance = new SymbolPositionLogic();
-    }
-    
+
     public static SymbolPositionLogic getInstance() {
-        return SymbolPositionLogicHolder.instance;
+        return CDI.current().select(SymbolPositionLogic.class).get();
     }
 
     public SymbolPosition getSymbolPositionByName(final ExecutionErrorAccumulator eea, final String symbolPositionName) {

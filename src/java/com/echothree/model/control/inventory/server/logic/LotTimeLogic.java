@@ -22,19 +22,18 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class LotTimeLogic {
 
-    private LotTimeLogic() {
+    protected LotTimeLogic() {
         super();
     }
 
-    private static class LotTimeLogicHolder {
-        static LotTimeLogic instance = new LotTimeLogic();
-    }
-
     public static LotTimeLogic getInstance() {
-        return LotTimeLogicHolder.instance;
+        return CDI.current().select(LotTimeLogic.class).get();
     }
 
     public void createOrUpdateLotTimeIfNotNull(final ExecutionErrorAccumulator ema, final Lot lot, final String lotTimeTypeName, final Long time,

@@ -34,7 +34,10 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class AllocationPriorityLogic
         extends BaseLogic {
 
@@ -42,12 +45,8 @@ public class AllocationPriorityLogic
         super();
     }
 
-    private static class AllocationPriorityLogicHolder {
-        static AllocationPriorityLogic instance = new AllocationPriorityLogic();
-    }
-
     public static AllocationPriorityLogic getInstance() {
-        return AllocationPriorityLogicHolder.instance;
+        return CDI.current().select(AllocationPriorityLogic.class).get();
     }
 
     public AllocationPriority createAllocationPriority(final ExecutionErrorAccumulator eea, final String allocationPriorityName,

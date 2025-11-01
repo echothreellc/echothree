@@ -23,19 +23,18 @@ import com.echothree.model.data.user.server.entity.UserLoginStatus;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class LockoutPolicyLogic {
     
-    private LockoutPolicyLogic() {
+    protected LockoutPolicyLogic() {
         super();
     }
-    
-    private static class LockoutPolicyLogicHolder {
-        static LockoutPolicyLogic instance = new LockoutPolicyLogic();
-    }
-    
+
     public static LockoutPolicyLogic getInstance() {
-        return LockoutPolicyLogicHolder.instance;
+        return CDI.current().select(LockoutPolicyLogic.class).get();
     }
     
     private void resetFailureCount(final Session session, final UserLoginStatus userLoginStatus,

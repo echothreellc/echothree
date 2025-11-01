@@ -23,14 +23,14 @@ import com.echothree.model.control.core.common.exception.InvalidParameterCountEx
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.filter.common.exception.CannotDeleteFilterAdjustmentInUseException;
 import com.echothree.model.control.filter.common.exception.DuplicateFilterAdjustmentNameException;
-import com.echothree.model.control.filter.common.exception.UnknownDefaultFilterKindException;
 import com.echothree.model.control.filter.common.exception.UnknownDefaultFilterAdjustmentException;
+import com.echothree.model.control.filter.common.exception.UnknownDefaultFilterKindException;
 import com.echothree.model.control.filter.common.exception.UnknownFilterAdjustmentNameException;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.data.filter.server.entity.FilterAdjustment;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentSource;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentType;
 import com.echothree.model.data.filter.server.entity.FilterKind;
-import com.echothree.model.data.filter.server.entity.FilterAdjustment;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -39,20 +39,19 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class FilterAdjustmentLogic
         extends BaseLogic {
 
-    private FilterAdjustmentLogic() {
+    protected FilterAdjustmentLogic() {
         super();
     }
 
-    private static class FilterAdjustmentLogicHolder {
-        static FilterAdjustmentLogic instance = new FilterAdjustmentLogic();
-    }
-
     public static FilterAdjustmentLogic getInstance() {
-        return FilterAdjustmentLogic.FilterAdjustmentLogicHolder.instance;
+        return CDI.current().select(FilterAdjustmentLogic.class).get();
     }
 
     public FilterAdjustment createFilterAdjustment(final ExecutionErrorAccumulator eea, final String filterKindName,

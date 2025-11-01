@@ -23,20 +23,19 @@ import com.echothree.model.data.queue.server.entity.QueuedEntity;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class QueuedEntityLogic
         extends BaseLogic {
 
-    private QueuedEntityLogic() {
+    protected QueuedEntityLogic() {
         super();
     }
 
-    private static class QueuedEntityLogicHolder {
-        static QueuedEntityLogic instance = new QueuedEntityLogic();
-    }
-
     public static QueuedEntityLogic getInstance() {
-        return QueuedEntityLogicHolder.instance;
+        return CDI.current().select(QueuedEntityLogic.class).get();
     }
     
     public QueuedEntity createQueuedEntityUsingNames(final ExecutionErrorAccumulator eea, final String queueTypeName, final EntityInstance entityInstance) {

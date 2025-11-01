@@ -29,20 +29,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class TransactionGroupLogic
         extends BaseLogic {
 
-    private TransactionGroupLogic() {
+    protected TransactionGroupLogic() {
         super();
     }
 
-    private static class TransactionGroupLogicHolder {
-        static TransactionGroupLogic instance = new TransactionGroupLogic();
-    }
-
     public static TransactionGroupLogic getInstance() {
-        return TransactionGroupLogic.TransactionGroupLogicHolder.instance;
+        return CDI.current().select(TransactionGroupLogic.class).get();
     }
 
     public TransactionGroup getTransactionGroupByName(final ExecutionErrorAccumulator eea, final String transactionGroupName,

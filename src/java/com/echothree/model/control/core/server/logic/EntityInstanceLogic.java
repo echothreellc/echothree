@@ -38,20 +38,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityIdGenerator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class EntityInstanceLogic
         extends BaseLogic {
 
-    private EntityInstanceLogic() {
+    protected EntityInstanceLogic() {
         super();
     }
 
-    private static class EntityInstanceLogicHolder {
-        static EntityInstanceLogic instance = new EntityInstanceLogic();
-    }
-
     public static EntityInstanceLogic getInstance() {
-        return EntityInstanceLogicHolder.instance;
+        return CDI.current().select(EntityInstanceLogic.class).get();
     }
 
     public EntityInstance createEntityInstance(final ExecutionErrorAccumulator eea, final EntityType entityType,

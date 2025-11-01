@@ -30,20 +30,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class LanguageLogic
         extends BaseLogic {
 
-    private LanguageLogic() {
+    protected LanguageLogic() {
         super();
     }
 
-    private static class LanguageLogicHolder {
-        static LanguageLogic instance = new LanguageLogic();
-    }
-
     public static LanguageLogic getInstance() {
-        return LanguageLogicHolder.instance;
+        return CDI.current().select(LanguageLogic.class).get();
     }
     
     public Language getLanguageByName(final ExecutionErrorAccumulator eea, final String languageIsoName,

@@ -34,20 +34,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class LocationUseTypeLogic
         extends BaseLogic {
-    
-    private LocationUseTypeLogic() {
+
+    protected LocationUseTypeLogic() {
         super();
     }
-    
-    private static class LocationUseTypeLogicHolder {
-        static LocationUseTypeLogic instance = new LocationUseTypeLogic();
-    }
-    
+
     public static LocationUseTypeLogic getInstance() {
-        return LocationUseTypeLogicHolder.instance;
+        return CDI.current().select(LocationUseTypeLogic.class).get();
     }
 
     public LocationUseType createLocationUseType(final ExecutionErrorAccumulator eea, final String locationUseTypeName,
