@@ -35,10 +35,10 @@ import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
 
-public class OrderShipmentGroupLogic
+public class BaseOrderShipmentGroupLogic
         extends BaseLogic {
 
-    protected OrderShipmentGroupLogic() {
+    protected BaseOrderShipmentGroupLogic() {
         super();
     }
 

@@ -19,7 +19,7 @@ package com.echothree.model.control.sales.server.logic;
 import com.echothree.model.control.customer.common.exception.UnknownCustomerTypeShippingMethodException;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.order.server.control.OrderShipmentGroupControl;
-import com.echothree.model.control.order.server.logic.OrderShipmentGroupLogic;
+import com.echothree.model.control.order.server.logic.BaseOrderShipmentGroupLogic;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.item.server.entity.ItemDeliveryType;
@@ -37,7 +37,7 @@ import javax.enterprise.inject.spi.CDI;
 
 @ApplicationScoped
 public class SalesOrderShipmentGroupLogic
-        extends OrderShipmentGroupLogic {
+        extends BaseOrderShipmentGroupLogic {
 
     protected SalesOrderShipmentGroupLogic() {
         super();
