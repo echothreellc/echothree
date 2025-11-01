@@ -38,7 +38,10 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class OrderPriorityLogic
         extends BaseLogic {
 
@@ -46,12 +49,8 @@ public class OrderPriorityLogic
         super();
     }
 
-    private static class OrderPriorityLogicHolder {
-        static OrderPriorityLogic instance = new OrderPriorityLogic();
-    }
-
     public static OrderPriorityLogic getInstance() {
-        return OrderPriorityLogic.OrderPriorityLogicHolder.instance;
+        return CDI.current().select(OrderPriorityLogic.class).get();
     }
 
     public OrderPriority createOrderPriority(final ExecutionErrorAccumulator eea, final String orderTypeName, final String orderPriorityName,

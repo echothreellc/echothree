@@ -66,7 +66,10 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.HashSet;
 import java.util.Set;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class OrderLogic
         extends BaseLogic {
 
@@ -74,12 +77,8 @@ public class OrderLogic
         super();
     }
 
-    private static class OrderLogicHolder {
-        static OrderLogic instance = new OrderLogic();
-    }
-
     public static OrderLogic getInstance() {
-        return OrderLogicHolder.instance;
+        return CDI.current().select(OrderLogic.class).get();
     }
 
     public Currency getOrderCurrency(final Order order) {

@@ -36,7 +36,10 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class OrderLineLogic
         extends BaseLogic {
 
@@ -44,12 +47,8 @@ public class OrderLineLogic
         super();
     }
 
-    private static class OrderLogicHolder {
-        static OrderLineLogic instance = new OrderLineLogic();
-    }
-
     public static OrderLineLogic getInstance() {
-        return OrderLogicHolder.instance;
+        return CDI.current().select(OrderLineLogic.class).get();
     }
 
     public OrderLine createOrderLine(final Session session, final ExecutionErrorAccumulator eea, final Order order, Integer orderLineSequence,
