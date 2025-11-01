@@ -32,20 +32,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class SalesOrderShipmentGroupLogic
         extends OrderShipmentGroupLogic {
 
-    private SalesOrderShipmentGroupLogic() {
+    protected SalesOrderShipmentGroupLogic() {
         super();
     }
 
-    private static class LogicHolder {
-        static SalesOrderShipmentGroupLogic instance = new SalesOrderShipmentGroupLogic();
-    }
-
     public static SalesOrderShipmentGroupLogic getInstance() {
-        return LogicHolder.instance;
+        return CDI.current().select(SalesOrderShipmentGroupLogic.class).get();
     }
     
     /**

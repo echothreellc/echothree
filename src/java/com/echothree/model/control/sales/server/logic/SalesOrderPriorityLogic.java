@@ -17,20 +17,19 @@
 package com.echothree.model.control.sales.server.logic;
 
 import com.echothree.model.control.order.server.logic.OrderPriorityLogic;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class SalesOrderPriorityLogic
         extends OrderPriorityLogic {
 
-    private SalesOrderPriorityLogic() {
+    protected SalesOrderPriorityLogic() {
         super();
     }
 
-    private static class LogicHolder {
-        static SalesOrderPriorityLogic instance = new SalesOrderPriorityLogic();
-    }
-
     public static SalesOrderPriorityLogic getInstance() {
-        return LogicHolder.instance;
+        return CDI.current().select(SalesOrderPriorityLogic.class).get();
     }
 
 }

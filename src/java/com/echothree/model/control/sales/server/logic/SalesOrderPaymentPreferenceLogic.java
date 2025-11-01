@@ -30,20 +30,19 @@ import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class SalesOrderPaymentPreferenceLogic
         extends OrderLogic {
 
-    private SalesOrderPaymentPreferenceLogic() {
+    protected SalesOrderPaymentPreferenceLogic() {
         super();
     }
 
-    private static class LogicHolder {
-        static SalesOrderPaymentPreferenceLogic instance = new SalesOrderPaymentPreferenceLogic();
-    }
-
     public static SalesOrderPaymentPreferenceLogic getInstance() {
-        return LogicHolder.instance;
+        return CDI.current().select(SalesOrderPaymentPreferenceLogic.class).get();
     }
     
     /**

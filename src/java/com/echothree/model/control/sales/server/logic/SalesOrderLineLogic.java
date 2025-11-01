@@ -70,20 +70,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.message.DummyExecutionErrorAccumulator;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class SalesOrderLineLogic
         extends OrderLineLogic {
 
-    private SalesOrderLineLogic() {
+    protected SalesOrderLineLogic() {
         super();
     }
 
-    private static class LogicHolder {
-        static SalesOrderLineLogic instance = new SalesOrderLineLogic();
-    }
-
     public static SalesOrderLineLogic getInstance() {
-        return LogicHolder.instance;
+        return CDI.current().select(SalesOrderLineLogic.class).get();
     }
 
     /**

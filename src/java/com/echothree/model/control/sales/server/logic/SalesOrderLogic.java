@@ -81,20 +81,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class SalesOrderLogic
         extends OrderLogic {
 
-    private SalesOrderLogic() {
+    protected SalesOrderLogic() {
         super();
     }
 
-    private static class LogicHolder {
-        static SalesOrderLogic instance = new SalesOrderLogic();
-    }
-
     public static SalesOrderLogic getInstance() {
-        return LogicHolder.instance;
+        return CDI.current().select(SalesOrderLogic.class).get();
     }
     
     final static long AllocatedInventoryTimeout = 5 * 60 * 1000; // 5 Minutes
