@@ -34,20 +34,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class ReturnKindLogic
         extends BaseLogic {
 
-    private ReturnKindLogic() {
+    protected ReturnKindLogic() {
         super();
     }
 
-    private static class ReturnKindLogicHolder {
-        static ReturnKindLogic instance = new ReturnKindLogic();
-    }
-
     public static ReturnKindLogic getInstance() {
-        return ReturnKindLogic.ReturnKindLogicHolder.instance;
+        return CDI.current().select(ReturnKindLogic.class).get();
     }
 
     public ReturnKind createReturnKind(final ExecutionErrorAccumulator eea, final String returnKindName,
