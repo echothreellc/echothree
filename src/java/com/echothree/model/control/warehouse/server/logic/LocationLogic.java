@@ -25,20 +25,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import java.util.regex.Pattern;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class LocationLogic
         extends BaseLogic {
-    
-    private LocationLogic() {
+
+    protected LocationLogic() {
         super();
     }
-    
-    private static class LocationLogicHolder {
-        static LocationLogic instance = new LocationLogic();
-    }
-    
+
     public static LocationLogic getInstance() {
-        return LocationLogicHolder.instance;
+        return CDI.current().select(LocationLogic.class).get();
     }
 
     public void validateLocationName(final ExecutionErrorAccumulator eea, final LocationType locationType, final String locationName) {
