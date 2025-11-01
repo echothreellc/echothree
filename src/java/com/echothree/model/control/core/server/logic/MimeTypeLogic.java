@@ -27,20 +27,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class MimeTypeLogic
         extends BaseLogic {
-    
-    private MimeTypeLogic() {
+
+    protected MimeTypeLogic() {
         super();
     }
-    
-    private static class MimeTypeLogicHolder {
-        static MimeTypeLogic instance = new MimeTypeLogic();
-    }
-    
+
     public static MimeTypeLogic getInstance() {
-        return MimeTypeLogicHolder.instance;
+        return CDI.current().select(MimeTypeLogic.class).get();
     }
     
     public MimeType getMimeTypeByName(final ExecutionErrorAccumulator eea, final String mimeTypeName) {

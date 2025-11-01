@@ -151,20 +151,19 @@ import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class EntityAttributeLogic
         extends BaseLogic {
-    
-    private EntityAttributeLogic() {
+
+    protected EntityAttributeLogic() {
         super();
     }
-    
-    private static class EntityAttributeLogicHolder {
-        static EntityAttributeLogic instance = new EntityAttributeLogic();
-    }
-    
+
     public static EntityAttributeLogic getInstance() {
-        return EntityAttributeLogicHolder.instance;
+        return CDI.current().select(EntityAttributeLogic.class).get();
     }
     
     public EntityAttributeType getEntityAttributeTypeByName(final ExecutionErrorAccumulator eea, final String entityAttributeTypeName) {

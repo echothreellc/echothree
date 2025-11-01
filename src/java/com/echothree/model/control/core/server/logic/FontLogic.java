@@ -25,20 +25,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class FontLogic
         extends BaseLogic {
 
-    private FontLogic() {
+    protected FontLogic() {
         super();
     }
-    
-    private static class FontLogicHolder {
-        static FontLogic instance = new FontLogic();
-    }
-    
+
     public static FontLogic getInstance() {
-        return FontLogicHolder.instance;
+        return CDI.current().select(FontLogic.class).get();
     }
     
     public FontStyle getFontStyleByName(final ExecutionErrorAccumulator eea, final String fontStyleName) {
