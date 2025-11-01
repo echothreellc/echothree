@@ -37,20 +37,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class EmployeeLogic
         extends BaseLogic {
-    
-    private EmployeeLogic() {
+
+    protected EmployeeLogic() {
         super();
     }
-    
-    private static class EmployeeLogicHolder {
-        static EmployeeLogic instance = new EmployeeLogic();
-    }
-    
+
     public static EmployeeLogic getInstance() {
-        return EmployeeLogicHolder.instance;
+        return CDI.current().select(EmployeeLogic.class).get();
     }
 
     public PartyEmployee getPartyEmployeeByName(final ExecutionErrorAccumulator eea, final String employeeName, final String partyName) {
