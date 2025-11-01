@@ -26,20 +26,19 @@ import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class ContactListChainLogic
         extends BaseChainLogic {
-    
-    private ContactListChainLogic() {
+
+    protected ContactListChainLogic() {
         super();
     }
-    
-    private static class ContactListChainLogicHolder {
-        static ContactListChainLogic instance = new ContactListChainLogic();
-    }
-    
+
     public static ContactListChainLogic getInstance() {
-        return ContactListChainLogicHolder.instance;
+        return CDI.current().select(ContactListChainLogic.class).get();
     }
     
     /** In looking for the Chain, the following are checked:

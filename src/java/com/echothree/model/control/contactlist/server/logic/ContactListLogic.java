@@ -37,20 +37,19 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import java.util.HashSet;
 import java.util.Set;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class ContactListLogic
     extends BaseLogic {
-    
-    private ContactListLogic() {
+
+    protected ContactListLogic() {
         super();
     }
-    
-    private static class ContactListLogicHolder {
-        static ContactListLogic instance = new ContactListLogic();
-    }
-    
+
     public static ContactListLogic getInstance() {
-        return ContactListLogicHolder.instance;
+        return CDI.current().select(ContactListLogic.class).get();
     }
     
     public ContactList getContactListByName(final ExecutionErrorAccumulator eea, final String contactListName) {
