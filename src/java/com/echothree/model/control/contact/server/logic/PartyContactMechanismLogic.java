@@ -26,22 +26,21 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class PartyContactMechanismLogic
     extends BaseLogic {
 
-    private PartyContactMechanismLogic() {
+    protected PartyContactMechanismLogic() {
         super();
     }
-    
-    private static class PartyContactMechanismLogicHolder {
-        static PartyContactMechanismLogic instance = new PartyContactMechanismLogic();
-    }
-    
+
     public static PartyContactMechanismLogic getInstance() {
-        return PartyContactMechanismLogicHolder.instance;
+        return CDI.current().select(PartyContactMechanismLogic.class).get();
     }
-    
+
     public PartyContactMechanism getPartyContactMechanism(final ExecutionErrorAccumulator eea, final Party party,
             final ContactMechanism contactMechanism, final EntityPermission entityPermission) {
         var contactControl = Session.getModelController(ContactControl.class);
