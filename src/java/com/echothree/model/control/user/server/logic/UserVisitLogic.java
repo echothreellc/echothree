@@ -27,20 +27,19 @@ import com.echothree.model.data.user.server.factory.UserVisitFactory;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class UserVisitLogic
         extends BaseLogic {
-    
-    private UserVisitLogic() {
+
+    protected UserVisitLogic() {
         super();
     }
-    
-    private static class UserVisitLogicHolder {
-        static UserVisitLogic instance = new UserVisitLogic();
-    }
-    
+
     public static UserVisitLogic getInstance() {
-        return UserVisitLogicHolder.instance;
+        return CDI.current().select(UserVisitLogic.class).get();
     }
     
     private void cleanupUserVisitDependencies(final UserVisit userVisit, final Long endTime, final PartyPK cleanedUpBy) {
