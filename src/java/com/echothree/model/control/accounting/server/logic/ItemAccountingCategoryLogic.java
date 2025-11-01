@@ -36,20 +36,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class ItemAccountingCategoryLogic
         extends BaseLogic {
-    
-    private ItemAccountingCategoryLogic() {
+
+    protected ItemAccountingCategoryLogic() {
         super();
     }
-    
-    private static class ItemAccountingCategoryLogicHolder {
-        static ItemAccountingCategoryLogic instance = new ItemAccountingCategoryLogic();
-    }
-    
+
     public static ItemAccountingCategoryLogic getInstance() {
-        return ItemAccountingCategoryLogicHolder.instance;
+        return CDI.current().select(ItemAccountingCategoryLogic.class).get();
     }
 
     public ItemAccountingCategory createItemAccountingCategory(final ExecutionErrorAccumulator eea, final String itemAccountingCategoryName,
