@@ -19,8 +19,8 @@ package com.echothree.model.control.printer.server.logic;
 import com.echothree.model.control.document.common.DocumentConstants;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.document.server.logic.DocumentLogic;
-import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.printer.common.workflow.PrinterGroupJobStatusConstants;
+import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.party.common.pk.PartyPK;
@@ -32,20 +32,19 @@ import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class PrinterGroupJobLogic
         extends BaseLogic {
 
-    private PrinterGroupJobLogic() {
+    protected PrinterGroupJobLogic() {
         super();
     }
 
-    private static class PrinterGroupJobLogicHolder {
-        static PrinterGroupJobLogic instance = new PrinterGroupJobLogic();
-    }
-
     public static PrinterGroupJobLogic getInstance() {
-        return PrinterGroupJobLogicHolder.instance;
+        return CDI.current().select(PrinterGroupJobLogic.class).get();
     }
     
     private void insertPrinterGroupJobIntoWorkflow(final PrinterGroupJob printerGroupJob, final PartyPK createdBy) {
