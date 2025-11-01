@@ -25,37 +25,28 @@ import com.echothree.model.control.item.common.exception.DuplicateItemWeightType
 import com.echothree.model.control.item.common.exception.UnknownDefaultItemWeightTypeException;
 import com.echothree.model.control.item.common.exception.UnknownItemWeightTypeNameException;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.control.item.server.database.ItemEntityInstanceResult;
-import com.echothree.model.control.queue.common.QueueTypes;
-import com.echothree.model.control.queue.server.control.QueueControl;
-import com.echothree.model.control.queue.server.logic.QueueTypeLogic;
-import com.echothree.model.data.item.common.pk.ItemWeightTypePK;
 import com.echothree.model.data.item.server.entity.ItemWeightType;
 import com.echothree.model.data.item.server.value.ItemWeightTypeDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.queue.server.value.QueuedEntityValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.util.ArrayList;
-import java.util.List;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class ItemWeightTypeLogic
     extends BaseLogic {
 
-    private ItemWeightTypeLogic() {
+    protected ItemWeightTypeLogic() {
         super();
     }
 
-    private static class ItemWeightTypeLogicHolder {
-        static ItemWeightTypeLogic instance = new ItemWeightTypeLogic();
-    }
-
     public static ItemWeightTypeLogic getInstance() {
-        return ItemWeightTypeLogicHolder.instance;
+        return CDI.current().select(ItemWeightTypeLogic.class).get();
     }
 
     public ItemWeightType createItemWeightType(final ExecutionErrorAccumulator eea, final String itemWeightTypeName,

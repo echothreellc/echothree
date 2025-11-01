@@ -37,20 +37,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class LeaveLogic
         extends BaseLogic {
-    
-    private LeaveLogic() {
+
+    protected LeaveLogic() {
         super();
     }
-    
-    private static class LeaveLogicHolder {
-        static LeaveLogic instance = new LeaveLogic();
-    }
-    
+
     public static LeaveLogic getInstance() {
-        return LeaveLogicHolder.instance;
+        return CDI.current().select(LeaveLogic.class).get();
     }
     
     public LeaveType getLeaveTypeByName(final ExecutionErrorAccumulator eea, final String leaveTypeName) {

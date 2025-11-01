@@ -28,20 +28,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class ApplicationLogic
         extends BaseLogic {
-    
-    private ApplicationLogic() {
+
+    protected ApplicationLogic() {
         super();
     }
-    
-    private static class ApplicationLogicHolder {
-        static ApplicationLogic instance = new ApplicationLogic();
-    }
-    
+
     public static ApplicationLogic getInstance() {
-        return ApplicationLogicHolder.instance;
+        return CDI.current().select(ApplicationLogic.class).get();
     }
     
     public Application getApplicationByName(final ExecutionErrorAccumulator eea, final String applicationName) {

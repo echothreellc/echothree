@@ -26,20 +26,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class AssociateReferralLogic
         extends BaseLogic {
 
-    private AssociateReferralLogic() {
+    protected AssociateReferralLogic() {
         super();
     }
 
-    private static class LogicHolder {
-        static AssociateReferralLogic instance = new AssociateReferralLogic();
-    }
-
     public static AssociateReferralLogic getInstance() {
-        return LogicHolder.instance;
+        return CDI.current().select(AssociateReferralLogic.class).get();
     }
 
     public void handleAssociateReferral(final Session session, final ExecutionErrorAccumulator eea, final AssociatePartyContactMechanismSpec spec,

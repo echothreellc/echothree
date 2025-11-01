@@ -41,19 +41,18 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class PurchaseInvoiceLogic {
 
-    private PurchaseInvoiceLogic() {
+    protected PurchaseInvoiceLogic() {
         super();
     }
 
-    private static class PurchaseInvoiceLogicHolder {
-        static PurchaseInvoiceLogic instance = new PurchaseInvoiceLogic();
-    }
-
     public static PurchaseInvoiceLogic getInstance() {
-        return PurchaseInvoiceLogicHolder.instance;
+        return CDI.current().select(PurchaseInvoiceLogic.class).get();
     }
     
     public Invoice getInvoiceByName(String invoiceName) {

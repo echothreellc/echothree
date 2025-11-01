@@ -21,6 +21,7 @@ import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.core.server.logic.TextLogic;
 import com.echothree.model.control.search.common.exception.DuplicateSearchDefaultOperatorNameException;
 import com.echothree.model.control.search.common.exception.UnknownDefaultSearchDefaultOperatorException;
 import com.echothree.model.control.search.common.exception.UnknownSearchDefaultOperatorNameException;
@@ -33,20 +34,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class SearchDefaultOperatorLogic
         extends BaseLogic {
 
-    private SearchDefaultOperatorLogic() {
+    protected SearchDefaultOperatorLogic() {
         super();
     }
 
-    private static class SearchDefaultOperatorLogicHolder {
-        static SearchDefaultOperatorLogic instance = new SearchDefaultOperatorLogic();
-    }
-
     public static SearchDefaultOperatorLogic getInstance() {
-        return SearchDefaultOperatorLogic.SearchDefaultOperatorLogicHolder.instance;
+        return CDI.current().select(SearchDefaultOperatorLogic.class).get();
     }
 
     public SearchDefaultOperator createSearchDefaultOperator(final ExecutionErrorAccumulator eea, final String searchDefaultOperatorName,

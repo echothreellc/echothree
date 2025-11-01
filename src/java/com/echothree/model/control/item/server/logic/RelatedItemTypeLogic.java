@@ -34,20 +34,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class RelatedItemTypeLogic
     extends BaseLogic {
 
-    private RelatedItemTypeLogic() {
+    protected RelatedItemTypeLogic() {
         super();
     }
 
-    private static class RelatedItemTypeLogicHolder {
-        static RelatedItemTypeLogic instance = new RelatedItemTypeLogic();
-    }
-
     public static RelatedItemTypeLogic getInstance() {
-        return RelatedItemTypeLogicHolder.instance;
+        return CDI.current().select(RelatedItemTypeLogic.class).get();
     }
 
     public RelatedItemType createRelatedItemType(final ExecutionErrorAccumulator eea, final String relatedItemTypeName,

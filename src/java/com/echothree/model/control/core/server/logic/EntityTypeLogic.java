@@ -29,20 +29,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class EntityTypeLogic
         extends BaseLogic {
 
-    private EntityTypeLogic() {
+    protected EntityTypeLogic() {
         super();
     }
 
-    private static class EntityTypeLogicHolder {
-        static EntityTypeLogic instance = new EntityTypeLogic();
-    }
-
     public static EntityTypeLogic getInstance() {
-        return EntityTypeLogicHolder.instance;
+        return CDI.current().select(EntityTypeLogic.class).get();
     }
     
     public EntityType getEntityTypeByName(final ExecutionErrorAccumulator eea, final ComponentVendor componentVendor,

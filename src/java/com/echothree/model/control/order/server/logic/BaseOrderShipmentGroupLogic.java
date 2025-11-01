@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.order.server.logic;
 
-import com.echothree.model.control.customer.common.exception.UnknownCustomerTypeNameException;
 import com.echothree.model.control.order.common.exception.DuplicateOrderShipmentGroupSequenceException;
 import com.echothree.model.control.order.common.exception.UnknownDefaultOrderShipmentGroupException;
 import com.echothree.model.control.order.common.exception.UnknownOrderShipmentGroupException;
@@ -33,20 +32,14 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
-public class OrderShipmentGroupLogic
+public class BaseOrderShipmentGroupLogic
         extends BaseLogic {
 
-    protected OrderShipmentGroupLogic() {
+    protected BaseOrderShipmentGroupLogic() {
         super();
-    }
-
-    private static class OrderShipmentGroupLogicHolder {
-        static OrderShipmentGroupLogic instance = new OrderShipmentGroupLogic();
-    }
-
-    public static OrderShipmentGroupLogic getInstance() {
-        return OrderShipmentGroupLogicHolder.instance;
     }
 
     public OrderShipmentGroup createOrderShipmentGroup(final ExecutionErrorAccumulator eea, final Order order, Integer orderShipmentGroupSequence,

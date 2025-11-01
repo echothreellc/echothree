@@ -34,20 +34,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class SecurityRoleGroupLogic
         extends BaseLogic {
 
-    private SecurityRoleGroupLogic() {
+    protected SecurityRoleGroupLogic() {
         super();
     }
 
-    private static class SecurityRoleGroupLogicHolder {
-        static SecurityRoleGroupLogic instance = new SecurityRoleGroupLogic();
-    }
-
     public static SecurityRoleGroupLogic getInstance() {
-        return SecurityRoleGroupLogicHolder.instance;
+        return CDI.current().select(SecurityRoleGroupLogic.class).get();
     }
 
     public SecurityRoleGroup createSecurityRoleGroup(final ExecutionErrorAccumulator eea, final String securityRoleGroupName,

@@ -24,20 +24,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class CurrencyLogic
         extends BaseLogic {
 
-    private CurrencyLogic() {
+    protected CurrencyLogic() {
         super();
     }
 
-    private static class CurrencyLogicHolder {
-        static CurrencyLogic instance = new CurrencyLogic();
-    }
-
     public static CurrencyLogic getInstance() {
-        return CurrencyLogicHolder.instance;
+        return CDI.current().select(CurrencyLogic.class).get();
     }
     
     public Currency getCurrencyByName(final ExecutionErrorAccumulator eea, final String currencyIsoName) {

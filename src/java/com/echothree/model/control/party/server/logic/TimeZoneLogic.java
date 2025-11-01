@@ -23,20 +23,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class TimeZoneLogic
         extends BaseLogic {
 
-    private TimeZoneLogic() {
+    protected TimeZoneLogic() {
         super();
     }
 
-    private static class TimeZoneLogicHolder {
-        static TimeZoneLogic instance = new TimeZoneLogic();
-    }
-
     public static TimeZoneLogic getInstance() {
-        return TimeZoneLogicHolder.instance;
+        return CDI.current().select(TimeZoneLogic.class).get();
     }
     
     public TimeZone getTimeZoneByName(final ExecutionErrorAccumulator eea, final String javaTimeZoneName) {

@@ -16,31 +16,26 @@
 
 package com.echothree.model.control.selector.server.logic;
 
-import com.echothree.model.control.core.server.logic.*;
-import com.echothree.model.control.core.common.ComponentVendors;
-import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.selector.common.exception.UnknownSelectorNodeTypeNameException;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.selector.server.entity.SelectorNodeType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class SelectorNodeTypeLogic
         extends BaseLogic {
-    
-    private SelectorNodeTypeLogic() {
+
+    protected SelectorNodeTypeLogic() {
         super();
     }
-    
-    private static class SelectorNodeLogicHolder {
-        static SelectorNodeTypeLogic instance = new SelectorNodeTypeLogic();
-    }
-    
+
     public static SelectorNodeTypeLogic getInstance() {
-        return SelectorNodeLogicHolder.instance;
+        return CDI.current().select(SelectorNodeTypeLogic.class).get();
     }
     
     public SelectorNodeType getSelectorNodeTypeByName(final ExecutionErrorAccumulator eea, final String selectorNodeTypeName) {

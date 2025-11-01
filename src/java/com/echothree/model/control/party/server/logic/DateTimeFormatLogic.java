@@ -23,20 +23,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class DateTimeFormatLogic
         extends BaseLogic {
 
-    private DateTimeFormatLogic() {
+    protected DateTimeFormatLogic() {
         super();
     }
 
-    private static class DateTimeFormatLogicHolder {
-        static DateTimeFormatLogic instance = new DateTimeFormatLogic();
-    }
-
     public static DateTimeFormatLogic getInstance() {
-        return DateTimeFormatLogicHolder.instance;
+        return CDI.current().select(DateTimeFormatLogic.class).get();
     }
     
     public DateTimeFormat getDateTimeFormatByName(final ExecutionErrorAccumulator eea, final String dateTimeFormatName) {

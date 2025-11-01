@@ -30,20 +30,19 @@ import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class ContactEmailAddressLogic
     extends BaseLogic {
-    
-    private ContactEmailAddressLogic() {
+
+    protected ContactEmailAddressLogic() {
         super();
     }
-    
-    private static class ContactEmailAddressLogicHolder {
-        static ContactEmailAddressLogic instance = new ContactEmailAddressLogic();
-    }
-    
+
     public static ContactEmailAddressLogic getInstance() {
-        return ContactEmailAddressLogicHolder.instance;
+        return CDI.current().select(ContactEmailAddressLogic.class).get();
     }
     
     public PartyContactMechanism createContactEmailAddress(Party party, String emailAddress, Boolean allowSolicitation,

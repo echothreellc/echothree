@@ -44,20 +44,19 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class ReturnPolicyLogic
         extends BaseLogic {
-    
-    private ReturnPolicyLogic() {
+
+    protected ReturnPolicyLogic() {
         super();
     }
-    
-    private static class ReturnPolicyLogicHolder {
-        static ReturnPolicyLogic instance = new ReturnPolicyLogic();
-    }
-    
+
     public static ReturnPolicyLogic getInstance() {
-        return ReturnPolicyLogicHolder.instance;
+        return CDI.current().select(ReturnPolicyLogic.class).get();
     }
 
     public ReturnPolicy createReturnPolicy(final ExecutionErrorAccumulator eea, final String returnKindName, final String returnPolicyName,

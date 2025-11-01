@@ -23,20 +23,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class EditorLogic
         extends BaseLogic {
 
-    private EditorLogic() {
+    protected EditorLogic() {
         super();
     }
-    
-    private static class EditorLogicHolder {
-        static EditorLogic instance = new EditorLogic();
-    }
-    
+
     public static EditorLogic getInstance() {
-        return EditorLogicHolder.instance;
+        return CDI.current().select(EditorLogic.class).get();
     }
 
     public Editor getEditorByName(final ExecutionErrorAccumulator eea, final String editorName) {

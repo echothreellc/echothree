@@ -21,6 +21,7 @@ import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.core.server.logic.TextLogic;
 import com.echothree.model.control.search.common.exception.DuplicateSearchSortDirectionNameException;
 import com.echothree.model.control.search.common.exception.UnknownDefaultSearchSortDirectionException;
 import com.echothree.model.control.search.common.exception.UnknownSearchSortDirectionNameException;
@@ -33,20 +34,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class SearchSortDirectionLogic
         extends BaseLogic {
 
-    private SearchSortDirectionLogic() {
+    protected SearchSortDirectionLogic() {
         super();
     }
 
-    private static class SearchSortDirectionLogicHolder {
-        static SearchSortDirectionLogic instance = new SearchSortDirectionLogic();
-    }
-
     public static SearchSortDirectionLogic getInstance() {
-        return SearchSortDirectionLogic.SearchSortDirectionLogicHolder.instance;
+        return CDI.current().select(SearchSortDirectionLogic.class).get();
     }
 
     public SearchSortDirection createSearchSortDirection(final ExecutionErrorAccumulator eea, final String searchSortDirectionName,

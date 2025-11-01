@@ -28,20 +28,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class PersonalTitleLogic
         extends BaseLogic {
 
-    private PersonalTitleLogic() {
+    protected PersonalTitleLogic() {
         super();
     }
-    
-    private static class PersonalTitleLogicHolder {
-        static PersonalTitleLogic instance = new PersonalTitleLogic();
-    }
-    
+
     public static PersonalTitleLogic getInstance() {
-        return PersonalTitleLogicHolder.instance;
+        return CDI.current().select(PersonalTitleLogic.class).get();
     }
 
     private PersonalTitle getPersonalTitleById(final ExecutionErrorAccumulator eea, final String personalTitleId,

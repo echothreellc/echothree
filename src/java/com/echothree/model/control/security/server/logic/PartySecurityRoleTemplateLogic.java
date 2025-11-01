@@ -17,10 +17,10 @@
 package com.echothree.model.control.security.server.logic;
 
 import com.echothree.model.control.security.server.control.SecurityControl;
+import com.echothree.model.control.training.common.training.PartyTrainingClassStatusConstants;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.training.server.logic.PartyTrainingClassLogic;
 import com.echothree.model.control.training.server.logic.PartyTrainingClassLogic.PreparedPartyTrainingClass;
-import com.echothree.model.control.training.common.training.PartyTrainingClassStatusConstants;
 import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplate;
 import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplateRole;
 import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplateTrainingClass;
@@ -32,19 +32,18 @@ import com.echothree.util.server.persistence.Session;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class PartySecurityRoleTemplateLogic {
 
-    private PartySecurityRoleTemplateLogic() {
+    protected PartySecurityRoleTemplateLogic() {
         super();
     }
 
-    private static class PartySecurityRoleTemplateLogicHolder {
-        static PartySecurityRoleTemplateLogic instance = new PartySecurityRoleTemplateLogic();
-    }
-
     public static PartySecurityRoleTemplateLogic getInstance() {
-        return PartySecurityRoleTemplateLogicHolder.instance;
+        return CDI.current().select(PartySecurityRoleTemplateLogic.class).get();
     }
 
     // --------------------------------------------------------------------------------

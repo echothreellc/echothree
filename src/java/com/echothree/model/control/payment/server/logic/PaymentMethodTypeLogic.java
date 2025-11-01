@@ -17,36 +17,35 @@
 package com.echothree.model.control.payment.server.logic;
 
 import com.echothree.control.user.payment.common.spec.PaymentMethodTypeUniversalSpec;
-import com.echothree.model.control.payment.common.exception.DuplicatePaymentMethodTypeNameException;
-import com.echothree.model.control.payment.common.exception.UnknownPaymentMethodTypeNameException;
-import com.echothree.model.control.payment.common.exception.UnknownDefaultPaymentMethodTypeException;
-import com.echothree.model.control.payment.server.control.PaymentMethodTypeControl;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
-import com.echothree.model.data.payment.server.entity.PaymentMethodType;
+import com.echothree.model.control.payment.common.exception.DuplicatePaymentMethodTypeNameException;
+import com.echothree.model.control.payment.common.exception.UnknownDefaultPaymentMethodTypeException;
+import com.echothree.model.control.payment.common.exception.UnknownPaymentMethodTypeNameException;
+import com.echothree.model.control.payment.server.control.PaymentMethodTypeControl;
 import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.model.data.payment.server.entity.PaymentMethodType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class PaymentMethodTypeLogic
     extends BaseLogic {
-    
-    private PaymentMethodTypeLogic() {
+
+    protected PaymentMethodTypeLogic() {
         super();
     }
-    
-    private static class PaymentMethodTypeLogicHolder {
-        static PaymentMethodTypeLogic instance = new PaymentMethodTypeLogic();
-    }
-    
+
     public static PaymentMethodTypeLogic getInstance() {
-        return PaymentMethodTypeLogicHolder.instance;
+        return CDI.current().select(PaymentMethodTypeLogic.class).get();
     }
 
     public PaymentMethodType createPaymentMethodType(final ExecutionErrorAccumulator eea, final String paymentMethodTypeName,

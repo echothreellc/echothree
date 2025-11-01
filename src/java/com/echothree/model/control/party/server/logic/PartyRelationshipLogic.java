@@ -37,20 +37,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class PartyRelationshipLogic
         extends BaseLogic {
-    
-    private PartyRelationshipLogic() {
+
+    protected PartyRelationshipLogic() {
         super();
     }
-    
-    private static class PartyRelationshipLogicHolder {
-        static PartyRelationshipLogic instance = new PartyRelationshipLogic();
-    }
-    
+
     public static PartyRelationshipLogic getInstance() {
-        return PartyRelationshipLogicHolder.instance;
+        return CDI.current().select(PartyRelationshipLogic.class).get();
     }
 
     public PartyRelationshipType getPartyRelationshipTypeByName(final ExecutionErrorAccumulator eea, final String partyRelationshipTypeName) {

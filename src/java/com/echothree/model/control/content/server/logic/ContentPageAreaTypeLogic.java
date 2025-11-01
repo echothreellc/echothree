@@ -32,20 +32,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class ContentPageAreaTypeLogic
     extends BaseLogic {
-    
-    private ContentPageAreaTypeLogic() {
+
+    protected ContentPageAreaTypeLogic() {
         super();
     }
-    
-    private static class ContentPageAreaTypeLogicHolder {
-        static ContentPageAreaTypeLogic instance = new ContentPageAreaTypeLogic();
-    }
-    
+
     public static ContentPageAreaTypeLogic getInstance() {
-        return ContentPageAreaTypeLogicHolder.instance;
+        return CDI.current().select(ContentPageAreaTypeLogic.class).get();
     }
 
     public ContentPageAreaType createContentPageAreaType(final ExecutionErrorAccumulator eea, final String contentPageAreaTypeName,

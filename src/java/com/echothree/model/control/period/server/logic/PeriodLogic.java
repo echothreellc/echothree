@@ -24,19 +24,18 @@ import com.echothree.model.data.period.server.entity.Period;
 import com.echothree.model.data.period.server.entity.PeriodKind;
 import com.echothree.model.data.period.server.entity.PeriodType;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class PeriodLogic {
 
-    private PeriodLogic() {
+    protected PeriodLogic() {
         super();
     }
 
-    private static class PeriodLogicHolder {
-        static PeriodLogic instance = new PeriodLogic();
-    }
-
     public static PeriodLogic getInstance() {
-        return PeriodLogicHolder.instance;
+        return CDI.current().select(PeriodLogic.class).get();
     }
     
     public Period createPeriod(final PeriodKind periodKind, final String periodName, final Period parentPeriod,

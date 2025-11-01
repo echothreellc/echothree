@@ -26,20 +26,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class ItemCategoryLogic
         extends BaseLogic {
-    
-    private ItemCategoryLogic() {
+
+    protected ItemCategoryLogic() {
         super();
     }
-    
-    private static class ItemCategoryLogicHolder {
-        static ItemCategoryLogic instance = new ItemCategoryLogic();
-    }
-    
+
     public static ItemCategoryLogic getInstance() {
-        return ItemCategoryLogicHolder.instance;
+        return CDI.current().select(ItemCategoryLogic.class).get();
     }
 
     public ItemCategory getItemCategoryByName(final ExecutionErrorAccumulator eea, final String itemCategoryName, EntityPermission entityPermission) {

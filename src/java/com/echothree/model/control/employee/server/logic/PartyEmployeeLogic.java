@@ -32,20 +32,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class PartyEmployeeLogic
         extends BaseLogic {
 
-    private PartyEmployeeLogic() {
+    protected PartyEmployeeLogic() {
         super();
     }
-    
-    private static class PartyEmployeeLogicHolder {
-        static PartyEmployeeLogic instance = new PartyEmployeeLogic();
-    }
-    
+
     public static PartyEmployeeLogic getInstance() {
-        return PartyEmployeeLogicHolder.instance;
+        return CDI.current().select(PartyEmployeeLogic.class).get();
     }
 
     public PartyEmployee getPartyEmployeeByName(final ExecutionErrorAccumulator eea, final String partyEmployeeName, final String partyName,

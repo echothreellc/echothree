@@ -29,19 +29,18 @@ import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.period.server.entity.Period;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class PostingLogic {
 
-    private PostingLogic() {
+    protected PostingLogic() {
         super();
     }
 
-    private static class PostingLogicHolder {
-        static PostingLogic instance = new PostingLogic();
-    }
-
     public static PostingLogic getInstance() {
-        return PostingLogicHolder.instance;
+        return CDI.current().select(PostingLogic.class).get();
     }
     
     private void updateGlAccountSummary(final AccountingControl accountingControl, final GlAccount glAccount,

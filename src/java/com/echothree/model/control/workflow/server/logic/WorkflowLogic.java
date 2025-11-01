@@ -36,20 +36,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class WorkflowLogic
         extends BaseLogic {
-    
-    private WorkflowLogic() {
+
+    protected WorkflowLogic() {
         super();
     }
-    
-    private static class WorkflowLogicHolder {
-        static WorkflowLogic instance = new WorkflowLogic();
-    }
-    
+
     public static WorkflowLogic getInstance() {
-        return WorkflowLogicHolder.instance;
+        return CDI.current().select(WorkflowLogic.class).get();
     }
 
     public Workflow getWorkflowByName(final Class<? extends BaseException> unknownException, final ExecutionErrors unknownExecutionError,

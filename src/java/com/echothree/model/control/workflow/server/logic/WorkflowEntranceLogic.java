@@ -51,20 +51,19 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class WorkflowEntranceLogic
         extends BaseLogic {
 
-    private WorkflowEntranceLogic() {
+    protected WorkflowEntranceLogic() {
         super();
     }
-    
-    private static class WorkflowEntranceLogicHolder {
-        static WorkflowEntranceLogic instance = new WorkflowEntranceLogic();
-    }
-    
+
     public static WorkflowEntranceLogic getInstance() {
-        return WorkflowEntranceLogicHolder.instance;
+        return CDI.current().select(WorkflowEntranceLogic.class).get();
     }
 
     public WorkflowEntrance getWorkflowEntranceByName(final Class<? extends BaseException> unknownWorkflowException, final ExecutionErrors unknownWorkflowExecutionError,

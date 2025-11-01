@@ -22,13 +22,13 @@ import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.wishlist.common.exception.DuplicateWishlistPriorityNameException;
-import com.echothree.model.control.wishlist.common.exception.UnknownDefaultWishlistTypeException;
 import com.echothree.model.control.wishlist.common.exception.UnknownDefaultWishlistPriorityException;
+import com.echothree.model.control.wishlist.common.exception.UnknownDefaultWishlistTypeException;
 import com.echothree.model.control.wishlist.common.exception.UnknownWishlistPriorityNameException;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.wishlist.server.entity.WishlistType;
 import com.echothree.model.data.wishlist.server.entity.WishlistPriority;
+import com.echothree.model.data.wishlist.server.entity.WishlistType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
@@ -36,20 +36,19 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class WishlistPriorityLogic
         extends BaseLogic {
 
-    private WishlistPriorityLogic() {
+    protected WishlistPriorityLogic() {
         super();
     }
 
-    private static class WishlistPriorityLogicHolder {
-        static WishlistPriorityLogic instance = new WishlistPriorityLogic();
-    }
-
     public static WishlistPriorityLogic getInstance() {
-        return WishlistPriorityLogic.WishlistPriorityLogicHolder.instance;
+        return CDI.current().select(WishlistPriorityLogic.class).get();
     }
 
     public WishlistPriority createWishlistPriority(final ExecutionErrorAccumulator eea, final String wishlistTypeName, final String wishlistPriorityName,

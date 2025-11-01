@@ -34,20 +34,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class GlAccountClassLogic
         extends BaseLogic {
-    
-    private GlAccountClassLogic() {
+
+    protected GlAccountClassLogic() {
         super();
     }
-    
-    private static class GlAccountClassLogicHolder {
-        static GlAccountClassLogic instance = new GlAccountClassLogic();
-    }
-    
+
     public static GlAccountClassLogic getInstance() {
-        return GlAccountClassLogicHolder.instance;
+        return CDI.current().select(GlAccountClassLogic.class).get();
     }
 
     public GlAccountClass createGlAccountClass(final ExecutionErrorAccumulator eea, final String glAccountClassName,

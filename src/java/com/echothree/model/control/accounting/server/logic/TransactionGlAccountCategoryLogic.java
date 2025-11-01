@@ -35,20 +35,19 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class TransactionGlAccountCategoryLogic
         extends BaseLogic {
 
-    private TransactionGlAccountCategoryLogic() {
+    protected TransactionGlAccountCategoryLogic() {
         super();
     }
 
-    private static class TransactionGlAccountCategoryLogicHolder {
-        static TransactionGlAccountCategoryLogic instance = new TransactionGlAccountCategoryLogic();
-    }
-
     public static TransactionGlAccountCategoryLogic getInstance() {
-        return TransactionGlAccountCategoryLogic.TransactionGlAccountCategoryLogicHolder.instance;
+        return CDI.current().select(TransactionGlAccountCategoryLogic.class).get();
     }
 
     public TransactionGlAccountCategory createTransactionGlAccountCategory(final ExecutionErrorAccumulator eea, final String transactionTypeName,

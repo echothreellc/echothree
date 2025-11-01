@@ -31,20 +31,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class RoleTypeLogic
         extends BaseLogic {
 
-    private RoleTypeLogic() {
+    protected RoleTypeLogic() {
         super();
     }
 
-    private static class RoleTypeLogicHolder {
-        static RoleTypeLogic instance = new RoleTypeLogic();
-    }
-
     public static RoleTypeLogic getInstance() {
-        return RoleTypeLogic.RoleTypeLogicHolder.instance;
+        return CDI.current().select(RoleTypeLogic.class).get();
     }
 
     public RoleType createRoleType(final ExecutionErrorAccumulator eea, final String roleTypeName, final RoleType parentRoleType,

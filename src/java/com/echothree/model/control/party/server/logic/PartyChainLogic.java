@@ -25,20 +25,19 @@ import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class PartyChainLogic
         extends BaseChainLogic {
-    
-    private PartyChainLogic() {
+
+    protected PartyChainLogic() {
         super();
     }
-    
-    private static class PartyChainLogicHolder {
-        static PartyChainLogic instance = new PartyChainLogic();
-    }
-    
+
     public static PartyChainLogic getInstance() {
-        return PartyChainLogicHolder.instance;
+        return CDI.current().select(PartyChainLogic.class).get();
     }
     
     protected ChainInstance createPartyChainInstance(final ExecutionErrorAccumulator eea, final String chainTypeName, final Party party,

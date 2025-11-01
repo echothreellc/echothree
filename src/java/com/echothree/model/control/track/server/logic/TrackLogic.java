@@ -31,20 +31,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class TrackLogic
         extends BaseLogic {
 
-    private TrackLogic() {
+    protected TrackLogic() {
         super();
     }
 
-    private static class TrackLogicHolder {
-        static TrackLogic instance = new TrackLogic();
-    }
-
     public static TrackLogic getInstance() {
-        return TrackLogicHolder.instance;
+        return CDI.current().select(TrackLogic.class).get();
     }
     
     public Track getTrackByName(final ExecutionErrorAccumulator eea, final String trackName) {

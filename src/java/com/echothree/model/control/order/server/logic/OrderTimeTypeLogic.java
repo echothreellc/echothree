@@ -38,20 +38,19 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class OrderTimeTypeLogic
         extends BaseLogic {
 
-    private OrderTimeTypeLogic() {
+    protected OrderTimeTypeLogic() {
         super();
     }
 
-    private static class OrderTimeTypeLogicHolder {
-        static OrderTimeTypeLogic instance = new OrderTimeTypeLogic();
-    }
-
     public static OrderTimeTypeLogic getInstance() {
-        return OrderTimeTypeLogic.OrderTimeTypeLogicHolder.instance;
+        return CDI.current().select(OrderTimeTypeLogic.class).get();
     }
 
     public OrderTimeType createOrderTimeType(final ExecutionErrorAccumulator eea, final String orderTypeName, final String orderTimeTypeName,

@@ -25,20 +25,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class PartyScaleUseLogic
         extends BaseLogic {
 
-    private PartyScaleUseLogic() {
+    protected PartyScaleUseLogic() {
         super();
     }
 
-    private static class PartyScaleUseLogicHolder {
-        static PartyScaleUseLogic instance = new PartyScaleUseLogic();
-    }
-
     public static PartyScaleUseLogic getInstance() {
-        return PartyScaleUseLogicHolder.instance;
+        return CDI.current().select(PartyScaleUseLogic.class).get();
     }
 
     public PartyScaleUse getPartyScaleUse(final ExecutionErrorAccumulator ema, final Party party, final ScaleUseType scaleUseType,

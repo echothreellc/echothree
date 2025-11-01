@@ -28,20 +28,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class ContactMechanismPurposeLogic
     extends BaseLogic {
-    
-    private ContactMechanismPurposeLogic() {
+
+    protected ContactMechanismPurposeLogic() {
         super();
     }
-    
-    private static class ContactMechanismPurposeLogicHolder {
-        static ContactMechanismPurposeLogic instance = new ContactMechanismPurposeLogic();
-    }
-    
+
     public static ContactMechanismPurposeLogic getInstance() {
-        return ContactMechanismPurposeLogicHolder.instance;
+        return CDI.current().select(ContactMechanismPurposeLogic.class).get();
     }
 
     public ContactMechanismPurpose getContactMechanismPurposeByName(final ExecutionErrorAccumulator eea, final String contactMechanismPurposeName) {

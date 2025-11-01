@@ -34,20 +34,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class EntityAttributeGroupLogic
         extends BaseLogic {
-    
-    private EntityAttributeGroupLogic() {
+
+    protected EntityAttributeGroupLogic() {
         super();
     }
-    
-    private static class EntityAttributeGroupLogicHolder {
-        static EntityAttributeGroupLogic instance = new EntityAttributeGroupLogic();
-    }
-    
+
     public static EntityAttributeGroupLogic getInstance() {
-        return EntityAttributeGroupLogicHolder.instance;
+        return CDI.current().select(EntityAttributeGroupLogic.class).get();
     }
     
     public EntityAttributeGroup createEntityAttributeGroup(final ExecutionErrorAccumulator eea, String entityAttributeGroupName,

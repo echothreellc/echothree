@@ -17,14 +17,14 @@
 package com.echothree.model.control.inventory.server.logic;
 
 import com.echothree.control.user.inventory.common.spec.InventoryConditionUniversalSpec;
-import com.echothree.model.control.inventory.common.exception.DuplicateInventoryConditionNameException;
-import com.echothree.model.control.inventory.common.exception.UnknownInventoryConditionNameException;
-import com.echothree.model.control.inventory.common.exception.UnknownDefaultInventoryConditionException;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.inventory.common.exception.DuplicateInventoryConditionNameException;
+import com.echothree.model.control.inventory.common.exception.UnknownDefaultInventoryConditionException;
+import com.echothree.model.control.inventory.common.exception.UnknownInventoryConditionNameException;
+import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -33,20 +33,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class InventoryConditionLogic
     extends BaseLogic {
-    
-    private InventoryConditionLogic() {
+
+    protected InventoryConditionLogic() {
         super();
     }
-    
-    private static class InventoryConditionLogicHolder {
-        static InventoryConditionLogic instance = new InventoryConditionLogic();
-    }
-    
+
     public static InventoryConditionLogic getInstance() {
-        return InventoryConditionLogicHolder.instance;
+        return CDI.current().select(InventoryConditionLogic.class).get();
     }
 
     public InventoryCondition createInventoryCondition(final ExecutionErrorAccumulator eea, final String inventoryConditionName,

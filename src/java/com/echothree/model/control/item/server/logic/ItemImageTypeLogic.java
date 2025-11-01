@@ -34,20 +34,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class ItemImageTypeLogic
     extends BaseLogic {
 
-    private ItemImageTypeLogic() {
+    protected ItemImageTypeLogic() {
         super();
     }
 
-    private static class ItemImageTypeLogicHolder {
-        static ItemImageTypeLogic instance = new ItemImageTypeLogic();
-    }
-
     public static ItemImageTypeLogic getInstance() {
-        return ItemImageTypeLogicHolder.instance;
+        return CDI.current().select(ItemImageTypeLogic.class).get();
     }
 
     public ItemImageType createItemImageType(final ExecutionErrorAccumulator eea, final String itemImageTypeName,

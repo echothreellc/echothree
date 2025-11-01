@@ -36,20 +36,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class PartyCancellationPolicyLogic
         extends BaseLogic {
-    
-    private PartyCancellationPolicyLogic() {
+
+    protected PartyCancellationPolicyLogic() {
         super();
     }
-    
-    private static class PartyCancellationPolicyLogicHolder {
-        static PartyCancellationPolicyLogic instance = new PartyCancellationPolicyLogic();
-    }
-    
+
     public static PartyCancellationPolicyLogic getInstance() {
-        return PartyCancellationPolicyLogicHolder.instance;
+        return CDI.current().select(PartyCancellationPolicyLogic.class).get();
     }
 
     public WorkflowEntrance insertPartyCancellationPolicyIntoWorkflow(EntityInstance entityInstance, BasePK createdBy) {

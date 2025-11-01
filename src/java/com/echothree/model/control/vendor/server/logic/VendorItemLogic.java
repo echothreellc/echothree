@@ -30,20 +30,19 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class VendorItemLogic
         extends BaseLogic {
 
-    private VendorItemLogic() {
+    protected VendorItemLogic() {
         super();
     }
-    
-    private static class VendorItemLogicHolder {
-        static VendorItemLogic instance = new VendorItemLogic();
-    }
-    
+
     public static VendorItemLogic getInstance() {
-        return VendorItemLogicHolder.instance;
+        return CDI.current().select(VendorItemLogic.class).get();
     }
 
     public VendorItem getVendorItemByUniversalSpec(final ExecutionErrorAccumulator eea, final VendorItemUniversalSpec universalSpec,

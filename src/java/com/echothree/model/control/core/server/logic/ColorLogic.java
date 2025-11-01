@@ -23,20 +23,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class ColorLogic
         extends BaseLogic {
 
-    private ColorLogic() {
+    protected ColorLogic() {
         super();
     }
-    
-    private static class ColorLogicHolder {
-        static ColorLogic instance = new ColorLogic();
-    }
-    
+
     public static ColorLogic getInstance() {
-        return ColorLogicHolder.instance;
+        return CDI.current().select(ColorLogic.class).get();
     }
 
     public Color getColorByName(final ExecutionErrorAccumulator eea, final String colorName) {

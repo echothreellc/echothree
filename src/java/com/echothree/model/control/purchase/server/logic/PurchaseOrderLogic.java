@@ -23,7 +23,7 @@ import com.echothree.model.control.order.common.OrderRoleTypes;
 import com.echothree.model.control.order.common.OrderTypes;
 import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.order.server.control.OrderRoleControl;
-import com.echothree.model.control.order.server.logic.OrderLogic;
+import com.echothree.model.control.order.server.logic.BaseOrderLogic;
 import com.echothree.model.control.order.server.logic.OrderPriorityLogic;
 import com.echothree.model.control.purchase.common.choice.PurchaseOrderStatusChoicesBean;
 import com.echothree.model.control.purchase.common.exception.DuplicateHandlingInPurchaseOrderStatusTransitionException;
@@ -66,20 +66,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class PurchaseOrderLogic
-        extends OrderLogic {
+        extends BaseOrderLogic {
 
-    private PurchaseOrderLogic() {
+    protected PurchaseOrderLogic() {
         super();
     }
 
-    private static class LogicHolder {
-        static PurchaseOrderLogic instance = new PurchaseOrderLogic();
-    }
-
     public static PurchaseOrderLogic getInstance() {
-        return LogicHolder.instance;
+        return CDI.current().select(PurchaseOrderLogic.class).get();
     }
     
     public void validatePurchaseOrderReference(final ExecutionErrorAccumulator eea, final String reference,

@@ -18,20 +18,19 @@ package com.echothree.model.control.sequence.server.logic.checksum;
 
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import java.nio.charset.StandardCharsets;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class Mod10SequenceChecksum
         implements SequenceChecksum {
 
-    private Mod10SequenceChecksum() {
+    protected Mod10SequenceChecksum() {
         super();
     }
 
-    private static class SequenceChecksumHolder {
-        static SequenceChecksum instance = new Mod10SequenceChecksum();
-    }
-
-    public static SequenceChecksum getInstance() {
-        return SequenceChecksumHolder.instance;
+    public static Mod10SequenceChecksum getInstance() {
+        return CDI.current().select(Mod10SequenceChecksum.class).get();
     }
 
     @Override

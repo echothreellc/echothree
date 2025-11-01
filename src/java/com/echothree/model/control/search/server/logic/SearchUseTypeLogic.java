@@ -25,28 +25,27 @@ import com.echothree.model.control.search.common.exception.DuplicateSearchUseTyp
 import com.echothree.model.control.search.common.exception.UnknownDefaultSearchUseTypeException;
 import com.echothree.model.control.search.common.exception.UnknownSearchUseTypeNameException;
 import com.echothree.model.control.search.server.control.SearchControl;
-import com.echothree.model.data.search.server.entity.SearchUseType;
 import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.model.data.search.server.entity.SearchUseType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class SearchUseTypeLogic
         extends BaseLogic {
 
-    private SearchUseTypeLogic() {
+    protected SearchUseTypeLogic() {
         super();
     }
 
-    private static class SearchUseTypeLogicHolder {
-        static SearchUseTypeLogic instance = new SearchUseTypeLogic();
-    }
-
     public static SearchUseTypeLogic getInstance() {
-        return SearchUseTypeLogic.SearchUseTypeLogicHolder.instance;
+        return CDI.current().select(SearchUseTypeLogic.class).get();
     }
 
     public SearchUseType createSearchUseType(final ExecutionErrorAccumulator eea, final String searchUseTypeName,

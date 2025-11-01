@@ -37,19 +37,11 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 
-public class OrderLineLogic
+public class BaseOrderLineLogic
         extends BaseLogic {
 
-    protected OrderLineLogic() {
+    protected BaseOrderLineLogic() {
         super();
-    }
-
-    private static class OrderLogicHolder {
-        static OrderLineLogic instance = new OrderLineLogic();
-    }
-
-    public static OrderLineLogic getInstance() {
-        return OrderLogicHolder.instance;
     }
 
     public OrderLine createOrderLine(final Session session, final ExecutionErrorAccumulator eea, final Order order, Integer orderLineSequence,

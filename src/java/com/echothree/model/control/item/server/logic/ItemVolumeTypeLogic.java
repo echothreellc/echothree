@@ -25,37 +25,28 @@ import com.echothree.model.control.item.common.exception.DuplicateItemVolumeType
 import com.echothree.model.control.item.common.exception.UnknownDefaultItemVolumeTypeException;
 import com.echothree.model.control.item.common.exception.UnknownItemVolumeTypeNameException;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.control.item.server.database.ItemEntityInstanceResult;
-import com.echothree.model.control.queue.common.QueueTypes;
-import com.echothree.model.control.queue.server.control.QueueControl;
-import com.echothree.model.control.queue.server.logic.QueueTypeLogic;
-import com.echothree.model.data.item.common.pk.ItemVolumeTypePK;
 import com.echothree.model.data.item.server.entity.ItemVolumeType;
 import com.echothree.model.data.item.server.value.ItemVolumeTypeDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.queue.server.value.QueuedEntityValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.util.ArrayList;
-import java.util.List;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class ItemVolumeTypeLogic
     extends BaseLogic {
 
-    private ItemVolumeTypeLogic() {
+    protected ItemVolumeTypeLogic() {
         super();
     }
 
-    private static class ItemVolumeTypeLogicHolder {
-        static ItemVolumeTypeLogic instance = new ItemVolumeTypeLogic();
-    }
-
     public static ItemVolumeTypeLogic getInstance() {
-        return ItemVolumeTypeLogicHolder.instance;
+        return CDI.current().select(ItemVolumeTypeLogic.class).get();
     }
 
     public ItemVolumeType createItemVolumeType(final ExecutionErrorAccumulator eea, final String itemVolumeTypeName,

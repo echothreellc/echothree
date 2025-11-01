@@ -42,21 +42,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class OfferLogic
         extends BaseLogic {
 
-    private OfferLogic() {
+    protected OfferLogic() {
         super();
     }
 
-    private static class OfferLogicHolder {
-
-        static OfferLogic instance = new OfferLogic();
-    }
-
     public static OfferLogic getInstance() {
-        return OfferLogicHolder.instance;
+        return CDI.current().select(OfferLogic.class).get();
     }
 
     public Offer createOffer(final ExecutionErrorAccumulator eea, final String offerName, final Sequence salesOrderSequence,

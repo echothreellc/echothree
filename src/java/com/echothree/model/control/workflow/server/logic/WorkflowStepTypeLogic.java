@@ -33,20 +33,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class WorkflowStepTypeLogic
         extends BaseLogic {
 
-    private WorkflowStepTypeLogic() {
+    protected WorkflowStepTypeLogic() {
         super();
     }
 
-    private static class WorkflowStepTypeLogicHolder {
-        static WorkflowStepTypeLogic instance = new WorkflowStepTypeLogic();
-    }
-
     public static WorkflowStepTypeLogic getInstance() {
-        return WorkflowStepTypeLogic.WorkflowStepTypeLogicHolder.instance;
+        return CDI.current().select(WorkflowStepTypeLogic.class).get();
     }
 
     public WorkflowStepType createWorkflowStepType(final ExecutionErrorAccumulator eea, final String workflowStepTypeName,

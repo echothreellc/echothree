@@ -32,20 +32,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class ItemPurchasingCategoryLogic
         extends BaseLogic {
-    
-    private ItemPurchasingCategoryLogic() {
+
+    protected ItemPurchasingCategoryLogic() {
         super();
     }
-    
-    private static class ItemPurchasingCategoryLogicHolder {
-        static ItemPurchasingCategoryLogic instance = new ItemPurchasingCategoryLogic();
-    }
-    
+
     public static ItemPurchasingCategoryLogic getInstance() {
-        return ItemPurchasingCategoryLogicHolder.instance;
+        return CDI.current().select(ItemPurchasingCategoryLogic.class).get();
     }
 
     public ItemPurchasingCategory getItemPurchasingCategoryByName(final ExecutionErrorAccumulator eea, final String itemPurchasingCategoryName,

@@ -47,20 +47,19 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class FilterLogic
         extends BaseLogic {
 
-    private FilterLogic() {
+    protected FilterLogic() {
         super();
     }
 
-    private static class FilterLogicHolder {
-        static FilterLogic instance = new FilterLogic();
-    }
-
     public static FilterLogic getInstance() {
-        return FilterLogic.FilterLogicHolder.instance;
+        return CDI.current().select(FilterLogic.class).get();
     }
 
     public Filter createFilter(final ExecutionErrorAccumulator eea, final String filterKindName, final String filterTypeName,

@@ -28,29 +28,25 @@ import com.echothree.model.control.inventory.server.control.InventoryAdjustmentT
 import com.echothree.model.data.inventory.server.entity.InventoryAdjustmentType;
 import com.echothree.model.data.inventory.server.value.InventoryAdjustmentTypeDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
-import com.echothree.model.data.workflow.server.entity.Workflow;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class InventoryAdjustmentTypeLogic
     extends BaseLogic {
 
-    private InventoryAdjustmentTypeLogic() {
+    protected InventoryAdjustmentTypeLogic() {
         super();
     }
 
-    private static class InventoryAdjustmentTypeLogicHolder {
-        static InventoryAdjustmentTypeLogic instance = new InventoryAdjustmentTypeLogic();
-    }
-
     public static InventoryAdjustmentTypeLogic getInstance() {
-        return InventoryAdjustmentTypeLogicHolder.instance;
+        return CDI.current().select(InventoryAdjustmentTypeLogic.class).get();
     }
 
     public InventoryAdjustmentType createInventoryAdjustmentType(final ExecutionErrorAccumulator eea, final String inventoryAdjustmentTypeName,

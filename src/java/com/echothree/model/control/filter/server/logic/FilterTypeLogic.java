@@ -36,20 +36,19 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class FilterTypeLogic
         extends BaseLogic {
 
-    private FilterTypeLogic() {
+    protected FilterTypeLogic() {
         super();
     }
 
-    private static class FilterTypeLogicHolder {
-        static FilterTypeLogic instance = new FilterTypeLogic();
-    }
-
     public static FilterTypeLogic getInstance() {
-        return FilterTypeLogic.FilterTypeLogicHolder.instance;
+        return CDI.current().select(FilterTypeLogic.class).get();
     }
 
     public FilterType createFilterType(final ExecutionErrorAccumulator eea, final String filterKindName, final String filterTypeName,

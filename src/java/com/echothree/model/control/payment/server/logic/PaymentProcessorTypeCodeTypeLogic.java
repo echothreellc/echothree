@@ -37,20 +37,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class PaymentProcessorTypeCodeTypeLogic
     extends BaseLogic {
-    
-    private PaymentProcessorTypeCodeTypeLogic() {
+
+    protected PaymentProcessorTypeCodeTypeLogic() {
         super();
     }
-    
-    private static class PaymentProcessorTypeCodeTypeLogicHolder {
-        static PaymentProcessorTypeCodeTypeLogic instance = new PaymentProcessorTypeCodeTypeLogic();
-    }
-    
+
     public static PaymentProcessorTypeCodeTypeLogic getInstance() {
-        return PaymentProcessorTypeCodeTypeLogicHolder.instance;
+        return CDI.current().select(PaymentProcessorTypeCodeTypeLogic.class).get();
     }
 
     public PaymentProcessorTypeCodeType createPaymentProcessorTypeCodeType(final ExecutionErrorAccumulator eea,

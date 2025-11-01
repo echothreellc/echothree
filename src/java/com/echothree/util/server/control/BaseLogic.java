@@ -29,7 +29,11 @@ import com.echothree.util.server.persistence.ThreadSession;
 import java.lang.reflect.InvocationTargetException;
 
 public abstract class BaseLogic {
-    
+
+    protected BaseLogic() {
+        super();
+    }
+
     public Session getSession() {
         return ThreadSession.currentSession();
     }

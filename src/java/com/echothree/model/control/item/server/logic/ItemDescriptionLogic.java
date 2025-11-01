@@ -44,6 +44,8 @@ import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
@@ -52,19 +54,16 @@ import javax.imageio.stream.ImageOutputStream;
 import javax.imageio.stream.MemoryCacheImageInputStream;
 import javax.imageio.stream.MemoryCacheImageOutputStream;
 
+@ApplicationScoped
 public class ItemDescriptionLogic
         extends BaseLogic {
-    
-    private ItemDescriptionLogic() {
+
+    protected ItemDescriptionLogic() {
         super();
     }
-    
-    private static class ItemDescriptionLogicHolder {
-        static ItemDescriptionLogic instance = new ItemDescriptionLogic();
-    }
-    
+
     public static ItemDescriptionLogic getInstance() {
-        return ItemDescriptionLogicHolder.instance;
+        return CDI.current().select(ItemDescriptionLogic.class).get();
     }
 
     public String getIndexDefaultItemDescriptionTypeName() {

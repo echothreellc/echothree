@@ -23,19 +23,18 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class PicklistTimeLogic {
 
-    private PicklistTimeLogic() {
+    protected PicklistTimeLogic() {
         super();
     }
 
-    private static class PicklistTimeLogicHolder {
-        static PicklistTimeLogic instance = new PicklistTimeLogic();
-    }
-
     public static PicklistTimeLogic getInstance() {
-        return PicklistTimeLogicHolder.instance;
+        return CDI.current().select(PicklistTimeLogic.class).get();
     }
 
     private String getPicklistTypeName(PicklistType picklistType) {

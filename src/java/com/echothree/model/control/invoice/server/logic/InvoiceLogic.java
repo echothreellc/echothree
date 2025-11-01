@@ -52,20 +52,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class InvoiceLogic
         extends BaseLogic {
 
-    private InvoiceLogic() {
+    protected InvoiceLogic() {
         super();
     }
 
-    private static class InvoiceLogicHolder {
-        static InvoiceLogic instance = new InvoiceLogic();
-    }
-
     public static InvoiceLogic getInstance() {
-        return InvoiceLogicHolder.instance;
+        return CDI.current().select(InvoiceLogic.class).get();
     }
     
     public Currency getInvoiceCurrency(final Invoice invoice) {

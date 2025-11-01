@@ -23,20 +23,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class UserLoginLogic
         extends BaseLogic {
-    
-    private UserLoginLogic() {
+
+    protected UserLoginLogic() {
         super();
     }
-    
-    private static class UserLoginLogicHolder {
-        static UserLoginLogic instance = new UserLoginLogic();
-    }
-    
+
     public static UserLoginLogic getInstance() {
-        return UserLoginLogicHolder.instance;
+        return CDI.current().select(UserLoginLogic.class).get();
     }
     
     public UserLogin getUserLoginByUsername(final ExecutionErrorAccumulator eea, final String username) {

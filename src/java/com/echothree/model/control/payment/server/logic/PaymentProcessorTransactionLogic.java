@@ -36,20 +36,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class PaymentProcessorTransactionLogic
     extends BaseLogic {
-    
-    private PaymentProcessorTransactionLogic() {
+
+    protected PaymentProcessorTransactionLogic() {
         super();
     }
-    
-    private static class PaymentProcessorTransactionLogicHolder {
-        static PaymentProcessorTransactionLogic instance = new PaymentProcessorTransactionLogic();
-    }
-    
+
     public static PaymentProcessorTransactionLogic getInstance() {
-        return PaymentProcessorTransactionLogicHolder.instance;
+        return CDI.current().select(PaymentProcessorTransactionLogic.class).get();
     }
 
     public PaymentProcessorTransaction createPaymentProcessorTransaction(final ExecutionErrorAccumulator eea, String paymentProcessorTransactionName,

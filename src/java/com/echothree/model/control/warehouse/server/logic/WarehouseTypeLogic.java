@@ -33,20 +33,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class WarehouseTypeLogic
         extends BaseLogic {
 
-    private WarehouseTypeLogic() {
+    protected WarehouseTypeLogic() {
         super();
     }
 
-    private static class WarehouseTypeLogicHolder {
-        static WarehouseTypeLogic instance = new WarehouseTypeLogic();
-    }
-
     public static WarehouseTypeLogic getInstance() {
-        return WarehouseTypeLogic.WarehouseTypeLogicHolder.instance;
+        return CDI.current().select(WarehouseTypeLogic.class).get();
     }
 
     public WarehouseType createWarehouseType(final ExecutionErrorAccumulator eea, final String warehouseTypeName,

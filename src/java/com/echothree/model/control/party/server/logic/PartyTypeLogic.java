@@ -33,20 +33,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class PartyTypeLogic
         extends BaseLogic {
 
-    private PartyTypeLogic() {
+    protected PartyTypeLogic() {
         super();
     }
 
-    private static class PartyTypeLogicHolder {
-        static PartyTypeLogic instance = new PartyTypeLogic();
-    }
-
     public static PartyTypeLogic getInstance() {
-        return PartyTypeLogic.PartyTypeLogicHolder.instance;
+        return CDI.current().select(PartyTypeLogic.class).get();
     }
 
     public PartyType createPartyType(final ExecutionErrorAccumulator eea, final String partyTypeName,

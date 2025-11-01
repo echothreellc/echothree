@@ -32,20 +32,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class OfferNameElementLogic
         extends BaseLogic {
 
-    private OfferNameElementLogic() {
+    protected OfferNameElementLogic() {
         super();
     }
 
-    private static class OfferNameElementLogicHolder {
-        static OfferNameElementLogic instance = new OfferNameElementLogic();
-    }
-
     public static OfferNameElementLogic getInstance() {
-        return OfferNameElementLogic.OfferNameElementLogicHolder.instance;
+        return CDI.current().select(OfferNameElementLogic.class).get();
     }
 
     public OfferNameElement createOfferNameElement(final ExecutionErrorAccumulator eea, final String offerNameElementName,

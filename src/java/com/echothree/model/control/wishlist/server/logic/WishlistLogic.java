@@ -31,26 +31,25 @@ import com.echothree.model.data.offer.server.entity.Source;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.wishlist.server.entity.WishlistType;
 import com.echothree.model.data.wishlist.server.entity.WishlistPriority;
+import com.echothree.model.data.wishlist.server.entity.WishlistType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class WishlistLogic
         extends BaseLogic {
-    
-    private WishlistLogic() {
+
+    protected WishlistLogic() {
         super();
     }
-    
-    private static class WishlistLogicHolder {
-        static WishlistLogic instance = new WishlistLogic();
-    }
-    
+
     public static WishlistLogic getInstance() {
-        return WishlistLogicHolder.instance;
+        return CDI.current().select(WishlistLogic.class).get();
     }
 
     private OfferUse getOrderOfferUse(final UserVisit userVisit, final OfferUse offerUse, final Party companyParty) {

@@ -28,20 +28,20 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import com.google.errorprone.annotations.InlineMe;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class ComponentVendorLogic
         extends BaseLogic {
 
-    private ComponentVendorLogic() {
+    protected ComponentVendorLogic() {
         super();
     }
 
-    private static class ComponentVendorLogicHolder {
-        static ComponentVendorLogic instance = new ComponentVendorLogic();
-    }
-
     public static ComponentVendorLogic getInstance() {
-        return ComponentVendorLogicHolder.instance;
+        return CDI.current().select(ComponentVendorLogic.class).get();
     }
 
     public ComponentVendor getComponentVendorByName(final ExecutionErrorAccumulator eea, final String componentVendorName,

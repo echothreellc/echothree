@@ -40,20 +40,19 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.regex.Pattern;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class PartyPaymentMethodLogic
     extends BaseLogic {
 
-    private PartyPaymentMethodLogic() {
+    protected PartyPaymentMethodLogic() {
         super();
     }
 
-    private static class PartyPaymentMethodLogicHolder {
-        static PartyPaymentMethodLogic instance = new PartyPaymentMethodLogic();
-    }
-
     public static PartyPaymentMethodLogic getInstance() {
-        return PartyPaymentMethodLogicHolder.instance;
+        return CDI.current().select(PartyPaymentMethodLogic.class).get();
     }
 
     private String getDigitsOnly(String s) {

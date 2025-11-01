@@ -33,20 +33,19 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import com.lowagie.text.pdf.PdfReader;
 import java.io.IOException;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class DocumentLogic
         extends BaseLogic {
 
-    private DocumentLogic() {
+    protected DocumentLogic() {
         super();
     }
 
-    private static class DocumentLogicHolder {
-        static DocumentLogic instance = new DocumentLogic();
-    }
-
     public static DocumentLogic getInstance() {
-        return DocumentLogicHolder.instance;
+        return CDI.current().select(DocumentLogic.class).get();
     }
 
     public Integer getPages(final MimeType mimeType, final ByteArray blob, final String clob) {

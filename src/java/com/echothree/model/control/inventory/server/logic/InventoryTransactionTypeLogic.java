@@ -37,20 +37,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class InventoryTransactionTypeLogic
     extends BaseLogic {
 
-    private InventoryTransactionTypeLogic() {
+    protected InventoryTransactionTypeLogic() {
         super();
     }
 
-    private static class InventoryTransactionTypeLogicHolder {
-        static InventoryTransactionTypeLogic instance = new InventoryTransactionTypeLogic();
-    }
-
     public static InventoryTransactionTypeLogic getInstance() {
-        return InventoryTransactionTypeLogicHolder.instance;
+        return CDI.current().select(InventoryTransactionTypeLogic.class).get();
     }
 
     public InventoryTransactionType createInventoryTransactionType(final ExecutionErrorAccumulator eea, final String inventoryTransactionTypeName,

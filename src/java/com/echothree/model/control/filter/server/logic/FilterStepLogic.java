@@ -43,20 +43,19 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class FilterStepLogic
         extends BaseLogic {
 
-    private FilterStepLogic() {
+    protected FilterStepLogic() {
         super();
     }
 
-    private static class FilterStepLogicHolder {
-        static FilterStepLogic instance = new FilterStepLogic();
-    }
-
     public static FilterStepLogic getInstance() {
-        return FilterStepLogic.FilterStepLogicHolder.instance;
+        return CDI.current().select(FilterStepLogic.class).get();
     }
 
     public FilterStep createFilterStep(final ExecutionErrorAccumulator eea, final String filterKindName,

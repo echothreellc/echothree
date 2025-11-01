@@ -25,19 +25,18 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.user.server.factory.UserSessionFactory;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class UserSessionLogic {
 
-    private UserSessionLogic() {
+    protected UserSessionLogic() {
         super();
     }
 
-    private static class UserSessionLogicHolder {
-        static UserSessionLogic instance = new UserSessionLogic();
-    }
-
     public static UserSessionLogic getInstance() {
-        return UserSessionLogicHolder.instance;
+        return CDI.current().select(UserSessionLogic.class).get();
     }
 
     /**

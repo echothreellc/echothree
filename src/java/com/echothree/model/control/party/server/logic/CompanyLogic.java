@@ -30,20 +30,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class CompanyLogic
         extends BaseLogic {
-    
-    private CompanyLogic() {
+
+    protected CompanyLogic() {
         super();
     }
-    
-    private static class CompanyLogicHolder {
-        static CompanyLogic instance = new CompanyLogic();
-    }
-    
+
     public static CompanyLogic getInstance() {
-        return CompanyLogicHolder.instance;
+        return CDI.current().select(CompanyLogic.class).get();
     }
 
     public PartyCompany getPartyCompanyByName(final ExecutionErrorAccumulator eea, final String companyName,

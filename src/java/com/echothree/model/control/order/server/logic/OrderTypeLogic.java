@@ -37,20 +37,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class OrderTypeLogic
     extends BaseLogic {
 
-    private OrderTypeLogic() {
+    protected OrderTypeLogic() {
         super();
     }
 
-    private static class OrderTypeLogicHolder {
-        static OrderTypeLogic instance = new OrderTypeLogic();
-    }
-
     public static OrderTypeLogic getInstance() {
-        return OrderTypeLogicHolder.instance;
+        return CDI.current().select(OrderTypeLogic.class).get();
     }
 
     public OrderType createOrderType(final ExecutionErrorAccumulator eea, final String orderTypeName,

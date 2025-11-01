@@ -23,20 +23,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class RatingLogic
         extends BaseLogic {
 
-    private RatingLogic() {
+    protected RatingLogic() {
         super();
     }
 
-    private static class RatingLogicHolder {
-        static RatingLogic instance = new RatingLogic();
-    }
-
     public static RatingLogic getInstance() {
-        return RatingLogicHolder.instance;
+        return CDI.current().select(RatingLogic.class).get();
     }
     
     public Rating getRatingByName(final ExecutionErrorAccumulator eea, final String ratingName) {

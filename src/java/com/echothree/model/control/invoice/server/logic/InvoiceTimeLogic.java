@@ -23,19 +23,18 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class InvoiceTimeLogic {
 
-    private InvoiceTimeLogic() {
+    protected InvoiceTimeLogic() {
         super();
     }
 
-    private static class InvoiceTimeLogicHolder {
-        static InvoiceTimeLogic instance = new InvoiceTimeLogic();
-    }
-
     public static InvoiceTimeLogic getInstance() {
-        return InvoiceTimeLogicHolder.instance;
+        return CDI.current().select(InvoiceTimeLogic.class).get();
     }
 
     private String getInvoiceTypeName(InvoiceType invoiceType) {

@@ -18,6 +18,7 @@ package com.echothree.model.control.workflow.server.logic;
 
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.server.logic.TextLogic;
 import com.echothree.model.control.order.server.trigger.OrderTrigger;
 import com.echothree.model.control.printer.server.trigger.PrinterGroupJobTrigger;
 import com.echothree.model.control.training.server.trigger.PartyTrainingClassTrigger;
@@ -30,19 +31,18 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class WorkflowTriggerLogic {
-    
-    private WorkflowTriggerLogic() {
+
+    protected WorkflowTriggerLogic() {
         super();
     }
-    
-    private static class WorkflowTriggerLogicHolder {
-        static WorkflowTriggerLogic instance = new WorkflowTriggerLogic();
-    }
-    
+
     public static WorkflowTriggerLogic getInstance() {
-        return WorkflowTriggerLogicHolder.instance;
+        return CDI.current().select(WorkflowTriggerLogic.class).get();
     }
     
     // TODO: configure using a property file.

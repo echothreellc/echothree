@@ -28,20 +28,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class TrainingClassLogic
         extends BaseLogic {
-    
-    private TrainingClassLogic() {
+
+    protected TrainingClassLogic() {
         super();
     }
-    
-    private static class TrainingClassLogicHolder {
-        static TrainingClassLogic instance = new TrainingClassLogic();
-    }
-    
+
     public static TrainingClassLogic getInstance() {
-        return TrainingClassLogicHolder.instance;
+        return CDI.current().select(TrainingClassLogic.class).get();
     }
     
     private TrainingClass getTrainingClassByName(final ExecutionErrorAccumulator eea, final String trainingClassName, EntityPermission entityPermission) {

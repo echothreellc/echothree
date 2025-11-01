@@ -35,20 +35,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class UseTypeLogic
         extends BaseLogic {
 
-    private UseTypeLogic() {
+    protected UseTypeLogic() {
         super();
     }
 
-    private static class UseTypeLogicHolder {
-        static UseTypeLogic instance = new UseTypeLogic();
-    }
-
     public static UseTypeLogic getInstance() {
-        return UseTypeLogic.UseTypeLogicHolder.instance;
+        return CDI.current().select(UseTypeLogic.class).get();
     }
 
     public UseType createUseType(final ExecutionErrorAccumulator eea, final String useTypeName,

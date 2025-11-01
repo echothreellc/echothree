@@ -31,20 +31,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class CampaignSourceLogic
         extends BaseLogic {
 
-    private CampaignSourceLogic() {
+    protected CampaignSourceLogic() {
         super();
     }
 
-    private static class CampaignSourceLogicHolder {
-        static CampaignSourceLogic instance = new CampaignSourceLogic();
-    }
-
     public static CampaignSourceLogic getInstance() {
-        return CampaignSourceLogicHolder.instance;
+        return CDI.current().select(CampaignSourceLogic.class).get();
     }
     
     public CampaignSource getCampaignSourceByName(final ExecutionErrorAccumulator eea, final String campaignSourceName) {

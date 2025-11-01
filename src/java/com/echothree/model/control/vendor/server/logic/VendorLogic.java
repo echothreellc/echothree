@@ -55,20 +55,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class VendorLogic
         extends BaseLogic {
-    
-    private VendorLogic() {
+
+    protected VendorLogic() {
         super();
     }
-    
-    private static class VendorLogicHolder {
-        static VendorLogic instance = new VendorLogic();
-    }
-    
+
     public static VendorLogic getInstance() {
-        return VendorLogicHolder.instance;
+        return CDI.current().select(VendorLogic.class).get();
     }
 
     private String getVendorName(final ExecutionErrorAccumulator eea) {

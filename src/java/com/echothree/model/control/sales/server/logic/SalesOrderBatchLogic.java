@@ -51,20 +51,19 @@ import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
 import java.util.ArrayList;
 import java.util.List;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class SalesOrderBatchLogic
         extends BaseLogic {
 
-    private SalesOrderBatchLogic() {
+    protected SalesOrderBatchLogic() {
         super();
     }
 
-    private static class BatchLogicHolder {
-        static SalesOrderBatchLogic instance = new SalesOrderBatchLogic();
-    }
-
     public static SalesOrderBatchLogic getInstance() {
-        return BatchLogicHolder.instance;
+        return CDI.current().select(SalesOrderBatchLogic.class).get();
     }
     
     public Batch createBatch(final ExecutionErrorAccumulator eea, final Currency currency, final PaymentMethod paymentMethod, final Long count,

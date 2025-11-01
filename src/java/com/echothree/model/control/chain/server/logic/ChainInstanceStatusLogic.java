@@ -30,19 +30,18 @@ import com.echothree.model.data.chain.server.entity.ChainInstance;
 import com.echothree.model.data.chain.server.entity.ChainInstanceStatus;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class ChainInstanceStatusLogic {
-    
-    private ChainInstanceStatusLogic() {
+
+    protected ChainInstanceStatusLogic() {
         super();
     }
-    
-    private static class ChainInstanceStatusLogicHolder {
-        static ChainInstanceStatusLogic instance = new ChainInstanceStatusLogic();
-    }
-    
+
     public static ChainInstanceStatusLogic getInstance() {
-        return ChainInstanceStatusLogicHolder.instance;
+        return CDI.current().select(ChainInstanceStatusLogic.class).get();
     }
     
     private void processChainActionLetter(final ChainControl chainControl, final ChainInstance chainInstance, final ChainAction chainAction, final BasePK processedBy) {

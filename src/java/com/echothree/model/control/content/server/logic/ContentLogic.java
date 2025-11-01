@@ -49,20 +49,19 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class ContentLogic
         extends BaseLogic {
 
-    private ContentLogic() {
+    protected ContentLogic() {
         super();
     }
 
-    private static class ContentLogicHolder {
-        static ContentLogic instance = new ContentLogic();
-    }
-
     public static ContentLogic getInstance() {
-        return ContentLogicHolder.instance;
+        return CDI.current().select(ContentLogic.class).get();
     }
 
     public void checkReferrer(final ExecutionErrorAccumulator eea, final String referrer) {

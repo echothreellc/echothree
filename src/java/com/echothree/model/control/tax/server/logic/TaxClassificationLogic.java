@@ -24,20 +24,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class TaxClassificationLogic
         extends BaseLogic {
-    
-    private TaxClassificationLogic() {
+
+    protected TaxClassificationLogic() {
         super();
     }
-    
-    private static class TaxClassificationLogicHolder {
-        static TaxClassificationLogic instance = new TaxClassificationLogic();
-    }
-    
+
     public static TaxClassificationLogic getInstance() {
-        return TaxClassificationLogicHolder.instance;
+        return CDI.current().select(TaxClassificationLogic.class).get();
     }
 
     public TaxClassification getTaxClassificationByName(final ExecutionErrorAccumulator eea, final GeoCode countryGeoCode, final String taxClassificationName) {

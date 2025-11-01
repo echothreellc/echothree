@@ -55,20 +55,19 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class WorkflowDestinationLogic
         extends BaseLogic {
 
-    private WorkflowDestinationLogic() {
+    protected WorkflowDestinationLogic() {
         super();
     }
-    
-    private static class WorkflowDestinationLogicHolder {
-        static WorkflowDestinationLogic instance = new WorkflowDestinationLogic();
-    }
-    
+
     public static WorkflowDestinationLogic getInstance() {
-        return WorkflowDestinationLogicHolder.instance;
+        return CDI.current().select(WorkflowDestinationLogic.class).get();
     }
     
     public WorkflowDestination getWorkflowDestinationByName(final ExecutionErrorAccumulator eea, final WorkflowStep workflowStep,

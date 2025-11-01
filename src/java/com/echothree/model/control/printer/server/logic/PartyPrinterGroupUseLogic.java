@@ -25,20 +25,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class PartyPrinterGroupUseLogic
         extends BaseLogic {
 
-    private PartyPrinterGroupUseLogic() {
+    protected PartyPrinterGroupUseLogic() {
         super();
     }
 
-    private static class PartyPrinterGroupUseLogicHolder {
-        static PartyPrinterGroupUseLogic instance = new PartyPrinterGroupUseLogic();
-    }
-
     public static PartyPrinterGroupUseLogic getInstance() {
-        return PartyPrinterGroupUseLogicHolder.instance;
+        return CDI.current().select(PartyPrinterGroupUseLogic.class).get();
     }
 
     public PartyPrinterGroupUse getPartyPrinterGroupUse(final ExecutionErrorAccumulator ema, final Party party, final PrinterGroupUseType printerGroupUseType,

@@ -37,7 +37,7 @@ import com.echothree.model.control.order.server.control.OrderBatchControl;
 import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.order.server.control.OrderPriorityControl;
 import com.echothree.model.control.order.server.control.OrderRoleControl;
-import com.echothree.model.control.order.server.logic.OrderLogic;
+import com.echothree.model.control.order.server.logic.BaseOrderLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.returnpolicy.common.ReturnKinds;
@@ -81,20 +81,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class SalesOrderLogic
-        extends OrderLogic {
+        extends BaseOrderLogic {
 
-    private SalesOrderLogic() {
+    protected SalesOrderLogic() {
         super();
     }
 
-    private static class LogicHolder {
-        static SalesOrderLogic instance = new SalesOrderLogic();
-    }
-
     public static SalesOrderLogic getInstance() {
-        return LogicHolder.instance;
+        return CDI.current().select(SalesOrderLogic.class).get();
     }
     
     final static long AllocatedInventoryTimeout = 5 * 60 * 1000; // 5 Minutes

@@ -33,20 +33,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class FilterKindLogic
         extends BaseLogic {
 
-    private FilterKindLogic() {
+    protected FilterKindLogic() {
         super();
     }
 
-    private static class FilterKindLogicHolder {
-        static FilterKindLogic instance = new FilterKindLogic();
-    }
-
     public static FilterKindLogic getInstance() {
-        return FilterKindLogic.FilterKindLogicHolder.instance;
+        return CDI.current().select(FilterKindLogic.class).get();
     }
 
     public FilterKind createFilterKind(final ExecutionErrorAccumulator eea, final String filterKindName,

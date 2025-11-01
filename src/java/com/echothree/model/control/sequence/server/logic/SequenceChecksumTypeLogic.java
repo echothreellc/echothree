@@ -23,20 +23,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class SequenceChecksumTypeLogic
         extends BaseLogic {
 
-    private SequenceChecksumTypeLogic() {
+    protected SequenceChecksumTypeLogic() {
         super();
     }
 
-    private static class SequenceChecksumTypeLogicHolder {
-        static SequenceChecksumTypeLogic instance = new SequenceChecksumTypeLogic();
-    }
-
     public static SequenceChecksumTypeLogic getInstance() {
-        return SequenceChecksumTypeLogic.SequenceChecksumTypeLogicHolder.instance;
+        return CDI.current().select(SequenceChecksumTypeLogic.class).get();
     }
 
     public SequenceChecksumType getSequenceChecksumTypeByName(final ExecutionErrorAccumulator eea, final String sequenceChecksumTypeName) {

@@ -28,20 +28,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class NameSuffixLogic
         extends BaseLogic {
-    
-    private NameSuffixLogic() {
+
+    protected NameSuffixLogic() {
         super();
     }
-    
-    private static class NameSuffixLogicHolder {
-        static NameSuffixLogic instance = new NameSuffixLogic();
-    }
-    
+
     public static NameSuffixLogic getInstance() {
-        return NameSuffixLogicHolder.instance;
+        return CDI.current().select(NameSuffixLogic.class).get();
     }
 
     private NameSuffix getNameSuffixById(final ExecutionErrorAccumulator eea, final String nameSuffixId,

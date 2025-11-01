@@ -32,20 +32,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class TagLogic
     extends BaseLogic {
-    
-    private TagLogic() {
+
+    protected TagLogic() {
         super();
     }
-    
-    private static class TagLogicHolder {
-        static TagLogic instance = new TagLogic();
-    }
-    
+
     public static TagLogic getInstance() {
-        return TagLogicHolder.instance;
+        return CDI.current().select(TagLogic.class).get();
     }
 
     public Tag createTag(final ExecutionErrorAccumulator eea, final TagScope tagScope, final String tagName,

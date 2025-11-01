@@ -34,20 +34,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class GeoCodeScopeLogic
         extends BaseLogic {
 
-    private GeoCodeScopeLogic() {
+    protected GeoCodeScopeLogic() {
         super();
     }
 
-    private static class GeoCodeScopeLogicTypeHolder {
-        static GeoCodeScopeLogic instance = new GeoCodeScopeLogic();
-    }
-
     public static GeoCodeScopeLogic getInstance() {
-        return GeoCodeScopeLogicTypeHolder.instance;
+        return CDI.current().select(GeoCodeScopeLogic.class).get();
     }
 
     public GeoCodeScope createGeoCodeScope(final ExecutionErrorAccumulator eea, final String geoCodeScopeName,

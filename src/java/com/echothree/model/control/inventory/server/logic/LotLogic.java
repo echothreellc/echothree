@@ -35,20 +35,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class LotLogic
         extends BaseLogic {
 
-    private LotLogic() {
+    protected LotLogic() {
         super();
     }
 
-    private static class LotTimeLogicHolder {
-        static LotLogic instance = new LotLogic();
-    }
-
     public static LotLogic getInstance() {
-        return LotTimeLogicHolder.instance;
+        return CDI.current().select(LotLogic.class).get();
     }
 
     public Lot createLot(final ExecutionErrorAccumulator eea, final Item item, String lotIdentifier,

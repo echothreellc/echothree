@@ -25,20 +25,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class TextLogic
         extends BaseLogic {
 
-    private TextLogic() {
+    protected TextLogic() {
         super();
     }
-    
-    private static class TextLogicHolder {
-        static TextLogic instance = new TextLogic();
-    }
-    
+
     public static TextLogic getInstance() {
-        return TextLogicHolder.instance;
+        return CDI.current().select(TextLogic.class).get();
     }
 
     public TextDecoration getTextDecorationByName(final ExecutionErrorAccumulator eea, final String textDecorationName) {

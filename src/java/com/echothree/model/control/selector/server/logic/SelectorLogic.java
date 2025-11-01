@@ -38,20 +38,19 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class SelectorLogic
         extends BaseLogic {
 
-    private SelectorLogic() {
+    protected SelectorLogic() {
         super();
     }
-    
-    private static class SelectorLogicHolder {
-        static SelectorLogic instance = new SelectorLogic();
-    }
-    
+
     public static SelectorLogic getInstance() {
-        return SelectorLogicHolder.instance;
+        return CDI.current().select(SelectorLogic.class).get();
     }
 
     public Selector createSelector(final ExecutionErrorAccumulator eea, final String selectorKindName, final String selectorTypeName,

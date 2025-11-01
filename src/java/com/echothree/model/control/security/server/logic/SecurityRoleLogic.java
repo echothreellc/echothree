@@ -36,20 +36,19 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class SecurityRoleLogic
         extends BaseLogic {
 
-    private SecurityRoleLogic() {
+    protected SecurityRoleLogic() {
         super();
     }
 
-    private static class SecurityRoleLogicHolder {
-        static SecurityRoleLogic instance = new SecurityRoleLogic();
-    }
-
     public static SecurityRoleLogic getInstance() {
-        return SecurityRoleLogicHolder.instance;
+        return CDI.current().select(SecurityRoleLogic.class).get();
     }
 
     public SecurityRole getSecurityRoleByName(final Class<? extends BaseException> unknownSecurityRoleGroupException, final ExecutionErrors unknownSecurityRoleGroupExecutionError,
