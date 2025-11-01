@@ -51,12 +51,14 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityInstanceControl
         extends BaseCoreControl {
 
     /** Creates a new instance of EntityInstanceControl */
-    public EntityInstanceControl() {
+    protected EntityInstanceControl() {
         super();
     }
 

@@ -111,12 +111,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CampaignControl
         extends BaseModelControl {
     
     /** Creates a new instance of CampaignControl */
-    public CampaignControl() {
+    protected CampaignControl() {
         super();
     }
     

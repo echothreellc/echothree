@@ -67,12 +67,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ScaleControl
         extends BaseModelControl {
     
     /** Creates a new instance of ScaleControl */
-    public ScaleControl() {
+    protected ScaleControl() {
         super();
     }
     

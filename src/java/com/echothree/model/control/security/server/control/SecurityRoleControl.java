@@ -30,12 +30,14 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SecurityRoleControl
         extends BaseModelControl {
 
     /** Creates a new instance of SecurityRoleControl */
-    public SecurityRoleControl() {
+    protected SecurityRoleControl() {
         super();
     }
 

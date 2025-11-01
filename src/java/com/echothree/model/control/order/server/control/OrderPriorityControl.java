@@ -42,12 +42,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OrderPriorityControl
         extends BaseOrderControl {
 
     /** Creates a new instance of OrderControl */
-    public OrderPriorityControl() {
+    protected OrderPriorityControl() {
         super();
     }
 

@@ -41,12 +41,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SalesOrderBatchControl
         extends BaseSalesControl {
 
     /** Creates a new instance of SalesOrderBatchControl */
-    public SalesOrderBatchControl() {
+    protected SalesOrderBatchControl() {
         super();
     }
 

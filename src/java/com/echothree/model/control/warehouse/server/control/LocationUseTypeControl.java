@@ -34,12 +34,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LocationUseTypeControl
         extends BaseWarehouseControl {
 
     /** Creates a new instance of WarehouseControl */
-    public LocationUseTypeControl() {
+    protected LocationUseTypeControl() {
         super();
     }
     

@@ -33,12 +33,14 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContentCatalogItemControl
         extends BaseModelControl {
 
     /** Creates a new instance of ContentCatalogItemControl */
-    public ContentCatalogItemControl() {
+    protected ContentCatalogItemControl() {
         super();
     }
 

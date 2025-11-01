@@ -93,12 +93,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SecurityControl
         extends BaseModelControl {
     
     /** Creates a new instance of SecurityControl */
-    public SecurityControl() {
+    protected SecurityControl() {
         super();
     }
     

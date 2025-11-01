@@ -104,12 +104,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WarehouseControl
         extends BaseWarehouseControl {
     
     /** Creates a new instance of WarehouseControl */
-    public WarehouseControl() {
+    protected WarehouseControl() {
         super();
     }
 

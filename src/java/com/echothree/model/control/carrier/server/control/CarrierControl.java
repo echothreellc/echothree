@@ -83,12 +83,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CarrierControl
         extends BaseModelControl {
     
     /** Creates a new instance of CarrierControl */
-    public CarrierControl() {
+    protected CarrierControl() {
         super();
     }
     

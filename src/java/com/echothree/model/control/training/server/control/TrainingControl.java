@@ -133,12 +133,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TrainingControl
         extends BaseModelControl {
     
     /** Creates a new instance of TrainingControl */
-    public TrainingControl() {
+    protected TrainingControl() {
         super();
     }
     

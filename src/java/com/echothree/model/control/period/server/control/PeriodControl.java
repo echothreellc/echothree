@@ -67,12 +67,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PeriodControl
         extends BaseModelControl {
     
     /** Creates a new instance of PeriodControl */
-    public PeriodControl() {
+    protected PeriodControl() {
         super();
     }
     

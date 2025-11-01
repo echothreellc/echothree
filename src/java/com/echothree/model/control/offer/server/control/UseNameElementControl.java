@@ -38,12 +38,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class UseNameElementControl
         extends BaseOfferControl {
 
     /** Creates a new instance of UseNameElementControl */
-    public UseNameElementControl() {
+    protected UseNameElementControl() {
         super();
     }
 

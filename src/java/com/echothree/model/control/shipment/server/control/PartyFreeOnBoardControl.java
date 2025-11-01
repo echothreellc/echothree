@@ -30,12 +30,14 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyFreeOnBoardControl
         extends BaseShipmentControl {
 
     /** Creates a new instance of FreeOnBoardControl */
-    public PartyFreeOnBoardControl() {
+    protected PartyFreeOnBoardControl() {
         super();
     }
 

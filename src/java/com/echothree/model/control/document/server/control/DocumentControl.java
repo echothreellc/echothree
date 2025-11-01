@@ -93,12 +93,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class DocumentControl
         extends BaseModelControl {
     
     /** Creates a new instance of DocumentControl */
-    public DocumentControl() {
+    protected DocumentControl() {
         super();
     }
     

@@ -76,12 +76,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WishlistControl
         extends BaseModelControl {
     
     /** Creates a new instance of WishlistControl */
-    public WishlistControl() {
+    protected WishlistControl() {
         super();
     }
     

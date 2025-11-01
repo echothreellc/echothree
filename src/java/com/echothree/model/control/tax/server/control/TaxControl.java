@@ -67,12 +67,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TaxControl
         extends BaseModelControl {
     
     /** Creates a new instance of TaxControl */
-    public TaxControl() {
+    protected TaxControl() {
         super();
     }
     

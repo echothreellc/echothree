@@ -83,12 +83,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ShipmentControl
         extends BaseShipmentControl {
     
     /** Creates a new instance of ShipmentControl */
-    public ShipmentControl() {
+    protected ShipmentControl() {
         super();
     }
     

@@ -53,12 +53,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ClubControl
         extends BaseModelControl {
     
     /** Creates a new instance of ClubControl */
-    public ClubControl() {
+    protected ClubControl() {
         super();
     }
     

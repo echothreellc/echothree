@@ -74,12 +74,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class BatchControl
         extends BaseModelControl {
     
     /** Creates a new instance of BatchControl */
-    public BatchControl() {
+    protected BatchControl() {
         super();
     }
     

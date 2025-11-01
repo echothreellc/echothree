@@ -57,12 +57,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CommandControl
         extends BaseCoreControl {
 
     /** Creates a new instance of CommandControl */
-    public CommandControl() {
+    protected CommandControl() {
         super();
     }
 

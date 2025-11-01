@@ -58,12 +58,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyPaymentMethodControl
         extends BasePaymentControl {
 
     /** Creates a new instance of PartyPaymentMethodControl */
-    public PartyPaymentMethodControl() {
+    protected PartyPaymentMethodControl() {
         super();
     }
 

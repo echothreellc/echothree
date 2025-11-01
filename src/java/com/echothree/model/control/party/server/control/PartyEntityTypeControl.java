@@ -31,12 +31,14 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyEntityTypeControl
         extends BasePartyControl {
 
     /** Creates a new instance of PartyEntityTypeControl */
-    public PartyEntityTypeControl() {
+    protected PartyEntityTypeControl() {
         super();
     }
 

@@ -89,12 +89,14 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CommunicationControl
         extends BaseModelControl {
     
     /** Creates a new instance of CommunicationControl */
-    public CommunicationControl() {
+    protected CommunicationControl() {
         super();
     }
     

@@ -48,12 +48,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ShippingControl
         extends BaseShippingControl {
     
     /** Creates a new instance of ShippingControl */
-    public ShippingControl() {
+    protected ShippingControl() {
         super();
     }
     
