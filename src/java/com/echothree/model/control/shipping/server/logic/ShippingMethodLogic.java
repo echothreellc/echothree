@@ -42,20 +42,19 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.Set;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class ShippingMethodLogic
     extends BaseLogic {
 
-    private ShippingMethodLogic() {
+    protected ShippingMethodLogic() {
         super();
     }
 
-    private static class ShippingMethodLogicHolder {
-        static ShippingMethodLogic instance = new ShippingMethodLogic();
-    }
-
     public static ShippingMethodLogic getInstance() {
-        return ShippingMethodLogicHolder.instance;
+        return CDI.current().select(ShippingMethodLogic.class).get();
     }
 
     public ShippingMethod createShippingMethod(final ExecutionErrorAccumulator eea, final String shippingMethodName,
