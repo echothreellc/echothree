@@ -18,21 +18,20 @@ package com.echothree.model.control.item.server.logic.checksum;
 
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class UpcAChecksumLogic
         extends BaseChecksumLogic
         implements ItemAliasChecksumInterface {
 
-    private UpcAChecksumLogic() {
+    protected UpcAChecksumLogic() {
         super();
     }
-    
-    private static class UpcAChecksumLogicHolder {
-        static UpcAChecksumLogic instance = new UpcAChecksumLogic();
-    }
-    
+
     public static UpcAChecksumLogic getInstance() {
-        return UpcAChecksumLogicHolder.instance;
+        return CDI.current().select(UpcAChecksumLogic.class).get();
     }
 
     @Override

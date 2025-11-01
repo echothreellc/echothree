@@ -18,21 +18,20 @@ package com.echothree.model.control.item.server.logic.checksum;
 
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class Gtin12ChecksumLogic
         extends BaseChecksumLogic
         implements ItemAliasChecksumInterface {
 
-    private Gtin12ChecksumLogic() {
+    protected Gtin12ChecksumLogic() {
         super();
     }
 
-    private static class Gtin12ChecksumLogicHolder {
-        static Gtin12ChecksumLogic instance = new Gtin12ChecksumLogic();
-    }
-
     public static Gtin12ChecksumLogic getInstance() {
-        return Gtin12ChecksumLogicHolder.instance;
+        return CDI.current().select(Gtin12ChecksumLogic.class).get();
     }
 
     @Override

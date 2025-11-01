@@ -18,21 +18,20 @@ package com.echothree.model.control.item.server.logic.checksum;
 
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class BooklandEanChecksumLogic
         extends BaseChecksumLogic
         implements ItemAliasChecksumInterface {
 
-    private BooklandEanChecksumLogic() {
+    protected BooklandEanChecksumLogic() {
         super();
     }
-    
-    private static class ItemAliasChecksumInterfaceHolder {
-        static BooklandEanChecksumLogic instance = new BooklandEanChecksumLogic();
-    }
-    
+
     public static BooklandEanChecksumLogic getInstance() {
-        return ItemAliasChecksumInterfaceHolder.instance;
+        return CDI.current().select(BooklandEanChecksumLogic.class).get();
     }
 
     @Override
