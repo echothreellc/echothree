@@ -35,20 +35,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class SequenceTypeLogic
         extends BaseLogic {
-    
-    private SequenceTypeLogic() {
+
+    protected SequenceTypeLogic() {
         super();
     }
-    
-    private static class SequenceLogicHolder {
-        static SequenceTypeLogic instance = new SequenceTypeLogic();
-    }
-    
+
     public static SequenceTypeLogic getInstance() {
-        return SequenceLogicHolder.instance;
+        return CDI.current().select(SequenceTypeLogic.class).get();
     }
 
     public SequenceType createSequenceType(final ExecutionErrorAccumulator eea, final String sequenceTypeName,

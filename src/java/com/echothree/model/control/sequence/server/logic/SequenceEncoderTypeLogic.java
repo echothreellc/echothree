@@ -23,20 +23,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class SequenceEncoderTypeLogic
         extends BaseLogic {
 
-    private SequenceEncoderTypeLogic() {
+    protected SequenceEncoderTypeLogic() {
         super();
     }
 
-    private static class SequenceEncoderTypeLogicHolder {
-        static SequenceEncoderTypeLogic instance = new SequenceEncoderTypeLogic();
-    }
-
     public static SequenceEncoderTypeLogic getInstance() {
-        return SequenceEncoderTypeLogic.SequenceEncoderTypeLogicHolder.instance;
+        return CDI.current().select(SequenceEncoderTypeLogic.class).get();
     }
 
     public SequenceEncoderType getSequenceEncoderTypeByName(final ExecutionErrorAccumulator eea, final String sequenceEncoderTypeName) {

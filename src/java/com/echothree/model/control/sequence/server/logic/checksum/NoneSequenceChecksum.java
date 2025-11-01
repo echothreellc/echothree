@@ -16,21 +16,20 @@
 
 package com.echothree.model.control.sequence.server.logic.checksum;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 import org.apache.commons.lang.StringUtils;
 
+@ApplicationScoped
 public class NoneSequenceChecksum
         implements SequenceChecksum {
 
-    private NoneSequenceChecksum() {
+    protected NoneSequenceChecksum() {
         super();
     }
 
-    private static class SequenceChecksumHolder {
-        static SequenceChecksum instance = new NoneSequenceChecksum();
-    }
-
-    public static SequenceChecksum getInstance() {
-        return SequenceChecksumHolder.instance;
+    public static NoneSequenceChecksum getInstance() {
+        return CDI.current().select(NoneSequenceChecksum.class).get();
     }
 
     @Override
