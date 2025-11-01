@@ -30,20 +30,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class ForumLogic
         extends BaseLogic {
-    
-    private ForumLogic() {
+
+    protected ForumLogic() {
         super();
     }
-    
-    private static class ForumLogicHolder {
-        static ForumLogic instance = new ForumLogic();
-    }
-    
+
     public static ForumLogic getInstance() {
-        return ForumLogicHolder.instance;
+        return CDI.current().select(ForumLogic.class).get();
     }
     
     public ForumRoleType getForumRoleTypeByName(final ExecutionErrorAccumulator eea, final String forumRoleTypeName) {
