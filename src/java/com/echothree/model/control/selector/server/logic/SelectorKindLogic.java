@@ -25,28 +25,27 @@ import com.echothree.model.control.selector.common.exception.DuplicateSelectorKi
 import com.echothree.model.control.selector.common.exception.UnknownDefaultSelectorKindException;
 import com.echothree.model.control.selector.common.exception.UnknownSelectorKindNameException;
 import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class SelectorKindLogic
         extends BaseLogic {
 
-    private SelectorKindLogic() {
+    protected SelectorKindLogic() {
         super();
     }
 
-    private static class SelectorKindLogicHolder {
-        static SelectorKindLogic instance = new SelectorKindLogic();
-    }
-
     public static SelectorKindLogic getInstance() {
-        return SelectorKindLogic.SelectorKindLogicHolder.instance;
+        return CDI.current().select(SelectorKindLogic.class).get();
     }
 
     public SelectorKind createSelectorKind(final ExecutionErrorAccumulator eea, final String selectorKindName,
