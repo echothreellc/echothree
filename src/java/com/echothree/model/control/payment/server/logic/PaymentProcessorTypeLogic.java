@@ -17,36 +17,35 @@
 package com.echothree.model.control.payment.server.logic;
 
 import com.echothree.control.user.payment.common.spec.PaymentProcessorTypeUniversalSpec;
-import com.echothree.model.control.payment.common.exception.DuplicatePaymentProcessorTypeNameException;
-import com.echothree.model.control.payment.common.exception.UnknownPaymentProcessorTypeNameException;
-import com.echothree.model.control.payment.common.exception.UnknownDefaultPaymentProcessorTypeException;
-import com.echothree.model.control.payment.server.control.PaymentProcessorTypeControl;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
-import com.echothree.model.data.payment.server.entity.PaymentProcessorType;
+import com.echothree.model.control.payment.common.exception.DuplicatePaymentProcessorTypeNameException;
+import com.echothree.model.control.payment.common.exception.UnknownDefaultPaymentProcessorTypeException;
+import com.echothree.model.control.payment.common.exception.UnknownPaymentProcessorTypeNameException;
+import com.echothree.model.control.payment.server.control.PaymentProcessorTypeControl;
 import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.model.data.payment.server.entity.PaymentProcessorType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class PaymentProcessorTypeLogic
     extends BaseLogic {
-    
-    private PaymentProcessorTypeLogic() {
+
+    protected PaymentProcessorTypeLogic() {
         super();
     }
-    
-    private static class PaymentProcessorTypeLogicHolder {
-        static PaymentProcessorTypeLogic instance = new PaymentProcessorTypeLogic();
-    }
-    
+
     public static PaymentProcessorTypeLogic getInstance() {
-        return PaymentProcessorTypeLogicHolder.instance;
+        return CDI.current().select(PaymentProcessorTypeLogic.class).get();
     }
 
     public PaymentProcessorType createPaymentProcessorType(final ExecutionErrorAccumulator eea, final String paymentProcessorTypeName,

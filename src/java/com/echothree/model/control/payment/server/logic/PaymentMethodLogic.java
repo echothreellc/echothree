@@ -33,20 +33,19 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.Set;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class PaymentMethodLogic
     extends BaseLogic {
 
-    private PaymentMethodLogic() {
+    protected PaymentMethodLogic() {
         super();
     }
 
-    private static class PaymentMethodLogicHolder {
-        static PaymentMethodLogic instance = new PaymentMethodLogic();
-    }
-
     public static PaymentMethodLogic getInstance() {
-        return PaymentMethodLogicHolder.instance;
+        return CDI.current().select(PaymentMethodLogic.class).get();
     }
 
     private PaymentMethod getPaymentMethodByName(final ExecutionErrorAccumulator eea, final String paymentMethodName, final EntityPermission entityPermission) {
