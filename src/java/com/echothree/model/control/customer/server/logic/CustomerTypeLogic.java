@@ -43,20 +43,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class CustomerTypeLogic
         extends BaseLogic {
-    
-    private CustomerTypeLogic() {
+
+    protected CustomerTypeLogic() {
         super();
     }
-    
-    private static class CustomerTypeLogicHolder {
-        static CustomerTypeLogic instance = new CustomerTypeLogic();
-    }
-    
+
     public static CustomerTypeLogic getInstance() {
-        return CustomerTypeLogicHolder.instance;
+        return CDI.current().select(CustomerTypeLogic.class).get();
     }
 
     public CustomerType createCustomerType(final ExecutionErrorAccumulator eea, final String customerTypeName, final Sequence customerSequence,

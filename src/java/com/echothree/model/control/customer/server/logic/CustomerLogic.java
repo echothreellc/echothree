@@ -40,20 +40,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class CustomerLogic
         extends BaseLogic {
-    
-    private CustomerLogic() {
+
+    protected CustomerLogic() {
         super();
     }
-    
-    private static class CustomerLogicHolder {
-        static CustomerLogic instance = new CustomerLogic();
-    }
-    
+
     public static CustomerLogic getInstance() {
-        return CustomerLogicHolder.instance;
+        return CDI.current().select(CustomerLogic.class).get();
     }
 
     public Customer getCustomerByName(final ExecutionErrorAccumulator eea, final String customerName, final String partyName,
