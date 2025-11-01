@@ -64,20 +64,19 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
 import java.util.List;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class OfferItemLogic
         extends BaseLogic {
 
-    private OfferItemLogic() {
+    protected OfferItemLogic() {
         super();
     }
 
-    private static class OfferItemLogicHolder {
-        static OfferItemLogic instance = new OfferItemLogic();
-    }
-
     public static OfferItemLogic getInstance() {
-        return OfferItemLogicHolder.instance;
+        return CDI.current().select(OfferItemLogic.class).get();
     }
 
     // --------------------------------------------------------------------------------

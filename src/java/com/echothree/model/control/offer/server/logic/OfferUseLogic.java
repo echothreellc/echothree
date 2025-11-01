@@ -31,20 +31,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class OfferUseLogic
         extends BaseLogic {
 
-    private OfferUseLogic() {
+    protected OfferUseLogic() {
         super();
     }
 
-    private static class OfferUseLogicHolder {
-        static OfferUseLogic instance = new OfferUseLogic();
-    }
-
     public static OfferUseLogic getInstance() {
-        return OfferUseLogicHolder.instance;
+        return CDI.current().select(OfferUseLogic.class).get();
     }
     
     public OfferUse getOfferUseByName(final ExecutionErrorAccumulator eea, final String offerName, final String useName,
