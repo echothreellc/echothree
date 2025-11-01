@@ -66,20 +66,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class PurchaseOrderLogic
         extends OrderLogic {
 
-    private PurchaseOrderLogic() {
+    protected PurchaseOrderLogic() {
         super();
     }
 
-    private static class LogicHolder {
-        static PurchaseOrderLogic instance = new PurchaseOrderLogic();
-    }
-
     public static PurchaseOrderLogic getInstance() {
-        return LogicHolder.instance;
+        return CDI.current().select(PurchaseOrderLogic.class).get();
     }
     
     public void validatePurchaseOrderReference(final ExecutionErrorAccumulator eea, final String reference,
