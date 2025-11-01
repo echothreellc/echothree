@@ -32,7 +32,7 @@ import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.offer.server.logic.OfferItemLogic;
 import com.echothree.model.control.offer.server.logic.SourceLogic;
 import com.echothree.model.control.order.common.OrderTypes;
-import com.echothree.model.control.order.server.logic.OrderLineLogic;
+import com.echothree.model.control.order.server.logic.BaseOrderLineLogic;
 import com.echothree.model.control.returnpolicy.common.ReturnKinds;
 import com.echothree.model.control.returnpolicy.server.logic.ReturnPolicyLogic;
 import com.echothree.model.control.sales.common.exception.CurrentTimeAfterSalesOrderEndTimeException;
@@ -75,7 +75,7 @@ import javax.enterprise.inject.spi.CDI;
 
 @ApplicationScoped
 public class SalesOrderLineLogic
-        extends OrderLineLogic {
+        extends BaseOrderLineLogic {
 
     protected SalesOrderLineLogic() {
         super();

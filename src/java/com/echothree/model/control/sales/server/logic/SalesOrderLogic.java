@@ -37,7 +37,7 @@ import com.echothree.model.control.order.server.control.OrderBatchControl;
 import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.order.server.control.OrderPriorityControl;
 import com.echothree.model.control.order.server.control.OrderRoleControl;
-import com.echothree.model.control.order.server.logic.OrderLogic;
+import com.echothree.model.control.order.server.logic.BaseOrderLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.returnpolicy.common.ReturnKinds;
@@ -86,7 +86,7 @@ import javax.enterprise.inject.spi.CDI;
 
 @ApplicationScoped
 public class SalesOrderLogic
-        extends OrderLogic {
+        extends BaseOrderLogic {
 
     protected SalesOrderLogic() {
         super();

@@ -16,13 +16,13 @@
 
 package com.echothree.model.control.sales.server.logic;
 
-import com.echothree.model.control.order.server.logic.OrderPriorityLogic;
+import com.echothree.model.control.order.server.logic.BaseOrderPriorityLogic;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
 
 @ApplicationScoped
 public class SalesOrderPriorityLogic
-        extends OrderPriorityLogic {
+        extends BaseOrderPriorityLogic {
 
     protected SalesOrderPriorityLogic() {
         super();

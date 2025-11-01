@@ -35,16 +35,11 @@ import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
 
-@ApplicationScoped
 public class OrderShipmentGroupLogic
         extends BaseLogic {
 
     protected OrderShipmentGroupLogic() {
         super();
-    }
-
-    public static OrderShipmentGroupLogic getInstance() {
-        return CDI.current().select(OrderShipmentGroupLogic.class).get();
     }
 
     public OrderShipmentGroup createOrderShipmentGroup(final ExecutionErrorAccumulator eea, final Order order, Integer orderShipmentGroupSequence,
