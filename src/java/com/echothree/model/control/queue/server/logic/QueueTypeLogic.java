@@ -23,20 +23,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class QueueTypeLogic
         extends BaseLogic {
 
-    private QueueTypeLogic() {
+    protected QueueTypeLogic() {
         super();
     }
 
-    private static class QueueTypeLogicHolder {
-        static QueueTypeLogic instance = new QueueTypeLogic();
-    }
-
     public static QueueTypeLogic getInstance() {
-        return QueueTypeLogicHolder.instance;
+        return CDI.current().select(QueueTypeLogic.class).get();
     }
     
     public QueueType getQueueTypeByName(final ExecutionErrorAccumulator eea, final String queueTypeName) {
