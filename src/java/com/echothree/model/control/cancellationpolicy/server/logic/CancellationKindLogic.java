@@ -34,20 +34,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class CancellationKindLogic
         extends BaseLogic {
 
-    private CancellationKindLogic() {
+    protected CancellationKindLogic() {
         super();
     }
 
-    private static class CancellationKindLogicHolder {
-        static CancellationKindLogic instance = new CancellationKindLogic();
-    }
-
     public static CancellationKindLogic getInstance() {
-        return CancellationKindLogic.CancellationKindLogicHolder.instance;
+        return CDI.current().select(CancellationKindLogic.class).get();
     }
 
     public CancellationKind createCancellationKind(final ExecutionErrorAccumulator eea, final String cancellationKindName,
