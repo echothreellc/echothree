@@ -16,9 +16,6 @@
 
 package com.echothree.model.control.uom.server.logic;
 
-import com.echothree.model.control.core.common.ComponentVendors;
-import com.echothree.model.control.core.common.EntityTypes;
-import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.uom.common.exception.InvalidUnitOfMeasureSpecificationException;
 import com.echothree.model.control.uom.common.exception.UnknownUnitOfMeasureKindUseException;
 import com.echothree.model.control.uom.common.exception.UnknownUnitOfMeasureTypeNameException;
@@ -30,23 +27,21 @@ import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.google.common.base.Splitter;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class UnitOfMeasureTypeLogic
     extends BaseLogic {
-    
-    private UnitOfMeasureTypeLogic() {
+
+    protected UnitOfMeasureTypeLogic() {
         super();
     }
-    
-    private static class UnitOfMeasureTypeLogicHolder {
-        static UnitOfMeasureTypeLogic instance = new UnitOfMeasureTypeLogic();
-    }
-    
+
     public static UnitOfMeasureTypeLogic getInstance() {
-        return UnitOfMeasureTypeLogicHolder.instance;
+        return CDI.current().select(UnitOfMeasureTypeLogic.class).get();
     }
     
     public UnitOfMeasureType getUnitOfMeasureTypeByName(final ExecutionErrorAccumulator eea, final UnitOfMeasureKind unitOfMeasureKind,
