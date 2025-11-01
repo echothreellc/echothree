@@ -60,12 +60,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class AppearanceControl
         extends BaseCoreControl {
 
     /** Creates a new instance of AppearanceControl */
-    public AppearanceControl() {
+    protected AppearanceControl() {
         super();
     }
 

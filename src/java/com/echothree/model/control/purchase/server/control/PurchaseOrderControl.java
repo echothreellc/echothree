@@ -15,12 +15,14 @@
 // --------------------------------------------------------------------------------
 
 package com.echothree.model.control.purchase.server.control;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PurchaseOrderControl
         extends BasePurchaseControl {
 
     /** Creates a new instance of PurchaseControl */
-    public PurchaseOrderControl() {
+    protected PurchaseOrderControl() {
         super();
     }
 

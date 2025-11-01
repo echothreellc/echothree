@@ -40,12 +40,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PaymentProcessorTypeCodeControl
         extends BasePaymentControl {
 
     /** Creates a new instance of PaymentProcessorTypeCodeControl */
-    public PaymentProcessorTypeCodeControl() {
+    protected PaymentProcessorTypeCodeControl() {
         super();
     }
 

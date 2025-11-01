@@ -103,12 +103,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ReturnPolicyControl
         extends BaseModelControl {
     
     /** Creates a new instance of ReturnPolicyControl */
-    public ReturnPolicyControl() {
+    protected ReturnPolicyControl() {
         super();
     }
     

@@ -86,12 +86,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WorkRequirementControl
         extends BaseModelControl {
     
     /** Creates a new instance of WorkRequirementControl */
-    public WorkRequirementControl() {
+    protected WorkRequirementControl() {
         super();
     }
     

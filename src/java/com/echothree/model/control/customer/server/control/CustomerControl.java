@@ -88,12 +88,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CustomerControl
         extends BaseModelControl {
     
     /** Creates a new instance of CustomerControl */
-    public CustomerControl() {
+    protected CustomerControl() {
         super();
     }
     

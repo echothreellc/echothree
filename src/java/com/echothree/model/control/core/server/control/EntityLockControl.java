@@ -29,12 +29,14 @@ import com.echothree.util.server.persistence.DslContextFactory;
 import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityLockControl
         extends BaseCoreControl {
     
     /** Creates a new instance of EntityLockControl */
-    public EntityLockControl() {
+    protected EntityLockControl() {
         super();
     }
     

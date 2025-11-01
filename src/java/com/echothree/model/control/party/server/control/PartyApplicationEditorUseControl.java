@@ -34,12 +34,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyApplicationEditorUseControl
         extends BasePartyControl {
 
     /** Creates a new instance of PartyApplicationEditorUseControl */
-    public PartyApplicationEditorUseControl() {
+    protected PartyApplicationEditorUseControl() {
         super();
     }
 

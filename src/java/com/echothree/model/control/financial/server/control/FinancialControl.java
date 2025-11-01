@@ -95,12 +95,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class FinancialControl
         extends BaseModelControl {
     
     /** Creates a new instance of FinancialControl */
-    public FinancialControl() {
+    protected FinancialControl() {
         super();
     }
     

@@ -68,12 +68,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class IndexControl
         extends BaseModelControl {
     
     /** Creates a new instance of IndexControl */
-    public IndexControl() {
+    protected IndexControl() {
         super();
     }
     

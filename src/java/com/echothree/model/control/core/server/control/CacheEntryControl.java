@@ -42,12 +42,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CacheEntryControl
         extends BaseCoreControl {
 
     /** Creates a new instance of CacheEntryControl */
-    public CacheEntryControl() {
+    protected CacheEntryControl() {
         super();
     }
 

@@ -126,12 +126,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class InvoiceControl
         extends BaseModelControl {
     
     /** Creates a new instance of InvoiceControl */
-    public InvoiceControl() {
+    protected InvoiceControl() {
         super();
     }
     

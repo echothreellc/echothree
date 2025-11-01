@@ -81,12 +81,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class UomControl
         extends BaseModelControl {
     
     /** Creates a new instance of UomControl */
-    public UomControl() {
+    protected UomControl() {
         super();
     }
     

@@ -44,12 +44,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class UseTypeControl
         extends BaseOfferControl {
 
     /** Creates a new instance of UseTypeControl */
-    public UseTypeControl() {
+    protected UseTypeControl() {
         super();
     }
     

@@ -16,6 +16,7 @@
 
 package com.echothree.util.server.persistence;
 
+import com.echothree.model.control.core.server.logic.TextLogic;
 import com.echothree.model.data.core.common.pk.EntityInstancePK;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
@@ -35,6 +36,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
+import javax.enterprise.inject.spi.CDI;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jooq.DSLContext;
@@ -58,8 +60,6 @@ public class Session {
     
     private DSLContext dslContext;
     private Connection connection;
-
-    private final Map<Class<? extends BaseModelControl>, BaseModelControl> modelControllers = new HashMap<>();
 
     private ValueCache valueCache = ValueCacheProviderImpl.getInstance().getValueCache();
     private SessionEntityCache sessionEntityCache = new SessionEntityCache(this);
@@ -141,19 +141,7 @@ public class Session {
     }
     
     public <T extends BaseModelControl> T getSessionModelController(Class<T> modelController) {
-        var result = modelControllers.get(modelController);
-        
-        if(result == null) {
-            try {
-                result = modelController.getDeclaredConstructor().newInstance();
-            } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                throw new RuntimeException(e);
-            }
-            
-            modelControllers.put(modelController, result);
-        }
-        
-        return (T)result;
+        return CDI.current().select(modelController).get();
     }
     
     private String getStringFromBaseFactory(final Class<? extends BaseFactory<? extends BasePK, ? extends BaseEntity>> entityFactory,

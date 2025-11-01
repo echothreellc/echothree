@@ -135,12 +135,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ChainControl
         extends BaseModelControl {
     
     /** Creates a new instance of ChainControl */
-    public ChainControl() {
+    protected ChainControl() {
         super();
     }
     

@@ -175,12 +175,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContentControl
         extends BaseModelControl {
     
     /** Creates a new instance of ContentControl */
-    public ContentControl() {
+    protected ContentControl() {
         super();
     }
     

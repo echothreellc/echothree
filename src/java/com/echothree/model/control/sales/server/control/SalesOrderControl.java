@@ -42,12 +42,14 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SalesOrderControl
         extends BaseSalesControl {
 
     /** Creates a new instance of SalesOrderControl */
-    public SalesOrderControl() {
+    protected SalesOrderControl() {
         super();
     }
 

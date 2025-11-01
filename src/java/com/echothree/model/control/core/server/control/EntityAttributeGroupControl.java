@@ -36,12 +36,14 @@ import static java.lang.Math.toIntExact;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityAttributeGroupControl
         extends BaseCoreControl {
 
     /** Creates a new instance of EntityAttributeGroupControl */
-    public EntityAttributeGroupControl() {
+    protected EntityAttributeGroupControl() {
         super();
     }
 

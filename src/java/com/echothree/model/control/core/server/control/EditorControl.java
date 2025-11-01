@@ -38,12 +38,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EditorControl
         extends BaseCoreControl {
 
     /** Creates a new instance of EditorControl */
-    public EditorControl() {
+    protected EditorControl() {
         super();
     }
 

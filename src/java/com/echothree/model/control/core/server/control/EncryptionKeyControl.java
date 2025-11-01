@@ -45,12 +45,14 @@ import com.echothree.util.server.persistence.Sha1Utils;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EncryptionKeyControl
         extends BaseCoreControl {
 
     /** Creates a new instance of EncryptionKeyControl */
-    public EncryptionKeyControl() {
+    protected EncryptionKeyControl() {
         super();
     }
 

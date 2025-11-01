@@ -46,12 +46,14 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class JobControl
         extends BaseModelControl {
     
     /** Creates a new instance of JobControl */
-    public JobControl() {
+    protected JobControl() {
         super();
     }
     

@@ -45,12 +45,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OrderLineAdjustmentControl
         extends BaseOrderControl {
 
     /** Creates a new instance of OrderControl */
-    public OrderLineAdjustmentControl() {
+    protected OrderLineAdjustmentControl() {
         super();
     }
 

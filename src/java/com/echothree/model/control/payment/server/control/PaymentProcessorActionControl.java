@@ -30,12 +30,14 @@ import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PaymentProcessorActionControl
         extends BasePaymentControl {
 
     /** Creates a new instance of PaymentProcessorActionControl */
-    public PaymentProcessorActionControl() {
+    protected PaymentProcessorActionControl() {
         super();
     }
 

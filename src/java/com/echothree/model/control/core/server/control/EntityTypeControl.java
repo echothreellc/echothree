@@ -56,12 +56,14 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityTypeControl
         extends BaseCoreControl {
 
     /** Creates a new instance of EntityTypeControl */
-    public EntityTypeControl() {
+    protected EntityTypeControl() {
         super();
     }
 

@@ -104,12 +104,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class InventoryControl
         extends BaseInventoryControl {
     
     /** Creates a new instance of InventoryControl */
-    public InventoryControl() {
+    protected InventoryControl() {
         super();
     }
     

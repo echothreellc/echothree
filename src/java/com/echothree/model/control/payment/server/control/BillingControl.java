@@ -48,12 +48,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class BillingControl
         extends BasePaymentControl {
 
     /** Creates a new instance of BillingControl */
-    public BillingControl() {
+    protected BillingControl() {
         super();
     }
     

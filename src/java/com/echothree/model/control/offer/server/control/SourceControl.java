@@ -37,12 +37,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SourceControl
         extends BaseOfferControl {
 
     /** Creates a new instance of UseControl */
-    public SourceControl() {
+    protected SourceControl() {
         super();
     }
 

@@ -69,12 +69,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SequenceControl
         extends BaseModelControl {
     
     /** Creates a new instance of SequenceControl */
-    public SequenceControl() {
+    protected SequenceControl() {
         super();
     }
     

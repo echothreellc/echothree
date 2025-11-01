@@ -34,12 +34,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OfferUseControl
         extends BaseOfferControl {
 
     /** Creates a new instance of OfferUseControl */
-    public OfferUseControl() {
+    protected OfferUseControl() {
         super();
     }
 

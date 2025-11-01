@@ -119,12 +119,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GeoControl
         extends BaseModelControl {
     
     /** Creates a new instance of GeoControl */
-    public GeoControl() {
+    protected GeoControl() {
         super();
     }
     

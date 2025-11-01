@@ -30,12 +30,14 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContactMechanismControl
         extends BaseModelControl {
 
     /** Creates a new instance of ContactMechanismControl */
-    public ContactMechanismControl() {
+    protected ContactMechanismControl() {
         super();
     }
 

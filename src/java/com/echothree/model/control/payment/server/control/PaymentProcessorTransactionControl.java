@@ -35,12 +35,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PaymentProcessorTransactionControl
         extends BasePaymentControl {
 
     /** Creates a new instance of PaymentProcessorTransactionControl */
-    public PaymentProcessorTransactionControl() {
+    protected PaymentProcessorTransactionControl() {
         super();
     }
 

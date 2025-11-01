@@ -76,12 +76,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PicklistControl
         extends BaseModelControl {
     
     /** Creates a new instance of PicklistControl */
-    public PicklistControl() {
+    protected PicklistControl() {
         super();
     }
     
