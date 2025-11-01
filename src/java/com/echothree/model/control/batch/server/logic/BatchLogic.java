@@ -37,20 +37,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class BatchLogic
         extends BaseLogic {
 
-    private BatchLogic() {
+    protected BatchLogic() {
         super();
     }
 
-    private static class BatchLogicHolder {
-        static BatchLogic instance = new BatchLogic();
-    }
-
     public static BatchLogic getInstance() {
-        return BatchLogicHolder.instance;
+        return CDI.current().select(BatchLogic.class).get();
     }
     
     public SequenceType getBatchSequenceType(final ExecutionErrorAccumulator eea, final BatchType batchType) {
