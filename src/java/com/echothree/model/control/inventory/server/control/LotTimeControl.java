@@ -404,7 +404,7 @@ public class LotTimeControl
         var lotTimeTypeDescription = getLotTimeTypeDescription(lotTimeType, language);
 
         if(lotTimeTypeDescription == null && !language.getIsDefault()) {
-            lotTimeTypeDescription = getLotTimeTypeDescription(lotTimeType, getPartyControl().getDefaultLanguage());
+            lotTimeTypeDescription = getLotTimeTypeDescription(lotTimeType, partyControl.getDefaultLanguage());
         }
 
         if(lotTimeTypeDescription == null) {

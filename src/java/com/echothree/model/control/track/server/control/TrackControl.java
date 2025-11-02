@@ -125,7 +125,7 @@ public class TrackControl
 
         var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(trackPK);
-        getWorkflowControl().addEntityToWorkflowUsingNames(null, TrackStatusConstants.Workflow_TRACK_STATUS,
+        workflowControl.addEntityToWorkflowUsingNames(null, TrackStatusConstants.Workflow_TRACK_STATUS,
                 TrackStatusConstants.WorkflowEntrance_NEW_ACTIVE, entityInstance, null, null, createdBy);
         
         return track;
@@ -278,7 +278,6 @@ public class TrackControl
 
     public TrackStatusChoicesBean getTrackStatusChoices(String defaultTrackStatusChoice, Language language,
             boolean allowNullChoice, Track track, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var employeeStatusChoicesBean = new TrackStatusChoicesBean();
         
         if(track == null) {
@@ -298,7 +297,6 @@ public class TrackControl
     }
     
     public void setTrackStatus(ExecutionErrorAccumulator eea, Party party, String employeeStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(party);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(TrackStatusConstants.Workflow_TRACK_STATUS,
                 entityInstance);
@@ -540,7 +538,7 @@ public class TrackControl
         var trackDescription = getTrackDescription(track, language);
 
         if(trackDescription == null && !language.getIsDefault()) {
-            trackDescription = getTrackDescription(track, getPartyControl().getDefaultLanguage());
+            trackDescription = getTrackDescription(track, partyControl.getDefaultLanguage());
         }
 
         if(trackDescription == null) {

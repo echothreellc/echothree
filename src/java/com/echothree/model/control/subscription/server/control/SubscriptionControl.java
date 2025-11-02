@@ -439,7 +439,7 @@ public class SubscriptionControl
         var subscriptionKindDescription = getSubscriptionKindDescription(subscriptionKind, language);
 
         if(subscriptionKindDescription == null && !language.getIsDefault()) {
-            subscriptionKindDescription = getSubscriptionKindDescription(subscriptionKind, getPartyControl().getDefaultLanguage());
+            subscriptionKindDescription = getSubscriptionKindDescription(subscriptionKind, partyControl.getDefaultLanguage());
         }
 
         if(subscriptionKindDescription == null) {
@@ -916,7 +916,7 @@ public class SubscriptionControl
         var subscriptionTypeDescription = getSubscriptionTypeDescription(subscriptionType, language);
         
         if(subscriptionTypeDescription == null && !language.getIsDefault()) {
-            subscriptionTypeDescription = getSubscriptionTypeDescription(subscriptionType, getPartyControl().getDefaultLanguage());
+            subscriptionTypeDescription = getSubscriptionTypeDescription(subscriptionType, partyControl.getDefaultLanguage());
         }
         
         if(subscriptionTypeDescription == null) {

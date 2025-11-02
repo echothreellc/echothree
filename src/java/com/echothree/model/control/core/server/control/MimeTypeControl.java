@@ -188,7 +188,7 @@ public class MimeTypeControl
         var mimeTypeUsageTypeDescription = getMimeTypeUsageTypeDescription(mimeTypeUsageType, language);
 
         if(mimeTypeUsageTypeDescription == null && !language.getIsDefault()) {
-            mimeTypeUsageTypeDescription = getMimeTypeUsageTypeDescription(mimeTypeUsageType, getPartyControl().getDefaultLanguage());
+            mimeTypeUsageTypeDescription = getMimeTypeUsageTypeDescription(mimeTypeUsageType, partyControl.getDefaultLanguage());
         }
 
         if(mimeTypeUsageTypeDescription == null) {
@@ -702,7 +702,7 @@ public class MimeTypeControl
         var mimeTypeDescription = getMimeTypeDescription(mimeType, language);
 
         if(mimeTypeDescription == null && !language.getIsDefault()) {
-            mimeTypeDescription = getMimeTypeDescription(mimeType, getPartyControl().getDefaultLanguage());
+            mimeTypeDescription = getMimeTypeDescription(mimeType, partyControl.getDefaultLanguage());
         }
 
         if(mimeTypeDescription == null) {

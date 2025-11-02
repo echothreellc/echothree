@@ -545,7 +545,7 @@ public class VendorControl
         var vendorTypeDescription = getVendorTypeDescription(vendorType, language);
         
         if(vendorTypeDescription == null && !language.getIsDefault()) {
-            vendorTypeDescription = getVendorTypeDescription(vendorType, getPartyControl().getDefaultLanguage());
+            vendorTypeDescription = getVendorTypeDescription(vendorType, partyControl.getDefaultLanguage());
         }
         
         if(vendorTypeDescription == null) {
@@ -815,7 +815,6 @@ public class VendorControl
     
     public VendorStatusChoicesBean getVendorStatusChoices(String defaultVendorStatusChoice, Language language,
             boolean allowNullChoice, Party vendorParty, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var vendorStatusChoicesBean = new VendorStatusChoicesBean();
 
         if(vendorParty == null) {
@@ -835,7 +834,6 @@ public class VendorControl
     }
 
     public void setVendorStatus(ExecutionErrorAccumulator eea, Party party, String vendorStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(party);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(VendorStatusConstants.Workflow_VENDOR_STATUS,
                 entityInstance);
@@ -1160,7 +1158,6 @@ public class VendorControl
     
     public VendorItemStatusChoicesBean getVendorItemStatusChoices(String defaultVendorItemStatusChoice, Language language,
             boolean allowNullChoice, VendorItem vendorItem, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var vendorItemStatusChoicesBean = new VendorItemStatusChoicesBean();
 
         if(vendorItem == null) {
@@ -1180,7 +1177,6 @@ public class VendorControl
     }
 
     public void setVendorItemStatus(ExecutionErrorAccumulator eea, VendorItem vendorItem, String vendorItemStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(vendorItem);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(VendorItemStatusConstants.Workflow_VENDOR_ITEM_STATUS,
                 entityInstance);
@@ -2026,7 +2022,7 @@ public class VendorControl
         var itemPurchasingCategoryDescription = getItemPurchasingCategoryDescription(itemPurchasingCategory, language);
         
         if(itemPurchasingCategoryDescription == null && !language.getIsDefault()) {
-            itemPurchasingCategoryDescription = getItemPurchasingCategoryDescription(itemPurchasingCategory, getPartyControl().getDefaultLanguage());
+            itemPurchasingCategoryDescription = getItemPurchasingCategoryDescription(itemPurchasingCategory, partyControl.getDefaultLanguage());
         }
         
         if(itemPurchasingCategoryDescription == null) {
@@ -2105,7 +2101,7 @@ public class VendorControl
             var vendorControl = Session.getModelController(VendorControl.class);
 
             while(rs.next()) {
-                var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+                var party = partyControl.getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
 
                 vendorResultTransfers.add(new VendorResultTransfer(party.getLastDetail().getPartyName(),
                         includeVendor ? vendorControl.getVendorTransfer(userVisit, party) : null));
@@ -2123,7 +2119,7 @@ public class VendorControl
 
         try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
             while(rs.next()) {
-                var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+                var party = partyControl.getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
 
                 vendorObjects.add(new VendorObject(party));
             }

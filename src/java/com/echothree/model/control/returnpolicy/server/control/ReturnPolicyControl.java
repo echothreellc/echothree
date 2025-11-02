@@ -684,7 +684,7 @@ public class ReturnPolicyControl
         var returnKindDescription = getReturnKindDescription(returnKind, language);
         
         if(returnKindDescription == null && !language.getIsDefault()) {
-            returnKindDescription = getReturnKindDescription(returnKind, getPartyControl().getDefaultLanguage());
+            returnKindDescription = getReturnKindDescription(returnKind, partyControl.getDefaultLanguage());
         }
         
         if(returnKindDescription == null) {
@@ -1163,7 +1163,7 @@ public class ReturnPolicyControl
         var returnPolicyTranslation = getReturnPolicyTranslation(returnPolicy, language);
 
         if(returnPolicyTranslation == null && !language.getIsDefault()) {
-            returnPolicyTranslation = getReturnPolicyTranslation(returnPolicy, getPartyControl().getDefaultLanguage());
+            returnPolicyTranslation = getReturnPolicyTranslation(returnPolicy, partyControl.getDefaultLanguage());
         }
 
         return returnPolicyTranslation;
@@ -1928,7 +1928,7 @@ public class ReturnPolicyControl
         var returnReasonDescription = getReturnReasonDescription(returnReason, language);
         
         if(returnReasonDescription == null && !language.getIsDefault()) {
-            returnReasonDescription = getReturnReasonDescription(returnReason, getPartyControl().getDefaultLanguage());
+            returnReasonDescription = getReturnReasonDescription(returnReason, partyControl.getDefaultLanguage());
         }
         
         if(returnReasonDescription == null) {
@@ -2683,7 +2683,7 @@ public class ReturnPolicyControl
         var returnTypeDescription = getReturnTypeDescription(returnType, language);
         
         if(returnTypeDescription == null && !language.getIsDefault()) {
-            returnTypeDescription = getReturnTypeDescription(returnType, getPartyControl().getDefaultLanguage());
+            returnTypeDescription = getReturnTypeDescription(returnType, partyControl.getDefaultLanguage());
         }
         
         if(returnTypeDescription == null) {

@@ -505,7 +505,7 @@ public class UseControl
         var useDescription = getUseDescription(use, language);
 
         if(useDescription == null && !language.getIsDefault()) {
-            useDescription = getUseDescription(use, getPartyControl().getDefaultLanguage());
+            useDescription = getUseDescription(use, partyControl.getDefaultLanguage());
         }
 
         if(useDescription == null) {

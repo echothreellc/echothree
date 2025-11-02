@@ -398,7 +398,7 @@ public class PaymentProcessorTypeControl
         String description;
 
         if(paymentProcessorTypeDescription == null && !language.getIsDefault()) {
-            paymentProcessorTypeDescription = getPaymentProcessorTypeDescription(paymentProcessorType, getPartyControl().getDefaultLanguage());
+            paymentProcessorTypeDescription = getPaymentProcessorTypeDescription(paymentProcessorType, partyControl.getDefaultLanguage());
         }
 
         if(paymentProcessorTypeDescription == null) {

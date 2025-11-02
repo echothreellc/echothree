@@ -383,7 +383,7 @@ public class CommentControl
         var commentTypeDescription = getCommentTypeDescription(commentType, language);
         
         if(commentTypeDescription == null && !language.getIsDefault()) {
-            commentTypeDescription = getCommentTypeDescription(commentType, getPartyControl().getDefaultLanguage());
+            commentTypeDescription = getCommentTypeDescription(commentType, partyControl.getDefaultLanguage());
         }
         
         if(commentTypeDescription == null) {
@@ -726,7 +726,7 @@ public class CommentControl
         var commentUsageTypeDescription = getCommentUsageTypeDescription(commentUsageType, language);
         
         if(commentUsageTypeDescription == null && !language.getIsDefault()) {
-            commentUsageTypeDescription = getCommentUsageTypeDescription(commentUsageType, getPartyControl().getDefaultLanguage());
+            commentUsageTypeDescription = getCommentUsageTypeDescription(commentUsageType, partyControl.getDefaultLanguage());
         }
         
         if(commentUsageTypeDescription == null) {
@@ -1078,7 +1078,6 @@ public class CommentControl
 
         var workflowEntrance = commentType.getLastDetail().getWorkflowEntrance();
         if(workflowEntrance != null) {
-            var workflowControl = getWorkflowControl();
             var workflow = workflowEntrance.getLastDetail().getWorkflow();
         
             commentStatusChoicesBean = new CommentStatusChoicesBean();
@@ -1105,7 +1104,6 @@ public class CommentControl
         var workflowEntrance = commentTypeDetail.getWorkflowEntrance();
         
         if(workflowEntrance != null) {
-            var workflowControl = getWorkflowControl();
             var workflow = workflowEntrance.getLastDetail().getWorkflow();
             var entityInstance = getEntityInstanceByBaseEntity(comment);
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);

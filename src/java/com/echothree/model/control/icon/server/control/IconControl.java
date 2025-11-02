@@ -582,7 +582,7 @@ public class IconControl
         var iconUsageTypeDescription = getIconUsageTypeDescription(iconUsageType, language);
         
         if(iconUsageTypeDescription == null && !language.getIsDefault()) {
-            iconUsageTypeDescription = getIconUsageTypeDescription(iconUsageType, getPartyControl().getDefaultLanguage());
+            iconUsageTypeDescription = getIconUsageTypeDescription(iconUsageType, partyControl.getDefaultLanguage());
         }
         
         if(iconUsageTypeDescription == null) {

@@ -374,7 +374,7 @@ public class WorkflowControl
         var workflowStepTypeDescription = getWorkflowStepTypeDescription(workflowStepType, language);
         
         if(workflowStepTypeDescription == null && !language.getIsDefault()) {
-            workflowStepTypeDescription = getWorkflowStepTypeDescription(workflowStepType, getPartyControl().getDefaultLanguage());
+            workflowStepTypeDescription = getWorkflowStepTypeDescription(workflowStepType, partyControl.getDefaultLanguage());
         }
         
         if(workflowStepTypeDescription == null) {
@@ -696,7 +696,7 @@ public class WorkflowControl
         var workflowDescription = getWorkflowDescription(workflow, language);
         
         if(workflowDescription == null && !language.getIsDefault()) {
-            workflowDescription = getWorkflowDescription(workflow, getPartyControl().getDefaultLanguage());
+            workflowDescription = getWorkflowDescription(workflow, partyControl.getDefaultLanguage());
         }
         
         if(workflowDescription == null) {
@@ -1195,7 +1195,7 @@ public class WorkflowControl
         var workflowStepDescription = getWorkflowStepDescription(workflowStep, language);
         
         if(workflowStepDescription == null && !language.getIsDefault()) {
-            workflowStepDescription = getWorkflowStepDescription(workflowStep, getPartyControl().getDefaultLanguage());
+            workflowStepDescription = getWorkflowStepDescription(workflowStep, partyControl.getDefaultLanguage());
         }
         
         if(workflowStepDescription == null) {
@@ -1903,7 +1903,7 @@ public class WorkflowControl
         var workflowEntranceDescription = getWorkflowEntranceDescription(workflowEntrance, language);
         
         if(workflowEntranceDescription == null && !language.getIsDefault()) {
-            workflowEntranceDescription = getWorkflowEntranceDescription(workflowEntrance, getPartyControl().getDefaultLanguage());
+            workflowEntranceDescription = getWorkflowEntranceDescription(workflowEntrance, partyControl.getDefaultLanguage());
         }
         
         if(workflowEntranceDescription == null) {
@@ -3110,7 +3110,7 @@ public class WorkflowControl
         var workflowDestinationDescription = getWorkflowDestinationDescription(workflowDestination, language);
         
         if(workflowDestinationDescription == null && !language.getIsDefault()) {
-            workflowDestinationDescription = getWorkflowDestinationDescription(workflowDestination, getPartyControl().getDefaultLanguage());
+            workflowDestinationDescription = getWorkflowDestinationDescription(workflowDestination, partyControl.getDefaultLanguage());
         }
         
         if(workflowDestinationDescription == null) {

@@ -354,7 +354,6 @@ public class PrinterControl
 
     public PrinterGroupStatusChoicesBean getPrinterGroupStatusChoices(String defaultPrinterGroupStatusChoice, Language language, PrinterGroup printerGroup,
             PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var printerGroupStatusChoicesBean = new PrinterGroupStatusChoicesBean();
         var entityInstance = getEntityInstanceByBaseEntity(printerGroup);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PrinterGroupStatusConstants.Workflow_PRINTER_GROUP_STATUS,
@@ -367,7 +366,6 @@ public class PrinterControl
     }
 
     public void setPrinterGroupStatus(ExecutionErrorAccumulator eea, PrinterGroup printerGroup, String printerGroupStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(printerGroup);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PrinterGroupStatusConstants.Workflow_PRINTER_GROUP_STATUS,
                 entityInstance);
@@ -503,7 +501,7 @@ public class PrinterControl
         var printerGroupDescription = getPrinterGroupDescription(printerGroup, language);
 
         if(printerGroupDescription == null && !language.getIsDefault()) {
-            printerGroupDescription = getPrinterGroupDescription(printerGroup, getPartyControl().getDefaultLanguage());
+            printerGroupDescription = getPrinterGroupDescription(printerGroup, partyControl.getDefaultLanguage());
         }
 
         if(printerGroupDescription == null) {
@@ -780,7 +778,6 @@ public class PrinterControl
     }
 
     public PrinterStatusChoicesBean getPrinterStatusChoices(String defaultPrinterStatusChoice, Language language, Printer printer, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var printerStatusChoicesBean = new PrinterStatusChoicesBean();
         var entityInstance = getEntityInstanceByBaseEntity(printer);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PrinterStatusConstants.Workflow_PRINTER_STATUS,
@@ -793,7 +790,6 @@ public class PrinterControl
     }
 
     public void setPrinterStatus(ExecutionErrorAccumulator eea, Printer printer, String printerStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(printer);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PrinterStatusConstants.Workflow_PRINTER_STATUS,
                 entityInstance);
@@ -918,7 +914,7 @@ public class PrinterControl
         var printerDescription = getPrinterDescription(printer, language);
 
         if(printerDescription == null && !language.getIsDefault()) {
-            printerDescription = getPrinterDescription(printer, getPartyControl().getDefaultLanguage());
+            printerDescription = getPrinterDescription(printer, partyControl.getDefaultLanguage());
         }
 
         if(printerDescription == null) {
@@ -1282,7 +1278,6 @@ public class PrinterControl
 
     public PrinterGroupJobStatusChoicesBean getPrinterGroupJobStatusChoices(String defaultPrinterGroupJobStatusChoice, Language language,
             PrinterGroupJob printerGroupJob, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var printerGroupJobStatusChoicesBean = new PrinterGroupJobStatusChoicesBean();
         var entityInstance = getEntityInstanceByBaseEntity(printerGroupJob);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PrinterGroupJobStatusConstants.Workflow_PRINTER_GROUP_JOB_STATUS,
@@ -1295,7 +1290,6 @@ public class PrinterControl
     }
 
     public void setPrinterGroupJobStatus(ExecutionErrorAccumulator eea, PrinterGroupJob printerGroupJob, String printerGroupJobStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(printerGroupJob);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PrinterGroupJobStatusConstants.Workflow_PRINTER_GROUP_JOB_STATUS, entityInstance);
         var workflowDestination = printerGroupJobStatusChoice == null ? null : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), printerGroupJobStatusChoice);
@@ -1723,7 +1717,7 @@ public class PrinterControl
         var printerGroupUseTypeDescription = getPrinterGroupUseTypeDescription(printerGroupUseType, language);
 
         if(printerGroupUseTypeDescription == null && !language.getIsDefault()) {
-            printerGroupUseTypeDescription = getPrinterGroupUseTypeDescription(printerGroupUseType, getPartyControl().getDefaultLanguage());
+            printerGroupUseTypeDescription = getPrinterGroupUseTypeDescription(printerGroupUseType, partyControl.getDefaultLanguage());
         }
 
         if(printerGroupUseTypeDescription == null) {

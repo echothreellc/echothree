@@ -421,7 +421,7 @@ public class EditorControl
         var editorDescription = getEditorDescription(editor, language);
 
         if(editorDescription == null && !language.getIsDefault()) {
-            editorDescription = getEditorDescription(editor, getPartyControl().getDefaultLanguage());
+            editorDescription = getEditorDescription(editor, partyControl.getDefaultLanguage());
         }
 
         if(editorDescription == null) {

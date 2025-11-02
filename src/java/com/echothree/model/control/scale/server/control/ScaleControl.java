@@ -448,7 +448,7 @@ public class ScaleControl
         var scaleTypeDescription = getScaleTypeDescription(scaleType, language);
 
         if(scaleTypeDescription == null && !language.getIsDefault()) {
-            scaleTypeDescription = getScaleTypeDescription(scaleType, getPartyControl().getDefaultLanguage());
+            scaleTypeDescription = getScaleTypeDescription(scaleType, partyControl.getDefaultLanguage());
         }
 
         if(scaleTypeDescription == null) {
@@ -960,7 +960,7 @@ public class ScaleControl
         var scaleDescription = getScaleDescription(scale, language);
 
         if(scaleDescription == null && !language.getIsDefault()) {
-            scaleDescription = getScaleDescription(scale, getPartyControl().getDefaultLanguage());
+            scaleDescription = getScaleDescription(scale, partyControl.getDefaultLanguage());
         }
 
         if(scaleDescription == null) {
@@ -1378,7 +1378,7 @@ public class ScaleControl
         var scaleUseTypeDescription = getScaleUseTypeDescription(scaleUseType, language);
 
         if(scaleUseTypeDescription == null && !language.getIsDefault()) {
-            scaleUseTypeDescription = getScaleUseTypeDescription(scaleUseType, getPartyControl().getDefaultLanguage());
+            scaleUseTypeDescription = getScaleUseTypeDescription(scaleUseType, partyControl.getDefaultLanguage());
         }
 
         if(scaleUseTypeDescription == null) {

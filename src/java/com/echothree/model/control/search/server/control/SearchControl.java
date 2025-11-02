@@ -571,7 +571,7 @@ public class SearchControl
         var searchUseTypeDescription = getSearchUseTypeDescription(searchUseType, language);
 
         if(searchUseTypeDescription == null && !language.getIsDefault()) {
-            searchUseTypeDescription = getSearchUseTypeDescription(searchUseType, getPartyControl().getDefaultLanguage());
+            searchUseTypeDescription = getSearchUseTypeDescription(searchUseType, partyControl.getDefaultLanguage());
         }
 
         if(searchUseTypeDescription == null) {
@@ -1027,7 +1027,7 @@ public class SearchControl
         var searchResultActionTypeDescription = getSearchResultActionTypeDescription(searchResultActionType, language);
 
         if(searchResultActionTypeDescription == null && !language.getIsDefault()) {
-            searchResultActionTypeDescription = getSearchResultActionTypeDescription(searchResultActionType, getPartyControl().getDefaultLanguage());
+            searchResultActionTypeDescription = getSearchResultActionTypeDescription(searchResultActionType, partyControl.getDefaultLanguage());
         }
 
         if(searchResultActionTypeDescription == null) {
@@ -1478,7 +1478,7 @@ public class SearchControl
         var searchCheckSpellingActionTypeDescription = getSearchCheckSpellingActionTypeDescription(searchCheckSpellingActionType, language);
 
         if(searchCheckSpellingActionTypeDescription == null && !language.getIsDefault()) {
-            searchCheckSpellingActionTypeDescription = getSearchCheckSpellingActionTypeDescription(searchCheckSpellingActionType, getPartyControl().getDefaultLanguage());
+            searchCheckSpellingActionTypeDescription = getSearchCheckSpellingActionTypeDescription(searchCheckSpellingActionType, partyControl.getDefaultLanguage());
         }
 
         if(searchCheckSpellingActionTypeDescription == null) {
@@ -1931,7 +1931,7 @@ public class SearchControl
         var searchDefaultOperatorDescription = getSearchDefaultOperatorDescription(searchDefaultOperator, language);
 
         if(searchDefaultOperatorDescription == null && !language.getIsDefault()) {
-            searchDefaultOperatorDescription = getSearchDefaultOperatorDescription(searchDefaultOperator, getPartyControl().getDefaultLanguage());
+            searchDefaultOperatorDescription = getSearchDefaultOperatorDescription(searchDefaultOperator, partyControl.getDefaultLanguage());
         }
 
         if(searchDefaultOperatorDescription == null) {
@@ -2384,7 +2384,7 @@ public class SearchControl
         var searchSortDirectionDescription = getSearchSortDirectionDescription(searchSortDirection, language);
 
         if(searchSortDirectionDescription == null && !language.getIsDefault()) {
-            searchSortDirectionDescription = getSearchSortDirectionDescription(searchSortDirection, getPartyControl().getDefaultLanguage());
+            searchSortDirectionDescription = getSearchSortDirectionDescription(searchSortDirection, partyControl.getDefaultLanguage());
         }
 
         if(searchSortDirectionDescription == null) {
@@ -2833,7 +2833,7 @@ public class SearchControl
         var searchKindDescription = getSearchKindDescription(searchKind, language);
 
         if(searchKindDescription == null && !language.getIsDefault()) {
-            searchKindDescription = getSearchKindDescription(searchKind, getPartyControl().getDefaultLanguage());
+            searchKindDescription = getSearchKindDescription(searchKind, partyControl.getDefaultLanguage());
         }
 
         if(searchKindDescription == null) {
@@ -3288,7 +3288,7 @@ public class SearchControl
         var searchTypeDescription = getSearchTypeDescription(searchType, language);
 
         if(searchTypeDescription == null && !language.getIsDefault()) {
-            searchTypeDescription = getSearchTypeDescription(searchType, getPartyControl().getDefaultLanguage());
+            searchTypeDescription = getSearchTypeDescription(searchType, partyControl.getDefaultLanguage());
         }
 
         if(searchTypeDescription == null) {
@@ -3741,7 +3741,7 @@ public class SearchControl
         var searchSortOrderDescription = getSearchSortOrderDescription(searchSortOrder, language);
 
         if(searchSortOrderDescription == null && !language.getIsDefault()) {
-            searchSortOrderDescription = getSearchSortOrderDescription(searchSortOrder, getPartyControl().getDefaultLanguage());
+            searchSortOrderDescription = getSearchSortOrderDescription(searchSortOrder, partyControl.getDefaultLanguage());
         }
 
         if(searchSortOrderDescription == null) {

@@ -500,7 +500,7 @@ public class CarrierControl
         var carrierTypeDescription = getCarrierTypeDescription(carrierType, language);
 
         if(carrierTypeDescription == null && !language.getIsDefault()) {
-            carrierTypeDescription = getCarrierTypeDescription(carrierType, getPartyControl().getDefaultLanguage());
+            carrierTypeDescription = getCarrierTypeDescription(carrierType, partyControl.getDefaultLanguage());
         }
 
         if(carrierTypeDescription == null) {
@@ -787,7 +787,7 @@ public class CarrierControl
         }
 
         for(var carrier : carriers) {
-            var partyGroup = getPartyControl().getPartyGroup(carrier.getParty());
+            var partyGroup = partyControl.getPartyGroup(carrier.getParty());
 
             var label = partyGroup.getName();
             var value = carrier.getCarrierName();
@@ -856,7 +856,7 @@ public class CarrierControl
         deleteCarrierServicesByCarrierParty(party, deletedBy);
         deleteCarrierOptionsByCarrierParty(party, deletedBy);
         
-        getPartyControl().deleteParty(party, deletedBy);
+        partyControl.deleteParty(party, deletedBy);
         
         carrier.setThruTime(session.START_TIME_LONG);
         carrier.store();
@@ -1301,7 +1301,7 @@ public class CarrierControl
         var carrierServiceDescription = getCarrierServiceDescription(carrierService, language);
         
         if(carrierServiceDescription == null && !language.getIsDefault()) {
-            carrierServiceDescription = getCarrierServiceDescription(carrierService, getPartyControl().getDefaultLanguage());
+            carrierServiceDescription = getCarrierServiceDescription(carrierService, partyControl.getDefaultLanguage());
         }
         
         if(carrierServiceDescription == null) {
@@ -1792,7 +1792,7 @@ public class CarrierControl
         var carrierOptionDescription = getCarrierOptionDescription(carrierOption, language);
         
         if(carrierOptionDescription == null && !language.getIsDefault()) {
-            carrierOptionDescription = getCarrierOptionDescription(carrierOption, getPartyControl().getDefaultLanguage());
+            carrierOptionDescription = getCarrierOptionDescription(carrierOption, partyControl.getDefaultLanguage());
         }
         
         if(carrierOptionDescription == null) {

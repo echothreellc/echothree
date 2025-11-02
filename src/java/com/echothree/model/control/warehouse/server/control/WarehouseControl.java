@@ -485,7 +485,7 @@ public class WarehouseControl
         var warehouseTypeDescription = getWarehouseTypeDescription(warehouseType, language);
 
         if(warehouseTypeDescription == null && !language.getIsDefault()) {
-            warehouseTypeDescription = getWarehouseTypeDescription(warehouseType, getPartyControl().getDefaultLanguage());
+            warehouseTypeDescription = getWarehouseTypeDescription(warehouseType, partyControl.getDefaultLanguage());
         }
 
         if(warehouseTypeDescription == null) {
@@ -765,7 +765,7 @@ public class WarehouseControl
         }
 
         for(var warehouse : partyCompanies) {
-            var partyGroup = getPartyControl().getPartyGroup(warehouse.getParty());
+            var partyGroup = partyControl.getPartyGroup(warehouse.getParty());
 
             var label = partyGroup.getName();
             var value = warehouse.getWarehouseName();
@@ -853,7 +853,7 @@ public class WarehouseControl
         deleteLocationTypesByWarehouseParty(party, deletedBy);
         inventoryControl.deleteInventoryLocationGroupsByWarehouseParty(party, deletedBy);
         
-        getPartyControl().deleteParty(party, deletedBy);
+        partyControl.deleteParty(party, deletedBy);
         
         warehouse.setThruTime(session.START_TIME_LONG);
         warehouse.store();
@@ -1288,7 +1288,7 @@ public class WarehouseControl
         var locationTypeDescription = getLocationTypeDescription(locationType, language);
         
         if(locationTypeDescription == null && !language.getIsDefault()) {
-            locationTypeDescription = getLocationTypeDescription(locationType, getPartyControl().getDefaultLanguage());
+            locationTypeDescription = getLocationTypeDescription(locationType, partyControl.getDefaultLanguage());
         }
         
         if(locationTypeDescription == null) {
@@ -1646,7 +1646,7 @@ public class WarehouseControl
         var locationNameElementDescription = getLocationNameElementDescription(locationNameElement, language);
         
         if(locationNameElementDescription == null && !language.getIsDefault()) {
-            locationNameElementDescription = getLocationNameElementDescription(locationNameElement, getPartyControl().getDefaultLanguage());
+            locationNameElementDescription = getLocationNameElementDescription(locationNameElement, partyControl.getDefaultLanguage());
         }
         
         if(locationNameElementDescription == null) {
@@ -2015,7 +2015,6 @@ public class WarehouseControl
     
     public LocationStatusChoicesBean getLocationStatusChoices(String defaultLocationStatusChoice, Language language,
             Location location, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var locationStatusChoicesBean = new LocationStatusChoicesBean();
         var entityInstance = getEntityInstanceByBaseEntity(location);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(LocationStatusConstants.Workflow_LOCATION_STATUS,
@@ -2028,7 +2027,6 @@ public class WarehouseControl
     }
     
     public void setLocationStatus(ExecutionErrorAccumulator eea, Location location, String locationStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(location);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(LocationStatusConstants.Workflow_LOCATION_STATUS,
                 entityInstance);
@@ -2212,7 +2210,7 @@ public class WarehouseControl
         var locationDescription = getLocationDescription(location, language);
         
         if(locationDescription == null && !language.getIsDefault()) {
-            locationDescription = getLocationDescription(location, getPartyControl().getDefaultLanguage());
+            locationDescription = getLocationDescription(location, partyControl.getDefaultLanguage());
         }
         
         if(locationDescription == null) {
@@ -2549,7 +2547,7 @@ public class WarehouseControl
             var warehouseControl = Session.getModelController(WarehouseControl.class);
 
             while(rs.next()) {
-                var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+                var party = partyControl.getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
 
                 warehouseResultTransfers.add(new WarehouseResultTransfer(party.getLastDetail().getPartyName(),
                         includeWarehouse ? warehouseControl.getWarehouseTransfer(userVisit, party) : null));
@@ -2567,7 +2565,7 @@ public class WarehouseControl
 
         try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
             while(rs.next()) {
-                var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+                var party = partyControl.getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
 
                 warehouseObjects.add(new WarehouseObject(party));
             }

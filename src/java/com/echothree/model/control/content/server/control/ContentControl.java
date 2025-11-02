@@ -384,7 +384,7 @@ public class ContentControl
         var contentPageAreaTypeDescription = getContentPageAreaTypeDescription(contentPageAreaType, language);
         
         if(contentPageAreaTypeDescription == null && !language.getIsDefault()) {
-            contentPageAreaTypeDescription = getContentPageAreaTypeDescription(contentPageAreaType, getPartyControl().getDefaultLanguage());
+            contentPageAreaTypeDescription = getContentPageAreaTypeDescription(contentPageAreaType, partyControl.getDefaultLanguage());
         }
         
         if(contentPageAreaTypeDescription == null) {
@@ -787,7 +787,7 @@ public class ContentControl
         var contentPageLayoutDescription = getContentPageLayoutDescription(contentPageLayout, language);
         
         if(contentPageLayoutDescription == null && !language.getIsDefault()) {
-            contentPageLayoutDescription = getContentPageLayoutDescription(contentPageLayout, getPartyControl().getDefaultLanguage());
+            contentPageLayoutDescription = getContentPageLayoutDescription(contentPageLayout, partyControl.getDefaultLanguage());
         }
         
         if(contentPageLayoutDescription == null) {
@@ -959,7 +959,7 @@ public class ContentControl
         var contentPageLayoutAreaDescription = getContentPageLayoutAreaDescription(contentPageLayoutArea, language);
         
         if(contentPageLayoutAreaDescription == null && !language.getIsDefault()) {
-            contentPageLayoutAreaDescription = getContentPageLayoutAreaDescription(contentPageLayoutArea, getPartyControl().getDefaultLanguage());
+            contentPageLayoutAreaDescription = getContentPageLayoutAreaDescription(contentPageLayoutArea, partyControl.getDefaultLanguage());
         }
         
         if(contentPageLayoutAreaDescription == null) {
@@ -1273,7 +1273,7 @@ public class ContentControl
         var contentCollectionDescription = getContentCollectionDescription(contentCollection, language);
         
         if(contentCollectionDescription == null && !language.getIsDefault()) {
-            contentCollectionDescription = getContentCollectionDescription(contentCollection, getPartyControl().getDefaultLanguage());
+            contentCollectionDescription = getContentCollectionDescription(contentCollection, partyControl.getDefaultLanguage());
         }
         
         if(contentCollectionDescription == null) {
@@ -1848,7 +1848,7 @@ public class ContentControl
         var contentSectionDescription = getContentSectionDescription(contentSection, language);
         
         if(contentSectionDescription == null && !language.getIsDefault()) {
-            contentSectionDescription = getContentSectionDescription(contentSection, getPartyControl().getDefaultLanguage());
+            contentSectionDescription = getContentSectionDescription(contentSection, partyControl.getDefaultLanguage());
         }
         
         if(contentSectionDescription == null) {
@@ -2343,7 +2343,7 @@ public class ContentControl
         var contentPageDescription = getContentPageDescription(contentPage, language);
         
         if(contentPageDescription == null && !language.getIsDefault()) {
-            contentPageDescription = getContentPageDescription(contentPage, getPartyControl().getDefaultLanguage());
+            contentPageDescription = getContentPageDescription(contentPage, partyControl.getDefaultLanguage());
         }
         
         if(contentPageDescription == null) {
@@ -2571,7 +2571,7 @@ public class ContentControl
         var contentPageArea = getContentPageArea(contentPage, contentPageLayoutArea, language);
         
         if(contentPageArea == null && !language.getIsDefault()) {
-            contentPageArea = getContentPageArea(contentPage, contentPageLayoutArea, getPartyControl().getDefaultLanguage());
+            contentPageArea = getContentPageArea(contentPage, contentPageLayoutArea, partyControl.getDefaultLanguage());
         }
         
         return contentPageArea;
@@ -3180,7 +3180,7 @@ public class ContentControl
         var contentCatalogDescription = getContentCatalogDescription(contentCatalog, language);
         
         if(contentCatalogDescription == null && !language.getIsDefault()) {
-            contentCatalogDescription = getContentCatalogDescription(contentCatalog, getPartyControl().getDefaultLanguage());
+            contentCatalogDescription = getContentCatalogDescription(contentCatalog, partyControl.getDefaultLanguage());
         }
         
         if(contentCatalogDescription == null) {
@@ -4426,7 +4426,7 @@ public class ContentControl
         var contentCategoryDescription = getContentCategoryDescription(contentCategory, language);
         
         if(contentCategoryDescription == null && !language.getIsDefault()) {
-            contentCategoryDescription = getContentCategoryDescription(contentCategory, getPartyControl().getDefaultLanguage());
+            contentCategoryDescription = getContentCategoryDescription(contentCategory, partyControl.getDefaultLanguage());
         }
         
         if(contentCategoryDescription == null) {
@@ -5441,7 +5441,7 @@ public class ContentControl
         var contentWebAddressDescription = getContentWebAddressDescription(contentWebAddress, language);
         
         if(contentWebAddressDescription == null && !language.getIsDefault()) {
-            contentWebAddressDescription = getContentWebAddressDescription(contentWebAddress, getPartyControl().getDefaultLanguage());
+            contentWebAddressDescription = getContentWebAddressDescription(contentWebAddress, partyControl.getDefaultLanguage());
         }
         
         if(contentWebAddressDescription == null) {

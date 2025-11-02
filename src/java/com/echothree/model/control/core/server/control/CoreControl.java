@@ -369,7 +369,7 @@ public class CoreControl
         var entityAttributeTypeDescription = getEntityAttributeTypeDescription(entityAttributeType, language);
         
         if(entityAttributeTypeDescription == null && !language.getIsDefault()) {
-            entityAttributeTypeDescription = getEntityAttributeTypeDescription(entityAttributeType, getPartyControl().getDefaultLanguage());
+            entityAttributeTypeDescription = getEntityAttributeTypeDescription(entityAttributeType, partyControl.getDefaultLanguage());
         }
         
         if(entityAttributeTypeDescription == null) {
@@ -847,7 +847,7 @@ public class CoreControl
         var entityAttributeGroupDescription = getEntityAttributeGroupDescription(entityAttributeGroup, language);
         
         if(entityAttributeGroupDescription == null && !language.getIsDefault()) {
-            entityAttributeGroupDescription = getEntityAttributeGroupDescription(entityAttributeGroup, getPartyControl().getDefaultLanguage());
+            entityAttributeGroupDescription = getEntityAttributeGroupDescription(entityAttributeGroup, partyControl.getDefaultLanguage());
         }
         
         if(entityAttributeGroupDescription == null) {
@@ -1473,7 +1473,7 @@ public class CoreControl
         var entityAttributeDescription = getEntityAttributeDescription(entityAttribute, language);
         
         if(entityAttributeDescription == null && !language.getIsDefault()) {
-            entityAttributeDescription = getEntityAttributeDescription(entityAttribute, getPartyControl().getDefaultLanguage());
+            entityAttributeDescription = getEntityAttributeDescription(entityAttribute, partyControl.getDefaultLanguage());
         }
         
         if(entityAttributeDescription == null) {
@@ -2839,7 +2839,7 @@ public class CoreControl
         var entityListItemDescription = getEntityListItemDescription(entityListItem, language);
         
         if(entityListItemDescription == null && !language.getIsDefault()) {
-            entityListItemDescription = getEntityListItemDescription(entityListItem, getPartyControl().getDefaultLanguage());
+            entityListItemDescription = getEntityListItemDescription(entityListItem, partyControl.getDefaultLanguage());
         }
         
         if(entityListItemDescription == null) {
@@ -3327,7 +3327,7 @@ public class CoreControl
         var entityIntegerRangeDescription = getEntityIntegerRangeDescription(entityIntegerRange, language);
         
         if(entityIntegerRangeDescription == null && !language.getIsDefault()) {
-            entityIntegerRangeDescription = getEntityIntegerRangeDescription(entityIntegerRange, getPartyControl().getDefaultLanguage());
+            entityIntegerRangeDescription = getEntityIntegerRangeDescription(entityIntegerRange, partyControl.getDefaultLanguage());
         }
         
         if(entityIntegerRangeDescription == null) {
@@ -3815,7 +3815,7 @@ public class CoreControl
         var entityLongRangeDescription = getEntityLongRangeDescription(entityLongRange, language);
         
         if(entityLongRangeDescription == null && !language.getIsDefault()) {
-            entityLongRangeDescription = getEntityLongRangeDescription(entityLongRange, getPartyControl().getDefaultLanguage());
+            entityLongRangeDescription = getEntityLongRangeDescription(entityLongRange, partyControl.getDefaultLanguage());
         }
         
         if(entityLongRangeDescription == null) {
@@ -6392,7 +6392,7 @@ public class CoreControl
         var entityStringAttribute = getEntityStringAttribute(entityAttribute, entityInstance, language);
         
         if(entityStringAttribute == null && !language.getIsDefault()) {
-            entityStringAttribute = getEntityStringAttribute(entityAttribute, entityInstance, getPartyControl().getDefaultLanguage());
+            entityStringAttribute = getEntityStringAttribute(entityAttribute, entityInstance, partyControl.getDefaultLanguage());
         }
         
         return entityStringAttribute;
@@ -7199,7 +7199,7 @@ public class CoreControl
         var entityBlobAttribute = getEntityBlobAttribute(entityAttribute, entityInstance, language);
         
         if(entityBlobAttribute == null && !language.getIsDefault()) {
-            entityBlobAttribute = getEntityBlobAttribute(entityAttribute, entityInstance, getPartyControl().getDefaultLanguage());
+            entityBlobAttribute = getEntityBlobAttribute(entityAttribute, entityInstance, partyControl.getDefaultLanguage());
         }
         
         return entityBlobAttribute;
@@ -7395,7 +7395,7 @@ public class CoreControl
         var entityClobAttribute = getEntityClobAttribute(entityAttribute, entityInstance, language);
         
         if(entityClobAttribute == null && !language.getIsDefault()) {
-            entityClobAttribute = getEntityClobAttribute(entityAttribute, entityInstance, getPartyControl().getDefaultLanguage());
+            entityClobAttribute = getEntityClobAttribute(entityAttribute, entityInstance, partyControl.getDefaultLanguage());
         }
         
         return entityClobAttribute;

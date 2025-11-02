@@ -463,7 +463,7 @@ public class AssociateControl
         var associateProgramDescription = getAssociateProgramDescription(associateProgram, language);
         
         if(associateProgramDescription == null && !language.getIsDefault()) {
-            associateProgramDescription = getAssociateProgramDescription(associateProgram, getPartyControl().getDefaultLanguage());
+            associateProgramDescription = getAssociateProgramDescription(associateProgram, partyControl.getDefaultLanguage());
         }
         
         if(associateProgramDescription == null) {

@@ -504,7 +504,7 @@ public class WishlistControl
         var wishlistTypeDescription = getWishlistTypeDescription(wishlistType, language);
         
         if(wishlistTypeDescription == null && !language.getIsDefault()) {
-            wishlistTypeDescription = getWishlistTypeDescription(wishlistType, getPartyControl().getDefaultLanguage());
+            wishlistTypeDescription = getWishlistTypeDescription(wishlistType, partyControl.getDefaultLanguage());
         }
         
         if(wishlistTypeDescription == null) {
@@ -1003,7 +1003,7 @@ public class WishlistControl
         var wishlistPriorityDescription = getWishlistPriorityDescription(wishlistPriority, language);
         
         if(wishlistPriorityDescription == null && !language.getIsDefault()) {
-            wishlistPriorityDescription = getWishlistPriorityDescription(wishlistPriority, getPartyControl().getDefaultLanguage());
+            wishlistPriorityDescription = getWishlistPriorityDescription(wishlistPriority, partyControl.getDefaultLanguage());
         }
         
         if(wishlistPriorityDescription == null) {

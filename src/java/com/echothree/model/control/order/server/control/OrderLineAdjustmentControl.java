@@ -414,7 +414,7 @@ public class OrderLineAdjustmentControl
         var orderLineAdjustmentTypeDescription = getOrderLineAdjustmentTypeDescription(orderLineAdjustmentType, language);
 
         if(orderLineAdjustmentTypeDescription == null && !language.getIsDefault()) {
-            orderLineAdjustmentTypeDescription = getOrderLineAdjustmentTypeDescription(orderLineAdjustmentType, getPartyControl().getDefaultLanguage());
+            orderLineAdjustmentTypeDescription = getOrderLineAdjustmentTypeDescription(orderLineAdjustmentType, partyControl.getDefaultLanguage());
         }
 
         if(orderLineAdjustmentTypeDescription == null) {

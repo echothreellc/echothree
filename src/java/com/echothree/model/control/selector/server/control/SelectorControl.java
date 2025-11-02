@@ -552,7 +552,7 @@ public class SelectorControl
         var selectorKindDescription = getSelectorKindDescription(selectorKind, language);
 
         if(selectorKindDescription == null && !language.getIsDefault()) {
-            selectorKindDescription = getSelectorKindDescription(selectorKind, getPartyControl().getDefaultLanguage());
+            selectorKindDescription = getSelectorKindDescription(selectorKind, partyControl.getDefaultLanguage());
         }
 
         if(selectorKindDescription == null) {
@@ -1003,7 +1003,7 @@ public class SelectorControl
         var selectorTypeDescription = getSelectorTypeDescription(selectorType, language);
 
         if(selectorTypeDescription == null && !language.getIsDefault()) {
-            selectorTypeDescription = getSelectorTypeDescription(selectorType, getPartyControl().getDefaultLanguage());
+            selectorTypeDescription = getSelectorTypeDescription(selectorType, partyControl.getDefaultLanguage());
         }
 
         if(selectorTypeDescription == null) {
@@ -1176,7 +1176,7 @@ public class SelectorControl
         var selectorBooleanTypeDescription = getSelectorBooleanTypeDescription(selectorBooleanType, language);
         
         if(selectorBooleanTypeDescription == null && !language.getIsDefault()) {
-            selectorBooleanTypeDescription = getSelectorBooleanTypeDescription(selectorBooleanType, getPartyControl().getDefaultLanguage());
+            selectorBooleanTypeDescription = getSelectorBooleanTypeDescription(selectorBooleanType, partyControl.getDefaultLanguage());
         }
         
         if(selectorBooleanTypeDescription == null) {
@@ -1297,7 +1297,7 @@ public class SelectorControl
         var selectorComparisonTypeDescription = getSelectorComparisonTypeDescription(selectorComparisonType, language);
         
         if(selectorComparisonTypeDescription == null && !language.getIsDefault()) {
-            selectorComparisonTypeDescription = getSelectorComparisonTypeDescription(selectorComparisonType, getPartyControl().getDefaultLanguage());
+            selectorComparisonTypeDescription = getSelectorComparisonTypeDescription(selectorComparisonType, partyControl.getDefaultLanguage());
         }
         
         if(selectorComparisonTypeDescription == null) {
@@ -1467,7 +1467,7 @@ public class SelectorControl
         var selectorNodeTypeDescription = getSelectorNodeTypeDescription(selectorNodeType, language);
         
         if(selectorNodeTypeDescription == null && !language.getIsDefault()) {
-            selectorNodeTypeDescription = getSelectorNodeTypeDescription(selectorNodeType, getPartyControl().getDefaultLanguage());
+            selectorNodeTypeDescription = getSelectorNodeTypeDescription(selectorNodeType, partyControl.getDefaultLanguage());
         }
         
         if(selectorNodeTypeDescription == null) {
@@ -1587,7 +1587,7 @@ public class SelectorControl
         var selectorTextSearchTypeDescription = getSelectorTextSearchTypeDescription(selectorTextSearchType, language);
         
         if(selectorTextSearchTypeDescription == null && !language.getIsDefault()) {
-            selectorTextSearchTypeDescription = getSelectorTextSearchTypeDescription(selectorTextSearchType, getPartyControl().getDefaultLanguage());
+            selectorTextSearchTypeDescription = getSelectorTextSearchTypeDescription(selectorTextSearchType, partyControl.getDefaultLanguage());
         }
         
         if(selectorTextSearchTypeDescription == null) {
@@ -2075,7 +2075,7 @@ public class SelectorControl
         var selectorDescription = getSelectorDescription(selector, language);
         
         if(selectorDescription == null && !language.getIsDefault()) {
-            selectorDescription = getSelectorDescription(selector, getPartyControl().getDefaultLanguage());
+            selectorDescription = getSelectorDescription(selector, partyControl.getDefaultLanguage());
         }
         
         if(selectorDescription == null) {
@@ -2608,7 +2608,7 @@ public class SelectorControl
         var selectorNodeDescription = getSelectorNodeDescription(selectorNode, language);
         
         if(selectorNodeDescription == null && !language.getIsDefault()) {
-            selectorNodeDescription = getSelectorNodeDescription(selectorNode, getPartyControl().getDefaultLanguage());
+            selectorNodeDescription = getSelectorNodeDescription(selectorNode, partyControl.getDefaultLanguage());
         }
         
         if(selectorNodeDescription == null) {

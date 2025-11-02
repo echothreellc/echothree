@@ -479,7 +479,7 @@ public class EntityInstanceControl
         searchControl.deleteSearchResultActionsByEntityInstance(entityInstance, deletedBy);
         securityControl.deletePartyEntitySecurityRolesByEntityInstance(entityInstance, deletedBy);
         Session.getModelController(TagControl.class).deleteEntityTagsByEntityInstance(entityInstance, deletedBy);
-        getWorkflowControl().deleteWorkflowEntityStatusesByEntityInstance(entityInstance, deletedBy);
+        workflowControl.deleteWorkflowEntityStatusesByEntityInstance(entityInstance, deletedBy);
         Session.getModelController(WorkEffortControl.class).deleteWorkEffortsByOwningEntityInstance(entityInstance, deletedBy);
 
         // If an EntityInstance is in a role for a ChainInstance, then that ChainInstance should be deleted. Because an individual

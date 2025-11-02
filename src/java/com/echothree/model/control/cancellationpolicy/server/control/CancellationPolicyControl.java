@@ -696,7 +696,7 @@ public class CancellationPolicyControl
         var cancellationKindDescription = getCancellationKindDescription(cancellationKind, language);
         
         if(cancellationKindDescription == null && !language.getIsDefault()) {
-            cancellationKindDescription = getCancellationKindDescription(cancellationKind, getPartyControl().getDefaultLanguage());
+            cancellationKindDescription = getCancellationKindDescription(cancellationKind, partyControl.getDefaultLanguage());
         }
         
         if(cancellationKindDescription == null) {
@@ -1175,7 +1175,7 @@ public class CancellationPolicyControl
         var cancellationPolicyTranslation = getCancellationPolicyTranslation(cancellationPolicy, language);
 
         if(cancellationPolicyTranslation == null && !language.getIsDefault()) {
-            cancellationPolicyTranslation = getCancellationPolicyTranslation(cancellationPolicy, getPartyControl().getDefaultLanguage());
+            cancellationPolicyTranslation = getCancellationPolicyTranslation(cancellationPolicy, partyControl.getDefaultLanguage());
         }
 
         return cancellationPolicyTranslation;
@@ -1940,7 +1940,7 @@ public class CancellationPolicyControl
         var cancellationReasonDescription = getCancellationReasonDescription(cancellationReason, language);
         
         if(cancellationReasonDescription == null && !language.getIsDefault()) {
-            cancellationReasonDescription = getCancellationReasonDescription(cancellationReason, getPartyControl().getDefaultLanguage());
+            cancellationReasonDescription = getCancellationReasonDescription(cancellationReason, partyControl.getDefaultLanguage());
         }
         
         if(cancellationReasonDescription == null) {
@@ -2733,7 +2733,7 @@ public class CancellationPolicyControl
         var cancellationTypeDescription = getCancellationTypeDescription(cancellationType, language);
         
         if(cancellationTypeDescription == null && !language.getIsDefault()) {
-            cancellationTypeDescription = getCancellationTypeDescription(cancellationType, getPartyControl().getDefaultLanguage());
+            cancellationTypeDescription = getCancellationTypeDescription(cancellationType, partyControl.getDefaultLanguage());
         }
         
         if(cancellationTypeDescription == null) {

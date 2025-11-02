@@ -438,7 +438,7 @@ public class ServerControl
         var protocolDescription = getProtocolDescription(protocol, language);
 
         if(protocolDescription == null && !language.getIsDefault()) {
-            protocolDescription = getProtocolDescription(protocol, getPartyControl().getDefaultLanguage());
+            protocolDescription = getProtocolDescription(protocol, partyControl.getDefaultLanguage());
         }
 
         if(protocolDescription == null) {
@@ -903,7 +903,7 @@ public class ServerControl
         var serviceDescription = getServiceDescription(service, language);
 
         if(serviceDescription == null && !language.getIsDefault()) {
-            serviceDescription = getServiceDescription(service, getPartyControl().getDefaultLanguage());
+            serviceDescription = getServiceDescription(service, partyControl.getDefaultLanguage());
         }
 
         if(serviceDescription == null) {
@@ -1328,7 +1328,7 @@ public class ServerControl
         var serverDescription = getServerDescription(server, language);
 
         if(serverDescription == null && !language.getIsDefault()) {
-            serverDescription = getServerDescription(server, getPartyControl().getDefaultLanguage());
+            serverDescription = getServerDescription(server, partyControl.getDefaultLanguage());
         }
 
         if(serverDescription == null) {

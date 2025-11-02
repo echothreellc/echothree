@@ -532,7 +532,7 @@ public class PaymentMethodControl
         var paymentMethodDescription = getPaymentMethodDescription(paymentMethod, language);
         
         if(paymentMethodDescription == null && !language.getIsDefault()) {
-            paymentMethodDescription = getPaymentMethodDescription(paymentMethod, getPartyControl().getDefaultLanguage());
+            paymentMethodDescription = getPaymentMethodDescription(paymentMethod, partyControl.getDefaultLanguage());
         }
         
         if(paymentMethodDescription == null) {

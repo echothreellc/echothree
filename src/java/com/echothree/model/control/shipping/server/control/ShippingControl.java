@@ -421,7 +421,7 @@ public class ShippingControl
         var shippingMethodDescription = getShippingMethodDescription(shippingMethod, language);
         
         if(shippingMethodDescription == null && !language.getIsDefault()) {
-            shippingMethodDescription = getShippingMethodDescription(shippingMethod, getPartyControl().getDefaultLanguage());
+            shippingMethodDescription = getShippingMethodDescription(shippingMethod, partyControl.getDefaultLanguage());
         }
         
         if(shippingMethodDescription == null) {

@@ -568,7 +568,7 @@ public class ItemControl
         var itemTypeDescription = getItemTypeDescription(itemType, language);
         
         if(itemTypeDescription == null && !language.getIsDefault()) {
-            itemTypeDescription = getItemTypeDescription(itemType, getPartyControl().getDefaultLanguage());
+            itemTypeDescription = getItemTypeDescription(itemType, partyControl.getDefaultLanguage());
         }
         
         if(itemTypeDescription == null) {
@@ -781,7 +781,7 @@ public class ItemControl
         var itemDeliveryTypeDescription = getItemDeliveryTypeDescription(itemDeliveryType, language);
         
         if(itemDeliveryTypeDescription == null && !language.getIsDefault()) {
-            itemDeliveryTypeDescription = getItemDeliveryTypeDescription(itemDeliveryType, getPartyControl().getDefaultLanguage());
+            itemDeliveryTypeDescription = getItemDeliveryTypeDescription(itemDeliveryType, partyControl.getDefaultLanguage());
         }
         
         if(itemDeliveryTypeDescription == null) {
@@ -994,7 +994,7 @@ public class ItemControl
         var itemInventoryTypeDescription = getItemInventoryTypeDescription(itemInventoryType, language);
         
         if(itemInventoryTypeDescription == null && !language.getIsDefault()) {
-            itemInventoryTypeDescription = getItemInventoryTypeDescription(itemInventoryType, getPartyControl().getDefaultLanguage());
+            itemInventoryTypeDescription = getItemInventoryTypeDescription(itemInventoryType, partyControl.getDefaultLanguage());
         }
         
         if(itemInventoryTypeDescription == null) {
@@ -1207,7 +1207,7 @@ public class ItemControl
         var itemUseTypeDescription = getItemUseTypeDescription(itemUseType, language);
         
         if(itemUseTypeDescription == null && !language.getIsDefault()) {
-            itemUseTypeDescription = getItemUseTypeDescription(itemUseType, getPartyControl().getDefaultLanguage());
+            itemUseTypeDescription = getItemUseTypeDescription(itemUseType, partyControl.getDefaultLanguage());
         }
         
         if(itemUseTypeDescription == null) {
@@ -1708,7 +1708,7 @@ public class ItemControl
         var itemCategoryDescription = getItemCategoryDescription(itemCategory, language);
         
         if(itemCategoryDescription == null && !language.getIsDefault()) {
-            itemCategoryDescription = getItemCategoryDescription(itemCategory, getPartyControl().getDefaultLanguage());
+            itemCategoryDescription = getItemCategoryDescription(itemCategory, partyControl.getDefaultLanguage());
         }
         
         if(itemCategoryDescription == null) {
@@ -2209,7 +2209,6 @@ public class ItemControl
 
     public ItemStatusChoicesBean getItemStatusChoices(String defaultItemStatusChoice, Language language, boolean allowNullChoice,
             Item item, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var itemStatusChoicesBean = new ItemStatusChoicesBean();
         
         if(item == null) {
@@ -2229,7 +2228,6 @@ public class ItemControl
     }
     
     public void setItemStatus(ExecutionErrorAccumulator eea, Item item, String itemStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(item);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(ItemStatusConstants.Workflow_ITEM_STATUS,
                 entityInstance);
@@ -3038,7 +3036,7 @@ public class ItemControl
         var itemAliasChecksumTypeDescription = getItemAliasChecksumTypeDescription(itemAliasChecksumType, language);
 
         if(itemAliasChecksumTypeDescription == null && !language.getIsDefault()) {
-            itemAliasChecksumTypeDescription = getItemAliasChecksumTypeDescription(itemAliasChecksumType, getPartyControl().getDefaultLanguage());
+            itemAliasChecksumTypeDescription = getItemAliasChecksumTypeDescription(itemAliasChecksumType, partyControl.getDefaultLanguage());
         }
 
         if(itemAliasChecksumTypeDescription == null) {
@@ -3462,7 +3460,7 @@ public class ItemControl
         var itemAliasTypeDescription = getItemAliasTypeDescription(itemAliasType, language);
         
         if(itemAliasTypeDescription == null && !language.getIsDefault()) {
-            itemAliasTypeDescription = getItemAliasTypeDescription(itemAliasType, getPartyControl().getDefaultLanguage());
+            itemAliasTypeDescription = getItemAliasTypeDescription(itemAliasType, partyControl.getDefaultLanguage());
         }
         
         if(itemAliasTypeDescription == null) {
@@ -6027,7 +6025,7 @@ public class ItemControl
         var itemPriceTypeDescription = getItemPriceTypeDescription(itemPriceType, language);
         
         if(itemPriceTypeDescription == null && !language.getIsDefault()) {
-            itemPriceTypeDescription = getItemPriceTypeDescription(itemPriceType, getPartyControl().getDefaultLanguage());
+            itemPriceTypeDescription = getItemPriceTypeDescription(itemPriceType, partyControl.getDefaultLanguage());
         }
         
         if(itemPriceTypeDescription == null) {
@@ -7208,7 +7206,7 @@ public class ItemControl
         var itemDescriptionTypeDescription = getItemDescriptionTypeDescription(itemDescriptionType, language);
 
         if(itemDescriptionTypeDescription == null && !language.getIsDefault()) {
-            itemDescriptionTypeDescription = getItemDescriptionTypeDescription(itemDescriptionType, getPartyControl().getDefaultLanguage());
+            itemDescriptionTypeDescription = getItemDescriptionTypeDescription(itemDescriptionType, partyControl.getDefaultLanguage());
         }
 
         if(itemDescriptionTypeDescription == null) {
@@ -7790,7 +7788,7 @@ public class ItemControl
         var itemDescriptionTypeUseTypeDescription = getItemDescriptionTypeUseTypeDescription(itemDescriptionTypeUseType, language);
 
         if(itemDescriptionTypeUseTypeDescription == null && !language.getIsDefault()) {
-            itemDescriptionTypeUseTypeDescription = getItemDescriptionTypeUseTypeDescription(itemDescriptionTypeUseType, getPartyControl().getDefaultLanguage());
+            itemDescriptionTypeUseTypeDescription = getItemDescriptionTypeUseTypeDescription(itemDescriptionTypeUseType, partyControl.getDefaultLanguage());
         }
 
         if(itemDescriptionTypeUseTypeDescription == null) {
@@ -8412,7 +8410,7 @@ public class ItemControl
         var itemImageTypeDescription = getItemImageTypeDescription(itemImageType, language);
 
         if(itemImageTypeDescription == null && !language.getIsDefault()) {
-            itemImageTypeDescription = getItemImageTypeDescription(itemImageType, getPartyControl().getDefaultLanguage());
+            itemImageTypeDescription = getItemImageTypeDescription(itemImageType, partyControl.getDefaultLanguage());
         }
 
         if(itemImageTypeDescription == null) {
@@ -8747,7 +8745,7 @@ public class ItemControl
         var itemDescription = getBestItemDescriptionWithinLanguage(itemDescriptionType, item, language);
 
         if(itemDescription == null && !language.getIsDefault()) {
-            itemDescription = getBestItemDescriptionWithinLanguage(itemDescriptionType, item, getPartyControl().getDefaultLanguage());
+            itemDescription = getBestItemDescriptionWithinLanguage(itemDescriptionType, item, partyControl.getDefaultLanguage());
         }
         
         return itemDescription;
@@ -9652,7 +9650,7 @@ public class ItemControl
         var itemVolumeTypeDescription = getItemVolumeTypeDescription(itemVolumeType, language);
 
         if(itemVolumeTypeDescription == null && !language.getIsDefault()) {
-            itemVolumeTypeDescription = getItemVolumeTypeDescription(itemVolumeType, getPartyControl().getDefaultLanguage());
+            itemVolumeTypeDescription = getItemVolumeTypeDescription(itemVolumeType, partyControl.getDefaultLanguage());
         }
 
         if(itemVolumeTypeDescription == null) {
@@ -10370,7 +10368,7 @@ public class ItemControl
         var itemWeightTypeDescription = getItemWeightTypeDescription(itemWeightType, language);
 
         if(itemWeightTypeDescription == null && !language.getIsDefault()) {
-            itemWeightTypeDescription = getItemWeightTypeDescription(itemWeightType, getPartyControl().getDefaultLanguage());
+            itemWeightTypeDescription = getItemWeightTypeDescription(itemWeightType, partyControl.getDefaultLanguage());
         }
 
         if(itemWeightTypeDescription == null) {
@@ -11108,7 +11106,7 @@ public class ItemControl
         var relatedItemTypeDescription = getRelatedItemTypeDescription(relatedItemType, language);
 
         if(relatedItemTypeDescription == null && !language.getIsDefault()) {
-            relatedItemTypeDescription = getRelatedItemTypeDescription(relatedItemType, getPartyControl().getDefaultLanguage());
+            relatedItemTypeDescription = getRelatedItemTypeDescription(relatedItemType, partyControl.getDefaultLanguage());
         }
 
         if(relatedItemTypeDescription == null) {
@@ -12012,7 +12010,7 @@ public class ItemControl
         var harmonizedTariffScheduleCodeTranslation = getHarmonizedTariffScheduleCodeTranslation(harmonizedTariffScheduleCode, language);
         
         if(harmonizedTariffScheduleCodeTranslation == null && !language.getIsDefault()) {
-            harmonizedTariffScheduleCodeTranslation = getHarmonizedTariffScheduleCodeTranslation(harmonizedTariffScheduleCode, getPartyControl().getDefaultLanguage());
+            harmonizedTariffScheduleCodeTranslation = getHarmonizedTariffScheduleCodeTranslation(harmonizedTariffScheduleCode, partyControl.getDefaultLanguage());
         }
         
         return harmonizedTariffScheduleCodeTranslation;
@@ -12414,7 +12412,7 @@ public class ItemControl
         var harmonizedTariffScheduleCodeUseTypeDescription = getHarmonizedTariffScheduleCodeUseTypeDescription(harmonizedTariffScheduleCodeUseType, language);
 
         if(harmonizedTariffScheduleCodeUseTypeDescription == null && !language.getIsDefault()) {
-            harmonizedTariffScheduleCodeUseTypeDescription = getHarmonizedTariffScheduleCodeUseTypeDescription(harmonizedTariffScheduleCodeUseType, getPartyControl().getDefaultLanguage());
+            harmonizedTariffScheduleCodeUseTypeDescription = getHarmonizedTariffScheduleCodeUseTypeDescription(harmonizedTariffScheduleCodeUseType, partyControl.getDefaultLanguage());
         }
 
         if(harmonizedTariffScheduleCodeUseTypeDescription == null) {
@@ -12820,7 +12818,7 @@ public class ItemControl
         var harmonizedTariffScheduleCodeUnitDescription = getHarmonizedTariffScheduleCodeUnitDescription(harmonizedTariffScheduleCodeUnit, language);
 
         if(harmonizedTariffScheduleCodeUnitDescription == null && !language.getIsDefault()) {
-            harmonizedTariffScheduleCodeUnitDescription = getHarmonizedTariffScheduleCodeUnitDescription(harmonizedTariffScheduleCodeUnit, getPartyControl().getDefaultLanguage());
+            harmonizedTariffScheduleCodeUnitDescription = getHarmonizedTariffScheduleCodeUnitDescription(harmonizedTariffScheduleCodeUnit, partyControl.getDefaultLanguage());
         }
 
         if(harmonizedTariffScheduleCodeUnitDescription == null) {

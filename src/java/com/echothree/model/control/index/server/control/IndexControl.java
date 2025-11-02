@@ -521,7 +521,7 @@ public class IndexControl
         var indexTypeDescription = getIndexTypeDescription(indexType, language);
 
         if(indexTypeDescription == null && !language.getIsDefault()) {
-            indexTypeDescription = getIndexTypeDescription(indexType, getPartyControl().getDefaultLanguage());
+            indexTypeDescription = getIndexTypeDescription(indexType, partyControl.getDefaultLanguage());
         }
 
         if(indexTypeDescription == null) {
@@ -947,7 +947,7 @@ public class IndexControl
         var indexFieldDescription = getIndexFieldDescription(indexField, language);
 
         if(indexFieldDescription == null && !language.getIsDefault()) {
-            indexFieldDescription = getIndexFieldDescription(indexField, getPartyControl().getDefaultLanguage());
+            indexFieldDescription = getIndexFieldDescription(indexField, partyControl.getDefaultLanguage());
         }
 
         if(indexFieldDescription == null) {
@@ -1269,7 +1269,7 @@ public class IndexControl
         var index = getIndex(indexType, language);
 
         if(index == null && !language.getIsDefault()) {
-            index = getIndex(indexType, getPartyControl().getDefaultLanguage());
+            index = getIndex(indexType, partyControl.getDefaultLanguage());
         }
 
         return index;
@@ -1510,7 +1510,7 @@ public class IndexControl
         var indexDescription = getIndexDescription(index, language);
 
         if(indexDescription == null && !language.getIsDefault()) {
-            indexDescription = getIndexDescription(index, getPartyControl().getDefaultLanguage());
+            indexDescription = getIndexDescription(index, partyControl.getDefaultLanguage());
         }
 
         if(indexDescription == null) {

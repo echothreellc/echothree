@@ -359,7 +359,7 @@ public class RatingControl
         var ratingTypeDescription = getRatingTypeDescription(ratingType, language);
         
         if(ratingTypeDescription == null && !language.getIsDefault()) {
-            ratingTypeDescription = getRatingTypeDescription(ratingType, getPartyControl().getDefaultLanguage());
+            ratingTypeDescription = getRatingTypeDescription(ratingType, partyControl.getDefaultLanguage());
         }
         
         if(ratingTypeDescription == null) {
@@ -832,7 +832,7 @@ public class RatingControl
         var ratingTypeListItemDescription = getRatingTypeListItemDescription(ratingTypeListItem, language);
         
         if(ratingTypeListItemDescription == null && !language.getIsDefault()) {
-            ratingTypeListItemDescription = getRatingTypeListItemDescription(ratingTypeListItem, getPartyControl().getDefaultLanguage());
+            ratingTypeListItemDescription = getRatingTypeListItemDescription(ratingTypeListItem, partyControl.getDefaultLanguage());
         }
         
         if(ratingTypeListItemDescription == null) {

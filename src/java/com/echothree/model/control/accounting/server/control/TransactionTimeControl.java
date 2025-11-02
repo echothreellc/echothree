@@ -437,7 +437,7 @@ public class TransactionTimeControl
         var transactionTimeTypeDescription = getTransactionTimeTypeDescription(transactionTimeType, language);
 
         if(transactionTimeTypeDescription == null && !language.getIsDefault()) {
-            transactionTimeTypeDescription = getTransactionTimeTypeDescription(transactionTimeType, getPartyControl().getDefaultLanguage());
+            transactionTimeTypeDescription = getTransactionTimeTypeDescription(transactionTimeType, partyControl.getDefaultLanguage());
         }
 
         if(transactionTimeTypeDescription == null) {

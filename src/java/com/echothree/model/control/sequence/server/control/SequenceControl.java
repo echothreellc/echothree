@@ -566,7 +566,7 @@ public class SequenceControl
         var sequenceTypeDescription = getSequenceTypeDescription(sequenceType, language);
         
         if(sequenceTypeDescription == null && !language.getIsDefault()) {
-            sequenceTypeDescription = getSequenceTypeDescription(sequenceType, getPartyControl().getDefaultLanguage());
+            sequenceTypeDescription = getSequenceTypeDescription(sequenceType, partyControl.getDefaultLanguage());
         }
         
         if(sequenceTypeDescription == null) {
@@ -752,7 +752,7 @@ public class SequenceControl
         var sequenceChecksumTypeDescription = getSequenceChecksumTypeDescription(sequenceChecksumType, language);
         
         if(sequenceChecksumTypeDescription == null && !language.getIsDefault()) {
-            sequenceChecksumTypeDescription = getSequenceChecksumTypeDescription(sequenceChecksumType, getPartyControl().getDefaultLanguage());
+            sequenceChecksumTypeDescription = getSequenceChecksumTypeDescription(sequenceChecksumType, partyControl.getDefaultLanguage());
         }
         
         if(sequenceChecksumTypeDescription == null) {
@@ -889,7 +889,7 @@ public class SequenceControl
         var sequenceEncoderTypeDescription = getSequenceEncoderTypeDescription(sequenceEncoderType, language);
         
         if(sequenceEncoderTypeDescription == null && !language.getIsDefault()) {
-            sequenceEncoderTypeDescription = getSequenceEncoderTypeDescription(sequenceEncoderType, getPartyControl().getDefaultLanguage());
+            sequenceEncoderTypeDescription = getSequenceEncoderTypeDescription(sequenceEncoderType, partyControl.getDefaultLanguage());
         }
         
         if(sequenceEncoderTypeDescription == null) {
@@ -1353,7 +1353,7 @@ public class SequenceControl
         var sequenceDescription = getSequenceDescription(sequence, language);
         
         if(sequenceDescription == null && !language.getIsDefault()) {
-            sequenceDescription = getSequenceDescription(sequence, getPartyControl().getDefaultLanguage());
+            sequenceDescription = getSequenceDescription(sequence, partyControl.getDefaultLanguage());
         }
         
         if(sequenceDescription == null) {

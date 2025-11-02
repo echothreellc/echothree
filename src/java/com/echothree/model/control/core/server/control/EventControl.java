@@ -85,10 +85,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class EventControl
         extends BaseCoreControl {
+
+    @Inject
+    protected CacheEntryControl cacheEntryControl;
+
+    @Inject
+    protected IndexControl indexControl;
+
+    @Inject
+    protected SequenceControl sequenceControl;
 
     /** Creates a new instance of EventControl */
     protected EventControl() {
@@ -309,7 +319,7 @@ public class EventControl
         EventGroup eventGroup = null;
 
         if(!alreadyCreatingEventGroup) {
-            var workflowStep = getWorkflowControl().getWorkflowStepUsingNames(Workflow_EVENT_GROUP_STATUS,
+            var workflowStep = workflowControl.getWorkflowStepUsingNames(Workflow_EVENT_GROUP_STATUS,
                     WorkflowStep_EVENT_GROUP_STATUS_ACTIVE);
 
             if(workflowStep != null) {
@@ -354,8 +364,6 @@ public class EventControl
     }
 
     public EventGroup createEventGroup(BasePK createdBy) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
-        var workflowControl = getWorkflowControl();
         EventGroup eventGroup = null;
         var workflow = workflowControl.getWorkflowByName(Workflow_EVENT_GROUP_STATUS);
 
@@ -369,7 +377,7 @@ public class EventControl
                 eventGroup = createEventGroup(eventGroupName, createdBy);
 
                 var entityInstance = getEntityInstanceByBaseEntity(eventGroup);
-                getWorkflowControl().addEntityToWorkflow(workflowEntrance, entityInstance, null, null, createdBy);
+                workflowControl.addEntityToWorkflow(workflowEntrance, entityInstance, null, null, createdBy);
             }
         }
 
@@ -487,14 +495,12 @@ public class EventControl
 
     public EventGroupStatusChoicesBean getEventGroupStatusChoices(String defaultEventGroupStatusChoice, Language language, boolean allowNullChoice,
             EventGroup eventGroup, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var eventGroupStatusChoicesBean = new EventGroupStatusChoicesBean();
 
         if(eventGroup == null) {
             workflowControl.getWorkflowEntranceChoices(eventGroupStatusChoicesBean, defaultEventGroupStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(Workflow_EVENT_GROUP_STATUS), partyPK);
         } else {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(eventGroup.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(Workflow_EVENT_GROUP_STATUS,
                     entityInstance);
@@ -507,7 +513,6 @@ public class EventControl
     }
 
     public void setEventGroupStatus(ExecutionErrorAccumulator eea, EventGroup eventGroup, String eventGroupStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(eventGroup);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(Workflow_EVENT_GROUP_STATUS,
                 entityInstance);
@@ -614,7 +619,7 @@ public class EventControl
         var eventTypeDescription = getEventTypeDescription(eventType, language);
 
         if(eventTypeDescription == null && !language.getIsDefault()) {
-            eventTypeDescription = getEventTypeDescription(eventType, getPartyControl().getDefaultLanguage());
+            eventTypeDescription = getEventTypeDescription(eventType, partyControl.getDefaultLanguage());
         }
 
         if(eventTypeDescription == null) {
@@ -865,7 +870,6 @@ public class EventControl
 
     public EventSubscriber createEventSubscriber(EntityInstance entityInstance, String description, Integer sortOrder,
             BasePK createdBy) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.EVENT_SUBSCRIBER.name());
         var sequence = sequenceControl.getDefaultSequence(sequenceType);
         var eventSubscriberName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
@@ -1236,8 +1240,6 @@ public class EventControl
     // --------------------------------------------------------------------------------
 
     private void queueEntityInstanceToIndexing(final EntityInstance entityInstance) {
-        var indexControl = Session.getModelController(IndexControl.class);
-
         if(indexControl.isEntityTypeUsedByIndexTypes(entityInstance.getEntityType())) {
             try {
                 QueuedEntityLogic.getInstance().createQueuedEntityUsingNames(null, QueueTypes.INDEXING.name(), entityInstance);
@@ -1327,8 +1329,6 @@ public class EventControl
                 shouldQueueEventToSubscribers = true;
             }
             case DELETE -> {
-                var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-
                 entityInstanceControl.deleteEntityInstanceDependencies(entityInstance, createdByBasePK);
                 entityTime.setDeletedTime(eventTime);
                 shouldClearCache = true;
@@ -1385,8 +1385,6 @@ public class EventControl
         }
 
         if(shouldClearCache) {
-            var cacheEntryControl = Session.getModelController(CacheEntryControl.class);
-
             cacheEntryControl.removeCacheEntriesByEntityInstance(entityInstance);
         }
 
@@ -1395,8 +1393,6 @@ public class EventControl
         }
 
         if(shouldCreateEntityAttributeDefaults) {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-
             entityInstanceControl.createEntityAttributeDefaults(entityInstance, createdByBasePK);
         }
 
