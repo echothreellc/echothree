@@ -540,7 +540,7 @@ public class EmployeeControl
         var responsibilityTypeDescription = getResponsibilityTypeDescription(responsibilityType, language);
         
         if(responsibilityTypeDescription == null && !language.getIsDefault()) {
-            responsibilityTypeDescription = getResponsibilityTypeDescription(responsibilityType, getPartyControl().getDefaultLanguage());
+            responsibilityTypeDescription = getResponsibilityTypeDescription(responsibilityType, partyControl.getDefaultLanguage());
         }
         
         if(responsibilityTypeDescription == null) {
@@ -967,7 +967,7 @@ public class EmployeeControl
         var skillTypeDescription = getSkillTypeDescription(skillType, language);
         
         if(skillTypeDescription == null && !language.getIsDefault()) {
-            skillTypeDescription = getSkillTypeDescription(skillType, getPartyControl().getDefaultLanguage());
+            skillTypeDescription = getSkillTypeDescription(skillType, partyControl.getDefaultLanguage());
         }
         
         if(skillTypeDescription == null) {
@@ -1383,7 +1383,7 @@ public class EmployeeControl
         var leaveTypeDescription = getLeaveTypeDescription(leaveType, language);
 
         if(leaveTypeDescription == null && !language.getIsDefault()) {
-            leaveTypeDescription = getLeaveTypeDescription(leaveType, getPartyControl().getDefaultLanguage());
+            leaveTypeDescription = getLeaveTypeDescription(leaveType, partyControl.getDefaultLanguage());
         }
 
         if(leaveTypeDescription == null) {
@@ -1800,7 +1800,7 @@ public class EmployeeControl
         var leaveReasonDescription = getLeaveReasonDescription(leaveReason, language);
 
         if(leaveReasonDescription == null && !language.getIsDefault()) {
-            leaveReasonDescription = getLeaveReasonDescription(leaveReason, getPartyControl().getDefaultLanguage());
+            leaveReasonDescription = getLeaveReasonDescription(leaveReason, partyControl.getDefaultLanguage());
         }
 
         if(leaveReasonDescription == null) {
@@ -2097,7 +2097,6 @@ public class EmployeeControl
 
     public LeaveStatusChoicesBean getLeaveStatusChoices(String defaultLeaveStatusChoice, Language language,
             boolean allowNullChoice, Leave leave, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var leaveStatusChoicesBean = new LeaveStatusChoicesBean();
 
         if(leave == null) {
@@ -2117,7 +2116,6 @@ public class EmployeeControl
     }
 
     public void setLeaveStatus(ExecutionErrorAccumulator eea, Leave leave, String leaveStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(leave);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(LeaveStatusConstants.Workflow_LEAVE_STATUS,
                 entityInstance);
@@ -2576,7 +2574,7 @@ public class EmployeeControl
         var terminationReasonDescription = getTerminationReasonDescription(terminationReason, language);
         
         if(terminationReasonDescription == null && !language.getIsDefault()) {
-            terminationReasonDescription = getTerminationReasonDescription(terminationReason, getPartyControl().getDefaultLanguage());
+            terminationReasonDescription = getTerminationReasonDescription(terminationReason, partyControl.getDefaultLanguage());
         }
         
         if(terminationReasonDescription == null) {
@@ -3004,7 +3002,7 @@ public class EmployeeControl
         var terminationTypeDescription = getTerminationTypeDescription(terminationType, language);
         
         if(terminationTypeDescription == null && !language.getIsDefault()) {
-            terminationTypeDescription = getTerminationTypeDescription(terminationType, getPartyControl().getDefaultLanguage());
+            terminationTypeDescription = getTerminationTypeDescription(terminationType, partyControl.getDefaultLanguage());
         }
         
         if(terminationTypeDescription == null) {
@@ -3770,7 +3768,7 @@ public class EmployeeControl
         var employeeTypeDescription = getEmployeeTypeDescription(employeeType, language);
         
         if(employeeTypeDescription == null && !language.getIsDefault()) {
-            employeeTypeDescription = getEmployeeTypeDescription(employeeType, getPartyControl().getDefaultLanguage());
+            employeeTypeDescription = getEmployeeTypeDescription(employeeType, partyControl.getDefaultLanguage());
         }
         
         if(employeeTypeDescription == null) {
@@ -3956,7 +3954,6 @@ public class EmployeeControl
     
     public EmployeeStatusChoicesBean getEmployeeStatusChoices(String defaultEmployeeStatusChoice, Language language,
             boolean allowNullChoice, Party employeeParty, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var employeeStatusChoicesBean = new EmployeeStatusChoicesBean();
         
         if(employeeParty == null) {
@@ -3976,7 +3973,6 @@ public class EmployeeControl
     }
     
     public void setEmployeeStatus(ExecutionErrorAccumulator eea, Party party, String employeeStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(party);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(EmployeeStatusConstants.Workflow_EMPLOYEE_STATUS,
                 entityInstance);
@@ -3992,7 +3988,6 @@ public class EmployeeControl
     
     public EmployeeAvailabilityChoicesBean getEmployeeAvailabilityChoices(String defaultEmployeeAvailabilityChoice, Language language,
             boolean allowNullChoice, Party employeeParty, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var employeeAvailabilityChoicesBean = new EmployeeAvailabilityChoicesBean();
         
         if(employeeParty == null) {
@@ -4012,7 +4007,6 @@ public class EmployeeControl
     }
     
     public void setEmployeeAvailability(ExecutionErrorAccumulator eea, Party party, String employeeAvailabilityChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(party);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(EmployeeAvailabilityConstants.Workflow_EMPLOYEE_AVAILABILITY,
                 entityInstance);
@@ -4479,7 +4473,7 @@ public class EmployeeControl
             var employeeControl = Session.getModelController(EmployeeControl.class);
 
             while(rs.next()) {
-                var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+                var party = partyControl.getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
 
                 employeeResultTransfers.add(new EmployeeResultTransfer(party.getLastDetail().getPartyName(),
                         includeEmployee ? employeeControl.getEmployeeTransfer(userVisit, party) : null));
@@ -4497,7 +4491,7 @@ public class EmployeeControl
 
         try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
             while(rs.next()) {
-                var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+                var party = partyControl.getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
 
                 employeeObjects.add(new EmployeeObject(party));
             }

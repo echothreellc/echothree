@@ -604,7 +604,7 @@ public class ContactListControl
         var contactListTypeDescription = getContactListTypeDescription(contactListType, language);
 
         if(contactListTypeDescription == null && !language.getIsDefault()) {
-            contactListTypeDescription = getContactListTypeDescription(contactListType, getPartyControl().getDefaultLanguage());
+            contactListTypeDescription = getContactListTypeDescription(contactListType, partyControl.getDefaultLanguage());
         }
 
         if(contactListTypeDescription == null) {
@@ -1012,7 +1012,7 @@ public class ContactListControl
         var contactListGroupDescription = getContactListGroupDescription(contactListGroup, language);
 
         if(contactListGroupDescription == null && !language.getIsDefault()) {
-            contactListGroupDescription = getContactListGroupDescription(contactListGroup, getPartyControl().getDefaultLanguage());
+            contactListGroupDescription = getContactListGroupDescription(contactListGroup, partyControl.getDefaultLanguage());
         }
 
         if(contactListGroupDescription == null) {
@@ -1417,7 +1417,7 @@ public class ContactListControl
         var contactListFrequencyDescription = getContactListFrequencyDescription(contactListFrequency, language);
 
         if(contactListFrequencyDescription == null && !language.getIsDefault()) {
-            contactListFrequencyDescription = getContactListFrequencyDescription(contactListFrequency, getPartyControl().getDefaultLanguage());
+            contactListFrequencyDescription = getContactListFrequencyDescription(contactListFrequency, partyControl.getDefaultLanguage());
         }
 
         if(contactListFrequencyDescription == null) {
@@ -1987,7 +1987,7 @@ public class ContactListControl
         var contactListDescription = getContactListDescription(contactList, language);
 
         if(contactListDescription == null && !language.getIsDefault()) {
-            contactListDescription = getContactListDescription(contactList, getPartyControl().getDefaultLanguage());
+            contactListDescription = getContactListDescription(contactList, partyControl.getDefaultLanguage());
         }
 
         if(contactListDescription == null) {
@@ -2229,7 +2229,6 @@ public class ContactListControl
     
     public PartyContactListStatusChoicesBean getPartyContactListStatusChoices(String defaultPartyContactListStatusChoice, Language language,
             boolean allowNullChoice, PartyContactList partyContactList, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var partyContactListStatusChoicesBean = new PartyContactListStatusChoicesBean();
 
         if(partyContactList == null) {
@@ -2250,7 +2249,6 @@ public class ContactListControl
 
     public void setPartyContactListStatus(ExecutionErrorAccumulator eea, PartyContactList partyContactList, String partyContactListStatusChoice,
             PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(partyContactList);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PartyContactListStatusConstants.Workflow_PARTY_CONTACT_LIST_STATUS,
                 entityInstance);

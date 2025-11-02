@@ -403,7 +403,7 @@ public class FreeOnBoardControl
         String description;
 
         if(freeOnBoardDescription == null && !language.getIsDefault()) {
-            freeOnBoardDescription = getFreeOnBoardDescription(freeOnBoard, getPartyControl().getDefaultLanguage());
+            freeOnBoardDescription = getFreeOnBoardDescription(freeOnBoard, partyControl.getDefaultLanguage());
         }
 
         if(freeOnBoardDescription == null) {

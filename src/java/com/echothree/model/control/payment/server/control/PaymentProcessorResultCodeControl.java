@@ -394,7 +394,7 @@ public class PaymentProcessorResultCodeControl
         String description;
 
         if(paymentProcessorResultCodeDescription == null && !language.getIsDefault()) {
-            paymentProcessorResultCodeDescription = getPaymentProcessorResultCodeDescription(paymentProcessorResultCode, getPartyControl().getDefaultLanguage());
+            paymentProcessorResultCodeDescription = getPaymentProcessorResultCodeDescription(paymentProcessorResultCode, partyControl.getDefaultLanguage());
         }
 
         if(paymentProcessorResultCodeDescription == null) {

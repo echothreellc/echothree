@@ -440,7 +440,7 @@ public class ApplicationControl
         var applicationDescription = getApplicationDescription(application, language);
 
         if(applicationDescription == null && !language.getIsDefault()) {
-            applicationDescription = getApplicationDescription(application, getPartyControl().getDefaultLanguage());
+            applicationDescription = getApplicationDescription(application, partyControl.getDefaultLanguage());
         }
 
         if(applicationDescription == null) {
@@ -1263,7 +1263,7 @@ public class ApplicationControl
         var applicationEditorUseDescription = getApplicationEditorUseDescription(applicationEditorUse, language);
 
         if(applicationEditorUseDescription == null && !language.getIsDefault()) {
-            applicationEditorUseDescription = getApplicationEditorUseDescription(applicationEditorUse, getPartyControl().getDefaultLanguage());
+            applicationEditorUseDescription = getApplicationEditorUseDescription(applicationEditorUse, partyControl.getDefaultLanguage());
         }
 
         if(applicationEditorUseDescription == null) {

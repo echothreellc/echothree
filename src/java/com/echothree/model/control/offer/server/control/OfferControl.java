@@ -554,7 +554,7 @@ public class OfferControl
         var offerDescription = getOfferDescription(offer, language);
         
         if(offerDescription == null && !language.getIsDefault()) {
-            offerDescription = getOfferDescription(offer, getPartyControl().getDefaultLanguage());
+            offerDescription = getOfferDescription(offer, partyControl.getDefaultLanguage());
         }
         
         if(offerDescription == null) {

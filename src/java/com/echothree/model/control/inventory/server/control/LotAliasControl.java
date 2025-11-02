@@ -411,7 +411,7 @@ public class LotAliasControl
         var lotAliasTypeDescription = getLotAliasTypeDescription(lotAliasType, language);
 
         if(lotAliasTypeDescription == null && !language.getIsDefault()) {
-            lotAliasTypeDescription = getLotAliasTypeDescription(lotAliasType, getPartyControl().getDefaultLanguage());
+            lotAliasTypeDescription = getLotAliasTypeDescription(lotAliasType, partyControl.getDefaultLanguage());
         }
 
         if(lotAliasTypeDescription == null) {

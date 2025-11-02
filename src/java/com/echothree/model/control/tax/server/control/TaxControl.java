@@ -486,7 +486,7 @@ public class TaxControl
         var taxClassificationTranslation = getTaxClassificationTranslation(taxClassification, language);
         
         if(taxClassificationTranslation == null && !language.getIsDefault()) {
-            taxClassificationTranslation = getTaxClassificationTranslation(taxClassification, getPartyControl().getDefaultLanguage());
+            taxClassificationTranslation = getTaxClassificationTranslation(taxClassification, partyControl.getDefaultLanguage());
         }
         
         return taxClassificationTranslation;
@@ -1121,7 +1121,7 @@ public class TaxControl
         var taxDescription = getTaxDescription(tax, language);
         
         if(taxDescription == null && !language.getIsDefault()) {
-            taxDescription = getTaxDescription(tax, getPartyControl().getDefaultLanguage());
+            taxDescription = getTaxDescription(tax, partyControl.getDefaultLanguage());
         }
         
         if(taxDescription == null) {

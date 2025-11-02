@@ -480,7 +480,7 @@ public class CommunicationControl
         var communicationEventPurposeDescription = getCommunicationEventPurposeDescription(communicationEventPurpose, language);
         
         if(communicationEventPurposeDescription == null && !language.getIsDefault()) {
-            communicationEventPurposeDescription = getCommunicationEventPurposeDescription(communicationEventPurpose, getPartyControl().getDefaultLanguage());
+            communicationEventPurposeDescription = getCommunicationEventPurposeDescription(communicationEventPurpose, partyControl.getDefaultLanguage());
         }
         
         if(communicationEventPurposeDescription == null) {
@@ -619,7 +619,7 @@ public class CommunicationControl
         var communicationEventRoleTypeDescription = getCommunicationEventRoleTypeDescription(communicationEventRoleType, language);
         
         if(communicationEventRoleTypeDescription == null && !language.getIsDefault()) {
-            communicationEventRoleTypeDescription = getCommunicationEventRoleTypeDescription(communicationEventRoleType, getPartyControl().getDefaultLanguage());
+            communicationEventRoleTypeDescription = getCommunicationEventRoleTypeDescription(communicationEventRoleType, partyControl.getDefaultLanguage());
         }
         
         if(communicationEventRoleTypeDescription == null) {
@@ -710,7 +710,7 @@ public class CommunicationControl
         var communicationEventTypeDescription = getCommunicationEventTypeDescription(communicationEventType, language);
         
         if(communicationEventTypeDescription == null && !language.getIsDefault()) {
-            communicationEventTypeDescription = getCommunicationEventTypeDescription(communicationEventType, getPartyControl().getDefaultLanguage());
+            communicationEventTypeDescription = getCommunicationEventTypeDescription(communicationEventType, partyControl.getDefaultLanguage());
         }
         
         if(communicationEventTypeDescription == null) {
@@ -1130,7 +1130,7 @@ public class CommunicationControl
         var communicationSourceTypeDescription = getCommunicationSourceTypeDescription(communicationSourceType, language);
         
         if(communicationSourceTypeDescription == null && !language.getIsDefault()) {
-            communicationSourceTypeDescription = getCommunicationSourceTypeDescription(communicationSourceType, getPartyControl().getDefaultLanguage());
+            communicationSourceTypeDescription = getCommunicationSourceTypeDescription(communicationSourceType, partyControl.getDefaultLanguage());
         }
         
         if(communicationSourceTypeDescription == null) {
@@ -1442,7 +1442,7 @@ public class CommunicationControl
         var communicationSourceDescription = getCommunicationSourceDescription(communicationSource, language);
         
         if(communicationSourceDescription == null && !language.getIsDefault()) {
-            communicationSourceDescription = getCommunicationSourceDescription(communicationSource, getPartyControl().getDefaultLanguage());
+            communicationSourceDescription = getCommunicationSourceDescription(communicationSource, partyControl.getDefaultLanguage());
         }
         
         if(communicationSourceDescription == null) {

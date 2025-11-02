@@ -396,7 +396,7 @@ public class PaymentMethodTypeControl
         String description;
 
         if(paymentMethodTypeDescription == null && !language.getIsDefault()) {
-            paymentMethodTypeDescription = getPaymentMethodTypeDescription(paymentMethodType, getPartyControl().getDefaultLanguage());
+            paymentMethodTypeDescription = getPaymentMethodTypeDescription(paymentMethodType, partyControl.getDefaultLanguage());
         }
 
         if(paymentMethodTypeDescription == null) {

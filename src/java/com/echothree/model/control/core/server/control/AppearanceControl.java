@@ -617,7 +617,7 @@ public class AppearanceControl
         var appearanceDescription = getAppearanceDescription(appearance, language);
 
         if(appearanceDescription == null && !language.getIsDefault()) {
-            appearanceDescription = getAppearanceDescription(appearance, getPartyControl().getDefaultLanguage());
+            appearanceDescription = getAppearanceDescription(appearance, partyControl.getDefaultLanguage());
         }
 
         if(appearanceDescription == null) {

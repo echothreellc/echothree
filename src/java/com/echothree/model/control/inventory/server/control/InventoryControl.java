@@ -389,7 +389,6 @@ public class InventoryControl
     
     public InventoryLocationGroupStatusChoicesBean getInventoryLocationGroupStatusChoices(String defaultInventoryLocationGroupStatusChoice, Language language,
             InventoryLocationGroup inventoryLocationGroup, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var inventoryLocationGroupStatusChoicesBean = new InventoryLocationGroupStatusChoicesBean();
         var entityInstance = getEntityInstanceByBaseEntity(inventoryLocationGroup);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(InventoryLocationGroupStatusConstants.Workflow_INVENTORY_LOCATION_GROUP_STATUS,
@@ -403,7 +402,6 @@ public class InventoryControl
     
     public void setInventoryLocationGroupStatus(ExecutionErrorAccumulator eea, InventoryLocationGroup inventoryLocationGroup,
             String inventoryLocationGroupStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(inventoryLocationGroup);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(InventoryLocationGroupStatusConstants.Workflow_INVENTORY_LOCATION_GROUP_STATUS,
                 entityInstance);
@@ -570,7 +568,7 @@ public class InventoryControl
         var inventoryLocationGroupDescription = getInventoryLocationGroupDescription(inventoryLocationGroup, language);
         
         if(inventoryLocationGroupDescription == null && !language.getIsDefault()) {
-            inventoryLocationGroupDescription = getInventoryLocationGroupDescription(inventoryLocationGroup, getPartyControl().getDefaultLanguage());
+            inventoryLocationGroupDescription = getInventoryLocationGroupDescription(inventoryLocationGroup, partyControl.getDefaultLanguage());
         }
         
         if(inventoryLocationGroupDescription == null) {
@@ -1290,7 +1288,7 @@ public class InventoryControl
         String description;
 
         if(inventoryConditionDescription == null && !language.getIsDefault()) {
-            inventoryConditionDescription = getInventoryConditionDescription(inventoryCondition, getPartyControl().getDefaultLanguage());
+            inventoryConditionDescription = getInventoryConditionDescription(inventoryCondition, partyControl.getDefaultLanguage());
         }
         
         if(inventoryConditionDescription == null) {
@@ -1476,7 +1474,7 @@ public class InventoryControl
         var inventoryConditionUseTypeDescription = getInventoryConditionUseTypeDescription(inventoryConditionUseType, language);
         
         if(inventoryConditionUseTypeDescription == null && !language.getIsDefault()) {
-            inventoryConditionUseTypeDescription = getInventoryConditionUseTypeDescription(inventoryConditionUseType, getPartyControl().getDefaultLanguage());
+            inventoryConditionUseTypeDescription = getInventoryConditionUseTypeDescription(inventoryConditionUseType, partyControl.getDefaultLanguage());
         }
         
         if(inventoryConditionUseTypeDescription == null) {
@@ -2670,7 +2668,7 @@ public class InventoryControl
         var allocationPriorityDescription = getAllocationPriorityDescription(allocationPriority, language);
 
         if(allocationPriorityDescription == null && !language.getIsDefault()) {
-            allocationPriorityDescription = getAllocationPriorityDescription(allocationPriority, getPartyControl().getDefaultLanguage());
+            allocationPriorityDescription = getAllocationPriorityDescription(allocationPriority, partyControl.getDefaultLanguage());
         }
 
         if(allocationPriorityDescription == null) {

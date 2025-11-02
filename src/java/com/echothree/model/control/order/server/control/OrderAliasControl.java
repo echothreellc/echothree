@@ -420,7 +420,7 @@ public class OrderAliasControl
         var orderAliasTypeDescription = getOrderAliasTypeDescription(orderAliasType, language);
 
         if(orderAliasTypeDescription == null && !language.getIsDefault()) {
-            orderAliasTypeDescription = getOrderAliasTypeDescription(orderAliasType, getPartyControl().getDefaultLanguage());
+            orderAliasTypeDescription = getOrderAliasTypeDescription(orderAliasType, partyControl.getDefaultLanguage());
         }
 
         if(orderAliasTypeDescription == null) {

@@ -359,7 +359,7 @@ public class CommandControl
         var commandDescription = getCommandDescription(command, language);
 
         if(commandDescription == null && !language.getIsDefault()) {
-            commandDescription = getCommandDescription(command, getPartyControl().getDefaultLanguage());
+            commandDescription = getCommandDescription(command, partyControl.getDefaultLanguage());
         }
 
         if(commandDescription == null) {
@@ -791,7 +791,7 @@ public class CommandControl
         var commandMessageTypeDescription = getCommandMessageTypeDescription(commandMessageType, language);
 
         if(commandMessageTypeDescription == null && !language.getIsDefault()) {
-            commandMessageTypeDescription = getCommandMessageTypeDescription(commandMessageType, getPartyControl().getDefaultLanguage());
+            commandMessageTypeDescription = getCommandMessageTypeDescription(commandMessageType, partyControl.getDefaultLanguage());
         }
 
         if(commandMessageTypeDescription == null) {
@@ -1083,7 +1083,7 @@ public class CommandControl
         var commandMessageTranslation = getCommandMessageTranslation(commandMessage, language);
 
         if(commandMessageTranslation == null && !language.getIsDefault()) {
-            commandMessageTranslation = getCommandMessageTranslation(commandMessage, getPartyControl().getDefaultLanguage());
+            commandMessageTranslation = getCommandMessageTranslation(commandMessage, partyControl.getDefaultLanguage());
         }
 
         return commandMessageTranslation;

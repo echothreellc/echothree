@@ -847,7 +847,7 @@ public class GeoControl
         var geoCodeTypeDescription = getGeoCodeTypeDescription(geoCodeType, language);
         
         if(geoCodeTypeDescription == null && !language.getIsDefault()) {
-            geoCodeTypeDescription = getGeoCodeTypeDescription(geoCodeType, getPartyControl().getDefaultLanguage());
+            geoCodeTypeDescription = getGeoCodeTypeDescription(geoCodeType, partyControl.getDefaultLanguage());
         }
         
         if(geoCodeTypeDescription == null) {
@@ -1297,7 +1297,7 @@ public class GeoControl
         var geoCodeScopeDescription = getGeoCodeScopeDescription(geoCodeScope, language);
         
         if(geoCodeScopeDescription == null && !language.getIsDefault()) {
-            geoCodeScopeDescription = getGeoCodeScopeDescription(geoCodeScope, getPartyControl().getDefaultLanguage());
+            geoCodeScopeDescription = getGeoCodeScopeDescription(geoCodeScope, partyControl.getDefaultLanguage());
         }
         
         if(geoCodeScopeDescription == null) {
@@ -1794,7 +1794,7 @@ public class GeoControl
         var geoCodeAliasTypeDescription = getGeoCodeAliasTypeDescription(geoCodeAliasType, language);
         
         if(geoCodeAliasTypeDescription == null && !language.getIsDefault()) {
-            geoCodeAliasTypeDescription = getGeoCodeAliasTypeDescription(geoCodeAliasType, getPartyControl().getDefaultLanguage());
+            geoCodeAliasTypeDescription = getGeoCodeAliasTypeDescription(geoCodeAliasType, partyControl.getDefaultLanguage());
         }
         
         if(geoCodeAliasTypeDescription == null) {
@@ -2263,7 +2263,7 @@ public class GeoControl
         var geoCodeDescription = getGeoCodeDescription(geoCode, language);
         
         if(geoCodeDescription == null && !language.getIsDefault()) {
-            geoCodeDescription = getGeoCodeDescription(geoCode, getPartyControl().getDefaultLanguage());
+            geoCodeDescription = getGeoCodeDescription(geoCode, partyControl.getDefaultLanguage());
         }
         
         if(geoCodeDescription == null) {

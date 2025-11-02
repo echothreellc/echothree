@@ -607,7 +607,7 @@ public class LetterControl
         var letterSourceDescription = getLetterSourceDescription(letterSource, language);
         
         if(letterSourceDescription == null && !language.getIsDefault()) {
-            letterSourceDescription = getLetterSourceDescription(letterSource, getPartyControl().getDefaultLanguage());
+            letterSourceDescription = getLetterSourceDescription(letterSource, partyControl.getDefaultLanguage());
         }
         
         if(letterSourceDescription == null) {
@@ -1161,7 +1161,7 @@ public class LetterControl
         var letterDescription = getLetterDescription(letter, language);
         
         if(letterDescription == null && !language.getIsDefault()) {
-            letterDescription = getLetterDescription(letter, getPartyControl().getDefaultLanguage());
+            letterDescription = getLetterDescription(letter, partyControl.getDefaultLanguage());
         }
         
         if(letterDescription == null) {

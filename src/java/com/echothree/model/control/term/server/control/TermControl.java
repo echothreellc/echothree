@@ -309,7 +309,7 @@ public class TermControl
         var termTypeDescription = getTermTypeDescription(termType, language);
 
         if(termTypeDescription == null && !language.getIsDefault()) {
-            termTypeDescription = getTermTypeDescription(termType, getPartyControl().getDefaultLanguage());
+            termTypeDescription = getTermTypeDescription(termType, partyControl.getDefaultLanguage());
         }
 
         if(termTypeDescription == null) {
@@ -714,7 +714,7 @@ public class TermControl
         var termDescription = getTermDescription(term, language);
         
         if(termDescription == null && !language.getIsDefault()) {
-            termDescription = getTermDescription(term, getPartyControl().getDefaultLanguage());
+            termDescription = getTermDescription(term, partyControl.getDefaultLanguage());
         }
         
         if(termDescription == null) {

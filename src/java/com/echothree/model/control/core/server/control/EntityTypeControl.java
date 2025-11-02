@@ -482,7 +482,7 @@ public class EntityTypeControl
         var entityTypeDescription = getEntityTypeDescription(entityType, language);
 
         if(entityTypeDescription == null && !language.getIsDefault()) {
-            entityTypeDescription = getEntityTypeDescription(entityType, getPartyControl().getDefaultLanguage());
+            entityTypeDescription = getEntityTypeDescription(entityType, partyControl.getDefaultLanguage());
         }
 
         if(entityTypeDescription == null) {

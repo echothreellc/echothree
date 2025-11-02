@@ -473,7 +473,7 @@ public class ForumControl
         var forumGroupDescription = getForumGroupDescription(forumGroup, language);
         
         if(forumGroupDescription == null && !language.getIsDefault()) {
-            forumGroupDescription = getForumGroupDescription(forumGroup, getPartyControl().getDefaultLanguage());
+            forumGroupDescription = getForumGroupDescription(forumGroup, partyControl.getDefaultLanguage());
         }
         
         if(forumGroupDescription == null) {
@@ -844,7 +844,7 @@ public class ForumControl
         var forumDescription = getForumDescription(forum, language);
         
         if(forumDescription == null && !language.getIsDefault()) {
-            forumDescription = getForumDescription(forum, getPartyControl().getDefaultLanguage());
+            forumDescription = getForumDescription(forum, partyControl.getDefaultLanguage());
         }
         
         if(forumDescription == null) {
@@ -1324,7 +1324,7 @@ public class ForumControl
         var forumRoleTypeDescription = getForumRoleTypeDescription(forumRoleType, language);
         
         if(forumRoleTypeDescription == null && !language.getIsDefault()) {
-            forumRoleTypeDescription = getForumRoleTypeDescription(forumRoleType, getPartyControl().getDefaultLanguage());
+            forumRoleTypeDescription = getForumRoleTypeDescription(forumRoleType, partyControl.getDefaultLanguage());
         }
         
         if(forumRoleTypeDescription == null) {
@@ -1441,7 +1441,7 @@ public class ForumControl
         var forumTypeDescription = getForumTypeDescription(forumType, language);
         
         if(forumTypeDescription == null && !language.getIsDefault()) {
-            forumTypeDescription = getForumTypeDescription(forumType, getPartyControl().getDefaultLanguage());
+            forumTypeDescription = getForumTypeDescription(forumType, partyControl.getDefaultLanguage());
         }
         
         if(forumTypeDescription == null) {
@@ -3528,7 +3528,7 @@ public class ForumControl
         var forumMessageAttachmentDescription = getForumMessageAttachmentDescription(forumMessageAttachment, language);
 
         if(forumMessageAttachmentDescription == null && !language.getIsDefault()) {
-            forumMessageAttachmentDescription = getForumMessageAttachmentDescription(forumMessageAttachment, getPartyControl().getDefaultLanguage());
+            forumMessageAttachmentDescription = getForumMessageAttachmentDescription(forumMessageAttachment, partyControl.getDefaultLanguage());
         }
 
         if(forumMessageAttachmentDescription == null) {
@@ -3828,7 +3828,7 @@ public class ForumControl
         var forumMessagePart = getForumMessagePart(forumMessage, forumMessagePartType, language);
         
         if(forumMessagePart == null && !language.getIsDefault()) {
-            forumMessagePart = getForumMessagePart(forumMessage, forumMessagePartType, getPartyControl().getDefaultLanguage());
+            forumMessagePart = getForumMessagePart(forumMessage, forumMessagePartType, partyControl.getDefaultLanguage());
         }
         
         return forumMessagePart;
@@ -4274,7 +4274,7 @@ public class ForumControl
         
         if(forumMessagePartTypeDescription == null && !language.getIsDefault()) {
             forumMessagePartTypeDescription = getForumMessagePartTypeDescription(forumMessagePartType,
-                    getPartyControl().getDefaultLanguage());
+                    partyControl.getDefaultLanguage());
         }
         
         if(forumMessagePartTypeDescription == null) {
@@ -4393,7 +4393,7 @@ public class ForumControl
         var forumMessageTypeDescription = getForumMessageTypeDescription(forumMessageType, language);
         
         if(forumMessageTypeDescription == null && !language.getIsDefault()) {
-            forumMessageTypeDescription = getForumMessageTypeDescription(forumMessageType, getPartyControl().getDefaultLanguage());
+            forumMessageTypeDescription = getForumMessageTypeDescription(forumMessageType, partyControl.getDefaultLanguage());
         }
         
         if(forumMessageTypeDescription == null) {

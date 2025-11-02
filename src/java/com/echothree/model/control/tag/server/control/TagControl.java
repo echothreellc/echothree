@@ -518,7 +518,7 @@ public class TagControl
         var tagScopeDescription = getTagScopeDescription(tagScope, language);
         
         if(tagScopeDescription == null && !language.getIsDefault()) {
-            tagScopeDescription = getTagScopeDescription(tagScope, getPartyControl().getDefaultLanguage());
+            tagScopeDescription = getTagScopeDescription(tagScope, partyControl.getDefaultLanguage());
         }
         
         if(tagScopeDescription == null) {

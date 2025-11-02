@@ -437,7 +437,7 @@ public class LicenseControl
         var licenseTypeDescription = getLicenseTypeDescription(licenseType, language);
 
         if(licenseTypeDescription == null && !language.getIsDefault()) {
-            licenseTypeDescription = getLicenseTypeDescription(licenseType, getPartyControl().getDefaultLanguage());
+            licenseTypeDescription = getLicenseTypeDescription(licenseType, partyControl.getDefaultLanguage());
         }
 
         if(licenseTypeDescription == null) {

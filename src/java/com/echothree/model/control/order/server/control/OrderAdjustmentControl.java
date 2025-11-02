@@ -413,7 +413,7 @@ public class OrderAdjustmentControl
         var orderAdjustmentTypeDescription = getOrderAdjustmentTypeDescription(orderAdjustmentType, language);
 
         if(orderAdjustmentTypeDescription == null && !language.getIsDefault()) {
-            orderAdjustmentTypeDescription = getOrderAdjustmentTypeDescription(orderAdjustmentType, getPartyControl().getDefaultLanguage());
+            orderAdjustmentTypeDescription = getOrderAdjustmentTypeDescription(orderAdjustmentType, partyControl.getDefaultLanguage());
         }
 
         if(orderAdjustmentTypeDescription == null) {

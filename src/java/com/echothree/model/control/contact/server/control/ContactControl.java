@@ -308,7 +308,7 @@ public class ContactControl
         var contactMechanismTypeDescription = getContactMechanismTypeDescription(contactMechanismType, language);
         
         if(contactMechanismTypeDescription == null && !language.getIsDefault()) {
-            contactMechanismTypeDescription = getContactMechanismTypeDescription(contactMechanismType, getPartyControl().getDefaultLanguage());
+            contactMechanismTypeDescription = getContactMechanismTypeDescription(contactMechanismType, partyControl.getDefaultLanguage());
         }
         
         if(contactMechanismTypeDescription == null) {
@@ -722,7 +722,7 @@ public class ContactControl
         var contactMechanismAliasTypeDescription = getContactMechanismAliasTypeDescription(contactMechanismAliasType, language);
 
         if(contactMechanismAliasTypeDescription == null && !language.getIsDefault()) {
-            contactMechanismAliasTypeDescription = getContactMechanismAliasTypeDescription(contactMechanismAliasType, getPartyControl().getDefaultLanguage());
+            contactMechanismAliasTypeDescription = getContactMechanismAliasTypeDescription(contactMechanismAliasType, partyControl.getDefaultLanguage());
         }
 
         if(contactMechanismAliasTypeDescription == null) {
@@ -1022,7 +1022,7 @@ public class ContactControl
         var contactMechanismPurposeDescription = getContactMechanismPurposeDescription(contactMechanismPurpose, language);
         
         if(contactMechanismPurposeDescription == null && !language.getIsDefault()) {
-            contactMechanismPurposeDescription = getContactMechanismPurposeDescription(contactMechanismPurpose, getPartyControl().getDefaultLanguage());
+            contactMechanismPurposeDescription = getContactMechanismPurposeDescription(contactMechanismPurpose, partyControl.getDefaultLanguage());
         }
         
         if(contactMechanismPurposeDescription == null) {
@@ -1136,7 +1136,6 @@ public class ContactControl
     
     public EmailAddressStatusChoicesBean getEmailAddressStatusChoices(String defaultEmailAddressStatusChoice, Language language, boolean allowNullChoice, ContactMechanism contactMechanism,
             PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var emailAddressStatusChoicesBean = new EmailAddressStatusChoicesBean();
         var entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(EmailAddressStatusConstants.Workflow_EMAIL_ADDRESS_STATUS,
@@ -1148,7 +1147,6 @@ public class ContactControl
     }
     
     public void setEmailAddressStatus(ExecutionErrorAccumulator eea,  ContactMechanism contactMechanism, String emailAddressStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(EmailAddressStatusConstants.Workflow_EMAIL_ADDRESS_STATUS,
                 entityInstance);
@@ -1164,7 +1162,6 @@ public class ContactControl
     
     public EmailAddressVerificationChoicesBean getEmailAddressVerificationChoices(String defaultEmailAddressVerificationChoice, Language language, boolean allowNullChoice, ContactMechanism contactMechanism,
             PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var emailAddressVerificationChoicesBean = new EmailAddressVerificationChoicesBean();
         var entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(EmailAddressVerificationConstants.Workflow_EMAIL_ADDRESS_VERIFICATION,
@@ -1176,7 +1173,6 @@ public class ContactControl
     }
     
     public void setEmailAddressVerification(ExecutionErrorAccumulator eea,  ContactMechanism contactMechanism, String emailAddressVerificationChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(EmailAddressVerificationConstants.Workflow_EMAIL_ADDRESS_VERIFICATION,
                 entityInstance);
@@ -1192,7 +1188,6 @@ public class ContactControl
     
     public PostalAddressStatusChoicesBean getPostalAddressStatusChoices(String defaultPostalAddressStatusChoice, Language language, boolean allowNullChoice, ContactMechanism contactMechanism,
             PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var postalAddressStatusChoicesBean = new PostalAddressStatusChoicesBean();
         var entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PostalAddressStatusConstants.Workflow_POSTAL_ADDRESS_STATUS,
@@ -1204,7 +1199,6 @@ public class ContactControl
     }
     
     public void setPostalAddressStatus(ExecutionErrorAccumulator eea,  ContactMechanism contactMechanism, String postalAddressStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PostalAddressStatusConstants.Workflow_POSTAL_ADDRESS_STATUS,
                 entityInstance);
@@ -1220,7 +1214,6 @@ public class ContactControl
     
     public TelephoneStatusChoicesBean getTelephoneStatusChoices(String defaultTelephoneStatusChoice, Language language, boolean allowNullChoice, ContactMechanism contactMechanism,
             PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var telephoneStatusChoicesBean = new TelephoneStatusChoicesBean();
         var entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(TelephoneStatusConstants.Workflow_TELEPHONE_STATUS,
@@ -1232,7 +1225,6 @@ public class ContactControl
     }
     
     public void setTelephoneStatus(ExecutionErrorAccumulator eea,  ContactMechanism contactMechanism, String telephoneStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(TelephoneStatusConstants.Workflow_TELEPHONE_STATUS,
                 entityInstance);
@@ -1248,7 +1240,6 @@ public class ContactControl
     
     public WebAddressStatusChoicesBean getWebAddressStatusChoices(String defaultWebAddressStatusChoice, Language language, boolean allowNullChoice, ContactMechanism contactMechanism,
             PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var webAddressStatusChoicesBean = new WebAddressStatusChoicesBean();
         var entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(WebAddressStatusConstants.Workflow_WEB_ADDRESS_STATUS,
@@ -1260,7 +1251,6 @@ public class ContactControl
     }
     
     public void setWebAddressStatus(ExecutionErrorAccumulator eea,  ContactMechanism contactMechanism, String webAddressStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(WebAddressStatusConstants.Workflow_WEB_ADDRESS_STATUS,
                 entityInstance);
@@ -3587,7 +3577,7 @@ public class ContactControl
         var postalAddressElementTypeDescription = getPostalAddressElementTypeDescription(postalAddressElementType, language);
         
         if(postalAddressElementTypeDescription == null && !language.getIsDefault()) {
-            postalAddressElementTypeDescription = getPostalAddressElementTypeDescription(postalAddressElementType, getPartyControl().getDefaultLanguage());
+            postalAddressElementTypeDescription = getPostalAddressElementTypeDescription(postalAddressElementType, partyControl.getDefaultLanguage());
         }
         
         if(postalAddressElementTypeDescription == null) {
@@ -3966,7 +3956,7 @@ public class ContactControl
         var postalAddressFormatDescription = getPostalAddressFormatDescription(postalAddressFormat, language);
         
         if(postalAddressFormatDescription == null && !language.getIsDefault()) {
-            postalAddressFormatDescription = getPostalAddressFormatDescription(postalAddressFormat, getPartyControl().getDefaultLanguage());
+            postalAddressFormatDescription = getPostalAddressFormatDescription(postalAddressFormat, partyControl.getDefaultLanguage());
         }
         
         if(postalAddressFormatDescription == null) {

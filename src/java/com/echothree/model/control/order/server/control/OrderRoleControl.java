@@ -117,7 +117,7 @@ public class OrderRoleControl
         var orderRoleTypeDescription = getOrderRoleTypeDescription(orderRoleType, language);
 
         if(orderRoleTypeDescription == null && !language.getIsDefault()) {
-            orderRoleTypeDescription = getOrderRoleTypeDescription(orderRoleType, getPartyControl().getDefaultLanguage());
+            orderRoleTypeDescription = getOrderRoleTypeDescription(orderRoleType, partyControl.getDefaultLanguage());
         }
 
         if(orderRoleTypeDescription == null) {

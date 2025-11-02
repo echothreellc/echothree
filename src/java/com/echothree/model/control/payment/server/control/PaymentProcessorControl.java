@@ -444,7 +444,7 @@ public class PaymentProcessorControl
         var paymentProcessorDescription = getPaymentProcessorDescription(paymentProcessor, language);
         
         if(paymentProcessorDescription == null && !language.getIsDefault()) {
-            paymentProcessorDescription = getPaymentProcessorDescription(paymentProcessor, getPartyControl().getDefaultLanguage());
+            paymentProcessorDescription = getPaymentProcessorDescription(paymentProcessor, partyControl.getDefaultLanguage());
         }
         
         if(paymentProcessorDescription == null) {

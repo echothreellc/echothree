@@ -585,7 +585,7 @@ public class UomControl
         var unitOfMeasureKindDescription = getUnitOfMeasureKindDescription(unitOfMeasureKind, language);
         
         if(unitOfMeasureKindDescription == null && !language.getIsDefault()) {
-            unitOfMeasureKindDescription = getUnitOfMeasureKindDescription(unitOfMeasureKind, getPartyControl().getDefaultLanguage());
+            unitOfMeasureKindDescription = getUnitOfMeasureKindDescription(unitOfMeasureKind, partyControl.getDefaultLanguage());
         }
         
         if(unitOfMeasureKindDescription == null) {
@@ -1095,7 +1095,7 @@ public class UomControl
         var unitOfMeasureTypeDescription = getUnitOfMeasureTypeDescription(unitOfMeasureType, language);
         
         if(unitOfMeasureTypeDescription == null && !language.getIsDefault()) {
-            unitOfMeasureTypeDescription = getUnitOfMeasureTypeDescription(unitOfMeasureType, getPartyControl().getDefaultLanguage());
+            unitOfMeasureTypeDescription = getUnitOfMeasureTypeDescription(unitOfMeasureType, partyControl.getDefaultLanguage());
         }
         
         return unitOfMeasureTypeDescription;
@@ -1822,7 +1822,7 @@ public class UomControl
         var unitOfMeasureKindUseTypeDescription = getUnitOfMeasureKindUseTypeDescription(unitOfMeasureKindUseType, language);
         
         if(unitOfMeasureKindUseTypeDescription == null && !language.getIsDefault()) {
-            unitOfMeasureKindUseTypeDescription = getUnitOfMeasureKindUseTypeDescription(unitOfMeasureKindUseType, getPartyControl().getDefaultLanguage());
+            unitOfMeasureKindUseTypeDescription = getUnitOfMeasureKindUseTypeDescription(unitOfMeasureKindUseType, partyControl.getDefaultLanguage());
         }
         
         if(unitOfMeasureKindUseTypeDescription == null) {

@@ -177,7 +177,7 @@ public class CampaignControl
 
         var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignPK);
-        getWorkflowControl().addEntityToWorkflowUsingNames(null, CampaignStatusConstants.Workflow_CAMPAIGN_STATUS,
+        workflowControl.addEntityToWorkflowUsingNames(null, CampaignStatusConstants.Workflow_CAMPAIGN_STATUS,
                 CampaignStatusConstants.WorkflowEntrance_NEW_ACTIVE, entityInstance, null, null, createdBy);
         
         return campaign;
@@ -330,7 +330,6 @@ public class CampaignControl
 
     public CampaignStatusChoicesBean getCampaignStatusChoices(String defaultCampaignStatusChoice, Language language,
             boolean allowNullChoice, Campaign campaign, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var employeeStatusChoicesBean = new CampaignStatusChoicesBean();
         
         if(campaign == null) {
@@ -350,7 +349,6 @@ public class CampaignControl
     }
     
     public void setCampaignStatus(ExecutionErrorAccumulator eea, Party party, String employeeStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(party);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(CampaignStatusConstants.Workflow_CAMPAIGN_STATUS,
                 entityInstance);
@@ -592,7 +590,7 @@ public class CampaignControl
         var campaignDescription = getCampaignDescription(campaign, language);
 
         if(campaignDescription == null && !language.getIsDefault()) {
-            campaignDescription = getCampaignDescription(campaign, getPartyControl().getDefaultLanguage());
+            campaignDescription = getCampaignDescription(campaign, partyControl.getDefaultLanguage());
         }
 
         if(campaignDescription == null) {
@@ -695,7 +693,7 @@ public class CampaignControl
 
         var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignSourcePK);
-        getWorkflowControl().addEntityToWorkflowUsingNames(null, CampaignSourceStatusConstants.Workflow_CAMPAIGN_SOURCE_STATUS,
+        workflowControl.addEntityToWorkflowUsingNames(null, CampaignSourceStatusConstants.Workflow_CAMPAIGN_SOURCE_STATUS,
                 CampaignSourceStatusConstants.WorkflowEntrance_NEW_ACTIVE, entityInstance, null, null, createdBy);
 
         return campaignSource;
@@ -848,7 +846,6 @@ public class CampaignControl
 
     public CampaignSourceStatusChoicesBean getCampaignSourceStatusChoices(String defaultCampaignSourceStatusChoice, Language language,
             boolean allowNullChoice, CampaignSource campaignSource, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var employeeStatusChoicesBean = new CampaignSourceStatusChoicesBean();
         
         if(campaignSource == null) {
@@ -868,7 +865,6 @@ public class CampaignControl
     }
     
     public void setCampaignSourceStatus(ExecutionErrorAccumulator eea, Party party, String employeeStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(party);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(CampaignSourceStatusConstants.Workflow_CAMPAIGN_SOURCE_STATUS,
                 entityInstance);
@@ -1110,7 +1106,7 @@ public class CampaignControl
         var campaignSourceDescription = getCampaignSourceDescription(campaignSource, language);
 
         if(campaignSourceDescription == null && !language.getIsDefault()) {
-            campaignSourceDescription = getCampaignSourceDescription(campaignSource, getPartyControl().getDefaultLanguage());
+            campaignSourceDescription = getCampaignSourceDescription(campaignSource, partyControl.getDefaultLanguage());
         }
 
         if(campaignSourceDescription == null) {
@@ -1213,7 +1209,7 @@ public class CampaignControl
 
         var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignMediumPK);
-        getWorkflowControl().addEntityToWorkflowUsingNames(null, CampaignMediumStatusConstants.Workflow_CAMPAIGN_MEDIUM_STATUS,
+        workflowControl.addEntityToWorkflowUsingNames(null, CampaignMediumStatusConstants.Workflow_CAMPAIGN_MEDIUM_STATUS,
                 CampaignMediumStatusConstants.WorkflowEntrance_NEW_ACTIVE, entityInstance, null, null, createdBy);
 
         return campaignMedium;
@@ -1366,7 +1362,6 @@ public class CampaignControl
 
     public CampaignMediumStatusChoicesBean getCampaignMediumStatusChoices(String defaultCampaignMediumStatusChoice, Language language,
             boolean allowNullChoice, CampaignMedium campaignMedium, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var employeeStatusChoicesBean = new CampaignMediumStatusChoicesBean();
         
         if(campaignMedium == null) {
@@ -1386,7 +1381,6 @@ public class CampaignControl
     }
     
     public void setCampaignMediumStatus(ExecutionErrorAccumulator eea, Party party, String employeeStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(party);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(CampaignMediumStatusConstants.Workflow_CAMPAIGN_MEDIUM_STATUS,
                 entityInstance);
@@ -1628,7 +1622,7 @@ public class CampaignControl
         var campaignMediumDescription = getCampaignMediumDescription(campaignMedium, language);
 
         if(campaignMediumDescription == null && !language.getIsDefault()) {
-            campaignMediumDescription = getCampaignMediumDescription(campaignMedium, getPartyControl().getDefaultLanguage());
+            campaignMediumDescription = getCampaignMediumDescription(campaignMedium, partyControl.getDefaultLanguage());
         }
 
         if(campaignMediumDescription == null) {
@@ -1731,7 +1725,7 @@ public class CampaignControl
 
         var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignTermPK);
-        getWorkflowControl().addEntityToWorkflowUsingNames(null, CampaignTermStatusConstants.Workflow_CAMPAIGN_TERM_STATUS,
+        workflowControl.addEntityToWorkflowUsingNames(null, CampaignTermStatusConstants.Workflow_CAMPAIGN_TERM_STATUS,
                 CampaignTermStatusConstants.WorkflowEntrance_NEW_ACTIVE, entityInstance, null, null, createdBy);
 
         return campaignTerm;
@@ -1884,7 +1878,6 @@ public class CampaignControl
 
     public CampaignTermStatusChoicesBean getCampaignTermStatusChoices(String defaultCampaignTermStatusChoice, Language language,
             boolean allowNullChoice, CampaignTerm campaignTerm, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var employeeStatusChoicesBean = new CampaignTermStatusChoicesBean();
         
         if(campaignTerm == null) {
@@ -1904,7 +1897,6 @@ public class CampaignControl
     }
     
     public void setCampaignTermStatus(ExecutionErrorAccumulator eea, Party party, String employeeStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(party);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(CampaignTermStatusConstants.Workflow_CAMPAIGN_TERM_STATUS,
                 entityInstance);
@@ -2146,7 +2138,7 @@ public class CampaignControl
         var campaignTermDescription = getCampaignTermDescription(campaignTerm, language);
 
         if(campaignTermDescription == null && !language.getIsDefault()) {
-            campaignTermDescription = getCampaignTermDescription(campaignTerm, getPartyControl().getDefaultLanguage());
+            campaignTermDescription = getCampaignTermDescription(campaignTerm, partyControl.getDefaultLanguage());
         }
 
         if(campaignTermDescription == null) {
@@ -2249,7 +2241,7 @@ public class CampaignControl
 
         var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignContentPK);
-        getWorkflowControl().addEntityToWorkflowUsingNames(null, CampaignContentStatusConstants.Workflow_CAMPAIGN_CONTENT_STATUS,
+        workflowControl.addEntityToWorkflowUsingNames(null, CampaignContentStatusConstants.Workflow_CAMPAIGN_CONTENT_STATUS,
                 CampaignContentStatusConstants.WorkflowEntrance_NEW_ACTIVE, entityInstance, null, null, createdBy);
 
         return campaignContent;
@@ -2402,7 +2394,6 @@ public class CampaignControl
 
     public CampaignContentStatusChoicesBean getCampaignContentStatusChoices(String defaultCampaignContentStatusChoice, Language language,
             boolean allowNullChoice, CampaignContent campaignContent, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var employeeStatusChoicesBean = new CampaignContentStatusChoicesBean();
         
         if(campaignContent == null) {
@@ -2422,7 +2413,6 @@ public class CampaignControl
     }
     
     public void setCampaignContentStatus(ExecutionErrorAccumulator eea, Party party, String employeeStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(party);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(CampaignContentStatusConstants.Workflow_CAMPAIGN_CONTENT_STATUS,
                 entityInstance);
@@ -2664,7 +2654,7 @@ public class CampaignControl
         var campaignContentDescription = getCampaignContentDescription(campaignContent, language);
 
         if(campaignContentDescription == null && !language.getIsDefault()) {
-            campaignContentDescription = getCampaignContentDescription(campaignContent, getPartyControl().getDefaultLanguage());
+            campaignContentDescription = getCampaignContentDescription(campaignContent, partyControl.getDefaultLanguage());
         }
 
         if(campaignContentDescription == null) {

@@ -448,7 +448,7 @@ public class InventoryAdjustmentTypeControl
         var inventoryAdjustmentTypeDescription = getInventoryAdjustmentTypeDescription(inventoryAdjustmentType, language);
 
         if(inventoryAdjustmentTypeDescription == null && !language.getIsDefault()) {
-            inventoryAdjustmentTypeDescription = getInventoryAdjustmentTypeDescription(inventoryAdjustmentType, getPartyControl().getDefaultLanguage());
+            inventoryAdjustmentTypeDescription = getInventoryAdjustmentTypeDescription(inventoryAdjustmentType, partyControl.getDefaultLanguage());
         }
 
         if(inventoryAdjustmentTypeDescription == null) {

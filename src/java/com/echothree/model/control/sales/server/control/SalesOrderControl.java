@@ -268,7 +268,6 @@ public class SalesOrderControl
 
         try {
             var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-            var workflowControl = getWorkflowControl();
             var ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                             "FROM searchresults, entityinstances " +

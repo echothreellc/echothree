@@ -548,7 +548,7 @@ public class DocumentControl
         var documentTypeDescription = getDocumentTypeDescription(documentType, language);
         
         if(documentTypeDescription == null && !language.getIsDefault()) {
-            documentTypeDescription = getDocumentTypeDescription(documentType, getPartyControl().getDefaultLanguage());
+            documentTypeDescription = getDocumentTypeDescription(documentType, partyControl.getDefaultLanguage());
         }
         
         if(documentTypeDescription == null) {
@@ -976,7 +976,7 @@ public class DocumentControl
         var documentTypeUsageTypeDescription = getDocumentTypeUsageTypeDescription(documentTypeUsageType, language);
 
         if(documentTypeUsageTypeDescription == null && !language.getIsDefault()) {
-            documentTypeUsageTypeDescription = getDocumentTypeUsageTypeDescription(documentTypeUsageType, getPartyControl().getDefaultLanguage());
+            documentTypeUsageTypeDescription = getDocumentTypeUsageTypeDescription(documentTypeUsageType, partyControl.getDefaultLanguage());
         }
 
         if(documentTypeUsageTypeDescription == null) {
@@ -1796,7 +1796,7 @@ public class DocumentControl
         var documentDescription = getDocumentDescription(document, language);
         
         if(documentDescription == null && !language.getIsDefault()) {
-            documentDescription = getDocumentDescription(document, getPartyControl().getDefaultLanguage());
+            documentDescription = getDocumentDescription(document, partyControl.getDefaultLanguage());
         }
         
         if(documentDescription == null) {

@@ -149,7 +149,7 @@ public class BillingControl
         var billingAccountRoleTypeDescription = getBillingAccountRoleTypeDescription(billingAccountRoleType, language);
         
         if(billingAccountRoleTypeDescription == null && !language.getIsDefault()) {
-            billingAccountRoleTypeDescription = getBillingAccountRoleTypeDescription(billingAccountRoleType, getPartyControl().getDefaultLanguage());
+            billingAccountRoleTypeDescription = getBillingAccountRoleTypeDescription(billingAccountRoleType, partyControl.getDefaultLanguage());
         }
         
         if(billingAccountRoleTypeDescription == null) {

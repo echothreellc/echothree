@@ -449,7 +449,7 @@ public class UseTypeControl
         var useTypeDescription = getUseTypeDescription(useType, language);
         
         if(useTypeDescription == null && !language.getIsDefault()) {
-            useTypeDescription = getUseTypeDescription(useType, getPartyControl().getDefaultLanguage());
+            useTypeDescription = getUseTypeDescription(useType, partyControl.getDefaultLanguage());
         }
         
         if(useTypeDescription == null) {

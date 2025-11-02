@@ -385,7 +385,7 @@ public class UserControl
     
     public UserVisitGroup getActiveUserVisitGroup() {
         UserVisitGroup userVisitGroup = null;
-        var workflowStep = getWorkflowControl().getWorkflowStepUsingNames(Workflow_USER_VISIT_GROUP_STATUS, WorkflowStep_USER_VISIT_GROUP_STATUS_ACTIVE);
+        var workflowStep = workflowControl.getWorkflowStepUsingNames(Workflow_USER_VISIT_GROUP_STATUS, WorkflowStep_USER_VISIT_GROUP_STATUS_ACTIVE);
 
         if(workflowStep != null) {
             List<UserVisitGroup> userVisitGroups;
@@ -427,7 +427,6 @@ public class UserControl
     
     public UserVisitGroup createUserVisitGroup(BasePK createdBy) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        var workflowControl = getWorkflowControl();
         UserVisitGroup userVisitGroup = null;
         var workflow = workflowControl.getWorkflowByName(Workflow_USER_VISIT_GROUP_STATUS);
         
@@ -441,7 +440,7 @@ public class UserControl
                 userVisitGroup = createUserVisitGroup(userVisitGroupName, createdBy);
 
                 var entityInstance = getEntityInstanceByBaseEntity(userVisitGroup);
-                getWorkflowControl().addEntityToWorkflow(workflowEntrance, entityInstance, null, null, createdBy);
+                workflowControl.addEntityToWorkflow(workflowEntrance, entityInstance, null, null, createdBy);
             }
         }
         
@@ -582,7 +581,6 @@ public class UserControl
     
     public UserVisitGroupStatusChoicesBean getUserVisitGroupStatusChoices(String defaultUserVisitGroupStatusChoice, Language language, boolean allowNullChoice,
             UserVisitGroup userVisitGroup, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var userVisitGroupStatusChoicesBean = new UserVisitGroupStatusChoicesBean();
         
         if(userVisitGroup == null) {
@@ -602,7 +600,6 @@ public class UserControl
     }
     
     public void setUserVisitGroupStatus(ExecutionErrorAccumulator eea, UserVisitGroup userVisitGroup, String userVisitGroupStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(userVisitGroup);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(Workflow_USER_VISIT_GROUP_STATUS, entityInstance);
         var workflowDestination = userVisitGroupStatusChoice == null? null:
@@ -630,15 +627,15 @@ public class UserControl
         }
 
         if(preferredLanguage == null) {
-            preferredLanguage = getPartyControl().getDefaultLanguage();
+            preferredLanguage = partyControl.getDefaultLanguage();
         }
 
         if(preferredTimeZone == null) {
-            preferredTimeZone = getPartyControl().getDefaultTimeZone();
+            preferredTimeZone = partyControl.getDefaultTimeZone();
         }
 
         if(preferredDateTimeFormat == null) {
-            preferredDateTimeFormat = getPartyControl().getDefaultDateTimeFormat();
+            preferredDateTimeFormat = partyControl.getDefaultDateTimeFormat();
         }
 
         var userVisit = UserVisitFactory.getInstance().create(userVisitGroup, userKey, preferredLanguage, preferredCurrency,
@@ -745,10 +742,10 @@ public class UserControl
             var partyPK = userSession.getPartyPK();
             
             if(partyPK != null) {
-                var partyDetailValue = getPartyControl().getPartyDetailValueByPKForUpdate(userSession.getPartyPK());
+                var partyDetailValue = partyControl.getPartyDetailValueByPKForUpdate(userSession.getPartyPK());
                 
                 partyDetailValue.setPreferredLanguagePK(language.getIsDefault() ? null : language.getPrimaryKey());
-                getPartyControl().updatePartyFromValue(partyDetailValue, updatedBy);
+                partyControl.updatePartyFromValue(partyDetailValue, updatedBy);
             }
         }
     }
@@ -761,7 +758,7 @@ public class UserControl
         }
         
         if(language == null) {
-            language = getPartyControl().getDefaultLanguage();
+            language = partyControl.getDefaultLanguage();
         }
         
         return language;
@@ -775,7 +772,7 @@ public class UserControl
         }
         
         if(language == null) {
-            language = getPartyControl().getDefaultLanguage();
+            language = partyControl.getDefaultLanguage();
         }
         
         return language;
@@ -793,10 +790,10 @@ public class UserControl
             var partyPK = userSession.getPartyPK();
             
             if(partyPK != null) {
-                var partyDetailValue = getPartyControl().getPartyDetailValueByPKForUpdate(userSession.getPartyPK());
+                var partyDetailValue = partyControl.getPartyDetailValueByPKForUpdate(userSession.getPartyPK());
                 
                 partyDetailValue.setPreferredCurrencyPK(currency.getIsDefault() ? null : currency.getPrimaryKey());
-                getPartyControl().updatePartyFromValue(partyDetailValue, updatedBy);
+                partyControl.updatePartyFromValue(partyDetailValue, updatedBy);
             }
         }
     }
@@ -845,11 +842,11 @@ public class UserControl
             var partyPK = userSession.getPartyPK();
             
             if(partyPK != null) {
-                var partyDetailValue = getPartyControl().getPartyDetailValueByPKForUpdate(userSession.getPartyPK());
+                var partyDetailValue = partyControl.getPartyDetailValueByPKForUpdate(userSession.getPartyPK());
                 var timeZoneDetail = timeZone.getLastDetail();
 
                 partyDetailValue.setPreferredTimeZonePK(timeZoneDetail.getIsDefault() ? null : timeZone.getPrimaryKey());
-                getPartyControl().updatePartyFromValue(partyDetailValue, updatedBy);
+                partyControl.updatePartyFromValue(partyDetailValue, updatedBy);
             }
         }
     }
@@ -862,7 +859,7 @@ public class UserControl
         }
         
         if(timeZone == null) {
-            timeZone = getPartyControl().getDefaultTimeZone();
+            timeZone = partyControl.getDefaultTimeZone();
         }
         
         return timeZone;
@@ -876,7 +873,7 @@ public class UserControl
         }
         
         if(timeZone == null) {
-            timeZone = getPartyControl().getDefaultTimeZone();
+            timeZone = partyControl.getDefaultTimeZone();
         }
         
         return timeZone;
@@ -895,10 +892,10 @@ public class UserControl
             var partyPK = userSession.getPartyPK();
             
             if(partyPK != null) {
-                var partyDetailValue = getPartyControl().getPartyDetailValueByPKForUpdate(userSession.getPartyPK());
+                var partyDetailValue = partyControl.getPartyDetailValueByPKForUpdate(userSession.getPartyPK());
                 
                 partyDetailValue.setPreferredDateTimeFormatPK(dateTimeFormatDetail.getIsDefault() ? null : dateTimeFormat.getPrimaryKey());
-                getPartyControl().updatePartyFromValue(partyDetailValue, updatedBy);
+                partyControl.updatePartyFromValue(partyDetailValue, updatedBy);
             }
         }
     }
@@ -911,7 +908,7 @@ public class UserControl
         }
         
         if(dateTimeFormat == null) {
-            dateTimeFormat = getPartyControl().getDefaultDateTimeFormat();
+            dateTimeFormat = partyControl.getDefaultDateTimeFormat();
         }
         
         return dateTimeFormat;
@@ -925,7 +922,7 @@ public class UserControl
         }
         
         if(dateTimeFormat == null) {
-            dateTimeFormat = getPartyControl().getDefaultDateTimeFormat();
+            dateTimeFormat = partyControl.getDefaultDateTimeFormat();
         }
         
         return dateTimeFormat;
@@ -1135,7 +1132,7 @@ public class UserControl
      */
     public UserSession createUserSession(UserVisit userVisit, Party party, PartyRelationship partyRelationship, Long identityVerifiedTime) {
         var partyType = party.getLastDetail().getPartyType();
-        var partyTypeAuditPolicy = getPartyControl().getPartyTypeAuditPolicy(partyType);
+        var partyTypeAuditPolicy = partyControl.getPartyTypeAuditPolicy(partyType);
         var retainUserVisitsTime = partyTypeAuditPolicy == null? null: partyTypeAuditPolicy.getLastDetail().getRetainUserVisitsTime();
         
         if(retainUserVisitsTime != null) {
@@ -1662,7 +1659,7 @@ public class UserControl
         var recoveryQuestionDescription = getRecoveryQuestionDescription(recoveryQuestion, language);
         
         if(recoveryQuestionDescription == null && !language.getIsDefault()) {
-            recoveryQuestionDescription = getRecoveryQuestionDescription(recoveryQuestion, getPartyControl().getDefaultLanguage());
+            recoveryQuestionDescription = getRecoveryQuestionDescription(recoveryQuestion, partyControl.getDefaultLanguage());
         }
         
         if(recoveryQuestionDescription == null) {
@@ -1967,7 +1964,7 @@ public class UserControl
         
         if(userLoginPasswordEncoderTypeDescription == null && !language.getIsDefault()) {
             userLoginPasswordEncoderTypeDescription = getUserLoginPasswordEncoderTypeDescription(userLoginPasswordEncoderType,
-                    getPartyControl().getDefaultLanguage());
+                    partyControl.getDefaultLanguage());
         }
         
         if(userLoginPasswordEncoderTypeDescription == null) {
@@ -2046,7 +2043,7 @@ public class UserControl
 
         if(userLoginPasswordTypeDescription == null && !language.getIsDefault()) {
             userLoginPasswordTypeDescription = getUserLoginPasswordTypeDescription(userLoginPasswordType,
-                    getPartyControl().getDefaultLanguage());
+                    partyControl.getDefaultLanguage());
         }
 
         if(userLoginPasswordTypeDescription == null) {

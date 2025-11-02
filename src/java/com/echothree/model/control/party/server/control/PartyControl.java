@@ -636,7 +636,7 @@ public class PartyControl
         var partyTypeDescription = getPartyTypeDescription(partyType, language);
         
         if(partyTypeDescription == null && !language.getIsDefault()) {
-            partyTypeDescription = getPartyTypeDescription(partyType, getPartyControl().getDefaultLanguage());
+            partyTypeDescription = getPartyTypeDescription(partyType, partyControl.getDefaultLanguage());
         }
         
         if(partyTypeDescription == null) {
@@ -710,7 +710,7 @@ public class PartyControl
         var partyTypeUseTypeDescription = getPartyTypeUseTypeDescription(partyTypeUseType, language);
         
         if(partyTypeUseTypeDescription == null && !language.getIsDefault()) {
-            partyTypeUseTypeDescription = getPartyTypeUseTypeDescription(partyTypeUseType, getPartyControl().getDefaultLanguage());
+            partyTypeUseTypeDescription = getPartyTypeUseTypeDescription(partyTypeUseType, partyControl.getDefaultLanguage());
         }
         
         if(partyTypeUseTypeDescription == null) {
@@ -1554,7 +1554,7 @@ public class PartyControl
         var timeZoneDescription = getTimeZoneDescription(timeZone, language);
         
         if(timeZoneDescription == null && !language.getIsDefault()) {
-            timeZoneDescription = getTimeZoneDescription(timeZone, getPartyControl().getDefaultLanguage());
+            timeZoneDescription = getTimeZoneDescription(timeZone, partyControl.getDefaultLanguage());
         }
         
         if(timeZoneDescription == null) {
@@ -1884,7 +1884,7 @@ public class PartyControl
         var dateTimeFormatDescription = getDateTimeFormatDescription(dateTimeFormat, language);
         
         if(dateTimeFormatDescription == null && !language.getIsDefault()) {
-            dateTimeFormatDescription = getDateTimeFormatDescription(dateTimeFormat, getPartyControl().getDefaultLanguage());
+            dateTimeFormatDescription = getDateTimeFormatDescription(dateTimeFormat, partyControl.getDefaultLanguage());
         }
         
         if(dateTimeFormatDescription == null) {
@@ -2728,7 +2728,7 @@ public class PartyControl
         String description;
 
         if(partyRelationshipTypeDescription == null && !language.getIsDefault()) {
-            partyRelationshipTypeDescription = getPartyRelationshipTypeDescription(partyRelationshipType, getPartyControl().getDefaultLanguage());
+            partyRelationshipTypeDescription = getPartyRelationshipTypeDescription(partyRelationshipType, partyControl.getDefaultLanguage());
         }
 
         if(partyRelationshipTypeDescription == null) {
@@ -3133,7 +3133,7 @@ public class PartyControl
         var partyAliasTypeDescription = getPartyAliasTypeDescription(partyAliasType, language);
 
         if(partyAliasTypeDescription == null && !language.getIsDefault()) {
-            partyAliasTypeDescription = getPartyAliasTypeDescription(partyAliasType, getPartyControl().getDefaultLanguage());
+            partyAliasTypeDescription = getPartyAliasTypeDescription(partyAliasType, partyControl.getDefaultLanguage());
         }
 
         if(partyAliasTypeDescription == null) {
@@ -3336,7 +3336,7 @@ public class PartyControl
         var roleTypeDescription = getRoleTypeDescription(roleType, language);
         
         if(roleTypeDescription == null && !language.getIsDefault()) {
-            roleTypeDescription = getRoleTypeDescription(roleType, getPartyControl().getDefaultLanguage());
+            roleTypeDescription = getRoleTypeDescription(roleType, partyControl.getDefaultLanguage());
         }
         
         if(roleTypeDescription == null) {
@@ -5536,7 +5536,7 @@ public class PartyControl
         var genderDescription = getGenderDescription(gender, language);
         
         if(genderDescription == null && !language.getIsDefault()) {
-            genderDescription = getGenderDescription(gender, getPartyControl().getDefaultLanguage());
+            genderDescription = getGenderDescription(gender, partyControl.getDefaultLanguage());
         }
         
         if(genderDescription == null) {
@@ -5961,7 +5961,7 @@ public class PartyControl
         var moodDescription = getMoodDescription(mood, language);
         
         if(moodDescription == null && !language.getIsDefault()) {
-            moodDescription = getMoodDescription(mood, getPartyControl().getDefaultLanguage());
+            moodDescription = getMoodDescription(mood, partyControl.getDefaultLanguage());
         }
         
         if(moodDescription == null) {
@@ -6439,7 +6439,7 @@ public class PartyControl
         var birthdayFormatDescription = getBirthdayFormatDescription(birthdayFormat, language);
 
         if(birthdayFormatDescription == null && !language.getIsDefault()) {
-            birthdayFormatDescription = getBirthdayFormatDescription(birthdayFormat, getPartyControl().getDefaultLanguage());
+            birthdayFormatDescription = getBirthdayFormatDescription(birthdayFormat, partyControl.getDefaultLanguage());
         }
 
         if(birthdayFormatDescription == null) {

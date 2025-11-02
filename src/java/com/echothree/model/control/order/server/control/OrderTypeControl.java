@@ -457,7 +457,7 @@ public class OrderTypeControl
         var orderTypeDescription = getOrderTypeDescription(orderType, language);
 
         if(orderTypeDescription == null && !language.getIsDefault()) {
-            orderTypeDescription = getOrderTypeDescription(orderType, getPartyControl().getDefaultLanguage());
+            orderTypeDescription = getOrderTypeDescription(orderType, partyControl.getDefaultLanguage());
         }
 
         if(orderTypeDescription == null) {

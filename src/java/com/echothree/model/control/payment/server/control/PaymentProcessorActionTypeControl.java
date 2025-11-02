@@ -396,7 +396,7 @@ public class PaymentProcessorActionTypeControl
         String description;
 
         if(paymentProcessorActionTypeDescription == null && !language.getIsDefault()) {
-            paymentProcessorActionTypeDescription = getPaymentProcessorActionTypeDescription(paymentProcessorActionType, getPartyControl().getDefaultLanguage());
+            paymentProcessorActionTypeDescription = getPaymentProcessorActionTypeDescription(paymentProcessorActionType, partyControl.getDefaultLanguage());
         }
 
         if(paymentProcessorActionTypeDescription == null) {

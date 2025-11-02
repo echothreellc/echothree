@@ -500,7 +500,7 @@ public class EntityAliasControl
         var entityAliasTypeDescription = getEntityAliasTypeDescription(entityAliasType, language);
 
         if(entityAliasTypeDescription == null && !language.getIsDefault()) {
-            entityAliasTypeDescription = getEntityAliasTypeDescription(entityAliasType, getPartyControl().getDefaultLanguage());
+            entityAliasTypeDescription = getEntityAliasTypeDescription(entityAliasType, partyControl.getDefaultLanguage());
         }
 
         if(entityAliasTypeDescription == null) {

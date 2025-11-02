@@ -452,7 +452,7 @@ public class OrderTimeControl
         var orderTimeTypeDescription = getOrderTimeTypeDescription(orderTimeType, language);
 
         if(orderTimeTypeDescription == null && !language.getIsDefault()) {
-            orderTimeTypeDescription = getOrderTimeTypeDescription(orderTimeType, getPartyControl().getDefaultLanguage());
+            orderTimeTypeDescription = getOrderTimeTypeDescription(orderTimeType, partyControl.getDefaultLanguage());
         }
 
         if(orderTimeTypeDescription == null) {
