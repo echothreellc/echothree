@@ -56,21 +56,21 @@ public class GetMessageCommand
     protected BaseResult execute() {
         var result = MessageResultFactory.getGetMessageResult();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var userVisit = getUserVisit();
             var entityTypeName = form.getEntityTypeName();
-            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
             
-            result.setComponentVendor(getComponentControl().getComponentVendorTransfer(userVisit, componentVendor));
+            result.setComponentVendor(componentControl.getComponentVendorTransfer(userVisit, componentVendor));
             
             if(entityType != null) {
                 var messageControl = Session.getModelController(MessageControl.class);
                 var messageTypeName = form.getMessageTypeName();
                 var messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
                 
-                result.setEntityType(getEntityTypeControl().getEntityTypeTransfer(userVisit, entityType));
+                result.setEntityType(entityTypeControl.getEntityTypeTransfer(userVisit, entityType));
                 
                 if(messageType != null) {
                     var messageName = form.getMessageName();

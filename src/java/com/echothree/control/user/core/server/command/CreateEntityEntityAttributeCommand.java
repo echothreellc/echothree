@@ -69,7 +69,6 @@ public class CreateEntityEntityAttributeCommand
                     EntityAttributeTypes.ENTITY);
 
             if(!hasExecutionErrors()) {
-                var coreControl = getCoreControl();
                 var entityEntityAttribute = coreControl.getEntityEntityAttribute(entityAttribute, entityInstance);
 
                 if(entityEntityAttribute == null) {

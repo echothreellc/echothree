@@ -69,14 +69,13 @@ public class GetEntityIntegerRangesCommand
 
     @Override
     protected Collection<EntityIntegerRange> getEntities() {
-        var coreControl = getCoreControl();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
         Collection<EntityIntegerRange> entityIntegerRanges = null;
 
         if(componentVendor != null) {
             var entityTypeName = form.getEntityTypeName();
-            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
 
             if(entityType != null) {
                 var entityAttributeName = form.getEntityAttributeName();
@@ -111,7 +110,6 @@ public class GetEntityIntegerRangesCommand
         var result = CoreResultFactory.getGetEntityIntegerRangesResult();
 
         if(entities != null) {
-            var coreControl = getCoreControl();
             var userVisit = getUserVisit();
 
             if(session.hasLimit(EntityIntegerRangeFactory.class)) {

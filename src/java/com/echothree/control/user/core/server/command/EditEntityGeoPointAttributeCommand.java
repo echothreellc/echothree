@@ -101,7 +101,6 @@ public class EditEntityGeoPointAttributeCommand
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                            var coreControl = getCoreControl();
                             EntityGeoPointAttribute entityGeoPointAttribute = null;
                             var basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
 

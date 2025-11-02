@@ -59,7 +59,6 @@ public class GetEntityAttributeTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
         var result = CoreResultFactory.getGetEntityAttributeTypeChoicesResult();
         var defaultEntityAttributeTypeChoice = form.getDefaultEntityAttributeTypeChoice();
         

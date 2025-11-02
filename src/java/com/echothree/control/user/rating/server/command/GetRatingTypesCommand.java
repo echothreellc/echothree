@@ -53,19 +53,19 @@ public class GetRatingTypesCommand
     protected BaseResult execute() {
         var result = RatingResultFactory.getGetRatingTypesResult();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var userVisit = getUserVisit();
             var entityTypeName = form.getEntityTypeName();
-            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
             
-            result.setComponentVendor(getComponentControl().getComponentVendorTransfer(userVisit, componentVendor));
+            result.setComponentVendor(componentControl.getComponentVendorTransfer(userVisit, componentVendor));
             
             if(entityType != null) {
                 var ratingControl = Session.getModelController(RatingControl.class);
                 
-                result.setEntityType(getEntityTypeControl().getEntityTypeTransfer(userVisit, entityType));
+                result.setEntityType(entityTypeControl.getEntityTypeTransfer(userVisit, entityType));
                 result.setRatingTypes(ratingControl.getRatingTypeTransfers(userVisit, entityType));
             } else {
                 addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), entityTypeName);

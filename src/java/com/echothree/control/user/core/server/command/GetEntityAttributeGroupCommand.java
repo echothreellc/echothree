@@ -73,7 +73,7 @@ public class GetEntityAttributeGroupCommand
         var result = CoreResultFactory.getGetEntityAttributeGroupResult();
 
         if(entityAttributeGroup != null) {
-            result.setEntityAttributeGroup(getCoreControl().getEntityAttributeGroupTransfer(getUserVisit(), entityAttributeGroup, null));
+            result.setEntityAttributeGroup(coreControl.getEntityAttributeGroupTransfer(getUserVisit(), entityAttributeGroup, null));
         }
 
         return result;

@@ -53,7 +53,7 @@ public class CreateComponentCommand
     protected BaseResult execute() {
         var componentControl = Session.getModelController(ComponentControl.class);
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var componentName = form.getComponentName();

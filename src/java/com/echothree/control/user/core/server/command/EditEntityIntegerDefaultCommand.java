@@ -85,7 +85,6 @@ public class EditEntityIntegerDefaultCommand
         EntityIntegerDefault entityIntegerDefault = null;
 
         if(!hasExecutionErrors()) {
-            var coreControl = getCoreControl();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 entityIntegerDefault = coreControl.getEntityIntegerDefault(entityAttribute);
@@ -108,7 +107,6 @@ public class EditEntityIntegerDefaultCommand
 
     @Override
     public void fillInResult(EditEntityIntegerDefaultResult result, EntityIntegerDefault entityIntegerDefault) {
-        var coreControl = getCoreControl();
 
         result.setEntityIntegerDefault(coreControl.getEntityIntegerDefaultTransfer(getUserVisit(), entityIntegerDefault));
     }
@@ -120,7 +118,6 @@ public class EditEntityIntegerDefaultCommand
 
     @Override
     public void doUpdate(EntityIntegerDefault entityIntegerDefault) {
-        var coreControl = getCoreControl();
         var entityIntegerDefaultValue = coreControl.getEntityIntegerDefaultValueForUpdate(entityIntegerDefault);
 
         entityIntegerDefaultValue.setIntegerAttribute(Integer.valueOf(edit.getIntegerAttribute()));

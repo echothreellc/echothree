@@ -79,7 +79,6 @@ public class DeleteEntityNameAttributeCommand
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                            var coreControl = getCoreControl();
                             var entityNameAttribute = coreControl.getEntityNameAttributeForUpdate(entityAttribute, entityInstance);
 
                             if(entityNameAttribute != null) {

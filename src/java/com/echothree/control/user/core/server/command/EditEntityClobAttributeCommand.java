@@ -86,7 +86,6 @@ public class EditEntityClobAttributeCommand
                 EntityAttributeTypes.CLOB);
 
         if(!hasExecutionErrors()) {
-            var coreControl = getCoreControl();
             EntityClobAttribute entityClobAttribute = null;
             var basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
 

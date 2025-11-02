@@ -76,13 +76,12 @@ public class GetEntityAttributeEntityTypesCommand
                 + (componentVendorName != null && entityTypeName != null && entityAttributeName != null && allowedComponentVendorName == null && allowedEntityTypeName == null ? 0 : 1);
 
         if(parameterCount == 1) {
-            var coreControl = getCoreControl();
 
             if(componentVendorName != null) {
-                var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+                var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
 
                 if(componentVendor != null) {
-                    var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
+                    var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
 
                     if(entityType != null) {
                         var entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
@@ -100,13 +99,13 @@ public class GetEntityAttributeEntityTypesCommand
                     addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
                 }
             } else {
-                var allowedComponentVendor = getComponentControl().getComponentVendorByName(allowedComponentVendorName);
+                var allowedComponentVendor = componentControl.getComponentVendorByName(allowedComponentVendorName);
 
                 if(allowedComponentVendor != null) {
-                    var allowedEntityType = getEntityTypeControl().getEntityTypeByName(allowedComponentVendor, allowedEntityTypeName);
+                    var allowedEntityType = entityTypeControl.getEntityTypeByName(allowedComponentVendor, allowedEntityTypeName);
 
                     if(allowedEntityType != null) {
-                        result.setEntityType(getEntityTypeControl().getEntityTypeTransfer(getUserVisit(), allowedEntityType));
+                        result.setEntityType(entityTypeControl.getEntityTypeTransfer(getUserVisit(), allowedEntityType));
                         result.setEntityAttributeEntityTypes(coreControl.getEntityAttributeEntityTypeTransfersByAllowedEntityType(getUserVisit(), allowedEntityType, null));
                     } else {
                         addExecutionError(ExecutionErrors.UnknownAllowedEntityTypeName.name(), allowedComponentVendorName, allowedEntityTypeName);

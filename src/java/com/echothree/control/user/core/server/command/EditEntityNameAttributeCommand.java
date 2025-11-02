@@ -93,7 +93,6 @@ public class EditEntityNameAttributeCommand
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                            var coreControl = getCoreControl();
                             EntityNameAttribute entityNameAttribute = null;
                             var basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
 

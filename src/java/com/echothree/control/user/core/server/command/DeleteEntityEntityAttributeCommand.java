@@ -61,7 +61,6 @@ public class DeleteEntityEntityAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
         var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
 
         if(!hasExecutionErrors()) {

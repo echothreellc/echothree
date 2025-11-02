@@ -79,7 +79,6 @@ public class DeleteEntityGeoPointAttributeCommand
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                            var coreControl = getCoreControl();
                             var entityGeoPointAttribute = coreControl.getEntityGeoPointAttributeForUpdate(entityAttribute, entityInstance);
 
                             if(entityGeoPointAttribute != null) {

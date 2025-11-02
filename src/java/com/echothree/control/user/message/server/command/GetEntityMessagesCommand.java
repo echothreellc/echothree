@@ -78,14 +78,14 @@ public class GetEntityMessagesCommand
                     addExecutionError(ExecutionErrors.UnknownEntityRef.name(), entityRef);
                 }
             } else {
-                var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+                var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
                 
-                result.setComponentVendor(getComponentControl().getComponentVendorTransfer(userVisit, componentVendor));
+                result.setComponentVendor(componentControl.getComponentVendorTransfer(userVisit, componentVendor));
                 
                 if(componentVendor != null) {
-                    var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
+                    var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
                     
-                    result.setEntityType(getEntityTypeControl().getEntityTypeTransfer(userVisit, entityType));
+                    result.setEntityType(entityTypeControl.getEntityTypeTransfer(userVisit, entityType));
                     
                     if(entityType != null) {
                         var messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);

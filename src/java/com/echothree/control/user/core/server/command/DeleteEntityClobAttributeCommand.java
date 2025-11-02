@@ -71,7 +71,6 @@ public class DeleteEntityClobAttributeCommand
                 EntityAttributeTypes.CLOB);
 
         if(!hasExecutionErrors()) {
-            var coreControl = getCoreControl();
             var entityClobAttribute = coreControl.getEntityClobAttributeForUpdate(entityAttribute, entityInstance, language);
 
             if(entityClobAttribute != null) {
