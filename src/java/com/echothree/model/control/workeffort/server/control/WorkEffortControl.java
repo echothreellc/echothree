@@ -345,7 +345,7 @@ public class WorkEffortControl
         var workEffortTypeDescription = getWorkEffortTypeDescription(workEffortType, language);
         
         if(workEffortTypeDescription == null && !language.getIsDefault()) {
-            workEffortTypeDescription = getWorkEffortTypeDescription(workEffortType, getPartyControl().getDefaultLanguage());
+            workEffortTypeDescription = getWorkEffortTypeDescription(workEffortType, partyControl.getDefaultLanguage());
         }
         
         if(workEffortTypeDescription == null) {
@@ -831,7 +831,7 @@ public class WorkEffortControl
         var workEffortScopeDescription = getWorkEffortScopeDescription(workEffortScope, language);
         
         if(workEffortScopeDescription == null && !language.getIsDefault()) {
-            workEffortScopeDescription = getWorkEffortScopeDescription(workEffortScope, getPartyControl().getDefaultLanguage());
+            workEffortScopeDescription = getWorkEffortScopeDescription(workEffortScope, partyControl.getDefaultLanguage());
         }
         
         if(workEffortScopeDescription == null) {

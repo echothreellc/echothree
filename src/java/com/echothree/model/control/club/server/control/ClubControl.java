@@ -483,7 +483,7 @@ public class ClubControl
         var clubDescription = getClubDescription(club, language);
         
         if(clubDescription == null && !language.getIsDefault()) {
-            clubDescription = getClubDescription(club, getPartyControl().getDefaultLanguage());
+            clubDescription = getClubDescription(club, partyControl.getDefaultLanguage());
         }
         
         if(clubDescription == null) {
@@ -660,7 +660,7 @@ public class ClubControl
         var clubItemTypeDescription = getClubItemTypeDescription(clubItemType, language);
         
         if(clubItemTypeDescription == null && !language.getIsDefault()) {
-            clubItemTypeDescription = getClubItemTypeDescription(clubItemType, getPartyControl().getDefaultLanguage());
+            clubItemTypeDescription = getClubItemTypeDescription(clubItemType, partyControl.getDefaultLanguage());
         }
         
         if(clubItemTypeDescription == null) {

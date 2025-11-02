@@ -443,7 +443,7 @@ public class OrderPriorityControl
         var orderPriorityDescription = getOrderPriorityDescription(orderPriority, language);
 
         if(orderPriorityDescription == null && !language.getIsDefault()) {
-            orderPriorityDescription = getOrderPriorityDescription(orderPriority, getPartyControl().getDefaultLanguage());
+            orderPriorityDescription = getOrderPriorityDescription(orderPriority, partyControl.getDefaultLanguage());
         }
 
         if(orderPriorityDescription == null) {

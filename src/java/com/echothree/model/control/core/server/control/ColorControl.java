@@ -445,7 +445,7 @@ public class ColorControl
         var colorDescription = getColorDescription(color, language);
 
         if(colorDescription == null && !language.getIsDefault()) {
-            colorDescription = getColorDescription(color, getPartyControl().getDefaultLanguage());
+            colorDescription = getColorDescription(color, partyControl.getDefaultLanguage());
         }
 
         if(colorDescription == null) {

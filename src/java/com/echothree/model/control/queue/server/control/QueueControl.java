@@ -464,7 +464,7 @@ public class QueueControl
         var queueTypeDescription = getQueueTypeDescription(queueType, language);
 
         if(queueTypeDescription == null && !language.getIsDefault()) {
-            queueTypeDescription = getQueueTypeDescription(queueType, getPartyControl().getDefaultLanguage());
+            queueTypeDescription = getQueueTypeDescription(queueType, partyControl.getDefaultLanguage());
         }
 
         if(queueTypeDescription == null) {

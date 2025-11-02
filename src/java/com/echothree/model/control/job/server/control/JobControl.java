@@ -184,7 +184,6 @@ public class JobControl
     
     public JobStatusChoicesBean getJobStatusChoices(String defaultJobStatusChoice, Language language, boolean allowNullChoice,
             Job job, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var jobStatusChoicesBean = new JobStatusChoicesBean();
         
         if(job == null) {
@@ -204,7 +203,6 @@ public class JobControl
     }
     
     public void setJobStatus(ExecutionErrorAccumulator eea, Job job, String jobStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(job);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(JobStatusConstants.Workflow_JOB_STATUS,
                 entityInstance);
@@ -358,7 +356,7 @@ public class JobControl
         var jobDescription = getJobDescription(job, language);
         
         if(jobDescription == null && !language.getIsDefault()) {
-            jobDescription = getJobDescription(job, getPartyControl().getDefaultLanguage());
+            jobDescription = getJobDescription(job, partyControl.getDefaultLanguage());
         }
         
         if(jobDescription == null) {

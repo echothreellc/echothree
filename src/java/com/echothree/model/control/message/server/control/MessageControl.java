@@ -369,7 +369,7 @@ public class MessageControl
         var messageTypeDescription = getMessageTypeDescription(messageType, language);
         
         if(messageTypeDescription == null && !language.getIsDefault()) {
-            messageTypeDescription = getMessageTypeDescription(messageType, getPartyControl().getDefaultLanguage());
+            messageTypeDescription = getMessageTypeDescription(messageType, partyControl.getDefaultLanguage());
         }
         
         if(messageTypeDescription == null) {
@@ -839,7 +839,7 @@ public class MessageControl
         var messageDescription = getMessageDescription(message, language);
         
         if(messageDescription == null && !language.getIsDefault()) {
-            messageDescription = getMessageDescription(message, getPartyControl().getDefaultLanguage());
+            messageDescription = getMessageDescription(message, partyControl.getDefaultLanguage());
         }
         
         if(messageDescription == null) {

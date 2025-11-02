@@ -530,7 +530,7 @@ public class TrainingControl
         var trainingClassTranslation = getTrainingClassTranslation(trainingClass, language);
         
         if(trainingClassTranslation == null && !language.getIsDefault()) {
-            trainingClassTranslation = getTrainingClassTranslation(trainingClass, getPartyControl().getDefaultLanguage());
+            trainingClassTranslation = getTrainingClassTranslation(trainingClass, partyControl.getDefaultLanguage());
         }
         
         return trainingClassTranslation;
@@ -841,7 +841,7 @@ public class TrainingControl
         var trainingClassSectionTranslation = getTrainingClassSectionTranslation(trainingClassSection, language);
         
         if(trainingClassSectionTranslation == null && !language.getIsDefault()) {
-            trainingClassSectionTranslation = getTrainingClassSectionTranslation(trainingClassSection, getPartyControl().getDefaultLanguage());
+            trainingClassSectionTranslation = getTrainingClassSectionTranslation(trainingClassSection, partyControl.getDefaultLanguage());
         }
         
         return trainingClassSectionTranslation;
@@ -1172,7 +1172,7 @@ public class TrainingControl
         var trainingClassPageTranslation = getTrainingClassPageTranslation(trainingClassPage, language);
         
         if(trainingClassPageTranslation == null && !language.getIsDefault()) {
-            trainingClassPageTranslation = getTrainingClassPageTranslation(trainingClassPage, getPartyControl().getDefaultLanguage());
+            trainingClassPageTranslation = getTrainingClassPageTranslation(trainingClassPage, partyControl.getDefaultLanguage());
         }
         
         return trainingClassPageTranslation;
@@ -1505,7 +1505,7 @@ public class TrainingControl
         var trainingClassQuestionTranslation = getTrainingClassQuestionTranslation(trainingClassQuestion, language);
         
         if(trainingClassQuestionTranslation == null && !language.getIsDefault()) {
-            trainingClassQuestionTranslation = getTrainingClassQuestionTranslation(trainingClassQuestion, getPartyControl().getDefaultLanguage());
+            trainingClassQuestionTranslation = getTrainingClassQuestionTranslation(trainingClassQuestion, partyControl.getDefaultLanguage());
         }
         
         return trainingClassQuestionTranslation;
@@ -1810,7 +1810,7 @@ public class TrainingControl
         var trainingClassAnswerTranslation = getTrainingClassAnswerTranslation(trainingClassAnswer, language);
         
         if(trainingClassAnswerTranslation == null && !language.getIsDefault()) {
-            trainingClassAnswerTranslation = getTrainingClassAnswerTranslation(trainingClassAnswer, getPartyControl().getDefaultLanguage());
+            trainingClassAnswerTranslation = getTrainingClassAnswerTranslation(trainingClassAnswer, partyControl.getDefaultLanguage());
         }
         
         return trainingClassAnswerTranslation;
@@ -2122,7 +2122,6 @@ public class TrainingControl
     
     public PartyTrainingClassStatusChoicesBean getPartyTrainingClassStatusChoices(String defaultPartyTrainingClassStatusChoice, Language language,
             boolean allowNullChoice, PartyTrainingClass partyTrainingClass, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var partyTrainingClassStatusChoicesBean = new PartyTrainingClassStatusChoicesBean();
 
         if(partyTrainingClass == null) {
@@ -2142,7 +2141,6 @@ public class TrainingControl
     }
 
     public void setPartyTrainingClassStatus(ExecutionErrorAccumulator eea, PartyTrainingClass partyTrainingClass, String partyTrainingClassStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(partyTrainingClass);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PartyTrainingClassStatusConstants.Workflow_PARTY_TRAINING_CLASS_STATUS,
                 entityInstance);

@@ -453,7 +453,7 @@ public class TextControl
         var textDecorationDescription = getTextDecorationDescription(textDecoration, language);
 
         if(textDecorationDescription == null && !language.getIsDefault()) {
-            textDecorationDescription = getTextDecorationDescription(textDecoration, getPartyControl().getDefaultLanguage());
+            textDecorationDescription = getTextDecorationDescription(textDecoration, partyControl.getDefaultLanguage());
         }
 
         if(textDecorationDescription == null) {
@@ -905,7 +905,7 @@ public class TextControl
         var textTransformationDescription = getTextTransformationDescription(textTransformation, language);
 
         if(textTransformationDescription == null && !language.getIsDefault()) {
-            textTransformationDescription = getTextTransformationDescription(textTransformation, getPartyControl().getDefaultLanguage());
+            textTransformationDescription = getTextTransformationDescription(textTransformation, partyControl.getDefaultLanguage());
         }
 
         if(textTransformationDescription == null) {

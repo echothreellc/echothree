@@ -453,7 +453,7 @@ public class FontControl
         var fontStyleDescription = getFontStyleDescription(fontStyle, language);
 
         if(fontStyleDescription == null && !language.getIsDefault()) {
-            fontStyleDescription = getFontStyleDescription(fontStyle, getPartyControl().getDefaultLanguage());
+            fontStyleDescription = getFontStyleDescription(fontStyle, partyControl.getDefaultLanguage());
         }
 
         if(fontStyleDescription == null) {
@@ -905,7 +905,7 @@ public class FontControl
         var fontWeightDescription = getFontWeightDescription(fontWeight, language);
 
         if(fontWeightDescription == null && !language.getIsDefault()) {
-            fontWeightDescription = getFontWeightDescription(fontWeight, getPartyControl().getDefaultLanguage());
+            fontWeightDescription = getFontWeightDescription(fontWeight, partyControl.getDefaultLanguage());
         }
 
         if(fontWeightDescription == null) {

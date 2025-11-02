@@ -504,7 +504,7 @@ public class ChainControl
         var chainKindDescription = getChainKindDescription(chainKind, language);
 
         if(chainKindDescription == null && !language.getIsDefault()) {
-            chainKindDescription = getChainKindDescription(chainKind, getPartyControl().getDefaultLanguage());
+            chainKindDescription = getChainKindDescription(chainKind, partyControl.getDefaultLanguage());
         }
 
         if(chainKindDescription == null) {
@@ -967,7 +967,7 @@ public class ChainControl
         var chainTypeDescription = getChainTypeDescription(chainType, language);
 
         if(chainTypeDescription == null && !language.getIsDefault()) {
-            chainTypeDescription = getChainTypeDescription(chainType, getPartyControl().getDefaultLanguage());
+            chainTypeDescription = getChainTypeDescription(chainType, partyControl.getDefaultLanguage());
         }
 
         if(chainTypeDescription == null) {
@@ -1271,7 +1271,7 @@ public class ChainControl
         var chainEntityRoleTypeDescription = getChainEntityRoleTypeDescription(chainEntityRoleType, language);
 
         if(chainEntityRoleTypeDescription == null && !language.getIsDefault()) {
-            chainEntityRoleTypeDescription = getChainEntityRoleTypeDescription(chainEntityRoleType, getPartyControl().getDefaultLanguage());
+            chainEntityRoleTypeDescription = getChainEntityRoleTypeDescription(chainEntityRoleType, partyControl.getDefaultLanguage());
         }
 
         if(chainEntityRoleTypeDescription == null) {
@@ -1740,7 +1740,7 @@ public class ChainControl
         var chainDescription = getChainDescription(chain, language);
 
         if(chainDescription == null && !language.getIsDefault()) {
-            chainDescription = getChainDescription(chain, getPartyControl().getDefaultLanguage());
+            chainDescription = getChainDescription(chain, partyControl.getDefaultLanguage());
         }
 
         if(chainDescription == null) {
@@ -2164,7 +2164,7 @@ public class ChainControl
         var chainActionSetDescription = getChainActionSetDescription(chainActionSet, language);
 
         if(chainActionSetDescription == null && !language.getIsDefault()) {
-            chainActionSetDescription = getChainActionSetDescription(chainActionSet, getPartyControl().getDefaultLanguage());
+            chainActionSetDescription = getChainActionSetDescription(chainActionSet, partyControl.getDefaultLanguage());
         }
 
         if(chainActionSetDescription == null) {
@@ -2569,7 +2569,7 @@ public class ChainControl
         var chainActionTypeDescription = getChainActionTypeDescription(chainActionType, language);
 
         if(chainActionTypeDescription == null && !language.getIsDefault()) {
-            chainActionTypeDescription = getChainActionTypeDescription(chainActionType, getPartyControl().getDefaultLanguage());
+            chainActionTypeDescription = getChainActionTypeDescription(chainActionType, partyControl.getDefaultLanguage());
         }
 
         if(chainActionTypeDescription == null) {
@@ -2908,7 +2908,7 @@ public class ChainControl
         var chainActionDescription = getChainActionDescription(chainAction, language);
 
         if(chainActionDescription == null && !language.getIsDefault()) {
-            chainActionDescription = getChainActionDescription(chainAction, getPartyControl().getDefaultLanguage());
+            chainActionDescription = getChainActionDescription(chainAction, partyControl.getDefaultLanguage());
         }
 
         if(chainActionDescription == null) {

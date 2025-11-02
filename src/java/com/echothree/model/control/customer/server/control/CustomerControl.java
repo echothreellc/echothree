@@ -556,7 +556,7 @@ public class CustomerControl
         var customerTypeDescription = getCustomerTypeDescription(customerType, language);
         
         if(customerTypeDescription == null && !language.getIsDefault()) {
-            customerTypeDescription = getCustomerTypeDescription(customerType, getPartyControl().getDefaultLanguage());
+            customerTypeDescription = getCustomerTypeDescription(customerType, partyControl.getDefaultLanguage());
         }
         
         if(customerTypeDescription == null) {
@@ -836,7 +836,6 @@ public class CustomerControl
     
     public CustomerStatusChoicesBean getCustomerStatusChoices(String defaultCustomerStatusChoice, Language language,
             boolean allowNullChoice, Party customerParty, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var customerStatusChoicesBean = new CustomerStatusChoicesBean();
         
         if(customerParty == null) {
@@ -856,7 +855,6 @@ public class CustomerControl
     }
     
     public void setCustomerStatus(ExecutionErrorAccumulator eea, Party party, String customerStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(party);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(CustomerStatusConstants.Workflow_CUSTOMER_STATUS,
                 entityInstance);
@@ -872,7 +870,6 @@ public class CustomerControl
     
     public CustomerCreditStatusChoicesBean getCustomerCreditStatusChoices(String defaultCustomerCreditStatusChoice, Language language,
             boolean allowNullChoice, Party customerParty, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var customerCreditStatusChoicesBean = new CustomerCreditStatusChoicesBean();
         
         if(customerParty == null) {
@@ -892,7 +889,6 @@ public class CustomerControl
     }
     
     public void setCustomerCreditStatus(ExecutionErrorAccumulator eea, Party party, String customerCreditStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(party);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(CustomerCreditStatusConstants.Workflow_CUSTOMER_CREDIT_STATUS,
                 entityInstance);
@@ -1514,7 +1510,7 @@ public class CustomerControl
             var customerControl = Session.getModelController(CustomerControl.class);
 
             while(rs.next()) {
-                var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+                var party = partyControl.getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
 
                 customerResultTransfers.add(new CustomerResultTransfer(party.getLastDetail().getPartyName(),
                         includeCustomer ? customerControl.getCustomerTransfer(userVisit, party) : null));
@@ -1532,7 +1528,7 @@ public class CustomerControl
 
         try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
             while(rs.next()) {
-                var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+                var party = partyControl.getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
 
                 customerObjects.add(new CustomerObject(party));
             }

@@ -530,7 +530,7 @@ public class ShipmentControl
         var shipmentTypeDescription = getShipmentTypeDescription(shipmentType, language);
 
         if(shipmentTypeDescription == null && !language.getIsDefault()) {
-            shipmentTypeDescription = getShipmentTypeDescription(shipmentType, getPartyControl().getDefaultLanguage());
+            shipmentTypeDescription = getShipmentTypeDescription(shipmentType, partyControl.getDefaultLanguage());
         }
 
         if(shipmentTypeDescription == null) {
@@ -949,7 +949,7 @@ public class ShipmentControl
         var shipmentTimeTypeDescription = getShipmentTimeTypeDescription(shipmentTimeType, language);
 
         if(shipmentTimeTypeDescription == null && !language.getIsDefault()) {
-            shipmentTimeTypeDescription = getShipmentTimeTypeDescription(shipmentTimeType, getPartyControl().getDefaultLanguage());
+            shipmentTimeTypeDescription = getShipmentTimeTypeDescription(shipmentTimeType, partyControl.getDefaultLanguage());
         }
 
         if(shipmentTimeTypeDescription == null) {
@@ -1864,7 +1864,7 @@ public class ShipmentControl
         var shipmentAliasTypeDescription = getShipmentAliasTypeDescription(shipmentAliasType, language);
 
         if(shipmentAliasTypeDescription == null && !language.getIsDefault()) {
-            shipmentAliasTypeDescription = getShipmentAliasTypeDescription(shipmentAliasType, getPartyControl().getDefaultLanguage());
+            shipmentAliasTypeDescription = getShipmentAliasTypeDescription(shipmentAliasType, partyControl.getDefaultLanguage());
         }
 
         if(shipmentAliasTypeDescription == null) {

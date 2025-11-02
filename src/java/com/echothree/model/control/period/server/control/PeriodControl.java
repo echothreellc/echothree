@@ -456,7 +456,7 @@ public class PeriodControl
         var periodKindDescription = getPeriodKindDescription(periodKind, language);
         
         if(periodKindDescription == null && !language.getIsDefault()) {
-            periodKindDescription = getPeriodKindDescription(periodKind, getPartyControl().getDefaultLanguage());
+            periodKindDescription = getPeriodKindDescription(periodKind, partyControl.getDefaultLanguage());
         }
         
         if(periodKindDescription == null) {
@@ -942,7 +942,7 @@ public class PeriodControl
         var periodTypeDescription = getPeriodTypeDescription(periodType, language);
         
         if(periodTypeDescription == null && !language.getIsDefault()) {
-            periodTypeDescription = getPeriodTypeDescription(periodType, getPartyControl().getDefaultLanguage());
+            periodTypeDescription = getPeriodTypeDescription(periodType, partyControl.getDefaultLanguage());
         }
         
         if(periodTypeDescription == null) {
@@ -1400,7 +1400,7 @@ public class PeriodControl
         var periodDescription = getPeriodDescription(period, language);
         
         if(periodDescription == null && !language.getIsDefault()) {
-            periodDescription = getPeriodDescription(period, getPartyControl().getDefaultLanguage());
+            periodDescription = getPeriodDescription(period, partyControl.getDefaultLanguage());
         }
         
         if(periodDescription == null) {
@@ -1466,7 +1466,6 @@ public class PeriodControl
     
     public FiscalPeriodStatusChoicesBean getFiscalPeriodStatusChoices(String defaultFiscalPeriodStatusChoice, Language language, boolean allowNullChoice,
             Period period, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var fiscalPeriodStatusChoicesBean = new FiscalPeriodStatusChoicesBean();
         
         if(period == null) {
@@ -1486,7 +1485,6 @@ public class PeriodControl
     }
     
     public void setFiscalPeriodStatus(ExecutionErrorAccumulator eea, Period period, String fiscalPeriodStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(period);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(FiscalPeriodStatusConstants.Workflow_FISCAL_PERIOD_STATUS,
                 entityInstance);

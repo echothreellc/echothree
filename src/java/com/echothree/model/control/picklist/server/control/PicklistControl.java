@@ -534,7 +534,7 @@ public class PicklistControl
         var picklistTypeDescription = getPicklistTypeDescription(picklistType, language);
 
         if(picklistTypeDescription == null && !language.getIsDefault()) {
-            picklistTypeDescription = getPicklistTypeDescription(picklistType, getPartyControl().getDefaultLanguage());
+            picklistTypeDescription = getPicklistTypeDescription(picklistType, partyControl.getDefaultLanguage());
         }
 
         if(picklistTypeDescription == null) {
@@ -953,7 +953,7 @@ public class PicklistControl
         var picklistTimeTypeDescription = getPicklistTimeTypeDescription(picklistTimeType, language);
 
         if(picklistTimeTypeDescription == null && !language.getIsDefault()) {
-            picklistTimeTypeDescription = getPicklistTimeTypeDescription(picklistTimeType, getPartyControl().getDefaultLanguage());
+            picklistTimeTypeDescription = getPicklistTimeTypeDescription(picklistTimeType, partyControl.getDefaultLanguage());
         }
 
         if(picklistTimeTypeDescription == null) {
@@ -1380,7 +1380,7 @@ public class PicklistControl
         var picklistAliasTypeDescription = getPicklistAliasTypeDescription(picklistAliasType, language);
 
         if(picklistAliasTypeDescription == null && !language.getIsDefault()) {
-            picklistAliasTypeDescription = getPicklistAliasTypeDescription(picklistAliasType, getPartyControl().getDefaultLanguage());
+            picklistAliasTypeDescription = getPicklistAliasTypeDescription(picklistAliasType, partyControl.getDefaultLanguage());
         }
 
         if(picklistAliasTypeDescription == null) {

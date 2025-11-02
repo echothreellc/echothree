@@ -241,7 +241,7 @@ public class InvoiceControl
         var invoiceLineUseTypeDescription = getInvoiceLineUseTypeDescription(invoiceLineUseType, language);
         
         if(invoiceLineUseTypeDescription == null && !language.getIsDefault()) {
-            invoiceLineUseTypeDescription = getInvoiceLineUseTypeDescription(invoiceLineUseType, getPartyControl().getDefaultLanguage());
+            invoiceLineUseTypeDescription = getInvoiceLineUseTypeDescription(invoiceLineUseType, partyControl.getDefaultLanguage());
         }
         
         if(invoiceLineUseTypeDescription == null) {
@@ -343,7 +343,7 @@ public class InvoiceControl
         var invoiceRoleTypeDescription = getInvoiceRoleTypeDescription(invoiceRoleType, language);
         
         if(invoiceRoleTypeDescription == null && !language.getIsDefault()) {
-            invoiceRoleTypeDescription = getInvoiceRoleTypeDescription(invoiceRoleType, getPartyControl().getDefaultLanguage());
+            invoiceRoleTypeDescription = getInvoiceRoleTypeDescription(invoiceRoleType, partyControl.getDefaultLanguage());
         }
         
         if(invoiceRoleTypeDescription == null) {
@@ -801,7 +801,7 @@ public class InvoiceControl
         var invoiceTypeDescription = getInvoiceTypeDescription(invoiceType, language);
         
         if(invoiceTypeDescription == null && !language.getIsDefault()) {
-            invoiceTypeDescription = getInvoiceTypeDescription(invoiceType, getPartyControl().getDefaultLanguage());
+            invoiceTypeDescription = getInvoiceTypeDescription(invoiceType, partyControl.getDefaultLanguage());
         }
         
         if(invoiceTypeDescription == null) {
@@ -1497,7 +1497,7 @@ public class InvoiceControl
         var invoiceTimeTypeDescription = getInvoiceTimeTypeDescription(invoiceTimeType, language);
 
         if(invoiceTimeTypeDescription == null && !language.getIsDefault()) {
-            invoiceTimeTypeDescription = getInvoiceTimeTypeDescription(invoiceTimeType, getPartyControl().getDefaultLanguage());
+            invoiceTimeTypeDescription = getInvoiceTimeTypeDescription(invoiceTimeType, partyControl.getDefaultLanguage());
         }
 
         if(invoiceTimeTypeDescription == null) {
@@ -1646,7 +1646,7 @@ public class InvoiceControl
         var invoiceAliasTypeDescription = getInvoiceAliasTypeDescription(invoiceAliasType, language);
         
         if(invoiceAliasTypeDescription == null && !language.getIsDefault()) {
-            invoiceAliasTypeDescription = getInvoiceAliasTypeDescription(invoiceAliasType, getPartyControl().getDefaultLanguage());
+            invoiceAliasTypeDescription = getInvoiceAliasTypeDescription(invoiceAliasType, partyControl.getDefaultLanguage());
         }
         
         if(invoiceAliasTypeDescription == null) {
@@ -2195,7 +2195,7 @@ public class InvoiceControl
         var invoiceLineTypeDescription = getInvoiceLineTypeDescription(invoiceLineType, language);
         
         if(invoiceLineTypeDescription == null && !language.getIsDefault()) {
-            invoiceLineTypeDescription = getInvoiceLineTypeDescription(invoiceLineType, getPartyControl().getDefaultLanguage());
+            invoiceLineTypeDescription = getInvoiceLineTypeDescription(invoiceLineType, partyControl.getDefaultLanguage());
         }
         
         if(invoiceLineTypeDescription == null) {

@@ -455,7 +455,7 @@ public class InventoryTransactionTypeControl
         var inventoryTransactionTypeDescription = getInventoryTransactionTypeDescription(inventoryTransactionType, language);
 
         if(inventoryTransactionTypeDescription == null && !language.getIsDefault()) {
-            inventoryTransactionTypeDescription = getInventoryTransactionTypeDescription(inventoryTransactionType, getPartyControl().getDefaultLanguage());
+            inventoryTransactionTypeDescription = getInventoryTransactionTypeDescription(inventoryTransactionType, partyControl.getDefaultLanguage());
         }
 
         if(inventoryTransactionTypeDescription == null) {

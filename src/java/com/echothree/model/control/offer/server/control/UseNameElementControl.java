@@ -331,7 +331,7 @@ public class UseNameElementControl
         var useNameElementDescription = getUseNameElementDescription(useNameElement, language);
 
         if(useNameElementDescription == null && !language.getIsDefault()) {
-            useNameElementDescription = getUseNameElementDescription(useNameElement, getPartyControl().getDefaultLanguage());
+            useNameElementDescription = getUseNameElementDescription(useNameElement, partyControl.getDefaultLanguage());
         }
 
         if(useNameElementDescription == null) {

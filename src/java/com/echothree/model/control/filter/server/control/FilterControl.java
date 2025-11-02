@@ -525,7 +525,7 @@ public class FilterControl
         var filterKindDescription = getFilterKindDescription(filterKind, language);
 
         if(filterKindDescription == null && !language.getIsDefault()) {
-            filterKindDescription = getFilterKindDescription(filterKind, getPartyControl().getDefaultLanguage());
+            filterKindDescription = getFilterKindDescription(filterKind, partyControl.getDefaultLanguage());
         }
 
         if(filterKindDescription == null) {
@@ -975,7 +975,7 @@ public class FilterControl
         var filterTypeDescription = getFilterTypeDescription(filterType, language);
 
         if(filterTypeDescription == null && !language.getIsDefault()) {
-            filterTypeDescription = getFilterTypeDescription(filterType, getPartyControl().getDefaultLanguage());
+            filterTypeDescription = getFilterTypeDescription(filterType, partyControl.getDefaultLanguage());
         }
 
         if(filterTypeDescription == null) {
@@ -1162,7 +1162,7 @@ public class FilterControl
         
         if(filterAdjustmentSourceDescription == null && !language.getIsDefault()) {
             filterAdjustmentSourceDescription = getFilterAdjustmentSourceDescription(filterAdjustmentSource,
-                    getPartyControl().getDefaultLanguage());
+                    partyControl.getDefaultLanguage());
         }
         
         if(filterAdjustmentSourceDescription == null) {
@@ -1299,7 +1299,7 @@ public class FilterControl
                 language);
         
         if(filterAdjustmentTypeDescription == null && !language.getIsDefault()) {
-            filterAdjustmentTypeDescription = getFilterAdjustmentTypeDescription(filterAdjustmentType, getPartyControl().getDefaultLanguage());
+            filterAdjustmentTypeDescription = getFilterAdjustmentTypeDescription(filterAdjustmentType, partyControl.getDefaultLanguage());
         }
         
         if(filterAdjustmentTypeDescription == null) {
@@ -2277,7 +2277,7 @@ public class FilterControl
         var filterAdjustmentDescription = getFilterAdjustmentDescription(filterAdjustment, language);
         
         if(filterAdjustmentDescription == null && !language.getIsDefault()) {
-            filterAdjustmentDescription = getFilterAdjustmentDescription(filterAdjustment, getPartyControl().getDefaultLanguage());
+            filterAdjustmentDescription = getFilterAdjustmentDescription(filterAdjustment, partyControl.getDefaultLanguage());
         }
         
         if(filterAdjustmentDescription == null) {
@@ -2777,7 +2777,7 @@ public class FilterControl
         var filterDescription = getFilterDescription(filter, language);
         
         if(filterDescription == null && !language.getIsDefault()) {
-            filterDescription = getFilterDescription(filter, getPartyControl().getDefaultLanguage());
+            filterDescription = getFilterDescription(filter, partyControl.getDefaultLanguage());
         }
         
         if(filterDescription == null) {
@@ -3182,7 +3182,7 @@ public class FilterControl
         var filterStepDescription = getFilterStepDescription(filterStep, language);
         
         if(filterStepDescription == null && !language.getIsDefault()) {
-            filterStepDescription = getFilterStepDescription(filterStep, getPartyControl().getDefaultLanguage());
+            filterStepDescription = getFilterStepDescription(filterStep, partyControl.getDefaultLanguage());
         }
         
         if(filterStepDescription == null) {
@@ -3929,7 +3929,7 @@ public class FilterControl
         var filterStepElementDescription = getFilterStepElementDescription(filterStepElement, language);
         
         if(filterStepElementDescription == null && !language.getIsDefault()) {
-            filterStepElementDescription = getFilterStepElementDescription(filterStepElement, getPartyControl().getDefaultLanguage());
+            filterStepElementDescription = getFilterStepElementDescription(filterStepElement, partyControl.getDefaultLanguage());
         }
         
         if(filterStepElementDescription == null) {

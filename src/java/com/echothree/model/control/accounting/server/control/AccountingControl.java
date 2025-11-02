@@ -451,7 +451,7 @@ public class AccountingControl
         var currencyDescription = getCurrencyDescription(currency, language);
         
         if(currencyDescription == null && !language.getIsDefault()) {
-            currencyDescription = getCurrencyDescription(currency, getPartyControl().getDefaultLanguage());
+            currencyDescription = getCurrencyDescription(currency, partyControl.getDefaultLanguage());
         }
         
         if(currencyDescription == null) {
@@ -963,7 +963,7 @@ public class AccountingControl
         var itemAccountingCategoryDescription = getItemAccountingCategoryDescription(itemAccountingCategory, language);
         
         if(itemAccountingCategoryDescription == null && !language.getIsDefault()) {
-            itemAccountingCategoryDescription = getItemAccountingCategoryDescription(itemAccountingCategory, getPartyControl().getDefaultLanguage());
+            itemAccountingCategoryDescription = getItemAccountingCategoryDescription(itemAccountingCategory, partyControl.getDefaultLanguage());
         }
         
         if(itemAccountingCategoryDescription == null) {
@@ -1180,7 +1180,7 @@ public class AccountingControl
         var glAccountTypeDescription = getGlAccountTypeDescription(glAccountType, language);
         
         if(glAccountTypeDescription == null && !language.getIsDefault()) {
-            glAccountTypeDescription = getGlAccountTypeDescription(glAccountType, getPartyControl().getDefaultLanguage());
+            glAccountTypeDescription = getGlAccountTypeDescription(glAccountType, partyControl.getDefaultLanguage());
         }
         
         if(glAccountTypeDescription == null) {
@@ -1662,7 +1662,7 @@ public class AccountingControl
         var glAccountClassDescription = getGlAccountClassDescription(glAccountClass, language);
         
         if(glAccountClassDescription == null && !language.getIsDefault()) {
-            glAccountClassDescription = getGlAccountClassDescription(glAccountClass, getPartyControl().getDefaultLanguage());
+            glAccountClassDescription = getGlAccountClassDescription(glAccountClass, partyControl.getDefaultLanguage());
         }
         
         if(glAccountClassDescription == null) {
@@ -2195,7 +2195,7 @@ public class AccountingControl
         var glAccountCategoryDescription = getGlAccountCategoryDescription(glAccountCategory, language);
         
         if(glAccountCategoryDescription == null && !language.getIsDefault()) {
-            glAccountCategoryDescription = getGlAccountCategoryDescription(glAccountCategory, getPartyControl().getDefaultLanguage());
+            glAccountCategoryDescription = getGlAccountCategoryDescription(glAccountCategory, partyControl.getDefaultLanguage());
         }
         
         if(glAccountCategoryDescription == null) {
@@ -2668,7 +2668,7 @@ public class AccountingControl
         var glResourceTypeDescription = getGlResourceTypeDescription(glResourceType, language);
         
         if(glResourceTypeDescription == null && !language.getIsDefault()) {
-            glResourceTypeDescription = getGlResourceTypeDescription(glResourceType, getPartyControl().getDefaultLanguage());
+            glResourceTypeDescription = getGlResourceTypeDescription(glResourceType, partyControl.getDefaultLanguage());
         }
         
         if(glResourceTypeDescription == null) {
@@ -3515,7 +3515,7 @@ public class AccountingControl
         var glAccountDescription = getGlAccountDescription(glAccount, language);
         
         if(glAccountDescription == null && !language.getIsDefault()) {
-            glAccountDescription = getGlAccountDescription(glAccount, getPartyControl().getDefaultLanguage());
+            glAccountDescription = getGlAccountDescription(glAccount, partyControl.getDefaultLanguage());
         }
         
         if(glAccountDescription == null) {
@@ -3902,7 +3902,7 @@ public class AccountingControl
         var transactionTypeDescription = getTransactionTypeDescription(transactionType, language);
         
         if(transactionTypeDescription == null && !language.getIsDefault()) {
-            transactionTypeDescription = getTransactionTypeDescription(transactionType, getPartyControl().getDefaultLanguage());
+            transactionTypeDescription = getTransactionTypeDescription(transactionType, partyControl.getDefaultLanguage());
         }
         
         if(transactionTypeDescription == null) {
@@ -4261,7 +4261,7 @@ public class AccountingControl
         var transactionGlAccountCategoryDescription = getTransactionGlAccountCategoryDescription(transactionGlAccountCategory, language);
         
         if(transactionGlAccountCategoryDescription == null && !language.getIsDefault()) {
-            transactionGlAccountCategoryDescription = getTransactionGlAccountCategoryDescription(transactionGlAccountCategory, getPartyControl().getDefaultLanguage());
+            transactionGlAccountCategoryDescription = getTransactionGlAccountCategoryDescription(transactionGlAccountCategory, partyControl.getDefaultLanguage());
         }
         
         if(transactionGlAccountCategoryDescription == null) {
@@ -4666,7 +4666,7 @@ public class AccountingControl
         var transactionEntityRoleTypeDescription = getTransactionEntityRoleTypeDescription(transactionEntityRoleType, language);
         
         if(transactionEntityRoleTypeDescription == null && !language.getIsDefault()) {
-            transactionEntityRoleTypeDescription = getTransactionEntityRoleTypeDescription(transactionEntityRoleType, getPartyControl().getDefaultLanguage());
+            transactionEntityRoleTypeDescription = getTransactionEntityRoleTypeDescription(transactionEntityRoleType, partyControl.getDefaultLanguage());
         }
         
         if(transactionEntityRoleTypeDescription == null) {
@@ -4875,7 +4875,7 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     
     public TransactionGroup getActiveTransactionGroup(BasePK createdBy) {
-        var workflowStep = getWorkflowControl().getWorkflowStepUsingNames(Workflow_TRANSACTION_GROUP_STATUS,
+        var workflowStep = workflowControl.getWorkflowStepUsingNames(Workflow_TRANSACTION_GROUP_STATUS,
                 WorkflowStep_TRANSACTION_GROUP_STATUS_ACTIVE);
         TransactionGroup transactionGroup = null;
         
@@ -4925,7 +4925,7 @@ public class AccountingControl
         var transactionGroup = createTransactionGroup(transactionGroupName, createdBy);
 
         var entityInstance = getEntityInstanceByBaseEntity(transactionGroup);
-        getWorkflowControl().addEntityToWorkflowUsingNames(null, Workflow_TRANSACTION_GROUP_STATUS, entityInstance, null, null,createdBy);
+        workflowControl.addEntityToWorkflowUsingNames(null, Workflow_TRANSACTION_GROUP_STATUS, entityInstance, null, null,createdBy);
         
         return transactionGroup;
     }
@@ -5065,7 +5065,6 @@ public class AccountingControl
     
     public TransactionGroupStatusChoicesBean getTransactionGroupStatusChoices(String defaultTransactionGroupStatusChoice, Language language, boolean allowNullChoice,
             TransactionGroup transactionGroup, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var transactionGroupStatusChoicesBean = new TransactionGroupStatusChoicesBean();
         
         if(transactionGroup == null) {
@@ -5085,7 +5084,6 @@ public class AccountingControl
     }
     
     public void setTransactionGroupStatus(ExecutionErrorAccumulator eea, TransactionGroup transactionGroup, String transactionGroupStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(transactionGroup);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(Workflow_TRANSACTION_GROUP_STATUS, entityInstance);
         var workflowDestination = transactionGroupStatusChoice == null? null:
@@ -6033,7 +6031,7 @@ public class AccountingControl
         var symbolPositionDescription = getSymbolPositionDescription(symbolPosition, language);
         
         if(symbolPositionDescription == null && !language.getIsDefault()) {
-            symbolPositionDescription = getSymbolPositionDescription(symbolPosition, getPartyControl().getDefaultLanguage());
+            symbolPositionDescription = getSymbolPositionDescription(symbolPosition, partyControl.getDefaultLanguage());
         }
         
         if(symbolPositionDescription == null) {

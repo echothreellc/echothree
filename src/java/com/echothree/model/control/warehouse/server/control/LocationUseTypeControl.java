@@ -230,7 +230,7 @@ public class LocationUseTypeControl
         var locationUseTypeDescription = getLocationUseTypeDescription(locationUseType, language);
         
         if(locationUseTypeDescription == null && !language.getIsDefault()) {
-            locationUseTypeDescription = getLocationUseTypeDescription(locationUseType, getPartyControl().getDefaultLanguage());
+            locationUseTypeDescription = getLocationUseTypeDescription(locationUseType, partyControl.getDefaultLanguage());
         }
         
         if(locationUseTypeDescription == null) {

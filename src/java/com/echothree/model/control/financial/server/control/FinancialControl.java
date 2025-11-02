@@ -249,7 +249,7 @@ public class FinancialControl
         var financialAccountRoleTypeDescription = getFinancialAccountRoleTypeDescription(financialAccountRoleType, language);
         
         if(financialAccountRoleTypeDescription == null && !language.getIsDefault()) {
-            financialAccountRoleTypeDescription = getFinancialAccountRoleTypeDescription(financialAccountRoleType, getPartyControl().getDefaultLanguage());
+            financialAccountRoleTypeDescription = getFinancialAccountRoleTypeDescription(financialAccountRoleType, partyControl.getDefaultLanguage());
         }
         
         if(financialAccountRoleTypeDescription == null) {
@@ -698,7 +698,7 @@ public class FinancialControl
         var financialAccountTypeDescription = getFinancialAccountTypeDescription(financialAccountType, language);
         
         if(financialAccountTypeDescription == null && !language.getIsDefault()) {
-            financialAccountTypeDescription = getFinancialAccountTypeDescription(financialAccountType, getPartyControl().getDefaultLanguage());
+            financialAccountTypeDescription = getFinancialAccountTypeDescription(financialAccountType, partyControl.getDefaultLanguage());
         }
         
         if(financialAccountTypeDescription == null) {
@@ -1215,7 +1215,7 @@ public class FinancialControl
         var financialAccountTransactionTypeDescription = getFinancialAccountTransactionTypeDescription(financialAccountTransactionType, language);
         
         if(financialAccountTransactionTypeDescription == null && !language.getIsDefault()) {
-            financialAccountTransactionTypeDescription = getFinancialAccountTransactionTypeDescription(financialAccountTransactionType, getPartyControl().getDefaultLanguage());
+            financialAccountTransactionTypeDescription = getFinancialAccountTransactionTypeDescription(financialAccountTransactionType, partyControl.getDefaultLanguage());
         }
         
         if(financialAccountTransactionTypeDescription == null) {
@@ -1652,7 +1652,7 @@ public class FinancialControl
         var financialAccountAliasTypeDescription = getFinancialAccountAliasTypeDescription(financialAccountAliasType, language);
         
         if(financialAccountAliasTypeDescription == null && !language.getIsDefault()) {
-            financialAccountAliasTypeDescription = getFinancialAccountAliasTypeDescription(financialAccountAliasType, getPartyControl().getDefaultLanguage());
+            financialAccountAliasTypeDescription = getFinancialAccountAliasTypeDescription(financialAccountAliasType, partyControl.getDefaultLanguage());
         }
         
         if(financialAccountAliasTypeDescription == null) {

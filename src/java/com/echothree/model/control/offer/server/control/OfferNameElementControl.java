@@ -331,7 +331,7 @@ public class OfferNameElementControl
         var offerNameElementDescription = getOfferNameElementDescription(offerNameElement, language);
         
         if(offerNameElementDescription == null && !language.getIsDefault()) {
-            offerNameElementDescription = getOfferNameElementDescription(offerNameElement, getPartyControl().getDefaultLanguage());
+            offerNameElementDescription = getOfferNameElementDescription(offerNameElement, partyControl.getDefaultLanguage());
         }
         
         if(offerNameElementDescription == null) {

@@ -419,7 +419,7 @@ public class PaymentProcessorTypeCodeControl
         String description;
 
         if(paymentProcessorTypeCodeDescription == null && !language.getIsDefault()) {
-            paymentProcessorTypeCodeDescription = getPaymentProcessorTypeCodeDescription(paymentProcessorTypeCode, getPartyControl().getDefaultLanguage());
+            paymentProcessorTypeCodeDescription = getPaymentProcessorTypeCodeDescription(paymentProcessorTypeCode, partyControl.getDefaultLanguage());
         }
 
         if(paymentProcessorTypeCodeDescription == null) {

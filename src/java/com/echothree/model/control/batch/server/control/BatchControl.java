@@ -533,7 +533,7 @@ public class BatchControl
         var batchTypeDescription = getBatchTypeDescription(batchType, language);
         
         if(batchTypeDescription == null && !language.getIsDefault()) {
-            batchTypeDescription = getBatchTypeDescription(batchType, getPartyControl().getDefaultLanguage());
+            batchTypeDescription = getBatchTypeDescription(batchType, partyControl.getDefaultLanguage());
         }
         
         if(batchTypeDescription == null) {
@@ -1126,7 +1126,7 @@ public class BatchControl
         var batchAliasTypeDescription = getBatchAliasTypeDescription(batchAliasType, language);
         
         if(batchAliasTypeDescription == null && !language.getIsDefault()) {
-            batchAliasTypeDescription = getBatchAliasTypeDescription(batchAliasType, getPartyControl().getDefaultLanguage());
+            batchAliasTypeDescription = getBatchAliasTypeDescription(batchAliasType, partyControl.getDefaultLanguage());
         }
         
         if(batchAliasTypeDescription == null) {

@@ -606,7 +606,7 @@ public class SecurityControl
         var securityRoleGroupDescription = getSecurityRoleGroupDescription(securityRoleGroup, language);
         
         if(securityRoleGroupDescription == null && !language.getIsDefault()) {
-            securityRoleGroupDescription = getSecurityRoleGroupDescription(securityRoleGroup, getPartyControl().getDefaultLanguage());
+            securityRoleGroupDescription = getSecurityRoleGroupDescription(securityRoleGroup, partyControl.getDefaultLanguage());
         }
         
         if(securityRoleGroupDescription == null) {
@@ -1116,7 +1116,7 @@ public class SecurityControl
         var securityRoleDescription = getSecurityRoleDescription(securityRole, language);
         
         if(securityRoleDescription == null && !language.getIsDefault()) {
-            securityRoleDescription = getSecurityRoleDescription(securityRole, getPartyControl().getDefaultLanguage());
+            securityRoleDescription = getSecurityRoleDescription(securityRole, partyControl.getDefaultLanguage());
         }
         
         if(securityRoleDescription == null) {
@@ -1730,7 +1730,7 @@ public class SecurityControl
         var partySecurityRoleTemplateDescription = getPartySecurityRoleTemplateDescription(partySecurityRoleTemplate, language);
         
         if(partySecurityRoleTemplateDescription == null && !language.getIsDefault()) {
-            partySecurityRoleTemplateDescription = getPartySecurityRoleTemplateDescription(partySecurityRoleTemplate, getPartyControl().getDefaultLanguage());
+            partySecurityRoleTemplateDescription = getPartySecurityRoleTemplateDescription(partySecurityRoleTemplate, partyControl.getDefaultLanguage());
         }
         
         if(partySecurityRoleTemplateDescription == null) {
@@ -2252,7 +2252,7 @@ public class SecurityControl
     }
     
     private void syncPartySecurityRoles(PartyPK partyPK, PartySecurityRoleTemplatePK partySecurityRoleTemplatePK, BasePK syncedBy) {
-        var party = getPartyControl().getPartyByPK(partyPK);
+        var party = partyControl.getPartyByPK(partyPK);
         var partySecurityRoleTemplate = getPartySecurityRoleTemplateFromPK(partySecurityRoleTemplatePK);
         
         syncPartySecurityRoles(party, partySecurityRoleTemplate, syncedBy);
