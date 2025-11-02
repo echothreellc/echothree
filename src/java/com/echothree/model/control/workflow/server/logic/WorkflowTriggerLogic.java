@@ -18,7 +18,6 @@ package com.echothree.model.control.workflow.server.logic;
 
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
-import com.echothree.model.control.core.server.logic.TextLogic;
 import com.echothree.model.control.order.server.trigger.OrderTrigger;
 import com.echothree.model.control.printer.server.trigger.PrinterGroupJobTrigger;
 import com.echothree.model.control.training.server.trigger.PartyTrainingClassTrigger;

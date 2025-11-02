@@ -233,39 +233,21 @@ public abstract class DatabaseUtilities {
     String getColumnParameterType(Column theColumn)
     throws Exception {
         String result = null;
-        
+
         switch(theColumn.getType()) {
-            case ColumnType.columnEID:
-                result = "Long";
-                break;
-            case ColumnType.columnInteger:
-                result = "Integer";
-                break;
-            case ColumnType.columnLong:
-                result = "Long";
-                break;
-            case ColumnType.columnString:
-                result = "String";
-                break;
-            case ColumnType.columnBoolean:
-                result = "Boolean";
-                break;
-            case ColumnType.columnDate:
-                result = "Integer";
-                break;
-            case ColumnType.columnTime:
-                result = "Long";
-                break;
-            case ColumnType.columnCLOB:
-                result = "char []";
-                break;
-            case ColumnType.columnBLOB:
-                result = "byte []";
-                break;
-            case ColumnType.columnForeignKey:
+            case ColumnType.columnEID -> result = "Long";
+            case ColumnType.columnInteger -> result = "Integer";
+            case ColumnType.columnLong -> result = "Long";
+            case ColumnType.columnString -> result = "String";
+            case ColumnType.columnBoolean -> result = "Boolean";
+            case ColumnType.columnDate -> result = "Integer";
+            case ColumnType.columnTime -> result = "Long";
+            case ColumnType.columnCLOB -> result = "char []";
+            case ColumnType.columnBLOB -> result = "byte []";
+            case ColumnType.columnForeignKey -> {
                 var destinationTable = theColumn.getTable().getDatabase().getTable(theColumn.getDestinationTable());
                 result = destinationTable.getNameSingular() + "Bean";
-                break;
+            }
         }
         return result;
     }
@@ -382,41 +364,20 @@ public abstract class DatabaseUtilities {
     String getColumnDefinitionWithName(Table theTable, String columnPrefix,
             String columnName, Column theColumn, Column theFKColumn) throws Exception {
         String columnResult = null;
-        
+
         switch(theColumn.getType()) {
-            case ColumnType.columnEID:
-                columnResult = getEIDDefinition(columnName, theColumn, theFKColumn);
-                break;
-            case ColumnType.columnInteger:
-                columnResult = getIntegerDefinition(columnName, theColumn, theFKColumn);
-                break;
-            case ColumnType.columnLong:
-                columnResult = getLongDefinition(columnName, theColumn, theFKColumn);
-                break;
-            case ColumnType.columnString:
-                columnResult = getStringDefinition(columnName, theColumn, theFKColumn);
-                break;
-            case ColumnType.columnBoolean:
-                columnResult = getBooleanDefinition(columnName, theColumn, theFKColumn);
-                break;
-            case ColumnType.columnDate:
-                columnResult = getDateDefinition(columnName, theColumn, theFKColumn);
-                break;
-            case ColumnType.columnTime:
-                columnResult = getTimeDefinition(columnName, theColumn, theFKColumn);
-                break;
-            case ColumnType.columnCLOB:
-                columnResult = getCLOBDefinition(columnName, theColumn);
-                break;
-            case ColumnType.columnBLOB:
-                columnResult = getBLOBDefinition(columnName, theColumn);
-                break;
-            case ColumnType.columnForeignKey:
-                columnResult = getForeignKeyDefinition(theTable, columnPrefix, theColumn);
-                break;
-            case ColumnType.columnUUID:
-                columnResult = getUUIDDefinition(columnName, theColumn);
-                break;
+            case ColumnType.columnEID -> columnResult = getEIDDefinition(columnName, theColumn, theFKColumn);
+            case ColumnType.columnInteger -> columnResult = getIntegerDefinition(columnName, theColumn, theFKColumn);
+            case ColumnType.columnLong -> columnResult = getLongDefinition(columnName, theColumn, theFKColumn);
+            case ColumnType.columnString -> columnResult = getStringDefinition(columnName, theColumn, theFKColumn);
+            case ColumnType.columnBoolean -> columnResult = getBooleanDefinition(columnName, theColumn, theFKColumn);
+            case ColumnType.columnDate -> columnResult = getDateDefinition(columnName, theColumn, theFKColumn);
+            case ColumnType.columnTime -> columnResult = getTimeDefinition(columnName, theColumn, theFKColumn);
+            case ColumnType.columnCLOB -> columnResult = getCLOBDefinition(columnName, theColumn);
+            case ColumnType.columnBLOB -> columnResult = getBLOBDefinition(columnName, theColumn);
+            case ColumnType.columnForeignKey ->
+                    columnResult = getForeignKeyDefinition(theTable, columnPrefix, theColumn);
+            case ColumnType.columnUUID -> columnResult = getUUIDDefinition(columnName, theColumn);
         }
         
         return columnResult;

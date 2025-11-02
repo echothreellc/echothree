@@ -407,39 +407,17 @@ public class DatabaseDefinitionParser
     public void startElement(String namespaceURI, String localName, String qName,
             Attributes attrs) throws SAXException {
         switch(currentState) {
-            case cStateNowhere:
-                startElementInNowhere(localName, attrs);
-                break;
-            case cStateInDatabase:
-                startElementInDatabase(localName, attrs);
-                break;
-            case cStateInFiles:
-                startElementInFiles(localName, attrs);
-                break;
-            case cStateInComponents:
-                startElementInComponents(localName, attrs);
-                break;
-            case cStateInComponent:
-                startElementInComponent(localName, attrs);
-                break;
-            case cStateInColumnTypes:
-                startElementInColumnTypes(localName, attrs);
-                break;
-            case cStateInTables:
-                startElementInTables(localName, attrs);
-                break;
-            case cStateInTable:
-                startElementInTable(localName, attrs);
-                break;
-            case cStateInColumns:
-                startElementInColumns(localName, attrs);
-                break;
-            case cStateInIndexes:
-                startElementInIndexes(localName, attrs);
-                break;
-            case cStateInIndex:
-                startElementInIndex(localName, attrs);
-                break;
+            case cStateNowhere -> startElementInNowhere(localName, attrs);
+            case cStateInDatabase -> startElementInDatabase(localName, attrs);
+            case cStateInFiles -> startElementInFiles(localName, attrs);
+            case cStateInComponents -> startElementInComponents(localName, attrs);
+            case cStateInComponent -> startElementInComponent(localName, attrs);
+            case cStateInColumnTypes -> startElementInColumnTypes(localName, attrs);
+            case cStateInTables -> startElementInTables(localName, attrs);
+            case cStateInTable -> startElementInTable(localName, attrs);
+            case cStateInColumns -> startElementInColumns(localName, attrs);
+            case cStateInIndexes -> startElementInIndexes(localName, attrs);
+            case cStateInIndex -> startElementInIndex(localName, attrs);
         }
     } // startElement(String,String,StringAttributes)
     
@@ -541,38 +519,18 @@ public class DatabaseDefinitionParser
     public void endElement(String namespaceURI, String localName, String qName)
     throws SAXException {
         switch(currentState) {
-            case cStateNowhere:
-                break;
-            case cStateInDatabase:
-                endElementInDatabase(localName);
-                break;
-            case cStateInFiles:
-                endElementInFiles(localName);
-                break;
-            case cStateInComponents:
-                endElementInComponents(localName);
-                break;
-            case cStateInComponent:
-                endElementInComponent(localName);
-                break;
-            case cStateInColumnTypes:
-                endElementInColumnTypes(localName);
-                break;
-            case cStateInTables:
-                endElementInTables(localName);
-                break;
-            case cStateInTable:
-                endElementInTable(localName);
-                break;
-            case cStateInColumns:
-                endElementInColumns(localName);
-                break;
-            case cStateInIndexes:
-                endElementInIndexes(localName);
-                break;
-            case cStateInIndex:
-                endElementInIndex(localName);
-                break;
+            case cStateNowhere -> {
+            }
+            case cStateInDatabase -> endElementInDatabase(localName);
+            case cStateInFiles -> endElementInFiles(localName);
+            case cStateInComponents -> endElementInComponents(localName);
+            case cStateInComponent -> endElementInComponent(localName);
+            case cStateInColumnTypes -> endElementInColumnTypes(localName);
+            case cStateInTables -> endElementInTables(localName);
+            case cStateInTable -> endElementInTable(localName);
+            case cStateInColumns -> endElementInColumns(localName);
+            case cStateInIndexes -> endElementInIndexes(localName);
+            case cStateInIndex -> endElementInIndex(localName);
         }
     }
     

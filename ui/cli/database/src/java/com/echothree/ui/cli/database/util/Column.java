@@ -236,45 +236,24 @@ public class Column {
     public String getTypeAsJavaType() {
         if(javaType == null) {
             switch(type) {
-                case ColumnType.columnEID:
-                    javaType = table.getPKClass();
-                    break;
-                case ColumnType.columnInteger:
-                    javaType = "Integer";
-                    break;
-                case ColumnType.columnLong:
-                    javaType = "Long";
-                    break;
-                case ColumnType.columnString:
-                    javaType = "String";
-                    break;
-                case ColumnType.columnBoolean:
-                    javaType = "Boolean";
-                    break;
-                case ColumnType.columnDate:
-                    javaType = "Integer";
-                    break;
-                case ColumnType.columnTime:
-                    javaType = "Long";
-                    break;
-                case ColumnType.columnCLOB:
-                    javaType = "String";
-                    break;
-                case ColumnType.columnBLOB:
-                    javaType = "ByteArray";
-                    break;
-                case ColumnType.columnForeignKey: {
+                case ColumnType.columnEID -> javaType = table.getPKClass();
+                case ColumnType.columnInteger -> javaType = "Integer";
+                case ColumnType.columnLong -> javaType = "Long";
+                case ColumnType.columnString -> javaType = "String";
+                case ColumnType.columnBoolean -> javaType = "Boolean";
+                case ColumnType.columnDate -> javaType = "Integer";
+                case ColumnType.columnTime -> javaType = "Long";
+                case ColumnType.columnCLOB -> javaType = "String";
+                case ColumnType.columnBLOB -> javaType = "ByteArray";
+                case ColumnType.columnForeignKey -> {
                     try {
                         var fkTable = getTable().getDatabase().getTable(destinationTable);
                         javaType = fkTable.getPKClass();
-                    } catch (Exception e) {
+                    } catch(Exception e) {
                         javaType = "<error>";
                     }
                 }
-                break;
-                case ColumnType.columnUUID:
-                    javaType = "String";
-                    break;
+                case ColumnType.columnUUID -> javaType = "String";
             }
         }
         return javaType;
@@ -283,39 +262,17 @@ public class Column {
     public String getTypeAsJavaSqlType() {
         if(javaSqlType == null) {
             switch(type) {
-                case ColumnType.columnEID:
-                    javaSqlType = "BIGINT";
-                    break;
-                case ColumnType.columnInteger:
-                    javaSqlType = "INTEGER";
-                    break;
-                case ColumnType.columnLong:
-                    javaSqlType = "BIGINT";
-                    break;
-                case ColumnType.columnString:
-                    javaSqlType = "VARCHAR";
-                    break;
-                case ColumnType.columnBoolean:
-                    javaSqlType = "BIT";
-                    break;
-                case ColumnType.columnDate:
-                    javaSqlType = "INTEGER";
-                    break;
-                case ColumnType.columnTime:
-                    javaSqlType = "BIGINT";
-                    break;
-                case ColumnType.columnCLOB:
-                    javaSqlType = "CLOB";
-                    break;
-                case ColumnType.columnBLOB:
-                    javaSqlType = "BLOB";
-                    break;
-                case ColumnType.columnForeignKey:
-                    javaSqlType = "BIGINT";
-                    break;
-                case ColumnType.columnUUID:
-                    javaSqlType = "BINARY";
-                    break;
+                case ColumnType.columnEID -> javaSqlType = "BIGINT";
+                case ColumnType.columnInteger -> javaSqlType = "INTEGER";
+                case ColumnType.columnLong -> javaSqlType = "BIGINT";
+                case ColumnType.columnString -> javaSqlType = "VARCHAR";
+                case ColumnType.columnBoolean -> javaSqlType = "BIT";
+                case ColumnType.columnDate -> javaSqlType = "INTEGER";
+                case ColumnType.columnTime -> javaSqlType = "BIGINT";
+                case ColumnType.columnCLOB -> javaSqlType = "CLOB";
+                case ColumnType.columnBLOB -> javaSqlType = "BLOB";
+                case ColumnType.columnForeignKey -> javaSqlType = "BIGINT";
+                case ColumnType.columnUUID -> javaSqlType = "BINARY";
             }
         }
         return javaSqlType;
