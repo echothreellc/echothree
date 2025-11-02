@@ -1019,6 +1019,8 @@ public class DatabaseUtilitiesForJava {
         pw.println("import java.util.List;");
         pw.println("import java.util.Map;");
         pw.println("import java.util.Set;");
+        pw.println("import javax.enterprise.context.ApplicationScoped;");
+        pw.println("import javax.enterprise.inject.spi.CDI;");
         pw.println("import org.apache.commons.logging.Log;");
         pw.println("import org.apache.commons.logging.LogFactory;");
         pw.println("");
@@ -1105,16 +1107,12 @@ public class DatabaseUtilitiesForJava {
         var factoryClass = theTable.getFactoryClass();
         
         pw.println("    /** Creates a new instance of " + factoryClass + " */");
-        pw.println("    private " + factoryClass + "() {");
+        pw.println("    protected " + factoryClass + "() {");
         pw.println("        super();");
         pw.println("    }");
         pw.println("    ");
-        pw.println("    private static class " + factoryClass + "Holder {");
-        pw.println("        static " + factoryClass + " instance = new " + factoryClass + "();");
-        pw.println("    }");
-        pw.println("    ");
         pw.println("    public static " + factoryClass + " getInstance() {");
-        pw.println("        return " + factoryClass + "Holder.instance;");
+        pw.println("        return CDI.current().select(" + factoryClass + ".class).get();");
         pw.println("    }");
         pw.println("    ");
     }
@@ -2290,6 +2288,7 @@ public class DatabaseUtilitiesForJava {
     
     public void writeFactoryClass(PrintWriter pw, Table theTable)
     throws Exception {
+        pw.println("@ApplicationScoped");
         pw.println("public class " + theTable.getFactoryClass());
         pw.println("        implements BaseFactory<" + theTable.getPKClass() + ", " + theTable.getEntityClass() + "> {");
         pw.println("    ");
