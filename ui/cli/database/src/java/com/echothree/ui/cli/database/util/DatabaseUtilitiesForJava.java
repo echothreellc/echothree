@@ -1102,7 +1102,6 @@ public class DatabaseUtilitiesForJava {
         pw.println("    ");
     }
     
-    // http://www.oreillynet.com/onjava/blog/2007/01/singletons_and_lazy_loading.html
     public void writeFactoryConstructors(PrintWriter pw, Table theTable) {
         var factoryClass = theTable.getFactoryClass();
         
