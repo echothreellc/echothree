@@ -79,7 +79,6 @@ public class DeleteEntityIntegerAttributeCommand
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                            var coreControl = getCoreControl();
                             var entityIntegerAttribute = coreControl.getEntityIntegerAttributeForUpdate(entityAttribute, entityInstance);
 
                             if(entityIntegerAttribute != null) {

@@ -66,11 +66,11 @@ public class DeleteEntityTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var entityTypeName = form.getEntityTypeName();
-            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
@@ -78,10 +78,10 @@ public class DeleteEntityTypeDescriptionCommand
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    var entityTypeDescription = getEntityTypeControl().getEntityTypeDescriptionForUpdate(entityType, language);
+                    var entityTypeDescription = entityTypeControl.getEntityTypeDescriptionForUpdate(entityType, language);
                     
                     if(entityTypeDescription != null) {
-                        getEntityTypeControl().deleteEntityTypeDescription(entityTypeDescription, getPartyPK());
+                        entityTypeControl.deleteEntityTypeDescription(entityTypeDescription, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.UnknownEntityTypeDescription.name(), componentVendorName, entityTypeName, languageIsoName);
                     }

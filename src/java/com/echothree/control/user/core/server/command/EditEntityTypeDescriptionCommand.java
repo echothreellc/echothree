@@ -89,11 +89,11 @@ public class EditEntityTypeDescriptionCommand
     public EntityTypeDescription getEntity(EditEntityTypeDescriptionResult result) {
         EntityTypeDescription entityTypeDescription = null;
         var componentVendorName = spec.getComponentVendorName();
-        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
             var entityTypeName = spec.getEntityTypeName();
-            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
 
             if(entityType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
@@ -102,9 +102,9 @@ public class EditEntityTypeDescriptionCommand
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                        entityTypeDescription = getEntityTypeControl().getEntityTypeDescription(entityType, language);
+                        entityTypeDescription = entityTypeControl.getEntityTypeDescription(entityType, language);
                     } else { // EditMode.UPDATE
-                        entityTypeDescription = getEntityTypeControl().getEntityTypeDescriptionForUpdate(entityType, language);
+                        entityTypeDescription = entityTypeControl.getEntityTypeDescriptionForUpdate(entityType, language);
                     }
 
                     if(entityTypeDescription == null) {
@@ -130,7 +130,7 @@ public class EditEntityTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditEntityTypeDescriptionResult result, EntityTypeDescription entityTypeDescription) {
-        result.setEntityTypeDescription(getEntityTypeControl().getEntityTypeDescriptionTransfer(getUserVisit(), entityTypeDescription));
+        result.setEntityTypeDescription(entityTypeControl.getEntityTypeDescriptionTransfer(getUserVisit(), entityTypeDescription));
     }
 
     @Override
@@ -140,10 +140,10 @@ public class EditEntityTypeDescriptionCommand
 
     @Override
     public void doUpdate(EntityTypeDescription entityTypeDescription) {
-        var entityTypeDescriptionValue = getEntityTypeControl().getEntityTypeDescriptionValue(entityTypeDescription);
+        var entityTypeDescriptionValue = entityTypeControl.getEntityTypeDescriptionValue(entityTypeDescription);
         entityTypeDescriptionValue.setDescription(edit.getDescription());
 
-        getEntityTypeControl().updateEntityTypeDescriptionFromValue(entityTypeDescriptionValue, getPartyPK());
+        entityTypeControl.updateEntityTypeDescriptionFromValue(entityTypeDescriptionValue, getPartyPK());
     }
     
     

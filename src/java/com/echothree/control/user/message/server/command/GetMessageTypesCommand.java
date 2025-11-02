@@ -53,19 +53,19 @@ public class GetMessageTypesCommand
     protected BaseResult execute() {
         var result = MessageResultFactory.getGetMessageTypesResult();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var userVisit = getUserVisit();
             var entityTypeName = form.getEntityTypeName();
-            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
             
-            result.setComponentVendor(getComponentControl().getComponentVendorTransfer(userVisit, componentVendor));
+            result.setComponentVendor(componentControl.getComponentVendorTransfer(userVisit, componentVendor));
             
             if(entityType != null) {
                 var messageControl = Session.getModelController(MessageControl.class);
                 
-                result.setEntityType(getEntityTypeControl().getEntityTypeTransfer(userVisit, entityType));
+                result.setEntityType(entityTypeControl.getEntityTypeTransfer(userVisit, entityType));
                 result.setMessageTypes(messageControl.getMessageTypeTransfers(userVisit, entityType));
             } else {
                 addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), entityTypeName);

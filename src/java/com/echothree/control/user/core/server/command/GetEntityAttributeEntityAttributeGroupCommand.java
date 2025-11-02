@@ -74,7 +74,6 @@ public class GetEntityAttributeEntityAttributeGroupCommand
             var entityAttributeGroup = EntityAttributeLogic.getInstance().getEntityAttributeGroupByName(this, form.getEntityAttributeGroupName());
 
             if(!hasExecutionErrors()) {
-                var coreControl = getCoreControl();
 
                 result = coreControl.getEntityAttributeEntityAttributeGroup(entityAttribute, entityAttributeGroup);
 
@@ -97,7 +96,6 @@ public class GetEntityAttributeEntityAttributeGroupCommand
         var result = CoreResultFactory.getGetEntityAttributeEntityAttributeGroupResult();
 
         if(entity != null) {
-            var coreControl = getCoreControl();
 
             result.setEntityAttributeEntityAttributeGroup(coreControl.getEntityAttributeEntityAttributeGroupTransfer(getUserVisit(), entity, null));
         }

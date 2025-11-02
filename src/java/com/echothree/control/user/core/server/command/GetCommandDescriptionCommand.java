@@ -55,7 +55,7 @@ public class GetCommandDescriptionCommand
         var commandControl = Session.getModelController(CommandControl.class);
         var result = CoreResultFactory.getGetCommandDescriptionResult();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
             var commandName = form.getCommandName();

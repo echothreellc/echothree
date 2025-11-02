@@ -72,7 +72,6 @@ public class CreateEntityAttributeEntityAttributeGroupCommand
             var entityAttributeGroup = EntityAttributeLogic.getInstance().getEntityAttributeGroupByName(this, form.getEntityAttributeGroupName());
             
             if(!hasExecutionErrors()) {
-                var coreControl = getCoreControl();
                 var entityAttributeEntityAttributeGroup = coreControl.getEntityAttributeEntityAttributeGroup(entityAttribute, entityAttributeGroup);
 
                 if(entityAttributeEntityAttributeGroup == null) {

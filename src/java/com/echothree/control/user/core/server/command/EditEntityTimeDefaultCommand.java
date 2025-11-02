@@ -85,7 +85,6 @@ public class EditEntityTimeDefaultCommand
         EntityTimeDefault entityTimeDefault = null;
 
         if(!hasExecutionErrors()) {
-            var coreControl = getCoreControl();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 entityTimeDefault = coreControl.getEntityTimeDefault(entityAttribute);
@@ -108,7 +107,6 @@ public class EditEntityTimeDefaultCommand
 
     @Override
     public void fillInResult(EditEntityTimeDefaultResult result, EntityTimeDefault entityTimeDefault) {
-        var coreControl = getCoreControl();
 
         result.setEntityTimeDefault(coreControl.getEntityTimeDefaultTransfer(getUserVisit(), entityTimeDefault));
     }
@@ -120,7 +118,6 @@ public class EditEntityTimeDefaultCommand
 
     @Override
     public void doUpdate(EntityTimeDefault entityTimeDefault) {
-        var coreControl = getCoreControl();
         var entityTimeDefaultValue = coreControl.getEntityTimeDefaultValueForUpdate(entityTimeDefault);
 
         entityTimeDefaultValue.setTimeAttribute(Long.valueOf(edit.getTimeAttribute()));

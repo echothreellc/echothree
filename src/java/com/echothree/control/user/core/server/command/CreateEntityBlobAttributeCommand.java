@@ -99,7 +99,6 @@ public class CreateEntityBlobAttributeCommand
                                             LanguageLogic.getInstance().getLanguageByName(this, languageIsoName);
 
                                     if(!hasExecutionErrors()) {
-                                        var coreControl = getCoreControl();
                                         var entityBlobAttribute = coreControl.getEntityBlobAttribute(entityAttribute, entityInstance, language);
 
                                         if(entityBlobAttribute == null) {

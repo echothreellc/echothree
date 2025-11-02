@@ -264,7 +264,7 @@ public class IdentifyCommand
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.ComponentVendor.name(), SecurityRoles.Search.name())) {
             var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-            var componentVendor = getComponentControl().getComponentVendorByName(target);
+            var componentVendor = componentControl.getComponentVendorByName(target);
 
             if(componentVendor != null) {
                 var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(componentVendor.getPrimaryKey());
@@ -279,7 +279,7 @@ public class IdentifyCommand
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.EntityType.name(), SecurityRoles.Search.name())) {
             var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-            var entityTypes = getEntityTypeControl().getEntityTypesByName(target);
+            var entityTypes = entityTypeControl.getEntityTypesByName(target);
 
             entityTypes.stream().map((entityType) -> entityInstanceControl.getEntityInstanceByBasePK(entityType.getPrimaryKey())).map((entityInstance) -> EntityNamesUtils.getInstance().getEntityNames(entityInstance)).forEach((entityInstanceAndNames) -> {
                 entityInstances.add(fillInEntityInstance(entityInstanceAndNames));

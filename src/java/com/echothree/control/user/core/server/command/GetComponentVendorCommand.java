@@ -75,7 +75,7 @@ public class GetComponentVendorCommand
         var result = CoreResultFactory.getGetComponentVendorResult();
         
         if(componentVendor != null) {
-            result.setComponentVendor(getComponentControl().getComponentVendorTransfer(getUserVisit(), componentVendor));
+            result.setComponentVendor(componentControl.getComponentVendorTransfer(getUserVisit(), componentVendor));
         }
         
         return result;

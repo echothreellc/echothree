@@ -79,7 +79,6 @@ public class DeleteEntityBooleanAttributeCommand
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                            var coreControl = getCoreControl();
                             var entityBooleanAttribute = coreControl.getEntityBooleanAttributeForUpdate(entityAttribute, entityInstance);
 
                             if(entityBooleanAttribute != null) {

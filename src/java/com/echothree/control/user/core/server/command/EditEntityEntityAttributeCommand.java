@@ -73,7 +73,6 @@ public class EditEntityEntityAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
         var result = CoreResultFactory.getEditEntityEntityAttributeResult();
         var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec);
 

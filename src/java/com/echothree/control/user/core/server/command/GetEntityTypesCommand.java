@@ -77,8 +77,8 @@ public class GetEntityTypesCommand
     protected Long getTotalEntities() {
         return hasExecutionErrors() ? null :
                 componentVendor == null ?
-                getEntityTypeControl().countEntityTypes() :
-                getEntityTypeControl().countEntityTypesByComponentVendor(componentVendor);
+                entityTypeControl.countEntityTypes() :
+                entityTypeControl.countEntityTypesByComponentVendor(componentVendor);
     }
 
     @Override
@@ -87,8 +87,8 @@ public class GetEntityTypesCommand
 
         if(!hasExecutionErrors()) {
             entities = componentVendor == null ?
-                    getEntityTypeControl().getEntityTypes():
-                    getEntityTypeControl().getEntityTypesByComponentVendor(componentVendor);
+                    entityTypeControl.getEntityTypes():
+                    entityTypeControl.getEntityTypesByComponentVendor(componentVendor);
         }
 
         return entities;
@@ -102,18 +102,18 @@ public class GetEntityTypesCommand
             var userVisit = getUserVisit();
 
             if(componentVendor != null) {
-                result.setComponentVendor(getComponentControl().getComponentVendorTransfer(userVisit, componentVendor));
+                result.setComponentVendor(componentControl.getComponentVendorTransfer(userVisit, componentVendor));
 
                 if(session.hasLimit(EntityTypeFactory.class)) {
-                    result.setEntityTypeCount(getEntityTypeControl().countEntityTypesByComponentVendor(componentVendor));
+                    result.setEntityTypeCount(entityTypeControl.countEntityTypesByComponentVendor(componentVendor));
                 }
             } else {
                 if(session.hasLimit(EntityTypeFactory.class)) {
-                    result.setEntityTypeCount(getEntityTypeControl().countEntityTypes());
+                    result.setEntityTypeCount(entityTypeControl.countEntityTypes());
                 }
             }
 
-            result.setEntityTypes(getEntityTypeControl().getEntityTypeTransfers(userVisit, entities));
+            result.setEntityTypes(entityTypeControl.getEntityTypeTransfers(userVisit, entities));
         }
 
         return result;

@@ -58,7 +58,6 @@ public class CreateMimeTypeCommand
        var mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
 
         if(mimeType == null) {
-            var coreControl = getCoreControl();
             var entityAttributeTypeName = form.getEntityAttributeTypeName();
             var entityAttributeType = coreControl.getEntityAttributeTypeByName(entityAttributeTypeName);
 

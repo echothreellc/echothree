@@ -62,7 +62,6 @@ public class GetEntityAttributeGroupDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
         var result = CoreResultFactory.getGetEntityAttributeGroupDescriptionsResult();
         var entityAttributeGroupName = form.getEntityAttributeGroupName();
         var entityAttributeGroup = coreControl.getEntityAttributeGroupByName(entityAttributeGroupName);

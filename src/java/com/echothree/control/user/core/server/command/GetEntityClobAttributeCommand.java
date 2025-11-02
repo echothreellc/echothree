@@ -59,7 +59,6 @@ public class GetEntityClobAttributeCommand
         var entityInstance = entityInstanceControl.getEntityInstanceByEntityRef(entityRef);
         
         if(entityInstance != null) {
-            var coreControl = getCoreControl();
             var entityAttributeName = form.getEntityAttributeName();
             var entityAttribute = coreControl.getEntityAttributeByName(entityInstance.getEntityType(), entityAttributeName);
             

@@ -79,7 +79,6 @@ public class DeleteEntityTimeAttributeCommand
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                            var coreControl = getCoreControl();
                             var entityTimeAttribute = coreControl.getEntityTimeAttributeForUpdate(entityAttribute, entityInstance);
 
                             if(entityTimeAttribute != null) {

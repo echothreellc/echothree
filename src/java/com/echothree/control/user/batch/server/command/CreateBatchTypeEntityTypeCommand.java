@@ -57,11 +57,11 @@ public class CreateBatchTypeEntityTypeCommand
         
         if(batchType != null) {
             var componentVendorName = form.getComponentVendorName();
-            var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+            var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
             
             if(componentVendor != null) {
                 var entityTypeName = form.getEntityTypeName();
-                var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
+                var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
                 
                 if(entityType != null) {
                     var batchTypeEntityType = batchControl.getBatchTypeEntityType(batchType, entityType);

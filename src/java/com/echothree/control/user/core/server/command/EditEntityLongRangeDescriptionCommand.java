@@ -89,14 +89,13 @@ public class EditEntityLongRangeDescriptionCommand
 
     @Override
     public EntityLongRangeDescription getEntity(EditEntityLongRangeDescriptionResult result) {
-        var coreControl = getCoreControl();
         EntityLongRangeDescription entityLongRangeDescription = null;
         var componentVendorName = spec.getComponentVendorName();
-        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
             var entityTypeName = spec.getEntityTypeName();
-            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
 
             if(entityType != null) {
                 var entityAttributeName = spec.getEntityAttributeName();
@@ -148,7 +147,6 @@ public class EditEntityLongRangeDescriptionCommand
 
     @Override
     public void fillInResult(EditEntityLongRangeDescriptionResult result, EntityLongRangeDescription entityLongRangeDescription) {
-        var coreControl = getCoreControl();
 
         result.setEntityLongRangeDescription(coreControl.getEntityLongRangeDescriptionTransfer(getUserVisit(), entityLongRangeDescription, null));
     }
@@ -160,7 +158,6 @@ public class EditEntityLongRangeDescriptionCommand
 
     @Override
     public void doUpdate(EntityLongRangeDescription entityLongRangeDescription) {
-        var coreControl = getCoreControl();
         var entityLongRangeDescriptionValue = coreControl.getEntityLongRangeDescriptionValue(entityLongRangeDescription);
         
         entityLongRangeDescriptionValue.setDescription(edit.getDescription());
