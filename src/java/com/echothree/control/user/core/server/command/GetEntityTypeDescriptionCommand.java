@@ -67,11 +67,11 @@ public class GetEntityTypeDescriptionCommand
     protected BaseResult execute() {
         var result = CoreResultFactory.getGetEntityTypeDescriptionResult();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
             var entityTypeName = form.getEntityTypeName();
-            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
 
             if(entityType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
@@ -79,10 +79,10 @@ public class GetEntityTypeDescriptionCommand
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    var entityTypeDescription = getEntityTypeControl().getEntityTypeDescription(entityType, language);
+                    var entityTypeDescription = entityTypeControl.getEntityTypeDescription(entityType, language);
 
                     if(entityTypeDescription != null) {
-                        result.setEntityTypeDescription(getEntityTypeControl().getEntityTypeDescriptionTransfer(getUserVisit(), entityTypeDescription));
+                        result.setEntityTypeDescription(entityTypeControl.getEntityTypeDescriptionTransfer(getUserVisit(), entityTypeDescription));
                     } else {
                         addExecutionError(ExecutionErrors.UnknownEntityTypeDescription.name(), componentVendorName, entityTypeName, languageIsoName);
                     }

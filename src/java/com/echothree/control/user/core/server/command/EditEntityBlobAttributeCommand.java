@@ -81,7 +81,6 @@ public class EditEntityBlobAttributeCommand
         var entityInstance = entityInstanceControl.getEntityInstanceByEntityRef(entityRef);
 
         if(entityInstance != null) {
-            var coreControl = getCoreControl();
             var entityAttributeName = spec.getEntityAttributeName();
             var entityAttribute = coreControl.getEntityAttributeByName(entityInstance.getEntityType(), entityAttributeName);
 

@@ -70,7 +70,7 @@ public class GetEntityListItemsCommand
 
             if(entityAttributeTypeName.equals(EntityAttributeTypes.LISTITEM.name())
                     || entityAttributeTypeName.equals(EntityAttributeTypes.MULTIPLELISTITEM.name())) {
-                entities = getCoreControl().getEntityListItems(entityAttribute);
+                entities = coreControl.getEntityListItems(entityAttribute);
             } else {
                 var entityAttributeDetail = entityAttribute.getLastDetail();
                 var entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
@@ -87,7 +87,6 @@ public class GetEntityListItemsCommand
     
     @Override
     protected BaseResult getResult(Collection<EntityListItem> entities) {
-            var coreControl = getCoreControl();
         var result = CoreResultFactory.getGetEntityListItemsResult();
         
         if(entities != null) {

@@ -62,10 +62,10 @@ public class DeleteComponentVendorCommand
     @Override
     protected BaseResult execute() {
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = getComponentControl().getComponentVendorByNameForUpdate(componentVendorName);
+        var componentVendor = componentControl.getComponentVendorByNameForUpdate(componentVendorName);
         
         if(componentVendor != null) {
-            getComponentControl().deleteComponentVendor(componentVendor, getPartyPK());
+            componentControl.deleteComponentVendor(componentVendor, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
         }

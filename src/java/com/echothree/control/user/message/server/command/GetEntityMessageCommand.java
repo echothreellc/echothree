@@ -62,16 +62,16 @@ public class GetEntityMessageCommand
         
         if(entityInstance != null) {
             var componentVendorName = form.getComponentVendorName();
-            var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+            var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
             var userVisit = getUserVisit();
             
-            result.setComponentVendor(getComponentControl().getComponentVendorTransfer(userVisit, componentVendor));
+            result.setComponentVendor(componentControl.getComponentVendorTransfer(userVisit, componentVendor));
             
             if(componentVendor != null) {
                 var entityTypeName = form.getEntityTypeName();
-                var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
+                var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
                 
-                result.setEntityType(getEntityTypeControl().getEntityTypeTransfer(userVisit, entityType));
+                result.setEntityType(entityTypeControl.getEntityTypeTransfer(userVisit, entityType));
                 
                 if(entityType != null) {
                     var messageControl = Session.getModelController(MessageControl.class);

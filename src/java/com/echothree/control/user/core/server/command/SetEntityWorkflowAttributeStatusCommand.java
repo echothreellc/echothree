@@ -73,7 +73,7 @@ public class SetEntityWorkflowAttributeStatusCommand
         if(!hasExecutionErrors()) {
             var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttribute(this, entityInstance, form, form,
                     EntityAttributeTypes.WORKFLOW);
-            var entityAttributeWorkflow = getCoreControl().getEntityAttributeWorkflow(entityAttribute);
+            var entityAttributeWorkflow = coreControl.getEntityAttributeWorkflow(entityAttribute);
             var workflow = entityAttributeWorkflow.getWorkflow();
             var workflowStepName = form.getWorkflowStepName();
             var workflowStep = WorkflowStepLogic.getInstance().getWorkflowStepByName(this, workflow, workflowStepName);

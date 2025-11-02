@@ -63,14 +63,14 @@ public class DeleteEntityTypeCommand
     @Override
     protected BaseResult execute() {
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var entityTypeName = form.getEntityTypeName();
-            var entityType = getEntityTypeControl().getEntityTypeByNameForUpdate(componentVendor, entityTypeName);
+            var entityType = entityTypeControl.getEntityTypeByNameForUpdate(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                getEntityTypeControl().deleteEntityType(entityType, getPartyPK());
+                entityTypeControl.deleteEntityType(entityType, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), componentVendorName, entityTypeName);
             }

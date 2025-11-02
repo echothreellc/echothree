@@ -72,7 +72,6 @@ public class CreateEntityCollectionAttributeCommand
                 var entityInstanceAttribute = EntityAttributeLogic.getInstance().getEntityInstanceAttribute(this, form);
 
                 if(!hasExecutionErrors()) {
-                    var coreControl = getCoreControl();
                     var entityCollectionAttribute = coreControl.getEntityCollectionAttribute(entityAttribute, entityInstance, entityInstanceAttribute);
 
                     if(entityCollectionAttribute == null) {

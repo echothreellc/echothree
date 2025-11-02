@@ -67,7 +67,6 @@ public class DeleteEntityListItemAttributeCommand
                     EntityAttributeTypes.LISTITEM);
 
             if(!hasExecutionErrors()) {
-                var coreControl = getCoreControl();
                 var entityListItemAttribute = coreControl.getEntityListItemAttributeForUpdate(entityAttribute, entityInstance);
                 
                 if(entityListItemAttribute != null) {

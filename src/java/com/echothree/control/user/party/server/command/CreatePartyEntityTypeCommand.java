@@ -77,11 +77,11 @@ public class CreatePartyEntityTypeCommand
 
             if(partyType.getAllowUserLogins()) {
                 var componentVendorName = form.getComponentVendorName();
-                var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+                var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
 
                 if(componentVendor != null) {
                     var entityTypeName = form.getEntityTypeName();
-                    var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
+                    var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
 
                     if(entityType != null) {
                         var partyEntityTypeControl = Session.getModelController(PartyEntityTypeControl.class);

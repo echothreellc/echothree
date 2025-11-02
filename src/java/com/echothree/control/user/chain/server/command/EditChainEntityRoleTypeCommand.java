@@ -168,12 +168,12 @@ public class EditChainEntityRoleTypeCommand
             addExecutionError(ExecutionErrors.DuplicateChainEntityRoleTypeName.name(), chainTypeDetail.getChainTypeName(), chainEntityRoleTypeName);
         } else {
             var componentVendorName = edit.getComponentVendorName();
-            var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+            var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
 
             if(componentVendor != null) {
                 var entityTypeName = edit.getEntityTypeName();
                 
-                entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
+                entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
 
                 if(entityType == null) {
                     addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), componentVendorName, entityTypeName);

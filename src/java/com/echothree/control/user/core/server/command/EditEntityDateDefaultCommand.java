@@ -85,7 +85,6 @@ public class EditEntityDateDefaultCommand
         EntityDateDefault entityDateDefault = null;
 
         if(!hasExecutionErrors()) {
-            var coreControl = getCoreControl();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 entityDateDefault = coreControl.getEntityDateDefault(entityAttribute);
@@ -108,7 +107,6 @@ public class EditEntityDateDefaultCommand
 
     @Override
     public void fillInResult(EditEntityDateDefaultResult result, EntityDateDefault entityDateDefault) {
-        var coreControl = getCoreControl();
 
         result.setEntityDateDefault(coreControl.getEntityDateDefaultTransfer(getUserVisit(), entityDateDefault));
     }
@@ -120,7 +118,6 @@ public class EditEntityDateDefaultCommand
 
     @Override
     public void doUpdate(EntityDateDefault entityDateDefault) {
-        var coreControl = getCoreControl();
         var entityDateDefaultValue = coreControl.getEntityDateDefaultValueForUpdate(entityDateDefault);
 
         entityDateDefaultValue.setDateAttribute(Integer.valueOf(edit.getDateAttribute()));

@@ -72,7 +72,6 @@ public class DeleteEntityMultipleListItemAttributeCommand
                 var entityListItem = EntityAttributeLogic.getInstance().getEntityListItem(this, entityAttribute, form);
 
                 if(!hasExecutionErrors()) {
-                    var coreControl = getCoreControl();
                     var entityListItemAttribute = coreControl.getEntityMultipleListItemAttributeForUpdate(entityAttribute, entityInstance, entityListItem);
 
                     if(entityListItemAttribute != null) {

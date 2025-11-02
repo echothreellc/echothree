@@ -73,7 +73,7 @@ public class DeleteEntityWorkflowAttributeCommand
             if(!hasExecutionErrors()) {
                 if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
                     var workflowControl = Session.getModelController(WorkflowControl.class);
-                    var entityAttributeWorkflow = getCoreControl().getEntityAttributeWorkflow(entityAttribute);
+                    var entityAttributeWorkflow = coreControl.getEntityAttributeWorkflow(entityAttribute);
                     var workflow = entityAttributeWorkflow.getWorkflow();
 
                     if(workflowControl.countWorkflowEntityStatusesByWorkflowAndEntityInstance(workflow, entityInstance) == 0) {

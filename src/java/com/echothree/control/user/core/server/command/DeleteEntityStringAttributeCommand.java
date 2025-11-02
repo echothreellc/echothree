@@ -93,7 +93,6 @@ public class DeleteEntityStringAttributeCommand
                                         LanguageLogic.getInstance().getLanguageByName(this, languageIsoName);
 
                                 if(!hasExecutionErrors()) {
-                                    var coreControl = getCoreControl();
                                     var entityStringAttribute = coreControl.getEntityStringAttributeForUpdate(entityAttribute, entityInstance, language);
 
                                     if(entityStringAttribute != null) {

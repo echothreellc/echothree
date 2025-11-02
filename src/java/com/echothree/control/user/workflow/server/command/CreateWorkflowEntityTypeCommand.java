@@ -71,11 +71,11 @@ public class CreateWorkflowEntityTypeCommand
         
         if(workflow != null) {
             var componentVendorName = form.getComponentVendorName();
-            var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+            var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
             
             if(componentVendor != null) {
                 var entityTypeName = form.getEntityTypeName();
-                var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
+                var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
                 
                 if(entityType != null) {
                     var workflowEntityType = workflowControl.getWorkflowEntityType(workflow, entityType);

@@ -77,7 +77,7 @@ public class EditCommandDescriptionCommand
         var commandControl = Session.getModelController(CommandControl.class);
         CommandDescription commandDescription = null;
         var componentVendorName = spec.getComponentVendorName();
-        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
             var commandName = spec.getCommandName();

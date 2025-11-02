@@ -85,7 +85,6 @@ public class EditEntityAttributeGroupCommand
     
     @Override
     public EntityAttributeGroup getEntity(EditEntityAttributeGroupResult result) {
-        var coreControl = getCoreControl();
         EntityAttributeGroup entityAttributeGroup;
         var entityAttributeGroupName = spec.getEntityAttributeGroupName();
 
@@ -109,14 +108,12 @@ public class EditEntityAttributeGroupCommand
     
     @Override
     public void fillInResult(EditEntityAttributeGroupResult result, EntityAttributeGroup entityAttributeGroup) {
-        var coreControl = getCoreControl();
         
         result.setEntityAttributeGroup(coreControl.getEntityAttributeGroupTransfer(getUserVisit(), entityAttributeGroup, null));
     }
     
     @Override
     public void doLock(EntityAttributeGroupEdit edit, EntityAttributeGroup entityAttributeGroup) {
-        var coreControl = getCoreControl();
         var entityAttributeGroupDescription = coreControl.getEntityAttributeGroupDescription(entityAttributeGroup, getPreferredLanguage());
         var entityAttributeGroupDetail = entityAttributeGroup.getLastDetail();
 
@@ -131,7 +128,6 @@ public class EditEntityAttributeGroupCommand
         
     @Override
     public void canUpdate(EntityAttributeGroup entityAttributeGroup) {
-        var coreControl = getCoreControl();
         var entityAttributeGroupName = edit.getEntityAttributeGroupName();
         var duplicateEntityAttributeGroup = coreControl.getEntityAttributeGroupByName(entityAttributeGroupName);
 
@@ -142,7 +138,6 @@ public class EditEntityAttributeGroupCommand
     
     @Override
     public void doUpdate(EntityAttributeGroup entityAttributeGroup) {
-        var coreControl = getCoreControl();
         var partyPK = getPartyPK();
         var entityAttributeGroupDetailValue = coreControl.getEntityAttributeGroupDetailValueForUpdate(entityAttributeGroup);
         var entityAttributeGroupDescription = coreControl.getEntityAttributeGroupDescriptionForUpdate(entityAttributeGroup, getPreferredLanguage());

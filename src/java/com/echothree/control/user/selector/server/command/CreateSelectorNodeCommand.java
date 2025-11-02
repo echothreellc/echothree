@@ -238,8 +238,6 @@ public class CreateSelectorNodeCommand
     
     private abstract class CoreSelectorNodeType
         extends BaseSelectorNodeType {
-        protected CoreControl coreControl = getCoreControl();
-
         protected CoreSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
             super(selectorControl, selectorNodeTypeName);
         }
@@ -373,11 +371,11 @@ public class CreateSelectorNodeCommand
             
             if(!hasExecutionErrors()) {
                 var componentVendorName = form.getComponentVendorName();
-                var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+                var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
                 
                 if(componentVendor != null) {
                     var entityTypeName = form.getEntityTypeName();
-                    var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
+                    var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
                     
                     if(entityType != null) {
                         var entityAttributeName = form.getEntityAttributeName();
@@ -411,8 +409,8 @@ public class CreateSelectorNodeCommand
     private class ResponsibilityNodeType
         extends EmployeeSelectorNodeType {
         private ResponsibilityType responsiblityType = null;
-        
-        public ResponsibilityNodeType(SelectorControl selectorControl) {
+
+        private ResponsibilityNodeType(SelectorControl selectorControl) {
             super(selectorControl, SelectorNodeTypes.RESPONSIBILITY_TYPE.name());
             
             if(!hasExecutionErrors()) {
@@ -459,8 +457,8 @@ public class CreateSelectorNodeCommand
     private class TrainingClassNodeType
         extends TrainingSelectorNodeType {
         private TrainingClass trainingClass = null;
-        
-        public TrainingClassNodeType(SelectorControl selectorControl) {
+
+        private TrainingClassNodeType(SelectorControl selectorControl) {
             super(selectorControl, SelectorNodeTypes.TRAINING_CLASS.name());
             
             if(!hasExecutionErrors()) {
@@ -483,8 +481,8 @@ public class CreateSelectorNodeCommand
     private class WorkflowStepNodeType
         extends WorkSelectorNodeType {
         private WorkflowStep workflowStep = null;
-        
-        public WorkflowStepNodeType(SelectorControl selectorControl) {
+
+        private WorkflowStepNodeType(SelectorControl selectorControl) {
             super(selectorControl, SelectorNodeTypes.TRAINING_CLASS.name());
             
             if(!hasExecutionErrors()) {
@@ -514,8 +512,8 @@ public class CreateSelectorNodeCommand
     private class ItemCategoryNodeType
         extends ItemSelectorNodeType {
         private ItemCategory itemCategory = null;
-        
-        public ItemCategoryNodeType(SelectorControl selectorControl) {
+
+        private ItemCategoryNodeType(SelectorControl selectorControl) {
             super(selectorControl, SelectorNodeTypes.ITEM_CATEGORY.name());
             
             if(!hasExecutionErrors()) {
@@ -540,8 +538,8 @@ public class CreateSelectorNodeCommand
     private class ItemAccountingCategoryNodeType
         extends AccountingSelectorNodeType {
         private ItemAccountingCategory itemAccountingCategory = null;
-        
-        public ItemAccountingCategoryNodeType(SelectorControl selectorControl) {
+
+        private ItemAccountingCategoryNodeType(SelectorControl selectorControl) {
             super(selectorControl, SelectorNodeTypes.ITEM_ACCOUNTING_CATEGORY.name());
             
             if(!hasExecutionErrors()) {
@@ -567,7 +565,7 @@ public class CreateSelectorNodeCommand
         extends VendorSelectorNodeType {
         private ItemPurchasingCategory itemPurchasingCategory = null;
         
-        public ItemPurchasingCategoryNodeType(SelectorControl selectorControl) {
+        private ItemPurchasingCategoryNodeType(SelectorControl selectorControl) {
             super(selectorControl, SelectorNodeTypes.ITEM_PURCHASING_CATEGORY.name());
             
             if(!hasExecutionErrors()) {
@@ -592,8 +590,8 @@ public class CreateSelectorNodeCommand
     private class PaymentMethodNodeType
         extends PaymentMethodSelectorNodeType {
         private PaymentMethod paymentMethod = null;
-        
-        public PaymentMethodNodeType(SelectorControl selectorControl) {
+
+        private PaymentMethodNodeType(SelectorControl selectorControl) {
             super(selectorControl, SelectorNodeTypes.PAYMENT_METHOD.name());
             
             if(!hasExecutionErrors()) {
@@ -616,8 +614,8 @@ public class CreateSelectorNodeCommand
     private class PaymentProcessorNodeType
         extends PaymentProcessorSelectorNodeType {
         private PaymentProcessor paymentProcessor = null;
-        
-        public PaymentProcessorNodeType(SelectorControl selectorControl) {
+
+        private PaymentProcessorNodeType(SelectorControl selectorControl) {
             super(selectorControl, SelectorNodeTypes.PAYMENT_PROCESSOR.name());
             
             if(!hasExecutionErrors()) {
@@ -640,8 +638,8 @@ public class CreateSelectorNodeCommand
     private class GeoCodeNodeType
         extends GeoSelectorNodeType {
         private GeoCode geoCode = null;
-        
-        public GeoCodeNodeType(SelectorControl selectorControl) {
+
+        private GeoCodeNodeType(SelectorControl selectorControl) {
             super(selectorControl, SelectorNodeTypes.PAYMENT_PROCESSOR.name());
             
             if(!hasExecutionErrors()) {

@@ -72,7 +72,6 @@ public class DeleteEntityCollectionAttributeCommand
                 var entityInstanceAttribute = EntityAttributeLogic.getInstance().getEntityInstanceAttribute(this, form);
 
                 if(!hasExecutionErrors()) {
-                    var coreControl = getCoreControl();
                     var entityCollectionAttribute = coreControl.getEntityCollectionAttributeForUpdate(entityAttribute, entityInstance, entityInstanceAttribute);
                     
                     if(entityCollectionAttribute != null) {

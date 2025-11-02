@@ -115,7 +115,7 @@ public class GetTagScopeEntityTypesCommand
             if(tagScope != null) {
                 result.setTagScope(tagControl.getTagScopeTransfer(userVisit, tagScope));
             } else {
-                result.setEntityType(getEntityTypeControl().getEntityTypeTransfer(userVisit, entityType));
+                result.setEntityType(entityTypeControl.getEntityTypeTransfer(userVisit, entityType));
             }
 
             result.setTagScopeEntityTypes(tagControl.getTagScopeEntityTypeTransfers(userVisit, entities));

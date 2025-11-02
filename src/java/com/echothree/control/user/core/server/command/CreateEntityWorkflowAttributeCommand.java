@@ -75,7 +75,7 @@ public class CreateEntityWorkflowAttributeCommand
 
             if(!hasExecutionErrors()) {
                 var workflowControl = Session.getModelController(WorkflowControl.class);
-                var entityAttributeWorkflow = getCoreControl().getEntityAttributeWorkflow(entityAttribute);
+                var entityAttributeWorkflow = coreControl.getEntityAttributeWorkflow(entityAttribute);
                 var workflow = entityAttributeWorkflow.getWorkflow();
 
                 if(workflowControl.countWorkflowEntityStatusesByWorkflowAndEntityInstance(workflow, entityInstance) == 0) {

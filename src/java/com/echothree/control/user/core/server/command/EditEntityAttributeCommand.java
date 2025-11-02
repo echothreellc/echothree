@@ -130,7 +130,6 @@ public class EditEntityAttributeCommand
 
     @Override
     public void fillInResult(EditEntityAttributeResult result, EntityAttribute entityAttribute) {
-        var coreControl = getCoreControl();
 
         result.setEntityAttribute(coreControl.getEntityAttributeTransfer(getUserVisit(), entityAttribute, null));
     }
@@ -140,7 +139,6 @@ public class EditEntityAttributeCommand
     
     @Override
     public void doLock(EntityAttributeEdit edit, EntityAttribute entityAttribute) {
-        var coreControl = getCoreControl();
         var entityAttributeDescription = coreControl.getEntityAttributeDescription(entityAttribute, getPreferredLanguage());
         var entityAttributeDetail = entityAttribute.getLastDetail();
         var entityAttributeTypeName = entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
@@ -227,7 +225,6 @@ public class EditEntityAttributeCommand
 
     @Override
     public void canUpdate(EntityAttribute entityAttribute) {
-        var coreControl = getCoreControl();
         var entityAttributeName = edit.getEntityAttributeName();
         var duplicateEntityAttribute = coreControl.getEntityAttributeByName(entityAttribute.getLastDetail().getEntityType(),
                 entityAttributeName);
@@ -272,7 +269,6 @@ public class EditEntityAttributeCommand
 
     @Override
     public void doUpdate(EntityAttribute entityAttribute) {
-        var coreControl = getCoreControl();
         var partyPK = getPartyPK();
         var entityAttributeDetailValue = coreControl.getEntityAttributeDetailValueForUpdate(entityAttribute);
         var entityAttributeDescription = coreControl.getEntityAttributeDescriptionForUpdate(entityAttribute, getPreferredLanguage());

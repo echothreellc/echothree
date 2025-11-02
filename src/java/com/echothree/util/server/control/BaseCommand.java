@@ -64,6 +64,7 @@ import com.echothree.util.server.persistence.ThreadUtils;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Future;
 import javax.ejb.AsyncResult;
+import javax.inject.Inject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -90,11 +91,27 @@ public abstract class BaseCommand
     private String componentVendorName;
     private String commandName;
     
-    private UserControl userControl;
-    
     private boolean checkIdentityVerifiedTime = true;
     private boolean updateLastCommandTime = true;
     private boolean logCommand = true;
+
+    @Inject
+    protected UserControl userControl;
+
+    @Inject
+    protected CoreControl coreControl;
+
+    @Inject
+    protected ComponentControl componentControl;
+
+    @Inject
+    protected EntityTypeControl entityTypeControl;
+
+    @Inject
+    protected EventControl eventControl;
+
+    @Inject
+    protected CommandControl commandControl;
 
     protected BaseCommand(CommandSecurityDefinition commandSecurityDefinition) {
         if(ControlDebugFlags.LogBaseCommands) {
@@ -158,7 +175,7 @@ public abstract class BaseCommand
     
     public Party getParty() {
         if(party == null) {
-            party = getUserControl().getPartyFromUserVisitPK(userVisitPK);
+            party = userControl.getPartyFromUserVisitPK(userVisitPK);
         }
         
         return party;
@@ -222,43 +239,39 @@ public abstract class BaseCommand
     }
     
     public UserControl getUserControl() {
-        if(userControl == null) {
-            userControl = Session.getModelController(UserControl.class);
-        }
-        
         return userControl;
     }
     
     public Language getPreferredLanguage() {
-        return getUserControl().getPreferredLanguageFromUserVisit(getUserVisit());
+        return userControl.getPreferredLanguageFromUserVisit(getUserVisit());
     }
     
     public Language getPreferredLanguage(Party party) {
-        return getUserControl().getPreferredLanguageFromParty(party);
+        return userControl.getPreferredLanguageFromParty(party);
     }
     
     public Currency getPreferredCurrency() {
-        return getUserControl().getPreferredCurrencyFromUserVisit(getUserVisit());
+        return userControl.getPreferredCurrencyFromUserVisit(getUserVisit());
     }
     
     public Currency getPreferredCurrency(Party party) {
-        return getUserControl().getPreferredCurrencyFromParty(party);
+        return userControl.getPreferredCurrencyFromParty(party);
     }
     
     public TimeZone getPreferredTimeZone() {
-        return getUserControl().getPreferredTimeZoneFromUserVisit(getUserVisit());
+        return userControl.getPreferredTimeZoneFromUserVisit(getUserVisit());
     }
     
     public TimeZone getPreferredTimeZone(Party party) {
-        return getUserControl().getPreferredTimeZoneFromParty(party);
+        return userControl.getPreferredTimeZoneFromParty(party);
     }
     
     public DateTimeFormat getPreferredDateTimeFormat() {
-        return getUserControl().getPreferredDateTimeFormatFromUserVisit(getUserVisit());
+        return userControl.getPreferredDateTimeFormatFromUserVisit(getUserVisit());
     }
     
     public DateTimeFormat getPreferredDateTimeFormat(Party party) {
-        return getUserControl().getPreferredDateTimeFormatFromParty(party);
+        return userControl.getPreferredDateTimeFormatFromParty(party);
     }
     
     public boolean getCheckIdentityVerifiedTime() {
@@ -287,7 +300,7 @@ public abstract class BaseCommand
 
     private void checkUserVisit() {
         if(getUserVisit() != null) {
-            userSession = getUserControl().getUserSessionByUserVisit(userVisit);
+            userSession = userControl.getUserSessionByUserVisit(userVisit);
 
             if(userSession != null && checkIdentityVerifiedTime) {
                 var identityVerifiedTime = userSession.getIdentityVerifiedTime();
@@ -545,11 +558,9 @@ public abstract class BaseCommand
 
                     // TODO: Check PartyTypeAuditPolicy to see if the command should be logged
                     if(logCommand) {
-                        var componentVendor = getComponentControl().getComponentVendorByName(getComponentVendorName());
+                        var componentVendor = componentControl.getComponentVendorByName(getComponentVendorName());
 
                         if(componentVendor != null) {
-                            var commandControl = Session.getModelController(CommandControl.class);
-
                             getCommandName();
                             getParty(); // TODO: should only use if UserSession.IdentityVerifiedTime != null
 
@@ -567,7 +578,7 @@ public abstract class BaseCommand
                             }
 
                             if(command != null) {
-                                var userVisitStatus = getUserControl().getUserVisitStatusForUpdate(userVisit);
+                                var userVisitStatus = userControl.getUserVisitStatusForUpdate(userVisit);
 
                                 if(userVisitStatus != null) {
                                     Integer userVisitCommandSequence = userVisitStatus.getUserVisitCommandSequence() + 1;
@@ -577,7 +588,7 @@ public abstract class BaseCommand
 
                                     userVisitStatus.setUserVisitCommandSequence(userVisitCommandSequence);
 
-                                    getUserControl().createUserVisitCommand(userVisit, userVisitCommandSequence, party, command, session.START_TIME_LONG,
+                                    userControl.createUserVisitCommand(userVisit, userVisitCommandSequence, party, command, session.START_TIME_LONG,
                                             System.currentTimeMillis(), hadSecurityErrors, hadValidationErrors, hasExecutionErrors);
                                 } else {
                                     getLog().error("Command not logged, unknown userVisitStatus for " + userVisit.getPrimaryKey());
@@ -647,49 +658,17 @@ public abstract class BaseCommand
     //   Event Utilities
     // --------------------------------------------------------------------------------
 
-    private CoreControl coreControl = null;
-    private ComponentControl componentControl = null;
-    private EntityTypeControl entityTypeControl = null;
-
-    protected CoreControl getCoreControl() {
-        if(coreControl == null) {
-            coreControl = Session.getModelController(CoreControl.class);
-        }
-
-        return coreControl;
-    }
-
-    protected ComponentControl getComponentControl() {
-        if(componentControl == null) {
-            componentControl = Session.getModelController(ComponentControl.class);
-        }
-
-        return componentControl;
-    }
-
-    protected EntityTypeControl getEntityTypeControl() {
-        if(entityTypeControl == null) {
-            entityTypeControl = Session.getModelController(EntityTypeControl.class);
-        }
-
-        return entityTypeControl;
-    }
-
-    protected EntityInstance getEntityInstanceByBasePK(BasePK pk) {
-        return getCoreControl().getEntityInstanceByBasePK(pk);
-    }
-    
     protected Event sendEvent(final BasePK basePK, final EventTypes eventType, final BasePK relatedBasePK,
             final EventTypes relatedEventType, final BasePK createdByBasePK) {
-        var entityInstance = getEntityInstanceByBasePK(basePK);
-        var relatedEntityInstance = relatedBasePK == null ? null : getEntityInstanceByBasePK(relatedBasePK);
+        var entityInstance = coreControl.getEntityInstanceByBasePK(basePK);
+        var relatedEntityInstance = relatedBasePK == null ? null : coreControl.getEntityInstanceByBasePK(relatedBasePK);
         
         return sendEvent(entityInstance, eventType, relatedEntityInstance, relatedEventType, createdByBasePK);
     }
     
     protected Event sendEvent(final EntityInstance entityInstance, final EventTypes eventType, final BasePK relatedBasePK,
             final EventTypes relatedEventType, final BasePK createdByBasePK) {
-        var relatedEntityInstance = relatedBasePK == null ? null : getEntityInstanceByBasePK(relatedBasePK);
+        var relatedEntityInstance = relatedBasePK == null ? null : coreControl.getEntityInstanceByBasePK(relatedBasePK);
 
         return sendEvent(entityInstance, eventType, relatedEntityInstance, relatedEventType, createdByBasePK);
     }
@@ -699,8 +678,6 @@ public abstract class BaseCommand
         Event event = null;
         
         if(createdByBasePK != null) {
-            var eventControl = Session.getModelController(EventControl.class);
-
             event = eventControl.sendEvent(entityInstance, eventType, relatedEntityInstance, relatedEventType,
                 createdByBasePK);
         }

@@ -64,12 +64,12 @@ public class GetEntityAttributeGroupsCommand
 
     @Override
     protected Long getTotalEntities() {
-        return getCoreControl().countEntityAttributeGroups();
+        return coreControl.countEntityAttributeGroups();
     }
 
     @Override
     protected Collection<EntityAttributeGroup> getEntities() {
-        return getCoreControl().getEntityAttributeGroups();
+        return coreControl.getEntityAttributeGroups();
     }
 
     @Override
@@ -77,7 +77,7 @@ public class GetEntityAttributeGroupsCommand
         var result = CoreResultFactory.getGetEntityAttributeGroupsResult();
 
         if(entities != null) {
-            result.setEntityAttributeGroups(getCoreControl().getEntityAttributeGroupTransfers(getUserVisit(), entities, null));
+            result.setEntityAttributeGroups(coreControl.getEntityAttributeGroupTransfers(getUserVisit(), entities, null));
         }
 
         return result;

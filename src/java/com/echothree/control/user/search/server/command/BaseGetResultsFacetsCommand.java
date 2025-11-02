@@ -62,7 +62,6 @@ public abstract class BaseGetResultsFacetsCommand<F extends BaseGetResultsFacets
             var userVisitSearch = searchControl.getUserVisitSearch(getUserVisit(), searchType);
 
             if(userVisitSearch != null) {
-                var coreControl = getCoreControl();
                 var entityAttributes = coreControl.getEntityAttributesByEntityType(entityType);
                 var userVisitSearchFacets = new LinkedHashMap<String, UserVisitSearchFacetTransfer>();
 

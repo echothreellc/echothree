@@ -25,10 +25,10 @@ import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
 import java.util.List;
 import java.util.concurrent.Future;
+import javax.inject.Inject;
 
 public abstract class BaseSimpleCommand<F extends BaseForm>
         extends BaseCommand {
@@ -36,6 +36,9 @@ public abstract class BaseSimpleCommand<F extends BaseForm>
     protected F form;
     private List<FieldDefinition> formFieldDefinitions;
     boolean allowLimits;
+
+    @Inject
+    protected MimeTypeControl mimeTypeControl;
 
     private void init(F form, List<FieldDefinition> formFieldDefinitions, boolean allowLimits) {
         this.form = form;
@@ -104,7 +107,6 @@ public abstract class BaseSimpleCommand<F extends BaseForm>
         var preferredClobMimeTypeName = form.getPreferredClobMimeTypeName();
         
         if(preferredClobMimeTypeName != null) {
-            var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
             var preferredClobMimeType = mimeTypeControl.getMimeTypeByName(preferredClobMimeTypeName);
 
             if(preferredClobMimeType == null) {

@@ -63,7 +63,6 @@ public class CreateEntityAttributeTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
         var entityAttributeTypeName = form.getEntityAttributeTypeName();
         var entityAttributeType = coreControl.getEntityAttributeTypeByName(entityAttributeTypeName);
         

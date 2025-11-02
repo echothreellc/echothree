@@ -79,7 +79,6 @@ public class DeleteEntityDateAttributeCommand
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                            var coreControl = getCoreControl();
                             var entityDateAttribute = coreControl.getEntityDateAttributeForUpdate(entityAttribute, entityInstance);
 
                             if(entityDateAttribute != null) {

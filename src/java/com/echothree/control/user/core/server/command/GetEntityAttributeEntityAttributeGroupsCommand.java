@@ -94,7 +94,6 @@ public class GetEntityAttributeEntityAttributeGroupsCommand
         Long totalEntities = null;
 
         if(!hasExecutionErrors()) {
-            var coreControl = getCoreControl();
 
             if(entityAttribute != null) {
                 totalEntities = coreControl.countEntityAttributeEntityAttributeGroupsByEntityAttribute(entityAttribute);
@@ -111,7 +110,6 @@ public class GetEntityAttributeEntityAttributeGroupsCommand
         Collection<EntityAttributeEntityAttributeGroup> result = null;
 
         if(!hasExecutionErrors()) {
-            var coreControl = getCoreControl();
 
             if(entityAttribute != null) {
                 result = coreControl.getEntityAttributeEntityAttributeGroupsByEntityAttribute(entityAttribute);
@@ -128,7 +126,6 @@ public class GetEntityAttributeEntityAttributeGroupsCommand
         var result = CoreResultFactory.getGetEntityAttributeEntityAttributeGroupsResult();
 
         if(entities != null) {
-            var coreControl = getCoreControl();
             var userVisit = getUserVisit();
 
             if(entityAttributeGroup == null) {

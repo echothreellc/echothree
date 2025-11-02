@@ -71,7 +71,6 @@ public class EditEntityListItemDefaultCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
         var result = CoreResultFactory.getEditEntityListItemDefaultResult();
         var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByUniversalSpec(this, spec);
 

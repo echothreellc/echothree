@@ -59,7 +59,6 @@ public class GetEntityAttributeTypeCommand
     
     @Override
     protected BaseResult getResult(EntityAttributeType entityAttributeType) {
-        var coreControl = getCoreControl();
         var result = CoreResultFactory.getGetEntityAttributeTypeResult();
 
         if(entityAttributeType != null) {
