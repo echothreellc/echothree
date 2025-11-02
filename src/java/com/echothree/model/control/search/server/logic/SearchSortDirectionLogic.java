@@ -21,7 +21,6 @@ import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
-import com.echothree.model.control.core.server.logic.TextLogic;
 import com.echothree.model.control.search.common.exception.DuplicateSearchSortDirectionNameException;
 import com.echothree.model.control.search.common.exception.UnknownDefaultSearchSortDirectionException;
 import com.echothree.model.control.search.common.exception.UnknownSearchSortDirectionNameException;

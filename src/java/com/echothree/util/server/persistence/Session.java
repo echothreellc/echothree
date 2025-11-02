@@ -16,7 +16,6 @@
 
 package com.echothree.util.server.persistence;
 
-import com.echothree.model.control.core.server.logic.TextLogic;
 import com.echothree.model.data.core.common.pk.EntityInstancePK;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
