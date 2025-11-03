@@ -33,13 +33,16 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class SecurityRoleGroupLogic
         extends BaseLogic {
+
+    @Inject
+    protected SecurityControl securityControl;
 
     protected SecurityRoleGroupLogic() {
         super();
@@ -52,7 +55,6 @@ public class SecurityRoleGroupLogic
     public SecurityRoleGroup createSecurityRoleGroup(final ExecutionErrorAccumulator eea, final String securityRoleGroupName,
             final SecurityRoleGroup parentSecurityRoleGroup, final Boolean isDefault, final Integer sortOrder,
             final Language language, final String description, final BasePK createdBy) {
-        var securityControl = Session.getModelController(SecurityControl.class);
         var securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
 
         if(securityRoleGroup == null) {
@@ -71,7 +73,6 @@ public class SecurityRoleGroupLogic
 
     public SecurityRoleGroup getSecurityRoleGroupByName(final Class<? extends BaseException> unknownException, final ExecutionErrors unknownExecutionError,
             final ExecutionErrorAccumulator eea, final String securityRoleGroupName, final EntityPermission entityPermission) {
-        var securityControl = Session.getModelController(SecurityControl.class);
         var securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName, entityPermission);
 
         if(securityRoleGroup == null) {
@@ -98,7 +99,6 @@ public class SecurityRoleGroupLogic
     public SecurityRoleGroup getSecurityRoleGroupByUniversalSpec(final ExecutionErrorAccumulator eea,
             final SecurityRoleGroupUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         SecurityRoleGroup securityRoleGroup = null;
-        var securityControl = Session.getModelController(SecurityControl.class);
         var securityRoleGroupName = universalSpec.getSecurityRoleGroupName();
         var parameterCount = (securityRoleGroupName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
@@ -146,8 +146,6 @@ public class SecurityRoleGroupLogic
 
     public void deleteSecurityRoleGroup(final ExecutionErrorAccumulator eea, final SecurityRoleGroup securityRoleGroup,
             final BasePK deletedBy) {
-        var securityControl = Session.getModelController(SecurityControl.class);
-
         securityControl.deleteSecurityRoleGroup(securityRoleGroup, deletedBy);
     }
 

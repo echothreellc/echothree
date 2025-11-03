@@ -25,6 +25,7 @@ import com.echothree.model.control.core.server.control.ComponentControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.core.server.control.EventControl;
+import com.echothree.model.control.license.server.logic.LicenseCheckLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.user.server.control.UserControl;
@@ -112,6 +113,12 @@ public abstract class BaseCommand
 
     @Inject
     protected CommandControl commandControl;
+
+    @Inject
+    protected LicenseCheckLogic licenseCheckLogic;
+
+    @Inject
+    protected SecurityRoleLogic securityRoleLogic;
 
     protected BaseCommand(CommandSecurityDefinition commandSecurityDefinition) {
         if(ControlDebugFlags.LogBaseCommands) {
@@ -345,8 +352,6 @@ public abstract class BaseCommand
                         if(securityRoleDefinitions == null) {
                             foundPartySecurityRole = true;
                         } else {
-                            var securityRoleLogic = SecurityRoleLogic.getInstance();
-
                             for(var securityRoleDefinition : securityRoleDefinitions) {
                                 var securityRoleGroupName = securityRoleDefinition.getSecurityRoleGroupName();
                                 var securityRoleName = securityRoleDefinition.getSecurityRoleName();
@@ -515,7 +520,7 @@ public abstract class BaseCommand
         try {
             BaseResult baseResult = null;
 
-//            if(LicenseCheckLogic.getInstance().permitExecution(session)) {
+//            if(licenseCheckLogic.permitExecution(session)) {
                 checkUserVisit();
                 securityResult = security();
 
