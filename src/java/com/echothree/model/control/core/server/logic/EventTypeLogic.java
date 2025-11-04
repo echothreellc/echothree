@@ -22,13 +22,16 @@ import com.echothree.model.data.core.server.entity.EventType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class EventTypeLogic
         extends BaseLogic {
+
+    @Inject
+    EventControl eventControl;
 
     protected EventTypeLogic() {
         super();
@@ -39,7 +42,6 @@ public class EventTypeLogic
     }
 
     public EventType getEventTypeByName(final ExecutionErrorAccumulator eea, final String eventTypeName) {
-        var eventControl = Session.getModelController(EventControl.class);
         var eventType = eventControl.getEventTypeByName(eventTypeName);
 
         if(eventType == null) {
