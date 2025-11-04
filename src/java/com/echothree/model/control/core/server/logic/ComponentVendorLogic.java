@@ -27,14 +27,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
-import com.google.errorprone.annotations.InlineMe;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class ComponentVendorLogic
         extends BaseLogic {
+
+    @Inject
+    ComponentControl componentControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected ComponentVendorLogic() {
         super();
@@ -46,7 +51,6 @@ public class ComponentVendorLogic
 
     public ComponentVendor getComponentVendorByName(final ExecutionErrorAccumulator eea, final String componentVendorName,
             final EntityPermission entityPermission) {
-        var componentControl = Session.getModelController(ComponentControl.class);
         var componentVendor = componentControl.getComponentVendorByName(componentVendorName, entityPermission);
 
         if(componentVendor == null) {
@@ -68,26 +72,23 @@ public class ComponentVendorLogic
             final ComponentVendorUniversalSpec universalSpec, final EntityPermission entityPermission) {
         ComponentVendor componentVendor = null;
         var componentVendorName = universalSpec.getComponentVendorName();
-        var parameterCount = (componentVendorName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (componentVendorName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 1:
+            case 1 -> {
                 if(componentVendorName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ComponentVendor.name());
 
                     if(!eea.hasExecutionErrors()) {
-                        var componentControl = Session.getModelController(ComponentControl.class);
-
                         componentVendor = componentControl.getComponentVendorByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
                     componentVendor = getComponentVendorByName(eea, componentVendorName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return componentVendor;
