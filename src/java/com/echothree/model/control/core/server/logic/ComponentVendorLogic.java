@@ -36,10 +36,10 @@ public class ComponentVendorLogic
         extends BaseLogic {
 
     @Inject
-    ComponentControl componentControl;
+    protected ComponentControl componentControl;
 
     @Inject
-    EntityInstanceLogic entityInstanceLogic;
+    protected EntityInstanceLogic entityInstanceLogic;
 
     protected ComponentVendorLogic() {
         super();
