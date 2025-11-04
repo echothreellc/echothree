@@ -31,7 +31,6 @@ import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.control.search.server.control.SearchControl;
 import static com.echothree.model.control.search.server.control.SearchControl.ENI_ENTITYUNIQUEID_COLUMN_INDEX;
 import com.echothree.model.control.tag.server.control.TagControl;
-import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.core.common.pk.EntityTypePK;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -57,10 +56,38 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class EntityTypeControl
         extends BaseCoreControl {
+
+    @Inject
+    protected AccountingControl accountingControl;
+
+    @Inject
+    protected BatchControl batchControl;
+
+    @Inject
+    protected CommentControl commentControl;
+
+    @Inject
+    protected CoreControl coreControl;
+
+    @Inject
+    protected EntityAliasControl entityAliasControl;
+
+    @Inject
+    protected IndexControl indexControl;
+
+    @Inject
+    protected MessageControl messageControl;
+
+    @Inject
+    protected RatingControl ratingControl;
+
+    @Inject
+    protected TagControl tagControl;
 
     /** Creates a new instance of EntityTypeControl */
     protected EntityTypeControl() {
@@ -70,16 +97,22 @@ public class EntityTypeControl
     // --------------------------------------------------------------------------------
     //   Entity Types
     // --------------------------------------------------------------------------------
+    
+    @Inject
+    protected EntityTypeFactory entityTypeFactory;
+    
+    @Inject
+    protected EntityTypeDetailFactory entityTypeDetailFactory;
 
     public EntityType createEntityType(ComponentVendor componentVendor, String entityTypeName, Boolean keepAllHistory,
             Long lockTimeout, Boolean isExtensible, Integer sortOrder, BasePK createdBy) {
-        var entityType = EntityTypeFactory.getInstance().create();
-        var entityTypeDetail = EntityTypeDetailFactory.getInstance().create(entityType, componentVendor,
+        var entityType = entityTypeFactory.create();
+        var entityTypeDetail = entityTypeDetailFactory.create(entityType, componentVendor,
                 entityTypeName, keepAllHistory, lockTimeout, isExtensible, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
         // Convert to R/W
-        entityType = EntityTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, entityType.getPrimaryKey());
+        entityType = entityTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE, entityType.getPrimaryKey());
         entityType.setActiveDetail(entityTypeDetail);
         entityType.setLastDetail(entityTypeDetail);
         entityType.store();
@@ -93,7 +126,7 @@ public class EntityTypeControl
     public EntityType getEntityTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new EntityTypePK(entityInstance.getEntityUniqueId());
 
-        return EntityTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return entityTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public EntityType getEntityTypeByEntityInstance(EntityInstance entityInstance) {
@@ -138,13 +171,13 @@ public class EntityTypeControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityTypeFactory.getInstance().prepareStatement(query);
+            var ps = entityTypeFactory.prepareStatement(query);
 
             ps.setLong(1, componentVendor.getPrimaryKey().getEntityId());
             ps.setString(2, entityTypeName);
 
-            entityType = EntityTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
+            entityType = entityTypeFactory.getEntityFromQuery(entityPermission, ps);
+        } catch(SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
 
@@ -206,12 +239,12 @@ public class EntityTypeControl
                         + "FOR UPDATE";
             }
 
-            var ps = EntityTypeFactory.getInstance().prepareStatement(query);
+            var ps = entityTypeFactory.prepareStatement(query);
 
             ps.setLong(1, componentVendor.getPrimaryKey().getEntityId());
 
-            entityTypes = EntityTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
+            entityTypes = entityTypeFactory.getEntitiesFromQuery(entityPermission, ps);
+        } catch(SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
 
@@ -247,12 +280,12 @@ public class EntityTypeControl
                         + "FOR UPDATE";
             }
 
-            var ps = EntityTypeFactory.getInstance().prepareStatement(query);
+            var ps = entityTypeFactory.prepareStatement(query);
 
             ps.setString(1, entityTypeName);
 
-            entityTypes = EntityTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
+            entityTypes = entityTypeFactory.getEntitiesFromQuery(entityPermission, ps);
+        } catch(SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
 
@@ -268,14 +301,14 @@ public class EntityTypeControl
     }
 
     public List<EntityType> getEntityTypes() {
-        var ps = EntityTypeFactory.getInstance().prepareStatement(
+        var ps = entityTypeFactory.prepareStatement(
                 "SELECT _ALL_ "
                         + "FROM entitytypes, entitytypedetails "
                         + "WHERE ent_activedetailid = entdt_entitytypedetailid "
                         + "ORDER BY entdt_sortorder, entdt_entitytypename "
                         + "_LIMIT_");
 
-        return EntityTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return entityTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
 
     public EntityTypeTransfer getEntityTypeTransfer(UserVisit userVisit, EntityType entityType) {
@@ -303,7 +336,7 @@ public class EntityTypeControl
 
     public void updateEntityTypeFromValue(EntityTypeDetailValue entityTypeDetailValue, BasePK updatedBy) {
         if(entityTypeDetailValue.hasBeenModified()) {
-            var entityType = EntityTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var entityType = entityTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     entityTypeDetailValue.getEntityTypePK());
             var entityTypeDetail = entityType.getActiveDetailForUpdate();
 
@@ -318,7 +351,7 @@ public class EntityTypeControl
             var isExtensible = entityTypeDetailValue.getIsExtensible();
             var sortOrder = entityTypeDetailValue.getSortOrder();
 
-            entityTypeDetail = EntityTypeDetailFactory.getInstance().create(entityTypePK, componentVendorPK, entityTypeName,
+            entityTypeDetail = entityTypeDetailFactory.create(entityTypePK, componentVendorPK, entityTypeName,
                     keepAllHistory, lockTimeout, isExtensible, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
             entityType.setActiveDetail(entityTypeDetail);
@@ -329,22 +362,10 @@ public class EntityTypeControl
     }
 
     public EntityType getEntityTypeByPK(EntityTypePK entityTypePK) {
-        return EntityTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, entityTypePK);
+        return entityTypeFactory.getEntityFromPK(EntityPermission.READ_ONLY, entityTypePK);
     }
 
     public void deleteEntityType(EntityType entityType, BasePK deletedBy) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
-        var batchControl = Session.getModelController(BatchControl.class);
-        var commentControl = Session.getModelController(CommentControl.class);
-        var coreControl = Session.getModelController(CoreControl.class);
-        var entityAliasControl = Session.getModelController(EntityAliasControl.class);
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-        var indexControl = Session.getModelController(IndexControl.class);
-        var messageControl = Session.getModelController(MessageControl.class);
-        var ratingControl = Session.getModelController(RatingControl.class);
-        var tagControl = Session.getModelController(TagControl.class);
-        var workflowControl = Session.getModelController(WorkflowControl.class);
-
         entityInstanceControl.deleteEntityInstancesByEntityTypeWithNullDeletedTime(entityType, deletedBy);
         deleteEntityTypeDescriptionsByEntityType(entityType, deletedBy);
         entityAliasControl.deleteEntityAliasTypesByEntityType(entityType, deletedBy);
@@ -379,9 +400,12 @@ public class EntityTypeControl
     //   Entity Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected EntityTypeDescriptionFactory entityTypeDescriptionFactory;
+    
     public EntityTypeDescription createEntityTypeDescription(EntityType entityType, Language language, String description,
             BasePK createdBy) {
-        var entityTypeDescription = EntityTypeDescriptionFactory.getInstance().create(entityType,
+        var entityTypeDescription = entityTypeDescriptionFactory.create(entityType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(entityType.getPrimaryKey(), EventTypes.MODIFY, entityTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -407,14 +431,14 @@ public class EntityTypeControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = entityTypeDescriptionFactory.prepareStatement(query);
 
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
 
-            entityTypeDescription = EntityTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
+            entityTypeDescription = entityTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
+        } catch(SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
 
@@ -456,13 +480,13 @@ public class EntityTypeControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = entityTypeDescriptionFactory.prepareStatement(query);
 
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            entityTypeDescriptions = EntityTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
+            entityTypeDescriptions = entityTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
+        } catch(SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
 
@@ -513,7 +537,7 @@ public class EntityTypeControl
 
     public void updateEntityTypeDescriptionFromValue(EntityTypeDescriptionValue entityTypeDescriptionValue, BasePK updatedBy) {
         if(entityTypeDescriptionValue.hasBeenModified()) {
-            var entityTypeDescription = EntityTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var entityTypeDescription = entityTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     entityTypeDescriptionValue.getPrimaryKey());
 
             entityTypeDescription.setThruTime(session.START_TIME_LONG);
@@ -523,7 +547,7 @@ public class EntityTypeControl
             var language = entityTypeDescription.getLanguage();
             var description = entityTypeDescriptionValue.getDescription();
 
-            entityTypeDescription = EntityTypeDescriptionFactory.getInstance().create(entityType, language,
+            entityTypeDescription = entityTypeDescriptionFactory.create(entityType, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
             sendEvent(entityType.getPrimaryKey(), EventTypes.MODIFY, entityTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -548,6 +572,12 @@ public class EntityTypeControl
     //   Entity Type Searches
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected SearchControl searchControl;
+    
+    @Inject
+    protected SearchResultFactory searchResultFactory;
+    
     public List<EntityTypeResultTransfer> getEntityTypeResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
         var entityTypeResultTransfers = new ArrayList<EntityTypeResultTransfer>();
@@ -559,27 +589,28 @@ public class EntityTypeControl
         }
 
         try {
-            var ps = SearchResultFactory.getInstance().prepareStatement(
+            try(var ps = searchResultFactory.prepareStatement(
                     "SELECT eni_entityuniqueid " +
                             "FROM searchresults, entityinstances " +
                             "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
                             "ORDER BY srchr_sortorder, srchr_eni_entityinstanceid " +
-                            "_LIMIT_");
+                            "_LIMIT_")) {
 
-            ps.setLong(1, search.getPrimaryKey().getEntityId());
+                ps.setLong(1, search.getPrimaryKey().getEntityId());
 
-            try (var rs = ps.executeQuery()) {
-                while(rs.next()) {
-                    var entityType = EntityTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new EntityTypePK(rs.getLong(1)));
-                    var entityTypeDetail = entityType.getLastDetail();
+                try(var rs = ps.executeQuery()) {
+                    while(rs.next()) {
+                        var entityType = entityTypeFactory.getEntityFromPK(EntityPermission.READ_ONLY, new EntityTypePK(rs.getLong(1)));
+                        var entityTypeDetail = entityType.getLastDetail();
 
-                    entityTypeResultTransfers.add(new EntityTypeResultTransfer(entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                            entityTypeDetail.getEntityTypeName(), includeEntityType ? getEntityTypeTransfer(userVisit, entityType) : null));
+                        entityTypeResultTransfers.add(new EntityTypeResultTransfer(entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
+                                entityTypeDetail.getEntityTypeName(), includeEntityType ? getEntityTypeTransfer(userVisit, entityType) : null));
+                    }
+                } catch(SQLException se) {
+                    throw new PersistenceDatabaseException(se);
                 }
-            } catch (SQLException se) {
-                throw new PersistenceDatabaseException(se);
             }
-        } catch (SQLException se) {
+        } catch(SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
 
@@ -587,16 +618,15 @@ public class EntityTypeControl
     }
 
     public List<EntityTypeObject> getEntityTypeObjectsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var entityTypeObjects = new ArrayList<EntityTypeObject>();
 
-        try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
+        try(var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
             while(rs.next()) {
                 var entityType = getEntityTypeByPK(new EntityTypePK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
 
                 entityTypeObjects.add(new EntityTypeObject(entityType));
             }
-        } catch (SQLException se) {
+        } catch(SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
 
