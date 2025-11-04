@@ -114,8 +114,8 @@ public abstract class BaseCommand
     @Inject
     protected CommandControl commandControl;
 
-    @Inject
-    protected LicenseCheckLogic licenseCheckLogic;
+//    @Inject
+//    protected LicenseCheckLogic licenseCheckLogic;
 
     @Inject
     protected SecurityRoleLogic securityRoleLogic;
