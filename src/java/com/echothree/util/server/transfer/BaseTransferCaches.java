@@ -23,7 +23,7 @@ public class BaseTransferCaches {
     protected UserVisit userVisit;
     
     /** Creates a new instance of BaseTransferCaches */
-    public BaseTransferCaches(UserVisit userVisit) {
+    protected BaseTransferCaches(UserVisit userVisit) {
         this.userVisit = userVisit;
     }
     

@@ -765,6 +765,7 @@ import com.echothree.model.data.item.common.ItemDescriptionTypeUseTypeConstants;
 import com.echothree.model.data.item.common.ItemImageTypeConstants;
 import com.echothree.model.data.item.common.ItemInventoryTypeConstants;
 import com.echothree.model.data.item.common.ItemPriceTypeConstants;
+import com.echothree.model.data.item.common.ItemPriceConstants;
 import com.echothree.model.data.item.common.ItemTypeConstants;
 import com.echothree.model.data.item.common.ItemUnitOfMeasureTypeConstants;
 import com.echothree.model.data.item.common.ItemUseTypeConstants;
@@ -8813,32 +8814,37 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("itemPrices")
-    static Collection<ItemPriceObject> itemPrices(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ItemPriceObject> itemPrices(final DataFetchingEnvironment env,
             @GraphQLName("itemName") @GraphQLNonNull final String itemName) {
-        Collection<ItemPrice> itemPrice;
-        Collection<ItemPriceObject> itemPriceObjects;
+        CountingPaginatedData<ItemPriceObject> data;
 
         try {
             var commandForm = ItemUtil.getHome().getGetItemPricesForm();
+            var command = CDI.current().select(GetItemPricesCommand.class).get();
 
             commandForm.setItemName(itemName);
 
-            itemPrice = CDI.current().select(GetItemPricesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ItemPriceConstants.COMPONENT_VENDOR_NAME, ItemPriceConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var itemPriceObjects = entities.stream()
+                            .map(ItemPriceObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, itemPriceObjects);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(itemPrice == null) {
-            itemPriceObjects = emptyList();
-        } else {
-            itemPriceObjects = new ArrayList<>(itemPrice.size());
-
-            itemPrice.stream()
-                    .map(ItemPriceObject::new)
-                    .forEachOrdered(itemPriceObjects::add);
-        }
-
-        return itemPriceObjects;
+        return data;
     }
 
     @GraphQLField
