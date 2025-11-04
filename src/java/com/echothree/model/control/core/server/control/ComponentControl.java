@@ -60,6 +60,9 @@ import javax.inject.Inject;
 public class ComponentControl
         extends BaseCoreControl {
 
+    @Inject
+    protected EntityTypeControl entityTypeControl;
+
     /** Creates a new instance of ComponentControl */
     protected ComponentControl() {
         super();
@@ -70,10 +73,10 @@ public class ComponentControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    ComponentVendorFactory componentVendorFactory;
+    protected ComponentVendorFactory componentVendorFactory;
     
     @Inject
-    ComponentVendorDetailFactory componentVendorDetailFactory;
+    protected ComponentVendorDetailFactory componentVendorDetailFactory;
     
     public ComponentVendor createComponentVendor(String componentVendorName, String description, BasePK createdBy) {
         var componentVendor = componentVendorFactory.create();
@@ -233,8 +236,6 @@ public class ComponentControl
     }
 
     public void deleteComponentVendor(ComponentVendor componentVendor, BasePK deletedBy) {
-        var entityTypeControl = Session.getModelController(EntityTypeControl.class);
-
         entityTypeControl.deleteEntityTypesByComponentVendor(componentVendor, deletedBy);
 
         var componentVendorDetail = componentVendor.getLastDetailForUpdate();
@@ -250,13 +251,13 @@ public class ComponentControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    SearchControl searchControl;
+    protected SearchControl searchControl;
 
     @Inject
-    SearchResultFactory searchResultFactory;
+    protected SearchResultFactory searchResultFactory;
     
     @Inject
-    CachedExecutedSearchResultFactory cachedExecutedSearchResultFactory;
+    protected CachedExecutedSearchResultFactory cachedExecutedSearchResultFactory;
 
     public List<ComponentVendorResultTransfer> getComponentVendorResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
@@ -355,10 +356,10 @@ public class ComponentControl
     // --------------------------------------------------------------------------------
     
     @Inject
-    ComponentFactory componentFactory;
+    protected ComponentFactory componentFactory;
     
     @Inject
-    ComponentDetailFactory componentDetailFactory;
+    protected ComponentDetailFactory componentDetailFactory;
 
     public Component createComponent(ComponentVendor componentVendor, String componentName, String description, BasePK createdBy) {
         var component = componentFactory.create();
@@ -401,7 +402,7 @@ public class ComponentControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    ComponentStageFactory componentStageFactory;
+    protected ComponentStageFactory componentStageFactory;
     
     public ComponentStage createComponentStage(String componentStageName, String description, Integer relativeAge) {
         var componentStage = componentStageFactory.create(componentStageName, description, relativeAge);
@@ -433,7 +434,7 @@ public class ComponentControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    ComponentVersionFactory componentVersionFactory;
+    protected ComponentVersionFactory componentVersionFactory;
     
     public ComponentVersion createComponentVersion(Component component, Integer majorRevision, Integer minorRevision,
             ComponentStage componentStage, Integer buildNumber,
