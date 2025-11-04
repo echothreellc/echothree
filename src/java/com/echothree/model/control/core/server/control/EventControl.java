@@ -100,6 +100,12 @@ public class EventControl
     @Inject
     protected SequenceControl sequenceControl;
 
+    @Inject
+    protected QueuedEntityLogic queuedEntityLogic;
+
+    @Inject
+    protected SequenceGeneratorLogic sequenceGeneratorLogic;
+
     /** Creates a new instance of EventControl */
     protected EventControl() {
         super();
@@ -109,8 +115,11 @@ public class EventControl
     //   Entity Times
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected EntityTimeFactory entityTimeFactory;
+    
     public EntityTime createEntityTime(EntityInstance entityInstance, Long createdTime, Long modifiedTime, Long deletedTime) {
-        return EntityTimeFactory.getInstance().create(entityInstance, createdTime, modifiedTime, deletedTime);
+        return entityTimeFactory.create(entityInstance, createdTime, modifiedTime, deletedTime);
 
     }
 
@@ -118,14 +127,14 @@ public class EventControl
         EntityTime entityTime;
 
         try {
-            var ps = EntityTimeFactory.getInstance().prepareStatement(
+            var ps = entityTimeFactory.prepareStatement(
                     "SELECT _ALL_ " +
                             "FROM entitytimes " +
                             "WHERE etim_eni_entityinstanceid = ?");
 
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
 
-            entityTime = EntityTimeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            entityTime = entityTimeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -137,7 +146,7 @@ public class EventControl
         EntityTime entityTime;
 
         try {
-            var ps = EntityTimeFactory.getInstance().prepareStatement(
+            var ps = entityTimeFactory.prepareStatement(
                     "SELECT _ALL_ " +
                             "FROM entitytimes " +
                             "WHERE etim_eni_entityinstanceid = ? " +
@@ -145,7 +154,7 @@ public class EventControl
 
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
 
-            entityTime = EntityTimeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_WRITE, ps);
+            entityTime = entityTimeFactory.getEntityFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -175,7 +184,7 @@ public class EventControl
 
         try {
             int intLimit = limit;
-            var ps = EntityTimeFactory.getInstance().prepareStatement(
+            var ps = entityTimeFactory.prepareStatement(
                     intLimit == -1? selectEntityTimesByEntityType: selectEntityTimesByEntityTypeWithLimit);
 
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
@@ -183,7 +192,7 @@ public class EventControl
                 ps.setInt(2, intLimit);
             }
 
-            entityTimes = EntityTimeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+            entityTimes = entityTimeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -212,7 +221,7 @@ public class EventControl
 
         try {
             int intLimit = limit;
-            var ps = EntityTimeFactory.getInstance().prepareStatement(
+            var ps = entityTimeFactory.prepareStatement(
                     intLimit == -1? selectEntityTimesByEntityTypeCreatedAfter: selectEntityTimesByEntityTypeCreatedAfterWithLimit);
 
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
@@ -221,7 +230,7 @@ public class EventControl
                 ps.setInt(3, intLimit);
             }
 
-            entityTimes = EntityTimeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+            entityTimes = entityTimeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -250,7 +259,7 @@ public class EventControl
 
         try {
             int intLimit = limit;
-            var ps = EntityTimeFactory.getInstance().prepareStatement(
+            var ps = entityTimeFactory.prepareStatement(
                     intLimit == -1? selectEntityTimesByEntityTypeModifiedAfter: selectEntityTimesByEntityTypeModifiedAfterWithLimit);
 
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
@@ -259,7 +268,7 @@ public class EventControl
                 ps.setInt(3, intLimit);
             }
 
-            entityTimes = EntityTimeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+            entityTimes = entityTimeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -288,7 +297,7 @@ public class EventControl
 
         try {
             int intLimit = limit;
-            var ps = EntityTimeFactory.getInstance().prepareStatement(
+            var ps = entityTimeFactory.prepareStatement(
                     intLimit == -1? selectEntityTimesByEntityTypeDeletedAfter: selectEntityTimesByEntityTypeDeletedAfterWithLimit);
 
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
@@ -297,7 +306,7 @@ public class EventControl
                 ps.setInt(3, intLimit);
             }
 
-            entityTimes = EntityTimeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+            entityTimes = entityTimeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -313,6 +322,12 @@ public class EventControl
     //   Event Groups
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected EventGroupFactory eventGroupFactory;
+
+    @Inject
+    protected EventGroupDetailFactory eventGroupDetailFactory;
+
     boolean alreadyCreatingEventGroup = false;
 
     public EventGroup getActiveEventGroup(BasePK createdBy) {
@@ -326,7 +341,7 @@ public class EventControl
                 List<EventGroup> eventGroups;
 
                 try {
-                    var ps = EventGroupFactory.getInstance().prepareStatement(
+                    var ps = eventGroupFactory.prepareStatement(
                             "SELECT _ALL_ " +
                                     "FROM componentvendors, componentvendordetails, entitytypes, entitytypedetails, entityinstances, " +
                                     "eventgroups, eventgroupdetails, workflowentitystatuses, entitytimes " +
@@ -345,7 +360,7 @@ public class EventControl
                     ps.setLong(3, workflowStep.getPrimaryKey().getEntityId());
                     ps.setLong(4, Session.MAX_TIME);
 
-                    eventGroups = EventGroupFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+                    eventGroups = eventGroupFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
                 } catch (SQLException se) {
                     throw new PersistenceDatabaseException(se);
                 }
@@ -372,7 +387,7 @@ public class EventControl
 
             if(workflowEntrance != null && (workflowControl.countWorkflowEntranceStepsByWorkflowEntrance(workflowEntrance) > 0)) {
                 var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.EVENT_GROUP.name());
-                var eventGroupName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+                var eventGroupName = sequenceGeneratorLogic.getNextSequenceValue(sequence);
 
                 eventGroup = createEventGroup(eventGroupName, createdBy);
 
@@ -383,14 +398,14 @@ public class EventControl
 
         return eventGroup;
     }
-
+    
     public EventGroup createEventGroup(String eventGroupName, BasePK createdBy) {
-        var eventGroup = EventGroupFactory.getInstance().create();
-        var eventGroupDetail = EventGroupDetailFactory.getInstance().create(eventGroup, eventGroupName,
+        var eventGroup = eventGroupFactory.create();
+        var eventGroupDetail = eventGroupDetailFactory.create(eventGroup, eventGroupName,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
-        eventGroup = EventGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        eventGroup = eventGroupFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 eventGroup.getPrimaryKey());
         eventGroup.setActiveDetail(eventGroupDetail);
         eventGroup.setLastDetail(eventGroupDetail);
@@ -422,11 +437,11 @@ public class EventControl
                         "FOR UPDATE";
             }
 
-            var ps = EventGroupFactory.getInstance().prepareStatement(query);
+            var ps = eventGroupFactory.prepareStatement(query);
 
             ps.setString(1, eventGroupName);
 
-            eventGroup = EventGroupFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            eventGroup = eventGroupFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -461,9 +476,9 @@ public class EventControl
                     "FOR UPDATE";
         }
 
-        var ps = EventGroupFactory.getInstance().prepareStatement(query);
+        var ps = eventGroupFactory.prepareStatement(query);
 
-        return EventGroupFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return eventGroupFactory.getEntitiesFromQuery(entityPermission, ps);
     }
 
     public List<EventGroup> getEventGroups() {
@@ -530,8 +545,11 @@ public class EventControl
     //   Event Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected EventTypeFactory eventTypeFactory;
+    
     public EventType createEventType(String eventTypeName) {
-        var eventType = EventTypeFactory.getInstance().create(eventTypeName);
+        var eventType = eventTypeFactory.create(eventTypeName);
 
         return eventType;
     }
@@ -540,14 +558,14 @@ public class EventControl
         EventType eventType;
 
         try {
-            var ps = EventTypeFactory.getInstance().prepareStatement(
+            var ps = eventTypeFactory.prepareStatement(
                     "SELECT _ALL_ " +
                             "FROM eventtypes " +
                             "WHERE evty_eventtypename = ?");
 
             ps.setString(1, eventTypeName);
 
-            eventType = EventTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            eventType = eventTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -572,12 +590,12 @@ public class EventControl
     }
 
     public List<EventType> getEventTypes() {
-        var ps = EventTypeFactory.getInstance().prepareStatement(
+        var ps = eventTypeFactory.prepareStatement(
                 "SELECT _ALL_ " +
                         "FROM eventtypes " +
                         "ORDER BY evty_eventtypename");
 
-        return EventTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return eventTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
 
     public EventTypeTransfer getEventTypeTransfer(UserVisit userVisit, EventType eventType) {
@@ -588,8 +606,11 @@ public class EventControl
     //   Event Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected EventTypeDescriptionFactory eventTypeDescriptionFactory;
+    
     public EventTypeDescription createEventTypeDescription(EventType eventType, Language language, String description) {
-        var eventTypeDescription = EventTypeDescriptionFactory.getInstance().create(eventType, language, description);
+        var eventTypeDescription = eventTypeDescriptionFactory.create(eventType, language, description);
 
         return eventTypeDescription;
     }
@@ -598,7 +619,7 @@ public class EventControl
         EventTypeDescription eventTypeDescription;
 
         try {
-            var ps = EventTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = eventTypeDescriptionFactory.prepareStatement(
                     "SELECT _ALL_ " +
                             "FROM eventtypedescriptions " +
                             "WHERE evtyd_evty_eventtypeid = ? AND evtyd_lang_languageid = ?");
@@ -606,7 +627,7 @@ public class EventControl
             ps.setLong(1, eventType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
 
-            eventTypeDescription = EventTypeDescriptionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            eventTypeDescription = eventTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -635,11 +656,14 @@ public class EventControl
     //   Events
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected EventFactory eventFactory;
+    
     public Event createEvent(EventGroup eventGroup, Long eventTime, EntityInstance entityInstance, EventType eventType,
             EntityInstance relatedEntityInstance, EventType relatedEventType, EntityInstance createdBy) {
         var eventTimeSequence = session.getNextEventTimeSequence(entityInstance.getPrimaryKey());
 
-        return EventFactory.getInstance().create(eventGroup, eventTime, eventTimeSequence, entityInstance, eventType, relatedEntityInstance, relatedEventType,
+        return eventFactory.create(eventGroup, eventTime, eventTimeSequence, entityInstance, eventType, relatedEntityInstance, relatedEventType,
                 createdBy);
     }
 
@@ -690,7 +714,7 @@ public class EventControl
     }
 
     public List<Event> getEventsByEventGroup(EventGroup eventGroup) {
-        return EventFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEventsByEventGroupQueries,
+        return eventFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEventsByEventGroupQueries,
                 eventGroup);
     }
 
@@ -709,7 +733,7 @@ public class EventControl
     }
 
     public List<Event> getEventsByEntityInstance(EntityInstance entityInstance) {
-        return EventFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEventsByEntityInstanceQueries,
+        return eventFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEventsByEntityInstanceQueries,
                 entityInstance);
     }
 
@@ -728,7 +752,7 @@ public class EventControl
     }
 
     public List<Event> getEventsByEventType(EventType eventType) {
-        return EventFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEventsByEventTypeQueries,
+        return eventFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEventsByEventTypeQueries,
                 eventType);
     }
 
@@ -747,7 +771,7 @@ public class EventControl
     }
 
     public List<Event> getEventsByCreatedBy(EntityInstance createdBy) {
-        return EventFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEventsByCreatedByQueries,
+        return eventFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEventsByCreatedByQueries,
                 createdBy);
     }
 
@@ -766,7 +790,7 @@ public class EventControl
     }
 
     public List<Event> getEventsByEntityInstanceAndEventTypeForUpdate(EntityInstance entityInstance, EventType eventType) {
-        return EventFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, getEventsByEntityInstanceAndEventTypeQueries,
+        return eventFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, getEventsByEntityInstanceAndEventTypeQueries,
                 entityInstance, eventType);
     }
 
@@ -805,17 +829,20 @@ public class EventControl
     //   Queued Events
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected QueuedEventFactory queuedEventFactory;
+    
     public QueuedEvent createQueuedEvent(Event event) {
-        return QueuedEventFactory.getInstance().create(event);
+        return queuedEventFactory.create(event);
     }
 
     public List<QueuedEvent> getQueuedEventsForUpdate() {
-        var ps = QueuedEventFactory.getInstance().prepareStatement(
+        var ps = queuedEventFactory.prepareStatement(
                 "SELECT _ALL_ " +
                         "FROM queuedevents " +
                         "FOR UPDATE");
 
-        return QueuedEventFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+        return queuedEventFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
     }
 
     public void removeQueuedEvent(QueuedEvent queuedEvent) {
@@ -826,8 +853,11 @@ public class EventControl
     //   Entity Visits
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected EntityVisitFactory entityVisitFactory;
+    
     public EntityVisit createEntityVisit(final EntityInstance entityInstance, final EntityInstance visitedEntityInstance) {
-        return EntityVisitFactory.getInstance().create(entityInstance, visitedEntityInstance, session.START_TIME_LONG);
+        return entityVisitFactory.create(entityInstance, visitedEntityInstance, session.START_TIME_LONG);
     }
 
     private static final Map<EntityPermission, String> getEntityVisitQueries;
@@ -849,7 +879,7 @@ public class EventControl
 
     private EntityVisit getEntityVisit(final EntityInstance entityInstance, final EntityInstance visitedEntityInstance,
             final EntityPermission entityPermission) {
-        return EntityVisitFactory.getInstance().getEntityFromQuery(entityPermission, getEntityVisitQueries, entityInstance, visitedEntityInstance);
+        return entityVisitFactory.getEntityFromQuery(entityPermission, getEntityVisitQueries, entityInstance, visitedEntityInstance);
     }
 
     public EntityVisit getEntityVisit(final EntityInstance entityInstance, final EntityInstance visitedEntityInstance) {
@@ -868,24 +898,30 @@ public class EventControl
     //   Event Subscribers
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected EventSubscriberFactory eventSubscriberFactory;
+    
+    @Inject
+    protected EventSubscriberDetailFactory eventSubscriberDetailFactory;
+    
     public EventSubscriber createEventSubscriber(EntityInstance entityInstance, String description, Integer sortOrder,
             BasePK createdBy) {
         var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.EVENT_SUBSCRIBER.name());
         var sequence = sequenceControl.getDefaultSequence(sequenceType);
-        var eventSubscriberName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var eventSubscriberName = sequenceGeneratorLogic.getNextSequenceValue(sequence);
 
         return createEventSubscriber(eventSubscriberName, entityInstance, description, sortOrder, createdBy);
     }
 
     public EventSubscriber createEventSubscriber(String eventSubscriberName, EntityInstance entityInstance, String description,
             Integer sortOrder, BasePK createdBy) {
-        var eventSubscriber = EventSubscriberFactory.getInstance().create();
-        var eventSubscriberDetail = EventSubscriberDetailFactory.getInstance().create(session,
+        var eventSubscriber = eventSubscriberFactory.create();
+        var eventSubscriberDetail = eventSubscriberDetailFactory.create(session,
                 eventSubscriber, eventSubscriberName, entityInstance, description, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
         // Convert to R/W
-        eventSubscriber = EventSubscriberFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        eventSubscriber = eventSubscriberFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 eventSubscriber.getPrimaryKey());
         eventSubscriber.setActiveDetail(eventSubscriberDetail);
         eventSubscriber.setLastDetail(eventSubscriberDetail);
@@ -913,11 +949,11 @@ public class EventControl
                         "FOR UPDATE";
             }
 
-            var ps = EventSubscriberFactory.getInstance().prepareStatement(query);
+            var ps = eventSubscriberFactory.prepareStatement(query);
 
             ps.setString(1, eventSubscriberName);
 
-            eventSubscriber = EventSubscriberFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            eventSubscriber = eventSubscriberFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -951,11 +987,11 @@ public class EventControl
                         "FOR UPDATE";
             }
 
-            var ps = EventSubscriberFactory.getInstance().prepareStatement(query);
+            var ps = eventSubscriberFactory.prepareStatement(query);
 
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
 
-            eventSubscribers = EventSubscriberFactory.getInstance().getEntitiesFromQuery(entityPermission,
+            eventSubscribers = eventSubscriberFactory.getEntitiesFromQuery(entityPermission,
                     ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -1013,8 +1049,11 @@ public class EventControl
     //   Queued Events
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected QueuedSubscriberEventFactory queuedSubscriberEventFactory;
+    
     public QueuedSubscriberEvent createQueuedSubscriberEvent(EventSubscriber eventSubscriber, Event event) {
-        return QueuedSubscriberEventFactory.getInstance().create(eventSubscriber, event);
+        return queuedSubscriberEventFactory.create(eventSubscriber, event);
     }
 
     private List<QueuedSubscriberEvent> getQueuedSubscriberEventsByEventSubscriber(EventSubscriber eventSubscriber,
@@ -1036,11 +1075,11 @@ public class EventControl
                         "FOR UPDATE";
             }
 
-            var ps = QueuedSubscriberEventFactory.getInstance().prepareStatement(query);
+            var ps = queuedSubscriberEventFactory.prepareStatement(query);
 
             ps.setLong(1, eventSubscriber.getPrimaryKey().getEntityId());
 
-            queuedSubscriberEvents = QueuedSubscriberEventFactory.getInstance().getEntitiesFromQuery(entityPermission,
+            queuedSubscriberEvents = queuedSubscriberEventFactory.getEntitiesFromQuery(entityPermission,
                     ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -1073,9 +1112,12 @@ public class EventControl
     //   Event Subscriber Event Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected EventSubscriberEventTypeFactory eventSubscriberEventTypeFactory;
+    
     public EventSubscriberEventType createEventSubscriberEventType(EventSubscriber eventSubscriber, EventType eventType,
             BasePK createdBy) {
-        var eventSubscriberEventType = EventSubscriberEventTypeFactory.getInstance().create(session,
+        var eventSubscriberEventType = eventSubscriberEventTypeFactory.create(session,
                 eventSubscriber, eventType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(eventSubscriber.getPrimaryKey(), EventTypes.MODIFY, eventSubscriberEventType.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1102,12 +1144,12 @@ public class EventControl
                         "FOR UPDATE";
             }
 
-            var ps = EventSubscriberEventTypeFactory.getInstance().prepareStatement(query);
+            var ps = eventSubscriberEventTypeFactory.prepareStatement(query);
 
             ps.setLong(1, eventType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            eventSubscriberEventTypes = EventSubscriberEventTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            eventSubscriberEventTypes = eventSubscriberEventTypeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1127,9 +1169,12 @@ public class EventControl
     //   Event Subscriber Entity Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected EventSubscriberEntityTypeFactory eventSubscriberEntityTypeFactory;
+    
     public EventSubscriberEntityType createEventSubscriberEntityType(EventSubscriber eventSubscriber, EntityType entityType,
             EventType eventType, BasePK createdBy) {
-        var eventSubscriberEntityType = EventSubscriberEntityTypeFactory.getInstance().create(session,
+        var eventSubscriberEntityType = eventSubscriberEntityTypeFactory.create(session,
                 eventSubscriber, entityType, eventType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(eventSubscriber.getPrimaryKey(), EventTypes.MODIFY, eventSubscriberEntityType.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1157,13 +1202,13 @@ public class EventControl
                         "FOR UPDATE";
             }
 
-            var ps = EventSubscriberEntityTypeFactory.getInstance().prepareStatement(query);
+            var ps = eventSubscriberEntityTypeFactory.prepareStatement(query);
 
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             ps.setLong(2, eventType.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
 
-            eventSubscriberEntityTypes = EventSubscriberEntityTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            eventSubscriberEntityTypes = eventSubscriberEntityTypeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1183,9 +1228,12 @@ public class EventControl
     //   Event Subscriber Entity Instances
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected EventSubscriberEntityInstanceFactory eventSubscriberEntityInstanceFactory;
+    
     public EventSubscriberEntityInstance createEventSubscriberEntityInstance(EventSubscriber eventSubscriber,
             EntityInstance entityInstance, EventType eventType, BasePK createdBy) {
-        var eventSubscriberEntityInstance = EventSubscriberEntityInstanceFactory.getInstance().create(session,
+        var eventSubscriberEntityInstance = eventSubscriberEntityInstanceFactory.create(session,
                 eventSubscriber, entityInstance, eventType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(eventSubscriber.getPrimaryKey(), EventTypes.MODIFY, eventSubscriberEntityInstance.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1213,13 +1261,13 @@ public class EventControl
                         "FOR UPDATE";
             }
 
-            var ps = EventSubscriberEntityInstanceFactory.getInstance().prepareStatement(query);
+            var ps = eventSubscriberEntityInstanceFactory.prepareStatement(query);
 
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, eventType.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
 
-            eventSubscriberEntityInstances = EventSubscriberEntityInstanceFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            eventSubscriberEntityInstances = eventSubscriberEntityInstanceFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1242,7 +1290,7 @@ public class EventControl
     private void queueEntityInstanceToIndexing(final EntityInstance entityInstance) {
         if(indexControl.isEntityTypeUsedByIndexTypes(entityInstance.getEntityType())) {
             try {
-                QueuedEntityLogic.getInstance().createQueuedEntityUsingNames(null, QueueTypes.INDEXING.name(), entityInstance);
+                queuedEntityLogic.createQueuedEntityUsingNames(null, QueueTypes.INDEXING.name(), entityInstance);
             } catch(UnknownQueueTypeNameException uqtne) {
                 // This will be thrown early in the setup process because the QueueType has not yet been created.
                 // Log as an informational message, but otherwise ignore it.
