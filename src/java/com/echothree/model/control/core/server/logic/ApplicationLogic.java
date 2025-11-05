@@ -27,13 +27,16 @@ import com.echothree.model.data.core.server.entity.Editor;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class ApplicationLogic
         extends BaseLogic {
+
+    @Inject
+    protected ApplicationControl applicationControl;
 
     protected ApplicationLogic() {
         super();
@@ -44,7 +47,6 @@ public class ApplicationLogic
     }
     
     public Application getApplicationByName(final ExecutionErrorAccumulator eea, final String applicationName) {
-        var applicationControl = Session.getModelController(ApplicationControl.class);
         var application = applicationControl.getApplicationByName(applicationName);
 
         if(application == null) {
@@ -55,7 +57,6 @@ public class ApplicationLogic
     }
     
     public ApplicationEditor getApplicationEditor(final ExecutionErrorAccumulator eea, final Application application, final Editor editor) {
-        var applicationControl = Session.getModelController(ApplicationControl.class);
         var applicationEditor = applicationControl.getApplicationEditor(application, editor);
         
         if(applicationEditor == null) {
@@ -68,7 +69,6 @@ public class ApplicationLogic
 
     public ApplicationEditorUse getApplicationEditorUseByName(final ExecutionErrorAccumulator eea, final Application application,
             final String applicationEditorUseName) {
-        var applicationControl = Session.getModelController(ApplicationControl.class);
         var applicationEditorUse = applicationControl.getApplicationEditorUseByName(application, applicationEditorUseName);
 
         if(applicationEditorUse == null) {

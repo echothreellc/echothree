@@ -24,13 +24,16 @@ import com.echothree.model.data.core.server.entity.FontWeight;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class FontLogic
         extends BaseLogic {
+
+    @Inject
+    protected FontControl fontControl;
 
     protected FontLogic() {
         super();
@@ -41,7 +44,6 @@ public class FontLogic
     }
     
     public FontStyle getFontStyleByName(final ExecutionErrorAccumulator eea, final String fontStyleName) {
-        var fontControl = Session.getModelController(FontControl.class);
         var fontStyle = fontControl.getFontStyleByName(fontStyleName);
 
         if(fontStyle == null) {
@@ -52,7 +54,6 @@ public class FontLogic
     }
     
     public FontWeight getFontWeightByName(final ExecutionErrorAccumulator eea, final String fontWeightName) {
-        var fontControl = Session.getModelController(FontControl.class);
         var fontWeight = fontControl.getFontWeightByName(fontWeightName);
 
         if(fontWeight == null) {
