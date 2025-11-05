@@ -22,7 +22,6 @@ import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.DuplicateEntityAttributeGroupNameException;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.common.exception.UnknownEntityAttributeGroupNameException;
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
@@ -33,13 +32,22 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class EntityAttributeGroupLogic
         extends BaseLogic {
+
+    @Inject
+    protected SequenceControl sequenceControl;
+
+    @Inject
+    protected EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    protected SequenceGeneratorLogic sequenceGeneratorLogic;
 
     protected EntityAttributeGroupLogic() {
         super();
@@ -51,13 +59,10 @@ public class EntityAttributeGroupLogic
     
     public EntityAttributeGroup createEntityAttributeGroup(final ExecutionErrorAccumulator eea, String entityAttributeGroupName,
             final Boolean isDefault, final Integer sortOrder, final String description, final Language language, final BasePK createdBy) {
-        var coreControl = Session.getModelController(CoreControl.class);
-        
         if(entityAttributeGroupName == null) {
-            var sequenceControl = Session.getModelController(SequenceControl.class);
             var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.ENTITY_ATTRIBUTE_GROUP.name());
             
-            entityAttributeGroupName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+            entityAttributeGroupName = sequenceGeneratorLogic.getNextSequenceValue(sequence);
         }
 
         var entityAttributeGroup = coreControl.getEntityAttributeGroupByName(entityAttributeGroupName);
@@ -78,7 +83,6 @@ public class EntityAttributeGroupLogic
 
     public EntityAttributeGroup getEntityAttributeGroupByName(final ExecutionErrorAccumulator eea, final String entityAttributeGroupName,
             final EntityPermission entityPermission) {
-        var coreControl = Session.getModelController(CoreControl.class);
         var entityAttributeGroup = coreControl.getEntityAttributeGroupByName(entityAttributeGroupName, entityPermission);
 
         if(entityAttributeGroup == null) {
@@ -99,14 +103,13 @@ public class EntityAttributeGroupLogic
     public EntityAttributeGroup getEntityAttributeGroupByUniversalSpec(final ExecutionErrorAccumulator eea,
             final EntityAttributeGroupUniversalSpec universalSpec, final EntityPermission entityPermission) {
         EntityAttributeGroup entityAttributeGroup = null;
-        var coreControl = Session.getModelController(CoreControl.class);
         var entityAttributeGroupName = universalSpec.getEntityAttributeGroupName();
-        var parameterCount = (entityAttributeGroupName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (entityAttributeGroupName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 1:
+            case 1 -> {
                 if(entityAttributeGroupName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityAttributeGroup.name());
 
                     if(!eea.hasExecutionErrors()) {
@@ -115,10 +118,9 @@ public class EntityAttributeGroupLogic
                 } else {
                     entityAttributeGroup = getEntityAttributeGroupByName(eea, entityAttributeGroupName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return entityAttributeGroup;

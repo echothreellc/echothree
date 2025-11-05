@@ -22,13 +22,16 @@ import com.echothree.model.data.core.server.entity.Color;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class ColorLogic
         extends BaseLogic {
+
+    @Inject
+    protected ColorControl colorControl;
 
     protected ColorLogic() {
         super();
@@ -39,7 +42,6 @@ public class ColorLogic
     }
 
     public Color getColorByName(final ExecutionErrorAccumulator eea, final String colorName) {
-        var colorControl = Session.getModelController(ColorControl.class);
         var color = colorControl.getColorByName(colorName);
 
         if(color == null) {

@@ -22,13 +22,16 @@ import com.echothree.model.data.core.server.entity.Editor;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class EditorLogic
         extends BaseLogic {
+
+    @Inject
+    protected EditorControl editorControl;
 
     protected EditorLogic() {
         super();
@@ -39,7 +42,6 @@ public class EditorLogic
     }
 
     public Editor getEditorByName(final ExecutionErrorAccumulator eea, final String editorName) {
-        var editorControl = Session.getModelController(EditorControl.class);
         var editor = editorControl.getEditorByName(editorName);
 
         if(editor == null) {
