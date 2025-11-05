@@ -27,13 +27,16 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class AppearanceLogic
         extends BaseLogic {
+
+    @Inject
+    protected AppearanceControl appearanceControl;
 
     protected AppearanceLogic() {
         super();
@@ -45,7 +48,6 @@ public class AppearanceLogic
 
     public Appearance getAppearanceByName(final ExecutionErrorAccumulator eea, final String appearanceName,
             final EntityPermission entityPermission) {
-        var appearanceControl = Session.getModelController(AppearanceControl.class);
         var appearance = appearanceControl.getAppearanceByName(appearanceName, entityPermission);
 
         if(appearance == null) {
@@ -70,23 +72,20 @@ public class AppearanceLogic
         var parameterCount = (appearanceName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 1:
+            case 1 -> {
                 if(appearanceName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.Appearance.name());
 
                     if(!eea.hasExecutionErrors()) {
-                        var appearanceControl = Session.getModelController(AppearanceControl.class);
-
                         appearance = appearanceControl.getAppearanceByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
                     appearance = getAppearanceByName(eea, appearanceName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return appearance;

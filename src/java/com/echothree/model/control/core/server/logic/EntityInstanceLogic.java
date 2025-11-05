@@ -40,10 +40,14 @@ import com.echothree.util.server.persistence.EntityIdGenerator;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class EntityInstanceLogic
         extends BaseLogic {
+
+    @Inject
+    protected EntityInstanceControl entityInstanceControl;
 
     protected EntityInstanceLogic() {
         super();
@@ -93,7 +97,6 @@ public class EntityInstanceLogic
     }
     
     public EntityInstance getEntityInstanceByEntityRef(final ExecutionErrorAccumulator eea, final String entityRef) {
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var entityInstance = entityInstanceControl.getEntityInstanceByEntityRef(entityRef);
 
         if(entityInstance == null) {
@@ -117,7 +120,6 @@ public class EntityInstanceLogic
     }
     
     public EntityInstance getEntityInstanceByUuid(final ExecutionErrorAccumulator eea, final String uuid) {
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var entityInstance = entityInstanceControl.getEntityInstanceByUuid(uuid);
 
         if(entityInstance == null) {
@@ -222,8 +224,6 @@ public class EntityInstanceLogic
         var componentVendorName = entityInstance.getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName();
 
         if(!ComponentVendors.ECHO_THREE.name().equals(componentVendorName)) {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-
             entityInstanceControl.deleteEntityInstance(entityInstance, deletedBy);
         } else {
             handleExecutionError(InvalidComponentVendorException.class, eea, ExecutionErrors.InvalidComponentVendor.name(), componentVendorName);
@@ -234,8 +234,6 @@ public class EntityInstanceLogic
         var componentVendorName = entityInstance.getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName();
 
         if(!ComponentVendors.ECHO_THREE.name().equals(componentVendorName)) {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-
             entityInstanceControl.removeEntityInstance(entityInstance);
         } else {
             handleExecutionError(InvalidComponentVendorException.class, eea, ExecutionErrors.InvalidComponentVendor.name(), componentVendorName);
