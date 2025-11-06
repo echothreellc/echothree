@@ -756,6 +756,7 @@ import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionType;
 import com.echothree.model.data.inventory.server.entity.Lot;
 import com.echothree.model.data.item.common.ItemAliasChecksumTypeConstants;
+import com.echothree.model.data.item.common.ItemAliasConstants;
 import com.echothree.model.data.item.common.ItemAliasTypeConstants;
 import com.echothree.model.data.item.common.ItemCategoryConstants;
 import com.echothree.model.data.item.common.ItemConstants;
@@ -8921,32 +8922,37 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("itemAliases")
-    static Collection<ItemAliasObject> itemAliases(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ItemAliasObject> itemAliases(final DataFetchingEnvironment env,
             @GraphQLName("itemName") @GraphQLNonNull final String itemName) {
-        Collection<ItemAlias> itemAlias;
-        Collection<ItemAliasObject> itemAliasObjects;
+        CountingPaginatedData<ItemAliasObject> data;
 
         try {
             var commandForm = ItemUtil.getHome().getGetItemAliasesForm();
+            var command = CDI.current().select(GetItemAliasesCommand.class).get();
 
             commandForm.setItemName(itemName);
 
-            itemAlias = CDI.current().select(GetItemAliasesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ItemAliasConstants.COMPONENT_VENDOR_NAME, ItemAliasConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var itemAliasObjects = entities.stream()
+                            .map(ItemAliasObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, itemAliasObjects);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(itemAlias == null) {
-            itemAliasObjects = emptyList();
-        } else {
-            itemAliasObjects = new ArrayList<>(itemAlias.size());
-
-            itemAlias.stream()
-                    .map(ItemAliasObject::new)
-                    .forEachOrdered(itemAliasObjects::add);
-        }
-
-        return itemAliasObjects;
+        return data;
     }
 
     @GraphQLField
