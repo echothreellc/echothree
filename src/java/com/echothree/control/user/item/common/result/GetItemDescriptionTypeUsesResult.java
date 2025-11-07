@@ -30,7 +30,10 @@ public interface GetItemDescriptionTypeUsesResult
     
     ItemDescriptionTypeUseTypeTransfer getItemDescriptionTypeUseType();
     void setItemDescriptionTypeUseType(ItemDescriptionTypeUseTypeTransfer itemDescriptionTypeUseType);
-    
+
+    Long getItemDescriptionTypeUseCount();
+    void setItemDescriptionTypeUseCount(Long itemDescriptionTypeUseCount);
+
     List<ItemDescriptionTypeUseTransfer> getItemDescriptionTypeUses();
     void setItemDescriptionTypeUses(List<ItemDescriptionTypeUseTransfer> itemDescriptionTypeUses);
     
