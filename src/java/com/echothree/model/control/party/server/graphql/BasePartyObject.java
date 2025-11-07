@@ -18,7 +18,6 @@ package com.echothree.model.control.party.server.graphql;
 
 import com.echothree.control.user.contact.common.form.ContactFormFactory;
 import com.echothree.control.user.contact.server.command.GetContactMechanismPurposeCommand;
-import com.echothree.control.user.core.common.form.CoreFormFactory;
 import com.echothree.model.control.accounting.server.graphql.AccountingSecurityUtils;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
 import com.echothree.model.control.contact.server.control.ContactControl;
@@ -41,13 +40,13 @@ import com.echothree.model.data.party.server.entity.PartyDetail;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
-import graphql.annotations.annotationTypes.GraphQLID;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
+import javax.enterprise.inject.spi.CDI;
 
 public abstract class BasePartyObject
         extends BaseEntityInstanceObject {
@@ -192,7 +191,7 @@ public abstract class BasePartyObject
 
         commandForm.setContactMechanismPurposeName(contactMechanismPurposeName);
 
-        var contactMechanismPurpose = new GetContactMechanismPurposeCommand().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        var contactMechanismPurpose = CDI.current().select(GetContactMechanismPurposeCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
         if(contactMechanismPurpose != null) {
             var contactControl = Session.getModelController(ContactControl.class);
             var partyContactMechanismPurpose = contactControl.getDefaultPartyContactMechanismPurpose(party, contactMechanismPurpose);
