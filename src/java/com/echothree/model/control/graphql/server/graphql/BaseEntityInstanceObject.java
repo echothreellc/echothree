@@ -56,6 +56,7 @@ import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
+import javax.enterprise.inject.spi.CDI;
 
 public abstract class BaseEntityInstanceObject
         extends BaseObject {
@@ -154,7 +155,7 @@ public abstract class BaseEntityInstanceObject
 
         commandForm.setUuid(id);
 
-        var entityAliasType = new GetEntityAliasTypeCommand().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        var entityAliasType = CDI.current().select(GetEntityAliasTypeCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
         if(entityInstance != null && entityAliasType != null) {
             return new EntityAliasTypeObject(entityAliasType, entityInstance);
         } else {
@@ -196,13 +197,11 @@ public abstract class BaseEntityInstanceObject
             @GraphQLName("id") @GraphQLID final String id) {
         var entityInstance = getEntityInstanceByBasePK();
         var commandForm = CoreFormFactory.getGetEntityAttributeGroupForm();
-        EntityAttributeGroup entityAttributeGroup;
 
         commandForm.setEntityAttributeGroupName(entityAttributeGroupName);
         commandForm.setUuid(id);
 
-        entityAttributeGroup = new GetEntityAttributeGroupCommand().getEntityForGraphQl(getUserVisitPK(env), commandForm);
-
+        var entityAttributeGroup = CDI.current().select(GetEntityAttributeGroupCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
         if(entityInstance != null && entityAttributeGroup != null) {
             return new EntityAttributeGroupObject(entityAttributeGroup, entityInstance);
         } else {
@@ -228,7 +227,7 @@ public abstract class BaseEntityInstanceObject
 
         commandForm.setUuid(id);
 
-        var entityAttribute = new GetEntityAttributeCommand().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        var entityAttribute = CDI.current().select(GetEntityAttributeCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
         if(entityInstance != null && entityAttribute != null) {
             return new EntityAttributeObject(entityAttribute, entityInstance);
         } else {
@@ -273,7 +272,7 @@ public abstract class BaseEntityInstanceObject
         commandForm.setTagScopeName(tagScopeName);
         commandForm.setUuid(id);
 
-        var tagScope = new GetTagScopeCommand().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        var tagScope = CDI.current().select(GetTagScopeCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
         if(entityInstance != null && tagScope != null) {
             return new TagScopeObject(tagScope, entityInstance);
         } else {
