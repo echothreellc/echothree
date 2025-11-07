@@ -765,8 +765,8 @@ import com.echothree.model.data.item.common.ItemDescriptionTypeConstants;
 import com.echothree.model.data.item.common.ItemDescriptionTypeUseTypeConstants;
 import com.echothree.model.data.item.common.ItemImageTypeConstants;
 import com.echothree.model.data.item.common.ItemInventoryTypeConstants;
-import com.echothree.model.data.item.common.ItemPriceTypeConstants;
 import com.echothree.model.data.item.common.ItemPriceConstants;
+import com.echothree.model.data.item.common.ItemPriceTypeConstants;
 import com.echothree.model.data.item.common.ItemTypeConstants;
 import com.echothree.model.data.item.common.ItemUnitOfMeasureTypeConstants;
 import com.echothree.model.data.item.common.ItemUseTypeConstants;
@@ -9570,34 +9570,39 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("itemDescriptionTypeUses")
-    static Collection<ItemDescriptionTypeUseObject> itemDescriptionTypeUses(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ItemDescriptionTypeUseObject> itemDescriptionTypeUses(final DataFetchingEnvironment env,
             @GraphQLName("itemDescriptionTypeUseTypeName") final String itemDescriptionTypeUseTypeName,
             @GraphQLName("itemDescriptionTypeName") final String itemDescriptionTypeName) {
-        Collection<ItemDescriptionTypeUse> itemDescriptionTypeUse;
-        Collection<ItemDescriptionTypeUseObject> itemDescriptionTypeUseObjects;
+        CountingPaginatedData<ItemDescriptionTypeUseObject> data;
 
         try {
             var commandForm = ItemUtil.getHome().getGetItemDescriptionTypeUsesForm();
+            var command = CDI.current().select(GetItemDescriptionTypeUsesCommand.class).get();
 
             commandForm.setItemDescriptionTypeUseTypeName(itemDescriptionTypeUseTypeName);
             commandForm.setItemDescriptionTypeName(itemDescriptionTypeName);
 
-            itemDescriptionTypeUse = CDI.current().select(GetItemDescriptionTypeUsesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, com.echothree.model.data.item.common.ItemDescriptionTypeUseConstants.COMPONENT_VENDOR_NAME, com.echothree.model.data.item.common.ItemDescriptionTypeUseConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var objects = entities.stream()
+                            .map(ItemDescriptionTypeUseObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, objects);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(itemDescriptionTypeUse == null) {
-            itemDescriptionTypeUseObjects = emptyList();
-        } else {
-            itemDescriptionTypeUseObjects = new ArrayList<>(itemDescriptionTypeUse.size());
-
-            itemDescriptionTypeUse.stream()
-                    .map(ItemDescriptionTypeUseObject::new)
-                    .forEachOrdered(itemDescriptionTypeUseObjects::add);
-        }
-
-        return itemDescriptionTypeUseObjects;
+        return data;
     }
 
     @GraphQLField
