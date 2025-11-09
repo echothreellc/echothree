@@ -19,15 +19,18 @@ package com.echothree.control.user.item.server.command;
 import com.echothree.control.user.item.common.form.GetItemDescriptionsForm;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.item.server.logic.ItemDescriptionTypeUseTypeLogic;
 import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemDescription;
+import com.echothree.model.data.item.server.entity.ItemDescriptionTypeUseType;
 import com.echothree.model.data.item.server.factory.ItemDescriptionFactory;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -36,15 +39,30 @@ import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class GetItemDescriptionsCommand
         extends BaseMultipleEntitiesCommand<ItemDescription, GetItemDescriptionsForm> {
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ItemLogic itemLogic;
+
+    @Inject
+    ItemDescriptionTypeUseTypeLogic itemDescriptionTypeUseTypeLogic;
+
+    @Inject
+    LanguageLogic languageLogic;
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -70,49 +88,54 @@ public class GetItemDescriptionsCommand
     }
 
     Item item;
+    ItemDescriptionTypeUseType itemDescriptionTypeUseType;
+    Language language;
 
     @Override
     protected Collection<ItemDescription> getEntities() {
-        var itemControl = Session.getModelController(ItemControl.class);
         Collection<ItemDescription> entities = null;
         var itemName = form.getItemName();
 
-        item = ItemLogic.getInstance().getItemByName(this, itemName);
+        item = itemLogic.getItemByName(this, itemName);
 
+        // If an Item was found...
         if(!hasExecutionErrors()) {
             var itemDescriptionTypeUseTypeName = form.getItemDescriptionTypeUseTypeName();
-            var itemDescriptionTypeUseType = itemDescriptionTypeUseTypeName == null ? null : itemControl.getItemDescriptionTypeUseTypeByName(itemDescriptionTypeUseTypeName);
 
-            if(itemDescriptionTypeUseTypeName == null || itemDescriptionTypeUseType != null) {
+            itemDescriptionTypeUseType = itemDescriptionTypeUseTypeName == null ? null : itemDescriptionTypeUseTypeLogic.getItemDescriptionTypeUseTypeByName(this, itemDescriptionTypeUseTypeName);
+
+            if(!hasExecutionErrors()) {
+                var languageIsoName = form.getLanguageIsoName();
+
                 if(itemDescriptionTypeUseType == null) {
-                    if(form.getLanguageIsoName() == null) {
+                    // If no ItemDescriptionTypeUseTypeName was specified, a LanguageIsoName must not be specified either...
+                    if(languageIsoName == null) {
+                        // Get all ItemDescriptions for the Item regardless of Language...
                         entities = itemControl.getItemDescriptionsByItem(item);
                     } else {
                         addExecutionError(ExecutionErrors.InvalidParameterCombination.name());
                     }
                 } else {
-                    var partyControl = Session.getModelController(PartyControl.class);
-                    var languageIsoName = form.getLanguageIsoName();
-                    var language = languageIsoName == null ? getPreferredLanguage() : partyControl.getLanguageByIsoName(languageIsoName);
+                    // If an ItemDescriptionTypeUseTypeName was specified, a Language must either be specific or pulled from the default...
+                    language = languageIsoName == null ? getPreferredLanguage() : languageLogic.getLanguageByName(this, languageIsoName);
 
-                    if(languageIsoName == null || language != null) {
+                    if(!hasExecutionErrors()) {
+                        // Get all ItemDescriptionTypeUses for the given ItemDescriptionTypeUseType...
                         var itemDescriptionTypeUses = itemControl.getItemDescriptionTypeUsesByItemDescriptionTypeUseType(itemDescriptionTypeUseType);
 
                         entities = new ArrayList<>();
 
+                        // And now try to get the best possible Item Description Type for each ItemDescriptionTypeUse...
                         for(var itemDescriptionTypeUse : itemDescriptionTypeUses) {
+                            // There are further comments in ItemControl on the algorithm for this.
                             var itemDescription = itemControl.getBestItemDescription(itemDescriptionTypeUse.getItemDescriptionType(), item, language);
 
                             if(itemDescription != null) {
                                 entities.add(itemDescription);
                             }
                         }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
                     }
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownItemDescriptionTypeUseTypeName.name(), itemDescriptionTypeUseTypeName);
             }
         }
 
@@ -124,14 +147,22 @@ public class GetItemDescriptionsCommand
         var result = ItemResultFactory.getGetItemDescriptionsResult();
 
         if(entities != null) {
-            var itemControl = Session.getModelController(ItemControl.class);
             var userVisit = getUserVisit();
+
+            result.setItem(itemControl.getItemTransfer(userVisit, item));
+
+            if(itemDescriptionTypeUseType != null) {
+                result.setItemDescriptionTypeUseType(itemControl.getItemDescriptionTypeUseTypeTransfer(userVisit, itemDescriptionTypeUseType));
+            }
+
+            if(language != null) {
+                result.setLanguage(partyControl.getLanguageTransfer(userVisit, language));
+            }
 
             if(session.hasLimit(ItemDescriptionFactory.class)) {
                 result.setItemDescriptionCount(itemControl.countItemDescriptionsByItem(item));
             }
 
-            result.setItem(itemControl.getItemTransfer(userVisit, item));
             result.setItemDescriptions(itemControl.getItemDescriptionTransfers(userVisit, entities));
         }
 
