@@ -35,7 +35,7 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -47,7 +47,7 @@ import javax.inject.Inject;
 
 @RequestScoped
 public class GetItemDescriptionsCommand
-        extends BaseMultipleEntitiesCommand<ItemDescription, GetItemDescriptionsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<ItemDescription, GetItemDescriptionsForm> {
 
     @Inject
     ItemControl itemControl;
@@ -91,9 +91,10 @@ public class GetItemDescriptionsCommand
     ItemDescriptionTypeUseType itemDescriptionTypeUseType;
     Language language;
 
+    Collection<ItemDescription> entities;
+
     @Override
-    protected Collection<ItemDescription> getEntities() {
-        Collection<ItemDescription> entities = null;
+    protected void handleForm() {
         var itemName = form.getItemName();
 
         item = itemLogic.getItemByName(this, itemName);
@@ -109,33 +110,60 @@ public class GetItemDescriptionsCommand
 
                 if(itemDescriptionTypeUseType == null) {
                     // If no ItemDescriptionTypeUseTypeName was specified, a LanguageIsoName must not be specified either...
-                    if(languageIsoName == null) {
-                        // Get all ItemDescriptions for the Item regardless of Language...
-                        entities = itemControl.getItemDescriptionsByItem(item);
-                    } else {
+                    if(languageIsoName != null) {
                         addExecutionError(ExecutionErrors.InvalidParameterCombination.name());
                     }
                 } else {
                     // If an ItemDescriptionTypeUseTypeName was specified, a Language must either be specific or pulled from the default...
                     language = languageIsoName == null ? getPreferredLanguage() : languageLogic.getLanguageByName(this, languageIsoName);
+                }
+            }
+        }
+    }
 
-                    if(!hasExecutionErrors()) {
-                        // Get all ItemDescriptionTypeUses for the given ItemDescriptionTypeUseType...
-                        var itemDescriptionTypeUses = itemControl.getItemDescriptionTypeUsesByItemDescriptionTypeUseType(itemDescriptionTypeUseType);
+    @Override
+    protected Long getTotalEntities() {
+        Long totalEntities = null;
 
-                        entities = new ArrayList<>();
+        if(!hasExecutionErrors()) {
+            if(itemDescriptionTypeUseType == null) {
+                totalEntities = itemControl.countItemDescriptionsByItem(item);
+            } else {
+                // Get all ItemDescriptionTypeUses for the given ItemDescriptionTypeUseType...
+                var itemDescriptionTypeUses = itemControl.getItemDescriptionTypeUsesByItemDescriptionTypeUseType(itemDescriptionTypeUseType);
 
-                        // And now try to get the best possible Item Description Type for each ItemDescriptionTypeUse...
-                        for(var itemDescriptionTypeUse : itemDescriptionTypeUses) {
-                            // There are further comments in ItemControl on the algorithm for this.
-                            var itemDescription = itemControl.getBestItemDescription(itemDescriptionTypeUse.getItemDescriptionType(), item, language);
+                entities = new ArrayList<>();
 
-                            if(itemDescription != null) {
-                                entities.add(itemDescription);
-                            }
-                        }
+                // And now try to get the best possible Item Description Type for each ItemDescriptionTypeUse...
+                for(var itemDescriptionTypeUse : itemDescriptionTypeUses) {
+                    // There are further comments in ItemControl on the algorithm for this.
+                    var itemDescription = itemControl.getBestItemDescription(itemDescriptionTypeUse.getItemDescriptionType(), item, language);
+
+                    if(itemDescription != null) {
+                        entities.add(itemDescription);
                     }
                 }
+
+                totalEntities = (long)entities.size();
+            }
+        }
+
+
+        return totalEntities;
+    }
+
+    @Override
+    protected Collection<ItemDescription> getEntities() {
+        // If an Item was found...
+        if(!hasExecutionErrors()) {
+            if(itemDescriptionTypeUseType == null) {
+                // If no ItemDescriptionTypeUseTypeName was specified, a LanguageIsoName must not be specified either...
+                if(language == null) {
+                    // Get all ItemDescriptions for the Item regardless of Language...
+                    entities = itemControl.getItemDescriptionsByItem(item);
+                }
+            } else {
+                getTotalEntities(); // Populates entities in this case.
             }
         }
 
@@ -160,7 +188,7 @@ public class GetItemDescriptionsCommand
             }
 
             if(session.hasLimit(ItemDescriptionFactory.class)) {
-                result.setItemDescriptionCount(itemControl.countItemDescriptionsByItem(item));
+                result.setItemDescriptionCount(getTotalEntities());
             }
 
             result.setItemDescriptions(itemControl.getItemDescriptionTransfers(userVisit, entities));
