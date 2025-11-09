@@ -8516,23 +8516,23 @@ public interface GraphQlQueries {
                     var limitOffset = objectLimiter.getLimitOffset();
                     var limitCount = objectLimiter.getLimitCount();
 
-                    Collection<ItemDescription> finalEntities;
+                    Collection<ItemDescription> limitedEntities;
                     if(itemDescriptionTypeUseTypeName != null) {
                         // A Limit must be manually applied.
-                        finalEntities = entities.stream()
+                        limitedEntities = entities.stream()
                                 .skip(limitOffset)
                                 .limit(limitCount)
                                 .toList();
                     } else {
                         // A Limit was applied in the SQL Query.
-                        finalEntities = entities;
+                        limitedEntities = entities;
                     }
 
-                    var itemDescriptions = finalEntities.stream()
+                    var itemDescriptions = limitedEntities.stream()
                             .skip(limitOffset)
                             .limit(limitCount)
                             .map(ItemDescriptionObject::new)
-                            .collect(Collectors.toCollection(() -> new ArrayList<>(finalEntities.size())));
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(limitedEntities.size())));
 
                     data = new CountedObjects<>(objectLimiter, itemDescriptions);
                 }
