@@ -8727,7 +8727,10 @@ public class ItemControl
     private ItemDescription getBestItemDescriptionWithinLanguage(final ItemDescriptionType itemDescriptionType, final Item item, final Language language) {
         ItemDescription itemDescription;
         var attemptedItemDescriptionType = itemDescriptionType;
-        
+
+        // For the requested ItemDescriptionType, Item, and Language, first try to get the Item Description by those
+        // exact qualifications. If no Item Description can be found, then try to get it using the Parent Item
+        // Description Type. When those run out, return null.
         do {
             itemDescription = getItemDescription(attemptedItemDescriptionType, item, language);
             
@@ -8742,8 +8745,11 @@ public class ItemControl
     }
     
     public ItemDescription getBestItemDescription(final ItemDescriptionType itemDescriptionType, final Item item, final Language language) {
+        // Try first with the specified language...
         var itemDescription = getBestItemDescriptionWithinLanguage(itemDescriptionType, item, language);
 
+        // If the specified language wasn't found, and it was not possible to fall back to a parent item description type,
+        // then try the default language...
         if(itemDescription == null && !language.getIsDefault()) {
             itemDescription = getBestItemDescriptionWithinLanguage(itemDescriptionType, item, partyControl.getDefaultLanguage());
         }
