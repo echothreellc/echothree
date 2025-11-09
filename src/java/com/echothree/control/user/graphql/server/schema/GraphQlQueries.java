@@ -761,6 +761,7 @@ import com.echothree.model.data.item.common.ItemAliasTypeConstants;
 import com.echothree.model.data.item.common.ItemCategoryConstants;
 import com.echothree.model.data.item.common.ItemConstants;
 import com.echothree.model.data.item.common.ItemDeliveryTypeConstants;
+import com.echothree.model.data.item.common.ItemDescriptionConstants;
 import com.echothree.model.data.item.common.ItemDescriptionTypeConstants;
 import com.echothree.model.data.item.common.ItemDescriptionTypeUseTypeConstants;
 import com.echothree.model.data.item.common.ItemImageTypeConstants;
@@ -8490,36 +8491,57 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("itemDescriptions")
-    static Collection<ItemDescriptionObject> itemDescriptions(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ItemDescriptionObject> itemDescriptions(final DataFetchingEnvironment env,
             @GraphQLName("itemName") @GraphQLNonNull final String itemName,
             @GraphQLName("itemDescriptionTypeUseTypeName") final String itemDescriptionTypeUseTypeName,
             @GraphQLName("languageIsoName") final String languageIsoName) {
-        Collection<ItemDescription> itemDescriptions;
-        Collection<ItemDescriptionObject> itemDescriptionObjects;
+        CountingPaginatedData<ItemDescriptionObject> data;
 
         try {
             var commandForm = ItemUtil.getHome().getGetItemDescriptionsForm();
+            var command = CDI.current().select(GetItemDescriptionsCommand.class).get();
 
             commandForm.setItemName(itemName);
             commandForm.setItemDescriptionTypeUseTypeName(itemDescriptionTypeUseTypeName);
             commandForm.setLanguageIsoName(languageIsoName);
 
-            itemDescriptions = CDI.current().select(GetItemDescriptionsCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ItemDescriptionConstants.COMPONENT_VENDOR_NAME, ItemDescriptionConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+                    var limitOffset = objectLimiter.getLimitOffset();
+                    var limitCount = objectLimiter.getLimitCount();
+
+                    Collection<ItemDescription> limitedEntities;
+                    if(itemDescriptionTypeUseTypeName != null) {
+                        // A Limit must be manually applied.
+                        limitedEntities = entities.stream()
+                                .skip(limitOffset)
+                                .limit(limitCount)
+                                .toList();
+                    } else {
+                        // A Limit was applied in the SQL Query.
+                        limitedEntities = entities;
+                    }
+
+                    var itemDescriptions = limitedEntities.stream()
+                            .skip(limitOffset)
+                            .limit(limitCount)
+                            .map(ItemDescriptionObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(limitedEntities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, itemDescriptions);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(itemDescriptions == null) {
-            itemDescriptionObjects = emptyList();
-        } else {
-            itemDescriptionObjects = new ArrayList<>(itemDescriptions.size());
-
-            itemDescriptions.stream()
-                    .map(ItemDescriptionObject::new)
-                    .forEachOrdered(itemDescriptionObjects::add);
-        }
-
-        return itemDescriptionObjects;
+        return data;
     }
 
     @GraphQLField
@@ -8574,7 +8596,6 @@ public interface GraphQlQueries {
 
         return data;
     }
-
 
     @GraphQLField
     @GraphQLName("itemUseType")

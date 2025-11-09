@@ -54,10 +54,20 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class ItemLogic
         extends BaseLogic {
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    WorkflowControl workflowControl;
 
     protected ItemLogic() {
         super();
@@ -68,7 +78,6 @@ public class ItemLogic
     }
     
     public ItemType getItemTypeByName(final ExecutionErrorAccumulator eea, final String itemTypeName) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemType = itemControl.getItemTypeByName(itemTypeName);
 
         if(itemType == null) {
@@ -79,7 +88,6 @@ public class ItemLogic
     }
 
     public ItemUseType getItemUseTypeByName(final ExecutionErrorAccumulator eea, final String itemUseTypeName) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemUseType = itemControl.getItemUseTypeByName(itemUseTypeName);
 
         if(itemUseType == null) {
@@ -90,7 +98,6 @@ public class ItemLogic
     }
 
     public Item getItemByName(final ExecutionErrorAccumulator eea, final String itemName) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var item = itemControl.getItemByName(itemName);
 
         if(item == null) {
@@ -101,7 +108,6 @@ public class ItemLogic
     }
 
     public Item getItemByNameThenAlias(final ExecutionErrorAccumulator eea, final String itemNameOrAlias) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var item = itemControl.getItemByNameThenAlias(itemNameOrAlias);
 
         if(item == null) {
@@ -119,7 +125,6 @@ public class ItemLogic
             final Long purchaseOrderStartTime, final Long purchaseOrderEndTime, final Boolean allowClubDiscounts, final Boolean allowCouponDiscounts,
             final Boolean allowAssociatePayments, final UnitOfMeasureKind unitOfMeasureKind, final ItemPriceType itemPriceType,
             final CancellationPolicy cancellationPolicy, final ReturnPolicy returnPolicy, final StylePath stylePath, final BasePK createdBy) {
-        var itemControl = Session.getModelController(ItemControl.class);
         Item item = null;
         
         if(itemCategory == null) {
@@ -166,8 +171,6 @@ public class ItemLogic
     }
 
     public void setItemStatus(final Session session, final ExecutionErrorAccumulator eea, final Item item, final String itemStatusChoice, final PartyPK modifiedBy) {
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, ItemStatusConstants.Workflow_ITEM_STATUS);
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(item.getPrimaryKey());
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);

@@ -29,13 +29,16 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class LanguageLogic
         extends BaseLogic {
+
+    @Inject
+    PartyControl partyControl;
 
     protected LanguageLogic() {
         super();
@@ -47,7 +50,6 @@ public class LanguageLogic
     
     public Language getLanguageByName(final ExecutionErrorAccumulator eea, final String languageIsoName,
             final EntityPermission entityPermission) {
-        var partyControl = Session.getModelController(PartyControl.class);
         var language = partyControl.getLanguageByIsoName(languageIsoName, entityPermission);
 
         if(language == null) {
@@ -72,8 +74,6 @@ public class LanguageLogic
                 ComponentVendors.ECHO_THREE.name(), EntityTypes.Language.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var partyControl = Session.getModelController(PartyControl.class);
-            
             projectLanguage = partyControl.getLanguageByEntityInstance(entityInstance, entityPermission);
         }
 
