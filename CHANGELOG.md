@@ -1,5 +1,33 @@
 # Changelog
 
+## 2025-11-09-01
+
+* Convert GetItemDescriptionTypeUses UC to Use BasePaginatedMultipleEntitiesCommand [1207](https://gitlab.echothree.com/echothree/echothree/-/issues/1207)
+* Convert GetItemImageTypes UC to Use BasePaginatedMultipleEntitiesCommand [1208](https://gitlab.echothree.com/echothree/echothree/-/issues/1208)
+* Convert GetItemDescriptions UC to Use BasePaginatedMultipleEntitiesCommand [1210](https://gitlab.echothree.com/echothree/echothree/-/issues/1210)
+* Convert GetItemPrices UC to Use BasePaginatedMultipleEntitiesCommand [1211](https://gitlab.echothree.com/echothree/echothree/-/issues/1211)
+* Convert GetItemAliases UC to Use BasePaginatedMultipleEntitiesCommand [1213](https://gitlab.echothree.com/echothree/echothree/-/issues/1213)
+* Convert GetItemDescriptionTypes UC to Use BasePaginatedMultipleEntitiesCommand [1215](https://gitlab.echothree.com/echothree/echothree/-/issues/1215)
+* Convert GetRelatedItems UC to Use BasePaginatedMultipleEntitiesCommand [1217](https://gitlab.echothree.com/echothree/echothree/-/issues/1217)
+* Convert GetItems UC to Use BasePaginatedMultipleEntitiesCommand [1218](https://gitlab.echothree.com/echothree/echothree/-/issues/1218)
+* Convert GetItemUnitOfMeasureTypes UC to Use BasePaginatedMultipleEntitiesCommand [1220](https://gitlab.echothree.com/echothree/echothree/-/issues/1220)
+* Convert GetItemDescriptionTypeUseTypes UC to Use BasePaginatedMultipleEntitiesCommand [1221](https://gitlab.echothree.com/echothree/echothree/-/issues/1221)
+* Add Inventory Adjustment Types [1621](https://gitlab.echothree.com/echothree/echothree/-/issues/1621)
+* Use CDI to Inject All UCs [1622](https://gitlab.echothree.com/echothree/echothree/-/issues/1622)
+* Convert Logic Classes to CDI Beans [1624](https://gitlab.echothree.com/echothree/echothree/-/issues/1624)
+* Convert Control Classes to CDI Beans [1625](https://gitlab.echothree.com/echothree/echothree/-/issues/1625)
+* Remove get*Control() Functions from BaseCommand [1626](https://gitlab.echothree.com/echothree/echothree/-/issues/1626)
+* Remove get*Control() Functions from BaseModelControl [1627](https://gitlab.echothree.com/echothree/echothree/-/issues/1627)
+* Convert Factory Classes to CDI Beans [1628](https://gitlab.echothree.com/echothree/echothree/-/issues/1628)
+* Convert BaseCommand.checkCommandSecurityDefinition()'s Dependencies to Be Injected [1629](https://gitlab.echothree.com/echothree/echothree/-/issues/1629)
+* Caffeine 3.2.3 Upgrade [1630](https://gitlab.echothree.com/echothree/echothree/-/issues/1630)
+* Convert CommandControl Use CDI Beans [1631](https://gitlab.echothree.com/echothree/echothree/-/issues/1631)
+* Convert EventControl Use CDI Beans [1632](https://gitlab.echothree.com/echothree/echothree/-/issues/1632)
+* Convert EntityTypeControl Use CDI Beans [1633](https://gitlab.echothree.com/echothree/echothree/-/issues/1633)
+* Convert ComponentControl Use CDI Beans [1634](https://gitlab.echothree.com/echothree/echothree/-/issues/1634)
+* Convert CoreControl to Use CDI Beans [1635](https://gitlab.echothree.com/echothree/echothree/-/issues/1635)
+* Convert GraphQL Security Checks to Use CDI [1636](https://gitlab.echothree.com/echothree/echothree/-/issues/1636)
+
 ## 2025-10-26-01
 
 * Provide Access to GeoCodeCountry Using GraphQL Union [1615](https://gitlab.echothree.com/echothree/echothree/-/issues/1615)
