@@ -46,10 +46,10 @@ public class ChainTransferCache
             var chainInstanceSequenceTransfer = chainInstanceSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, chainInstanceSequence);
             var isDefault = chainDetail.getIsDefault();
             var sortOrder = chainDetail.getSortOrder();
-            var description = chainControl.getBestChainDescription(chain, getLanguage());
+            var description = chainControl.getBestChainDescription(chain, getLanguage(userVisit));
             
             chainTransfer = new ChainTransfer(chainTypeTransfer, chainName, chainInstanceSequenceTransfer, isDefault, sortOrder, description);
-            put(chain, chainTransfer);
+            put(userVisit, chain, chainTransfer);
         }
         
         return chainTransfer;

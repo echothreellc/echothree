@@ -45,10 +45,10 @@ public class SearchCheckSpellingActionTypeTransferCache
             var searchCheckSpellingActionTypeName = searchCheckSpellingActionTypeDetail.getSearchCheckSpellingActionTypeName();
             var isDefault = searchCheckSpellingActionTypeDetail.getIsDefault();
             var sortOrder = searchCheckSpellingActionTypeDetail.getSortOrder();
-            var description = searchControl.getBestSearchCheckSpellingActionTypeDescription(searchCheckSpellingActionType, getLanguage());
+            var description = searchControl.getBestSearchCheckSpellingActionTypeDescription(searchCheckSpellingActionType, getLanguage(userVisit));
 
             searchCheckSpellingActionTypeTransfer = new SearchCheckSpellingActionTypeTransfer(searchCheckSpellingActionTypeName, isDefault, sortOrder, description);
-            put(searchCheckSpellingActionType, searchCheckSpellingActionTypeTransfer);
+            put(userVisit, searchCheckSpellingActionType, searchCheckSpellingActionTypeTransfer);
         }
 
         return searchCheckSpellingActionTypeTransfer;

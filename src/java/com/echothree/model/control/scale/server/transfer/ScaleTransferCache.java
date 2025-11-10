@@ -45,10 +45,10 @@ public class ScaleTransferCache
             var serverService = serverControl.getServerServiceTransfer(userVisit, scaleDetail.getServerService());
             var isDefault = scaleDetail.getIsDefault();
             var sortOrder = scaleDetail.getSortOrder();
-            var description = scaleControl.getBestScaleDescription(scale, getLanguage());
+            var description = scaleControl.getBestScaleDescription(scale, getLanguage(userVisit));
             
             scaleTransfer = new ScaleTransfer(scaleName, scaleType, serverService, isDefault, sortOrder, description);
-            put(scale, scaleTransfer);
+            put(userVisit, scale, scaleTransfer);
         }
         
         return scaleTransfer;

@@ -41,7 +41,7 @@ public class EntityAttributeGroupDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, entityAttributeGroupDescription.getLanguage());
             
             entityAttributeGroupDescriptionTransfer = new EntityAttributeGroupDescriptionTransfer(languageTransfer, entityAttributeGroupTransfer, entityAttributeGroupDescription.getDescription());
-            put(entityAttributeGroupDescription, entityAttributeGroupDescriptionTransfer);
+            put(userVisit, entityAttributeGroupDescription, entityAttributeGroupDescriptionTransfer);
         }
         
         return entityAttributeGroupDescriptionTransfer;

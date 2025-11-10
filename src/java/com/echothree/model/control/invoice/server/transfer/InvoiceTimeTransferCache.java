@@ -35,10 +35,10 @@ public class InvoiceTimeTransferCache
         if(invoiceTimeTransfer == null) {
             var invoiceTimeType = invoiceControl.getInvoiceTimeTypeTransfer(userVisit, invoiceTime.getInvoiceTimeType());
             var unformattedTime = invoiceTime.getTime();
-            var time = formatTypicalDateTime(unformattedTime);
+            var time = formatTypicalDateTime(userVisit, unformattedTime);
             
             invoiceTimeTransfer = new InvoiceTimeTransfer(invoiceTimeType, unformattedTime, time);
-            put(invoiceTime, invoiceTimeTransfer);
+            put(userVisit, invoiceTime, invoiceTimeTransfer);
         }
         
         return invoiceTimeTransfer;

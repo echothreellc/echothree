@@ -37,7 +37,7 @@ public class GeoCodeRelationshipTransferCache
             var toGeoCode = geoControl.getGeoCodeTransfer(userVisit, geoCodeRelationship.getToGeoCode());
             
             geoCodeRelationshipTransfer = new GeoCodeRelationshipTransfer(fromGeoCode, toGeoCode);
-            put(geoCodeRelationship, geoCodeRelationshipTransfer);
+            put(userVisit, geoCodeRelationship, geoCodeRelationshipTransfer);
         }
         
         return geoCodeRelationshipTransfer;

@@ -37,7 +37,7 @@ public class PicklistTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, picklistTypeDescription.getLanguage());
             
             picklistTypeDescriptionTransfer = new PicklistTypeDescriptionTransfer(languageTransfer, picklistTypeTransfer, picklistTypeDescription.getDescription());
-            put(picklistTypeDescription, picklistTypeDescriptionTransfer);
+            put(userVisit, picklistTypeDescription, picklistTypeDescriptionTransfer);
         }
         
         return picklistTypeDescriptionTransfer;

@@ -42,7 +42,7 @@ public class ShippingMethodCarrierServiceTransferCache
             var carrierService = carrierControl.getCarrierServiceTransfer(userVisit, shippingMethodCarrierService.getCarrierService());
             
             shippingMethodCarrierServiceTransfer = new ShippingMethodCarrierServiceTransfer(shippingMethod, carrierService);
-            put(shippingMethodCarrierService, shippingMethodCarrierServiceTransfer);
+            put(userVisit, shippingMethodCarrierService, shippingMethodCarrierServiceTransfer);
         }
         
         return shippingMethodCarrierServiceTransfer;

@@ -42,11 +42,11 @@ public class GeoCodeTypeTransferCache
                     parentGeoCodeType);
             var isDefault = geoCodeTypeDetail.getIsDefault();
             var sortOrder = geoCodeTypeDetail.getSortOrder();
-            var description = geoControl.getBestGeoCodeTypeDescription(geoCodeType, getLanguage());
+            var description = geoControl.getBestGeoCodeTypeDescription(geoCodeType, getLanguage(userVisit));
             
             geoCodeTypeTransfer = new GeoCodeTypeTransfer(geoCodeTypeName, parentGeoCodeTypeTransfer, isDefault, sortOrder,
                     description);
-            put(geoCodeType, geoCodeTypeTransfer);
+            put(userVisit, geoCodeType, geoCodeTypeTransfer);
         }
         
         return geoCodeTypeTransfer;

@@ -57,7 +57,7 @@ public class ComponentVendorTransferCache
             var description = filterDescription ? null : componentVendorDetail.getDescription();
             
             componentVendorTransfer = new ComponentVendorTransfer(componentVendorName, description);
-            put(componentVendor, componentVendorTransfer);
+            put(userVisit, componentVendor, componentVendorTransfer);
         }
         
         return componentVendorTransfer;

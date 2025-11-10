@@ -37,7 +37,7 @@ public class CancellationKindDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, cancellationKindDescription.getLanguage());
             
             cancellationKindDescriptionTransfer = new CancellationKindDescriptionTransfer(languageTransfer, cancellationKindTransfer, cancellationKindDescription.getDescription());
-            put(cancellationKindDescription, cancellationKindDescriptionTransfer);
+            put(userVisit, cancellationKindDescription, cancellationKindDescriptionTransfer);
         }
         
         return cancellationKindDescriptionTransfer;

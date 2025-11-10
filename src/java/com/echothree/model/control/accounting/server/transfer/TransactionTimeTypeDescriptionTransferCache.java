@@ -41,7 +41,7 @@ public class TransactionTimeTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, transactionTimeTypeDescription.getLanguage());
             
             transactionTimeTypeDescriptionTransfer = new TransactionTimeTypeDescriptionTransfer(languageTransfer, transactionTimeTypeTransfer, transactionTimeTypeDescription.getDescription());
-            put(transactionTimeTypeDescription, transactionTimeTypeDescriptionTransfer);
+            put(userVisit, transactionTimeTypeDescription, transactionTimeTypeDescriptionTransfer);
         }
         
         return transactionTimeTypeDescriptionTransfer;

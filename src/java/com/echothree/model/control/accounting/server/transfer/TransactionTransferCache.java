@@ -75,7 +75,7 @@ public class TransactionTransferCache
 
             transactionTransfer = new TransactionTransfer(transactionName, groupPartyTransfer, transactionGroupTransfer,
                     transactionTypeTransfer, transactionStatusTransfer);
-            put(transaction, transactionTransfer);
+            put(userVisit, transaction, transactionTransfer);
             
             if(includeTransactionGlEntries) {
                 transactionTransfer.setTransactionGlEntries(new ListWrapper<>(accountingControl.getTransactionGlEntryTransfersByTransaction(userVisit, transaction)));

@@ -37,7 +37,7 @@ public class ReturnReasonDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, returnReasonDescription.getLanguage());
             
             returnReasonDescriptionTransfer = new ReturnReasonDescriptionTransfer(languageTransfer, returnReasonTransfer, returnReasonDescription.getDescription());
-            put(returnReasonDescription, returnReasonDescriptionTransfer);
+            put(userVisit, returnReasonDescription, returnReasonDescriptionTransfer);
         }
         
         return returnReasonDescriptionTransfer;

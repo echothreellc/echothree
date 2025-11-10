@@ -42,10 +42,10 @@ public class ServerTransferCache
             var serverName = serverDetail.getServerName();
             var isDefault = serverDetail.getIsDefault();
             var sortOrder = serverDetail.getSortOrder();
-            var description = serverControl.getBestServerDescription(server, getLanguage());
+            var description = serverControl.getBestServerDescription(server, getLanguage(userVisit));
 
             serverTransfer = new ServerTransfer(serverName, isDefault, sortOrder, description);
-            put(server, serverTransfer);
+            put(userVisit, server, serverTransfer);
         }
 
         return serverTransfer;

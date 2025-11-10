@@ -41,7 +41,7 @@ public class UseNameElementDescriptionTransferCache
             
             useNameElementDescriptionTransfer = new UseNameElementDescriptionTransfer(languageTransfer, useNameElementTransfer,
                     useNameElementDescription.getDescription());
-            put(useNameElementDescription, useNameElementDescriptionTransfer);
+            put(userVisit, useNameElementDescription, useNameElementDescriptionTransfer);
         }
         
         return useNameElementDescriptionTransfer;

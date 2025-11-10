@@ -46,7 +46,7 @@ public class PersonTransferCache
             var nameSuffixTransfer = nameSuffix == null? null: partyControl.getNameSuffixTransfer(userVisit, nameSuffix);
             
             personTransfer = new PersonTransfer(personalTitleTransfer, firstName, middleName, lastName, nameSuffixTransfer);
-            put(person, personTransfer);
+            put(userVisit, person, personTransfer);
         }
         
         return personTransfer;

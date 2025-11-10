@@ -46,7 +46,7 @@ public class EntityDateAttributeTransferCache
             var dateAttribute = DateUtils.getInstance().formatDate(userVisit, unformattedDateAttribute);
             
             entityDateAttributeTransfer = new EntityDateAttributeTransfer(entityAttribute, entityInstanceTransfer, dateAttribute, unformattedDateAttribute);
-            put(entityDateAttribute, entityDateAttributeTransfer);
+            put(userVisit, entityDateAttribute, entityDateAttributeTransfer);
         }
         
         return entityDateAttributeTransfer;

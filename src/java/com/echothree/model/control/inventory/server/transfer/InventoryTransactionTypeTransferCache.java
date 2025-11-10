@@ -54,11 +54,11 @@ public class InventoryTransactionTypeTransferCache
             var inventoryTransactionWorkflowEntranceTransfer = inventoryTransactionWorkflowEntrance == null? null: workflowControl.getWorkflowEntranceTransfer(userVisit, inventoryTransactionWorkflowEntrance);
             var isDefault = inventoryTransactionTypeDetail.getIsDefault();
             var sortOrder = inventoryTransactionTypeDetail.getSortOrder();
-            var description = inventoryTransactionTypeControl.getBestInventoryTransactionTypeDescription(inventoryTransactionType, getLanguage());
+            var description = inventoryTransactionTypeControl.getBestInventoryTransactionTypeDescription(inventoryTransactionType, getLanguage(userVisit));
             
             inventoryTransactionTypeTransfer = new InventoryTransactionTypeTransfer(inventoryTransactionTypeName, inventoryTransactionSequenceTypeTransfer, inventoryTransactionWorkflowTransfer,
                     inventoryTransactionWorkflowEntranceTransfer, isDefault, sortOrder, description);
-            put(inventoryTransactionType, inventoryTransactionTypeTransfer);
+            put(userVisit, inventoryTransactionType, inventoryTransactionTypeTransfer);
         }
         
         return inventoryTransactionTypeTransfer;

@@ -43,10 +43,10 @@ public class BirthdayFormatTransferCache
             var birthdayFormatName = birthdayFormatDetail.getBirthdayFormatName();
             var isDefault = birthdayFormatDetail.getIsDefault();
             var sortOrder = birthdayFormatDetail.getSortOrder();
-            var description = partyControl.getBestBirthdayFormatDescription(birthdayFormat, getLanguage());
+            var description = partyControl.getBestBirthdayFormatDescription(birthdayFormat, getLanguage(userVisit));
             
             birthdayFormatTransfer = new BirthdayFormatTransfer(birthdayFormatName, isDefault, sortOrder, description);
-            put(birthdayFormat, birthdayFormatTransfer);
+            put(userVisit, birthdayFormat, birthdayFormatTransfer);
         }
         
         return birthdayFormatTransfer;

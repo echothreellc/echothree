@@ -39,7 +39,7 @@ public class CancellationReasonTypeTransferCache
             var sortOrder = cancellationReasonType.getSortOrder();
             
             cancellationReasonTypeTransfer = new CancellationReasonTypeTransfer(cancellationReason, cancellationType, isDefault, sortOrder);
-            put(cancellationReasonType, cancellationReasonTypeTransfer);
+            put(userVisit, cancellationReasonType, cancellationReasonTypeTransfer);
         }
         
         return cancellationReasonTypeTransfer;

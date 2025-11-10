@@ -46,10 +46,10 @@ public class OrderAliasTypeTransferCache
             var validationPattern = orderAliasTypeDetail.getValidationPattern();
             var isDefault = orderAliasTypeDetail.getIsDefault();
             var sortOrder = orderAliasTypeDetail.getSortOrder();
-            var description = orderAliasControl.getBestOrderAliasTypeDescription(orderAliasType, getLanguage());
+            var description = orderAliasControl.getBestOrderAliasTypeDescription(orderAliasType, getLanguage(userVisit));
             
             orderAliasTypeTransfer = new OrderAliasTypeTransfer(orderType, orderAliasTypeName, validationPattern, isDefault, sortOrder, description);
-            put(orderAliasType, orderAliasTypeTransfer);
+            put(userVisit, orderAliasType, orderAliasTypeTransfer);
         }
         
         return orderAliasTypeTransfer;

@@ -40,7 +40,7 @@ public class EventTransferCache
         if(eventTransfer == null) {
             var entityInstanceTransferCache = coreControl.getCoreTransferCaches(userVisit).getEntityInstanceTransferCache();
             var unformattedEventTime = event.getEventTime();
-            var eventTime = formatTypicalDateTime(unformattedEventTime);
+            var eventTime = formatTypicalDateTime(userVisit, unformattedEventTime);
             var eventTimeSequence = event.getEventTimeSequence();
             var entityInstanceTransfer = entityInstanceTransferCache.getEntityInstanceTransfer(event.getEntityInstance(), false, false, false, false);
             var eventTypeTransfer = eventControl.getEventTypeTransfer(userVisit, event.getEventType());
@@ -53,7 +53,7 @@ public class EventTransferCache
 
             eventTransfer = new EventTransfer(unformattedEventTime, eventTime, eventTimeSequence, entityInstanceTransfer, eventTypeTransfer,
                     relatedEntityInstanceTransfer, relatedEventTypeTransfer, createdByTransfer);
-            put(event, eventTransfer);
+            put(userVisit, event, eventTransfer);
         }
         
         return eventTransfer;

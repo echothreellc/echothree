@@ -41,7 +41,7 @@ public class PaymentMethodDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, paymentMethodDescription.getLanguage());
             
             paymentMethodDescriptionTransfer = new PaymentMethodDescriptionTransfer(languageTransfer, paymentMethodTransfer, paymentMethodDescription.getDescription());
-            put(paymentMethodDescription, paymentMethodDescriptionTransfer);
+            put(userVisit, paymentMethodDescription, paymentMethodDescriptionTransfer);
         }
         
         return paymentMethodDescriptionTransfer;

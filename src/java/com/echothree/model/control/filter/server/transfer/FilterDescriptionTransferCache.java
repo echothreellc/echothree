@@ -41,7 +41,7 @@ public class FilterDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, filterDescription.getLanguage());
             
             filterDescriptionTransfer = new FilterDescriptionTransfer(languageTransfer, filterTransfer, filterDescription.getDescription());
-            put(filterDescription, filterDescriptionTransfer);
+            put(userVisit, filterDescription, filterDescriptionTransfer);
         }
         
         return filterDescriptionTransfer;

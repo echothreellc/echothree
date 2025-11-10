@@ -44,10 +44,10 @@ public class ServiceTransferCache
             var protocol = serverControl.getProtocolTransfer(userVisit, serviceDetail.getProtocol());
             var isDefault = serviceDetail.getIsDefault();
             var sortOrder = serviceDetail.getSortOrder();
-            var description = serverControl.getBestServiceDescription(service, getLanguage());
+            var description = serverControl.getBestServiceDescription(service, getLanguage(userVisit));
     
             serviceTransfer = new ServiceTransfer(serviceName, port, protocol, isDefault, sortOrder, description);
-            put(service, serviceTransfer);
+            put(userVisit, service, serviceTransfer);
         }
         
         return serviceTransfer;

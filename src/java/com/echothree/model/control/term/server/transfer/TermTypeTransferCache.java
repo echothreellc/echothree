@@ -36,10 +36,10 @@ public class TermTypeTransferCache
             var termTypeName = termType.getTermTypeName();
             var isDefault = termType.getIsDefault();
             var sortOrder = termType.getSortOrder();
-            var description = termControl.getBestTermTypeDescription(termType, getLanguage());
+            var description = termControl.getBestTermTypeDescription(termType, getLanguage(userVisit));
             
             termTypeTransfer = new TermTypeTransfer(termTypeName, isDefault, sortOrder, description);
-            put(termType, termTypeTransfer);
+            put(userVisit, termType, termTypeTransfer);
         }
         
         return termTypeTransfer;

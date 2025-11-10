@@ -44,10 +44,10 @@ public class LotTimeTypeTransferCache
             var lotTimeTypeName = lotTimeTypeDetail.getLotTimeTypeName();
             var isDefault = lotTimeTypeDetail.getIsDefault();
             var sortOrder = lotTimeTypeDetail.getSortOrder();
-            var description = lotTimeControl.getBestLotTimeTypeDescription(lotTimeType, getLanguage());
+            var description = lotTimeControl.getBestLotTimeTypeDescription(lotTimeType, getLanguage(userVisit));
             
             lotTimeTypeTransfer = new LotTimeTypeTransfer(lotTimeTypeName, isDefault, sortOrder, description);
-            put(lotTimeType, lotTimeTypeTransfer);
+            put(userVisit, lotTimeType, lotTimeTypeTransfer);
         }
         
         return lotTimeTypeTransfer;

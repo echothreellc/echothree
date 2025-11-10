@@ -62,7 +62,7 @@ public class PaymentProcessorTransactionTransferCache
             
             paymentProcessorTransactionTransfer = new PaymentProcessorTransactionTransfer(paymentProcessorTransactionName,
                     paymentProcessor, paymentProcessorActionType, paymentProcessorResultCode);
-            put(paymentProcessorTransaction, paymentProcessorTransactionTransfer);
+            put(userVisit, paymentProcessorTransaction, paymentProcessorTransactionTransfer);
 
             if(includePaymentProcessorTransactionCodes) {
                 paymentProcessorTransactionTransfer.setPaymentProcessorTransactionCodes(new ListWrapper<>(paymentProcessorTransactionCodeControl.getPaymentProcessorTransactionCodeTransfersByPaymentProcessorTransaction(userVisit, paymentProcessorTransaction)));

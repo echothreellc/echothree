@@ -42,7 +42,7 @@ public class TrainingClassAnswerTransferCache
             var sortOrder = trainingClassAnswerDetail.getSortOrder();
             
             trainingClassAnswerTransfer = new TrainingClassAnswerTransfer(trainingClassQuestion, trainingClassAnswerName, isCorrect, sortOrder);
-            put(trainingClassAnswer, trainingClassAnswerTransfer);
+            put(userVisit, trainingClassAnswer, trainingClassAnswerTransfer);
         }
         
         return trainingClassAnswerTransfer;

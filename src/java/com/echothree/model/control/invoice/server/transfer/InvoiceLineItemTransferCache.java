@@ -52,7 +52,7 @@ public class InvoiceLineItemTransferCache
             var quantity = invoiceLineItem.getQuantity();
             
             invoiceLineItemTransfer = new InvoiceLineItemTransfer(invoiceLine, item, inventoryCondition, unitOfMeasureType, quantity);
-            put(invoiceLineItem, invoiceLineItemTransfer);
+            put(userVisit, invoiceLineItem, invoiceLineItemTransfer);
         }
 
         return invoiceLineItemTransfer;

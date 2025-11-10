@@ -49,11 +49,11 @@ public class PartyTypeAuditPolicyTransferCache
             var partyTypeTransfer = partyControl.getPartyTypeTransfer(userVisit, partyTypeAuditPolicyDetail.getPartyType());
             var auditCommands = partyTypeAuditPolicyDetail.getAuditCommands();
             var unformattedRetainUserVisitsTime = partyTypeAuditPolicyDetail.getRetainUserVisitsTime();
-            var retainUserVisitsTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedRetainUserVisitsTime);
+            var retainUserVisitsTime = formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedRetainUserVisitsTime);
 
             partyTypeAuditPolicyTransfer = new PartyTypeAuditPolicyTransfer(partyTypeTransfer, auditCommands, unformattedRetainUserVisitsTime,
                     retainUserVisitsTime);
-            put(partyTypeAuditPolicy, partyTypeAuditPolicyTransfer);
+            put(userVisit, partyTypeAuditPolicy, partyTypeAuditPolicyTransfer);
         }
 
         return partyTypeAuditPolicyTransfer;

@@ -34,10 +34,10 @@ public class WorkflowStepTypeTransferCache
         
         if(workflowStepTypeTransfer == null) {
             var workflowStepTypeName = workflowStepType.getWorkflowStepTypeName();
-            var description = workflowControl.getBestWorkflowStepTypeDescription(workflowStepType, getLanguage());
+            var description = workflowControl.getBestWorkflowStepTypeDescription(workflowStepType, getLanguage(userVisit));
             
             workflowStepTypeTransfer = new WorkflowStepTypeTransfer(workflowStepTypeName, description);
-            put(workflowStepType, workflowStepTypeTransfer);
+            put(userVisit, workflowStepType, workflowStepTypeTransfer);
         }
         
         return workflowStepTypeTransfer;

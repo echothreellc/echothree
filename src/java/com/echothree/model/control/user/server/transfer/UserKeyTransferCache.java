@@ -48,7 +48,7 @@ public class UserKeyTransferCache
             var partyRelationshipTransfer = partyRelationship == null? null: partyControl.getPartyRelationshipTransfer(userVisit, partyRelationship);
             
             userKeyTransfer = new UserKeyTransfer(userKeyName, partyTransfer, partyRelationshipTransfer);
-            put(userKey, userKeyTransfer);
+            put(userVisit, userKey, userKeyTransfer);
         }
         
         return userKeyTransfer;

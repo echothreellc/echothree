@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.workrequirement.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
-import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.control.workrequirement.common.workflow.WorkRequirementStatusConstants;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
@@ -61,9 +59,9 @@ public class WorkRequirementTransferCache
             var workEffort = workEffortControl.getWorkEffortTransfer(userVisit, workRequirementDetail.getWorkEffort());
             var workRequirementScope = workRequirementControl.getWorkRequirementScopeTransfer(userVisit, workRequirementDetail.getWorkRequirementScope());
             var unformattedStartTime = workRequirementDetail.getStartTime();
-            var startTime = formatTypicalDateTime(unformattedStartTime);
+            var startTime = formatTypicalDateTime(userVisit, unformattedStartTime);
             var unformattedRequiredTime = workRequirementDetail.getRequiredTime();
-            var requiredTime = formatTypicalDateTime(unformattedRequiredTime);
+            var requiredTime = formatTypicalDateTime(userVisit, unformattedRequiredTime);
 
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(workRequirement.getPrimaryKey());
             var workRequirementStatus = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
@@ -71,7 +69,7 @@ public class WorkRequirementTransferCache
 
             workRequirementTransfer = new WorkRequirementTransfer(workRequirementName, workEffort, workRequirementScope, unformattedStartTime, startTime,
                     unformattedRequiredTime, requiredTime, workRequirementStatus);
-            put(workRequirement, workRequirementTransfer);
+            put(userVisit, workRequirement, workRequirementTransfer);
 
             if(includeWorkAssignments) {
                 workRequirementTransfer.setWorkAssignments(new ListWrapper<>(workRequirementControl.getWorkAssignmentTransfersByWorkRequirement(userVisit, workRequirement)));

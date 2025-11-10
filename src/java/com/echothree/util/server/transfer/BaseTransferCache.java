@@ -104,16 +104,16 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         return log;
     }
     
-    protected void put(final K key, final V value, final EntityInstance entityInstance) {
+    protected void put(final UserVisit userVisit, final K key, final V value, final EntityInstance entityInstance) {
         transferCache.put(key, value);
 
         if(includeEntityInstance) {
-            setupEntityInstance(key, entityInstance, value);
+            setupEntityInstance(userVisit, key, entityInstance, value);
         }
     }
 
-    protected void put(final K key, final V value) {
-        put(key, value, null);
+    protected void put(final UserVisit userVisit, final K key, final V value) {
+        put(userVisit, key, value, null);
     }
 
     protected V get(Object key) {
@@ -136,15 +136,15 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         return userControl;
     }
 
-    protected PartyPK getPartyPK() {
+    protected PartyPK getPartyPK(final UserVisit userVisit) {
         if(party == null) {
-            getParty();
+            getParty(userVisit);
         }
 
         return party == null? null: party.getPrimaryKey();
     }
 
-    protected Party getParty() {
+    protected Party getParty(final UserVisit userVisit) {
         if(party == null) {
             party = getUserControl().getPartyFromUserVisit(userVisit);
         }
@@ -152,7 +152,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         return party;
     }
 
-    protected Language getLanguage() {
+    protected Language getLanguage(final UserVisit userVisit) {
         if(language == null) {
             language = getUserControl().getPreferredLanguageFromUserVisit(userVisit);
         }
@@ -160,7 +160,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         return language;
     }
     
-    protected Currency getCurrency() {
+    protected Currency getCurrency(final UserVisit userVisit) {
         if(currency == null) {
             currency = getUserControl().getPreferredCurrencyFromUserVisit(userVisit);
         }
@@ -168,7 +168,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         return currency;
     }
     
-    protected TimeZone getTimeZone() {
+    protected TimeZone getTimeZone(final UserVisit userVisit) {
         if(timeZone == null) {
             timeZone = getUserControl().getPreferredTimeZoneFromUserVisit(userVisit);
         }
@@ -176,7 +176,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         return timeZone;
     }
     
-    protected DateTimeFormat getDateTimeFormat() {
+    protected DateTimeFormat getDateTimeFormat(final UserVisit userVisit) {
         if(dateTimeFormat == null) {
             dateTimeFormat = getUserControl().getPreferredDateTimeFormatFromUserVisit(userVisit);
         }
@@ -184,7 +184,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         return dateTimeFormat;
     }
 
-    protected String formatTypicalDateTime(Long time) {
+    protected String formatTypicalDateTime(final UserVisit userVisit, Long time) {
         return DateUtils.getInstance().formatTypicalDateTime(userVisit, time);
     }
     
@@ -196,7 +196,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         return Inet4AddressUtils.getInstance().formatInet4Address(inet4Address);
     }
     
-    protected String formatUnitOfMeasure(UnitOfMeasureKind unitOfMeasureKind, Long measure) {
+    protected String formatUnitOfMeasure(final UserVisit userVisit, UnitOfMeasureKind unitOfMeasureKind, Long measure) {
         return UnitOfMeasureUtils.getInstance().formatUnitOfMeasure(userVisit, unitOfMeasureKind, measure);
     }
 
@@ -216,7 +216,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         this.includeEntityAliasTypes = includeEntityAliasTypes;
     }
 
-    protected void setupEntityAliasTypes(EntityInstance entityInstance, V transfer) {
+    protected void setupEntityAliasTypes(final UserVisit userVisit, EntityInstance entityInstance, V transfer) {
         var entityAliasControl = Session.getModelController(EntityAliasControl.class);
         var entityAliasTypeTransfers = entityAliasControl.getEntityAliasTypeTransfersByEntityType(userVisit, entityInstance.getEntityType(), entityInstance);
         var mapWrapper = new MapWrapper<EntityAliasTypeTransfer>(entityAliasTypeTransfers.size());
@@ -244,7 +244,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         this.includeEntityAttributeGroups = includeEntityAttributeGroups;
     }
 
-    protected void setupEntityAttributeGroups(EntityInstance entityInstance, V transfer) {
+    protected void setupEntityAttributeGroups(final UserVisit userVisit, EntityInstance entityInstance, V transfer) {
         var coreControl = Session.getModelController(CoreControl.class);
         var entityAttributeGroupTransfers = coreControl.getEntityAttributeGroupTransfersByEntityType(userVisit, entityInstance.getEntityType(), entityInstance);
         var mapWrapper = new MapWrapper<EntityAttributeGroupTransfer>(entityAttributeGroupTransfers.size());
@@ -272,7 +272,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         this.includeTagScopes = includeTagScopes;
     }
 
-    protected void setupTagScopes(EntityInstance entityInstance, V transfer) {
+    protected void setupTagScopes(final UserVisit userVisit, EntityInstance entityInstance, V transfer) {
         var tagControl = Session.getModelController(TagControl.class);
         var tagScopes = tagControl.getTagScopesByEntityType(entityInstance.getEntityType());
         var mapWrapper = new MapWrapper<TagScopeTransfer>(tagScopes.size());
@@ -372,7 +372,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         this.includeUuid = includeUuid;
     }
 
-    protected void setupEntityInstance(final K baseEntity, EntityInstance entityInstance, final V transfer) {
+    protected void setupEntityInstance(final UserVisit userVisit, final K baseEntity, EntityInstance entityInstance, final V transfer) {
         var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
         if(entityInstance == null) {
@@ -387,21 +387,21 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
 
             if(includeEntityAliasTypes || includeEntityAttributeGroups || includeTagScopes) {
                 if(includeEntityAliasTypes) {
-                    setupEntityAliasTypes(entityInstance, transfer);
+                    setupEntityAliasTypes(userVisit, entityInstance, transfer);
                 }
 
                 if(includeEntityAttributeGroups) {
-                    setupEntityAttributeGroups(entityInstance, transfer);
+                    setupEntityAttributeGroups(userVisit, entityInstance, transfer);
                 }
 
                 if(includeTagScopes) {
-                    setupTagScopes(entityInstance, transfer);
+                    setupTagScopes(userVisit, entityInstance, transfer);
                 }
             }
         }
     }
 
-    protected EntityInstance setupComments(final K commentedEntity, EntityInstance commentedEntityInstance, final V transfer, final String commentTypeName) {
+    protected EntityInstance setupComments(final UserVisit userVisit, final K commentedEntity, EntityInstance commentedEntityInstance, final V transfer, final String commentTypeName) {
         var commentControl = Session.getModelController(CommentControl.class);
         
         if(commentedEntityInstance == null) {
@@ -417,7 +417,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         return commentedEntityInstance;
     }
 
-    protected EntityInstance setupRatings(final K ratedEntity, EntityInstance ratedEntityInstance, final V transfer, final String ratingTypeName) {
+    protected EntityInstance setupRatings(final UserVisit userVisit, final K ratedEntity, EntityInstance ratedEntityInstance, final V transfer, final String ratingTypeName) {
         var ratingControl = Session.getModelController(RatingControl.class);
         
         if(ratedEntityInstance == null) {
@@ -433,7 +433,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         return ratedEntityInstance;
     }
 
-    protected EntityInstance setupOwnedWorkEfforts(final K baseEntity, EntityInstance owningEntityInstance, final V transfer) {
+    protected EntityInstance setupOwnedWorkEfforts(final UserVisit userVisit, final K baseEntity, EntityInstance owningEntityInstance, final V transfer) {
         var workEffortControl = Session.getModelController(WorkEffortControl.class);
         
         if(owningEntityInstance == null) {

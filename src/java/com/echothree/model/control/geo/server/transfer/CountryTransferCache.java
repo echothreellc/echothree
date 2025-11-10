@@ -70,14 +70,14 @@ public class CountryTransferCache
             var postalCodeLength = geoCodeCountry.getPostalCodeLength();
             var postalCodeGeoCodeLength = geoCodeCountry.getPostalCodeGeoCodeLength();
             var postalCodeExample = geoCodeCountry.getPostalCodeExample();
-            var description = geoControl.getBestGeoCodeDescription(geoCode, getLanguage());
+            var description = geoControl.getBestGeoCodeDescription(geoCode, getLanguage(userVisit));
             
             countryTransfer = new CountryTransfer(geoCodeName, geoCodeType, geoCodeScope, isDefault, sortOrder, telephoneCode,
                     areaCodePattern, areaCodeRequired, areaCodeExample, telephoneNumberPattern, telephoneNumberExample,
                     postalAddressFormat, cityRequired, cityGeoCodeRequired, stateRequired, stateGeoCodeRequired, postalCodePattern,
                     postalCodeRequired, postalCodeGeoCodeRequired, postalCodeLength, postalCodeGeoCodeLength, postalCodeExample,
                     description);
-            put(geoCode, countryTransfer);
+            put(userVisit, geoCode, countryTransfer);
             
             if(includeAliases) {
                 setupGeoCodeAliasTransfers(geoCode, countryTransfer);

@@ -41,7 +41,7 @@ public class ChainActionLetterTransferCache
             var letter = letterControl.getLetterTransfer(userVisit, chainActionLetter.getLetter());
             
             chainActionLetterTransfer = new ChainActionLetterTransfer(chainAction, letter);
-            put(chainActionLetter, chainActionLetterTransfer);
+            put(userVisit, chainActionLetter, chainActionLetterTransfer);
         }
         
         return chainActionLetterTransfer;

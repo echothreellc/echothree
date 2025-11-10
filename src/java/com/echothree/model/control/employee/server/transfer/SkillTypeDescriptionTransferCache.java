@@ -38,7 +38,7 @@ public class SkillTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, skillTypeDescription.getLanguage());
             
             skillTypeDescriptionTransfer = new SkillTypeDescriptionTransfer(languageTransfer, skillTypeTransfer, skillTypeDescription.getDescription());
-            put(skillTypeDescription, skillTypeDescriptionTransfer);
+            put(userVisit, skillTypeDescription, skillTypeDescriptionTransfer);
         }
         
         return skillTypeDescriptionTransfer;

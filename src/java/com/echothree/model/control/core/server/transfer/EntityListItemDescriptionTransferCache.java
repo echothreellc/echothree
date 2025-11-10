@@ -42,7 +42,7 @@ public class EntityListItemDescriptionTransferCache
             
             entityListItemDescriptionTransfer = new EntityListItemDescriptionTransfer(languageTransfer, entityListItemTransfer,
                     entityListItemDescription.getDescription());
-            put(entityListItemDescription, entityListItemDescriptionTransfer);
+            put(userVisit, entityListItemDescription, entityListItemDescriptionTransfer);
         }
         return entityListItemDescriptionTransfer;
     }

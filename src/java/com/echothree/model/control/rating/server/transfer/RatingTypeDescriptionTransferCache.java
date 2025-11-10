@@ -38,7 +38,7 @@ public class RatingTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, ratingTypeDescription.getLanguage());
             
             ratingTypeDescriptionTransfer = new RatingTypeDescriptionTransfer(languageTransfer, ratingTypeTransfer, ratingTypeDescription.getDescription());
-            put(ratingTypeDescription, ratingTypeDescriptionTransfer);
+            put(userVisit, ratingTypeDescription, ratingTypeDescriptionTransfer);
         }
         
         return ratingTypeDescriptionTransfer;

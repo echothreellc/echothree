@@ -40,10 +40,10 @@ public class InventoryConditionTransferCache
             var inventoryConditionName = inventoryConditionDetail.getInventoryConditionName();
             var isDefault = inventoryConditionDetail.getIsDefault();
             var sortOrder = inventoryConditionDetail.getSortOrder();
-            var description = inventoryControl.getBestInventoryConditionDescription(inventoryCondition, getLanguage());
+            var description = inventoryControl.getBestInventoryConditionDescription(inventoryCondition, getLanguage(userVisit));
             
             inventoryConditionTransfer = new InventoryConditionTransfer(inventoryConditionName, isDefault, sortOrder, description);
-            put(inventoryCondition, inventoryConditionTransfer);
+            put(userVisit, inventoryCondition, inventoryConditionTransfer);
         }
         
         return inventoryConditionTransfer;

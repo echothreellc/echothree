@@ -56,7 +56,7 @@ public class DocumentTransferCache
             var documentType = documentControl.getDocumentTypeTransfer(userVisit, documentDetail.getDocumentType());
             var mimeType = mimeTypeControl.getMimeTypeTransfer(userVisit, documentDetail.getMimeType());
             var pages = documentDetail.getPages();
-            var description = documentControl.getBestDocumentDescription(document, getLanguage());
+            var description = documentControl.getBestDocumentDescription(document, getLanguage(userVisit));
             ByteArray blob = null;
             String clob = null;
             String eTag = null;
@@ -89,7 +89,7 @@ public class DocumentTransferCache
             }
 
             documentTransfer = new DocumentTransfer(documentName, documentType, mimeType, pages, description, blob, clob, eTag);
-            put(document, documentTransfer);
+            put(userVisit, document, documentTransfer);
         }
         
         return documentTransfer;

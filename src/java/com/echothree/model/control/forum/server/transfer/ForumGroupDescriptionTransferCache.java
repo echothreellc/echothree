@@ -37,7 +37,7 @@ public class ForumGroupDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, forumGroupDescription.getLanguage());
             
             forumGroupDescriptionTransfer = new ForumGroupDescriptionTransfer(languageTransfer, forumGroupTransfer, forumGroupDescription.getDescription());
-            put(forumGroupDescription, forumGroupDescriptionTransfer);
+            put(userVisit, forumGroupDescription, forumGroupDescriptionTransfer);
         }
         
         return forumGroupDescriptionTransfer;

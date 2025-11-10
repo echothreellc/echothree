@@ -42,7 +42,7 @@ public class LotTimeTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, lotTimeTypeDescription.getLanguage());
             
             lotTimeTypeDescriptionTransfer = new LotTimeTypeDescriptionTransfer(languageTransfer, lotTimeTypeTransfer, lotTimeTypeDescription.getDescription());
-            put(lotTimeTypeDescription, lotTimeTypeDescriptionTransfer);
+            put(userVisit, lotTimeTypeDescription, lotTimeTypeDescriptionTransfer);
         }
         
         return lotTimeTypeDescriptionTransfer;

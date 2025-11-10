@@ -46,7 +46,7 @@ public class ItemUnitOfMeasureTypeTransferCache
             var sortOrder = itemUnitOfMeasureType.getSortOrder();
             
             itemUnitOfMeasureTypeTransfer = new ItemUnitOfMeasureTypeTransfer(item, unitOfMeasureType, isDefault, sortOrder);
-            put(itemUnitOfMeasureType, itemUnitOfMeasureTypeTransfer);
+            put(userVisit, itemUnitOfMeasureType, itemUnitOfMeasureTypeTransfer);
         }
         
         return itemUnitOfMeasureTypeTransfer;

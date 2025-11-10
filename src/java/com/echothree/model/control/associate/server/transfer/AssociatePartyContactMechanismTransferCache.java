@@ -49,7 +49,7 @@ public class AssociatePartyContactMechanismTransferCache
             
             associatePartyContactMechanismTransfer = new AssociatePartyContactMechanismTransfer(associate, associatePartyContactMechanismName,
                     partyContactMechanism, isDefault, sortOrder);
-            put(associatePartyContactMechanism, associatePartyContactMechanismTransfer);
+            put(userVisit, associatePartyContactMechanism, associatePartyContactMechanismTransfer);
         }
         return associatePartyContactMechanismTransfer;
     }

@@ -37,7 +37,7 @@ public class BirthdayFormatDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, birthdayFormatDescription.getLanguage());
             
             birthdayFormatDescriptionTransfer = new BirthdayFormatDescriptionTransfer(languageTransfer, birthdayFormatTransfer, birthdayFormatDescription.getDescription());
-            put(birthdayFormatDescription, birthdayFormatDescriptionTransfer);
+            put(userVisit, birthdayFormatDescription, birthdayFormatDescriptionTransfer);
         }
         
         return birthdayFormatDescriptionTransfer;

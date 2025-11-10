@@ -38,7 +38,7 @@ public class ContentPageLayoutDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, contentPageLayoutDescription.getLanguage());
             
             contentPageLayoutDescriptionTransfer = new ContentPageLayoutDescriptionTransfer(languageTransfer, contentPageLayoutTransfer, contentPageLayoutDescription.getDescription());
-            put(contentPageLayoutDescription, contentPageLayoutDescriptionTransfer);
+            put(userVisit, contentPageLayoutDescription, contentPageLayoutDescriptionTransfer);
         }
         
         return contentPageLayoutDescriptionTransfer;

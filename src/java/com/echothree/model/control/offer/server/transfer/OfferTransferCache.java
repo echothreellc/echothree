@@ -103,11 +103,11 @@ public class OfferTransferCache
             var offerItemPriceFilterTransfer = offerItemPriceFilter == null ? null : filterControl.getFilterTransfer(userVisit, offerItemPriceFilter);
             var isDefault = filterIsDefault ? null : offerDetail.getIsDefault();
             var sortOrder = filterSortOrder ? null : offerDetail.getSortOrder();
-            var description = filterDescription ? null : offerControl.getBestOfferDescription(offer, getLanguage());
+            var description = filterDescription ? null : offerControl.getBestOfferDescription(offer, getLanguage(userVisit));
             
             offerTransfer = new OfferTransfer(offerName, salesOrderSequenceTransfer, departmentTransfer, offerItemSelectorTransfer,
                     offerItemPriceFilterTransfer, isDefault, sortOrder, description);
-            put(offer, offerTransfer);
+            put(userVisit, offer, offerTransfer);
 
             if(includeOfferCustomerTypes) {
                 offerTransfer.setOfferCustomerTypes(ListWrapperBuilder.getInstance().filter(transferProperties, offerControl.getOfferCustomerTypeTransfersByOffer(userVisit, offer)));

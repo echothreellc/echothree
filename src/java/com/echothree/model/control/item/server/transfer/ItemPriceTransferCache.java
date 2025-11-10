@@ -140,9 +140,9 @@ public class ItemPriceTransferCache
             
             for(var itemFixedPrice : itemFixedPriceHistory) {
                 var unformattedFromTime = filterUnformattedFromTime ? null : itemFixedPrice.getFromTime();
-                var fromTime = filterFromTime ? null : formatTypicalDateTime(itemFixedPrice.getFromTime());
+                var fromTime = filterFromTime ? null : formatTypicalDateTime(userVisit, itemFixedPrice.getFromTime());
                 var unformattedThruTime = filterUnformattedThruTime ? null : itemFixedPrice.getThruTime();
-                var thruTime = filterThruTime ? null : formatTypicalDateTime(itemFixedPrice.getThruTime());
+                var thruTime = filterThruTime ? null : formatTypicalDateTime(userVisit, itemFixedPrice.getThruTime());
                 
                 historyTransfers.add(new HistoryTransfer<>(getItemPriceTransfer(itemPrice, itemFixedPrice, null),
                         unformattedFromTime, fromTime, unformattedThruTime, thruTime));
@@ -154,9 +154,9 @@ public class ItemPriceTransferCache
             
             for(var itemVariablePrice : itemVariablePriceHistory) {
                 var unformattedFromTime = filterUnformattedFromTime ? null : itemVariablePrice.getFromTime();
-                var fromTime = filterFromTime ? null : formatTypicalDateTime(itemVariablePrice.getFromTime());
+                var fromTime = filterFromTime ? null : formatTypicalDateTime(userVisit, itemVariablePrice.getFromTime());
                 var unformattedThruTime = filterUnformattedThruTime ? null : itemVariablePrice.getThruTime();
-                var thruTime = filterThruTime ? null : formatTypicalDateTime(itemVariablePrice.getThruTime());
+                var thruTime = filterThruTime ? null : formatTypicalDateTime(userVisit, itemVariablePrice.getThruTime());
                 
                 historyTransfers.add(new HistoryTransfer<>(getItemPriceTransfer(itemPrice, null, itemVariablePrice),
                         unformattedFromTime, fromTime, unformattedThruTime, thruTime));
@@ -183,7 +183,7 @@ public class ItemPriceTransferCache
             
             itemPriceTransfer = getItemPriceTransfer(itemPrice, itemFixedPrice, itemVariablePrice);
             
-            put(itemPrice, itemPriceTransfer);
+            put(userVisit, itemPrice, itemPriceTransfer);
         }
         
         return itemPriceTransfer;

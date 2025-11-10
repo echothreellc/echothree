@@ -43,10 +43,10 @@ public class FilterKindTransferCache
             var filterKindName = filterKindDetail.getFilterKindName();
             var isDefault = filterKindDetail.getIsDefault();
             var sortOrder = filterKindDetail.getSortOrder();
-            var description = filterControl.getBestFilterKindDescription(filterKind, getLanguage());
+            var description = filterControl.getBestFilterKindDescription(filterKind, getLanguage(userVisit));
             
             filterKindTransfer = new FilterKindTransfer(filterKindName, isDefault, sortOrder, description);
-            put(filterKind, filterKindTransfer);
+            put(userVisit, filterKind, filterKindTransfer);
         }
         
         return filterKindTransfer;

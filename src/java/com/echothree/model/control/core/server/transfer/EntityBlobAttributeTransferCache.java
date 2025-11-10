@@ -73,7 +73,7 @@ public class EntityBlobAttributeTransferCache
             }
             
             entityBlobAttributeTransfer = new EntityBlobAttributeTransfer(entityAttribute, entityInstanceTransfer, language, blobAttribute, mimeType, eTag);
-            put(entityBlobAttribute, entityBlobAttributeTransfer);
+            put(userVisit, entityBlobAttribute, entityBlobAttributeTransfer);
         }
         
         return entityBlobAttributeTransfer;

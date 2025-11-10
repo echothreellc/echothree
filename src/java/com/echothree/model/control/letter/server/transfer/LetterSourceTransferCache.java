@@ -49,12 +49,12 @@ public class LetterSourceTransferCache
             var letterSourcePartyContactMechanismTransfer = contactControl.getPartyContactMechanismTransfer(userVisit, letterSourceDetail.getLetterSourcePartyContactMechanism());
             var isDefault = letterSourceDetail.getIsDefault();
             var sortOrder = letterSourceDetail.getSortOrder();
-            var description = letterControl.getBestLetterSourceDescription(letterSource, getLanguage());
+            var description = letterControl.getBestLetterSourceDescription(letterSource, getLanguage(userVisit));
             
             letterSourceTransfer = new LetterSourceTransfer(letterSourceName, companyTransfer,
                     emailAddressPartyContactMechanismTransfer, postalAddressPartyContactMechanismTransfer,
                     letterSourcePartyContactMechanismTransfer, isDefault, sortOrder, description);
-            put(letterSource, letterSourceTransfer);
+            put(userVisit, letterSource, letterSourceTransfer);
         }
         
         return letterSourceTransfer;

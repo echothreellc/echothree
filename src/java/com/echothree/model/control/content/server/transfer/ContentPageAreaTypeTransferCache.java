@@ -34,10 +34,10 @@ public class ContentPageAreaTypeTransferCache
         
         if(contentPageAreaTypeTransfer == null) {
             var contentPageAreaTypeName = contentPageAreaType.getContentPageAreaTypeName();
-            var description = contentControl.getBestContentPageAreaTypeDescription(contentPageAreaType, getLanguage());
+            var description = contentControl.getBestContentPageAreaTypeDescription(contentPageAreaType, getLanguage(userVisit));
             
             contentPageAreaTypeTransfer = new ContentPageAreaTypeTransfer(contentPageAreaTypeName, description);
-            put(contentPageAreaType, contentPageAreaTypeTransfer);
+            put(userVisit, contentPageAreaType, contentPageAreaTypeTransfer);
         }
         
         return contentPageAreaTypeTransfer;

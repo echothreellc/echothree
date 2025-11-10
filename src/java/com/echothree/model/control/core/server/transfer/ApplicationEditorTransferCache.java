@@ -47,7 +47,7 @@ public class ApplicationEditorTransferCache
             var sortOrder = applicationEditorDetail.getSortOrder();
 
             applicationEditorTransfer = new ApplicationEditorTransfer(application, editor, isDefault, sortOrder);
-            put(applicationEditor, applicationEditorTransfer);
+            put(userVisit, applicationEditor, applicationEditorTransfer);
         }
 
         return applicationEditorTransfer;

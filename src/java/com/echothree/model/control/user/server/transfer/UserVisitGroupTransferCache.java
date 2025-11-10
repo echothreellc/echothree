@@ -50,7 +50,7 @@ public class UserVisitGroupTransferCache
                     UserVisitGroupStatusConstants.Workflow_USER_VISIT_GROUP_STATUS, entityInstance);
 
             userVisitGroupTransfer = new UserVisitGroupTransfer(userVisitGroupName, userVisitGroupStatusTransfer);
-            put(userVisitGroup, userVisitGroupTransfer);
+            put(userVisit, userVisitGroup, userVisitGroupTransfer);
         }
 
         return userVisitGroupTransfer;

@@ -81,15 +81,15 @@ public class EntityAliasTypeTransferCache
             var validationPattern = filterValidationPattern ? null : entityAliasTypeDetail.getValidationPattern();
             var isDefault = filterIsDefault ? null : entityAliasTypeDetail.getIsDefault();
             var sortOrder = filterSortOrder ? null : entityAliasTypeDetail.getSortOrder();
-            var description = filterDescription ? null : entityAliasControl.getBestEntityAliasTypeDescription(entityAliasType, getLanguage());
+            var description = filterDescription ? null : entityAliasControl.getBestEntityAliasTypeDescription(entityAliasType, getLanguage(userVisit));
             
             entityAliasTypeTransfer = new EntityAliasTypeTransfer(entityTypeTransfer, entityAliasTypeName,
                     validationPattern, isDefault, sortOrder, description);
 
             if(entityInstance == null) {
-                put(entityAliasType, entityAliasTypeTransfer);
+                put(userVisit, entityAliasType, entityAliasTypeTransfer);
             } else {
-                setupEntityInstance(entityAliasType, null, entityAliasTypeTransfer);
+                setupEntityInstance(userVisit, entityAliasType, null, entityAliasTypeTransfer);
             }
         }
         return entityAliasTypeTransfer;

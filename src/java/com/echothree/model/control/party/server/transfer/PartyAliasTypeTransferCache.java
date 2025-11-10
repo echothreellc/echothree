@@ -53,10 +53,10 @@ public class PartyAliasTypeTransferCache
             var validationPattern = partyAliasTypeDetail.getValidationPattern();
             var isDefault = partyAliasTypeDetail.getIsDefault();
             var sortOrder = partyAliasTypeDetail.getSortOrder();
-            var description = partyControl.getBestPartyAliasTypeDescription(partyAliasType, getLanguage());
+            var description = partyControl.getBestPartyAliasTypeDescription(partyAliasType, getLanguage(userVisit));
             
             partyAliasTypeTransfer = new PartyAliasTypeTransfer(partyType, partyAliasTypeName, validationPattern, isDefault, sortOrder, description);
-            put(partyAliasType, partyAliasTypeTransfer);
+            put(userVisit, partyAliasType, partyAliasTypeTransfer);
         }
         
         return partyAliasTypeTransfer;

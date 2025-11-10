@@ -43,10 +43,10 @@ public class ShipmentTimeTypeTransferCache
             var shipmentTimeTypeName = shipmentTimeTypeDetail.getShipmentTimeTypeName();
             var isDefault = shipmentTimeTypeDetail.getIsDefault();
             var sortOrder = shipmentTimeTypeDetail.getSortOrder();
-            var description = shipmentControl.getBestShipmentTimeTypeDescription(shipmentTimeType, getLanguage());
+            var description = shipmentControl.getBestShipmentTimeTypeDescription(shipmentTimeType, getLanguage(userVisit));
             
             shipmentTimeTypeTransfer = new ShipmentTimeTypeTransfer(shipmentTimeTypeName, isDefault, sortOrder, description);
-            put(shipmentTimeType, shipmentTimeTypeTransfer);
+            put(userVisit, shipmentTimeType, shipmentTimeTypeTransfer);
         }
         
         return shipmentTimeTypeTransfer;

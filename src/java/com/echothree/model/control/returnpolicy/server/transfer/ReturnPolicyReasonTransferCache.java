@@ -39,7 +39,7 @@ public class ReturnPolicyReasonTransferCache
             var sortOrder = returnPolicyReason.getSortOrder();
             
             returnPolicyReasonTransfer = new ReturnPolicyReasonTransfer(returnPolicy, returnReason, isDefault, sortOrder);
-            put(returnPolicyReason, returnPolicyReasonTransfer);
+            put(userVisit, returnPolicyReason, returnPolicyReasonTransfer);
         }
         
         return returnPolicyReasonTransfer;

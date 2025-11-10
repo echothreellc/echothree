@@ -40,7 +40,7 @@ public class RatingTransferCache
             var ratingDetail = rating.getLastDetail();
             
             ratingTransfer = new RatingTransfer();
-            put(rating, ratingTransfer);
+            put(userVisit, rating, ratingTransfer);
             
             ratingTransfer.setRatingName(ratingDetail.getRatingName());
             ratingTransfer.setRatingTypeListItem(ratingControl.getRatingTypeListItemTransfer(userVisit, ratingDetail.getRatingTypeListItem()));

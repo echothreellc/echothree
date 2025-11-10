@@ -60,11 +60,11 @@ public class FilterTransferCache
             var filterItemSelectorTransfer = filterItemSelector == null? null: selectorControl.getSelectorTransfer(userVisit, filterItemSelector);
             var isDefault = filterDetail.getIsDefault();
             var sortOrder = filterDetail.getSortOrder();
-            var description = filterControl.getBestFilterDescription(filter, getLanguage());
+            var description = filterControl.getBestFilterDescription(filter, getLanguage(userVisit));
             
             filterTransfer = new FilterTransfer(filterTypeTransfer, filterName, initialFilterAdjustmentTransfer,
                     filterItemSelectorTransfer, isDefault, sortOrder, description);
-            put(filter, filterTransfer);
+            put(userVisit, filter, filterTransfer);
             
             if(includeFilterEntranceSteps) {
                 filterTransfer.setFilterEntranceSteps(new ListWrapper<>(filterControl.getFilterEntranceStepTransfersByFilter(userVisit, filter)));

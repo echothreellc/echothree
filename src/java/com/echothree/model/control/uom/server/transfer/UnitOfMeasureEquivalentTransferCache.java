@@ -39,7 +39,7 @@ public class UnitOfMeasureEquivalentTransferCache
             var toQuantity = unitOfMeasureEquivalent.getToQuantity();
             
             unitOfMeasureEquivalentTransfer = new UnitOfMeasureEquivalentTransfer(fromUnitOfMeasureType, toUnitOfMeasureType, toQuantity);
-            put(unitOfMeasureEquivalent, unitOfMeasureEquivalentTransfer);
+            put(userVisit, unitOfMeasureEquivalent, unitOfMeasureEquivalentTransfer);
         }
         
         return unitOfMeasureEquivalentTransfer;

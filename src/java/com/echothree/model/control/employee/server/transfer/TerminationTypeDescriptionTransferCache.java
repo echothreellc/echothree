@@ -38,7 +38,7 @@ public class TerminationTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, terminationTypeDescription.getLanguage());
             
             terminationTypeDescriptionTransfer = new TerminationTypeDescriptionTransfer(languageTransfer, terminationTypeTransfer, terminationTypeDescription.getDescription());
-            put(terminationTypeDescription, terminationTypeDescriptionTransfer);
+            put(userVisit, terminationTypeDescription, terminationTypeDescriptionTransfer);
         }
         
         return terminationTypeDescriptionTransfer;

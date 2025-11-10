@@ -40,7 +40,7 @@ public class UnitOfMeasureTypeDescriptionTransferCache
             unitOfMeasureTypeDescriptionTransfer = new UnitOfMeasureTypeDescriptionTransfer(languageTransfer,
                     unitOfMeasureTypeTransfer, unitOfMeasureTypeDescription.getSingularDescription(),
                     unitOfMeasureTypeDescription.getPluralDescription(), unitOfMeasureTypeDescription.getSymbol());
-            put(unitOfMeasureTypeDescription, unitOfMeasureTypeDescriptionTransfer);
+            put(userVisit, unitOfMeasureTypeDescription, unitOfMeasureTypeDescriptionTransfer);
         }
         
         return unitOfMeasureTypeDescriptionTransfer;

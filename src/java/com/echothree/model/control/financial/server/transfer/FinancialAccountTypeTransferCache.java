@@ -58,13 +58,13 @@ public class FinancialAccountTypeTransferCache
             var financialAccountWorkflowEntranceTransfer = financialAccountWorkflowEntrance == null? null: workflowControl.getWorkflowEntranceTransfer(userVisit, financialAccountWorkflowEntrance);
             var isDefault = financialAccountTypeDetail.getIsDefault();
             var sortOrder = financialAccountTypeDetail.getSortOrder();
-            var description = financialControl.getBestFinancialAccountTypeDescription(financialAccountType, getLanguage());
+            var description = financialControl.getBestFinancialAccountTypeDescription(financialAccountType, getLanguage(userVisit));
             
             financialAccountTypeTransfer = new FinancialAccountTypeTransfer(financialAccountTypeName, parentFinancialAccountTypeTransfer,
                     defaultGlAccountTransfer, financialAccountSequenceTypeTransfer, financialAccountTransactionSequenceTypeTransfer,
                     financialAccountWorkflowTransfer, financialAccountWorkflowEntranceTransfer, isDefault, sortOrder,
                     description);
-            put(financialAccountType, financialAccountTypeTransfer);
+            put(userVisit, financialAccountType, financialAccountTypeTransfer);
         }
         
         return financialAccountTypeTransfer;

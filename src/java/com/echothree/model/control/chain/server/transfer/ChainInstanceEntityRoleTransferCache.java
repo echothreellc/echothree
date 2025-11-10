@@ -42,7 +42,7 @@ public class ChainInstanceEntityRoleTransferCache
             var entityInstance = entityInstanceControl.getEntityInstanceTransfer(userVisit, chainInstanceEntityRole.getEntityInstance(), false, false, false, false);
             
             chainInstanceEntityRoleTransfer = new ChainInstanceEntityRoleTransfer(chainInstance, chainEntityRoleType, entityInstance);
-            put(chainInstanceEntityRole, chainInstanceEntityRoleTransfer);
+            put(userVisit, chainInstanceEntityRole, chainInstanceEntityRoleTransfer);
         }
         
         return chainInstanceEntityRoleTransfer;

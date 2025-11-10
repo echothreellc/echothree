@@ -95,7 +95,7 @@ public class DivisionTransferCache
             
             divisionTransfer = new DivisionTransfer(partyName, partyTypeTransfer, preferredLanguageTransfer, preferredCurrencyTransfer, preferredTimeZoneTransfer, preferredDateTimeFormatTransfer,
                     personTransfer, partyGroupTransfer, company, divisionName, isDefault, sortOrder);
-            put(party, divisionTransfer);
+            put(userVisit, party, divisionTransfer);
             
             if(includePartyContactMechanisms) {
                 divisionTransfer.setPartyContactMechanisms(new ListWrapper<>(contactControl.getPartyContactMechanismTransfersByParty(userVisit, party)));

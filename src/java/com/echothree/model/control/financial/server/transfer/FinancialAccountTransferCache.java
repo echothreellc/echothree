@@ -71,7 +71,7 @@ public class FinancialAccountTransferCache
             
             financialAccountTransfer = new FinancialAccountTransfer(financialAccountType, financialAccountName, currencyTransfer, glAccountTransfer, reference,
                     description, unformattedActualBalance, actualBalance, unformattedAvailableBalance, availableBalance);
-            put(financialAccount, financialAccountTransfer);
+            put(userVisit, financialAccount, financialAccountTransfer);
             
             if(includeRoles) {
                 var financialAccountRoleTransfers = financialControl.getFinancialAccountRoleTransfersByFinancialAccount(userVisit, financialAccount);

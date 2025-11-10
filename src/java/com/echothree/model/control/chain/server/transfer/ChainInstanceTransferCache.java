@@ -52,7 +52,7 @@ public class ChainInstanceTransferCache
             var chain = chainControl.getChainTransfer(userVisit, chainInstanceDetail.getChain());
             
             chainInstanceTransfer = new ChainInstanceTransfer(chainInstanceName, chain);
-            put(chainInstance, chainInstanceTransfer);
+            put(userVisit, chainInstance, chainInstanceTransfer);
             
             if(includeChainInstanceStatus) {
                 chainInstanceTransfer.setChainInstanceStatus(chainControl.getChainInstanceStatusTransfer(userVisit, chainInstance));

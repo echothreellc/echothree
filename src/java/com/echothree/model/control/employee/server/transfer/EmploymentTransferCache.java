@@ -44,9 +44,9 @@ public class EmploymentTransferCache
             var partyTransfer = partyControl.getPartyTransfer(userVisit, employmentDetail.getParty());
             var companyTransfer = partyControl.getCompanyTransfer(userVisit, employmentDetail.getCompanyParty());
             var unformattedStartTime = employmentDetail.getStartTime();
-            var startTime = formatTypicalDateTime(unformattedStartTime);
+            var startTime = formatTypicalDateTime(userVisit, unformattedStartTime);
             var unformattedEndTime = employmentDetail.getEndTime();
-            var endTime = formatTypicalDateTime(unformattedEndTime);
+            var endTime = formatTypicalDateTime(userVisit, unformattedEndTime);
             var terminationType = employmentDetail.getTerminationType();
             var terminationTypeTransfer = terminationType == null ? null : employeeControl.getTerminationTypeTransfer(userVisit, terminationType);
             var terminationReason = employmentDetail.getTerminationReason();
@@ -54,7 +54,7 @@ public class EmploymentTransferCache
             
             employmentTransfer = new EmploymentTransfer(employmentName, partyTransfer, companyTransfer, unformattedStartTime, startTime, unformattedEndTime,
                     endTime, terminationTypeTransfer, terminationReasonTransfer);
-            put(employment, employmentTransfer);
+            put(userVisit, employment, employmentTransfer);
         }
         
         return employmentTransfer;

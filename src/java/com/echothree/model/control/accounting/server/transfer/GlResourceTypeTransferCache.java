@@ -43,10 +43,10 @@ public class GlResourceTypeTransferCache
             var glResourceTypeName = glResourceTypeDetail.getGlResourceTypeName();
             var isDefault = glResourceTypeDetail.getIsDefault();
             var sortOrder = glResourceTypeDetail.getSortOrder();
-            var description = accountingControl.getBestGlResourceTypeDescription(glResourceType, getLanguage());
+            var description = accountingControl.getBestGlResourceTypeDescription(glResourceType, getLanguage(userVisit));
             
             glResourceTypeTransfer = new GlResourceTypeTransfer(glResourceTypeName, isDefault, sortOrder, description);
-            put(glResourceType, glResourceTypeTransfer);
+            put(userVisit, glResourceType, glResourceTypeTransfer);
         }
         
         return glResourceTypeTransfer;

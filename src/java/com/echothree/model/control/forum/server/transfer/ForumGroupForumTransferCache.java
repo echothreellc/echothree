@@ -39,7 +39,7 @@ public class ForumGroupForumTransferCache
             var sortOrder = forumGroupForum.getSortOrder();
             
             forumGroupForumTransfer = new ForumGroupForumTransfer(forumGroup, forum, isDefault, sortOrder);
-            put(forumGroupForum, forumGroupForumTransfer);
+            put(userVisit, forumGroupForum, forumGroupForumTransfer);
         }
         
         return forumGroupForumTransfer;

@@ -40,7 +40,7 @@ public class ColorDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, colorDescription.getLanguage());
             
             colorDescriptionTransfer = new ColorDescriptionTransfer(languageTransfer, colorTransfer, colorDescription.getDescription());
-            put(colorDescription, colorDescriptionTransfer);
+            put(userVisit, colorDescription, colorDescriptionTransfer);
         }
         return colorDescriptionTransfer;
     }

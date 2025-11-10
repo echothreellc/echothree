@@ -55,10 +55,10 @@ public class QueueTypeTransferCache
             var queueTypeName = queueTypeDetail.getQueueTypeName();
             var isDefault = queueTypeDetail.getIsDefault();
             var sortOrder = queueTypeDetail.getSortOrder();
-            var description = queueControl.getBestQueueTypeDescription(queueType, getLanguage());
+            var description = queueControl.getBestQueueTypeDescription(queueType, getLanguage(userVisit));
 
             queueTypeTransfer = new QueueTypeTransfer(queueTypeName, isDefault, sortOrder, description);
-            put(queueType, queueTypeTransfer);
+            put(userVisit, queueType, queueTypeTransfer);
             
             if(includeQueuedEntityCount) {
                 queueTypeTransfer.setQueuedEntityCount(queueControl.countQueuedEntitiesByQueueType(queueType));
@@ -69,7 +69,7 @@ public class QueueTypeTransferCache
                 
                 if(unformattedOldestQueuedEntityTime != null) {
                     queueTypeTransfer.setUnformattedOldestQueuedEntityTime(unformattedOldestQueuedEntityTime);
-                    queueTypeTransfer.setOldestQueuedEntityTime(formatTypicalDateTime(unformattedOldestQueuedEntityTime));
+                    queueTypeTransfer.setOldestQueuedEntityTime(formatTypicalDateTime(userVisit, unformattedOldestQueuedEntityTime));
                 }
             }
 
@@ -78,7 +78,7 @@ public class QueueTypeTransferCache
                 
                 if(unformattedLatestQueuedEntityTime != null) {
                     queueTypeTransfer.setUnformattedLatestQueuedEntityTime(unformattedLatestQueuedEntityTime);
-                    queueTypeTransfer.setLatestQueuedEntityTime(formatTypicalDateTime(unformattedLatestQueuedEntityTime));
+                    queueTypeTransfer.setLatestQueuedEntityTime(formatTypicalDateTime(userVisit, unformattedLatestQueuedEntityTime));
                 }
             }
             

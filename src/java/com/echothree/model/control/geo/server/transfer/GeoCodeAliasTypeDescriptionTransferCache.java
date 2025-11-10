@@ -37,7 +37,7 @@ public class GeoCodeAliasTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, geoCodeAliasTypeDescription.getLanguage());
             
             geoCodeAliasTypeDescriptionTransfer = new GeoCodeAliasTypeDescriptionTransfer(languageTransfer, geoCodeAliasTypeTransfer, geoCodeAliasTypeDescription.getDescription());
-            put(geoCodeAliasTypeDescription, geoCodeAliasTypeDescriptionTransfer);
+            put(userVisit, geoCodeAliasTypeDescription, geoCodeAliasTypeDescriptionTransfer);
         }
         
         return geoCodeAliasTypeDescriptionTransfer;

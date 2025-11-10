@@ -48,10 +48,10 @@ public class PostalAddressFormatTransferCache
             var postalAddressFormatName = postalAddressFormatDetail.getPostalAddressFormatName();
             var isDefault = postalAddressFormatDetail.getIsDefault();
             var sortOrder = postalAddressFormatDetail.getSortOrder();
-            var description = contactControl.getBestPostalAddressFormatDescription(postalAddressFormat, getLanguage());
+            var description = contactControl.getBestPostalAddressFormatDescription(postalAddressFormat, getLanguage(userVisit));
             
             postalAddressFormatTransfer = new PostalAddressFormatTransfer(postalAddressFormatName, isDefault, sortOrder, description);
-            put(postalAddressFormat, postalAddressFormatTransfer);
+            put(userVisit, postalAddressFormat, postalAddressFormatTransfer);
             
             if(includeLines) {
                 postalAddressFormatTransfer.setPostalAddressLines(new ListWrapper<>(contactControl.getPostalAddressLineTransfersByPostalAddressFormat(userVisit, postalAddressFormat)));

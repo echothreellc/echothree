@@ -38,7 +38,7 @@ public class LeaveTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, leaveTypeDescription.getLanguage());
             
             leaveTypeDescriptionTransfer = new LeaveTypeDescriptionTransfer(languageTransfer, leaveTypeTransfer, leaveTypeDescription.getDescription());
-            put(leaveTypeDescription, leaveTypeDescriptionTransfer);
+            put(userVisit, leaveTypeDescription, leaveTypeDescriptionTransfer);
         }
         
         return leaveTypeDescriptionTransfer;

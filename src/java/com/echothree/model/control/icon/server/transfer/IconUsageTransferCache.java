@@ -39,7 +39,7 @@ public class IconUsageTransferCache
             var sortOrder = iconUsageType.getSortOrder();
             
             iconUsageTransfer = new IconUsageTransfer(icon, iconUsageType, isDefault, sortOrder);
-            put(iconUsage, iconUsageTransfer);
+            put(userVisit, iconUsage, iconUsageTransfer);
         }
         return iconUsageTransfer;
     }

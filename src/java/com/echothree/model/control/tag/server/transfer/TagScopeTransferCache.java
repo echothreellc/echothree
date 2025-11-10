@@ -51,10 +51,10 @@ public class TagScopeTransferCache
             var tagScopeName = tagScopeDetail.getTagScopeName();
             var isDefault = tagScopeDetail.getIsDefault();
             var sortOrder = tagScopeDetail.getSortOrder();
-            var description = tagControl.getBestTagScopeDescription(tagScope, getLanguage());
+            var description = tagControl.getBestTagScopeDescription(tagScope, getLanguage(userVisit));
             
             tagScopeTransfer = new TagScopeTransfer(tagScopeName, isDefault, sortOrder, description);
-            put(tagScope, tagScopeTransfer);
+            put(userVisit, tagScope, tagScopeTransfer);
             
             if(includeTags) {
                 tagScopeTransfer.setTags(new ListWrapper<>(tagControl.getTagTransfersByTagScope(userVisit, tagScope)));

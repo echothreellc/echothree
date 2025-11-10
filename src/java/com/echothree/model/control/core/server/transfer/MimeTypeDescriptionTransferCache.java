@@ -41,7 +41,7 @@ public class MimeTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, mimeTypeDescription.getLanguage());
             
             mimeTypeDescriptionTransfer = new MimeTypeDescriptionTransfer(languageTransfer, mimeTypeTransfer, mimeTypeDescription.getDescription());
-            put(mimeTypeDescription, mimeTypeDescriptionTransfer);
+            put(userVisit, mimeTypeDescription, mimeTypeDescriptionTransfer);
         }
         
         return mimeTypeDescriptionTransfer;

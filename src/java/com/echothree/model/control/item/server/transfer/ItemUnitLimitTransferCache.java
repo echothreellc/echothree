@@ -50,7 +50,7 @@ public class ItemUnitLimitTransferCache
             var maximumQuantity = longMaximumQuantity == null ? null : longMaximumQuantity.toString();
 
             itemUnitLimitTransfer = new ItemUnitLimitTransfer(item, inventoryCondition, unitOfMeasureType, minimumQuantity, maximumQuantity);
-            put(itemUnitLimit, itemUnitLimitTransfer);
+            put(userVisit, itemUnitLimit, itemUnitLimitTransfer);
         }
         
         return itemUnitLimitTransfer;

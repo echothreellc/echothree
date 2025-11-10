@@ -54,7 +54,7 @@ public class TrackTransferCache
             var value = trackDetail.getValue();
             var isDefault = trackDetail.getIsDefault();
             var sortOrder = trackDetail.getSortOrder();
-            var description = trackControl.getBestTrackDescription(track, getLanguage());
+            var description = trackControl.getBestTrackDescription(track, getLanguage(userVisit));
 
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(track.getPrimaryKey());
             var trackStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
@@ -62,7 +62,7 @@ public class TrackTransferCache
             
             trackTransfer = new TrackTransfer(trackName, valueSha1Hash, value, isDefault, sortOrder, description,
                     trackStatusTransfer);
-            put(track, trackTransfer);
+            put(userVisit, track, trackTransfer);
         }
 
         return trackTransfer;

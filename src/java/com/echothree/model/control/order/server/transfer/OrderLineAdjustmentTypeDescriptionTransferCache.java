@@ -40,7 +40,7 @@ public class OrderLineAdjustmentTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, orderLineAdjustmentTypeDescription.getLanguage());
             
             orderLineAdjustmentTypeDescriptionTransfer = new OrderLineAdjustmentTypeDescriptionTransfer(languageTransfer, orderLineAdjustmentTypeTransfer, orderLineAdjustmentTypeDescription.getDescription());
-            put(orderLineAdjustmentTypeDescription, orderLineAdjustmentTypeDescriptionTransfer);
+            put(userVisit, orderLineAdjustmentTypeDescription, orderLineAdjustmentTypeDescriptionTransfer);
         }
         
         return orderLineAdjustmentTypeDescriptionTransfer;

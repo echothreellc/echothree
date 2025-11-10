@@ -39,10 +39,10 @@ public class TransactionTimeTransferCache
         if(transactionTimeTransfer == null) {
             var transactionTimeType = transactionTimeControl.getTransactionTimeTypeTransfer(userVisit, transactionTime.getTransactionTimeType());
             var unformattedTime = transactionTime.getTime();
-            var time = formatTypicalDateTime(unformattedTime);
+            var time = formatTypicalDateTime(userVisit, unformattedTime);
             
             transactionTimeTransfer = new TransactionTimeTransfer(transactionTimeType, unformattedTime, time);
-            put(transactionTime, transactionTimeTransfer);
+            put(userVisit, transactionTime, transactionTimeTransfer);
         }
         
         return transactionTimeTransfer;

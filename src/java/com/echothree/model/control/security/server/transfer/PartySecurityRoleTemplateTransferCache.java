@@ -39,11 +39,11 @@ public class PartySecurityRoleTemplateTransferCache
             var partySecurityRoleTemplateName = partySecurityRoleTemplateDetail.getPartySecurityRoleTemplateName();
             var isDefault = partySecurityRoleTemplateDetail.getIsDefault();
             var sortOrder = partySecurityRoleTemplateDetail.getSortOrder();
-            var description = securityControl.getBestPartySecurityRoleTemplateDescription(partySecurityRoleTemplate, getLanguage());
+            var description = securityControl.getBestPartySecurityRoleTemplateDescription(partySecurityRoleTemplate, getLanguage(userVisit));
             
             partySecurityRoleTemplateTransfer = new PartySecurityRoleTemplateTransfer(partySecurityRoleTemplateName, isDefault,
                     sortOrder, description);
-            put(partySecurityRoleTemplate, partySecurityRoleTemplateTransfer);
+            put(userVisit, partySecurityRoleTemplate, partySecurityRoleTemplateTransfer);
         }
         
         return partySecurityRoleTemplateTransfer;

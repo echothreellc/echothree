@@ -41,7 +41,7 @@ public class ShipmentTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, shipmentTypeDescription.getLanguage());
             
             shipmentTypeDescriptionTransfer = new ShipmentTypeDescriptionTransfer(languageTransfer, shipmentTypeTransfer, shipmentTypeDescription.getDescription());
-            put(shipmentTypeDescription, shipmentTypeDescriptionTransfer);
+            put(userVisit, shipmentTypeDescription, shipmentTypeDescriptionTransfer);
         }
         
         return shipmentTypeDescriptionTransfer;

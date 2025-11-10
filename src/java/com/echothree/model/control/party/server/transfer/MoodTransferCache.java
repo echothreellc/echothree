@@ -47,10 +47,10 @@ public class MoodTransferCache
             var iconTransfer = icon == null? null: iconControl.getIconTransfer(userVisit, icon);
             var isDefault = moodDetail.getIsDefault();
             var sortOrder = moodDetail.getSortOrder();
-            var description = partyControl.getBestMoodDescription(mood, getLanguage());
+            var description = partyControl.getBestMoodDescription(mood, getLanguage(userVisit));
             
             moodTransfer = new MoodTransfer(moodName, iconTransfer, isDefault, sortOrder, description);
-            put(mood, moodTransfer);
+            put(userVisit, mood, moodTransfer);
         }
         
         return moodTransfer;

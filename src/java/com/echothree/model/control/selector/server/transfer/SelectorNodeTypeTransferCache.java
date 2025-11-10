@@ -34,10 +34,10 @@ public class SelectorNodeTypeTransferCache
         
         if(selectorNodeTypeTransfer == null) {
             var selectorNodeTypeName = selectorNodeType.getSelectorNodeTypeName();
-            var description = selectorControl.getBestSelectorNodeTypeDescription(selectorNodeType, getLanguage());
+            var description = selectorControl.getBestSelectorNodeTypeDescription(selectorNodeType, getLanguage(userVisit));
             
             selectorNodeTypeTransfer = new SelectorNodeTypeTransfer(selectorNodeTypeName, description);
-            put(selectorNodeType, selectorNodeTypeTransfer);
+            put(userVisit, selectorNodeType, selectorNodeTypeTransfer);
         }
         return selectorNodeTypeTransfer;
     }

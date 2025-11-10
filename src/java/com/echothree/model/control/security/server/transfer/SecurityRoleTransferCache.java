@@ -40,10 +40,10 @@ public class SecurityRoleTransferCache
             var securityRoleGroupTransfer = securityControl.getSecurityRoleGroupTransfer(userVisit, securityRoleDetail.getSecurityRoleGroup());
             var isDefault = securityRoleDetail.getIsDefault();
             var sortOrder = securityRoleDetail.getSortOrder();
-            var description = securityControl.getBestSecurityRoleDescription(securityRole, getLanguage());
+            var description = securityControl.getBestSecurityRoleDescription(securityRole, getLanguage(userVisit));
             
             securityRoleTransfer = new SecurityRoleTransfer(securityRoleGroupTransfer, securityRoleName, isDefault, sortOrder, description);
-            put(securityRole, securityRoleTransfer);
+            put(userVisit, securityRole, securityRoleTransfer);
         }
         return securityRoleTransfer;
     }

@@ -45,10 +45,10 @@ public class ShipmentAliasTypeTransferCache
             var validationPattern = shipmentAliasTypeDetail.getValidationPattern();
             var isDefault = shipmentAliasTypeDetail.getIsDefault();
             var sortOrder = shipmentAliasTypeDetail.getSortOrder();
-            var description = shipmentControl.getBestShipmentAliasTypeDescription(shipmentAliasType, getLanguage());
+            var description = shipmentControl.getBestShipmentAliasTypeDescription(shipmentAliasType, getLanguage(userVisit));
             
             shipmentAliasTypeTransfer = new ShipmentAliasTypeTransfer(shipmentType, shipmentAliasTypeName, validationPattern, isDefault, sortOrder, description);
-            put(shipmentAliasType, shipmentAliasTypeTransfer);
+            put(userVisit, shipmentAliasType, shipmentAliasTypeTransfer);
         }
         
         return shipmentAliasTypeTransfer;

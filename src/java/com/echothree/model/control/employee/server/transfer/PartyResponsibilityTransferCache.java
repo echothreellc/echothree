@@ -43,7 +43,7 @@ public class PartyResponsibilityTransferCache
             var responsibilityType = employeeControl.getResponsibilityTypeTransfer(userVisit, partyResponsibility.getResponsibilityType());
             
             partyResponsibilityTransfer = new PartyResponsibilityTransfer(party, responsibilityType);
-            put(partyResponsibility, partyResponsibilityTransfer);
+            put(userVisit, partyResponsibility, partyResponsibilityTransfer);
         }
         
         return partyResponsibilityTransfer;

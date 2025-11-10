@@ -37,7 +37,7 @@ public class WorkflowDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, workflowDescription.getLanguage());
             
             workflowDescriptionTransfer = new WorkflowDescriptionTransfer(languageTransfer, workflowTransfer, workflowDescription.getDescription());
-            put(workflowDescription, workflowDescriptionTransfer);
+            put(userVisit, workflowDescription, workflowDescriptionTransfer);
         }
         
         return workflowDescriptionTransfer;

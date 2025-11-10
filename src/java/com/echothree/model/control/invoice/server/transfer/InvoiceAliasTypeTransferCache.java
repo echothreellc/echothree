@@ -41,10 +41,10 @@ public class InvoiceAliasTypeTransferCache
             var validationPattern = invoiceAliasTypeDetail.getValidationPattern();
             var isDefault = invoiceAliasTypeDetail.getIsDefault();
             var sortOrder = invoiceAliasTypeDetail.getSortOrder();
-            var description = invoiceControl.getBestInvoiceAliasTypeDescription(invoiceAliasType, getLanguage());
+            var description = invoiceControl.getBestInvoiceAliasTypeDescription(invoiceAliasType, getLanguage(userVisit));
             
             invoiceAliasTypeTransfer = new InvoiceAliasTypeTransfer(invoiceType, invoiceAliasTypeName, validationPattern, isDefault, sortOrder, description);
-            put(invoiceAliasType, invoiceAliasTypeTransfer);
+            put(userVisit, invoiceAliasType, invoiceAliasTypeTransfer);
         }
         
         return invoiceAliasTypeTransfer;

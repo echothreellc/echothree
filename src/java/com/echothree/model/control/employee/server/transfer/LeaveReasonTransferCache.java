@@ -39,10 +39,10 @@ public class LeaveReasonTransferCache
             var leaveReasonName = leaveReasonDetail.getLeaveReasonName();
             var isDefault = leaveReasonDetail.getIsDefault();
             var sortOrder = leaveReasonDetail.getSortOrder();
-            var description = employeeControl.getBestLeaveReasonDescription(leaveReason, getLanguage());
+            var description = employeeControl.getBestLeaveReasonDescription(leaveReason, getLanguage(userVisit));
             
             leaveReasonTransfer = new LeaveReasonTransfer(leaveReasonName, isDefault, sortOrder, description);
-            put(leaveReason, leaveReasonTransfer);
+            put(userVisit, leaveReason, leaveReasonTransfer);
         }
         
         return leaveReasonTransfer;

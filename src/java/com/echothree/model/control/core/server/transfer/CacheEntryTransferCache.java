@@ -81,9 +81,9 @@ public class CacheEntryTransferCache
             var mimeType = cacheEntry.getMimeType();
             var mimeTypeTransfer = filterMimeType ? null : mimeTypeControl.getMimeTypeTransfer(userVisit, mimeType);
             var unformattedCreatedTime = cacheEntry.getCreatedTime();
-            var createdTime = filterCreatedTime ? null : formatTypicalDateTime(unformattedCreatedTime);
+            var createdTime = filterCreatedTime ? null : formatTypicalDateTime(userVisit, unformattedCreatedTime);
             var unformattedValidUntilTime = cacheEntry.getValidUntilTime();
-            var validUntilTime = filterValidUntilTime ? null : formatTypicalDateTime(unformattedValidUntilTime);
+            var validUntilTime = filterValidUntilTime ? null : formatTypicalDateTime(userVisit, unformattedValidUntilTime);
             String clob = null;
             ByteArray blob = null;
 
@@ -109,7 +109,7 @@ public class CacheEntryTransferCache
             cacheEntryTransfer = new CacheEntryTransfer(cacheEntryKey, mimeTypeTransfer, createdTime,
                     filterUnformattedCreatedTime ? null : unformattedCreatedTime, validUntilTime,
                     filterUnformattedValidUntilTime ? null : unformattedValidUntilTime, clob, blob);
-            put(cacheEntry, cacheEntryTransfer);
+            put(userVisit, cacheEntry, cacheEntryTransfer);
             
             if(includeCacheEntryDependencies) {
                 cacheEntryTransfer.setCacheEntryDependencies(new ListWrapper<>(cacheEntryControl.getCacheEntryDependencyTransfersByCacheEntry(userVisit, cacheEntry)));

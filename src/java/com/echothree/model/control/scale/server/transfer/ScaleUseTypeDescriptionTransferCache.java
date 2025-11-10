@@ -37,7 +37,7 @@ public class ScaleUseTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, scaleUseTypeDescription.getLanguage());
             
             scaleUseTypeDescriptionTransfer = new ScaleUseTypeDescriptionTransfer(languageTransfer, scaleUseTypeTransfer, scaleUseTypeDescription.getDescription());
-            put(scaleUseTypeDescription, scaleUseTypeDescriptionTransfer);
+            put(userVisit, scaleUseTypeDescription, scaleUseTypeDescriptionTransfer);
         }
         
         return scaleUseTypeDescriptionTransfer;

@@ -62,15 +62,15 @@ public class WorkRequirementTypeTransferCache
             var workflowStep = workRequirementTypeDetail.getWorkflowStep();
             var workflowStepTransfer = workflowStep == null? null: workflowControl.getWorkflowStepTransfer(userVisit, workflowStep);
             var timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
-            var estimatedTimeAllowed = formatUnitOfMeasure(timeUnitOfMeasureKind, workRequirementTypeDetail.getEstimatedTimeAllowed());
-            var maximumTimeAllowed = formatUnitOfMeasure(timeUnitOfMeasureKind, workRequirementTypeDetail.getMaximumTimeAllowed());
+            var estimatedTimeAllowed = formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, workRequirementTypeDetail.getEstimatedTimeAllowed());
+            var maximumTimeAllowed = formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, workRequirementTypeDetail.getMaximumTimeAllowed());
             var allowReassignment = workRequirementTypeDetail.getAllowReassignment();
             var sortOrder = workRequirementTypeDetail.getSortOrder();
-            var description = workRequirementControl.getBestWorkRequirementTypeDescription(workRequirementType, getLanguage());
+            var description = workRequirementControl.getBestWorkRequirementTypeDescription(workRequirementType, getLanguage(userVisit));
             
             workRequirementTypeTransfer = new WorkRequirementTypeTransfer(workEffortTypeTransfer, workRequirementTypeName, workRequirementSequenceTransfer,
                     workflowStepTransfer, estimatedTimeAllowed, maximumTimeAllowed, allowReassignment, sortOrder, description);
-            put(workRequirementType, workRequirementTypeTransfer);
+            put(userVisit, workRequirementType, workRequirementTypeTransfer);
 
             if(includeWorkRequirementScopes) {
                 workRequirementTypeTransfer.setWorkRequirementScopes(new ListWrapper<>(workRequirementControl.getWorkRequirementScopeTransfersByWorkRequirementType(userVisit, workRequirementType)));

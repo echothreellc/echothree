@@ -49,7 +49,7 @@ public class TrainingClassSectionTranslationTransferCache
             
             trainingClassSectionTranslationTransfer = new TrainingClassSectionTranslationTransfer(trainingClassSectionTransfer, languageTransfer, description,
                     overviewMimeTypeTransfer, overview, introductionMimeTypeTransfer, introduction);
-            put(trainingClassSectionTranslation, trainingClassSectionTranslationTransfer);
+            put(userVisit, trainingClassSectionTranslation, trainingClassSectionTranslationTransfer);
         }
         
         return trainingClassSectionTranslationTransfer;

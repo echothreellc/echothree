@@ -45,7 +45,7 @@ public class TrainingClassPageTranslationTransferCache
             
             trainingClassPageTranslationTransfer = new TrainingClassPageTranslationTransfer(trainingClassPageTransfer, languageTransfer, description,
                     pageMimeTypeTransfer, page);
-            put(trainingClassPageTranslation, trainingClassPageTranslationTransfer);
+            put(userVisit, trainingClassPageTranslation, trainingClassPageTranslationTransfer);
         }
         
         return trainingClassPageTranslationTransfer;

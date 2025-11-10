@@ -80,7 +80,7 @@ public class TrainingClassTransferCache
             var alwaysReassignOnExpiration = trainingClassDetail.getAlwaysReassignOnExpiration();
             var isDefault = trainingClassDetail.getIsDefault();
             var sortOrder = trainingClassDetail.getSortOrder();
-            var trainingClassTranslation = trainingControl.getBestTrainingClassTranslation(trainingClass, getLanguage());
+            var trainingClassTranslation = trainingControl.getBestTrainingClassTranslation(trainingClass, getLanguage(userVisit));
             var description = trainingClassTranslation == null ? trainingClassName : trainingClassTranslation.getDescription();
             
             trainingClassTransfer = new TrainingClassTransfer(trainingClassName, unformattedEstimatedReadingTime, estimatedReadingTime,
@@ -88,7 +88,7 @@ public class TrainingClassTransferCache
                     testingTimeAllowed, unformattedRequiredCompletionTime, requiredCompletionTime, workEffortScopeTransfer, unformattedDefaultPercentageToPass,
                     defaultPercentageToPass, overallQuestionCount, unformattedTestingValidityTime, testingValidityTime, unformattedExpiredRetentionTime,
                     expiredRetentionTime, alwaysReassignOnExpiration, isDefault, sortOrder, description);
-            put(trainingClass, trainingClassTransfer);
+            put(userVisit, trainingClass, trainingClassTransfer);
             
             if(includeTrainingClassSections) {
                 trainingClassTransfer.setTrainingClassSections(new ListWrapper<>(trainingControl.getTrainingClassSectionTransfers(userVisit, trainingClass)));

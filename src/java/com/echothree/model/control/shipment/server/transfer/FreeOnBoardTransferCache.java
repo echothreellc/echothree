@@ -43,10 +43,10 @@ public class FreeOnBoardTransferCache
             var freeOnBoardName = freeOnBoardDetail.getFreeOnBoardName();
             var isDefault = freeOnBoardDetail.getIsDefault();
             var sortOrder = freeOnBoardDetail.getSortOrder();
-            var description = freeOnBoardControl.getBestFreeOnBoardDescription(freeOnBoard, getLanguage());
+            var description = freeOnBoardControl.getBestFreeOnBoardDescription(freeOnBoard, getLanguage(userVisit));
             
             freeOnBoardTransfer = new FreeOnBoardTransfer(freeOnBoardName, isDefault, sortOrder, description);
-            put(freeOnBoard, freeOnBoardTransfer);
+            put(userVisit, freeOnBoard, freeOnBoardTransfer);
         }
         
         return freeOnBoardTransfer;

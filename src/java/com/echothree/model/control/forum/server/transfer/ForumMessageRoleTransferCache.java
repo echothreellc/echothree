@@ -44,7 +44,7 @@ public class ForumMessageRoleTransferCache
             var party = partyControl.getPartyTransfer(userVisit, forumMessageRole.getParty());
             
             forumMessageRoleTransfer = new ForumMessageRoleTransfer(forumMessage, forumRoleType, party);
-            put(forumMessageRole, forumMessageRoleTransfer);
+            put(userVisit, forumMessageRole, forumMessageRoleTransfer);
         }
         
         return forumMessageRoleTransfer;

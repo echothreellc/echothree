@@ -42,7 +42,7 @@ public class LotAliasTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, lotAliasTypeDescription.getLanguage());
             
             lotAliasTypeDescriptionTransfer = new LotAliasTypeDescriptionTransfer(languageTransfer, lotAliasTypeTransfer, lotAliasTypeDescription.getDescription());
-            put(lotAliasTypeDescription, lotAliasTypeDescriptionTransfer);
+            put(userVisit, lotAliasTypeDescription, lotAliasTypeDescriptionTransfer);
         }
         
         return lotAliasTypeDescriptionTransfer;

@@ -39,10 +39,10 @@ public class InvoiceTimeTypeTransferCache
             var invoiceTimeTypeName = invoiceTimeTypeDetail.getInvoiceTimeTypeName();
             var isDefault = invoiceTimeTypeDetail.getIsDefault();
             var sortOrder = invoiceTimeTypeDetail.getSortOrder();
-            var description = invoiceControl.getBestInvoiceTimeTypeDescription(invoiceTimeType, getLanguage());
+            var description = invoiceControl.getBestInvoiceTimeTypeDescription(invoiceTimeType, getLanguage(userVisit));
             
             invoiceTimeTypeTransfer = new InvoiceTimeTypeTransfer(invoiceTimeTypeName, isDefault, sortOrder, description);
-            put(invoiceTimeType, invoiceTimeTypeTransfer);
+            put(userVisit, invoiceTimeType, invoiceTimeTypeTransfer);
         }
         
         return invoiceTimeTypeTransfer;

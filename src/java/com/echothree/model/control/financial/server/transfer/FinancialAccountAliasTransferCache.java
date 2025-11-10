@@ -38,7 +38,7 @@ public class FinancialAccountAliasTransferCache
             var alias = financialAccountAlias.getAlias();
             
             financialAccountAliasTransfer = new FinancialAccountAliasTransfer(financial, financialAccountAliasType, alias);
-            put(financialAccountAlias, financialAccountAliasTransfer);
+            put(userVisit, financialAccountAlias, financialAccountAliasTransfer);
         }
         
         return financialAccountAliasTransfer;

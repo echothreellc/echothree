@@ -75,10 +75,10 @@ public class EntityListItemTransferCache
             var entityListItemName = filterEntityListItemName ? null : entityListItemDetail.getEntityListItemName();
             var isDefault = filterIsDefault ? null : entityListItemDetail.getIsDefault();
             var sortOrder = filterSortOrder ? null : entityListItemDetail.getSortOrder();
-            var description = filterDescription ? null : coreControl.getBestEntityListItemDescription(entityListItem, getLanguage());
+            var description = filterDescription ? null : coreControl.getBestEntityListItemDescription(entityListItem, getLanguage(userVisit));
             
             entityListItemTransfer = new EntityListItemTransfer(entityAttributeTransfer, entityListItemName, isDefault, sortOrder, description);
-            put(entityListItem, entityListItemTransfer);
+            put(userVisit, entityListItem, entityListItemTransfer);
         }
         
         return entityListItemTransfer;

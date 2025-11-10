@@ -37,11 +37,11 @@ public class InventoryConditionUseTypeTransferCache
             var inventoryConditionUseTypeName = inventoryConditionUseType.getInventoryConditionUseTypeName();
             var isDefault = inventoryConditionUseType.getIsDefault();
             var sortOrder = inventoryConditionUseType.getSortOrder();
-            var description = inventoryControl.getBestInventoryConditionUseTypeDescription(inventoryConditionUseType, getLanguage());
+            var description = inventoryControl.getBestInventoryConditionUseTypeDescription(inventoryConditionUseType, getLanguage(userVisit));
             
             inventoryConditionUseTypeTransfer = new InventoryConditionUseTypeTransfer(inventoryConditionUseTypeName, isDefault,
                     sortOrder, description);
-            put(inventoryConditionUseType, inventoryConditionUseTypeTransfer);
+            put(userVisit, inventoryConditionUseType, inventoryConditionUseTypeTransfer);
         }
         
         return inventoryConditionUseTypeTransfer;

@@ -40,10 +40,10 @@ public class CancellationReasonTransferCache
             var cancellationReasonName = cancellationReasonDetail.getCancellationReasonName();
             var isDefault = cancellationReasonDetail.getIsDefault();
             var sortOrder = cancellationReasonDetail.getSortOrder();
-            var description = cancellationPolicyControl.getBestCancellationReasonDescription(cancellationReason, getLanguage());
+            var description = cancellationPolicyControl.getBestCancellationReasonDescription(cancellationReason, getLanguage(userVisit));
             
             cancellationReasonTransfer = new CancellationReasonTransfer(cancellationKind, cancellationReasonName, isDefault, sortOrder, description);
-            put(cancellationReason, cancellationReasonTransfer);
+            put(userVisit, cancellationReason, cancellationReasonTransfer);
         }
         
         return cancellationReasonTransfer;

@@ -40,10 +40,10 @@ public class GlAccountTypeTransferCache
             var glAccountTypeName = glAccountType.getGlAccountTypeName();
             var isDefault = glAccountType.getIsDefault();
             var sortOrder = glAccountType.getSortOrder();
-            var description = accountingControl.getBestGlAccountTypeDescription(glAccountType, getLanguage());
+            var description = accountingControl.getBestGlAccountTypeDescription(glAccountType, getLanguage(userVisit));
             
             glAccountTypeTransfer = new GlAccountTypeTransfer(glAccountTypeName, isDefault, sortOrder, description);
-            put(glAccountType, glAccountTypeTransfer);
+            put(userVisit, glAccountType, glAccountTypeTransfer);
         }
         return glAccountTypeTransfer;
     }

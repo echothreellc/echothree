@@ -43,7 +43,7 @@ public class PartyFreeOnBoardTransferCache
             var freeOnBoardTransfer = freeOnBoardControl.getFreeOnBoardTransfer(userVisit, partyFreeOnBoard.getFreeOnBoard());
 
             partyFreeOnBoardTransfer = new PartyFreeOnBoardTransfer(partyTransfer, freeOnBoardTransfer);
-            put(partyFreeOnBoard, partyFreeOnBoardTransfer);
+            put(userVisit, partyFreeOnBoard, partyFreeOnBoardTransfer);
         }
         
         return partyFreeOnBoardTransfer;

@@ -37,7 +37,7 @@ public class ContactListGroupDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, contactListGroupDescription.getLanguage());
             
             contactListGroupDescriptionTransfer = new ContactListGroupDescriptionTransfer(languageTransfer, contactListGroupTransfer, contactListGroupDescription.getDescription());
-            put(contactListGroupDescription, contactListGroupDescriptionTransfer);
+            put(userVisit, contactListGroupDescription, contactListGroupDescriptionTransfer);
         }
         
         return contactListGroupDescriptionTransfer;

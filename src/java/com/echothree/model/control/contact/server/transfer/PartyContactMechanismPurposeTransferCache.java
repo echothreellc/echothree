@@ -38,7 +38,7 @@ public class PartyContactMechanismPurposeTransferCache
             var sortOrder = partyContactMechanismPurposeDetail.getSortOrder();
             
             partyContactMechanismPurposeTransfer = new PartyContactMechanismPurposeTransfer(isDefault, sortOrder);
-            put(partyContactMechanismPurpose, partyContactMechanismPurposeTransfer);
+            put(userVisit, partyContactMechanismPurpose, partyContactMechanismPurposeTransfer);
             
             partyContactMechanismPurposeTransfer.setPartyContactMechanism(contactControl.getPartyContactMechanismTransfer(userVisit, partyContactMechanismPurposeDetail.getPartyContactMechanism()));
             partyContactMechanismPurposeTransfer.setContactMechanismPurpose(contactControl.getContactMechanismPurposeTransfer(userVisit, partyContactMechanismPurposeDetail.getContactMechanismPurpose()));

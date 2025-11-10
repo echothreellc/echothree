@@ -187,7 +187,7 @@ public class ItemDescriptionTransferCache
             
             itemDescriptionTransfer = new ItemDescriptionTransfer(itemDescriptionTypeTransfer, itemTransfer, languageTransfer, mimeTypeTransfer,
                     blobDescription, clobDescription, stringDescription, itemImageTypeTransfer, height, width, scaledFromParent, eTag);
-            put(itemDescription, itemDescriptionTransfer);
+            put(userVisit, itemDescription, itemDescriptionTransfer);
         }
         
         return itemDescriptionTransfer;

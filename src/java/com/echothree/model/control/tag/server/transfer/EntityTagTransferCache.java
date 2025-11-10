@@ -42,7 +42,7 @@ public class EntityTagTransferCache
             var tag = tagControl.getTagTransfer(userVisit, entityTag.getTag());
             
             entityTagTransfer = new EntityTagTransfer(taggedEntityInstance, tag);
-            put(entityTag, entityTagTransfer);
+            put(userVisit, entityTag, entityTagTransfer);
         }
         
         return entityTagTransfer;

@@ -39,7 +39,7 @@ public class ForumForumThreadTransferCache
             var sortOrder = forumForumThread.getSortOrder();
             
             forumForumThreadTransfer = new ForumForumThreadTransfer(forum, forumThread, isDefault, sortOrder);
-            put(forumForumThread, forumForumThreadTransfer);
+            put(userVisit, forumForumThread, forumForumThreadTransfer);
         }
         
         return forumForumThreadTransfer;

@@ -47,11 +47,11 @@ public class TransactionGlAccountCategoryTransferCache
             var sortOrder = transactionGlAccountCategoryDetail.getSortOrder();
             var transactionGlAccount = accountingControl.getTransactionGlAccount(transactionGlAccountCategory);
             var glAccountTransfer = transactionGlAccount == null? null: accountingControl.getGlAccountTransfer(userVisit, transactionGlAccount.getGlAccount());
-            var description = accountingControl.getBestTransactionGlAccountCategoryDescription(transactionGlAccountCategory, getLanguage());
+            var description = accountingControl.getBestTransactionGlAccountCategoryDescription(transactionGlAccountCategory, getLanguage(userVisit));
             
             transactionGlAccountCategoryTransfer = new TransactionGlAccountCategoryTransfer(transactionTypeTransfer, transactionGlAccountCategoryName,
                     glAccountCategoryTransfer, sortOrder, glAccountTransfer, description);
-            put(transactionGlAccountCategory, transactionGlAccountCategoryTransfer);
+            put(userVisit, transactionGlAccountCategory, transactionGlAccountCategoryTransfer);
         }
         
         return transactionGlAccountCategoryTransfer;

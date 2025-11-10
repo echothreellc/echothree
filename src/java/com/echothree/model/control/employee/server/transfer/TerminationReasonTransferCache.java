@@ -39,10 +39,10 @@ public class TerminationReasonTransferCache
             var terminationReasonName = terminationReasonDetail.getTerminationReasonName();
             var isDefault = terminationReasonDetail.getIsDefault();
             var sortOrder = terminationReasonDetail.getSortOrder();
-            var description = employeeControl.getBestTerminationReasonDescription(terminationReason, getLanguage());
+            var description = employeeControl.getBestTerminationReasonDescription(terminationReason, getLanguage(userVisit));
             
             terminationReasonTransfer = new TerminationReasonTransfer(terminationReasonName, isDefault, sortOrder, description);
-            put(terminationReason, terminationReasonTransfer);
+            put(userVisit, terminationReason, terminationReasonTransfer);
         }
         
         return terminationReasonTransfer;

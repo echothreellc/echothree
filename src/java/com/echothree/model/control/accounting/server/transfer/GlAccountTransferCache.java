@@ -50,12 +50,12 @@ public class GlAccountTransferCache
             var glResourceTypeTransfer = accountingControl.getGlResourceTypeTransfer(userVisit, glAccountDetail.getGlResourceType());
             var currencyTransfer = accountingControl.getCurrencyTransfer(userVisit, glAccountDetail.getCurrency());
             var isDefault = glAccountDetail.getIsDefault();
-            var description = accountingControl.getBestGlAccountDescription(glAccount, getLanguage());
+            var description = accountingControl.getBestGlAccountDescription(glAccount, getLanguage(userVisit));
             
             glAccountTransfer = new GlAccountTransfer(glAccountName, parentGlAccountTransfer, glAccountTypeTransfer,
                     glAccountClassTransfer, glAccountCategoryTransfer, glResourceTypeTransfer, currencyTransfer, isDefault,
                     description);
-            put(glAccount, glAccountTransfer);
+            put(userVisit, glAccount, glAccountTransfer);
         }
         
         return glAccountTransfer;

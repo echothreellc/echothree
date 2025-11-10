@@ -51,18 +51,18 @@ public class UserLoginTransferCache
             var userLoginStatus = userControl.getUserLoginStatus(party);
             var username = userLogin.getUsername();
             var unformattedLastLoginTime = userLoginStatus.getLastLoginTime();
-            var lastLoginTime = formatTypicalDateTime(unformattedLastLoginTime);
+            var lastLoginTime = formatTypicalDateTime(userVisit, unformattedLastLoginTime);
             var failureCount = userLoginStatus.getFailureCount();
             var unformattedFirstFailureTime = userLoginStatus.getFirstFailureTime();
-            var firstFailureTime = formatTypicalDateTime(unformattedFirstFailureTime);
+            var firstFailureTime = formatTypicalDateTime(userVisit, unformattedFirstFailureTime);
             var unformattedLastFailureTime = userLoginStatus.getLastFailureTime();
-            var lastFailureTime = formatTypicalDateTime(unformattedLastFailureTime);
+            var lastFailureTime = formatTypicalDateTime(userVisit, unformattedLastFailureTime);
             var expiredCount = userLoginStatus.getExpiredCount();
             var forceChange = userLoginStatus.getForceChange();
             
             userLoginTransfer = new UserLoginTransfer(partyTransfer, username, unformattedLastLoginTime, lastLoginTime, failureCount,
                     unformattedFirstFailureTime, firstFailureTime, unformattedLastFailureTime, lastFailureTime, expiredCount, forceChange);
-            put(userLogin, userLoginTransfer);
+            put(userVisit, userLogin, userLoginTransfer);
 
             if(includeUserLoginPasswords) {
                 var userLoginPasswordTransfers = userControl.getUserLoginPasswordTransfersByParty(userVisit, userLogin.getParty());

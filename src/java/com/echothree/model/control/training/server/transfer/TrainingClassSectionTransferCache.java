@@ -54,12 +54,12 @@ public class TrainingClassSectionTransferCache
             var percentageToPass = PercentUtils.getInstance().formatFractionalPercent(unformattedPercentageToPass);
             var questionCount = trainingClassSectionDetail.getQuestionCount();
             var sortOrder = trainingClassSectionDetail.getSortOrder();
-            var trainingClassSectionTranslation = trainingControl.getBestTrainingClassSectionTranslation(trainingClassSection, getLanguage());
+            var trainingClassSectionTranslation = trainingControl.getBestTrainingClassSectionTranslation(trainingClassSection, getLanguage(userVisit));
             var description = trainingClassSectionTranslation == null ? trainingClassSectionName : trainingClassSectionTranslation.getDescription();
             
             trainingClassSectionTransfer = new TrainingClassSectionTransfer(trainingClass, trainingClassSectionName, unformattedPercentageToPass,
                     percentageToPass, questionCount, sortOrder, description);
-            put(trainingClassSection, trainingClassSectionTransfer);
+            put(userVisit, trainingClassSection, trainingClassSectionTransfer);
             
             if(includeTrainingClassPages) {
                 trainingClassSectionTransfer.setTrainingClassPages(new ListWrapper<>(trainingControl.getTrainingClassPageTransfers(userVisit, trainingClassSection)));

@@ -39,10 +39,10 @@ public class EmployeeTypeTransferCache
             var employeeTypeName = employeeTypeDetail.getEmployeeTypeName();
             var isDefault = employeeTypeDetail.getIsDefault();
             var sortOrder = employeeTypeDetail.getSortOrder();
-            var description = employeeControl.getBestEmployeeTypeDescription(employeeType, getLanguage());
+            var description = employeeControl.getBestEmployeeTypeDescription(employeeType, getLanguage(userVisit));
             
             employeeTypeTransfer = new EmployeeTypeTransfer(employeeTypeName, isDefault, sortOrder, description);
-            put(employeeType, employeeTypeTransfer);
+            put(userVisit, employeeType, employeeTypeTransfer);
         }
         
         return employeeTypeTransfer;

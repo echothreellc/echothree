@@ -51,7 +51,7 @@ public class ItemKitMemberTransferCache
             
             itemKitMemberTransfer = new ItemKitMemberTransfer(item, inventoryCondition, unitOfMeasureType, memberItem, memberInventoryCondition,
                     memberUnitOfMeasureType, quantity);
-            put(itemKitMember, itemKitMemberTransfer);
+            put(userVisit, itemKitMember, itemKitMemberTransfer);
         }
         
         return itemKitMemberTransfer;

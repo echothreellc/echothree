@@ -41,7 +41,7 @@ public class MimeTypeUsageTransferCache
                     mimeTypeUsage.getMimeTypeUsageType());
             
             mimeTypeUsageTransfer = new MimeTypeUsageTransfer(mimeType, mimeTypeUsageType);
-            put(mimeTypeUsage, mimeTypeUsageTransfer);
+            put(userVisit, mimeTypeUsage, mimeTypeUsageTransfer);
         }
         
         return mimeTypeUsageTransfer;

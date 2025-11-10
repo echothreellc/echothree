@@ -44,10 +44,10 @@ public class FilterTypeTransferCache
             var filterTypeName = filterTypeDetail.getFilterTypeName();
             var isDefault = filterTypeDetail.getIsDefault();
             var sortOrder = filterTypeDetail.getSortOrder();
-            var description = filterControl.getBestFilterTypeDescription(filterType, getLanguage());
+            var description = filterControl.getBestFilterTypeDescription(filterType, getLanguage(userVisit));
             
             filterTypeTransfer = new FilterTypeTransfer(filterKindTransfer, filterTypeName, isDefault, sortOrder, description);
-            put(filterType, filterTypeTransfer);
+            put(userVisit, filterType, filterTypeTransfer);
         }
         
         return filterTypeTransfer;

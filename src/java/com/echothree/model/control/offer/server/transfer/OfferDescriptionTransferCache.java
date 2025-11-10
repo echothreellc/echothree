@@ -40,7 +40,7 @@ public class OfferDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, offerDescription.getLanguage());
             
             offerDescriptionTransfer = new OfferDescriptionTransfer(languageTransfer, offerTransfer, offerDescription.getDescription());
-            put(offerDescription, offerDescriptionTransfer);
+            put(userVisit, offerDescription, offerDescriptionTransfer);
         }
         
         return offerDescriptionTransfer;

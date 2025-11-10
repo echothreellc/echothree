@@ -37,7 +37,7 @@ public class LicenseTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, licenseTypeDescription.getLanguage());
             
             licenseTypeDescriptionTransfer = new LicenseTypeDescriptionTransfer(languageTransfer, licenseTypeTransfer, licenseTypeDescription.getDescription());
-            put(licenseTypeDescription, licenseTypeDescriptionTransfer);
+            put(userVisit, licenseTypeDescription, licenseTypeDescriptionTransfer);
         }
         return licenseTypeDescriptionTransfer;
     }

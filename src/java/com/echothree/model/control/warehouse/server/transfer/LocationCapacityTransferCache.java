@@ -47,7 +47,7 @@ public class LocationCapacityTransferCache
             var capacity = locationCapacity.getCapacity();
             
             locationCapacityTransfer = new LocationCapacityTransfer(locationTransfer, unitOfMeasureTypeTransfer, capacity);
-            put(locationCapacity, locationCapacityTransfer);
+            put(userVisit, locationCapacity, locationCapacityTransfer);
         }
         
         return locationCapacityTransfer;

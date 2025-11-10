@@ -53,7 +53,7 @@ public class PostalAddressLineTransferCache
             
             postalAddressLineTransfer = new PostalAddressLineTransfer(postalAddressFormat, postalAddressLineSortOrder, prefix,
                     alwaysIncludePrefix, suffix, alwaysIncludeSuffix, collapseIfEmpty);
-            put(postalAddressLine, postalAddressLineTransfer);
+            put(userVisit, postalAddressLine, postalAddressLineTransfer);
             
             if(includeElements) {
                 postalAddressLineTransfer.setPostalAddressLineElements(new ListWrapper<>(contactControl.getPostalAddressLineElementTransfersByPostalAddressLine(userVisit, postalAddressLine)));

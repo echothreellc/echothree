@@ -53,7 +53,7 @@ public class InvoiceLineTransferCache
             
             invoiceLineTransfer = new InvoiceLineTransfer(invoiceTransfer, invoiceLineSequence, parentInvoiceLineTransfer, invoiceLineTypeTransfer, invoiceLineUseTypeTransfer, amount,
                     unformattedAmount, description);
-            put(invoiceLine, invoiceLineTransfer);
+            put(userVisit, invoiceLine, invoiceLineTransfer);
 
             var invoiceLineUseTypeName = invoiceLineUseTypeTransfer.getInvoiceLineUseTypeName();
             if(invoiceLineUseTypeName.equals(InvoiceLineUseTypes.ITEM.name())) {

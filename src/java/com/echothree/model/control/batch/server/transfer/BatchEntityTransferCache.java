@@ -41,7 +41,7 @@ public class BatchEntityTransferCache
             var entityInstanceTransfer = entityInstanceControl.getEntityInstanceTransfer(userVisit, batchEntity.getEntityInstance(), false, false, false, false);
 
             batchEntityTransfer = new BatchEntityTransfer(entityInstanceTransfer);
-            put(batchEntity, batchEntityTransfer);
+            put(userVisit, batchEntity, batchEntityTransfer);
         }
 
         return batchEntityTransfer;

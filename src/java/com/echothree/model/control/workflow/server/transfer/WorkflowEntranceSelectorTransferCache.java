@@ -43,7 +43,7 @@ public class WorkflowEntranceSelectorTransferCache
             var selector = selectorControl.getSelectorTransfer(userVisit, workflowEntranceSelector.getSelector());
             
             workflowEntranceSelectorTransfer = new WorkflowEntranceSelectorTransfer(workflowEntrance, selector);
-            put(workflowEntranceSelector, workflowEntranceSelectorTransfer);
+            put(userVisit, workflowEntranceSelector, workflowEntranceSelectorTransfer);
         }
         
         return workflowEntranceSelectorTransfer;

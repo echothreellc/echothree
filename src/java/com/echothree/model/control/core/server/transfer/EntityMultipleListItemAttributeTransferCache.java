@@ -44,7 +44,7 @@ public class EntityMultipleListItemAttributeTransferCache
             var entityListItem = coreControl.getEntityListItemTransfer(userVisit, entityMultipleListItemAttribute.getEntityListItem(), entityInstance);
             
             entityMultipleListItemAttributeTransfer = new EntityMultipleListItemAttributeTransfer(entityAttribute, entityInstanceTransfer, entityListItem);
-            put(entityMultipleListItemAttribute, entityMultipleListItemAttributeTransfer);
+            put(userVisit, entityMultipleListItemAttribute, entityMultipleListItemAttributeTransfer);
         }
         
         return entityMultipleListItemAttributeTransfer;

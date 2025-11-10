@@ -52,7 +52,7 @@ public class CustomerTypeCreditLimitTransferCache
             
             customerTypeCreditLimitTransfer = new CustomerTypeCreditLimitTransfer(customerTypeTransfer, currencyTransfer,
                     creditLimit, potentialCreditLimit);
-            put(customerTypeCreditLimit, customerTypeCreditLimitTransfer);
+            put(userVisit, customerTypeCreditLimit, customerTypeCreditLimitTransfer);
         }
         
         return customerTypeCreditLimitTransfer;

@@ -60,10 +60,10 @@ public class ItemPriceTypeTransferCache
             var itemPriceTypeName = filterItemPriceTypeName ? null : itemPriceType.getItemPriceTypeName();
             var isDefault = filterIsDefault ? null : itemPriceType.getIsDefault();
             var sortOrder = filterSortOrder ? null : itemPriceType.getSortOrder();
-            var description = filterDescription ? null : itemControl.getBestItemPriceTypeDescription(itemPriceType, getLanguage());
+            var description = filterDescription ? null : itemControl.getBestItemPriceTypeDescription(itemPriceType, getLanguage(userVisit));
 
             itemPriceTypeTransfer = new ItemPriceTypeTransfer(itemPriceTypeName, isDefault, sortOrder, description);
-            put(itemPriceType, itemPriceTypeTransfer);
+            put(userVisit, itemPriceType, itemPriceTypeTransfer);
         }
 
         return itemPriceTypeTransfer;

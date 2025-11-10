@@ -144,9 +144,9 @@ public class OfferItemPriceTransferCache
             
             for(var offerItemFixedPrice : offerItemFixedPriceHistory) {
                 var unformattedFromTime = filterUnformattedFromTime ? null : offerItemFixedPrice.getFromTime();
-                var fromTime = filterFromTime ? null : formatTypicalDateTime(offerItemFixedPrice.getFromTime());
+                var fromTime = filterFromTime ? null : formatTypicalDateTime(userVisit, offerItemFixedPrice.getFromTime());
                 var unformattedThruTime = filterUnformattedThruTime ? null : offerItemFixedPrice.getThruTime();
-                var thruTime = filterThruTime ? null : formatTypicalDateTime(offerItemFixedPrice.getThruTime());
+                var thruTime = filterThruTime ? null : formatTypicalDateTime(userVisit, offerItemFixedPrice.getThruTime());
                 
                 historyTransfers.add(new HistoryTransfer<>(getOfferItemPriceTransfer(offerItemPrice, offerItemFixedPrice, null),
                         unformattedFromTime, fromTime, unformattedThruTime, thruTime));
@@ -158,9 +158,9 @@ public class OfferItemPriceTransferCache
             
             for(var offerItemVariablePrice : offerItemVariablePriceHistory) {
                 var unformattedFromTime = filterUnformattedFromTime ? null : offerItemVariablePrice.getFromTime();
-                var fromTime = filterFromTime ? null : formatTypicalDateTime(offerItemVariablePrice.getFromTime());
+                var fromTime = filterFromTime ? null : formatTypicalDateTime(userVisit, offerItemVariablePrice.getFromTime());
                 var unformattedThruTime = filterUnformattedThruTime ? null : offerItemVariablePrice.getThruTime();
-                var thruTime = filterThruTime ? null : formatTypicalDateTime(offerItemVariablePrice.getThruTime());
+                var thruTime = filterThruTime ? null : formatTypicalDateTime(userVisit, offerItemVariablePrice.getThruTime());
                 
                 historyTransfers.add(new HistoryTransfer<>(getOfferItemPriceTransfer(offerItemPrice, null, offerItemVariablePrice),
                         unformattedFromTime, fromTime, unformattedThruTime, thruTime));
@@ -186,7 +186,7 @@ public class OfferItemPriceTransferCache
             
             offerItemPriceTransfer = getOfferItemPriceTransfer(offerItemPrice, offerItemFixedPrice, offerItemVariablePrice);
             
-            put(offerItemPrice, offerItemPriceTransfer);
+            put(userVisit, offerItemPrice, offerItemPriceTransfer);
         }
         
         return offerItemPriceTransfer;

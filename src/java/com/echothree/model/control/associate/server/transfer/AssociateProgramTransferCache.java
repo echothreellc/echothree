@@ -53,12 +53,12 @@ public class AssociateProgramTransferCache
             var itemDirectSalePercent = PercentUtils.getInstance().formatFractionalPercent(associateProgramDetail.getItemDirectSalePercent());
             var isDefault = associateProgramDetail.getIsDefault();
             var sortOrder = associateProgramDetail.getSortOrder();
-            var description = associateControl.getBestAssociateProgramDescription(associateProgram, getLanguage());
+            var description = associateControl.getBestAssociateProgramDescription(associateProgram, getLanguage(userVisit));
             
             associateProgramTransfer = new AssociateProgramTransfer(associateProgramName, associateSequenceTransfer,
                     associatePartyContactMechanismSequenceTransfer, associateReferralSequenceTransfer, itemIndirectSalePercent,
                     itemDirectSalePercent, isDefault, sortOrder, description);
-            put(associateProgram, associateProgramTransfer);
+            put(userVisit, associateProgram, associateProgramTransfer);
         }
         return associateProgramTransfer;
     }

@@ -41,7 +41,7 @@ public class PaymentProcessorTypeCodeTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, paymentProcessorTypeCodeTypeDescription.getLanguage());
             
             paymentProcessorTypeCodeTypeDescriptionTransfer = new PaymentProcessorTypeCodeTypeDescriptionTransfer(languageTransfer, paymentProcessorTypeCodeTypeTransfer, paymentProcessorTypeCodeTypeDescription.getDescription());
-            put(paymentProcessorTypeCodeTypeDescription, paymentProcessorTypeCodeTypeDescriptionTransfer);
+            put(userVisit, paymentProcessorTypeCodeTypeDescription, paymentProcessorTypeCodeTypeDescriptionTransfer);
         }
         
         return paymentProcessorTypeCodeTypeDescriptionTransfer;

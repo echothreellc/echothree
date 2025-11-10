@@ -41,7 +41,7 @@ public class GeoCodeTaxTransferCache
             var tax = taxControl.getTaxTransfer(userVisit, geoCodeTax.getTax());
             
             geoCodeTaxTransfer = new GeoCodeTaxTransfer(geoCode, tax);
-            put(geoCodeTax, geoCodeTaxTransfer);
+            put(userVisit, geoCodeTax, geoCodeTaxTransfer);
         }
         return geoCodeTaxTransfer;
     }

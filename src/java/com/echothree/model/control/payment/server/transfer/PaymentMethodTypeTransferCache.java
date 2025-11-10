@@ -43,10 +43,10 @@ public class PaymentMethodTypeTransferCache
             var paymentMethodTypeName = paymentMethodTypeDetail.getPaymentMethodTypeName();
             var isDefault = paymentMethodTypeDetail.getIsDefault();
             var sortOrder = paymentMethodTypeDetail.getSortOrder();
-            var description = paymentMethodTypeControl.getBestPaymentMethodTypeDescription(paymentMethodType, getLanguage());
+            var description = paymentMethodTypeControl.getBestPaymentMethodTypeDescription(paymentMethodType, getLanguage(userVisit));
             
             paymentMethodTypeTransfer = new PaymentMethodTypeTransfer(paymentMethodTypeName, isDefault, sortOrder, description);
-            put(paymentMethodType, paymentMethodTypeTransfer);
+            put(userVisit, paymentMethodType, paymentMethodTypeTransfer);
         }
         
         return paymentMethodTypeTransfer;

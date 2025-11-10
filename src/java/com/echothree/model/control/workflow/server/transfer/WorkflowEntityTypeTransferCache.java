@@ -41,7 +41,7 @@ public class WorkflowEntityTypeTransferCache
             var entityType = entityTypeControl.getEntityTypeTransfer(userVisit, workflowEntityType.getEntityType());
             
             workflowEntityTypeTransfer = new WorkflowEntityTypeTransfer(workflow, entityType);
-            put(workflowEntityType, workflowEntityTypeTransfer);
+            put(userVisit, workflowEntityType, workflowEntityTypeTransfer);
         }
         
         return workflowEntityTypeTransfer;

@@ -38,7 +38,7 @@ public class SequenceTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, sequenceTypeDescription.getLanguage());
             
             sequenceTypeDescriptionTransfer = new SequenceTypeDescriptionTransfer(languageTransfer, sequenceTypeTransfer, sequenceTypeDescription.getDescription());
-            put(sequenceTypeDescription, sequenceTypeDescriptionTransfer);
+            put(userVisit, sequenceTypeDescription, sequenceTypeDescriptionTransfer);
         }
         
         return sequenceTypeDescriptionTransfer;

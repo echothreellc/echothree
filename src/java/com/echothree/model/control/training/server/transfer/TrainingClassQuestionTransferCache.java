@@ -53,7 +53,7 @@ public class TrainingClassQuestionTransferCache
             
             trainingClassQuestionTransfer = new TrainingClassQuestionTransfer(trainingClassSection, trainingClassQuestionName, askingRequired, passingRequired,
                     sortOrder);
-            put(trainingClassQuestion, trainingClassQuestionTransfer);
+            put(userVisit, trainingClassQuestion, trainingClassQuestionTransfer);
             
             if(includeTrainingClassAnswers) {
                 trainingClassQuestionTransfer.setTrainingClassAnswers(new ListWrapper<>(trainingControl.getTrainingClassAnswerTransfers(userVisit, trainingClassQuestion)));

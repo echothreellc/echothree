@@ -41,11 +41,11 @@ public class SelectorNodeTransferCache
             var selectorNodeTypeTransferCache = selectorControl.getSelectorTransferCaches(userVisit).getSelectorNodeTypeTransferCache();
             var selectorNodeType = selectorNodeTypeTransferCache.getSelectorNodeTypeTransfer(selectorNodeDetail.getSelectorNodeType());
             var negate = selectorNodeDetail.getNegate();
-            var description = selectorControl.getBestSelectorNodeDescription(selectorNode, getLanguage());
+            var description = selectorControl.getBestSelectorNodeDescription(selectorNode, getLanguage(userVisit));
             
             selectorNodeTransfer = new SelectorNodeTransfer(selector, selectorNodeName, isRootSelectorNode, selectorNodeType,
             negate, description);
-            put(selectorNode, selectorNodeTransfer);
+            put(userVisit, selectorNode, selectorNodeTransfer);
         }
         
         return selectorNodeTransfer;

@@ -45,7 +45,7 @@ public class ContentForumTransferCache
             var isDefault = contentForumDetail.getIsDefault();
             
             contentForumTransfer = new ContentForumTransfer(contentCollection, forum, isDefault);
-            put(contentForum, contentForumTransfer);
+            put(userVisit, contentForum, contentForumTransfer);
         }
         
         return contentForumTransfer;

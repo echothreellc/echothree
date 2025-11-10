@@ -45,10 +45,10 @@ public class SearchSortDirectionTransferCache
             var searchSortDirectionName = searchSortDirectionDetail.getSearchSortDirectionName();
             var isDefault = searchSortDirectionDetail.getIsDefault();
             var sortOrder = searchSortDirectionDetail.getSortOrder();
-            var description = searchControl.getBestSearchSortDirectionDescription(searchSortDirection, getLanguage());
+            var description = searchControl.getBestSearchSortDirectionDescription(searchSortDirection, getLanguage(userVisit));
 
             searchSortDirectionTransfer = new SearchSortDirectionTransfer(searchSortDirectionName, isDefault, sortOrder, description);
-            put(searchSortDirection, searchSortDirectionTransfer);
+            put(userVisit, searchSortDirection, searchSortDirectionTransfer);
         }
 
         return searchSortDirectionTransfer;

@@ -49,11 +49,11 @@ public class EditorTransferCache
             var defaultWidth = editorDetail.getDefaultWidth();
             var isDefault = editorDetail.getIsDefault();
             var sortOrder = editorDetail.getSortOrder();
-            var description = editorControl.getBestEditorDescription(editor, getLanguage());
+            var description = editorControl.getBestEditorDescription(editor, getLanguage(userVisit));
 
             editorTransfer = new EditorTransfer(editorName, hasDimensions, minimumHeight, minimumWidth, maximumHeight, maximumWidth, defaultHeight,
                     defaultWidth, isDefault, sortOrder, description);
-            put(editor, editorTransfer);
+            put(userVisit, editor, editorTransfer);
         }
 
         return editorTransfer;

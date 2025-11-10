@@ -43,10 +43,10 @@ public class PaymentProcessorResultCodeTransferCache
             var paymentProcessorResultCodeName = paymentProcessorResultCodeDetail.getPaymentProcessorResultCodeName();
             var isDefault = paymentProcessorResultCodeDetail.getIsDefault();
             var sortOrder = paymentProcessorResultCodeDetail.getSortOrder();
-            var description = paymentProcessorResultCodeControl.getBestPaymentProcessorResultCodeDescription(paymentProcessorResultCode, getLanguage());
+            var description = paymentProcessorResultCodeControl.getBestPaymentProcessorResultCodeDescription(paymentProcessorResultCode, getLanguage(userVisit));
             
             paymentProcessorResultCodeTransfer = new PaymentProcessorResultCodeTransfer(paymentProcessorResultCodeName, isDefault, sortOrder, description);
-            put(paymentProcessorResultCode, paymentProcessorResultCodeTransfer);
+            put(userVisit, paymentProcessorResultCode, paymentProcessorResultCodeTransfer);
         }
         
         return paymentProcessorResultCodeTransfer;

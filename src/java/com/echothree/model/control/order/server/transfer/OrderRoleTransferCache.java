@@ -44,7 +44,7 @@ public class OrderRoleTransferCache
             var orderRoleType = orderRoleControl.getOrderRoleTypeTransfer(userVisit, orderRole.getOrderRoleType());
 
             orderRoleTransfer = new OrderRoleTransfer(party, orderRoleType);
-            put(orderRole, orderRoleTransfer);
+            put(userVisit, orderRole, orderRoleTransfer);
         }
         
         return orderRoleTransfer;

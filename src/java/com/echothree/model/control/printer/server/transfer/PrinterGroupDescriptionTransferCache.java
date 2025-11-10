@@ -37,7 +37,7 @@ public class PrinterGroupDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, printerGroupDescription.getLanguage());
             
             printerGroupDescriptionTransfer = new PrinterGroupDescriptionTransfer(languageTransfer, printerGroupTransfer, printerGroupDescription.getDescription());
-            put(printerGroupDescription, printerGroupDescriptionTransfer);
+            put(userVisit, printerGroupDescription, printerGroupDescriptionTransfer);
         }
         
         return printerGroupDescriptionTransfer;

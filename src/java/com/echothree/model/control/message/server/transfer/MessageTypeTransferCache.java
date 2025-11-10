@@ -47,10 +47,10 @@ public class MessageTypeTransferCache
             var mimeTypeUsageType = messageTypeDetail.getMimeTypeUsageType();
             var mimeTypeUsageTypeTransfer = mimeTypeUsageType == null? null: mimeTypeControl.getMimeTypeUsageTypeTransfer(userVisit, mimeTypeUsageType);
             var sortOrder = messageTypeDetail.getSortOrder();
-            var description = messageControl.getBestMessageTypeDescription(messageType, getLanguage());
+            var description = messageControl.getBestMessageTypeDescription(messageType, getLanguage(userVisit));
             
             messageTypeTransfer = new MessageTypeTransfer(entityTypeTransfer, messageTypeName, mimeTypeUsageTypeTransfer, sortOrder, description);
-            put(messageType, messageTypeTransfer);
+            put(userVisit, messageType, messageTypeTransfer);
         }
         
         return messageTypeTransfer;

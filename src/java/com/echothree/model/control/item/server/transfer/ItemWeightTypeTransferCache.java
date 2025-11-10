@@ -40,11 +40,11 @@ public class ItemWeightTypeTransferCache
             var itemWeightTypeName = itemWeightTypeDetail.getItemWeightTypeName();
             var isDefault = itemWeightTypeDetail.getIsDefault();
             var sortOrder = itemWeightTypeDetail.getSortOrder();
-            var description = itemControl.getBestItemWeightTypeDescription(itemWeightType, getLanguage());
+            var description = itemControl.getBestItemWeightTypeDescription(itemWeightType, getLanguage(userVisit));
             
             itemWeightTypeTransfer = new ItemWeightTypeTransfer(itemWeightTypeName, isDefault, sortOrder,
                     description);
-            put(itemWeightType, itemWeightTypeTransfer);
+            put(userVisit, itemWeightType, itemWeightTypeTransfer);
         }
         
         return itemWeightTypeTransfer;

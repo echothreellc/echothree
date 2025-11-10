@@ -50,7 +50,7 @@ public class ContactEmailAddressTransferCache
                     EmailAddressVerificationConstants.Workflow_EMAIL_ADDRESS_VERIFICATION, entityInstance);
             
             contactEmailAddressTransfer = new ContactEmailAddressTransfer(emailAddress, emailAddressStatusTransfer, emailAddressVerificationTransfer);
-            put(contactEmailAddress, contactEmailAddressTransfer);
+            put(userVisit, contactEmailAddress, contactEmailAddressTransfer);
         }
         
         return contactEmailAddressTransfer;

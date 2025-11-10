@@ -39,7 +39,7 @@ public class TaxDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, taxDescription.getLanguage());
             
             taxDescriptionTransfer = new TaxDescriptionTransfer(languageTransfer, taxTransfer, taxDescription.getDescription());
-            put(taxDescription, taxDescriptionTransfer);
+            put(userVisit, taxDescription, taxDescriptionTransfer);
         }
         
         return taxDescriptionTransfer;

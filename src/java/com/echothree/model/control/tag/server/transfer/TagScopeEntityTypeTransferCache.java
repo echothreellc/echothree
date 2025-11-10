@@ -42,7 +42,7 @@ public class TagScopeEntityTypeTransferCache
             var entityType = entityTypeControl.getEntityTypeTransfer(userVisit, tagScopeEntityType.getEntityType());
             
             tagScopeEntityTypeTransfer = new TagScopeEntityTypeTransfer(tagScope, entityType);
-            put(tagScopeEntityType, tagScopeEntityTypeTransfer);
+            put(userVisit, tagScopeEntityType, tagScopeEntityTypeTransfer);
         }
         
         return tagScopeEntityTypeTransfer;

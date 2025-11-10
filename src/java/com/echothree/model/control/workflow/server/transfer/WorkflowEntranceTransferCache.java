@@ -64,11 +64,11 @@ public class WorkflowEntranceTransferCache
             var workflowEntranceName = filterWorkflowEntranceName ? null : workflowEntranceDetail.getWorkflowEntranceName();
             var isDefault = filterIsDefault ? null : workflowEntranceDetail.getIsDefault();
             var sortOrder = filterSortOrder ? null : workflowEntranceDetail.getSortOrder();
-            var description = filterDescription ? null : workflowControl.getBestWorkflowEntranceDescription(workflowEntrance, getLanguage());
+            var description = filterDescription ? null : workflowControl.getBestWorkflowEntranceDescription(workflowEntrance, getLanguage(userVisit));
             
             workflowEntranceTransfer = new WorkflowEntranceTransfer(workflow, workflowEntranceName, isDefault, sortOrder,
                     description);
-            put(workflowEntrance, workflowEntranceTransfer);
+            put(userVisit, workflowEntrance, workflowEntranceTransfer);
         }
         
         return workflowEntranceTransfer;

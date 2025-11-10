@@ -39,10 +39,10 @@ public class DocumentTypeUsageTypeTransferCache
             var documentTypeUsageTypeName = documentTypeUsageTypeDetail.getDocumentTypeUsageTypeName();
             var isDefault = documentTypeUsageTypeDetail.getIsDefault();
             var sortOrder = documentTypeUsageTypeDetail.getSortOrder();
-            var description = documentControl.getBestDocumentTypeUsageTypeDescription(documentTypeUsageType, getLanguage());
+            var description = documentControl.getBestDocumentTypeUsageTypeDescription(documentTypeUsageType, getLanguage(userVisit));
             
             documentTypeUsageTypeTransfer = new DocumentTypeUsageTypeTransfer(documentTypeUsageTypeName, isDefault, sortOrder, description);
-            put(documentTypeUsageType, documentTypeUsageTypeTransfer);
+            put(userVisit, documentTypeUsageType, documentTypeUsageTypeTransfer);
         }
         return documentTypeUsageTypeTransfer;
     }

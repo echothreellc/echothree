@@ -111,7 +111,7 @@ public class CompanyTransferCache
             
             companyTransfer = new CompanyTransfer(partyName, partyTypeTransfer, preferredLanguageTransfer, preferredCurrencyTransfer, preferredTimeZoneTransfer, preferredDateTimeFormatTransfer,
                     personTransfer, partyGroupTransfer, companyName, isDefault, sortOrder);
-            put(party, companyTransfer);
+            put(userVisit, party, companyTransfer);
             
             if(includePartyContactMechanisms) {
                 companyTransfer.setPartyContactMechanisms(new ListWrapper<>(contactControl.getPartyContactMechanismTransfersByParty(userVisit, party)));

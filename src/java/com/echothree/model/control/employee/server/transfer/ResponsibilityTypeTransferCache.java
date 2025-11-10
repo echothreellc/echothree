@@ -39,10 +39,10 @@ public class ResponsibilityTypeTransferCache
             var responsibilityTypeName = responsibilityTypeDetail.getResponsibilityTypeName();
             var isDefault = responsibilityTypeDetail.getIsDefault();
             var sortOrder = responsibilityTypeDetail.getSortOrder();
-            var description = employeeControl.getBestResponsibilityTypeDescription(responsibilityType, getLanguage());
+            var description = employeeControl.getBestResponsibilityTypeDescription(responsibilityType, getLanguage(userVisit));
             
             responsibilityTypeTransfer = new ResponsibilityTypeTransfer(responsibilityTypeName, isDefault, sortOrder, description);
-            put(responsibilityType, responsibilityTypeTransfer);
+            put(userVisit, responsibilityType, responsibilityTypeTransfer);
         }
         
         return responsibilityTypeTransfer;

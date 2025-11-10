@@ -52,10 +52,10 @@ public class PeriodTransferCache
             var periodType = periodDetail.getPeriodType();
             var periodTypeTransfer = periodType == null? null: periodControl.getPeriodTypeTransfer(userVisit, periodType);
             var unformattedStartTime = periodDetail.getStartTime();
-            var startTime = formatTypicalDateTime(unformattedStartTime);
+            var startTime = formatTypicalDateTime(userVisit, unformattedStartTime);
             var unformattedEndTime = periodDetail.getEndTime();
-            var endTime = formatTypicalDateTime(unformattedEndTime);
-            var description = periodControl.getBestPeriodDescription(period, getLanguage());
+            var endTime = formatTypicalDateTime(userVisit, unformattedEndTime);
+            var description = periodControl.getBestPeriodDescription(period, getLanguage(userVisit));
             WorkflowEntityStatusTransfer status = null;
 
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(period.getPrimaryKey());
@@ -67,7 +67,7 @@ public class PeriodTransferCache
             
             periodTransfer = new PeriodTransfer(periodKindTransfer, periodName, parentPeriodTransfer, periodTypeTransfer, unformattedStartTime, startTime, unformattedEndTime,
                     endTime, description, status);
-            put(period, periodTransfer);
+            put(userVisit, period, periodTransfer);
         }
         
         return periodTransfer;

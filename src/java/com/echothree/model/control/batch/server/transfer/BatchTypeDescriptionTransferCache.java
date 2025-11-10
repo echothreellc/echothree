@@ -38,7 +38,7 @@ public class BatchTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, batchTypeDescription.getLanguage());
             
             batchTypeDescriptionTransfer = new BatchTypeDescriptionTransfer(languageTransfer, batchTypeTransfer, batchTypeDescription.getDescription());
-            put(batchTypeDescription, batchTypeDescriptionTransfer);
+            put(userVisit, batchTypeDescription, batchTypeDescriptionTransfer);
         }
         
         return batchTypeDescriptionTransfer;

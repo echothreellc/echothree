@@ -46,7 +46,7 @@ public class ReturnPolicyTranslationTransferCache
             
             returnPolicyTranslationTransfer = new ReturnPolicyTranslationTransfer(returnPolicyTransfer, languageTransfer, description,
                     policyMimeTypeTransfer, policy);
-            put(returnPolicyTranslation, returnPolicyTranslationTransfer);
+            put(userVisit, returnPolicyTranslation, returnPolicyTranslationTransfer);
         }
         
         return returnPolicyTranslationTransfer;

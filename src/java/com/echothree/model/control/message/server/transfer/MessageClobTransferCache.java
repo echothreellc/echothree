@@ -45,7 +45,7 @@ public class MessageClobTransferCache
             var clob = messageClob.getClob();
             
             messageClobTransfer = new MessageClobTransfer(message, language, mimeType, clob);
-            put(messageClob, messageClobTransfer);
+            put(userVisit, messageClob, messageClobTransfer);
         }
         
         return messageClobTransfer;

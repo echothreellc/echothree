@@ -198,7 +198,7 @@ public class VendorTransferCache
                     maximumPurchaseOrderAmount, useItemPurchasingCategories, defaultItemAliasTypeTransfer, cancellationPolicyTransfer, returnPolicyTransfer,
                     apGlAccountTransfer, holdUntilComplete, allowBackorders, allowSubstitutions, allowCombiningShipments, requireReference,
                     allowReferenceDuplicates, referenceValidationPattern, vendorStatusTransfer);
-            put(party, vendorTransfer);
+            put(userVisit, party, vendorTransfer);
 
             if(includeUserLogin) {
                 vendorTransfer.setUserLogin(userControl.getUserLoginTransfer(userVisit, party));
@@ -269,7 +269,7 @@ public class VendorTransferCache
             }
 
             if(includePurchasingComments) {
-                setupComments(null, entityInstance, vendorTransfer, CommentConstants.CommentType_VENDOR_PURCHASING);
+                setupComments(userVisit, null, entityInstance, vendorTransfer, CommentConstants.CommentType_VENDOR_PURCHASING);
             }
 
             if(includePartyCreditLimits) {

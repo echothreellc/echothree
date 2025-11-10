@@ -44,7 +44,7 @@ public class OfferChainTypeTransferCache
             var chainTransfer = chain == null? null: chainControl.getChainTransfer(userVisit, chain);
             
             offerChainTypeTransfer = new OfferChainTypeTransfer(offerTransfer, chainTypeTransfer, chainTransfer);
-            put(offerChainType, offerChainTypeTransfer);
+            put(userVisit, offerChainType, offerChainTypeTransfer);
         }
         
         return offerChainTypeTransfer;

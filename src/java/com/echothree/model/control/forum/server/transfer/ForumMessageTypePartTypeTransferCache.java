@@ -39,7 +39,7 @@ public class ForumMessageTypePartTypeTransferCache
             var forumMessagePartType = forumControl.getForumMessagePartTypeTransfer(userVisit, forumMessageTypePartType.getForumMessagePartType());
             
             forumMessageTypePartTypeTransfer = new ForumMessageTypePartTypeTransfer(forumMessageType, indexDefault, sortOrder, forumMessagePartType);
-            put(forumMessageTypePartType, forumMessageTypePartTypeTransfer);
+            put(userVisit, forumMessageTypePartType, forumMessageTypePartTypeTransfer);
         }
         
         return forumMessageTypePartTypeTransfer;

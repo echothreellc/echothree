@@ -39,10 +39,10 @@ public class TerminationTypeTransferCache
             var terminationTypeName = terminationTypeDetail.getTerminationTypeName();
             var isDefault = terminationTypeDetail.getIsDefault();
             var sortOrder = terminationTypeDetail.getSortOrder();
-            var description = employeeControl.getBestTerminationTypeDescription(terminationType, getLanguage());
+            var description = employeeControl.getBestTerminationTypeDescription(terminationType, getLanguage(userVisit));
             
             terminationTypeTransfer = new TerminationTypeTransfer(terminationTypeName, isDefault, sortOrder, description);
-            put(terminationType, terminationTypeTransfer);
+            put(userVisit, terminationType, terminationTypeTransfer);
         }
         
         return terminationTypeTransfer;

@@ -46,7 +46,7 @@ public class ReturnTypeShippingMethodTransferCache
             
             returnTypeShippingMethodTransfer = new ReturnTypeShippingMethodTransfer(returnType, shippingMethod, isDefault,
                     sortOrder);
-            put(returnTypeShippingMethod, returnTypeShippingMethodTransfer);
+            put(userVisit, returnTypeShippingMethod, returnTypeShippingMethodTransfer);
         }
         
         return returnTypeShippingMethodTransfer;

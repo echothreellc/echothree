@@ -38,7 +38,7 @@ public class CarrierTypeDescriptionTransferCache
             var description = carrierTypeDescription.getDescription();
             
             carrierTypeDescriptionTransfer = new CarrierTypeDescriptionTransfer(languageTransfer, carrierTypeTransfer, description);
-            put(carrierTypeDescription, carrierTypeDescriptionTransfer);
+            put(userVisit, carrierTypeDescription, carrierTypeDescriptionTransfer);
         }
         
         return carrierTypeDescriptionTransfer;

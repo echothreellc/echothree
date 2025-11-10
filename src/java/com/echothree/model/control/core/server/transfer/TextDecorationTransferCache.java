@@ -42,10 +42,10 @@ public class TextDecorationTransferCache
             var textDecorationName = textDecorationDetail.getTextDecorationName();
             var isDefault = textDecorationDetail.getIsDefault();
             var sortOrder = textDecorationDetail.getSortOrder();
-            var description = textControl.getBestTextDecorationDescription(textDecoration, getLanguage());
+            var description = textControl.getBestTextDecorationDescription(textDecoration, getLanguage(userVisit));
 
             textDecorationTransfer = new TextDecorationTransfer(textDecorationName, isDefault, sortOrder, description);
-            put(textDecoration, textDecorationTransfer);
+            put(userVisit, textDecoration, textDecorationTransfer);
         }
 
         return textDecorationTransfer;

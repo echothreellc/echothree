@@ -41,7 +41,7 @@ public class CommandDescriptionTransferCache
             
             commandDescriptionTransfer = new CommandDescriptionTransfer(languageTransfer, commandTransfer,
                     commandDescription.getDescription());
-            put(commandDescription, commandDescriptionTransfer);
+            put(userVisit, commandDescription, commandDescriptionTransfer);
         }
         return commandDescriptionTransfer;
     }

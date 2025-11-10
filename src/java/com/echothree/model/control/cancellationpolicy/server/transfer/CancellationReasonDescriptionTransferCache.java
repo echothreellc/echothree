@@ -37,7 +37,7 @@ public class CancellationReasonDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, cancellationReasonDescription.getLanguage());
             
             cancellationReasonDescriptionTransfer = new CancellationReasonDescriptionTransfer(languageTransfer, cancellationReasonTransfer, cancellationReasonDescription.getDescription());
-            put(cancellationReasonDescription, cancellationReasonDescriptionTransfer);
+            put(userVisit, cancellationReasonDescription, cancellationReasonDescriptionTransfer);
         }
         
         return cancellationReasonDescriptionTransfer;

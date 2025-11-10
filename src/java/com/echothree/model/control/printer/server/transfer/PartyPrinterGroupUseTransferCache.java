@@ -45,7 +45,7 @@ public class PartyPrinterGroupUseTransferCache
                     partyPrinterGroupUse.getPrinterGroup());
             
             partyPrinterGroupUseTransfer = new PartyPrinterGroupUseTransfer(party, printerGroupUseType, printerGroup);
-            put(partyPrinterGroupUse, partyPrinterGroupUseTransfer);
+            put(userVisit, partyPrinterGroupUse, partyPrinterGroupUseTransfer);
         }
         
         return partyPrinterGroupUseTransfer;

@@ -41,7 +41,7 @@ public class FilterStepDestinationTransferCache
             var toFilterStep = filterControl.getFilterStepTransfer(userVisit, filterStepDestination.getToFilterStep());
             
             filterStepDestinationTransfer = new FilterStepDestinationTransfer(fromFilterStep, toFilterStep);
-            put(filterStepDestination, filterStepDestinationTransfer);
+            put(userVisit, filterStepDestination, filterStepDestinationTransfer);
         }
         
         return filterStepDestinationTransfer;

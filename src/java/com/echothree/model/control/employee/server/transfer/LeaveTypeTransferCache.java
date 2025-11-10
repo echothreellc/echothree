@@ -39,10 +39,10 @@ public class LeaveTypeTransferCache
             var leaveTypeName = leaveTypeDetail.getLeaveTypeName();
             var isDefault = leaveTypeDetail.getIsDefault();
             var sortOrder = leaveTypeDetail.getSortOrder();
-            var description = employeeControl.getBestLeaveTypeDescription(leaveType, getLanguage());
+            var description = employeeControl.getBestLeaveTypeDescription(leaveType, getLanguage(userVisit));
             
             leaveTypeTransfer = new LeaveTypeTransfer(leaveTypeName, isDefault, sortOrder, description);
-            put(leaveType, leaveTypeTransfer);
+            put(userVisit, leaveType, leaveTypeTransfer);
         }
         
         return leaveTypeTransfer;

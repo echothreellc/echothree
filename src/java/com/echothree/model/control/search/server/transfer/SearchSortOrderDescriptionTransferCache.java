@@ -37,7 +37,7 @@ public class SearchSortOrderDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, searchSortOrderDescription.getLanguage());
             
             searchSortOrderDescriptionTransfer = new SearchSortOrderDescriptionTransfer(languageTransfer, searchSortOrderTransfer, searchSortOrderDescription.getDescription());
-            put(searchSortOrderDescription, searchSortOrderDescriptionTransfer);
+            put(userVisit, searchSortOrderDescription, searchSortOrderDescriptionTransfer);
         }
         
         return searchSortOrderDescriptionTransfer;

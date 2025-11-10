@@ -57,10 +57,10 @@ public class ForumGroupTransferCache
             var icon = forumGroupDetail.getIcon();
             var iconTransfer = icon == null? null: iconControl.getIconTransfer(userVisit, icon);
             var sortOrder = forumGroupDetail.getSortOrder();
-            var description = forumControl.getBestForumGroupDescription(forumGroup, getLanguage());
+            var description = forumControl.getBestForumGroupDescription(forumGroup, getLanguage(userVisit));
             
             forumGroupTransfer = new ForumGroupTransfer(forumGroupName, iconTransfer, sortOrder, description);
-            put(forumGroup, forumGroupTransfer);
+            put(userVisit, forumGroup, forumGroupTransfer);
             
             if(includeForums) {
                 var forumGroupForums = forumControl.getForumGroupForumsByForumGroup(forumGroup);

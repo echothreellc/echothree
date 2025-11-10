@@ -45,10 +45,10 @@ public class SearchResultActionTypeTransferCache
             var searchResultActionTypeName = searchResultActionTypeDetail.getSearchResultActionTypeName();
             var isDefault = searchResultActionTypeDetail.getIsDefault();
             var sortOrder = searchResultActionTypeDetail.getSortOrder();
-            var description = searchControl.getBestSearchResultActionTypeDescription(searchResultActionType, getLanguage());
+            var description = searchControl.getBestSearchResultActionTypeDescription(searchResultActionType, getLanguage(userVisit));
 
             searchResultActionTypeTransfer = new SearchResultActionTypeTransfer(searchResultActionTypeName, isDefault, sortOrder, description);
-            put(searchResultActionType, searchResultActionTypeTransfer);
+            put(userVisit, searchResultActionType, searchResultActionTypeTransfer);
         }
 
         return searchResultActionTypeTransfer;

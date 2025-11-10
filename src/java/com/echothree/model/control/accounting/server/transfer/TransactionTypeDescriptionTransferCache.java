@@ -42,7 +42,7 @@ public class TransactionTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, transactionTypeDescription.getLanguage());
             
             transactionTypeDescriptionTransfer = new TransactionTypeDescriptionTransfer(languageTransfer, transactionTypeTransfer, transactionTypeDescription.getDescription());
-            put(transactionTypeDescription, transactionTypeDescriptionTransfer);
+            put(userVisit, transactionTypeDescription, transactionTypeDescriptionTransfer);
         }
         
         return transactionTypeDescriptionTransfer;

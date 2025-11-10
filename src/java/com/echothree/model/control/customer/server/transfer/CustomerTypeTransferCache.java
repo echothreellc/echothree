@@ -135,14 +135,14 @@ public class CustomerTypeTransferCache
             var allocationPriorityTransfer = allocationPriority == null ? null : inventoryControl.getAllocationPriorityTransfer(userVisit, allocationPriority);
             var isDefault = filterIsDefault ? null : customerTypeDetail.getIsDefault();
             var sortOrder = filterSortOrder ? null : customerTypeDetail.getSortOrder();
-            var description = filterDescription ? null : customerControl.getBestCustomerTypeDescription(customerType, getLanguage());
+            var description = filterDescription ? null : customerControl.getBestCustomerTypeDescription(customerType, getLanguage(userVisit));
 
             customerTypeTransfer = new CustomerTypeTransfer(customerTypeName, customerSequenceTransfer, defaultOfferUseTransfer,
                     defaultTermTransfer, defaultFreeOnBoardTransfer, defaultCancellationPolicyTransfer, defaultReturnPolicyTransfer,
                     defaultArGlAccountTransfer, defaultHoldUntilComplete, defaultAllowBackorders, defaultAllowSubstitutions,
                     defaultAllowCombiningShipments, defaultRequireReference, defaultAllowReferenceDuplicates,
                     defaultReferenceValidationPattern, defaultTaxable, allocationPriorityTransfer, isDefault, sortOrder, description);
-            put(customerType, customerTypeTransfer);
+            put(userVisit, customerType, customerTypeTransfer);
         }
 
         return customerTypeTransfer;

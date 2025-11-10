@@ -40,11 +40,11 @@ public class WishlistPriorityTransferCache
             var wishlistPriorityName = wishlistPriorityDetail.getWishlistPriorityName();
             var isDefault = wishlistPriorityDetail.getIsDefault();
             var sortOrder = wishlistPriorityDetail.getSortOrder();
-            var description = wishlistControl.getBestWishlistPriorityDescription(wishlistPriority, getLanguage());
+            var description = wishlistControl.getBestWishlistPriorityDescription(wishlistPriority, getLanguage(userVisit));
             
             wishlistPriorityTransfer = new WishlistPriorityTransfer(wishlistType, wishlistPriorityName, isDefault,
                     sortOrder, description);
-            put(wishlistPriority, wishlistPriorityTransfer);
+            put(userVisit, wishlistPriority, wishlistPriorityTransfer);
         }
         
         return wishlistPriorityTransfer;

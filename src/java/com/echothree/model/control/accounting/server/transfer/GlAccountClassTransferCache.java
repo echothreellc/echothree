@@ -45,10 +45,10 @@ public class GlAccountClassTransferCache
             var parentGlAccountClassTransfer = parentGlAccountClass == null? null: getTransfer(parentGlAccountClass);
             var isDefault = glAccountClassDetail.getIsDefault();
             var sortOrder = glAccountClassDetail.getSortOrder();
-            var description = accountingControl.getBestGlAccountClassDescription(glAccountClass, getLanguage());
+            var description = accountingControl.getBestGlAccountClassDescription(glAccountClass, getLanguage(userVisit));
             
             glAccountClassTransfer = new GlAccountClassTransfer(glAccountClassName, parentGlAccountClassTransfer, isDefault, sortOrder, description);
-            put(glAccountClass, glAccountClassTransfer);
+            put(userVisit, glAccountClass, glAccountClassTransfer);
         }
         
         return glAccountClassTransfer;

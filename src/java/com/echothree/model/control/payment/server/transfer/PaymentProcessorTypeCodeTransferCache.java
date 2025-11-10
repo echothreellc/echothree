@@ -46,11 +46,11 @@ public class PaymentProcessorTypeCodeTransferCache
             var paymentProcessorTypeCodeName = paymentProcessorTypeCodeDetail.getPaymentProcessorTypeCodeName();
             var isDefault = paymentProcessorTypeCodeDetail.getIsDefault();
             var sortOrder = paymentProcessorTypeCodeDetail.getSortOrder();
-            var description = paymentProcessorTypeCodeControl.getBestPaymentProcessorTypeCodeDescription(paymentProcessorTypeCode, getLanguage());
+            var description = paymentProcessorTypeCodeControl.getBestPaymentProcessorTypeCodeDescription(paymentProcessorTypeCode, getLanguage(userVisit));
             
             paymentProcessorTypeCodeTransfer = new PaymentProcessorTypeCodeTransfer(paymentProcessorTypeCodeTypeTransfer,
                     paymentProcessorTypeCodeName, isDefault, sortOrder, description);
-            put(paymentProcessorTypeCode, paymentProcessorTypeCodeTransfer);
+            put(userVisit, paymentProcessorTypeCode, paymentProcessorTypeCodeTransfer);
         }
         
         return paymentProcessorTypeCodeTransfer;

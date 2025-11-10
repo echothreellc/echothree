@@ -36,10 +36,10 @@ public class PostalAddressElementTypeTransferCache
             var postalAddressElementTypeName = postalAddressElementType.getPostalAddressElementTypeName();
             var isDefault = postalAddressElementType.getIsDefault();
             var sortOrder = postalAddressElementType.getSortOrder();
-            var description = contactControl.getBestPostalAddressElementTypeDescription(postalAddressElementType, getLanguage());
+            var description = contactControl.getBestPostalAddressElementTypeDescription(postalAddressElementType, getLanguage(userVisit));
             
             postalAddressElementTypeTransfer = new PostalAddressElementTypeTransfer(postalAddressElementTypeName, isDefault, sortOrder, description);
-            put(postalAddressElementType, postalAddressElementTypeTransfer);
+            put(userVisit, postalAddressElementType, postalAddressElementTypeTransfer);
         }
         
         return postalAddressElementTypeTransfer;

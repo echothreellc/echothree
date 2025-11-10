@@ -43,10 +43,10 @@ public class ScaleUseTypeTransferCache
             var scaleUseTypeName = scaleUseTypeDetail.getScaleUseTypeName();
             var isDefault = scaleUseTypeDetail.getIsDefault();
             var sortOrder = scaleUseTypeDetail.getSortOrder();
-            var description = scaleControl.getBestScaleUseTypeDescription(scaleUseType, getLanguage());
+            var description = scaleControl.getBestScaleUseTypeDescription(scaleUseType, getLanguage(userVisit));
 
             scaleUseTypeTransfer = new ScaleUseTypeTransfer(scaleUseTypeName, isDefault, sortOrder, description);
-            put(scaleUseType, scaleUseTypeTransfer);
+            put(userVisit, scaleUseType, scaleUseTypeTransfer);
         }
 
         return scaleUseTypeTransfer;

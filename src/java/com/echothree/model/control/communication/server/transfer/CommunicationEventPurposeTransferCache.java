@@ -39,10 +39,10 @@ public class CommunicationEventPurposeTransferCache
             var communicationEventPurposeName = communicationEventPurposeDetail.getCommunicationEventPurposeName();
             var isDefault = communicationEventPurposeDetail.getIsDefault();
             var sortOrder = communicationEventPurposeDetail.getSortOrder();
-            var description = communicationControl.getBestCommunicationEventPurposeDescription(communicationEventPurpose, getLanguage());
+            var description = communicationControl.getBestCommunicationEventPurposeDescription(communicationEventPurpose, getLanguage(userVisit));
             
             communicationEventPurposeTransfer = new CommunicationEventPurposeTransfer(communicationEventPurposeName, isDefault, sortOrder, description);
-            put(communicationEventPurpose, communicationEventPurposeTransfer);
+            put(userVisit, communicationEventPurpose, communicationEventPurposeTransfer);
         }
         
         return communicationEventPurposeTransfer;

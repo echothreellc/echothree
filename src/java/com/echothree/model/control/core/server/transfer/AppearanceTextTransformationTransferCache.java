@@ -42,7 +42,7 @@ public class AppearanceTextTransformationTransferCache
             var textTransformation = textControl.getTextTransformationTransfer(userVisit, appearanceTextTransformation.getTextTransformation());
 
             appearanceTextTransformationTransfer = new AppearanceTextTransformationTransfer(appearance, textTransformation);
-            put(appearanceTextTransformation, appearanceTextTransformationTransfer);
+            put(userVisit, appearanceTextTransformation, appearanceTextTransformationTransfer);
         }
 
         return appearanceTextTransformationTransfer;

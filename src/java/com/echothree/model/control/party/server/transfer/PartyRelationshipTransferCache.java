@@ -43,7 +43,7 @@ public class PartyRelationshipTransferCache
             var toRoleType = partyControl.getRoleTypeTransfer(userVisit, partyRelationship.getFromRoleType());
             
             partyRelationshipTransfer = new PartyRelationshipTransfer(fromParty, fromRoleType, toParty, toRoleType);
-            put(partyRelationship, partyRelationshipTransfer);
+            put(userVisit, partyRelationship, partyRelationshipTransfer);
         }
         
         return partyRelationshipTransfer;

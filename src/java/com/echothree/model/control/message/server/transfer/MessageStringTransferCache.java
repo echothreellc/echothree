@@ -44,7 +44,7 @@ public class MessageStringTransferCache
             var string = messageString.getString();
             
             messageStringTransfer = new MessageStringTransfer(message, language, string);
-            put(messageString, messageStringTransfer);
+            put(userVisit, messageString, messageStringTransfer);
         }
         
         return messageStringTransfer;

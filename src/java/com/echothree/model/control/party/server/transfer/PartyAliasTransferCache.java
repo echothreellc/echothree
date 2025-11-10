@@ -44,7 +44,7 @@ public class PartyAliasTransferCache
             var alias = partyAlias.getAlias();
             
             partyAliasTransfer = new PartyAliasTransfer(party, partyAliasType, alias);
-            put(partyAlias, partyAliasTransfer);
+            put(userVisit, partyAlias, partyAliasTransfer);
         }
         
         return partyAliasTransfer;

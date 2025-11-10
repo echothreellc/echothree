@@ -146,7 +146,7 @@ public class ContentCatalogItemTransferCache
             contentCatalogItemTransfer = new ContentCatalogItemTransfer(contentCatalog, itemTransfer, inventoryConditionTransfer, unitOfMeasureTypeTransfer,
                     currencyTransfer, unformattedUnitPrice, unitPrice, unformattedMinimumUnitPrice, minimumUnitPrice, unformattedMaximumUnitPrice,
                     maximumUnitPrice, unformattedUnitPriceIncrement, unitPriceIncrement);
-            put(contentCatalogItem, contentCatalogItemTransfer);
+            put(userVisit, contentCatalogItem, contentCatalogItemTransfer);
         }
         
         return contentCatalogItemTransfer;

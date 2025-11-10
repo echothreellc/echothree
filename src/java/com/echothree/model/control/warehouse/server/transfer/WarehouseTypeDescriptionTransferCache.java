@@ -37,7 +37,7 @@ public class WarehouseTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, warehouseTypeDescription.getLanguage());
             
             warehouseTypeDescriptionTransfer = new WarehouseTypeDescriptionTransfer(languageTransfer, warehouseTypeTransfer, warehouseTypeDescription.getDescription());
-            put(warehouseTypeDescription, warehouseTypeDescriptionTransfer);
+            put(userVisit, warehouseTypeDescription, warehouseTypeDescriptionTransfer);
         }
         
         return warehouseTypeDescriptionTransfer;

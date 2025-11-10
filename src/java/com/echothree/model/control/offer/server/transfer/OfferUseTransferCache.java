@@ -49,7 +49,7 @@ public class OfferUseTransferCache
             var salesOrderSequenceTransfer = salesOrderSequence == null? null:sequenceControl.getSequenceTransfer(userVisit, salesOrderSequence);
             
             offerUseTransfer = new OfferUseTransfer(offerTransfer, useTransfer, salesOrderSequenceTransfer);
-            put(offerUse, offerUseTransfer);
+            put(userVisit, offerUse, offerUseTransfer);
         }
         
         return offerUseTransfer;

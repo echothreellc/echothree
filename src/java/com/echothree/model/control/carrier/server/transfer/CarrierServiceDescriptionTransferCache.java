@@ -39,7 +39,7 @@ public class CarrierServiceDescriptionTransferCache
             
             carrierServiceDescriptionTransfer = new CarrierServiceDescriptionTransfer(languageTransfer, carrierServiceTransfer,
                     description);
-            put(carrierServiceDescription, carrierServiceDescriptionTransfer);
+            put(userVisit, carrierServiceDescription, carrierServiceDescriptionTransfer);
         }
         
         return carrierServiceDescriptionTransfer;

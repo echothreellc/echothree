@@ -46,10 +46,10 @@ public class ClubItemTransferCache
             var clubItemType = clubControl.getClubItemTypeTransfer(userVisit, clubItem.getClubItemType());
             var item = itemControl.getItemTransfer(userVisit, clubItem.getItem());
             var unformattedSubscriptionTime = clubItem.getSubscriptionTime();
-            var subscriptionTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedSubscriptionTime);
+            var subscriptionTime = formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedSubscriptionTime);
             
             clubItemTransfer = new ClubItemTransfer(club, clubItemType, item, unformattedSubscriptionTime, subscriptionTime);
-            put(clubItem, clubItemTransfer);
+            put(userVisit, clubItem, clubItemTransfer);
         }
         return clubItemTransfer;
     }

@@ -43,7 +43,7 @@ public class WorkflowDestinationPartyTypeTransferCache
             var partyType = partyControl.getPartyTypeTransfer(userVisit, workflowDestinationPartyType.getPartyType());
             
             workflowDestinationPartyTypeTransfer = new WorkflowDestinationPartyTypeTransfer(workflowDestination, partyType);
-            put(workflowDestinationPartyType, workflowDestinationPartyTypeTransfer);
+            put(userVisit, workflowDestinationPartyType, workflowDestinationPartyTypeTransfer);
         }
         
         return workflowDestinationPartyTypeTransfer;

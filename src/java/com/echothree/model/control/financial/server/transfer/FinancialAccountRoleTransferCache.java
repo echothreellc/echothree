@@ -44,7 +44,7 @@ public class FinancialAccountRoleTransferCache
             var financialAccountRoleType = financialControl.getFinancialAccountRoleTypeTransfer(userVisit, financialAccountRole.getFinancialAccountRoleType());
 
             financialAccountRoleTransfer = new FinancialAccountRoleTransfer(financialAccount, party, financialAccountRoleType);
-            put(financialAccountRole, financialAccountRoleTransfer);
+            put(userVisit, financialAccountRole, financialAccountRoleTransfer);
         }
 
         return financialAccountRoleTransfer;

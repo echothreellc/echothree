@@ -57,7 +57,7 @@ public class PrinterGroupJobTransferCache
             
             printerGroupJobTransfer = new PrinterGroupJobTransfer(printerGroupJobName, printerGroupTransfer, documentTransfer, copies, priority,
                     printerGroupJobStatusTransfer);
-            put(printerGroupJob, printerGroupJobTransfer);
+            put(userVisit, printerGroupJob, printerGroupJobTransfer);
         }
         
         return printerGroupJobTransfer;

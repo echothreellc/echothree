@@ -34,10 +34,10 @@ public class UserLoginPasswordEncoderTypeTransferCache
         
         if(userLoginPasswordEncoderTypeTransfer == null) {
             var userLoginPasswordEncoderTypeName = userLoginPasswordEncoderType.getUserLoginPasswordEncoderTypeName();
-            var description = userControl.getBestUserLoginPasswordEncoderTypeDescription(userLoginPasswordEncoderType, getLanguage());
+            var description = userControl.getBestUserLoginPasswordEncoderTypeDescription(userLoginPasswordEncoderType, getLanguage(userVisit));
             
             userLoginPasswordEncoderTypeTransfer = new UserLoginPasswordEncoderTypeTransfer(userLoginPasswordEncoderTypeName, description);
-            put(userLoginPasswordEncoderType, userLoginPasswordEncoderTypeTransfer);
+            put(userVisit, userLoginPasswordEncoderType, userLoginPasswordEncoderTypeTransfer);
         }
         
         return userLoginPasswordEncoderTypeTransfer;

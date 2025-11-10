@@ -36,10 +36,10 @@ public class CommunicationEventTypeTransferCache
             var communicationEventTypeName = communicationEventType.getCommunicationEventTypeName();
             var isDefault = communicationEventType.getIsDefault();
             var sortOrder = communicationEventType.getSortOrder();
-            var description = communicationControl.getBestCommunicationEventTypeDescription(communicationEventType, getLanguage());
+            var description = communicationControl.getBestCommunicationEventTypeDescription(communicationEventType, getLanguage(userVisit));
             
             communicationEventTypeTransfer = new CommunicationEventTypeTransfer(communicationEventTypeName, isDefault, sortOrder, description);
-            put(communicationEventType, communicationEventTypeTransfer);
+            put(userVisit, communicationEventType, communicationEventTypeTransfer);
         }
         
         return communicationEventTypeTransfer;

@@ -44,13 +44,13 @@ public class SubscriptionTransferCache
             var subscriptionType = subscriptionControl.getSubscriptionTypeTransfer(userVisit, subscriptionDetail.getSubscriptionType());
             var party = partyControl.getPartyTransfer(userVisit, subscriptionDetail.getParty());
             var unformattedStartTime = subscriptionDetail.getStartTime();
-            var startTime = formatTypicalDateTime(unformattedStartTime);
+            var startTime = formatTypicalDateTime(userVisit, unformattedStartTime);
             var unformattedEndTime = subscriptionDetail.getEndTime();
-            var endTime = formatTypicalDateTime(unformattedEndTime);
+            var endTime = formatTypicalDateTime(userVisit, unformattedEndTime);
 
             subscriptionTransfer = new SubscriptionTransfer(subscriptionName, subscriptionType, party, unformattedStartTime, startTime, unformattedEndTime,
                     endTime);
-            put(subscription, subscriptionTransfer);
+            put(userVisit, subscription, subscriptionTransfer);
         }
 
         return subscriptionTransfer;

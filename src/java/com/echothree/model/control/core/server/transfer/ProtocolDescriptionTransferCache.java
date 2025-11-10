@@ -41,7 +41,7 @@ public class ProtocolDescriptionTransferCache
             
             protocolDescriptionTransfer = new ProtocolDescriptionTransfer(languageTransfer, protocolTransfer,
                     protocolDescription.getDescription());
-            put(protocolDescription, protocolDescriptionTransfer);
+            put(userVisit, protocolDescription, protocolDescriptionTransfer);
         }
         return protocolDescriptionTransfer;
     }

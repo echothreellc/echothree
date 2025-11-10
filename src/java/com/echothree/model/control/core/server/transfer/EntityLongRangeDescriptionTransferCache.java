@@ -42,7 +42,7 @@ public class EntityLongRangeDescriptionTransferCache
             
             entityLongRangeDescriptionTransfer = new EntityLongRangeDescriptionTransfer(languageTransfer, entityLongRangeTransfer,
                     entityLongRangeDescription.getDescription());
-            put(entityLongRangeDescription, entityLongRangeDescriptionTransfer);
+            put(userVisit, entityLongRangeDescription, entityLongRangeDescriptionTransfer);
         }
         return entityLongRangeDescriptionTransfer;
     }

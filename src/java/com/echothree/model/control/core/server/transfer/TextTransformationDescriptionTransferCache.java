@@ -40,7 +40,7 @@ public class TextTransformationDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, textTransformationDescription.getLanguage());
             
             textTransformationDescriptionTransfer = new TextTransformationDescriptionTransfer(languageTransfer, textTransformationTransfer, textTransformationDescription.getDescription());
-            put(textTransformationDescription, textTransformationDescriptionTransfer);
+            put(userVisit, textTransformationDescription, textTransformationDescriptionTransfer);
         }
         return textTransformationDescriptionTransfer;
     }

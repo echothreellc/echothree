@@ -51,7 +51,7 @@ public class PartyCreditLimitTransferCache
             
             partyCreditLimitTransfer = new PartyCreditLimitTransfer(partyTransfer, currencyTransfer, creditLimit,
                     potentialCreditLimit);
-            put(partyCreditLimit, partyCreditLimitTransfer);
+            put(userVisit, partyCreditLimit, partyCreditLimitTransfer);
         }
         
         return partyCreditLimitTransfer;

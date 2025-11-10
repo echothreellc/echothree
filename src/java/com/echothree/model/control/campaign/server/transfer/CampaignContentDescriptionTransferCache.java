@@ -37,7 +37,7 @@ public class CampaignContentDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, campaignContentDescription.getLanguage());
             
             campaignContentDescriptionTransfer = new CampaignContentDescriptionTransfer(languageTransfer, campaignContentTransfer, campaignContentDescription.getDescription());
-            put(campaignContentDescription, campaignContentDescriptionTransfer);
+            put(userVisit, campaignContentDescription, campaignContentDescriptionTransfer);
         }
         return campaignContentDescriptionTransfer;
     }

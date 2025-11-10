@@ -84,11 +84,11 @@ public class UnitOfMeasureTypeTransferCache
             var suppressSymbolSeparator = filterSuppressSymbolSeparator ? null : unitOfMeasureTypeDetail.getSuppressSymbolSeparator();
             var isDefault = filterIsDefault ? null : unitOfMeasureTypeDetail.getIsDefault();
             var sortOrder = filterSortOrder ? null : unitOfMeasureTypeDetail.getSortOrder();
-            var description = filterDescription ? null : uomControl.getBestSingularUnitOfMeasureTypeDescription(unitOfMeasureType, getLanguage());
+            var description = filterDescription ? null : uomControl.getBestSingularUnitOfMeasureTypeDescription(unitOfMeasureType, getLanguage(userVisit));
             
             unitOfMeasureTypeTransfer = new UnitOfMeasureTypeTransfer(unitOfMeasureKind, unitOfMeasureTypeName, symbolPosition,
                     suppressSymbolSeparator, isDefault, sortOrder, description);
-            put(unitOfMeasureType, unitOfMeasureTypeTransfer);
+            put(userVisit, unitOfMeasureType, unitOfMeasureTypeTransfer);
             
             if(includeVolume) {
                 var unitOfMeasureTypeVolume = uomControl.getUnitOfMeasureTypeVolume(unitOfMeasureType);

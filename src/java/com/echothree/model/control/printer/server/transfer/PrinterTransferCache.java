@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.printer.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.printer.common.transfer.PrinterTransfer;
 import com.echothree.model.control.printer.server.control.PrinterControl;
@@ -47,14 +46,14 @@ public class PrinterTransferCache
             var printerName = printerDetail.getPrinterName();
             var printerGroupTransfer = printerControl.getPrinterGroupTransfer(userVisit, printerDetail.getPrinterGroup());
             var priority = printerDetail.getPriority();
-            var description = printerControl.getBestPrinterDescription(printer, getLanguage());
+            var description = printerControl.getBestPrinterDescription(printer, getLanguage(userVisit));
 
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(printer.getPrimaryKey());
             var printerStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     PrinterStatusConstants.Workflow_PRINTER_STATUS, entityInstance);
             
             printerTransfer = new PrinterTransfer(printerName, printerGroupTransfer, priority, printerStatusTransfer, description);
-            put(printer, printerTransfer);
+            put(userVisit, printer, printerTransfer);
         }
         
         return printerTransfer;

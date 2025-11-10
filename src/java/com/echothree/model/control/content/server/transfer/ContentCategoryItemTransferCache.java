@@ -59,7 +59,7 @@ public class ContentCategoryItemTransferCache
             var sortOrder = filterSortOrder ? null : contentCategoryItem.getSortOrder();
             
             contentCategoryItemTransfer = new ContentCategoryItemTransfer(contentCategory, contentCatalogItem, isDefault, sortOrder);
-            put(contentCategoryItem, contentCategoryItemTransfer);
+            put(userVisit, contentCategoryItem, contentCategoryItemTransfer);
         }
         
         return contentCategoryItemTransfer;

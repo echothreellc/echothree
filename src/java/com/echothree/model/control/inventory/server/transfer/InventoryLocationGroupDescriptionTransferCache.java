@@ -39,7 +39,7 @@ public class InventoryLocationGroupDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, inventoryLocationGroupDescription.getLanguage());
             
             inventoryLocationGroupDescriptionTransfer = new InventoryLocationGroupDescriptionTransfer(languageTransfer, inventoryLocationGroupTransfer, inventoryLocationGroupDescription.getDescription());
-            put(inventoryLocationGroupDescription, inventoryLocationGroupDescriptionTransfer);
+            put(userVisit, inventoryLocationGroupDescription, inventoryLocationGroupDescriptionTransfer);
         }
         
         return inventoryLocationGroupDescriptionTransfer;

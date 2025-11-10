@@ -38,7 +38,7 @@ public class SecurityRoleGroupDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, securityRoleGroupDescription.getLanguage());
             
             securityRoleGroupDescriptionTransfer = new SecurityRoleGroupDescriptionTransfer(languageTransfer, securityRoleGroupTransfer, securityRoleGroupDescription.getDescription());
-            put(securityRoleGroupDescription, securityRoleGroupDescriptionTransfer);
+            put(userVisit, securityRoleGroupDescription, securityRoleGroupDescriptionTransfer);
         }
         
         return securityRoleGroupDescriptionTransfer;

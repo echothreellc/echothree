@@ -45,7 +45,7 @@ public class MessageBlobTransferCache
             var blob = messageBlob.getBlob();
             
             messageBlobTransfer = new MessageBlobTransfer(message, language, mimeType, blob);
-            put(messageBlob, messageBlobTransfer);
+            put(userVisit, messageBlob, messageBlobTransfer);
         }
         
         return messageBlobTransfer;

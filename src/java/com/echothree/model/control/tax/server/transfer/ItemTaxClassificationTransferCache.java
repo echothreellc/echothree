@@ -55,7 +55,7 @@ public class ItemTaxClassificationTransferCache
             var taxClassification = taxControl.getTaxClassificationTransfer(userVisit, itemTaxClassificationDetail.getTaxClassification());
             
             itemTaxClassificationTransfer = new ItemTaxClassificationTransfer(item, countryGeoCode, taxClassification);
-            put(itemTaxClassification, itemTaxClassificationTransfer);
+            put(userVisit, itemTaxClassification, itemTaxClassificationTransfer);
         }
         
         return itemTaxClassificationTransfer;

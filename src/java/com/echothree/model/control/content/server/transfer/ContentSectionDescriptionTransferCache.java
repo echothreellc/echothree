@@ -37,7 +37,7 @@ public class ContentSectionDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, contentSectionDescription.getLanguage());
             
             contentSectionDescriptionTransfer = new ContentSectionDescriptionTransfer(languageTransfer, contentSectionTransfer, contentSectionDescription.getDescription());
-            put(contentSectionDescription, contentSectionDescriptionTransfer);
+            put(userVisit, contentSectionDescription, contentSectionDescriptionTransfer);
         }
         
         return contentSectionDescriptionTransfer;

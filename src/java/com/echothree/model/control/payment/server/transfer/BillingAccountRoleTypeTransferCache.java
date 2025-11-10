@@ -39,10 +39,10 @@ public class BillingAccountRoleTypeTransferCache
         if(billingAccountRoleTypeTransfer == null) {
             var billingAccountRoleTypeName = billingAccountRoleType.getBillingAccountRoleTypeName();
             var sortOrder = billingAccountRoleType.getSortOrder();
-            var description = billingControl.getBestBillingAccountRoleTypeDescription(billingAccountRoleType, getLanguage());
+            var description = billingControl.getBestBillingAccountRoleTypeDescription(billingAccountRoleType, getLanguage(userVisit));
             
             billingAccountRoleTypeTransfer = new BillingAccountRoleTypeTransfer(billingAccountRoleTypeName, sortOrder, description);
-            put(billingAccountRoleType, billingAccountRoleTypeTransfer);
+            put(userVisit, billingAccountRoleType, billingAccountRoleTypeTransfer);
         }
         
         return billingAccountRoleTypeTransfer;

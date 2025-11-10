@@ -42,7 +42,7 @@ public class EntityAppearanceTransferCache
             var appearance = appearanceControl.getAppearanceTransfer(userVisit, entityAppearance.getAppearance());
             
             entityAppearanceTransfer = new EntityAppearanceTransfer(entityInstance, appearance);
-            put(entityAppearance, entityAppearanceTransfer);
+            put(userVisit, entityAppearance, entityAppearanceTransfer);
         }
         
         return entityAppearanceTransfer;

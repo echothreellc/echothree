@@ -40,10 +40,10 @@ public class FilterAdjustmentTypeTransferCache
             var filterAdjustmentTypeName = filterAdjustmentType.getFilterAdjustmentTypeName();
             var isDefault = filterAdjustmentType.getIsDefault();
             var sortOrder = filterAdjustmentType.getSortOrder();
-            var description = filterControl.getBestFilterAdjustmentTypeDescription(filterAdjustmentType, getLanguage());
+            var description = filterControl.getBestFilterAdjustmentTypeDescription(filterAdjustmentType, getLanguage(userVisit));
             
             filterAdjustmentTypeTransfer = new FilterAdjustmentTypeTransfer(filterAdjustmentTypeName, isDefault, sortOrder, description);
-            put(filterAdjustmentType, filterAdjustmentTypeTransfer);
+            put(userVisit, filterAdjustmentType, filterAdjustmentTypeTransfer);
         }
         return filterAdjustmentTypeTransfer;
     }

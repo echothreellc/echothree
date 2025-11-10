@@ -37,7 +37,7 @@ public class TrackDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, trackDescription.getLanguage());
             
             trackDescriptionTransfer = new TrackDescriptionTransfer(languageTransfer, trackTransfer, trackDescription.getDescription());
-            put(trackDescription, trackDescriptionTransfer);
+            put(userVisit, trackDescription, trackDescriptionTransfer);
         }
         return trackDescriptionTransfer;
     }

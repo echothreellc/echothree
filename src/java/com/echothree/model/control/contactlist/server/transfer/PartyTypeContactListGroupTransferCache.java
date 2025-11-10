@@ -44,7 +44,7 @@ public class PartyTypeContactListGroupTransferCache
             var addWhenCreated = partyTypeContactListGroup.getAddWhenCreated();
             
             partyTypeContactListGroupTransfer = new PartyTypeContactListGroupTransfer(partyTypeTransfer, contactListGroupTransfer, addWhenCreated);
-            put(partyTypeContactListGroup, partyTypeContactListGroupTransfer);
+            put(userVisit, partyTypeContactListGroup, partyTypeContactListGroupTransfer);
         }
         
         return partyTypeContactListGroupTransfer;

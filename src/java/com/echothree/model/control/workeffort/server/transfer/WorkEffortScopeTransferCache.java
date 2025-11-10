@@ -62,19 +62,19 @@ public class WorkEffortScopeTransferCache
             var workEffortSequence = workEffortScopeDetail.getWorkEffortSequence();
             var workEffortSequenceTransfer = workEffortSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, workEffortSequence);
             var unformattedScheduledTime = workEffortScopeDetail.getScheduledTime();
-            var scheduledTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedScheduledTime);
+            var scheduledTime = formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedScheduledTime);
             var unformattedEstimatedTimeAllowed = workEffortScopeDetail.getEstimatedTimeAllowed();
-            var estimatedTimeAllowed = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedEstimatedTimeAllowed);
+            var estimatedTimeAllowed = formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedEstimatedTimeAllowed);
             var unformattedMaximumTimeAllowed = workEffortScopeDetail.getMaximumTimeAllowed();
-            var maximumTimeAllowed = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedMaximumTimeAllowed);
+            var maximumTimeAllowed = formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedMaximumTimeAllowed);
             var isDefault = workEffortScopeDetail.getIsDefault();
             var sortOrder = workEffortScopeDetail.getSortOrder();
-            var description = workEffortControl.getBestWorkEffortScopeDescription(workEffortScope, getLanguage());
+            var description = workEffortControl.getBestWorkEffortScopeDescription(workEffortScope, getLanguage(userVisit));
             
             workEffortScopeTransfer = new WorkEffortScopeTransfer(workEffortTypeTransfer, workEffortScopeName, workEffortSequenceTransfer,
                     unformattedScheduledTime, scheduledTime, unformattedEstimatedTimeAllowed, estimatedTimeAllowed, unformattedMaximumTimeAllowed,
                     maximumTimeAllowed, isDefault, sortOrder, description);
-            put(workEffortScope, workEffortScopeTransfer);
+            put(userVisit, workEffortScope, workEffortScopeTransfer);
 
             if(includeWorkRequirementScopes) {
                 workEffortScopeTransfer.setWorkRequirementScopes(new ListWrapper<>(workRequirementControl.getWorkRequirementScopeTransfersByWorkEffortScope(userVisit, workEffortScope)));

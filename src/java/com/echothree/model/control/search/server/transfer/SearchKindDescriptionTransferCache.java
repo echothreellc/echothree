@@ -37,7 +37,7 @@ public class SearchKindDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, searchKindDescription.getLanguage());
             
             searchKindDescriptionTransfer = new SearchKindDescriptionTransfer(languageTransfer, searchKindTransfer, searchKindDescription.getDescription());
-            put(searchKindDescription, searchKindDescriptionTransfer);
+            put(userVisit, searchKindDescription, searchKindDescriptionTransfer);
         }
         
         return searchKindDescriptionTransfer;

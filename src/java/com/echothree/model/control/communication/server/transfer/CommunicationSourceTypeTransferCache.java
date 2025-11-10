@@ -36,10 +36,10 @@ public class CommunicationSourceTypeTransferCache
             var communicationSourceTypeName = communicationSourceType.getCommunicationSourceTypeName();
             var isDefault = communicationSourceType.getIsDefault();
             var sortOrder = communicationSourceType.getSortOrder();
-            var description = communicationControl.getBestCommunicationSourceTypeDescription(communicationSourceType, getLanguage());
+            var description = communicationControl.getBestCommunicationSourceTypeDescription(communicationSourceType, getLanguage(userVisit));
             
             communicationSourceTypeTransfer = new CommunicationSourceTypeTransfer(communicationSourceTypeName, isDefault, sortOrder, description);
-            put(communicationSourceType, communicationSourceTypeTransfer);
+            put(userVisit, communicationSourceType, communicationSourceTypeTransfer);
         }
         
         return communicationSourceTypeTransfer;

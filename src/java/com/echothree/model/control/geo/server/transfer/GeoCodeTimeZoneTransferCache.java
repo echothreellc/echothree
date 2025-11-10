@@ -45,7 +45,7 @@ public class GeoCodeTimeZoneTransferCache
             var sortOrder = geoCodeTimeZone.getSortOrder();
             
             geoCodeTimeZoneTransfer = new GeoCodeTimeZoneTransfer(geoCode, timeZone, isDefault, sortOrder);
-            put(geoCodeTimeZone, geoCodeTimeZoneTransfer);
+            put(userVisit, geoCodeTimeZone, geoCodeTimeZoneTransfer);
         }
         
         return geoCodeTimeZoneTransfer;

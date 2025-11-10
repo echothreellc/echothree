@@ -88,11 +88,11 @@ public class ContentCatalogTransferCache
             var defaultOfferUseTransfer = defaultOfferUse == null ? null : offerUseControl.getOfferUseTransfer(userVisit, defaultOfferUse);
             var isDefault = filterIsDefault ? null : contentCatalogDetail.getIsDefault();
             var sortOrder = filterSortOrder ? null : contentCatalogDetail.getSortOrder();
-            var description = filterDescription ? null : contentControl.getBestContentCatalogDescription(contentCatalog, getLanguage());
+            var description = filterDescription ? null : contentControl.getBestContentCatalogDescription(contentCatalog, getLanguage(userVisit));
             
             contentCatalogTransfer = new ContentCatalogTransfer(contentCollectionTransfer, contentCatalogName, defaultOfferUseTransfer, isDefault, sortOrder,
                     description);
-            put(contentCatalog, contentCatalogTransfer);
+            put(userVisit, contentCatalog, contentCatalogTransfer);
             
             if(includeContentCatalogItems) {
                 contentCatalogTransfer.setContentCatalogItems(new ListWrapper<>(contentControl.getContentCatalogItemTransfers(userVisit, contentCatalog)));

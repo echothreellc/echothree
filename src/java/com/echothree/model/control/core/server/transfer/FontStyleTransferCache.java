@@ -42,10 +42,10 @@ public class FontStyleTransferCache
             var fontStyleName = fontStyleDetail.getFontStyleName();
             var isDefault = fontStyleDetail.getIsDefault();
             var sortOrder = fontStyleDetail.getSortOrder();
-            var description = fontControl.getBestFontStyleDescription(fontStyle, getLanguage());
+            var description = fontControl.getBestFontStyleDescription(fontStyle, getLanguage(userVisit));
 
             fontStyleTransfer = new FontStyleTransfer(fontStyleName, isDefault, sortOrder, description);
-            put(fontStyle, fontStyleTransfer);
+            put(userVisit, fontStyle, fontStyleTransfer);
         }
 
         return fontStyleTransfer;

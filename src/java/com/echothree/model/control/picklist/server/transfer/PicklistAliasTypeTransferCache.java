@@ -41,10 +41,10 @@ public class PicklistAliasTypeTransferCache
             var validationPattern = picklistAliasTypeDetail.getValidationPattern();
             var isDefault = picklistAliasTypeDetail.getIsDefault();
             var sortOrder = picklistAliasTypeDetail.getSortOrder();
-            var description = picklistControl.getBestPicklistAliasTypeDescription(picklistAliasType, getLanguage());
+            var description = picklistControl.getBestPicklistAliasTypeDescription(picklistAliasType, getLanguage(userVisit));
             
             picklistAliasTypeTransfer = new PicklistAliasTypeTransfer(picklistType, picklistAliasTypeName, validationPattern, isDefault, sortOrder, description);
-            put(picklistAliasType, picklistAliasTypeTransfer);
+            put(userVisit, picklistAliasType, picklistAliasTypeTransfer);
         }
         
         return picklistAliasTypeTransfer;

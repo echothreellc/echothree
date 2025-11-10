@@ -49,10 +49,10 @@ public class TaxTransferCache
             var percent = formatFractionalPercent(taxDetail.getPercent());
             var isDefault = taxDetail.getIsDefault();
             var sortOrder = taxDetail.getSortOrder();
-            var description = taxControl.getBestTaxDescription(tax, getLanguage());
+            var description = taxControl.getBestTaxDescription(tax, getLanguage(userVisit));
             
             taxTransfer = new TaxTransfer(taxName, contactMechanismPurpose, glAccount, percent, isDefault, sortOrder, description);
-            put(tax, taxTransfer);
+            put(userVisit, tax, taxTransfer);
         }
         
         return taxTransfer;

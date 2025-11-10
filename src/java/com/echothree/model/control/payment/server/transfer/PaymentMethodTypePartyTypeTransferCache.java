@@ -49,7 +49,7 @@ public class PaymentMethodTypePartyTypeTransferCache
             
             paymentMethodTypePartyTypeTransfer = new PaymentMethodTypePartyTypeTransfer(paymentMethodType, partyType, partyPaymentMethodWorkflow,
                     partyContactMechanismWorkflow);
-            put(paymentMethodTypePartyType, paymentMethodTypePartyTypeTransfer);
+            put(userVisit, paymentMethodTypePartyType, paymentMethodTypePartyTypeTransfer);
         }
         return paymentMethodTypePartyTypeTransfer;
     }

@@ -40,7 +40,7 @@ public class ContactMechanismAliasTransferCache
             var alias = contactMechanismAlias.getAlias();
             
             contactMechanismAliasTransfer = new ContactMechanismAliasTransfer(contactMechanism, contactMechanismAliasType, alias);
-            put(contactMechanismAlias, contactMechanismAliasTransfer);
+            put(userVisit, contactMechanismAlias, contactMechanismAliasTransfer);
         }
         
         return contactMechanismAliasTransfer;

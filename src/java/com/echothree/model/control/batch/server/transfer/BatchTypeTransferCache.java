@@ -54,11 +54,11 @@ public class BatchTypeTransferCache
             var batchWorkflowEntranceTransfer = batchWorkflowEntrance == null? null: workflowControl.getWorkflowEntranceTransfer(userVisit, batchWorkflowEntrance);
             var isDefault = batchTypeDetail.getIsDefault();
             var sortOrder = batchTypeDetail.getSortOrder();
-            var description = batchControl.getBestBatchTypeDescription(batchType, getLanguage());
+            var description = batchControl.getBestBatchTypeDescription(batchType, getLanguage(userVisit));
             
             batchTypeTransfer = new BatchTypeTransfer(batchTypeName, parentBatchTypeTransfer, batchSequenceTypeTransfer, batchWorkflowTransfer,
                     batchWorkflowEntranceTransfer, isDefault, sortOrder, description);
-            put(batchType, batchTypeTransfer);
+            put(userVisit, batchType, batchTypeTransfer);
         }
         
         return batchTypeTransfer;

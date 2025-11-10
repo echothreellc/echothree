@@ -38,11 +38,11 @@ public class ContactMechanismTypeTransferCache
             var parentContactMechanismTypeTransfer = parentContactMechanismType == null? null: getContactMechanismTypeTransfer(parentContactMechanismType);
             var isDefault = contactMechanismType.getIsDefault();
             var sortOrder = contactMechanismType.getSortOrder();
-            var description = contactControl.getBestContactMechanismTypeDescription(contactMechanismType, getLanguage());
+            var description = contactControl.getBestContactMechanismTypeDescription(contactMechanismType, getLanguage(userVisit));
             
             contactMechanismTypeTransfer = new ContactMechanismTypeTransfer(contactMechanismTypeName,
                     parentContactMechanismTypeTransfer, isDefault, sortOrder, description);
-            put(contactMechanismType, contactMechanismTypeTransfer);
+            put(userVisit, contactMechanismType, contactMechanismTypeTransfer);
         }
         
         return contactMechanismTypeTransfer;

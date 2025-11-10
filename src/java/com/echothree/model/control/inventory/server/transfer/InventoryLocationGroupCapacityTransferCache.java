@@ -46,7 +46,7 @@ public class InventoryLocationGroupCapacityTransferCache
             
             inventoryLocationGroupCapacityTransfer = new InventoryLocationGroupCapacityTransfer(inventoryLocationGroupTransfer, unitOfMeasureTypeTransfer,
             capacity);
-            put(inventoryLocationGroupCapacity, inventoryLocationGroupCapacityTransfer);
+            put(userVisit, inventoryLocationGroupCapacity, inventoryLocationGroupCapacityTransfer);
         }
         
         return inventoryLocationGroupCapacityTransfer;

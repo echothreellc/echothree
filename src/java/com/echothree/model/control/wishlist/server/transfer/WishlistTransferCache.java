@@ -52,7 +52,7 @@ public class WishlistTransferCache
             var wishlistType = wishlistControl.getWishlistTypeTransfer(userVisit, wishlist.getWishlistType());
             
             wishlistTransfer = new WishlistTransfer(orderType, orderName, currency, offerUse, wishlistType);
-            put(order, wishlistTransfer);
+            put(userVisit, order, wishlistTransfer);
         }
         
         return wishlistTransfer;

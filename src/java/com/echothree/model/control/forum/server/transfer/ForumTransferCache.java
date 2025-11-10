@@ -69,10 +69,10 @@ public class ForumTransferCache
             var forumMessageSequence = forumDetail.getForumMessageSequence();
             var forumMessageSequenceTransfer = forumMessageSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, forumMessageSequence);
             var sortOrder = forumDetail.getSortOrder();
-            var description = forumControl.getBestForumDescription(forum, getLanguage());
+            var description = forumControl.getBestForumDescription(forum, getLanguage(userVisit));
             
             forumTransfer = new ForumTransfer(forumName, forumTypeTransfer, iconTransfer, forumThreadSequenceTransfer, forumMessageSequenceTransfer, sortOrder, description);
-            put(forum, forumTransfer);
+            put(userVisit, forum, forumTransfer);
             
             if(includeForumGroups) {
                 var forumGroupForums = forumControl.getForumGroupForumsByForum(forum);

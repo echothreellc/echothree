@@ -40,10 +40,10 @@ public class HarmonizedTariffScheduleCodeUseTypeTransferCache
             var harmonizedTariffScheduleCodeUseTypeName = harmonizedTariffScheduleCodeUseTypeDetail.getHarmonizedTariffScheduleCodeUseTypeName();
             var isDefault = harmonizedTariffScheduleCodeUseTypeDetail.getIsDefault();
             var sortOrder = harmonizedTariffScheduleCodeUseTypeDetail.getSortOrder();
-            var description = itemControl.getBestHarmonizedTariffScheduleCodeUseTypeDescription(harmonizedTariffScheduleCodeUseType, getLanguage());
+            var description = itemControl.getBestHarmonizedTariffScheduleCodeUseTypeDescription(harmonizedTariffScheduleCodeUseType, getLanguage(userVisit));
             
             harmonizedTariffScheduleCodeUseTypeTransfer = new HarmonizedTariffScheduleCodeUseTypeTransfer(harmonizedTariffScheduleCodeUseTypeName, isDefault, sortOrder, description);
-            put(harmonizedTariffScheduleCodeUseType, harmonizedTariffScheduleCodeUseTypeTransfer);
+            put(userVisit, harmonizedTariffScheduleCodeUseType, harmonizedTariffScheduleCodeUseTypeTransfer);
         }
         
         return harmonizedTariffScheduleCodeUseTypeTransfer;

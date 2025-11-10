@@ -63,11 +63,11 @@ public class PartyTypeTransferCache
             var allowPartyAliases = partyType.getAllowPartyAliases();
             var isDefault = partyType.getIsDefault();
             var sortOrder = partyType.getSortOrder();
-            var description = partyControl.getBestPartyTypeDescription(partyType, getLanguage());
+            var description = partyControl.getBestPartyTypeDescription(partyType, getLanguage(userVisit));
             
             partyTypeTransfer = new PartyTypeTransfer(partyTypeName, parentPartyTypeTransfer, billingAccountSequenceTypeTransfer, allowUserLogins,
                     allowPartyAliases, isDefault, sortOrder, description);
-            put(partyType, partyTypeTransfer);
+            put(userVisit, partyType, partyTypeTransfer);
             
             if(includeAuditPolicy) {
                 var partyTypeAuditPolicy = partyControl.getPartyTypeAuditPolicy(partyType);

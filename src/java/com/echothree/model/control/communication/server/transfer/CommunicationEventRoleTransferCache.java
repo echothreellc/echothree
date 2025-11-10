@@ -47,7 +47,7 @@ public class CommunicationEventRoleTransferCache
             
             communicationEventRoleTransfer = new CommunicationEventRoleTransfer(communicationEvent, party,
                     communicationEventRoleType);
-            put(communicationEventRole, communicationEventRoleTransfer);
+            put(userVisit, communicationEventRole, communicationEventRoleTransfer);
         }
         
         return communicationEventRoleTransfer;

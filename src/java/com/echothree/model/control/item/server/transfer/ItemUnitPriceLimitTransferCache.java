@@ -55,7 +55,7 @@ public class ItemUnitPriceLimitTransferCache
             
             itemUnitPriceLimitTransfer = new ItemUnitPriceLimitTransfer(item, inventoryCondition, unitOfMeasureType, currencyTransfer,
                     unformattedMinimumUnitPrice, minimumUnitPrice, unformattedMaximumUnitPrice, maximumUnitPrice);
-            put(itemUnitPriceLimit, itemUnitPriceLimitTransfer);
+            put(userVisit, itemUnitPriceLimit, itemUnitPriceLimitTransfer);
         }
         
         return itemUnitPriceLimitTransfer;

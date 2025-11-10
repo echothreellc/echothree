@@ -42,7 +42,7 @@ public class GlResourceTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, glResourceTypeDescription.getLanguage());
             
             glResourceTypeDescriptionTransfer = new GlResourceTypeDescriptionTransfer(languageTransfer, glResourceTypeTransfer, glResourceTypeDescription.getDescription());
-            put(glResourceTypeDescription, glResourceTypeDescriptionTransfer);
+            put(userVisit, glResourceTypeDescription, glResourceTypeDescriptionTransfer);
         }
         
         return glResourceTypeDescriptionTransfer;

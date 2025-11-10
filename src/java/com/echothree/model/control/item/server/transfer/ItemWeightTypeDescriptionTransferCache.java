@@ -39,7 +39,7 @@ public class ItemWeightTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, itemWeightTypeDescription.getLanguage());
             
             itemWeightTypeDescriptionTransfer = new ItemWeightTypeDescriptionTransfer(languageTransfer, itemWeightTypeTransfer, itemWeightTypeDescription.getDescription());
-            put(itemWeightTypeDescription, itemWeightTypeDescriptionTransfer);
+            put(userVisit, itemWeightTypeDescription, itemWeightTypeDescriptionTransfer);
         }
         
         return itemWeightTypeDescriptionTransfer;

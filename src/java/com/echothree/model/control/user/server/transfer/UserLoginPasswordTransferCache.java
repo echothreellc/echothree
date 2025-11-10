@@ -59,12 +59,12 @@ public class UserLoginPasswordTransferCache
                 }
 
                 unformattedChangedTime = userLoginPasswordString.getChangedTime();
-                changedTime = formatTypicalDateTime(unformattedChangedTime);
+                changedTime = formatTypicalDateTime(userVisit, unformattedChangedTime);
                 wasReset = userLoginPasswordString.getWasReset();
             }
 
             userLoginPasswordTransfer = new UserLoginPasswordTransfer(party, userLoginPasswordType, password, unformattedChangedTime, changedTime, wasReset);
-            put(userLoginPassword, userLoginPasswordTransfer);
+            put(userVisit, userLoginPassword, userLoginPasswordTransfer);
         }
         
         return userLoginPasswordTransfer;

@@ -38,7 +38,7 @@ public class ItemImageTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, itemImageTypeDescription.getLanguage());
             
             itemImageTypeDescriptionTransfer = new ItemImageTypeDescriptionTransfer(languageTransfer, itemImageTypeTransfer, itemImageTypeDescription.getDescription());
-            put(itemImageTypeDescription, itemImageTypeDescriptionTransfer);
+            put(userVisit, itemImageTypeDescription, itemImageTypeDescriptionTransfer);
         }
         
         return itemImageTypeDescriptionTransfer;

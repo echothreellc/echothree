@@ -43,7 +43,7 @@ public class QueuedLetterTransferCache
             var letter = letterControl.getLetterTransfer(userVisit, queuedLetter.getLetter());
             
             queuedLetterTransfer = new QueuedLetterTransfer(chainInstance, letter);
-            put(queuedLetter, queuedLetterTransfer);
+            put(userVisit, queuedLetter, queuedLetterTransfer);
         }
         
         return queuedLetterTransfer;

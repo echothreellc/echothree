@@ -64,7 +64,7 @@ public class TransactionGlEntryTransferCache
                     unformattedOriginalDebit, originalDebit, unformattedOriginalCredit, originalCredit, unformattedDebit,
                     debit, unformattedCredit, credit);
 
-            put(transactionGlEntry, transactionGlEntryTransfer);
+            put(userVisit, transactionGlEntry, transactionGlEntryTransfer);
         }
 
         return transactionGlEntryTransfer;

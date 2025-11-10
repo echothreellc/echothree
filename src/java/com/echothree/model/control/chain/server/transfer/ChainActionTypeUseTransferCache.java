@@ -39,7 +39,7 @@ public class ChainActionTypeUseTransferCache
             var isDefault = chainActionTypeUse.getIsDefault();
             
             chainActionTypeUseTransfer = new ChainActionTypeUseTransfer(chainKind, chainActionType, isDefault);
-            put(chainActionTypeUse, chainActionTypeUseTransfer);
+            put(userVisit, chainActionTypeUse, chainActionTypeUseTransfer);
         }
         return chainActionTypeUseTransfer;
     }

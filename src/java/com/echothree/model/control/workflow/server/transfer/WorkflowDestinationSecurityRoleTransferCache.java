@@ -43,7 +43,7 @@ public class WorkflowDestinationSecurityRoleTransferCache
             var securityRole = securityControl.getSecurityRoleTransfer(userVisit, workflowDestinationSecurityRole.getSecurityRole());
             
             workflowDestinationSecurityRoleTransfer = new WorkflowDestinationSecurityRoleTransfer(workflowDestinationPartyType, securityRole);
-            put(workflowDestinationSecurityRole, workflowDestinationSecurityRoleTransfer);
+            put(userVisit, workflowDestinationSecurityRole, workflowDestinationSecurityRoleTransfer);
         }
         
         return workflowDestinationSecurityRoleTransfer;

@@ -47,11 +47,11 @@ public class FinancialAccountTransactionTypeTransferCache
             var glAccountTransfer = accountingControl.getGlAccountTransfer(userVisit, financialAccountTransactionTypeDetail.getGlAccount());
             var isDefault = financialAccountTransactionTypeDetail.getIsDefault();
             var sortOrder = financialAccountTransactionTypeDetail.getSortOrder();
-            var description = financialControl.getBestFinancialAccountTransactionTypeDescription(financialAccountTransactionType, getLanguage());
+            var description = financialControl.getBestFinancialAccountTransactionTypeDescription(financialAccountTransactionType, getLanguage(userVisit));
             
             financialAccountTransactionTypeTransfer = new FinancialAccountTransactionTypeTransfer(financialAccountTypeTransfer,
                     financialAccountTransactionTypeName, parentFinancialAccountTransactionTypeTransfer, glAccountTransfer, isDefault, sortOrder, description);
-            put(financialAccountTransactionType, financialAccountTransactionTypeTransfer);
+            put(userVisit, financialAccountTransactionType, financialAccountTransactionTypeTransfer);
         }
         
         return financialAccountTransactionTypeTransfer;

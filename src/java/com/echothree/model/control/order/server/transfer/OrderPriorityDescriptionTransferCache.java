@@ -40,7 +40,7 @@ public class OrderPriorityDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, orderPriorityDescription.getLanguage());
             
             orderPriorityDescriptionTransfer = new OrderPriorityDescriptionTransfer(languageTransfer, orderPriorityTransfer, orderPriorityDescription.getDescription());
-            put(orderPriorityDescription, orderPriorityDescriptionTransfer);
+            put(userVisit, orderPriorityDescription, orderPriorityDescriptionTransfer);
         }
         
         return orderPriorityDescriptionTransfer;

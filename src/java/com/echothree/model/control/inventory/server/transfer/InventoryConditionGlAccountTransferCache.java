@@ -56,7 +56,7 @@ public class InventoryConditionGlAccountTransferCache
             inventoryConditionGlAccountTransfer = new InventoryConditionGlAccountTransfer(inventoryConditionTransfer,
                     itemAccountingCategoryTransfer, inventoryGlAccountTransfer, salesGlAccountTransfer, returnsGlAccountTransfer,
                     cogsGlAccountTransfer, returnsCogsGlAccountTransfer);
-            put(inventoryConditionGlAccount, inventoryConditionGlAccountTransfer);
+            put(userVisit, inventoryConditionGlAccount, inventoryConditionGlAccountTransfer);
         }
         
         return inventoryConditionGlAccountTransfer;

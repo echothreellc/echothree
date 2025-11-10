@@ -47,11 +47,11 @@ public class ApplicationEditorUseTransferCache
             var defaultWidth = applicationEditorUseDetail.getDefaultWidth();
             var isDefault = applicationEditorUseDetail.getIsDefault();
             var sortOrder = applicationEditorUseDetail.getSortOrder();
-            var description = applicationControl.getBestApplicationEditorUseDescription(applicationEditorUse, getLanguage());
+            var description = applicationControl.getBestApplicationEditorUseDescription(applicationEditorUse, getLanguage(userVisit));
 
             applicationEditorUseTransfer = new ApplicationEditorUseTransfer(applicationTransfer, applicationEditorUseName, defaultApplicationEditorTransfer,
                     defaultHeight, defaultWidth, isDefault, sortOrder, description);
-            put(applicationEditorUse, applicationEditorUseTransfer);
+            put(userVisit, applicationEditorUse, applicationEditorUseTransfer);
         }
 
         return applicationEditorUseTransfer;

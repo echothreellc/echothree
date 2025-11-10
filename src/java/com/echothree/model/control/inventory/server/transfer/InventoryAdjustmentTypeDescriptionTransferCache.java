@@ -42,7 +42,7 @@ public class InventoryAdjustmentTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, inventoryAdjustmentTypeDescription.getLanguage());
             
             inventoryAdjustmentTypeDescriptionTransfer = new InventoryAdjustmentTypeDescriptionTransfer(languageTransfer, inventoryAdjustmentTypeTransfer, inventoryAdjustmentTypeDescription.getDescription());
-            put(inventoryAdjustmentTypeDescription, inventoryAdjustmentTypeDescriptionTransfer);
+            put(userVisit, inventoryAdjustmentTypeDescription, inventoryAdjustmentTypeDescriptionTransfer);
         }
         
         return inventoryAdjustmentTypeDescriptionTransfer;

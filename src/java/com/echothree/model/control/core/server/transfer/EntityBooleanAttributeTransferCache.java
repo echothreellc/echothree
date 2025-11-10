@@ -44,7 +44,7 @@ public class EntityBooleanAttributeTransferCache
             var booleanAttribute = entityBooleanAttribute.getBooleanAttribute();
             
             entityBooleanAttributeTransfer = new EntityBooleanAttributeTransfer(entityAttribute, entityInstanceTransfer, booleanAttribute);
-            put(entityBooleanAttribute, entityBooleanAttributeTransfer);
+            put(userVisit, entityBooleanAttribute, entityBooleanAttributeTransfer);
         }
         
         return entityBooleanAttributeTransfer;

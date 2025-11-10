@@ -45,10 +45,10 @@ public class GlAccountCategoryTransferCache
             var parentGlAccountCategoryTransfer = parentGlAccountCategory == null ? null : getTransfer(parentGlAccountCategory);
             var isDefault = glAccountCategoryDetail.getIsDefault();
             var sortOrder = glAccountCategoryDetail.getSortOrder();
-            var description = accountingControl.getBestGlAccountCategoryDescription(glAccountCategory, getLanguage());
+            var description = accountingControl.getBestGlAccountCategoryDescription(glAccountCategory, getLanguage(userVisit));
 
             glAccountCategoryTransfer = new GlAccountCategoryTransfer(glAccountCategoryName, parentGlAccountCategoryTransfer, isDefault, sortOrder, description);
-            put(glAccountCategory, glAccountCategoryTransfer);
+            put(userVisit, glAccountCategory, glAccountCategoryTransfer);
         }
 
         return glAccountCategoryTransfer;

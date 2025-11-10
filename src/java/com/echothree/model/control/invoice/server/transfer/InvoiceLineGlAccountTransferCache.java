@@ -43,7 +43,7 @@ public class InvoiceLineGlAccountTransferCache
             var glAccount = accountingControl.getGlAccountTransfer(userVisit, invoiceLineGlAccount.getGlAccount());
 
             invoiceLineGlAccountTransfer = new InvoiceLineGlAccountTransfer(invoiceLine, glAccount);
-            put(invoiceLineGlAccount, invoiceLineGlAccountTransfer);
+            put(userVisit, invoiceLineGlAccount, invoiceLineGlAccountTransfer);
         }
 
         return invoiceLineGlAccountTransfer;

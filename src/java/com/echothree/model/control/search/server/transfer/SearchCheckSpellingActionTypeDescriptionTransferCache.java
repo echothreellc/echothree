@@ -37,7 +37,7 @@ public class SearchCheckSpellingActionTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, searchCheckSpellingActionTypeDescription.getLanguage());
             
             searchCheckSpellingActionTypeDescriptionTransfer = new SearchCheckSpellingActionTypeDescriptionTransfer(languageTransfer, searchCheckSpellingActionTypeTransfer, searchCheckSpellingActionTypeDescription.getDescription());
-            put(searchCheckSpellingActionTypeDescription, searchCheckSpellingActionTypeDescriptionTransfer);
+            put(userVisit, searchCheckSpellingActionTypeDescription, searchCheckSpellingActionTypeDescriptionTransfer);
         }
         return searchCheckSpellingActionTypeDescriptionTransfer;
     }

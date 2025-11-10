@@ -39,7 +39,7 @@ public class PartySecurityRoleTemplateRoleTransferCache
             var securityRoleTransfer = securityRoleTransferCache.getSecurityRoleTransfer(partySecurityRoleTemplateRole.getSecurityRole());
             
             partySecurityRoleTemplateRoleTransfer = new PartySecurityRoleTemplateRoleTransfer(partySecurityRoleTemplateTransfer, securityRoleTransfer);
-            put(partySecurityRoleTemplateRole, partySecurityRoleTemplateRoleTransfer);
+            put(userVisit, partySecurityRoleTemplateRole, partySecurityRoleTemplateRoleTransfer);
         }
         
         return partySecurityRoleTemplateRoleTransfer;

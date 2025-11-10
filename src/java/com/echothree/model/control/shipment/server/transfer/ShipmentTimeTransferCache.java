@@ -39,10 +39,10 @@ public class ShipmentTimeTransferCache
         if(shipmentTimeTransfer == null) {
             var shipmentTimeType = shipmentControl.getShipmentTimeTypeTransfer(userVisit, shipmentTime.getShipmentTimeType());
             var unformattedTime = shipmentTime.getTime();
-            var time = formatTypicalDateTime(unformattedTime);
+            var time = formatTypicalDateTime(userVisit, unformattedTime);
             
             shipmentTimeTransfer = new ShipmentTimeTransfer(shipmentTimeType, unformattedTime, time);
-            put(shipmentTime, shipmentTimeTransfer);
+            put(userVisit, shipmentTime, shipmentTimeTransfer);
         }
         
         return shipmentTimeTransfer;

@@ -38,10 +38,10 @@ public class OrderTimeTransferCache
         if(orderTimeTransfer == null) {
             var orderTimeType = orderTimeControl.getOrderTimeTypeTransfer(userVisit, orderTime.getOrderTimeType());
             var unformattedTime = orderTime.getTime();
-            var time = formatTypicalDateTime(unformattedTime);
+            var time = formatTypicalDateTime(userVisit, unformattedTime);
             
             orderTimeTransfer = new OrderTimeTransfer(orderTimeType, unformattedTime, time);
-            put(orderTime, orderTimeTransfer);
+            put(userVisit, orderTime, orderTimeTransfer);
         }
         
         return orderTimeTransfer;

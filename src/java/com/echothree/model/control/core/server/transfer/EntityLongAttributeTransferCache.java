@@ -44,7 +44,7 @@ public class EntityLongAttributeTransferCache
             var longAttribute = entityLongAttribute.getLongAttribute();
             
             entityLongAttributeTransfer = new EntityLongAttributeTransfer(entityAttribute, entityInstanceTransfer, longAttribute);
-            put(entityLongAttribute, entityLongAttributeTransfer);
+            put(userVisit, entityLongAttribute, entityLongAttributeTransfer);
         }
         
         return entityLongAttributeTransfer;

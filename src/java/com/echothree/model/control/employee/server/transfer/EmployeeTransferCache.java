@@ -148,7 +148,7 @@ public class EmployeeTransferCache
 
             employeeTransfer = new EmployeeTransfer(partyName, partyTypeTransfer, preferredLanguageTransfer, preferredCurrencyTransfer, preferredTimeZoneTransfer, preferredDateTimeFormatTransfer,
                     personTransfer, profileTransfer, employeeName, employeeType, employeeStatusTransfer, employeeAvailabilityTransfer);
-            put(party, employeeTransfer, entityInstance);
+            put(userVisit, party, employeeTransfer, entityInstance);
 
             if(includeUserLogin) {
                 employeeTransfer.setUserLogin(userControl.getUserLoginTransfer(userVisit, party));

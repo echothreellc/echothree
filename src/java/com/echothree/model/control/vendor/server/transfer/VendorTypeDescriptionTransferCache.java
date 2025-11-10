@@ -37,7 +37,7 @@ public class VendorTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, vendorTypeDescription.getLanguage());
             
             vendorTypeDescriptionTransfer = new VendorTypeDescriptionTransfer(languageTransfer, vendorTypeTransfer, vendorTypeDescription.getDescription());
-            put(vendorTypeDescription, vendorTypeDescriptionTransfer);
+            put(userVisit, vendorTypeDescription, vendorTypeDescriptionTransfer);
         }
         
         return vendorTypeDescriptionTransfer;

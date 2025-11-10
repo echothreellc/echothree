@@ -36,10 +36,10 @@ public class ForumMessageTypeTransferCache
             var forumMessageTypeName = forumMessageType.getForumMessageTypeName();
             var isDefault = forumMessageType.getIsDefault();
             var sortOrder = forumMessageType.getSortOrder();
-            var description = forumControl.getBestForumMessageTypeDescription(forumMessageType, getLanguage());
+            var description = forumControl.getBestForumMessageTypeDescription(forumMessageType, getLanguage(userVisit));
             
             forumMessageTypeTransfer = new ForumMessageTypeTransfer(forumMessageTypeName, isDefault, sortOrder, description);
-            put(forumMessageType, forumMessageTypeTransfer);
+            put(userVisit, forumMessageType, forumMessageTypeTransfer);
         }
         
         return forumMessageTypeTransfer;

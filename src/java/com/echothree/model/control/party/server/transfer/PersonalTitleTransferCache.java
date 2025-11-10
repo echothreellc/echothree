@@ -43,7 +43,7 @@ public class PersonalTitleTransferCache
             var sortOrder = personalTitleDetail.getSortOrder();
             
             personalTitleTransfer = new PersonalTitleTransfer(personalTitleId, description, isDefault, sortOrder);
-            put(personalTitle, personalTitleTransfer);
+            put(userVisit, personalTitle, personalTitleTransfer);
         }
         
         return personalTitleTransfer;

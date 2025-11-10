@@ -53,7 +53,7 @@ public class ContactTelephoneTransferCache
             
             contactTelephoneTransfer = new ContactTelephoneTransfer(countryGeoCode, areaCode, telephoneNumber, telephoneExtension,
                     telephoneStatusTransfer);
-            put(contactTelephone, contactTelephoneTransfer);
+            put(userVisit, contactTelephone, contactTelephoneTransfer);
         }
         
         return contactTelephoneTransfer;

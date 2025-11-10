@@ -46,10 +46,10 @@ public class TransactionEntityRoleTypeTransferCache
             var transactionEntityRoleTypeName = transactionEntityRoleTypeDetail.getTransactionEntityRoleTypeName();
             var entityType = entityTypeControl.getEntityTypeTransfer(userVisit, transactionEntityRoleTypeDetail.getEntityType());
             var sortOrder = transactionEntityRoleTypeDetail.getSortOrder();
-            var description = accountingControl.getBestTransactionEntityRoleTypeDescription(transactionEntityRoleType, getLanguage());
+            var description = accountingControl.getBestTransactionEntityRoleTypeDescription(transactionEntityRoleType, getLanguage(userVisit));
             
             transactionEntityRoleTypeTransfer = new TransactionEntityRoleTypeTransfer(transactionType, transactionEntityRoleTypeName, entityType, sortOrder, description);
-            put(transactionEntityRoleType, transactionEntityRoleTypeTransfer);
+            put(userVisit, transactionEntityRoleType, transactionEntityRoleTypeTransfer);
         }
         
         return transactionEntityRoleTypeTransfer;

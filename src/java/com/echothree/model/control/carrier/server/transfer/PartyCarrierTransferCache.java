@@ -43,7 +43,7 @@ public class PartyCarrierTransferCache
             var carrier = carrierControl.getCarrierTransfer(userVisit, partyCarrier.getCarrierParty());
             
             partyCarrierTransfer = new PartyCarrierTransfer(party, carrier);
-            put(partyCarrier, partyCarrierTransfer);
+            put(userVisit, partyCarrier, partyCarrierTransfer);
         }
         
         return partyCarrierTransfer;

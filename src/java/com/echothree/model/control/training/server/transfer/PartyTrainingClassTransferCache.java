@@ -57,9 +57,9 @@ public class PartyTrainingClassTransferCache
             var partyTransfer = partyControl.getPartyTransfer(userVisit, partyTrainingClassDetail.getParty());
             var trainingClassTransfer = trainingControl.getTrainingClassTransfer(userVisit, partyTrainingClassDetail.getTrainingClass());
             var unformattedCompletedTime = partyTrainingClassDetail.getCompletedTime();
-            var completedTime = unformattedCompletedTime == null ? null : formatTypicalDateTime(unformattedCompletedTime);
+            var completedTime = unformattedCompletedTime == null ? null : formatTypicalDateTime(userVisit, unformattedCompletedTime);
             var unformattedValidUntilTime = partyTrainingClassDetail.getValidUntilTime();
-            var validUntilTime = unformattedValidUntilTime == null ? null : formatTypicalDateTime(unformattedValidUntilTime);
+            var validUntilTime = unformattedValidUntilTime == null ? null : formatTypicalDateTime(userVisit, unformattedValidUntilTime);
 
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(partyTrainingClass.getPrimaryKey());
             var partyTrainingClassStatus = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
@@ -67,8 +67,8 @@ public class PartyTrainingClassTransferCache
 
             partyTrainingClassTransfer = new PartyTrainingClassTransfer(partyTrainingClassName, partyTransfer, trainingClassTransfer,
                     unformattedCompletedTime, completedTime, unformattedValidUntilTime, validUntilTime, partyTrainingClassStatus);
-            put(partyTrainingClass, partyTrainingClassTransfer);
-            setupOwnedWorkEfforts(null, entityInstance, partyTrainingClassTransfer);
+            put(userVisit, partyTrainingClass, partyTrainingClassTransfer);
+            setupOwnedWorkEfforts(userVisit, null, entityInstance, partyTrainingClassTransfer);
 
             if(includePartyTrainingClassSessions) {
                 partyTrainingClassTransfer.setPartyTrainingClassSessions(new ListWrapper<>(trainingControl.getPartyTrainingClassSessionTransfersByPartyTrainingClass(userVisit, partyTrainingClass)));

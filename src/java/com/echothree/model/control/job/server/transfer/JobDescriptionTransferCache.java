@@ -37,7 +37,7 @@ public class JobDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, jobDescription.getLanguage());
             
             jobDescriptionTransfer = new JobDescriptionTransfer(languageTransfer, jobTransfer, jobDescription.getDescription());
-            put(jobDescription, jobDescriptionTransfer);
+            put(userVisit, jobDescription, jobDescriptionTransfer);
         }
         
         return jobDescriptionTransfer;

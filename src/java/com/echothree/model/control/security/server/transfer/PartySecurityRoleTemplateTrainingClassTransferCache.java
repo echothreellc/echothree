@@ -41,7 +41,7 @@ public class PartySecurityRoleTemplateTrainingClassTransferCache
             var trainingClass = trainingControl.getTrainingClassTransfer(userVisit, partySecurityRoleTemplateTrainingClass.getTrainingClass());
             
             partySecurityRoleTemplateTrainingClassTransfer = new PartySecurityRoleTemplateTrainingClassTransfer(partySecurityRoleTemplate, trainingClass);
-            put(partySecurityRoleTemplateTrainingClass, partySecurityRoleTemplateTrainingClassTransfer);
+            put(userVisit, partySecurityRoleTemplateTrainingClass, partySecurityRoleTemplateTrainingClassTransfer);
         }
         
         return partySecurityRoleTemplateTrainingClassTransfer;

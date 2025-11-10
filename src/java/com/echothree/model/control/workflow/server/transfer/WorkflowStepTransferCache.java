@@ -69,11 +69,11 @@ public class WorkflowStepTransferCache
             var isDefault = filterIsDefault ? null : workflowStepDetail.getIsDefault();
             var sortOrder = filterSortOrder ? null : workflowStepDetail.getSortOrder();
             var hasDestinations = filterHasDestinations ? null : workflowControl.countWorkflowDestinationsByWorkflowStep(workflowStep) > 0;
-            var description = filterDescription ? null : workflowControl.getBestWorkflowStepDescription(workflowStep, getLanguage());
+            var description = filterDescription ? null : workflowControl.getBestWorkflowStepDescription(workflowStep, getLanguage(userVisit));
             
             workflowStepTransfer = new WorkflowStepTransfer(workflow, workflowStepName, workflowStepType, isDefault, sortOrder,
                     hasDestinations, description);
-            put(workflowStep, workflowStepTransfer);
+            put(userVisit, workflowStep, workflowStepTransfer);
         }
         
         return workflowStepTransfer;

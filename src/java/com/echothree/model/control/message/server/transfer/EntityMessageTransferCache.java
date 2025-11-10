@@ -41,7 +41,7 @@ public class EntityMessageTransferCache
             var message = messageControl.getMessageTransfer(userVisit, entityMessage.getMessage());
             
             entityMessageTransfer = new EntityMessageTransfer(entityInstance, message);
-            put(entityMessage, entityMessageTransfer);
+            put(userVisit, entityMessage, entityMessageTransfer);
         }
         
         return entityMessageTransfer;

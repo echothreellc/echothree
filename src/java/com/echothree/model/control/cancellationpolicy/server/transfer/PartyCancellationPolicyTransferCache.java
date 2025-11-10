@@ -44,11 +44,11 @@ public class PartyCancellationPolicyTransferCache
             var cancellationPolicy = cancellationPolicyControl.getCancellationPolicyTransfer(userVisit, partyCancellationPolicy.getCancellationPolicy());
 
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(partyCancellationPolicy.getPrimaryKey());
-            var createdBy = getPartyPK();
+            var createdBy = getPartyPK(userVisit);
             var partyCancellationPolicyStatusTransfer = PartyCancellationPolicyLogic.getInstance().getPartyCancellationPolicyStatusTransfer(userVisit, entityInstance, createdBy);
 
             partyCancellationPolicyTransfer = new PartyCancellationPolicyTransfer(party, cancellationPolicy, partyCancellationPolicyStatusTransfer);
-            put(partyCancellationPolicy, partyCancellationPolicyTransfer, entityInstance);
+            put(userVisit, partyCancellationPolicy, partyCancellationPolicyTransfer, entityInstance);
         }
         
         return partyCancellationPolicyTransfer;

@@ -49,7 +49,7 @@ public class PaymentProcessorTypeActionTransferCache
             
             paymentProcessorTypeActionTransfer = new PaymentProcessorTypeActionTransfer(paymentProcessorTypeTransfer,
                     paymentProcessorActionTypeTransfer, isDefault, sortOrder);
-            put(paymentProcessorTypeAction, paymentProcessorTypeActionTransfer);
+            put(userVisit, paymentProcessorTypeAction, paymentProcessorTypeActionTransfer);
         }
         
         return paymentProcessorTypeActionTransfer;

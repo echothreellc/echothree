@@ -44,11 +44,11 @@ public class PartyReturnPolicyTransferCache
             var returnPolicy = returnPolicyControl.getReturnPolicyTransfer(userVisit, partyReturnPolicy.getReturnPolicy());
 
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(partyReturnPolicy.getPrimaryKey());
-            var createdBy = getPartyPK();
+            var createdBy = getPartyPK(userVisit);
             var partyReturnPolicyStatusTransfer = PartyReturnPolicyLogic.getInstance().getPartyReturnPolicyStatusTransfer(userVisit, entityInstance, createdBy);
 
             partyReturnPolicyTransfer = new PartyReturnPolicyTransfer(party, returnPolicy, partyReturnPolicyStatusTransfer);
-            put(partyReturnPolicy, partyReturnPolicyTransfer, entityInstance);
+            put(userVisit, partyReturnPolicy, partyReturnPolicyTransfer, entityInstance);
         }
 
         return partyReturnPolicyTransfer;

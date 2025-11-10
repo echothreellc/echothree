@@ -42,10 +42,10 @@ public class ChainActionChainActionSetTransferCache
             var nextChainActionSet = chainControl.getChainActionSetTransfer(userVisit, chainActionChainActionSet.getNextChainActionSet());
             var unformattedDelayTime = chainActionChainActionSet.getDelayTime();
             var timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
-            var delayTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedDelayTime);
+            var delayTime = formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedDelayTime);
             
             chainActionChainActionSetTransfer = new ChainActionChainActionSetTransfer(chainAction, nextChainActionSet, unformattedDelayTime, delayTime);
-            put(chainActionChainActionSet, chainActionChainActionSetTransfer);
+            put(userVisit, chainActionChainActionSet, chainActionChainActionSetTransfer);
         }
         
         return chainActionChainActionSetTransfer;

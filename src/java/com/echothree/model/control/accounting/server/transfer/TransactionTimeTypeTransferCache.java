@@ -43,10 +43,10 @@ public class TransactionTimeTypeTransferCache
             var transactionTimeTypeName = transactionTimeTypeDetail.getTransactionTimeTypeName();
             var isDefault = transactionTimeTypeDetail.getIsDefault();
             var sortOrder = transactionTimeTypeDetail.getSortOrder();
-            var description = transactionTimeControl.getBestTransactionTimeTypeDescription(transactionTimeType, getLanguage());
+            var description = transactionTimeControl.getBestTransactionTimeTypeDescription(transactionTimeType, getLanguage(userVisit));
             
             transactionTimeTypeTransfer = new TransactionTimeTypeTransfer(transactionTimeTypeName, isDefault, sortOrder, description);
-            put(transactionTimeType, transactionTimeTypeTransfer);
+            put(userVisit, transactionTimeType, transactionTimeTypeTransfer);
         }
         
         return transactionTimeTypeTransfer;

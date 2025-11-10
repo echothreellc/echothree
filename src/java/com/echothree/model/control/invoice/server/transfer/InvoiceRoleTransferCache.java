@@ -48,7 +48,7 @@ public class InvoiceRoleTransferCache
             var invoiceRoleType = invoiceControl.getInvoiceRoleTypeTransfer(userVisit, invoiceRole.getInvoiceRoleType());
 
             invoiceRoleTransfer = new InvoiceRoleTransfer(invoice, party, partyContactMechanism, invoiceRoleType);
-            put(invoiceRole, invoiceRoleTransfer);
+            put(userVisit, invoiceRole, invoiceRoleTransfer);
         }
 
         return invoiceRoleTransfer;

@@ -34,10 +34,10 @@ public class InvoiceLineUseTypeTransferCache
         
         if(invoiceLineUseTypeTransfer == null) {
             var invoiceLineUseTypeName = invoiceLineUseType.getInvoiceLineUseTypeName();
-            var description = invoiceControl.getBestInvoiceLineUseTypeDescription(invoiceLineUseType, getLanguage());
+            var description = invoiceControl.getBestInvoiceLineUseTypeDescription(invoiceLineUseType, getLanguage(userVisit));
             
             invoiceLineUseTypeTransfer = new InvoiceLineUseTypeTransfer(invoiceLineUseTypeName, description);
-            put(invoiceLineUseType, invoiceLineUseTypeTransfer);
+            put(userVisit, invoiceLineUseType, invoiceLineUseTypeTransfer);
         }
         
         return invoiceLineUseTypeTransfer;

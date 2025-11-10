@@ -42,10 +42,10 @@ public class ItemCategoryTransferCache
             var parentItemCategoryTransfer = parentItemCategory == null ? null : getTransfer(parentItemCategory);
             var isDefault = itemCategoryDetail.getIsDefault();
             var sortOrder = itemCategoryDetail.getSortOrder();
-            var description = itemControl.getBestItemCategoryDescription(itemCategory, getLanguage());
+            var description = itemControl.getBestItemCategoryDescription(itemCategory, getLanguage(userVisit));
             
             itemCategoryTransfer = new ItemCategoryTransfer(itemCategoryName, parentItemCategoryTransfer, isDefault, sortOrder, description);
-            put(itemCategory, itemCategoryTransfer);
+            put(userVisit, itemCategory, itemCategoryTransfer);
         }
         
         return itemCategoryTransfer;

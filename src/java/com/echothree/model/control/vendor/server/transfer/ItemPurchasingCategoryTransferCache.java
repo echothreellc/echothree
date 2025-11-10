@@ -41,11 +41,11 @@ public class ItemPurchasingCategoryTransferCache
             var parentItemPurchasingCategoryTransfer = parentItemPurchasingCategory == null? null: getItemPurchasingCategoryTransfer(parentItemPurchasingCategory);
             var isDefault = itemPurchasingCategoryDetail.getIsDefault();
             var sortOrder = itemPurchasingCategoryDetail.getSortOrder();
-            var description = vendorControl.getBestItemPurchasingCategoryDescription(itemPurchasingCategory, getLanguage());
+            var description = vendorControl.getBestItemPurchasingCategoryDescription(itemPurchasingCategory, getLanguage(userVisit));
             
             itemPurchasingCategoryTransfer = new ItemPurchasingCategoryTransfer(itemPurchasingCategoryName,
                     parentItemPurchasingCategoryTransfer, isDefault, sortOrder, description);
-            put(itemPurchasingCategory, itemPurchasingCategoryTransfer);
+            put(userVisit, itemPurchasingCategory, itemPurchasingCategoryTransfer);
         }
         
         return itemPurchasingCategoryTransfer;

@@ -52,10 +52,10 @@ public class ClubTransferCache
             var currencyTransfer = currency == null? null: accountingControl.getCurrencyTransfer(userVisit, currency);
             var isDefault = clubDetail.getIsDefault();
             var sortOrder = clubDetail.getSortOrder();
-            var description = clubControl.getBestClubDescription(club, getLanguage());
+            var description = clubControl.getBestClubDescription(club, getLanguage(userVisit));
             
             clubTransfer = new ClubTransfer(clubName, subscriptionTypeTransfer, clubPriceFilterTransfer, currencyTransfer, isDefault, sortOrder, description);
-            put(club, clubTransfer);
+            put(userVisit, club, clubTransfer);
         }
         
         return clubTransfer;

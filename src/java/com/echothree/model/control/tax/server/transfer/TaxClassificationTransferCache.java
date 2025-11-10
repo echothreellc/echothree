@@ -45,11 +45,11 @@ public class TaxClassificationTransferCache
             var taxClassificationName = taxClassificationDetail.getTaxClassificationName();
             var isDefault = taxClassificationDetail.getIsDefault();
             var sortOrder = taxClassificationDetail.getSortOrder();
-            var taxClassificationTranslation = taxControl.getBestTaxClassificationTranslation(taxClassification, getLanguage());
+            var taxClassificationTranslation = taxControl.getBestTaxClassificationTranslation(taxClassification, getLanguage(userVisit));
             var description = taxClassificationTranslation == null ? taxClassificationName : taxClassificationTranslation.getDescription();
             
             taxClassificationTransfer = new TaxClassificationTransfer(countryTransfer, taxClassificationName, isDefault, sortOrder, description);
-            put(taxClassification, taxClassificationTransfer);
+            put(userVisit, taxClassification, taxClassificationTransfer);
         }
         
         return taxClassificationTransfer;

@@ -47,10 +47,10 @@ public class ItemImageTypeTransferCache
             var quality = itemImageTypeDetail.getQuality();
             var isDefault = itemImageTypeDetail.getIsDefault();
             var sortOrder = itemImageTypeDetail.getSortOrder();
-            var description = itemControl.getBestItemImageTypeDescription(itemImageType, getLanguage());
+            var description = itemControl.getBestItemImageTypeDescription(itemImageType, getLanguage(userVisit));
             
             itemImageTypeTransfer = new ItemImageTypeTransfer(itemImageTypeName, preferredMimeTypeTransfer, quality, isDefault, sortOrder, description);
-            put(itemImageType, itemImageTypeTransfer);
+            put(userVisit, itemImageType, itemImageTypeTransfer);
         }
         
         return itemImageTypeTransfer;

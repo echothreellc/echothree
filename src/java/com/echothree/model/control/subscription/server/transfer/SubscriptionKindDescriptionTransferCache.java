@@ -37,7 +37,7 @@ public class SubscriptionKindDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, subscriptionKindDescription.getLanguage());
             
             subscriptionKindDescriptionTransfer = new SubscriptionKindDescriptionTransfer(languageTransfer, subscriptionKindTransfer, subscriptionKindDescription.getDescription());
-            put(subscriptionKindDescription, subscriptionKindDescriptionTransfer);
+            put(userVisit, subscriptionKindDescription, subscriptionKindDescriptionTransfer);
         }
         
         return subscriptionKindDescriptionTransfer;

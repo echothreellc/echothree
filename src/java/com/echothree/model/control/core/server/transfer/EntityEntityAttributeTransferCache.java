@@ -44,7 +44,7 @@ public class EntityEntityAttributeTransferCache
             var entityInstanceAttribute = entityInstanceControl.getEntityInstanceTransfer(userVisit, entityEntityAttribute.getEntityInstanceAttribute(), false, false, false, false);
             
             entityEntityAttributeTransfer = new EntityEntityAttributeTransfer(entityAttribute, entityInstanceTransfer, entityInstanceAttribute);
-            put(entityEntityAttribute, entityEntityAttributeTransfer);
+            put(userVisit, entityEntityAttribute, entityEntityAttributeTransfer);
         }
         
         return entityEntityAttributeTransfer;

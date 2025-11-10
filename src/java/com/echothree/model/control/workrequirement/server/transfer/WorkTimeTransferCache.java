@@ -49,9 +49,9 @@ public class WorkTimeTransferCache
             var workTimeSequence = workTimeDetail.getWorkTimeSequence();
             var party = partyControl.getPartyTransfer(userVisit, workTimeDetail.getParty());
             var unformattedStartTime = workTimeDetail.getStartTime();
-            var startTime = formatTypicalDateTime(unformattedStartTime);
+            var startTime = formatTypicalDateTime(userVisit, unformattedStartTime);
             var unformattedEndTime = workTimeDetail.getEndTime();
-            var endTime = formatTypicalDateTime(unformattedEndTime);
+            var endTime = formatTypicalDateTime(userVisit, unformattedEndTime);
 
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(workTime.getPrimaryKey());
             var workTimeStatus = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
@@ -59,7 +59,7 @@ public class WorkTimeTransferCache
 
             workTimeTransfer = new WorkTimeTransfer(workRequirement, workTimeSequence, party, unformattedStartTime, startTime, unformattedEndTime, endTime,
                     workTimeStatus);
-            put(workTime, workTimeTransfer);
+            put(userVisit, workTime, workTimeTransfer);
         }
         
         return workTimeTransfer;

@@ -35,10 +35,10 @@ public class PicklistTimeTransferCache
         if(picklistTimeTransfer == null) {
             var picklistTimeType = picklistControl.getPicklistTimeTypeTransfer(userVisit, picklistTime.getPicklistTimeType());
             var unformattedTime = picklistTime.getTime();
-            var time = formatTypicalDateTime(unformattedTime);
+            var time = formatTypicalDateTime(userVisit, unformattedTime);
             
             picklistTimeTransfer = new PicklistTimeTransfer(picklistTimeType, unformattedTime, time);
-            put(picklistTime, picklistTimeTransfer);
+            put(userVisit, picklistTime, picklistTimeTransfer);
         }
         
         return picklistTimeTransfer;

@@ -50,7 +50,7 @@ public class StateTransferCache
             var geoCodeScope = geoControl.getGeoCodeScopeTransfer(userVisit, geoCodeDetail.getGeoCodeScope());
             var isDefault = geoCodeDetail.getIsDefault();
             var sortOrder = geoCodeDetail.getSortOrder();
-            var description = geoControl.getBestGeoCodeDescription(geoCode, getLanguage());
+            var description = geoControl.getBestGeoCodeDescription(geoCode, getLanguage(userVisit));
 
             var countryGeoCodeType = geoControl.getGeoCodeTypeByName(GeoCodeTypes.COUNTRY.name());
             var geoCodeRelationships = geoControl.getGeoCodeRelationshipsByFromGeoCodeAndGeoCodeType(geoCode, countryGeoCodeType);
@@ -60,7 +60,7 @@ public class StateTransferCache
             var country = geoControl.getCountryTransfer(userVisit, geoCodeRelationships.getFirst().getToGeoCode());
             
             stateTransfer = new StateTransfer(country, geoCodeName, geoCodeType, geoCodeScope, isDefault, sortOrder, description);
-            put(geoCode, stateTransfer);
+            put(userVisit, geoCode, stateTransfer);
             
             if(includeAliases) {
                 setupGeoCodeAliasTransfers(geoCode, stateTransfer);

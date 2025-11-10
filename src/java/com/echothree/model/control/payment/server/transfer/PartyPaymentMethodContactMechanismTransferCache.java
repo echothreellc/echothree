@@ -60,7 +60,7 @@ public class PartyPaymentMethodContactMechanismTransferCache
             
             partyPaymentMethodContactMechanismTransfer = new PartyPaymentMethodContactMechanismTransfer(partyPaymentMethodTransfer,
                     partyContactMechanismPurposeTransfer, partyPaymentMethodContactMechanismStatusTransfer);
-            put(partyPaymentMethodContactMechanism, partyPaymentMethodContactMechanismTransfer);
+            put(userVisit, partyPaymentMethodContactMechanism, partyPaymentMethodContactMechanismTransfer);
         }
         return partyPaymentMethodContactMechanismTransfer;
     }

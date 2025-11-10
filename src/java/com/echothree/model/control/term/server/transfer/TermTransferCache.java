@@ -43,7 +43,7 @@ public class TermTransferCache
             var termType = termTypeTransferCache.getTermTypeTransfer(termDetail.getTermType());
             var isDefault = termDetail.getIsDefault();
             var sortOrder = termDetail.getSortOrder();
-            var description = termControl.getBestTermDescription(term, getLanguage());
+            var description = termControl.getBestTermDescription(term, getLanguage(userVisit));
             String netDueDays = null;
             String discountPercentage = null;
             String discountDays = null;
@@ -69,7 +69,7 @@ public class TermTransferCache
             
             termTransfer = new TermTransfer(termName, termType, isDefault, sortOrder, description,
                     discountPercentage, netDueDays, discountDays, netDueDayOfMonth, dueNextMonthDays, discountBeforeDayOfMonth);
-            put(term, termTransfer);
+            put(userVisit, term, termTransfer);
         }
         return termTransfer;
     }

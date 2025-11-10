@@ -53,13 +53,13 @@ public class EntityAttributeGroupTransferCache
             var entityAttributeGroupName = entityAttributeGroupDetail.getEntityAttributeGroupName();
             var isDefault = entityAttributeGroupDetail.getIsDefault();
             var sortOrder = entityAttributeGroupDetail.getSortOrder();
-            var description = coreControl.getBestEntityAttributeGroupDescription(entityAttributeGroup, getLanguage());
+            var description = coreControl.getBestEntityAttributeGroupDescription(entityAttributeGroup, getLanguage(userVisit));
             
             entityAttributeGroupTransfer = new EntityAttributeGroupTransfer(entityAttributeGroupName, isDefault, sortOrder, description);
             if(entityInstance == null) {
-                put(entityAttributeGroup, entityAttributeGroupTransfer);
+                put(userVisit, entityAttributeGroup, entityAttributeGroupTransfer);
             } else {
-                setupEntityInstance(entityAttributeGroup, null, entityAttributeGroupTransfer);
+                setupEntityInstance(userVisit, entityAttributeGroup, null, entityAttributeGroupTransfer);
             }
             
             if(includeEntityAttributes) {

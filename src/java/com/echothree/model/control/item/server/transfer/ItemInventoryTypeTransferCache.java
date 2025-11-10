@@ -37,10 +37,10 @@ public class ItemInventoryTypeTransferCache
             var itemInventoryTypeName = itemInventoryType.getItemInventoryTypeName();
             var isDefault = itemInventoryType.getIsDefault();
             var sortOrder = itemInventoryType.getSortOrder();
-            var description = itemControl.getBestItemInventoryTypeDescription(itemInventoryType, getLanguage());
+            var description = itemControl.getBestItemInventoryTypeDescription(itemInventoryType, getLanguage(userVisit));
             
             itemInventoryTypeTransfer = new ItemInventoryTypeTransfer(itemInventoryTypeName, isDefault, sortOrder, description);
-            put(itemInventoryType, itemInventoryTypeTransfer);
+            put(userVisit, itemInventoryType, itemInventoryTypeTransfer);
         }
         
         return itemInventoryTypeTransfer;

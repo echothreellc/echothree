@@ -45,10 +45,10 @@ public class CancellationKindTransferCache
             var cancellationSequenceTypeTransfer = cancellationSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, cancellationSequenceType);
             var isDefault = cancellationKindDetail.getIsDefault();
             var sortOrder = cancellationKindDetail.getSortOrder();
-            var description = cancellationPolicyControl.getBestCancellationKindDescription(cancellationKind, getLanguage());
+            var description = cancellationPolicyControl.getBestCancellationKindDescription(cancellationKind, getLanguage(userVisit));
             
             cancellationKindTransfer = new CancellationKindTransfer(cancellationKindName, cancellationSequenceTypeTransfer, isDefault, sortOrder, description);
-            put(cancellationKind, cancellationKindTransfer);
+            put(userVisit, cancellationKind, cancellationKindTransfer);
         }
         
         return cancellationKindTransfer;

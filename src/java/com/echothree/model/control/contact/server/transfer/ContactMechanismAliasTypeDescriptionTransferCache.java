@@ -37,7 +37,7 @@ public class ContactMechanismAliasTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, contactMechanismAliasTypeDescription.getLanguage());
             
             contactMechanismAliasTypeDescriptionTransfer = new ContactMechanismAliasTypeDescriptionTransfer(languageTransfer, contactMechanismAliasTypeTransfer, contactMechanismAliasTypeDescription.getDescription());
-            put(contactMechanismAliasTypeDescription, contactMechanismAliasTypeDescriptionTransfer);
+            put(userVisit, contactMechanismAliasTypeDescription, contactMechanismAliasTypeDescriptionTransfer);
         }
         
         return contactMechanismAliasTypeDescriptionTransfer;

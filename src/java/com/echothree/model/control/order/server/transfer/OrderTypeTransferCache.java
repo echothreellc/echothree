@@ -52,11 +52,11 @@ public class OrderTypeTransferCache
             var orderWorkflowEntranceTransfer = orderWorkflowEntrance == null? null: workflowControl.getWorkflowEntranceTransfer(userVisit, orderWorkflowEntrance);
             var isDefault = orderTypeDetail.getIsDefault();
             var sortOrder = orderTypeDetail.getSortOrder();
-            var description = orderTypeControl.getBestOrderTypeDescription(orderType, getLanguage());
+            var description = orderTypeControl.getBestOrderTypeDescription(orderType, getLanguage(userVisit));
             
             orderTypeTransfer = new OrderTypeTransfer(orderTypeName, orderSequenceTypeTransfer, orderWorkflowTransfer,
                     orderWorkflowEntranceTransfer, isDefault, sortOrder, description);
-            put(orderType, orderTypeTransfer);
+            put(userVisit, orderType, orderTypeTransfer);
         }
         
         return orderTypeTransfer;

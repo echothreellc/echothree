@@ -103,7 +103,7 @@ public class WarehouseTransferCache
             warehouseTransfer = new WarehouseTransfer(partyName, partyTypeTransfer, preferredLanguageTransfer, preferredCurrencyTransfer,
                     preferredTimeZoneTransfer, preferredDateTimeFormatTransfer, personTransfer, partyGroupTransfer, warehouseName,
                     warehouseTypeTransfer, isDefault, sortOrder);
-            put(party, warehouseTransfer);
+            put(userVisit, party, warehouseTransfer);
 
             if(includeLocationsCount) {
                 warehouseTransfer.setLocationsCount(warehouseControl.countLocationsByWarehouseParty(party));

@@ -38,7 +38,7 @@ public class ForumMessageAttachmentDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, forumMessageAttachmentDescription.getLanguage());
             
             forumMessageAttachmentDescriptionTransfer = new ForumMessageAttachmentDescriptionTransfer(languageTransfer, forumMessageAttachmentTransfer, forumMessageAttachmentDescription.getDescription());
-            put(forumMessageAttachmentDescription, forumMessageAttachmentDescriptionTransfer);
+            put(userVisit, forumMessageAttachmentDescription, forumMessageAttachmentDescriptionTransfer);
         }
         
         return forumMessageAttachmentDescriptionTransfer;

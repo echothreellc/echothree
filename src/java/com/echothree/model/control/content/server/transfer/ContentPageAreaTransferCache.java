@@ -125,7 +125,7 @@ public class ContentPageAreaTransferCache
 
             contentPageAreaTransfer = new ContentPageAreaTransfer(contentPageTransfer, contentPageLayoutAreaTransfer, languageTransfer, mimeTypeTransfer,
                     blob, clob, string, url);
-            put(contentPageArea, contentPageAreaTransfer);
+            put(userVisit, contentPageArea, contentPageAreaTransfer);
         }
         
         return contentPageAreaTransfer;

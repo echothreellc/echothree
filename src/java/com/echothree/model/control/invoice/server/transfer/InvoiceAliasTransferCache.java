@@ -38,7 +38,7 @@ public class InvoiceAliasTransferCache
             var alias = invoiceAlias.getAlias();
             
             invoiceAliasTransfer = new InvoiceAliasTransfer(invoice, invoiceAliasType, alias);
-            put(invoiceAlias, invoiceAliasTransfer);
+            put(userVisit, invoiceAlias, invoiceAliasTransfer);
         }
         
         return invoiceAliasTransfer;

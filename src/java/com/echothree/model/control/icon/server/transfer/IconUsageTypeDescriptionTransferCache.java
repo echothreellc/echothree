@@ -37,7 +37,7 @@ public class IconUsageTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, iconUsageTypeDescription.getLanguage());
             
             iconUsageTypeDescriptionTransfer = new IconUsageTypeDescriptionTransfer(languageTransfer, iconUsageTypeTransfer, iconUsageTypeDescription.getDescription());
-            put(iconUsageTypeDescription, iconUsageTypeDescriptionTransfer);
+            put(userVisit, iconUsageTypeDescription, iconUsageTypeDescriptionTransfer);
         }
         
         return iconUsageTypeDescriptionTransfer;

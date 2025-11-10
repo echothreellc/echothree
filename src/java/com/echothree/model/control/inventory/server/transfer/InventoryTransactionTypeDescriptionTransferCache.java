@@ -42,7 +42,7 @@ public class InventoryTransactionTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, inventoryTransactionTypeDescription.getLanguage());
             
             inventoryTransactionTypeDescriptionTransfer = new InventoryTransactionTypeDescriptionTransfer(languageTransfer, inventoryTransactionTypeTransfer, inventoryTransactionTypeDescription.getDescription());
-            put(inventoryTransactionTypeDescription, inventoryTransactionTypeDescriptionTransfer);
+            put(userVisit, inventoryTransactionTypeDescription, inventoryTransactionTypeDescriptionTransfer);
         }
         
         return inventoryTransactionTypeDescriptionTransfer;

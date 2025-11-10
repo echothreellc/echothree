@@ -41,7 +41,7 @@ public class EntityListItemDefaultTransferCache
             var entityListItem = coreControl.getEntityListItemTransfer(userVisit, entityListItemDefault.getEntityListItem(), null);
             
             entityListItemDefaultTransfer = new EntityListItemDefaultTransfer(entityAttribute, entityListItem);
-            put(entityListItemDefault, entityListItemDefaultTransfer);
+            put(userVisit, entityListItemDefault, entityListItemDefaultTransfer);
         }
         
         return entityListItemDefaultTransfer;

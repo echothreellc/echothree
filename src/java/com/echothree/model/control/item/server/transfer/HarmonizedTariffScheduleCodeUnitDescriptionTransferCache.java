@@ -38,7 +38,7 @@ public class HarmonizedTariffScheduleCodeUnitDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, harmonizedTariffScheduleCodeUnitDescription.getLanguage());
             
             harmonizedTariffScheduleCodeUnitDescriptionTransfer = new HarmonizedTariffScheduleCodeUnitDescriptionTransfer(languageTransfer, harmonizedTariffScheduleCodeUnitTransfer, harmonizedTariffScheduleCodeUnitDescription.getDescription());
-            put(harmonizedTariffScheduleCodeUnitDescription, harmonizedTariffScheduleCodeUnitDescriptionTransfer);
+            put(userVisit, harmonizedTariffScheduleCodeUnitDescription, harmonizedTariffScheduleCodeUnitDescriptionTransfer);
         }
         
         return harmonizedTariffScheduleCodeUnitDescriptionTransfer;

@@ -50,7 +50,7 @@ public class CommunicationSourceTransferCache
             var communicationSourceTypeTransfer = communicationControl.getCommunicationSourceTypeTransfer(userVisit,
                     communicationSourceDetail.getCommunicationSourceType());
             var sortOrder = communicationSourceDetail.getSortOrder();
-            var description = communicationControl.getBestCommunicationSourceDescription(communicationSource, getLanguage());
+            var description = communicationControl.getBestCommunicationSourceDescription(communicationSource, getLanguage(userVisit));
             CommunicationEmailSourceTransfer communicationEmailSourceTransfer = null;
             
             if(includeRelated) {
@@ -64,7 +64,7 @@ public class CommunicationSourceTransferCache
             
             communicationSourceTransfer = new CommunicationSourceTransfer(communicationSourceName, communicationSourceTypeTransfer, 
                     sortOrder, description, communicationEmailSourceTransfer);
-            put(communicationSource, communicationSourceTransfer);
+            put(userVisit, communicationSource, communicationSourceTransfer);
         }
         
         return communicationSourceTransfer;

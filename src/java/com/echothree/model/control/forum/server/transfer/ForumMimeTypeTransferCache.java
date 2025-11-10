@@ -43,7 +43,7 @@ public class ForumMimeTypeTransferCache
             var sortOrder = forumMimeType.getSortOrder();
             
             forumMimeTypeTransfer = new ForumMimeTypeTransfer(forum, mimeType, isDefault, sortOrder);
-            put(forumMimeType, forumMimeTypeTransfer);
+            put(userVisit, forumMimeType, forumMimeTypeTransfer);
         }
         
         return forumMimeTypeTransfer;

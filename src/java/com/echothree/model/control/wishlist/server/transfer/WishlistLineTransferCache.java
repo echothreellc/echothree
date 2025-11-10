@@ -66,7 +66,7 @@ public class WishlistLineTransferCache
             
             wishlistLineTransfer = new WishlistLineTransfer(wishlist, orderLineSequence, item, inventoryCondition, unitOfMeasureType, quantity,
                     unformattedUnitAmount, unitAmount, description, offerUse, wishlistPriority, associateReferral, comment);
-            put(orderLine, wishlistLineTransfer);
+            put(userVisit, orderLine, wishlistLineTransfer);
         }
         
         return wishlistLineTransfer;

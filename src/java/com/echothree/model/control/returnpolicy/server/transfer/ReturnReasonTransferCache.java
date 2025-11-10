@@ -40,10 +40,10 @@ public class ReturnReasonTransferCache
             var returnReasonName = returnReasonDetail.getReturnReasonName();
             var isDefault = returnReasonDetail.getIsDefault();
             var sortOrder = returnReasonDetail.getSortOrder();
-            var description = returnPolicyControl.getBestReturnReasonDescription(returnReason, getLanguage());
+            var description = returnPolicyControl.getBestReturnReasonDescription(returnReason, getLanguage(userVisit));
             
             returnReasonTransfer = new ReturnReasonTransfer(returnKind, returnReasonName, isDefault, sortOrder, description);
-            put(returnReason, returnReasonTransfer);
+            put(userVisit, returnReason, returnReasonTransfer);
         }
         
         return returnReasonTransfer;

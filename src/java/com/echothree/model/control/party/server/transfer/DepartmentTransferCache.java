@@ -95,7 +95,7 @@ public class DepartmentTransferCache
             
             departmentTransfer = new DepartmentTransfer(partyName, partyTypeTransfer, preferredLanguageTransfer, preferredCurrencyTransfer, preferredTimeZoneTransfer, preferredDateTimeFormatTransfer,
                     personTransfer, partyGroupTransfer, division, departmentName, isDefault, sortOrder);
-            put(party, departmentTransfer);
+            put(userVisit, party, departmentTransfer);
             
             if(includePartyContactMechanisms) {
                 departmentTransfer.setPartyContactMechanisms(new ListWrapper<>(contactControl.getPartyContactMechanismTransfersByParty(userVisit, party)));

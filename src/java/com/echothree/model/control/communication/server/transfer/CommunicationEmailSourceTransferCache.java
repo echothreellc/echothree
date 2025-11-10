@@ -51,7 +51,7 @@ public class CommunicationEmailSourceTransferCache
             
             communicationEmailSourceTransfer = new CommunicationEmailSourceTransfer(serverTransfer, username, password,
                     receiveWorkEffortScopeTransfer, sendWorkEffortScopeTransfer, reviewEmployeeSelectorTransfer);
-            put(communicationEmailSource, communicationEmailSourceTransfer);
+            put(userVisit, communicationEmailSource, communicationEmailSourceTransfer);
         }
         
         return communicationEmailSourceTransfer;

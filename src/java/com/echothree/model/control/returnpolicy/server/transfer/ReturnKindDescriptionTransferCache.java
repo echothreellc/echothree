@@ -37,7 +37,7 @@ public class ReturnKindDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, returnKindDescription.getLanguage());
             
             returnKindDescriptionTransfer = new ReturnKindDescriptionTransfer(languageTransfer, returnKindTransfer, returnKindDescription.getDescription());
-            put(returnKindDescription, returnKindDescriptionTransfer);
+            put(userVisit, returnKindDescription, returnKindDescriptionTransfer);
         }
         
         return returnKindDescriptionTransfer;

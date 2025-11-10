@@ -101,7 +101,7 @@ public class ForumMessagePartTransferCache
             
             forumMessagePartTransfer = new ForumMessagePartTransfer(forumMessageTransfer, forumMessagePartTypeTransfer,
                     languageTransfer, mimeTypeTransfer, blobMessagePart, clobMessagePart, stringMessagePart);
-            put(forumMessagePart, forumMessagePartTransfer);
+            put(userVisit, forumMessagePart, forumMessagePartTransfer);
         }
         
         return forumMessagePartTransfer;

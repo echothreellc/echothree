@@ -48,11 +48,11 @@ public class AssociateReferralTransferCache
             var targetEntityInstance = associateReferralDetail.getTargetEntityInstance();
             var targetEntityInstanceTransfer = targetEntityInstance == null ? null : entityInstanceControl.getEntityInstanceTransfer(userVisit, targetEntityInstance, false, false, false, false);
             var unformattedAssociateReferralTime = associateReferralDetail.getAssociateReferralTime();
-            var associateReferralTime = formatTypicalDateTime(unformattedAssociateReferralTime);
+            var associateReferralTime = formatTypicalDateTime(userVisit, unformattedAssociateReferralTime);
 
             associateReferralTransfer = new AssociateReferralTransfer(associateReferralName, associateTransfer, associatePartyContactMechanismTransfer,
                     targetEntityInstanceTransfer, unformattedAssociateReferralTime, associateReferralTime);
-            put(associateReferral, associateReferralTransfer);
+            put(userVisit, associateReferral, associateReferralTransfer);
         }
         
         return associateReferralTransfer;

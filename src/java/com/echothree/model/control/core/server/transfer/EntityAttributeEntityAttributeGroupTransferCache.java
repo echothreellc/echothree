@@ -42,7 +42,7 @@ public class EntityAttributeEntityAttributeGroupTransferCache
             var sortOrder = entityAttributeEntityAttributeGroup.getSortOrder();
             
             entityAttributeEntityAttributeGroupTransfer = new EntityAttributeEntityAttributeGroupTransfer(entityAttributeTransfer, entityAttributeGroupTransfer, sortOrder);
-            put(entityAttributeEntityAttributeGroup, entityAttributeEntityAttributeGroupTransfer);
+            put(userVisit, entityAttributeEntityAttributeGroup, entityAttributeEntityAttributeGroupTransfer);
         }
         return entityAttributeEntityAttributeGroupTransfer;
     }

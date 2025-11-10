@@ -46,7 +46,7 @@ public class PostalAddressLineElementTransferCache
             postalAddressLineElementTransfer = new PostalAddressLineElementTransfer(postalAddressLine,
                     postalAddressLineElementSortOrder, postalAddressElementType, prefix, alwaysIncludePrefix, suffix,
                     alwaysIncludeSuffix);
-            put(postalAddressLineElement, postalAddressLineElementTransfer);
+            put(userVisit, postalAddressLineElement, postalAddressLineElementTransfer);
         }
         
         return postalAddressLineElementTransfer;

@@ -60,7 +60,7 @@ public class FilterAdjustmentAmountTransferCache
             filterAdjustmentAmountTransfer = new FilterAdjustmentAmountTransfer(filterAdjustmentTransfer, unitOfMeasureTypeTransfer, currencyTransfer,
                     unformattedAmount, amount);
             
-            put(filterAdjustmentAmount, filterAdjustmentAmountTransfer);
+            put(userVisit, filterAdjustmentAmount, filterAdjustmentAmountTransfer);
         }
         
         return filterAdjustmentAmountTransfer;

@@ -43,7 +43,7 @@ public class PartyTypeDocumentTypeUsageTypeTransferCache
             var sortOrder = partyTypeDocumentTypeUsageType.getSortOrder();
             
             partyTypeDocumentTypeUsageTypeTransfer = new PartyTypeDocumentTypeUsageTypeTransfer(partyTypeTransfer, documentTypeUsageTypeTransfer, isDefault, sortOrder);
-            put(partyTypeDocumentTypeUsageType, partyTypeDocumentTypeUsageTypeTransfer);
+            put(userVisit, partyTypeDocumentTypeUsageType, partyTypeDocumentTypeUsageTypeTransfer);
         }
         
         return partyTypeDocumentTypeUsageTypeTransfer;

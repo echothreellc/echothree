@@ -54,10 +54,10 @@ public class MessageTransferCache
             var includeByDefault = messageDetail.getIncludeByDefault();
             var isDefault = messageDetail.getIsDefault();
             var sortOrder = messageDetail.getSortOrder();
-            var description = messageControl.getBestMessageDescription(message, getLanguage());
+            var description = messageControl.getBestMessageDescription(message, getLanguage(userVisit));
             
             messageTransfer = new MessageTransfer(messageTypeTransfer, messageName, includeByDefault, isDefault, sortOrder, description);
-            put(message, messageTransfer);
+            put(userVisit, message, messageTransfer);
             
             if(includeString) {
                 messageTransfer.setMessageStrings(new ListWrapper<>(messageControl.getMessageStringTransfersByMessage(userVisit, message)));

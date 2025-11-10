@@ -50,11 +50,11 @@ public class ContactListTypeTransferCache
             var usedForSolicitation = contactListTypeDetail.getUsedForSolicitation();
             var isDefault = contactListTypeDetail.getIsDefault();
             var sortOrder = contactListTypeDetail.getSortOrder();
-            var description = contactListControl.getBestContactListTypeDescription(contactListType, getLanguage());
+            var description = contactListControl.getBestContactListTypeDescription(contactListType, getLanguage(userVisit));
             
             contactListTypeTransfer = new ContactListTypeTransfer(contactListTypeName, confirmationRequestChainTransfer, subscribeChainTransfer,
                     unsubscribeChainTransfer, usedForSolicitation, isDefault, sortOrder, description);
-            put(contactListType, contactListTypeTransfer);
+            put(userVisit, contactListType, contactListTypeTransfer);
         }
         
         return contactListTypeTransfer;

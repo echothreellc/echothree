@@ -40,10 +40,10 @@ public class IndexFieldTransferCache
             var indexFieldName = indexFieldDetail.getIndexFieldName();
             var isDefault = indexFieldDetail.getIsDefault();
             var sortOrder = indexFieldDetail.getSortOrder();
-            var description = indexControl.getBestIndexFieldDescription(indexField, getLanguage());
+            var description = indexControl.getBestIndexFieldDescription(indexField, getLanguage(userVisit));
             
             indexFieldTransfer = new IndexFieldTransfer(indexTypeTransfer, indexFieldName, isDefault, sortOrder, description);
-            put(indexField, indexFieldTransfer);
+            put(userVisit, indexField, indexFieldTransfer);
         }
         
         return indexFieldTransfer;

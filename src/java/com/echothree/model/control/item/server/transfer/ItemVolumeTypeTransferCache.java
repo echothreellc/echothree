@@ -40,11 +40,11 @@ public class ItemVolumeTypeTransferCache
             var itemVolumeTypeName = itemVolumeTypeDetail.getItemVolumeTypeName();
             var isDefault = itemVolumeTypeDetail.getIsDefault();
             var sortOrder = itemVolumeTypeDetail.getSortOrder();
-            var description = itemControl.getBestItemVolumeTypeDescription(itemVolumeType, getLanguage());
+            var description = itemControl.getBestItemVolumeTypeDescription(itemVolumeType, getLanguage(userVisit));
             
             itemVolumeTypeTransfer = new ItemVolumeTypeTransfer(itemVolumeTypeName, isDefault, sortOrder,
                     description);
-            put(itemVolumeType, itemVolumeTypeTransfer);
+            put(userVisit, itemVolumeType, itemVolumeTypeTransfer);
         }
         
         return itemVolumeTypeTransfer;

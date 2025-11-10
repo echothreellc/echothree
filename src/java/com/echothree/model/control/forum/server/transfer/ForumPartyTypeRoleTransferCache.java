@@ -44,7 +44,7 @@ public class ForumPartyTypeRoleTransferCache
             var forumRoleType = forumControl.getForumRoleTypeTransfer(userVisit, forumPartyTypeRole.getForumRoleType());
             
             forumPartyTypeRoleTransfer = new ForumPartyTypeRoleTransfer(forum, partyType, forumRoleType);
-            put(forumPartyTypeRole, forumPartyTypeRoleTransfer);
+            put(userVisit, forumPartyTypeRole, forumPartyTypeRoleTransfer);
         }
         
         return forumPartyTypeRoleTransfer;

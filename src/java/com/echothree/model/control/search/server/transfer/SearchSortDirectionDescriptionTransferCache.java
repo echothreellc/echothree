@@ -37,7 +37,7 @@ public class SearchSortDirectionDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, searchSortDirectionDescription.getLanguage());
             
             searchSortDirectionDescriptionTransfer = new SearchSortDirectionDescriptionTransfer(languageTransfer, searchSortDirectionTransfer, searchSortDirectionDescription.getDescription());
-            put(searchSortDirectionDescription, searchSortDirectionDescriptionTransfer);
+            put(userVisit, searchSortDirectionDescription, searchSortDirectionDescriptionTransfer);
         }
         return searchSortDirectionDescriptionTransfer;
     }

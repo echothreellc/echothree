@@ -44,7 +44,7 @@ public class EntityListItemAttributeTransferCache
             var entityListItem = coreControl.getEntityListItemTransfer(userVisit, entityListItemAttribute.getEntityListItem(), entityInstance);
             
             entityListItemAttributeTransfer = new EntityListItemAttributeTransfer(entityAttribute, entityInstanceTransfer, entityListItem);
-            put(entityListItemAttribute, entityListItemAttributeTransfer);
+            put(userVisit, entityListItemAttribute, entityListItemAttributeTransfer);
         }
         
         return entityListItemAttributeTransfer;

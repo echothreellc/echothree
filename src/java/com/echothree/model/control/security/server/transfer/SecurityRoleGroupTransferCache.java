@@ -53,10 +53,10 @@ public class SecurityRoleGroupTransferCache
             var parentSecurityRoleGroupTransfer = parentSecurityRoleGroup == null ? null : getSecurityRoleGroupTransfer(parentSecurityRoleGroup);
             var isDefault = securityRoleGroupDetail.getIsDefault();
             var sortOrder = securityRoleGroupDetail.getSortOrder();
-            var description = securityControl.getBestSecurityRoleGroupDescription(securityRoleGroup, getLanguage());
+            var description = securityControl.getBestSecurityRoleGroupDescription(securityRoleGroup, getLanguage(userVisit));
 
             securityRoleGroupTransfer = new SecurityRoleGroupTransfer(securityRoleGroupName, parentSecurityRoleGroupTransfer, isDefault, sortOrder, description);
-            put(securityRoleGroup, securityRoleGroupTransfer);
+            put(userVisit, securityRoleGroup, securityRoleGroupTransfer);
 
             if(includeSecurityRolesCount) {
                 securityRoleGroupTransfer.setSecurityRoleCount(securityControl.countSecurityRolesBySecurityRoleGroup(securityRoleGroup));

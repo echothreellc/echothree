@@ -75,7 +75,7 @@ public class OfferItemTransferCache
             var item = filterItem ? null : itemControl.getItemTransfer(userVisit, offerItem.getItem());
             
             offerItemTransfer = new OfferItemTransfer(offer, item);
-            put(offerItem, offerItemTransfer);
+            put(userVisit, offerItem, offerItemTransfer);
 
             if(includeOfferItemPrices) {
                 offerItemTransfer.setOfferItemPrices(ListWrapperBuilder.getInstance().filter(transferProperties,

@@ -46,10 +46,10 @@ public class ContentWebAddressTransferCache
             var contentWebAddressDetail = contentWebAddress.getLastDetail();
             var contentWebAddressName = contentWebAddressDetail.getContentWebAddressName();
             var contentCollectionTransfer = contentControl.getContentCollectionTransfer(userVisit, contentWebAddressDetail.getContentCollection());
-            var description = contentControl.getBestContentWebAddressDescription(contentWebAddress, getLanguage());
+            var description = contentControl.getBestContentWebAddressDescription(contentWebAddress, getLanguage(userVisit));
             
             contentWebAddressTransfer = new ContentWebAddressTransfer(contentWebAddressName, contentCollectionTransfer, description);
-            put(contentWebAddress, contentWebAddressTransfer);
+            put(userVisit, contentWebAddress, contentWebAddressTransfer);
         }
         
         return contentWebAddressTransfer;

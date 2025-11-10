@@ -53,7 +53,7 @@ public class OrderPaymentPreferenceTransferCache
             
             orderPaymentPreferenceTransfer = new OrderPaymentPreferenceTransfer(orderPaymentPreferenceSequence, paymentMethodTransfer,
                     partyPaymentMethodTransfer, wasPresent, unformattedMaximumAmount, maximumAmount,sortOrder);
-            put(orderPaymentPreference, orderPaymentPreferenceTransfer);
+            put(userVisit, orderPaymentPreference, orderPaymentPreferenceTransfer);
         }
         
         return orderPaymentPreferenceTransfer;

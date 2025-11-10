@@ -44,7 +44,7 @@ public class ForumMessagePartTypeTransferCache
             
             forumMessagePartTypeTransfer = new ForumMessagePartTypeTransfer(forumMessagePartTypeName, mimeTypeUsageTypeTransfer,
                     sortOrder);
-            put(forumMessagePartType, forumMessagePartTypeTransfer);
+            put(userVisit, forumMessagePartType, forumMessagePartTypeTransfer);
         }
         
         return forumMessagePartTypeTransfer;

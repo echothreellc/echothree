@@ -62,7 +62,7 @@ public class InventoryLocationGroupTransferCache
             var inventoryLocationGroupName = inventoryLocationGroupDetail.getInventoryLocationGroupName();
             var isDefault = inventoryLocationGroupDetail.getIsDefault();
             var sortOrder = inventoryLocationGroupDetail.getSortOrder();
-            var description = inventoryControl.getBestInventoryLocationGroupDescription(inventoryLocationGroup, getLanguage());
+            var description = inventoryControl.getBestInventoryLocationGroupDescription(inventoryLocationGroup, getLanguage(userVisit));
 
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(inventoryLocationGroup.getPrimaryKey());
             var inventoryLocationGroupStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
@@ -70,7 +70,7 @@ public class InventoryLocationGroupTransferCache
             
             inventoryLocationGroupTransfer = new InventoryLocationGroupTransfer(warehouseTransfer, inventoryLocationGroupName, isDefault, sortOrder,
                     description, inventoryLocationGroupStatusTransfer);
-            put(inventoryLocationGroup, inventoryLocationGroupTransfer);
+            put(userVisit, inventoryLocationGroup, inventoryLocationGroupTransfer);
             
             if(includeCapacities) {
                 inventoryLocationGroupTransfer.setInventoryLocationGroupCapacities(new ListWrapper<>(inventoryControl.getInventoryLocationGroupCapacityTransfersByInventoryLocationGroup(userVisit, inventoryLocationGroup)));

@@ -18,7 +18,6 @@ package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.EntityLockTransfer;
 import com.echothree.model.control.core.server.CoreDebugFlags;
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.core.common.pk.EntityInstancePK;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -108,8 +107,8 @@ public class EntityLockTransferCache
                     getLog().info("--- lockTargetEntityInstanceTransfer = " + lockTargetEntityInstanceTransfer.getEntityRef());
                 }
 
-                var lockedTimeString = formatTypicalDateTime(lockedTime);
-                var expirationTimeString = formatTypicalDateTime(expirationTime);
+                var lockedTimeString = formatTypicalDateTime(userVisit, lockedTime);
+                var expirationTimeString = formatTypicalDateTime(userVisit, expirationTime);
 
                 entityLockTransfer = new EntityLockTransfer(lockTargetEntityInstanceTransfer, lockedByEntityInstanceTransfer, lockedTime, lockedTimeString, expirationTime, expirationTimeString);
             }

@@ -40,7 +40,7 @@ public class EntityLongDefaultTransferCache
             var longAttribute = entityLongDefault.getLongAttribute();
             
             entityLongDefaultTransfer = new EntityLongDefaultTransfer(entityAttribute, longAttribute);
-            put(entityLongDefault, entityLongDefaultTransfer);
+            put(userVisit, entityLongDefault, entityLongDefaultTransfer);
         }
         
         return entityLongDefaultTransfer;

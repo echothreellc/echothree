@@ -51,7 +51,7 @@ public class EntityVisitTransferCache
             var unformattedVisitedTime = entityVisit.getVisitedTime();
 
             entityVisitTransfer = new EntityVisitTransfer(unformattedVisitedTime);
-            put(entityVisit, entityVisitTransfer);
+            put(userVisit, entityVisit, entityVisitTransfer);
 
             if(includeEntityInstance) {
                 entityVisitTransfer.setEntityInstance(entityInstanceControl.getEntityInstanceTransfer(userVisit, entityVisit.getEntityInstance(), false, false, false, false));
@@ -62,7 +62,7 @@ public class EntityVisitTransferCache
             }
 
             if(includeVisitedTime) {
-                entityVisitTransfer.setVisitedTime(formatTypicalDateTime(unformattedVisitedTime));
+                entityVisitTransfer.setVisitedTime(formatTypicalDateTime(userVisit, unformattedVisitedTime));
             }
         }
 

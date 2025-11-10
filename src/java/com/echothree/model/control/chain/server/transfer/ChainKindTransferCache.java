@@ -39,10 +39,10 @@ public class ChainKindTransferCache
             var chainKindName = chainKindDetail.getChainKindName();
             var isDefault = chainKindDetail.getIsDefault();
             var sortOrder = chainKindDetail.getSortOrder();
-            var description = chainControl.getBestChainKindDescription(chainKind, getLanguage());
+            var description = chainControl.getBestChainKindDescription(chainKind, getLanguage(userVisit));
             
             chainKindTransfer = new ChainKindTransfer(chainKindName, isDefault, sortOrder, description);
-            put(chainKind, chainKindTransfer);
+            put(userVisit, chainKind, chainKindTransfer);
         }
         
         return chainKindTransfer;

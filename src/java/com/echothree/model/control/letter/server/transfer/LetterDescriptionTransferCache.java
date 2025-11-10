@@ -37,7 +37,7 @@ public class LetterDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, letterDescription.getLanguage());
             
             letterDescriptionTransfer = new LetterDescriptionTransfer(languageTransfer, letterTransfer, letterDescription.getDescription());
-            put(letterDescription, letterDescriptionTransfer);
+            put(userVisit, letterDescription, letterDescriptionTransfer);
         }
         
         return letterDescriptionTransfer;

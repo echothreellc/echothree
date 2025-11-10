@@ -41,7 +41,7 @@ public class QueuedEntityTransferCache
             var entityInstance = entityInstanceControl.getEntityInstanceTransfer(userVisit, queuedEntity.getEntityInstance(), true, true, true, true);
 
             queuedEntityTransfer = new QueuedEntityTransfer(queueType, entityInstance);
-            put(queuedEntity, queuedEntityTransfer);
+            put(userVisit, queuedEntity, queuedEntityTransfer);
         }
 
         return queuedEntityTransfer;

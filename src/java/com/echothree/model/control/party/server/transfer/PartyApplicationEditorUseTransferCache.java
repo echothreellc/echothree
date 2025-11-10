@@ -51,7 +51,7 @@ public class PartyApplicationEditorUseTransferCache
 
             partyApplicationEditorUseTransfer = new PartyApplicationEditorUseTransfer(partyTransfer, applicationEditorUseTransfer, applicationEditorTransfer,
                     preferredHeight, preferredWidth);
-            put(partyApplicationEditorUse, partyApplicationEditorUseTransfer);
+            put(userVisit, partyApplicationEditorUse, partyApplicationEditorUseTransfer);
         }
 
         return partyApplicationEditorUseTransfer;

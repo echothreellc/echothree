@@ -40,7 +40,7 @@ public class UserVisitCampaignTransferCache
             var userVisitTransfer = userControl.getUserVisitTransfer(userVisit, userVisit);
             var userVisitCampaignSequence = userVisitCampaign.getUserVisitCampaignSequence();
             var unformattedTime = userVisitCampaign.getTime();
-            var time = formatTypicalDateTime(unformattedTime);
+            var time = formatTypicalDateTime(userVisit, unformattedTime);
             var campaign = userVisitCampaign.getCampaign();
             var campaignTransfer = campaign == null ? null : campaignControl.getCampaignTransfer(userVisit, campaign);
             var campaignSource = userVisitCampaign.getCampaignSource();
@@ -54,7 +54,7 @@ public class UserVisitCampaignTransferCache
 
             userVisitCampaignTransfer = new UserVisitCampaignTransfer(userVisitTransfer, userVisitCampaignSequence, unformattedTime, time, campaignTransfer,
                     campaignSourceTransfer, campaignMediumTransfer, campaignTermTransfer, campaignContentTransfer);
-            put(userVisitCampaign, userVisitCampaignTransfer);
+            put(userVisit, userVisitCampaign, userVisitCampaignTransfer);
         }
 
         return userVisitCampaignTransfer;

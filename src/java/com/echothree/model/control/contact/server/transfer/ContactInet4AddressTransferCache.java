@@ -36,7 +36,7 @@ public class ContactInet4AddressTransferCache
             var inet4Address = formatInet4Address(contactInet4Address.getInet4Address());
             
             contactInet4AddressTransfer = new ContactInet4AddressTransfer(inet4Address);
-            put(contactInet4Address, contactInet4AddressTransfer);
+            put(userVisit, contactInet4Address, contactInet4AddressTransfer);
         }
         
         return contactInet4AddressTransfer;

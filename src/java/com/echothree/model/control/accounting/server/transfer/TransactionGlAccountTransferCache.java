@@ -43,7 +43,7 @@ public class TransactionGlAccountTransferCache
                     transactionGlAccount.getGlAccount());
             
             transactionGlAccountTransfer = new TransactionGlAccountTransfer(transactionGlAccountCategory, glAccount);
-            put(transactionGlAccount, transactionGlAccountTransfer);
+            put(userVisit, transactionGlAccount, transactionGlAccountTransfer);
         }
         
         return transactionGlAccountTransfer;

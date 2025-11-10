@@ -47,7 +47,7 @@ public class BillingAccountRoleTransferCache
             var billingAccountRoleType = billingControl.getBillingAccountRoleTypeTransfer(userVisit, billingAccountRole.getBillingAccountRoleType());
 
             billingAccountRoleTransfer = new BillingAccountRoleTransfer(billingAccount, party, partyContactMechanism, billingAccountRoleType);
-            put(billingAccountRole, billingAccountRoleTransfer);
+            put(userVisit, billingAccountRole, billingAccountRoleTransfer);
         }
 
         return billingAccountRoleTransfer;

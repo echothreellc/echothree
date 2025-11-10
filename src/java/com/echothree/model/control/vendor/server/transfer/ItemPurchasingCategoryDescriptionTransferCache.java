@@ -38,7 +38,7 @@ public class ItemPurchasingCategoryDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, itemPurchasingCategoryDescription.getLanguage());
             
             itemPurchasingCategoryDescriptionTransfer = new ItemPurchasingCategoryDescriptionTransfer(languageTransfer, itemPurchasingCategoryTransfer, itemPurchasingCategoryDescription.getDescription());
-            put(itemPurchasingCategoryDescription, itemPurchasingCategoryDescriptionTransfer);
+            put(userVisit, itemPurchasingCategoryDescription, itemPurchasingCategoryDescriptionTransfer);
         }
         
         return itemPurchasingCategoryDescriptionTransfer;

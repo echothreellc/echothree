@@ -55,7 +55,7 @@ public class ItemHarmonizedTariffScheduleCodeTransferCache
             
             itemHarmonizedTariffScheduleCodeTransfer = new ItemHarmonizedTariffScheduleCodeTransfer(item, countryGeoCode, harmonizedTariffScheduleCodeUseType,
                     harmonizedTariffScheduleCode);
-            put(itemHarmonizedTariffScheduleCode, itemHarmonizedTariffScheduleCodeTransfer);
+            put(userVisit, itemHarmonizedTariffScheduleCode, itemHarmonizedTariffScheduleCodeTransfer);
         }
         
         return itemHarmonizedTariffScheduleCodeTransfer;

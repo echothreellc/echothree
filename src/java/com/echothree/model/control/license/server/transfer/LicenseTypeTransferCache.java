@@ -45,10 +45,10 @@ public class LicenseTypeTransferCache
             var licenseTypeName = licenseTypeDetail.getLicenseTypeName();
             var isDefault = licenseTypeDetail.getIsDefault();
             var sortOrder = licenseTypeDetail.getSortOrder();
-            var description = licenseControl.getBestLicenseTypeDescription(licenseType, getLanguage());
+            var description = licenseControl.getBestLicenseTypeDescription(licenseType, getLanguage(userVisit));
 
             licenseTypeTransfer = new LicenseTypeTransfer(licenseTypeName, isDefault, sortOrder, description);
-            put(licenseType, licenseTypeTransfer);
+            put(userVisit, licenseType, licenseTypeTransfer);
         }
 
         return licenseTypeTransfer;

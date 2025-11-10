@@ -38,14 +38,14 @@ public class PartyTrainingClassSessionAnswerTransferCache
             var trainingClassAnswer = partyTrainingClassSessionAnswer.getTrainingClassAnswer();
             var trainingClassAnswerTransfer = trainingClassAnswer == null ? null : trainingControl.getTrainingClassAnswerTransfer(userVisit, trainingClassAnswer);
             var unformattedQuestionStartTime = partyTrainingClassSessionAnswer.getQuestionStartTime();
-            var questionStartTime = unformattedQuestionStartTime == null ? null : formatTypicalDateTime(unformattedQuestionStartTime);
+            var questionStartTime = unformattedQuestionStartTime == null ? null : formatTypicalDateTime(userVisit, unformattedQuestionStartTime);
             var unformattedQuestionEndTime = partyTrainingClassSessionAnswer.getQuestionEndTime();
-            var questionEndTime = unformattedQuestionEndTime == null ? null : formatTypicalDateTime(unformattedQuestionEndTime);
+            var questionEndTime = unformattedQuestionEndTime == null ? null : formatTypicalDateTime(userVisit, unformattedQuestionEndTime);
 
             partyTrainingClassSessionAnswerTransfer = new PartyTrainingClassSessionAnswerTransfer(partyTrainingClassSessionQuestionTransfer,
                     partyTrainingClassSessionAnswerSequence, trainingClassAnswerTransfer, unformattedQuestionStartTime, questionStartTime,
                     unformattedQuestionEndTime, questionEndTime);
-            put(partyTrainingClassSessionAnswer, partyTrainingClassSessionAnswerTransfer);
+            put(userVisit, partyTrainingClassSessionAnswer, partyTrainingClassSessionAnswerTransfer);
         }
         
         return partyTrainingClassSessionAnswerTransfer;

@@ -55,7 +55,7 @@ public class ForumMessageAttachmentTransferCache
             var forumMessage = forumControl.getForumMessageTransfer(userVisit, forumMessageAttachmentDetail.getForumMessage());
             var forumMessageAttachmentSequence = forumMessageAttachmentDetail.getForumMessageAttachmentSequence();
             var mimeType = mimeTypeControl.getMimeTypeTransfer(userVisit, forumMessageAttachmentDetail.getMimeType());
-            var description = forumControl.getBestForumMessageAttachmentDescription(forumMessageAttachment, getLanguage());
+            var description = forumControl.getBestForumMessageAttachmentDescription(forumMessageAttachment, getLanguage(userVisit));
             ByteArray blob = null;
             String clob = null;
             String eTag = null;
@@ -90,7 +90,7 @@ public class ForumMessageAttachmentTransferCache
 
             forumMessageAttachmentTransfer = new ForumMessageAttachmentTransfer(forumMessage, forumMessageAttachmentSequence, mimeType, description, blob, clob,
                     eTag);
-            put(forumMessageAttachment, forumMessageAttachmentTransfer);
+            put(userVisit, forumMessageAttachment, forumMessageAttachmentTransfer);
         }
         
         return forumMessageAttachmentTransfer;

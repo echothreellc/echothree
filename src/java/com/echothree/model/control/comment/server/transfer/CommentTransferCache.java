@@ -67,7 +67,7 @@ public class CommentTransferCache
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(comment.getPrimaryKey());
             
             commentTransfer = new CommentTransfer();
-            put(comment, commentTransfer, entityInstance);
+            put(userVisit, comment, commentTransfer, entityInstance);
             
             commentTransfer.setCommentName(commentDetail.getCommentName());
             commentTransfer.setCommentType(commentControl.getCommentTypeTransfer(userVisit, commentType));

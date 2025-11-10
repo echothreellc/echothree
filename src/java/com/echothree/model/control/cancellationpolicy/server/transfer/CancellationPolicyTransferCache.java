@@ -40,11 +40,11 @@ public class CancellationPolicyTransferCache
             var cancellationPolicyName = cancellationPolicyDetail.getCancellationPolicyName();
             var isDefault = cancellationPolicyDetail.getIsDefault();
             var sortOrder = cancellationPolicyDetail.getSortOrder();
-            var cancellationPolicyTranslation = cancellationPolicyControl.getBestCancellationPolicyTranslation(cancellationPolicy, getLanguage());
+            var cancellationPolicyTranslation = cancellationPolicyControl.getBestCancellationPolicyTranslation(cancellationPolicy, getLanguage(userVisit));
             var description = cancellationPolicyTranslation == null ? cancellationPolicyName : cancellationPolicyTranslation.getDescription();
             
             cancellationPolicyTransfer = new CancellationPolicyTransfer(cancellationKind, cancellationPolicyName, isDefault, sortOrder, description);
-            put(cancellationPolicy, cancellationPolicyTransfer);
+            put(userVisit, cancellationPolicy, cancellationPolicyTransfer);
         }
         return cancellationPolicyTransfer;
     }

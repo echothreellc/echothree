@@ -45,7 +45,7 @@ public class GeoCodeDateTimeFormatTransferCache
             var sortOrder = geoCodeDateTimeFormat.getSortOrder();
             
             geoCodeDateTimeFormatTransfer = new GeoCodeDateTimeFormatTransfer(geoCode, dateTimeFormat, isDefault, sortOrder);
-            put(geoCodeDateTimeFormat, geoCodeDateTimeFormatTransfer);
+            put(userVisit, geoCodeDateTimeFormat, geoCodeDateTimeFormatTransfer);
         }
         
         return geoCodeDateTimeFormatTransfer;

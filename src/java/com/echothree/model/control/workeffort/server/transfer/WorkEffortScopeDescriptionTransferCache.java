@@ -39,7 +39,7 @@ public class WorkEffortScopeDescriptionTransferCache
             
             workEffortScopeDescriptionTransfer = new WorkEffortScopeDescriptionTransfer(languageTransfer, workEffortScopeTransfer,
                     description);
-            put(workEffortScopeDescription, workEffortScopeDescriptionTransfer);
+            put(userVisit, workEffortScopeDescription, workEffortScopeDescriptionTransfer);
         }
         
         return workEffortScopeDescriptionTransfer;

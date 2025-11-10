@@ -37,7 +37,7 @@ public class ClubDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, clubDescription.getLanguage());
             
             clubDescriptionTransfer = new ClubDescriptionTransfer(languageTransfer, clubTransfer, clubDescription.getDescription());
-            put(clubDescription, clubDescriptionTransfer);
+            put(userVisit, clubDescription, clubDescriptionTransfer);
         }
         
         return clubDescriptionTransfer;

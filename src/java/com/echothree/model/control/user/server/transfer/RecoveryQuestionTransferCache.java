@@ -39,10 +39,10 @@ public class RecoveryQuestionTransferCache
             var recoveryQuestionName = recoveryQuestionDetail.getRecoveryQuestionName();
             var isDefault = recoveryQuestionDetail.getIsDefault();
             var sortOrder = recoveryQuestionDetail.getSortOrder();
-            var description = userControl.getBestRecoveryQuestionDescription(recoveryQuestion, getLanguage());
+            var description = userControl.getBestRecoveryQuestionDescription(recoveryQuestion, getLanguage(userVisit));
             
             recoveryQuestionTransfer = new RecoveryQuestionTransfer(recoveryQuestionName, isDefault, sortOrder, description);
-            put(recoveryQuestion, recoveryQuestionTransfer);
+            put(userVisit, recoveryQuestion, recoveryQuestionTransfer);
         }
         
         return recoveryQuestionTransfer;

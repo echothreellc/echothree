@@ -60,7 +60,7 @@ public class TransactionGroupTransferCache
                     TransactionGroupStatusConstants.Workflow_TRANSACTION_GROUP_STATUS, entityInstance);
             
             transactionGroupTransfer = new TransactionGroupTransfer(transactionGroupName, transactionGroupStatusTransfer);
-            put(transactionGroup, transactionGroupTransfer, entityInstance);
+            put(userVisit, transactionGroup, transactionGroupTransfer, entityInstance);
             
             if(includeTransactions) {
                 transactionGroupTransfer.setTransactions(new ListWrapper<>(accountingControl.getTransactionTransfersByTransactionGroup(userVisit, transactionGroup)));

@@ -40,7 +40,7 @@ public class UseDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, useDescription.getLanguage());
             
             useDescriptionTransfer = new UseDescriptionTransfer(languageTransfer, useTransfer, useDescription.getDescription());
-            put(useDescription, useDescriptionTransfer);
+            put(userVisit, useDescription, useDescriptionTransfer);
         }
         
         return useDescriptionTransfer;

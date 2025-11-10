@@ -40,7 +40,7 @@ public class TagScopeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, tagScopeDescription.getLanguage());
             
             tagScopeDescriptionTransfer = new TagScopeDescriptionTransfer(languageTransfer, tagScopeTransfer, tagScopeDescription.getDescription());
-            put(tagScopeDescription, tagScopeDescriptionTransfer);
+            put(userVisit, tagScopeDescription, tagScopeDescriptionTransfer);
         }
         
         return tagScopeDescriptionTransfer;

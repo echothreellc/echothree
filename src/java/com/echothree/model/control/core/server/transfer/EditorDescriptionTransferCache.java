@@ -40,7 +40,7 @@ public class EditorDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, editorDescription.getLanguage());
             
             editorDescriptionTransfer = new EditorDescriptionTransfer(languageTransfer, editorTransfer, editorDescription.getDescription());
-            put(editorDescription, editorDescriptionTransfer);
+            put(userVisit, editorDescription, editorDescriptionTransfer);
         }
         return editorDescriptionTransfer;
     }

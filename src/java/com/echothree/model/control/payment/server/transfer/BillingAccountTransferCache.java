@@ -72,7 +72,7 @@ public class BillingAccountTransferCache
 //            }
             
             billingAccountTransfer = new BillingAccountTransfer(billingAccountName, currencyTransfer, reference, description, creditLimit, potentialCreditLimit);
-            put(billingAccount, billingAccountTransfer);
+            put(userVisit, billingAccount, billingAccountTransfer);
             
             if(includeRoles) {
                 var billingAccountRoleTransfers = billingControl.getBillingAccountRoleTransfersByBillingAccount(userVisit, billingAccount);

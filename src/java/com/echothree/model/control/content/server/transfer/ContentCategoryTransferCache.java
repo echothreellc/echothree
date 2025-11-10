@@ -94,11 +94,11 @@ public class ContentCategoryTransferCache
             var contentCategoryItemSelectorTransfer = contentCategoryItemSelector == null ? null : selectorControl.getSelectorTransfer(userVisit, contentCategoryItemSelector);
             var isDefault = filterIsDefault ? null : contentCategoryDetail.getIsDefault();
             var sortOrder = filterSortOrder ? null : contentCategoryDetail.getSortOrder();
-            var description = filterDescription ? null : contentControl.getBestContentCategoryDescription(contentCategory, getLanguage());
+            var description = filterDescription ? null : contentControl.getBestContentCategoryDescription(contentCategory, getLanguage(userVisit));
             
             contentCategoryTransfer = new ContentCategoryTransfer(contentCatalogTransfer, contentCategoryName, parentContentCategoryTransfer,
                     defaultOfferUseTransfer, contentCategoryItemSelectorTransfer, isDefault, sortOrder, description);
-            put(contentCategory, contentCategoryTransfer);
+            put(userVisit, contentCategory, contentCategoryTransfer);
 
             if(includeContentCategoryItems) {
                 contentCategoryTransfer.setContentCategoryItems(ListWrapperBuilder.getInstance().filter(transferProperties, contentControl.getContentCategoryItemTransfersByContentCategory(userVisit, contentCategoryDetail.getContentCategory())));

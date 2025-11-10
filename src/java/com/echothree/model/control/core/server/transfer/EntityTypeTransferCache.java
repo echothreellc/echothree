@@ -130,7 +130,7 @@ public class EntityTypeTransferCache
             var unformattedLockTimeout = entityTypeDetail.getLockTimeout();
             
             entityTypeTransfer = new EntityTypeTransfer();
-            put(entityType, entityTypeTransfer);
+            put(userVisit, entityType, entityTypeTransfer);
             
             if(!filterComponentVendor) {
                 entityTypeTransfer.setComponentVendor(componentControl.getComponentVendorTransfer(userVisit, entityTypeDetail.getComponentVendor()));
@@ -161,14 +161,14 @@ public class EntityTypeTransferCache
             }
 
             if(!filterDescription) {
-                entityTypeTransfer.setDescription(entityTypeControl.getBestEntityTypeDescription(entityType, getLanguage()));
+                entityTypeTransfer.setDescription(entityTypeControl.getBestEntityTypeDescription(entityType, getLanguage(userVisit)));
             }
             
             if(!filterEntityInstance) {
                 entityTypeTransfer.setEntityInstance(entityInstanceControl.getEntityInstanceTransfer(userVisit, entityType, false, false, false, false));
             }
             
-            setupEntityInstance(entityType, null, entityTypeTransfer);
+            setupEntityInstance(userVisit, entityType, null, entityTypeTransfer);
             
             if(includeIndexTypesCount) {
                 entityTypeTransfer.setIndexTypesCount(indexControl.countIndexTypesByEntityType(entityType));

@@ -59,8 +59,8 @@ public class CommunicationEventTransferCache
             communicationEventTransfer = new CommunicationEventTransfer(communicationEventName, communicationEventTypeTransfer,
                     communicationSourceTransfer, communicationEventPurposeTransfer, originalCommunicationEventTransfer,
                     parentCommunicationEventTransfer, partyContactMechanismTransfer, documentTransfer);
-            put(communicationEvent, communicationEventTransfer);
-            setupOwnedWorkEfforts(communicationEvent, null, communicationEventTransfer);
+            put(userVisit, communicationEvent, communicationEventTransfer);
+            setupOwnedWorkEfforts(userVisit, communicationEvent, null, communicationEventTransfer);
         }
         
         return communicationEventTransfer;

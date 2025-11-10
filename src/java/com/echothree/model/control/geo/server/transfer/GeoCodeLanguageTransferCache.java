@@ -45,7 +45,7 @@ public class GeoCodeLanguageTransferCache
             var sortOrder = geoCodeLanguage.getSortOrder();
             
             geoCodeLanguageTransfer = new GeoCodeLanguageTransfer(geoCode, language, isDefault, sortOrder);
-            put(geoCodeLanguage, geoCodeLanguageTransfer);
+            put(userVisit, geoCodeLanguage, geoCodeLanguageTransfer);
         }
         
         return geoCodeLanguageTransfer;

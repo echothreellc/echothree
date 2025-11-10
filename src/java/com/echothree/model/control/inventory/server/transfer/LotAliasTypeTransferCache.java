@@ -45,10 +45,10 @@ public class LotAliasTypeTransferCache
             var validationPattern = lotAliasTypeDetail.getValidationPattern();
             var isDefault = lotAliasTypeDetail.getIsDefault();
             var sortOrder = lotAliasTypeDetail.getSortOrder();
-            var description = lotAliasControl.getBestLotAliasTypeDescription(lotAliasType, getLanguage());
+            var description = lotAliasControl.getBestLotAliasTypeDescription(lotAliasType, getLanguage(userVisit));
             
             lotAliasTypeTransfer = new LotAliasTypeTransfer(lotAliasTypeName, validationPattern, isDefault, sortOrder, description);
-            put(lotAliasType, lotAliasTypeTransfer);
+            put(userVisit, lotAliasType, lotAliasTypeTransfer);
         }
         
         return lotAliasTypeTransfer;

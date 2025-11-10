@@ -47,7 +47,7 @@ public class FinancialAccountTransactionTransferCache
             
             financialAccountTransactionTransfer = new FinancialAccountTransactionTransfer(financialAccountTransactionName, financialAccountTransfer,
                     financialAccountTransactionTypeTransfer, unformattedAmount, amount, comment);
-            put(financialAccountTransaction, financialAccountTransactionTransfer);
+            put(userVisit, financialAccountTransaction, financialAccountTransactionTransfer);
         }
         
         return financialAccountTransactionTransfer;

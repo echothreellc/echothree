@@ -39,7 +39,7 @@ public class ReturnReasonTypeTransferCache
             var sortOrder = returnReasonType.getSortOrder();
             
             returnReasonTypeTransfer = new ReturnReasonTypeTransfer(returnReason, returnType, isDefault, sortOrder);
-            put(returnReasonType, returnReasonTypeTransfer);
+            put(userVisit, returnReasonType, returnReasonTypeTransfer);
         }
         
         return returnReasonTypeTransfer;

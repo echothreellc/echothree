@@ -43,7 +43,7 @@ public class NameSuffixTransferCache
             var sortOrder = nameSuffixDetail.getSortOrder();
             
             nameSuffixTransfer = new NameSuffixTransfer(nameSuffixId, description, isDefault, sortOrder);
-            put(nameSuffix, nameSuffixTransfer);
+            put(userVisit, nameSuffix, nameSuffixTransfer);
         }
         
         return nameSuffixTransfer;

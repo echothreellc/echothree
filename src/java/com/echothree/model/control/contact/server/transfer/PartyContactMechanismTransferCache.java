@@ -66,7 +66,7 @@ public class PartyContactMechanismTransferCache
             var description = partyContactMechanismDetail.getDescription();
             
             partyContactMechanismTransfer = new PartyContactMechanismTransfer(party, contactMechanism, isDefault, sortOrder, description);
-            put(partyContactMechanism, partyContactMechanismTransfer);
+            put(userVisit, partyContactMechanism, partyContactMechanismTransfer);
 
             if(includePartyContactMechanismPurposes) {
                 partyContactMechanismTransfer.setPartyContactMechanismPurposes(new ListWrapper<>(contactControl.getPartyContactMechanismPurposeTransfersByPartyContactMechanism(userVisit, partyContactMechanism)));

@@ -49,7 +49,7 @@ public class FilterAdjustmentPercentTransferCache
             
             filterAdjustmentPercentTransfer = new FilterAdjustmentPercentTransfer(filterAdjustment, unitOfMeasureType, currency, percent);
             
-            put(filterAdjustmentPercent, filterAdjustmentPercentTransfer);
+            put(userVisit, filterAdjustmentPercent, filterAdjustmentPercentTransfer);
         }
         
         return filterAdjustmentPercentTransfer;

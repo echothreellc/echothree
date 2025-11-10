@@ -37,7 +37,7 @@ public class RecoveryQuestionDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, recoveryQuestionDescription.getLanguage());
             
             recoveryQuestionDescriptionTransfer = new RecoveryQuestionDescriptionTransfer(languageTransfer, recoveryQuestionTransfer, recoveryQuestionDescription.getDescription());
-            put(recoveryQuestionDescription, recoveryQuestionDescriptionTransfer);
+            put(userVisit, recoveryQuestionDescription, recoveryQuestionDescriptionTransfer);
         }
         
         return recoveryQuestionDescriptionTransfer;

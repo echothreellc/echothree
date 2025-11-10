@@ -39,7 +39,7 @@ public class ItemAliasTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, itemAliasTypeDescription.getLanguage());
             
             itemAliasTypeDescriptionTransfer = new ItemAliasTypeDescriptionTransfer(languageTransfer, itemAliasTypeTransfer, itemAliasTypeDescription.getDescription());
-            put(itemAliasTypeDescription, itemAliasTypeDescriptionTransfer);
+            put(userVisit, itemAliasTypeDescription, itemAliasTypeDescriptionTransfer);
         }
         
         return itemAliasTypeDescriptionTransfer;

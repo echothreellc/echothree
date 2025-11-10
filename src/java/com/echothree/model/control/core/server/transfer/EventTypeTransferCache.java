@@ -37,10 +37,10 @@ public class EventTypeTransferCache
         
         if(eventTypeTransfer == null) {
             var eventTypeName = eventType.getEventTypeName();
-            var description = eventControl.getBestEventTypeDescription(eventType, getLanguage());
+            var description = eventControl.getBestEventTypeDescription(eventType, getLanguage(userVisit));
             
             eventTypeTransfer = new EventTypeTransfer(eventTypeName, description);
-            put(eventType, eventTypeTransfer);
+            put(userVisit, eventType, eventTypeTransfer);
         }
         return eventTypeTransfer;
     }

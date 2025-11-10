@@ -40,10 +40,10 @@ public class ChainActionSetTransferCache
             var chainActionSetName = chainActionSetDetail.getChainActionSetName();
             var isDefault = chainActionSetDetail.getIsDefault();
             var sortOrder = chainActionSetDetail.getSortOrder();
-            var description = chainControl.getBestChainActionSetDescription(chainActionSet, getLanguage());
+            var description = chainControl.getBestChainActionSetDescription(chainActionSet, getLanguage(userVisit));
 
             chainActionSetTransfer = new ChainActionSetTransfer(chainTransfer, chainActionSetName, isDefault, sortOrder, description);
-            put(chainActionSet, chainActionSetTransfer);
+            put(userVisit, chainActionSet, chainActionSetTransfer);
         }
 
         return chainActionSetTransfer;

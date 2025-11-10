@@ -40,11 +40,11 @@ public class ReturnPolicyTransferCache
             var returnPolicyName = returnPolicyDetail.getReturnPolicyName();
             var isDefault = returnPolicyDetail.getIsDefault();
             var sortOrder = returnPolicyDetail.getSortOrder();
-            var returnPolicyTranslation = returnPolicyControl.getBestReturnPolicyTranslation(returnPolicy, getLanguage());
+            var returnPolicyTranslation = returnPolicyControl.getBestReturnPolicyTranslation(returnPolicy, getLanguage(userVisit));
             var description = returnPolicyTranslation == null ? returnPolicyName : returnPolicyTranslation.getDescription();
             
             returnPolicyTransfer = new ReturnPolicyTransfer(returnKind, returnPolicyName, isDefault, sortOrder, description);
-            put(returnPolicy, returnPolicyTransfer);
+            put(userVisit, returnPolicy, returnPolicyTransfer);
         }
         return returnPolicyTransfer;
     }

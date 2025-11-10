@@ -38,7 +38,7 @@ public class AllocationPriorityDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, allocationPriorityDescription.getLanguage());
             
             allocationPriorityDescriptionTransfer = new AllocationPriorityDescriptionTransfer(languageTransfer, allocationPriorityTransfer, allocationPriorityDescription.getDescription());
-            put(allocationPriorityDescription, allocationPriorityDescriptionTransfer);
+            put(userVisit, allocationPriorityDescription, allocationPriorityDescriptionTransfer);
         }
         
         return allocationPriorityDescriptionTransfer;

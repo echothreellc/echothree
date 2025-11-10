@@ -40,10 +40,10 @@ public class LotTimeTransferCache
         if(lotTimeTransfer == null) {
             var lotTimeType = lotTimeControl.getLotTimeTypeTransfer(userVisit, lotTime.getLotTimeType());
             var unformattedTime = lotTime.getTime();
-            var time = formatTypicalDateTime(unformattedTime);
+            var time = formatTypicalDateTime(userVisit, unformattedTime);
             
             lotTimeTransfer = new LotTimeTransfer(lotTimeType, unformattedTime, time);
-            put(lotTime, lotTimeTransfer);
+            put(userVisit, lotTime, lotTimeTransfer);
         }
         
         return lotTimeTransfer;

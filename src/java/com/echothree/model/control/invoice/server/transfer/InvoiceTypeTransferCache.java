@@ -41,11 +41,11 @@ public class InvoiceTypeTransferCache
             var parentInvoiceTypeTransfer = parentInvoiceType == null? null: getInvoiceTypeTransfer(parentInvoiceType);
             var isDefault = invoiceTypeDetail.getIsDefault();
             var sortOrder = invoiceTypeDetail.getSortOrder();
-            var description = invoiceControl.getBestInvoiceTypeDescription(invoiceType, getLanguage());
+            var description = invoiceControl.getBestInvoiceTypeDescription(invoiceType, getLanguage(userVisit));
             
             invoiceTypeTransfer = new InvoiceTypeTransfer(invoiceTypeName, parentInvoiceTypeTransfer, isDefault, sortOrder,
                     description);
-            put(invoiceType, invoiceTypeTransfer);
+            put(userVisit, invoiceType, invoiceTypeTransfer);
         }
         
         return invoiceTypeTransfer;

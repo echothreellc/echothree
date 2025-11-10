@@ -37,7 +37,7 @@ public class WishlistTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, wishlistTypeDescription.getLanguage());
             
             wishlistTypeDescriptionTransfer = new WishlistTypeDescriptionTransfer(languageTransfer, wishlistTypeTransfer, wishlistTypeDescription.getDescription());
-            put(wishlistTypeDescription, wishlistTypeDescriptionTransfer);
+            put(userVisit, wishlistTypeDescription, wishlistTypeDescriptionTransfer);
         }
         
         return wishlistTypeDescriptionTransfer;

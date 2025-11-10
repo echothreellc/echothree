@@ -64,9 +64,9 @@ public class LeaveTransferCache
             var leaveReason = leaveDetail.getLeaveReason();
             var leaveReasonTransfer = leaveReason == null ? null : employeeControl.getLeaveReasonTransfer(userVisit, leaveReason);
             var unformattedStartTime = leaveDetail.getStartTime();
-            var startTime = formatTypicalDateTime(unformattedStartTime);
+            var startTime = formatTypicalDateTime(userVisit, unformattedStartTime);
             var unformattedEndTime = leaveDetail.getEndTime();
-            var endTime = formatTypicalDateTime(unformattedEndTime);
+            var endTime = formatTypicalDateTime(userVisit, unformattedEndTime);
             var unformattedTotalTime = leaveDetail.getTotalTime();
             var totalTime = unformattedTotalTime == null ? null : unitOfMeasureUtils.formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedTotalTime);
 
@@ -76,7 +76,7 @@ public class LeaveTransferCache
 
             leaveTransfer = new LeaveTransfer(leaveName, partyTransfer, companyTransfer, leaveTypeTransfer, leaveReasonTransfer, unformattedStartTime,
                     startTime, unformattedEndTime, endTime, unformattedTotalTime, totalTime, leaveStatus);
-            put(leave, leaveTransfer);
+            put(userVisit, leave, leaveTransfer);
         }
         
         return leaveTransfer;

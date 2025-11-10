@@ -59,10 +59,10 @@ public class MimeTypeUsageTypeTransferCache
             var mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();
             var isDefault = mimeTypeUsageType.getIsDefault();
             var sortOrder = mimeTypeUsageType.getSortOrder();
-            var description = mimeTypeControl.getBestMimeTypeUsageTypeDescription(mimeTypeUsageType, getLanguage());
+            var description = mimeTypeControl.getBestMimeTypeUsageTypeDescription(mimeTypeUsageType, getLanguage(userVisit));
             
             mimeTypeUsageTypeTransfer = new MimeTypeUsageTypeTransfer(mimeTypeUsageTypeName, isDefault, sortOrder, description);
-            put(mimeTypeUsageType, mimeTypeUsageTypeTransfer);
+            put(userVisit, mimeTypeUsageType, mimeTypeUsageTypeTransfer);
         }
         
         return mimeTypeUsageTypeTransfer;

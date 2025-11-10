@@ -43,10 +43,10 @@ public class UseNameElementTransferCache
             var offset = useNameElementDetail.getOffset();
             var length = useNameElementDetail.getLength();
             var validationPattern = useNameElementDetail.getValidationPattern();
-            var description = useNameElementControl.getBestUseNameElementDescription(useNameElement, getLanguage());
+            var description = useNameElementControl.getBestUseNameElementDescription(useNameElement, getLanguage(userVisit));
             
             useNameElementTransfer = new UseNameElementTransfer(useNameElementName, offset, length, validationPattern, description);
-            put(useNameElement, useNameElementTransfer);
+            put(userVisit, useNameElement, useNameElementTransfer);
         }
         
         return useNameElementTransfer;

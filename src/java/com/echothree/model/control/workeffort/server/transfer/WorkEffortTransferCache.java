@@ -59,20 +59,20 @@ public class WorkEffortTransferCache
             var owningEntityInstance = entityInstanceControl.getEntityInstanceTransfer(userVisit, workEffortDetail.getOwningEntityInstance(), false, false, false, false);
             var workEffortScope = workEffortControl.getWorkEffortScopeTransfer(userVisit, workEffortDetail.getWorkEffortScope());
             var unformattedScheduledTime = workEffortDetail.getScheduledTime();
-            var scheduledTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedScheduledTime);
+            var scheduledTime = formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedScheduledTime);
             var unformattedScheduledStartTime = workEffortDetail.getScheduledStartTime();
-            var scheduledStartTime = formatTypicalDateTime(unformattedScheduledStartTime);
+            var scheduledStartTime = formatTypicalDateTime(userVisit, unformattedScheduledStartTime);
             var unformattedScheduledEndTime = workEffortDetail.getScheduledEndTime();
-            var scheduledEndTime = formatTypicalDateTime(unformattedScheduledEndTime);
+            var scheduledEndTime = formatTypicalDateTime(userVisit, unformattedScheduledEndTime);
             var unformattedEstimatedTimeAllowed = workEffortDetail.getEstimatedTimeAllowed();
-            var estimatedTimeAllowed = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedEstimatedTimeAllowed);
+            var estimatedTimeAllowed = formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedEstimatedTimeAllowed);
             var unformattedMaximumTimeAllowed = workEffortDetail.getMaximumTimeAllowed();
-            var maximumTimeAllowed = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedMaximumTimeAllowed);
+            var maximumTimeAllowed = formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedMaximumTimeAllowed);
 
             workEffortTransfer = new WorkEffortTransfer(workEffortName, owningEntityInstance, workEffortScope, unformattedScheduledTime, scheduledTime,
                     unformattedScheduledStartTime, scheduledStartTime, unformattedScheduledEndTime, scheduledEndTime, unformattedEstimatedTimeAllowed,
                     estimatedTimeAllowed, unformattedMaximumTimeAllowed, maximumTimeAllowed);
-            put(workEffort, workEffortTransfer);
+            put(userVisit, workEffort, workEffortTransfer);
 
             if(includeWorkRequirements) {
                 workEffortTransfer.setWorkRequirements(new ListWrapper<>(workRequirementControl.getWorkRequirementTransfersByWorkEffort(userVisit, workEffort)));

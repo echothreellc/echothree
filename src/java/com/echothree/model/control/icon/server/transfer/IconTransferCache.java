@@ -46,7 +46,7 @@ public class IconTransferCache
             var sortOrder = iconDetail.getSortOrder();
             
             iconTransfer = new IconTransfer(iconName, document, isDefault, sortOrder);
-            put(icon, iconTransfer);
+            put(userVisit, icon, iconTransfer);
         }
         
         return iconTransfer;

@@ -46,7 +46,7 @@ public class ItemPackCheckRequirementTransferCache
             var maximumQuantity = longMaximumQuantity == null ? null : longMaximumQuantity.toString();
             
             itemPackCheckRequirementTransfer = new ItemPackCheckRequirementTransfer(item, unitOfMeasureType, minimumQuantity, maximumQuantity);
-            put(itemPackCheckRequirement, itemPackCheckRequirementTransfer);
+            put(userVisit, itemPackCheckRequirement, itemPackCheckRequirementTransfer);
         }
         
         return itemPackCheckRequirementTransfer;

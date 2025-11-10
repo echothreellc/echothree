@@ -39,10 +39,10 @@ public class IconUsageTypeTransferCache
             var iconUsageTypeName = iconUsageTypeDetail.getIconUsageTypeName();
             var isDefault = iconUsageTypeDetail.getIsDefault();
             var sortOrder = iconUsageTypeDetail.getSortOrder();
-            var description = iconControl.getBestIconUsageTypeDescription(iconUsageType, getLanguage());
+            var description = iconControl.getBestIconUsageTypeDescription(iconUsageType, getLanguage(userVisit));
             
             iconUsageTypeTransfer = new IconUsageTypeTransfer(iconUsageTypeName, isDefault, sortOrder, description);
-            put(iconUsageType, iconUsageTypeTransfer);
+            put(userVisit, iconUsageType, iconUsageTypeTransfer);
         }
         return iconUsageTypeTransfer;
     }

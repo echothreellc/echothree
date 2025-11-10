@@ -106,7 +106,7 @@ public class EntityInstanceTransferCache
             
             entityInstanceTransfer = new EntityInstanceTransfer(entityTypeTransfer, entityUniqueId, uuid, entityRef,
                     entityTimeTransfer, description);
-            put(entityInstance, entityInstanceTransfer);
+            put(userVisit, entityInstance, entityInstanceTransfer);
 
             if(includeEntityAppearance || this.includeEntityAppearance) {
                 var appearanceControl = Session.getModelController(AppearanceControl.class);

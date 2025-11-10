@@ -44,10 +44,10 @@ public class CommandTransferCache
             var componentVendor = componentControl.getComponentVendorTransfer(userVisit, commandDetail.getComponentVendor());
             var commandName = commandDetail.getCommandName();
             var sortOrder = commandDetail.getSortOrder();
-            var description = commandControl.getBestCommandDescription(command, getLanguage());
+            var description = commandControl.getBestCommandDescription(command, getLanguage(userVisit));
     
             commandTransfer = new CommandTransfer(componentVendor, commandName, sortOrder, description);
-            put(command, commandTransfer);
+            put(userVisit, command, commandTransfer);
         }
         
         return commandTransfer;

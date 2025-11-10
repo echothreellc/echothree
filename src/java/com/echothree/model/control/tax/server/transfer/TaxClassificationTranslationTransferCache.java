@@ -47,7 +47,7 @@ public class TaxClassificationTranslationTransferCache
             
             taxClassificationTranslationTransfer = new TaxClassificationTranslationTransfer(languageTransfer,
                     taxClassificationTransfer, description, overviewMimeTypeTransfer, overview);
-            put(taxClassificationTranslation, taxClassificationTranslationTransfer);
+            put(userVisit, taxClassificationTranslation, taxClassificationTranslationTransfer);
         }
         
         return taxClassificationTranslationTransfer;

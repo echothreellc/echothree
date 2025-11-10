@@ -55,7 +55,7 @@ public class ContactMechanismTransferCache
             var allowSolicitation = contactMechanismDetail.getAllowSolicitation();
 
             contactMechanismTransfer = new ContactMechanismTransfer(contactMechanismName, contactMechanismType, allowSolicitation);
-            put(contactMechanism, contactMechanismTransfer);
+            put(userVisit, contactMechanism, contactMechanismTransfer);
 
             var contactMechanismTypeName = contactMechanismType.getContactMechanismTypeName();
             
@@ -72,7 +72,7 @@ public class ContactMechanismTransferCache
             }
             
             if(includeComments) {
-                setupComments(contactMechanism, null, contactMechanismTransfer, CommentConstants.CommentType_CONTACT_MECHANISM);
+                setupComments(userVisit, contactMechanism, null, contactMechanismTransfer, CommentConstants.CommentType_CONTACT_MECHANISM);
             }
         }
         

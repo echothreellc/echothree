@@ -41,7 +41,7 @@ public class EntityTypeDescriptionTransferCache
             
             entityTypeDescriptionTransfer = new EntityTypeDescriptionTransfer(languageTransfer, entityTypeTransfer,
                     entityTypeDescription.getDescription());
-            put(entityTypeDescription, entityTypeDescriptionTransfer);
+            put(userVisit, entityTypeDescription, entityTypeDescriptionTransfer);
         }
         return entityTypeDescriptionTransfer;
     }

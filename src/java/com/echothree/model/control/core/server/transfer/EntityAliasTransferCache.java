@@ -44,7 +44,7 @@ public class EntityAliasTransferCache
             var entityInstanceTransfer = entityInstanceControl.getEntityInstanceTransfer(userVisit, entityAlias.getEntityInstance(), false, false, false, false);
             
             entityAliasTransfer = new EntityAliasTransfer(entityAliasType, alias, entityInstanceTransfer);
-            put(entityAlias, entityAliasTransfer);
+            put(userVisit, entityAlias, entityAliasTransfer);
         }
         
         return entityAliasTransfer;

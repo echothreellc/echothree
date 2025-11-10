@@ -39,10 +39,10 @@ public class SelectorKindTransferCache
             var selectorKindName = selectorKindDetail.getSelectorKindName();
             var isDefault = selectorKindDetail.getIsDefault();
             var sortOrder = selectorKindDetail.getSortOrder();
-            var description = selectorControl.getBestSelectorKindDescription(selectorKind, getLanguage());
+            var description = selectorControl.getBestSelectorKindDescription(selectorKind, getLanguage(userVisit));
             
             selectorKindTransfer = new SelectorKindTransfer(selectorKindName, isDefault, sortOrder, description);
-            put(selectorKind, selectorKindTransfer);
+            put(userVisit, selectorKind, selectorKindTransfer);
         }
         
         return selectorKindTransfer;

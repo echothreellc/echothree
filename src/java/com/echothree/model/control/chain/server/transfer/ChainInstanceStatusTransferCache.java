@@ -40,12 +40,12 @@ public class ChainInstanceStatusTransferCache
             var chainInstance = chainControl.getChainInstanceTransfer(userVisit, chainInstanceStatus.getChainInstance());
             var nextChainActionSet = chainControl.getChainActionSetTransfer(userVisit, chainInstanceStatus.getNextChainActionSet());
             var unformattedNextChainActionSetTime = chainInstanceStatus.getNextChainActionSetTime();
-            var nextChainActionSetTime = formatTypicalDateTime(unformattedNextChainActionSetTime);
+            var nextChainActionSetTime = formatTypicalDateTime(userVisit, unformattedNextChainActionSetTime);
             var queuedLetterSequence = chainInstanceStatus.getQueuedLetterSequence();
             
             chainInstanceStatusTransfer = new ChainInstanceStatusTransfer(chainInstance, nextChainActionSet, unformattedNextChainActionSetTime,
                     nextChainActionSetTime, queuedLetterSequence);
-            put(chainInstanceStatus, chainInstanceStatusTransfer);
+            put(userVisit, chainInstanceStatus, chainInstanceStatusTransfer);
         }
         
         return chainInstanceStatusTransfer;

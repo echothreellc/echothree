@@ -37,10 +37,10 @@ public class ItemUseTypeTransferCache
             var itemUseTypeName = itemUseType.getItemUseTypeName();
             var isDefault = itemUseType.getIsDefault();
             var sortOrder = itemUseType.getSortOrder();
-            var description = itemControl.getBestItemUseTypeDescription(itemUseType, getLanguage());
+            var description = itemControl.getBestItemUseTypeDescription(itemUseType, getLanguage(userVisit));
             
             itemUseTypeTransfer = new ItemUseTypeTransfer(itemUseTypeName, isDefault, sortOrder, description);
-            put(itemUseType, itemUseTypeTransfer);
+            put(userVisit, itemUseType, itemUseTypeTransfer);
         }
         
         return itemUseTypeTransfer;

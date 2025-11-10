@@ -38,10 +38,10 @@ public class ContentPageLayoutAreaTransferCache
             var contentPageAreaTypeTransfer = contentTransferCaches.getContentPageAreaTypeTransferCache().getTransfer(contentPageLayoutArea.getContentPageAreaType());
             var showDescriptionField = contentPageLayoutArea.getShowDescriptionField();
             var sortOrder = contentPageLayoutArea.getSortOrder();
-            var description = contentControl.getBestContentPageLayoutAreaDescription(contentPageLayoutArea, getLanguage());
+            var description = contentControl.getBestContentPageLayoutAreaDescription(contentPageLayoutArea, getLanguage(userVisit));
             
             contentPageLayoutAreaTransfer = new ContentPageLayoutAreaTransfer(contentPageLayoutTransfer, contentPageAreaTypeTransfer, showDescriptionField, sortOrder, description);
-            put(contentPageLayoutArea, contentPageLayoutAreaTransfer);
+            put(userVisit, contentPageLayoutArea, contentPageLayoutAreaTransfer);
         }
         
         return contentPageLayoutAreaTransfer;

@@ -38,7 +38,7 @@ public class AssociateProgramDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, associateProgramDescription.getLanguage());
             
             associateProgramDescriptionTransfer = new AssociateProgramDescriptionTransfer(languageTransfer, associateProgramTransfer, associateProgramDescription.getDescription());
-            put(associateProgramDescription, associateProgramDescriptionTransfer);
+            put(userVisit, associateProgramDescription, associateProgramDescriptionTransfer);
         }
         
         return associateProgramDescriptionTransfer;

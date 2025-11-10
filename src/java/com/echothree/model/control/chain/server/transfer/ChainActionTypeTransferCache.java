@@ -40,10 +40,10 @@ public class ChainActionTypeTransferCache
             var allowMultiple = chainActionTypeDetail.getAllowMultiple();
             var isDefault = chainActionTypeDetail.getIsDefault();
             var sortOrder = chainActionTypeDetail.getSortOrder();
-            var description = chainControl.getBestChainActionTypeDescription(chainActionType, getLanguage());
+            var description = chainControl.getBestChainActionTypeDescription(chainActionType, getLanguage(userVisit));
             
             chainActionTypeTransfer = new ChainActionTypeTransfer(chainActionTypeName, allowMultiple, isDefault, sortOrder, description);
-            put(chainActionType, chainActionTypeTransfer);
+            put(userVisit, chainActionType, chainActionTypeTransfer);
         }
         
         return chainActionTypeTransfer;

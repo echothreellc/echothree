@@ -41,11 +41,11 @@ public class FilterAdjustmentSourceTransferCache
             var allowedForInitialAmount = filterAdjustmentSource.getAllowedForInitialAmount();
             var isDefault = filterAdjustmentSource.getIsDefault();
             var sortOrder = filterAdjustmentSource.getSortOrder();
-            var description = filterControl.getBestFilterAdjustmentSourceDescription(filterAdjustmentSource, getLanguage());
+            var description = filterControl.getBestFilterAdjustmentSourceDescription(filterAdjustmentSource, getLanguage(userVisit));
             
             filterAdjustmentSourceTransfer = new FilterAdjustmentSourceTransfer(filterAdjustmentSourceName, allowedForInitialAmount, isDefault,
             sortOrder, description);
-            put(filterAdjustmentSource, filterAdjustmentSourceTransfer);
+            put(userVisit, filterAdjustmentSource, filterAdjustmentSourceTransfer);
         }
         return filterAdjustmentSourceTransfer;
     }

@@ -46,7 +46,7 @@ public class ItemAliasTransferCache
             var alias = itemAlias.getAlias();
             
             itemAliasTransfer = new ItemAliasTransfer(item, unitOfMeasureType, itemAliasType, alias);
-            put(itemAlias, itemAliasTransfer);
+            put(userVisit, itemAlias, itemAliasTransfer);
         }
         
         return itemAliasTransfer;

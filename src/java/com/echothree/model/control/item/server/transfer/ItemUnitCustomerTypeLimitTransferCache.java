@@ -53,7 +53,7 @@ public class ItemUnitCustomerTypeLimitTransferCache
             
             itemUnitCustomerTypeLimitTransfer = new ItemUnitCustomerTypeLimitTransfer(item, inventoryCondition, unitOfMeasureType, customerType,
                     minimumQuantity, maximumQuantity);
-            put(itemUnitCustomerTypeLimit, itemUnitCustomerTypeLimitTransfer);
+            put(userVisit, itemUnitCustomerTypeLimit, itemUnitCustomerTypeLimitTransfer);
         }
         
         return itemUnitCustomerTypeLimitTransfer;

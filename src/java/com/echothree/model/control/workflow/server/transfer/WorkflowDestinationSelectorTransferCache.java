@@ -43,7 +43,7 @@ public class WorkflowDestinationSelectorTransferCache
             var selector = selectorControl.getSelectorTransfer(userVisit, workflowDestinationSelector.getSelector());
             
             workflowDestinationSelectorTransfer = new WorkflowDestinationSelectorTransfer(workflowDestination, selector);
-            put(workflowDestinationSelector, workflowDestinationSelectorTransfer);
+            put(userVisit, workflowDestinationSelector, workflowDestinationSelectorTransfer);
         }
         
         return workflowDestinationSelectorTransfer;

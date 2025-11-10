@@ -38,11 +38,11 @@ public class ContactMechanismPurposeTransferCache
             var eventSubscriber = contactMechanismPurpose.getEventSubscriber();
             var isDefault = contactMechanismPurpose.getIsDefault();
             var sortOrder = contactMechanismPurpose.getSortOrder();
-            var description = contactControl.getBestContactMechanismPurposeDescription(contactMechanismPurpose, getLanguage());
+            var description = contactControl.getBestContactMechanismPurposeDescription(contactMechanismPurpose, getLanguage(userVisit));
             
             contactMechanismPurposeTransfer = new ContactMechanismPurposeTransfer(contactMechanismPurposeName, contactMechanismType,
                     eventSubscriber, isDefault, sortOrder, description);
-            put(contactMechanismPurpose, contactMechanismPurposeTransfer);
+            put(userVisit, contactMechanismPurpose, contactMechanismPurposeTransfer);
         }
         
         return contactMechanismPurposeTransfer;

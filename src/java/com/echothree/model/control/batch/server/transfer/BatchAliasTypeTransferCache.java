@@ -42,10 +42,10 @@ public class BatchAliasTypeTransferCache
             var validationPattern = batchAliasTypeDetail.getValidationPattern();
             var isDefault = batchAliasTypeDetail.getIsDefault();
             var sortOrder = batchAliasTypeDetail.getSortOrder();
-            var description = batchControl.getBestBatchAliasTypeDescription(batchAliasType, getLanguage());
+            var description = batchControl.getBestBatchAliasTypeDescription(batchAliasType, getLanguage(userVisit));
             
             batchAliasTypeTransfer = new BatchAliasTypeTransfer(batchType, batchAliasTypeName, validationPattern, isDefault, sortOrder, description);
-            put(batchAliasType, batchAliasTypeTransfer);
+            put(userVisit, batchAliasType, batchAliasTypeTransfer);
         }
         
         return batchAliasTypeTransfer;

@@ -19,7 +19,6 @@ package com.echothree.model.control.core.server.transfer;
 import com.echothree.model.control.core.common.transfer.EntityBooleanDefaultTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.EntityBooleanDefault;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
@@ -41,7 +40,7 @@ public class EntityBooleanDefaultTransferCache
             var booleanAttribute = entityBooleanDefault.getBooleanAttribute();
             
             entityBooleanDefaultTransfer = new EntityBooleanDefaultTransfer(entityAttribute, booleanAttribute);
-            put(entityBooleanDefault, entityBooleanDefaultTransfer);
+            put(userVisit, entityBooleanDefault, entityBooleanDefaultTransfer);
         }
         
         return entityBooleanDefaultTransfer;

@@ -40,7 +40,7 @@ public class UnitOfMeasureKindUseTransferCache
             
             unitOfMeasureKindUseTransfer = new UnitOfMeasureKindUseTransfer(unitOfMeasureKindUseType, unitOfMeasureKind, isDefault,
                     sortOrder);
-            put(unitOfMeasureKindUse, unitOfMeasureKindUseTransfer);
+            put(userVisit, unitOfMeasureKindUse, unitOfMeasureKindUseTransfer);
         }
         
         return unitOfMeasureKindUseTransfer;

@@ -112,7 +112,7 @@ public class InvoiceTransferCache
             }
             
             invoiceTransfer = setInvoiceTimes(invoice, new InvoiceTransfer(invoiceType, invoiceName, billingAccount, glAccount, term, reference, description, invoiceStatus));
-            put(invoice, invoiceTransfer, entityInstance);
+            put(userVisit, invoice, invoiceTransfer, entityInstance);
             
 
             if(includeLines) {

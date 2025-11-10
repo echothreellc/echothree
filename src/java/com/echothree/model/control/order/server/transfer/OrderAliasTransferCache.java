@@ -42,7 +42,7 @@ public class OrderAliasTransferCache
             var alias = orderAlias.getAlias();
             
             orderAliasTransfer = new OrderAliasTransfer(orderAliasType, alias);
-            put(orderAlias, orderAliasTransfer);
+            put(userVisit, orderAlias, orderAliasTransfer);
         }
         
         return orderAliasTransfer;

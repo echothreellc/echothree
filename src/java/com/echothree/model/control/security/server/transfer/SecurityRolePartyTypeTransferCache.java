@@ -45,7 +45,7 @@ public class SecurityRolePartyTypeTransferCache
             var partySelectorTransfer = partySelector == null? null: selectorControl.getSelectorTransfer(userVisit, partySelector);
             
             securityRolePartyTypeTransfer = new SecurityRolePartyTypeTransfer(securityRoleTransfer, partyTypeTransfer, partySelectorTransfer);
-            put(securityRolePartyType, securityRolePartyTypeTransfer);
+            put(userVisit, securityRolePartyType, securityRolePartyTypeTransfer);
         }
         
         return securityRolePartyTypeTransfer;

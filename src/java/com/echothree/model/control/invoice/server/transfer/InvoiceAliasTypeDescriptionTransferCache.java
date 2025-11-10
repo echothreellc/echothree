@@ -37,7 +37,7 @@ public class InvoiceAliasTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, invoiceAliasTypeDescription.getLanguage());
             
             invoiceAliasTypeDescriptionTransfer = new InvoiceAliasTypeDescriptionTransfer(languageTransfer, invoiceAliasTypeTransfer, invoiceAliasTypeDescription.getDescription());
-            put(invoiceAliasTypeDescription, invoiceAliasTypeDescriptionTransfer);
+            put(userVisit, invoiceAliasTypeDescription, invoiceAliasTypeDescriptionTransfer);
         }
         
         return invoiceAliasTypeDescriptionTransfer;

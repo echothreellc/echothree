@@ -39,10 +39,10 @@ public class ContactListGroupTransferCache
             var contactListGroupName = contactListGroupDetail.getContactListGroupName();
             var isDefault = contactListGroupDetail.getIsDefault();
             var sortOrder = contactListGroupDetail.getSortOrder();
-            var description = contactListControl.getBestContactListGroupDescription(contactListGroup, getLanguage());
+            var description = contactListControl.getBestContactListGroupDescription(contactListGroup, getLanguage(userVisit));
             
             contactListGroupTransfer = new ContactListGroupTransfer(contactListGroupName, isDefault, sortOrder, description);
-            put(contactListGroup, contactListGroupTransfer);
+            put(userVisit, contactListGroup, contactListGroupTransfer);
         }
         
         return contactListGroupTransfer;

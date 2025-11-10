@@ -44,7 +44,7 @@ public class TrainingClassQuestionTranslationTransferCache
             
             trainingClassQuestionTranslationTransfer = new TrainingClassQuestionTranslationTransfer(trainingClassQuestionTransfer, languageTransfer,
                     questionMimeTypeTransfer, question);
-            put(trainingClassQuestionTranslation, trainingClassQuestionTranslationTransfer);
+            put(userVisit, trainingClassQuestionTranslation, trainingClassQuestionTranslationTransfer);
         }
         
         return trainingClassQuestionTranslationTransfer;

@@ -36,10 +36,10 @@ public class UnitOfMeasureTypeWeightTransferCache
         if(unitOfMeasureTypeWeightTransfer == null) {
             var unitOfMeasureTypeTransfer = uomControl.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureTypeWeight.getUnitOfMeasureType());
             var volumeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_WEIGHT);
-            var weight = formatUnitOfMeasure(volumeUnitOfMeasureKind, unitOfMeasureTypeWeight.getWeight());
+            var weight = formatUnitOfMeasure(userVisit, volumeUnitOfMeasureKind, unitOfMeasureTypeWeight.getWeight());
             
             unitOfMeasureTypeWeightTransfer = new UnitOfMeasureTypeWeightTransfer(unitOfMeasureTypeTransfer, weight);
-            put(unitOfMeasureTypeWeight, unitOfMeasureTypeWeightTransfer);
+            put(userVisit, unitOfMeasureTypeWeight, unitOfMeasureTypeWeightTransfer);
         }
         
         return unitOfMeasureTypeWeightTransfer;

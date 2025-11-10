@@ -43,11 +43,11 @@ public class OfferNameElementTransferCache
             var offset = offerNameElementDetail.getOffset();
             var length = offerNameElementDetail.getLength();
             var validationPattern = offerNameElementDetail.getValidationPattern();
-            var description = offerNameElementControl.getBestOfferNameElementDescription(offerNameElement, getLanguage());
+            var description = offerNameElementControl.getBestOfferNameElementDescription(offerNameElement, getLanguage(userVisit));
             
             offerNameElementTransfer = new OfferNameElementTransfer(offerNameElementName, offset, length, validationPattern,
                     description);
-            put(offerNameElement, offerNameElementTransfer);
+            put(userVisit, offerNameElement, offerNameElementTransfer);
         }
         
         return offerNameElementTransfer;

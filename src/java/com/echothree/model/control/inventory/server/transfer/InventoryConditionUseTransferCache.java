@@ -41,7 +41,7 @@ public class InventoryConditionUseTransferCache
             var isDefault = inventoryConditionUse.getIsDefault();
             
             inventoryConditionUseTransfer = new InventoryConditionUseTransfer(inventoryConditionUseType, inventoryCondition, isDefault);
-            put(inventoryConditionUse, inventoryConditionUseTransfer);
+            put(userVisit, inventoryConditionUse, inventoryConditionUseTransfer);
         }
         
         return inventoryConditionUseTransfer;

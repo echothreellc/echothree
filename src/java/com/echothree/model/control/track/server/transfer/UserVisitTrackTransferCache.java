@@ -40,12 +40,12 @@ public class UserVisitTrackTransferCache
             var userVisitTransfer = userControl.getUserVisitTransfer(userVisit, userVisit);
             var userVisitTrackSequence = userVisitTrack.getUserVisitTrackSequence();
             var unformattedTime = userVisitTrack.getTime();
-            var time = formatTypicalDateTime(unformattedTime);
+            var time = formatTypicalDateTime(userVisit, unformattedTime);
             var track = userVisitTrack.getTrack();
             var trackTransfer = track == null ? null : trackControl.getTrackTransfer(userVisit, track);
 
             userVisitTrackTransfer = new UserVisitTrackTransfer(userVisitTransfer, userVisitTrackSequence, unformattedTime, time, trackTransfer);
-            put(userVisitTrack, userVisitTrackTransfer);
+            put(userVisit, userVisitTrack, userVisitTrackTransfer);
         }
 
         return userVisitTrackTransfer;

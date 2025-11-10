@@ -52,7 +52,7 @@ public class TagTransferCache
             var usageCount = includeUsageCount ? tagControl.countEntityTagsByTag(tag) : null;
             
             tagTransfer = new TagTransfer(tagScope, tagName, usageCount);
-            put(tag, tagTransfer);
+            put(userVisit, tag, tagTransfer);
         }
         
         return tagTransfer;

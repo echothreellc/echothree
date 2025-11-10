@@ -43,10 +43,10 @@ public class PrinterGroupUseTypeTransferCache
             var printerGroupUseTypeName = printerGroupUseTypeDetail.getPrinterGroupUseTypeName();
             var isDefault = printerGroupUseTypeDetail.getIsDefault();
             var sortOrder = printerGroupUseTypeDetail.getSortOrder();
-            var description = printerControl.getBestPrinterGroupUseTypeDescription(printerGroupUseType, getLanguage());
+            var description = printerControl.getBestPrinterGroupUseTypeDescription(printerGroupUseType, getLanguage(userVisit));
 
             printerGroupUseTypeTransfer = new PrinterGroupUseTypeTransfer(printerGroupUseTypeName, isDefault, sortOrder, description);
-            put(printerGroupUseType, printerGroupUseTypeTransfer);
+            put(userVisit, printerGroupUseType, printerGroupUseTypeTransfer);
         }
 
         return printerGroupUseTypeTransfer;

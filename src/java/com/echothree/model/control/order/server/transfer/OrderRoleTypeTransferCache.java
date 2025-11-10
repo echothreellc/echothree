@@ -38,10 +38,10 @@ public class OrderRoleTypeTransferCache
         if(orderRoleTypeTransfer == null) {
             var orderRoleTypeName = orderRoleType.getOrderRoleTypeName();
             var sortOrder = orderRoleType.getSortOrder();
-            var description = orderRoleControl.getBestOrderRoleTypeDescription(orderRoleType, getLanguage());
+            var description = orderRoleControl.getBestOrderRoleTypeDescription(orderRoleType, getLanguage(userVisit));
             
             orderRoleTypeTransfer = new OrderRoleTypeTransfer(orderRoleTypeName, sortOrder, description);
-            put(orderRoleType, orderRoleTypeTransfer);
+            put(userVisit, orderRoleType, orderRoleTypeTransfer);
         }
         
         return orderRoleTypeTransfer;

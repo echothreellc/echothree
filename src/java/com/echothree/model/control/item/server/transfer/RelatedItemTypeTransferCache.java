@@ -40,10 +40,10 @@ public class RelatedItemTypeTransferCache
             var relatedItemTypeName = relatedItemTypeDetail.getRelatedItemTypeName();
             var isDefault = relatedItemTypeDetail.getIsDefault();
             var sortOrder = relatedItemTypeDetail.getSortOrder();
-            var description = itemControl.getBestRelatedItemTypeDescription(relatedItemType, getLanguage());
+            var description = itemControl.getBestRelatedItemTypeDescription(relatedItemType, getLanguage(userVisit));
 
             relatedItemTypeTransfer = new RelatedItemTypeTransfer(relatedItemTypeName, isDefault, sortOrder, description);
-            put(relatedItemType, relatedItemTypeTransfer);
+            put(userVisit, relatedItemType, relatedItemTypeTransfer);
         }
         
         return relatedItemTypeTransfer;

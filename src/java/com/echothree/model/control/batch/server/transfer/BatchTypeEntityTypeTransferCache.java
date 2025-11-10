@@ -18,7 +18,6 @@ package com.echothree.model.control.batch.server.transfer;
 
 import com.echothree.model.control.batch.common.transfer.BatchTypeEntityTypeTransfer;
 import com.echothree.model.control.batch.server.control.BatchControl;
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.data.batch.server.entity.BatchTypeEntityType;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -43,7 +42,7 @@ public class BatchTypeEntityTypeTransferCache
             var entityType = entityTypeControl.getEntityTypeTransfer(userVisit, batchTypeEntityType.getEntityType());
             
             batchTypeEntityTypeTransfer = new BatchTypeEntityTypeTransfer(batchType, entityType);
-            put(batchTypeEntityType, batchTypeEntityTypeTransfer);
+            put(userVisit, batchTypeEntityType, batchTypeEntityTypeTransfer);
         }
         
         return batchTypeEntityTypeTransfer;

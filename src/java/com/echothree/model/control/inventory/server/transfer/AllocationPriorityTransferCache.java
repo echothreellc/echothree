@@ -41,10 +41,10 @@ public class AllocationPriorityTransferCache
             var priority = allocationPriorityDetail.getPriority();
             var isDefault = allocationPriorityDetail.getIsDefault();
             var sortOrder = allocationPriorityDetail.getSortOrder();
-            var description = inventoryControl.getBestAllocationPriorityDescription(allocationPriority, getLanguage());
+            var description = inventoryControl.getBestAllocationPriorityDescription(allocationPriority, getLanguage(userVisit));
             
             allocationPriorityTransfer = new AllocationPriorityTransfer(allocationPriorityName, priority, isDefault, sortOrder, description);
-            put(allocationPriority, allocationPriorityTransfer);
+            put(userVisit, allocationPriority, allocationPriorityTransfer);
         }
         
         return allocationPriorityTransfer;

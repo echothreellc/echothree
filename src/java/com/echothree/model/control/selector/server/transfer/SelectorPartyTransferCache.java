@@ -43,7 +43,7 @@ public class SelectorPartyTransferCache
             var partyTransfer = partyControl.getPartyTransfer(userVisit, selectorParty.getParty());
             
             selectorPartyTransfer = new SelectorPartyTransfer(selectorTransfer, partyTransfer);
-            put(selectorParty, selectorPartyTransfer);
+            put(userVisit, selectorParty, selectorPartyTransfer);
         }
         
         return selectorPartyTransfer;

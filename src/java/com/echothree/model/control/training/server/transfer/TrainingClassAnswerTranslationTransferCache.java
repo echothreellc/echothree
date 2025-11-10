@@ -47,7 +47,7 @@ public class TrainingClassAnswerTranslationTransferCache
             
             trainingClassAnswerTranslationTransfer = new TrainingClassAnswerTranslationTransfer(trainingClassAnswerTransfer, languageTransfer,
                     answerMimeTypeTransfer, answer, selectedMimeTypeTransfer, selected);
-            put(trainingClassAnswerTranslation, trainingClassAnswerTranslationTransfer);
+            put(userVisit, trainingClassAnswerTranslation, trainingClassAnswerTranslationTransfer);
         }
         
         return trainingClassAnswerTranslationTransfer;

@@ -50,7 +50,7 @@ public class EntityStringDefaultTransferCache
             var stringAttribute = includeString ? entityStringDefault.getStringAttribute() : null;
 
             entityStringDefaultTransfer = new EntityStringDefaultTransfer(entityAttribute, language, stringAttribute);
-            put(entityStringDefault, entityStringDefaultTransfer);
+            put(userVisit, entityStringDefault, entityStringDefaultTransfer);
         }
         
         return entityStringDefaultTransfer;

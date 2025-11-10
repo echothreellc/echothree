@@ -35,10 +35,10 @@ public class InvoiceRoleTypeTransferCache
         if(invoiceRoleTypeTransfer == null) {
             var invoiceRoleTypeName = invoiceRoleType.getInvoiceRoleTypeName();
             var sortOrder = invoiceRoleType.getSortOrder();
-            var description = invoiceControl.getBestInvoiceRoleTypeDescription(invoiceRoleType, getLanguage());
+            var description = invoiceControl.getBestInvoiceRoleTypeDescription(invoiceRoleType, getLanguage(userVisit));
             
             invoiceRoleTypeTransfer = new InvoiceRoleTypeTransfer(invoiceRoleTypeName, sortOrder, description);
-            put(invoiceRoleType, invoiceRoleTypeTransfer);
+            put(userVisit, invoiceRoleType, invoiceRoleTypeTransfer);
         }
         
         return invoiceRoleTypeTransfer;

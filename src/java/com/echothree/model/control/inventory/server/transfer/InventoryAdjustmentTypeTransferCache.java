@@ -48,11 +48,11 @@ public class InventoryAdjustmentTypeTransferCache
             var inventoryAdjustmentTypeName = inventoryAdjustmentTypeDetail.getInventoryAdjustmentTypeName();
             var isDefault = inventoryAdjustmentTypeDetail.getIsDefault();
             var sortOrder = inventoryAdjustmentTypeDetail.getSortOrder();
-            var description = inventoryAdjustmentTypeControl.getBestInventoryAdjustmentTypeDescription(inventoryAdjustmentType, getLanguage());
+            var description = inventoryAdjustmentTypeControl.getBestInventoryAdjustmentTypeDescription(inventoryAdjustmentType, getLanguage(userVisit));
             
             inventoryAdjustmentTypeTransfer = new InventoryAdjustmentTypeTransfer(inventoryAdjustmentTypeName, isDefault,
                     sortOrder, description);
-            put(inventoryAdjustmentType, inventoryAdjustmentTypeTransfer);
+            put(userVisit, inventoryAdjustmentType, inventoryAdjustmentTypeTransfer);
         }
         
         return inventoryAdjustmentTypeTransfer;

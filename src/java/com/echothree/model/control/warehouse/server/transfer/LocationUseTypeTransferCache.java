@@ -41,11 +41,11 @@ public class LocationUseTypeTransferCache
             var allowMultiple = locationUseType.getAllowMultiple();
             var isDefault = locationUseType.getIsDefault();
             var sortOrder = locationUseType.getSortOrder();
-            var description = locationUseTypeControl.getBestLocationUseTypeDescription(locationUseType, getLanguage());
+            var description = locationUseTypeControl.getBestLocationUseTypeDescription(locationUseType, getLanguage(userVisit));
             
             locationUseTypeTransfer = new LocationUseTypeTransfer(locationUseTypeName, allowMultiple, isDefault, sortOrder,
             description);
-            put(locationUseType, locationUseTypeTransfer);
+            put(userVisit, locationUseType, locationUseTypeTransfer);
         }
         
         return locationUseTypeTransfer;

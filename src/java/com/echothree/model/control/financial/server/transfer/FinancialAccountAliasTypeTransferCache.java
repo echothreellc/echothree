@@ -41,10 +41,10 @@ public class FinancialAccountAliasTypeTransferCache
             var validationPattern = financialAccountAliasTypeDetail.getValidationPattern();
             var isDefault = financialAccountAliasTypeDetail.getIsDefault();
             var sortOrder = financialAccountAliasTypeDetail.getSortOrder();
-            var description = financialControl.getBestFinancialAccountAliasTypeDescription(financialAccountAliasType, getLanguage());
+            var description = financialControl.getBestFinancialAccountAliasTypeDescription(financialAccountAliasType, getLanguage(userVisit));
             
             financialAccountAliasTypeTransfer = new FinancialAccountAliasTypeTransfer(financialAccountType, financialAccountAliasTypeName, validationPattern, isDefault, sortOrder, description);
-            put(financialAccountAliasType, financialAccountAliasTypeTransfer);
+            put(userVisit, financialAccountAliasType, financialAccountAliasTypeTransfer);
         }
         
         return financialAccountAliasTypeTransfer;

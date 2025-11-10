@@ -38,7 +38,7 @@ public class CommentUsageTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, commentUsageTypeDescription.getLanguage());
             
             commentUsageTypeDescriptionTransfer = new CommentUsageTypeDescriptionTransfer(languageTransfer, commentUsageTypeTransfer, commentUsageTypeDescription.getDescription());
-            put(commentUsageTypeDescription, commentUsageTypeDescriptionTransfer);
+            put(userVisit, commentUsageTypeDescription, commentUsageTypeDescriptionTransfer);
         }
         
         return commentUsageTypeDescriptionTransfer;

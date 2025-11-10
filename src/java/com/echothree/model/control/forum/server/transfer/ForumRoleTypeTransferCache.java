@@ -36,10 +36,10 @@ public class ForumRoleTypeTransferCache
             var forumRoleTypeName = forumRoleType.getForumRoleTypeName();
             var isDefault = forumRoleType.getIsDefault();
             var sortOrder = forumRoleType.getSortOrder();
-            var description = forumControl.getBestForumRoleTypeDescription(forumRoleType, getLanguage());
+            var description = forumControl.getBestForumRoleTypeDescription(forumRoleType, getLanguage(userVisit));
             
             forumRoleTypeTransfer = new ForumRoleTypeTransfer(forumRoleTypeName, isDefault, sortOrder, description);
-            put(forumRoleType, forumRoleTypeTransfer);
+            put(userVisit, forumRoleType, forumRoleTypeTransfer);
         }
         
         return forumRoleTypeTransfer;

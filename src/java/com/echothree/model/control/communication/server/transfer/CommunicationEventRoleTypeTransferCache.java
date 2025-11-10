@@ -35,11 +35,11 @@ public class CommunicationEventRoleTypeTransferCache
         if(communicationEventRoleTypeTransfer == null) {
             var communicationEventRoleTypeName = communicationEventRoleType.getCommunicationEventRoleTypeName();
             var sortOrder = communicationEventRoleType.getSortOrder();
-            var description = communicationControl.getBestCommunicationEventRoleTypeDescription(communicationEventRoleType, getLanguage());
+            var description = communicationControl.getBestCommunicationEventRoleTypeDescription(communicationEventRoleType, getLanguage(userVisit));
             
             communicationEventRoleTypeTransfer = new CommunicationEventRoleTypeTransfer(communicationEventRoleTypeName, sortOrder,
                     description);
-            put(communicationEventRoleType, communicationEventRoleTypeTransfer);
+            put(userVisit, communicationEventRoleType, communicationEventRoleTypeTransfer);
         }
         
         return communicationEventRoleTypeTransfer;

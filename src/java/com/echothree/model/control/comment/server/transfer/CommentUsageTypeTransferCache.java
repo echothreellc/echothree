@@ -39,10 +39,10 @@ public class CommentUsageTypeTransferCache
             var commentType = commentControl.getCommentTypeTransfer(userVisit, commentUsageTypeDetail.getCommentType());
             var commentUsageTypeName = commentUsageTypeDetail.getCommentUsageTypeName();
             var selectedByDefault = commentUsageTypeDetail.getSelectedByDefault();
-            var description = commentControl.getBestCommentUsageTypeDescription(commentUsageType, getLanguage());
+            var description = commentControl.getBestCommentUsageTypeDescription(commentUsageType, getLanguage(userVisit));
             
             commentUsageTypeTransfer = new CommentUsageTypeTransfer(commentType, commentUsageTypeName, selectedByDefault, description);
-            put(commentUsageType, commentUsageTypeTransfer);
+            put(userVisit, commentUsageType, commentUsageTypeTransfer);
         }
         
         return commentUsageTypeTransfer;

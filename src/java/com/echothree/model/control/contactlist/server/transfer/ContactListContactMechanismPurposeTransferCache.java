@@ -44,7 +44,7 @@ public class ContactListContactMechanismPurposeTransferCache
             var sortOrder = contactListContactMechanismPurposeDetail.getSortOrder();
             
             contactListContactMechanismPurposeTransfer = new ContactListContactMechanismPurposeTransfer(contactList, contactMechanismPurpose, isDefault, sortOrder);
-            put(contactListContactMechanismPurpose, contactListContactMechanismPurposeTransfer);
+            put(userVisit, contactListContactMechanismPurpose, contactListContactMechanismPurposeTransfer);
         }
         
         return contactListContactMechanismPurposeTransfer;

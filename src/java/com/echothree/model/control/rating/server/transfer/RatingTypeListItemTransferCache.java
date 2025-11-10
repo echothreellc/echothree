@@ -40,10 +40,10 @@ public class RatingTypeListItemTransferCache
             var ratingTypeListItemName = ratingTypeListItemDetail.getRatingTypeListItemName();
             var isDefault = ratingTypeListItemDetail.getIsDefault();
             var sortOrder = ratingTypeListItemDetail.getSortOrder();
-            var description = ratingControl.getBestRatingTypeListItemDescription(ratingTypeListItem, getLanguage());
+            var description = ratingControl.getBestRatingTypeListItemDescription(ratingTypeListItem, getLanguage(userVisit));
             
             ratingTypeListItemTransfer = new RatingTypeListItemTransfer(ratingType, ratingTypeListItemName, isDefault, sortOrder, description);
-            put(ratingTypeListItem, ratingTypeListItemTransfer);
+            put(userVisit, ratingTypeListItem, ratingTypeListItemTransfer);
         }
         
         return ratingTypeListItemTransfer;

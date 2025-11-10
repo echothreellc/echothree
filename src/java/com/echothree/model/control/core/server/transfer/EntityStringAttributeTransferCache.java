@@ -54,7 +54,7 @@ public class EntityStringAttributeTransferCache
             var stringAttribute = includeString ? entityStringAttribute.getStringAttribute() : null;
             
             entityStringAttributeTransfer = new EntityStringAttributeTransfer(entityAttribute, entityInstanceTransfer, language, stringAttribute);
-            put(entityStringAttribute, entityStringAttributeTransfer);
+            put(userVisit, entityStringAttribute, entityStringAttributeTransfer);
         }
         
         return entityStringAttributeTransfer;

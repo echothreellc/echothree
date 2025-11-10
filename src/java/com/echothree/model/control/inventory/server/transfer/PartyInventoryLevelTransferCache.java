@@ -45,13 +45,13 @@ public class PartyInventoryLevelTransferCache
             var itemTransfer = itemControl.getItemTransfer(userVisit, item);
             var inventoryConditionTransfer = inventoryControl.getInventoryConditionTransfer(userVisit, partyInventoryLevel.getInventoryCondition());
             var unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
-            var minimumInventory = formatUnitOfMeasure(unitOfMeasureKind, partyInventoryLevel.getMinimumInventory());
-            var maximumInventory = formatUnitOfMeasure(unitOfMeasureKind, partyInventoryLevel.getMaximumInventory());
-            var reorderQuantity = formatUnitOfMeasure(unitOfMeasureKind, partyInventoryLevel.getReorderQuantity());
+            var minimumInventory = formatUnitOfMeasure(userVisit, unitOfMeasureKind, partyInventoryLevel.getMinimumInventory());
+            var maximumInventory = formatUnitOfMeasure(userVisit, unitOfMeasureKind, partyInventoryLevel.getMaximumInventory());
+            var reorderQuantity = formatUnitOfMeasure(userVisit, unitOfMeasureKind, partyInventoryLevel.getReorderQuantity());
             
             partyInventoryLevelTransfer = new PartyInventoryLevelTransfer(partyTransfer, itemTransfer, inventoryConditionTransfer,
                     minimumInventory, maximumInventory, reorderQuantity);
-            put(partyInventoryLevel, partyInventoryLevelTransfer);
+            put(userVisit, partyInventoryLevel, partyInventoryLevelTransfer);
         }
         
         return partyInventoryLevelTransfer;

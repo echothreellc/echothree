@@ -37,7 +37,7 @@ public class DocumentTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, documentTypeDescription.getLanguage());
             
             documentTypeDescriptionTransfer = new DocumentTypeDescriptionTransfer(languageTransfer, documentTypeTransfer, documentTypeDescription.getDescription());
-            put(documentTypeDescription, documentTypeDescriptionTransfer);
+            put(userVisit, documentTypeDescription, documentTypeDescriptionTransfer);
         }
         
         return documentTypeDescriptionTransfer;

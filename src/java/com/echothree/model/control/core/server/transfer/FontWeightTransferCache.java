@@ -42,10 +42,10 @@ public class FontWeightTransferCache
             var fontWeightName = fontWeightDetail.getFontWeightName();
             var isDefault = fontWeightDetail.getIsDefault();
             var sortOrder = fontWeightDetail.getSortOrder();
-            var description = fontControl.getBestFontWeightDescription(fontWeight, getLanguage());
+            var description = fontControl.getBestFontWeightDescription(fontWeight, getLanguage(userVisit));
 
             fontWeightTransfer = new FontWeightTransfer(fontWeightName, isDefault, sortOrder, description);
-            put(fontWeight, fontWeightTransfer);
+            put(userVisit, fontWeight, fontWeightTransfer);
         }
 
         return fontWeightTransfer;

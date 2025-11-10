@@ -23,7 +23,6 @@ import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.customer.common.CustomerOptions;
 import com.echothree.model.control.customer.common.transfer.CustomerTransfer;
@@ -199,7 +198,7 @@ public class CustomerTransferCache
                     customerTypeTransfer, initialOfferUse, cancellationPolicyTransfer, returnPolicyTransfer, arGlAccountTransfer, holdUntilComplete,
                     allowBackorders, allowSubstitutions, allowCombiningShipments, requireReference, allowReferenceDuplicates, referenceValidationPattern,
                     customerStatusTransfer, customerCreditStatusTransfer);
-            put(party, customerTransfer, entityInstance);
+            put(userVisit, party, customerTransfer, entityInstance);
 
             if(includeUserLogin) {
                 customerTransfer.setUserLogin(userControl.getUserLoginTransfer(userVisit, party));
@@ -242,11 +241,11 @@ public class CustomerTransferCache
             }
 
             if(includeCustomerServiceComments) {
-                setupComments(null, entityInstance, customerTransfer, CommentConstants.CommentType_CUSTOMER_CUSTOMER_SERVICE);
+                setupComments(userVisit, null, entityInstance, customerTransfer, CommentConstants.CommentType_CUSTOMER_CUSTOMER_SERVICE);
             }
 
             if(includeOrderEntryComments) {
-                setupComments(null, entityInstance, customerTransfer, CommentConstants.CommentType_CUSTOMER_ORDER_ENTRY);
+                setupComments(userVisit, null, entityInstance, customerTransfer, CommentConstants.CommentType_CUSTOMER_ORDER_ENTRY);
             }
             
             if(includeBillingAccounts) {

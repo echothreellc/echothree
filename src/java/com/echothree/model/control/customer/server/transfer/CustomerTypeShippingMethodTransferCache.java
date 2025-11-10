@@ -44,7 +44,7 @@ public class CustomerTypeShippingMethodTransferCache
             
             customerTypeShippingMethodTransfer = new CustomerTypeShippingMethodTransfer(customerType, shippingMethod, defaultSelectionPriority, isDefault,
                     sortOrder);
-            put(customerTypeShippingMethod, customerTypeShippingMethodTransfer);
+            put(userVisit, customerTypeShippingMethod, customerTypeShippingMethodTransfer);
         }
         
         return customerTypeShippingMethodTransfer;

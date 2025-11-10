@@ -54,13 +54,13 @@ public class IndexTransferCache
             var directory = indexDetail.getDirectory();
             var isDefault = indexDetail.getIsDefault();
             var sortOrder = indexDetail.getSortOrder();
-            var description = indexControl.getBestIndexDescription(index, getLanguage());
+            var description = indexControl.getBestIndexDescription(index, getLanguage(userVisit));
             var unformattedCreatedTime = indexStatus.getCreatedTime();
-            var createdTime = formatTypicalDateTime(unformattedCreatedTime);
+            var createdTime = formatTypicalDateTime(userVisit, unformattedCreatedTime);
 
             indexTransfer = new IndexTransfer(indexName, indexTypeTransfer, languageTransfer, directory, isDefault, sortOrder, description,
                     unformattedCreatedTime, createdTime);
-            put(index, indexTransfer);
+            put(userVisit, index, indexTransfer);
         }
 
         return indexTransfer;

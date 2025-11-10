@@ -48,11 +48,11 @@ public class DocumentTypeTransferCache
             var maximumPages = documentTypeDetail.getMaximumPages();
             var isDefault = documentTypeDetail.getIsDefault();
             var sortOrder = documentTypeDetail.getSortOrder();
-            var description = documentControl.getBestDocumentTypeDescription(documentType, getLanguage());
+            var description = documentControl.getBestDocumentTypeDescription(documentType, getLanguage(userVisit));
             
             documentTypeTransfer = new DocumentTypeTransfer(documentTypeName, parentDocumentTypeTransfer, mimeTypeUsageTypeTransfer, maximumPages, isDefault,
                     sortOrder, description);
-            put(documentType, documentTypeTransfer);
+            put(userVisit, documentType, documentTypeTransfer);
         }
         return documentTypeTransfer;
     }

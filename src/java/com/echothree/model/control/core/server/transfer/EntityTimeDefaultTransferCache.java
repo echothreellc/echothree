@@ -38,10 +38,10 @@ public class EntityTimeDefaultTransferCache
         if(entityTimeDefaultTransfer == null) {
             var entityDefault = coreControl.getEntityAttributeTransfer(userVisit, entityTimeDefault.getEntityAttribute(), null);
             var unformattedTimeAttribute = entityTimeDefault.getTimeAttribute();
-            var timeAttribute = formatTypicalDateTime(unformattedTimeAttribute);
+            var timeAttribute = formatTypicalDateTime(userVisit, unformattedTimeAttribute);
             
             entityTimeDefaultTransfer = new EntityTimeDefaultTransfer(entityDefault, timeAttribute, unformattedTimeAttribute);
-            put(entityTimeDefault, entityTimeDefaultTransfer);
+            put(userVisit, entityTimeDefault, entityTimeDefaultTransfer);
         }
         
         return entityTimeDefaultTransfer;

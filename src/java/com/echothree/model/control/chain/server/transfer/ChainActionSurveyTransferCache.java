@@ -42,7 +42,7 @@ public class ChainActionSurveyTransferCache
             SurveyTransfer survey = null; // TODO: surveyControl.getSurveyTransfer(userVisit, chainActionSurvey.getSurvey());
             
             chainActionSurveyTransfer = new ChainActionSurveyTransfer(chainAction, survey);
-            put(chainActionSurvey, chainActionSurveyTransfer);
+            put(userVisit, chainActionSurvey, chainActionSurveyTransfer);
         }
         
         return chainActionSurveyTransfer;

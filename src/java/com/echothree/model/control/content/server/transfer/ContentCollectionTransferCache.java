@@ -57,10 +57,10 @@ public class ContentCollectionTransferCache
             var contentCollectionDetail = contentCollection.getLastDetail();
             var contentCollectionName = contentCollectionDetail.getContentCollectionName();
             var defaultOfferUse = offerUseControl.getOfferUseTransfer(userVisit, contentCollectionDetail.getDefaultOfferUse());
-            var description = contentControl.getBestContentCollectionDescription(contentCollection, getLanguage());
+            var description = contentControl.getBestContentCollectionDescription(contentCollection, getLanguage(userVisit));
             
             contentCollectionTransfer = new ContentCollectionTransfer(contentCollectionName, defaultOfferUse, description);
-            put(contentCollection, contentCollectionTransfer);
+            put(userVisit, contentCollection, contentCollectionTransfer);
             
             if(includeContentCatalogs) {
                 contentCollectionTransfer.setContentCatalogs(new ListWrapper<>(contentControl.getContentCatalogTransfers(userVisit, contentCollection)));

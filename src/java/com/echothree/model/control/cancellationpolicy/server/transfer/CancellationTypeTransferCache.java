@@ -46,11 +46,11 @@ public class CancellationTypeTransferCache
             var cancellationSequenceTransfer = cancellationSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, cancellationSequence);
             var isDefault = cancellationTypeDetail.getIsDefault();
             var sortOrder = cancellationTypeDetail.getSortOrder();
-            var description = cancellationPolicyControl.getBestCancellationTypeDescription(cancellationType, getLanguage());
+            var description = cancellationPolicyControl.getBestCancellationTypeDescription(cancellationType, getLanguage(userVisit));
             
             cancellationTypeTransfer = new CancellationTypeTransfer(cancellationKindTransfer, cancellationTypeName, cancellationSequenceTransfer, isDefault,
                     sortOrder, description);
-            put(cancellationType, cancellationTypeTransfer);
+            put(userVisit, cancellationType, cancellationTypeTransfer);
         }
         
         return cancellationTypeTransfer;

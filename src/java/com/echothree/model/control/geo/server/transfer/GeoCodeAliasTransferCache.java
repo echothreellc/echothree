@@ -39,7 +39,7 @@ public class GeoCodeAliasTransferCache
             var alias = geoCodeAlias.getAlias();
             
             geoCodeAliasTransfer = new GeoCodeAliasTransfer(geoCode, geoCodeScope, geoCodeAliasType, alias);
-            put(geoCodeAlias, geoCodeAliasTransfer);
+            put(userVisit, geoCodeAlias, geoCodeAliasTransfer);
         }
         
         return geoCodeAliasTransfer;

@@ -40,10 +40,10 @@ public class RoleTypeTransferCache
             var roleTypeName = roleType.getRoleTypeName();
             var parentRoleType = roleType.getParentRoleType();
             var parentRoleTypeTransfer = parentRoleType == null? null: getTransfer(parentRoleType);
-            var description = partyControl.getBestRoleTypeDescription(roleType, getLanguage());
+            var description = partyControl.getBestRoleTypeDescription(roleType, getLanguage(userVisit));
             
             roleTypeTransfer = new RoleTypeTransfer(roleTypeName, parentRoleTypeTransfer, description);
-            put(roleType, roleTypeTransfer);
+            put(userVisit, roleType, roleTypeTransfer);
         }
         
         return roleTypeTransfer;

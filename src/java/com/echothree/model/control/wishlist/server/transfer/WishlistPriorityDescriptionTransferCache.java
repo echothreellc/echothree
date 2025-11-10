@@ -37,7 +37,7 @@ public class WishlistPriorityDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, wishlistPriorityDescription.getLanguage());
             
             wishlistPriorityDescriptionTransfer = new WishlistPriorityDescriptionTransfer(languageTransfer, wishlistPriorityTransfer, wishlistPriorityDescription.getDescription());
-            put(wishlistPriorityDescription, wishlistPriorityDescriptionTransfer);
+            put(userVisit, wishlistPriorityDescription, wishlistPriorityDescriptionTransfer);
         }
         
         return wishlistPriorityDescriptionTransfer;

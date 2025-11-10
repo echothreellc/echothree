@@ -35,10 +35,10 @@ public class FinancialAccountRoleTypeTransferCache
         if(financialAccountRoleTypeTransfer == null) {
             var financialAccountRoleTypeName = financialAccountRoleType.getFinancialAccountRoleTypeName();
             var sortOrder = financialAccountRoleType.getSortOrder();
-            var description = financialControl.getBestFinancialAccountRoleTypeDescription(financialAccountRoleType, getLanguage());
+            var description = financialControl.getBestFinancialAccountRoleTypeDescription(financialAccountRoleType, getLanguage(userVisit));
             
             financialAccountRoleTypeTransfer = new FinancialAccountRoleTypeTransfer(financialAccountRoleTypeName, sortOrder, description);
-            put(financialAccountRoleType, financialAccountRoleTypeTransfer);
+            put(userVisit, financialAccountRoleType, financialAccountRoleTypeTransfer);
         }
         
         return financialAccountRoleTypeTransfer;

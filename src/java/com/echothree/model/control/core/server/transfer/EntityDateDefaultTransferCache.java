@@ -42,7 +42,7 @@ public class EntityDateDefaultTransferCache
             var dateAttribute = DateUtils.getInstance().formatDate(userVisit, unformattedDateAttribute);
             
             entityDateDefaultTransfer = new EntityDateDefaultTransfer(entityAttribute, dateAttribute, unformattedDateAttribute);
-            put(entityDateDefault, entityDateDefaultTransfer);
+            put(userVisit, entityDateDefault, entityDateDefaultTransfer);
         }
         
         return entityDateDefaultTransfer;

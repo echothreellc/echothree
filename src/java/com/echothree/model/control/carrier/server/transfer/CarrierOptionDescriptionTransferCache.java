@@ -39,7 +39,7 @@ public class CarrierOptionDescriptionTransferCache
             
             carrierOptionDescriptionTransfer = new CarrierOptionDescriptionTransfer(languageTransfer, carrierOptionTransfer,
                     description);
-            put(carrierOptionDescription, carrierOptionDescriptionTransfer);
+            put(userVisit, carrierOptionDescription, carrierOptionDescriptionTransfer);
         }
         
         return carrierOptionDescriptionTransfer;

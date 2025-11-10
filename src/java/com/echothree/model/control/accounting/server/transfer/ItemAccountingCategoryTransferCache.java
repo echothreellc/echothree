@@ -55,13 +55,13 @@ public class ItemAccountingCategoryTransferCache
             var returnsCogsGlAccountTransfer = returnsCogsGlAccount == null? null: accountingControl.getGlAccountTransfer(userVisit, returnsCogsGlAccount);
             var isDefault = itemAccountingCategoryDetail.getIsDefault();
             var sortOrder = itemAccountingCategoryDetail.getSortOrder();
-            var description = accountingControl.getBestItemAccountingCategoryDescription(itemAccountingCategory, getLanguage());
+            var description = accountingControl.getBestItemAccountingCategoryDescription(itemAccountingCategory, getLanguage(userVisit));
             
             itemAccountingCategoryTransfer = new ItemAccountingCategoryTransfer(itemAccountingCategoryName,
                     parentItemAccountingCategoryTransfer, inventoryGlAccountTransfer, salesGlAccountTransfer,
                     returnsGlAccountTransfer, cogsGlAccountTransfer, returnsCogsGlAccountTransfer, isDefault, sortOrder,
                     description);
-            put(itemAccountingCategory, itemAccountingCategoryTransfer);
+            put(userVisit, itemAccountingCategory, itemAccountingCategoryTransfer);
         }
         
         return itemAccountingCategoryTransfer;

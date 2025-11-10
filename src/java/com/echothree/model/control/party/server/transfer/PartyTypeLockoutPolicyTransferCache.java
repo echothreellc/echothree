@@ -49,14 +49,14 @@ public class PartyTypeLockoutPolicyTransferCache
             var partyTypeTransfer = partyControl.getPartyTypeTransfer(userVisit, partyTypeLockoutPolicyDetail.getPartyType());
             var lockoutFailureCount = partyTypeLockoutPolicyDetail.getLockoutFailureCount();
             var unformattedResetFailureCountTime = partyTypeLockoutPolicyDetail.getResetFailureCountTime();
-            var resetFailureCountTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedResetFailureCountTime);
+            var resetFailureCountTime = formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedResetFailureCountTime);
             var manualLockoutReset = partyTypeLockoutPolicyDetail.getManualLockoutReset();
             var unformattedLockoutInactiveTime = partyTypeLockoutPolicyDetail.getLockoutInactiveTime();
-            var lockoutInactiveTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedLockoutInactiveTime);
+            var lockoutInactiveTime = formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedLockoutInactiveTime);
 
             partyTypeLockoutPolicyTransfer = new PartyTypeLockoutPolicyTransfer(partyTypeTransfer, lockoutFailureCount, unformattedResetFailureCountTime,
                     resetFailureCountTime, manualLockoutReset, unformattedLockoutInactiveTime, lockoutInactiveTime);
-            put(partyTypeLockoutPolicy, partyTypeLockoutPolicyTransfer);
+            put(userVisit, partyTypeLockoutPolicy, partyTypeLockoutPolicyTransfer);
         }
 
         return partyTypeLockoutPolicyTransfer;

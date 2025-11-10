@@ -55,11 +55,11 @@ public class ShipmentTypeTransferCache
             var shipmentWorkflowEntranceTransfer = shipmentWorkflowEntrance == null? null: workflowControl.getWorkflowEntranceTransfer(userVisit, shipmentWorkflowEntrance);
             var isDefault = shipmentTypeDetail.getIsDefault();
             var sortOrder = shipmentTypeDetail.getSortOrder();
-            var description = shipmentControl.getBestShipmentTypeDescription(shipmentType, getLanguage());
+            var description = shipmentControl.getBestShipmentTypeDescription(shipmentType, getLanguage(userVisit));
             
             shipmentTypeTransfer = new ShipmentTypeTransfer(shipmentTypeName, parentShipmentTypeTransfer, shipmentSequenceTypeTransfer, shipmentWorkflowTransfer,
                     shipmentWorkflowEntranceTransfer, isDefault, sortOrder, description);
-            put(shipmentType, shipmentTypeTransfer);
+            put(userVisit, shipmentType, shipmentTypeTransfer);
         }
         
         return shipmentTypeTransfer;

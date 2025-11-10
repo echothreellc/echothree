@@ -69,7 +69,7 @@ public class PartyTrainingClassSessionTransferCache
             
             partyTrainingClassSessionTransfer = new PartyTrainingClassSessionTransfer(partyTrainingClassTransfer, partyTrainingClassSessionSequence,
                     lastPartyTrainingClassSessionSectionTransfer, lastPartyTrainingClassSessionPageTransfer, lastPartyTrainingClassSessionQuestionTransfer);
-            put(partyTrainingClassSession, partyTrainingClassSessionTransfer);
+            put(userVisit, partyTrainingClassSession, partyTrainingClassSessionTransfer);
             
             if(includePartyTrainingClassSessionPages) {
                 partyTrainingClassSessionTransfer.setPartyTrainingClassSessionPages(new ListWrapper<>(trainingControl.getPartyTrainingClassSessionPageTransfersByPartyTrainingClassSession(userVisit, partyTrainingClassSession)));

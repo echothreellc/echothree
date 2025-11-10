@@ -45,10 +45,10 @@ public class ReturnKindTransferCache
             var returnSequenceTypeTransfer = returnSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, returnSequenceType);
             var isDefault = returnKindDetail.getIsDefault();
             var sortOrder = returnKindDetail.getSortOrder();
-            var description = returnPolicyControl.getBestReturnKindDescription(returnKind, getLanguage());
+            var description = returnPolicyControl.getBestReturnKindDescription(returnKind, getLanguage(userVisit));
             
             returnKindTransfer = new ReturnKindTransfer(returnKindName, returnSequenceTypeTransfer, isDefault, sortOrder, description);
-            put(returnKind, returnKindTransfer);
+            put(userVisit, returnKind, returnKindTransfer);
         }
         
         return returnKindTransfer;

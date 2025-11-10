@@ -39,10 +39,10 @@ public class GeoCodeScopeTransferCache
             var geoCodeScopeName = geoCodeScopeDetail.getGeoCodeScopeName();
             var isDefault = geoCodeScopeDetail.getIsDefault();
             var sortOrder = geoCodeScopeDetail.getSortOrder();
-            var description = geoControl.getBestGeoCodeScopeDescription(geoCodeScope, getLanguage());
+            var description = geoControl.getBestGeoCodeScopeDescription(geoCodeScope, getLanguage(userVisit));
             
             geoCodeScopeTransfer = new GeoCodeScopeTransfer(geoCodeScopeName, isDefault, sortOrder, description);
-            put(geoCodeScope, geoCodeScopeTransfer);
+            put(userVisit, geoCodeScope, geoCodeScopeTransfer);
         }
         
         return geoCodeScopeTransfer;

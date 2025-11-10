@@ -36,10 +36,10 @@ public class SequenceChecksumTypeTransferCache
             var sequenceChecksumTypeName = sequenceChecksumType.getSequenceChecksumTypeName();
             var isDefault = sequenceChecksumType.getIsDefault();
             var sortOrder = sequenceChecksumType.getSortOrder();
-            var description = sequenceControl.getBestSequenceChecksumTypeDescription(sequenceChecksumType, getLanguage());
+            var description = sequenceControl.getBestSequenceChecksumTypeDescription(sequenceChecksumType, getLanguage(userVisit));
             
             sequenceChecksumTypeTransfer = new SequenceChecksumTypeTransfer(sequenceChecksumTypeName, isDefault, sortOrder, description);
-            put(sequenceChecksumType, sequenceChecksumTypeTransfer);
+            put(userVisit, sequenceChecksumType, sequenceChecksumTypeTransfer);
         }
         return sequenceChecksumTypeTransfer;
     }

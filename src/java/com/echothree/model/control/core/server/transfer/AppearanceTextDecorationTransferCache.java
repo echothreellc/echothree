@@ -42,7 +42,7 @@ public class AppearanceTextDecorationTransferCache
             var textDecoration = textControl.getTextDecorationTransfer(userVisit, appearanceTextDecoration.getTextDecoration());
 
             appearanceTextDecorationTransfer = new AppearanceTextDecorationTransfer(appearance, textDecoration);
-            put(appearanceTextDecoration, appearanceTextDecorationTransfer);
+            put(userVisit, appearanceTextDecoration, appearanceTextDecorationTransfer);
         }
 
         return appearanceTextDecorationTransfer;

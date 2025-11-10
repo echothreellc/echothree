@@ -38,7 +38,7 @@ public class BatchAliasTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, batchAliasTypeDescription.getLanguage());
             
             batchAliasTypeDescriptionTransfer = new BatchAliasTypeDescriptionTransfer(languageTransfer, batchAliasTypeTransfer, batchAliasTypeDescription.getDescription());
-            put(batchAliasTypeDescription, batchAliasTypeDescriptionTransfer);
+            put(userVisit, batchAliasTypeDescription, batchAliasTypeDescriptionTransfer);
         }
         
         return batchAliasTypeDescriptionTransfer;

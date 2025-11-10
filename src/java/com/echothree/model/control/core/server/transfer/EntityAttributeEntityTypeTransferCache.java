@@ -43,7 +43,7 @@ public class EntityAttributeEntityTypeTransferCache
             var allowedEntityType = entityTypeControl.getEntityTypeTransfer(userVisit, entityAttributeEntityType.getAllowedEntityType());
             
             entityAttributeEntityTypeTransfer = new EntityAttributeEntityTypeTransfer(entityAttribute, allowedEntityType);
-            put(entityAttributeEntityType, entityAttributeEntityTypeTransfer);
+            put(userVisit, entityAttributeEntityType, entityAttributeEntityTypeTransfer);
         }
         
         return entityAttributeEntityTypeTransfer;

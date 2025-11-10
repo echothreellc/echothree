@@ -38,11 +38,11 @@ public class ContactMechanismAliasTypeTransferCache
             var validationPattern = contactMechanismAliasTypeDetail.getValidationPattern();
             var isDefault = contactMechanismAliasTypeDetail.getIsDefault();
             var sortOrder = contactMechanismAliasTypeDetail.getSortOrder();
-            var description = contactControl.getBestContactMechanismAliasTypeDescription(contactMechanismAliasType, getLanguage());
+            var description = contactControl.getBestContactMechanismAliasTypeDescription(contactMechanismAliasType, getLanguage(userVisit));
             
             contactMechanismAliasTypeTransfer = new ContactMechanismAliasTypeTransfer(contactMechanismAliasTypeName, validationPattern, isDefault, sortOrder,
                     description);
-            put(contactMechanismAliasType, contactMechanismAliasTypeTransfer);
+            put(userVisit, contactMechanismAliasType, contactMechanismAliasTypeTransfer);
         }
         
         return contactMechanismAliasTypeTransfer;

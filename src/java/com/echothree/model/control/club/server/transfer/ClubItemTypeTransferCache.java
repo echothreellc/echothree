@@ -36,10 +36,10 @@ public class ClubItemTypeTransferCache
             var clubItemTypeName = clubItemType.getClubItemTypeName();
             var isDefault = clubItemType.getIsDefault();
             var sortOrder = clubItemType.getSortOrder();
-            var description = clubControl.getBestClubItemTypeDescription(clubItemType, getLanguage());
+            var description = clubControl.getBestClubItemTypeDescription(clubItemType, getLanguage(userVisit));
             
             clubItemTypeTransfer = new ClubItemTypeTransfer(clubItemTypeName, isDefault, sortOrder, description);
-            put(clubItemType, clubItemTypeTransfer);
+            put(userVisit, clubItemType, clubItemTypeTransfer);
         }
         return clubItemTypeTransfer;
     }

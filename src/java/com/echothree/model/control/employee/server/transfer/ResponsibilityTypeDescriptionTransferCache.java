@@ -38,7 +38,7 @@ public class ResponsibilityTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, responsibilityTypeDescription.getLanguage());
             
             responsibilityTypeDescriptionTransfer = new ResponsibilityTypeDescriptionTransfer(languageTransfer, responsibilityTypeTransfer, responsibilityTypeDescription.getDescription());
-            put(responsibilityTypeDescription, responsibilityTypeDescriptionTransfer);
+            put(userVisit, responsibilityTypeDescription, responsibilityTypeDescriptionTransfer);
         }
         
         return responsibilityTypeDescriptionTransfer;

@@ -37,7 +37,7 @@ public class PartyContactMechanismRelationshipTransferCache
             var toPartyContactMechanism = contactControl.getPartyContactMechanismTransfer(userVisit, partyContactMechanismRelationship.getToPartyContactMechanism());
             
             partyContactMechanismRelationshipTransfer = new PartyContactMechanismRelationshipTransfer(fromPartyContactMechanism, toPartyContactMechanism);
-            put(partyContactMechanismRelationship, partyContactMechanismRelationshipTransfer);
+            put(userVisit, partyContactMechanismRelationship, partyContactMechanismRelationshipTransfer);
         }
         
         return partyContactMechanismRelationshipTransfer;

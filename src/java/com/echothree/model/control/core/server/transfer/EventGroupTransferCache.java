@@ -49,7 +49,7 @@ public class EventGroupTransferCache
                     EventGroupStatusConstants.Workflow_EVENT_GROUP_STATUS, entityInstance);
             
             eventGroupTransfer = new EventGroupTransfer(eventGroupName, eventGroupStatusTransfer);
-            put(eventGroup, eventGroupTransfer);
+            put(userVisit, eventGroup, eventGroupTransfer);
         }
         
         return eventGroupTransfer;

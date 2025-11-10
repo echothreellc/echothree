@@ -45,7 +45,7 @@ public class GeoCodeCurrencyTransferCache
             var sortOrder = geoCodeCurrency.getSortOrder();
             
             geoCodeCurrencyTransfer = new GeoCodeCurrencyTransfer(geoCode, currency, isDefault, sortOrder);
-            put(geoCodeCurrency, geoCodeCurrencyTransfer);
+            put(userVisit, geoCodeCurrency, geoCodeCurrencyTransfer);
         }
         
         return geoCodeCurrencyTransfer;

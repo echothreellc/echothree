@@ -74,11 +74,11 @@ public class EntityLongRangeTransferCache
             var maximumLongValue = filterMaximumLongValue ? null : entityLongRangeDetail.getMaximumLongValue();
             var isDefault = filterIsDefault ? null : entityLongRangeDetail.getIsDefault();
             var sortOrder = filterSortOrder ? null : entityLongRangeDetail.getSortOrder();
-            var description = coreControl.getBestEntityLongRangeDescription(entityLongRange, getLanguage());
+            var description = coreControl.getBestEntityLongRangeDescription(entityLongRange, getLanguage(userVisit));
             
             entityLongRangeTransfer = new EntityLongRangeTransfer(entityAttributeTransfer, entityLongRangeName, minimumLongValue, maximumLongValue, isDefault,
                     sortOrder, description);
-            put(entityLongRange, entityLongRangeTransfer);
+            put(userVisit, entityLongRange, entityLongRangeTransfer);
         }
         return entityLongRangeTransfer;
     }

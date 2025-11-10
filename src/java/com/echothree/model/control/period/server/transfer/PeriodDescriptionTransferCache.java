@@ -37,7 +37,7 @@ public class PeriodDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, periodDescription.getLanguage());
             
             periodDescriptionTransfer = new PeriodDescriptionTransfer(languageTransfer, periodTransfer, periodDescription.getDescription());
-            put(periodDescription, periodDescriptionTransfer);
+            put(userVisit, periodDescription, periodDescriptionTransfer);
         }
         
         return periodDescriptionTransfer;

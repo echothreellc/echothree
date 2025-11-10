@@ -42,10 +42,10 @@ public class EntityTimeAttributeTransferCache
             var entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityTimeAttribute.getEntityAttribute(), entityInstance) : null;
             var entityInstanceTransfer = entityInstanceControl.getEntityInstanceTransfer(userVisit, entityTimeAttribute.getEntityInstance(), false, false, false, false);
             var unformattedTimeAttribute = entityTimeAttribute.getTimeAttribute();
-            var timeAttribute = formatTypicalDateTime(unformattedTimeAttribute);
+            var timeAttribute = formatTypicalDateTime(userVisit, unformattedTimeAttribute);
             
             entityTimeAttributeTransfer = new EntityTimeAttributeTransfer(entityAttribute, entityInstanceTransfer, timeAttribute, unformattedTimeAttribute);
-            put(entityTimeAttribute, entityTimeAttributeTransfer);
+            put(userVisit, entityTimeAttribute, entityTimeAttributeTransfer);
         }
         
         return entityTimeAttributeTransfer;

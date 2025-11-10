@@ -40,10 +40,10 @@ public class SearchTypeTransferCache
             var searchTypeName = searchTypeDetail.getSearchTypeName();
             var isDefault = searchTypeDetail.getIsDefault();
             var sortOrder = searchTypeDetail.getSortOrder();
-            var description = searchControl.getBestSearchTypeDescription(searchType, getLanguage());
+            var description = searchControl.getBestSearchTypeDescription(searchType, getLanguage(userVisit));
             
             searchTypeTransfer = new SearchTypeTransfer(searchKindTransfer, searchTypeName, isDefault, sortOrder, description);
-            put(searchType, searchTypeTransfer);
+            put(userVisit, searchType, searchTypeTransfer);
         }
         
         return searchTypeTransfer;

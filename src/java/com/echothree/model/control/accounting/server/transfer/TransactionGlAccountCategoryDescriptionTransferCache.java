@@ -42,7 +42,7 @@ public class TransactionGlAccountCategoryDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, transactionGlAccountCategoryDescription.getLanguage());
             
             transactionGlAccountCategoryDescriptionTransfer = new TransactionGlAccountCategoryDescriptionTransfer(languageTransfer, transactionGlAccountCategoryTransfer, transactionGlAccountCategoryDescription.getDescription());
-            put(transactionGlAccountCategoryDescription, transactionGlAccountCategoryDescriptionTransfer);
+            put(userVisit, transactionGlAccountCategoryDescription, transactionGlAccountCategoryDescriptionTransfer);
         }
         
         return transactionGlAccountCategoryDescriptionTransfer;

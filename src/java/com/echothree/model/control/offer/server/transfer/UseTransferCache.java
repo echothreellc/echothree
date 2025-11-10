@@ -45,10 +45,10 @@ public class UseTransferCache
             var useType = useTypeControl.getUseTypeTransfer(userVisit, useDetail.getUseType());
             var isDefault = useDetail.getIsDefault();
             var sortOrder = useDetail.getSortOrder();
-            var description = useControl.getBestUseDescription(use, getLanguage());
+            var description = useControl.getBestUseDescription(use, getLanguage(userVisit));
             
             useTransfer = new UseTransfer(useName, useType, isDefault, sortOrder, description);
-            put(use, useTransfer);
+            put(userVisit, use, useTransfer);
         }
         
         return useTransfer;

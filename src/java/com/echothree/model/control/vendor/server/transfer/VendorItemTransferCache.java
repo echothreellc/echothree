@@ -78,7 +78,7 @@ public class VendorItemTransferCache
             var returnPolicyTransfer = returnPolicy == null? null: returnPolicyControl.getReturnPolicyTransfer(userVisit, returnPolicy);
             
             if(description == null) {
-                description = itemDescriptionLogic.getBestStringUsingNames(null, ItemDescriptionTypes.PURCHASE_ORDER_DESCRIPTION.name(), item, getParty());
+                description = itemDescriptionLogic.getBestStringUsingNames(null, ItemDescriptionTypes.PURCHASE_ORDER_DESCRIPTION.name(), item, getParty(userVisit));
             }
 
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(vendorItem.getPrimaryKey());
@@ -87,14 +87,14 @@ public class VendorItemTransferCache
 
             vendorItemTransfer = new VendorItemTransfer(itemTransfer, vendor, vendorItemName, description, priority, cancellationPolicyTransfer,
                     returnPolicyTransfer, vendorItemStatusTransfer);
-            put(vendorItem, vendorItemTransfer);
+            put(userVisit, vendorItem, vendorItemTransfer);
 
             if(includeVendorItemCosts) {
                 vendorItemTransfer.setVendorItemCosts(new ListWrapper<>(vendorControl.getVendorItemCostTransfersByVendorItem(userVisit, vendorItem)));
             }
             
             if(includePurchasingComments) {
-                setupComments(null, entityInstance, vendorItemTransfer, CommentConstants.CommentType_VENDOR_ITEM_PURCHASING);
+                setupComments(userVisit, null, entityInstance, vendorItemTransfer, CommentConstants.CommentType_VENDOR_ITEM_PURCHASING);
             }
         }
         

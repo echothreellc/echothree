@@ -37,7 +37,7 @@ public class CustomerTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, customerTypeDescription.getLanguage());
             
             customerTypeDescriptionTransfer = new CustomerTypeDescriptionTransfer(languageTransfer, customerTypeTransfer, customerTypeDescription.getDescription());
-            put(customerTypeDescription, customerTypeDescriptionTransfer);
+            put(userVisit, customerTypeDescription, customerTypeDescriptionTransfer);
         }
         
         return customerTypeDescriptionTransfer;

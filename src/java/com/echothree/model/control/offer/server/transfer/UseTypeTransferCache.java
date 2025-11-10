@@ -42,10 +42,10 @@ public class UseTypeTransferCache
             var useTypeName = useTypeDetail.getUseTypeName();
             var isDefault = useTypeDetail.getIsDefault();
             var sortOrder = useTypeDetail.getSortOrder();
-            var description = useTypeControl.getBestUseTypeDescription(useType, getLanguage());
+            var description = useTypeControl.getBestUseTypeDescription(useType, getLanguage(userVisit));
             
             useTypeTransfer = new UseTypeTransfer(useTypeName, isDefault, sortOrder, description);
-            put(useType, useTypeTransfer);
+            put(userVisit, useType, useTypeTransfer);
         }
         
         return useTypeTransfer;

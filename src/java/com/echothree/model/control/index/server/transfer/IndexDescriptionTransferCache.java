@@ -37,7 +37,7 @@ public class IndexDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, indexDescription.getLanguage());
             
             indexDescriptionTransfer = new IndexDescriptionTransfer(languageTransfer, indexTransfer, indexDescription.getDescription());
-            put(indexDescription, indexDescriptionTransfer);
+            put(userVisit, indexDescription, indexDescriptionTransfer);
         }
         return indexDescriptionTransfer;
     }

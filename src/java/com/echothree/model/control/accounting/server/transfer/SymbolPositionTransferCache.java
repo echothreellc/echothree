@@ -43,10 +43,10 @@ public class SymbolPositionTransferCache
             var symbolPositionName = symbolPositionDetail.getSymbolPositionName();
             var isDefault = symbolPositionDetail.getIsDefault();
             var sortOrder = symbolPositionDetail.getSortOrder();
-            var description = accountingControl.getBestSymbolPositionDescription(symbolPosition, getLanguage());
+            var description = accountingControl.getBestSymbolPositionDescription(symbolPosition, getLanguage(userVisit));
             
             symbolPositionTransfer = new SymbolPositionTransfer(symbolPositionName, isDefault, sortOrder, description);
-            put(symbolPosition, symbolPositionTransfer);
+            put(userVisit, symbolPosition, symbolPositionTransfer);
         }
         
         return symbolPositionTransfer;

@@ -46,7 +46,7 @@ public class PaymentProcessorTransactionCodeTransferCache
 
             paymentProcessorTransactionCodeTransfer = new PaymentProcessorTransactionCodeTransfer(paymentProcessorTransactionTransfer,
                     paymentProcessorActionTypeTransfer);
-            put(paymentProcessorTransactionCode, paymentProcessorTransactionCodeTransfer);
+            put(userVisit, paymentProcessorTransactionCode, paymentProcessorTransactionCodeTransfer);
         }
         
         return paymentProcessorTransactionCodeTransfer;

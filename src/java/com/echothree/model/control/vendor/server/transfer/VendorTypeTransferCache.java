@@ -68,12 +68,12 @@ public class VendorTypeTransferCache
             var defaultReferenceValidationPattern = vendorTypeDetail.getDefaultReferenceValidationPattern();
             var isDefault = vendorTypeDetail.getIsDefault();
             var sortOrder = vendorTypeDetail.getSortOrder();
-            var description = vendorControl.getBestVendorTypeDescription(vendorType, getLanguage());
+            var description = vendorControl.getBestVendorTypeDescription(vendorType, getLanguage(userVisit));
             
             vendorTypeTransfer = new VendorTypeTransfer(vendorTypeName, defaultTermTransfer, defaultFreeOnBoardTransfer, defaultCancellationPolicyTransfer, defaultReturnPolicyTransfer,
                     defaultApGlAccountTransfer, defaultHoldUntilComplete, defaultAllowBackorders, defaultAllowSubstitutions, defaultAllowCombiningShipments,
                     defaultRequireReference, defaultAllowReferenceDuplicates, defaultReferenceValidationPattern, isDefault, sortOrder, description);
-            put(vendorType, vendorTypeTransfer);
+            put(userVisit, vendorType, vendorTypeTransfer);
         }
         
         return vendorTypeTransfer;

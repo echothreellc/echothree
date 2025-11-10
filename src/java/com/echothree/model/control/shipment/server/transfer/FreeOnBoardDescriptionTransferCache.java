@@ -41,7 +41,7 @@ public class FreeOnBoardDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, freeOnBoardDescription.getLanguage());
             
             freeOnBoardDescriptionTransfer = new FreeOnBoardDescriptionTransfer(languageTransfer, freeOnBoardTransfer, freeOnBoardDescription.getDescription());
-            put(freeOnBoardDescription, freeOnBoardDescriptionTransfer);
+            put(userVisit, freeOnBoardDescription, freeOnBoardDescriptionTransfer);
         }
         
         return freeOnBoardDescriptionTransfer;

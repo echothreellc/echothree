@@ -42,10 +42,10 @@ public class OrderLineAdjustmentTypeTransferCache
             var orderLineAdjustmentTypeName = orderLineAdjustmentTypeDetail.getOrderLineAdjustmentTypeName();
             var isDefault = orderLineAdjustmentTypeDetail.getIsDefault();
             var sortOrder = orderLineAdjustmentTypeDetail.getSortOrder();
-            var description = orderLineAdjustmentControl.getBestOrderLineAdjustmentTypeDescription(orderLineAdjustmentType, getLanguage());
+            var description = orderLineAdjustmentControl.getBestOrderLineAdjustmentTypeDescription(orderLineAdjustmentType, getLanguage(userVisit));
             
             orderLineAdjustmentTypeTransfer = new OrderLineAdjustmentTypeTransfer(orderLineAdjustmentTypeName, isDefault, sortOrder, description);
-            put(orderLineAdjustmentType, orderLineAdjustmentTypeTransfer);
+            put(userVisit, orderLineAdjustmentType, orderLineAdjustmentTypeTransfer);
         }
         
         return orderLineAdjustmentTypeTransfer;

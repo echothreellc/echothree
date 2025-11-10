@@ -40,7 +40,7 @@ public class FontWeightDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, fontWeightDescription.getLanguage());
             
             fontWeightDescriptionTransfer = new FontWeightDescriptionTransfer(languageTransfer, fontWeightTransfer, fontWeightDescription.getDescription());
-            put(fontWeightDescription, fontWeightDescriptionTransfer);
+            put(userVisit, fontWeightDescription, fontWeightDescriptionTransfer);
         }
         return fontWeightDescriptionTransfer;
     }

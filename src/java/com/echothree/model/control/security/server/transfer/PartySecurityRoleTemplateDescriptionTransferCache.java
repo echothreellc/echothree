@@ -38,7 +38,7 @@ public class PartySecurityRoleTemplateDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, partySecurityRoleTemplateDescription.getLanguage());
             
             partySecurityRoleTemplateDescriptionTransfer = new PartySecurityRoleTemplateDescriptionTransfer(languageTransfer, partySecurityRoleTemplateTransfer, partySecurityRoleTemplateDescription.getDescription());
-            put(partySecurityRoleTemplateDescription, partySecurityRoleTemplateDescriptionTransfer);
+            put(userVisit, partySecurityRoleTemplateDescription, partySecurityRoleTemplateDescriptionTransfer);
         }
         
         return partySecurityRoleTemplateDescriptionTransfer;

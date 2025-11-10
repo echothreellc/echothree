@@ -45,7 +45,7 @@ public class RecoveryAnswerTransferCache
             var answer = recoveryAnswerDetail.getAnswer();
             
             recoveryAnswerTransfer = new RecoveryAnswerTransfer(party, recoveryQuestion, answer);
-            put(recoveryAnswer, recoveryAnswerTransfer);
+            put(userVisit, recoveryAnswer, recoveryAnswerTransfer);
         }
         
         return recoveryAnswerTransfer;

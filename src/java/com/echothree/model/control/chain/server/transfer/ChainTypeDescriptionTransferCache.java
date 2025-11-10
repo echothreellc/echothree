@@ -37,7 +37,7 @@ public class ChainTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, chainTypeDescription.getLanguage());
             
             chainTypeDescriptionTransfer = new ChainTypeDescriptionTransfer(languageTransfer, chainTypeTransfer, chainTypeDescription.getDescription());
-            put(chainTypeDescription, chainTypeDescriptionTransfer);
+            put(userVisit, chainTypeDescription, chainTypeDescriptionTransfer);
         }
         
         return chainTypeDescriptionTransfer;

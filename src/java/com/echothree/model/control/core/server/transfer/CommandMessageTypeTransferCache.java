@@ -42,10 +42,10 @@ public class CommandMessageTypeTransferCache
             var commandMessageTypeName = commandMessageTypeDetail.getCommandMessageTypeName();
             var isDefault = commandMessageTypeDetail.getIsDefault();
             var sortOrder = commandMessageTypeDetail.getSortOrder();
-            var description = commandControl.getBestCommandMessageTypeDescription(commandMessageType, getLanguage());
+            var description = commandControl.getBestCommandMessageTypeDescription(commandMessageType, getLanguage(userVisit));
             
             commandMessageTypeTransfer = new CommandMessageTypeTransfer(commandMessageTypeName, isDefault, sortOrder, description);
-            put(commandMessageType, commandMessageTypeTransfer);
+            put(userVisit, commandMessageType, commandMessageTypeTransfer);
         }
         
         return commandMessageTypeTransfer;

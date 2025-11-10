@@ -37,7 +37,7 @@ public class ContactListFrequencyDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, contactListFrequencyDescription.getLanguage());
             
             contactListFrequencyDescriptionTransfer = new ContactListFrequencyDescriptionTransfer(languageTransfer, contactListFrequencyTransfer, contactListFrequencyDescription.getDescription());
-            put(contactListFrequencyDescription, contactListFrequencyDescriptionTransfer);
+            put(userVisit, contactListFrequencyDescription, contactListFrequencyDescriptionTransfer);
         }
         
         return contactListFrequencyDescriptionTransfer;

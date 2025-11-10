@@ -58,7 +58,7 @@ public class CacheEntryDependencyTransferCache
             var entityInstance = filterEntityInstance ? null : entityInstanceControl.getEntityInstanceTransfer(userVisit, cacheEntryDependency.getEntityInstance(), false, false, false, false);
 
             cacheEntryDependencyTransfer = new CacheEntryDependencyTransfer(cacheEntry, entityInstance);
-            put(cacheEntryDependency, cacheEntryDependencyTransfer);
+            put(userVisit, cacheEntryDependency, cacheEntryDependencyTransfer);
         }
         
         return cacheEntryDependencyTransfer;

@@ -60,10 +60,10 @@ public class LanguageTransferCache
             var languageIsoName = filterLanguageIsoName ? null : language.getLanguageIsoName();
             var isDefault = filterisDefault ? null : language.getIsDefault();
             var sortOrder = filterSortOrder ? null : language.getSortOrder();
-            var description = filterDescription ? null : partyControl.getBestLanguageDescription(language, getLanguage());
+            var description = filterDescription ? null : partyControl.getBestLanguageDescription(language, getLanguage(userVisit));
             
             languageTransfer = new LanguageTransfer(languageIsoName, isDefault, sortOrder, description);
-            put(language, languageTransfer);
+            put(userVisit, language, languageTransfer);
         }
         
         return languageTransfer;

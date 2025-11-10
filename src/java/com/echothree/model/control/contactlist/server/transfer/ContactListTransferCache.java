@@ -48,11 +48,11 @@ public class ContactListTransferCache
             var defaultPartyContactListStatus = workflowControl.getWorkflowEntranceTransfer(userVisit, contactListDetail.getDefaultPartyContactListStatus());
             var isDefault = contactListDetail.getIsDefault();
             var sortOrder = contactListDetail.getSortOrder();
-            var description = contactListControl.getBestContactListDescription(contactList, getLanguage());
+            var description = contactListControl.getBestContactListDescription(contactList, getLanguage(userVisit));
             
             contactListTransfer = new ContactListTransfer(contactListName, contactListGroupTransfer, contactListTypeTransfer, contactListFrequencyTransfer,
                     defaultPartyContactListStatus, isDefault, sortOrder, description);
-            put(contactList, contactListTransfer);
+            put(userVisit, contactList, contactListTransfer);
         }
         
         return contactListTransfer;

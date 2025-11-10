@@ -38,7 +38,7 @@ public class TermDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, termDescription.getLanguage());
             
             termDescriptionTransfer = new TermDescriptionTransfer(languageTransfer, termTransfer, termDescription.getDescription());
-            put(termDescription, termDescriptionTransfer);
+            put(userVisit, termDescription, termDescriptionTransfer);
         }
         
         return termDescriptionTransfer;

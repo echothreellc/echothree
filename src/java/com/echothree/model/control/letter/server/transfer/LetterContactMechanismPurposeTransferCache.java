@@ -46,7 +46,7 @@ public class LetterContactMechanismPurposeTransferCache
             
             letterContactMechanismPurposeTransfer = new LetterContactMechanismPurposeTransfer(letter, contactMechanismPurpose,
                     priority);
-            put(letterContactMechanismPurpose, letterContactMechanismPurposeTransfer);
+            put(userVisit, letterContactMechanismPurpose, letterContactMechanismPurposeTransfer);
         }
         
         return letterContactMechanismPurposeTransfer;

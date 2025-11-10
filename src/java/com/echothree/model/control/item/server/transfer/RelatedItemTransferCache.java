@@ -43,7 +43,7 @@ public class RelatedItemTransferCache
             var sortOrder = relatedItemDetail.getSortOrder();
             
             relatedItemTransfer = new RelatedItemTransfer(relatedItemType, fromItem, toItem, sortOrder);
-            put(relatedItem, relatedItemTransfer);
+            put(userVisit, relatedItem, relatedItemTransfer);
         }
         
         return relatedItemTransfer;

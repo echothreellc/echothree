@@ -166,14 +166,14 @@ public class PartyPaymentMethodTransferCache
                     partyPaymentMethodStatusTransfer, number, expirationMonth, expirationYear, personalTitleTransfer, firstName,
                     middleName, lastName, nameSuffixTransfer, name, billingPartyContactMechanismTransfer, issuerName,
                     issuerPartyContactMechanismTransfer, securityCode);
-            put(partyPaymentMethod, partyPaymentMethodTransfer);
+            put(userVisit, partyPaymentMethod, partyPaymentMethodTransfer);
             
             if(includePartyPaymentMethodContactMechanisms) {
                 partyPaymentMethodTransfer.setPartyPaymentMethodContactMechanisms(new ListWrapper<>(partyPaymentMethodControl.getPartyPaymentMethodContactMechanismTransfersByPartyPaymentMethod(userVisit, partyPaymentMethod)));
             }
 
             if(includeComments) {
-                setupComments(partyPaymentMethod, entityInstance, partyPaymentMethodTransfer, CommentConstants.CommentType_PARTY_PAYMENT_METHOD);
+                setupComments(userVisit, partyPaymentMethod, entityInstance, partyPaymentMethodTransfer, CommentConstants.CommentType_PARTY_PAYMENT_METHOD);
             }
         }
         

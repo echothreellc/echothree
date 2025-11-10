@@ -51,7 +51,7 @@ public class AssociateTransferCache
             var summary = associateDetail.getSummary();
             
             associateTransfer = new AssociateTransfer(associateProgram, associateName, party, description, summaryMimeType, summary);
-            put(associate, associateTransfer);
+            put(userVisit, associate, associateTransfer);
         }
         return associateTransfer;
     }

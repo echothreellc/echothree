@@ -41,7 +41,7 @@ public class ServiceDescriptionTransferCache
             
             serviceDescriptionTransfer = new ServiceDescriptionTransfer(languageTransfer, serviceTransfer,
                     serviceDescription.getDescription());
-            put(serviceDescription, serviceDescriptionTransfer);
+            put(userVisit, serviceDescription, serviceDescriptionTransfer);
         }
         return serviceDescriptionTransfer;
     }

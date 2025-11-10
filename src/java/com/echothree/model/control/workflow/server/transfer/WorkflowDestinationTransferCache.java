@@ -65,11 +65,11 @@ public class WorkflowDestinationTransferCache
             var workflowDestinationName = filterWorkflowDestinationName ? null : workflowDestinationDetail.getWorkflowDestinationName();
             var isDefault = filterIsDefault ? null : workflowDestinationDetail.getIsDefault();
             var sortOrder = filterSortOrder ? null : workflowDestinationDetail.getSortOrder();
-            var description = filterDescription ? null : workflowControl.getBestWorkflowDestinationDescription(workflowDestination, getLanguage());
+            var description = filterDescription ? null : workflowControl.getBestWorkflowDestinationDescription(workflowDestination, getLanguage(userVisit));
             
             workflowDestinationTransfer = new WorkflowDestinationTransfer(workflowStep, workflowDestinationName, isDefault,
                     sortOrder, description);
-            put(workflowDestination, workflowDestinationTransfer);
+            put(userVisit, workflowDestination, workflowDestinationTransfer);
         }
         
         return workflowDestinationTransfer;

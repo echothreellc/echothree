@@ -40,7 +40,7 @@ public class ServerServiceTransferCache
             var service = serverControl.getServiceTransfer(userVisit, serverService.getService());
             
             serverServiceTransfer = new ServerServiceTransfer(server, service);
-            put(serverService, serverServiceTransfer);
+            put(userVisit, serverService, serverServiceTransfer);
         }
         return serverServiceTransfer;
     }

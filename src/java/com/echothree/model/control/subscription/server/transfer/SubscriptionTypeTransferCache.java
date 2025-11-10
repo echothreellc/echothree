@@ -47,11 +47,11 @@ public class SubscriptionTypeTransferCache
             var subscriptionSequenceTransfer = subscriptionSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, subscriptionSequence);
             var isDefault = subscriptionTypeDetail.getIsDefault();
             var sortOrder = subscriptionTypeDetail.getSortOrder();
-            var description = subscriptionControl.getBestSubscriptionTypeDescription(subscriptionType, getLanguage());
+            var description = subscriptionControl.getBestSubscriptionTypeDescription(subscriptionType, getLanguage(userVisit));
             
             subscriptionTypeTransfer = new SubscriptionTypeTransfer(subscriptionKindTransfer, subscriptionTypeName,
                     subscriptionSequenceTransfer, isDefault, sortOrder, description);
-            put(subscriptionType, subscriptionTypeTransfer);
+            put(userVisit, subscriptionType, subscriptionTypeTransfer);
         }
         
         return subscriptionTypeTransfer;

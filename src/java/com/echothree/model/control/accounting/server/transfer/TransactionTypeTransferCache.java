@@ -42,10 +42,10 @@ public class TransactionTypeTransferCache
             var transactionTypeDetail = transactionType.getLastDetail();
             var transactionTypeName = transactionTypeDetail.getTransactionTypeName();
             var sortOrder = transactionTypeDetail.getSortOrder();
-            var description = accountingControl.getBestTransactionTypeDescription(transactionType, getLanguage());
+            var description = accountingControl.getBestTransactionTypeDescription(transactionType, getLanguage(userVisit));
             
             transactionTypeTransfer = new TransactionTypeTransfer(transactionTypeName, sortOrder, description);
-            put(transactionType, transactionTypeTransfer);
+            put(userVisit, transactionType, transactionTypeTransfer);
         }
         
         return transactionTypeTransfer;

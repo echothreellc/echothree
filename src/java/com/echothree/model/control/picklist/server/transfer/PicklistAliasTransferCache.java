@@ -38,7 +38,7 @@ public class PicklistAliasTransferCache
             var alias = picklistAlias.getAlias();
             
             picklistAliasTransfer = new PicklistAliasTransfer(picklist, picklistAliasType, alias);
-            put(picklistAlias, picklistAliasTransfer);
+            put(userVisit, picklistAlias, picklistAliasTransfer);
         }
         
         return picklistAliasTransfer;

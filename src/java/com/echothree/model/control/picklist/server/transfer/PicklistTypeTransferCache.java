@@ -53,11 +53,11 @@ public class PicklistTypeTransferCache
             var picklistWorkflowEntranceTransfer = picklistWorkflowEntrance == null? null: workflowControl.getWorkflowEntranceTransfer(userVisit, picklistWorkflowEntrance);
             var isDefault = picklistTypeDetail.getIsDefault();
             var sortOrder = picklistTypeDetail.getSortOrder();
-            var description = picklistControl.getBestPicklistTypeDescription(picklistType, getLanguage());
+            var description = picklistControl.getBestPicklistTypeDescription(picklistType, getLanguage(userVisit));
             
             picklistTypeTransfer = new PicklistTypeTransfer(picklistTypeName, parentPicklistTypeTransfer, picklistSequenceTypeTransfer, picklistWorkflowTransfer,
                     picklistWorkflowEntranceTransfer, isDefault, sortOrder, description);
-            put(picklistType, picklistTypeTransfer);
+            put(userVisit, picklistType, picklistTypeTransfer);
         }
         
         return picklistTypeTransfer;

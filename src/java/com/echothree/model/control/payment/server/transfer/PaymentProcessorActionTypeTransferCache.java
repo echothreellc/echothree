@@ -43,10 +43,10 @@ public class PaymentProcessorActionTypeTransferCache
             var paymentProcessorActionTypeName = paymentProcessorActionTypeDetail.getPaymentProcessorActionTypeName();
             var isDefault = paymentProcessorActionTypeDetail.getIsDefault();
             var sortOrder = paymentProcessorActionTypeDetail.getSortOrder();
-            var description = paymentProcessorActionTypeControl.getBestPaymentProcessorActionTypeDescription(paymentProcessorActionType, getLanguage());
+            var description = paymentProcessorActionTypeControl.getBestPaymentProcessorActionTypeDescription(paymentProcessorActionType, getLanguage(userVisit));
             
             paymentProcessorActionTypeTransfer = new PaymentProcessorActionTypeTransfer(paymentProcessorActionTypeName, isDefault, sortOrder, description);
-            put(paymentProcessorActionType, paymentProcessorActionTypeTransfer);
+            put(userVisit, paymentProcessorActionType, paymentProcessorActionTypeTransfer);
         }
         
         return paymentProcessorActionTypeTransfer;

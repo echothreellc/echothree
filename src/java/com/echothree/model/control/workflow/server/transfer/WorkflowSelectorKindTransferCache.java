@@ -43,7 +43,7 @@ public class WorkflowSelectorKindTransferCache
             var selectorKind = selectorControl.getSelectorKindTransfer(userVisit, workflowSelectorKind.getSelectorKind());
             
             workflowSelectorKindTransfer = new WorkflowSelectorKindTransfer(workflow, selectorKind);
-            put(workflowSelectorKind, workflowSelectorKindTransfer);
+            put(userVisit, workflowSelectorKind, workflowSelectorKindTransfer);
         }
         
         return workflowSelectorKindTransfer;

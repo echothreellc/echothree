@@ -38,7 +38,7 @@ public class TerminationReasonDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, terminationReasonDescription.getLanguage());
             
             terminationReasonDescriptionTransfer = new TerminationReasonDescriptionTransfer(languageTransfer, terminationReasonTransfer, terminationReasonDescription.getDescription());
-            put(terminationReasonDescription, terminationReasonDescriptionTransfer);
+            put(userVisit, terminationReasonDescription, terminationReasonDescriptionTransfer);
         }
         
         return terminationReasonDescriptionTransfer;

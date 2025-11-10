@@ -49,12 +49,12 @@ public class EntityGeoPointDefaultTransferCache
             var latitude = geoPointUtils.formatDegrees(unformattedLatitude);
             var unformattedLongitude = entityGeoPointDefault.getLongitude();
             var longitude = geoPointUtils.formatDegrees(unformattedLongitude);
-            var elevation = formatUnitOfMeasure(elevationUnitOfMeasureKind, entityGeoPointDefault.getElevation());
-            var altitude = formatUnitOfMeasure(altitudeUnitOfMeasureKind, entityGeoPointDefault.getAltitude());
+            var elevation = formatUnitOfMeasure(userVisit, elevationUnitOfMeasureKind, entityGeoPointDefault.getElevation());
+            var altitude = formatUnitOfMeasure(userVisit, altitudeUnitOfMeasureKind, entityGeoPointDefault.getAltitude());
             
             entityGeoPointDefaultTransfer = new EntityGeoPointDefaultTransfer(entityAttribute, unformattedLatitude, latitude,
                     unformattedLongitude, longitude, elevation, altitude);
-            put(entityGeoPointDefault, entityGeoPointDefaultTransfer);
+            put(userVisit, entityGeoPointDefault, entityGeoPointDefaultTransfer);
         }
         
         return entityGeoPointDefaultTransfer;

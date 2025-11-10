@@ -43,7 +43,7 @@ public class CommandMessageTranslationTransferCache
             var translation = commandMessageTranslation.getTranslation();
             
             commandMessageTranslationTransfer = new CommandMessageTranslationTransfer(commandMessage, language, translation);
-            put(commandMessageTranslation, commandMessageTranslationTransfer);
+            put(userVisit, commandMessageTranslation, commandMessageTranslationTransfer);
         }
         
         return commandMessageTranslationTransfer;

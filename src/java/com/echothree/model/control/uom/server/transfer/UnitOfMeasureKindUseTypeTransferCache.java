@@ -38,11 +38,11 @@ public class UnitOfMeasureKindUseTypeTransferCache
             var allowFractionDigits = unitOfMeasureKindUseType.getAllowFractionDigits();
             var isDefault = unitOfMeasureKindUseType.getIsDefault();
             var sortOrder = unitOfMeasureKindUseType.getSortOrder();
-            var description = uomControl.getBestUnitOfMeasureKindUseTypeDescription(unitOfMeasureKindUseType, getLanguage());
+            var description = uomControl.getBestUnitOfMeasureKindUseTypeDescription(unitOfMeasureKindUseType, getLanguage(userVisit));
             
             unitOfMeasureKindUseTypeTransfer = new UnitOfMeasureKindUseTypeTransfer(unitOfMeasureKindUseTypeName, allowMultiple, allowFractionDigits, isDefault,
                     sortOrder, description);
-            put(unitOfMeasureKindUseType, unitOfMeasureKindUseTypeTransfer);
+            put(userVisit, unitOfMeasureKindUseType, unitOfMeasureKindUseTypeTransfer);
         }
         
         return unitOfMeasureKindUseTypeTransfer;

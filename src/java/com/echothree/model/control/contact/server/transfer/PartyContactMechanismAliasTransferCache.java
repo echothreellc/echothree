@@ -48,7 +48,7 @@ public class PartyContactMechanismAliasTransferCache
             
             partyContactMechanismAliasTransfer = new PartyContactMechanismAliasTransfer(party, contactMechanism,
                     contactMechanismAliasType, alias);
-            put(partyContactMechanismAlias, partyContactMechanismAliasTransfer);
+            put(userVisit, partyContactMechanismAlias, partyContactMechanismAliasTransfer);
         }
         
         return partyContactMechanismAliasTransfer;

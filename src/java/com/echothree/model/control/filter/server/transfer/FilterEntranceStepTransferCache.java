@@ -41,7 +41,7 @@ public class FilterEntranceStepTransferCache
             var filterStep = filterControl.getFilterStepTransfer(userVisit, filterEntranceStep.getFilterStep());
             
             filterEntranceStepTransfer = new FilterEntranceStepTransfer(filter, filterStep);
-            put(filterEntranceStep, filterEntranceStepTransfer);
+            put(userVisit, filterEntranceStep, filterEntranceStepTransfer);
         }
         
         return filterEntranceStepTransfer;

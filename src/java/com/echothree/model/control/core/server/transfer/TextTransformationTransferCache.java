@@ -42,10 +42,10 @@ public class TextTransformationTransferCache
             var textTransformationName = textTransformationDetail.getTextTransformationName();
             var isDefault = textTransformationDetail.getIsDefault();
             var sortOrder = textTransformationDetail.getSortOrder();
-            var description = textControl.getBestTextTransformationDescription(textTransformation, getLanguage());
+            var description = textControl.getBestTextTransformationDescription(textTransformation, getLanguage(userVisit));
 
             textTransformationTransfer = new TextTransformationTransfer(textTransformationName, isDefault, sortOrder, description);
-            put(textTransformation, textTransformationTransfer);
+            put(userVisit, textTransformation, textTransformationTransfer);
         }
 
         return textTransformationTransfer;

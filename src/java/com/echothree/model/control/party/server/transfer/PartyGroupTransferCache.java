@@ -36,7 +36,7 @@ public class PartyGroupTransferCache
             var name = partyGroup.getName();
             
             partyGroupTransfer = new PartyGroupTransfer(name);
-            put(partyGroup, partyGroupTransfer);
+            put(userVisit, partyGroup, partyGroupTransfer);
         }
         
         return partyGroupTransfer;

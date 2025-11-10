@@ -42,7 +42,7 @@ public class SymbolPositionDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, symbolPositionDescription.getLanguage());
             
             symbolPositionDescriptionTransfer = new SymbolPositionDescriptionTransfer(languageTransfer, symbolPositionTransfer, symbolPositionDescription.getDescription());
-            put(symbolPositionDescription, symbolPositionDescriptionTransfer);
+            put(userVisit, symbolPositionDescription, symbolPositionDescriptionTransfer);
         }
         
         return symbolPositionDescriptionTransfer;

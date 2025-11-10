@@ -46,11 +46,11 @@ public class SequenceTypeTransferCache
             var chunkSize = sequenceTypeDetail.getChunkSize();
             var isDefault = sequenceTypeDetail.getIsDefault();
             var sortOrder = sequenceTypeDetail.getSortOrder();
-            var description = sequenceControl.getBestSequenceTypeDescription(sequenceType, getLanguage());
+            var description = sequenceControl.getBestSequenceTypeDescription(sequenceType, getLanguage(userVisit));
             
             sequenceTypeTransfer = new SequenceTypeTransfer(sequenceTypeName, prefix, suffix, sequenceEncoderType,
                     sequenceChecksumType, chunkSize, isDefault, sortOrder, description);
-            put(sequenceType, sequenceTypeTransfer);
+            put(userVisit, sequenceType, sequenceTypeTransfer);
         }
         return sequenceTypeTransfer;
     }

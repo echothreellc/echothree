@@ -42,11 +42,11 @@ public class GeoCodeAliasTypeTransferCache
             var isRequired = geoCodeAliasTypeDetail.getIsRequired();
             var isDefault = geoCodeAliasTypeDetail.getIsDefault();
             var sortOrder = geoCodeAliasTypeDetail.getSortOrder();
-            var description = geoControl.getBestGeoCodeAliasTypeDescription(geoCodeAliasType, getLanguage());
+            var description = geoControl.getBestGeoCodeAliasTypeDescription(geoCodeAliasType, getLanguage(userVisit));
             
             geoCodeAliasTypeTransfer = new GeoCodeAliasTypeTransfer(geoCodeType, geoCodeAliasTypeName, validationPattern, isRequired, isDefault, sortOrder,
                     description);
-            put(geoCodeAliasType, geoCodeAliasTypeTransfer);
+            put(userVisit, geoCodeAliasType, geoCodeAliasTypeTransfer);
         }
         
         return geoCodeAliasTypeTransfer;

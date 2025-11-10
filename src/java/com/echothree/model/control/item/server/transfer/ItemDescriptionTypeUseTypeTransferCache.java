@@ -40,10 +40,10 @@ public class ItemDescriptionTypeUseTypeTransferCache
             var itemDescriptionTypeUseTypeName = itemDescriptionTypeUseTypeDetail.getItemDescriptionTypeUseTypeName();
             var isDefault = itemDescriptionTypeUseTypeDetail.getIsDefault();
             var sortOrder = itemDescriptionTypeUseTypeDetail.getSortOrder();
-            var description = itemControl.getBestItemDescriptionTypeUseTypeDescription(itemDescriptionTypeUseType, getLanguage());
+            var description = itemControl.getBestItemDescriptionTypeUseTypeDescription(itemDescriptionTypeUseType, getLanguage(userVisit));
             
             itemDescriptionTypeUseTypeTransfer = new ItemDescriptionTypeUseTypeTransfer(itemDescriptionTypeUseTypeName, isDefault, sortOrder, description);
-            put(itemDescriptionTypeUseType, itemDescriptionTypeUseTypeTransfer);
+            put(userVisit, itemDescriptionTypeUseType, itemDescriptionTypeUseTypeTransfer);
         }
         
         return itemDescriptionTypeUseTypeTransfer;

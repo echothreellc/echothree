@@ -48,7 +48,7 @@ public class BaseEncryptionKeyTransferCache
                     BaseEncryptionKeyStatusConstants.Workflow_BASE_ENCRYPTION_KEY_STATUS, entityInstance);
             
             baseEncryptionKeyTransfer = new BaseEncryptionKeyTransfer(baseEncryptionKeyName, baseEncryptionKeyStatus);
-            put(baseEncryptionKey, baseEncryptionKeyTransfer);
+            put(userVisit, baseEncryptionKey, baseEncryptionKeyTransfer);
         }
         
         return baseEncryptionKeyTransfer;

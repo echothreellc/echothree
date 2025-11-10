@@ -50,7 +50,7 @@ public class PostalCodeTransferCache
             var geoCodeScope = geoControl.getGeoCodeScopeTransfer(userVisit, geoCodeDetail.getGeoCodeScope());
             var isDefault = geoCodeDetail.getIsDefault();
             var sortOrder = geoCodeDetail.getSortOrder();
-            var description = geoControl.getBestGeoCodeDescription(geoCode, getLanguage());
+            var description = geoControl.getBestGeoCodeDescription(geoCode, getLanguage(userVisit));
 
             var countryGeoCodeType = geoControl.getGeoCodeTypeByName(GeoCodeTypes.COUNTRY.name());
             var geoCodeRelationships = geoControl.getGeoCodeRelationshipsByFromGeoCodeAndGeoCodeType(geoCode, countryGeoCodeType);
@@ -61,7 +61,7 @@ public class PostalCodeTransferCache
             
             postalCodeTransfer = new PostalCodeTransfer(country, geoCodeName, geoCodeType, geoCodeScope, isDefault, sortOrder,
                     description);
-            put(geoCode, postalCodeTransfer);
+            put(userVisit, geoCode, postalCodeTransfer);
             
             if(includeAliases) {
                 setupGeoCodeAliasTransfers(geoCode, postalCodeTransfer);

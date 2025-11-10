@@ -39,10 +39,10 @@ public class ContactListFrequencyTransferCache
             var contactListFrequencyName = contactListFrequencyDetail.getContactListFrequencyName();
             var isDefault = contactListFrequencyDetail.getIsDefault();
             var sortOrder = contactListFrequencyDetail.getSortOrder();
-            var description = contactListControl.getBestContactListFrequencyDescription(contactListFrequency, getLanguage());
+            var description = contactListControl.getBestContactListFrequencyDescription(contactListFrequency, getLanguage(userVisit));
             
             contactListFrequencyTransfer = new ContactListFrequencyTransfer(contactListFrequencyName, isDefault, sortOrder, description);
-            put(contactListFrequency, contactListFrequencyTransfer);
+            put(userVisit, contactListFrequency, contactListFrequencyTransfer);
         }
         
         return contactListFrequencyTransfer;

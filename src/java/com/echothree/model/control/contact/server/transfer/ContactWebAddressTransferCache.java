@@ -47,7 +47,7 @@ public class ContactWebAddressTransferCache
                     WebAddressStatusConstants.Workflow_WEB_ADDRESS_STATUS, entityInstance);
             
             contactWebAddressTransfer = new ContactWebAddressTransfer(url, webAddressStatusTransfer);
-            put(contactWebAddress, contactWebAddressTransfer);
+            put(userVisit, contactWebAddress, contactWebAddressTransfer);
         }
         
         return contactWebAddressTransfer;

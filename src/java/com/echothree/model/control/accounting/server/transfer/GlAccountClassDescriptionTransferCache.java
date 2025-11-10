@@ -42,7 +42,7 @@ public class GlAccountClassDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, glAccountClassDescription.getLanguage());
             
             glAccountClassDescriptionTransfer = new GlAccountClassDescriptionTransfer(languageTransfer, glAccountClassTransfer, glAccountClassDescription.getDescription());
-            put(glAccountClassDescription, glAccountClassDescriptionTransfer);
+            put(userVisit, glAccountClassDescription, glAccountClassDescriptionTransfer);
         }
         
         return glAccountClassDescriptionTransfer;

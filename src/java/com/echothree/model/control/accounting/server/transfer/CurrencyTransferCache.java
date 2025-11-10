@@ -105,13 +105,13 @@ public class CurrencyTransferCache
             var minusSign = filterMinusSign ? null : currency.getMinusSign();
             var isDefault = filterisDefault ? null : currency.getIsDefault();
             var sortOrder = filterSortOrder ? null : currency.getSortOrder();
-            var description = filterDescription ? null : accountingControl.getBestCurrencyDescription(currency, getLanguage());
+            var description = filterDescription ? null : accountingControl.getBestCurrencyDescription(currency, getLanguage(userVisit));
             
             currencyTransfer = new CurrencyTransfer(currencyIsoName, symbol, symbolPosition, symbolOnListStart, symbolOnListMember,
                     symbolOnSubtotal, symbolOnTotal, groupingSeparator, groupingSize, fractionSeparator, defaultFractionDigits,
                     priceUnitFractionDigits, priceLineFractionDigits, costUnitFractionDigits, costLineFractionDigits, minusSign,
                     isDefault, sortOrder, description);
-            put(currency, currencyTransfer);
+            put(userVisit, currency, currencyTransfer);
         }
         return currencyTransfer;
     }

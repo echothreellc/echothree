@@ -45,7 +45,7 @@ public class CustomerTypePaymentMethodTransferCache
             
             customerTypePaymentMethodTransfer = new CustomerTypePaymentMethodTransfer(customerType, paymentMethod, defaultSelectionPriority, isDefault,
                     sortOrder);
-            put(customerTypePaymentMethod, customerTypePaymentMethodTransfer);
+            put(userVisit, customerTypePaymentMethod, customerTypePaymentMethodTransfer);
         }
         
         return customerTypePaymentMethodTransfer;

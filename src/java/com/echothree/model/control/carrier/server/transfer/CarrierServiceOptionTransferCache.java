@@ -37,7 +37,7 @@ public class CarrierServiceOptionTransferCache
             var carrierOption = carrierControl.getCarrierOptionTransfer(userVisit, carrierServiceOption.getCarrierOption());
             
             carrierServiceOptionTransfer = new CarrierServiceOptionTransfer(carrierService, carrierOption);
-            put(carrierServiceOption, carrierServiceOptionTransfer);
+            put(userVisit, carrierServiceOption, carrierServiceOptionTransfer);
         }
         
         return carrierServiceOptionTransfer;

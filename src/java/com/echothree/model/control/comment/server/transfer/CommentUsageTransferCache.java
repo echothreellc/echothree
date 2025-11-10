@@ -34,7 +34,7 @@ public class CommentUsageTransferCache
         
         if(commentUsageTransfer == null) {
             commentUsageTransfer = new CommentUsageTransfer();
-            put(commentUsage, commentUsageTransfer);
+            put(userVisit, commentUsage, commentUsageTransfer);
             
             commentUsageTransfer.setComment(commentControl.getCommentTransfer(userVisit, commentUsage.getComment()));
             commentUsageTransfer.setCommentUsageType(commentControl.getCommentUsageTypeTransfer(userVisit,

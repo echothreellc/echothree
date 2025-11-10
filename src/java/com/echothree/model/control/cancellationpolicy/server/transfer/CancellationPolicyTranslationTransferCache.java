@@ -46,7 +46,7 @@ public class CancellationPolicyTranslationTransferCache
             
             cancellationPolicyTranslationTransfer = new CancellationPolicyTranslationTransfer(cancellationPolicyTransfer, languageTransfer, description,
                     policyMimeTypeTransfer, policy);
-            put(cancellationPolicyTranslation, cancellationPolicyTranslationTransfer);
+            put(userVisit, cancellationPolicyTranslation, cancellationPolicyTranslationTransfer);
         }
         
         return cancellationPolicyTranslationTransfer;

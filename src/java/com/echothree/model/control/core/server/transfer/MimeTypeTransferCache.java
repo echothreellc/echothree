@@ -78,10 +78,10 @@ public class MimeTypeTransferCache
             var entityAttributeType = filterEntityAttributeType ? null : coreControl.getEntityAttributeTypeTransfer(userVisit, mimeTypeDetail.getEntityAttributeType());
             var isDefault = filterIsDefault ? null : mimeTypeDetail.getIsDefault();
             var sortOrder = filterSortOrder ? null : mimeTypeDetail.getSortOrder();
-            var description = filterDescription ? null : mimeTypeControl.getBestMimeTypeDescription(mimeType, getLanguage());
+            var description = filterDescription ? null : mimeTypeControl.getBestMimeTypeDescription(mimeType, getLanguage(userVisit));
 
             mimeTypeTransfer = new MimeTypeTransfer(mimeTypeName, entityAttributeType, isDefault, sortOrder, description);
-            put(mimeType, mimeTypeTransfer);
+            put(userVisit, mimeType, mimeTypeTransfer);
 
             if(includeMimeTypeFileExtensions) {
                 mimeTypeTransfer.setMimeTypeFileExtensions(new ListWrapper<>(mimeTypeControl.getMimeTypeFileExtensionTransfersByMimeType(userVisit, mimeType)));

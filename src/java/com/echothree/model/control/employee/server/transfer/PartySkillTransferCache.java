@@ -43,7 +43,7 @@ public class PartySkillTransferCache
             var skillType = employeeControl.getSkillTypeTransfer(userVisit, partySkill.getSkillType());
             
             partySkillTransfer = new PartySkillTransfer(party, skillType);
-            put(partySkill, partySkillTransfer);
+            put(userVisit, partySkill, partySkillTransfer);
         }
         
         return partySkillTransfer;

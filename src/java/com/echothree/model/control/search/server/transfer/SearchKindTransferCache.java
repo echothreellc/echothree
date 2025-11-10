@@ -39,10 +39,10 @@ public class SearchKindTransferCache
             var searchKindName = searchKindDetail.getSearchKindName();
             var isDefault = searchKindDetail.getIsDefault();
             var sortOrder = searchKindDetail.getSortOrder();
-            var description = searchControl.getBestSearchKindDescription(searchKind, getLanguage());
+            var description = searchControl.getBestSearchKindDescription(searchKind, getLanguage(userVisit));
             
             searchKindTransfer = new SearchKindTransfer(searchKindName, isDefault, sortOrder, description);
-            put(searchKind, searchKindTransfer);
+            put(userVisit, searchKind, searchKindTransfer);
         }
         
         return searchKindTransfer;

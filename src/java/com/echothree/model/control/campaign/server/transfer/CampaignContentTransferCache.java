@@ -54,7 +54,7 @@ public class CampaignContentTransferCache
             var value = campaignContentDetail.getValue();
             var isDefault = campaignContentDetail.getIsDefault();
             var sortOrder = campaignContentDetail.getSortOrder();
-            var description = campaignControl.getBestCampaignContentDescription(campaignContent, getLanguage());
+            var description = campaignControl.getBestCampaignContentDescription(campaignContent, getLanguage(userVisit));
 
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignContent.getPrimaryKey());
             var campaignContentStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
@@ -62,7 +62,7 @@ public class CampaignContentTransferCache
             
             campaignContentTransfer = new CampaignContentTransfer(campaignContentName, valueSha1Hash, value, isDefault, sortOrder, description,
                     campaignContentStatusTransfer);
-            put(campaignContent, campaignContentTransfer);
+            put(userVisit, campaignContent, campaignContentTransfer);
         }
 
         return campaignContentTransfer;

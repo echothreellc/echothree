@@ -42,7 +42,7 @@ public class ShipmentAliasTransferCache
             var alias = shipmentAlias.getAlias();
             
             shipmentAliasTransfer = new ShipmentAliasTransfer(/*shipment,*/ shipmentAliasType, alias);
-            put(shipmentAlias, shipmentAliasTransfer);
+            put(userVisit, shipmentAlias, shipmentAliasTransfer);
         }
         
         return shipmentAliasTransfer;

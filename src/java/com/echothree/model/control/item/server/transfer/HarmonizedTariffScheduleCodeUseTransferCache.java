@@ -40,7 +40,7 @@ public class HarmonizedTariffScheduleCodeUseTransferCache
             var harmonizedTariffScheduleCodeUseType = itemControl.getHarmonizedTariffScheduleCodeUseTypeTransfer(userVisit, harmonizedTariffScheduleCodeUse.getHarmonizedTariffScheduleCodeUseType());
             
             harmonizedTariffScheduleCodeUseTransfer = new HarmonizedTariffScheduleCodeUseTransfer(harmonizedTariffScheduleCode, harmonizedTariffScheduleCodeUseType);
-            put(harmonizedTariffScheduleCodeUse, harmonizedTariffScheduleCodeUseTransfer);
+            put(userVisit, harmonizedTariffScheduleCodeUse, harmonizedTariffScheduleCodeUseTransfer);
         }
         
         return harmonizedTariffScheduleCodeUseTransfer;

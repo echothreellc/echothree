@@ -49,10 +49,10 @@ public class GeoCodeTransferCache
             var geoCodeScope = geoControl.getGeoCodeScopeTransfer(userVisit, geoCodeDetail.getGeoCodeScope());
             var isDefault = geoCodeDetail.getIsDefault();
             var sortOrder = geoCodeDetail.getSortOrder();
-            var description = geoControl.getBestGeoCodeDescription(geoCode, getLanguage());
+            var description = geoControl.getBestGeoCodeDescription(geoCode, getLanguage(userVisit));
             
             geoCodeTransfer = new GeoCodeTransfer(geoCodeName, geoCodeType, geoCodeScope, isDefault, sortOrder, description);
-            put(geoCode, geoCodeTransfer);
+            put(userVisit, geoCode, geoCodeTransfer);
             
             if(includeAliases) {
                 setupGeoCodeAliasTransfers(geoCode, geoCodeTransfer);

@@ -44,7 +44,7 @@ public class TransactionEntityRoleTransferCache
             var entityInstance = entityInstanceControl.getEntityInstanceTransfer(userVisit, transactionEntityRole.getEntityInstance(), false, false, false, false);
             
             transactionEntityRoleTransfer = new TransactionEntityRoleTransfer(transaction, transactionEntityRoleType, entityInstance);
-            put(transactionEntityRole, transactionEntityRoleTransfer);
+            put(userVisit, transactionEntityRole, transactionEntityRoleTransfer);
         }
         
         return transactionEntityRoleTransfer;

@@ -51,7 +51,7 @@ public class PartyTrainingClassSessionQuestionTransferCache
 
             partyTrainingClassSessionQuestionTransfer = new PartyTrainingClassSessionQuestionTransfer(partyTrainingClassSessionTransfer,
                     trainingClassQuestionTransfer, sortOrder);
-            put(partyTrainingClassSessionQuestion, partyTrainingClassSessionQuestionTransfer);
+            put(userVisit, partyTrainingClassSessionQuestion, partyTrainingClassSessionQuestionTransfer);
             
             if(includePartyTrainingClassSessionAnswers) {
                 partyTrainingClassSessionQuestionTransfer.setPartyTrainingClassSessionAnswers(new ListWrapper<>(trainingControl.getPartyTrainingClassSessionAnswerTransfersByPartyTrainingClassSessionQuestion(userVisit, partyTrainingClassSessionQuestion)));

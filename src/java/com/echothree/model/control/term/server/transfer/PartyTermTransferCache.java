@@ -44,7 +44,7 @@ public class PartyTermTransferCache
             var taxable = partyTerm.getTaxable();
             
             partyTermTransfer = new PartyTermTransfer(party, term, taxable);
-            put(partyTerm, partyTermTransfer);
+            put(userVisit, partyTerm, partyTermTransfer);
         }
         
         return partyTermTransfer;

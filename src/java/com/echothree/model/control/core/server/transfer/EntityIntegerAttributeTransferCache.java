@@ -44,7 +44,7 @@ public class EntityIntegerAttributeTransferCache
             var integerAttribute = entityIntegerAttribute.getIntegerAttribute();
             
             entityIntegerAttributeTransfer = new EntityIntegerAttributeTransfer(entityAttribute, entityInstanceTransfer, integerAttribute);
-            put(entityIntegerAttribute, entityIntegerAttributeTransfer);
+            put(userVisit, entityIntegerAttribute, entityIntegerAttributeTransfer);
         }
         
         return entityIntegerAttributeTransfer;

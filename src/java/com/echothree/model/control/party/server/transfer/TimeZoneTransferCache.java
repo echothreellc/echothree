@@ -68,10 +68,10 @@ public class TimeZoneTransferCache
             var unixTimeZoneName = filterUnixTimeZoneName ? null : timeZoneDetail.getUnixTimeZoneName();
             var isDefault = filterIsDefault ? null : timeZoneDetail.getIsDefault();
             var sortOrder = filterSortOrder ? null : timeZoneDetail.getSortOrder();
-            var description = filterDescription ? null : partyControl.getBestTimeZoneDescription(timeZone, getLanguage());
+            var description = filterDescription ? null : partyControl.getBestTimeZoneDescription(timeZone, getLanguage(userVisit));
             
             timeZoneTransfer = new TimeZoneTransfer(javaTimeZoneName, unixTimeZoneName, isDefault, sortOrder, description);
-            put(timeZone, timeZoneTransfer);
+            put(userVisit, timeZone, timeZoneTransfer);
         }
         
         return timeZoneTransfer;

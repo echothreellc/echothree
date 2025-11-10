@@ -45,7 +45,7 @@ public class LotAliasTransferCache
             var alias = lotAlias.getAlias();
             
             lotAliasTransfer = new LotAliasTransfer(/*lot,*/ lotAliasType, alias);
-            put(lotAlias, lotAliasTransfer);
+            put(userVisit, lotAlias, lotAliasTransfer);
         }
         
         return lotAliasTransfer;

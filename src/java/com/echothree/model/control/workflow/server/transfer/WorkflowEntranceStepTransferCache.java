@@ -37,7 +37,7 @@ public class WorkflowEntranceStepTransferCache
             var workflowStep = workflowControl.getWorkflowStepTransfer(userVisit, workflowEntranceStep.getWorkflowStep());
             
             workflowEntranceStepTransfer = new WorkflowEntranceStepTransfer(workflowEntrance, workflowStep);
-            put(workflowEntranceStep, workflowEntranceStepTransfer);
+            put(userVisit, workflowEntranceStep, workflowEntranceStepTransfer);
         }
         
         return workflowEntranceStepTransfer;

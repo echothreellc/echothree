@@ -39,10 +39,10 @@ public class CarrierTypeTransferCache
             var carrierTypeName = carrierTypeDetail.getCarrierTypeName();
             var isDefault = carrierTypeDetail.getIsDefault();
             var sortOrder = carrierTypeDetail.getSortOrder();
-            var description = carrierControl.getBestCarrierTypeDescription(carrierType, getLanguage());
+            var description = carrierControl.getBestCarrierTypeDescription(carrierType, getLanguage(userVisit));
 
             carrierTypeTransfer = new CarrierTypeTransfer(carrierTypeName, isDefault, sortOrder, description);
-            put(carrierType, carrierTypeTransfer);
+            put(userVisit, carrierType, carrierTypeTransfer);
         }
 
         return carrierTypeTransfer;

@@ -40,10 +40,10 @@ public class ChainTypeTransferCache
             var chainTypeName = chainTypeDetail.getChainTypeName();
             var isDefault = chainTypeDetail.getIsDefault();
             var sortOrder = chainTypeDetail.getSortOrder();
-            var description = chainControl.getBestChainTypeDescription(chainType, getLanguage());
+            var description = chainControl.getBestChainTypeDescription(chainType, getLanguage(userVisit));
             
             chainTypeTransfer = new ChainTypeTransfer(chainKindTransfer, chainTypeName, isDefault, sortOrder, description);
-            put(chainType, chainTypeTransfer);
+            put(userVisit, chainType, chainTypeTransfer);
         }
         
         return chainTypeTransfer;

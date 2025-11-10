@@ -40,10 +40,10 @@ public class SelectorTypeTransferCache
             var selectorTypeName = selectorTypeDetail.getSelectorTypeName();
             var isDefault = selectorTypeDetail.getIsDefault();
             var sortOrder = selectorTypeDetail.getSortOrder();
-            var description = selectorControl.getBestSelectorTypeDescription(selectorType, getLanguage());
+            var description = selectorControl.getBestSelectorTypeDescription(selectorType, getLanguage(userVisit));
             
             selectorTypeTransfer = new SelectorTypeTransfer(selectorKindTransfer, selectorTypeName, isDefault, sortOrder, description);
-            put(selectorType, selectorTypeTransfer);
+            put(userVisit, selectorType, selectorTypeTransfer);
         }
         
         return selectorTypeTransfer;

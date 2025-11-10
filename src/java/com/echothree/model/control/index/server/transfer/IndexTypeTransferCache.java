@@ -51,10 +51,10 @@ public class IndexTypeTransferCache
             var entityTypeTransfer = entityType == null ? null : entityTypeControl.getEntityTypeTransfer(userVisit, entityType);
             var isDefault = indexTypeDetail.getIsDefault();
             var sortOrder = indexTypeDetail.getSortOrder();
-            var description = indexControl.getBestIndexTypeDescription(indexType, getLanguage());
+            var description = indexControl.getBestIndexTypeDescription(indexType, getLanguage(userVisit));
 
             indexTypeTransfer = new IndexTypeTransfer(indexTypeName, entityTypeTransfer, isDefault, sortOrder, description);
-            put(indexType, indexTypeTransfer);
+            put(userVisit, indexType, indexTypeTransfer);
         }
 
         return indexTypeTransfer;

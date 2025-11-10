@@ -44,7 +44,7 @@ public class PartyEntityTypeTransferCache
             var confirmDelete = partyEntityType.getConfirmDelete();
             
             partyEntityTypeTransfer = new PartyEntityTypeTransfer(party, entityType, confirmDelete);
-            put(partyEntityType, partyEntityTypeTransfer);
+            put(userVisit, partyEntityType, partyEntityTypeTransfer);
         }
         
         return partyEntityTypeTransfer;

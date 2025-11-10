@@ -42,7 +42,7 @@ public class ShippingMethodDescriptionTransferCache
             
             shippingMethodDescriptionTransfer = new ShippingMethodDescriptionTransfer(languageTransfer, shippingMethodTransfer,
                     description);
-            put(shippingMethodDescription, shippingMethodDescriptionTransfer);
+            put(userVisit, shippingMethodDescription, shippingMethodDescriptionTransfer);
         }
         
         return shippingMethodDescriptionTransfer;

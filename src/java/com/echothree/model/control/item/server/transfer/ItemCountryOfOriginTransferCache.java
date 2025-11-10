@@ -45,7 +45,7 @@ public class ItemCountryOfOriginTransferCache
             var percent = PercentUtils.getInstance().formatFractionalPercent(unformattedPercent);
             
             itemCountryOfOriginTransfer = new ItemCountryOfOriginTransfer(item, countryGeoCode, unformattedPercent, percent);
-            put(itemCountryOfOrigin, itemCountryOfOriginTransfer);
+            put(userVisit, itemCountryOfOrigin, itemCountryOfOriginTransfer);
         }
         
         return itemCountryOfOriginTransfer;

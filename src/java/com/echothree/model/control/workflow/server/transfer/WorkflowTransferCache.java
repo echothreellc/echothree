@@ -72,11 +72,11 @@ public class WorkflowTransferCache
             var securityRoleGroup = filterSecurityRoleGroup ? null : workflowDetail.getSecurityRoleGroup();
             var securityRoleGroupTransfer = securityRoleGroup == null? null: securityControl.getSecurityRoleGroupTransfer(userVisit, securityRoleGroup);
             var sortOrder = filterSortOrder ? null : workflowDetail.getSortOrder();
-            var description = filterDescription ? null : workflowControl.getBestWorkflowDescription(workflow, getLanguage());
+            var description = filterDescription ? null : workflowControl.getBestWorkflowDescription(workflow, getLanguage(userVisit));
             
             workflowTransfer = new WorkflowTransfer(workflowName, selectorTypeTransfer,
                     securityRoleGroupTransfer, sortOrder, description);
-            put(workflow, workflowTransfer);
+            put(userVisit, workflow, workflowTransfer);
         }
         
         return workflowTransfer;

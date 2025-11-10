@@ -42,10 +42,10 @@ public class LocationTypeTransferCache
             var locationTypeName = locationTypeDetail.getLocationTypeName();
             var isDefault = locationTypeDetail.getIsDefault();
             var sortOrder = locationTypeDetail.getSortOrder();
-            var description = warehouseControl.getBestLocationTypeDescription(locationType, getLanguage());
+            var description = warehouseControl.getBestLocationTypeDescription(locationType, getLanguage(userVisit));
             
             locationTypeTransfer = new LocationTypeTransfer(warehouseTransfer, locationTypeName, isDefault, sortOrder, description);
-            put(locationType, locationTypeTransfer);
+            put(userVisit, locationType, locationTypeTransfer);
         }
         
         return locationTypeTransfer;

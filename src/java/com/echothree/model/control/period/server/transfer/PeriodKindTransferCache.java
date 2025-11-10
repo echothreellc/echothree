@@ -39,10 +39,10 @@ public class PeriodKindTransferCache
             var periodKindName = periodKindDetail.getPeriodKindName();
             var isDefault = periodKindDetail.getIsDefault();
             var sortOrder = periodKindDetail.getSortOrder();
-            var description = periodControl.getBestPeriodKindDescription(periodKind, getLanguage());
+            var description = periodControl.getBestPeriodKindDescription(periodKind, getLanguage(userVisit));
             
             periodKindTransfer = new PeriodKindTransfer(periodKindName, isDefault, sortOrder, description);
-            put(periodKind, periodKindTransfer);
+            put(userVisit, periodKind, periodKindTransfer);
         }
         
         return periodKindTransfer;

@@ -51,11 +51,11 @@ public class CommandMessageTransferCache
             var commandMessageDetail = commandMessage.getLastDetail();
             var commandMessageType = commandControl.getCommandMessageTypeTransfer(userVisit, commandMessageDetail.getCommandMessageType());
             var commandMessageKey = commandMessageDetail.getCommandMessageKey();
-            var commandMessageTranslation = commandControl.getBestCommandMessageTranslation(commandMessage, getLanguage());
+            var commandMessageTranslation = commandControl.getBestCommandMessageTranslation(commandMessage, getLanguage(userVisit));
             var translation = commandMessageTranslation == null ? null : commandMessageTranslation.getTranslation();
     
             commandMessageTransfer = new CommandMessageTransfer(commandMessageType, commandMessageKey, translation);
-            put(commandMessage, commandMessageTransfer);
+            put(userVisit, commandMessage, commandMessageTransfer);
             
             if(includeTranslations) {
                 var commandMessageTranslationTransfers = commandControl.getCommandMessageTranslationTransfersByCommandMessage(userVisit, commandMessage);

@@ -37,10 +37,10 @@ public class ItemAliasChecksumTypeTransferCache
             var itemAliasChecksumTypeName = itemAliasChecksumType.getItemAliasChecksumTypeName();
             var isDefault = itemAliasChecksumType.getIsDefault();
             var sortOrder = itemAliasChecksumType.getSortOrder();
-            var description = itemControl.getBestItemAliasChecksumTypeDescription(itemAliasChecksumType, getLanguage());
+            var description = itemControl.getBestItemAliasChecksumTypeDescription(itemAliasChecksumType, getLanguage(userVisit));
             
             itemAliasChecksumTypeTransfer = new ItemAliasChecksumTypeTransfer(itemAliasChecksumTypeName, isDefault, sortOrder, description);
-            put(itemAliasChecksumType, itemAliasChecksumTypeTransfer);
+            put(userVisit, itemAliasChecksumType, itemAliasChecksumTypeTransfer);
         }
         
         return itemAliasChecksumTypeTransfer;

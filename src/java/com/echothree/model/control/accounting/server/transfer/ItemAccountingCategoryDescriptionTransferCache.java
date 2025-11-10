@@ -42,7 +42,7 @@ public class ItemAccountingCategoryDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, itemAccountingCategoryDescription.getLanguage());
             
             itemAccountingCategoryDescriptionTransfer = new ItemAccountingCategoryDescriptionTransfer(languageTransfer, itemAccountingCategoryTransfer, itemAccountingCategoryDescription.getDescription());
-            put(itemAccountingCategoryDescription, itemAccountingCategoryDescriptionTransfer);
+            put(userVisit, itemAccountingCategoryDescription, itemAccountingCategoryDescriptionTransfer);
         }
         
         return itemAccountingCategoryDescriptionTransfer;

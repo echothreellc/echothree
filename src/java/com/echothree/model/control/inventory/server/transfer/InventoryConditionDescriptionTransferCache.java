@@ -39,7 +39,7 @@ public class InventoryConditionDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, inventoryConditionDescription.getLanguage());
             
             inventoryConditionDescriptionTransfer = new InventoryConditionDescriptionTransfer(languageTransfer, inventoryConditionTransfer, inventoryConditionDescription.getDescription());
-            put(inventoryConditionDescription, inventoryConditionDescriptionTransfer);
+            put(userVisit, inventoryConditionDescription, inventoryConditionDescriptionTransfer);
         }
         
         return inventoryConditionDescriptionTransfer;

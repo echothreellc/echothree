@@ -37,7 +37,7 @@ public class WorkflowDestinationStepTransferCache
             var workflowStep = workflowControl.getWorkflowStepTransfer(userVisit, workflowDestinationStep.getWorkflowStep());
             
             workflowDestinationStepTransfer = new WorkflowDestinationStepTransfer(workflowDestination, workflowStep);
-            put(workflowDestinationStep, workflowDestinationStepTransfer);
+            put(userVisit, workflowDestinationStep, workflowDestinationStepTransfer);
         }
         
         return workflowDestinationStepTransfer;

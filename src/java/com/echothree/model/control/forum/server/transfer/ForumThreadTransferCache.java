@@ -63,11 +63,11 @@ public class ForumThreadTransferCache
             var icon = forumThreadDetail.getIcon();
             var iconTransfer = icon == null? null: iconControl.getIconTransfer(userVisit, icon);
             var unformattedPostedTime = forumThreadDetail.getPostedTime();
-            var postedTime = formatTypicalDateTime(unformattedPostedTime);
+            var postedTime = formatTypicalDateTime(userVisit, unformattedPostedTime);
             var sortOrder = forumThreadDetail.getSortOrder();
                     
             forumThreadTransfer = new ForumThreadTransfer(forumThreadName, iconTransfer, unformattedPostedTime, postedTime, sortOrder);
-            put(forumThread, forumThreadTransfer);
+            put(userVisit, forumThread, forumThreadTransfer);
             
             if(includeForumMessages) {
                 if(hasForumMessageLimits) {

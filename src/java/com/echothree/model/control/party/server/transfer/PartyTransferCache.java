@@ -129,7 +129,7 @@ public class PartyTransferCache
             
             partyTransfer = new PartyTransfer(partyName, partyTypeTransfer, preferredLanguageTransfer, preferredCurrencyTransfer, preferredTimeZoneTransfer, preferredDateTimeFormatTransfer,
                     personTransfer, partyGroupTransfer, profileTransfer);
-            put(party, partyTransfer);
+            put(userVisit, party, partyTransfer);
             
             if(includeUserLogin) {
                 partyTransfer.setUserLogin(userControl.getUserLoginTransfer(userVisit, party));
@@ -140,7 +140,7 @@ public class PartyTransferCache
             }
             
             if(includeDescription) {
-                partyTransfer.setDescription(partyControl.getBestPartyDescription(party, getLanguage()));
+                partyTransfer.setDescription(partyControl.getBestPartyDescription(party, getLanguage(userVisit)));
             }
             
             if(includePartyContactMechanisms) {

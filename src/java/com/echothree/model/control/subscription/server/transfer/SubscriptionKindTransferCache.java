@@ -39,10 +39,10 @@ public class SubscriptionKindTransferCache
             var subscriptionKindName = subscriptionKindDetail.getSubscriptionKindName();
             var isDefault = subscriptionKindDetail.getIsDefault();
             var sortOrder = subscriptionKindDetail.getSortOrder();
-            var description = subscriptionControl.getBestSubscriptionKindDescription(subscriptionKind, getLanguage());
+            var description = subscriptionControl.getBestSubscriptionKindDescription(subscriptionKind, getLanguage(userVisit));
             
             subscriptionKindTransfer = new SubscriptionKindTransfer(subscriptionKindName, isDefault, sortOrder, description);
-            put(subscriptionKind, subscriptionKindTransfer);
+            put(userVisit, subscriptionKind, subscriptionKindTransfer);
         }
         
         return subscriptionKindTransfer;

@@ -45,10 +45,10 @@ public class SearchDefaultOperatorTransferCache
             var searchDefaultOperatorName = searchDefaultOperatorDetail.getSearchDefaultOperatorName();
             var isDefault = searchDefaultOperatorDetail.getIsDefault();
             var sortOrder = searchDefaultOperatorDetail.getSortOrder();
-            var description = searchControl.getBestSearchDefaultOperatorDescription(searchDefaultOperator, getLanguage());
+            var description = searchControl.getBestSearchDefaultOperatorDescription(searchDefaultOperator, getLanguage(userVisit));
 
             searchDefaultOperatorTransfer = new SearchDefaultOperatorTransfer(searchDefaultOperatorName, isDefault, sortOrder, description);
-            put(searchDefaultOperator, searchDefaultOperatorTransfer);
+            put(userVisit, searchDefaultOperator, searchDefaultOperatorTransfer);
         }
 
         return searchDefaultOperatorTransfer;

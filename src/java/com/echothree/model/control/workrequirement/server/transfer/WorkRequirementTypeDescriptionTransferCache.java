@@ -39,7 +39,7 @@ public class WorkRequirementTypeDescriptionTransferCache
             
             workRequirementTypeDescriptionTransfer = new WorkRequirementTypeDescriptionTransfer(languageTransfer, workRequirementTypeTransfer,
                     description);
-            put(workRequirementTypeDescription, workRequirementTypeDescriptionTransfer);
+            put(userVisit, workRequirementTypeDescription, workRequirementTypeDescriptionTransfer);
         }
         
         return workRequirementTypeDescriptionTransfer;

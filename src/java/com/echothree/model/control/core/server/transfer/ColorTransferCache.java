@@ -45,10 +45,10 @@ public class ColorTransferCache
             var blue = colorDetail.getBlue();
             var isDefault = colorDetail.getIsDefault();
             var sortOrder = colorDetail.getSortOrder();
-            var description = colorControl.getBestColorDescription(color, getLanguage());
+            var description = colorControl.getBestColorDescription(color, getLanguage(userVisit));
 
             colorTransfer = new ColorTransfer(colorName, red, green, blue, isDefault, sortOrder, description);
-            put(color, colorTransfer);
+            put(userVisit, color, colorTransfer);
         }
 
         return colorTransfer;

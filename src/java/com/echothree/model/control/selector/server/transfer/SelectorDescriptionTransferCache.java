@@ -38,7 +38,7 @@ public class SelectorDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, selectorDescription.getLanguage());
             
             selectorDescriptionTransfer = new SelectorDescriptionTransfer(languageTransfer, selectorTransfer, selectorDescription.getDescription());
-            put(selectorDescription, selectorDescriptionTransfer);
+            put(userVisit, selectorDescription, selectorDescriptionTransfer);
         }
         
         return selectorDescriptionTransfer;

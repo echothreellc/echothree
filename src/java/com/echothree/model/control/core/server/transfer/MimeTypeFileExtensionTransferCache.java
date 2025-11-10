@@ -41,7 +41,7 @@ public class MimeTypeFileExtensionTransferCache
             var isDefault = mimeTypeFileExtension.getIsDefault();
             
             mimeTypeFileExtensionTransfer = new MimeTypeFileExtensionTransfer(mimeType, fileExtension, isDefault);
-            put(mimeTypeFileExtension, mimeTypeFileExtensionTransfer);
+            put(userVisit, mimeTypeFileExtension, mimeTypeFileExtensionTransfer);
         }
         
         return mimeTypeFileExtensionTransfer;

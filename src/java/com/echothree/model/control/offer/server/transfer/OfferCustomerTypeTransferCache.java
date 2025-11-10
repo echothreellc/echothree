@@ -44,7 +44,7 @@ public class OfferCustomerTypeTransferCache
             var sortOrder = offerCustomerType.getSortOrder();
             
             offerCustomerTypeTransfer = new OfferCustomerTypeTransfer(offer, customerType, isDefault, sortOrder);
-            put(offerCustomerType, offerCustomerTypeTransfer);
+            put(userVisit, offerCustomerType, offerCustomerTypeTransfer);
         }
         
         return offerCustomerTypeTransfer;

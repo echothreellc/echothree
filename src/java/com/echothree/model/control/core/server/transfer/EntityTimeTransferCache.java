@@ -57,15 +57,15 @@ public class EntityTimeTransferCache
         
         if(entityTimeTransfer == null) {
             var unformattedCreatedTime = filterUnformattedCreatedTime ? null : entityTime.getCreatedTime();
-            var createdTime = formatTypicalDateTime(unformattedCreatedTime);
+            var createdTime = formatTypicalDateTime(userVisit, unformattedCreatedTime);
             var unformattedModifiedTime = filterUnformattedModifiedTime ? null : entityTime.getModifiedTime();
-            var modifiedTime = formatTypicalDateTime(unformattedModifiedTime);
+            var modifiedTime = formatTypicalDateTime(userVisit, unformattedModifiedTime);
             var unformattedDeletedTime = filterUnformattedDeletedTime ? null : entityTime.getDeletedTime();
-            var deletedTime = formatTypicalDateTime(unformattedDeletedTime);
+            var deletedTime = formatTypicalDateTime(userVisit, unformattedDeletedTime);
             
             entityTimeTransfer = new EntityTimeTransfer(unformattedCreatedTime, createdTime, unformattedModifiedTime, modifiedTime,
                     unformattedDeletedTime, deletedTime);
-            put(entityTime, entityTimeTransfer);
+            put(userVisit, entityTime, entityTimeTransfer);
         }
 
         return entityTimeTransfer;

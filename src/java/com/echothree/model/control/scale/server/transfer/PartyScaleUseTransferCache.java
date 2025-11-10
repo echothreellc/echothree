@@ -43,7 +43,7 @@ public class PartyScaleUseTransferCache
             var scale = scaleControl.getScaleTransfer(userVisit, partyScaleUse.getScale());
             
             partyScaleUseTransfer = new PartyScaleUseTransfer(party, scaleUseType, scale);
-            put(partyScaleUse, partyScaleUseTransfer);
+            put(userVisit, partyScaleUse, partyScaleUseTransfer);
         }
         
         return partyScaleUseTransfer;

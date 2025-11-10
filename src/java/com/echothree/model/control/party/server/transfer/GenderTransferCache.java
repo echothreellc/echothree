@@ -43,10 +43,10 @@ public class GenderTransferCache
             var genderName = genderDetail.getGenderName();
             var isDefault = genderDetail.getIsDefault();
             var sortOrder = genderDetail.getSortOrder();
-            var description = partyControl.getBestGenderDescription(gender, getLanguage());
+            var description = partyControl.getBestGenderDescription(gender, getLanguage(userVisit));
             
             genderTransfer = new GenderTransfer(genderName, isDefault, sortOrder, description);
-            put(gender, genderTransfer);
+            put(userVisit, gender, genderTransfer);
         }
         
         return genderTransfer;

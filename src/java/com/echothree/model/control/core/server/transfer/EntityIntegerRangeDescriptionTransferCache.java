@@ -42,7 +42,7 @@ public class EntityIntegerRangeDescriptionTransferCache
             
             entityIntegerRangeDescriptionTransfer = new EntityIntegerRangeDescriptionTransfer(languageTransfer, entityIntegerRangeTransfer,
                     entityIntegerRangeDescription.getDescription());
-            put(entityIntegerRangeDescription, entityIntegerRangeDescriptionTransfer);
+            put(userVisit, entityIntegerRangeDescription, entityIntegerRangeDescriptionTransfer);
         }
         return entityIntegerRangeDescriptionTransfer;
     }

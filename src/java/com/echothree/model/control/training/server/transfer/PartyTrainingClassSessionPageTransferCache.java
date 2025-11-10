@@ -37,14 +37,14 @@ public class PartyTrainingClassSessionPageTransferCache
             var partyTrainingClassSessionPageSequence = partyTrainingClassSessionPage.getPartyTrainingClassSessionPageSequence();
             var trainingClassPage = trainingControl.getTrainingClassPageTransfer(userVisit, partyTrainingClassSessionPage.getTrainingClassPage());
             var unformattedReadingStartTime = partyTrainingClassSessionPage.getReadingStartTime();
-            var readingStartTime = formatTypicalDateTime(unformattedReadingStartTime);
+            var readingStartTime = formatTypicalDateTime(userVisit, unformattedReadingStartTime);
             var unformattedReadingEndTime = partyTrainingClassSessionPage.getReadingEndTime();
-            var readingEndTime = formatTypicalDateTime(unformattedReadingEndTime);
+            var readingEndTime = formatTypicalDateTime(userVisit, unformattedReadingEndTime);
 
 
             partyTrainingClassSessionPageTransfer = new PartyTrainingClassSessionPageTransfer(partyTrainingClassSession, partyTrainingClassSessionPageSequence,
                     trainingClassPage, unformattedReadingStartTime, readingStartTime, unformattedReadingEndTime, readingEndTime);
-            put(partyTrainingClassSessionPage, partyTrainingClassSessionPageTransfer);
+            put(userVisit, partyTrainingClassSessionPage, partyTrainingClassSessionPageTransfer);
         }
         
         return partyTrainingClassSessionPageTransfer;

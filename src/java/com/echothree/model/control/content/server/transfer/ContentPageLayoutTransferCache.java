@@ -39,10 +39,10 @@ public class ContentPageLayoutTransferCache
             var contentPageLayoutName = contentPageLayoutDetail.getContentPageLayoutName();
             var isDefault = contentPageLayoutDetail.getIsDefault();
             var sortOrder = contentPageLayoutDetail.getSortOrder();
-            var description = contentControl.getBestContentPageLayoutDescription(contentPageLayout, getLanguage());
+            var description = contentControl.getBestContentPageLayoutDescription(contentPageLayout, getLanguage(userVisit));
             
             contentPageLayoutTransfer = new ContentPageLayoutTransfer(contentPageLayoutName, isDefault, sortOrder, description);
-            put(contentPageLayout, contentPageLayoutTransfer);
+            put(userVisit, contentPageLayout, contentPageLayoutTransfer);
         }
         
         return contentPageLayoutTransfer;

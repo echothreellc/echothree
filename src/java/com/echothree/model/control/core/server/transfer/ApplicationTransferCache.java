@@ -48,10 +48,10 @@ public class ApplicationTransferCache
             var applicationName = applicationDetail.getApplicationName();
             var isDefault = applicationDetail.getIsDefault();
             var sortOrder = applicationDetail.getSortOrder();
-            var description = applicationControl.getBestApplicationDescription(application, getLanguage());
+            var description = applicationControl.getBestApplicationDescription(application, getLanguage(userVisit));
 
             applicationTransfer = new ApplicationTransfer(applicationName, isDefault, sortOrder, description);
-            put(application, applicationTransfer);
+            put(userVisit, application, applicationTransfer);
         }
 
         return applicationTransfer;

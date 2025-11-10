@@ -36,10 +36,10 @@ public class SequenceEncoderTypeTransferCache
             var sequenceEncoderTypeName = sequenceEncoderType.getSequenceEncoderTypeName();
             var isDefault = sequenceEncoderType.getIsDefault();
             var sortOrder = sequenceEncoderType.getSortOrder();
-            var description = sequenceControl.getBestSequenceEncoderTypeDescription(sequenceEncoderType, getLanguage());
+            var description = sequenceControl.getBestSequenceEncoderTypeDescription(sequenceEncoderType, getLanguage(userVisit));
             
             sequenceEncoderTypeTransfer = new SequenceEncoderTypeTransfer(sequenceEncoderTypeName, isDefault, sortOrder, description);
-            put(sequenceEncoderType, sequenceEncoderTypeTransfer);
+            put(userVisit, sequenceEncoderType, sequenceEncoderTypeTransfer);
         }
         return sequenceEncoderTypeTransfer;
     }

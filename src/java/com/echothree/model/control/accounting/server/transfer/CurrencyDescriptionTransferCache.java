@@ -42,7 +42,7 @@ public class CurrencyDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, currencyDescription.getLanguage());
             
             currencyDescriptionTransfer = new CurrencyDescriptionTransfer(languageTransfer, currencyTransfer, currencyDescription.getDescription());
-            put(currencyDescription, currencyDescriptionTransfer);
+            put(userVisit, currencyDescription, currencyDescriptionTransfer);
         }
         
         return currencyDescriptionTransfer;

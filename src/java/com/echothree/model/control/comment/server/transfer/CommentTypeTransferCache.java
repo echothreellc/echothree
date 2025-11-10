@@ -55,11 +55,11 @@ public class CommentTypeTransferCache
             var mimeTypeUsageType = commentTypeDetail.getMimeTypeUsageType();
             var mimeTypeUsageTypeTransfer = mimeTypeUsageType == null? null: mimeTypeControl.getMimeTypeUsageTypeTransfer(userVisit, mimeTypeUsageType);
             var sortOrder = commentTypeDetail.getSortOrder();
-            var description = commentControl.getBestCommentTypeDescription(commentType, getLanguage());
+            var description = commentControl.getBestCommentTypeDescription(commentType, getLanguage(userVisit));
             
             commentTypeTransfer = new CommentTypeTransfer(entityTypeTransfer, commentTypeName, commentSequenceTransfer,
                     workflowEntranceTransfer, mimeTypeUsageTypeTransfer, sortOrder, description);
-            put(commentType, commentTypeTransfer);
+            put(userVisit, commentType, commentTypeTransfer);
         }
         
         return commentTypeTransfer;

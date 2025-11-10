@@ -44,7 +44,7 @@ public class CustomerTypeContactListGroupTransferCache
             var addWhenCreated = customerTypeContactListGroup.getAddWhenCreated();
             
             customerTypeContactListGroupTransfer = new CustomerTypeContactListGroupTransfer(customerTypeTransfer, contactListGroupTransfer, addWhenCreated);
-            put(customerTypeContactListGroup, customerTypeContactListGroupTransfer);
+            put(userVisit, customerTypeContactListGroup, customerTypeContactListGroupTransfer);
         }
         
         return customerTypeContactListGroupTransfer;

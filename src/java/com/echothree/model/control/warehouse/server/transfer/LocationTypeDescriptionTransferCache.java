@@ -38,7 +38,7 @@ public class LocationTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, locationTypeDescription.getLanguage());
             
             locationTypeDescriptionTransfer = new LocationTypeDescriptionTransfer(languageTransfer, locationTypeTransfer, locationTypeDescription.getDescription());
-            put(locationTypeDescription, locationTypeDescriptionTransfer);
+            put(userVisit, locationTypeDescription, locationTypeDescriptionTransfer);
         }
         
         return locationTypeDescriptionTransfer;

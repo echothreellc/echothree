@@ -40,7 +40,7 @@ public class BatchAliasTransferCache
             var alias = batchAlias.getAlias();
             
             batchAliasTransfer = new BatchAliasTransfer(batchAliasType, alias);
-            put(batchAlias, batchAliasTransfer);
+            put(userVisit, batchAlias, batchAliasTransfer);
         }
         
         return batchAliasTransfer;

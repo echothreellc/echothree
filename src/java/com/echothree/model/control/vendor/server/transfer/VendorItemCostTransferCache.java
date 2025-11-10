@@ -56,7 +56,7 @@ public class VendorItemCostTransferCache
             
             vendorItemCostTransfer = new VendorItemCostTransfer(vendorItemTransfer, inventoryConditionTransfer, unitOfMeasureTypeTransfer, unformattedUnitCost,
                     unitCost);
-            put(vendorItemCost, vendorItemCostTransfer);
+            put(userVisit, vendorItemCost, vendorItemCostTransfer);
         }
         
         return vendorItemCostTransfer;

@@ -41,7 +41,7 @@ public class DocumentTypeUsageTransferCache
             
             documentTypeUsageTransfer = new DocumentTypeUsageTransfer(documentTypeUsageTypeTransfer, documentTypeTransfer, isDefault, sortOrder,
                     maximumInstances);
-            put(documentTypeUsage, documentTypeUsageTransfer);
+            put(userVisit, documentTypeUsage, documentTypeUsageTransfer);
         }
         
         return documentTypeUsageTransfer;

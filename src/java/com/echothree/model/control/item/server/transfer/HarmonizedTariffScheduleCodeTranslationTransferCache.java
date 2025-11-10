@@ -47,7 +47,7 @@ public class HarmonizedTariffScheduleCodeTranslationTransferCache
             
             harmonizedTariffScheduleCodeTranslationTransfer = new HarmonizedTariffScheduleCodeTranslationTransfer(languageTransfer,
                     harmonizedTariffScheduleCodeTransfer, description, overviewMimeTypeTransfer, overview);
-            put(harmonizedTariffScheduleCodeTranslation, harmonizedTariffScheduleCodeTranslationTransfer);
+            put(userVisit, harmonizedTariffScheduleCodeTranslation, harmonizedTariffScheduleCodeTranslationTransfer);
         }
         
         return harmonizedTariffScheduleCodeTranslationTransfer;

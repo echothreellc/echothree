@@ -42,11 +42,11 @@ public class LocationNameElementTransferCache
             var offset = locationNameElementDetail.getOffset();
             var length = locationNameElementDetail.getLength();
             var validationPattern = locationNameElementDetail.getValidationPattern();
-            var description = warehouseControl.getBestLocationNameElementDescription(locationNameElement, getLanguage());
+            var description = warehouseControl.getBestLocationNameElementDescription(locationNameElement, getLanguage(userVisit));
             
             locationNameElementTransfer = new LocationNameElementTransfer(locationNameElementName, locationType, offset, length,
                     validationPattern, description);
-            put(locationNameElement, locationNameElementTransfer);
+            put(userVisit, locationNameElement, locationNameElementTransfer);
         }
         
         return locationNameElementTransfer;

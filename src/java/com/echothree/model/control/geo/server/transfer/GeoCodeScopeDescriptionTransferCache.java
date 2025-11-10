@@ -37,7 +37,7 @@ public class GeoCodeScopeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, geoCodeScopeDescription.getLanguage());
             
             geoCodeScopeDescriptionTransfer = new GeoCodeScopeDescriptionTransfer(languageTransfer, geoCodeScopeTransfer, geoCodeScopeDescription.getDescription());
-            put(geoCodeScopeDescription, geoCodeScopeDescriptionTransfer);
+            put(userVisit, geoCodeScopeDescription, geoCodeScopeDescriptionTransfer);
         }
         
         return geoCodeScopeDescriptionTransfer;

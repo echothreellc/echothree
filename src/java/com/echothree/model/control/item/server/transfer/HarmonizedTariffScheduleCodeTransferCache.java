@@ -59,12 +59,12 @@ public class HarmonizedTariffScheduleCodeTransferCache
             var secondHarmonizedTariffScheduleCodeUnitTransfer = secondHarmonizedTariffScheduleCodeUnit == null ? null : itemControl.getHarmonizedTariffScheduleCodeUnitTransfer(userVisit, secondHarmonizedTariffScheduleCodeUnit);
             var isDefault = harmonizedTariffScheduleCodeDetail.getIsDefault();
             var sortOrder = harmonizedTariffScheduleCodeDetail.getSortOrder();
-            var harmonizedTariffScheduleCodeTranslation = itemControl.getBestHarmonizedTariffScheduleCodeTranslation(harmonizedTariffScheduleCode, getLanguage());
+            var harmonizedTariffScheduleCodeTranslation = itemControl.getBestHarmonizedTariffScheduleCodeTranslation(harmonizedTariffScheduleCode, getLanguage(userVisit));
             var description = harmonizedTariffScheduleCodeTranslation == null ? harmonizedTariffScheduleCodeName : harmonizedTariffScheduleCodeTranslation.getDescription();
             
             harmonizedTariffScheduleCodeTransfer = new HarmonizedTariffScheduleCodeTransfer(countryTransfer, harmonizedTariffScheduleCodeName,
                     firstHarmonizedTariffScheduleCodeUnitTransfer, secondHarmonizedTariffScheduleCodeUnitTransfer, isDefault, sortOrder, description);
-            put(harmonizedTariffScheduleCode, harmonizedTariffScheduleCodeTransfer);
+            put(userVisit, harmonizedTariffScheduleCode, harmonizedTariffScheduleCodeTransfer);
             
             if(includeHarmonizedTariffScheduleCodeUses) {
                 var harmonizedTariffScheduleCodeUseTransfers = itemControl.getHarmonizedTariffScheduleCodeUseTransfersByHarmonizedTariffScheduleCode(userVisit, harmonizedTariffScheduleCode);

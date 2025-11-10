@@ -19,14 +19,11 @@ package com.echothree.model.control.sales.server.transfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.batch.server.transfer.GenericBatchTransferCache;
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.order.server.control.OrderBatchControl;
-import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.sales.common.transfer.SalesOrderBatchTransfer;
 import com.echothree.model.control.sales.server.control.SalesOrderBatchControl;
-import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.batch.server.entity.Batch;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -67,7 +64,7 @@ public class SalesOrderBatchTransferCache
             
             salesOrderBatchTransfer = new SalesOrderBatchTransfer(batchTypeTransfer, batchName, currencyTransfer, paymentMethodTransfer, count, amount,
                     getBatchStatus(batch, entityInstance));
-            put(batch, salesOrderBatchTransfer, entityInstance);
+            put(userVisit, batch, salesOrderBatchTransfer, entityInstance);
             
             handleOptions(batch, salesOrderBatchTransfer);
         }

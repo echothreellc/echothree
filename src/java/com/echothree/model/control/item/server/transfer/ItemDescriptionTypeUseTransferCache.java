@@ -38,7 +38,7 @@ public class ItemDescriptionTypeUseTransferCache
             var itemDescriptionTypeUseType = itemControl.getItemDescriptionTypeUseTypeTransfer(userVisit, itemDescriptionTypeUse.getItemDescriptionTypeUseType());
             
             itemDescriptionTypeUseTransfer = new ItemDescriptionTypeUseTransfer(itemDescriptionType, itemDescriptionTypeUseType);
-            put(itemDescriptionTypeUse, itemDescriptionTypeUseTransfer);
+            put(userVisit, itemDescriptionTypeUse, itemDescriptionTypeUseTransfer);
         }
         
         return itemDescriptionTypeUseTransfer;

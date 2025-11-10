@@ -39,11 +39,11 @@ public class TrainingClassPageTransferCache
             var trainingClassSection = trainingControl.getTrainingClassSectionTransfer(userVisit, trainingClassPageDetail.getTrainingClassSection());
             var trainingClassPageName = trainingClassPageDetail.getTrainingClassPageName();
             var sortOrder = trainingClassPageDetail.getSortOrder();
-            var trainingClassPageTranslation = trainingControl.getBestTrainingClassPageTranslation(trainingClassPage, getLanguage());
+            var trainingClassPageTranslation = trainingControl.getBestTrainingClassPageTranslation(trainingClassPage, getLanguage(userVisit));
             var description = trainingClassPageTranslation == null ? trainingClassPageName : trainingClassPageTranslation.getDescription();
             
             trainingClassPageTransfer = new TrainingClassPageTransfer(trainingClassSection, trainingClassPageName, sortOrder, description);
-            put(trainingClassPage, trainingClassPageTransfer);
+            put(userVisit, trainingClassPage, trainingClassPageTransfer);
         }
         
         return trainingClassPageTransfer;

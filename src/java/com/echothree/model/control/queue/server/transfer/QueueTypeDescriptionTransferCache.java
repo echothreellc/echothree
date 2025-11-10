@@ -37,7 +37,7 @@ public class QueueTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, queueTypeDescription.getLanguage());
             
             queueTypeDescriptionTransfer = new QueueTypeDescriptionTransfer(languageTransfer, queueTypeTransfer, queueTypeDescription.getDescription());
-            put(queueTypeDescription, queueTypeDescriptionTransfer);
+            put(userVisit, queueTypeDescription, queueTypeDescriptionTransfer);
         }
         return queueTypeDescriptionTransfer;
     }

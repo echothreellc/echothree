@@ -41,7 +41,7 @@ public class OfferNameElementDescriptionTransferCache
             
             offerNameElementDescriptionTransfer = new OfferNameElementDescriptionTransfer(languageTransfer, offerNameElementTransfer,
                     offerNameElementDescription.getDescription());
-            put(offerNameElementDescription, offerNameElementDescriptionTransfer);
+            put(userVisit, offerNameElementDescription, offerNameElementDescriptionTransfer);
         }
         
         return offerNameElementDescriptionTransfer;

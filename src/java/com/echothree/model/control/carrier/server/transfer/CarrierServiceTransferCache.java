@@ -48,11 +48,11 @@ public class CarrierServiceTransferCache
             var itemSelectorTransfer = itemSelector == null? null: selectorControl.getSelectorTransfer(userVisit, itemSelector);
             var isDefault = carrierServiceDetail.getIsDefault();
             var sortOrder = carrierServiceDetail.getSortOrder();
-            var description = carrierControl.getBestCarrierServiceDescription(carrierService, getLanguage());
+            var description = carrierControl.getBestCarrierServiceDescription(carrierService, getLanguage(userVisit));
             
             carrierServiceTransfer = new CarrierServiceTransfer(carrier, carrierServiceName, geoCodeSelectorTransfer, itemSelectorTransfer, isDefault,
                     sortOrder, description);
-            put(carrierService, carrierServiceTransfer);
+            put(userVisit, carrierService, carrierServiceTransfer);
         }
         
         return carrierServiceTransfer;

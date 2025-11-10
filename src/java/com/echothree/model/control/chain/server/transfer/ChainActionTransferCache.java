@@ -50,10 +50,10 @@ public class ChainActionTransferCache
             var chainActionType = chainActionDetail.getChainActionType();
             var chainActionTypeTransfer = chainControl.getChainActionTypeTransfer(userVisit, chainActionType);
             var sortOrder = chainActionDetail.getSortOrder();
-            var description = chainControl.getBestChainActionDescription(chainAction, getLanguage());
+            var description = chainControl.getBestChainActionDescription(chainAction, getLanguage(userVisit));
 
             chainActionTransfer = new ChainActionTransfer(chainActionSetTransfer, chainActionName, chainActionTypeTransfer, sortOrder, description);
-            put(chainAction, chainActionTransfer);
+            put(userVisit, chainAction, chainActionTransfer);
 
             if(includeRelated) {
                 var chainActionTypeName = chainActionType.getLastDetail().getChainActionTypeName();

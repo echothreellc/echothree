@@ -40,7 +40,7 @@ public class EntityIntegerDefaultTransferCache
             var integerAttribute = entityIntegerDefault.getIntegerAttribute();
             
             entityIntegerDefaultTransfer = new EntityIntegerDefaultTransfer(entityAttribute, integerAttribute);
-            put(entityIntegerDefault, entityIntegerDefaultTransfer);
+            put(userVisit, entityIntegerDefault, entityIntegerDefaultTransfer);
         }
         
         return entityIntegerDefaultTransfer;

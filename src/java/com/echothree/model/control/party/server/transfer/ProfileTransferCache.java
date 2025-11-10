@@ -65,7 +65,7 @@ public class ProfileTransferCache
             profileTransfer = new ProfileTransfer(nickname, iconTransfer, pronunciation, genderTransfer, pronouns, birthday,
                     unformattedBirthday, birthdayFormat, occupation, hobbies, location, bioMimeTypeTransfer, bio,
                     signatureMimeTypeTransfer, signature);
-            put(profile, profileTransfer);
+            put(userVisit, profile, profileTransfer);
         }
         
         return profileTransfer;

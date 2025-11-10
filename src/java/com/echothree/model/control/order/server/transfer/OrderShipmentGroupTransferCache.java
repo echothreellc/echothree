@@ -54,7 +54,7 @@ public class OrderShipmentGroupTransferCache
             
             orderShipmentGroupTransfer = new OrderShipmentGroupTransfer(orderShipmentGroupSequence, itemDeliveryTypeTransfer, isDefault,
                     partyContactMechanismTransfer, shippingMethodTransfer, holdUntilComplete);
-            put(orderShipmentGroup, orderShipmentGroupTransfer);
+            put(userVisit, orderShipmentGroup, orderShipmentGroupTransfer);
         }
         
         return orderShipmentGroupTransfer;

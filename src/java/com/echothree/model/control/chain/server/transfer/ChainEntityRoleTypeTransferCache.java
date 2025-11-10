@@ -44,10 +44,10 @@ public class ChainEntityRoleTypeTransferCache
             var chainEntityRoleTypeName = chainEntityRoleTypeDetail.getChainEntityRoleTypeName();
             var entityType = entityTypeControl.getEntityTypeTransfer(userVisit, chainEntityRoleTypeDetail.getEntityType());
             var sortOrder = chainEntityRoleTypeDetail.getSortOrder();
-            var description = chainControl.getBestChainEntityRoleTypeDescription(chainEntityRoleType, getLanguage());
+            var description = chainControl.getBestChainEntityRoleTypeDescription(chainEntityRoleType, getLanguage(userVisit));
             
             chainEntityRoleTypeTransfer = new ChainEntityRoleTypeTransfer(chainType, chainEntityRoleTypeName, entityType, sortOrder, description);
-            put(chainEntityRoleType, chainEntityRoleTypeTransfer);
+            put(userVisit, chainEntityRoleType, chainEntityRoleTypeTransfer);
         }
         
         return chainEntityRoleTypeTransfer;

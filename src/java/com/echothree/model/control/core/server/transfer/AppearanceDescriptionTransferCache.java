@@ -42,7 +42,7 @@ public class AppearanceDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, appearanceDescription.getLanguage());
             
             appearanceDescriptionTransfer = new AppearanceDescriptionTransfer(languageTransfer, appearanceTransfer, appearanceDescription.getDescription());
-            put(appearanceDescription, appearanceDescriptionTransfer);
+            put(userVisit, appearanceDescription, appearanceDescriptionTransfer);
         }
         return appearanceDescriptionTransfer;
     }
