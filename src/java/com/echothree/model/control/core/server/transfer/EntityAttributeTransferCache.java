@@ -113,70 +113,65 @@ public class EntityAttributeTransferCache
 
             var entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
             switch(EntityAttributeTypes.valueOf(entityAttributeTypeName)) {
-                case BLOB:
+                case BLOB -> {
                     if(!filterCheckContentWebAddress) {
                         var entityAttributeBlob = coreControl.getEntityAttributeBlob(entityAttribute);
-                        
+
                         entityAttributeTransfer.setCheckContentWebAddress(entityAttributeBlob.getCheckContentWebAddress());
                     }
-                    break;
-                case STRING:
+                }
+                case STRING -> {
                     if(!filterValidationPattern) {
                         var entityAttributeString = coreControl.getEntityAttributeString(entityAttribute);
-                        
+
                         if(entityAttributeString != null) {
                             entityAttributeTransfer.setValidationPattern(filterValidationPattern ? null : entityAttributeString.getValidationPattern());
                         }
                     }
-                    break;
-                case INTEGER: {
+                }
+                case INTEGER -> {
                     // TODO
-                    
+
                     if(!filterUnitOfMeasureType) {
                         var entityAttributeNumeric = coreControl.getEntityAttributeNumeric(entityAttribute);
-                        
+
                         if(entityAttributeNumeric != null) {
                             if(!filterUnitOfMeasureType) {
                                 var unitOfMeasureType = entityAttributeNumeric.getUnitOfMeasureType();
-                                
+
                                 entityAttributeTransfer.setUnitOfMeasureType(unitOfMeasureType == null ? null : uomControl.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureType));
                             }
                         }
                     }
                 }
-                break;
-                case LONG: {
+                case LONG -> {
                     // TODO
-                    
                     if(!filterUnitOfMeasureType) {
                         var entityAttributeNumeric = coreControl.getEntityAttributeNumeric(entityAttribute);
-                        
+
                         if(entityAttributeNumeric != null) {
                             if(!filterUnitOfMeasureType) {
                                 var unitOfMeasureType = entityAttributeNumeric.getUnitOfMeasureType();
-                                
+
                                 entityAttributeTransfer.setUnitOfMeasureType(unitOfMeasureType == null ? null : uomControl.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureType));
                             }
                         }
                     }
                 }
-                break;
-                case LISTITEM:
-                case MULTIPLELISTITEM:
+                case LISTITEM, MULTIPLELISTITEM -> {
                     if(!filterEntityListItemSequence) {
                         var entityAttributeListItem = coreControl.getEntityAttributeListItem(entityAttribute);
-                        
+
                         if(entityAttributeListItem != null) {
                             if(!filterEntityListItemSequence) {
                                 var entityListItemSequence = entityAttributeListItem.getEntityListItemSequence();
-                                
+
                                 entityAttributeTransfer.setEntityListItemSequence(entityListItemSequence == null ? null : sequenceControl.getSequenceTransfer(userVisit, entityListItemSequence));
                             }
                         }
                     }
-                    break;
-                default:
-                    break;
+                }
+                default -> {}
             }
             
             if(entityInstance == null) {
