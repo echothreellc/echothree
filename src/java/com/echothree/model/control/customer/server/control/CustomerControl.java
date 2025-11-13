@@ -332,12 +332,12 @@ public class CustomerControl
         List<CustomerTypeTransfer> customerTypeTransfers = null;
 
         if(customerTypes != null) {
-            var customerTypeTransferCache = getCustomerTransferCaches(userVisit).getCustomerTypeTransferCache();
+            var customerTypeTransferCache = getCustomerTransferCaches().getCustomerTypeTransferCache();
 
             customerTypeTransfers = new ArrayList<>(customerTypes.size());
 
             for(var customerType : customerTypes) {
-                customerTypeTransfers.add(customerTypeTransferCache.getCustomerTypeTransfer(customerType));
+                customerTypeTransfers.add(customerTypeTransferCache.getCustomerTypeTransfer(userVisit, customerType));
             }
         }
 
@@ -577,12 +577,12 @@ public class CustomerControl
         List<CustomerTypeDescriptionTransfer> customerTypeDescriptionTransfers = null;
         
         if(customerTypeDescriptions != null) {
-            var customerTypeDescriptionTransferCache = getCustomerTransferCaches(userVisit).getCustomerTypeDescriptionTransferCache();
+            var customerTypeDescriptionTransferCache = getCustomerTransferCaches().getCustomerTypeDescriptionTransferCache();
             
             customerTypeDescriptionTransfers = new ArrayList<>(customerTypeDescriptions.size());
             
             for(var customerTypeDescription : customerTypeDescriptions) {
-                customerTypeDescriptionTransfers.add(customerTypeDescriptionTransferCache.getCustomerTypeDescriptionTransfer(customerTypeDescription));
+                customerTypeDescriptionTransfers.add(customerTypeDescriptionTransferCache.getCustomerTypeDescriptionTransfer(userVisit, customerTypeDescription));
             }
         }
         
@@ -791,10 +791,10 @@ public class CustomerControl
 
     public List<CustomerTransfer> getCustomerTransfers(UserVisit userVisit, Collection<Customer> customers) {
         var customerTransfers = new ArrayList<CustomerTransfer>(customers.size());
-        var customerTransferCache = getCustomerTransferCaches(userVisit).getCustomerTransferCache();
+        var customerTransferCache = getCustomerTransferCaches().getCustomerTransferCache();
 
         customers.forEach((customer) ->
-                customerTransfers.add(customerTransferCache.getTransfer(customer))
+                customerTransfers.add(customerTransferCache.getTransfer(userVisit, customer))
         );
 
         return customerTransfers;
@@ -1097,10 +1097,10 @@ public class CustomerControl
     private List<CustomerTypePaymentMethodTransfer> getCustomerTypePaymentMethodTransfersByPaymentMethod(UserVisit userVisit,
             List<CustomerTypePaymentMethod> customerTypePaymentMethods) {
         List<CustomerTypePaymentMethodTransfer> customerTypePaymentMethodTransfers = new ArrayList<>(customerTypePaymentMethods.size());
-        var customerTypePaymentMethodTransferCache = getCustomerTransferCaches(userVisit).getCustomerTypePaymentMethodTransferCache();
+        var customerTypePaymentMethodTransferCache = getCustomerTransferCaches().getCustomerTypePaymentMethodTransferCache();
 
         for(var customerTypePaymentMethod : customerTypePaymentMethods) {
-            customerTypePaymentMethodTransfers.add(customerTypePaymentMethodTransferCache.getCustomerTypePaymentMethodTransfer(customerTypePaymentMethod));
+            customerTypePaymentMethodTransfers.add(customerTypePaymentMethodTransferCache.getCustomerTypePaymentMethodTransfer(userVisit, customerTypePaymentMethod));
         }
 
         return customerTypePaymentMethodTransfers;
@@ -1393,10 +1393,10 @@ public class CustomerControl
     private List<CustomerTypeShippingMethodTransfer> getCustomerTypeShippingMethodTransfersByShippingMethod(UserVisit userVisit,
             List<CustomerTypeShippingMethod> customerTypeShippingMethods) {
         List<CustomerTypeShippingMethodTransfer> customerTypeShippingMethodTransfers = new ArrayList<>(customerTypeShippingMethods.size());
-        var customerTypeShippingMethodTransferCache = getCustomerTransferCaches(userVisit).getCustomerTypeShippingMethodTransferCache();
+        var customerTypeShippingMethodTransferCache = getCustomerTransferCaches().getCustomerTypeShippingMethodTransferCache();
 
         for(var customerTypeShippingMethod : customerTypeShippingMethods) {
-            customerTypeShippingMethodTransfers.add(customerTypeShippingMethodTransferCache.getCustomerTypeShippingMethodTransfer(customerTypeShippingMethod));
+            customerTypeShippingMethodTransfers.add(customerTypeShippingMethodTransferCache.getCustomerTypeShippingMethodTransfer(userVisit, customerTypeShippingMethod));
         }
 
         return customerTypeShippingMethodTransfers;

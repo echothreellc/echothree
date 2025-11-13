@@ -187,10 +187,10 @@ public class PaymentProcessorActionTypeControl
     public List<PaymentProcessorActionTypeTransfer> getPaymentProcessorActionTypeTransfers(final UserVisit userVisit,
             final Collection<PaymentProcessorActionType> paymentProcessorActionTypes) {
         var paymentProcessorActionTypeTransfers = new ArrayList<PaymentProcessorActionTypeTransfer>(paymentProcessorActionTypes.size());
-        var paymentProcessorActionTypeTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorActionTypeTransferCache();
+        var paymentProcessorActionTypeTransferCache = getPaymentTransferCaches().getPaymentProcessorActionTypeTransferCache();
 
         paymentProcessorActionTypes.forEach((paymentProcessorActionType) ->
-                paymentProcessorActionTypeTransfers.add(paymentProcessorActionTypeTransferCache.getTransfer(paymentProcessorActionType))
+                paymentProcessorActionTypeTransfers.add(paymentProcessorActionTypeTransferCache.getTransfer(userVisit, paymentProcessorActionType))
         );
 
         return paymentProcessorActionTypeTransfers;
@@ -417,10 +417,10 @@ public class PaymentProcessorActionTypeControl
             final PaymentProcessorActionType paymentProcessorActionType) {
         var paymentProcessorActionTypeDescriptions = getPaymentProcessorActionTypeDescriptionsByPaymentProcessorActionType(paymentProcessorActionType);
         var paymentProcessorActionTypeDescriptionTransfers = new ArrayList<PaymentProcessorActionTypeDescriptionTransfer>(paymentProcessorActionTypeDescriptions.size());
-        var paymentProcessorActionTypeDescriptionTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorActionTypeDescriptionTransferCache();
+        var paymentProcessorActionTypeDescriptionTransferCache = getPaymentTransferCaches().getPaymentProcessorActionTypeDescriptionTransferCache();
 
         paymentProcessorActionTypeDescriptions.forEach((paymentProcessorActionTypeDescription) ->
-                paymentProcessorActionTypeDescriptionTransfers.add(paymentProcessorActionTypeDescriptionTransferCache.getTransfer(paymentProcessorActionTypeDescription))
+                paymentProcessorActionTypeDescriptionTransfers.add(paymentProcessorActionTypeDescriptionTransferCache.getTransfer(userVisit, paymentProcessorActionTypeDescription))
         );
 
         return paymentProcessorActionTypeDescriptionTransfers;

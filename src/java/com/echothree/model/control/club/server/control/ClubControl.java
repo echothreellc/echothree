@@ -283,10 +283,10 @@ public class ClubControl
     public List<ClubTransfer> getClubTransfers(UserVisit userVisit) {
         var clubs = getClubs();
         List<ClubTransfer> clubTransfers = new ArrayList<>(clubs.size());
-        var clubTransferCache = getClubTransferCaches(userVisit).getClubTransferCache();
+        var clubTransferCache = getClubTransferCaches().getClubTransferCache();
         
         clubs.forEach((club) ->
-                clubTransfers.add(clubTransferCache.getClubTransfer(club))
+                clubTransfers.add(clubTransferCache.getClubTransfer(userVisit, club))
         );
         
         return clubTransfers;
@@ -504,10 +504,10 @@ public class ClubControl
             Club club) {
         var clubDescriptions = getClubDescriptionsByClub(club);
         List<ClubDescriptionTransfer> clubDescriptionTransfers = new ArrayList<>(clubDescriptions.size());
-        var clubDescriptionTransferCache = getClubTransferCaches(userVisit).getClubDescriptionTransferCache();
+        var clubDescriptionTransferCache = getClubTransferCaches().getClubDescriptionTransferCache();
         
         clubDescriptions.forEach((clubDescription) ->
-                clubDescriptionTransfers.add(clubDescriptionTransferCache.getClubDescriptionTransfer(clubDescription))
+                clubDescriptionTransfers.add(clubDescriptionTransferCache.getClubDescriptionTransfer(userVisit, clubDescription))
         );
         
         return clubDescriptionTransfers;
@@ -618,10 +618,10 @@ public class ClubControl
     public List<ClubItemTypeTransfer> getClubItemTypeTransfers(UserVisit userVisit) {
         var clubItemTypes = getClubItemTypes();
         List<ClubItemTypeTransfer> clubItemTypeTransfers = new ArrayList<>(clubItemTypes.size());
-        var clubItemTypeTransferCache = getClubTransferCaches(userVisit).getClubItemTypeTransferCache();
+        var clubItemTypeTransferCache = getClubTransferCaches().getClubItemTypeTransferCache();
         
         clubItemTypes.forEach((clubItemType) ->
-                clubItemTypeTransfers.add(clubItemTypeTransferCache.getClubItemTypeTransfer(clubItemType))
+                clubItemTypeTransfers.add(clubItemTypeTransferCache.getClubItemTypeTransfer(userVisit, clubItemType))
         );
         
         return clubItemTypeTransfers;
@@ -815,10 +815,10 @@ public class ClubControl
     
     private List<ClubItemTransfer> getClubItemTransfers(UserVisit userVisit, Collection<ClubItem> clubItems) {
         List<ClubItemTransfer> clubItemTransfers = new ArrayList<>(clubItems.size());
-        var clubItemTransferCache = getClubTransferCaches(userVisit).getClubItemTransferCache();
+        var clubItemTransferCache = getClubTransferCaches().getClubItemTransferCache();
         
         clubItems.forEach((clubItem) ->
-                clubItemTransfers.add(clubItemTransferCache.getClubItemTransfer(clubItem))
+                clubItemTransfers.add(clubItemTransferCache.getClubItemTransfer(userVisit, clubItem))
         );
         
         return clubItemTransfers;

@@ -270,10 +270,10 @@ public class PeriodControl
     public List<PeriodKindTransfer> getPeriodKindTransfers(UserVisit userVisit) {
         var periodKinds = getPeriodKinds();
         List<PeriodKindTransfer> periodKindTransfers = new ArrayList<>(periodKinds.size());
-        var periodKindTransferCache = getPeriodTransferCaches(userVisit).getPeriodKindTransferCache();
+        var periodKindTransferCache = getPeriodTransferCaches().getPeriodKindTransferCache();
         
         periodKinds.forEach((periodKind) ->
-                periodKindTransfers.add(periodKindTransferCache.getPeriodKindTransfer(periodKind))
+                periodKindTransfers.add(periodKindTransferCache.getPeriodKindTransfer(userVisit, periodKind))
         );
         
         return periodKindTransfers;
@@ -742,10 +742,10 @@ public class PeriodControl
     public List<PeriodTypeTransfer> getPeriodTypeTransfersByPeriodKind(UserVisit userVisit, PeriodKind periodKind) {
         var periodTypes = getPeriodTypes(periodKind);
         List<PeriodTypeTransfer> periodTypeTransfers = new ArrayList<>(periodTypes.size());
-        var periodTypeTransferCache = getPeriodTransferCaches(userVisit).getPeriodTypeTransferCache();
+        var periodTypeTransferCache = getPeriodTransferCaches().getPeriodTypeTransferCache();
         
         periodTypes.forEach((periodType) ->
-                periodTypeTransfers.add(periodTypeTransferCache.getPeriodTypeTransfer(periodType))
+                periodTypeTransfers.add(periodTypeTransferCache.getPeriodTypeTransfer(userVisit, periodType))
         );
         
         return periodTypeTransfers;
@@ -1230,10 +1230,10 @@ public class PeriodControl
     public List<PeriodTransfer> getPeriodTransfersByPeriodType(UserVisit userVisit, PeriodType periodType) {
         var periods = getPeriods(periodType);
         List<PeriodTransfer> periodTransfers = new ArrayList<>(periods.size());
-        var periodTransferCache = getPeriodTransferCaches(userVisit).getPeriodTransferCache();
+        var periodTransferCache = getPeriodTransferCaches().getPeriodTransferCache();
         
         periods.forEach((period) ->
-                periodTransfers.add(periodTransferCache.getPeriodTransfer(period))
+                periodTransfers.add(periodTransferCache.getPeriodTransfer(userVisit, period))
         );
         
         return periodTransfers;

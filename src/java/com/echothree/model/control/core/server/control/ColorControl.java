@@ -218,10 +218,10 @@ public class ColorControl
 
     public List<ColorTransfer> getColorTransfers(UserVisit userVisit, Collection<Color> entities) {
         List<ColorTransfer> transfers = new ArrayList<>(entities.size());
-        var transferCache = getCoreTransferCaches(userVisit).getColorTransferCache();
+        var TransferCache = getCoreTransferCaches().getColorTransferCache();
 
         entities.forEach((entity) ->
-                transfers.add(transferCache.getColorTransfer(entity))
+                Transfers.add(TransferCache.getColorTransfer(userVisit, entity))
         );
 
         return transfers;
@@ -464,10 +464,10 @@ public class ColorControl
     public List<ColorDescriptionTransfer> getColorDescriptionTransfersByColor(UserVisit userVisit, Color color) {
         var colorDescriptions = getColorDescriptionsByColor(color);
         List<ColorDescriptionTransfer> colorDescriptionTransfers = new ArrayList<>(colorDescriptions.size());
-        var colorDescriptionTransferCache = getCoreTransferCaches(userVisit).getColorDescriptionTransferCache();
+        var colorDescriptionTransferCache = getCoreTransferCaches().getColorDescriptionTransferCache();
 
         colorDescriptions.forEach((colorDescription) ->
-                colorDescriptionTransfers.add(colorDescriptionTransferCache.getColorDescriptionTransfer(colorDescription))
+                colorDescriptionTransfers.add(colorDescriptionTransferCache.getColorDescriptionTransfer(userVisit, colorDescription))
         );
 
         return colorDescriptionTransfers;

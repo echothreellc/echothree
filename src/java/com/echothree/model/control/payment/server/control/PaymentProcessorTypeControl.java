@@ -189,10 +189,10 @@ public class PaymentProcessorTypeControl
     public List<PaymentProcessorTypeTransfer> getPaymentProcessorTypeTransfers(final UserVisit userVisit,
             final Collection<PaymentProcessorType> paymentProcessorTypes) {
         var paymentProcessorTypeTransfers = new ArrayList<PaymentProcessorTypeTransfer>(paymentProcessorTypes.size());
-        var paymentProcessorTypeTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorTypeTransferCache();
+        var paymentProcessorTypeTransferCache = getPaymentTransferCaches().getPaymentProcessorTypeTransferCache();
 
         paymentProcessorTypes.forEach((paymentProcessorType) ->
-                paymentProcessorTypeTransfers.add(paymentProcessorTypeTransferCache.getTransfer(paymentProcessorType))
+                paymentProcessorTypeTransfers.add(paymentProcessorTypeTransferCache.getTransfer(userVisit, paymentProcessorType))
         );
 
         return paymentProcessorTypeTransfers;
@@ -419,10 +419,10 @@ public class PaymentProcessorTypeControl
             final PaymentProcessorType paymentProcessorType) {
         var paymentProcessorTypeDescriptions = getPaymentProcessorTypeDescriptionsByPaymentProcessorType(paymentProcessorType);
         var paymentProcessorTypeDescriptionTransfers = new ArrayList<PaymentProcessorTypeDescriptionTransfer>(paymentProcessorTypeDescriptions.size());
-        var paymentProcessorTypeDescriptionTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorTypeDescriptionTransferCache();
+        var paymentProcessorTypeDescriptionTransferCache = getPaymentTransferCaches().getPaymentProcessorTypeDescriptionTransferCache();
 
         paymentProcessorTypeDescriptions.forEach((paymentProcessorTypeDescription) ->
-                paymentProcessorTypeDescriptionTransfers.add(paymentProcessorTypeDescriptionTransferCache.getTransfer(paymentProcessorTypeDescription))
+                paymentProcessorTypeDescriptionTransfers.add(paymentProcessorTypeDescriptionTransferCache.getTransfer(userVisit, paymentProcessorTypeDescription))
         );
 
         return paymentProcessorTypeDescriptionTransfers;

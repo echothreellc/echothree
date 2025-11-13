@@ -266,10 +266,10 @@ public class WorkRequirementControl
     public List<WorkRequirementTypeTransfer> getWorkRequirementTypeTransfers(UserVisit userVisit, WorkEffortType workEffortType) {
         var workRequirementTypes = getWorkRequirementTypes(workEffortType);
         List<WorkRequirementTypeTransfer> workRequirementTypeTransfers = new ArrayList<>(workRequirementTypes.size());
-        var workRequirementTypeTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkRequirementTypeTransferCache();
+        var workRequirementTypeTransferCache = getWorkRequirementTransferCaches().getWorkRequirementTypeTransferCache();
         
         workRequirementTypes.forEach((workRequirementType) ->
-                workRequirementTypeTransfers.add(workRequirementTypeTransferCache.getWorkRequirementTypeTransfer(workRequirementType))
+                workRequirementTypeTransfers.add(workRequirementTypeTransferCache.getWorkRequirementTypeTransfer(userVisit, workRequirementType))
         );
         
         return workRequirementTypeTransfers;
@@ -458,10 +458,10 @@ public class WorkRequirementControl
     public List<WorkRequirementTypeDescriptionTransfer> getWorkRequirementTypeDescriptionTransfers(UserVisit userVisit, WorkRequirementType workRequirementType) {
         var workRequirementTypeDescriptions = getWorkRequirementTypeDescriptionsByWorkRequirementType(workRequirementType);
         List<WorkRequirementTypeDescriptionTransfer> workRequirementTypeDescriptionTransfers = new ArrayList<>(workRequirementTypeDescriptions.size());
-        var workRequirementTypeDescriptionTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkRequirementTypeDescriptionTransferCache();
+        var workRequirementTypeDescriptionTransferCache = getWorkRequirementTransferCaches().getWorkRequirementTypeDescriptionTransferCache();
         
         workRequirementTypeDescriptions.forEach((workRequirementTypeDescription) ->
-                workRequirementTypeDescriptionTransfers.add(workRequirementTypeDescriptionTransferCache.getWorkRequirementTypeDescriptionTransfer(workRequirementTypeDescription))
+                workRequirementTypeDescriptionTransfers.add(workRequirementTypeDescriptionTransferCache.getWorkRequirementTypeDescriptionTransfer(userVisit, workRequirementTypeDescription))
         );
         
         return workRequirementTypeDescriptionTransfers;
@@ -699,10 +699,10 @@ public class WorkRequirementControl
     
     public List<WorkRequirementScopeTransfer> getWorkRequirementScopeTransfers(UserVisit userVisit, Collection<WorkRequirementScope> workRequirementScopes) {
         List<WorkRequirementScopeTransfer> workRequirementScopeTransfers = new ArrayList<>(workRequirementScopes.size());
-        var workRequirementScopeTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkRequirementScopeTransferCache();
+        var workRequirementScopeTransferCache = getWorkRequirementTransferCaches().getWorkRequirementScopeTransferCache();
         
         workRequirementScopes.forEach((workRequirementScope) ->
-                workRequirementScopeTransfers.add(workRequirementScopeTransferCache.getWorkRequirementScopeTransfer(workRequirementScope))
+                workRequirementScopeTransfers.add(workRequirementScopeTransferCache.getWorkRequirementScopeTransfer(userVisit, workRequirementScope))
         );
         
         return workRequirementScopeTransfers;
@@ -961,10 +961,10 @@ public class WorkRequirementControl
     
     public List<WorkRequirementTransfer> getWorkRequirementTransfers(UserVisit userVisit, Collection<WorkRequirement> workRequirements) {
         List<WorkRequirementTransfer> workRequirementTransfers = new ArrayList<>(workRequirements.size());
-        var workRequirementTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkRequirementTransferCache();
+        var workRequirementTransferCache = getWorkRequirementTransferCaches().getWorkRequirementTransferCache();
         
         workRequirements.forEach((workRequirement) ->
-                workRequirementTransfers.add(workRequirementTransferCache.getWorkRequirementTransfer(workRequirement))
+                workRequirementTransfers.add(workRequirementTransferCache.getWorkRequirementTransfer(userVisit, workRequirement))
         );
         
         return workRequirementTransfers;
@@ -1266,10 +1266,10 @@ public class WorkRequirementControl
 
     public List<WorkAssignmentTransfer> getWorkAssignmentTransfers(UserVisit userVisit, Collection<WorkAssignment> workAssignments) {
         List<WorkAssignmentTransfer> workAssignmentTransfers = new ArrayList<>(workAssignments.size());
-        var workAssignmentTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkAssignmentTransferCache();
+        var workAssignmentTransferCache = getWorkRequirementTransferCaches().getWorkAssignmentTransferCache();
 
         workAssignments.forEach((workAssignment) ->
-                workAssignmentTransfers.add(workAssignmentTransferCache.getWorkAssignmentTransfer(workAssignment))
+                workAssignmentTransfers.add(workAssignmentTransferCache.getWorkAssignmentTransfer(userVisit, workAssignment))
         );
 
         return workAssignmentTransfers;
@@ -1516,10 +1516,10 @@ public class WorkRequirementControl
     
     public List<WorkTimeTransfer> getWorkTimeTransfers(UserVisit userVisit, Collection<WorkTime> workTimes) {
         List<WorkTimeTransfer> workTimeTransfers = new ArrayList<>(workTimes.size());
-        var workTimeTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkTimeTransferCache();
+        var workTimeTransferCache = getWorkRequirementTransferCaches().getWorkTimeTransferCache();
 
         workTimes.forEach((workTime) ->
-                workTimeTransfers.add(workTimeTransferCache.getWorkTimeTransfer(workTime))
+                workTimeTransfers.add(workTimeTransferCache.getWorkTimeTransfer(userVisit, workTime))
         );
 
         return workTimeTransfers;

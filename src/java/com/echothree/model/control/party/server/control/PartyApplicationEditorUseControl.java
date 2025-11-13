@@ -214,10 +214,10 @@ public class PartyApplicationEditorUseControl
 
     public List<PartyApplicationEditorUseTransfer> getPartyApplicationEditorUseTransfers(List<PartyApplicationEditorUse> partyApplicationEditorUses, UserVisit userVisit) {
         List<PartyApplicationEditorUseTransfer> partyApplicationEditorUseTransfers = new ArrayList<>(partyApplicationEditorUses.size());
-        var partyApplicationEditorUseTransferCache = getPartyTransferCaches(userVisit).getPartyApplicationEditorUseTransferCache();
+        var partyApplicationEditorUseTransferCache = getPartyTransferCaches().getPartyApplicationEditorUseTransferCache();
 
         partyApplicationEditorUses.forEach((partyApplicationEditorUse) ->
-                partyApplicationEditorUseTransfers.add(partyApplicationEditorUseTransferCache.getPartyApplicationEditorUseTransfer(partyApplicationEditorUse))
+                partyApplicationEditorUseTransfers.add(partyApplicationEditorUseTransferCache.getPartyApplicationEditorUseTransfer(userVisit, partyApplicationEditorUse))
         );
 
         return partyApplicationEditorUseTransfers;

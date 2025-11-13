@@ -172,10 +172,10 @@ public class LotControl
 
     public List<LotTransfer> getLotTransfers(final UserVisit userVisit, final Collection<Lot> lots) {
         var lotTransfers = new ArrayList<LotTransfer>(lots.size());
-        var lotTransferCache = getInventoryTransferCaches(userVisit).getLotTransferCache();
+        var lotTransferCache = getInventoryTransferCaches().getLotTransferCache();
 
         lots.forEach((lot) ->
-                lotTransfers.add(lotTransferCache.getTransfer(lot))
+                lotTransfers.add(lotTransferCache.getTransfer(userVisit, lot))
         );
 
         return lotTransfers;

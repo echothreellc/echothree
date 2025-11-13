@@ -275,10 +275,10 @@ public class ShipmentControl
     public List<ShipmentTypeTransfer> getShipmentTypeTransfers(UserVisit userVisit) {
         var shipmentTypes = getShipmentTypes();
         List<ShipmentTypeTransfer> shipmentTypeTransfers = new ArrayList<>(shipmentTypes.size());
-        var shipmentTypeTransferCache = getShipmentTransferCaches(userVisit).getShipmentTypeTransferCache();
+        var shipmentTypeTransferCache = getShipmentTransferCaches().getShipmentTypeTransferCache();
 
         shipmentTypes.forEach((shipmentType) ->
-                shipmentTypeTransfers.add(shipmentTypeTransferCache.getTransfer(shipmentType))
+                shipmentTypeTransfers.add(shipmentTypeTransferCache.getTransfer(userVisit, shipmentType))
         );
 
         return shipmentTypeTransfers;
@@ -549,10 +549,10 @@ public class ShipmentControl
     public List<ShipmentTypeDescriptionTransfer> getShipmentTypeDescriptionTransfersByShipmentType(UserVisit userVisit, ShipmentType shipmentType) {
         var shipmentTypeDescriptions = getShipmentTypeDescriptionsByShipmentType(shipmentType);
         List<ShipmentTypeDescriptionTransfer> shipmentTypeDescriptionTransfers = new ArrayList<>(shipmentTypeDescriptions.size());
-        var shipmentTypeDescriptionTransferCache = getShipmentTransferCaches(userVisit).getShipmentTypeDescriptionTransferCache();
+        var shipmentTypeDescriptionTransferCache = getShipmentTransferCaches().getShipmentTypeDescriptionTransferCache();
 
         shipmentTypeDescriptions.forEach((shipmentTypeDescription) ->
-                shipmentTypeDescriptionTransfers.add(shipmentTypeDescriptionTransferCache.getTransfer(shipmentTypeDescription))
+                shipmentTypeDescriptionTransfers.add(shipmentTypeDescriptionTransferCache.getTransfer(userVisit, shipmentTypeDescription))
         );
 
         return shipmentTypeDescriptionTransfers;
@@ -741,10 +741,10 @@ public class ShipmentControl
     public List<ShipmentTimeTypeTransfer> getShipmentTimeTypeTransfers(UserVisit userVisit, ShipmentType shipmentType) {
         var shipmentTimeTypes = getShipmentTimeTypes(shipmentType);
         List<ShipmentTimeTypeTransfer> shipmentTimeTypeTransfers = new ArrayList<>(shipmentTimeTypes.size());
-        var shipmentTimeTypeTransferCache = getShipmentTransferCaches(userVisit).getShipmentTimeTypeTransferCache();
+        var shipmentTimeTypeTransferCache = getShipmentTransferCaches().getShipmentTimeTypeTransferCache();
 
         shipmentTimeTypes.forEach((shipmentTimeType) ->
-                shipmentTimeTypeTransfers.add(shipmentTimeTypeTransferCache.getTransfer(shipmentTimeType))
+                shipmentTimeTypeTransfers.add(shipmentTimeTypeTransferCache.getTransfer(userVisit, shipmentTimeType))
         );
 
         return shipmentTimeTypeTransfers;
@@ -968,10 +968,10 @@ public class ShipmentControl
     public List<ShipmentTimeTypeDescriptionTransfer> getShipmentTimeTypeDescriptionTransfersByShipmentTimeType(UserVisit userVisit, ShipmentTimeType shipmentTimeType) {
         var shipmentTimeTypeDescriptions = getShipmentTimeTypeDescriptionsByShipmentTimeType(shipmentTimeType);
         List<ShipmentTimeTypeDescriptionTransfer> shipmentTimeTypeDescriptionTransfers = new ArrayList<>(shipmentTimeTypeDescriptions.size());
-        var shipmentTimeTypeDescriptionTransferCache = getShipmentTransferCaches(userVisit).getShipmentTimeTypeDescriptionTransferCache();
+        var shipmentTimeTypeDescriptionTransferCache = getShipmentTransferCaches().getShipmentTimeTypeDescriptionTransferCache();
 
         shipmentTimeTypeDescriptions.forEach((shipmentTimeTypeDescription) ->
-                shipmentTimeTypeDescriptionTransfers.add(shipmentTimeTypeDescriptionTransferCache.getTransfer(shipmentTimeTypeDescription))
+                shipmentTimeTypeDescriptionTransfers.add(shipmentTimeTypeDescriptionTransferCache.getTransfer(userVisit, shipmentTimeTypeDescription))
         );
 
         return shipmentTimeTypeDescriptionTransfers;
@@ -1209,10 +1209,10 @@ public class ShipmentControl
     
     public List<ShipmentTypeShippingMethodTransfer> getShipmentTypeShippingMethodTransfers(UserVisit userVisit, Collection<ShipmentTypeShippingMethod> shipmentTypeShippingMethods) {
         List<ShipmentTypeShippingMethodTransfer> shipmentTypeShippingMethodTransfers = new ArrayList<>(shipmentTypeShippingMethods.size());
-        var shipmentTypeShippingMethodTransferCache = getShipmentTransferCaches(userVisit).getShipmentTypeShippingMethodTransferCache();
+        var shipmentTypeShippingMethodTransferCache = getShipmentTransferCaches().getShipmentTypeShippingMethodTransferCache();
         
         shipmentTypeShippingMethods.forEach((shipmentTypeShippingMethod) ->
-                shipmentTypeShippingMethodTransfers.add(shipmentTypeShippingMethodTransferCache.getTransfer(shipmentTypeShippingMethod))
+                shipmentTypeShippingMethodTransfers.add(shipmentTypeShippingMethodTransferCache.getTransfer(userVisit, shipmentTypeShippingMethod))
         );
         
         return shipmentTypeShippingMethodTransfers;
@@ -1443,10 +1443,10 @@ public class ShipmentControl
 
     public List<ShipmentTimeTransfer> getShipmentTimeTransfers(UserVisit userVisit, Collection<ShipmentTime> shipmentTimes) {
         List<ShipmentTimeTransfer> shipmentTimeTransfers = new ArrayList<>(shipmentTimes.size());
-        var shipmentTimeTransferCache = getShipmentTransferCaches(userVisit).getShipmentTimeTransferCache();
+        var shipmentTimeTransferCache = getShipmentTransferCaches().getShipmentTimeTransferCache();
 
         shipmentTimes.forEach((shipmentTime) ->
-                shipmentTimeTransfers.add(shipmentTimeTransferCache.getTransfer(shipmentTime))
+                shipmentTimeTransfers.add(shipmentTimeTransferCache.getTransfer(userVisit, shipmentTime))
         );
 
         return shipmentTimeTransfers;
@@ -1645,10 +1645,10 @@ public class ShipmentControl
     public List<ShipmentAliasTypeTransfer> getShipmentAliasTypeTransfers(UserVisit userVisit, ShipmentType shipmentType) {
         var shipmentAliasTypes = getShipmentAliasTypes(shipmentType);
         List<ShipmentAliasTypeTransfer> shipmentAliasTypeTransfers = new ArrayList<>(shipmentAliasTypes.size());
-        var shipmentAliasTypeTransferCache = getShipmentTransferCaches(userVisit).getShipmentAliasTypeTransferCache();
+        var shipmentAliasTypeTransferCache = getShipmentTransferCaches().getShipmentAliasTypeTransferCache();
 
         shipmentAliasTypes.forEach((shipmentAliasType) ->
-                shipmentAliasTypeTransfers.add(shipmentAliasTypeTransferCache.getTransfer(shipmentAliasType))
+                shipmentAliasTypeTransfers.add(shipmentAliasTypeTransferCache.getTransfer(userVisit, shipmentAliasType))
         );
 
         return shipmentAliasTypeTransfers;
@@ -1883,10 +1883,10 @@ public class ShipmentControl
     public List<ShipmentAliasTypeDescriptionTransfer> getShipmentAliasTypeDescriptionTransfersByShipmentAliasType(UserVisit userVisit, ShipmentAliasType shipmentAliasType) {
         var shipmentAliasTypeDescriptions = getShipmentAliasTypeDescriptionsByShipmentAliasType(shipmentAliasType);
         List<ShipmentAliasTypeDescriptionTransfer> shipmentAliasTypeDescriptionTransfers = new ArrayList<>(shipmentAliasTypeDescriptions.size());
-        var shipmentAliasTypeDescriptionTransferCache = getShipmentTransferCaches(userVisit).getShipmentAliasTypeDescriptionTransferCache();
+        var shipmentAliasTypeDescriptionTransferCache = getShipmentTransferCaches().getShipmentAliasTypeDescriptionTransferCache();
 
         shipmentAliasTypeDescriptions.forEach((shipmentAliasTypeDescription) ->
-                shipmentAliasTypeDescriptionTransfers.add(shipmentAliasTypeDescriptionTransferCache.getTransfer(shipmentAliasTypeDescription))
+                shipmentAliasTypeDescriptionTransfers.add(shipmentAliasTypeDescriptionTransferCache.getTransfer(userVisit, shipmentAliasTypeDescription))
         );
 
         return shipmentAliasTypeDescriptionTransfers;
@@ -2076,10 +2076,10 @@ public class ShipmentControl
     public List<ShipmentAliasTransfer> getShipmentAliasTransfersByShipment(UserVisit userVisit, Shipment shipment) {
         var shipmentaliases = getShipmentAliasesByShipment(shipment);
         List<ShipmentAliasTransfer> shipmentAliasTransfers = new ArrayList<>(shipmentaliases.size());
-        var shipmentAliasTransferCache = getShipmentTransferCaches(userVisit).getShipmentAliasTransferCache();
+        var shipmentAliasTransferCache = getShipmentTransferCaches().getShipmentAliasTransferCache();
 
         shipmentaliases.forEach((shipmentAlias) ->
-                shipmentAliasTransfers.add(shipmentAliasTransferCache.getTransfer(shipmentAlias))
+                shipmentAliasTransfers.add(shipmentAliasTransferCache.getTransfer(userVisit, shipmentAlias))
         );
 
         return shipmentAliasTransfers;

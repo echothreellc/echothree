@@ -316,10 +316,10 @@ public class PaymentMethodControl
     
     public List<PaymentMethodTransfer> getPaymentMethodTransfers(UserVisit userVisit, Collection<PaymentMethod> paymentMethods) {
         List<PaymentMethodTransfer> paymentMethodTransfers = new ArrayList<>(paymentMethods.size());
-        var paymentMethodTransferCache = getPaymentTransferCaches(userVisit).getPaymentMethodTransferCache();
+        var paymentMethodTransferCache = getPaymentTransferCaches().getPaymentMethodTransferCache();
 
         paymentMethods.forEach((paymentMethod) ->
-                paymentMethodTransfers.add(paymentMethodTransferCache.getTransfer(paymentMethod))
+                paymentMethodTransfers.add(paymentMethodTransferCache.getTransfer(userVisit, paymentMethod))
         );
 
         return paymentMethodTransfers;
@@ -551,10 +551,10 @@ public class PaymentMethodControl
     public List<PaymentMethodDescriptionTransfer> getPaymentMethodDescriptionTransfers(UserVisit userVisit, PaymentMethod paymentMethod) {
         var paymentMethodDescriptions = getPaymentMethodDescriptions(paymentMethod);
         List<PaymentMethodDescriptionTransfer> paymentMethodDescriptionTransfers = new ArrayList<>(paymentMethodDescriptions.size());
-        var paymentMethodDescriptionTransferCache = getPaymentTransferCaches(userVisit).getPaymentMethodDescriptionTransferCache();
+        var paymentMethodDescriptionTransferCache = getPaymentTransferCaches().getPaymentMethodDescriptionTransferCache();
         
         paymentMethodDescriptions.forEach((paymentMethodDescription) ->
-                paymentMethodDescriptionTransfers.add(paymentMethodDescriptionTransferCache.getTransfer(paymentMethodDescription))
+                paymentMethodDescriptionTransfers.add(paymentMethodDescriptionTransferCache.getTransfer(userVisit, paymentMethodDescription))
         );
         
         return paymentMethodDescriptionTransfers;

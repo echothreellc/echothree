@@ -369,10 +369,10 @@ public class CampaignControl
     public List<CampaignTransfer> getCampaignTransfers(UserVisit userVisit) {
         var campaigns = getCampaigns();
         List<CampaignTransfer> campaignTransfers = new ArrayList<>(campaigns.size());
-        var campaignTransferCache = getCampaignTransferCaches(userVisit).getCampaignTransferCache();
+        var campaignTransferCache = getCampaignTransferCaches().getCampaignTransferCache();
 
         campaigns.forEach((campaign) ->
-                campaignTransfers.add(campaignTransferCache.getCampaignTransfer(campaign))
+                campaignTransfers.add(campaignTransferCache.getCampaignTransfer(userVisit, campaign))
         );
 
         return campaignTransfers;
@@ -609,10 +609,10 @@ public class CampaignControl
     public List<CampaignDescriptionTransfer> getCampaignDescriptionTransfersByCampaign(UserVisit userVisit, Campaign campaign) {
         var campaignDescriptions = getCampaignDescriptionsByCampaign(campaign);
         List<CampaignDescriptionTransfer> campaignDescriptionTransfers = new ArrayList<>(campaignDescriptions.size());
-        var campaignDescriptionTransferCache = getCampaignTransferCaches(userVisit).getCampaignDescriptionTransferCache();
+        var campaignDescriptionTransferCache = getCampaignTransferCaches().getCampaignDescriptionTransferCache();
 
         campaignDescriptions.forEach((campaignDescription) ->
-                campaignDescriptionTransfers.add(campaignDescriptionTransferCache.getCampaignDescriptionTransfer(campaignDescription))
+                campaignDescriptionTransfers.add(campaignDescriptionTransferCache.getCampaignDescriptionTransfer(userVisit, campaignDescription))
         );
 
         return campaignDescriptionTransfers;
@@ -885,10 +885,10 @@ public class CampaignControl
     public List<CampaignSourceTransfer> getCampaignSourceTransfers(UserVisit userVisit) {
         var campaignSources = getCampaignSources();
         List<CampaignSourceTransfer> campaignSourceTransfers = new ArrayList<>(campaignSources.size());
-        var campaignSourceTransferCache = getCampaignTransferCaches(userVisit).getCampaignSourceTransferCache();
+        var campaignSourceTransferCache = getCampaignTransferCaches().getCampaignSourceTransferCache();
 
         campaignSources.forEach((campaignSource) ->
-                campaignSourceTransfers.add(campaignSourceTransferCache.getCampaignSourceTransfer(campaignSource))
+                campaignSourceTransfers.add(campaignSourceTransferCache.getCampaignSourceTransfer(userVisit, campaignSource))
         );
 
         return campaignSourceTransfers;
@@ -1125,10 +1125,10 @@ public class CampaignControl
     public List<CampaignSourceDescriptionTransfer> getCampaignSourceDescriptionTransfersByCampaignSource(UserVisit userVisit, CampaignSource campaignSource) {
         var campaignSourceDescriptions = getCampaignSourceDescriptionsByCampaignSource(campaignSource);
         List<CampaignSourceDescriptionTransfer> campaignSourceDescriptionTransfers = new ArrayList<>(campaignSourceDescriptions.size());
-        var campaignSourceDescriptionTransferCache = getCampaignTransferCaches(userVisit).getCampaignSourceDescriptionTransferCache();
+        var campaignSourceDescriptionTransferCache = getCampaignTransferCaches().getCampaignSourceDescriptionTransferCache();
 
         campaignSourceDescriptions.forEach((campaignSourceDescription) ->
-                campaignSourceDescriptionTransfers.add(campaignSourceDescriptionTransferCache.getCampaignSourceDescriptionTransfer(campaignSourceDescription))
+                campaignSourceDescriptionTransfers.add(campaignSourceDescriptionTransferCache.getCampaignSourceDescriptionTransfer(userVisit, campaignSourceDescription))
         );
 
         return campaignSourceDescriptionTransfers;
@@ -1401,10 +1401,10 @@ public class CampaignControl
     public List<CampaignMediumTransfer> getCampaignMediumTransfers(UserVisit userVisit) {
         var campaignMediums = getCampaignMediums();
         List<CampaignMediumTransfer> campaignMediumTransfers = new ArrayList<>(campaignMediums.size());
-        var campaignMediumTransferCache = getCampaignTransferCaches(userVisit).getCampaignMediumTransferCache();
+        var campaignMediumTransferCache = getCampaignTransferCaches().getCampaignMediumTransferCache();
 
         campaignMediums.forEach((campaignMedium) ->
-                campaignMediumTransfers.add(campaignMediumTransferCache.getCampaignMediumTransfer(campaignMedium))
+                campaignMediumTransfers.add(campaignMediumTransferCache.getCampaignMediumTransfer(userVisit, campaignMedium))
         );
 
         return campaignMediumTransfers;
@@ -1641,10 +1641,10 @@ public class CampaignControl
     public List<CampaignMediumDescriptionTransfer> getCampaignMediumDescriptionTransfersByCampaignMedium(UserVisit userVisit, CampaignMedium campaignMedium) {
         var campaignMediumDescriptions = getCampaignMediumDescriptionsByCampaignMedium(campaignMedium);
         List<CampaignMediumDescriptionTransfer> campaignMediumDescriptionTransfers = new ArrayList<>(campaignMediumDescriptions.size());
-        var campaignMediumDescriptionTransferCache = getCampaignTransferCaches(userVisit).getCampaignMediumDescriptionTransferCache();
+        var campaignMediumDescriptionTransferCache = getCampaignTransferCaches().getCampaignMediumDescriptionTransferCache();
 
         campaignMediumDescriptions.forEach((campaignMediumDescription) ->
-                campaignMediumDescriptionTransfers.add(campaignMediumDescriptionTransferCache.getCampaignMediumDescriptionTransfer(campaignMediumDescription))
+                campaignMediumDescriptionTransfers.add(campaignMediumDescriptionTransferCache.getCampaignMediumDescriptionTransfer(userVisit, campaignMediumDescription))
         );
 
         return campaignMediumDescriptionTransfers;
@@ -1917,10 +1917,10 @@ public class CampaignControl
     public List<CampaignTermTransfer> getCampaignTermTransfers(UserVisit userVisit) {
         var campaignTerms = getCampaignTerms();
         List<CampaignTermTransfer> campaignTermTransfers = new ArrayList<>(campaignTerms.size());
-        var campaignTermTransferCache = getCampaignTransferCaches(userVisit).getCampaignTermTransferCache();
+        var campaignTermTransferCache = getCampaignTransferCaches().getCampaignTermTransferCache();
 
         campaignTerms.forEach((campaignTerm) ->
-                campaignTermTransfers.add(campaignTermTransferCache.getCampaignTermTransfer(campaignTerm))
+                campaignTermTransfers.add(campaignTermTransferCache.getCampaignTermTransfer(userVisit, campaignTerm))
         );
 
         return campaignTermTransfers;
@@ -2157,10 +2157,10 @@ public class CampaignControl
     public List<CampaignTermDescriptionTransfer> getCampaignTermDescriptionTransfersByCampaignTerm(UserVisit userVisit, CampaignTerm campaignTerm) {
         var campaignTermDescriptions = getCampaignTermDescriptionsByCampaignTerm(campaignTerm);
         List<CampaignTermDescriptionTransfer> campaignTermDescriptionTransfers = new ArrayList<>(campaignTermDescriptions.size());
-        var campaignTermDescriptionTransferCache = getCampaignTransferCaches(userVisit).getCampaignTermDescriptionTransferCache();
+        var campaignTermDescriptionTransferCache = getCampaignTransferCaches().getCampaignTermDescriptionTransferCache();
 
         campaignTermDescriptions.forEach((campaignTermDescription) ->
-                campaignTermDescriptionTransfers.add(campaignTermDescriptionTransferCache.getCampaignTermDescriptionTransfer(campaignTermDescription))
+                campaignTermDescriptionTransfers.add(campaignTermDescriptionTransferCache.getCampaignTermDescriptionTransfer(userVisit, campaignTermDescription))
         );
 
         return campaignTermDescriptionTransfers;
@@ -2433,10 +2433,10 @@ public class CampaignControl
     public List<CampaignContentTransfer> getCampaignContentTransfers(UserVisit userVisit) {
         var campaignContents = getCampaignContents();
         List<CampaignContentTransfer> campaignContentTransfers = new ArrayList<>(campaignContents.size());
-        var campaignContentTransferCache = getCampaignTransferCaches(userVisit).getCampaignContentTransferCache();
+        var campaignContentTransferCache = getCampaignTransferCaches().getCampaignContentTransferCache();
 
         campaignContents.forEach((campaignContent) ->
-                campaignContentTransfers.add(campaignContentTransferCache.getCampaignContentTransfer(campaignContent))
+                campaignContentTransfers.add(campaignContentTransferCache.getCampaignContentTransfer(userVisit, campaignContent))
         );
 
         return campaignContentTransfers;
@@ -2673,10 +2673,10 @@ public class CampaignControl
     public List<CampaignContentDescriptionTransfer> getCampaignContentDescriptionTransfersByCampaignContent(UserVisit userVisit, CampaignContent campaignContent) {
         var campaignContentDescriptions = getCampaignContentDescriptionsByCampaignContent(campaignContent);
         List<CampaignContentDescriptionTransfer> campaignContentDescriptionTransfers = new ArrayList<>(campaignContentDescriptions.size());
-        var campaignContentDescriptionTransferCache = getCampaignTransferCaches(userVisit).getCampaignContentDescriptionTransferCache();
+        var campaignContentDescriptionTransferCache = getCampaignTransferCaches().getCampaignContentDescriptionTransferCache();
 
         campaignContentDescriptions.forEach((campaignContentDescription) ->
-                campaignContentDescriptionTransfers.add(campaignContentDescriptionTransferCache.getCampaignContentDescriptionTransfer(campaignContentDescription))
+                campaignContentDescriptionTransfers.add(campaignContentDescriptionTransferCache.getCampaignContentDescriptionTransfer(userVisit, campaignContentDescription))
         );
 
         return campaignContentDescriptionTransfers;
@@ -2924,10 +2924,10 @@ public class CampaignControl
 
     public List<UserVisitCampaignTransfer> getUserVisitCampaignTransfers(UserVisit userVisit, Collection<UserVisitCampaign> userVisitCampaigns) {
         List<UserVisitCampaignTransfer> userVisitCampaignTransfers = new ArrayList<>(userVisitCampaigns.size());
-        var userVisitCampaignTransferCache = getCampaignTransferCaches(userVisit).getUserVisitCampaignTransferCache();
+        var userVisitCampaignTransferCache = getCampaignTransferCaches().getUserVisitCampaignTransferCache();
 
         userVisitCampaigns.forEach((userVisitCampaign) ->
-                userVisitCampaignTransfers.add(userVisitCampaignTransferCache.getUserVisitCampaignTransfer(userVisitCampaign))
+                userVisitCampaignTransfers.add(userVisitCampaignTransferCache.getUserVisitCampaignTransfer(userVisit, userVisitCampaign))
         );
 
         return userVisitCampaignTransfers;

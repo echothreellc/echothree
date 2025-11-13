@@ -312,10 +312,10 @@ public class WarehouseControl
 
     public List<WarehouseTypeTransfer> getWarehouseTypeTransfers(UserVisit userVisit, Collection<WarehouseType> warehouseTypes) {
         List<WarehouseTypeTransfer> warehouseTypeTransfers = new ArrayList<>(warehouseTypes.size());
-        var warehouseTypeTransferCache = getWarehouseTransferCaches(userVisit).getWarehouseTypeTransferCache();
+        var warehouseTypeTransferCache = getWarehouseTransferCaches().getWarehouseTypeTransferCache();
 
         warehouseTypes.forEach((warehouseType) ->
-                warehouseTypeTransfers.add(warehouseTypeTransferCache.getTransfer(warehouseType))
+                warehouseTypeTransfers.add(warehouseTypeTransferCache.getTransfer(userVisit, warehouseType))
         );
 
         return warehouseTypeTransfers;
@@ -1484,10 +1484,10 @@ public class WarehouseControl
     public List<LocationNameElementTransfer> getLocationNameElementTransfersByLocationType(UserVisit userVisit, LocationType locationType) {
         var locationNameElements = getLocationNameElementsByLocationType(locationType);
         List<LocationNameElementTransfer> locationNameElementTransfers = new ArrayList<>(locationNameElements.size());
-        var locationNameElementTransferCache = getWarehouseTransferCaches(userVisit).getLocationNameElementTransferCache();
+        var locationNameElementTransferCache = getWarehouseTransferCaches().getLocationNameElementTransferCache();
         
         locationNameElements.forEach((locationNameElement) ->
-                locationNameElementTransfers.add(locationNameElementTransferCache.getLocationNameElementTransfer(locationNameElement))
+                locationNameElementTransfers.add(locationNameElementTransferCache.getLocationNameElementTransfer(userVisit, locationNameElement))
         );
         
         return locationNameElementTransfers;
@@ -2506,10 +2506,10 @@ public class WarehouseControl
     public List<LocationCapacityTransfer> getLocationCapacityTransfersByLocation(UserVisit userVisit, Location location) {
         var locationCapacities = getLocationCapacitiesByLocation(location);
         List<LocationCapacityTransfer> locationCapacityTransfers = new ArrayList<>(locationCapacities.size());
-        var locationCapacityTransferCache = getWarehouseTransferCaches(userVisit).getLocationCapacityTransferCache();
+        var locationCapacityTransferCache = getWarehouseTransferCaches().getLocationCapacityTransferCache();
         
         locationCapacities.forEach((locationCapacity) ->
-                locationCapacityTransfers.add(locationCapacityTransferCache.getLocationCapacityTransfer(locationCapacity))
+                locationCapacityTransfers.add(locationCapacityTransferCache.getLocationCapacityTransfer(userVisit, locationCapacity))
         );
         
         return locationCapacityTransfers;

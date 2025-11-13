@@ -257,10 +257,10 @@ public class CommunicationControl
     public List<CommunicationEventPurposeTransfer> getCommunicationEventPurposeTransfers(UserVisit userVisit) {
         var communicationEventPurposes = getCommunicationEventPurposes();
         List<CommunicationEventPurposeTransfer> communicationEventPurposeTransfers = new ArrayList<>(communicationEventPurposes.size());
-        var communicationEventPurposeTransferCache = getCommunicationTransferCaches(userVisit).getCommunicationEventPurposeTransferCache();
+        var communicationEventPurposeTransferCache = getCommunicationTransferCaches().getCommunicationEventPurposeTransferCache();
         
         communicationEventPurposes.forEach((communicationEventPurpose) ->
-                communicationEventPurposeTransfers.add(communicationEventPurposeTransferCache.getCommunicationEventPurposeTransfer(communicationEventPurpose))
+                communicationEventPurposeTransfers.add(communicationEventPurposeTransferCache.getCommunicationEventPurposeTransfer(userVisit, communicationEventPurpose))
         );
         
         return communicationEventPurposeTransfers;
@@ -499,10 +499,10 @@ public class CommunicationControl
     public List<CommunicationEventPurposeDescriptionTransfer> getCommunicationEventPurposeDescriptionTransfers(UserVisit userVisit, CommunicationEventPurpose communicationEventPurpose) {
         var communicationEventPurposeDescriptions = getCommunicationEventPurposeDescriptionsByCommunicationEventPurpose(communicationEventPurpose);
         List<CommunicationEventPurposeDescriptionTransfer> communicationEventPurposeDescriptionTransfers = new ArrayList<>(communicationEventPurposeDescriptions.size());
-        var communicationEventPurposeDescriptionTransferCache = getCommunicationTransferCaches(userVisit).getCommunicationEventPurposeDescriptionTransferCache();
+        var communicationEventPurposeDescriptionTransferCache = getCommunicationTransferCaches().getCommunicationEventPurposeDescriptionTransferCache();
         
         communicationEventPurposeDescriptions.forEach((communicationEventPurposeDescription) ->
-                communicationEventPurposeDescriptionTransfers.add(communicationEventPurposeDescriptionTransferCache.getCommunicationEventPurposeDescriptionTransfer(communicationEventPurposeDescription))
+                communicationEventPurposeDescriptionTransfers.add(communicationEventPurposeDescriptionTransferCache.getCommunicationEventPurposeDescriptionTransfer(userVisit, communicationEventPurposeDescription))
         );
         
         return communicationEventPurposeDescriptionTransfers;
@@ -870,10 +870,10 @@ public class CommunicationControl
     
     public List<CommunicationEventTransfer> getCommunicationEventTransfers(UserVisit userVisit, Collection<CommunicationEvent> communicationEvents) {
         List<CommunicationEventTransfer> communicationEventTransfers = new ArrayList<>(communicationEvents.size());
-        var communicationEventTransferCache = getCommunicationTransferCaches(userVisit).getCommunicationEventTransferCache();
+        var communicationEventTransferCache = getCommunicationTransferCaches().getCommunicationEventTransferCache();
         
         communicationEvents.forEach((communicationEvent) ->
-                communicationEventTransfers.add(communicationEventTransferCache.getCommunicationEventTransfer(communicationEvent))
+                communicationEventTransfers.add(communicationEventTransferCache.getCommunicationEventTransfer(userVisit, communicationEvent))
         );
         
         return communicationEventTransfers;
@@ -1282,10 +1282,10 @@ public class CommunicationControl
     
     public List<CommunicationSourceTransfer> getCommunicationSourceTransfers(UserVisit userVisit, Collection<CommunicationSource> communicationSources) {
         List<CommunicationSourceTransfer> communicationSourceTransfers = new ArrayList<>(communicationSources.size());
-        var communicationSourceTransferCache = getCommunicationTransferCaches(userVisit).getCommunicationSourceTransferCache();
+        var communicationSourceTransferCache = getCommunicationTransferCaches().getCommunicationSourceTransferCache();
         
         communicationSources.forEach((communicationSource) ->
-                communicationSourceTransfers.add(communicationSourceTransferCache.getCommunicationSourceTransfer(communicationSource))
+                communicationSourceTransfers.add(communicationSourceTransferCache.getCommunicationSourceTransfer(userVisit, communicationSource))
         );
         
         return communicationSourceTransfers;
@@ -1461,10 +1461,10 @@ public class CommunicationControl
     public List<CommunicationSourceDescriptionTransfer> getCommunicationSourceDescriptionTransfers(UserVisit userVisit, CommunicationSource communicationSource) {
         var communicationSourceDescriptions = getCommunicationSourceDescriptionsByCommunicationSource(communicationSource);
         List<CommunicationSourceDescriptionTransfer> communicationSourceDescriptionTransfers = new ArrayList<>(communicationSourceDescriptions.size());
-        var communicationSourceDescriptionTransferCache = getCommunicationTransferCaches(userVisit).getCommunicationSourceDescriptionTransferCache();
+        var communicationSourceDescriptionTransferCache = getCommunicationTransferCaches().getCommunicationSourceDescriptionTransferCache();
         
         communicationSourceDescriptions.forEach((communicationSourceDescription) ->
-                communicationSourceDescriptionTransfers.add(communicationSourceDescriptionTransferCache.getCommunicationSourceDescriptionTransfer(communicationSourceDescription))
+                communicationSourceDescriptionTransfers.add(communicationSourceDescriptionTransferCache.getCommunicationSourceDescriptionTransfer(userVisit, communicationSourceDescription))
         );
         
         return communicationSourceDescriptionTransfers;

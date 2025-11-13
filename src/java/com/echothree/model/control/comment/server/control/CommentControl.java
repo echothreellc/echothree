@@ -218,10 +218,10 @@ public class CommentControl
     public List<CommentTypeTransfer> getCommentTypeTransfers(UserVisit userVisit, EntityType entityType) {
         var commentTypes = getCommentTypes(entityType);
         List<CommentTypeTransfer> commentTypeTransfers = new ArrayList<>(commentTypes.size());
-        var commentTypeTransferCache = getCommentTransferCaches(userVisit).getCommentTypeTransferCache();
+        var commentTypeTransferCache = getCommentTransferCaches().getCommentTypeTransferCache();
         
         commentTypes.forEach((commentType) ->
-                commentTypeTransfers.add(commentTypeTransferCache.getCommentTypeTransfer(commentType))
+                commentTypeTransfers.add(commentTypeTransferCache.getCommentTypeTransfer(userVisit, commentType))
         );
         
         return commentTypeTransfers;
@@ -402,10 +402,10 @@ public class CommentControl
     public List<CommentTypeDescriptionTransfer> getCommentTypeDescriptionTransfers(UserVisit userVisit, CommentType commentType) {
         var commentTypeDescriptions = getCommentTypeDescriptionsByCommentType(commentType);
         List<CommentTypeDescriptionTransfer> commentTypeDescriptionTransfers = new ArrayList<>(commentTypeDescriptions.size());
-        var commentTypeDescriptionTransferCache = getCommentTransferCaches(userVisit).getCommentTypeDescriptionTransferCache();
+        var commentTypeDescriptionTransferCache = getCommentTransferCaches().getCommentTypeDescriptionTransferCache();
         
         commentTypeDescriptions.forEach((commentTypeDescription) ->
-                commentTypeDescriptionTransfers.add(commentTypeDescriptionTransferCache.getCommentTypeDescriptionTransfer(commentTypeDescription))
+                commentTypeDescriptionTransfers.add(commentTypeDescriptionTransferCache.getCommentTypeDescriptionTransfer(userVisit, commentTypeDescription))
         );
         
         return commentTypeDescriptionTransfers;
@@ -562,10 +562,10 @@ public class CommentControl
     public List<CommentUsageTypeTransfer> getCommentUsageTypeTransfers(UserVisit userVisit, CommentType commentType) {
         var commentUsageTypes = getCommentUsageTypes(commentType);
         List<CommentUsageTypeTransfer> commentUsageTypeTransfers = new ArrayList<>(commentUsageTypes.size());
-        var commentUsageTypeTransferCache = getCommentTransferCaches(userVisit).getCommentUsageTypeTransferCache();
+        var commentUsageTypeTransferCache = getCommentTransferCaches().getCommentUsageTypeTransferCache();
         
         commentUsageTypes.forEach((commentUsageType) ->
-                commentUsageTypeTransfers.add(commentUsageTypeTransferCache.getCommentUsageTypeTransfer(commentUsageType))
+                commentUsageTypeTransfers.add(commentUsageTypeTransferCache.getCommentUsageTypeTransfer(userVisit, commentUsageType))
         );
         
         return commentUsageTypeTransfers;
@@ -745,10 +745,10 @@ public class CommentControl
     public List<CommentUsageTypeDescriptionTransfer> getCommentUsageTypeDescriptionTransfers(UserVisit userVisit, CommentUsageType commentUsageType) {
         var commentUsageTypeDescriptions = getCommentUsageTypeDescriptionsByCommentUsageType(commentUsageType);
         List<CommentUsageTypeDescriptionTransfer> commentUsageTypeDescriptionTransfers = new ArrayList<>(commentUsageTypeDescriptions.size());
-        var commentUsageTypeDescriptionTransferCache = getCommentTransferCaches(userVisit).getCommentUsageTypeDescriptionTransferCache();
+        var commentUsageTypeDescriptionTransferCache = getCommentTransferCaches().getCommentUsageTypeDescriptionTransferCache();
         
         commentUsageTypeDescriptions.forEach((commentUsageTypeDescription) ->
-                commentUsageTypeDescriptionTransfers.add(commentUsageTypeDescriptionTransferCache.getCommentUsageTypeDescriptionTransfer(commentUsageTypeDescription))
+                commentUsageTypeDescriptionTransfers.add(commentUsageTypeDescriptionTransferCache.getCommentUsageTypeDescriptionTransfer(userVisit, commentUsageTypeDescription))
         );
         
         return commentUsageTypeDescriptionTransfers;
@@ -1020,10 +1020,10 @@ public class CommentControl
     
     public List<CommentTransfer> getCommentTransfers(UserVisit userVisit, Collection<Comment> comments) {
         List<CommentTransfer> commentTransfers = new ArrayList<>(comments.size());
-        var commentTransferCache = getCommentTransferCaches(userVisit).getCommentTransferCache();
+        var commentTransferCache = getCommentTransferCaches().getCommentTransferCache();
         
         comments.forEach((comment) ->
-                commentTransfers.add(commentTransferCache.getCommentTransfer(comment))
+                commentTransfers.add(commentTransferCache.getCommentTransfer(userVisit, comment))
         );
         
         return commentTransfers;

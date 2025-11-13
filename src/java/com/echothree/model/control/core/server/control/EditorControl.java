@@ -204,10 +204,10 @@ public class EditorControl
     public List<EditorTransfer> getEditorTransfers(UserVisit userVisit) {
         var editors = getEditors();
         List<EditorTransfer> editorTransfers = new ArrayList<>(editors.size());
-        var editorTransferCache = getCoreTransferCaches(userVisit).getEditorTransferCache();
+        var editorTransferCache = getCoreTransferCaches().getEditorTransferCache();
 
         editors.forEach((editor) ->
-                editorTransfers.add(editorTransferCache.getEditorTransfer(editor))
+                editorTransfers.add(editorTransferCache.getEditorTransfer(userVisit, editor))
         );
 
         return editorTransfers;
@@ -452,10 +452,10 @@ public class EditorControl
     public List<EditorDescriptionTransfer> getEditorDescriptionTransfersByEditor(UserVisit userVisit, Editor editor) {
         var editorDescriptions = getEditorDescriptionsByEditor(editor);
         List<EditorDescriptionTransfer> editorDescriptionTransfers = new ArrayList<>(editorDescriptions.size());
-        var editorDescriptionTransferCache = getCoreTransferCaches(userVisit).getEditorDescriptionTransferCache();
+        var editorDescriptionTransferCache = getCoreTransferCaches().getEditorDescriptionTransferCache();
 
         editorDescriptions.forEach((editorDescription) ->
-                editorDescriptionTransfers.add(editorDescriptionTransferCache.getEditorDescriptionTransfer(editorDescription))
+                editorDescriptionTransfers.add(editorDescriptionTransferCache.getEditorDescriptionTransfer(userVisit, editorDescription))
         );
 
         return editorDescriptionTransfers;

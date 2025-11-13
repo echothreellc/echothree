@@ -219,10 +219,10 @@ public class LicenseControl
     public List<LicenseTypeTransfer> getLicenseTypeTransfers(UserVisit userVisit) {
         var licenseTypes = getLicenseTypes();
         List<LicenseTypeTransfer> licenseTypeTransfers = new ArrayList<>(licenseTypes.size());
-        var licenseTypeTransferCache = getLicenseTransferCaches(userVisit).getLicenseTypeTransferCache();
+        var licenseTypeTransferCache = getLicenseTransferCaches().getLicenseTypeTransferCache();
 
         licenseTypes.forEach((licenseType) ->
-                licenseTypeTransfers.add(licenseTypeTransferCache.getLicenseTypeTransfer(licenseType))
+                licenseTypeTransfers.add(licenseTypeTransferCache.getLicenseTypeTransfer(userVisit, licenseType))
         );
 
         return licenseTypeTransfers;
@@ -456,10 +456,10 @@ public class LicenseControl
     public List<LicenseTypeDescriptionTransfer> getLicenseTypeDescriptionTransfersByLicenseType(UserVisit userVisit, LicenseType licenseType) {
         var licenseTypeDescriptions = getLicenseTypeDescriptionsByLicenseType(licenseType);
         List<LicenseTypeDescriptionTransfer> licenseTypeDescriptionTransfers = new ArrayList<>(licenseTypeDescriptions.size());
-        var licenseTypeDescriptionTransferCache = getLicenseTransferCaches(userVisit).getLicenseTypeDescriptionTransferCache();
+        var licenseTypeDescriptionTransferCache = getLicenseTransferCaches().getLicenseTypeDescriptionTransferCache();
 
         licenseTypeDescriptions.forEach((licenseTypeDescription) ->
-                licenseTypeDescriptionTransfers.add(licenseTypeDescriptionTransferCache.getLicenseTypeDescriptionTransfer(licenseTypeDescription))
+                licenseTypeDescriptionTransfers.add(licenseTypeDescriptionTransferCache.getLicenseTypeDescriptionTransfer(userVisit, licenseTypeDescription))
         );
 
         return licenseTypeDescriptionTransfers;

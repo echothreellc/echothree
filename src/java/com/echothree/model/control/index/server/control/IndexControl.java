@@ -288,10 +288,10 @@ public class IndexControl
 
     public List<IndexTypeTransfer> getIndexTypeTransfers(UserVisit userVisit, Collection<IndexType> indexTypes) {
         List<IndexTypeTransfer> indexTypeTransfers = new ArrayList<>(indexTypes.size());
-        var indexTypeTransferCache = getIndexTransferCaches(userVisit).getIndexTypeTransferCache();
+        var indexTypeTransferCache = getIndexTransferCaches().getIndexTypeTransferCache();
 
         indexTypes.forEach((indexType) ->
-                indexTypeTransfers.add(indexTypeTransferCache.getIndexTypeTransfer(indexType))
+                indexTypeTransfers.add(indexTypeTransferCache.getIndexTypeTransfer(userVisit, indexType))
         );
 
         return indexTypeTransfers;
@@ -540,10 +540,10 @@ public class IndexControl
     public List<IndexTypeDescriptionTransfer> getIndexTypeDescriptionTransfersByIndexType(UserVisit userVisit, IndexType indexType) {
         var indexTypeDescriptions = getIndexTypeDescriptionsByIndexType(indexType);
         List<IndexTypeDescriptionTransfer> indexTypeDescriptionTransfers = new ArrayList<>(indexTypeDescriptions.size());
-        var indexTypeDescriptionTransferCache = getIndexTransferCaches(userVisit).getIndexTypeDescriptionTransferCache();
+        var indexTypeDescriptionTransferCache = getIndexTransferCaches().getIndexTypeDescriptionTransferCache();
 
         indexTypeDescriptions.forEach((indexTypeDescription) ->
-                indexTypeDescriptionTransfers.add(indexTypeDescriptionTransferCache.getIndexTypeDescriptionTransfer(indexTypeDescription))
+                indexTypeDescriptionTransfers.add(indexTypeDescriptionTransferCache.getIndexTypeDescriptionTransfer(userVisit, indexTypeDescription))
         );
 
         return indexTypeDescriptionTransfers;
@@ -763,10 +763,10 @@ public class IndexControl
     public List<IndexFieldTransfer> getIndexFieldTransfersByIndexType(UserVisit userVisit, IndexType indexType) {
         var indexFields = getIndexFields(indexType);
         List<IndexFieldTransfer> indexFieldTransfers = new ArrayList<>(indexFields.size());
-        var indexFieldTransferCache = getIndexTransferCaches(userVisit).getIndexFieldTransferCache();
+        var indexFieldTransferCache = getIndexTransferCaches().getIndexFieldTransferCache();
 
         indexFields.forEach((indexField) ->
-                indexFieldTransfers.add(indexFieldTransferCache.getIndexFieldTransfer(indexField))
+                indexFieldTransfers.add(indexFieldTransferCache.getIndexFieldTransfer(userVisit, indexField))
         );
 
         return indexFieldTransfers;
@@ -1282,10 +1282,10 @@ public class IndexControl
     public List<IndexTransfer> getIndexTransfers(UserVisit userVisit) {
         var indexes = getIndexes();
         List<IndexTransfer> indexTransfers = new ArrayList<>(indexes.size());
-        var indexTransferCache = getIndexTransferCaches(userVisit).getIndexTransferCache();
+        var indexTransferCache = getIndexTransferCaches().getIndexTransferCache();
 
         indexes.forEach((index) ->
-                indexTransfers.add(indexTransferCache.getIndexTransfer(index))
+                indexTransfers.add(indexTransferCache.getIndexTransfer(userVisit, index))
         );
 
         return indexTransfers;
@@ -1529,10 +1529,10 @@ public class IndexControl
     public List<IndexDescriptionTransfer> getIndexDescriptionTransfersByIndex(UserVisit userVisit, Index index) {
         var indexDescriptions = getIndexDescriptionsByIndex(index);
         List<IndexDescriptionTransfer> indexDescriptionTransfers = new ArrayList<>(indexDescriptions.size());
-        var indexDescriptionTransferCache = getIndexTransferCaches(userVisit).getIndexDescriptionTransferCache();
+        var indexDescriptionTransferCache = getIndexTransferCaches().getIndexDescriptionTransferCache();
 
         indexDescriptions.forEach((indexDescription) ->
-                indexDescriptionTransfers.add(indexDescriptionTransferCache.getIndexDescriptionTransfer(indexDescription))
+                indexDescriptionTransfers.add(indexDescriptionTransferCache.getIndexDescriptionTransfer(userVisit, indexDescription))
         );
 
         return indexDescriptionTransfers;

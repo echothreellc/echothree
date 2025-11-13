@@ -256,10 +256,10 @@ public class ShippingControl
 
     public List<ShippingMethodTransfer> getShippingMethodTransfers(UserVisit userVisit, Collection<ShippingMethod> entities) {
         List<ShippingMethodTransfer> shippingMethodTransfers = new ArrayList<>(entities.size());
-        var shippingMethodTransferCache = getShippingTransferCaches(userVisit).getShippingMethodTransferCache();
+        var shippingMethodTransferCache = getShippingTransferCaches().getShippingMethodTransferCache();
 
         entities.forEach((shippingMethod) ->
-                shippingMethodTransfers.add(shippingMethodTransferCache.getShippingMethodTransfer(shippingMethod))
+                shippingMethodTransfers.add(shippingMethodTransferCache.getShippingMethodTransfer(userVisit, shippingMethod))
         );
 
         return shippingMethodTransfers;
@@ -440,10 +440,10 @@ public class ShippingControl
     public List<ShippingMethodDescriptionTransfer> getShippingMethodDescriptionTransfers(UserVisit userVisit, ShippingMethod shippingMethod) {
         var shippingMethodDescriptions = getShippingMethodDescriptionsByShippingMethod(shippingMethod);
         List<ShippingMethodDescriptionTransfer> shippingMethodDescriptionTransfers = new ArrayList<>(shippingMethodDescriptions.size());
-        var shippingMethodDescriptionTransferCache = getShippingTransferCaches(userVisit).getShippingMethodDescriptionTransferCache();
+        var shippingMethodDescriptionTransferCache = getShippingTransferCaches().getShippingMethodDescriptionTransferCache();
         
         shippingMethodDescriptions.forEach((shippingMethodDescription) ->
-                shippingMethodDescriptionTransfers.add(shippingMethodDescriptionTransferCache.getShippingMethodDescriptionTransfer(shippingMethodDescription))
+                shippingMethodDescriptionTransfers.add(shippingMethodDescriptionTransferCache.getShippingMethodDescriptionTransfer(userVisit, shippingMethodDescription))
         );
         
         return shippingMethodDescriptionTransfers;
@@ -635,10 +635,10 @@ public class ShippingControl
     public List<ShippingMethodCarrierServiceTransfer> getShippingMethodCarrierServiceTransfers(UserVisit userVisit,
             List<ShippingMethodCarrierService> shippingMethodCarrierServices) {
         List<ShippingMethodCarrierServiceTransfer> shippingMethodCarrierServiceTransfers = new ArrayList<>(shippingMethodCarrierServices.size());
-        var shippingMethodCarrierServiceTransferCache = getShippingTransferCaches(userVisit).getShippingMethodCarrierServiceTransferCache();
+        var shippingMethodCarrierServiceTransferCache = getShippingTransferCaches().getShippingMethodCarrierServiceTransferCache();
         
         shippingMethodCarrierServices.forEach((shippingMethodCarrierService) ->
-                shippingMethodCarrierServiceTransfers.add(shippingMethodCarrierServiceTransferCache.getShippingMethodCarrierServiceTransfer(shippingMethodCarrierService))
+                shippingMethodCarrierServiceTransfers.add(shippingMethodCarrierServiceTransferCache.getShippingMethodCarrierServiceTransfer(userVisit, shippingMethodCarrierService))
         );
         
         return shippingMethodCarrierServiceTransfers;

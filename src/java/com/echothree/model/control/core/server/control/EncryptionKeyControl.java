@@ -256,10 +256,10 @@ public class EncryptionKeyControl
     public List<BaseEncryptionKeyTransfer> getBaseEncryptionKeyTransfers(UserVisit userVisit) {
         var baseEncryptionKeys = getBaseEncryptionKeys();
         List<BaseEncryptionKeyTransfer> baseEncryptionKeyTransfers = new ArrayList<>(baseEncryptionKeys.size());
-        var baseEncryptionKeyTransferCache = getCoreTransferCaches(userVisit).getBaseEncryptionKeyTransferCache();
+        var baseEncryptionKeyTransferCache = getCoreTransferCaches().getBaseEncryptionKeyTransferCache();
 
         baseEncryptionKeys.forEach((baseEncryptionKey) ->
-                baseEncryptionKeyTransfers.add(baseEncryptionKeyTransferCache.getBaseEncryptionKeyTransfer(baseEncryptionKey))
+                baseEncryptionKeyTransfers.add(baseEncryptionKeyTransferCache.getBaseEncryptionKeyTransfer(userVisit, baseEncryptionKey))
         );
 
         return baseEncryptionKeyTransfers;

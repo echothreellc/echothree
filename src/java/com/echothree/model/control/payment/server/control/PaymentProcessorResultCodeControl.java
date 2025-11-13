@@ -187,10 +187,10 @@ public class PaymentProcessorResultCodeControl
     public List<PaymentProcessorResultCodeTransfer> getPaymentProcessorResultCodeTransfers(final UserVisit userVisit,
             final Collection<PaymentProcessorResultCode> paymentProcessorResultCodes) {
         var paymentProcessorResultCodeTransfers = new ArrayList<PaymentProcessorResultCodeTransfer>(paymentProcessorResultCodes.size());
-        var paymentProcessorResultCodeTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorResultCodeTransferCache();
+        var paymentProcessorResultCodeTransferCache = getPaymentTransferCaches().getPaymentProcessorResultCodeTransferCache();
 
         paymentProcessorResultCodes.forEach((paymentProcessorResultCode) ->
-                paymentProcessorResultCodeTransfers.add(paymentProcessorResultCodeTransferCache.getTransfer(paymentProcessorResultCode))
+                paymentProcessorResultCodeTransfers.add(paymentProcessorResultCodeTransferCache.getTransfer(userVisit, paymentProcessorResultCode))
         );
 
         return paymentProcessorResultCodeTransfers;
@@ -415,10 +415,10 @@ public class PaymentProcessorResultCodeControl
             final PaymentProcessorResultCode paymentProcessorResultCode) {
         var paymentProcessorResultCodeDescriptions = getPaymentProcessorResultCodeDescriptionsByPaymentProcessorResultCode(paymentProcessorResultCode);
         var paymentProcessorResultCodeDescriptionTransfers = new ArrayList<PaymentProcessorResultCodeDescriptionTransfer>(paymentProcessorResultCodeDescriptions.size());
-        var paymentProcessorResultCodeDescriptionTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorResultCodeDescriptionTransferCache();
+        var paymentProcessorResultCodeDescriptionTransferCache = getPaymentTransferCaches().getPaymentProcessorResultCodeDescriptionTransferCache();
 
         paymentProcessorResultCodeDescriptions.forEach((paymentProcessorResultCodeDescription) ->
-                paymentProcessorResultCodeDescriptionTransfers.add(paymentProcessorResultCodeDescriptionTransferCache.getTransfer(paymentProcessorResultCodeDescription))
+                paymentProcessorResultCodeDescriptionTransfers.add(paymentProcessorResultCodeDescriptionTransferCache.getTransfer(userVisit, paymentProcessorResultCodeDescription))
         );
 
         return paymentProcessorResultCodeDescriptionTransfers;

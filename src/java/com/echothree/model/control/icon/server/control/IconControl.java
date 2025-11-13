@@ -397,10 +397,10 @@ public class IconControl
     public List<IconUsageTypeTransfer> getIconUsageTypeTransfers(UserVisit userVisit) {
         var iconUsageTypes = getIconUsageTypes();
         List<IconUsageTypeTransfer> iconUsageTypeTransfers = new ArrayList<>(iconUsageTypes.size());
-        var iconUsageTypeTransferCache = getIconTransferCaches(userVisit).getIconUsageTypeTransferCache();
+        var iconUsageTypeTransferCache = getIconTransferCaches().getIconUsageTypeTransferCache();
         
         iconUsageTypes.forEach((iconUsageType) ->
-                iconUsageTypeTransfers.add(iconUsageTypeTransferCache.getIconUsageTypeTransfer(iconUsageType))
+                iconUsageTypeTransfers.add(iconUsageTypeTransferCache.getIconUsageTypeTransfer(userVisit, iconUsageType))
         );
         
         return iconUsageTypeTransfers;
@@ -841,10 +841,10 @@ public class IconControl
     
     public List<IconUsageTransfer> getIconUsageTransfers(UserVisit userVisit, Collection<IconUsage> iconUsages) {
         List<IconUsageTransfer> iconUsageTransfers = new ArrayList<>(iconUsages.size());
-        var iconUsageTransferCache = getIconTransferCaches(userVisit).getIconUsageTransferCache();
+        var iconUsageTransferCache = getIconTransferCaches().getIconUsageTransferCache();
         
         iconUsages.forEach((iconUsage) ->
-                iconUsageTransfers.add(iconUsageTransferCache.getIconUsageTransfer(iconUsage))
+                iconUsageTransfers.add(iconUsageTransferCache.getIconUsageTransfer(userVisit, iconUsage))
         );
         
         return iconUsageTransfers;

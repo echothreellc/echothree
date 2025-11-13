@@ -370,10 +370,10 @@ public class SequenceControl
 
     public List<SequenceTypeTransfer> getSequenceTypeTransfers(UserVisit userVisit, Collection<SequenceType> sequenceTypes) {
         List<SequenceTypeTransfer> sequenceTypeTransfers = new ArrayList<>(sequenceTypes.size());
-        var sequenceTypeTransferCache = getSequenceTransferCaches(userVisit).getSequenceTypeTransferCache();
+        var sequenceTypeTransferCache = getSequenceTransferCaches().getSequenceTypeTransferCache();
 
         sequenceTypes.forEach((sequenceType) ->
-                sequenceTypeTransfers.add(sequenceTypeTransferCache.getSequenceTypeTransfer(sequenceType))
+                sequenceTypeTransfers.add(sequenceTypeTransferCache.getSequenceTypeTransfer(userVisit, sequenceType))
         );
 
         return sequenceTypeTransfers;
@@ -585,10 +585,10 @@ public class SequenceControl
     public List<SequenceTypeDescriptionTransfer> getSequenceTypeDescriptionTransfers(UserVisit userVisit, SequenceType sequenceType) {
         var sequenceTypeDescriptions = getSequenceTypeDescriptionsBySequenceType(sequenceType);
         List<SequenceTypeDescriptionTransfer> sequenceTypeDescriptionTransfers = new ArrayList<>(sequenceTypeDescriptions.size());
-        var sequenceTypeDescriptionTransferCache = getSequenceTransferCaches(userVisit).getSequenceTypeDescriptionTransferCache();
+        var sequenceTypeDescriptionTransferCache = getSequenceTransferCaches().getSequenceTypeDescriptionTransferCache();
         
         sequenceTypeDescriptions.forEach((sequenceTypeDescription) ->
-                sequenceTypeDescriptionTransfers.add(sequenceTypeDescriptionTransferCache.getSequenceTypeDescriptionTransfer(sequenceTypeDescription))
+                sequenceTypeDescriptionTransfers.add(sequenceTypeDescriptionTransferCache.getSequenceTypeDescriptionTransfer(userVisit, sequenceTypeDescription))
         );
         
         return sequenceTypeDescriptionTransfers;
@@ -673,10 +673,10 @@ public class SequenceControl
 
     public List<SequenceChecksumTypeTransfer> getSequenceChecksumTypeTransfers(UserVisit userVisit, Collection<SequenceChecksumType> sequenceChecksumTypes) {
         List<SequenceChecksumTypeTransfer> sequenceChecksumTypeTransfers = new ArrayList<>(sequenceChecksumTypes.size());
-        var sequenceChecksumTypeTransferCache = getSequenceTransferCaches(userVisit).getSequenceChecksumTypeTransferCache();
+        var sequenceChecksumTypeTransferCache = getSequenceTransferCaches().getSequenceChecksumTypeTransferCache();
 
         sequenceChecksumTypes.forEach((sequenceChecksumType) ->
-                sequenceChecksumTypeTransfers.add(sequenceChecksumTypeTransferCache.getSequenceChecksumTypeTransfer(sequenceChecksumType))
+                sequenceChecksumTypeTransfers.add(sequenceChecksumTypeTransferCache.getSequenceChecksumTypeTransfer(userVisit, sequenceChecksumType))
         );
 
         return sequenceChecksumTypeTransfers;
@@ -811,10 +811,10 @@ public class SequenceControl
 
     public List<SequenceEncoderTypeTransfer> getSequenceEncoderTypeTransfers(UserVisit userVisit, Collection<SequenceEncoderType> sequenceEncoderTypes) {
         List<SequenceEncoderTypeTransfer> sequenceEncoderTypeTransfers = new ArrayList<>(sequenceEncoderTypes.size());
-        var sequenceEncoderTypeTransferCache = getSequenceTransferCaches(userVisit).getSequenceEncoderTypeTransferCache();
+        var sequenceEncoderTypeTransferCache = getSequenceTransferCaches().getSequenceEncoderTypeTransferCache();
 
         sequenceEncoderTypes.forEach((sequenceEncoderType) ->
-                sequenceEncoderTypeTransfers.add(sequenceEncoderTypeTransferCache.getSequenceEncoderTypeTransfer(sequenceEncoderType))
+                sequenceEncoderTypeTransfers.add(sequenceEncoderTypeTransferCache.getSequenceEncoderTypeTransfer(userVisit, sequenceEncoderType))
         );
 
         return sequenceEncoderTypeTransfers;
@@ -1143,10 +1143,10 @@ public class SequenceControl
 
     public List<SequenceTransfer> getSequenceTransfers(UserVisit userVisit, Collection<Sequence> sequences) {
         var sequenceTransfers = new ArrayList<SequenceTransfer>(sequences.size());
-        var sequenceTransferCache = getSequenceTransferCaches(userVisit).getSequenceTransferCache();
+        var sequenceTransferCache = getSequenceTransferCaches().getSequenceTransferCache();
 
         sequences.forEach((sequence) ->
-            sequenceTransfers.add(sequenceTransferCache.getSequenceTransfer(sequence))
+            sequenceTransfers.add(sequenceTransferCache.getSequenceTransfer(userVisit, sequence))
         );
 
         return sequenceTransfers;
@@ -1372,10 +1372,10 @@ public class SequenceControl
     public List<SequenceDescriptionTransfer> getSequenceDescriptionTransfers(UserVisit userVisit, Sequence sequence) {
         var sequenceDescriptions = getSequenceDescriptionsBySequence(sequence);
         List<SequenceDescriptionTransfer> sequenceDescriptionTransfers = new ArrayList<>(sequenceDescriptions.size());
-        var sequenceDescriptionTransferCache = getSequenceTransferCaches(userVisit).getSequenceDescriptionTransferCache();
+        var sequenceDescriptionTransferCache = getSequenceTransferCaches().getSequenceDescriptionTransferCache();
         
         sequenceDescriptions.forEach((sequenceDescription) ->
-                sequenceDescriptionTransfers.add(sequenceDescriptionTransferCache.getSequenceDescriptionTransfer(sequenceDescription))
+                sequenceDescriptionTransfers.add(sequenceDescriptionTransferCache.getSequenceDescriptionTransfer(userVisit, sequenceDescription))
         );
         
         return sequenceDescriptionTransfers;

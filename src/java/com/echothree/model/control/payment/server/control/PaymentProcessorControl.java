@@ -242,10 +242,10 @@ public class PaymentProcessorControl
 
     public List<PaymentProcessorTransfer> getPaymentProcessorTransfers(UserVisit userVisit, Collection<PaymentProcessor> paymentProcessors) {
         List<PaymentProcessorTransfer> paymentProcessorTransfers = new ArrayList<>(paymentProcessors.size());
-        var paymentProcessorTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorTransferCache();
+        var paymentProcessorTransferCache = getPaymentTransferCaches().getPaymentProcessorTransferCache();
 
         paymentProcessors.forEach((paymentProcessor) ->
-                paymentProcessorTransfers.add(paymentProcessorTransferCache.getTransfer(paymentProcessor))
+                paymentProcessorTransfers.add(paymentProcessorTransferCache.getTransfer(userVisit, paymentProcessor))
         );
 
         return paymentProcessorTransfers;
@@ -463,10 +463,10 @@ public class PaymentProcessorControl
     public List<PaymentProcessorDescriptionTransfer> getPaymentProcessorDescriptionTransfers(UserVisit userVisit, PaymentProcessor paymentProcessor) {
         var paymentProcessorDescriptions = getPaymentProcessorDescriptions(paymentProcessor);
         List<PaymentProcessorDescriptionTransfer> paymentProcessorDescriptionTransfers = new ArrayList<>(paymentProcessorDescriptions.size());
-        var paymentProcessorDescriptionTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorDescriptionTransferCache();
+        var paymentProcessorDescriptionTransferCache = getPaymentTransferCaches().getPaymentProcessorDescriptionTransferCache();
         
         paymentProcessorDescriptions.forEach((paymentProcessorDescription) ->
-                paymentProcessorDescriptionTransfers.add(paymentProcessorDescriptionTransferCache.getTransfer(paymentProcessorDescription))
+                paymentProcessorDescriptionTransfers.add(paymentProcessorDescriptionTransferCache.getTransfer(userVisit, paymentProcessorDescription))
         );
         
         return paymentProcessorDescriptionTransfers;

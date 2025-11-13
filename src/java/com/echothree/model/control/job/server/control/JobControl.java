@@ -173,10 +173,10 @@ public class JobControl
     public List<JobTransfer> getJobTransfers(UserVisit userVisit) {
         var jobs = getJobs();
         List<JobTransfer> jobTransfers = new ArrayList<>(jobs.size());
-        var jobTransferCache = getJobTransferCaches(userVisit).getJobTransferCache();
+        var jobTransferCache = getJobTransferCaches().getJobTransferCache();
         
         jobs.forEach((job) ->
-                jobTransfers.add(jobTransferCache.getJobTransfer(job))
+                jobTransfers.add(jobTransferCache.getJobTransfer(userVisit, job))
         );
         
         return jobTransfers;

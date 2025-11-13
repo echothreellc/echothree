@@ -196,10 +196,10 @@ public class FreeOnBoardControl
     public List<FreeOnBoardTransfer> getFreeOnBoardTransfers(final UserVisit userVisit,
             final Collection<FreeOnBoard> freeOnBoards) {
         var freeOnBoardTransfers = new ArrayList<FreeOnBoardTransfer>(freeOnBoards.size());
-        var freeOnBoardTransferCache = getShipmentTransferCaches(userVisit).getFreeOnBoardTransferCache();
+        var freeOnBoardTransferCache = getShipmentTransferCaches().getFreeOnBoardTransferCache();
 
         freeOnBoards.forEach((freeOnBoard) ->
-                freeOnBoardTransfers.add(freeOnBoardTransferCache.getTransfer(freeOnBoard))
+                freeOnBoardTransfers.add(freeOnBoardTransferCache.getTransfer(userVisit, freeOnBoard))
         );
 
         return freeOnBoardTransfers;
@@ -424,10 +424,10 @@ public class FreeOnBoardControl
             final FreeOnBoard freeOnBoard) {
         var freeOnBoardDescriptions = getFreeOnBoardDescriptionsByFreeOnBoard(freeOnBoard);
         var freeOnBoardDescriptionTransfers = new ArrayList<FreeOnBoardDescriptionTransfer>(freeOnBoardDescriptions.size());
-        var freeOnBoardDescriptionTransferCache = getShipmentTransferCaches(userVisit).getFreeOnBoardDescriptionTransferCache();
+        var freeOnBoardDescriptionTransferCache = getShipmentTransferCaches().getFreeOnBoardDescriptionTransferCache();
 
         freeOnBoardDescriptions.forEach((freeOnBoardDescription) ->
-                freeOnBoardDescriptionTransfers.add(freeOnBoardDescriptionTransferCache.getTransfer(freeOnBoardDescription))
+                freeOnBoardDescriptionTransfers.add(freeOnBoardDescriptionTransferCache.getTransfer(userVisit, freeOnBoardDescription))
         );
 
         return freeOnBoardDescriptionTransfers;

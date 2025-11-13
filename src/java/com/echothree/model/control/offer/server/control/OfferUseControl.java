@@ -276,10 +276,10 @@ public class OfferUseControl
 
     public List<OfferUseTransfer> getOfferUseTransfers(UserVisit userVisit, Collection<OfferUse> offerUses) {
         List<OfferUseTransfer> offerUseTransfers = new ArrayList<>(offerUses.size());
-        var offerUseTransferCache = getOfferTransferCaches(userVisit).getOfferUseTransferCache();
+        var offerUseTransferCache = getOfferTransferCaches().getOfferUseTransferCache();
 
         offerUses.forEach((offerUse) ->
-                offerUseTransfers.add(offerUseTransferCache.getOfferUseTransfer(offerUse))
+                offerUseTransfers.add(offerUseTransferCache.getOfferUseTransfer(userVisit, offerUse))
         );
 
         return offerUseTransfers;

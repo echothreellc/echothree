@@ -167,10 +167,10 @@ public class CacheEntryControl
 
     public List<CacheEntryTransfer> getCacheEntryTransfers(UserVisit userVisit, Collection<CacheEntry> cacheEntries) {
         List<CacheEntryTransfer> cacheEntryTransfers = new ArrayList<>(cacheEntries.size());
-        var cacheEntryTransferCache = getCoreTransferCaches(userVisit).getCacheEntryTransferCache();
+        var cacheEntryTransferCache = getCoreTransferCaches().getCacheEntryTransferCache();
 
         cacheEntries.forEach((cacheEntry) ->
-                cacheEntryTransfers.add(cacheEntryTransferCache.getCacheEntryTransfer(cacheEntry))
+                cacheEntryTransfers.add(cacheEntryTransferCache.getCacheEntryTransfer(userVisit, cacheEntry))
         );
 
         return cacheEntryTransfers;
@@ -379,10 +379,10 @@ public class CacheEntryControl
 
     public List<CacheEntryDependencyTransfer> getCacheEntryDependencyTransfers(UserVisit userVisit, Collection<CacheEntryDependency> cacheEntries) {
         List<CacheEntryDependencyTransfer> cacheEntryDependencyTransfers = new ArrayList<>(cacheEntries.size());
-        var cacheEntryDependencyTransferCache = getCoreTransferCaches(userVisit).getCacheEntryDependencyTransferCache();
+        var cacheEntryDependencyTransferCache = getCoreTransferCaches().getCacheEntryDependencyTransferCache();
 
         cacheEntries.forEach((cacheEntryDependency) ->
-                cacheEntryDependencyTransfers.add(cacheEntryDependencyTransferCache.getCacheEntryDependencyTransfer(cacheEntryDependency))
+                cacheEntryDependencyTransfers.add(cacheEntryDependencyTransferCache.getCacheEntryDependencyTransfer(userVisit, cacheEntryDependency))
         );
 
         return cacheEntryDependencyTransfers;

@@ -299,10 +299,10 @@ public class TaxControl
 
     public List<TaxClassificationTransfer> getTaxClassificationTransfers(UserVisit userVisit, Collection<TaxClassification> taxClassifications) {
         List<TaxClassificationTransfer> taxClassificationTransfers = new ArrayList<>(taxClassifications.size());
-        var taxClassificationTransferCache = getTaxTransferCaches(userVisit).getTaxClassificationTransferCache();
+        var taxClassificationTransferCache = getTaxTransferCaches().getTaxClassificationTransferCache();
 
         taxClassifications.forEach((taxClassification) ->
-                taxClassificationTransfers.add(taxClassificationTransferCache.getTransfer(taxClassification))
+                taxClassificationTransfers.add(taxClassificationTransferCache.getTransfer(userVisit, taxClassification))
         );
 
         return taxClassificationTransfers;
@@ -708,10 +708,10 @@ public class TaxControl
 
     public List<ItemTaxClassificationTransfer> getItemTaxClassificationTransfers(UserVisit userVisit, Collection<ItemTaxClassification> itemTaxClassifications) {
         List<ItemTaxClassificationTransfer> itemTaxClassificationTransfers = new ArrayList<>(itemTaxClassifications.size());
-        var itemTaxClassificationTransferCache = getTaxTransferCaches(userVisit).getItemTaxClassificationTransferCache();
+        var itemTaxClassificationTransferCache = getTaxTransferCaches().getItemTaxClassificationTransferCache();
 
         itemTaxClassifications.forEach((itemTaxClassification) ->
-                itemTaxClassificationTransfers.add(itemTaxClassificationTransferCache.getTransfer(itemTaxClassification))
+                itemTaxClassificationTransfers.add(itemTaxClassificationTransferCache.getTransfer(userVisit, itemTaxClassification))
         );
 
         return itemTaxClassificationTransfers;
@@ -927,10 +927,10 @@ public class TaxControl
     public List<TaxTransfer> getTaxTransfers(UserVisit userVisit) {
         var taxes = getTaxes();
         List<TaxTransfer> taxTransfers = new ArrayList<>(taxes.size());
-        var taxTransferCache = getTaxTransferCaches(userVisit).getTaxTransferCache();
+        var taxTransferCache = getTaxTransferCaches().getTaxTransferCache();
         
         taxes.forEach((tax) ->
-                taxTransfers.add(taxTransferCache.getTransfer(tax))
+                taxTransfers.add(taxTransferCache.getTransfer(userVisit, tax))
         );
         
         return taxTransfers;

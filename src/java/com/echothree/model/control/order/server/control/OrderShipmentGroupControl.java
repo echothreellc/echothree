@@ -233,10 +233,10 @@ public class OrderShipmentGroupControl
 
     public List<OrderShipmentGroupTransfer> getOrderShipmentGroupTransfers(UserVisit userVisit, Collection<OrderShipmentGroup> orderShipmentGroups) {
         List<OrderShipmentGroupTransfer> orderShipmentGroupTransfers = new ArrayList<>(orderShipmentGroups.size());
-        var orderShipmentGroupTransferCache = getOrderTransferCaches(userVisit).getOrderShipmentGroupTransferCache();
+        var orderShipmentGroupTransferCache = getOrderTransferCaches().getOrderShipmentGroupTransferCache();
 
         orderShipmentGroups.forEach((orderShipmentGroup) ->
-                orderShipmentGroupTransfers.add(orderShipmentGroupTransferCache.getOrderShipmentGroupTransfer(orderShipmentGroup))
+                orderShipmentGroupTransfers.add(orderShipmentGroupTransferCache.getOrderShipmentGroupTransfer(userVisit, orderShipmentGroup))
         );
 
         return orderShipmentGroupTransfers;

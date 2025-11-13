@@ -853,10 +853,10 @@ public class OfferControl
 
     public List<OfferCustomerTypeTransfer> getOfferCustomerTypeTransfers(UserVisit userVisit, Collection<OfferCustomerType> offerCustomerTypes) {
         List<OfferCustomerTypeTransfer> offerCustomerTypeTransfers = new ArrayList<>(offerCustomerTypes.size());
-        var offerCustomerTypeTransferCache = getOfferTransferCaches(userVisit).getOfferCustomerTypeTransferCache();
+        var offerCustomerTypeTransferCache = getOfferTransferCaches().getOfferCustomerTypeTransferCache();
 
         offerCustomerTypes.forEach((offerCustomerType) ->
-                offerCustomerTypeTransfers.add(offerCustomerTypeTransferCache.getOfferCustomerTypeTransfer(offerCustomerType))
+                offerCustomerTypeTransfers.add(offerCustomerTypeTransferCache.getOfferCustomerTypeTransfer(userVisit, offerCustomerType))
         );
 
         return offerCustomerTypeTransfers;
@@ -1142,10 +1142,10 @@ public class OfferControl
     
     public List<OfferChainTypeTransfer> getOfferChainTypeTransfers(UserVisit userVisit, Collection<OfferChainType> offerChainTypes) {
         List<OfferChainTypeTransfer> offerChainTypeTransfers = new ArrayList<>(offerChainTypes.size());
-        var offerChainTypeTransferCache = getOfferTransferCaches(userVisit).getOfferChainTypeTransferCache();
+        var offerChainTypeTransferCache = getOfferTransferCaches().getOfferChainTypeTransferCache();
         
         offerChainTypes.forEach((offerChainType) ->
-                offerChainTypeTransfers.add(offerChainTypeTransferCache.getOfferChainTypeTransfer(offerChainType))
+                offerChainTypeTransfers.add(offerChainTypeTransferCache.getOfferChainTypeTransfer(userVisit, offerChainType))
         );
         
         return offerChainTypeTransfers;

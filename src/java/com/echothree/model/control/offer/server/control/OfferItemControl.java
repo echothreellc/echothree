@@ -208,10 +208,10 @@ public class OfferItemControl
 
     public List<OfferItemTransfer> getOfferItemTransfers(UserVisit userVisit, Collection<OfferItem> offerItems) {
         List<OfferItemTransfer> offerItemTransfers = new ArrayList<>(offerItems.size());
-        var offerItemTransferCache = getOfferTransferCaches(userVisit).getOfferItemTransferCache();
+        var offerItemTransferCache = getOfferTransferCaches().getOfferItemTransferCache();
 
         offerItems.forEach((offerItem) ->
-                offerItemTransfers.add(offerItemTransferCache.getOfferItemTransfer(offerItem))
+                offerItemTransfers.add(offerItemTransferCache.getOfferItemTransfer(userVisit, offerItem))
         );
 
         return offerItemTransfers;
@@ -468,10 +468,10 @@ public class OfferItemControl
 
     public List<OfferItemPriceTransfer> getOfferItemPriceTransfers(UserVisit userVisit, Collection<OfferItemPrice> offerItemPrices) {
         List<OfferItemPriceTransfer> offerItemPriceTransfers = new ArrayList<>(offerItemPrices.size());
-        var offerItemPriceTransferCache = getOfferTransferCaches(userVisit).getOfferItemPriceTransferCache();
+        var offerItemPriceTransferCache = getOfferTransferCaches().getOfferItemPriceTransferCache();
 
         offerItemPrices.forEach((offerItemPrice) ->
-                offerItemPriceTransfers.add(offerItemPriceTransferCache.getTransfer(offerItemPrice))
+                offerItemPriceTransfers.add(offerItemPriceTransferCache.getTransfer(userVisit, offerItemPrice))
         );
 
         return offerItemPriceTransfers;

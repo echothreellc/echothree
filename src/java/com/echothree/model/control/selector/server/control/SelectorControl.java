@@ -380,10 +380,10 @@ public class SelectorControl
 
     public List<SelectorKindTransfer> getSelectorKindTransfers(UserVisit userVisit, Collection<SelectorKind> selectorKinds) {
         List<SelectorKindTransfer> selectorKindTransfers = new ArrayList<>(selectorKinds.size());
-        var selectorKindTransferCache = getSelectorTransferCaches(userVisit).getSelectorKindTransferCache();
+        var selectorKindTransferCache = getSelectorTransferCaches().getSelectorKindTransferCache();
 
         selectorKinds.forEach((selectorKind) ->
-                selectorKindTransfers.add(selectorKindTransferCache.getSelectorKindTransfer(selectorKind))
+                selectorKindTransfers.add(selectorKindTransferCache.getSelectorKindTransfer(userVisit, selectorKind))
         );
 
         return selectorKindTransfers;
@@ -817,10 +817,10 @@ public class SelectorControl
 
     public List<SelectorTypeTransfer> getSelectorTypeTransfers(UserVisit userVisit, Collection<SelectorType> selectorTypes) {
         List<SelectorTypeTransfer> selectorTypeTransfers = new ArrayList<>(selectorTypes.size());
-        var selectorTypeTransferCache = getSelectorTransferCaches(userVisit).getSelectorTypeTransferCache();
+        var selectorTypeTransferCache = getSelectorTransferCaches().getSelectorTypeTransferCache();
 
         selectorTypes.forEach((selectorType) ->
-                selectorTypeTransfers.add(selectorTypeTransferCache.getSelectorTypeTransfer(selectorType))
+                selectorTypeTransfers.add(selectorTypeTransferCache.getSelectorTypeTransfer(userVisit, selectorType))
         );
 
         return selectorTypeTransfers;
@@ -1386,10 +1386,10 @@ public class SelectorControl
     
     public List<SelectorNodeTypeTransfer> getSelectorNodeTypeTransfers(UserVisit userVisit, Collection<SelectorNodeType> selectorNodeTypes) {
         List<SelectorNodeTypeTransfer> selectorNodeTypeTransfers = new ArrayList<>(selectorNodeTypes.size());
-        var selectorNodeTypeTransferCache = getSelectorTransferCaches(userVisit).getSelectorNodeTypeTransferCache();
+        var selectorNodeTypeTransferCache = getSelectorTransferCaches().getSelectorNodeTypeTransferCache();
         
         selectorNodeTypes.forEach((selectorNodeType) ->
-                selectorNodeTypeTransfers.add(selectorNodeTypeTransferCache.getSelectorNodeTypeTransfer(selectorNodeType))
+                selectorNodeTypeTransfers.add(selectorNodeTypeTransferCache.getSelectorNodeTypeTransfer(userVisit, selectorNodeType))
         );
         
         return selectorNodeTypeTransfers;
@@ -1868,10 +1868,10 @@ public class SelectorControl
     
     public List<SelectorTransfer> getSelectorTransfers(UserVisit userVisit, Collection<Selector> selectors) {
         List<SelectorTransfer> selectorTransfers = new ArrayList<>(selectors.size());
-        var selectorTransferCache = getSelectorTransferCaches(userVisit).getSelectorTransferCache();
+        var selectorTransferCache = getSelectorTransferCaches().getSelectorTransferCache();
         
         selectors.forEach((selector) ->
-                selectorTransfers.add(selectorTransferCache.getSelectorTransfer(selector))
+                selectorTransfers.add(selectorTransferCache.getSelectorTransfer(userVisit, selector))
         );
         
         return selectorTransfers;
@@ -4338,10 +4338,10 @@ public class SelectorControl
     public List<SelectorPartyTransfer> getSelectorPartyTransfers(UserVisit userVisit, Selector selector) {
         var selectorParties = getSelectorPartiesBySelector(selector);
         List<SelectorPartyTransfer> selectorPartyTransfers = new ArrayList<>(selectorParties.size());
-        var selectorPartyTransferCache = getSelectorTransferCaches(userVisit).getSelectorPartyTransferCache();
+        var selectorPartyTransferCache = getSelectorTransferCaches().getSelectorPartyTransferCache();
         
         selectorParties.forEach((selectorParty) ->
-                selectorPartyTransfers.add(selectorPartyTransferCache.getSelectorPartyTransfer(selectorParty))
+                selectorPartyTransfers.add(selectorPartyTransferCache.getSelectorPartyTransfer(userVisit, selectorParty))
         );
         
         return selectorPartyTransfers;

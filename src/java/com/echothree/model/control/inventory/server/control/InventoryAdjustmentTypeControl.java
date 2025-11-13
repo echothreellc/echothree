@@ -224,10 +224,10 @@ public class InventoryAdjustmentTypeControl
 
     public List<InventoryAdjustmentTypeTransfer> getInventoryAdjustmentTypeTransfers(UserVisit userVisit, Collection<InventoryAdjustmentType> inventoryAdjustmentTypes) {
         List<InventoryAdjustmentTypeTransfer> inventoryAdjustmentTypeTransfers = new ArrayList<>(inventoryAdjustmentTypes.size());
-        var inventoryAdjustmentTypeTransferCache = getInventoryTransferCaches(userVisit).getInventoryAdjustmentTypeTransferCache();
+        var inventoryAdjustmentTypeTransferCache = getInventoryTransferCaches().getInventoryAdjustmentTypeTransferCache();
 
         inventoryAdjustmentTypes.forEach((inventoryAdjustmentType) ->
-                inventoryAdjustmentTypeTransfers.add(inventoryAdjustmentTypeTransferCache.getTransfer(inventoryAdjustmentType))
+                inventoryAdjustmentTypeTransfers.add(inventoryAdjustmentTypeTransferCache.getTransfer(userVisit, inventoryAdjustmentType))
         );
 
         return inventoryAdjustmentTypeTransfers;
@@ -467,10 +467,10 @@ public class InventoryAdjustmentTypeControl
     public List<InventoryAdjustmentTypeDescriptionTransfer> getInventoryAdjustmentTypeDescriptionTransfersByInventoryAdjustmentType(UserVisit userVisit, InventoryAdjustmentType inventoryAdjustmentType) {
         var inventoryAdjustmentTypeDescriptions = getInventoryAdjustmentTypeDescriptionsByInventoryAdjustmentType(inventoryAdjustmentType);
         List<InventoryAdjustmentTypeDescriptionTransfer> inventoryAdjustmentTypeDescriptionTransfers = new ArrayList<>(inventoryAdjustmentTypeDescriptions.size());
-        var inventoryAdjustmentTypeDescriptionTransferCache = getInventoryTransferCaches(userVisit).getInventoryAdjustmentTypeDescriptionTransferCache();
+        var inventoryAdjustmentTypeDescriptionTransferCache = getInventoryTransferCaches().getInventoryAdjustmentTypeDescriptionTransferCache();
 
         inventoryAdjustmentTypeDescriptions.forEach((inventoryAdjustmentTypeDescription) ->
-                inventoryAdjustmentTypeDescriptionTransfers.add(inventoryAdjustmentTypeDescriptionTransferCache.getTransfer(inventoryAdjustmentTypeDescription))
+                inventoryAdjustmentTypeDescriptionTransfers.add(inventoryAdjustmentTypeDescriptionTransferCache.getTransfer(userVisit, inventoryAdjustmentTypeDescription))
         );
 
         return inventoryAdjustmentTypeDescriptionTransfers;

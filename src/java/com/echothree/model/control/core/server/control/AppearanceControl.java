@@ -367,10 +367,10 @@ public class AppearanceControl
 
     public List<AppearanceTransfer> getAppearanceTransfers(UserVisit userVisit, Collection<Appearance> appearances) {
         List<AppearanceTransfer> appearanceTransfers = new ArrayList<>(appearances.size());
-        var appearanceTransferCache = getCoreTransferCaches(userVisit).getAppearanceTransferCache();
+        var appearanceTransferCache = getCoreTransferCaches().getAppearanceTransferCache();
 
         appearances.forEach((appearance) ->
-                appearanceTransfers.add(appearanceTransferCache.getAppearanceTransfer(appearance))
+                appearanceTransfers.add(appearanceTransferCache.getAppearanceTransfer(userVisit, appearance))
         );
 
         return appearanceTransfers;
@@ -636,10 +636,10 @@ public class AppearanceControl
     public List<AppearanceDescriptionTransfer> getAppearanceDescriptionTransfersByAppearance(UserVisit userVisit, Appearance appearance) {
         var appearanceDescriptions = getAppearanceDescriptionsByAppearance(appearance);
         List<AppearanceDescriptionTransfer> appearanceDescriptionTransfers = new ArrayList<>(appearanceDescriptions.size());
-        var appearanceDescriptionTransferCache = getCoreTransferCaches(userVisit).getAppearanceDescriptionTransferCache();
+        var appearanceDescriptionTransferCache = getCoreTransferCaches().getAppearanceDescriptionTransferCache();
 
         appearanceDescriptions.forEach((appearanceDescription) ->
-                appearanceDescriptionTransfers.add(appearanceDescriptionTransferCache.getAppearanceDescriptionTransfer(appearanceDescription))
+                appearanceDescriptionTransfers.add(appearanceDescriptionTransferCache.getAppearanceDescriptionTransfer(userVisit, appearanceDescription))
         );
 
         return appearanceDescriptionTransfers;
@@ -800,10 +800,10 @@ public class AppearanceControl
 
     public List<AppearanceTextDecorationTransfer> getAppearanceTextDecorationTransfers(UserVisit userVisit, Collection<AppearanceTextDecoration> appearanceTextDecorations) {
         List<AppearanceTextDecorationTransfer> appearanceTextDecorationTransfers = new ArrayList<>(appearanceTextDecorations.size());
-        var appearanceTextDecorationTransferCache = getCoreTransferCaches(userVisit).getAppearanceTextDecorationTransferCache();
+        var appearanceTextDecorationTransferCache = getCoreTransferCaches().getAppearanceTextDecorationTransferCache();
 
         appearanceTextDecorations.forEach((appearanceTextDecoration) ->
-                appearanceTextDecorationTransfers.add(appearanceTextDecorationTransferCache.getAppearanceTextDecorationTransfer(appearanceTextDecoration))
+                appearanceTextDecorationTransfers.add(appearanceTextDecorationTransferCache.getAppearanceTextDecorationTransfer(userVisit, appearanceTextDecoration))
         );
 
         return appearanceTextDecorationTransfers;
@@ -958,10 +958,10 @@ public class AppearanceControl
 
     public List<AppearanceTextTransformationTransfer> getAppearanceTextTransformationTransfers(UserVisit userVisit, Collection<AppearanceTextTransformation> appearanceTextTransformations) {
         List<AppearanceTextTransformationTransfer> appearanceTextTransformationTransfers = new ArrayList<>(appearanceTextTransformations.size());
-        var appearanceTextTransformationTransferCache = getCoreTransferCaches(userVisit).getAppearanceTextTransformationTransferCache();
+        var appearanceTextTransformationTransferCache = getCoreTransferCaches().getAppearanceTextTransformationTransferCache();
 
         appearanceTextTransformations.forEach((appearanceTextTransformation) ->
-                appearanceTextTransformationTransfers.add(appearanceTextTransformationTransferCache.getAppearanceTextTransformationTransfer(appearanceTextTransformation))
+                appearanceTextTransformationTransfers.add(appearanceTextTransformationTransferCache.getAppearanceTextTransformationTransfer(userVisit, appearanceTextTransformation))
         );
 
         return appearanceTextTransformationTransfers;
@@ -1108,10 +1108,10 @@ public class AppearanceControl
     public List<EntityAppearanceTransfer> getEntityAppearanceTransfersByAppearance(UserVisit userVisit, Appearance appearance) {
         var entityAppearances = getEntityAppearancesByAppearance(appearance);
         List<EntityAppearanceTransfer> entityAppearanceTransfers = new ArrayList<>(entityAppearances.size());
-        var entityAppearanceTransferCache = getCoreTransferCaches(userVisit).getEntityAppearanceTransferCache();
+        var entityAppearanceTransferCache = getCoreTransferCaches().getEntityAppearanceTransferCache();
 
         entityAppearances.forEach((entityAppearance) ->
-                entityAppearanceTransfers.add(entityAppearanceTransferCache.getEntityAppearanceTransfer(entityAppearance))
+                entityAppearanceTransfers.add(entityAppearanceTransferCache.getEntityAppearanceTransfer(userVisit, entityAppearance))
         );
 
         return entityAppearanceTransfers;

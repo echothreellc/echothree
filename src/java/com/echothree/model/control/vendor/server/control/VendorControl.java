@@ -333,12 +333,12 @@ public class VendorControl
         List<VendorTypeTransfer> vendorTypeTransfers = null;
 
         if(vendorTypes != null) {
-            var vendorTypeTransferCache = getVendorTransferCaches(userVisit).getVendorTypeTransferCache();
+            var vendorTypeTransferCache = getVendorTransferCaches().getVendorTypeTransferCache();
 
             vendorTypeTransfers = new ArrayList<>(vendorTypes.size());
 
             for(var vendorType : vendorTypes) {
-                vendorTypeTransfers.add(vendorTypeTransferCache.getVendorTypeTransfer(vendorType));
+                vendorTypeTransfers.add(vendorTypeTransferCache.getVendorTypeTransfer(userVisit, vendorType));
             }
         }
 
@@ -566,12 +566,12 @@ public class VendorControl
         List<VendorTypeDescriptionTransfer> vendorTypeDescriptionTransfers = null;
         
         if(vendorTypeDescriptions != null) {
-            var vendorTypeDescriptionTransferCache = getVendorTransferCaches(userVisit).getVendorTypeDescriptionTransferCache();
+            var vendorTypeDescriptionTransferCache = getVendorTransferCaches().getVendorTypeDescriptionTransferCache();
             
             vendorTypeDescriptionTransfers = new ArrayList<>(vendorTypeDescriptions.size());
             
             for(var vendorTypeDescription : vendorTypeDescriptions) {
-                vendorTypeDescriptionTransfers.add(vendorTypeDescriptionTransferCache.getVendorTypeDescriptionTransfer(vendorTypeDescription));
+                vendorTypeDescriptionTransfers.add(vendorTypeDescriptionTransferCache.getVendorTypeDescriptionTransfer(userVisit, vendorTypeDescription));
             }
         }
         
@@ -857,10 +857,10 @@ public class VendorControl
 
     public List<VendorTransfer> getVendorTransfers(UserVisit userVisit, Collection<Vendor> vendors) {
         var vendorTransfers = new ArrayList<VendorTransfer>(vendors.size());
-        var vendorTransferCache = getVendorTransferCaches(userVisit).getVendorTransferCache();
+        var vendorTransferCache = getVendorTransferCaches().getVendorTransferCache();
 
         vendors.forEach((vendor) ->
-                vendorTransfers.add(vendorTransferCache.getTransfer(vendor))
+                vendorTransfers.add(vendorTransferCache.getTransfer(userVisit, vendor))
         );
 
         return vendorTransfers;
@@ -1196,10 +1196,10 @@ public class VendorControl
     
     public List<VendorItemTransfer> getVendorItemTransfers(UserVisit userVisit, Collection<VendorItem> vendorItems) {
         List<VendorItemTransfer> vendorItemTransfers = new ArrayList<>(vendorItems.size());
-        var vendorItemTransferCache = getVendorTransferCaches(userVisit).getVendorItemTransferCache();
+        var vendorItemTransferCache = getVendorTransferCaches().getVendorItemTransferCache();
         
         vendorItems.forEach((vendorItem) ->
-                vendorItemTransfers.add(vendorItemTransferCache.getVendorItemTransfer(vendorItem))
+                vendorItemTransfers.add(vendorItemTransferCache.getVendorItemTransfer(userVisit, vendorItem))
         );
         
         return vendorItemTransfers;
@@ -1489,10 +1489,10 @@ public class VendorControl
     
     public List<VendorItemCostTransfer> getVendorItemCostTransfers(UserVisit userVisit, Collection<VendorItemCost> vendorItemCosts) {
         List<VendorItemCostTransfer> vendorItemCostTransfers = new ArrayList<>(vendorItemCosts.size());
-        var vendorItemCostTransferCache = getVendorTransferCaches(userVisit).getVendorItemCostTransferCache();
+        var vendorItemCostTransferCache = getVendorTransferCaches().getVendorItemCostTransferCache();
         
         for(var vendorItemCost : vendorItemCosts) {
-            vendorItemCostTransfers.add(vendorItemCostTransferCache.getVendorItemCostTransfer(vendorItemCost));
+            vendorItemCostTransfers.add(vendorItemCostTransferCache.getVendorItemCostTransfer(userVisit, vendorItemCost));
         }
         
         return vendorItemCostTransfers;
@@ -1751,10 +1751,10 @@ public class VendorControl
 
     public List<ItemPurchasingCategoryTransfer> getItemPurchasingCategoryTransfers(UserVisit userVisit, Collection<ItemPurchasingCategory> itemPurchasingCategories) {
         var itemPurchasingCategoryTransfers = new ArrayList<ItemPurchasingCategoryTransfer>(itemPurchasingCategories.size());
-        var itemPurchasingCategoryTransferCache = getVendorTransferCaches(userVisit).getItemPurchasingCategoryTransferCache();
+        var itemPurchasingCategoryTransferCache = getVendorTransferCaches().getItemPurchasingCategoryTransferCache();
 
         itemPurchasingCategories.forEach((itemPurchasingCategory) ->
-                itemPurchasingCategoryTransfers.add(itemPurchasingCategoryTransferCache.getItemPurchasingCategoryTransfer(itemPurchasingCategory))
+                itemPurchasingCategoryTransfers.add(itemPurchasingCategoryTransferCache.getItemPurchasingCategoryTransfer(userVisit, itemPurchasingCategory))
         );
 
         return itemPurchasingCategoryTransfers;
@@ -2041,10 +2041,10 @@ public class VendorControl
     public List<ItemPurchasingCategoryDescriptionTransfer> getItemPurchasingCategoryDescriptionTransfersByItemPurchasingCategory(UserVisit userVisit, ItemPurchasingCategory itemPurchasingCategory) {
         var itemPurchasingCategoryDescriptions = getItemPurchasingCategoryDescriptionsByItemPurchasingCategory(itemPurchasingCategory);
         List<ItemPurchasingCategoryDescriptionTransfer> itemPurchasingCategoryDescriptionTransfers = new ArrayList<>(itemPurchasingCategoryDescriptions.size());
-        var itemPurchasingCategoryDescriptionTransferCache = getVendorTransferCaches(userVisit).getItemPurchasingCategoryDescriptionTransferCache();
+        var itemPurchasingCategoryDescriptionTransferCache = getVendorTransferCaches().getItemPurchasingCategoryDescriptionTransferCache();
         
         itemPurchasingCategoryDescriptions.forEach((itemPurchasingCategoryDescription) ->
-                itemPurchasingCategoryDescriptionTransfers.add(itemPurchasingCategoryDescriptionTransferCache.getItemPurchasingCategoryDescriptionTransfer(itemPurchasingCategoryDescription))
+                itemPurchasingCategoryDescriptionTransfers.add(itemPurchasingCategoryDescriptionTransferCache.getItemPurchasingCategoryDescriptionTransfer(userVisit, itemPurchasingCategoryDescription))
         );
         
         return itemPurchasingCategoryDescriptionTransfers;

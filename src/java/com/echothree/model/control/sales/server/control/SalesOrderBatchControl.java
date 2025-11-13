@@ -110,10 +110,10 @@ public class SalesOrderBatchControl
         var batchControl = Session.getModelController(BatchControl.class);
         var batches = batchControl.getBatchesUsingNames(BatchConstants.BatchType_SALES_ORDER);
         List<SalesOrderBatchTransfer> salesOrderBatchTransfers = new ArrayList<>(batches.size());
-        var salesOrderBatchTransferCache = getSaleTransferCaches(userVisit).getSalesOrderBatchTransferCache();
+        var salesOrderBatchTransferCache = getSaleTransferCaches().getSalesOrderBatchTransferCache();
 
         batches.forEach((batch) ->
-                salesOrderBatchTransfers.add(salesOrderBatchTransferCache.getTransfer(batch))
+                salesOrderBatchTransfers.add(salesOrderBatchTransferCache.getTransfer(userVisit, batch))
         );
 
         return salesOrderBatchTransfers;

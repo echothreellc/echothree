@@ -262,10 +262,10 @@ public class CancellationPolicyControl
     
     public List<PartyCancellationPolicyTransfer> getPartyCancellationPolicyTransfers(UserVisit userVisit, Collection<PartyCancellationPolicy> cancellationPolicies) {
         List<PartyCancellationPolicyTransfer> cancellationPolicyTransfers = new ArrayList<>(cancellationPolicies.size());
-        var cancellationPolicyTransferCache = getCancellationPolicyTransferCaches(userVisit).getPartyCancellationPolicyTransferCache();
+        var cancellationPolicyTransferCache = getCancellationPolicyTransferCaches().getPartyCancellationPolicyTransferCache();
 
         cancellationPolicies.forEach((cancellationPolicy) ->
-                cancellationPolicyTransfers.add(cancellationPolicyTransferCache.getPartyCancellationPolicyTransfer(cancellationPolicy))
+                cancellationPolicyTransfers.add(cancellationPolicyTransferCache.getPartyCancellationPolicyTransfer(userVisit, cancellationPolicy))
         );
 
         return cancellationPolicyTransfers;
@@ -505,10 +505,10 @@ public class CancellationPolicyControl
 
     public List<CancellationKindTransfer> getCancellationKindTransfers(UserVisit userVisit, Collection<CancellationKind> cancellationKinds) {
         var cancellationKindTransfers = new ArrayList<CancellationKindTransfer>(cancellationKinds.size());
-        var cancellationKindTransferCache = getCancellationPolicyTransferCaches(userVisit).getCancellationKindTransferCache();
+        var cancellationKindTransferCache = getCancellationPolicyTransferCaches().getCancellationKindTransferCache();
 
         cancellationKinds.forEach((cancellationKind) ->
-                cancellationKindTransfers.add(cancellationKindTransferCache.getCancellationKindTransfer(cancellationKind))
+                cancellationKindTransfers.add(cancellationKindTransferCache.getCancellationKindTransfer(userVisit, cancellationKind))
         );
 
         return cancellationKindTransfers;
@@ -988,10 +988,10 @@ public class CancellationPolicyControl
 
     public List<CancellationPolicyTransfer> getCancellationPolicyTransfers(UserVisit userVisit, Collection<CancellationPolicy> cancellationPolicies) {
         List<CancellationPolicyTransfer> cancellationPolicyTransfers = new ArrayList<>(cancellationPolicies.size());
-        var cancellationPolicyTransferCache = getCancellationPolicyTransferCaches(userVisit).getCancellationPolicyTransferCache();
+        var cancellationPolicyTransferCache = getCancellationPolicyTransferCaches().getCancellationPolicyTransferCache();
 
         cancellationPolicies.forEach((cancellationPolicy) ->
-                cancellationPolicyTransfers.add(cancellationPolicyTransferCache.getCancellationPolicyTransfer(cancellationPolicy))
+                cancellationPolicyTransfers.add(cancellationPolicyTransferCache.getCancellationPolicyTransfer(userVisit, cancellationPolicy))
         );
 
         return cancellationPolicyTransfers;
@@ -1188,10 +1188,10 @@ public class CancellationPolicyControl
     public List<CancellationPolicyTranslationTransfer> getCancellationPolicyTranslationTransfers(UserVisit userVisit, CancellationPolicy cancellationPolicy) {
         var cancellationPolicyTranslations = getCancellationPolicyTranslationsByCancellationPolicy(cancellationPolicy);
         List<CancellationPolicyTranslationTransfer> cancellationPolicyTranslationTransfers = new ArrayList<>(cancellationPolicyTranslations.size());
-        var cancellationPolicyTranslationTransferCache = getCancellationPolicyTransferCaches(userVisit).getCancellationPolicyTranslationTransferCache();
+        var cancellationPolicyTranslationTransferCache = getCancellationPolicyTransferCaches().getCancellationPolicyTranslationTransferCache();
 
         cancellationPolicyTranslations.forEach((cancellationPolicyTranslation) ->
-                cancellationPolicyTranslationTransfers.add(cancellationPolicyTranslationTransferCache.getCancellationPolicyTranslationTransfer(cancellationPolicyTranslation))
+                cancellationPolicyTranslationTransfers.add(cancellationPolicyTranslationTransferCache.getCancellationPolicyTranslationTransfer(userVisit, cancellationPolicyTranslation))
         );
 
         return cancellationPolicyTranslationTransfers;
@@ -1432,10 +1432,10 @@ public class CancellationPolicyControl
     
     public List<CancellationPolicyReasonTransfer> getCancellationPolicyReasonTransfers(UserVisit userVisit, Collection<CancellationPolicyReason> cancellationPolicyReasons) {
         List<CancellationPolicyReasonTransfer> cancellationPolicyReasonTransfers = new ArrayList<>(cancellationPolicyReasons.size());
-        var cancellationPolicyReasonTransferCache = getCancellationPolicyTransferCaches(userVisit).getCancellationPolicyReasonTransferCache();
+        var cancellationPolicyReasonTransferCache = getCancellationPolicyTransferCaches().getCancellationPolicyReasonTransferCache();
         
         cancellationPolicyReasons.forEach((cancellationPolicyReason) ->
-                cancellationPolicyReasonTransfers.add(cancellationPolicyReasonTransferCache.getCancellationPolicyReasonTransfer(cancellationPolicyReason))
+                cancellationPolicyReasonTransfers.add(cancellationPolicyReasonTransferCache.getCancellationPolicyReasonTransfer(userVisit, cancellationPolicyReason))
         );
         
         return cancellationPolicyReasonTransfers;
@@ -1739,10 +1739,10 @@ public class CancellationPolicyControl
     public List<CancellationReasonTransfer> getCancellationReasonTransfersByCancellationKind(UserVisit userVisit, CancellationKind cancellationKind) {
         var cancellationReasons = getCancellationReasons(cancellationKind);
         List<CancellationReasonTransfer> cancellationReasonTransfers = new ArrayList<>(cancellationReasons.size());
-        var cancellationReasonTransferCache = getCancellationPolicyTransferCaches(userVisit).getCancellationReasonTransferCache();
+        var cancellationReasonTransferCache = getCancellationPolicyTransferCaches().getCancellationReasonTransferCache();
         
         cancellationReasons.forEach((cancellationReason) ->
-                cancellationReasonTransfers.add(cancellationReasonTransferCache.getCancellationReasonTransfer(cancellationReason))
+                cancellationReasonTransfers.add(cancellationReasonTransferCache.getCancellationReasonTransfer(userVisit, cancellationReason))
         );
         
         return cancellationReasonTransfers;
@@ -2201,10 +2201,10 @@ public class CancellationPolicyControl
     
     public List<CancellationReasonTypeTransfer> getCancellationReasonTypeTransfers(UserVisit userVisit, Collection<CancellationReasonType> cancellationReasonTypes) {
         List<CancellationReasonTypeTransfer> cancellationReasonTypeTransfers = new ArrayList<>(cancellationReasonTypes.size());
-        var cancellationReasonTypeTransferCache = getCancellationPolicyTransferCaches(userVisit).getCancellationReasonTypeTransferCache();
+        var cancellationReasonTypeTransferCache = getCancellationPolicyTransferCaches().getCancellationReasonTypeTransferCache();
         
         cancellationReasonTypes.forEach((cancellationReasonType) ->
-                cancellationReasonTypeTransfers.add(cancellationReasonTypeTransferCache.getCancellationReasonTypeTransfer(cancellationReasonType))
+                cancellationReasonTypeTransfers.add(cancellationReasonTypeTransferCache.getCancellationReasonTypeTransfer(userVisit, cancellationReasonType))
         );
         
         return cancellationReasonTypeTransfers;
@@ -2532,10 +2532,10 @@ public class CancellationPolicyControl
     public List<CancellationTypeTransfer> getCancellationTypeTransfersByCancellationKind(UserVisit userVisit, CancellationKind cancellationKind) {
         var cancellationTypes = getCancellationTypes(cancellationKind);
         List<CancellationTypeTransfer> cancellationTypeTransfers = new ArrayList<>(cancellationTypes.size());
-        var cancellationTypeTransferCache = getCancellationPolicyTransferCaches(userVisit).getCancellationTypeTransferCache();
+        var cancellationTypeTransferCache = getCancellationPolicyTransferCaches().getCancellationTypeTransferCache();
         
         cancellationTypes.forEach((cancellationType) ->
-                cancellationTypeTransfers.add(cancellationTypeTransferCache.getCancellationTypeTransfer(cancellationType))
+                cancellationTypeTransfers.add(cancellationTypeTransferCache.getCancellationTypeTransfer(userVisit, cancellationType))
         );
         
         return cancellationTypeTransfers;

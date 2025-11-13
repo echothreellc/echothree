@@ -317,10 +317,10 @@ public class TrackControl
     public List<TrackTransfer> getTrackTransfers(UserVisit userVisit) {
         var tracks = getTracks();
         List<TrackTransfer> trackTransfers = new ArrayList<>(tracks.size());
-        var trackTransferCache = getTrackTransferCaches(userVisit).getTrackTransferCache();
+        var trackTransferCache = getTrackTransferCaches().getTrackTransferCache();
 
         tracks.forEach((track) ->
-                trackTransfers.add(trackTransferCache.getTrackTransfer(track))
+                trackTransfers.add(trackTransferCache.getTrackTransfer(userVisit, track))
         );
 
         return trackTransfers;
@@ -557,10 +557,10 @@ public class TrackControl
     public List<TrackDescriptionTransfer> getTrackDescriptionTransfersByTrack(UserVisit userVisit, Track track) {
         var trackDescriptions = getTrackDescriptionsByTrack(track);
         List<TrackDescriptionTransfer> trackDescriptionTransfers = new ArrayList<>(trackDescriptions.size());
-        var trackDescriptionTransferCache = getTrackTransferCaches(userVisit).getTrackDescriptionTransferCache();
+        var trackDescriptionTransferCache = getTrackTransferCaches().getTrackDescriptionTransferCache();
 
         trackDescriptions.forEach((trackDescription) ->
-                trackDescriptionTransfers.add(trackDescriptionTransferCache.getTrackDescriptionTransfer(trackDescription))
+                trackDescriptionTransfers.add(trackDescriptionTransferCache.getTrackDescriptionTransfer(userVisit, trackDescription))
         );
 
         return trackDescriptionTransfers;
@@ -718,10 +718,10 @@ public class TrackControl
 
     public List<UserVisitTrackTransfer> getUserVisitTrackTransfers(UserVisit userVisit, Collection<UserVisitTrack> userVisitTracks) {
         var userVisitTrackTransfers = new ArrayList<UserVisitTrackTransfer>(userVisitTracks.size());
-        var userVisitTrackTransferCache = getTrackTransferCaches(userVisit).getUserVisitTrackTransferCache();
+        var userVisitTrackTransferCache = getTrackTransferCaches().getUserVisitTrackTransferCache();
 
         userVisitTracks.forEach((userVisitTrack) ->
-                userVisitTrackTransfers.add(userVisitTrackTransferCache.getUserVisitTrackTransfer(userVisitTrack))
+                userVisitTrackTransfers.add(userVisitTrackTransferCache.getUserVisitTrackTransfer(userVisit, userVisitTrack))
         );
 
         return userVisitTrackTransfers;

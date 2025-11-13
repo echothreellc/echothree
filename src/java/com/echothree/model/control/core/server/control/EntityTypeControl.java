@@ -317,10 +317,10 @@ public class EntityTypeControl
 
     public List<EntityTypeTransfer> getEntityTypeTransfers(UserVisit userVisit, Collection<EntityType> entityTypes) {
         List<EntityTypeTransfer> entityTypeTransfers = new ArrayList<>(entityTypes.size());
-        var entityTypeTransferCache = getCoreTransferCaches(userVisit).getEntityTypeTransferCache();
+        var entityTypeTransferCache = getCoreTransferCaches().getEntityTypeTransferCache();
 
         entityTypes.forEach((entityType) ->
-                entityTypeTransfers.add(entityTypeTransferCache.getEntityTypeTransfer(entityType))
+                entityTypeTransfers.add(entityTypeTransferCache.getEntityTypeTransfer(userVisit, entityType))
         );
 
         return entityTypeTransfers;
@@ -526,10 +526,10 @@ public class EntityTypeControl
             EntityType entityType) {
         var entityTypeDescriptions = getEntityTypeDescriptionsByEntityType(entityType);
         List<EntityTypeDescriptionTransfer> entityTypeDescriptionTransfers = new ArrayList<>(entityTypeDescriptions.size());
-        var entityTypeDescriptionTransferCache = getCoreTransferCaches(userVisit).getEntityTypeDescriptionTransferCache();
+        var entityTypeDescriptionTransferCache = getCoreTransferCaches().getEntityTypeDescriptionTransferCache();
 
         entityTypeDescriptions.forEach((entityTypeDescription) ->
-                entityTypeDescriptionTransfers.add(entityTypeDescriptionTransferCache.getEntityTypeDescriptionTransfer(entityTypeDescription))
+                entityTypeDescriptionTransfers.add(entityTypeDescriptionTransferCache.getEntityTypeDescriptionTransfer(userVisit, entityTypeDescription))
         );
 
         return entityTypeDescriptionTransfers;

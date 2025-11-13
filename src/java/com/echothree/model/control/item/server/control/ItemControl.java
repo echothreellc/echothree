@@ -517,10 +517,10 @@ public class ItemControl
 
     public List<ItemTypeTransfer> getItemTypeTransfers(UserVisit userVisit, Collection<ItemType> entities) {
         var itemTypeTransfers = new ArrayList<ItemTypeTransfer>(entities.size());
-        var itemTypeTransferCache = getItemTransferCaches(userVisit).getItemTypeTransferCache();
+        var itemTypeTransferCache = getItemTransferCaches().getItemTypeTransferCache();
 
         entities.forEach((entity) ->
-                itemTypeTransfers.add(itemTypeTransferCache.getTransfer(entity))
+                itemTypeTransfers.add(itemTypeTransferCache.getTransfer(userVisit, entity))
         );
 
         return itemTypeTransfers;
@@ -730,10 +730,10 @@ public class ItemControl
 
     public List<ItemDeliveryTypeTransfer> getItemDeliveryTypeTransfers(UserVisit userVisit, Collection<ItemDeliveryType> entities) {
         var itemDeliveryTypeTransfers = new ArrayList<ItemDeliveryTypeTransfer>(entities.size());
-        var itemDeliveryTypeTransferCache = getItemTransferCaches(userVisit).getItemDeliveryTypeTransferCache();
+        var itemDeliveryTypeTransferCache = getItemTransferCaches().getItemDeliveryTypeTransferCache();
 
         entities.forEach((entity) ->
-                itemDeliveryTypeTransfers.add(itemDeliveryTypeTransferCache.getTransfer(entity))
+                itemDeliveryTypeTransfers.add(itemDeliveryTypeTransferCache.getTransfer(userVisit, entity))
         );
 
         return itemDeliveryTypeTransfers;
@@ -943,10 +943,10 @@ public class ItemControl
 
     public List<ItemInventoryTypeTransfer> getItemInventoryTypeTransfers(UserVisit userVisit, Collection<ItemInventoryType> entities) {
         var itemInventoryTypeTransfers = new ArrayList<ItemInventoryTypeTransfer>(entities.size());
-        var itemInventoryTypeTransferCache = getItemTransferCaches(userVisit).getItemInventoryTypeTransferCache();
+        var itemInventoryTypeTransferCache = getItemTransferCaches().getItemInventoryTypeTransferCache();
 
         entities.forEach((entity) ->
-                itemInventoryTypeTransfers.add(itemInventoryTypeTransferCache.getTransfer(entity))
+                itemInventoryTypeTransfers.add(itemInventoryTypeTransferCache.getTransfer(userVisit, entity))
         );
 
         return itemInventoryTypeTransfers;
@@ -1156,10 +1156,10 @@ public class ItemControl
 
     public List<ItemUseTypeTransfer> getItemUseTypeTransfers(UserVisit userVisit, Collection<ItemUseType> entities) {
         var itemUseTypeTransfers = new ArrayList<ItemUseTypeTransfer>(entities.size());
-        var itemUseTypeTransferCache = getItemTransferCaches(userVisit).getItemUseTypeTransferCache();
+        var itemUseTypeTransferCache = getItemTransferCaches().getItemUseTypeTransferCache();
 
         entities.forEach((entity) ->
-                itemUseTypeTransfers.add(itemUseTypeTransferCache.getTransfer(entity))
+                itemUseTypeTransfers.add(itemUseTypeTransferCache.getTransfer(userVisit, entity))
         );
 
         return itemUseTypeTransfers;
@@ -1434,10 +1434,10 @@ public class ItemControl
 
     public List<ItemCategoryTransfer> getItemCategoryTransfers(UserVisit userVisit, Collection<ItemCategory> itemCategories) {
         List<ItemCategoryTransfer> itemCategoryTransfers = new ArrayList<>(itemCategories.size());
-        var itemCategoryTransferCache = getItemTransferCaches(userVisit).getItemCategoryTransferCache();
+        var itemCategoryTransferCache = getItemTransferCaches().getItemCategoryTransferCache();
 
         itemCategories.forEach((itemCategory) ->
-                itemCategoryTransfers.add(itemCategoryTransferCache.getTransfer(itemCategory))
+                itemCategoryTransfers.add(itemCategoryTransferCache.getTransfer(userVisit, itemCategory))
         );
 
         return itemCategoryTransfers;
@@ -1727,10 +1727,10 @@ public class ItemControl
     public List<ItemCategoryDescriptionTransfer> getItemCategoryDescriptionTransfersByItemCategory(UserVisit userVisit, ItemCategory itemCategory) {
         var itemCategoryDescriptions = getItemCategoryDescriptionsByItemCategory(itemCategory);
         List<ItemCategoryDescriptionTransfer> itemCategoryDescriptionTransfers = new ArrayList<>(itemCategoryDescriptions.size());
-        var itemCategoryDescriptionTransferCache = getItemTransferCaches(userVisit).getItemCategoryDescriptionTransferCache();
+        var itemCategoryDescriptionTransferCache = getItemTransferCaches().getItemCategoryDescriptionTransferCache();
         
         itemCategoryDescriptions.forEach((itemCategoryDescription) ->
-                itemCategoryDescriptionTransfers.add(itemCategoryDescriptionTransferCache.getTransfer(itemCategoryDescription))
+                itemCategoryDescriptionTransfers.add(itemCategoryDescriptionTransferCache.getTransfer(userVisit, itemCategoryDescription))
         );
         
         return itemCategoryDescriptionTransfers;
@@ -2194,10 +2194,10 @@ public class ItemControl
 
     public List<ItemTransfer> getItemTransfers(UserVisit userVisit, Collection<Item> items) {
         List<ItemTransfer> itemTransfers = new ArrayList<>(items.size());
-        var itemTransferCache = getItemTransferCaches(userVisit).getItemTransferCache();
+        var itemTransferCache = getItemTransferCaches().getItemTransferCache();
 
         items.forEach((item) ->
-                itemTransfers.add(itemTransferCache.getTransfer(item))
+                itemTransfers.add(itemTransferCache.getTransfer(userVisit, item))
         );
 
         return itemTransfers;
@@ -2515,10 +2515,10 @@ public class ItemControl
     
     public List<ItemUnitOfMeasureTypeTransfer> getItemUnitOfMeasureTypeTransfers(UserVisit userVisit, Collection<ItemUnitOfMeasureType> itemUnitOfMeasureTypes) {
         List<ItemUnitOfMeasureTypeTransfer> itemUnitOfMeasureTypeTransfers = new ArrayList<>(itemUnitOfMeasureTypes.size());
-        var itemUnitOfMeasureTypeTransferCache = getItemTransferCaches(userVisit).getItemUnitOfMeasureTypeTransferCache();
+        var itemUnitOfMeasureTypeTransferCache = getItemTransferCaches().getItemUnitOfMeasureTypeTransferCache();
         
         itemUnitOfMeasureTypes.forEach((itemUnitOfMeasureType) ->
-                itemUnitOfMeasureTypeTransfers.add(itemUnitOfMeasureTypeTransferCache.getTransfer(itemUnitOfMeasureType))
+                itemUnitOfMeasureTypeTransfers.add(itemUnitOfMeasureTypeTransferCache.getTransfer(userVisit, itemUnitOfMeasureType))
         );
         
         return itemUnitOfMeasureTypeTransfers;
@@ -2985,10 +2985,10 @@ public class ItemControl
 
     public List<ItemAliasChecksumTypeTransfer> getItemAliasChecksumTypeTransfers(UserVisit userVisit, Collection<ItemAliasChecksumType> entities) {
         var itemAliasChecksumTypeTransfers = new ArrayList<ItemAliasChecksumTypeTransfer>(entities.size());
-        var itemAliasChecksumTypeTransferCache = getItemTransferCaches(userVisit).getItemAliasChecksumTypeTransferCache();
+        var itemAliasChecksumTypeTransferCache = getItemTransferCaches().getItemAliasChecksumTypeTransferCache();
 
         entities.forEach((entity) ->
-                itemAliasChecksumTypeTransfers.add(itemAliasChecksumTypeTransferCache.getTransfer(entity))
+                itemAliasChecksumTypeTransfers.add(itemAliasChecksumTypeTransferCache.getTransfer(userVisit, entity))
         );
 
         return itemAliasChecksumTypeTransfers;
@@ -3218,10 +3218,10 @@ public class ItemControl
 
     public List<ItemAliasTypeTransfer> getItemAliasTypeTransfers(UserVisit userVisit, Collection<ItemAliasType> itemAliasTypes) {
         List<ItemAliasTypeTransfer> itemAliasTypeTransfers = new ArrayList<>(itemAliasTypes.size());
-        var itemAliasTypeTransferCache = getItemTransferCaches(userVisit).getItemAliasTypeTransferCache();
+        var itemAliasTypeTransferCache = getItemTransferCaches().getItemAliasTypeTransferCache();
 
         itemAliasTypes.forEach((itemAliasType) ->
-                itemAliasTypeTransfers.add(itemAliasTypeTransferCache.getTransfer(itemAliasType))
+                itemAliasTypeTransfers.add(itemAliasTypeTransferCache.getTransfer(userVisit, itemAliasType))
         );
 
         return itemAliasTypeTransfers;
@@ -3479,10 +3479,10 @@ public class ItemControl
     public List<ItemAliasTypeDescriptionTransfer> getItemAliasTypeDescriptionTransfersByItemAliasType(UserVisit userVisit, ItemAliasType itemAliasType) {
         var itemAliasTypeDescriptions = getItemAliasTypeDescriptionsByItemAliasType(itemAliasType);
         List<ItemAliasTypeDescriptionTransfer> itemAliasTypeDescriptionTransfers = new ArrayList<>(itemAliasTypeDescriptions.size());
-        var itemAliasTypeDescriptionTransferCache = getItemTransferCaches(userVisit).getItemAliasTypeDescriptionTransferCache();
+        var itemAliasTypeDescriptionTransferCache = getItemTransferCaches().getItemAliasTypeDescriptionTransferCache();
         
         itemAliasTypeDescriptions.forEach((itemAliasTypeDescription) ->
-                itemAliasTypeDescriptionTransfers.add(itemAliasTypeDescriptionTransferCache.getTransfer(itemAliasTypeDescription))
+                itemAliasTypeDescriptionTransfers.add(itemAliasTypeDescriptionTransferCache.getTransfer(userVisit, itemAliasTypeDescription))
         );
         
         return itemAliasTypeDescriptionTransfers;
@@ -4126,10 +4126,10 @@ public class ItemControl
     public List<ItemCountryOfOriginTransfer> getItemCountryOfOriginTransfersByItem(UserVisit userVisit, Item item) {
         var itemCountryOfOrigins = getItemCountryOfOriginsByItem(item);
         List<ItemCountryOfOriginTransfer> itemCountryOfOriginTransfers = new ArrayList<>(itemCountryOfOrigins.size());
-        var itemCountryOfOriginTransferCache = getItemTransferCaches(userVisit).getItemCountryOfOriginTransferCache();
+        var itemCountryOfOriginTransferCache = getItemTransferCaches().getItemCountryOfOriginTransferCache();
         
         itemCountryOfOrigins.forEach((itemCountryOfOrigin) ->
-                itemCountryOfOriginTransfers.add(itemCountryOfOriginTransferCache.getTransfer(itemCountryOfOrigin))
+                itemCountryOfOriginTransfers.add(itemCountryOfOriginTransferCache.getTransfer(userVisit, itemCountryOfOrigin))
         );
         
         return itemCountryOfOriginTransfers;
@@ -4638,10 +4638,10 @@ public class ItemControl
     public List<ItemKitMemberTransfer> getItemKitMemberTransfersByItem(UserVisit userVisit, Item item) {
         var itemKitMembers = getItemKitMembersByItem(item);
         List<ItemKitMemberTransfer> itemKitMemberTransfers = new ArrayList<>(itemKitMembers.size());
-        var itemKitMemberTransferCache = getItemTransferCaches(userVisit).getItemKitMemberTransferCache();
+        var itemKitMemberTransferCache = getItemTransferCaches().getItemKitMemberTransferCache();
         
         itemKitMembers.forEach((itemKitMember) ->
-                itemKitMemberTransfers.add(itemKitMemberTransferCache.getTransfer(itemKitMember))
+                itemKitMemberTransfers.add(itemKitMemberTransferCache.getTransfer(userVisit, itemKitMember))
         );
         
         return itemKitMemberTransfers;
@@ -4879,10 +4879,10 @@ public class ItemControl
     public List<ItemPackCheckRequirementTransfer> getItemPackCheckRequirementTransfersByItem(UserVisit userVisit, Item item) {
         var itemPackCheckRequirements = getItemPackCheckRequirementsByItem(item);
         List<ItemPackCheckRequirementTransfer> itemPackCheckRequirementTransfers = new ArrayList<>(itemPackCheckRequirements.size());
-        var itemPackCheckRequirementTransferCache = getItemTransferCaches(userVisit).getItemPackCheckRequirementTransferCache();
+        var itemPackCheckRequirementTransferCache = getItemTransferCaches().getItemPackCheckRequirementTransferCache();
         
         itemPackCheckRequirements.forEach((itemPackCheckRequirement) ->
-                itemPackCheckRequirementTransfers.add(itemPackCheckRequirementTransferCache.getTransfer(itemPackCheckRequirement))
+                itemPackCheckRequirementTransfers.add(itemPackCheckRequirementTransferCache.getTransfer(userVisit, itemPackCheckRequirement))
         );
         
         return itemPackCheckRequirementTransfers;
@@ -5210,10 +5210,10 @@ public class ItemControl
     public List<ItemUnitCustomerTypeLimitTransfer> getItemUnitCustomerTypeLimitTransfersByItem(UserVisit userVisit, Item item) {
         var itemUnitCustomerTypeLimits = getItemUnitCustomerTypeLimitsByItem(item);
         List<ItemUnitCustomerTypeLimitTransfer> itemUnitCustomerTypeLimitTransfers = new ArrayList<>(itemUnitCustomerTypeLimits.size());
-        var itemUnitCustomerTypeLimitTransferCache = getItemTransferCaches(userVisit).getItemUnitCustomerTypeLimitTransferCache();
+        var itemUnitCustomerTypeLimitTransferCache = getItemTransferCaches().getItemUnitCustomerTypeLimitTransferCache();
         
         itemUnitCustomerTypeLimits.forEach((itemUnitCustomerTypeLimit) ->
-                itemUnitCustomerTypeLimitTransfers.add(itemUnitCustomerTypeLimitTransferCache.getTransfer(itemUnitCustomerTypeLimit))
+                itemUnitCustomerTypeLimitTransfers.add(itemUnitCustomerTypeLimitTransferCache.getTransfer(userVisit, itemUnitCustomerTypeLimit))
         );
         
         return itemUnitCustomerTypeLimitTransfers;
@@ -5496,10 +5496,10 @@ public class ItemControl
     public List<ItemUnitLimitTransfer> getItemUnitLimitTransfersByItem(UserVisit userVisit, Item item) {
         var itemUnitLimits = getItemUnitLimitsByItem(item);
         List<ItemUnitLimitTransfer> itemUnitLimitTransfers = new ArrayList<>(itemUnitLimits.size());
-        var itemUnitLimitTransferCache = getItemTransferCaches(userVisit).getItemUnitLimitTransferCache();
+        var itemUnitLimitTransferCache = getItemTransferCaches().getItemUnitLimitTransferCache();
         
         itemUnitLimits.forEach((itemUnitLimit) ->
-                itemUnitLimitTransfers.add(itemUnitLimitTransferCache.getTransfer(itemUnitLimit))
+                itemUnitLimitTransfers.add(itemUnitLimitTransferCache.getTransfer(userVisit, itemUnitLimit))
         );
         
         return itemUnitLimitTransfers;
@@ -5786,10 +5786,10 @@ public class ItemControl
     public List<ItemUnitPriceLimitTransfer> getItemUnitPriceLimitTransfersByItem(UserVisit userVisit, Item item) {
         var itemUnitPriceLimits = getItemUnitPriceLimitsByItem(item);
         List<ItemUnitPriceLimitTransfer> itemUnitPriceLimitTransfers = new ArrayList<>(itemUnitPriceLimits.size());
-        var itemUnitPriceLimitTransferCache = getItemTransferCaches(userVisit).getItemUnitPriceLimitTransferCache();
+        var itemUnitPriceLimitTransferCache = getItemTransferCaches().getItemUnitPriceLimitTransferCache();
         
         itemUnitPriceLimits.forEach((itemUnitPriceLimit) ->
-                itemUnitPriceLimitTransfers.add(itemUnitPriceLimitTransferCache.getTransfer(itemUnitPriceLimit))
+                itemUnitPriceLimitTransfers.add(itemUnitPriceLimitTransferCache.getTransfer(userVisit, itemUnitPriceLimit))
         );
         
         return itemUnitPriceLimitTransfers;
@@ -5974,10 +5974,10 @@ public class ItemControl
 
     public List<ItemPriceTypeTransfer> getItemPriceTypeTransfers(UserVisit userVisit, Collection<ItemPriceType> entities) {
         var itemPriceTypeTransfers = new ArrayList<ItemPriceTypeTransfer>(entities.size());
-        var itemPriceTypeTransferCache = getItemTransferCaches(userVisit).getItemPriceTypeTransferCache();
+        var itemPriceTypeTransferCache = getItemTransferCaches().getItemPriceTypeTransferCache();
 
         entities.forEach((entity) ->
-                itemPriceTypeTransfers.add(itemPriceTypeTransferCache.getTransfer(entity))
+                itemPriceTypeTransfers.add(itemPriceTypeTransferCache.getTransfer(userVisit, entity))
         );
 
         return itemPriceTypeTransfers;
@@ -6374,10 +6374,10 @@ public class ItemControl
     
     public List<ItemPriceTransfer> getItemPriceTransfers(UserVisit userVisit, Collection<ItemPrice> itemPrices) {
         List<ItemPriceTransfer> itemPriceTransfers = new ArrayList<>(itemPrices.size());
-        var itemPriceTransferCache = getItemTransferCaches(userVisit).getItemPriceTransferCache();
+        var itemPriceTransferCache = getItemTransferCaches().getItemPriceTransferCache();
         
         itemPrices.forEach((itemPrice) ->
-                itemPriceTransfers.add(itemPriceTransferCache.getTransfer(itemPrice))
+                itemPriceTransfers.add(itemPriceTransferCache.getTransfer(userVisit, itemPrice))
         );
         
         return itemPriceTransfers;
@@ -6932,10 +6932,10 @@ public class ItemControl
 
     public List<ItemDescriptionTypeTransfer> getItemDescriptionTypeTransfers(UserVisit userVisit, Collection<ItemDescriptionType> itemDescriptionTypes) {
         List<ItemDescriptionTypeTransfer> itemDescriptionTypeTransfers = new ArrayList<>(itemDescriptionTypes.size());
-        var itemDescriptionTypeTransferCache = getItemTransferCaches(userVisit).getItemDescriptionTypeTransferCache();
+        var itemDescriptionTypeTransferCache = getItemTransferCaches().getItemDescriptionTypeTransferCache();
 
         itemDescriptionTypes.forEach((itemDescriptionType) ->
-                itemDescriptionTypeTransfers.add(itemDescriptionTypeTransferCache.getTransfer(itemDescriptionType))
+                itemDescriptionTypeTransfers.add(itemDescriptionTypeTransferCache.getTransfer(userVisit, itemDescriptionType))
         );
 
         return itemDescriptionTypeTransfers;
@@ -7225,10 +7225,10 @@ public class ItemControl
     public List<ItemDescriptionTypeDescriptionTransfer> getItemDescriptionTypeDescriptionTransfersByItemDescriptionType(UserVisit userVisit, ItemDescriptionType itemDescriptionType) {
         var itemDescriptionTypeDescriptions = getItemDescriptionTypeDescriptionsByItemDescriptionType(itemDescriptionType);
         List<ItemDescriptionTypeDescriptionTransfer> itemDescriptionTypeDescriptionTransfers = new ArrayList<>(itemDescriptionTypeDescriptions.size());
-        var itemDescriptionTypeDescriptionTransferCache = getItemTransferCaches(userVisit).getItemDescriptionTypeDescriptionTransferCache();
+        var itemDescriptionTypeDescriptionTransferCache = getItemTransferCaches().getItemDescriptionTypeDescriptionTransferCache();
 
         itemDescriptionTypeDescriptions.forEach((itemDescriptionTypeDescription) ->
-                itemDescriptionTypeDescriptionTransfers.add(itemDescriptionTypeDescriptionTransferCache.getTransfer(itemDescriptionTypeDescription))
+                itemDescriptionTypeDescriptionTransfers.add(itemDescriptionTypeDescriptionTransferCache.getTransfer(userVisit, itemDescriptionTypeDescription))
         );
 
         return itemDescriptionTypeDescriptionTransfers;
@@ -7571,10 +7571,10 @@ public class ItemControl
 
     public List<ItemDescriptionTypeUseTypeTransfer> getItemDescriptionTypeUseTypeTransfers(UserVisit userVisit, Collection<ItemDescriptionTypeUseType> itemDescriptionTypeUseTypes) {
         List<ItemDescriptionTypeUseTypeTransfer> itemDescriptionTypeUseTypeTransfers = new ArrayList<>(itemDescriptionTypeUseTypes.size());
-        var itemDescriptionTypeUseTypeTransferCache = getItemTransferCaches(userVisit).getItemDescriptionTypeUseTypeTransferCache();
+        var itemDescriptionTypeUseTypeTransferCache = getItemTransferCaches().getItemDescriptionTypeUseTypeTransferCache();
 
         itemDescriptionTypeUseTypes.forEach((itemDescriptionTypeUseType) ->
-                itemDescriptionTypeUseTypeTransfers.add(itemDescriptionTypeUseTypeTransferCache.getTransfer(itemDescriptionTypeUseType))
+                itemDescriptionTypeUseTypeTransfers.add(itemDescriptionTypeUseTypeTransferCache.getTransfer(userVisit, itemDescriptionTypeUseType))
         );
 
         return itemDescriptionTypeUseTypeTransfers;
@@ -7807,10 +7807,10 @@ public class ItemControl
     public List<ItemDescriptionTypeUseTypeDescriptionTransfer> getItemDescriptionTypeUseTypeDescriptionTransfersByItemDescriptionTypeUseType(UserVisit userVisit, ItemDescriptionTypeUseType itemDescriptionTypeUseType) {
         var itemDescriptionTypeUseTypeDescriptions = getItemDescriptionTypeUseTypeDescriptionsByItemDescriptionTypeUseType(itemDescriptionTypeUseType);
         List<ItemDescriptionTypeUseTypeDescriptionTransfer> itemDescriptionTypeUseTypeDescriptionTransfers = new ArrayList<>(itemDescriptionTypeUseTypeDescriptions.size());
-        var itemDescriptionTypeUseTypeDescriptionTransferCache = getItemTransferCaches(userVisit).getItemDescriptionTypeUseTypeDescriptionTransferCache();
+        var itemDescriptionTypeUseTypeDescriptionTransferCache = getItemTransferCaches().getItemDescriptionTypeUseTypeDescriptionTransferCache();
 
         itemDescriptionTypeUseTypeDescriptions.forEach((itemDescriptionTypeUseTypeDescription) ->
-                itemDescriptionTypeUseTypeDescriptionTransfers.add(itemDescriptionTypeUseTypeDescriptionTransferCache.getTransfer(itemDescriptionTypeUseTypeDescription))
+                itemDescriptionTypeUseTypeDescriptionTransfers.add(itemDescriptionTypeUseTypeDescriptionTransferCache.getTransfer(userVisit, itemDescriptionTypeUseTypeDescription))
         );
 
         return itemDescriptionTypeUseTypeDescriptionTransfers;
@@ -7989,10 +7989,10 @@ public class ItemControl
 
     public List<ItemDescriptionTypeUseTransfer> getItemDescriptionTypeUseTransfers(final UserVisit userVisit, final Collection<ItemDescriptionTypeUse> itemDescriptionTypeUses) {
         List<ItemDescriptionTypeUseTransfer> itemDescriptionTypeUseTransfers = new ArrayList<>(itemDescriptionTypeUses.size());
-        var itemDescriptionTypeUseTransferCache = getItemTransferCaches(userVisit).getItemDescriptionTypeUseTransferCache();
+        var itemDescriptionTypeUseTransferCache = getItemTransferCaches().getItemDescriptionTypeUseTransferCache();
 
         itemDescriptionTypeUses.forEach((itemDescriptionTypeUse) ->
-                itemDescriptionTypeUseTransfers.add(itemDescriptionTypeUseTransferCache.getTransfer(itemDescriptionTypeUse))
+                itemDescriptionTypeUseTransfers.add(itemDescriptionTypeUseTransferCache.getTransfer(userVisit, itemDescriptionTypeUse))
         );
 
         return itemDescriptionTypeUseTransfers;
@@ -8195,10 +8195,10 @@ public class ItemControl
 
     public List<ItemImageTypeTransfer> getItemImageTypeTransfers(UserVisit userVisit, Collection<ItemImageType> itemImageTypes) {
         List<ItemImageTypeTransfer> itemImageTypeTransfers = new ArrayList<>(itemImageTypes.size());
-        var itemImageTypeTransferCache = getItemTransferCaches(userVisit).getItemImageTypeTransferCache();
+        var itemImageTypeTransferCache = getItemTransferCaches().getItemImageTypeTransferCache();
 
         itemImageTypes.forEach((itemImageType) ->
-                itemImageTypeTransfers.add(itemImageTypeTransferCache.getTransfer(itemImageType))
+                itemImageTypeTransfers.add(itemImageTypeTransferCache.getTransfer(userVisit, itemImageType))
         );
 
         return itemImageTypeTransfers;
@@ -8429,10 +8429,10 @@ public class ItemControl
     public List<ItemImageTypeDescriptionTransfer> getItemImageTypeDescriptionTransfersByItemImageType(UserVisit userVisit, ItemImageType itemImageType) {
         var itemImageTypeDescriptions = getItemImageTypeDescriptionsByItemImageType(itemImageType);
         List<ItemImageTypeDescriptionTransfer> itemImageTypeDescriptionTransfers = new ArrayList<>(itemImageTypeDescriptions.size());
-        var itemImageTypeDescriptionTransferCache = getItemTransferCaches(userVisit).getItemImageTypeDescriptionTransferCache();
+        var itemImageTypeDescriptionTransferCache = getItemTransferCaches().getItemImageTypeDescriptionTransferCache();
 
         itemImageTypeDescriptions.forEach((itemImageTypeDescription) ->
-                itemImageTypeDescriptionTransfers.add(itemImageTypeDescriptionTransferCache.getTransfer(itemImageTypeDescription))
+                itemImageTypeDescriptionTransfers.add(itemImageTypeDescriptionTransferCache.getTransfer(userVisit, itemImageTypeDescription))
         );
 
         return itemImageTypeDescriptionTransfers;
@@ -8779,10 +8779,10 @@ public class ItemControl
 
     public List<ItemDescriptionTransfer> getItemDescriptionTransfers(UserVisit userVisit, Collection<ItemDescription> itemDescriptions) {
         List<ItemDescriptionTransfer> itemDescriptionTransfers = new ArrayList<>(itemDescriptions.size());
-        var itemDescriptionTransferCache = getItemTransferCaches(userVisit).getItemDescriptionTransferCache();
+        var itemDescriptionTransferCache = getItemTransferCaches().getItemDescriptionTransferCache();
 
         itemDescriptions.forEach((itemDescription) ->
-                itemDescriptionTransfers.add(itemDescriptionTransferCache.getTransfer(itemDescription))
+                itemDescriptionTransfers.add(itemDescriptionTransferCache.getTransfer(userVisit, itemDescription))
         );
 
         return itemDescriptionTransfers;
@@ -9429,10 +9429,10 @@ public class ItemControl
 
     public List<ItemVolumeTypeTransfer> getItemVolumeTypeTransfers(UserVisit userVisit, Collection<ItemVolumeType> itemVolumeTypes) {
         List<ItemVolumeTypeTransfer> itemVolumeTypeTransfers = new ArrayList<>(itemVolumeTypes.size());
-        var itemVolumeTypeTransferCache = getItemTransferCaches(userVisit).getItemVolumeTypeTransferCache();
+        var itemVolumeTypeTransferCache = getItemTransferCaches().getItemVolumeTypeTransferCache();
 
         itemVolumeTypes.forEach((itemVolumeType) ->
-                itemVolumeTypeTransfers.add(itemVolumeTypeTransferCache.getTransfer(itemVolumeType))
+                itemVolumeTypeTransfers.add(itemVolumeTypeTransferCache.getTransfer(userVisit, itemVolumeType))
         );
 
         return itemVolumeTypeTransfers;
@@ -9675,10 +9675,10 @@ public class ItemControl
     public List<ItemVolumeTypeDescriptionTransfer> getItemVolumeTypeDescriptionTransfersByItemVolumeType(UserVisit userVisit, ItemVolumeType itemVolumeType) {
         var itemVolumeTypeDescriptions = getItemVolumeTypeDescriptionsByItemVolumeType(itemVolumeType);
         List<ItemVolumeTypeDescriptionTransfer> itemVolumeTypeDescriptionTransfers = new ArrayList<>(itemVolumeTypeDescriptions.size());
-        var itemVolumeTypeDescriptionTransferCache = getItemTransferCaches(userVisit).getItemVolumeTypeDescriptionTransferCache();
+        var itemVolumeTypeDescriptionTransferCache = getItemTransferCaches().getItemVolumeTypeDescriptionTransferCache();
 
         itemVolumeTypeDescriptions.forEach((itemVolumeTypeDescription) ->
-                itemVolumeTypeDescriptionTransfers.add(itemVolumeTypeDescriptionTransferCache.getTransfer(itemVolumeTypeDescription))
+                itemVolumeTypeDescriptionTransfers.add(itemVolumeTypeDescriptionTransferCache.getTransfer(userVisit, itemVolumeTypeDescription))
         );
 
         return itemVolumeTypeDescriptionTransfers;
@@ -9943,10 +9943,10 @@ public class ItemControl
     public List<ItemVolumeTransfer> getItemVolumeTransfersByItem(UserVisit userVisit, Item item) {
         var itemVolumes = getItemVolumesByItem(item);
         List<ItemVolumeTransfer> itemVolumeTransfers = new ArrayList<>(itemVolumes.size());
-        var itemVolumeTransferCache = getItemTransferCaches(userVisit).getItemVolumeTransferCache();
+        var itemVolumeTransferCache = getItemTransferCaches().getItemVolumeTransferCache();
 
         itemVolumes.forEach((itemVolume) ->
-                itemVolumeTransfers.add(itemVolumeTransferCache.getTransfer(itemVolume))
+                itemVolumeTransfers.add(itemVolumeTransferCache.getTransfer(userVisit, itemVolume))
         );
 
         return itemVolumeTransfers;
@@ -10146,10 +10146,10 @@ public class ItemControl
 
     public List<ItemWeightTypeTransfer> getItemWeightTypeTransfers(UserVisit userVisit, Collection<ItemWeightType> itemWeightTypes) {
         List<ItemWeightTypeTransfer> itemWeightTypeTransfers = new ArrayList<>(itemWeightTypes.size());
-        var itemWeightTypeTransferCache = getItemTransferCaches(userVisit).getItemWeightTypeTransferCache();
+        var itemWeightTypeTransferCache = getItemTransferCaches().getItemWeightTypeTransferCache();
 
         itemWeightTypes.forEach((itemWeightType) ->
-                itemWeightTypeTransfers.add(itemWeightTypeTransferCache.getTransfer(itemWeightType))
+                itemWeightTypeTransfers.add(itemWeightTypeTransferCache.getTransfer(userVisit, itemWeightType))
         );
 
         return itemWeightTypeTransfers;
@@ -10393,10 +10393,10 @@ public class ItemControl
     public List<ItemWeightTypeDescriptionTransfer> getItemWeightTypeDescriptionTransfersByItemWeightType(UserVisit userVisit, ItemWeightType itemWeightType) {
         var itemWeightTypeDescriptions = getItemWeightTypeDescriptionsByItemWeightType(itemWeightType);
         List<ItemWeightTypeDescriptionTransfer> itemWeightTypeDescriptionTransfers = new ArrayList<>(itemWeightTypeDescriptions.size());
-        var itemWeightTypeDescriptionTransferCache = getItemTransferCaches(userVisit).getItemWeightTypeDescriptionTransferCache();
+        var itemWeightTypeDescriptionTransferCache = getItemTransferCaches().getItemWeightTypeDescriptionTransferCache();
 
         itemWeightTypeDescriptions.forEach((itemWeightTypeDescription) ->
-                itemWeightTypeDescriptionTransfers.add(itemWeightTypeDescriptionTransferCache.getTransfer(itemWeightTypeDescription))
+                itemWeightTypeDescriptionTransfers.add(itemWeightTypeDescriptionTransferCache.getTransfer(userVisit, itemWeightTypeDescription))
         );
 
         return itemWeightTypeDescriptionTransfers;
@@ -10659,10 +10659,10 @@ public class ItemControl
     public List<ItemWeightTransfer> getItemWeightTransfersByItem(UserVisit userVisit, Item item) {
         var itemWeights = getItemWeightsByItem(item);
         List<ItemWeightTransfer> itemWeightTransfers = new ArrayList<>(itemWeights.size());
-        var itemWeightTransferCache = getItemTransferCaches(userVisit).getItemWeightTransferCache();
+        var itemWeightTransferCache = getItemTransferCaches().getItemWeightTransferCache();
         
         itemWeights.forEach((itemWeight) ->
-                itemWeightTransfers.add(itemWeightTransferCache.getTransfer(itemWeight))
+                itemWeightTransfers.add(itemWeightTransferCache.getTransfer(userVisit, itemWeight))
         );
         
         return itemWeightTransfers;
@@ -10895,10 +10895,10 @@ public class ItemControl
 
     public List<RelatedItemTypeTransfer> getRelatedItemTypeTransfers(UserVisit userVisit, Collection<RelatedItemType> relatedItemTypes) {
         List<RelatedItemTypeTransfer> relatedItemTypeTransfers = new ArrayList<>(relatedItemTypes.size());
-        var relatedItemTypeTransferCache = getItemTransferCaches(userVisit).getRelatedItemTypeTransferCache();
+        var relatedItemTypeTransferCache = getItemTransferCaches().getRelatedItemTypeTransferCache();
 
         relatedItemTypes.forEach((relatedItemType) ->
-                relatedItemTypeTransfers.add(relatedItemTypeTransferCache.getTransfer(relatedItemType))
+                relatedItemTypeTransfers.add(relatedItemTypeTransferCache.getTransfer(userVisit, relatedItemType))
         );
 
         return relatedItemTypeTransfers;
@@ -11131,10 +11131,10 @@ public class ItemControl
     public List<RelatedItemTypeDescriptionTransfer> getRelatedItemTypeDescriptionTransfersByRelatedItemType(UserVisit userVisit, RelatedItemType relatedItemType) {
         var relatedItemTypeDescriptions = getRelatedItemTypeDescriptionsByRelatedItemType(relatedItemType);
         List<RelatedItemTypeDescriptionTransfer> relatedItemTypeDescriptionTransfers = new ArrayList<>(relatedItemTypeDescriptions.size());
-        var relatedItemTypeDescriptionTransferCache = getItemTransferCaches(userVisit).getRelatedItemTypeDescriptionTransferCache();
+        var relatedItemTypeDescriptionTransferCache = getItemTransferCaches().getRelatedItemTypeDescriptionTransferCache();
 
         relatedItemTypeDescriptions.forEach((relatedItemTypeDescription) ->
-                relatedItemTypeDescriptionTransfers.add(relatedItemTypeDescriptionTransferCache.getTransfer(relatedItemTypeDescription))
+                relatedItemTypeDescriptionTransfers.add(relatedItemTypeDescriptionTransferCache.getTransfer(userVisit, relatedItemTypeDescription))
         );
 
         return relatedItemTypeDescriptionTransfers;
@@ -11457,10 +11457,10 @@ public class ItemControl
 
     public List<RelatedItemTransfer> getRelatedItemTransfers(UserVisit userVisit, Collection<RelatedItem> relatedItems) {
         List<RelatedItemTransfer> relatedItemTransfers = new ArrayList<>(relatedItems.size());
-        var relatedItemTransferCache = getItemTransferCaches(userVisit).getRelatedItemTransferCache();
+        var relatedItemTransferCache = getItemTransferCaches().getRelatedItemTransferCache();
 
         relatedItems.forEach((relatedItem) ->
-                relatedItemTransfers.add(relatedItemTransferCache.getTransfer(relatedItem))
+                relatedItemTransfers.add(relatedItemTransferCache.getTransfer(userVisit, relatedItem))
         );
 
         return relatedItemTransfers;
@@ -11812,10 +11812,10 @@ public class ItemControl
 
     public List<HarmonizedTariffScheduleCodeTransfer> getHarmonizedTariffScheduleCodeTransfers(UserVisit userVisit, Collection<HarmonizedTariffScheduleCode> harmonizedTariffScheduleCodes) {
         List<HarmonizedTariffScheduleCodeTransfer> harmonizedTariffScheduleCodeTransfers = new ArrayList<>(harmonizedTariffScheduleCodes.size());
-        var harmonizedTariffScheduleCodeTransferCache = getItemTransferCaches(userVisit).getHarmonizedTariffScheduleCodeTransferCache();
+        var harmonizedTariffScheduleCodeTransferCache = getItemTransferCaches().getHarmonizedTariffScheduleCodeTransferCache();
 
         harmonizedTariffScheduleCodes.forEach((harmonizedTariffScheduleCode) ->
-                harmonizedTariffScheduleCodeTransfers.add(harmonizedTariffScheduleCodeTransferCache.getTransfer(harmonizedTariffScheduleCode))
+                harmonizedTariffScheduleCodeTransfers.add(harmonizedTariffScheduleCodeTransferCache.getTransfer(userVisit, harmonizedTariffScheduleCode))
         );
 
         return harmonizedTariffScheduleCodeTransfers;
@@ -12249,10 +12249,10 @@ public class ItemControl
     public List<HarmonizedTariffScheduleCodeUseTypeTransfer> getHarmonizedTariffScheduleCodeUseTypeTransfers(UserVisit userVisit) {
         var harmonizedTariffScheduleCodeUseTypes = getHarmonizedTariffScheduleCodeUseTypes();
         List<HarmonizedTariffScheduleCodeUseTypeTransfer> harmonizedTariffScheduleCodeUseTypeTransfers = new ArrayList<>(harmonizedTariffScheduleCodeUseTypes.size());
-        var harmonizedTariffScheduleCodeUseTypeTransferCache = getItemTransferCaches(userVisit).getHarmonizedTariffScheduleCodeUseTypeTransferCache();
+        var harmonizedTariffScheduleCodeUseTypeTransferCache = getItemTransferCaches().getHarmonizedTariffScheduleCodeUseTypeTransferCache();
 
         harmonizedTariffScheduleCodeUseTypes.forEach((harmonizedTariffScheduleCodeUseType) ->
-                harmonizedTariffScheduleCodeUseTypeTransfers.add(harmonizedTariffScheduleCodeUseTypeTransferCache.getTransfer(harmonizedTariffScheduleCodeUseType))
+                harmonizedTariffScheduleCodeUseTypeTransfers.add(harmonizedTariffScheduleCodeUseTypeTransferCache.getTransfer(userVisit, harmonizedTariffScheduleCodeUseType))
         );
 
         return harmonizedTariffScheduleCodeUseTypeTransfers;
@@ -12655,10 +12655,10 @@ public class ItemControl
     public List<HarmonizedTariffScheduleCodeUnitTransfer> getHarmonizedTariffScheduleCodeUnitTransfers(UserVisit userVisit) {
         var harmonizedTariffScheduleCodeUnits = getHarmonizedTariffScheduleCodeUnits();
         List<HarmonizedTariffScheduleCodeUnitTransfer> harmonizedTariffScheduleCodeUnitTransfers = new ArrayList<>(harmonizedTariffScheduleCodeUnits.size());
-        var harmonizedTariffScheduleCodeUnitTransferCache = getItemTransferCaches(userVisit).getHarmonizedTariffScheduleCodeUnitTransferCache();
+        var harmonizedTariffScheduleCodeUnitTransferCache = getItemTransferCaches().getHarmonizedTariffScheduleCodeUnitTransferCache();
 
         harmonizedTariffScheduleCodeUnits.forEach((harmonizedTariffScheduleCodeUnit) ->
-                harmonizedTariffScheduleCodeUnitTransfers.add(harmonizedTariffScheduleCodeUnitTransferCache.getTransfer(harmonizedTariffScheduleCodeUnit))
+                harmonizedTariffScheduleCodeUnitTransfers.add(harmonizedTariffScheduleCodeUnitTransferCache.getTransfer(userVisit, harmonizedTariffScheduleCodeUnit))
         );
 
         return harmonizedTariffScheduleCodeUnitTransfers;
@@ -13257,10 +13257,10 @@ public class ItemControl
 
     public List<ItemHarmonizedTariffScheduleCodeTransfer> getItemHarmonizedTariffScheduleCodeTransfers(UserVisit userVisit, Collection<ItemHarmonizedTariffScheduleCode> itemHarmonizedTariffScheduleCodes) {
         List<ItemHarmonizedTariffScheduleCodeTransfer> itemHarmonizedTariffScheduleCodeTransfers = new ArrayList<>(itemHarmonizedTariffScheduleCodes.size());
-        var itemHarmonizedTariffScheduleCodeTransferCache = getItemTransferCaches(userVisit).getItemHarmonizedTariffScheduleCodeTransferCache();
+        var itemHarmonizedTariffScheduleCodeTransferCache = getItemTransferCaches().getItemHarmonizedTariffScheduleCodeTransferCache();
 
         itemHarmonizedTariffScheduleCodes.forEach((itemHarmonizedTariffScheduleCode) ->
-                itemHarmonizedTariffScheduleCodeTransfers.add(itemHarmonizedTariffScheduleCodeTransferCache.getTransfer(itemHarmonizedTariffScheduleCode))
+                itemHarmonizedTariffScheduleCodeTransfers.add(itemHarmonizedTariffScheduleCodeTransferCache.getTransfer(userVisit, itemHarmonizedTariffScheduleCode))
         );
 
         return itemHarmonizedTariffScheduleCodeTransfers;

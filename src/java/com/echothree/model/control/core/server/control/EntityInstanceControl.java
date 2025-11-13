@@ -311,7 +311,7 @@ public class EntityInstanceControl
     public List<EntityInstanceTransfer> getEntityInstanceTransfers(UserVisit userVisit, Collection<EntityInstance> entityInstances,
             boolean includeEntityAppearance, boolean includeEntityVisit, boolean includeNames, boolean includeUuid) {
         var entityInstanceTransfers = new ArrayList<EntityInstanceTransfer>(entityInstances.size());
-        var entityInstanceTransferCache = getCoreTransferCaches(userVisit).getEntityInstanceTransferCache();
+        var entityInstanceTransferCache = getCoreTransferCaches().getEntityInstanceTransferCache();
 
         entityInstances.forEach((entityInstance) ->
                 entityInstanceTransfers.add(entityInstanceTransferCache.getEntityInstanceTransfer(entityInstance,
