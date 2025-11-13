@@ -52,6 +52,8 @@ public class PartyPaymentMethodTransferCache
     PaymentMethodControl paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
+    boolean needToMaskChecked = false;
+
     boolean includeNumber;
     boolean includeSecurityCode;
     boolean includePartyPaymentMethodContactMechanisms;
@@ -69,7 +71,17 @@ public class PartyPaymentMethodTransferCache
             includeSecurityCode = options.contains(PaymentOptions.PartyPaymentMethodIncludeSecurityCode);
             includePartyPaymentMethodContactMechanisms = options.contains(PaymentOptions.PartyPaymentMethodIncludePartyPaymentMethodContactMechanisms);
             includeComments = options.contains(PaymentOptions.PartyPaymentMethodIncludeComments);
+        }
+        
+        setIncludeEntityInstance(true);
+    }
 
+    @Override
+    public PartyPaymentMethodTransfer getTransfer(UserVisit userVisit, PartyPaymentMethod partyPaymentMethod) {
+        var partyPaymentMethodTransfer = get(partyPaymentMethod);
+
+        // Additional security check to determine if the PAN or security code should be masked.
+        if(!needToMaskChecked) {
             if(includeNumber || includeSecurityCode) {
                 var userControl = Session.getModelController(UserControl.class);
 
@@ -80,15 +92,10 @@ public class PartyPaymentMethodTransferCache
                     maskNumberAndSecurityCode = true;
                 }
             }
-        }
-        
-        setIncludeEntityInstance(true);
-    }
 
-    @Override
-    public PartyPaymentMethodTransfer getTransfer(UserVisit userVisit, PartyPaymentMethod partyPaymentMethod) {
-        var partyPaymentMethodTransfer = get(partyPaymentMethod);
-        
+            needToMaskChecked = true;
+        }
+
         if(partyPaymentMethodTransfer == null) {
             var partyPaymentMethodDetail = partyPaymentMethod.getLastDetail();
             var partyPaymentMethodName = partyPaymentMethodDetail.getPartyPaymentMethodName();
