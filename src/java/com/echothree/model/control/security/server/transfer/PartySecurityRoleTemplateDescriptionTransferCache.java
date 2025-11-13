@@ -29,7 +29,7 @@ public class PartySecurityRoleTemplateDescriptionTransferCache
         super(securityControl);
     }
     
-    public PartySecurityRoleTemplateDescriptionTransfer getPartySecurityRoleTemplateDescriptionTransfer(PartySecurityRoleTemplateDescription partySecurityRoleTemplateDescription) {
+    public PartySecurityRoleTemplateDescriptionTransfer getPartySecurityRoleTemplateDescriptionTransfer(UserVisit userVisit, PartySecurityRoleTemplateDescription partySecurityRoleTemplateDescription) {
         var partySecurityRoleTemplateDescriptionTransfer = get(partySecurityRoleTemplateDescription);
         
         if(partySecurityRoleTemplateDescriptionTransfer == null) {

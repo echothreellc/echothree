@@ -29,7 +29,7 @@ public class InvoiceTimeTransferCache
         super(invoiceControl);
     }
     
-    public InvoiceTimeTransfer getInvoiceTimeTransfer(InvoiceTime invoiceTime) {
+    public InvoiceTimeTransfer getInvoiceTimeTransfer(UserVisit userVisit, InvoiceTime invoiceTime) {
         var invoiceTimeTransfer = get(invoiceTime);
         
         if(invoiceTimeTransfer == null) {

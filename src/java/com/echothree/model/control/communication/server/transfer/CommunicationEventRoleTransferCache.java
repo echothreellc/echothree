@@ -35,7 +35,7 @@ public class CommunicationEventRoleTransferCache
         partyControl = Session.getModelController(PartyControl.class);
     }
     
-    public CommunicationEventRoleTransfer getCommunicationEventRoleTransfer(CommunicationEventRole communicationEventRole) {
+    public CommunicationEventRoleTransfer getCommunicationEventRoleTransfer(UserVisit userVisit, CommunicationEventRole communicationEventRole) {
         var communicationEventRoleTransfer = get(communicationEventRole);
         
         if(communicationEventRoleTransfer == null) {

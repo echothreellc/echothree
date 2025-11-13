@@ -33,7 +33,7 @@ public class ChainInstanceStatusTransferCache
         super(chainControl);
     }
     
-    public ChainInstanceStatusTransfer getChainInstanceStatusTransfer(ChainInstanceStatus chainInstanceStatus) {
+    public ChainInstanceStatusTransfer getChainInstanceStatusTransfer(UserVisit userVisit, ChainInstanceStatus chainInstanceStatus) {
         var chainInstanceStatusTransfer = get(chainInstanceStatus);
         
         if(chainInstanceStatusTransfer == null) {

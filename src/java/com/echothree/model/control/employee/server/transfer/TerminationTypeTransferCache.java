@@ -31,7 +31,7 @@ public class TerminationTypeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public TerminationTypeTransfer getTerminationTypeTransfer(TerminationType terminationType) {
+    public TerminationTypeTransfer getTerminationTypeTransfer(UserVisit userVisit, TerminationType terminationType) {
         var terminationTypeTransfer = get(terminationType);
         
         if(terminationTypeTransfer == null) {

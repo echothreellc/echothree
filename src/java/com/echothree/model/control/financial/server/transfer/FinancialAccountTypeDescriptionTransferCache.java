@@ -29,7 +29,7 @@ public class FinancialAccountTypeDescriptionTransferCache
         super(financialControl);
     }
     
-    public FinancialAccountTypeDescriptionTransfer getFinancialAccountTypeDescriptionTransfer(FinancialAccountTypeDescription financialAccountTypeDescription) {
+    public FinancialAccountTypeDescriptionTransfer getFinancialAccountTypeDescriptionTransfer(UserVisit userVisit, FinancialAccountTypeDescription financialAccountTypeDescription) {
         var financialAccountTypeDescriptionTransfer = get(financialAccountTypeDescription);
         
         if(financialAccountTypeDescriptionTransfer == null) {

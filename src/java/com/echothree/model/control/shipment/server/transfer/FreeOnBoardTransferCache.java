@@ -35,7 +35,7 @@ public class FreeOnBoardTransferCache
     }
     
     @Override
-    public FreeOnBoardTransfer getTransfer(FreeOnBoard freeOnBoard) {
+    public FreeOnBoardTransfer getTransfer(UserVisit userVisit, FreeOnBoard freeOnBoard) {
         var freeOnBoardTransfer = get(freeOnBoard);
         
         if(freeOnBoardTransfer == null) {

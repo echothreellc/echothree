@@ -33,7 +33,7 @@ public class TrainingClassPageTranslationTransferCache
         super(trainingControl);
     }
     
-    public TrainingClassPageTranslationTransfer getTrainingClassPageTranslationTransfer(TrainingClassPageTranslation trainingClassPageTranslation) {
+    public TrainingClassPageTranslationTransfer getTrainingClassPageTranslationTransfer(UserVisit userVisit, TrainingClassPageTranslation trainingClassPageTranslation) {
         var trainingClassPageTranslationTransfer = get(trainingClassPageTranslation);
         
         if(trainingClassPageTranslationTransfer == null) {

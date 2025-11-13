@@ -41,7 +41,7 @@ public class InvoiceLineItemTransferCache
         uomControl = Session.getModelController(UomControl.class);
     }
 
-    public InvoiceLineItemTransfer getInvoiceLineItemTransfer(InvoiceLineItem invoiceLineItem) {
+    public InvoiceLineItemTransfer getInvoiceLineItemTransfer(UserVisit userVisit, InvoiceLineItem invoiceLineItem) {
         var invoiceLineItemTransfer = get(invoiceLineItem);
 
         if(invoiceLineItemTransfer == null) {

@@ -29,7 +29,7 @@ public class IndexFieldDescriptionTransferCache
         super(indexControl);
     }
     
-    public IndexFieldDescriptionTransfer getIndexFieldDescriptionTransfer(IndexFieldDescription indexFieldDescription) {
+    public IndexFieldDescriptionTransfer getIndexFieldDescriptionTransfer(UserVisit userVisit, IndexFieldDescription indexFieldDescription) {
         var indexFieldDescriptionTransfer = get(indexFieldDescription);
         
         if(indexFieldDescriptionTransfer == null) {

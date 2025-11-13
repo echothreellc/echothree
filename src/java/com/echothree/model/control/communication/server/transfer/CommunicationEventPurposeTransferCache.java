@@ -31,7 +31,7 @@ public class CommunicationEventPurposeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public CommunicationEventPurposeTransfer getCommunicationEventPurposeTransfer(CommunicationEventPurpose communicationEventPurpose) {
+    public CommunicationEventPurposeTransfer getCommunicationEventPurposeTransfer(UserVisit userVisit, CommunicationEventPurpose communicationEventPurpose) {
         var communicationEventPurposeTransfer = get(communicationEventPurpose);
         
         if(communicationEventPurposeTransfer == null) {

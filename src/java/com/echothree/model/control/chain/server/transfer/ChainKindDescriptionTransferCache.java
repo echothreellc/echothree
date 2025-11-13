@@ -29,7 +29,7 @@ public class ChainKindDescriptionTransferCache
         super(chainControl);
     }
     
-    public ChainKindDescriptionTransfer getChainKindDescriptionTransfer(ChainKindDescription chainKindDescription) {
+    public ChainKindDescriptionTransfer getChainKindDescriptionTransfer(UserVisit userVisit, ChainKindDescription chainKindDescription) {
         var chainKindDescriptionTransfer = get(chainKindDescription);
         
         if(chainKindDescriptionTransfer == null) {

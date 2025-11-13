@@ -33,7 +33,7 @@ public class CustomerTypeContactListTransferCache
         super(contactListControl);
     }
     
-    public CustomerTypeContactListTransfer getCustomerTypeContactListTransfer(CustomerTypeContactList customerTypeContactList) {
+    public CustomerTypeContactListTransfer getCustomerTypeContactListTransfer(UserVisit userVisit, CustomerTypeContactList customerTypeContactList) {
         var customerTypeContactListTransfer = get(customerTypeContactList);
         
         if(customerTypeContactListTransfer == null) {

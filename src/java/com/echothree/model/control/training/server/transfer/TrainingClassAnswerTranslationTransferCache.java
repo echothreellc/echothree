@@ -33,7 +33,7 @@ public class TrainingClassAnswerTranslationTransferCache
         super(trainingControl);
     }
     
-    public TrainingClassAnswerTranslationTransfer getTrainingClassAnswerTranslationTransfer(TrainingClassAnswerTranslation trainingClassAnswerTranslation) {
+    public TrainingClassAnswerTranslationTransfer getTrainingClassAnswerTranslationTransfer(UserVisit userVisit, TrainingClassAnswerTranslation trainingClassAnswerTranslation) {
         var trainingClassAnswerTranslationTransfer = get(trainingClassAnswerTranslation);
         
         if(trainingClassAnswerTranslationTransfer == null) {

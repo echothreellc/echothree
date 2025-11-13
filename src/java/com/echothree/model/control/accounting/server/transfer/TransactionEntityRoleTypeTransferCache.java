@@ -37,7 +37,7 @@ public class TransactionEntityRoleTypeTransferCache
     }
     
     @Override
-    public TransactionEntityRoleTypeTransfer getTransfer(TransactionEntityRoleType transactionEntityRoleType) {
+    public TransactionEntityRoleTypeTransfer getTransfer(UserVisit userVisit, TransactionEntityRoleType transactionEntityRoleType) {
         var transactionEntityRoleTypeTransfer = get(transactionEntityRoleType);
         
         if(transactionEntityRoleTypeTransfer == null) {

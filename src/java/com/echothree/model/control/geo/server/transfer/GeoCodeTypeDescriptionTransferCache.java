@@ -29,7 +29,7 @@ public class GeoCodeTypeDescriptionTransferCache
         super(geoControl);
     }
     
-    public GeoCodeTypeDescriptionTransfer getGeoCodeTypeDescriptionTransfer(GeoCodeTypeDescription geoCodeTypeDescription) {
+    public GeoCodeTypeDescriptionTransfer getGeoCodeTypeDescriptionTransfer(UserVisit userVisit, GeoCodeTypeDescription geoCodeTypeDescription) {
         var geoCodeTypeDescriptionTransfer = get(geoCodeTypeDescription);
         
         if(geoCodeTypeDescriptionTransfer == null) {

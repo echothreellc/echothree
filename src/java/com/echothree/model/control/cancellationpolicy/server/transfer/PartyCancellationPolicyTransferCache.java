@@ -36,7 +36,7 @@ public class PartyCancellationPolicyTransferCache
         super(cancellationPolicyControl);
     }
 
-    public PartyCancellationPolicyTransfer getPartyCancellationPolicyTransfer(PartyCancellationPolicy partyCancellationPolicy) {
+    public PartyCancellationPolicyTransfer getPartyCancellationPolicyTransfer(UserVisit userVisit, PartyCancellationPolicy partyCancellationPolicy) {
         var partyCancellationPolicyTransfer = get(partyCancellationPolicy);
         
         if(partyCancellationPolicyTransfer == null) {

@@ -47,7 +47,7 @@ public class ForumMessageAttachmentTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public ForumMessageAttachmentTransfer getForumMessageAttachmentTransfer(ForumMessageAttachment forumMessageAttachment) {
+    public ForumMessageAttachmentTransfer getForumMessageAttachmentTransfer(UserVisit userVisit, ForumMessageAttachment forumMessageAttachment) {
         var forumMessageAttachmentTransfer = get(forumMessageAttachment);
         
         if(forumMessageAttachmentTransfer == null) {

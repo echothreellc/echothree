@@ -30,7 +30,7 @@ public class ItemDeliveryTypeTransferCache
     }
     
     @Override
-    public ItemDeliveryTypeTransfer getTransfer(ItemDeliveryType itemDeliveryType) {
+    public ItemDeliveryTypeTransfer getTransfer(UserVisit userVisit, ItemDeliveryType itemDeliveryType) {
         var itemDeliveryTypeTransfer = get(itemDeliveryType);
         
         if(itemDeliveryTypeTransfer == null) {

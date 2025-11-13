@@ -32,7 +32,7 @@ public class GeoCodeTaxTransferCache
     }
     
     @Override
-    public GeoCodeTaxTransfer getTransfer(GeoCodeTax geoCodeTax) {
+    public GeoCodeTaxTransfer getTransfer(UserVisit userVisit, GeoCodeTax geoCodeTax) {
         var geoCodeTaxTransfer = get(geoCodeTax);
         
         if(geoCodeTaxTransfer == null) {

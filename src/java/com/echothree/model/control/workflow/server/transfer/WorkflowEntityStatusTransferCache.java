@@ -43,7 +43,7 @@ public class WorkflowEntityStatusTransferCache
         }
     }
 
-    public WorkflowEntityStatusTransfer getWorkflowEntityStatusTransfer(WorkflowEntityStatus workflowEntityStatus) {
+    public WorkflowEntityStatusTransfer getWorkflowEntityStatusTransfer(UserVisit userVisit, WorkflowEntityStatus workflowEntityStatus) {
         var workflowEntityStatusTransfer = get(workflowEntityStatus);
 
         if(workflowEntityStatusTransfer == null) {

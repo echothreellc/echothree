@@ -41,7 +41,7 @@ public class IndexTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public IndexTransfer getIndexTransfer(Index index) {
+    public IndexTransfer getIndexTransfer(UserVisit userVisit, Index index) {
         var indexTransfer = get(index);
 
         if(indexTransfer == null) {

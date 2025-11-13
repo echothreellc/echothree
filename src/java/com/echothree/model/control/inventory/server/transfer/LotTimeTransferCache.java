@@ -34,7 +34,7 @@ public class LotTimeTransferCache
     }
     
     @Override
-    public LotTimeTransfer getTransfer(LotTime lotTime) {
+    public LotTimeTransfer getTransfer(UserVisit userVisit, LotTime lotTime) {
         var lotTimeTransfer = get(lotTime);
         
         if(lotTimeTransfer == null) {

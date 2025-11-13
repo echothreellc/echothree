@@ -34,7 +34,7 @@ public class EventTransferCache
         super();
     }
     
-    public EventTransfer getEventTransfer(Event event) {
+    public EventTransfer getEventTransfer(UserVisit userVisit, Event event) {
         var eventTransfer = get(event);
         
         if(eventTransfer == null) {

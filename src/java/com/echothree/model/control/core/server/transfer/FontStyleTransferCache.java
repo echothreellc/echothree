@@ -34,7 +34,7 @@ public class FontStyleTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public FontStyleTransfer getFontStyleTransfer(FontStyle fontStyle) {
+    public FontStyleTransfer getFontStyleTransfer(UserVisit userVisit, FontStyle fontStyle) {
         var fontStyleTransfer = get(fontStyle);
 
         if(fontStyleTransfer == null) {

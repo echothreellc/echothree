@@ -32,7 +32,7 @@ public class OrderTimeTypeDescriptionTransferCache
         super();
     }
     
-    public OrderTimeTypeDescriptionTransfer getOrderTimeTypeDescriptionTransfer(OrderTimeTypeDescription orderTimeTypeDescription) {
+    public OrderTimeTypeDescriptionTransfer getOrderTimeTypeDescriptionTransfer(UserVisit userVisit, OrderTimeTypeDescription orderTimeTypeDescription) {
         var orderTimeTypeDescriptionTransfer = get(orderTimeTypeDescription);
         
         if(orderTimeTypeDescriptionTransfer == null) {

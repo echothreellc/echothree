@@ -29,7 +29,7 @@ public class SkillTypeDescriptionTransferCache
         super(employeeControl);
     }
     
-    public SkillTypeDescriptionTransfer getSkillTypeDescriptionTransfer(SkillTypeDescription skillTypeDescription) {
+    public SkillTypeDescriptionTransfer getSkillTypeDescriptionTransfer(UserVisit userVisit, SkillTypeDescription skillTypeDescription) {
         var skillTypeDescriptionTransfer = get(skillTypeDescription);
         
         if(skillTypeDescriptionTransfer == null) {

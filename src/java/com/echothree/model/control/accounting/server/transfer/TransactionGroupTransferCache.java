@@ -48,7 +48,7 @@ public class TransactionGroupTransferCache
     }
     
     @Override
-    public TransactionGroupTransfer getTransfer(TransactionGroup transactionGroup) {
+    public TransactionGroupTransfer getTransfer(UserVisit userVisit, TransactionGroup transactionGroup) {
         var transactionGroupTransfer = get(transactionGroup);
         
         if(transactionGroupTransfer == null) {

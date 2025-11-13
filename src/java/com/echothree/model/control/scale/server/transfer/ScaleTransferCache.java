@@ -35,7 +35,7 @@ public class ScaleTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public ScaleTransfer getScaleTransfer(Scale scale) {
+    public ScaleTransfer getScaleTransfer(UserVisit userVisit, Scale scale) {
         var scaleTransfer = get(scale);
         
         if(scaleTransfer == null) {

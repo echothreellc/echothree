@@ -33,7 +33,7 @@ public class PartyRelationshipTransferCache
     }
 
     @Override
-    public PartyRelationshipTransfer getTransfer(PartyRelationship partyRelationship) {
+    public PartyRelationshipTransfer getTransfer(UserVisit userVisit, PartyRelationship partyRelationship) {
         var partyRelationshipTransfer = get(partyRelationship);
         
         if(partyRelationshipTransfer == null) {

@@ -39,7 +39,7 @@ public class GeoCodeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public GeoCodeTransfer getGeoCodeTransfer(GeoCode geoCode) {
+    public GeoCodeTransfer getGeoCodeTransfer(UserVisit userVisit, GeoCode geoCode) {
         var geoCodeTransfer = get(geoCode);
         
         if(geoCodeTransfer == null) {

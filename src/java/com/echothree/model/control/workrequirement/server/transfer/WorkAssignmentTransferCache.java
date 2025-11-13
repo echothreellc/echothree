@@ -40,7 +40,7 @@ public class WorkAssignmentTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public WorkAssignmentTransfer getWorkAssignmentTransfer(WorkAssignment workAssignment) {
+    public WorkAssignmentTransfer getWorkAssignmentTransfer(UserVisit userVisit, WorkAssignment workAssignment) {
         var workAssignmentTransfer = get(workAssignment);
         
         if(workAssignmentTransfer == null) {

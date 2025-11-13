@@ -32,7 +32,7 @@ public class OrderLineTimeTransferCache
         super();
     }
     
-    public OrderLineTimeTransfer getOrderLineTimeTransfer(OrderLineTime orderLineTime) {
+    public OrderLineTimeTransfer getOrderLineTimeTransfer(UserVisit userVisit, OrderLineTime orderLineTime) {
         var orderLineTimeTransfer = get(orderLineTime);
         
         if(orderLineTimeTransfer == null) {

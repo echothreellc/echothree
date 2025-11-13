@@ -40,7 +40,7 @@ public class PostalCodeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public PostalCodeTransfer getPostalCodeTransfer(GeoCode geoCode) {
+    public PostalCodeTransfer getPostalCodeTransfer(UserVisit userVisit, GeoCode geoCode) {
         var postalCodeTransfer = get(geoCode);
         
         if(postalCodeTransfer == null) {

@@ -36,7 +36,7 @@ public class AssociateReferralTransferCache
     }
     
     @Override
-    public AssociateReferralTransfer getTransfer(AssociateReferral associateReferral) {
+    public AssociateReferralTransfer getTransfer(UserVisit userVisit, AssociateReferral associateReferral) {
         var associateReferralTransfer = get(associateReferral);
         
         if(associateReferralTransfer == null) {

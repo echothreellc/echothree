@@ -29,7 +29,7 @@ public class PartyGroupTransferCache
     }
 
     @Override
-    public PartyGroupTransfer getTransfer(PartyGroup partyGroup) {
+    public PartyGroupTransfer getTransfer(UserVisit userVisit, PartyGroup partyGroup) {
         var partyGroupTransfer = get(partyGroup);
         
         if(partyGroupTransfer == null) {

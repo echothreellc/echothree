@@ -31,7 +31,7 @@ public class LeaveTypeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public LeaveTypeTransfer getLeaveTypeTransfer(LeaveType leaveType) {
+    public LeaveTypeTransfer getLeaveTypeTransfer(UserVisit userVisit, LeaveType leaveType) {
         var leaveTypeTransfer = get(leaveType);
         
         if(leaveTypeTransfer == null) {

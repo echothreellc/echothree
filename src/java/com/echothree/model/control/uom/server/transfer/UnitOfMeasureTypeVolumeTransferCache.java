@@ -30,7 +30,7 @@ public class UnitOfMeasureTypeVolumeTransferCache
         super(uomControl);
     }
     
-    public UnitOfMeasureTypeVolumeTransfer getUnitOfMeasureTypeVolumeTransfer(UnitOfMeasureTypeVolume unitOfMeasureTypeVolume) {
+    public UnitOfMeasureTypeVolumeTransfer getUnitOfMeasureTypeVolumeTransfer(UserVisit userVisit, UnitOfMeasureTypeVolume unitOfMeasureTypeVolume) {
         var unitOfMeasureTypeVolumeTransfer = get(unitOfMeasureTypeVolume);
         
         if(unitOfMeasureTypeVolumeTransfer == null) {

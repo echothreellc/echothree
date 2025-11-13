@@ -41,7 +41,7 @@ public class EntityStringDefaultTransferCache
         }
     }
     
-    public EntityStringDefaultTransfer getEntityStringDefaultTransfer(EntityStringDefault entityStringDefault) {
+    public EntityStringDefaultTransfer getEntityStringDefaultTransfer(UserVisit userVisit, EntityStringDefault entityStringDefault) {
         var entityStringDefaultTransfer = get(entityStringDefault);
         
         if(entityStringDefaultTransfer == null) {

@@ -33,7 +33,7 @@ public class FilterAdjustmentTypeTransferCache
     }
 
     @Override
-    public FilterAdjustmentTypeTransfer getTransfer(FilterAdjustmentType filterAdjustmentType) {
+    public FilterAdjustmentTypeTransfer getTransfer(UserVisit userVisit, FilterAdjustmentType filterAdjustmentType) {
         var filterAdjustmentTypeTransfer = get(filterAdjustmentType);
         
         if(filterAdjustmentTypeTransfer == null) {

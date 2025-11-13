@@ -29,7 +29,7 @@ public class ContactMechanismAliasTransferCache
         super(contactControl);
     }
     
-    public ContactMechanismAliasTransfer getContactMechanismAliasTransfer(ContactMechanismAlias contactMechanismAlias) {
+    public ContactMechanismAliasTransfer getContactMechanismAliasTransfer(UserVisit userVisit, ContactMechanismAlias contactMechanismAlias) {
         var contactMechanismAliasTransfer = get(contactMechanismAlias);
         
         if(contactMechanismAliasTransfer == null) {

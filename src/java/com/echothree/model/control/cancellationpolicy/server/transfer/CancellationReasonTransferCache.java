@@ -31,7 +31,7 @@ public class CancellationReasonTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public CancellationReasonTransfer getCancellationReasonTransfer(CancellationReason cancellationReason) {
+    public CancellationReasonTransfer getCancellationReasonTransfer(UserVisit userVisit, CancellationReason cancellationReason) {
         var cancellationReasonTransfer = get(cancellationReason);
         
         if(cancellationReasonTransfer == null) {

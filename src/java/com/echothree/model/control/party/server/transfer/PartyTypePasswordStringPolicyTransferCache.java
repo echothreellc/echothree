@@ -41,7 +41,7 @@ public class PartyTypePasswordStringPolicyTransferCache
     }
 
     @Override
-    public PartyTypePasswordStringPolicyTransfer getTransfer(PartyTypePasswordStringPolicy partyTypePasswordStringPolicy) {
+    public PartyTypePasswordStringPolicyTransfer getTransfer(UserVisit userVisit, PartyTypePasswordStringPolicy partyTypePasswordStringPolicy) {
         var partyTypePasswordStringPolicyTransfer = get(partyTypePasswordStringPolicy);
         
         if(partyTypePasswordStringPolicyTransfer == null) {

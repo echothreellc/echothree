@@ -32,7 +32,7 @@ public class EntityLongDefaultTransferCache
         super();
     }
     
-    public EntityLongDefaultTransfer getEntityLongDefaultTransfer(EntityLongDefault entityLongDefault) {
+    public EntityLongDefaultTransfer getEntityLongDefaultTransfer(UserVisit userVisit, EntityLongDefault entityLongDefault) {
         var entityLongDefaultTransfer = get(entityLongDefault);
         
         if(entityLongDefaultTransfer == null) {

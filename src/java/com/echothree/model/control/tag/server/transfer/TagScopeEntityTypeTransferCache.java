@@ -34,7 +34,7 @@ public class TagScopeEntityTypeTransferCache
         super();
     }
     
-    public TagScopeEntityTypeTransfer getTagScopeEntityTypeTransfer(TagScopeEntityType tagScopeEntityType) {
+    public TagScopeEntityTypeTransfer getTagScopeEntityTypeTransfer(UserVisit userVisit, TagScopeEntityType tagScopeEntityType) {
         var tagScopeEntityTypeTransfer = get(tagScopeEntityType);
         
         if(tagScopeEntityTypeTransfer == null) {

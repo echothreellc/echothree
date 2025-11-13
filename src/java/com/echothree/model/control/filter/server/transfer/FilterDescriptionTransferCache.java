@@ -33,7 +33,7 @@ public class FilterDescriptionTransferCache
     }
 
     @Override
-    public FilterDescriptionTransfer getTransfer(FilterDescription filterDescription) {
+    public FilterDescriptionTransfer getTransfer(UserVisit userVisit, FilterDescription filterDescription) {
         var filterDescriptionTransfer = get(filterDescription);
         
         if(filterDescriptionTransfer == null) {

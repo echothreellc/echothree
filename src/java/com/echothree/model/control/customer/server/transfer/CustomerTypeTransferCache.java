@@ -103,7 +103,7 @@ public class CustomerTypeTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
 
-    public CustomerTypeTransfer getCustomerTypeTransfer(CustomerType customerType) {
+    public CustomerTypeTransfer getCustomerTypeTransfer(UserVisit userVisit, CustomerType customerType) {
         var customerTypeTransfer = get(customerType);
 
         if(customerTypeTransfer == null) {

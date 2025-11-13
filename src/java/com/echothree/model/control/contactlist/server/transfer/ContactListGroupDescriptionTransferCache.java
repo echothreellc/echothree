@@ -29,7 +29,7 @@ public class ContactListGroupDescriptionTransferCache
         super(contactListControl);
     }
     
-    public ContactListGroupDescriptionTransfer getContactListGroupDescriptionTransfer(ContactListGroupDescription contactListGroupDescription) {
+    public ContactListGroupDescriptionTransfer getContactListGroupDescriptionTransfer(UserVisit userVisit, ContactListGroupDescription contactListGroupDescription) {
         var contactListGroupDescriptionTransfer = get(contactListGroupDescription);
         
         if(contactListGroupDescriptionTransfer == null) {

@@ -29,7 +29,7 @@ public class WorkRequirementTypeDescriptionTransferCache
         super(workRequirementControl);
     }
     
-    public WorkRequirementTypeDescriptionTransfer getWorkRequirementTypeDescriptionTransfer(WorkRequirementTypeDescription workRequirementTypeDescription) {
+    public WorkRequirementTypeDescriptionTransfer getWorkRequirementTypeDescriptionTransfer(UserVisit userVisit, WorkRequirementTypeDescription workRequirementTypeDescription) {
         var workRequirementTypeDescriptionTransfer = get(workRequirementTypeDescription);
         
         if(workRequirementTypeDescriptionTransfer == null) {

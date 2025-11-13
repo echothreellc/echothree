@@ -33,7 +33,7 @@ public class GlAccountClassDescriptionTransferCache
     }
     
     @Override
-    public GlAccountClassDescriptionTransfer getTransfer(GlAccountClassDescription glAccountClassDescription) {
+    public GlAccountClassDescriptionTransfer getTransfer(UserVisit userVisit, GlAccountClassDescription glAccountClassDescription) {
         var glAccountClassDescriptionTransfer = get(glAccountClassDescription);
         
         if(glAccountClassDescriptionTransfer == null) {

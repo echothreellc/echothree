@@ -35,7 +35,7 @@ public class MessageClobTransferCache
         super(messageControl);
     }
     
-    public MessageClobTransfer getMessageClobTransfer(MessageClob messageClob) {
+    public MessageClobTransfer getMessageClobTransfer(UserVisit userVisit, MessageClob messageClob) {
         var messageClobTransfer = get(messageClob);
         
         if(messageClobTransfer == null) {

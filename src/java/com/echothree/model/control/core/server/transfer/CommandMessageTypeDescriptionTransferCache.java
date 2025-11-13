@@ -32,7 +32,7 @@ public class CommandMessageTypeDescriptionTransferCache
         super();
     }
     
-    public CommandMessageTypeDescriptionTransfer getCommandMessageTypeDescriptionTransfer(CommandMessageTypeDescription commandMessageTypeDescription) {
+    public CommandMessageTypeDescriptionTransfer getCommandMessageTypeDescriptionTransfer(UserVisit userVisit, CommandMessageTypeDescription commandMessageTypeDescription) {
         var commandMessageTypeDescriptionTransfer = get(commandMessageTypeDescription);
         
         if(commandMessageTypeDescriptionTransfer == null) {

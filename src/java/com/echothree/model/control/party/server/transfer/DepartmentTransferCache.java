@@ -62,12 +62,12 @@ public class DepartmentTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public DepartmentTransfer getTransfer(PartyDepartment partyDepartment) {
+    public DepartmentTransfer getTransfer(UserVisit userVisit, PartyDepartment partyDepartment) {
         return getTransfer(partyDepartment.getParty());
     }
 
     @Override
-    public DepartmentTransfer getTransfer(Party party) {
+    public DepartmentTransfer getTransfer(UserVisit userVisit, Party party) {
         var departmentTransfer = get(party);
         
         if(departmentTransfer == null) {

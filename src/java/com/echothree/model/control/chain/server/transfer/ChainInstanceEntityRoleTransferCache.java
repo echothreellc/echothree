@@ -33,7 +33,7 @@ public class ChainInstanceEntityRoleTransferCache
         super(chainControl);
     }
     
-    public ChainInstanceEntityRoleTransfer getChainInstanceEntityRoleTransfer(ChainInstanceEntityRole chainInstanceEntityRole) {
+    public ChainInstanceEntityRoleTransfer getChainInstanceEntityRoleTransfer(UserVisit userVisit, ChainInstanceEntityRole chainInstanceEntityRole) {
         var chainInstanceEntityRoleTransfer = get(chainInstanceEntityRole);
         
         if(chainInstanceEntityRoleTransfer == null) {

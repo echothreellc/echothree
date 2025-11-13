@@ -37,7 +37,7 @@ public class SearchDefaultOperatorTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public SearchDefaultOperatorTransfer getSearchDefaultOperatorTransfer(SearchDefaultOperator searchDefaultOperator) {
+    public SearchDefaultOperatorTransfer getSearchDefaultOperatorTransfer(UserVisit userVisit, SearchDefaultOperator searchDefaultOperator) {
         var searchDefaultOperatorTransfer = get(searchDefaultOperator);
 
         if(searchDefaultOperatorTransfer == null) {

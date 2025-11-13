@@ -35,7 +35,7 @@ public class CancellationTypeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public CancellationTypeTransfer getCancellationTypeTransfer(CancellationType cancellationType) {
+    public CancellationTypeTransfer getCancellationTypeTransfer(UserVisit userVisit, CancellationType cancellationType) {
         var cancellationTypeTransfer = get(cancellationType);
         
         if(cancellationTypeTransfer == null) {

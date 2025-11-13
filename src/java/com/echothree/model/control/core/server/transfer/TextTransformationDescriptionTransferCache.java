@@ -32,7 +32,7 @@ public class TextTransformationDescriptionTransferCache
         super();
     }
     
-    public TextTransformationDescriptionTransfer getTextTransformationDescriptionTransfer(TextTransformationDescription textTransformationDescription) {
+    public TextTransformationDescriptionTransfer getTextTransformationDescriptionTransfer(UserVisit userVisit, TextTransformationDescription textTransformationDescription) {
         var textTransformationDescriptionTransfer = get(textTransformationDescription);
         
         if(textTransformationDescriptionTransfer == null) {

@@ -39,7 +39,7 @@ public class WarehouseTypeTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public WarehouseTypeTransfer getTransfer(WarehouseType warehouseType) {
+    public WarehouseTypeTransfer getTransfer(UserVisit userVisit, WarehouseType warehouseType) {
         var warehouseTypeTransfer = get(warehouseType);
         
         if(warehouseTypeTransfer == null) {

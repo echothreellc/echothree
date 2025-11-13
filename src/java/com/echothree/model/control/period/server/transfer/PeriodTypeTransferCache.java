@@ -31,7 +31,7 @@ public class PeriodTypeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public PeriodTypeTransfer getPeriodTypeTransfer(PeriodType periodType) {
+    public PeriodTypeTransfer getPeriodTypeTransfer(UserVisit userVisit, PeriodType periodType) {
         var periodTypeTransfer = get(periodType);
         
         if(periodTypeTransfer == null) {

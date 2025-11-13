@@ -29,7 +29,7 @@ public class TrackDescriptionTransferCache
         super(trackControl);
     }
     
-    public TrackDescriptionTransfer getTrackDescriptionTransfer(TrackDescription trackDescription) {
+    public TrackDescriptionTransfer getTrackDescriptionTransfer(UserVisit userVisit, TrackDescription trackDescription) {
         var trackDescriptionTransfer = get(trackDescription);
         
         if(trackDescriptionTransfer == null) {

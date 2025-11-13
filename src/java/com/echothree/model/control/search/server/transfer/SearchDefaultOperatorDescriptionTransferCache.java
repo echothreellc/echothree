@@ -29,7 +29,7 @@ public class SearchDefaultOperatorDescriptionTransferCache
         super(searchControl);
     }
     
-    public SearchDefaultOperatorDescriptionTransfer getSearchDefaultOperatorDescriptionTransfer(SearchDefaultOperatorDescription searchDefaultOperatorDescription) {
+    public SearchDefaultOperatorDescriptionTransfer getSearchDefaultOperatorDescriptionTransfer(UserVisit userVisit, SearchDefaultOperatorDescription searchDefaultOperatorDescription) {
         var searchDefaultOperatorDescriptionTransfer = get(searchDefaultOperatorDescription);
         
         if(searchDefaultOperatorDescriptionTransfer == null) {

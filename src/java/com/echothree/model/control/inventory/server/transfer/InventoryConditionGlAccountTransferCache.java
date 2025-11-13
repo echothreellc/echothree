@@ -36,7 +36,7 @@ public class InventoryConditionGlAccountTransferCache
     }
     
     @Override
-    public InventoryConditionGlAccountTransfer getTransfer(InventoryConditionGlAccount inventoryConditionGlAccount) {
+    public InventoryConditionGlAccountTransfer getTransfer(UserVisit userVisit, InventoryConditionGlAccount inventoryConditionGlAccount) {
         var inventoryConditionGlAccountTransfer = get(inventoryConditionGlAccount);
         
         if(inventoryConditionGlAccountTransfer == null) {

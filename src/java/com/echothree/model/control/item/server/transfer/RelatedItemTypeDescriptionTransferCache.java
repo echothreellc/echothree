@@ -30,7 +30,7 @@ public class RelatedItemTypeDescriptionTransferCache
     }
     
     @Override
-    public RelatedItemTypeDescriptionTransfer getTransfer(RelatedItemTypeDescription relatedItemTypeDescription) {
+    public RelatedItemTypeDescriptionTransfer getTransfer(UserVisit userVisit, RelatedItemTypeDescription relatedItemTypeDescription) {
         var relatedItemTypeDescriptionTransfer = get(relatedItemTypeDescription);
         
         if(relatedItemTypeDescriptionTransfer == null) {

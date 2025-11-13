@@ -29,7 +29,7 @@ public class PrinterDescriptionTransferCache
         super(printerControl);
     }
     
-    public PrinterDescriptionTransfer getPrinterDescriptionTransfer(PrinterDescription printerDescription) {
+    public PrinterDescriptionTransfer getPrinterDescriptionTransfer(UserVisit userVisit, PrinterDescription printerDescription) {
         var printerDescriptionTransfer = get(printerDescription);
         
         if(printerDescriptionTransfer == null) {

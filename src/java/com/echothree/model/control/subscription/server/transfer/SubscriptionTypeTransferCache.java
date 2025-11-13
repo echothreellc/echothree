@@ -35,7 +35,7 @@ public class SubscriptionTypeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public SubscriptionTypeTransfer getSubscriptionTypeTransfer(SubscriptionType subscriptionType) {
+    public SubscriptionTypeTransfer getSubscriptionTypeTransfer(UserVisit userVisit, SubscriptionType subscriptionType) {
         var subscriptionTypeTransfer = get(subscriptionType);
         
         if(subscriptionTypeTransfer == null) {

@@ -29,7 +29,7 @@ public class ForumTypeTransferCache
         super(forumControl);
     }
     
-    public ForumTypeTransfer getForumTypeTransfer(ForumType forumType) {
+    public ForumTypeTransfer getForumTypeTransfer(UserVisit userVisit, ForumType forumType) {
         var forumTypeTransfer = get(forumType);
         
         if(forumTypeTransfer == null) {

@@ -31,7 +31,7 @@ public class NameSuffixTransferCache
     }
 
     @Override
-    public NameSuffixTransfer getTransfer(NameSuffix nameSuffix) {
+    public NameSuffixTransfer getTransfer(UserVisit userVisit, NameSuffix nameSuffix) {
         var nameSuffixTransfer = get(nameSuffix);
         
         if(nameSuffixTransfer == null) {

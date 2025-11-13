@@ -50,7 +50,7 @@ public class CacheEntryDependencyTransferCache
         }
     }
     
-    public CacheEntryDependencyTransfer getCacheEntryDependencyTransfer(CacheEntryDependency cacheEntryDependency) {
+    public CacheEntryDependencyTransfer getCacheEntryDependencyTransfer(UserVisit userVisit, CacheEntryDependency cacheEntryDependency) {
         var cacheEntryDependencyTransfer = get(cacheEntryDependency);
         
         if(cacheEntryDependencyTransfer == null) {

@@ -49,7 +49,7 @@ public class AppearanceTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public AppearanceTransfer getAppearanceTransfer(Appearance appearance) {
+    public AppearanceTransfer getAppearanceTransfer(UserVisit userVisit, Appearance appearance) {
         var appearanceTransfer = get(appearance);
 
         if(appearanceTransfer == null) {

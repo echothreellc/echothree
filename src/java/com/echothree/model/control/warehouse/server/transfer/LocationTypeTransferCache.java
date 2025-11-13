@@ -31,7 +31,7 @@ public class LocationTypeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public LocationTypeTransfer getLocationTypeTransfer(LocationType locationType) {
+    public LocationTypeTransfer getLocationTypeTransfer(UserVisit userVisit, LocationType locationType) {
         var locationTypeTransfer = get(locationType);
         
         if(locationTypeTransfer == null) {

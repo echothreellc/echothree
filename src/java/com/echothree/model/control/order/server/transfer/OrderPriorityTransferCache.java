@@ -34,7 +34,7 @@ public class OrderPriorityTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public OrderPriorityTransfer getOrderPriorityTransfer(OrderPriority orderPriority) {
+    public OrderPriorityTransfer getOrderPriorityTransfer(UserVisit userVisit, OrderPriority orderPriority) {
         var orderPriorityTransfer = get(orderPriority);
         
         if(orderPriorityTransfer == null) {

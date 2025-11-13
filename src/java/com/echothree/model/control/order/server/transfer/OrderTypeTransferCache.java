@@ -38,7 +38,7 @@ public class OrderTypeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public OrderTypeTransfer getOrderTypeTransfer(OrderType orderType) {
+    public OrderTypeTransfer getOrderTypeTransfer(UserVisit userVisit, OrderType orderType) {
         var orderTypeTransfer = get(orderType);
         
         if(orderTypeTransfer == null) {

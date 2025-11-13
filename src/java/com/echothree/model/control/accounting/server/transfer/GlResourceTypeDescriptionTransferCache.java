@@ -33,7 +33,7 @@ public class GlResourceTypeDescriptionTransferCache
     }
     
     @Override
-    public GlResourceTypeDescriptionTransfer getTransfer(GlResourceTypeDescription glResourceTypeDescription) {
+    public GlResourceTypeDescriptionTransfer getTransfer(UserVisit userVisit, GlResourceTypeDescription glResourceTypeDescription) {
         var glResourceTypeDescriptionTransfer = get(glResourceTypeDescription);
         
         if(glResourceTypeDescriptionTransfer == null) {

@@ -35,7 +35,7 @@ public class CarrierOptionTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public CarrierOptionTransfer getCarrierOptionTransfer(CarrierOption carrierOption) {
+    public CarrierOptionTransfer getCarrierOptionTransfer(UserVisit userVisit, CarrierOption carrierOption) {
         var carrierOptionTransfer = get(carrierOption);
         
         if(carrierOptionTransfer == null) {

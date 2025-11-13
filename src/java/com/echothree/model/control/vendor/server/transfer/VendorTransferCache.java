@@ -138,11 +138,11 @@ public class VendorTransferCache
         hasCommunicationEventLimits = session.hasLimit(CommunicationEventFactory.class);
     }
 
-    public VendorTransfer getTransfer(Vendor vendor) {
+    public VendorTransfer getTransfer(UserVisit userVisit, Vendor vendor) {
         return getTransfer(vendor.getParty());
     }
 
-    public VendorTransfer getTransfer(Party party) {
+    public VendorTransfer getTransfer(UserVisit userVisit, Party party) {
         var vendorTransfer = get(party);
 
         if(vendorTransfer == null) {

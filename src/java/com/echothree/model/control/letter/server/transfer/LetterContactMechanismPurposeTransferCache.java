@@ -35,7 +35,7 @@ public class LetterContactMechanismPurposeTransferCache
         contactControl = Session.getModelController(ContactControl.class);
     }
     
-    public LetterContactMechanismPurposeTransfer getLetterContactMechanismPurposeTransfer(LetterContactMechanismPurpose letterContactMechanismPurpose) {
+    public LetterContactMechanismPurposeTransfer getLetterContactMechanismPurposeTransfer(UserVisit userVisit, LetterContactMechanismPurpose letterContactMechanismPurpose) {
         var letterContactMechanismPurposeTransfer = get(letterContactMechanismPurpose);
         
         if(letterContactMechanismPurposeTransfer == null) {

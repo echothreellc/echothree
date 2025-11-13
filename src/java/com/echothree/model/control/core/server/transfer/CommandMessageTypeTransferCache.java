@@ -34,7 +34,7 @@ public class CommandMessageTypeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public CommandMessageTypeTransfer getCommandMessageTypeTransfer(CommandMessageType commandMessageType) {
+    public CommandMessageTypeTransfer getCommandMessageTypeTransfer(UserVisit userVisit, CommandMessageType commandMessageType) {
         var commandMessageTypeTransfer = get(commandMessageType);
         
         if(commandMessageTypeTransfer == null) {

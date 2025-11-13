@@ -40,7 +40,7 @@ public class PrinterGroupJobTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public PrinterGroupJobTransfer getPrinterGroupJobTransfer(PrinterGroupJob printerGroupJob) {
+    public PrinterGroupJobTransfer getPrinterGroupJobTransfer(UserVisit userVisit, PrinterGroupJob printerGroupJob) {
         var printerGroupJobTransfer = get(printerGroupJob);
         
         if(printerGroupJobTransfer == null) {

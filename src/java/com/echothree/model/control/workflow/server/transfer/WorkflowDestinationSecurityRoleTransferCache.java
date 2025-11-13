@@ -35,7 +35,7 @@ public class WorkflowDestinationSecurityRoleTransferCache
         securityControl = Session.getModelController(SecurityControl.class);
     }
     
-    public WorkflowDestinationSecurityRoleTransfer getWorkflowDestinationSecurityRoleTransfer(WorkflowDestinationSecurityRole workflowDestinationSecurityRole) {
+    public WorkflowDestinationSecurityRoleTransfer getWorkflowDestinationSecurityRoleTransfer(UserVisit userVisit, WorkflowDestinationSecurityRole workflowDestinationSecurityRole) {
         var workflowDestinationSecurityRoleTransfer = get(workflowDestinationSecurityRole);
         
         if(workflowDestinationSecurityRoleTransfer == null) {

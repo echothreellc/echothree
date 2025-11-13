@@ -46,7 +46,7 @@ public class SalesOrderBatchTransferCache
     }
     
     @Override
-    public SalesOrderBatchTransfer getTransfer(Batch batch) {
+    public SalesOrderBatchTransfer getTransfer(UserVisit userVisit, Batch batch) {
         var salesOrderBatchTransfer = get(batch);
         
         if(salesOrderBatchTransfer == null) {

@@ -29,7 +29,7 @@ public class ReturnTypeDescriptionTransferCache
         super(returnPolicyControl);
     }
     
-    public ReturnTypeDescriptionTransfer getReturnTypeDescriptionTransfer(ReturnTypeDescription returnTypeDescription) {
+    public ReturnTypeDescriptionTransfer getReturnTypeDescriptionTransfer(UserVisit userVisit, ReturnTypeDescription returnTypeDescription) {
         var returnTypeDescriptionTransfer = get(returnTypeDescription);
         
         if(returnTypeDescriptionTransfer == null) {

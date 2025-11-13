@@ -34,7 +34,7 @@ public class FontWeightTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public FontWeightTransfer getFontWeightTransfer(FontWeight fontWeight) {
+    public FontWeightTransfer getFontWeightTransfer(UserVisit userVisit, FontWeight fontWeight) {
         var fontWeightTransfer = get(fontWeight);
 
         if(fontWeightTransfer == null) {

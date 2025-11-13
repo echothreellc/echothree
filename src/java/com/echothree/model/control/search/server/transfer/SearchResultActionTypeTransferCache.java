@@ -37,7 +37,7 @@ public class SearchResultActionTypeTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public SearchResultActionTypeTransfer getSearchResultActionTypeTransfer(SearchResultActionType searchResultActionType) {
+    public SearchResultActionTypeTransfer getSearchResultActionTypeTransfer(UserVisit userVisit, SearchResultActionType searchResultActionType) {
         var searchResultActionTypeTransfer = get(searchResultActionType);
 
         if(searchResultActionTypeTransfer == null) {

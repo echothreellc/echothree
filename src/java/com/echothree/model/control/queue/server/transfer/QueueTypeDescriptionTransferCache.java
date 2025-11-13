@@ -29,7 +29,7 @@ public class QueueTypeDescriptionTransferCache
         super(queueControl);
     }
     
-    public QueueTypeDescriptionTransfer getQueueTypeDescriptionTransfer(QueueTypeDescription queueTypeDescription) {
+    public QueueTypeDescriptionTransfer getQueueTypeDescriptionTransfer(UserVisit userVisit, QueueTypeDescription queueTypeDescription) {
         var queueTypeDescriptionTransfer = get(queueTypeDescription);
         
         if(queueTypeDescriptionTransfer == null) {

@@ -36,7 +36,7 @@ public class ApplicationEditorTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public ApplicationEditorTransfer getApplicationEditorTransfer(ApplicationEditor applicationEditor) {
+    public ApplicationEditorTransfer getApplicationEditorTransfer(UserVisit userVisit, ApplicationEditor applicationEditor) {
         var applicationEditorTransfer = get(applicationEditor);
 
         if(applicationEditorTransfer == null) {

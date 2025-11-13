@@ -38,7 +38,7 @@ public class TaxTransferCache
     }
     
     @Override
-    public TaxTransfer getTransfer(Tax tax) {
+    public TaxTransfer getTransfer(UserVisit userVisit, Tax tax) {
         var taxTransfer = get(tax);
         
         if(taxTransfer == null) {

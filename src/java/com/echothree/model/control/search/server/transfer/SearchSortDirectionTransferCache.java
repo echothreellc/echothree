@@ -37,7 +37,7 @@ public class SearchSortDirectionTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public SearchSortDirectionTransfer getSearchSortDirectionTransfer(SearchSortDirection searchSortDirection) {
+    public SearchSortDirectionTransfer getSearchSortDirectionTransfer(UserVisit userVisit, SearchSortDirection searchSortDirection) {
         var searchSortDirectionTransfer = get(searchSortDirection);
 
         if(searchSortDirectionTransfer == null) {

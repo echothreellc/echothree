@@ -29,7 +29,7 @@ public class SubscriptionTypeDescriptionTransferCache
         super(subscriptionControl);
     }
     
-    public SubscriptionTypeDescriptionTransfer getSubscriptionTypeDescriptionTransfer(SubscriptionTypeDescription subscriptionTypeDescription) {
+    public SubscriptionTypeDescriptionTransfer getSubscriptionTypeDescriptionTransfer(UserVisit userVisit, SubscriptionTypeDescription subscriptionTypeDescription) {
         var subscriptionTypeDescriptionTransfer = get(subscriptionTypeDescription);
         
         if(subscriptionTypeDescriptionTransfer == null) {

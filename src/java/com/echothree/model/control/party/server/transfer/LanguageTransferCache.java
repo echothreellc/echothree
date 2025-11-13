@@ -53,7 +53,7 @@ public class LanguageTransferCache
     }
 
     @Override
-    public LanguageTransfer getTransfer(Language language) {
+    public LanguageTransfer getTransfer(UserVisit userVisit, Language language) {
         var languageTransfer = get(language);
         
         if(languageTransfer == null) {

@@ -29,7 +29,7 @@ public class ChainEntityRoleTypeDescriptionTransferCache
         super(chainControl);
     }
     
-    public ChainEntityRoleTypeDescriptionTransfer getChainEntityRoleTypeDescriptionTransfer(ChainEntityRoleTypeDescription chainEntityRoleTypeDescription) {
+    public ChainEntityRoleTypeDescriptionTransfer getChainEntityRoleTypeDescriptionTransfer(UserVisit userVisit, ChainEntityRoleTypeDescription chainEntityRoleTypeDescription) {
         var chainEntityRoleTypeDescriptionTransfer = get(chainEntityRoleTypeDescription);
         
         if(chainEntityRoleTypeDescriptionTransfer == null) {

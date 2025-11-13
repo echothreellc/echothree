@@ -29,7 +29,7 @@ public class PrinterGroupUseTypeDescriptionTransferCache
         super(printerControl);
     }
     
-    public PrinterGroupUseTypeDescriptionTransfer getPrinterGroupUseTypeDescriptionTransfer(PrinterGroupUseTypeDescription printerGroupUseTypeDescription) {
+    public PrinterGroupUseTypeDescriptionTransfer getPrinterGroupUseTypeDescriptionTransfer(UserVisit userVisit, PrinterGroupUseTypeDescription printerGroupUseTypeDescription) {
         var printerGroupUseTypeDescriptionTransfer = get(printerGroupUseTypeDescription);
         
         if(printerGroupUseTypeDescriptionTransfer == null) {

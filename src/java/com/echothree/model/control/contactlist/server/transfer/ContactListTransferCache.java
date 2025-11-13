@@ -35,7 +35,7 @@ public class ContactListTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public ContactListTransfer getContactListTransfer(ContactList contactList) {
+    public ContactListTransfer getContactListTransfer(UserVisit userVisit, ContactList contactList) {
         var contactListTransfer = get(contactList);
         
         if(contactListTransfer == null) {

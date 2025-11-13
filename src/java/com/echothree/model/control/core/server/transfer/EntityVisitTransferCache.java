@@ -44,7 +44,7 @@ public class EntityVisitTransferCache
         }
     }
     
-    public EntityVisitTransfer getEntityVisitTransfer(EntityVisit entityVisit) {
+    public EntityVisitTransfer getEntityVisitTransfer(UserVisit userVisit, EntityVisit entityVisit) {
         var entityVisitTransfer = get(entityVisit);
         
         if(entityVisitTransfer == null) {

@@ -29,7 +29,7 @@ public class TerminationTypeDescriptionTransferCache
         super(employeeControl);
     }
     
-    public TerminationTypeDescriptionTransfer getTerminationTypeDescriptionTransfer(TerminationTypeDescription terminationTypeDescription) {
+    public TerminationTypeDescriptionTransfer getTerminationTypeDescriptionTransfer(UserVisit userVisit, TerminationTypeDescription terminationTypeDescription) {
         var terminationTypeDescriptionTransfer = get(terminationTypeDescription);
         
         if(terminationTypeDescriptionTransfer == null) {

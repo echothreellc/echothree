@@ -69,7 +69,7 @@ public class MimeTypeTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
 
-    public MimeTypeTransfer getMimeTypeTransfer(MimeType mimeType) {
+    public MimeTypeTransfer getMimeTypeTransfer(UserVisit userVisit, MimeType mimeType) {
         var mimeTypeTransfer = get(mimeType);
 
         if(mimeTypeTransfer == null) {

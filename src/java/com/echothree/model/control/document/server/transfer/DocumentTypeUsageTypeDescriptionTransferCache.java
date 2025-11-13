@@ -29,7 +29,7 @@ public class DocumentTypeUsageTypeDescriptionTransferCache
         super(documentControl);
     }
     
-    public DocumentTypeUsageTypeDescriptionTransfer getDocumentTypeUsageTypeDescriptionTransfer(DocumentTypeUsageTypeDescription documentTypeUsageTypeDescription) {
+    public DocumentTypeUsageTypeDescriptionTransfer getDocumentTypeUsageTypeDescriptionTransfer(UserVisit userVisit, DocumentTypeUsageTypeDescription documentTypeUsageTypeDescription) {
         var documentTypeUsageTypeDescriptionTransfer = get(documentTypeUsageTypeDescription);
         
         if(documentTypeUsageTypeDescriptionTransfer == null) {

@@ -35,7 +35,7 @@ public class LocationCapacityTransferCache
         uomControl = Session.getModelController(UomControl.class);
     }
     
-    public LocationCapacityTransfer getLocationCapacityTransfer(LocationCapacity locationCapacity) {
+    public LocationCapacityTransfer getLocationCapacityTransfer(UserVisit userVisit, LocationCapacity locationCapacity) {
         var locationCapacityTransfer = get(locationCapacity);
         
         if(locationCapacityTransfer == null) {

@@ -33,7 +33,7 @@ public class FreeOnBoardDescriptionTransferCache
     }
     
     @Override
-    public FreeOnBoardDescriptionTransfer getTransfer(FreeOnBoardDescription freeOnBoardDescription) {
+    public FreeOnBoardDescriptionTransfer getTransfer(UserVisit userVisit, FreeOnBoardDescription freeOnBoardDescription) {
         var freeOnBoardDescriptionTransfer = get(freeOnBoardDescription);
         
         if(freeOnBoardDescriptionTransfer == null) {

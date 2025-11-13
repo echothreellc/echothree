@@ -29,7 +29,7 @@ public class LeaveTypeDescriptionTransferCache
         super(employeeControl);
     }
     
-    public LeaveTypeDescriptionTransfer getLeaveTypeDescriptionTransfer(LeaveTypeDescription leaveTypeDescription) {
+    public LeaveTypeDescriptionTransfer getLeaveTypeDescriptionTransfer(UserVisit userVisit, LeaveTypeDescription leaveTypeDescription) {
         var leaveTypeDescriptionTransfer = get(leaveTypeDescription);
         
         if(leaveTypeDescriptionTransfer == null) {

@@ -35,7 +35,7 @@ public class SelectorPartyTransferCache
         partyControl = Session.getModelController(PartyControl.class);
     }
     
-    public SelectorPartyTransfer getSelectorPartyTransfer(SelectorParty selectorParty) {
+    public SelectorPartyTransfer getSelectorPartyTransfer(UserVisit userVisit, SelectorParty selectorParty) {
         var selectorPartyTransfer = get(selectorParty);
         
         if(selectorPartyTransfer == null) {

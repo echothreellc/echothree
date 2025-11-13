@@ -36,7 +36,7 @@ public class TransactionGlEntryTransferCache
     }
 
     @Override
-    public TransactionGlEntryTransfer getTransfer(TransactionGlEntry transactionGlEntry) {
+    public TransactionGlEntryTransfer getTransfer(UserVisit userVisit, TransactionGlEntry transactionGlEntry) {
         var transactionGlEntryTransfer = get(transactionGlEntry);
 
         if(transactionGlEntryTransfer == null) {

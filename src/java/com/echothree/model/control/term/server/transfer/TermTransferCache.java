@@ -33,7 +33,7 @@ public class TermTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public TermTransfer getTermTransfer(Term term) {
+    public TermTransfer getTermTransfer(UserVisit userVisit, Term term) {
         var termTransfer = get(term);
         
         if(termTransfer == null) {

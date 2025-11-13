@@ -47,7 +47,7 @@ public class QueueTypeTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public QueueTypeTransfer getQueueTypeTransfer(QueueType queueType) {
+    public QueueTypeTransfer getQueueTypeTransfer(UserVisit userVisit, QueueType queueType) {
         var queueTypeTransfer = get(queueType);
 
         if(queueTypeTransfer == null) {

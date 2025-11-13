@@ -42,7 +42,7 @@ public class EntityLockTransferCache
     }
     
     @SuppressWarnings("Finally")
-    public EntityLockTransfer getEntityLockTransfer(BasePK lockTarget) {
+    public EntityLockTransfer getEntityLockTransfer(UserVisit userVisit, BasePK lockTarget) {
         var entityLockTransfer = (EntityLockTransfer)get(lockTarget);
         
         if(entityLockTransfer == null) {

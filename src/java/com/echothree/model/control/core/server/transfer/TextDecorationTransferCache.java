@@ -34,7 +34,7 @@ public class TextDecorationTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public TextDecorationTransfer getTextDecorationTransfer(TextDecoration textDecoration) {
+    public TextDecorationTransfer getTextDecorationTransfer(UserVisit userVisit, TextDecoration textDecoration) {
         var textDecorationTransfer = get(textDecoration);
 
         if(textDecorationTransfer == null) {

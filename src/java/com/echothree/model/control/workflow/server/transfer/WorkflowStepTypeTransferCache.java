@@ -29,7 +29,7 @@ public class WorkflowStepTypeTransferCache
         super(workflowControl);
     }
     
-    public WorkflowStepTypeTransfer getWorkflowStepTypeTransfer(WorkflowStepType workflowStepType) {
+    public WorkflowStepTypeTransfer getWorkflowStepTypeTransfer(UserVisit userVisit, WorkflowStepType workflowStepType) {
         var workflowStepTypeTransfer = get(workflowStepType);
         
         if(workflowStepTypeTransfer == null) {

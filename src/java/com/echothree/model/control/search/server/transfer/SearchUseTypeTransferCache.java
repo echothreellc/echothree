@@ -37,7 +37,7 @@ public class SearchUseTypeTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public SearchUseTypeTransfer getSearchUseTypeTransfer(SearchUseType searchUseType) {
+    public SearchUseTypeTransfer getSearchUseTypeTransfer(UserVisit userVisit, SearchUseType searchUseType) {
         var searchUseTypeTransfer = get(searchUseType);
 
         if(searchUseTypeTransfer == null) {

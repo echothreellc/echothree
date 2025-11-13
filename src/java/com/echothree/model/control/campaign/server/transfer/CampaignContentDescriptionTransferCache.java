@@ -29,7 +29,7 @@ public class CampaignContentDescriptionTransferCache
         super(campaignControl);
     }
     
-    public CampaignContentDescriptionTransfer getCampaignContentDescriptionTransfer(CampaignContentDescription campaignContentDescription) {
+    public CampaignContentDescriptionTransfer getCampaignContentDescriptionTransfer(UserVisit userVisit, CampaignContentDescription campaignContentDescription) {
         var campaignContentDescriptionTransfer = get(campaignContentDescription);
         
         if(campaignContentDescriptionTransfer == null) {

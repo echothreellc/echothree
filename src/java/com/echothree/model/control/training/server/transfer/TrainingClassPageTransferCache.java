@@ -31,7 +31,7 @@ public class TrainingClassPageTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public TrainingClassPageTransfer getTrainingClassPageTransfer(TrainingClassPage trainingClassPage) {
+    public TrainingClassPageTransfer getTrainingClassPageTransfer(UserVisit userVisit, TrainingClassPage trainingClassPage) {
         var trainingClassPageTransfer = get(trainingClassPage);
         
         if(trainingClassPageTransfer == null) {

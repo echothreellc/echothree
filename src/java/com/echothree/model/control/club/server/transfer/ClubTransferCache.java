@@ -39,7 +39,7 @@ public class ClubTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public ClubTransfer getClubTransfer(Club club) {
+    public ClubTransfer getClubTransfer(UserVisit userVisit, Club club) {
         var clubTransfer = get(club);
         
         if(clubTransfer == null) {

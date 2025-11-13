@@ -43,7 +43,7 @@ public class TagScopeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public TagScopeTransfer getTagScopeTransfer(TagScope tagScope) {
+    public TagScopeTransfer getTagScopeTransfer(UserVisit userVisit, TagScope tagScope) {
         var tagScopeTransfer = get(tagScope);
         
         if(tagScopeTransfer == null) {

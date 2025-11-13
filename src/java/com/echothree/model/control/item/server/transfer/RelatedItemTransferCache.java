@@ -32,7 +32,7 @@ public class RelatedItemTransferCache
     }
     
     @Override
-    public RelatedItemTransfer getTransfer(RelatedItem relatedItem) {
+    public RelatedItemTransfer getTransfer(UserVisit userVisit, RelatedItem relatedItem) {
         var relatedItemTransfer = get(relatedItem);
         
         if(relatedItemTransfer == null) {

@@ -31,7 +31,7 @@ public class CarrierTypeTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public CarrierTypeTransfer getCarrierTypeTransfer(CarrierType carrierType) {
+    public CarrierTypeTransfer getCarrierTypeTransfer(UserVisit userVisit, CarrierType carrierType) {
         var carrierTypeTransfer = get(carrierType);
 
         if(carrierTypeTransfer == null) {

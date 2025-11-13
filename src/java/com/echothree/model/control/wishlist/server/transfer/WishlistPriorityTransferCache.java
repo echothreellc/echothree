@@ -31,7 +31,7 @@ public class WishlistPriorityTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public WishlistPriorityTransfer getWishlistPriorityTransfer(WishlistPriority wishlistPriority) {
+    public WishlistPriorityTransfer getWishlistPriorityTransfer(UserVisit userVisit, WishlistPriority wishlistPriority) {
         var wishlistPriorityTransfer = get(wishlistPriority);
         
         if(wishlistPriorityTransfer == null) {

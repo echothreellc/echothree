@@ -31,7 +31,7 @@ public class SkillTypeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public SkillTypeTransfer getSkillTypeTransfer(SkillType skillType) {
+    public SkillTypeTransfer getSkillTypeTransfer(UserVisit userVisit, SkillType skillType) {
         var skillTypeTransfer = get(skillType);
         
         if(skillTypeTransfer == null) {

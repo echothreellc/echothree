@@ -89,7 +89,7 @@ public class DateTimeFormatTransferCache
     }
 
     @Override
-    public DateTimeFormatTransfer getTransfer(DateTimeFormat dateTimeFormat) {
+    public DateTimeFormatTransfer getTransfer(UserVisit userVisit, DateTimeFormat dateTimeFormat) {
         var dateTimeFormatTransfer = get(dateTimeFormat);
         
         if(dateTimeFormatTransfer == null) {

@@ -34,7 +34,7 @@ public class OfferNameElementTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public OfferNameElementTransfer getOfferNameElementTransfer(OfferNameElement offerNameElement) {
+    public OfferNameElementTransfer getOfferNameElementTransfer(UserVisit userVisit, OfferNameElement offerNameElement) {
         var offerNameElementTransfer = get(offerNameElement);
         
         if(offerNameElementTransfer == null) {

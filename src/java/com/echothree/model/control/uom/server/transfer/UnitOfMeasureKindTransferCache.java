@@ -55,7 +55,7 @@ public class UnitOfMeasureKindTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
     
-    public UnitOfMeasureKindTransfer getUnitOfMeasureKindTransfer(UnitOfMeasureKind unitOfMeasureKind) {
+    public UnitOfMeasureKindTransfer getUnitOfMeasureKindTransfer(UserVisit userVisit, UnitOfMeasureKind unitOfMeasureKind) {
         var unitOfMeasureKindTransfer = get(unitOfMeasureKind);
         
         if(unitOfMeasureKindTransfer == null) {

@@ -31,7 +31,7 @@ public class InvoiceTimeTypeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public InvoiceTimeTypeTransfer getInvoiceTimeTypeTransfer(InvoiceTimeType invoiceTimeType) {
+    public InvoiceTimeTypeTransfer getInvoiceTimeTypeTransfer(UserVisit userVisit, InvoiceTimeType invoiceTimeType) {
         var invoiceTimeTypeTransfer = get(invoiceTimeType);
         
         if(invoiceTimeTypeTransfer == null) {

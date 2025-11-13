@@ -29,7 +29,7 @@ public class ResponsibilityTypeDescriptionTransferCache
         super(employeeControl);
     }
     
-    public ResponsibilityTypeDescriptionTransfer getResponsibilityTypeDescriptionTransfer(ResponsibilityTypeDescription responsibilityTypeDescription) {
+    public ResponsibilityTypeDescriptionTransfer getResponsibilityTypeDescriptionTransfer(UserVisit userVisit, ResponsibilityTypeDescription responsibilityTypeDescription) {
         var responsibilityTypeDescriptionTransfer = get(responsibilityTypeDescription);
         
         if(responsibilityTypeDescriptionTransfer == null) {

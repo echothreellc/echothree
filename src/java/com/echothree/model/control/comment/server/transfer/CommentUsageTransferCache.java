@@ -29,7 +29,7 @@ public class CommentUsageTransferCache
         super(commentControl);
     }
     
-    public CommentUsageTransfer getCommentUsageTransfer(CommentUsage commentUsage) {
+    public CommentUsageTransfer getCommentUsageTransfer(UserVisit userVisit, CommentUsage commentUsage) {
         var commentUsageTransfer = get(commentUsage);
         
         if(commentUsageTransfer == null) {

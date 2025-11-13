@@ -35,7 +35,7 @@ public class CarrierServiceTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public CarrierServiceTransfer getCarrierServiceTransfer(CarrierService carrierService) {
+    public CarrierServiceTransfer getCarrierServiceTransfer(UserVisit userVisit, CarrierService carrierService) {
         var carrierServiceTransfer = get(carrierService);
         
         if(carrierServiceTransfer == null) {

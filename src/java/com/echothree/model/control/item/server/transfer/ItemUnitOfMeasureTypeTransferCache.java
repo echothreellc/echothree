@@ -36,7 +36,7 @@ public class ItemUnitOfMeasureTypeTransferCache
     }
     
     @Override
-    public ItemUnitOfMeasureTypeTransfer getTransfer(ItemUnitOfMeasureType itemUnitOfMeasureType) {
+    public ItemUnitOfMeasureTypeTransfer getTransfer(UserVisit userVisit, ItemUnitOfMeasureType itemUnitOfMeasureType) {
         var itemUnitOfMeasureTypeTransfer = get(itemUnitOfMeasureType);
         
         if(itemUnitOfMeasureTypeTransfer == null) {

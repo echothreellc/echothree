@@ -29,7 +29,7 @@ public class WorkflowStepDescriptionTransferCache
         super(workflowControl);
     }
     
-    public WorkflowStepDescriptionTransfer getWorkflowStepDescriptionTransfer(WorkflowStepDescription workflowStepDescription) {
+    public WorkflowStepDescriptionTransfer getWorkflowStepDescriptionTransfer(UserVisit userVisit, WorkflowStepDescription workflowStepDescription) {
         var workflowStepDescriptionTransfer = get(workflowStepDescription);
         
         if(workflowStepDescriptionTransfer == null) {

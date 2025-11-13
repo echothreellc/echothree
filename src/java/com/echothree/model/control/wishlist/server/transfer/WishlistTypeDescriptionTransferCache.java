@@ -29,7 +29,7 @@ public class WishlistTypeDescriptionTransferCache
         super(wishlistControl);
     }
     
-    public WishlistTypeDescriptionTransfer getWishlistTypeDescriptionTransfer(WishlistTypeDescription wishlistTypeDescription) {
+    public WishlistTypeDescriptionTransfer getWishlistTypeDescriptionTransfer(UserVisit userVisit, WishlistTypeDescription wishlistTypeDescription) {
         var wishlistTypeDescriptionTransfer = get(wishlistTypeDescription);
         
         if(wishlistTypeDescriptionTransfer == null) {

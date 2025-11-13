@@ -38,7 +38,7 @@ public class PostalAddressLineTransferCache
         }
     }
     
-    public PostalAddressLineTransfer getPostalAddressLineTransfer(PostalAddressLine postalAddressLine) {
+    public PostalAddressLineTransfer getPostalAddressLineTransfer(UserVisit userVisit, PostalAddressLine postalAddressLine) {
         var postalAddressLineTransfer = get(postalAddressLine);
         
         if(postalAddressLineTransfer == null) {

@@ -31,7 +31,7 @@ public class ResponsibilityTypeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public ResponsibilityTypeTransfer getResponsibilityTypeTransfer(ResponsibilityType responsibilityType) {
+    public ResponsibilityTypeTransfer getResponsibilityTypeTransfer(UserVisit userVisit, ResponsibilityType responsibilityType) {
         var responsibilityTypeTransfer = get(responsibilityType);
         
         if(responsibilityTypeTransfer == null) {

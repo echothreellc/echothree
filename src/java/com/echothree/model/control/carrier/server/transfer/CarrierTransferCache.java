@@ -66,11 +66,11 @@ public class CarrierTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public CarrierTransfer getCarrierTransfer(Carrier carrier) {
+    public CarrierTransfer getCarrierTransfer(UserVisit userVisit, Carrier carrier) {
         return getCarrierTransfer(carrier.getParty());
     }
 
-    public CarrierTransfer getCarrierTransfer(Party party) {
+    public CarrierTransfer getCarrierTransfer(UserVisit userVisit, Party party) {
         var carrierTransfer = get(party);
         
         if(carrierTransfer == null) {

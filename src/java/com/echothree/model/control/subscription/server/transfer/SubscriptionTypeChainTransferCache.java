@@ -38,7 +38,7 @@ public class SubscriptionTypeChainTransferCache
         super(subscriptionControl);
     }
     
-    public SubscriptionTypeChainTransfer getSubscriptionTypeChainTransfer(SubscriptionTypeChain subscriptionTypeChain) {
+    public SubscriptionTypeChainTransfer getSubscriptionTypeChainTransfer(UserVisit userVisit, SubscriptionTypeChain subscriptionTypeChain) {
         var subscriptionTypeChainTransfer = get(subscriptionTypeChain);
         
         if(subscriptionTypeChainTransfer == null) {

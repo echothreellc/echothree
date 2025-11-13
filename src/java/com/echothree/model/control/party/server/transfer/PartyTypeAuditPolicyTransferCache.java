@@ -41,7 +41,7 @@ public class PartyTypeAuditPolicyTransferCache
     }
 
     @Override
-    public PartyTypeAuditPolicyTransfer getTransfer(PartyTypeAuditPolicy partyTypeAuditPolicy) {
+    public PartyTypeAuditPolicyTransfer getTransfer(UserVisit userVisit, PartyTypeAuditPolicy partyTypeAuditPolicy) {
         var partyTypeAuditPolicyTransfer = get(partyTypeAuditPolicy);
 
         if(partyTypeAuditPolicyTransfer == null) {

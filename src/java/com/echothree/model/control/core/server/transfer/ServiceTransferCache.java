@@ -34,7 +34,7 @@ public class ServiceTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public ServiceTransfer getServiceTransfer(Service service) {
+    public ServiceTransfer getServiceTransfer(UserVisit userVisit, Service service) {
         var serviceTransfer = get(service);
         
         if(serviceTransfer == null) {

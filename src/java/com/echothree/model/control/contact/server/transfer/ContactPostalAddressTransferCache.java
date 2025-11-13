@@ -38,7 +38,7 @@ public class ContactPostalAddressTransferCache
         super(contactControl);
     }
     
-    public ContactPostalAddressTransfer getContactPostalAddressTransfer(ContactPostalAddress contactPostalAddress) {
+    public ContactPostalAddressTransfer getContactPostalAddressTransfer(UserVisit userVisit, ContactPostalAddress contactPostalAddress) {
         var contactPostalAddressTransfer = get(contactPostalAddress);
         
         if(contactPostalAddressTransfer == null) {

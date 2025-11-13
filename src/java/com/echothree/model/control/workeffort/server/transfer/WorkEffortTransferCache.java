@@ -50,7 +50,7 @@ public class WorkEffortTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public WorkEffortTransfer getWorkEffortTransfer(WorkEffort workEffort) {
+    public WorkEffortTransfer getWorkEffortTransfer(UserVisit userVisit, WorkEffort workEffort) {
         var workEffortTransfer = get(workEffort);
         
         if(workEffortTransfer == null) {

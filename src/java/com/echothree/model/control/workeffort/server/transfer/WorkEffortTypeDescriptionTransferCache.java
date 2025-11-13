@@ -29,7 +29,7 @@ public class WorkEffortTypeDescriptionTransferCache
         super(workEffortControl);
     }
     
-    public WorkEffortTypeDescriptionTransfer getWorkEffortTypeDescriptionTransfer(WorkEffortTypeDescription workEffortTypeDescription) {
+    public WorkEffortTypeDescriptionTransfer getWorkEffortTypeDescriptionTransfer(UserVisit userVisit, WorkEffortTypeDescription workEffortTypeDescription) {
         var workEffortTypeDescriptionTransfer = get(workEffortTypeDescription);
         
         if(workEffortTypeDescriptionTransfer == null) {

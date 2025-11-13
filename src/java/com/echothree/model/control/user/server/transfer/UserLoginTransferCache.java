@@ -42,7 +42,7 @@ public class UserLoginTransferCache
         }
     }
     
-    public UserLoginTransfer getUserLoginTransfer(UserLogin userLogin) {
+    public UserLoginTransfer getUserLoginTransfer(UserVisit userVisit, UserLogin userLogin) {
         var userLoginTransfer = get(userLogin);
         
         if(userLoginTransfer == null) {

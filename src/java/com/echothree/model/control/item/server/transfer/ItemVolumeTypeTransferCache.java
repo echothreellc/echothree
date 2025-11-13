@@ -32,7 +32,7 @@ public class ItemVolumeTypeTransferCache
     }
     
     @Override
-    public ItemVolumeTypeTransfer getTransfer(ItemVolumeType itemVolumeType) {
+    public ItemVolumeTypeTransfer getTransfer(UserVisit userVisit, ItemVolumeType itemVolumeType) {
         var itemVolumeTypeTransfer = get(itemVolumeType);
         
         if(itemVolumeTypeTransfer == null) {

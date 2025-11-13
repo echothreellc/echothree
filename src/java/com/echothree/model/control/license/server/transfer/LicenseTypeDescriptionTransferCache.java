@@ -29,7 +29,7 @@ public class LicenseTypeDescriptionTransferCache
         super(licenseControl);
     }
     
-    public LicenseTypeDescriptionTransfer getLicenseTypeDescriptionTransfer(LicenseTypeDescription licenseTypeDescription) {
+    public LicenseTypeDescriptionTransfer getLicenseTypeDescriptionTransfer(UserVisit userVisit, LicenseTypeDescription licenseTypeDescription) {
         var licenseTypeDescriptionTransfer = get(licenseTypeDescription);
         
         if(licenseTypeDescriptionTransfer == null) {

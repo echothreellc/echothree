@@ -35,7 +35,7 @@ public class GeoCodeTimeZoneTransferCache
         partyControl = Session.getModelController(PartyControl.class);
     }
     
-    public GeoCodeTimeZoneTransfer getGeoCodeTimeZoneTransfer(GeoCodeTimeZone geoCodeTimeZone) {
+    public GeoCodeTimeZoneTransfer getGeoCodeTimeZoneTransfer(UserVisit userVisit, GeoCodeTimeZone geoCodeTimeZone) {
         var geoCodeTimeZoneTransfer = get(geoCodeTimeZone);
         
         if(geoCodeTimeZoneTransfer == null) {

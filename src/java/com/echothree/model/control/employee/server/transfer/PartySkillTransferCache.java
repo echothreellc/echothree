@@ -35,7 +35,7 @@ public class PartySkillTransferCache
         partyControl = Session.getModelController(PartyControl.class);
     }
     
-    public PartySkillTransfer getPartySkillTransfer(PartySkill partySkill) {
+    public PartySkillTransfer getPartySkillTransfer(UserVisit userVisit, PartySkill partySkill) {
         var partySkillTransfer = get(partySkill);
         
         if(partySkillTransfer == null) {

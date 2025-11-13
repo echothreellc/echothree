@@ -29,7 +29,7 @@ public class UnitOfMeasureKindUseTypeTransferCache
         super(uomControl);
     }
     
-    public UnitOfMeasureKindUseTypeTransfer getUnitOfMeasureKindUseTypeTransfer(UnitOfMeasureKindUseType unitOfMeasureKindUseType) {
+    public UnitOfMeasureKindUseTypeTransfer getUnitOfMeasureKindUseTypeTransfer(UserVisit userVisit, UnitOfMeasureKindUseType unitOfMeasureKindUseType) {
         var unitOfMeasureKindUseTypeTransfer = get(unitOfMeasureKindUseType);
         
         if(unitOfMeasureKindUseTypeTransfer == null) {

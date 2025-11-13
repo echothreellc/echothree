@@ -36,7 +36,7 @@ public class PartyInventoryLevelTransferCache
     }
     
     @Override
-    public PartyInventoryLevelTransfer getTransfer(PartyInventoryLevel partyInventoryLevel) {
+    public PartyInventoryLevelTransfer getTransfer(UserVisit userVisit, PartyInventoryLevel partyInventoryLevel) {
         var partyInventoryLevelTransfer = get(partyInventoryLevel);
         
         if(partyInventoryLevelTransfer == null) {

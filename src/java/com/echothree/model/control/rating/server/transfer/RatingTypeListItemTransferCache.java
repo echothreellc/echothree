@@ -31,7 +31,7 @@ public class RatingTypeListItemTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public RatingTypeListItemTransfer getRatingTypeListItemTransfer(RatingTypeListItem ratingTypeListItem) {
+    public RatingTypeListItemTransfer getRatingTypeListItemTransfer(UserVisit userVisit, RatingTypeListItem ratingTypeListItem) {
         var ratingTypeListItemTransfer = get(ratingTypeListItem);
         
         if(ratingTypeListItemTransfer == null) {

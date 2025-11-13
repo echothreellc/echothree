@@ -37,7 +37,7 @@ public class PartyApplicationEditorUseTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public PartyApplicationEditorUseTransfer getPartyApplicationEditorUseTransfer(PartyApplicationEditorUse partyApplicationEditorUse) {
+    public PartyApplicationEditorUseTransfer getPartyApplicationEditorUseTransfer(UserVisit userVisit, PartyApplicationEditorUse partyApplicationEditorUse) {
         var partyApplicationEditorUseTransfer = get(partyApplicationEditorUse);
 
         if(partyApplicationEditorUseTransfer == null) {

@@ -73,7 +73,7 @@ public class UnitOfMeasureTypeTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
     
-    public UnitOfMeasureTypeTransfer getUnitOfMeasureTypeTransfer(UnitOfMeasureType unitOfMeasureType) {
+    public UnitOfMeasureTypeTransfer getUnitOfMeasureTypeTransfer(UserVisit userVisit, UnitOfMeasureType unitOfMeasureType) {
         var unitOfMeasureTypeTransfer = get(unitOfMeasureType);
         
         if(unitOfMeasureTypeTransfer == null) {

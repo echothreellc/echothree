@@ -41,7 +41,7 @@ public class PartyTypeLockoutPolicyTransferCache
     }
 
     @Override
-    public PartyTypeLockoutPolicyTransfer getTransfer(PartyTypeLockoutPolicy partyTypeLockoutPolicy) {
+    public PartyTypeLockoutPolicyTransfer getTransfer(UserVisit userVisit, PartyTypeLockoutPolicy partyTypeLockoutPolicy) {
         var partyTypeLockoutPolicyTransfer = get(partyTypeLockoutPolicy);
 
         if(partyTypeLockoutPolicyTransfer == null) {

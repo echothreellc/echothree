@@ -40,7 +40,7 @@ public class PartyTrainingClassSessionQuestionTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public PartyTrainingClassSessionQuestionTransfer getPartyTrainingClassSessionQuestionTransfer(PartyTrainingClassSessionQuestion partyTrainingClassSessionQuestion) {
+    public PartyTrainingClassSessionQuestionTransfer getPartyTrainingClassSessionQuestionTransfer(UserVisit userVisit, PartyTrainingClassSessionQuestion partyTrainingClassSessionQuestion) {
         var partyTrainingClassSessionQuestionTransfer = get(partyTrainingClassSessionQuestion);
         
         if(partyTrainingClassSessionQuestionTransfer == null) {

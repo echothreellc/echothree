@@ -40,7 +40,7 @@ public class InventoryTransactionTypeTransferCache
     }
 
     @Override
-    public InventoryTransactionTypeTransfer getTransfer(InventoryTransactionType inventoryTransactionType) {
+    public InventoryTransactionTypeTransfer getTransfer(UserVisit userVisit, InventoryTransactionType inventoryTransactionType) {
         var inventoryTransactionTypeTransfer = get(inventoryTransactionType);
         
         if(inventoryTransactionTypeTransfer == null) {

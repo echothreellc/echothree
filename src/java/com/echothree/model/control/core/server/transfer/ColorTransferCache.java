@@ -34,7 +34,7 @@ public class ColorTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public ColorTransfer getColorTransfer(Color color) {
+    public ColorTransfer getColorTransfer(UserVisit userVisit, Color color) {
         var colorTransfer = get(color);
 
         if(colorTransfer == null) {

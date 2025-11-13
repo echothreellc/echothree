@@ -54,7 +54,7 @@ public class LotTransferCache
     }
     
     @Override
-    public LotTransfer getTransfer(Lot lot) {
+    public LotTransfer getTransfer(UserVisit userVisit, Lot lot) {
         var lotTransfer = get(lot);
         
         if(lotTransfer == null) {

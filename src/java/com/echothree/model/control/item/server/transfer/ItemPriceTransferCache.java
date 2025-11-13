@@ -167,7 +167,7 @@ public class ItemPriceTransferCache
     }
     
     @Override
-    public ItemPriceTransfer getTransfer(ItemPrice itemPrice) {
+    public ItemPriceTransfer getTransfer(UserVisit userVisit, ItemPrice itemPrice) {
         var itemPriceTransfer = get(itemPrice);
         
         if(itemPriceTransfer == null) {

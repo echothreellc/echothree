@@ -35,7 +35,7 @@ public class PartyResponsibilityTransferCache
         partyControl = Session.getModelController(PartyControl.class);
     }
     
-    public PartyResponsibilityTransfer getPartyResponsibilityTransfer(PartyResponsibility partyResponsibility) {
+    public PartyResponsibilityTransfer getPartyResponsibilityTransfer(UserVisit userVisit, PartyResponsibility partyResponsibility) {
         var partyResponsibilityTransfer = get(partyResponsibility);
         
         if(partyResponsibilityTransfer == null) {

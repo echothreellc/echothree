@@ -29,7 +29,7 @@ public class VendorTypeDescriptionTransferCache
         super(vendorControl);
     }
     
-    public VendorTypeDescriptionTransfer getVendorTypeDescriptionTransfer(VendorTypeDescription vendorTypeDescription) {
+    public VendorTypeDescriptionTransfer getVendorTypeDescriptionTransfer(UserVisit userVisit, VendorTypeDescription vendorTypeDescription) {
         var vendorTypeDescriptionTransfer = get(vendorTypeDescription);
         
         if(vendorTypeDescriptionTransfer == null) {

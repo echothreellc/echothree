@@ -32,7 +32,7 @@ public class FontStyleDescriptionTransferCache
         super();
     }
     
-    public FontStyleDescriptionTransfer getFontStyleDescriptionTransfer(FontStyleDescription fontStyleDescription) {
+    public FontStyleDescriptionTransfer getFontStyleDescriptionTransfer(UserVisit userVisit, FontStyleDescription fontStyleDescription) {
         var fontStyleDescriptionTransfer = get(fontStyleDescription);
         
         if(fontStyleDescriptionTransfer == null) {

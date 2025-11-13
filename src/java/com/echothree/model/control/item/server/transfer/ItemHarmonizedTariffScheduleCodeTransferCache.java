@@ -43,7 +43,7 @@ public class ItemHarmonizedTariffScheduleCodeTransferCache
     }
     
     @Override
-    public ItemHarmonizedTariffScheduleCodeTransfer getTransfer(ItemHarmonizedTariffScheduleCode itemHarmonizedTariffScheduleCode) {
+    public ItemHarmonizedTariffScheduleCodeTransfer getTransfer(UserVisit userVisit, ItemHarmonizedTariffScheduleCode itemHarmonizedTariffScheduleCode) {
         var itemHarmonizedTariffScheduleCodeTransfer = get(itemHarmonizedTariffScheduleCode);
         
         if(itemHarmonizedTariffScheduleCodeTransfer == null) {

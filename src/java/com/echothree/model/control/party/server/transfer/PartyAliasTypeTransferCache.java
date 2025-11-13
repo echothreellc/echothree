@@ -43,7 +43,7 @@ public class PartyAliasTypeTransferCache
     }
 
     @Override
-    public PartyAliasTypeTransfer getTransfer(PartyAliasType partyAliasType) {
+    public PartyAliasTypeTransfer getTransfer(UserVisit userVisit, PartyAliasType partyAliasType) {
         var partyAliasTypeTransfer = get(partyAliasType);
         
         if(partyAliasTypeTransfer == null) {

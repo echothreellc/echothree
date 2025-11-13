@@ -37,7 +37,7 @@ public class ItemKitMemberTransferCache
     }
     
     @Override
-    public ItemKitMemberTransfer getTransfer(ItemKitMember itemKitMember) {
+    public ItemKitMemberTransfer getTransfer(UserVisit userVisit, ItemKitMember itemKitMember) {
         var itemKitMemberTransfer = get(itemKitMember);
         
         if(itemKitMemberTransfer == null) {

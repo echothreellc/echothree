@@ -40,7 +40,7 @@ public class TrainingClassQuestionTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public TrainingClassQuestionTransfer getTrainingClassQuestionTransfer(TrainingClassQuestion trainingClassQuestion) {
+    public TrainingClassQuestionTransfer getTrainingClassQuestionTransfer(UserVisit userVisit, TrainingClassQuestion trainingClassQuestion) {
         var trainingClassQuestionTransfer = get(trainingClassQuestion);
         
         if(trainingClassQuestionTransfer == null) {

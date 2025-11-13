@@ -34,7 +34,7 @@ public class OrderAdjustmentTypeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public OrderAdjustmentTypeTransfer getOrderAdjustmentTypeTransfer(OrderAdjustmentType orderAdjustmentType) {
+    public OrderAdjustmentTypeTransfer getOrderAdjustmentTypeTransfer(UserVisit userVisit, OrderAdjustmentType orderAdjustmentType) {
         var orderAdjustmentTypeTransfer = get(orderAdjustmentType);
         
         if(orderAdjustmentTypeTransfer == null) {

@@ -29,7 +29,7 @@ public class ContactMechanismPurposeTransferCache
         super(contactControl);
     }
     
-    public ContactMechanismPurposeTransfer getContactMechanismPurposeTransfer(ContactMechanismPurpose contactMechanismPurpose) {
+    public ContactMechanismPurposeTransfer getContactMechanismPurposeTransfer(UserVisit userVisit, ContactMechanismPurpose contactMechanismPurpose) {
         var contactMechanismPurposeTransfer = get(contactMechanismPurpose);
         
         if(contactMechanismPurposeTransfer == null) {

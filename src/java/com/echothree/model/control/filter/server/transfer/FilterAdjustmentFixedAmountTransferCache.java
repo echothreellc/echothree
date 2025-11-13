@@ -39,7 +39,7 @@ public class FilterAdjustmentFixedAmountTransferCache
     }
 
     @Override
-    public FilterAdjustmentFixedAmountTransfer getTransfer(FilterAdjustmentFixedAmount filterAdjustmentFixedAmount) {
+    public FilterAdjustmentFixedAmountTransfer getTransfer(UserVisit userVisit, FilterAdjustmentFixedAmount filterAdjustmentFixedAmount) {
         var filterAdjustmentFixedAmountTransfer = get(filterAdjustmentFixedAmount);
         
         if(filterAdjustmentFixedAmountTransfer == null) {

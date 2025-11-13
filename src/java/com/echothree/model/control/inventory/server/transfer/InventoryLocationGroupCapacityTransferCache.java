@@ -32,7 +32,7 @@ public class InventoryLocationGroupCapacityTransferCache
     }
     
     @Override
-    public InventoryLocationGroupCapacityTransfer getTransfer(InventoryLocationGroupCapacity inventoryLocationGroupCapacity) {
+    public InventoryLocationGroupCapacityTransfer getTransfer(UserVisit userVisit, InventoryLocationGroupCapacity inventoryLocationGroupCapacity) {
         var inventoryLocationGroupCapacityTransfer = get(inventoryLocationGroupCapacity);
         
         if(inventoryLocationGroupCapacityTransfer == null) {

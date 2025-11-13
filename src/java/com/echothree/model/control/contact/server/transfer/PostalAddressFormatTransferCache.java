@@ -40,7 +40,7 @@ public class PostalAddressFormatTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public PostalAddressFormatTransfer getPostalAddressFormatTransfer(PostalAddressFormat postalAddressFormat) {
+    public PostalAddressFormatTransfer getPostalAddressFormatTransfer(UserVisit userVisit, PostalAddressFormat postalAddressFormat) {
         var postalAddressFormatTransfer = get(postalAddressFormat);
         
         if(postalAddressFormatTransfer == null) {

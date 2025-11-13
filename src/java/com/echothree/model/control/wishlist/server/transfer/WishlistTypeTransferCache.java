@@ -31,7 +31,7 @@ public class WishlistTypeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public WishlistTypeTransfer getWishlistTypeTransfer(WishlistType wishlistType) {
+    public WishlistTypeTransfer getWishlistTypeTransfer(UserVisit userVisit, WishlistType wishlistType) {
         var wishlistTypeTransfer = get(wishlistType);
         
         if(wishlistTypeTransfer == null) {

@@ -31,7 +31,7 @@ public class SearchSortOrderTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public SearchSortOrderTransfer getSearchSortOrderTransfer(SearchSortOrder searchSortOrder) {
+    public SearchSortOrderTransfer getSearchSortOrderTransfer(UserVisit userVisit, SearchSortOrder searchSortOrder) {
         var searchSortOrderTransfer = get(searchSortOrder);
         
         if(searchSortOrderTransfer == null) {

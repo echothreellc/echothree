@@ -33,7 +33,7 @@ public class RoleTypeTransferCache
     }
 
     @Override
-    public RoleTypeTransfer getTransfer(RoleType roleType) {
+    public RoleTypeTransfer getTransfer(UserVisit userVisit, RoleType roleType) {
         var roleTypeTransfer = get(roleType);
         
         if(roleTypeTransfer == null) {

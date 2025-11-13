@@ -50,7 +50,7 @@ public class WorkRequirementTypeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public WorkRequirementTypeTransfer getWorkRequirementTypeTransfer(WorkRequirementType workRequirementType) {
+    public WorkRequirementTypeTransfer getWorkRequirementTypeTransfer(UserVisit userVisit, WorkRequirementType workRequirementType) {
         var workRequirementTypeTransfer = get(workRequirementType);
         
         if(workRequirementTypeTransfer == null) {

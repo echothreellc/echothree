@@ -32,7 +32,7 @@ public class EntityBooleanDefaultTransferCache
         super();
     }
     
-    public EntityBooleanDefaultTransfer getEntityBooleanDefaultTransfer(EntityBooleanDefault entityBooleanDefault) {
+    public EntityBooleanDefaultTransfer getEntityBooleanDefaultTransfer(UserVisit userVisit, EntityBooleanDefault entityBooleanDefault) {
         var entityBooleanDefaultTransfer = get(entityBooleanDefault);
         
         if(entityBooleanDefaultTransfer == null) {

@@ -91,7 +91,7 @@ public class InvoiceTransferCache
         return invoiceTransfer;
     }
 
-    public InvoiceTransfer getInvoiceTransfer(Invoice invoice) {
+    public InvoiceTransfer getInvoiceTransfer(UserVisit userVisit, Invoice invoice) {
         var invoiceTransfer = get(invoice);
         
         if(invoiceTransfer == null) {

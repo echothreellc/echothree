@@ -31,7 +31,7 @@ public class GeoCodeAliasTypeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public GeoCodeAliasTypeTransfer getGeoCodeAliasTypeTransfer(GeoCodeAliasType geoCodeAliasType) {
+    public GeoCodeAliasTypeTransfer getGeoCodeAliasTypeTransfer(UserVisit userVisit, GeoCodeAliasType geoCodeAliasType) {
         var geoCodeAliasTypeTransfer = get(geoCodeAliasType);
         
         if(geoCodeAliasTypeTransfer == null) {

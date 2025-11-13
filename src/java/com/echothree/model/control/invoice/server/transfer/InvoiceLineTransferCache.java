@@ -33,7 +33,7 @@ public class InvoiceLineTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public InvoiceLineTransfer getInvoiceLineTransfer(InvoiceLine invoiceLine) {
+    public InvoiceLineTransfer getInvoiceLineTransfer(UserVisit userVisit, InvoiceLine invoiceLine) {
         var invoiceLineTransfer = get(invoiceLine);
         
         if(invoiceLineTransfer == null) {

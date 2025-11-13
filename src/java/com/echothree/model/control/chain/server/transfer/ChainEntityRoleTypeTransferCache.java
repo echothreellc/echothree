@@ -35,7 +35,7 @@ public class ChainEntityRoleTypeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public ChainEntityRoleTypeTransfer getChainEntityRoleTypeTransfer(ChainEntityRoleType chainEntityRoleType) {
+    public ChainEntityRoleTypeTransfer getChainEntityRoleTypeTransfer(UserVisit userVisit, ChainEntityRoleType chainEntityRoleType) {
         var chainEntityRoleTypeTransfer = get(chainEntityRoleType);
         
         if(chainEntityRoleTypeTransfer == null) {

@@ -29,7 +29,7 @@ public class ContentPageDescriptionTransferCache
         super(contentControl);
     }
     
-    public ContentPageDescriptionTransfer getContentPageDescriptionTransfer(ContentPageDescription contentPageDescription) {
+    public ContentPageDescriptionTransfer getContentPageDescriptionTransfer(UserVisit userVisit, ContentPageDescription contentPageDescription) {
         var contentPageDescriptionTransfer = get(contentPageDescription);
         
         if(contentPageDescriptionTransfer == null) {

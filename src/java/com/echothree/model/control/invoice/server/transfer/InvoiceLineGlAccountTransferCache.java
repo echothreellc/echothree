@@ -35,7 +35,7 @@ public class InvoiceLineGlAccountTransferCache
         accountingControl = Session.getModelController(AccountingControl.class);
     }
 
-    public InvoiceLineGlAccountTransfer getInvoiceLineGlAccountTransfer(InvoiceLineGlAccount invoiceLineGlAccount) {
+    public InvoiceLineGlAccountTransfer getInvoiceLineGlAccountTransfer(UserVisit userVisit, InvoiceLineGlAccount invoiceLineGlAccount) {
         var invoiceLineGlAccountTransfer = get(invoiceLineGlAccount);
 
         if(invoiceLineGlAccountTransfer == null) {

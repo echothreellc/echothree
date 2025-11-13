@@ -29,7 +29,7 @@ public class ContentPageLayoutDescriptionTransferCache
         super(contentControl);
     }
     
-    public ContentPageLayoutDescriptionTransfer getTransfer(ContentPageLayoutDescription contentPageLayoutDescription) {
+    public ContentPageLayoutDescriptionTransfer getTransfer(UserVisit userVisit, ContentPageLayoutDescription contentPageLayoutDescription) {
         var contentPageLayoutDescriptionTransfer = get(contentPageLayoutDescription);
         
         if(contentPageLayoutDescriptionTransfer == null) {

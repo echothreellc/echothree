@@ -35,7 +35,7 @@ public class QueuedLetterTransferCache
         chainControl = Session.getModelController(ChainControl.class);
     }
     
-    public QueuedLetterTransfer getQueuedLetterTransfer(QueuedLetter queuedLetter) {
+    public QueuedLetterTransfer getQueuedLetterTransfer(UserVisit userVisit, QueuedLetter queuedLetter) {
         var queuedLetterTransfer = get(queuedLetter);
         
         if(queuedLetterTransfer == null) {

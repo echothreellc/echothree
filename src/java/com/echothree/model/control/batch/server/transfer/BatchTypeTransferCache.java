@@ -38,7 +38,7 @@ public class BatchTypeTransferCache
     }
     
     @Override
-    public BatchTypeTransfer getTransfer(BatchType batchType) {
+    public BatchTypeTransfer getTransfer(UserVisit userVisit, BatchType batchType) {
         var batchTypeTransfer = get(batchType);
         
         if(batchTypeTransfer == null) {

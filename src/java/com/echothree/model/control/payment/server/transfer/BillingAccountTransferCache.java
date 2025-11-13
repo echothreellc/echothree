@@ -46,7 +46,7 @@ public class BillingAccountTransferCache
     }
 
     @Override
-    public BillingAccountTransfer getTransfer(BillingAccount billingAccount) {
+    public BillingAccountTransfer getTransfer(UserVisit userVisit, BillingAccount billingAccount) {
         var billingAccountTransfer = get(billingAccount);
 
         if(billingAccountTransfer == null) {

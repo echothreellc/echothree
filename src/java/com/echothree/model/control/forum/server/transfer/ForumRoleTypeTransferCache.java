@@ -29,7 +29,7 @@ public class ForumRoleTypeTransferCache
         super(forumControl);
     }
     
-    public ForumRoleTypeTransfer getForumRoleTypeTransfer(ForumRoleType forumRoleType) {
+    public ForumRoleTypeTransfer getForumRoleTypeTransfer(UserVisit userVisit, ForumRoleType forumRoleType) {
         var forumRoleTypeTransfer = get(forumRoleType);
         
         if(forumRoleTypeTransfer == null) {

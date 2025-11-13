@@ -35,7 +35,7 @@ public class CustomerTypeContactListGroupTransferCache
         super(contactListControl);
     }
     
-    public CustomerTypeContactListGroupTransfer getCustomerTypeContactListGroupTransfer(CustomerTypeContactListGroup customerTypeContactListGroup) {
+    public CustomerTypeContactListGroupTransfer getCustomerTypeContactListGroupTransfer(UserVisit userVisit, CustomerTypeContactListGroup customerTypeContactListGroup) {
         var customerTypeContactListGroupTransfer = get(customerTypeContactListGroup);
         
         if(customerTypeContactListGroupTransfer == null) {

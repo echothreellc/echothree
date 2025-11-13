@@ -31,7 +31,7 @@ public class PartySecurityRoleTemplateTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public PartySecurityRoleTemplateTransfer getPartySecurityRoleTemplateTransfer(PartySecurityRoleTemplate partySecurityRoleTemplate) {
+    public PartySecurityRoleTemplateTransfer getPartySecurityRoleTemplateTransfer(UserVisit userVisit, PartySecurityRoleTemplate partySecurityRoleTemplate) {
         var partySecurityRoleTemplateTransfer = get(partySecurityRoleTemplate);
         
         if(partySecurityRoleTemplateTransfer == null) {

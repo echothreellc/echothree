@@ -37,7 +37,7 @@ public class PicklistTypeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public PicklistTypeTransfer getPicklistTypeTransfer(PicklistType picklistType) {
+    public PicklistTypeTransfer getPicklistTypeTransfer(UserVisit userVisit, PicklistType picklistType) {
         var picklistTypeTransfer = get(picklistType);
         
         if(picklistTypeTransfer == null) {

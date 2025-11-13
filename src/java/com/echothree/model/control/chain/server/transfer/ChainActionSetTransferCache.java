@@ -31,7 +31,7 @@ public class ChainActionSetTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public ChainActionSetTransfer getChainActionSetTransfer(ChainActionSet chainActionSet) {
+    public ChainActionSetTransfer getChainActionSetTransfer(UserVisit userVisit, ChainActionSet chainActionSet) {
         var chainActionSetTransfer = get(chainActionSet);
 
         if(chainActionSetTransfer == null) {

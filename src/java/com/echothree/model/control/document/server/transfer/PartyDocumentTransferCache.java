@@ -33,7 +33,7 @@ public class PartyDocumentTransferCache
         super(documentControl);
     }
     
-    public PartyDocumentTransfer getPartyDocumentTransfer(PartyDocument partyDocument) {
+    public PartyDocumentTransfer getPartyDocumentTransfer(UserVisit userVisit, PartyDocument partyDocument) {
         var partyDocumentTransfer = get(partyDocument);
         
         if(partyDocumentTransfer == null) {

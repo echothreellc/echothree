@@ -36,7 +36,7 @@ public class ContactWebAddressTransferCache
         super(contactControl);
     }
     
-    public ContactWebAddressTransfer getContactWebAddressTransfer(ContactWebAddress contactWebAddress) {
+    public ContactWebAddressTransfer getContactWebAddressTransfer(UserVisit userVisit, ContactWebAddress contactWebAddress) {
         var contactWebAddressTransfer = get(contactWebAddress);
         
         if(contactWebAddressTransfer == null) {

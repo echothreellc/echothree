@@ -35,7 +35,7 @@ public class GeoCodeLanguageTransferCache
         partyControl = Session.getModelController(PartyControl.class);
     }
     
-    public GeoCodeLanguageTransfer getGeoCodeLanguageTransfer(GeoCodeLanguage geoCodeLanguage) {
+    public GeoCodeLanguageTransfer getGeoCodeLanguageTransfer(UserVisit userVisit, GeoCodeLanguage geoCodeLanguage) {
         var geoCodeLanguageTransfer = get(geoCodeLanguage);
         
         if(geoCodeLanguageTransfer == null) {

@@ -35,7 +35,7 @@ public class BirthdayFormatTransferCache
     }
 
     @Override
-    public BirthdayFormatTransfer getTransfer(BirthdayFormat birthdayFormat) {
+    public BirthdayFormatTransfer getTransfer(UserVisit userVisit, BirthdayFormat birthdayFormat) {
         var birthdayFormatTransfer = get(birthdayFormat);
         
         if(birthdayFormatTransfer == null) {

@@ -40,7 +40,7 @@ public class WorkTimeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public WorkTimeTransfer getWorkTimeTransfer(WorkTime workTime) {
+    public WorkTimeTransfer getWorkTimeTransfer(UserVisit userVisit, WorkTime workTime) {
         var workTimeTransfer = get(workTime);
         
         if(workTimeTransfer == null) {

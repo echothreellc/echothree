@@ -37,7 +37,7 @@ public class PaymentProcessorTypeActionTransferCache
     }
     
     @Override
-    public PaymentProcessorTypeActionTransfer getTransfer(PaymentProcessorTypeAction paymentProcessorTypeAction) {
+    public PaymentProcessorTypeActionTransfer getTransfer(UserVisit userVisit, PaymentProcessorTypeAction paymentProcessorTypeAction) {
         var paymentProcessorTypeActionTransfer = get(paymentProcessorTypeAction);
         
         if(paymentProcessorTypeActionTransfer == null) {

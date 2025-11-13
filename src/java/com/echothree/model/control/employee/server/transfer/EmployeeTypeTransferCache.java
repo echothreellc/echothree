@@ -31,7 +31,7 @@ public class EmployeeTypeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public EmployeeTypeTransfer getEmployeeTypeTransfer(EmployeeType employeeType) {
+    public EmployeeTypeTransfer getEmployeeTypeTransfer(UserVisit userVisit, EmployeeType employeeType) {
         var employeeTypeTransfer = get(employeeType);
         
         if(employeeTypeTransfer == null) {

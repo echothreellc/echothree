@@ -72,7 +72,7 @@ public class ContentPageTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
 
-    public ContentPageTransfer getContentPageTransfer(ContentPage contentPage) {
+    public ContentPageTransfer getContentPageTransfer(UserVisit userVisit, ContentPage contentPage) {
         var contentPageTransfer = get(contentPage);
         
         if(contentPageTransfer == null) {

@@ -37,7 +37,7 @@ public class MessageTypeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public MessageTypeTransfer getMessageTypeTransfer(MessageType messageType) {
+    public MessageTypeTransfer getMessageTypeTransfer(UserVisit userVisit, MessageType messageType) {
         var messageTypeTransfer = get(messageType);
         
         if(messageTypeTransfer == null) {

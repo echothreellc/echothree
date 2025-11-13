@@ -37,7 +37,7 @@ public class ItemUnitLimitTransferCache
     }
     
     @Override
-    public ItemUnitLimitTransfer getTransfer(ItemUnitLimit itemUnitLimit) {
+    public ItemUnitLimitTransfer getTransfer(UserVisit userVisit, ItemUnitLimit itemUnitLimit) {
         var itemUnitLimitTransfer = get(itemUnitLimit);
         
         if(itemUnitLimitTransfer == null) {

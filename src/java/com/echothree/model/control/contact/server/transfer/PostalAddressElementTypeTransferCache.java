@@ -29,7 +29,7 @@ public class PostalAddressElementTypeTransferCache
         super(contactControl);
     }
     
-    public PostalAddressElementTypeTransfer getPostalAddressElementTypeTransfer(PostalAddressElementType postalAddressElementType) {
+    public PostalAddressElementTypeTransfer getPostalAddressElementTypeTransfer(UserVisit userVisit, PostalAddressElementType postalAddressElementType) {
         var postalAddressElementTypeTransfer = get(postalAddressElementType);
         
         if(postalAddressElementTypeTransfer == null) {

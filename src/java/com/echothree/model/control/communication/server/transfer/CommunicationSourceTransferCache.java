@@ -41,7 +41,7 @@ public class CommunicationSourceTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public CommunicationSourceTransfer getCommunicationSourceTransfer(CommunicationSource communicationSource) {
+    public CommunicationSourceTransfer getCommunicationSourceTransfer(UserVisit userVisit, CommunicationSource communicationSource) {
         var communicationSourceTransfer = get(communicationSource);
         
         if(communicationSourceTransfer == null) {

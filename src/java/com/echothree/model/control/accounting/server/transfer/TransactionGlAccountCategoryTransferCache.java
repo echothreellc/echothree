@@ -35,7 +35,7 @@ public class TransactionGlAccountCategoryTransferCache
     }
     
     @Override
-    public TransactionGlAccountCategoryTransfer getTransfer(TransactionGlAccountCategory transactionGlAccountCategory) {
+    public TransactionGlAccountCategoryTransfer getTransfer(UserVisit userVisit, TransactionGlAccountCategory transactionGlAccountCategory) {
         var transactionGlAccountCategoryTransfer = get(transactionGlAccountCategory);
         
         if(transactionGlAccountCategoryTransfer == null) {

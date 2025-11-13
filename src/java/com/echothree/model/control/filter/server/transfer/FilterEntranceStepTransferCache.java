@@ -33,7 +33,7 @@ public class FilterEntranceStepTransferCache
     }
 
     @Override
-    public FilterEntranceStepTransfer getTransfer(FilterEntranceStep filterEntranceStep) {
+    public FilterEntranceStepTransfer getTransfer(UserVisit userVisit, FilterEntranceStep filterEntranceStep) {
         var filterEntranceStepTransfer = get(filterEntranceStep);
         
         if(filterEntranceStepTransfer == null) {

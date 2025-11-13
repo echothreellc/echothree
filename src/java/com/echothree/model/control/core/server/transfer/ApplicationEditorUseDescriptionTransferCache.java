@@ -32,7 +32,7 @@ public class ApplicationEditorUseDescriptionTransferCache
         super();
     }
     
-    public ApplicationEditorUseDescriptionTransfer getApplicationEditorUseDescriptionTransfer(ApplicationEditorUseDescription applicationEditorUseDescription) {
+    public ApplicationEditorUseDescriptionTransfer getApplicationEditorUseDescriptionTransfer(UserVisit userVisit, ApplicationEditorUseDescription applicationEditorUseDescription) {
         var applicationEditorUseDescriptionTransfer = get(applicationEditorUseDescription);
         
         if(applicationEditorUseDescriptionTransfer == null) {

@@ -38,7 +38,7 @@ public class PrinterTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public PrinterTransfer getPrinterTransfer(Printer printer) {
+    public PrinterTransfer getPrinterTransfer(UserVisit userVisit, Printer printer) {
         var printerTransfer = get(printer);
         
         if(printerTransfer == null) {

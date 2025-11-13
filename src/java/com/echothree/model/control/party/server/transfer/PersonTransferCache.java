@@ -33,7 +33,7 @@ public class PersonTransferCache
     }
 
     @Override
-    public PersonTransfer getTransfer(Person person) {
+    public PersonTransfer getTransfer(UserVisit userVisit, Person person) {
         var personTransfer = get(person);
         
         if(personTransfer == null) {

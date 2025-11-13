@@ -37,7 +37,7 @@ public class OrderPaymentPreferenceTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public OrderPaymentPreferenceTransfer getOrderPaymentPreferenceTransfer(OrderPaymentPreference orderPaymentPreference) {
+    public OrderPaymentPreferenceTransfer getOrderPaymentPreferenceTransfer(UserVisit userVisit, OrderPaymentPreference orderPaymentPreference) {
         var orderPaymentPreferenceTransfer = get(orderPaymentPreference);
         
         if(orderPaymentPreferenceTransfer == null) {

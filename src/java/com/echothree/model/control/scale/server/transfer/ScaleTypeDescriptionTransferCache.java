@@ -29,7 +29,7 @@ public class ScaleTypeDescriptionTransferCache
         super(scaleControl);
     }
     
-    public ScaleTypeDescriptionTransfer getScaleTypeDescriptionTransfer(ScaleTypeDescription scaleTypeDescription) {
+    public ScaleTypeDescriptionTransfer getScaleTypeDescriptionTransfer(UserVisit userVisit, ScaleTypeDescription scaleTypeDescription) {
         var scaleTypeDescriptionTransfer = get(scaleTypeDescription);
         
         if(scaleTypeDescriptionTransfer == null) {

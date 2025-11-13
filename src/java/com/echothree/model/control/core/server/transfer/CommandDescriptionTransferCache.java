@@ -32,7 +32,7 @@ public class CommandDescriptionTransferCache
         super();
     }
     
-    public CommandDescriptionTransfer getCommandDescriptionTransfer(CommandDescription commandDescription) {
+    public CommandDescriptionTransfer getCommandDescriptionTransfer(UserVisit userVisit, CommandDescription commandDescription) {
         var commandDescriptionTransfer = get(commandDescription);
         
         if(commandDescriptionTransfer == null) {

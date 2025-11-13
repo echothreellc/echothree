@@ -39,7 +39,7 @@ public class WishlistTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public WishlistTransfer getWishlistTransfer(Order order) {
+    public WishlistTransfer getWishlistTransfer(UserVisit userVisit, Order order) {
         var wishlistTransfer = get(order);
         
         if(wishlistTransfer == null) {

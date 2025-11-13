@@ -86,7 +86,7 @@ public class PartyPaymentMethodTransferCache
     }
 
     @Override
-    public PartyPaymentMethodTransfer getTransfer(PartyPaymentMethod partyPaymentMethod) {
+    public PartyPaymentMethodTransfer getTransfer(UserVisit userVisit, PartyPaymentMethod partyPaymentMethod) {
         var partyPaymentMethodTransfer = get(partyPaymentMethod);
         
         if(partyPaymentMethodTransfer == null) {

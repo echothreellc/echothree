@@ -39,7 +39,7 @@ public class CustomerTypeCreditLimitTransferCache
         customerControl = Session.getModelController(CustomerControl.class);
     }
     
-    public CustomerTypeCreditLimitTransfer getCustomerTypeCreditLimitTransfer(CustomerTypeCreditLimit customerTypeCreditLimit) {
+    public CustomerTypeCreditLimitTransfer getCustomerTypeCreditLimitTransfer(UserVisit userVisit, CustomerTypeCreditLimit customerTypeCreditLimit) {
         var customerTypeCreditLimitTransfer = get(customerTypeCreditLimit);
         
         if(customerTypeCreditLimitTransfer == null) {

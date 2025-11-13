@@ -34,7 +34,7 @@ public class AppearanceTextDecorationTransferCache
         super();
     }
 
-    public AppearanceTextDecorationTransfer getAppearanceTextDecorationTransfer(AppearanceTextDecoration appearanceTextDecoration) {
+    public AppearanceTextDecorationTransfer getAppearanceTextDecorationTransfer(UserVisit userVisit, AppearanceTextDecoration appearanceTextDecoration) {
         var appearanceTextDecorationTransfer = get(appearanceTextDecoration);
 
         if(appearanceTextDecorationTransfer == null) {

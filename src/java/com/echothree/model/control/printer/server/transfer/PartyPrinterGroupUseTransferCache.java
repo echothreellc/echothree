@@ -34,7 +34,7 @@ public class PartyPrinterGroupUseTransferCache
         partyControl = Session.getModelController(PartyControl.class);
     }
     
-    public PartyPrinterGroupUseTransfer getPartyPrinterGroupUseTransfer(PartyPrinterGroupUse partyPrinterGroupUse) {
+    public PartyPrinterGroupUseTransfer getPartyPrinterGroupUseTransfer(UserVisit userVisit, PartyPrinterGroupUse partyPrinterGroupUse) {
         var partyPrinterGroupUseTransfer = get(partyPrinterGroupUse);
         
         if(partyPrinterGroupUseTransfer == null) {

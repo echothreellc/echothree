@@ -32,7 +32,7 @@ public class ProtocolDescriptionTransferCache
         super();
     }
     
-    public ProtocolDescriptionTransfer getProtocolDescriptionTransfer(ProtocolDescription protocolDescription) {
+    public ProtocolDescriptionTransfer getProtocolDescriptionTransfer(UserVisit userVisit, ProtocolDescription protocolDescription) {
         var protocolDescriptionTransfer = get(protocolDescription);
         
         if(protocolDescriptionTransfer == null) {

@@ -40,7 +40,7 @@ public class StateTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public StateTransfer getStateTransfer(GeoCode geoCode) {
+    public StateTransfer getStateTransfer(UserVisit userVisit, GeoCode geoCode) {
         var stateTransfer = get(geoCode);
         
         if(stateTransfer == null) {

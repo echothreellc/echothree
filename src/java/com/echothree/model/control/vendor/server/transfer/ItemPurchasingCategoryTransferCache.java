@@ -31,7 +31,7 @@ public class ItemPurchasingCategoryTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public ItemPurchasingCategoryTransfer getItemPurchasingCategoryTransfer(ItemPurchasingCategory itemPurchasingCategory) {
+    public ItemPurchasingCategoryTransfer getItemPurchasingCategoryTransfer(UserVisit userVisit, ItemPurchasingCategory itemPurchasingCategory) {
         var itemPurchasingCategoryTransfer = get(itemPurchasingCategory);
         
         if(itemPurchasingCategoryTransfer == null) {

@@ -32,7 +32,7 @@ public class ColorDescriptionTransferCache
         super();
     }
     
-    public ColorDescriptionTransfer getColorDescriptionTransfer(ColorDescription colorDescription) {
+    public ColorDescriptionTransfer getColorDescriptionTransfer(UserVisit userVisit, ColorDescription colorDescription) {
         var colorDescriptionTransfer = get(colorDescription);
         
         if(colorDescriptionTransfer == null) {

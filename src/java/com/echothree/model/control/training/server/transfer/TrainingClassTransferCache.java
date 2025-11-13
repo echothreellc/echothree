@@ -50,7 +50,7 @@ public class TrainingClassTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public TrainingClassTransfer getTrainingClassTransfer(TrainingClass trainingClass) {
+    public TrainingClassTransfer getTrainingClassTransfer(UserVisit userVisit, TrainingClass trainingClass) {
         var trainingClassTransfer = get(trainingClass);
         
         if(trainingClassTransfer == null) {

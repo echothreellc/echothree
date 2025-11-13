@@ -35,7 +35,7 @@ public class WorkflowEntranceSelectorTransferCache
         selectorControl = Session.getModelController(SelectorControl.class);
     }
     
-    public WorkflowEntranceSelectorTransfer getWorkflowEntranceSelectorTransfer(WorkflowEntranceSelector workflowEntranceSelector) {
+    public WorkflowEntranceSelectorTransfer getWorkflowEntranceSelectorTransfer(UserVisit userVisit, WorkflowEntranceSelector workflowEntranceSelector) {
         var workflowEntranceSelectorTransfer = get(workflowEntranceSelector);
         
         if(workflowEntranceSelectorTransfer == null) {

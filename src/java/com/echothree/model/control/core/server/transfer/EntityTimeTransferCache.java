@@ -52,7 +52,7 @@ public class EntityTimeTransferCache
         }
     }
     
-    public EntityTimeTransfer getEntityTimeTransfer(EntityTime entityTime) {
+    public EntityTimeTransfer getEntityTimeTransfer(UserVisit userVisit, EntityTime entityTime) {
         var entityTimeTransfer = get(entityTime);
         
         if(entityTimeTransfer == null) {

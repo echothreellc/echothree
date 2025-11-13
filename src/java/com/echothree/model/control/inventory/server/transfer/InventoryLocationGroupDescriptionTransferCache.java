@@ -30,7 +30,7 @@ public class InventoryLocationGroupDescriptionTransferCache
     }
     
     @Override
-    public InventoryLocationGroupDescriptionTransfer getTransfer(InventoryLocationGroupDescription inventoryLocationGroupDescription) {
+    public InventoryLocationGroupDescriptionTransfer getTransfer(UserVisit userVisit, InventoryLocationGroupDescription inventoryLocationGroupDescription) {
         var inventoryLocationGroupDescriptionTransfer = get(inventoryLocationGroupDescription);
         
         if(inventoryLocationGroupDescriptionTransfer == null) {

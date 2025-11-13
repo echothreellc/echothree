@@ -30,7 +30,7 @@ public class InventoryConditionDescriptionTransferCache
     }
     
     @Override
-    public InventoryConditionDescriptionTransfer getTransfer(InventoryConditionDescription inventoryConditionDescription) {
+    public InventoryConditionDescriptionTransfer getTransfer(UserVisit userVisit, InventoryConditionDescription inventoryConditionDescription) {
         var inventoryConditionDescriptionTransfer = get(inventoryConditionDescription);
         
         if(inventoryConditionDescriptionTransfer == null) {

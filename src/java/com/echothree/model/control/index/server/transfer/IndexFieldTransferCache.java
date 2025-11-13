@@ -31,7 +31,7 @@ public class IndexFieldTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public IndexFieldTransfer getIndexFieldTransfer(IndexField indexField) {
+    public IndexFieldTransfer getIndexFieldTransfer(UserVisit userVisit, IndexField indexField) {
         var indexFieldTransfer = get(indexField);
         
         if(indexFieldTransfer == null) {

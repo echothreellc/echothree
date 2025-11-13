@@ -33,7 +33,7 @@ public class ForumMessagePartTypeTransferCache
         super(forumControl);
     }
     
-    public ForumMessagePartTypeTransfer getForumMessagePartTypeTransfer(ForumMessagePartType forumMessagePartType) {
+    public ForumMessagePartTypeTransfer getForumMessagePartTypeTransfer(UserVisit userVisit, ForumMessagePartType forumMessagePartType) {
         var forumMessagePartTypeTransfer = get(forumMessagePartType);
         
         if(forumMessagePartTypeTransfer == null) {

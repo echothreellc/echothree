@@ -35,7 +35,7 @@ public class EmploymentTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public EmploymentTransfer getEmploymentTransfer(Employment employment) {
+    public EmploymentTransfer getEmploymentTransfer(UserVisit userVisit, Employment employment) {
         var employmentTransfer = get(employment);
         
         if(employmentTransfer == null) {

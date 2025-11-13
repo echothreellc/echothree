@@ -32,7 +32,7 @@ public class EditorDescriptionTransferCache
         super();
     }
     
-    public EditorDescriptionTransfer getEditorDescriptionTransfer(EditorDescription editorDescription) {
+    public EditorDescriptionTransfer getEditorDescriptionTransfer(UserVisit userVisit, EditorDescription editorDescription) {
         var editorDescriptionTransfer = get(editorDescription);
         
         if(editorDescriptionTransfer == null) {

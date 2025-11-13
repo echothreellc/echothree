@@ -29,7 +29,7 @@ public class JobDescriptionTransferCache
         super(jobControl);
     }
     
-    public JobDescriptionTransfer getJobDescriptionTransfer(JobDescription jobDescription) {
+    public JobDescriptionTransfer getJobDescriptionTransfer(UserVisit userVisit, JobDescription jobDescription) {
         var jobDescriptionTransfer = get(jobDescription);
         
         if(jobDescriptionTransfer == null) {

@@ -34,7 +34,7 @@ public class EntityTagTransferCache
         super();
     }
     
-    public EntityTagTransfer getEntityTagTransfer(EntityTag entityTag) {
+    public EntityTagTransfer getEntityTagTransfer(UserVisit userVisit, EntityTag entityTag) {
         var entityTagTransfer = get(entityTag);
         
         if(entityTagTransfer == null) {

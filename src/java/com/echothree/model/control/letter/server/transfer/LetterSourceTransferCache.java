@@ -37,7 +37,7 @@ public class LetterSourceTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public LetterSourceTransfer getLetterSourceTransfer(LetterSource letterSource) {
+    public LetterSourceTransfer getLetterSourceTransfer(UserVisit userVisit, LetterSource letterSource) {
         var letterSourceTransfer = get(letterSource);
         
         if(letterSourceTransfer == null) {

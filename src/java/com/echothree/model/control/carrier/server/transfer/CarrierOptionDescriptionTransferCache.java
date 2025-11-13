@@ -29,7 +29,7 @@ public class CarrierOptionDescriptionTransferCache
         super(carrierControl);
     }
     
-    public CarrierOptionDescriptionTransfer getCarrierOptionDescriptionTransfer(CarrierOptionDescription carrierOptionDescription) {
+    public CarrierOptionDescriptionTransfer getCarrierOptionDescriptionTransfer(UserVisit userVisit, CarrierOptionDescription carrierOptionDescription) {
         var carrierOptionDescriptionTransfer = get(carrierOptionDescription);
         
         if(carrierOptionDescriptionTransfer == null) {

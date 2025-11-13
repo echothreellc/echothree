@@ -32,7 +32,7 @@ public class EntityIntegerDefaultTransferCache
         super();
     }
     
-    public EntityIntegerDefaultTransfer getEntityIntegerDefaultTransfer(EntityIntegerDefault entityIntegerDefault) {
+    public EntityIntegerDefaultTransfer getEntityIntegerDefaultTransfer(UserVisit userVisit, EntityIntegerDefault entityIntegerDefault) {
         var entityIntegerDefaultTransfer = get(entityIntegerDefault);
         
         if(entityIntegerDefaultTransfer == null) {

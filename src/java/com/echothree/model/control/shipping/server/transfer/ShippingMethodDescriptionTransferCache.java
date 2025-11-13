@@ -32,7 +32,7 @@ public class ShippingMethodDescriptionTransferCache
         super();
     }
     
-    public ShippingMethodDescriptionTransfer getShippingMethodDescriptionTransfer(ShippingMethodDescription shippingMethodDescription) {
+    public ShippingMethodDescriptionTransfer getShippingMethodDescriptionTransfer(UserVisit userVisit, ShippingMethodDescription shippingMethodDescription) {
         var shippingMethodDescriptionTransfer = get(shippingMethodDescription);
         
         if(shippingMethodDescriptionTransfer == null) {

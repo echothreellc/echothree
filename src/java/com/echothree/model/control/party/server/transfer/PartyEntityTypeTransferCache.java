@@ -35,7 +35,7 @@ public class PartyEntityTypeTransferCache
         super();
     }
     
-    public PartyEntityTypeTransfer getPartyEntityTypeTransfer(PartyEntityType partyEntityType) {
+    public PartyEntityTypeTransfer getPartyEntityTypeTransfer(UserVisit userVisit, PartyEntityType partyEntityType) {
         var partyEntityTypeTransfer = get(partyEntityType);
         
         if(partyEntityTypeTransfer == null) {

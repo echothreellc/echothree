@@ -42,7 +42,7 @@ public class PartyPaymentMethodContactMechanismTransferCache
     }
 
     @Override
-    public PartyPaymentMethodContactMechanismTransfer getTransfer(PartyPaymentMethodContactMechanism partyPaymentMethodContactMechanism) {
+    public PartyPaymentMethodContactMechanismTransfer getTransfer(UserVisit userVisit, PartyPaymentMethodContactMechanism partyPaymentMethodContactMechanism) {
         var partyPaymentMethodContactMechanismTransfer = get(partyPaymentMethodContactMechanism);
         
         if(partyPaymentMethodContactMechanismTransfer == null) {

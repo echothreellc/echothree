@@ -31,7 +31,7 @@ public class LeaveReasonTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public LeaveReasonTransfer getLeaveReasonTransfer(LeaveReason leaveReason) {
+    public LeaveReasonTransfer getLeaveReasonTransfer(UserVisit userVisit, LeaveReason leaveReason) {
         var leaveReasonTransfer = get(leaveReason);
         
         if(leaveReasonTransfer == null) {

@@ -105,7 +105,7 @@ public class PartyTransferCache
     }
 
     @Override
-    public PartyTransfer getTransfer(Party party) {
+    public PartyTransfer getTransfer(UserVisit userVisit, Party party) {
         var partyTransfer = get(party);
         
         if(partyTransfer == null) {

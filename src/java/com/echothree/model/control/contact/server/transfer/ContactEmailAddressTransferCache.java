@@ -37,7 +37,7 @@ public class ContactEmailAddressTransferCache
         super(contactControl);
     }
     
-    public ContactEmailAddressTransfer getContactEmailAddressTransfer(ContactEmailAddress contactEmailAddress) {
+    public ContactEmailAddressTransfer getContactEmailAddressTransfer(UserVisit userVisit, ContactEmailAddress contactEmailAddress) {
         var contactEmailAddressTransfer = get(contactEmailAddress);
         
         if(contactEmailAddressTransfer == null) {

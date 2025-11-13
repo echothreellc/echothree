@@ -29,7 +29,7 @@ public class CommunicationSourceTypeTransferCache
         super(communicationControl);
     }
     
-    public CommunicationSourceTypeTransfer getCommunicationSourceTypeTransfer(CommunicationSourceType communicationSourceType) {
+    public CommunicationSourceTypeTransfer getCommunicationSourceTypeTransfer(UserVisit userVisit, CommunicationSourceType communicationSourceType) {
         var communicationSourceTypeTransfer = get(communicationSourceType);
         
         if(communicationSourceTypeTransfer == null) {

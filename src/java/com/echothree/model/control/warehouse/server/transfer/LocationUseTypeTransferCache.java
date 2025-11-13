@@ -33,7 +33,7 @@ public class LocationUseTypeTransferCache
         super(warehouseControl);
     }
     
-    public LocationUseTypeTransfer getLocationUseTypeTransfer(LocationUseType locationUseType) {
+    public LocationUseTypeTransfer getLocationUseTypeTransfer(UserVisit userVisit, LocationUseType locationUseType) {
         var locationUseTypeTransfer = get(locationUseType);
         
         if(locationUseTypeTransfer == null) {

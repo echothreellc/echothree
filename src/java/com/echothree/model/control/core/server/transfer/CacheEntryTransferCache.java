@@ -73,7 +73,7 @@ public class CacheEntryTransferCache
         }
     }
     
-    public CacheEntryTransfer getCacheEntryTransfer(CacheEntry cacheEntry) {
+    public CacheEntryTransfer getCacheEntryTransfer(UserVisit userVisit, CacheEntry cacheEntry) {
         var cacheEntryTransfer = get(cacheEntry);
         
         if(cacheEntryTransfer == null) {

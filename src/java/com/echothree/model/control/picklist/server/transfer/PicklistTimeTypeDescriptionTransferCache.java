@@ -29,7 +29,7 @@ public class PicklistTimeTypeDescriptionTransferCache
         super(picklistControl);
     }
     
-    public PicklistTimeTypeDescriptionTransfer getPicklistTimeTypeDescriptionTransfer(PicklistTimeTypeDescription picklistTimeTypeDescription) {
+    public PicklistTimeTypeDescriptionTransfer getPicklistTimeTypeDescriptionTransfer(UserVisit userVisit, PicklistTimeTypeDescription picklistTimeTypeDescription) {
         var picklistTimeTypeDescriptionTransfer = get(picklistTimeTypeDescription);
         
         if(picklistTimeTypeDescriptionTransfer == null) {

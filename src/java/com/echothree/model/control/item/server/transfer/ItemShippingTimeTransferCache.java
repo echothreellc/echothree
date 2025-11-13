@@ -58,7 +58,7 @@ public class ItemShippingTimeTransferCache
     }
     
     @Override
-    public ItemShippingTimeTransfer getTransfer(ItemShippingTime itemShippingTime) {
+    public ItemShippingTimeTransfer getTransfer(UserVisit userVisit, ItemShippingTime itemShippingTime) {
         var itemShippingTimeTransfer = get(itemShippingTime);
         
         if(itemShippingTimeTransfer == null) {

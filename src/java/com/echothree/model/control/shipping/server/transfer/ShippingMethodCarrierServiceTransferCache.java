@@ -34,7 +34,7 @@ public class ShippingMethodCarrierServiceTransferCache
         super();
     }
     
-    public ShippingMethodCarrierServiceTransfer getShippingMethodCarrierServiceTransfer(ShippingMethodCarrierService shippingMethodCarrierService) {
+    public ShippingMethodCarrierServiceTransfer getShippingMethodCarrierServiceTransfer(UserVisit userVisit, ShippingMethodCarrierService shippingMethodCarrierService) {
         var shippingMethodCarrierServiceTransfer = get(shippingMethodCarrierService);
         
         if(shippingMethodCarrierServiceTransfer == null) {

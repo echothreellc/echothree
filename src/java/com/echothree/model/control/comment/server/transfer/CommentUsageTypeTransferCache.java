@@ -31,7 +31,7 @@ public class CommentUsageTypeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public CommentUsageTypeTransfer getCommentUsageTypeTransfer(CommentUsageType commentUsageType) {
+    public CommentUsageTypeTransfer getCommentUsageTypeTransfer(UserVisit userVisit, CommentUsageType commentUsageType) {
         var commentUsageTypeTransfer = get(commentUsageType);
         
         if(commentUsageTypeTransfer == null) {

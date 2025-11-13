@@ -29,7 +29,7 @@ public class CustomerTypeDescriptionTransferCache
         super(customerControl);
     }
     
-    public CustomerTypeDescriptionTransfer getCustomerTypeDescriptionTransfer(CustomerTypeDescription customerTypeDescription) {
+    public CustomerTypeDescriptionTransfer getCustomerTypeDescriptionTransfer(UserVisit userVisit, CustomerTypeDescription customerTypeDescription) {
         var customerTypeDescriptionTransfer = get(customerTypeDescription);
         
         if(customerTypeDescriptionTransfer == null) {

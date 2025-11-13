@@ -43,7 +43,7 @@ public class VendorTypeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public VendorTypeTransfer getVendorTypeTransfer(VendorType vendorType) {
+    public VendorTypeTransfer getVendorTypeTransfer(UserVisit userVisit, VendorType vendorType) {
         var vendorTypeTransfer = get(vendorType);
         
         if(vendorTypeTransfer == null) {

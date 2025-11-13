@@ -31,7 +31,7 @@ public class SelectorTypeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public SelectorTypeTransfer getSelectorTypeTransfer(SelectorType selectorType) {
+    public SelectorTypeTransfer getSelectorTypeTransfer(UserVisit userVisit, SelectorType selectorType) {
         var selectorTypeTransfer = get(selectorType);
         
         if(selectorTypeTransfer == null) {

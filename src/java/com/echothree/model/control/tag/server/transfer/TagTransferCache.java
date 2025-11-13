@@ -42,7 +42,7 @@ public class TagTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public TagTransfer getTagTransfer(Tag tag) {
+    public TagTransfer getTagTransfer(UserVisit userVisit, Tag tag) {
         var tagTransfer = get(tag);
         
         if(tagTransfer == null) {

@@ -48,7 +48,7 @@ public class ComponentVendorTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
     
-    public ComponentVendorTransfer getComponentVendorTransfer(ComponentVendor componentVendor) {
+    public ComponentVendorTransfer getComponentVendorTransfer(UserVisit userVisit, ComponentVendor componentVendor) {
         var componentVendorTransfer = get(componentVendor);
         
         if(componentVendorTransfer == null) {

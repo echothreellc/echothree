@@ -31,7 +31,7 @@ public class ChainKindTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public ChainKindTransfer getChainKindTransfer(ChainKind chainKind) {
+    public ChainKindTransfer getChainKindTransfer(UserVisit userVisit, ChainKind chainKind) {
         var chainKindTransfer = get(chainKind);
         
         if(chainKindTransfer == null) {

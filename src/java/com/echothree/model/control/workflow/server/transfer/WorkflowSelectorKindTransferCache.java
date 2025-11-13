@@ -35,7 +35,7 @@ public class WorkflowSelectorKindTransferCache
         selectorControl = Session.getModelController(SelectorControl.class);
     }
     
-    public WorkflowSelectorKindTransfer getWorkflowSelectorKindTransfer(WorkflowSelectorKind workflowSelectorKind) {
+    public WorkflowSelectorKindTransfer getWorkflowSelectorKindTransfer(UserVisit userVisit, WorkflowSelectorKind workflowSelectorKind) {
         var workflowSelectorKindTransfer = get(workflowSelectorKind);
         
         if(workflowSelectorKindTransfer == null) {

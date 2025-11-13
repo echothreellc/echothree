@@ -38,7 +38,7 @@ public class ItemUnitCustomerTypeLimitTransferCache
     }
     
     @Override
-    public ItemUnitCustomerTypeLimitTransfer getTransfer(ItemUnitCustomerTypeLimit itemUnitCustomerTypeLimit) {
+    public ItemUnitCustomerTypeLimitTransfer getTransfer(UserVisit userVisit, ItemUnitCustomerTypeLimit itemUnitCustomerTypeLimit) {
         var itemUnitCustomerTypeLimitTransfer = get(itemUnitCustomerTypeLimit);
         
         if(itemUnitCustomerTypeLimitTransfer == null) {

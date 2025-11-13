@@ -29,7 +29,7 @@ public class BirthdayFormatDescriptionTransferCache
     }
 
     @Override
-    public BirthdayFormatDescriptionTransfer getTransfer(BirthdayFormatDescription birthdayFormatDescription) {
+    public BirthdayFormatDescriptionTransfer getTransfer(UserVisit userVisit, BirthdayFormatDescription birthdayFormatDescription) {
         var birthdayFormatDescriptionTransfer = get(birthdayFormatDescription);
         
         if(birthdayFormatDescriptionTransfer == null) {

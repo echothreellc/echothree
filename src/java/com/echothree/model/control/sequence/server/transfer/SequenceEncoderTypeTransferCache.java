@@ -29,7 +29,7 @@ public class SequenceEncoderTypeTransferCache
         super(sequenceControl);
     }
     
-    public SequenceEncoderTypeTransfer getSequenceEncoderTypeTransfer(SequenceEncoderType sequenceEncoderType) {
+    public SequenceEncoderTypeTransfer getSequenceEncoderTypeTransfer(UserVisit userVisit, SequenceEncoderType sequenceEncoderType) {
         var sequenceEncoderTypeTransfer = get(sequenceEncoderType);
         
         if(sequenceEncoderTypeTransfer == null) {

@@ -43,7 +43,7 @@ public class SecurityRoleGroupTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public SecurityRoleGroupTransfer getSecurityRoleGroupTransfer(SecurityRoleGroup securityRoleGroup) {
+    public SecurityRoleGroupTransfer getSecurityRoleGroupTransfer(UserVisit userVisit, SecurityRoleGroup securityRoleGroup) {
         var securityRoleGroupTransfer = get(securityRoleGroup);
 
         if(securityRoleGroupTransfer == null) {

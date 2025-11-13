@@ -34,7 +34,7 @@ public class CommandMessageTranslationTransferCache
         super();
     }
     
-    public CommandMessageTranslationTransfer getCommandMessageTranslationTransfer(CommandMessageTranslation commandMessageTranslation) {
+    public CommandMessageTranslationTransfer getCommandMessageTranslationTransfer(UserVisit userVisit, CommandMessageTranslation commandMessageTranslation) {
         var commandMessageTranslationTransfer = get(commandMessageTranslation);
         
         if(commandMessageTranslationTransfer == null) {

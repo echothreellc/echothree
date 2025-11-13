@@ -31,7 +31,7 @@ public class ReturnReasonTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public ReturnReasonTransfer getReturnReasonTransfer(ReturnReason returnReason) {
+    public ReturnReasonTransfer getReturnReasonTransfer(UserVisit userVisit, ReturnReason returnReason) {
         var returnReasonTransfer = get(returnReason);
         
         if(returnReasonTransfer == null) {

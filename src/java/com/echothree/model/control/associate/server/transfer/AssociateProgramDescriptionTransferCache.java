@@ -30,7 +30,7 @@ public class AssociateProgramDescriptionTransferCache
     }
     
     @Override
-    public AssociateProgramDescriptionTransfer getTransfer(AssociateProgramDescription associateProgramDescription) {
+    public AssociateProgramDescriptionTransfer getTransfer(UserVisit userVisit, AssociateProgramDescription associateProgramDescription) {
         var associateProgramDescriptionTransfer = get(associateProgramDescription);
         
         if(associateProgramDescriptionTransfer == null) {

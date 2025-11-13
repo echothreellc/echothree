@@ -36,7 +36,7 @@ public class CommandTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public CommandTransfer getCommandTransfer(Command command) {
+    public CommandTransfer getCommandTransfer(UserVisit userVisit, Command command) {
         var commandTransfer = get(command);
         
         if(commandTransfer == null) {

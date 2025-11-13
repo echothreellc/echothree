@@ -29,7 +29,7 @@ public class UserLoginPasswordEncoderTypeTransferCache
         super(userControl);
     }
     
-    public UserLoginPasswordEncoderTypeTransfer getUserLoginPasswordEncoderTypeTransfer(UserLoginPasswordEncoderType userLoginPasswordEncoderType) {
+    public UserLoginPasswordEncoderTypeTransfer getUserLoginPasswordEncoderTypeTransfer(UserVisit userVisit, UserLoginPasswordEncoderType userLoginPasswordEncoderType) {
         var userLoginPasswordEncoderTypeTransfer = get(userLoginPasswordEncoderType);
         
         if(userLoginPasswordEncoderTypeTransfer == null) {

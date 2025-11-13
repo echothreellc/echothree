@@ -37,7 +37,7 @@ public class MoodTransferCache
     }
 
     @Override
-    public MoodTransfer getTransfer(Mood mood) {
+    public MoodTransfer getTransfer(UserVisit userVisit, Mood mood) {
         var moodTransfer = get(mood);
         
         if(moodTransfer == null) {

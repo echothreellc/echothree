@@ -35,7 +35,7 @@ public class IconTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public IconTransfer getIconTransfer(Icon icon) {
+    public IconTransfer getIconTransfer(UserVisit userVisit, Icon icon) {
         var iconTransfer = get(icon);
         
         if(iconTransfer == null) {

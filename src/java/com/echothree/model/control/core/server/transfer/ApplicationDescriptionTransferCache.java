@@ -32,7 +32,7 @@ public class ApplicationDescriptionTransferCache
         super();
     }
     
-    public ApplicationDescriptionTransfer getApplicationDescriptionTransfer(ApplicationDescription applicationDescription) {
+    public ApplicationDescriptionTransfer getApplicationDescriptionTransfer(UserVisit userVisit, ApplicationDescription applicationDescription) {
         var applicationDescriptionTransfer = get(applicationDescription);
         
         if(applicationDescriptionTransfer == null) {

@@ -36,7 +36,7 @@ public class LocationVolumeTransferCache
         uomControl = Session.getModelController(UomControl.class);
     }
     
-    public LocationVolumeTransfer getLocationVolumeTransfer(LocationVolume locationVolume) {
+    public LocationVolumeTransfer getLocationVolumeTransfer(UserVisit userVisit, LocationVolume locationVolume) {
         var locationVolumeTransfer = get(locationVolume);
         
         if(locationVolumeTransfer == null) {

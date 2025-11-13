@@ -36,7 +36,7 @@ public class AssociatePartyContactMechanismTransferCache
     }
     
     @Override
-    public AssociatePartyContactMechanismTransfer getTransfer(AssociatePartyContactMechanism associatePartyContactMechanism) {
+    public AssociatePartyContactMechanismTransfer getTransfer(UserVisit userVisit, AssociatePartyContactMechanism associatePartyContactMechanism) {
         var associatePartyContactMechanismTransfer = get(associatePartyContactMechanism);
         
         if(associatePartyContactMechanismTransfer == null) {

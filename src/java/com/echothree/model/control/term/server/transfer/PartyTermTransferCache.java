@@ -35,7 +35,7 @@ public class PartyTermTransferCache
         partyControl = Session.getModelController(PartyControl.class);
     }
     
-    public PartyTermTransfer getPartyTermTransfer(PartyTerm partyTerm) {
+    public PartyTermTransfer getPartyTermTransfer(UserVisit userVisit, PartyTerm partyTerm) {
         var partyTermTransfer = get(partyTerm);
         
         if(partyTermTransfer == null) {

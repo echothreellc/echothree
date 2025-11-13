@@ -30,7 +30,7 @@ public class ChainActionTypeUseTransferCache
         super(chainControl);
     }
     
-    public ChainActionTypeUseTransfer getChainActionTypeUseTransfer(ChainActionTypeUse chainActionTypeUse) {
+    public ChainActionTypeUseTransfer getChainActionTypeUseTransfer(UserVisit userVisit, ChainActionTypeUse chainActionTypeUse) {
         var chainActionTypeUseTransfer = get(chainActionTypeUse);
         
         if(chainActionTypeUseTransfer == null) {

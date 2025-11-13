@@ -29,7 +29,7 @@ public class TermTypeTransferCache
         super(termControl);
     }
     
-    public TermTypeTransfer getTermTypeTransfer(TermType termType) {
+    public TermTypeTransfer getTermTypeTransfer(UserVisit userVisit, TermType termType) {
         var termTypeTransfer = get(termType);
         
         if(termTypeTransfer == null) {

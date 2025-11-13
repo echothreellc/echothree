@@ -47,7 +47,7 @@ public class DocumentTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public DocumentTransfer getDocumentTransfer(Document document) {
+    public DocumentTransfer getDocumentTransfer(UserVisit userVisit, Document document) {
         var documentTransfer = get(document);
         
         if(documentTransfer == null) {

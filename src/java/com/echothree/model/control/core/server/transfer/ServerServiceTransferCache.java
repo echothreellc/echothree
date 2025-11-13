@@ -32,7 +32,7 @@ public class ServerServiceTransferCache
         super();
     }
     
-    public ServerServiceTransfer getServerServiceTransfer(ServerService serverService) {
+    public ServerServiceTransfer getServerServiceTransfer(UserVisit userVisit, ServerService serverService) {
         var serverServiceTransfer = get(serverService);
         
         if(serverServiceTransfer == null) {

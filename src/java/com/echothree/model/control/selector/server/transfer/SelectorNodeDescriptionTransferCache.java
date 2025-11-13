@@ -29,7 +29,7 @@ public class SelectorNodeDescriptionTransferCache
         super(selectorControl);
     }
     
-    public SelectorNodeDescriptionTransfer getSelectorNodeDescriptionTransfer(SelectorNodeDescription selectorNodeDescription) {
+    public SelectorNodeDescriptionTransfer getSelectorNodeDescriptionTransfer(UserVisit userVisit, SelectorNodeDescription selectorNodeDescription) {
         var selectorNodeDescriptionTransfer = get(selectorNodeDescription);
         
         if(selectorNodeDescriptionTransfer == null) {

@@ -31,7 +31,7 @@ public class TerminationReasonTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public TerminationReasonTransfer getTerminationReasonTransfer(TerminationReason terminationReason) {
+    public TerminationReasonTransfer getTerminationReasonTransfer(UserVisit userVisit, TerminationReason terminationReason) {
         var terminationReasonTransfer = get(terminationReason);
         
         if(terminationReasonTransfer == null) {

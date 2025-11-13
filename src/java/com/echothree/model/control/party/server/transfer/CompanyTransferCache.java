@@ -80,12 +80,12 @@ public class CompanyTransferCache
         hasInvoiceLimits = session.hasLimit(InvoiceFactory.class);
     }
     
-    public CompanyTransfer getTransfer(PartyCompany partyCompany) {
+    public CompanyTransfer getTransfer(UserVisit userVisit, PartyCompany partyCompany) {
         return getTransfer(partyCompany.getParty());
     }
 
     @Override
-    public CompanyTransfer getTransfer(Party party) {
+    public CompanyTransfer getTransfer(UserVisit userVisit, Party party) {
         var companyTransfer = get(party);
         
         if(companyTransfer == null) {

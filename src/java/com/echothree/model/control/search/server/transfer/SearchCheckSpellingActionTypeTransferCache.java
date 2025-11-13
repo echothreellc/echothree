@@ -37,7 +37,7 @@ public class SearchCheckSpellingActionTypeTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public SearchCheckSpellingActionTypeTransfer getSearchCheckSpellingActionTypeTransfer(SearchCheckSpellingActionType searchCheckSpellingActionType) {
+    public SearchCheckSpellingActionTypeTransfer getSearchCheckSpellingActionTypeTransfer(UserVisit userVisit, SearchCheckSpellingActionType searchCheckSpellingActionType) {
         var searchCheckSpellingActionTypeTransfer = get(searchCheckSpellingActionType);
 
         if(searchCheckSpellingActionTypeTransfer == null) {

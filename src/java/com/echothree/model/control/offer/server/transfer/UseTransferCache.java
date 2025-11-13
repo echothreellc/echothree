@@ -36,7 +36,7 @@ public class UseTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public UseTransfer getUseTransfer(Use use) {
+    public UseTransfer getUseTransfer(UserVisit userVisit, Use use) {
         var useTransfer = get(use);
         
         if(useTransfer == null) {

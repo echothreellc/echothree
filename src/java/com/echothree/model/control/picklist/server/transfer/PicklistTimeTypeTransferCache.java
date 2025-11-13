@@ -31,7 +31,7 @@ public class PicklistTimeTypeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public PicklistTimeTypeTransfer getPicklistTimeTypeTransfer(PicklistTimeType picklistTimeType) {
+    public PicklistTimeTypeTransfer getPicklistTimeTypeTransfer(UserVisit userVisit, PicklistTimeType picklistTimeType) {
         var picklistTimeTypeTransfer = get(picklistTimeType);
         
         if(picklistTimeTypeTransfer == null) {

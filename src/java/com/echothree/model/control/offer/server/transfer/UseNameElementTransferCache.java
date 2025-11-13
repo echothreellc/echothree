@@ -34,7 +34,7 @@ public class UseNameElementTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public UseNameElementTransfer getUseNameElementTransfer(UseNameElement useNameElement) {
+    public UseNameElementTransfer getUseNameElementTransfer(UserVisit userVisit, UseNameElement useNameElement) {
         var useNameElementTransfer = get(useNameElement);
         
         if(useNameElementTransfer == null) {

@@ -35,7 +35,7 @@ public class TransactionTimeTypeTransferCache
     }
 
     @Override
-    public TransactionTimeTypeTransfer getTransfer(TransactionTimeType transactionTimeType) {
+    public TransactionTimeTypeTransfer getTransfer(UserVisit userVisit, TransactionTimeType transactionTimeType) {
         var transactionTimeTypeTransfer = get(transactionTimeType);
         
         if(transactionTimeTypeTransfer == null) {

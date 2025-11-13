@@ -50,7 +50,7 @@ public class PrinterGroupTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public PrinterGroupTransfer getPrinterGroupTransfer(PrinterGroup printerGroup) {
+    public PrinterGroupTransfer getPrinterGroupTransfer(UserVisit userVisit, PrinterGroup printerGroup) {
         var printerGroupTransfer = get(printerGroup);
         
         if(printerGroupTransfer == null) {

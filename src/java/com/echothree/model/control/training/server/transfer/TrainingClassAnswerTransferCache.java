@@ -31,7 +31,7 @@ public class TrainingClassAnswerTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public TrainingClassAnswerTransfer getTrainingClassAnswerTransfer(TrainingClassAnswer trainingClassAnswer) {
+    public TrainingClassAnswerTransfer getTrainingClassAnswerTransfer(UserVisit userVisit, TrainingClassAnswer trainingClassAnswer) {
         var trainingClassAnswerTransfer = get(trainingClassAnswer);
         
         if(trainingClassAnswerTransfer == null) {

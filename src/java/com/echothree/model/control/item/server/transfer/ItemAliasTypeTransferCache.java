@@ -32,7 +32,7 @@ public class ItemAliasTypeTransferCache
     }
     
     @Override
-    public ItemAliasTypeTransfer getTransfer(ItemAliasType itemAliasType) {
+    public ItemAliasTypeTransfer getTransfer(UserVisit userVisit, ItemAliasType itemAliasType) {
         var itemAliasTypeTransfer = get(itemAliasType);
         
         if(itemAliasTypeTransfer == null) {

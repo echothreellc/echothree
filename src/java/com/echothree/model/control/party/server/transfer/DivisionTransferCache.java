@@ -62,12 +62,12 @@ public class DivisionTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public DivisionTransfer getTransfer(PartyDivision partyDivision) {
+    public DivisionTransfer getTransfer(UserVisit userVisit, PartyDivision partyDivision) {
         return getTransfer(partyDivision.getParty());
     }
 
     @Override
-    public DivisionTransfer getTransfer(Party party) {
+    public DivisionTransfer getTransfer(UserVisit userVisit, Party party) {
         var divisionTransfer = get(party);
         
         if(divisionTransfer == null) {

@@ -35,7 +35,7 @@ public class MessageBlobTransferCache
         super(messageControl);
     }
     
-    public MessageBlobTransfer getMessageBlobTransfer(MessageBlob messageBlob) {
+    public MessageBlobTransfer getMessageBlobTransfer(UserVisit userVisit, MessageBlob messageBlob) {
         var messageBlobTransfer = get(messageBlob);
         
         if(messageBlobTransfer == null) {

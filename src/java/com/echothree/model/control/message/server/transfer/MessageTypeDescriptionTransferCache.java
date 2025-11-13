@@ -29,7 +29,7 @@ public class MessageTypeDescriptionTransferCache
         super(messageControl);
     }
     
-    public MessageTypeDescriptionTransfer getMessageTypeDescriptionTransfer(MessageTypeDescription messageTypeDescription) {
+    public MessageTypeDescriptionTransfer getMessageTypeDescriptionTransfer(UserVisit userVisit, MessageTypeDescription messageTypeDescription) {
         var messageTypeDescriptionTransfer = get(messageTypeDescription);
         
         if(messageTypeDescriptionTransfer == null) {

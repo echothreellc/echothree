@@ -47,7 +47,7 @@ public class ShippingMethodTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public ShippingMethodTransfer getShippingMethodTransfer(ShippingMethod shippingMethod) {
+    public ShippingMethodTransfer getShippingMethodTransfer(UserVisit userVisit, ShippingMethod shippingMethod) {
         var shippingMethodTransfer = get(shippingMethod);
 
         if(shippingMethodTransfer == null) {

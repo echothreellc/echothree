@@ -32,7 +32,7 @@ public class AllocationPriorityTransferCache
     }
     
     @Override
-    public AllocationPriorityTransfer getTransfer(AllocationPriority allocationPriority) {
+    public AllocationPriorityTransfer getTransfer(UserVisit userVisit, AllocationPriority allocationPriority) {
         var allocationPriorityTransfer = get(allocationPriority);
         
         if(allocationPriorityTransfer == null) {

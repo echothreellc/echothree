@@ -35,7 +35,7 @@ public class PartyAliasTransferCache
     }
 
     @Override
-    public PartyAliasTransfer getTransfer(PartyAlias partyAlias) {
+    public PartyAliasTransfer getTransfer(UserVisit userVisit, PartyAlias partyAlias) {
         var partyAliasTransfer = get(partyAlias);
         
         if(partyAliasTransfer == null) {

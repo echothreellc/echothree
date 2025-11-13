@@ -34,7 +34,7 @@ public class EditorTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public EditorTransfer getEditorTransfer(Editor editor) {
+    public EditorTransfer getEditorTransfer(UserVisit userVisit, Editor editor) {
         var editorTransfer = get(editor);
 
         if(editorTransfer == null) {

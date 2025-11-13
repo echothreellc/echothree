@@ -33,7 +33,7 @@ public class EntityDateDefaultTransferCache
         super();
     }
     
-    public EntityDateDefaultTransfer getEntityDateDefaultTransfer(EntityDateDefault entityDateDefault) {
+    public EntityDateDefaultTransfer getEntityDateDefaultTransfer(UserVisit userVisit, EntityDateDefault entityDateDefault) {
         var entityDateDefaultTransfer = get(entityDateDefault);
         
         if(entityDateDefaultTransfer == null) {

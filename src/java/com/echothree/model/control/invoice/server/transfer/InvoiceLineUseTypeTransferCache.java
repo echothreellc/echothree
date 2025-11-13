@@ -29,7 +29,7 @@ public class InvoiceLineUseTypeTransferCache
         super(invoiceControl);
     }
     
-    public InvoiceLineUseTypeTransfer getInvoiceLineUseTypeTransfer(InvoiceLineUseType invoiceLineUseType) {
+    public InvoiceLineUseTypeTransfer getInvoiceLineUseTypeTransfer(UserVisit userVisit, InvoiceLineUseType invoiceLineUseType) {
         var invoiceLineUseTypeTransfer = get(invoiceLineUseType);
         
         if(invoiceLineUseTypeTransfer == null) {

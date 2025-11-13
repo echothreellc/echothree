@@ -52,7 +52,7 @@ public class ForumMessageTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public ForumMessageTransfer getForumMessageTransfer(ForumMessage forumMessage) {
+    public ForumMessageTransfer getForumMessageTransfer(UserVisit userVisit, ForumMessage forumMessage) {
         var forumMessageTransfer = get(forumMessage);
 
         if(forumMessageTransfer == null) {

@@ -32,7 +32,7 @@ public class EntityMultipleListItemDefaultTransferCache
         super();
     }
     
-    public EntityMultipleListItemDefaultTransfer getEntityMultipleListItemDefaultTransfer(EntityMultipleListItemDefault entityMultipleListItemDefault) {
+    public EntityMultipleListItemDefaultTransfer getEntityMultipleListItemDefaultTransfer(UserVisit userVisit, EntityMultipleListItemDefault entityMultipleListItemDefault) {
         var entityMultipleListItemDefaultTransfer = get(entityMultipleListItemDefault);
         
         if(entityMultipleListItemDefaultTransfer == null) {

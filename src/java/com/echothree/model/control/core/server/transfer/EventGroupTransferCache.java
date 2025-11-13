@@ -37,7 +37,7 @@ public class EventGroupTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public EventGroupTransfer getEventGroupTransfer(EventGroup eventGroup) {
+    public EventGroupTransfer getEventGroupTransfer(UserVisit userVisit, EventGroup eventGroup) {
         var eventGroupTransfer = get(eventGroup);
         
         if(eventGroupTransfer == null) {

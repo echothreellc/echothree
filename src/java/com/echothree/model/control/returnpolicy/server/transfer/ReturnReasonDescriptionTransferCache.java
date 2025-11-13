@@ -29,7 +29,7 @@ public class ReturnReasonDescriptionTransferCache
         super(returnPolicyControl);
     }
     
-    public ReturnReasonDescriptionTransfer getReturnReasonDescriptionTransfer(ReturnReasonDescription returnReasonDescription) {
+    public ReturnReasonDescriptionTransfer getReturnReasonDescriptionTransfer(UserVisit userVisit, ReturnReasonDescription returnReasonDescription) {
         var returnReasonDescriptionTransfer = get(returnReasonDescription);
         
         if(returnReasonDescriptionTransfer == null) {

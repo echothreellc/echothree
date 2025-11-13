@@ -29,7 +29,7 @@ public class GeoCodeRelationshipTransferCache
         super(geoControl);
     }
     
-    public GeoCodeRelationshipTransfer getGeoCodeRelationshipTransfer(GeoCodeRelationship geoCodeRelationship) {
+    public GeoCodeRelationshipTransfer getGeoCodeRelationshipTransfer(UserVisit userVisit, GeoCodeRelationship geoCodeRelationship) {
         var geoCodeRelationshipTransfer = get(geoCodeRelationship);
         
         if(geoCodeRelationshipTransfer == null) {

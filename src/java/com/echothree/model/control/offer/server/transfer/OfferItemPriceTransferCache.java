@@ -170,7 +170,7 @@ public class OfferItemPriceTransferCache
         return new ListWrapper<>(historyTransfers);
     }
     
-    public OfferItemPriceTransfer getTransfer(OfferItemPrice offerItemPrice) {
+    public OfferItemPriceTransfer getTransfer(UserVisit userVisit, OfferItemPrice offerItemPrice) {
         var offerItemPriceTransfer = get(offerItemPrice);
         
         if(offerItemPriceTransfer == null) {

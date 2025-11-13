@@ -33,7 +33,7 @@ public class RatingTransferCache
         super(ratingControl);
     }
     
-    public RatingTransfer getRatingTransfer(Rating rating) {
+    public RatingTransfer getRatingTransfer(UserVisit userVisit, Rating rating) {
         var ratingTransfer = get(rating);
         
         if(ratingTransfer == null) {

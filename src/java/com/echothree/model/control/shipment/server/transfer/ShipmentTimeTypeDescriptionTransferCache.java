@@ -33,7 +33,7 @@ public class ShipmentTimeTypeDescriptionTransferCache
     }
 
     @Override
-    public ShipmentTimeTypeDescriptionTransfer getTransfer(ShipmentTimeTypeDescription shipmentTimeTypeDescription) {
+    public ShipmentTimeTypeDescriptionTransfer getTransfer(UserVisit userVisit, ShipmentTimeTypeDescription shipmentTimeTypeDescription) {
         var shipmentTimeTypeDescriptionTransfer = get(shipmentTimeTypeDescription);
         
         if(shipmentTimeTypeDescriptionTransfer == null) {

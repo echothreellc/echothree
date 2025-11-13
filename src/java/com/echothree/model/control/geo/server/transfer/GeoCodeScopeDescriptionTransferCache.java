@@ -29,7 +29,7 @@ public class GeoCodeScopeDescriptionTransferCache
         super(geoControl);
     }
     
-    public GeoCodeScopeDescriptionTransfer getGeoCodeScopeDescriptionTransfer(GeoCodeScopeDescription geoCodeScopeDescription) {
+    public GeoCodeScopeDescriptionTransfer getGeoCodeScopeDescriptionTransfer(UserVisit userVisit, GeoCodeScopeDescription geoCodeScopeDescription) {
         var geoCodeScopeDescriptionTransfer = get(geoCodeScopeDescription);
         
         if(geoCodeScopeDescriptionTransfer == null) {

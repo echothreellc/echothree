@@ -83,7 +83,7 @@ public class CurrencyTransferCache
     }
     
     @Override
-    public CurrencyTransfer getTransfer(Currency currency) {
+    public CurrencyTransfer getTransfer(UserVisit userVisit, Currency currency) {
         var currencyTransfer = get(currency);
         
         if(currencyTransfer == null) {

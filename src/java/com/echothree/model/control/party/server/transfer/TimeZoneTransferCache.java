@@ -59,7 +59,7 @@ public class TimeZoneTransferCache
     }
 
     @Override
-    public TimeZoneTransfer getTransfer(TimeZone timeZone) {
+    public TimeZoneTransfer getTransfer(UserVisit userVisit, TimeZone timeZone) {
         var timeZoneTransfer = get(timeZone);
         
         if(timeZoneTransfer == null) {

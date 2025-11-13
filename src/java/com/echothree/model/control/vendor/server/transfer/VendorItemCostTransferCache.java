@@ -42,7 +42,7 @@ public class VendorItemCostTransferCache
         uomControl = Session.getModelController(UomControl.class);
     }
     
-    public VendorItemCostTransfer getVendorItemCostTransfer(VendorItemCost vendorItemCost) {
+    public VendorItemCostTransfer getVendorItemCostTransfer(UserVisit userVisit, VendorItemCost vendorItemCost) {
         var vendorItemCostTransfer = get(vendorItemCost);
         
         if(vendorItemCostTransfer == null) {

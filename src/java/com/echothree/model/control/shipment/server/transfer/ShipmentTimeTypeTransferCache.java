@@ -35,7 +35,7 @@ public class ShipmentTimeTypeTransferCache
     }
 
     @Override
-    public ShipmentTimeTypeTransfer getTransfer(ShipmentTimeType shipmentTimeType) {
+    public ShipmentTimeTypeTransfer getTransfer(UserVisit userVisit, ShipmentTimeType shipmentTimeType) {
         var shipmentTimeTypeTransfer = get(shipmentTimeType);
         
         if(shipmentTimeTypeTransfer == null) {

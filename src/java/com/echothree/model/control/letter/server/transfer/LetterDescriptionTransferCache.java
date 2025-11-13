@@ -29,7 +29,7 @@ public class LetterDescriptionTransferCache
         super(letterControl);
     }
     
-    public LetterDescriptionTransfer getLetterDescriptionTransfer(LetterDescription letterDescription) {
+    public LetterDescriptionTransfer getLetterDescriptionTransfer(UserVisit userVisit, LetterDescription letterDescription) {
         var letterDescriptionTransfer = get(letterDescription);
         
         if(letterDescriptionTransfer == null) {

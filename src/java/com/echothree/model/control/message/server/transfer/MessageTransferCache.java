@@ -44,7 +44,7 @@ public class MessageTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public MessageTransfer getMessageTransfer(Message message) {
+    public MessageTransfer getMessageTransfer(UserVisit userVisit, Message message) {
         var messageTransfer = get(message);
         
         if(messageTransfer == null) {

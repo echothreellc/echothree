@@ -32,7 +32,7 @@ public class ServiceDescriptionTransferCache
         super();
     }
     
-    public ServiceDescriptionTransfer getServiceDescriptionTransfer(ServiceDescription serviceDescription) {
+    public ServiceDescriptionTransfer getServiceDescriptionTransfer(UserVisit userVisit, ServiceDescription serviceDescription) {
         var serviceDescriptionTransfer = get(serviceDescription);
         
         if(serviceDescriptionTransfer == null) {

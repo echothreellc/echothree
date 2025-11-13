@@ -34,7 +34,7 @@ public class OrderLineAdjustmentTypeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public OrderLineAdjustmentTypeTransfer getOrderLineAdjustmentTypeTransfer(OrderLineAdjustmentType orderLineAdjustmentType) {
+    public OrderLineAdjustmentTypeTransfer getOrderLineAdjustmentTypeTransfer(UserVisit userVisit, OrderLineAdjustmentType orderLineAdjustmentType) {
         var orderLineAdjustmentTypeTransfer = get(orderLineAdjustmentType);
         
         if(orderLineAdjustmentTypeTransfer == null) {

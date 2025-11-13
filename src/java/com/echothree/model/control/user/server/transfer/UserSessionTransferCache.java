@@ -35,7 +35,7 @@ public class UserSessionTransferCache
         partyControl = Session.getModelController(PartyControl.class);
     }
     
-    public UserSessionTransfer getUserSessionTransfer(UserSession userSession) {
+    public UserSessionTransfer getUserSessionTransfer(UserVisit userVisit, UserSession userSession) {
         var userSessionTransfer = get(userSession);
         
         if(userSessionTransfer == null) {

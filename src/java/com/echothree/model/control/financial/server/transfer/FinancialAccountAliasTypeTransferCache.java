@@ -31,7 +31,7 @@ public class FinancialAccountAliasTypeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public FinancialAccountAliasTypeTransfer getFinancialAccountAliasTypeTransfer(FinancialAccountAliasType financialAccountAliasType) {
+    public FinancialAccountAliasTypeTransfer getFinancialAccountAliasTypeTransfer(UserVisit userVisit, FinancialAccountAliasType financialAccountAliasType) {
         var financialAccountAliasTypeTransfer = get(financialAccountAliasType);
         
         if(financialAccountAliasTypeTransfer == null) {

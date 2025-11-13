@@ -122,7 +122,7 @@ public class EntityTypeTransferCache
         }
     }
     
-    public EntityTypeTransfer getEntityTypeTransfer(EntityType entityType) {
+    public EntityTypeTransfer getEntityTypeTransfer(UserVisit userVisit, EntityType entityType) {
         var entityTypeTransfer = get(entityType);
         
         if(entityTypeTransfer == null) {

@@ -31,7 +31,7 @@ public class InvoiceAliasTypeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public InvoiceAliasTypeTransfer getInvoiceAliasTypeTransfer(InvoiceAliasType invoiceAliasType) {
+    public InvoiceAliasTypeTransfer getInvoiceAliasTypeTransfer(UserVisit userVisit, InvoiceAliasType invoiceAliasType) {
         var invoiceAliasTypeTransfer = get(invoiceAliasType);
         
         if(invoiceAliasTypeTransfer == null) {

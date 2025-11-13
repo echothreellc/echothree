@@ -67,7 +67,7 @@ public class OfferItemTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
     
-    public OfferItemTransfer getOfferItemTransfer(OfferItem offerItem) {
+    public OfferItemTransfer getOfferItemTransfer(UserVisit userVisit, OfferItem offerItem) {
         var offerItemTransfer = get(offerItem);
         
         if(offerItemTransfer == null) {

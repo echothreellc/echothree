@@ -29,7 +29,7 @@ public class ClubDescriptionTransferCache
         super(clubControl);
     }
     
-    public ClubDescriptionTransfer getClubDescriptionTransfer(ClubDescription clubDescription) {
+    public ClubDescriptionTransfer getClubDescriptionTransfer(UserVisit userVisit, ClubDescription clubDescription) {
         var clubDescriptionTransfer = get(clubDescription);
         
         if(clubDescriptionTransfer == null) {

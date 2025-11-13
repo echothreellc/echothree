@@ -29,7 +29,7 @@ public class PostalAddressFormatDescriptionTransferCache
         super(contactControl);
     }
     
-    public PostalAddressFormatDescriptionTransfer getPostalAddressFormatDescriptionTransfer(PostalAddressFormatDescription postalAddressFormatDescription) {
+    public PostalAddressFormatDescriptionTransfer getPostalAddressFormatDescriptionTransfer(UserVisit userVisit, PostalAddressFormatDescription postalAddressFormatDescription) {
         var postalAddressFormatDescriptionTransfer = get(postalAddressFormatDescription);
         
         if(postalAddressFormatDescriptionTransfer == null) {

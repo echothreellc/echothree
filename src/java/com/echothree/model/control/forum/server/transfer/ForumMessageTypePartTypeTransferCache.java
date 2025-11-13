@@ -29,7 +29,7 @@ public class ForumMessageTypePartTypeTransferCache
         super(forumControl);
     }
     
-    public ForumMessageTypePartTypeTransfer getForumMessageTypePartTypeTransfer(ForumMessageTypePartType forumMessageTypePartType) {
+    public ForumMessageTypePartTypeTransfer getForumMessageTypePartTypeTransfer(UserVisit userVisit, ForumMessageTypePartType forumMessageTypePartType) {
         var forumMessageTypePartTypeTransfer = get(forumMessageTypePartType);
         
         if(forumMessageTypePartTypeTransfer == null) {

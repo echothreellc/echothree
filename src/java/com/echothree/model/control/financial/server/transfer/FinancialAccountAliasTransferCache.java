@@ -29,7 +29,7 @@ public class FinancialAccountAliasTransferCache
         super(financialControl);
     }
     
-    public FinancialAccountAliasTransfer getFinancialAccountAliasTransfer(FinancialAccountAlias financialAccountAlias) {
+    public FinancialAccountAliasTransfer getFinancialAccountAliasTransfer(UserVisit userVisit, FinancialAccountAlias financialAccountAlias) {
         var financialAccountAliasTransfer = get(financialAccountAlias);
         
         if(financialAccountAliasTransfer == null) {

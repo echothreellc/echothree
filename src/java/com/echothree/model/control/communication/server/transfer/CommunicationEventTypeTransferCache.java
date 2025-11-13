@@ -29,7 +29,7 @@ public class CommunicationEventTypeTransferCache
         super(communicationControl);
     }
     
-    public CommunicationEventTypeTransfer getCommunicationEventTypeTransfer(CommunicationEventType communicationEventType) {
+    public CommunicationEventTypeTransfer getCommunicationEventTypeTransfer(UserVisit userVisit, CommunicationEventType communicationEventType) {
         var communicationEventTypeTransfer = get(communicationEventType);
         
         if(communicationEventTypeTransfer == null) {

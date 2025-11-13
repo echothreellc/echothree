@@ -35,7 +35,7 @@ public class GeoCodeDateTimeFormatTransferCache
         partyControl = Session.getModelController(PartyControl.class);
     }
     
-    public GeoCodeDateTimeFormatTransfer getGeoCodeDateTimeFormatTransfer(GeoCodeDateTimeFormat geoCodeDateTimeFormat) {
+    public GeoCodeDateTimeFormatTransfer getGeoCodeDateTimeFormatTransfer(UserVisit userVisit, GeoCodeDateTimeFormat geoCodeDateTimeFormat) {
         var geoCodeDateTimeFormatTransfer = get(geoCodeDateTimeFormat);
         
         if(geoCodeDateTimeFormatTransfer == null) {

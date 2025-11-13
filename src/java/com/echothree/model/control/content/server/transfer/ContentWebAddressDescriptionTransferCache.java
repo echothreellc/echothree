@@ -29,7 +29,7 @@ public class ContentWebAddressDescriptionTransferCache
         super(contentControl);
     }
     
-    public ContentWebAddressDescriptionTransfer getContentWebAddressDescriptionTransfer(ContentWebAddressDescription contentWebAddressDescription) {
+    public ContentWebAddressDescriptionTransfer getContentWebAddressDescriptionTransfer(UserVisit userVisit, ContentWebAddressDescription contentWebAddressDescription) {
         var contentWebAddressDescriptionTransfer = get(contentWebAddressDescription);
         
         if(contentWebAddressDescriptionTransfer == null) {

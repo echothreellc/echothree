@@ -31,7 +31,7 @@ public class ContactListFrequencyTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public ContactListFrequencyTransfer getContactListFrequencyTransfer(ContactListFrequency contactListFrequency) {
+    public ContactListFrequencyTransfer getContactListFrequencyTransfer(UserVisit userVisit, ContactListFrequency contactListFrequency) {
         var contactListFrequencyTransfer = get(contactListFrequency);
         
         if(contactListFrequencyTransfer == null) {

@@ -31,7 +31,7 @@ public class PersonalTitleTransferCache
     }
 
     @Override
-    public PersonalTitleTransfer getTransfer(PersonalTitle personalTitle) {
+    public PersonalTitleTransfer getTransfer(UserVisit userVisit, PersonalTitle personalTitle) {
         var personalTitleTransfer = get(personalTitle);
         
         if(personalTitleTransfer == null) {

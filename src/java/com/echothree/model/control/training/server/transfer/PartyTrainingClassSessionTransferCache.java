@@ -45,7 +45,7 @@ public class PartyTrainingClassSessionTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public PartyTrainingClassSessionTransfer getPartyTrainingClassSessionTransfer(PartyTrainingClassSession partyTrainingClassSession) {
+    public PartyTrainingClassSessionTransfer getPartyTrainingClassSessionTransfer(UserVisit userVisit, PartyTrainingClassSession partyTrainingClassSession) {
         var partyTrainingClassSessionTransfer = get(partyTrainingClassSession);
         
         if(partyTrainingClassSessionTransfer == null) {

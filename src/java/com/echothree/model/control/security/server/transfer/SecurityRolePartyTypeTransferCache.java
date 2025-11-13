@@ -35,7 +35,7 @@ public class SecurityRolePartyTypeTransferCache
         super(securityControl);
     }
     
-    public SecurityRolePartyTypeTransfer getSecurityRolePartyTypeTransfer(SecurityRolePartyType securityRolePartyType) {
+    public SecurityRolePartyTypeTransfer getSecurityRolePartyTypeTransfer(UserVisit userVisit, SecurityRolePartyType securityRolePartyType) {
         var securityRolePartyTypeTransfer = get(securityRolePartyType);
         
         if(securityRolePartyTypeTransfer == null) {

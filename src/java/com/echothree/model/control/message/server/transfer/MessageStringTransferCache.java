@@ -35,7 +35,7 @@ public class MessageStringTransferCache
         partyControl = Session.getModelController(PartyControl.class);
     }
     
-    public MessageStringTransfer getMessageStringTransfer(MessageString messageString) {
+    public MessageStringTransfer getMessageStringTransfer(UserVisit userVisit, MessageString messageString) {
         var messageStringTransfer = get(messageString);
         
         if(messageStringTransfer == null) {

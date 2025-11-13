@@ -34,7 +34,7 @@ public class OfferChainTypeTransferCache
         super();
     }
     
-    public OfferChainTypeTransfer getOfferChainTypeTransfer(OfferChainType offerChainType) {
+    public OfferChainTypeTransfer getOfferChainTypeTransfer(UserVisit userVisit, OfferChainType offerChainType) {
         var offerChainTypeTransfer = get(offerChainType);
         
         if(offerChainTypeTransfer == null) {

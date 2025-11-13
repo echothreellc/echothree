@@ -34,7 +34,7 @@ public class LotAliasTypeDescriptionTransferCache
     }
     
     @Override
-    public LotAliasTypeDescriptionTransfer getTransfer(LotAliasTypeDescription lotAliasTypeDescription) {
+    public LotAliasTypeDescriptionTransfer getTransfer(UserVisit userVisit, LotAliasTypeDescription lotAliasTypeDescription) {
         var lotAliasTypeDescriptionTransfer = get(lotAliasTypeDescription);
         
         if(lotAliasTypeDescriptionTransfer == null) {

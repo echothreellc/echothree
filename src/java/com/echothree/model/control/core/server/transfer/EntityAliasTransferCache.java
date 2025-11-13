@@ -34,7 +34,7 @@ public class EntityAliasTransferCache
         super();
     }
     
-    public EntityAliasTransfer getEntityAliasTransfer(EntityAlias entityAlias) {
+    public EntityAliasTransfer getEntityAliasTransfer(UserVisit userVisit, EntityAlias entityAlias) {
         var entityAliasTransfer = get(entityAlias);
         
         if(entityAliasTransfer == null) {

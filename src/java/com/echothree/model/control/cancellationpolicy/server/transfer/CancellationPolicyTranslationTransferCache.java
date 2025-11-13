@@ -33,7 +33,7 @@ public class CancellationPolicyTranslationTransferCache
         super(cancellationPolicyControl);
     }
     
-    public CancellationPolicyTranslationTransfer getCancellationPolicyTranslationTransfer(CancellationPolicyTranslation cancellationPolicyTranslation) {
+    public CancellationPolicyTranslationTransfer getCancellationPolicyTranslationTransfer(UserVisit userVisit, CancellationPolicyTranslation cancellationPolicyTranslation) {
         var cancellationPolicyTranslationTransfer = get(cancellationPolicyTranslation);
         
         if(cancellationPolicyTranslationTransfer == null) {

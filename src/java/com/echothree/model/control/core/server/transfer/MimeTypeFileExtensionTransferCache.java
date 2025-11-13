@@ -32,7 +32,7 @@ public class MimeTypeFileExtensionTransferCache
         super();
     }
     
-    public MimeTypeFileExtensionTransfer getMimeTypeFileExtensionTransfer(MimeTypeFileExtension mimeTypeFileExtension) {
+    public MimeTypeFileExtensionTransfer getMimeTypeFileExtensionTransfer(UserVisit userVisit, MimeTypeFileExtension mimeTypeFileExtension) {
         var mimeTypeFileExtensionTransfer = get(mimeTypeFileExtension);
         
         if(mimeTypeFileExtensionTransfer == null) {

@@ -33,7 +33,7 @@ public class QueuedEntityTransferCache
         super(queueControl);
     }
 
-    public QueuedEntityTransfer getQueuedEntityTransfer(QueuedEntity queuedEntity) {
+    public QueuedEntityTransfer getQueuedEntityTransfer(UserVisit userVisit, QueuedEntity queuedEntity) {
         var queuedEntityTransfer = get(queuedEntity);
 
         if(queuedEntityTransfer == null) {

@@ -29,7 +29,7 @@ public class IconUsageTransferCache
         super(iconControl);
     }
     
-    public IconUsageTransfer getIconUsageTransfer(IconUsage iconUsage) {
+    public IconUsageTransfer getIconUsageTransfer(UserVisit userVisit, IconUsage iconUsage) {
         var iconUsageTransfer = get(iconUsage);
         
         if(iconUsageTransfer == null) {

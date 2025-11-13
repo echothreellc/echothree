@@ -34,7 +34,7 @@ public class TextTransformationTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public TextTransformationTransfer getTextTransformationTransfer(TextTransformation textTransformation) {
+    public TextTransformationTransfer getTextTransformationTransfer(UserVisit userVisit, TextTransformation textTransformation) {
         var textTransformationTransfer = get(textTransformation);
 
         if(textTransformationTransfer == null) {

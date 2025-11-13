@@ -49,7 +49,7 @@ public class ContentCategoryItemTransferCache
         }
     }
     
-    public ContentCategoryItemTransfer getContentCategoryItemTransfer(ContentCategoryItem contentCategoryItem) {
+    public ContentCategoryItemTransfer getContentCategoryItemTransfer(UserVisit userVisit, ContentCategoryItem contentCategoryItem) {
         var contentCategoryItemTransfer = get(contentCategoryItem);
         
         if(contentCategoryItemTransfer == null) {

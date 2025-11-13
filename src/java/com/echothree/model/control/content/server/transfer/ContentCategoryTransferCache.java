@@ -79,7 +79,7 @@ public class ContentCategoryTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
     
-    public ContentCategoryTransfer getContentCategoryTransfer(ContentCategory contentCategory) {
+    public ContentCategoryTransfer getContentCategoryTransfer(UserVisit userVisit, ContentCategory contentCategory) {
         var contentCategoryTransfer = get(contentCategory);
         
         if(contentCategoryTransfer == null) {

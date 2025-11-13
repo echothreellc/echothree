@@ -29,7 +29,7 @@ public class LocationTypeDescriptionTransferCache
         super(warehouseControl);
     }
     
-    public LocationTypeDescriptionTransfer getLocationTypeDescriptionTransfer(LocationTypeDescription locationTypeDescription) {
+    public LocationTypeDescriptionTransfer getLocationTypeDescriptionTransfer(UserVisit userVisit, LocationTypeDescription locationTypeDescription) {
         var locationTypeDescriptionTransfer = get(locationTypeDescription);
         
         if(locationTypeDescriptionTransfer == null) {

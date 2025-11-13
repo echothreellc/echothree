@@ -54,7 +54,7 @@ public class WorkEffortTypeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public WorkEffortTypeTransfer getWorkEffortTypeTransfer(WorkEffortType workEffortType) {
+    public WorkEffortTypeTransfer getWorkEffortTypeTransfer(UserVisit userVisit, WorkEffortType workEffortType) {
         var workEffortTypeTransfer = get(workEffortType);
         
         if(workEffortTypeTransfer == null) {

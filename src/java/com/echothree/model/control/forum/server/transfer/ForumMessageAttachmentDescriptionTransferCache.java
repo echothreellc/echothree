@@ -29,7 +29,7 @@ public class ForumMessageAttachmentDescriptionTransferCache
         super(forumControl);
     }
     
-    public ForumMessageAttachmentDescriptionTransfer getForumMessageAttachmentDescriptionTransfer(ForumMessageAttachmentDescription forumMessageAttachmentDescription) {
+    public ForumMessageAttachmentDescriptionTransfer getForumMessageAttachmentDescriptionTransfer(UserVisit userVisit, ForumMessageAttachmentDescription forumMessageAttachmentDescription) {
         var forumMessageAttachmentDescriptionTransfer = get(forumMessageAttachmentDescription);
         
         if(forumMessageAttachmentDescriptionTransfer == null) {

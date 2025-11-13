@@ -40,7 +40,7 @@ public class ApplicationTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public ApplicationTransfer getApplicationTransfer(Application application) {
+    public ApplicationTransfer getApplicationTransfer(UserVisit userVisit, Application application) {
         var applicationTransfer = get(application);
 
         if(applicationTransfer == null) {

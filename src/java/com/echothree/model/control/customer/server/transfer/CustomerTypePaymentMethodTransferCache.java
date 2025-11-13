@@ -33,7 +33,7 @@ public class CustomerTypePaymentMethodTransferCache
         super(customerControl);
     }
     
-    public CustomerTypePaymentMethodTransfer getCustomerTypePaymentMethodTransfer(CustomerTypePaymentMethod customerTypePaymentMethod) {
+    public CustomerTypePaymentMethodTransfer getCustomerTypePaymentMethodTransfer(UserVisit userVisit, CustomerTypePaymentMethod customerTypePaymentMethod) {
         var customerTypePaymentMethodTransfer = get(customerTypePaymentMethod);
         
         if(customerTypePaymentMethodTransfer == null) {

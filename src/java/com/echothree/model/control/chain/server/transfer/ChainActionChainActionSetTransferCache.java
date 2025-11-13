@@ -34,7 +34,7 @@ public class ChainActionChainActionSetTransferCache
         super(chainControl);
     }
     
-    public ChainActionChainActionSetTransfer getChainActionChainActionSetTransfer(ChainActionChainActionSet chainActionChainActionSet) {
+    public ChainActionChainActionSetTransfer getChainActionChainActionSetTransfer(UserVisit userVisit, ChainActionChainActionSet chainActionChainActionSet) {
         var chainActionChainActionSetTransfer = get(chainActionChainActionSet);
         
         if(chainActionChainActionSetTransfer == null) {

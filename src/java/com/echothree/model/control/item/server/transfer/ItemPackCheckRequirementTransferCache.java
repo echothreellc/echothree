@@ -34,7 +34,7 @@ public class ItemPackCheckRequirementTransferCache
     }
     
     @Override
-    public ItemPackCheckRequirementTransfer getTransfer(ItemPackCheckRequirement itemPackCheckRequirement) {
+    public ItemPackCheckRequirementTransfer getTransfer(UserVisit userVisit, ItemPackCheckRequirement itemPackCheckRequirement) {
         var itemPackCheckRequirementTransfer = get(itemPackCheckRequirement);
         
         if(itemPackCheckRequirementTransfer == null) {

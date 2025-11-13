@@ -34,7 +34,7 @@ public class ServerTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public ServerTransfer getServerTransfer(Server server) {
+    public ServerTransfer getServerTransfer(UserVisit userVisit, Server server) {
         var serverTransfer = get(server);
 
         if(serverTransfer == null) {

@@ -50,7 +50,7 @@ public class ContentCollectionTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public ContentCollectionTransfer getContentCollectionTransfer(ContentCollection contentCollection) {
+    public ContentCollectionTransfer getContentCollectionTransfer(UserVisit userVisit, ContentCollection contentCollection) {
         var contentCollectionTransfer = get(contentCollection);
         
         if(contentCollectionTransfer == null) {

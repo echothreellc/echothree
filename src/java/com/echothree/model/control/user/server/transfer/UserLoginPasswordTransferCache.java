@@ -34,7 +34,7 @@ public class UserLoginPasswordTransferCache
         super(userControl);
     }
     
-    public UserLoginPasswordTransfer getUserLoginPasswordTransfer(UserLoginPassword userLoginPassword) {
+    public UserLoginPasswordTransfer getUserLoginPasswordTransfer(UserVisit userVisit, UserLoginPassword userLoginPassword) {
         var userLoginPasswordTransfer = get(userLoginPassword);
         
         if(userLoginPasswordTransfer == null) {

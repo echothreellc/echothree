@@ -37,7 +37,7 @@ public class BillingAccountRoleTransferCache
     }
 
     @Override
-    public BillingAccountRoleTransfer getTransfer(BillingAccountRole billingAccountRole) {
+    public BillingAccountRoleTransfer getTransfer(UserVisit userVisit, BillingAccountRole billingAccountRole) {
         var billingAccountRoleTransfer = get(billingAccountRole);
 
         if(billingAccountRoleTransfer == null) {

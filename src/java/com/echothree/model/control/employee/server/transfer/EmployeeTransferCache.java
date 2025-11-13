@@ -112,11 +112,11 @@ public class EmployeeTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public EmployeeTransfer getTransfer(PartyEmployee partyEmployee) {
+    public EmployeeTransfer getTransfer(UserVisit userVisit, PartyEmployee partyEmployee) {
         return getTransfer(partyEmployee.getParty());
     }
 
-    public EmployeeTransfer getTransfer(Party party) {
+    public EmployeeTransfer getTransfer(UserVisit userVisit, Party party) {
         var employeeTransfer = get(party);
 
         if(employeeTransfer == null) {

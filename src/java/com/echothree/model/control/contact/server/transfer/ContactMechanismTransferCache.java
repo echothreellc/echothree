@@ -44,7 +44,7 @@ public class ContactMechanismTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public ContactMechanismTransfer getContactMechanismTransfer(ContactMechanism contactMechanism) {
+    public ContactMechanismTransfer getContactMechanismTransfer(UserVisit userVisit, ContactMechanism contactMechanism) {
         var contactMechanismTransfer = get(contactMechanism);
         
         if(contactMechanismTransfer == null) {

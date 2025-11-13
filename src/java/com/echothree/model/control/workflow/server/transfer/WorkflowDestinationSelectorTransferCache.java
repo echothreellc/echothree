@@ -35,7 +35,7 @@ public class WorkflowDestinationSelectorTransferCache
         selectorControl = Session.getModelController(SelectorControl.class);
     }
     
-    public WorkflowDestinationSelectorTransfer getWorkflowDestinationSelectorTransfer(WorkflowDestinationSelector workflowDestinationSelector) {
+    public WorkflowDestinationSelectorTransfer getWorkflowDestinationSelectorTransfer(UserVisit userVisit, WorkflowDestinationSelector workflowDestinationSelector) {
         var workflowDestinationSelectorTransfer = get(workflowDestinationSelector);
         
         if(workflowDestinationSelectorTransfer == null) {

@@ -49,7 +49,7 @@ public class ForumMessagePartTransferCache
         }
     }
     
-    public ForumMessagePartTransfer getForumMessagePartTransfer(ForumMessagePart forumMessagePart) {
+    public ForumMessagePartTransfer getForumMessagePartTransfer(UserVisit userVisit, ForumMessagePart forumMessagePart) {
         var forumMessagePartTransfer = get(forumMessagePart);
         
         if(forumMessagePartTransfer == null) {

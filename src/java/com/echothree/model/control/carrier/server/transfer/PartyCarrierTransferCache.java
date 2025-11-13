@@ -35,7 +35,7 @@ public class PartyCarrierTransferCache
         super(carrierControl);
     }
     
-    public PartyCarrierTransfer getPartyCarrierTransfer(PartyCarrier partyCarrier) {
+    public PartyCarrierTransfer getPartyCarrierTransfer(UserVisit userVisit, PartyCarrier partyCarrier) {
         var partyCarrierTransfer = get(partyCarrier);
         
         if(partyCarrierTransfer == null) {

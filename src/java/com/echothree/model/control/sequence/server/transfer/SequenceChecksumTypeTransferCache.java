@@ -29,7 +29,7 @@ public class SequenceChecksumTypeTransferCache
         super(sequenceControl);
     }
     
-    public SequenceChecksumTypeTransfer getSequenceChecksumTypeTransfer(SequenceChecksumType sequenceChecksumType) {
+    public SequenceChecksumTypeTransfer getSequenceChecksumTypeTransfer(UserVisit userVisit, SequenceChecksumType sequenceChecksumType) {
         var sequenceChecksumTypeTransfer = get(sequenceChecksumType);
         
         if(sequenceChecksumTypeTransfer == null) {

@@ -40,7 +40,7 @@ public class CountyTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public CountyTransfer getCountyTransfer(GeoCode geoCode) {
+    public CountyTransfer getCountyTransfer(UserVisit userVisit, GeoCode geoCode) {
         var countyTransfer = get(geoCode);
         
         if(countyTransfer == null) {

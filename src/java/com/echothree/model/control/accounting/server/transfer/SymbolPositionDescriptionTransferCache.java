@@ -33,7 +33,7 @@ public class SymbolPositionDescriptionTransferCache
     }
     
     @Override
-    public SymbolPositionDescriptionTransfer getTransfer(SymbolPositionDescription symbolPositionDescription) {
+    public SymbolPositionDescriptionTransfer getTransfer(UserVisit userVisit, SymbolPositionDescription symbolPositionDescription) {
         var symbolPositionDescriptionTransfer = get(symbolPositionDescription);
         
         if(symbolPositionDescriptionTransfer == null) {

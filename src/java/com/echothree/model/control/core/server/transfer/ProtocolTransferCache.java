@@ -34,7 +34,7 @@ public class ProtocolTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public ProtocolTransfer getProtocolTransfer(Protocol protocol) {
+    public ProtocolTransfer getProtocolTransfer(UserVisit userVisit, Protocol protocol) {
         var protocolTransfer = get(protocol);
         
         if(protocolTransfer == null) {

@@ -34,7 +34,7 @@ public class ChainActionSurveyTransferCache
         super(chainControl);
     }
     
-    public ChainActionSurveyTransfer getChainActionSurveyTransfer(ChainActionSurvey chainActionSurvey) {
+    public ChainActionSurveyTransfer getChainActionSurveyTransfer(UserVisit userVisit, ChainActionSurvey chainActionSurvey) {
         var chainActionSurveyTransfer = get(chainActionSurvey);
         
         if(chainActionSurveyTransfer == null) {

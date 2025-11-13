@@ -52,7 +52,7 @@ public class WorkEffortScopeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public WorkEffortScopeTransfer getWorkEffortScopeTransfer(WorkEffortScope workEffortScope) {
+    public WorkEffortScopeTransfer getWorkEffortScopeTransfer(UserVisit userVisit, WorkEffortScope workEffortScope) {
         var workEffortScopeTransfer = get(workEffortScope);
         
         if(workEffortScopeTransfer == null) {

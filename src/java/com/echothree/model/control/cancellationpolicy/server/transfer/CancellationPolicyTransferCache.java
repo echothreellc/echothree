@@ -31,7 +31,7 @@ public class CancellationPolicyTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public CancellationPolicyTransfer getCancellationPolicyTransfer(CancellationPolicy cancellationPolicy) {
+    public CancellationPolicyTransfer getCancellationPolicyTransfer(UserVisit userVisit, CancellationPolicy cancellationPolicy) {
         var cancellationPolicyTransfer = get(cancellationPolicy);
         
         if(cancellationPolicyTransfer == null) {

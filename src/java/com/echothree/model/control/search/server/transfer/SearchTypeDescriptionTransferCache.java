@@ -29,7 +29,7 @@ public class SearchTypeDescriptionTransferCache
         super(searchControl);
     }
     
-    public SearchTypeDescriptionTransfer getSearchTypeDescriptionTransfer(SearchTypeDescription searchTypeDescription) {
+    public SearchTypeDescriptionTransfer getSearchTypeDescriptionTransfer(UserVisit userVisit, SearchTypeDescription searchTypeDescription) {
         var searchTypeDescriptionTransfer = get(searchTypeDescription);
         
         if(searchTypeDescriptionTransfer == null) {

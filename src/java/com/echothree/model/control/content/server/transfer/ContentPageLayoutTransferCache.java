@@ -31,7 +31,7 @@ public class ContentPageLayoutTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public ContentPageLayoutTransfer getTransfer(ContentPageLayout contentPageLayout) {
+    public ContentPageLayoutTransfer getTransfer(UserVisit userVisit, ContentPageLayout contentPageLayout) {
         var contentPageLayoutTransfer = get(contentPageLayout);
         
         if(contentPageLayoutTransfer == null) {

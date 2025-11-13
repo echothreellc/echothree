@@ -33,7 +33,7 @@ public class ReturnPolicyTranslationTransferCache
         super(returnPolicyControl);
     }
     
-    public ReturnPolicyTranslationTransfer getReturnPolicyTranslationTransfer(ReturnPolicyTranslation returnPolicyTranslation) {
+    public ReturnPolicyTranslationTransfer getReturnPolicyTranslationTransfer(UserVisit userVisit, ReturnPolicyTranslation returnPolicyTranslation) {
         var returnPolicyTranslationTransfer = get(returnPolicyTranslation);
         
         if(returnPolicyTranslationTransfer == null) {

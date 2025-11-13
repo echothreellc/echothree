@@ -34,7 +34,7 @@ public class PartyScaleUseTransferCache
         partyControl = Session.getModelController(PartyControl.class);
     }
     
-    public PartyScaleUseTransfer getPartyScaleUseTransfer(PartyScaleUse partyScaleUse) {
+    public PartyScaleUseTransfer getPartyScaleUseTransfer(UserVisit userVisit, PartyScaleUse partyScaleUse) {
         var partyScaleUseTransfer = get(partyScaleUse);
         
         if(partyScaleUseTransfer == null) {

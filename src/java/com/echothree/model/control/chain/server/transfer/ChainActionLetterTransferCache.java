@@ -33,7 +33,7 @@ public class ChainActionLetterTransferCache
         super(chainControl);
     }
     
-    public ChainActionLetterTransfer getChainActionLetterTransfer(ChainActionLetter chainActionLetter) {
+    public ChainActionLetterTransfer getChainActionLetterTransfer(UserVisit userVisit, ChainActionLetter chainActionLetter) {
         var chainActionLetterTransfer = get(chainActionLetter);
         
         if(chainActionLetterTransfer == null) {

@@ -56,7 +56,7 @@ public class WorkflowDestinationTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
     
-    public WorkflowDestinationTransfer getWorkflowDestinationTransfer(WorkflowDestination workflowDestination) {
+    public WorkflowDestinationTransfer getWorkflowDestinationTransfer(UserVisit userVisit, WorkflowDestination workflowDestination) {
         var workflowDestinationTransfer = get(workflowDestination);
         
         if(workflowDestinationTransfer == null) {

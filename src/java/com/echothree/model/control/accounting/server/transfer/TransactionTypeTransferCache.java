@@ -35,7 +35,7 @@ public class TransactionTypeTransferCache
     }
     
     @Override
-    public TransactionTypeTransfer getTransfer(TransactionType transactionType) {
+    public TransactionTypeTransfer getTransfer(UserVisit userVisit, TransactionType transactionType) {
         var transactionTypeTransfer = get(transactionType);
         
         if(transactionTypeTransfer == null) {

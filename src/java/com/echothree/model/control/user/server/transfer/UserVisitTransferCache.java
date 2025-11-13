@@ -49,7 +49,7 @@ public class UserVisitTransferCache
         }
     }
     
-    public UserVisitTransfer getUserVisitTransfer(UserVisit userVisitEntity) {
+    public UserVisitTransfer getUserVisitTransfer(UserVisit userVisit, UserVisit userVisitEntity) {
         var userVisitTransfer = get(userVisit);
         
         if(userVisitTransfer == null) {

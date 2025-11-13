@@ -31,7 +31,7 @@ public class RecoveryQuestionTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public RecoveryQuestionTransfer getRecoveryQuestionTransfer(RecoveryQuestion recoveryQuestion) {
+    public RecoveryQuestionTransfer getRecoveryQuestionTransfer(UserVisit userVisit, RecoveryQuestion recoveryQuestion) {
         var recoveryQuestionTransfer = get(recoveryQuestion);
         
         if(recoveryQuestionTransfer == null) {

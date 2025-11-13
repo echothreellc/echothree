@@ -31,7 +31,7 @@ public class GeoCodeScopeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public GeoCodeScopeTransfer getGeoCodeScopeTransfer(GeoCodeScope geoCodeScope) {
+    public GeoCodeScopeTransfer getGeoCodeScopeTransfer(UserVisit userVisit, GeoCodeScope geoCodeScope) {
         var geoCodeScopeTransfer = get(geoCodeScope);
         
         if(geoCodeScopeTransfer == null) {

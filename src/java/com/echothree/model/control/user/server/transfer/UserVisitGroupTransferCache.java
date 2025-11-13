@@ -38,7 +38,7 @@ public class UserVisitGroupTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public UserVisitGroupTransfer getUserVisitGroupTransfer(UserVisitGroup userVisitGroup) {
+    public UserVisitGroupTransfer getUserVisitGroupTransfer(UserVisit userVisit, UserVisitGroup userVisitGroup) {
         var userVisitGroupTransfer = get(userVisitGroup);
 
         if(userVisitGroupTransfer == null) {

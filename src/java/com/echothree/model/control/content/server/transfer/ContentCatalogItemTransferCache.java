@@ -91,7 +91,7 @@ public class ContentCatalogItemTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
     
-    public ContentCatalogItemTransfer getContentCatalogItemTransfer(ContentCatalogItem contentCatalogItem) {
+    public ContentCatalogItemTransfer getContentCatalogItemTransfer(UserVisit userVisit, ContentCatalogItem contentCatalogItem) {
         var contentCatalogItemTransfer = get(contentCatalogItem);
         
         if(contentCatalogItemTransfer == null) {

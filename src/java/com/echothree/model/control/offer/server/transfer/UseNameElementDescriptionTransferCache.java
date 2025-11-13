@@ -32,7 +32,7 @@ public class UseNameElementDescriptionTransferCache
         super();
     }
     
-    public UseNameElementDescriptionTransfer getUseNameElementDescriptionTransfer(UseNameElementDescription useNameElementDescription) {
+    public UseNameElementDescriptionTransfer getUseNameElementDescriptionTransfer(UserVisit userVisit, UseNameElementDescription useNameElementDescription) {
         var useNameElementDescriptionTransfer = get(useNameElementDescription);
         
         if(useNameElementDescriptionTransfer == null) {

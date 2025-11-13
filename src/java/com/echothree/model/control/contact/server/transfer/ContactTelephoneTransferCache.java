@@ -37,7 +37,7 @@ public class ContactTelephoneTransferCache
         super(contactControl);
     }
     
-    public ContactTelephoneTransfer getContactTelephoneTransfer(ContactTelephone contactTelephone) {
+    public ContactTelephoneTransfer getContactTelephoneTransfer(UserVisit userVisit, ContactTelephone contactTelephone) {
         var contactTelephoneTransfer = get(contactTelephone);
         
         if(contactTelephoneTransfer == null) {

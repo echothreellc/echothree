@@ -34,7 +34,7 @@ public class EntityAppearanceTransferCache
         super();
     }
     
-    public EntityAppearanceTransfer getEntityAppearanceTransfer(EntityAppearance entityAppearance) {
+    public EntityAppearanceTransfer getEntityAppearanceTransfer(UserVisit userVisit, EntityAppearance entityAppearance) {
         var entityAppearanceTransfer = get(entityAppearance);
         
         if(entityAppearanceTransfer == null) {

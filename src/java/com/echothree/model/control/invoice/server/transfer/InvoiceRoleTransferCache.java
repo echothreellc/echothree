@@ -38,7 +38,7 @@ public class InvoiceRoleTransferCache
         partyControl = Session.getModelController(PartyControl.class);
     }
 
-    public InvoiceRoleTransfer getInvoiceRoleTransfer(InvoiceRole invoiceRole) {
+    public InvoiceRoleTransfer getInvoiceRoleTransfer(UserVisit userVisit, InvoiceRole invoiceRole) {
         var invoiceRoleTransfer = get(invoiceRole);
 
         if(invoiceRoleTransfer == null) {

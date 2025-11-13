@@ -61,7 +61,7 @@ public class VendorItemTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public VendorItemTransfer getVendorItemTransfer(VendorItem vendorItem) {
+    public VendorItemTransfer getVendorItemTransfer(UserVisit userVisit, VendorItem vendorItem) {
         var vendorItemTransfer = get(vendorItem);
         
         if(vendorItemTransfer == null) {

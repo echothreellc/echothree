@@ -29,7 +29,7 @@ public class CarrierServiceOptionTransferCache
         super(carrierControl);
     }
     
-    public CarrierServiceOptionTransfer getCarrierServiceOptionTransfer(CarrierServiceOption carrierServiceOption) {
+    public CarrierServiceOptionTransfer getCarrierServiceOptionTransfer(UserVisit userVisit, CarrierServiceOption carrierServiceOption) {
         var carrierServiceOptionTransfer = get(carrierServiceOption);
         
         if(carrierServiceOptionTransfer == null) {

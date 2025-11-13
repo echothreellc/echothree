@@ -29,7 +29,7 @@ public class ContentCategoryDescriptionTransferCache
         super(contentControl);
     }
     
-    public ContentCategoryDescriptionTransfer getContentCategoryDescriptionTransfer(ContentCategoryDescription contentCategoryDescription) {
+    public ContentCategoryDescriptionTransfer getContentCategoryDescriptionTransfer(UserVisit userVisit, ContentCategoryDescription contentCategoryDescription) {
         var contentCategoryDescriptionTransfer = get(contentCategoryDescription);
         
         if(contentCategoryDescriptionTransfer == null) {

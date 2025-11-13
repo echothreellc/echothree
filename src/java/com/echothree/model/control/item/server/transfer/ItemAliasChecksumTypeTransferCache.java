@@ -30,7 +30,7 @@ public class ItemAliasChecksumTypeTransferCache
     }
     
     @Override
-    public ItemAliasChecksumTypeTransfer getTransfer(ItemAliasChecksumType itemAliasChecksumType) {
+    public ItemAliasChecksumTypeTransfer getTransfer(UserVisit userVisit, ItemAliasChecksumType itemAliasChecksumType) {
         var itemAliasChecksumTypeTransfer = get(itemAliasChecksumType);
         
         if(itemAliasChecksumTypeTransfer == null) {

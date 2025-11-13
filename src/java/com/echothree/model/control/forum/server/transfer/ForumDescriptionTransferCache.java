@@ -29,7 +29,7 @@ public class ForumDescriptionTransferCache
         super(forumControl);
     }
     
-    public ForumDescriptionTransfer getForumDescriptionTransfer(ForumDescription forumDescription) {
+    public ForumDescriptionTransfer getForumDescriptionTransfer(UserVisit userVisit, ForumDescription forumDescription) {
         var forumDescriptionTransfer = get(forumDescription);
         
         if(forumDescriptionTransfer == null) {

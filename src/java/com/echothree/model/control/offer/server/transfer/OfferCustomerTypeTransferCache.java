@@ -34,7 +34,7 @@ public class OfferCustomerTypeTransferCache
         super();
     }
     
-    public OfferCustomerTypeTransfer getOfferCustomerTypeTransfer(OfferCustomerType offerCustomerType) {
+    public OfferCustomerTypeTransfer getOfferCustomerTypeTransfer(UserVisit userVisit, OfferCustomerType offerCustomerType) {
         var offerCustomerTypeTransfer = get(offerCustomerType);
         
         if(offerCustomerTypeTransfer == null) {

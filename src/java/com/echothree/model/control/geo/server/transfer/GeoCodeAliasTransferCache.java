@@ -29,7 +29,7 @@ public class GeoCodeAliasTransferCache
         super(geoControl);
     }
     
-    public GeoCodeAliasTransfer getGeoCodeAliasTransfer(GeoCodeAlias geoCodeAlias) {
+    public GeoCodeAliasTransfer getGeoCodeAliasTransfer(UserVisit userVisit, GeoCodeAlias geoCodeAlias) {
         var geoCodeAliasTransfer = get(geoCodeAlias);
         
         if(geoCodeAliasTransfer == null) {

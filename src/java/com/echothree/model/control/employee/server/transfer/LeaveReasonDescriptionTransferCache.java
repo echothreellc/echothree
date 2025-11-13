@@ -29,7 +29,7 @@ public class LeaveReasonDescriptionTransferCache
         super(employeeControl);
     }
     
-    public LeaveReasonDescriptionTransfer getLeaveReasonDescriptionTransfer(LeaveReasonDescription leaveReasonDescription) {
+    public LeaveReasonDescriptionTransfer getLeaveReasonDescriptionTransfer(UserVisit userVisit, LeaveReasonDescription leaveReasonDescription) {
         var leaveReasonDescriptionTransfer = get(leaveReasonDescription);
         
         if(leaveReasonDescriptionTransfer == null) {

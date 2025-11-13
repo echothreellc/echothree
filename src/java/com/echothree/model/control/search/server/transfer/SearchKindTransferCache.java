@@ -31,7 +31,7 @@ public class SearchKindTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public SearchKindTransfer getSearchKindTransfer(SearchKind searchKind) {
+    public SearchKindTransfer getSearchKindTransfer(UserVisit userVisit, SearchKind searchKind) {
         var searchKindTransfer = get(searchKind);
         
         if(searchKindTransfer == null) {

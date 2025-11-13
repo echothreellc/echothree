@@ -32,7 +32,7 @@ public class OfferNameElementDescriptionTransferCache
         super();
     }
     
-    public OfferNameElementDescriptionTransfer getOfferNameElementDescriptionTransfer(OfferNameElementDescription offerNameElementDescription) {
+    public OfferNameElementDescriptionTransfer getOfferNameElementDescriptionTransfer(UserVisit userVisit, OfferNameElementDescription offerNameElementDescription) {
         var offerNameElementDescriptionTransfer = get(offerNameElementDescription);
         
         if(offerNameElementDescriptionTransfer == null) {

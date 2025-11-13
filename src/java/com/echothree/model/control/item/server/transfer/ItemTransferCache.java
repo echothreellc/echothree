@@ -205,7 +205,7 @@ public class ItemTransferCache
     }
     
     @Override
-    public ItemTransfer getTransfer(Item item) {
+    public ItemTransfer getTransfer(UserVisit userVisit, Item item) {
         var itemTransfer = get(item);
         
         if(itemTransfer == null) {

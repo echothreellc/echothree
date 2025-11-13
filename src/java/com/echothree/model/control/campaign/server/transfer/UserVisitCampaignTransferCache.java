@@ -33,7 +33,7 @@ public class UserVisitCampaignTransferCache
         super(campaignControl);
     }
 
-    public UserVisitCampaignTransfer getUserVisitCampaignTransfer(UserVisitCampaign userVisitCampaign) {
+    public UserVisitCampaignTransfer getUserVisitCampaignTransfer(UserVisit userVisit, UserVisitCampaign userVisitCampaign) {
         var userVisitCampaignTransfer = get(userVisitCampaign);
 
         if(userVisitCampaignTransfer == null) {

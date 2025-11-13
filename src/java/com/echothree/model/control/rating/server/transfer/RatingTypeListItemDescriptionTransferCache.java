@@ -29,7 +29,7 @@ public class RatingTypeListItemDescriptionTransferCache
         super(ratingControl);
     }
     
-    public RatingTypeListItemDescriptionTransfer getRatingTypeListItemDescriptionTransfer(RatingTypeListItemDescription ratingTypeListItemDescription) {
+    public RatingTypeListItemDescriptionTransfer getRatingTypeListItemDescriptionTransfer(UserVisit userVisit, RatingTypeListItemDescription ratingTypeListItemDescription) {
         var ratingTypeListItemDescriptionTransfer = get(ratingTypeListItemDescription);
         
         if(ratingTypeListItemDescriptionTransfer == null) {

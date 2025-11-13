@@ -29,7 +29,7 @@ public class TerminationReasonDescriptionTransferCache
         super(employeeControl);
     }
     
-    public TerminationReasonDescriptionTransfer getTerminationReasonDescriptionTransfer(TerminationReasonDescription terminationReasonDescription) {
+    public TerminationReasonDescriptionTransfer getTerminationReasonDescriptionTransfer(UserVisit userVisit, TerminationReasonDescription terminationReasonDescription) {
         var terminationReasonDescriptionTransfer = get(terminationReasonDescription);
         
         if(terminationReasonDescriptionTransfer == null) {

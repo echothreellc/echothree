@@ -71,11 +71,11 @@ public class WarehouseTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public WarehouseTransfer getWarehouseTransfer(Warehouse warehouse) {
+    public WarehouseTransfer getWarehouseTransfer(UserVisit userVisit, Warehouse warehouse) {
         return getWarehouseTransfer(warehouse.getParty());
     }
     
-    public WarehouseTransfer getWarehouseTransfer(Party party) {
+    public WarehouseTransfer getWarehouseTransfer(UserVisit userVisit, Party party) {
         var warehouseTransfer = get(party);
         
         if(warehouseTransfer == null) {

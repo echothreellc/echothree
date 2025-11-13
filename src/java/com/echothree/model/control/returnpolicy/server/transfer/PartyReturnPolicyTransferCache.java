@@ -36,7 +36,7 @@ public class PartyReturnPolicyTransferCache
         super(returnPolicyControl);
     }
 
-    public PartyReturnPolicyTransfer getPartyReturnPolicyTransfer(PartyReturnPolicy partyReturnPolicy) {
+    public PartyReturnPolicyTransfer getPartyReturnPolicyTransfer(UserVisit userVisit, PartyReturnPolicy partyReturnPolicy) {
         var partyReturnPolicyTransfer = get(partyReturnPolicy);
 
         if(partyReturnPolicyTransfer == null) {

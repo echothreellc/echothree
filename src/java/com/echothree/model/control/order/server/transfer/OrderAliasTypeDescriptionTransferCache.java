@@ -32,7 +32,7 @@ public class OrderAliasTypeDescriptionTransferCache
         super();
     }
     
-    public OrderAliasTypeDescriptionTransfer getOrderAliasTypeDescriptionTransfer(OrderAliasTypeDescription orderAliasTypeDescription) {
+    public OrderAliasTypeDescriptionTransfer getOrderAliasTypeDescriptionTransfer(UserVisit userVisit, OrderAliasTypeDescription orderAliasTypeDescription) {
         var orderAliasTypeDescriptionTransfer = get(orderAliasTypeDescription);
         
         if(orderAliasTypeDescriptionTransfer == null) {

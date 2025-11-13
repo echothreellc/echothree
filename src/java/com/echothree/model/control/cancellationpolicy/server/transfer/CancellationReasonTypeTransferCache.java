@@ -29,7 +29,7 @@ public class CancellationReasonTypeTransferCache
         super(cancellationPolicyControl);
     }
     
-    public CancellationReasonTypeTransfer getCancellationReasonTypeTransfer(CancellationReasonType cancellationReasonType) {
+    public CancellationReasonTypeTransfer getCancellationReasonTypeTransfer(UserVisit userVisit, CancellationReasonType cancellationReasonType) {
         var cancellationReasonTypeTransfer = get(cancellationReasonType);
         
         if(cancellationReasonTypeTransfer == null) {

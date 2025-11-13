@@ -39,7 +39,7 @@ public class PartyCreditLimitTransferCache
         partyControl = Session.getModelController(PartyControl.class);
     }
     
-    public PartyCreditLimitTransfer getPartyCreditLimitTransfer(PartyCreditLimit partyCreditLimit) {
+    public PartyCreditLimitTransfer getPartyCreditLimitTransfer(UserVisit userVisit, PartyCreditLimit partyCreditLimit) {
         var partyCreditLimitTransfer = get(partyCreditLimit);
         
         if(partyCreditLimitTransfer == null) {

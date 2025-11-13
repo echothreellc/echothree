@@ -36,7 +36,7 @@ public class UserKeyTransferCache
         partyControl = Session.getModelController(PartyControl.class);
     }
     
-    public UserKeyTransfer getUserKeyTransfer(UserKey userKey) {
+    public UserKeyTransfer getUserKeyTransfer(UserVisit userVisit, UserKey userKey) {
         var userKeyTransfer = get(userKey);
         
         if(userKeyTransfer == null) {

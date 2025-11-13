@@ -46,7 +46,7 @@ public class HarmonizedTariffScheduleCodeTransferCache
     }
     
     @Override
-    public HarmonizedTariffScheduleCodeTransfer getTransfer(HarmonizedTariffScheduleCode harmonizedTariffScheduleCode) {
+    public HarmonizedTariffScheduleCodeTransfer getTransfer(UserVisit userVisit, HarmonizedTariffScheduleCode harmonizedTariffScheduleCode) {
         var harmonizedTariffScheduleCodeTransfer = get(harmonizedTariffScheduleCode);
         
         if(harmonizedTariffScheduleCodeTransfer == null) {

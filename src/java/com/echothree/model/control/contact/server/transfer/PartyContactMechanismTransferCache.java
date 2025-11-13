@@ -54,7 +54,7 @@ public class PartyContactMechanismTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public PartyContactMechanismTransfer getPartyContactMechanismTransfer(PartyContactMechanism partyContactMechanism) {
+    public PartyContactMechanismTransfer getPartyContactMechanismTransfer(UserVisit userVisit, PartyContactMechanism partyContactMechanism) {
         var partyContactMechanismTransfer = get(partyContactMechanism);
         
         if(partyContactMechanismTransfer == null) {

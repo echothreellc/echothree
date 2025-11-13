@@ -35,7 +35,7 @@ public class GlAccountCategoryTransferCache
     }
 
     @Override
-    public GlAccountCategoryTransfer getTransfer(GlAccountCategory glAccountCategory) {
+    public GlAccountCategoryTransfer getTransfer(UserVisit userVisit, GlAccountCategory glAccountCategory) {
         var glAccountCategoryTransfer = get(glAccountCategory);
 
         if(glAccountCategoryTransfer == null) {

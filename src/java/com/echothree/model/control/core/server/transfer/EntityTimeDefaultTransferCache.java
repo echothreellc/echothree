@@ -32,7 +32,7 @@ public class EntityTimeDefaultTransferCache
         super();
     }
     
-    public EntityTimeDefaultTransfer getEntityTimeDefaultTransfer(EntityTimeDefault entityTimeDefault) {
+    public EntityTimeDefaultTransfer getEntityTimeDefaultTransfer(UserVisit userVisit, EntityTimeDefault entityTimeDefault) {
         var entityTimeDefaultTransfer = get(entityTimeDefault);
         
         if(entityTimeDefaultTransfer == null) {

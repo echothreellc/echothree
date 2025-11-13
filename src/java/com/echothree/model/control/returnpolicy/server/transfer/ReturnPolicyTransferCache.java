@@ -31,7 +31,7 @@ public class ReturnPolicyTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public ReturnPolicyTransfer getReturnPolicyTransfer(ReturnPolicy returnPolicy) {
+    public ReturnPolicyTransfer getReturnPolicyTransfer(UserVisit userVisit, ReturnPolicy returnPolicy) {
         var returnPolicyTransfer = get(returnPolicy);
         
         if(returnPolicyTransfer == null) {

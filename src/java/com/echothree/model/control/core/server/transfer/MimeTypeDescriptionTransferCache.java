@@ -32,7 +32,7 @@ public class MimeTypeDescriptionTransferCache
         super();
     }
     
-    public MimeTypeDescriptionTransfer getMimeTypeDescriptionTransfer(MimeTypeDescription mimeTypeDescription) {
+    public MimeTypeDescriptionTransfer getMimeTypeDescriptionTransfer(UserVisit userVisit, MimeTypeDescription mimeTypeDescription) {
         var mimeTypeDescriptionTransfer = get(mimeTypeDescription);
         
         if(mimeTypeDescriptionTransfer == null) {

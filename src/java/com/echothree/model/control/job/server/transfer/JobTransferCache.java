@@ -40,7 +40,7 @@ public class JobTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public JobTransfer getJobTransfer(Job job) {
+    public JobTransfer getJobTransfer(UserVisit userVisit, Job job) {
         var jobTransfer = get(job);
         
         if(jobTransfer == null) {

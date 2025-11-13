@@ -29,7 +29,7 @@ public class CommentTypeDescriptionTransferCache
         super(commentControl);
     }
     
-    public CommentTypeDescriptionTransfer getCommentTypeDescriptionTransfer(CommentTypeDescription commentTypeDescription) {
+    public CommentTypeDescriptionTransfer getCommentTypeDescriptionTransfer(UserVisit userVisit, CommentTypeDescription commentTypeDescription) {
         var commentTypeDescriptionTransfer = get(commentTypeDescription);
         
         if(commentTypeDescriptionTransfer == null) {

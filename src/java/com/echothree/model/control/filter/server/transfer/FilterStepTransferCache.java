@@ -48,7 +48,7 @@ public class FilterStepTransferCache
     }
 
     @Override
-    public FilterStepTransfer getTransfer(FilterStep filterStep) {
+    public FilterStepTransfer getTransfer(UserVisit userVisit, FilterStep filterStep) {
         var filterStepTransfer = get(filterStep);
         
         if(filterStepTransfer == null) {

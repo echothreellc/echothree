@@ -35,7 +35,7 @@ public class ReturnTypeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public ReturnTypeTransfer getReturnTypeTransfer(ReturnType returnType) {
+    public ReturnTypeTransfer getReturnTypeTransfer(UserVisit userVisit, ReturnType returnType) {
         var returnTypeTransfer = get(returnType);
         
         if(returnTypeTransfer == null) {

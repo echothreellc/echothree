@@ -33,7 +33,7 @@ public class PartyTypeContactListTransferCache
         super(contactListControl);
     }
     
-    public PartyTypeContactListTransfer getPartyTypeContactListTransfer(PartyTypeContactList partyTypeContactList) {
+    public PartyTypeContactListTransfer getPartyTypeContactListTransfer(UserVisit userVisit, PartyTypeContactList partyTypeContactList) {
         var partyTypeContactListTransfer = get(partyTypeContactList);
         
         if(partyTypeContactListTransfer == null) {

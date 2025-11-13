@@ -51,7 +51,7 @@ public class PartyContactListTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public PartyContactListTransfer getPartyContactListTransfer(PartyContactList partyContactList) {
+    public PartyContactListTransfer getPartyContactListTransfer(UserVisit userVisit, PartyContactList partyContactList) {
         var partyContactListTransfer = get(partyContactList);
         
         if(partyContactListTransfer == null) {

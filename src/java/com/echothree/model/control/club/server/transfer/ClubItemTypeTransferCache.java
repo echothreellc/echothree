@@ -29,7 +29,7 @@ public class ClubItemTypeTransferCache
         super(clubControl);
     }
     
-    public ClubItemTypeTransfer getClubItemTypeTransfer(ClubItemType clubItemType) {
+    public ClubItemTypeTransfer getClubItemTypeTransfer(UserVisit userVisit, ClubItemType clubItemType) {
         var clubItemTypeTransfer = get(clubItemType);
         
         if(clubItemTypeTransfer == null) {

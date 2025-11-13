@@ -35,7 +35,7 @@ public class FinancialAccountRoleTransferCache
         partyControl = Session.getModelController(PartyControl.class);
     }
 
-    public FinancialAccountRoleTransfer getFinancialAccountRoleTransfer(FinancialAccountRole financialAccountRole) {
+    public FinancialAccountRoleTransfer getFinancialAccountRoleTransfer(UserVisit userVisit, FinancialAccountRole financialAccountRole) {
         var financialAccountRoleTransfer = get(financialAccountRole);
 
         if(financialAccountRoleTransfer == null) {

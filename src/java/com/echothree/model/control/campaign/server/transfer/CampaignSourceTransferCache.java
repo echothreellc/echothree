@@ -44,7 +44,7 @@ public class CampaignSourceTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public CampaignSourceTransfer getCampaignSourceTransfer(CampaignSource campaignSource) {
+    public CampaignSourceTransfer getCampaignSourceTransfer(UserVisit userVisit, CampaignSource campaignSource) {
         var campaignSourceTransfer = get(campaignSource);
 
         if(campaignSourceTransfer == null) {

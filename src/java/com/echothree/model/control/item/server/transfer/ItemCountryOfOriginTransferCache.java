@@ -35,7 +35,7 @@ public class ItemCountryOfOriginTransferCache
     }
     
     @Override
-    public ItemCountryOfOriginTransfer getTransfer(ItemCountryOfOrigin itemCountryOfOrigin) {
+    public ItemCountryOfOriginTransfer getTransfer(UserVisit userVisit, ItemCountryOfOrigin itemCountryOfOrigin) {
         var itemCountryOfOriginTransfer = get(itemCountryOfOrigin);
         
         if(itemCountryOfOriginTransfer == null) {

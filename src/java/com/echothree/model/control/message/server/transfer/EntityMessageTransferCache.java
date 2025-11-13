@@ -33,7 +33,7 @@ public class EntityMessageTransferCache
         super(messageControl);
     }
     
-    public EntityMessageTransfer getEntityMessageTransfer(EntityMessage entityMessage) {
+    public EntityMessageTransfer getEntityMessageTransfer(UserVisit userVisit, EntityMessage entityMessage) {
         var entityMessageTransfer = get(entityMessage);
         
         if(entityMessageTransfer == null) {

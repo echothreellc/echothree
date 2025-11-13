@@ -36,7 +36,7 @@ public class OrderRoleTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public OrderRoleTransfer getOrderRoleTransfer(OrderRole orderRole) {
+    public OrderRoleTransfer getOrderRoleTransfer(UserVisit userVisit, OrderRole orderRole) {
         var orderRoleTransfer = get(orderRole);
         
         if(orderRoleTransfer == null) {

@@ -35,7 +35,7 @@ public class PartyContactMechanismAliasTransferCache
         partyControl = Session.getModelController(PartyControl.class);
     }
     
-    public PartyContactMechanismAliasTransfer getPartyContactMechanismAliasTransfer(PartyContactMechanismAlias partyContactMechanismAlias) {
+    public PartyContactMechanismAliasTransfer getPartyContactMechanismAliasTransfer(UserVisit userVisit, PartyContactMechanismAlias partyContactMechanismAlias) {
         var partyContactMechanismAliasTransfer = get(partyContactMechanismAlias);
         
         if(partyContactMechanismAliasTransfer == null) {

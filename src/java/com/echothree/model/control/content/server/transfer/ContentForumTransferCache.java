@@ -35,7 +35,7 @@ public class ContentForumTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public ContentForumTransfer getContentForumTransfer(ContentForum contentForum) {
+    public ContentForumTransfer getContentForumTransfer(UserVisit userVisit, ContentForum contentForum) {
         var contentForumTransfer = get(contentForum);
         
         if(contentForumTransfer == null) {

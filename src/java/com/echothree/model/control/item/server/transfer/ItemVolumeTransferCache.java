@@ -35,7 +35,7 @@ public class ItemVolumeTransferCache
     }
     
     @Override
-    public ItemVolumeTransfer getTransfer(ItemVolume itemVolume) {
+    public ItemVolumeTransfer getTransfer(UserVisit userVisit, ItemVolume itemVolume) {
         var itemVolumeTransfer = get(itemVolume);
         
         if(itemVolumeTransfer == null) {

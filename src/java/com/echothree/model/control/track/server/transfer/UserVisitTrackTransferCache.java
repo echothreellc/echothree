@@ -33,7 +33,7 @@ public class UserVisitTrackTransferCache
         super(trackControl);
     }
 
-    public UserVisitTrackTransfer getUserVisitTrackTransfer(UserVisitTrack userVisitTrack) {
+    public UserVisitTrackTransfer getUserVisitTrackTransfer(UserVisit userVisit, UserVisitTrack userVisitTrack) {
         var userVisitTrackTransfer = get(userVisitTrack);
 
         if(userVisitTrackTransfer == null) {

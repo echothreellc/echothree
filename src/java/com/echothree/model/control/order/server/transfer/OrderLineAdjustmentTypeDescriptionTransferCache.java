@@ -32,7 +32,7 @@ public class OrderLineAdjustmentTypeDescriptionTransferCache
         super();
     }
     
-    public OrderLineAdjustmentTypeDescriptionTransfer getOrderLineAdjustmentTypeDescriptionTransfer(OrderLineAdjustmentTypeDescription orderLineAdjustmentTypeDescription) {
+    public OrderLineAdjustmentTypeDescriptionTransfer getOrderLineAdjustmentTypeDescriptionTransfer(UserVisit userVisit, OrderLineAdjustmentTypeDescription orderLineAdjustmentTypeDescription) {
         var orderLineAdjustmentTypeDescriptionTransfer = get(orderLineAdjustmentTypeDescription);
         
         if(orderLineAdjustmentTypeDescriptionTransfer == null) {

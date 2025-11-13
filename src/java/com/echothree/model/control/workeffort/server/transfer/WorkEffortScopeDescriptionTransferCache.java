@@ -29,7 +29,7 @@ public class WorkEffortScopeDescriptionTransferCache
         super(workEffortControl);
     }
     
-    public WorkEffortScopeDescriptionTransfer getWorkEffortScopeDescriptionTransfer(WorkEffortScopeDescription workEffortScopeDescription) {
+    public WorkEffortScopeDescriptionTransfer getWorkEffortScopeDescriptionTransfer(UserVisit userVisit, WorkEffortScopeDescription workEffortScopeDescription) {
         var workEffortScopeDescriptionTransfer = get(workEffortScopeDescription);
         
         if(workEffortScopeDescriptionTransfer == null) {

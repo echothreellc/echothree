@@ -31,7 +31,7 @@ public class IconUsageTypeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public IconUsageTypeTransfer getIconUsageTypeTransfer(IconUsageType iconUsageType) {
+    public IconUsageTypeTransfer getIconUsageTypeTransfer(UserVisit userVisit, IconUsageType iconUsageType) {
         var iconUsageTypeTransfer = get(iconUsageType);
         
         if(iconUsageTypeTransfer == null) {

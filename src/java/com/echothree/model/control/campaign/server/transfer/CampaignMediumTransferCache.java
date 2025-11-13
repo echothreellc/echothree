@@ -44,7 +44,7 @@ public class CampaignMediumTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public CampaignMediumTransfer getCampaignMediumTransfer(CampaignMedium campaignMedium) {
+    public CampaignMediumTransfer getCampaignMediumTransfer(UserVisit userVisit, CampaignMedium campaignMedium) {
         var campaignMediumTransfer = get(campaignMedium);
 
         if(campaignMediumTransfer == null) {

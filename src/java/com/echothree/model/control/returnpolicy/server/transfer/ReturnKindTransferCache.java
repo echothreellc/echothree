@@ -35,7 +35,7 @@ public class ReturnKindTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public ReturnKindTransfer getReturnKindTransfer(ReturnKind returnKind) {
+    public ReturnKindTransfer getReturnKindTransfer(UserVisit userVisit, ReturnKind returnKind) {
         var returnKindTransfer = get(returnKind);
         
         if(returnKindTransfer == null) {

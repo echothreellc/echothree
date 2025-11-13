@@ -29,7 +29,7 @@ public class GenderDescriptionTransferCache
     }
 
     @Override
-    public GenderDescriptionTransfer getTransfer(GenderDescription genderDescription) {
+    public GenderDescriptionTransfer getTransfer(UserVisit userVisit, GenderDescription genderDescription) {
         var genderDescriptionTransfer = get(genderDescription);
         
         if(genderDescriptionTransfer == null) {

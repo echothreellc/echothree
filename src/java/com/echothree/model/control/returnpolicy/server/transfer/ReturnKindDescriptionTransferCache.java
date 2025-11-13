@@ -29,7 +29,7 @@ public class ReturnKindDescriptionTransferCache
         super(returnPolicyControl);
     }
     
-    public ReturnKindDescriptionTransfer getReturnKindDescriptionTransfer(ReturnKindDescription returnKindDescription) {
+    public ReturnKindDescriptionTransfer getReturnKindDescriptionTransfer(UserVisit userVisit, ReturnKindDescription returnKindDescription) {
         var returnKindDescriptionTransfer = get(returnKindDescription);
         
         if(returnKindDescriptionTransfer == null) {

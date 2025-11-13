@@ -30,7 +30,7 @@ public class UnitOfMeasureTypeWeightTransferCache
         super(uomControl);
     }
     
-    public UnitOfMeasureTypeWeightTransfer getUnitOfMeasureTypeWeightTransfer(UnitOfMeasureTypeWeight unitOfMeasureTypeWeight) {
+    public UnitOfMeasureTypeWeightTransfer getUnitOfMeasureTypeWeightTransfer(UserVisit userVisit, UnitOfMeasureTypeWeight unitOfMeasureTypeWeight) {
         var unitOfMeasureTypeWeightTransfer = get(unitOfMeasureTypeWeight);
         
         if(unitOfMeasureTypeWeightTransfer == null) {

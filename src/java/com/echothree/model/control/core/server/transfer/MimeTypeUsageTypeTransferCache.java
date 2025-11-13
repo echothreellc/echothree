@@ -52,7 +52,7 @@ public class MimeTypeUsageTypeTransferCache
         }
     }
     
-    public MimeTypeUsageTypeTransfer getMimeTypeUsageTypeTransfer(MimeTypeUsageType mimeTypeUsageType) {
+    public MimeTypeUsageTypeTransfer getMimeTypeUsageTypeTransfer(UserVisit userVisit, MimeTypeUsageType mimeTypeUsageType) {
         var mimeTypeUsageTypeTransfer = get(mimeTypeUsageType);
         
         if(mimeTypeUsageTypeTransfer == null) {

@@ -44,7 +44,7 @@ public class TrackTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public TrackTransfer getTrackTransfer(Track track) {
+    public TrackTransfer getTrackTransfer(UserVisit userVisit, Track track) {
         var trackTransfer = get(track);
 
         if(trackTransfer == null) {

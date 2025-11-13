@@ -38,7 +38,7 @@ public class OrderShipmentGroupTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public OrderShipmentGroupTransfer getOrderShipmentGroupTransfer(OrderShipmentGroup orderShipmentGroup) {
+    public OrderShipmentGroupTransfer getOrderShipmentGroupTransfer(UserVisit userVisit, OrderShipmentGroup orderShipmentGroup) {
         var orderShipmentGroupTransfer = get(orderShipmentGroup);
         
         if(orderShipmentGroupTransfer == null) {

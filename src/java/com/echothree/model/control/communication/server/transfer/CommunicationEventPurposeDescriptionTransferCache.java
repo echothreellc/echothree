@@ -29,7 +29,7 @@ public class CommunicationEventPurposeDescriptionTransferCache
         super(communicationControl);
     }
     
-    public CommunicationEventPurposeDescriptionTransfer getCommunicationEventPurposeDescriptionTransfer(CommunicationEventPurposeDescription communicationEventPurposeDescription) {
+    public CommunicationEventPurposeDescriptionTransfer getCommunicationEventPurposeDescriptionTransfer(UserVisit userVisit, CommunicationEventPurposeDescription communicationEventPurposeDescription) {
         var communicationEventPurposeDescriptionTransfer = get(communicationEventPurposeDescription);
         
         if(communicationEventPurposeDescriptionTransfer == null) {

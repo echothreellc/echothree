@@ -29,7 +29,7 @@ public class PartyTrainingClassSessionAnswerTransferCache
         super(trainingControl);
     }
     
-    public PartyTrainingClassSessionAnswerTransfer getPartyTrainingClassSessionAnswerTransfer(PartyTrainingClassSessionAnswer partyTrainingClassSessionAnswer) {
+    public PartyTrainingClassSessionAnswerTransfer getPartyTrainingClassSessionAnswerTransfer(UserVisit userVisit, PartyTrainingClassSessionAnswer partyTrainingClassSessionAnswer) {
         var partyTrainingClassSessionAnswerTransfer = get(partyTrainingClassSessionAnswer);
         
         if(partyTrainingClassSessionAnswerTransfer == null) {

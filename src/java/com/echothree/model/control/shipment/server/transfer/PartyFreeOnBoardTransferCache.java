@@ -35,7 +35,7 @@ public class PartyFreeOnBoardTransferCache
     }
     
     @Override
-    public PartyFreeOnBoardTransfer getTransfer(PartyFreeOnBoard partyFreeOnBoard) {
+    public PartyFreeOnBoardTransfer getTransfer(UserVisit userVisit, PartyFreeOnBoard partyFreeOnBoard) {
         var partyFreeOnBoardTransfer = get(partyFreeOnBoard);
         
         if(partyFreeOnBoardTransfer == null) {

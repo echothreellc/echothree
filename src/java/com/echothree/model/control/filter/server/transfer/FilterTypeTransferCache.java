@@ -35,7 +35,7 @@ public class FilterTypeTransferCache
     }
 
     @Override
-    public FilterTypeTransfer getTransfer(FilterType filterType) {
+    public FilterTypeTransfer getTransfer(UserVisit userVisit, FilterType filterType) {
         var filterTypeTransfer = get(filterType);
         
         if(filterTypeTransfer == null) {

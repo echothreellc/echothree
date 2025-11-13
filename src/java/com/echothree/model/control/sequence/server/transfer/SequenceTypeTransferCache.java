@@ -31,7 +31,7 @@ public class SequenceTypeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public SequenceTypeTransfer getSequenceTypeTransfer(SequenceType sequenceType) {
+    public SequenceTypeTransfer getSequenceTypeTransfer(UserVisit userVisit, SequenceType sequenceType) {
         var sequenceTypeTransfer = get(sequenceType);
         
         if(sequenceTypeTransfer == null) {

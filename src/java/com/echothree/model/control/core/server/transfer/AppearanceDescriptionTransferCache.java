@@ -34,7 +34,7 @@ public class AppearanceDescriptionTransferCache
         super();
     }
     
-    public AppearanceDescriptionTransfer getAppearanceDescriptionTransfer(AppearanceDescription appearanceDescription) {
+    public AppearanceDescriptionTransfer getAppearanceDescriptionTransfer(UserVisit userVisit, AppearanceDescription appearanceDescription) {
         var appearanceDescriptionTransfer = get(appearanceDescription);
         
         if(appearanceDescriptionTransfer == null) {

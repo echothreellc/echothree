@@ -29,7 +29,7 @@ public class TimeZoneDescriptionTransferCache
     }
 
     @Override
-    public TimeZoneDescriptionTransfer getTransfer(TimeZoneDescription timeZoneDescription) {
+    public TimeZoneDescriptionTransfer getTransfer(UserVisit userVisit, TimeZoneDescription timeZoneDescription) {
         var timeZoneDescriptionTransfer = get(timeZoneDescription);
         
         if(timeZoneDescriptionTransfer == null) {

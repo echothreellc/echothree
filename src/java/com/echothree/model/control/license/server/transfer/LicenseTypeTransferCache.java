@@ -37,7 +37,7 @@ public class LicenseTypeTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public LicenseTypeTransfer getLicenseTypeTransfer(LicenseType licenseType) {
+    public LicenseTypeTransfer getLicenseTypeTransfer(UserVisit userVisit, LicenseType licenseType) {
         var licenseTypeTransfer = get(licenseType);
 
         if(licenseTypeTransfer == null) {

@@ -48,7 +48,7 @@ public class EntityAttributeTypeTransferCache
         }
     }
     
-    public EntityAttributeTypeTransfer getEntityAttributeTypeTransfer(EntityAttributeType entityAttributeType) {
+    public EntityAttributeTypeTransfer getEntityAttributeTypeTransfer(UserVisit userVisit, EntityAttributeType entityAttributeType) {
         var entityAttributeTypeTransfer = get(entityAttributeType);
         
         if(entityAttributeTypeTransfer == null) {

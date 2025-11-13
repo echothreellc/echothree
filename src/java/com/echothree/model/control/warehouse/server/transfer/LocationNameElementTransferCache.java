@@ -31,7 +31,7 @@ public class LocationNameElementTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public LocationNameElementTransfer getLocationNameElementTransfer(LocationNameElement locationNameElement) {
+    public LocationNameElementTransfer getLocationNameElementTransfer(UserVisit userVisit, LocationNameElement locationNameElement) {
         var locationNameElementTransfer = get(locationNameElement);
         
         if(locationNameElementTransfer == null) {

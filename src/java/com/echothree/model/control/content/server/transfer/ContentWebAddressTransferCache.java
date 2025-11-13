@@ -39,7 +39,7 @@ public class ContentWebAddressTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public ContentWebAddressTransfer getContentWebAddressTransfer(ContentWebAddress contentWebAddress) {
+    public ContentWebAddressTransfer getContentWebAddressTransfer(UserVisit userVisit, ContentWebAddress contentWebAddress) {
         var contentWebAddressTransfer = get(contentWebAddress);
         
         if(contentWebAddressTransfer == null) {

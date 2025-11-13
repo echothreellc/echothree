@@ -32,7 +32,7 @@ public class BatchAliasTransferCache
     }
     
     @Override
-    public BatchAliasTransfer getTransfer(BatchAlias batchAlias) {
+    public BatchAliasTransfer getTransfer(UserVisit userVisit, BatchAlias batchAlias) {
         var batchAliasTransfer = get(batchAlias);
         
         if(batchAliasTransfer == null) {

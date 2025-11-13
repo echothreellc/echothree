@@ -51,7 +51,7 @@ public class LeaveTransferCache
         unitOfMeasureUtils = UnitOfMeasureUtils.getInstance();
     }
     
-    public LeaveTransfer getLeaveTransfer(Leave leave) {
+    public LeaveTransfer getLeaveTransfer(UserVisit userVisit, Leave leave) {
         var leaveTransfer = get(leave);
         
         if(leaveTransfer == null) {

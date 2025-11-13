@@ -32,7 +32,7 @@ public class EventTypeTransferCache
         super();
     }
     
-    public EventTypeTransfer getEventTypeTransfer(EventType eventType) {
+    public EventTypeTransfer getEventTypeTransfer(UserVisit userVisit, EventType eventType) {
         var eventTypeTransfer = get(eventType);
         
         if(eventTypeTransfer == null) {

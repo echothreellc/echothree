@@ -37,7 +37,7 @@ public class CommunicationEventTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public CommunicationEventTransfer getCommunicationEventTransfer(CommunicationEvent communicationEvent) {
+    public CommunicationEventTransfer getCommunicationEventTransfer(UserVisit userVisit, CommunicationEvent communicationEvent) {
         var communicationEventTransfer = get(communicationEvent);
         
         if(communicationEventTransfer == null) {

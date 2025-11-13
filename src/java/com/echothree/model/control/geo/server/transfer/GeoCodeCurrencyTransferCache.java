@@ -35,7 +35,7 @@ public class GeoCodeCurrencyTransferCache
         accountingControl = Session.getModelController(AccountingControl.class);
     }
     
-    public GeoCodeCurrencyTransfer getGeoCodeCurrencyTransfer(GeoCodeCurrency geoCodeCurrency) {
+    public GeoCodeCurrencyTransfer getGeoCodeCurrencyTransfer(UserVisit userVisit, GeoCodeCurrency geoCodeCurrency) {
         var geoCodeCurrencyTransfer = get(geoCodeCurrency);
         
         if(geoCodeCurrencyTransfer == null) {

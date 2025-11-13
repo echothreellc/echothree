@@ -32,7 +32,7 @@ public class OrderRoleTypeTransferCache
         super();
     }
     
-    public OrderRoleTypeTransfer getOrderRoleTypeTransfer(OrderRoleType orderRoleType) {
+    public OrderRoleTypeTransfer getOrderRoleTypeTransfer(UserVisit userVisit, OrderRoleType orderRoleType) {
         var orderRoleTypeTransfer = get(orderRoleType);
         
         if(orderRoleTypeTransfer == null) {

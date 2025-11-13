@@ -29,7 +29,7 @@ public class ForumForumThreadTransferCache
         super(forumControl);
     }
     
-    public ForumForumThreadTransfer getForumForumThreadTransfer(ForumForumThread forumForumThread) {
+    public ForumForumThreadTransfer getForumForumThreadTransfer(UserVisit userVisit, ForumForumThread forumForumThread) {
         var forumForumThreadTransfer = get(forumForumThread);
         
         if(forumForumThreadTransfer == null) {

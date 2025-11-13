@@ -40,7 +40,7 @@ public class PeriodTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public PeriodTransfer getPeriodTransfer(Period period) {
+    public PeriodTransfer getPeriodTransfer(UserVisit userVisit, Period period) {
         var periodTransfer = get(period);
         
         if(periodTransfer == null) {

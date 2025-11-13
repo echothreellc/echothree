@@ -34,7 +34,7 @@ public class TaxClassificationTranslationTransferCache
     }
     
     @Override
-    public TaxClassificationTranslationTransfer getTransfer(TaxClassificationTranslation taxClassificationTranslation) {
+    public TaxClassificationTranslationTransfer getTransfer(UserVisit userVisit, TaxClassificationTranslation taxClassificationTranslation) {
         var taxClassificationTranslationTransfer = get(taxClassificationTranslation);
         
         if(taxClassificationTranslationTransfer == null) {

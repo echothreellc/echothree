@@ -48,7 +48,7 @@ public class ForumGroupTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public ForumGroupTransfer getForumGroupTransfer(ForumGroup forumGroup) {
+    public ForumGroupTransfer getForumGroupTransfer(UserVisit userVisit, ForumGroup forumGroup) {
         var forumGroupTransfer = get(forumGroup);
         
         if(forumGroupTransfer == null) {

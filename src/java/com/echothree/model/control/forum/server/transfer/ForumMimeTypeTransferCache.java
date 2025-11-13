@@ -33,7 +33,7 @@ public class ForumMimeTypeTransferCache
         super(forumControl);
     }
     
-    public ForumMimeTypeTransfer getForumMimeTypeTransfer(ForumMimeType forumMimeType) {
+    public ForumMimeTypeTransfer getForumMimeTypeTransfer(UserVisit userVisit, ForumMimeType forumMimeType) {
         var forumMimeTypeTransfer = get(forumMimeType);
         
         if(forumMimeTypeTransfer == null) {

@@ -29,7 +29,7 @@ public class CancellationKindDescriptionTransferCache
         super(cancellationPolicyControl);
     }
     
-    public CancellationKindDescriptionTransfer getCancellationKindDescriptionTransfer(CancellationKindDescription cancellationKindDescription) {
+    public CancellationKindDescriptionTransfer getCancellationKindDescriptionTransfer(UserVisit userVisit, CancellationKindDescription cancellationKindDescription) {
         var cancellationKindDescriptionTransfer = get(cancellationKindDescription);
         
         if(cancellationKindDescriptionTransfer == null) {

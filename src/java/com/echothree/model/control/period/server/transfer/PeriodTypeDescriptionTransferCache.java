@@ -29,7 +29,7 @@ public class PeriodTypeDescriptionTransferCache
         super(periodControl);
     }
     
-    public PeriodTypeDescriptionTransfer getPeriodTypeDescriptionTransfer(PeriodTypeDescription periodTypeDescription) {
+    public PeriodTypeDescriptionTransfer getPeriodTypeDescriptionTransfer(UserVisit userVisit, PeriodTypeDescription periodTypeDescription) {
         var periodTypeDescriptionTransfer = get(periodTypeDescription);
         
         if(periodTypeDescriptionTransfer == null) {

@@ -35,7 +35,7 @@ public class InventoryLocationGroupVolumeTransferCache
     }
     
     @Override
-    public InventoryLocationGroupVolumeTransfer getTransfer(InventoryLocationGroupVolume inventoryLocationGroupVolume) {
+    public InventoryLocationGroupVolumeTransfer getTransfer(UserVisit userVisit, InventoryLocationGroupVolume inventoryLocationGroupVolume) {
         var inventoryLocationGroupVolumeTransfer = get(inventoryLocationGroupVolume);
         
         if(inventoryLocationGroupVolumeTransfer == null) {

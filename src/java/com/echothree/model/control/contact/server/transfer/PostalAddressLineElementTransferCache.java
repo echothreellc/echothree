@@ -29,7 +29,7 @@ public class PostalAddressLineElementTransferCache
         super(contactControl);
     }
     
-    public PostalAddressLineElementTransfer getPostalAddressLineElementTransfer(PostalAddressLineElement postalAddressLineElement) {
+    public PostalAddressLineElementTransfer getPostalAddressLineElementTransfer(UserVisit userVisit, PostalAddressLineElement postalAddressLineElement) {
         var postalAddressLineElementTransfer = get(postalAddressLineElement);
         
         if(postalAddressLineElementTransfer == null) {

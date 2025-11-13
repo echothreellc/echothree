@@ -32,7 +32,7 @@ public class EntityTypeDescriptionTransferCache
         super();
     }
     
-    public EntityTypeDescriptionTransfer getEntityTypeDescriptionTransfer(EntityTypeDescription entityTypeDescription) {
+    public EntityTypeDescriptionTransfer getEntityTypeDescriptionTransfer(UserVisit userVisit, EntityTypeDescription entityTypeDescription) {
         var entityTypeDescriptionTransfer = get(entityTypeDescription);
         
         if(entityTypeDescriptionTransfer == null) {

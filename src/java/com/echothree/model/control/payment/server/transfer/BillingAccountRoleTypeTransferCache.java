@@ -33,7 +33,7 @@ public class BillingAccountRoleTypeTransferCache
     }
 
     @Override
-    public BillingAccountRoleTypeTransfer getTransfer(BillingAccountRoleType billingAccountRoleType) {
+    public BillingAccountRoleTypeTransfer getTransfer(UserVisit userVisit, BillingAccountRoleType billingAccountRoleType) {
         var billingAccountRoleTypeTransfer = get(billingAccountRoleType);
         
         if(billingAccountRoleTypeTransfer == null) {

@@ -35,7 +35,7 @@ public class ReturnTypeShippingMethodTransferCache
         shippingControl = Session.getModelController(ShippingControl.class);
     }
     
-    public ReturnTypeShippingMethodTransfer getReturnTypeShippingMethodTransfer(ReturnTypeShippingMethod returnTypeShippingMethod) {
+    public ReturnTypeShippingMethodTransfer getReturnTypeShippingMethodTransfer(UserVisit userVisit, ReturnTypeShippingMethod returnTypeShippingMethod) {
         var returnTypeShippingMethodTransfer = get(returnTypeShippingMethod);
         
         if(returnTypeShippingMethodTransfer == null) {

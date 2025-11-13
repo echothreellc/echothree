@@ -42,7 +42,7 @@ public class CountryTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public CountryTransfer getCountryTransfer(GeoCode geoCode) {
+    public CountryTransfer getCountryTransfer(UserVisit userVisit, GeoCode geoCode) {
         var countryTransfer = get(geoCode);
         
         if(countryTransfer == null) {

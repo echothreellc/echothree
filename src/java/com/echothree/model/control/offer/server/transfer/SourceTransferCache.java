@@ -32,7 +32,7 @@ public class SourceTransferCache
         super();
     }
     
-    public SourceTransfer getSourceTransfer(Source source) {
+    public SourceTransfer getSourceTransfer(UserVisit userVisit, Source source) {
         var sourceTransfer = get(source);
         
         if(sourceTransfer == null) {

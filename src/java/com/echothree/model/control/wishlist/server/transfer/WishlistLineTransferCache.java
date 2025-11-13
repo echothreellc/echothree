@@ -43,7 +43,7 @@ public class WishlistLineTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public WishlistLineTransfer getWishlistLineTransfer(OrderLine orderLine) {
+    public WishlistLineTransfer getWishlistLineTransfer(UserVisit userVisit, OrderLine orderLine) {
         var wishlistLineTransfer = get(orderLine);
         
         if(wishlistLineTransfer == null) {

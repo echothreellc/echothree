@@ -29,7 +29,7 @@ public class InvoiceRoleTypeTransferCache
         super(invoiceControl);
     }
     
-    public InvoiceRoleTypeTransfer getInvoiceRoleTypeTransfer(InvoiceRoleType invoiceRoleType) {
+    public InvoiceRoleTypeTransfer getInvoiceRoleTypeTransfer(UserVisit userVisit, InvoiceRoleType invoiceRoleType) {
         var invoiceRoleTypeTransfer = get(invoiceRoleType);
         
         if(invoiceRoleTypeTransfer == null) {

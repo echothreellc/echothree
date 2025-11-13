@@ -33,7 +33,7 @@ public class PartyTypeDocumentTypeUsageTypeTransferCache
         super(documentControl);
     }
     
-    public PartyTypeDocumentTypeUsageTypeTransfer getPartyTypeDocumentTypeUsageTypeTransfer(PartyTypeDocumentTypeUsageType partyTypeDocumentTypeUsageType) {
+    public PartyTypeDocumentTypeUsageTypeTransfer getPartyTypeDocumentTypeUsageTypeTransfer(UserVisit userVisit, PartyTypeDocumentTypeUsageType partyTypeDocumentTypeUsageType) {
         var partyTypeDocumentTypeUsageTypeTransfer = get(partyTypeDocumentTypeUsageType);
         
         if(partyTypeDocumentTypeUsageTypeTransfer == null) {

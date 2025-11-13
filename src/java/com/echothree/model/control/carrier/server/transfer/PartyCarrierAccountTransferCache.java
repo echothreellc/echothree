@@ -35,7 +35,7 @@ public class PartyCarrierAccountTransferCache
         super(carrierControl);
     }
     
-    public PartyCarrierAccountTransfer getPartyCarrierAccountTransfer(PartyCarrierAccount partyCarrierAccount) {
+    public PartyCarrierAccountTransfer getPartyCarrierAccountTransfer(UserVisit userVisit, PartyCarrierAccount partyCarrierAccount) {
         var partyCarrierAccountTransfer = get(partyCarrierAccount);
         
         if(partyCarrierAccountTransfer == null) {

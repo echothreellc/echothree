@@ -32,7 +32,7 @@ public class TagScopeDescriptionTransferCache
         super();
     }
     
-    public TagScopeDescriptionTransfer getTagScopeDescriptionTransfer(TagScopeDescription tagScopeDescription) {
+    public TagScopeDescriptionTransfer getTagScopeDescriptionTransfer(UserVisit userVisit, TagScopeDescription tagScopeDescription) {
         var tagScopeDescriptionTransfer = get(tagScopeDescription);
         
         if(tagScopeDescriptionTransfer == null) {

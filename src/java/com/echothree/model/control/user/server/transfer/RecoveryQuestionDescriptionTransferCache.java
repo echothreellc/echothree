@@ -29,7 +29,7 @@ public class RecoveryQuestionDescriptionTransferCache
         super(userControl);
     }
     
-    public RecoveryQuestionDescriptionTransfer getRecoveryQuestionDescriptionTransfer(RecoveryQuestionDescription recoveryQuestionDescription) {
+    public RecoveryQuestionDescriptionTransfer getRecoveryQuestionDescriptionTransfer(UserVisit userVisit, RecoveryQuestionDescription recoveryQuestionDescription) {
         var recoveryQuestionDescriptionTransfer = get(recoveryQuestionDescription);
         
         if(recoveryQuestionDescriptionTransfer == null) {

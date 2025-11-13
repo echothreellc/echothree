@@ -38,7 +38,7 @@ public class OfferUseTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public OfferUseTransfer getOfferUseTransfer(OfferUse offerUse) {
+    public OfferUseTransfer getOfferUseTransfer(UserVisit userVisit, OfferUse offerUse) {
         var offerUseTransfer = get(offerUse);
         
         if(offerUseTransfer == null) {

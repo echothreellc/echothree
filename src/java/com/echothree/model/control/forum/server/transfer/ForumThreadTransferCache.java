@@ -54,7 +54,7 @@ public class ForumThreadTransferCache
         hasForumMessageLimits = session.hasLimit(ForumMessageFactory.class);
     }
     
-    public ForumThreadTransfer getForumThreadTransfer(ForumThread forumThread) {
+    public ForumThreadTransfer getForumThreadTransfer(UserVisit userVisit, ForumThread forumThread) {
         var forumThreadTransfer = get(forumThread);
         
         if(forumThreadTransfer == null) {

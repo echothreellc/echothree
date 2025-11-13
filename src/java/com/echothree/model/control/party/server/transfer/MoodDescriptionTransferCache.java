@@ -29,7 +29,7 @@ public class MoodDescriptionTransferCache
     }
 
     @Override
-    public MoodDescriptionTransfer getTransfer(MoodDescription moodDescription) {
+    public MoodDescriptionTransfer getTransfer(UserVisit userVisit, MoodDescription moodDescription) {
         var moodDescriptionTransfer = get(moodDescription);
         
         if(moodDescriptionTransfer == null) {
