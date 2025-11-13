@@ -31,12 +31,9 @@ import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatus
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.invoice.server.entity.Invoice;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.string.DateTimeFormatType;
-import com.echothree.util.common.string.DateTimeFormatter;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.Session;
-import com.echothree.util.server.string.DateUtils;
 
 public class InvoiceTransferCache
         extends BaseInvoiceTransferCache<Invoice, InvoiceTransfer> {
@@ -48,8 +45,7 @@ public class InvoiceTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     boolean includeLines;
     boolean includeRoles;
-    DateTimeFormatter shortDateFormatter;
-    
+
     /** Creates a new instance of InvoiceTransferCache */
     public InvoiceTransferCache(InvoiceControl invoiceControl) {
         super(invoiceControl);
@@ -61,8 +57,6 @@ public class InvoiceTransferCache
         }
 
         setIncludeEntityInstance(true);
-        
-        shortDateFormatter = DateUtils.getInstance().getDateTimeFormatter(userVisit, DateTimeFormatType.SHORT_DATE);
     }
 
     private InvoiceTransfer setInvoiceTimes(UserVisit userVisit, Invoice invoice, InvoiceTransfer invoiceTransfer) {
@@ -113,7 +107,6 @@ public class InvoiceTransferCache
             
             invoiceTransfer = setInvoiceTimes(userVisit, invoice, new InvoiceTransfer(invoiceType, invoiceName, billingAccount, glAccount, term, reference, description, invoiceStatus));
             put(userVisit, invoice, invoiceTransfer, entityInstance);
-            
 
             if(includeLines) {
                 invoiceTransfer.setInvoiceLines(new ListWrapper<>(invoiceControl.getInvoiceLineTransfersByInvoice(userVisit, invoice)));
