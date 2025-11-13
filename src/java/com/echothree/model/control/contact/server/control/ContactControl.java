@@ -264,10 +264,10 @@ public class ContactControl
     public List<ContactMechanismTypeTransfer> getContactMechanismTypeTransfers(UserVisit userVisit) {
         var entities = getContactMechanismTypes();
         List<ContactMechanismTypeTransfer> transfers = new ArrayList<>(entities.size());
-        var cache = getContactTransferCaches(userVisit).getContactMechanismTypeTransferCache();
+        var cache = getContactTransferCaches().getContactMechanismTypeTransferCache();
         
         entities.forEach((entity) ->
-                transfers.add(cache.getContactMechanismTypeTransfer(entity))
+                transfers.add(cache.getContactMechanismTypeTransfer(userVisit, entity))
         );
         
         return transfers;
@@ -970,10 +970,10 @@ public class ContactControl
     
     public List<ContactMechanismPurposeTransfer> getContactMechanismPurposeTransfers(UserVisit userVisit, Collection<ContactMechanismPurpose> entities) {
         List<ContactMechanismPurposeTransfer> transfers = new ArrayList<>(entities.size());
-        var cache = getContactTransferCaches(userVisit).getContactMechanismPurposeTransferCache();
+        var cache = getContactTransferCaches().getContactMechanismPurposeTransferCache();
         
         entities.forEach((entity) ->
-                transfers.add(cache.getContactMechanismPurposeTransfer(entity))
+                transfers.add(cache.getContactMechanismPurposeTransfer(userVisit, entity))
         );
         
         return transfers;
@@ -1128,7 +1128,7 @@ public class ContactControl
         var contactMechanismTransferCache = getContactTransferCaches().getContactMechanismTransferCache();
         
         partyContactMechanisms.forEach((partyContactMechanism) -> {
-            contactMechanismTransfers.add(contactMechanismTransferCache.getContactMechanismTransfer(partyContactMechanism.getLastDetail().getContactMechanism()));
+            contactMechanismTransfers.add(contactMechanismTransferCache.getContactMechanismTransfer(userVisit, partyContactMechanism.getLastDetail().getContactMechanism()));
         });
         
         return contactMechanismTransfers;
@@ -1460,10 +1460,10 @@ public class ContactControl
     public List<ContactMechanismAliasTransfer> getContactMechanismAliasTransfersByContactMechanism(UserVisit userVisit, ContactMechanism contactMechanism) {
         var entities = getContactMechanismAliasesByContactMechanism(contactMechanism);
         List<ContactMechanismAliasTransfer> transfers = new ArrayList<>(entities.size());
-        var cache = getContactTransferCaches(userVisit).getContactMechanismAliasTransferCache();
+        var cache = getContactTransferCaches().getContactMechanismAliasTransferCache();
         
         entities.forEach((entity) ->
-                transfers.add(cache.getContactMechanismAliasTransfer(entity))
+                transfers.add(cache.getContactMechanismAliasTransfer(userVisit, entity))
         );
         
         return transfers;
@@ -1631,7 +1631,7 @@ public class ContactControl
     }
     
     public ContactInet4AddressTransfer getContactInet4AddressTransfer(UserVisit userVisit, ContactInet4Address contactInet4Address) {
-        return getContactTransferCaches(userVisit).getContactInet4AddressTransferCache().getContactInet4AddressTransfer(contactInet4Address);
+        return getContactTransferCaches().getContactInet4AddressTransferCache().getContactInet4AddressTransfer(userVisit, contactInet4Address);
     }
     
     public void updateContactInet4AddressFromValue(ContactInet4AddressValue contactInet4AddressValue, BasePK updatedBy) {
@@ -2582,10 +2582,10 @@ public class ContactControl
     public List<PartyContactMechanismTransfer> getPartyContactMechanismTransfersByParty(UserVisit userVisit, Party party) {
         var entities = getPartyContactMechanismsByParty(party);
         List<PartyContactMechanismTransfer> transfers = new ArrayList<>(entities.size());
-        var cache = getContactTransferCaches(userVisit).getPartyContactMechanismTransferCache();
+        var cache = getContactTransferCaches().getPartyContactMechanismTransferCache();
         
         entities.forEach((entity) ->
-                transfers.add(cache.getPartyContactMechanismTransfer(entity))
+                transfers.add(cache.getPartyContactMechanismTransfer(userVisit, entity))
         );
         
         return transfers;
@@ -3192,10 +3192,10 @@ public class ContactControl
             PartyContactMechanism partyContactMechanism) {
         var entities = getPartyContactMechanismPurposesByPartyContactMechanism(partyContactMechanism);
         List<PartyContactMechanismPurposeTransfer> transfers = new ArrayList<>(entities.size());
-        var cache = getContactTransferCaches(userVisit).getPartyContactMechanismPurposeTransferCache();
+        var cache = getContactTransferCaches().getPartyContactMechanismPurposeTransferCache();
         
         entities.forEach((entity) ->
-                transfers.add(cache.getPartyContactMechanismPurposeTransfer(entity))
+                transfers.add(cache.getPartyContactMechanismPurposeTransfer(userVisit, entity))
         );
         
         return transfers;

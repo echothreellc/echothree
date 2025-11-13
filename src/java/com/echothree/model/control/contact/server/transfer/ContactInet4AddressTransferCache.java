@@ -25,11 +25,11 @@ public class ContactInet4AddressTransferCache
         extends BaseContactTransferCache<ContactInet4Address, ContactInet4AddressTransfer> {
     
     /** Creates a new instance of ContactInet4AddressTransferCache */
-    public ContactInet4AddressTransferCache(UserVisit userVisit, ContactControl contactControl) {
+    public ContactInet4AddressTransferCache(ContactControl contactControl) {
         super(contactControl);
     }
     
-    public ContactInet4AddressTransfer getContactInet4AddressTransfer(ContactInet4Address contactInet4Address) {
+    public ContactInet4AddressTransfer getContactInet4AddressTransfer(UserVisit userVisit, ContactInet4Address contactInet4Address) {
         var contactInet4AddressTransfer = get(contactInet4Address);
         
         if(contactInet4AddressTransfer == null) {

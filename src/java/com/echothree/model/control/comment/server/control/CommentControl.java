@@ -1573,10 +1573,10 @@ public class CommentControl
     public List<CommentUsageTransfer> getCommentUsageTransfersByComment(UserVisit userVisit, Comment comment) {
         var entities = getCommentUsagesByComment(comment);
         List<CommentUsageTransfer> transfers = new ArrayList<>(entities.size());
-        var cache = getCommentTransferCaches(userVisit).getCommentUsageTransferCache();
+        var cache = getCommentTransferCaches().getCommentUsageTransferCache();
         
         entities.forEach((entity) ->
-                transfers.add(cache.getCommentUsageTransfer(entity))
+                transfers.add(cache.getCommentUsageTransfer(userVisit, entity))
         );
         
         return transfers;
