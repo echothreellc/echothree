@@ -29,7 +29,7 @@ public abstract class BaseAssociateTransferCache<K extends BaseEntity, V extends
     
     /** Creates a new instance of BaseAssociateTransferCache */
     protected BaseAssociateTransferCache(UserVisit userVisit, AssociateControl associateControl) {
-        super(userVisit);
+        super();
         
         this.associateControl = associateControl;
     }

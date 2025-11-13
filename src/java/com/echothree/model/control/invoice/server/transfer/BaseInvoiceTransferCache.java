@@ -29,7 +29,7 @@ public abstract class BaseInvoiceTransferCache<K extends BaseEntity, V extends B
     
     /** Creates a new instance of BaseInvoiceTransferCache */
     protected BaseInvoiceTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
-        super(userVisit);
+        super();
         
         this.invoiceControl = invoiceControl;
     }

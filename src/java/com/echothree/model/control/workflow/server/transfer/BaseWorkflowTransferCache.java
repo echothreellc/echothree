@@ -29,7 +29,7 @@ public abstract class BaseWorkflowTransferCache<K extends BaseEntity, V extends 
     
     /** Creates a new instance of BaseWorkflowTransferCache */
     protected BaseWorkflowTransferCache(UserVisit userVisit, WorkflowControl workflowControl) {
-        super(userVisit);
+        super();
         
         this.workflowControl = workflowControl;
     }

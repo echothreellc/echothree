@@ -29,7 +29,7 @@ public abstract class BaseItemTransferCache<K extends BaseEntity, V extends Base
 
     /** Creates a new instance of BaseItemTransferCache */
     protected BaseItemTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit);
+        super();
 
         this.itemControl = itemControl;
     }

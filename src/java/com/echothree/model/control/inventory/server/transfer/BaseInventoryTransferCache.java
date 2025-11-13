@@ -29,7 +29,7 @@ public abstract class BaseInventoryTransferCache<K extends BaseEntity, V extends
     
     /** Creates a new instance of BaseInventoryTransferCache */
     protected BaseInventoryTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit);
+        super();
         
         this.inventoryControl = inventoryControl;
     }

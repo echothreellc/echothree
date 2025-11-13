@@ -60,7 +60,6 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     
     private Log log = null;
     
-    protected UserVisit userVisit;
     protected Session session;
     protected Map<K, V> transferCache;
     
@@ -82,9 +81,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     boolean includeTagScopes;
     
     /** Creates a new instance of BaseTransferCache */
-    protected BaseTransferCache(UserVisit userVisit) {
-        this.userVisit = userVisit;
-        
+    protected BaseTransferCache() {
         session = ThreadSession.currentSession();
         transferCache = new HashMap<>();
         

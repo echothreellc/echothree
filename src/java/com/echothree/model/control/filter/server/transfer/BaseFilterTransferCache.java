@@ -26,7 +26,7 @@ public abstract class BaseFilterTransferCache<K extends BaseEntity, V extends Ba
     
     /** Creates a new instance of BaseFilterTransferCache */
     protected BaseFilterTransferCache(UserVisit userVisit) {
-        super(userVisit);
+        super();
     }
 
     protected abstract V getTransfer(K key);

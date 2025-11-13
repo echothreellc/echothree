@@ -29,7 +29,7 @@ public abstract class BaseUserTransferCache<K extends BaseEntity, V extends Base
     
     /** Creates a new instance of BaseUserTransferCache */
     protected BaseUserTransferCache(UserVisit userVisit, UserControl userControl) {
-        super(userVisit);
+        super();
         
         this.userControl = userControl;
     }

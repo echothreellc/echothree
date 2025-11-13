@@ -29,7 +29,7 @@ public abstract class BaseChainTransferCache<K extends BaseEntity, V extends Bas
     
     /** Creates a new instance of BaseChainTransferCache */
     protected BaseChainTransferCache(UserVisit userVisit, ChainControl chainControl) {
-        super(userVisit);
+        super();
         
         this.chainControl = chainControl;
     }

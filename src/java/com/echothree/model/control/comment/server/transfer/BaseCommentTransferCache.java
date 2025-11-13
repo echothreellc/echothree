@@ -29,7 +29,7 @@ public abstract class BaseCommentTransferCache<K extends BaseEntity, V extends B
     
     /** Creates a new instance of BaseCommentTransferCache */
     protected BaseCommentTransferCache(UserVisit userVisit, CommentControl commentControl) {
-        super(userVisit);
+        super();
         
         this.commentControl = commentControl;
     }

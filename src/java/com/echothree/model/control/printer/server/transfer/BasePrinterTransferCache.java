@@ -29,7 +29,7 @@ public abstract class BasePrinterTransferCache<K extends BaseEntity, V extends B
     
     /** Creates a new instance of BasePrinterTransferCache */
     protected BasePrinterTransferCache(UserVisit userVisit, PrinterControl printerControl) {
-        super(userVisit);
+        super();
         
         this.printerControl = printerControl;
     }

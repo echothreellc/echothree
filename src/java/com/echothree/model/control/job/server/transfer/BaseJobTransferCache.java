@@ -29,7 +29,7 @@ public abstract class BaseJobTransferCache<K extends BaseEntity, V extends BaseT
     
     /** Creates a new instance of BaseJobTransferCache */
     protected BaseJobTransferCache(UserVisit userVisit, JobControl jobControl) {
-        super(userVisit);
+        super();
         
         this.jobControl = jobControl;
     }

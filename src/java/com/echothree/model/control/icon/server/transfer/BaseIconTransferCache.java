@@ -29,7 +29,7 @@ public abstract class BaseIconTransferCache<K extends BaseEntity, V extends Base
     
     /** Creates a new instance of BaseIconTransferCache */
     protected BaseIconTransferCache(UserVisit userVisit, IconControl iconControl) {
-        super(userVisit);
+        super();
         
         this.iconControl = iconControl;
     }

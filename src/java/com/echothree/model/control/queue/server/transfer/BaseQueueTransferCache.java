@@ -29,7 +29,7 @@ public abstract class BaseQueueTransferCache<K extends BaseEntity, V extends Bas
     
     /** Creates a new instance of BaseQueueTransferCache */
     protected BaseQueueTransferCache(UserVisit userVisit, QueueControl queueControl) {
-        super(userVisit);
+        super();
         
         this.queueControl = queueControl;
     }

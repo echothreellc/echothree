@@ -29,7 +29,7 @@ public abstract class BaseLicenseTransferCache<K extends BaseEntity, V extends B
     
     /** Creates a new instance of BaseLicenseTransferCache */
     protected BaseLicenseTransferCache(UserVisit userVisit, LicenseControl licenseControl) {
-        super(userVisit);
+        super();
         
         this.licenseControl = licenseControl;
     }

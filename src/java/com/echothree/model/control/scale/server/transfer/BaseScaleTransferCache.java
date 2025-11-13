@@ -29,7 +29,7 @@ public abstract class BaseScaleTransferCache<K extends BaseEntity, V extends Bas
     
     /** Creates a new instance of BaseScaleTransferCache */
     protected BaseScaleTransferCache(UserVisit userVisit, ScaleControl scaleControl) {
-        super(userVisit);
+        super();
         
         this.scaleControl = scaleControl;
     }

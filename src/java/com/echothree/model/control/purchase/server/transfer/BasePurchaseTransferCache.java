@@ -26,7 +26,7 @@ public abstract class BasePurchaseTransferCache<K extends BaseEntity, V extends 
     
     /** Creates a new instance of BaseSalesTransferCache */
     protected BasePurchaseTransferCache(UserVisit userVisit) {
-        super(userVisit);
+        super();
     }
     
 }

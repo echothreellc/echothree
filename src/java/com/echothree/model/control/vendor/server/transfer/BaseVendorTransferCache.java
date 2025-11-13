@@ -29,7 +29,7 @@ public abstract class BaseVendorTransferCache<K extends BaseEntity, V extends Ba
     
     /** Creates a new instance of BaseVendorTransferCache */
     protected BaseVendorTransferCache(UserVisit userVisit, VendorControl vendorControl) {
-        super(userVisit);
+        super();
         
         this.vendorControl = vendorControl;
     }
