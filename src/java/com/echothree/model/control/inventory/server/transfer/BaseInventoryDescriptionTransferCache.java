@@ -29,7 +29,7 @@ public abstract class BaseInventoryDescriptionTransferCache<K extends BaseEntity
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of BaseInventoryDescriptionTransferCache */
-    protected BaseInventoryDescriptionTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
+    protected BaseInventoryDescriptionTransferCache( InventoryControl inventoryControl) {
         super(userVisit, inventoryControl);
     }
     

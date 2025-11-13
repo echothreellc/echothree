@@ -29,7 +29,7 @@ public abstract class BasePicklistDescriptionTransferCache<K extends BaseEntity,
     PartyControl partyControl;
     
     /** Creates a new instance of BasePicklistDescriptionTransferCache */
-    protected BasePicklistDescriptionTransferCache(UserVisit userVisit, PicklistControl picklistControl) {
+    protected BasePicklistDescriptionTransferCache( PicklistControl picklistControl) {
         super(userVisit, picklistControl);
         
         partyControl = Session.getModelController(PartyControl.class);

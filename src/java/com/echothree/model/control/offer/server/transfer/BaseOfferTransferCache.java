@@ -25,7 +25,7 @@ public abstract class BaseOfferTransferCache<K extends BaseEntity, V extends Bas
         extends BaseTransferCache<K, V> {
     
     /** Creates a new instance of BaseOfferTransferCache */
-    protected BaseOfferTransferCache(UserVisit userVisit) {
+    protected BaseOfferTransferCache() {
         super();
     }
     

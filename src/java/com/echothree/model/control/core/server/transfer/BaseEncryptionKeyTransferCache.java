@@ -31,8 +31,8 @@ public class BaseEncryptionKeyTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of BaseEncryptionKeyTransferCache */
-    protected BaseEncryptionKeyTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected BaseEncryptionKeyTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

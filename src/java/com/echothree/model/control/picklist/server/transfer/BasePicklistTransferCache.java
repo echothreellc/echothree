@@ -28,7 +28,7 @@ public abstract class BasePicklistTransferCache<K extends BaseEntity, V extends 
     PicklistControl picklistControl;
     
     /** Creates a new instance of BasePicklistTransferCache */
-    protected BasePicklistTransferCache(UserVisit userVisit, PicklistControl picklistControl) {
+    protected BasePicklistTransferCache( PicklistControl picklistControl) {
         super();
         
         this.picklistControl = picklistControl;

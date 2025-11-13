@@ -29,7 +29,7 @@ public abstract class BaseCarrierDescriptionTransferCache<K extends BaseEntity, 
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of BaseCarrierDescriptionTransferCache */
-    protected BaseCarrierDescriptionTransferCache(UserVisit userVisit, CarrierControl carrierControl) {
+    protected BaseCarrierDescriptionTransferCache( CarrierControl carrierControl) {
         super(userVisit, carrierControl);
     }
     

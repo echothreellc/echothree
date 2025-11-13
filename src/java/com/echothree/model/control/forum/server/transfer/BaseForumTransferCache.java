@@ -28,7 +28,7 @@ public abstract class BaseForumTransferCache<K extends BaseEntity, V extends Bas
     ForumControl forumControl;
     
     /** Creates a new instance of BaseForumTransferCache */
-    protected BaseForumTransferCache(UserVisit userVisit, ForumControl forumControl) {
+    protected BaseForumTransferCache( ForumControl forumControl) {
         super();
         
         this.forumControl = forumControl;

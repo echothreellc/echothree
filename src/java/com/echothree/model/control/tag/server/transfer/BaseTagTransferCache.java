@@ -25,7 +25,7 @@ public abstract class BaseTagTransferCache<K extends BaseEntity, V extends BaseT
         extends BaseTransferCache<K, V> {
     
     /** Creates a new instance of BaseTagTransferCache */
-    protected BaseTagTransferCache(UserVisit userVisit) {
+    protected BaseTagTransferCache() {
         super();
     }
     

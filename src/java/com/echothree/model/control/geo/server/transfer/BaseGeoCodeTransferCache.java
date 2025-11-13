@@ -28,7 +28,7 @@ public abstract class BaseGeoCodeTransferCache<K extends BaseEntity, V extends B
         extends BaseGeoTransferCache<K, V> {
 
     /** Creates a new instance of BaseGeoCodeTransferCache */
-    protected BaseGeoCodeTransferCache(UserVisit userVisit, GeoControl geoControl) {
+    protected BaseGeoCodeTransferCache( GeoControl geoControl) {
         super(userVisit, geoControl);
     }
 

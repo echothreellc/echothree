@@ -28,7 +28,7 @@ public abstract class BaseTrackTransferCache<K extends BaseEntity, V extends Bas
     TrackControl trackControl;
     
     /** Creates a new instance of BaseTrackTransferCache */
-    protected BaseTrackTransferCache(UserVisit userVisit, TrackControl trackControl) {
+    protected BaseTrackTransferCache( TrackControl trackControl) {
         super();
         
         this.trackControl = trackControl;

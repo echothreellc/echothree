@@ -28,7 +28,7 @@ public abstract class BaseBatchTransferCache<K extends BaseEntity, V extends Bas
     protected BatchControl batchControl;
     
     /** Creates a new instance of BaseBatchTransferCache */
-    protected BaseBatchTransferCache(UserVisit userVisit, BatchControl batchControl) {
+    protected BaseBatchTransferCache( BatchControl batchControl) {
         super();
         
         this.batchControl = batchControl;

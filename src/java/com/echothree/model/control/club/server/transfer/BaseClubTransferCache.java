@@ -28,7 +28,7 @@ public abstract class BaseClubTransferCache<K extends BaseEntity, V extends Base
     ClubControl clubControl;
     
     /** Creates a new instance of BaseClubTransferCache */
-    protected BaseClubTransferCache(UserVisit userVisit, ClubControl clubControl) {
+    protected BaseClubTransferCache( ClubControl clubControl) {
         super();
         
         this.clubControl = clubControl;
