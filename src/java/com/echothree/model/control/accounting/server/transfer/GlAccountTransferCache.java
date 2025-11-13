@@ -42,7 +42,7 @@ public class GlAccountTransferCache
             var glAccountDetail = glAccount.getLastDetail();
             var glAccountName = glAccountDetail.getGlAccountName();
             var parentGlAccount = glAccountDetail.getParentGlAccount();
-            var parentGlAccountTransfer = parentGlAccount == null? null: getTransfer(parentGlAccount);
+            var parentGlAccountTransfer = parentGlAccount == null ? null : getTransfer(userVisit, parentGlAccount);
             var glAccountTypeTransfer = accountingControl.getGlAccountTypeTransfer(userVisit, glAccountDetail.getGlAccountType());
             var glAccountClassTransfer = accountingControl.getGlAccountClassTransfer(userVisit, glAccountDetail.getGlAccountClass());
             var glAccountCategory = glAccountDetail.getGlAccountCategory();

@@ -45,7 +45,7 @@ public class BatchTypeTransferCache
             var batchTypeDetail = batchType.getLastDetail();
             var batchTypeName = batchTypeDetail.getBatchTypeName();
             var parentBatchType = batchTypeDetail.getParentBatchType();
-            var parentBatchTypeTransfer = parentBatchType == null? null: getTransfer(parentBatchType);
+            var parentBatchTypeTransfer = parentBatchType == null ? null : getTransfer(userVisit, parentBatchType);
             var batchSequenceType = batchTypeDetail.getBatchSequenceType();
             var batchSequenceTypeTransfer = batchSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, batchSequenceType);
             var batchWorkflow = batchTypeDetail.getBatchWorkflow();

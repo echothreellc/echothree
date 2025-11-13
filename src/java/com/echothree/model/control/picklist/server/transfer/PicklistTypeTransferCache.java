@@ -44,7 +44,7 @@ public class PicklistTypeTransferCache
             var picklistTypeDetail = picklistType.getLastDetail();
             var picklistTypeName = picklistTypeDetail.getPicklistTypeName();
             var parentPicklistType = picklistTypeDetail.getParentPicklistType();
-            var parentPicklistTypeTransfer = parentPicklistType == null? null: getPicklistTypeTransfer(parentPicklistType);
+            var parentPicklistTypeTransfer = parentPicklistType == null ? null : getPicklistTypeTransfer(userVisit, parentPicklistType);
             var picklistSequenceType = picklistTypeDetail.getPicklistSequenceType();
             var picklistSequenceTypeTransfer = picklistSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, picklistSequenceType);
             var picklistWorkflow = picklistTypeDetail.getPicklistWorkflow();

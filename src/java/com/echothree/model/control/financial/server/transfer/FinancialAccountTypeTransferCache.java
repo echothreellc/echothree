@@ -46,7 +46,7 @@ public class FinancialAccountTypeTransferCache
             var financialAccountTypeDetail = financialAccountType.getLastDetail();
             var financialAccountTypeName = financialAccountTypeDetail.getFinancialAccountTypeName();
             var parentFinancialAccountType = financialAccountTypeDetail.getParentFinancialAccountType();
-            var parentFinancialAccountTypeTransfer = parentFinancialAccountType == null? null: getFinancialAccountTypeTransfer(parentFinancialAccountType);
+            var parentFinancialAccountTypeTransfer = parentFinancialAccountType == null ? null : getFinancialAccountTypeTransfer(userVisit, parentFinancialAccountType);
             var defaultGlAccountTransfer = accountingControl.getGlAccountTransfer(userVisit, financialAccountTypeDetail.getDefaultGlAccount());
             var financialAccountSequenceType = financialAccountTypeDetail.getFinancialAccountSequenceType();
             var financialAccountSequenceTypeTransfer = financialAccountSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, financialAccountSequenceType);

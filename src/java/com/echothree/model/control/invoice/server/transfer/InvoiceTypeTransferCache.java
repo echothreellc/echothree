@@ -38,7 +38,7 @@ public class InvoiceTypeTransferCache
             var invoiceTypeDetail = invoiceType.getLastDetail();
             var invoiceTypeName = invoiceTypeDetail.getInvoiceTypeName();
             var parentInvoiceType = invoiceTypeDetail.getParentInvoiceType();
-            var parentInvoiceTypeTransfer = parentInvoiceType == null? null: getInvoiceTypeTransfer(parentInvoiceType);
+            var parentInvoiceTypeTransfer = parentInvoiceType == null ? null : getInvoiceTypeTransfer(userVisit, parentInvoiceType);
             var isDefault = invoiceTypeDetail.getIsDefault();
             var sortOrder = invoiceTypeDetail.getSortOrder();
             var description = invoiceControl.getBestInvoiceTypeDescription(invoiceType, getLanguage(userVisit));

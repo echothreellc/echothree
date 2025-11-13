@@ -39,7 +39,7 @@ public class ItemCategoryTransferCache
             var itemCategoryDetail = itemCategory.getLastDetail();
             var itemCategoryName = itemCategoryDetail.getItemCategoryName();
             var parentItemCategory = itemCategoryDetail.getParentItemCategory();
-            var parentItemCategoryTransfer = parentItemCategory == null ? null : getTransfer(parentItemCategory);
+            var parentItemCategoryTransfer = parentItemCategory == null ? null : getTransfer(userVisit, parentItemCategory);
             var isDefault = itemCategoryDetail.getIsDefault();
             var sortOrder = itemCategoryDetail.getSortOrder();
             var description = itemControl.getBestItemCategoryDescription(itemCategory, getLanguage(userVisit));

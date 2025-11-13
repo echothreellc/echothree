@@ -46,7 +46,7 @@ public class ShipmentTypeTransferCache
             var shipmentTypeDetail = shipmentType.getLastDetail();
             var shipmentTypeName = shipmentTypeDetail.getShipmentTypeName();
             var parentShipmentType = shipmentTypeDetail.getParentShipmentType();
-            var parentShipmentTypeTransfer = parentShipmentType == null? null: getTransfer(parentShipmentType);
+            var parentShipmentTypeTransfer = parentShipmentType == null ? null : getTransfer(userVisit, parentShipmentType);
             var shipmentSequenceType = shipmentTypeDetail.getShipmentSequenceType();
             var shipmentSequenceTypeTransfer = shipmentSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, shipmentSequenceType);
             var shipmentWorkflow = shipmentTypeDetail.getShipmentWorkflow();

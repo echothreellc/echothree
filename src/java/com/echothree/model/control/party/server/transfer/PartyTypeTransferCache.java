@@ -56,7 +56,7 @@ public class PartyTypeTransferCache
         if(partyTypeTransfer == null) {
             var partyTypeName = partyType.getPartyTypeName();
             var parentPartyType = partyType.getParentPartyType();
-            var parentPartyTypeTransfer = parentPartyType == null? null: getTransfer(parentPartyType);
+            var parentPartyTypeTransfer = parentPartyType == null ? null : getTransfer(userVisit, parentPartyType);
             var billingAccountSequenceType = partyType.getBillingAccountSequenceType();
             var billingAccountSequenceTypeTransfer = billingAccountSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, billingAccountSequenceType);
             var allowUserLogins = partyType.getAllowUserLogins();

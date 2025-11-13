@@ -42,7 +42,7 @@ public class GlAccountCategoryTransferCache
             var glAccountCategoryDetail = glAccountCategory.getLastDetail();
             var glAccountCategoryName = glAccountCategoryDetail.getGlAccountCategoryName();
             var parentGlAccountCategory = glAccountCategoryDetail.getParentGlAccountCategory();
-            var parentGlAccountCategoryTransfer = parentGlAccountCategory == null ? null : getTransfer(parentGlAccountCategory);
+            var parentGlAccountCategoryTransfer = parentGlAccountCategory == null ? null : getTransfer(userVisit, parentGlAccountCategory);
             var isDefault = glAccountCategoryDetail.getIsDefault();
             var sortOrder = glAccountCategoryDetail.getSortOrder();
             var description = accountingControl.getBestGlAccountCategoryDescription(glAccountCategory, getLanguage(userVisit));

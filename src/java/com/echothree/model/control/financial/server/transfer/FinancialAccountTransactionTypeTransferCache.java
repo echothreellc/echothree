@@ -43,7 +43,7 @@ public class FinancialAccountTransactionTypeTransferCache
             var financialAccountTypeTransfer = financialControl.getFinancialAccountTypeTransfer(userVisit, financialAccountTransactionTypeDetail.getFinancialAccountType());
             var financialAccountTransactionTypeName = financialAccountTransactionTypeDetail.getFinancialAccountTransactionTypeName();
             var parentFinancialAccountTransactionType = financialAccountTransactionTypeDetail.getParentFinancialAccountTransactionType();
-            var parentFinancialAccountTransactionTypeTransfer = parentFinancialAccountTransactionType == null? null: getFinancialAccountTransactionTypeTransfer(parentFinancialAccountTransactionType);
+            var parentFinancialAccountTransactionTypeTransfer = parentFinancialAccountTransactionType == null ? null : getFinancialAccountTransactionTypeTransfer(userVisit, parentFinancialAccountTransactionType);
             var glAccountTransfer = accountingControl.getGlAccountTransfer(userVisit, financialAccountTransactionTypeDetail.getGlAccount());
             var isDefault = financialAccountTransactionTypeDetail.getIsDefault();
             var sortOrder = financialAccountTransactionTypeDetail.getSortOrder();

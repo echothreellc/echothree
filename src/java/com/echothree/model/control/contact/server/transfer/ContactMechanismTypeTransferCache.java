@@ -35,7 +35,7 @@ public class ContactMechanismTypeTransferCache
         if(contactMechanismTypeTransfer == null) {
             var contactMechanismTypeName = contactMechanismType.getContactMechanismTypeName();
             var parentContactMechanismType = contactMechanismType.getParentContactMechanismType();
-            var parentContactMechanismTypeTransfer = parentContactMechanismType == null? null: getContactMechanismTypeTransfer(parentContactMechanismType);
+            var parentContactMechanismTypeTransfer = parentContactMechanismType == null ? null : getContactMechanismTypeTransfer(userVisit, parentContactMechanismType);
             var isDefault = contactMechanismType.getIsDefault();
             var sortOrder = contactMechanismType.getSortOrder();
             var description = contactControl.getBestContactMechanismTypeDescription(contactMechanismType, getLanguage(userVisit));

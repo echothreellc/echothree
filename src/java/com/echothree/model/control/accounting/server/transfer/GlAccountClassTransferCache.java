@@ -42,7 +42,7 @@ public class GlAccountClassTransferCache
             var glAccountClassDetail = glAccountClass.getLastDetail();
             var glAccountClassName = glAccountClassDetail.getGlAccountClassName();
             var parentGlAccountClass = glAccountClassDetail.getParentGlAccountClass();
-            var parentGlAccountClassTransfer = parentGlAccountClass == null? null: getTransfer(parentGlAccountClass);
+            var parentGlAccountClassTransfer = parentGlAccountClass == null ? null : getTransfer(userVisit, parentGlAccountClass);
             var isDefault = glAccountClassDetail.getIsDefault();
             var sortOrder = glAccountClassDetail.getSortOrder();
             var description = accountingControl.getBestGlAccountClassDescription(glAccountClass, getLanguage(userVisit));

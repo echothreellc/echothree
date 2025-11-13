@@ -38,7 +38,7 @@ public class ItemPurchasingCategoryTransferCache
             var itemPurchasingCategoryDetail = itemPurchasingCategory.getLastDetail();
             var itemPurchasingCategoryName = itemPurchasingCategoryDetail.getItemPurchasingCategoryName();
             var parentItemPurchasingCategory = itemPurchasingCategoryDetail.getParentItemPurchasingCategory();
-            var parentItemPurchasingCategoryTransfer = parentItemPurchasingCategory == null? null: getItemPurchasingCategoryTransfer(parentItemPurchasingCategory);
+            var parentItemPurchasingCategoryTransfer = parentItemPurchasingCategory == null ? null : getItemPurchasingCategoryTransfer(userVisit, parentItemPurchasingCategory);
             var isDefault = itemPurchasingCategoryDetail.getIsDefault();
             var sortOrder = itemPurchasingCategoryDetail.getSortOrder();
             var description = vendorControl.getBestItemPurchasingCategoryDescription(itemPurchasingCategory, getLanguage(userVisit));

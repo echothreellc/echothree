@@ -42,7 +42,7 @@ public class ItemAccountingCategoryTransferCache
             var itemAccountingCategoryDetail = itemAccountingCategory.getLastDetail();
             var itemAccountingCategoryName = itemAccountingCategoryDetail.getItemAccountingCategoryName();
             var parentItemAccountingCategory = itemAccountingCategoryDetail.getParentItemAccountingCategory();
-            var parentItemAccountingCategoryTransfer = parentItemAccountingCategory == null? null: getTransfer(parentItemAccountingCategory);
+            var parentItemAccountingCategoryTransfer = parentItemAccountingCategory == null ? null : getTransfer(userVisit, parentItemAccountingCategory);
             var inventoryGlAccount = itemAccountingCategoryDetail.getInventoryGlAccount();
             var inventoryGlAccountTransfer = inventoryGlAccount == null? null: accountingControl.getGlAccountTransfer(userVisit, inventoryGlAccount);
             var salesGlAccount = itemAccountingCategoryDetail.getSalesGlAccount();

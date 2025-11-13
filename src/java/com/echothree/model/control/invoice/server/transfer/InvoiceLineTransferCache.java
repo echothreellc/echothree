@@ -42,7 +42,7 @@ public class InvoiceLineTransferCache
             var invoiceTransfer = invoiceControl.getInvoiceTransfer(userVisit, invoice);
             var invoiceLineSequence = invoiceLineDetail.getInvoiceLineSequence();
             var parentInvoiceLine = invoiceLineDetail.getParentInvoiceLine();
-            var parentInvoiceLineTransfer = parentInvoiceLine == null? null: getInvoiceLineTransfer(parentInvoiceLine);
+            var parentInvoiceLineTransfer = parentInvoiceLine == null ? null : getInvoiceLineTransfer(userVisit, parentInvoiceLine);
             var invoiceLineTypeTransfer = invoiceControl.getInvoiceLineTypeTransfer(userVisit, invoiceLineDetail.getInvoiceLineType());
             var invoiceLineUseTypeTransfer = invoiceControl.getInvoiceLineUseTypeTransfer(userVisit, invoiceLineDetail.getInvoiceLineUseType());
             var description = invoiceLineDetail.getDescription();
