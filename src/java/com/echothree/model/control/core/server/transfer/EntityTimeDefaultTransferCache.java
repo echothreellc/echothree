@@ -28,20 +28,20 @@ public class EntityTimeDefaultTransferCache
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of EntityTimeDefaultTransferCache */
-    public EntityTimeDefaultTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityTimeDefaultTransferCache() {
+        super();
     }
     
-    public EntityTimeDefaultTransfer getEntityTimeDefaultTransfer(EntityTimeDefault entityTimeDefault) {
+    public EntityTimeDefaultTransfer getEntityTimeDefaultTransfer(UserVisit userVisit, EntityTimeDefault entityTimeDefault) {
         var entityTimeDefaultTransfer = get(entityTimeDefault);
         
         if(entityTimeDefaultTransfer == null) {
             var entityDefault = coreControl.getEntityAttributeTransfer(userVisit, entityTimeDefault.getEntityAttribute(), null);
             var unformattedTimeAttribute = entityTimeDefault.getTimeAttribute();
-            var timeAttribute = formatTypicalDateTime(unformattedTimeAttribute);
+            var timeAttribute = formatTypicalDateTime(userVisit, unformattedTimeAttribute);
             
             entityTimeDefaultTransfer = new EntityTimeDefaultTransfer(entityDefault, timeAttribute, unformattedTimeAttribute);
-            put(entityTimeDefault, entityTimeDefaultTransfer);
+            put(userVisit, entityTimeDefault, entityTimeDefaultTransfer);
         }
         
         return entityTimeDefaultTransfer;

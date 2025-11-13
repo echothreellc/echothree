@@ -25,11 +25,11 @@ public class InvoiceTimeTypeDescriptionTransferCache
         extends BaseInvoiceDescriptionTransferCache<InvoiceTimeTypeDescription, InvoiceTimeTypeDescriptionTransfer> {
     
     /** Creates a new instance of InvoiceTimeTypeDescriptionTransferCache */
-    public InvoiceTimeTypeDescriptionTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
-        super(userVisit, invoiceControl);
+    public InvoiceTimeTypeDescriptionTransferCache(InvoiceControl invoiceControl) {
+        super(invoiceControl);
     }
     
-    public InvoiceTimeTypeDescriptionTransfer getInvoiceTimeTypeDescriptionTransfer(InvoiceTimeTypeDescription invoiceTimeTypeDescription) {
+    public InvoiceTimeTypeDescriptionTransfer getInvoiceTimeTypeDescriptionTransfer(UserVisit userVisit, InvoiceTimeTypeDescription invoiceTimeTypeDescription) {
         var invoiceTimeTypeDescriptionTransfer = get(invoiceTimeTypeDescription);
         
         if(invoiceTimeTypeDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class InvoiceTimeTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, invoiceTimeTypeDescription.getLanguage());
             
             invoiceTimeTypeDescriptionTransfer = new InvoiceTimeTypeDescriptionTransfer(languageTransfer, invoiceTimeTypeTransfer, invoiceTimeTypeDescription.getDescription());
-            put(invoiceTimeTypeDescription, invoiceTimeTypeDescriptionTransfer);
+            put(userVisit, invoiceTimeTypeDescription, invoiceTimeTypeDescriptionTransfer);
         }
         
         return invoiceTimeTypeDescriptionTransfer;

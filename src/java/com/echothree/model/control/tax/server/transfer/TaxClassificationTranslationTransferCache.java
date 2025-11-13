@@ -29,12 +29,12 @@ public class TaxClassificationTranslationTransferCache
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     
     /** Creates a new instance of TaxClassificationTranslationTransferCache */
-    public TaxClassificationTranslationTransferCache(UserVisit userVisit, TaxControl taxControl) {
-        super(userVisit, taxControl);
+    public TaxClassificationTranslationTransferCache(TaxControl taxControl) {
+        super(taxControl);
     }
     
     @Override
-    public TaxClassificationTranslationTransfer getTransfer(TaxClassificationTranslation taxClassificationTranslation) {
+    public TaxClassificationTranslationTransfer getTransfer(UserVisit userVisit, TaxClassificationTranslation taxClassificationTranslation) {
         var taxClassificationTranslationTransfer = get(taxClassificationTranslation);
         
         if(taxClassificationTranslationTransfer == null) {
@@ -47,7 +47,7 @@ public class TaxClassificationTranslationTransferCache
             
             taxClassificationTranslationTransfer = new TaxClassificationTranslationTransfer(languageTransfer,
                     taxClassificationTransfer, description, overviewMimeTypeTransfer, overview);
-            put(taxClassificationTranslation, taxClassificationTranslationTransfer);
+            put(userVisit, taxClassificationTranslation, taxClassificationTranslationTransfer);
         }
         
         return taxClassificationTranslationTransfer;

@@ -32,13 +32,13 @@ public class OrderShipmentGroupTransferCache
     ShippingControl shippingControl = Session.getModelController(ShippingControl.class);;
     
     /** Creates a new instance of OrderShipmentGroupTransferCache */
-    public OrderShipmentGroupTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public OrderShipmentGroupTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public OrderShipmentGroupTransfer getOrderShipmentGroupTransfer(OrderShipmentGroup orderShipmentGroup) {
+    public OrderShipmentGroupTransfer getOrderShipmentGroupTransfer(UserVisit userVisit, OrderShipmentGroup orderShipmentGroup) {
         var orderShipmentGroupTransfer = get(orderShipmentGroup);
         
         if(orderShipmentGroupTransfer == null) {
@@ -54,7 +54,7 @@ public class OrderShipmentGroupTransferCache
             
             orderShipmentGroupTransfer = new OrderShipmentGroupTransfer(orderShipmentGroupSequence, itemDeliveryTypeTransfer, isDefault,
                     partyContactMechanismTransfer, shippingMethodTransfer, holdUntilComplete);
-            put(orderShipmentGroup, orderShipmentGroupTransfer);
+            put(userVisit, orderShipmentGroup, orderShipmentGroupTransfer);
         }
         
         return orderShipmentGroupTransfer;

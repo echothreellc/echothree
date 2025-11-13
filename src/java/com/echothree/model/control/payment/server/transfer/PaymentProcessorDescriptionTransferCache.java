@@ -28,12 +28,12 @@ public class PaymentProcessorDescriptionTransferCache
     PaymentProcessorControl paymentProcessorControl = Session.getModelController(com.echothree.model.control.payment.server.control.PaymentProcessorControl.class);
 
     /** Creates a new instance of PaymentProcessorDescriptionTransferCache */
-    public PaymentProcessorDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public PaymentProcessorDescriptionTransferCache() {
+        super();
     }
 
     @Override
-    public PaymentProcessorDescriptionTransfer getTransfer(PaymentProcessorDescription paymentProcessorDescription) {
+    public PaymentProcessorDescriptionTransfer getTransfer(UserVisit userVisit, PaymentProcessorDescription paymentProcessorDescription) {
         var paymentProcessorDescriptionTransfer = get(paymentProcessorDescription);
         
         if(paymentProcessorDescriptionTransfer == null) {
@@ -41,7 +41,7 @@ public class PaymentProcessorDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, paymentProcessorDescription.getLanguage());
             
             paymentProcessorDescriptionTransfer = new PaymentProcessorDescriptionTransfer(languageTransfer, paymentProcessorTransfer, paymentProcessorDescription.getDescription());
-            put(paymentProcessorDescription, paymentProcessorDescriptionTransfer);
+            put(userVisit, paymentProcessorDescription, paymentProcessorDescriptionTransfer);
         }
         
         return paymentProcessorDescriptionTransfer;

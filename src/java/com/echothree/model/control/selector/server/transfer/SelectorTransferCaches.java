@@ -37,78 +37,78 @@ public class SelectorTransferCaches
     protected SelectorPartyTransferCache selectorPartyTransferCache;
     
     /** Creates a new instance of SelectorTransferCaches */
-    public SelectorTransferCaches(UserVisit userVisit, SelectorControl selectorControl) {
-        super(userVisit);
+    public SelectorTransferCaches(SelectorControl selectorControl) {
+        super();
         
         this.selectorControl = selectorControl;
     }
     
     public SelectorKindTransferCache getSelectorKindTransferCache() {
         if(filterKindTransferCache == null)
-            filterKindTransferCache = new SelectorKindTransferCache(userVisit, selectorControl);
+            filterKindTransferCache = new SelectorKindTransferCache(selectorControl);
 
         return filterKindTransferCache;
     }
 
     public SelectorKindDescriptionTransferCache getSelectorKindDescriptionTransferCache() {
         if(filterKindDescriptionTransferCache == null)
-            filterKindDescriptionTransferCache = new SelectorKindDescriptionTransferCache(userVisit, selectorControl);
+            filterKindDescriptionTransferCache = new SelectorKindDescriptionTransferCache(selectorControl);
 
         return filterKindDescriptionTransferCache;
     }
 
     public SelectorTypeTransferCache getSelectorTypeTransferCache() {
         if(filterTypeTransferCache == null)
-            filterTypeTransferCache = new SelectorTypeTransferCache(userVisit, selectorControl);
+            filterTypeTransferCache = new SelectorTypeTransferCache(selectorControl);
 
         return filterTypeTransferCache;
     }
 
     public SelectorTypeDescriptionTransferCache getSelectorTypeDescriptionTransferCache() {
         if(filterTypeDescriptionTransferCache == null)
-            filterTypeDescriptionTransferCache = new SelectorTypeDescriptionTransferCache(userVisit, selectorControl);
+            filterTypeDescriptionTransferCache = new SelectorTypeDescriptionTransferCache(selectorControl);
 
         return filterTypeDescriptionTransferCache;
     }
 
     public SelectorTransferCache getSelectorTransferCache() {
         if(selectorTransferCache == null)
-            selectorTransferCache = new SelectorTransferCache(userVisit, selectorControl);
+            selectorTransferCache = new SelectorTransferCache(selectorControl);
         
         return selectorTransferCache;
     }
     
     public SelectorDescriptionTransferCache getSelectorDescriptionTransferCache() {
         if(selectorDescriptionTransferCache == null)
-            selectorDescriptionTransferCache = new SelectorDescriptionTransferCache(userVisit, selectorControl);
+            selectorDescriptionTransferCache = new SelectorDescriptionTransferCache(selectorControl);
         
         return selectorDescriptionTransferCache;
     }
     
     public SelectorNodeDescriptionTransferCache getSelectorNodeDescriptionTransferCache() {
         if(selectorNodeDescriptionTransferCache == null)
-            selectorNodeDescriptionTransferCache = new SelectorNodeDescriptionTransferCache(userVisit, selectorControl);
+            selectorNodeDescriptionTransferCache = new SelectorNodeDescriptionTransferCache(selectorControl);
         
         return selectorNodeDescriptionTransferCache;
     }
     
     public SelectorNodeTransferCache getSelectorNodeTransferCache() {
         if(selectorNodeTransferCache == null)
-            selectorNodeTransferCache = new SelectorNodeTransferCache(userVisit, selectorControl);
+            selectorNodeTransferCache = new SelectorNodeTransferCache(selectorControl);
         
         return selectorNodeTransferCache;
     }
     
     public SelectorNodeTypeTransferCache getSelectorNodeTypeTransferCache() {
         if(selectorNodeTypeTransferCache == null)
-            selectorNodeTypeTransferCache = new SelectorNodeTypeTransferCache(userVisit, selectorControl);
+            selectorNodeTypeTransferCache = new SelectorNodeTypeTransferCache(selectorControl);
         
         return selectorNodeTypeTransferCache;
     }
     
     public SelectorPartyTransferCache getSelectorPartyTransferCache() {
         if(selectorPartyTransferCache == null)
-            selectorPartyTransferCache = new SelectorPartyTransferCache(userVisit, selectorControl);
+            selectorPartyTransferCache = new SelectorPartyTransferCache(selectorControl);
         
         return selectorPartyTransferCache;
     }

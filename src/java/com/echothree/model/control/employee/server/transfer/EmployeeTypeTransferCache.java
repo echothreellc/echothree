@@ -25,13 +25,13 @@ public class EmployeeTypeTransferCache
         extends BaseEmployeeTransferCache<EmployeeType, EmployeeTypeTransfer> {
     
     /** Creates a new instance of EmployeeTypeTransferCache */
-    public EmployeeTypeTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit, employeeControl);
+    public EmployeeTypeTransferCache(EmployeeControl employeeControl) {
+        super(employeeControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public EmployeeTypeTransfer getEmployeeTypeTransfer(EmployeeType employeeType) {
+    public EmployeeTypeTransfer getEmployeeTypeTransfer(UserVisit userVisit, EmployeeType employeeType) {
         var employeeTypeTransfer = get(employeeType);
         
         if(employeeTypeTransfer == null) {
@@ -39,10 +39,10 @@ public class EmployeeTypeTransferCache
             var employeeTypeName = employeeTypeDetail.getEmployeeTypeName();
             var isDefault = employeeTypeDetail.getIsDefault();
             var sortOrder = employeeTypeDetail.getSortOrder();
-            var description = employeeControl.getBestEmployeeTypeDescription(employeeType, getLanguage());
+            var description = employeeControl.getBestEmployeeTypeDescription(employeeType, getLanguage(userVisit));
             
             employeeTypeTransfer = new EmployeeTypeTransfer(employeeTypeName, isDefault, sortOrder, description);
-            put(employeeType, employeeTypeTransfer);
+            put(userVisit, employeeType, employeeTypeTransfer);
         }
         
         return employeeTypeTransfer;

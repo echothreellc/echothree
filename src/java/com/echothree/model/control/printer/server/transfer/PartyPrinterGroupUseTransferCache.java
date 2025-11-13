@@ -29,12 +29,12 @@ public class PartyPrinterGroupUseTransferCache
     PartyControl partyControl;
     
     /** Creates a new instance of PartyPrinterGroupUseTransferCache */
-    public PartyPrinterGroupUseTransferCache(UserVisit userVisit, PrinterControl printerControl) {
-        super(userVisit, printerControl);
+    public PartyPrinterGroupUseTransferCache(PrinterControl printerControl) {
+        super(printerControl);
         partyControl = Session.getModelController(PartyControl.class);
     }
     
-    public PartyPrinterGroupUseTransfer getPartyPrinterGroupUseTransfer(PartyPrinterGroupUse partyPrinterGroupUse) {
+    public PartyPrinterGroupUseTransfer getPartyPrinterGroupUseTransfer(UserVisit userVisit, PartyPrinterGroupUse partyPrinterGroupUse) {
         var partyPrinterGroupUseTransfer = get(partyPrinterGroupUse);
         
         if(partyPrinterGroupUseTransfer == null) {
@@ -45,7 +45,7 @@ public class PartyPrinterGroupUseTransferCache
                     partyPrinterGroupUse.getPrinterGroup());
             
             partyPrinterGroupUseTransfer = new PartyPrinterGroupUseTransfer(party, printerGroupUseType, printerGroup);
-            put(partyPrinterGroupUse, partyPrinterGroupUseTransfer);
+            put(userVisit, partyPrinterGroupUse, partyPrinterGroupUseTransfer);
         }
         
         return partyPrinterGroupUseTransfer;

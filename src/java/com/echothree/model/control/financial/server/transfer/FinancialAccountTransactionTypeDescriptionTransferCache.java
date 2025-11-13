@@ -25,11 +25,11 @@ public class FinancialAccountTransactionTypeDescriptionTransferCache
         extends BaseFinancialDescriptionTransferCache<FinancialAccountTransactionTypeDescription, FinancialAccountTransactionTypeDescriptionTransfer> {
     
     /** Creates a new instance of FinancialAccountTransactionTypeDescriptionTransferCache */
-    public FinancialAccountTransactionTypeDescriptionTransferCache(UserVisit userVisit, FinancialControl financialControl) {
-        super(userVisit, financialControl);
+    public FinancialAccountTransactionTypeDescriptionTransferCache(FinancialControl financialControl) {
+        super(financialControl);
     }
     
-    public FinancialAccountTransactionTypeDescriptionTransfer getFinancialAccountTransactionTypeDescriptionTransfer(FinancialAccountTransactionTypeDescription financialAccountTransactionTypeDescription) {
+    public FinancialAccountTransactionTypeDescriptionTransfer getFinancialAccountTransactionTypeDescriptionTransfer(UserVisit userVisit, FinancialAccountTransactionTypeDescription financialAccountTransactionTypeDescription) {
         var financialAccountTransactionTypeDescriptionTransfer = get(financialAccountTransactionTypeDescription);
         
         if(financialAccountTransactionTypeDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class FinancialAccountTransactionTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, financialAccountTransactionTypeDescription.getLanguage());
             
             financialAccountTransactionTypeDescriptionTransfer = new FinancialAccountTransactionTypeDescriptionTransfer(languageTransfer, financialAccountTransactionTypeTransfer, financialAccountTransactionTypeDescription.getDescription());
-            put(financialAccountTransactionTypeDescription, financialAccountTransactionTypeDescriptionTransfer);
+            put(userVisit, financialAccountTransactionTypeDescription, financialAccountTransactionTypeDescriptionTransfer);
         }
         
         return financialAccountTransactionTypeDescriptionTransfer;

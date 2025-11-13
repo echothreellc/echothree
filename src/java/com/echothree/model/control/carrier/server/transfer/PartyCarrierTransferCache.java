@@ -31,11 +31,11 @@ public class PartyCarrierTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of PartyCarrierTransferCache */
-    public PartyCarrierTransferCache(UserVisit userVisit, CarrierControl carrierControl) {
-        super(userVisit, carrierControl);
+    public PartyCarrierTransferCache(CarrierControl carrierControl) {
+        super(carrierControl);
     }
     
-    public PartyCarrierTransfer getPartyCarrierTransfer(PartyCarrier partyCarrier) {
+    public PartyCarrierTransfer getPartyCarrierTransfer(UserVisit userVisit, PartyCarrier partyCarrier) {
         var partyCarrierTransfer = get(partyCarrier);
         
         if(partyCarrierTransfer == null) {
@@ -43,7 +43,7 @@ public class PartyCarrierTransferCache
             var carrier = carrierControl.getCarrierTransfer(userVisit, partyCarrier.getCarrierParty());
             
             partyCarrierTransfer = new PartyCarrierTransfer(party, carrier);
-            put(partyCarrier, partyCarrierTransfer);
+            put(userVisit, partyCarrier, partyCarrierTransfer);
         }
         
         return partyCarrierTransfer;

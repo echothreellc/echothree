@@ -25,11 +25,11 @@ public class QueueTypeDescriptionTransferCache
         extends BaseQueueDescriptionTransferCache<QueueTypeDescription, QueueTypeDescriptionTransfer> {
     
     /** Creates a new instance of QueueTypeDescriptionTransferCache */
-    public QueueTypeDescriptionTransferCache(UserVisit userVisit, QueueControl queueControl) {
-        super(userVisit, queueControl);
+    public QueueTypeDescriptionTransferCache(QueueControl queueControl) {
+        super(queueControl);
     }
     
-    public QueueTypeDescriptionTransfer getQueueTypeDescriptionTransfer(QueueTypeDescription queueTypeDescription) {
+    public QueueTypeDescriptionTransfer getQueueTypeDescriptionTransfer(UserVisit userVisit, QueueTypeDescription queueTypeDescription) {
         var queueTypeDescriptionTransfer = get(queueTypeDescription);
         
         if(queueTypeDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class QueueTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, queueTypeDescription.getLanguage());
             
             queueTypeDescriptionTransfer = new QueueTypeDescriptionTransfer(languageTransfer, queueTypeTransfer, queueTypeDescription.getDescription());
-            put(queueTypeDescription, queueTypeDescriptionTransfer);
+            put(userVisit, queueTypeDescription, queueTypeDescriptionTransfer);
         }
         return queueTypeDescriptionTransfer;
     }

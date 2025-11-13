@@ -28,20 +28,20 @@ public class OrderLineTimeTransferCache
     OrderTimeControl orderTimeControl = Session.getModelController(OrderTimeControl.class);
 
     /** Creates a new instance of OrderLineTimeTransferCache */
-    public OrderLineTimeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public OrderLineTimeTransferCache() {
+        super();
     }
     
-    public OrderLineTimeTransfer getOrderLineTimeTransfer(OrderLineTime orderLineTime) {
+    public OrderLineTimeTransfer getOrderLineTimeTransfer(UserVisit userVisit, OrderLineTime orderLineTime) {
         var orderLineTimeTransfer = get(orderLineTime);
         
         if(orderLineTimeTransfer == null) {
             var orderTimeType = orderTimeControl.getOrderTimeTypeTransfer(userVisit, orderLineTime.getOrderTimeType());
             var unformattedTime = orderLineTime.getTime();
-            var time = formatTypicalDateTime(unformattedTime);
+            var time = formatTypicalDateTime(userVisit, unformattedTime);
             
             orderLineTimeTransfer = new OrderLineTimeTransfer(orderTimeType, unformattedTime, time);
-            put(orderLineTime, orderLineTimeTransfer);
+            put(userVisit, orderLineTime, orderLineTimeTransfer);
         }
         
         return orderLineTimeTransfer;

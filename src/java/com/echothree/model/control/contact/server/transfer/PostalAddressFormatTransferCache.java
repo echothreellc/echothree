@@ -29,8 +29,8 @@ public class PostalAddressFormatTransferCache
     boolean includeLines;
     
     /** Creates a new instance of PostalAddressFormatTransferCache */
-    public PostalAddressFormatTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    public PostalAddressFormatTransferCache(ContactControl contactControl) {
+        super(contactControl);
         
         var options = session.getOptions();
         if(options != null) {
@@ -40,7 +40,7 @@ public class PostalAddressFormatTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public PostalAddressFormatTransfer getPostalAddressFormatTransfer(PostalAddressFormat postalAddressFormat) {
+    public PostalAddressFormatTransfer getPostalAddressFormatTransfer(UserVisit userVisit, PostalAddressFormat postalAddressFormat) {
         var postalAddressFormatTransfer = get(postalAddressFormat);
         
         if(postalAddressFormatTransfer == null) {
@@ -48,10 +48,10 @@ public class PostalAddressFormatTransferCache
             var postalAddressFormatName = postalAddressFormatDetail.getPostalAddressFormatName();
             var isDefault = postalAddressFormatDetail.getIsDefault();
             var sortOrder = postalAddressFormatDetail.getSortOrder();
-            var description = contactControl.getBestPostalAddressFormatDescription(postalAddressFormat, getLanguage());
+            var description = contactControl.getBestPostalAddressFormatDescription(postalAddressFormat, getLanguage(userVisit));
             
             postalAddressFormatTransfer = new PostalAddressFormatTransfer(postalAddressFormatName, isDefault, sortOrder, description);
-            put(postalAddressFormat, postalAddressFormatTransfer);
+            put(userVisit, postalAddressFormat, postalAddressFormatTransfer);
             
             if(includeLines) {
                 postalAddressFormatTransfer.setPostalAddressLines(new ListWrapper<>(contactControl.getPostalAddressLineTransfersByPostalAddressFormat(userVisit, postalAddressFormat)));

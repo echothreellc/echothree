@@ -32,8 +32,8 @@ public class ItemTaxClassificationTransferCache
     ItemControl itemControl = Session.getModelController(ItemControl.class);
     
     /** Creates a new instance of ItemTaxClassificationTransferCache */
-    public ItemTaxClassificationTransferCache(UserVisit userVisit, TaxControl taxControl) {
-        super(userVisit, taxControl);
+    public ItemTaxClassificationTransferCache(TaxControl taxControl) {
+        super(taxControl);
         
         var options = session.getOptions();
         if(options != null) {
@@ -45,7 +45,7 @@ public class ItemTaxClassificationTransferCache
     }
     
     @Override
-    public ItemTaxClassificationTransfer getTransfer(ItemTaxClassification itemTaxClassification) {
+    public ItemTaxClassificationTransfer getTransfer(UserVisit userVisit, ItemTaxClassification itemTaxClassification) {
         var itemTaxClassificationTransfer = get(itemTaxClassification);
         
         if(itemTaxClassificationTransfer == null) {
@@ -55,7 +55,7 @@ public class ItemTaxClassificationTransferCache
             var taxClassification = taxControl.getTaxClassificationTransfer(userVisit, itemTaxClassificationDetail.getTaxClassification());
             
             itemTaxClassificationTransfer = new ItemTaxClassificationTransfer(item, countryGeoCode, taxClassification);
-            put(itemTaxClassification, itemTaxClassificationTransfer);
+            put(userVisit, itemTaxClassification, itemTaxClassificationTransfer);
         }
         
         return itemTaxClassificationTransfer;

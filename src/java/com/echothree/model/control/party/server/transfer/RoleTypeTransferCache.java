@@ -28,22 +28,22 @@ public class RoleTypeTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of RoleTypeTransferCache */
-    public RoleTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public RoleTypeTransferCache() {
+        super();
     }
 
     @Override
-    public RoleTypeTransfer getTransfer(RoleType roleType) {
+    public RoleTypeTransfer getTransfer(UserVisit userVisit, RoleType roleType) {
         var roleTypeTransfer = get(roleType);
         
         if(roleTypeTransfer == null) {
             var roleTypeName = roleType.getRoleTypeName();
             var parentRoleType = roleType.getParentRoleType();
-            var parentRoleTypeTransfer = parentRoleType == null? null: getTransfer(parentRoleType);
-            var description = partyControl.getBestRoleTypeDescription(roleType, getLanguage());
+            var parentRoleTypeTransfer = parentRoleType == null ? null : getTransfer(userVisit, parentRoleType);
+            var description = partyControl.getBestRoleTypeDescription(roleType, getLanguage(userVisit));
             
             roleTypeTransfer = new RoleTypeTransfer(roleTypeName, parentRoleTypeTransfer, description);
-            put(roleType, roleTypeTransfer);
+            put(userVisit, roleType, roleTypeTransfer);
         }
         
         return roleTypeTransfer;

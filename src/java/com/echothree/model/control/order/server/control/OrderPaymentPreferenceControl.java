@@ -253,15 +253,15 @@ public class OrderPaymentPreferenceControl
     }
 
     public OrderPaymentPreferenceTransfer getOrderPaymentPreferenceTransfer(UserVisit userVisit, OrderPaymentPreference orderPaymentPreference) {
-        return getOrderTransferCaches(userVisit).getOrderPaymentPreferenceTransferCache().getOrderPaymentPreferenceTransfer(orderPaymentPreference);
+        return getOrderTransferCaches().getOrderPaymentPreferenceTransferCache().getOrderPaymentPreferenceTransfer(userVisit, orderPaymentPreference);
     }
 
     public List<OrderPaymentPreferenceTransfer> getOrderPaymentPreferenceTransfers(UserVisit userVisit, Collection<OrderPaymentPreference> orderPaymentPreferences) {
         List<OrderPaymentPreferenceTransfer> orderPaymentPreferenceTransfers = new ArrayList<>(orderPaymentPreferences.size());
-        var orderPaymentPreferenceTransferCache = getOrderTransferCaches(userVisit).getOrderPaymentPreferenceTransferCache();
+        var orderPaymentPreferenceTransferCache = getOrderTransferCaches().getOrderPaymentPreferenceTransferCache();
 
         orderPaymentPreferences.forEach((orderPaymentPreference) ->
-                orderPaymentPreferenceTransfers.add(orderPaymentPreferenceTransferCache.getOrderPaymentPreferenceTransfer(orderPaymentPreference))
+                orderPaymentPreferenceTransfers.add(orderPaymentPreferenceTransferCache.getOrderPaymentPreferenceTransfer(userVisit, orderPaymentPreference))
         );
 
         return orderPaymentPreferenceTransfers;

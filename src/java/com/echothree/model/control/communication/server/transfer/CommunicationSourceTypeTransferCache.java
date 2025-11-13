@@ -25,21 +25,21 @@ public class CommunicationSourceTypeTransferCache
         extends BaseCommunicationTransferCache<CommunicationSourceType, CommunicationSourceTypeTransfer> {
     
     /** Creates a new instance of CommunicationSourceTypeTransferCache */
-    public CommunicationSourceTypeTransferCache(UserVisit userVisit, CommunicationControl communicationControl) {
-        super(userVisit, communicationControl);
+    public CommunicationSourceTypeTransferCache(CommunicationControl communicationControl) {
+        super(communicationControl);
     }
     
-    public CommunicationSourceTypeTransfer getCommunicationSourceTypeTransfer(CommunicationSourceType communicationSourceType) {
+    public CommunicationSourceTypeTransfer getCommunicationSourceTypeTransfer(UserVisit userVisit, CommunicationSourceType communicationSourceType) {
         var communicationSourceTypeTransfer = get(communicationSourceType);
         
         if(communicationSourceTypeTransfer == null) {
             var communicationSourceTypeName = communicationSourceType.getCommunicationSourceTypeName();
             var isDefault = communicationSourceType.getIsDefault();
             var sortOrder = communicationSourceType.getSortOrder();
-            var description = communicationControl.getBestCommunicationSourceTypeDescription(communicationSourceType, getLanguage());
+            var description = communicationControl.getBestCommunicationSourceTypeDescription(communicationSourceType, getLanguage(userVisit));
             
             communicationSourceTypeTransfer = new CommunicationSourceTypeTransfer(communicationSourceTypeName, isDefault, sortOrder, description);
-            put(communicationSourceType, communicationSourceTypeTransfer);
+            put(userVisit, communicationSourceType, communicationSourceTypeTransfer);
         }
         
         return communicationSourceTypeTransfer;

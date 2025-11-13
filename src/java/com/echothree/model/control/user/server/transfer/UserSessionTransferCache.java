@@ -29,13 +29,13 @@ public class UserSessionTransferCache
     PartyControl partyControl;
     
     /** Creates a new instance of UserSessionTransferCache */
-    public UserSessionTransferCache(UserVisit userVisit, UserControl userControl) {
-        super(userVisit, userControl);
+    public UserSessionTransferCache(UserControl userControl) {
+        super(userControl);
         
         partyControl = Session.getModelController(PartyControl.class);
     }
     
-    public UserSessionTransfer getUserSessionTransfer(UserSession userSession) {
+    public UserSessionTransfer getUserSessionTransfer(UserVisit userVisit, UserSession userSession) {
         var userSessionTransfer = get(userSession);
         
         if(userSessionTransfer == null) {
@@ -44,11 +44,11 @@ public class UserSessionTransferCache
             var partyRelationship = userSession.getPartyRelationship();
             var partyRelationshipTransfer = partyRelationship == null ? null : partyControl.getPartyRelationshipTransfer(userVisit, partyRelationship);
             var unformattedIdentityVerifiedTime = userSession.getIdentityVerifiedTime();
-            var identityVerifiedTime = unformattedIdentityVerifiedTime == null ? null : formatTypicalDateTime(unformattedIdentityVerifiedTime);
+            var identityVerifiedTime = unformattedIdentityVerifiedTime == null ? null : formatTypicalDateTime(userVisit, unformattedIdentityVerifiedTime);
             
             userSessionTransfer = new UserSessionTransfer(userVisitTransfer, partyTransfer, partyRelationshipTransfer, unformattedIdentityVerifiedTime,
                     identityVerifiedTime);
-            put(userSession, userSessionTransfer);
+            put(userVisit, userSession, userSessionTransfer);
         }
         
         return userSessionTransfer;

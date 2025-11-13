@@ -33,12 +33,12 @@ public class FilterAdjustmentPercentTransferCache
     UomControl uomControl = Session.getModelController(UomControl.class);
 
     /** Creates a new instance of FilterAdjustmentPercentTransferCache */
-    public FilterAdjustmentPercentTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public FilterAdjustmentPercentTransferCache() {
+        super();
     }
 
     @Override
-    public FilterAdjustmentPercentTransfer getTransfer(FilterAdjustmentPercent filterAdjustmentPercent) {
+    public FilterAdjustmentPercentTransfer getTransfer(UserVisit userVisit, FilterAdjustmentPercent filterAdjustmentPercent) {
         var filterAdjustmentPercentTransfer = get(filterAdjustmentPercent);
         
         if(filterAdjustmentPercentTransfer == null) {
@@ -49,7 +49,7 @@ public class FilterAdjustmentPercentTransferCache
             
             filterAdjustmentPercentTransfer = new FilterAdjustmentPercentTransfer(filterAdjustment, unitOfMeasureType, currency, percent);
             
-            put(filterAdjustmentPercent, filterAdjustmentPercentTransfer);
+            put(userVisit, filterAdjustmentPercent, filterAdjustmentPercentTransfer);
         }
         
         return filterAdjustmentPercentTransfer;

@@ -25,27 +25,27 @@ public class SelectorNodeTransferCache
         extends BaseSelectorTransferCache<SelectorNode, SelectorNodeTransfer> {
     
     /** Creates a new instance of SelectorNodeTransferCache */
-    public SelectorNodeTransferCache(UserVisit userVisit, SelectorControl selectorControl) {
-        super(userVisit, selectorControl);
+    public SelectorNodeTransferCache(SelectorControl selectorControl) {
+        super(selectorControl);
     }
     
-    public SelectorNodeTransfer getSelectorNodeTransfer(SelectorNode selectorNode) {
+    public SelectorNodeTransfer getSelectorNodeTransfer(UserVisit userVisit, SelectorNode selectorNode) {
         var selectorNodeTransfer = get(selectorNode);
         
         if(selectorNodeTransfer == null) {
             var selectorNodeDetail = selectorNode.getLastDetail();
-            var selectorTransferCache = selectorControl.getSelectorTransferCaches(userVisit).getSelectorTransferCache();
-            var selector = selectorTransferCache.getSelectorTransfer(selectorNodeDetail.getSelector());
+            var selectorTransferCache = selectorControl.getSelectorTransferCaches().getSelectorTransferCache();
+            var selector = selectorTransferCache.getSelectorTransfer(userVisit, selectorNodeDetail.getSelector());
             var selectorNodeName = selectorNodeDetail.getSelectorNodeName();
             var isRootSelectorNode = selectorNodeDetail.getIsRootSelectorNode();
-            var selectorNodeTypeTransferCache = selectorControl.getSelectorTransferCaches(userVisit).getSelectorNodeTypeTransferCache();
-            var selectorNodeType = selectorNodeTypeTransferCache.getSelectorNodeTypeTransfer(selectorNodeDetail.getSelectorNodeType());
+            var selectorNodeTypeTransferCache = selectorControl.getSelectorTransferCaches().getSelectorNodeTypeTransferCache();
+            var selectorNodeType = selectorNodeTypeTransferCache.getSelectorNodeTypeTransfer(userVisit, selectorNodeDetail.getSelectorNodeType());
             var negate = selectorNodeDetail.getNegate();
-            var description = selectorControl.getBestSelectorNodeDescription(selectorNode, getLanguage());
+            var description = selectorControl.getBestSelectorNodeDescription(selectorNode, getLanguage(userVisit));
             
             selectorNodeTransfer = new SelectorNodeTransfer(selector, selectorNodeName, isRootSelectorNode, selectorNodeType,
             negate, description);
-            put(selectorNode, selectorNodeTransfer);
+            put(userVisit, selectorNode, selectorNodeTransfer);
         }
         
         return selectorNodeTransfer;

@@ -33,8 +33,8 @@ public class EntityVisitTransferCache
     boolean includeVisitedTime;
 
     /** Creates a new instance of EntityVisitTransferCache */
-    public EntityVisitTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityVisitTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {
@@ -44,14 +44,14 @@ public class EntityVisitTransferCache
         }
     }
     
-    public EntityVisitTransfer getEntityVisitTransfer(EntityVisit entityVisit) {
+    public EntityVisitTransfer getEntityVisitTransfer(UserVisit userVisit, EntityVisit entityVisit) {
         var entityVisitTransfer = get(entityVisit);
         
         if(entityVisitTransfer == null) {
             var unformattedVisitedTime = entityVisit.getVisitedTime();
 
             entityVisitTransfer = new EntityVisitTransfer(unformattedVisitedTime);
-            put(entityVisit, entityVisitTransfer);
+            put(userVisit, entityVisit, entityVisitTransfer);
 
             if(includeEntityInstance) {
                 entityVisitTransfer.setEntityInstance(entityInstanceControl.getEntityInstanceTransfer(userVisit, entityVisit.getEntityInstance(), false, false, false, false));
@@ -62,7 +62,7 @@ public class EntityVisitTransferCache
             }
 
             if(includeVisitedTime) {
-                entityVisitTransfer.setVisitedTime(formatTypicalDateTime(unformattedVisitedTime));
+                entityVisitTransfer.setVisitedTime(formatTypicalDateTime(userVisit, unformattedVisitedTime));
             }
         }
 

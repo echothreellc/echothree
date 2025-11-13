@@ -25,11 +25,11 @@ public class GeoCodeAliasTransferCache
         extends BaseGeoTransferCache<GeoCodeAlias, GeoCodeAliasTransfer> {
     
     /** Creates a new instance of GeoCodeAliasTransferCache */
-    public GeoCodeAliasTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
+    public GeoCodeAliasTransferCache(GeoControl geoControl) {
+        super(geoControl);
     }
     
-    public GeoCodeAliasTransfer getGeoCodeAliasTransfer(GeoCodeAlias geoCodeAlias) {
+    public GeoCodeAliasTransfer getGeoCodeAliasTransfer(UserVisit userVisit, GeoCodeAlias geoCodeAlias) {
         var geoCodeAliasTransfer = get(geoCodeAlias);
         
         if(geoCodeAliasTransfer == null) {
@@ -39,7 +39,7 @@ public class GeoCodeAliasTransferCache
             var alias = geoCodeAlias.getAlias();
             
             geoCodeAliasTransfer = new GeoCodeAliasTransfer(geoCode, geoCodeScope, geoCodeAliasType, alias);
-            put(geoCodeAlias, geoCodeAliasTransfer);
+            put(userVisit, geoCodeAlias, geoCodeAliasTransfer);
         }
         
         return geoCodeAliasTransfer;

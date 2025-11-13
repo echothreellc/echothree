@@ -29,13 +29,13 @@ public class GeoCodeCurrencyTransferCache
     AccountingControl accountingControl;
     
     /** Creates a new instance of GeoCodeCurrencyTransferCache */
-    public GeoCodeCurrencyTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
+    public GeoCodeCurrencyTransferCache(GeoControl geoControl) {
+        super(geoControl);
         
         accountingControl = Session.getModelController(AccountingControl.class);
     }
     
-    public GeoCodeCurrencyTransfer getGeoCodeCurrencyTransfer(GeoCodeCurrency geoCodeCurrency) {
+    public GeoCodeCurrencyTransfer getGeoCodeCurrencyTransfer(UserVisit userVisit, GeoCodeCurrency geoCodeCurrency) {
         var geoCodeCurrencyTransfer = get(geoCodeCurrency);
         
         if(geoCodeCurrencyTransfer == null) {
@@ -45,7 +45,7 @@ public class GeoCodeCurrencyTransferCache
             var sortOrder = geoCodeCurrency.getSortOrder();
             
             geoCodeCurrencyTransfer = new GeoCodeCurrencyTransfer(geoCode, currency, isDefault, sortOrder);
-            put(geoCodeCurrency, geoCodeCurrencyTransfer);
+            put(userVisit, geoCodeCurrency, geoCodeCurrencyTransfer);
         }
         
         return geoCodeCurrencyTransfer;

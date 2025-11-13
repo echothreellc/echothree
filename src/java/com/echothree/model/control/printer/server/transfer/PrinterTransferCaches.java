@@ -35,64 +35,64 @@ public class PrinterTransferCaches
     protected PrinterGroupJobTransferCache printerGroupJobTransferCache;
     
     /** Creates a new instance of PrinterTransferCaches */
-    public PrinterTransferCaches(UserVisit userVisit, PrinterControl printerControl) {
-        super(userVisit);
+    public PrinterTransferCaches(PrinterControl printerControl) {
+        super();
         
         this.printerControl = printerControl;
     }
     
     public PrinterGroupTransferCache getPrinterGroupTransferCache() {
         if(printerGroupTransferCache == null)
-            printerGroupTransferCache = new PrinterGroupTransferCache(userVisit, printerControl);
+            printerGroupTransferCache = new PrinterGroupTransferCache(printerControl);
         
         return printerGroupTransferCache;
     }
     
     public PrinterGroupDescriptionTransferCache getPrinterGroupDescriptionTransferCache() {
         if(printerGroupDescriptionTransferCache == null)
-            printerGroupDescriptionTransferCache = new PrinterGroupDescriptionTransferCache(userVisit, printerControl);
+            printerGroupDescriptionTransferCache = new PrinterGroupDescriptionTransferCache(printerControl);
         
         return printerGroupDescriptionTransferCache;
     }
     
     public PrinterGroupUseTypeTransferCache getPrinterGroupUseTypeTransferCache() {
         if(printerGroupUseTypeTransferCache == null)
-            printerGroupUseTypeTransferCache = new PrinterGroupUseTypeTransferCache(userVisit, printerControl);
+            printerGroupUseTypeTransferCache = new PrinterGroupUseTypeTransferCache(printerControl);
 
         return printerGroupUseTypeTransferCache;
     }
 
     public PrinterGroupUseTypeDescriptionTransferCache getPrinterGroupUseTypeDescriptionTransferCache() {
         if(printerGroupUseTypeDescriptionTransferCache == null)
-            printerGroupUseTypeDescriptionTransferCache = new PrinterGroupUseTypeDescriptionTransferCache(userVisit, printerControl);
+            printerGroupUseTypeDescriptionTransferCache = new PrinterGroupUseTypeDescriptionTransferCache(printerControl);
 
         return printerGroupUseTypeDescriptionTransferCache;
     }
 
     public PartyPrinterGroupUseTransferCache getPartyPrinterGroupUseTransferCache() {
         if(partyPrinterGroupUseTransferCache == null)
-            partyPrinterGroupUseTransferCache = new PartyPrinterGroupUseTransferCache(userVisit, printerControl);
+            partyPrinterGroupUseTransferCache = new PartyPrinterGroupUseTransferCache(printerControl);
         
         return partyPrinterGroupUseTransferCache;
     }
     
     public PrinterTransferCache getPrinterTransferCache() {
         if(printerTransferCache == null)
-            printerTransferCache = new PrinterTransferCache(userVisit, printerControl);
+            printerTransferCache = new PrinterTransferCache(printerControl);
         
         return printerTransferCache;
     }
     
     public PrinterDescriptionTransferCache getPrinterDescriptionTransferCache() {
         if(printerDescriptionTransferCache == null)
-            printerDescriptionTransferCache = new PrinterDescriptionTransferCache(userVisit, printerControl);
+            printerDescriptionTransferCache = new PrinterDescriptionTransferCache(printerControl);
         
         return printerDescriptionTransferCache;
     }
     
     public PrinterGroupJobTransferCache getPrinterGroupJobTransferCache() {
         if(printerGroupJobTransferCache == null)
-            printerGroupJobTransferCache = new PrinterGroupJobTransferCache(userVisit, printerControl);
+            printerGroupJobTransferCache = new PrinterGroupJobTransferCache(printerControl);
         
         return printerGroupJobTransferCache;
     }

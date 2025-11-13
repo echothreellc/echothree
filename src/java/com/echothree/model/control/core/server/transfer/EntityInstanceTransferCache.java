@@ -50,8 +50,8 @@ public class EntityInstanceTransferCache
     boolean filterDescription;
     
     /** Creates a new instance of EntityInstanceTransferCache */
-    public EntityInstanceTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityInstanceTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -75,8 +75,8 @@ public class EntityInstanceTransferCache
         }
     }
 
-    public EntityInstanceTransfer getEntityInstanceTransfer(EntityInstance entityInstance, boolean includeEntityAppearance,
-            boolean includeEntityVisit, boolean includeNames, boolean includeUuid) {
+    public EntityInstanceTransfer getEntityInstanceTransfer(final UserVisit userVisit, EntityInstance entityInstance, final boolean includeEntityAppearance,
+            final boolean includeEntityVisit, final boolean includeNames, final boolean includeUuid) {
         var entityInstanceTransfer = get(entityInstance);
         
         if(entityInstanceTransfer == null) {
@@ -106,7 +106,7 @@ public class EntityInstanceTransferCache
             
             entityInstanceTransfer = new EntityInstanceTransfer(entityTypeTransfer, entityUniqueId, uuid, entityRef,
                     entityTimeTransfer, description);
-            put(entityInstance, entityInstanceTransfer);
+            put(userVisit, entityInstance, entityInstanceTransfer);
 
             if(includeEntityAppearance || this.includeEntityAppearance) {
                 var appearanceControl = Session.getModelController(AppearanceControl.class);

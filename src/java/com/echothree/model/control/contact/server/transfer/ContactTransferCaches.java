@@ -47,148 +47,148 @@ public class ContactTransferCaches
     protected ContactInet4AddressTransferCache contactInet4AddressTransferCache;
     
     /** Creates a new instance of ContactTransferCaches */
-    public ContactTransferCaches(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit);
+    public ContactTransferCaches(ContactControl contactControl) {
+        super();
         
         this.contactControl = contactControl;
     }
     
     public PostalAddressFormatTransferCache getPostalAddressFormatTransferCache() {
         if(postalAddressFormatTransferCache == null)
-            postalAddressFormatTransferCache = new PostalAddressFormatTransferCache(userVisit, contactControl);
+            postalAddressFormatTransferCache = new PostalAddressFormatTransferCache(contactControl);
         
         return postalAddressFormatTransferCache;
     }
     
     public PostalAddressElementTypeTransferCache getPostalAddressElementTypeTransferCache() {
         if(postalAddressElementTypeTransferCache == null)
-            postalAddressElementTypeTransferCache = new PostalAddressElementTypeTransferCache(userVisit, contactControl);
+            postalAddressElementTypeTransferCache = new PostalAddressElementTypeTransferCache(contactControl);
         
         return postalAddressElementTypeTransferCache;
     }
     
     public ContactMechanismAliasTypeTransferCache getContactMechanismAliasTypeTransferCache() {
         if(contactMechanismAliasTypeTransferCache == null)
-            contactMechanismAliasTypeTransferCache = new ContactMechanismAliasTypeTransferCache(userVisit, contactControl);
+            contactMechanismAliasTypeTransferCache = new ContactMechanismAliasTypeTransferCache(contactControl);
 
         return contactMechanismAliasTypeTransferCache;
     }
 
     public ContactMechanismAliasTypeDescriptionTransferCache getContactMechanismAliasTypeDescriptionTransferCache() {
         if(contactMechanismAliasTypeDescriptionTransferCache == null)
-            contactMechanismAliasTypeDescriptionTransferCache = new ContactMechanismAliasTypeDescriptionTransferCache(userVisit, contactControl);
+            contactMechanismAliasTypeDescriptionTransferCache = new ContactMechanismAliasTypeDescriptionTransferCache(contactControl);
 
         return contactMechanismAliasTypeDescriptionTransferCache;
     }
 
     public ContactMechanismPurposeTransferCache getContactMechanismPurposeTransferCache() {
         if(contactMechanismPurposeTransferCache == null)
-            contactMechanismPurposeTransferCache = new ContactMechanismPurposeTransferCache(userVisit, contactControl);
+            contactMechanismPurposeTransferCache = new ContactMechanismPurposeTransferCache(contactControl);
         
         return contactMechanismPurposeTransferCache;
     }
     
     public ContactMechanismTypeTransferCache getContactMechanismTypeTransferCache() {
         if(contactMechanismTypeTransferCache == null)
-            contactMechanismTypeTransferCache = new ContactMechanismTypeTransferCache(userVisit, contactControl);
+            contactMechanismTypeTransferCache = new ContactMechanismTypeTransferCache(contactControl);
         
         return contactMechanismTypeTransferCache;
     }
     
     public ContactMechanismTransferCache getContactMechanismTransferCache() {
         if(contactMechanismTransferCache == null)
-            contactMechanismTransferCache = new ContactMechanismTransferCache(userVisit, contactControl);
+            contactMechanismTransferCache = new ContactMechanismTransferCache(contactControl);
         
         return contactMechanismTransferCache;
     }
     
     public ContactEmailAddressTransferCache getContactEmailAddressTransferCache() {
         if(contactEmailAddressTransferCache == null)
-            contactEmailAddressTransferCache = new ContactEmailAddressTransferCache(userVisit, contactControl);
+            contactEmailAddressTransferCache = new ContactEmailAddressTransferCache(contactControl);
         
         return contactEmailAddressTransferCache;
     }
     
     public ContactPostalAddressTransferCache getContactPostalAddressTransferCache() {
         if(contactPostalAddressTransferCache == null)
-            contactPostalAddressTransferCache = new ContactPostalAddressTransferCache(userVisit, contactControl);
+            contactPostalAddressTransferCache = new ContactPostalAddressTransferCache(contactControl);
         
         return contactPostalAddressTransferCache;
     }
     
     public ContactTelephoneTransferCache getContactTelephoneTransferCache() {
         if(contactTelephoneTransferCache == null)
-            contactTelephoneTransferCache = new ContactTelephoneTransferCache(userVisit, contactControl);
+            contactTelephoneTransferCache = new ContactTelephoneTransferCache(contactControl);
         
         return contactTelephoneTransferCache;
     }
     
     public PostalAddressFormatDescriptionTransferCache getPostalAddressFormatDescriptionTransferCache() {
         if(postalAddressFormatDescriptionTransferCache == null)
-            postalAddressFormatDescriptionTransferCache = new PostalAddressFormatDescriptionTransferCache(userVisit, contactControl);
+            postalAddressFormatDescriptionTransferCache = new PostalAddressFormatDescriptionTransferCache(contactControl);
         
         return postalAddressFormatDescriptionTransferCache;
     }
     
     public PostalAddressLineTransferCache getPostalAddressLineTransferCache() {
         if(postalAddressLineTransferCache == null)
-            postalAddressLineTransferCache = new PostalAddressLineTransferCache(userVisit, contactControl);
+            postalAddressLineTransferCache = new PostalAddressLineTransferCache(contactControl);
         
         return postalAddressLineTransferCache;
     }
     
     public PostalAddressLineElementTransferCache getPostalAddressLineElementTransferCache() {
         if(postalAddressLineElementTransferCache == null)
-            postalAddressLineElementTransferCache = new PostalAddressLineElementTransferCache(userVisit, contactControl);
+            postalAddressLineElementTransferCache = new PostalAddressLineElementTransferCache(contactControl);
         
         return postalAddressLineElementTransferCache;
     }
     
     public ContactWebAddressTransferCache getContactWebAddressTransferCache() {
         if(contactWebAddressTransferCache == null)
-            contactWebAddressTransferCache = new ContactWebAddressTransferCache(userVisit, contactControl);
+            contactWebAddressTransferCache = new ContactWebAddressTransferCache(contactControl);
         
         return contactWebAddressTransferCache;
     }
     
     public ContactMechanismAliasTransferCache getContactMechanismAliasTransferCache() {
         if(contactMechanismAliasTransferCache == null)
-            contactMechanismAliasTransferCache = new ContactMechanismAliasTransferCache(userVisit, contactControl);
+            contactMechanismAliasTransferCache = new ContactMechanismAliasTransferCache(contactControl);
         
         return contactMechanismAliasTransferCache;
     }
     
     public PartyContactMechanismAliasTransferCache getPartyContactMechanismAliasTransferCache() {
         if(partyContactMechanismAliasTransferCache == null)
-            partyContactMechanismAliasTransferCache = new PartyContactMechanismAliasTransferCache(userVisit, contactControl);
+            partyContactMechanismAliasTransferCache = new PartyContactMechanismAliasTransferCache(contactControl);
         
         return partyContactMechanismAliasTransferCache;
     }
     
     public PartyContactMechanismPurposeTransferCache getPartyContactMechanismPurposeTransferCache() {
         if(partyContactMechanismPurposeTransferCache == null)
-            partyContactMechanismPurposeTransferCache = new PartyContactMechanismPurposeTransferCache(userVisit, contactControl);
+            partyContactMechanismPurposeTransferCache = new PartyContactMechanismPurposeTransferCache(contactControl);
         
         return partyContactMechanismPurposeTransferCache;
     }
     
     public PartyContactMechanismRelationshipTransferCache getPartyContactMechanismRelationshipTransferCache() {
         if(partyContactMechanismRelationshipTransferCache == null)
-            partyContactMechanismRelationshipTransferCache = new PartyContactMechanismRelationshipTransferCache(userVisit, contactControl);
+            partyContactMechanismRelationshipTransferCache = new PartyContactMechanismRelationshipTransferCache(contactControl);
         
         return partyContactMechanismRelationshipTransferCache;
     }
     
     public PartyContactMechanismTransferCache getPartyContactMechanismTransferCache() {
         if(partyContactMechanismTransferCache == null)
-            partyContactMechanismTransferCache = new PartyContactMechanismTransferCache(userVisit, contactControl);
+            partyContactMechanismTransferCache = new PartyContactMechanismTransferCache(contactControl);
         
         return partyContactMechanismTransferCache;
     }
     
     public ContactInet4AddressTransferCache getContactInet4AddressTransferCache() {
         if(contactInet4AddressTransferCache == null)
-            contactInet4AddressTransferCache = new ContactInet4AddressTransferCache(userVisit, contactControl);
+            contactInet4AddressTransferCache = new ContactInet4AddressTransferCache(contactControl);
         
         return contactInet4AddressTransferCache;
     }

@@ -25,14 +25,14 @@ public class BatchAliasTypeTransferCache
         extends BaseBatchTransferCache<BatchAliasType, BatchAliasTypeTransfer> {
     
     /** Creates a new instance of BatchAliasTypeTransferCache */
-    public BatchAliasTypeTransferCache(UserVisit userVisit, BatchControl batchControl) {
-        super(userVisit, batchControl);
+    public BatchAliasTypeTransferCache(BatchControl batchControl) {
+        super(batchControl);
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public BatchAliasTypeTransfer getTransfer(BatchAliasType batchAliasType) {
+    public BatchAliasTypeTransfer getTransfer(UserVisit userVisit, BatchAliasType batchAliasType) {
         var batchAliasTypeTransfer = get(batchAliasType);
         
         if(batchAliasTypeTransfer == null) {
@@ -42,10 +42,10 @@ public class BatchAliasTypeTransferCache
             var validationPattern = batchAliasTypeDetail.getValidationPattern();
             var isDefault = batchAliasTypeDetail.getIsDefault();
             var sortOrder = batchAliasTypeDetail.getSortOrder();
-            var description = batchControl.getBestBatchAliasTypeDescription(batchAliasType, getLanguage());
+            var description = batchControl.getBestBatchAliasTypeDescription(batchAliasType, getLanguage(userVisit));
             
             batchAliasTypeTransfer = new BatchAliasTypeTransfer(batchType, batchAliasTypeName, validationPattern, isDefault, sortOrder, description);
-            put(batchAliasType, batchAliasTypeTransfer);
+            put(userVisit, batchAliasType, batchAliasTypeTransfer);
         }
         
         return batchAliasTypeTransfer;

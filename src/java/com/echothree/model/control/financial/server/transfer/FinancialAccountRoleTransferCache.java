@@ -29,13 +29,13 @@ public class FinancialAccountRoleTransferCache
     PartyControl partyControl;
 
     /** Creates a new instance of FinancialAccountRoleTransferCache */
-    public FinancialAccountRoleTransferCache(UserVisit userVisit, FinancialControl financialControl) {
-        super(userVisit, financialControl);
+    public FinancialAccountRoleTransferCache(FinancialControl financialControl) {
+        super(financialControl);
 
         partyControl = Session.getModelController(PartyControl.class);
     }
 
-    public FinancialAccountRoleTransfer getFinancialAccountRoleTransfer(FinancialAccountRole financialAccountRole) {
+    public FinancialAccountRoleTransfer getFinancialAccountRoleTransfer(UserVisit userVisit, FinancialAccountRole financialAccountRole) {
         var financialAccountRoleTransfer = get(financialAccountRole);
 
         if(financialAccountRoleTransfer == null) {
@@ -44,7 +44,7 @@ public class FinancialAccountRoleTransferCache
             var financialAccountRoleType = financialControl.getFinancialAccountRoleTypeTransfer(userVisit, financialAccountRole.getFinancialAccountRoleType());
 
             financialAccountRoleTransfer = new FinancialAccountRoleTransfer(financialAccount, party, financialAccountRoleType);
-            put(financialAccountRole, financialAccountRoleTransfer);
+            put(userVisit, financialAccountRole, financialAccountRoleTransfer);
         }
 
         return financialAccountRoleTransfer;

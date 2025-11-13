@@ -32,12 +32,12 @@ public class PaymentMethodTypePartyTypeTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
     /** Creates a new instance of PaymentMethodTypePartyTypeTransferCache */
-    public PaymentMethodTypePartyTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public PaymentMethodTypePartyTypeTransferCache() {
+        super();
     }
 
     @Override
-    public PaymentMethodTypePartyTypeTransfer getTransfer(PaymentMethodTypePartyType paymentMethodTypePartyType) {
+    public PaymentMethodTypePartyTypeTransfer getTransfer(UserVisit userVisit, PaymentMethodTypePartyType paymentMethodTypePartyType) {
         var paymentMethodTypePartyTypeTransfer = get(paymentMethodTypePartyType);
         
         if(paymentMethodTypePartyTypeTransfer == null) {
@@ -49,7 +49,7 @@ public class PaymentMethodTypePartyTypeTransferCache
             
             paymentMethodTypePartyTypeTransfer = new PaymentMethodTypePartyTypeTransfer(paymentMethodType, partyType, partyPaymentMethodWorkflow,
                     partyContactMechanismWorkflow);
-            put(paymentMethodTypePartyType, paymentMethodTypePartyTypeTransfer);
+            put(userVisit, paymentMethodTypePartyType, paymentMethodTypePartyTypeTransfer);
         }
         return paymentMethodTypePartyTypeTransfer;
     }

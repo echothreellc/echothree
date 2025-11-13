@@ -25,22 +25,22 @@ public class ItemAliasChecksumTypeTransferCache
         extends BaseItemTransferCache<ItemAliasChecksumType, ItemAliasChecksumTypeTransfer> {
     
     /** Creates a new instance of ItemAliasChecksumTypeTransferCache */
-    public ItemAliasChecksumTypeTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemAliasChecksumTypeTransferCache(ItemControl itemControl) {
+        super(itemControl);
     }
     
     @Override
-    public ItemAliasChecksumTypeTransfer getTransfer(ItemAliasChecksumType itemAliasChecksumType) {
+    public ItemAliasChecksumTypeTransfer getTransfer(UserVisit userVisit, ItemAliasChecksumType itemAliasChecksumType) {
         var itemAliasChecksumTypeTransfer = get(itemAliasChecksumType);
         
         if(itemAliasChecksumTypeTransfer == null) {
             var itemAliasChecksumTypeName = itemAliasChecksumType.getItemAliasChecksumTypeName();
             var isDefault = itemAliasChecksumType.getIsDefault();
             var sortOrder = itemAliasChecksumType.getSortOrder();
-            var description = itemControl.getBestItemAliasChecksumTypeDescription(itemAliasChecksumType, getLanguage());
+            var description = itemControl.getBestItemAliasChecksumTypeDescription(itemAliasChecksumType, getLanguage(userVisit));
             
             itemAliasChecksumTypeTransfer = new ItemAliasChecksumTypeTransfer(itemAliasChecksumTypeName, isDefault, sortOrder, description);
-            put(itemAliasChecksumType, itemAliasChecksumTypeTransfer);
+            put(userVisit, itemAliasChecksumType, itemAliasChecksumTypeTransfer);
         }
         
         return itemAliasChecksumTypeTransfer;

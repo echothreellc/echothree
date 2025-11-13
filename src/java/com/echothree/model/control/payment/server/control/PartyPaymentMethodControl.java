@@ -250,15 +250,15 @@ public class PartyPaymentMethodControl
     }
 
     public PartyPaymentMethodTransfer getPartyPaymentMethodTransfer(UserVisit userVisit, PartyPaymentMethod partyPaymentMethod) {
-        return getPaymentTransferCaches(userVisit).getPartyPaymentMethodTransferCache().getTransfer(partyPaymentMethod);
+        return getPaymentTransferCaches().getPartyPaymentMethodTransferCache().getTransfer(userVisit, partyPaymentMethod);
     }
 
     public List<PartyPaymentMethodTransfer> getPartyPaymentMethodTransfers(UserVisit userVisit, Collection<PartyPaymentMethod> partyPaymentMethods) {
         List<PartyPaymentMethodTransfer> partyPaymentMethodTransfers = new ArrayList<>(partyPaymentMethods.size());
-        var partyPaymentMethodTransferCache = getPaymentTransferCaches(userVisit).getPartyPaymentMethodTransferCache();
+        var partyPaymentMethodTransferCache = getPaymentTransferCaches().getPartyPaymentMethodTransferCache();
 
         partyPaymentMethods.forEach((partyPaymentMethod) ->
-                partyPaymentMethodTransfers.add(partyPaymentMethodTransferCache.getTransfer(partyPaymentMethod))
+                partyPaymentMethodTransfers.add(partyPaymentMethodTransferCache.getTransfer(userVisit, partyPaymentMethod))
         );
 
         return partyPaymentMethodTransfers;
@@ -926,16 +926,16 @@ public class PartyPaymentMethodControl
     
     public PartyPaymentMethodContactMechanismTransfer getPartyPaymentMethodContactMechanismTransfer(UserVisit userVisit,
             PartyPaymentMethodContactMechanism partyPaymentMethodContactMechanism) {
-        return getPaymentTransferCaches(userVisit).getPartyPaymentMethodContactMechanismTransferCache().getTransfer(partyPaymentMethodContactMechanism);
+        return getPaymentTransferCaches().getPartyPaymentMethodContactMechanismTransferCache().getTransfer(userVisit, partyPaymentMethodContactMechanism);
     }
     
     public List<PartyPaymentMethodContactMechanismTransfer> getPartyPaymentMethodContactMechanismTransfers(UserVisit userVisit,
             List<PartyPaymentMethodContactMechanism> partyPaymentMethodContactMechanisms) {
         List<PartyPaymentMethodContactMechanismTransfer> partyPaymentMethodContactMechanismTransfers = new ArrayList<>(partyPaymentMethodContactMechanisms.size());
-        var partyPaymentMethodContactMechanismTransferCache = getPaymentTransferCaches(userVisit).getPartyPaymentMethodContactMechanismTransferCache();
+        var partyPaymentMethodContactMechanismTransferCache = getPaymentTransferCaches().getPartyPaymentMethodContactMechanismTransferCache();
         
         partyPaymentMethodContactMechanisms.forEach((partyPaymentMethodContactMechanism) ->
-                partyPaymentMethodContactMechanismTransfers.add(partyPaymentMethodContactMechanismTransferCache.getTransfer(partyPaymentMethodContactMechanism))
+                partyPaymentMethodContactMechanismTransfers.add(partyPaymentMethodContactMechanismTransferCache.getTransfer(userVisit, partyPaymentMethodContactMechanism))
         );
         
         return partyPaymentMethodContactMechanismTransfers;

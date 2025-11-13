@@ -33,13 +33,13 @@ public class WishlistTransferCache
     OrderTypeControl orderTypeControl = Session.getModelController(OrderTypeControl.class);
     
     /** Creates a new instance of WishlistTransferCache */
-    public WishlistTransferCache(UserVisit userVisit, WishlistControl wishlistControl) {
-        super(userVisit, wishlistControl);
+    public WishlistTransferCache(WishlistControl wishlistControl) {
+        super(wishlistControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public WishlistTransfer getWishlistTransfer(Order order) {
+    public WishlistTransfer getWishlistTransfer(UserVisit userVisit, Order order) {
         var wishlistTransfer = get(order);
         
         if(wishlistTransfer == null) {
@@ -52,7 +52,7 @@ public class WishlistTransferCache
             var wishlistType = wishlistControl.getWishlistTypeTransfer(userVisit, wishlist.getWishlistType());
             
             wishlistTransfer = new WishlistTransfer(orderType, orderName, currency, offerUse, wishlistType);
-            put(order, wishlistTransfer);
+            put(userVisit, order, wishlistTransfer);
         }
         
         return wishlistTransfer;

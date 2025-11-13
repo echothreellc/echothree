@@ -33,50 +33,50 @@ public class WishlistTransferCaches
     protected WishlistLineTransferCache wishlistLineTransferCache;
     
     /** Creates a new instance of WishlistTransferCaches */
-    public WishlistTransferCaches(UserVisit userVisit, WishlistControl wishlistControl) {
-        super(userVisit);
+    public WishlistTransferCaches(WishlistControl wishlistControl) {
+        super();
         
         this.wishlistControl = wishlistControl;
     }
     
     public WishlistTypeTransferCache getWishlistTypeTransferCache() {
         if(wishlistTypeTransferCache == null)
-            wishlistTypeTransferCache = new WishlistTypeTransferCache(userVisit, wishlistControl);
+            wishlistTypeTransferCache = new WishlistTypeTransferCache(wishlistControl);
         
         return wishlistTypeTransferCache;
     }
     
     public WishlistTypeDescriptionTransferCache getWishlistTypeDescriptionTransferCache() {
         if(wishlistTypeDescriptionTransferCache == null)
-            wishlistTypeDescriptionTransferCache = new WishlistTypeDescriptionTransferCache(userVisit, wishlistControl);
+            wishlistTypeDescriptionTransferCache = new WishlistTypeDescriptionTransferCache(wishlistControl);
         
         return wishlistTypeDescriptionTransferCache;
     }
     
     public WishlistPriorityTransferCache getWishlistPriorityTransferCache() {
         if(wishlistPriorityTransferCache == null)
-            wishlistPriorityTransferCache = new WishlistPriorityTransferCache(userVisit, wishlistControl);
+            wishlistPriorityTransferCache = new WishlistPriorityTransferCache(wishlistControl);
         
         return wishlistPriorityTransferCache;
     }
     
     public WishlistPriorityDescriptionTransferCache getWishlistPriorityDescriptionTransferCache() {
         if(wishlistPriorityDescriptionTransferCache == null)
-            wishlistPriorityDescriptionTransferCache = new WishlistPriorityDescriptionTransferCache(userVisit, wishlistControl);
+            wishlistPriorityDescriptionTransferCache = new WishlistPriorityDescriptionTransferCache(wishlistControl);
         
         return wishlistPriorityDescriptionTransferCache;
     }
     
     public WishlistTransferCache getWishlistTransferCache() {
         if(wishlistTransferCache == null)
-            wishlistTransferCache = new WishlistTransferCache(userVisit, wishlistControl);
+            wishlistTransferCache = new WishlistTransferCache(wishlistControl);
         
         return wishlistTransferCache;
     }
     
     public WishlistLineTransferCache getWishlistLineTransferCache() {
         if(wishlistLineTransferCache == null)
-            wishlistLineTransferCache = new WishlistLineTransferCache(userVisit, wishlistControl);
+            wishlistLineTransferCache = new WishlistLineTransferCache(wishlistControl);
         
         return wishlistLineTransferCache;
     }

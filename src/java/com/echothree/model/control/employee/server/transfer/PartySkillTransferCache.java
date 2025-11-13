@@ -29,13 +29,13 @@ public class PartySkillTransferCache
     PartyControl partyControl;
     
     /** Creates a new instance of PartySkillTransferCache */
-    public PartySkillTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit, employeeControl);
+    public PartySkillTransferCache(EmployeeControl employeeControl) {
+        super(employeeControl);
         
         partyControl = Session.getModelController(PartyControl.class);
     }
     
-    public PartySkillTransfer getPartySkillTransfer(PartySkill partySkill) {
+    public PartySkillTransfer getPartySkillTransfer(UserVisit userVisit, PartySkill partySkill) {
         var partySkillTransfer = get(partySkill);
         
         if(partySkillTransfer == null) {
@@ -43,7 +43,7 @@ public class PartySkillTransferCache
             var skillType = employeeControl.getSkillTypeTransfer(userVisit, partySkill.getSkillType());
             
             partySkillTransfer = new PartySkillTransfer(party, skillType);
-            put(partySkill, partySkillTransfer);
+            put(userVisit, partySkill, partySkillTransfer);
         }
         
         return partySkillTransfer;

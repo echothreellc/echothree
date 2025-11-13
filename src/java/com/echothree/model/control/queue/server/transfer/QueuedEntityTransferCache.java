@@ -29,11 +29,11 @@ public class QueuedEntityTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         
     /** Creates a new instance of QueuedEntityTransferCache */
-    public QueuedEntityTransferCache(UserVisit userVisit, QueueControl queueControl) {
-        super(userVisit, queueControl);
+    public QueuedEntityTransferCache(QueueControl queueControl) {
+        super(queueControl);
     }
 
-    public QueuedEntityTransfer getQueuedEntityTransfer(QueuedEntity queuedEntity) {
+    public QueuedEntityTransfer getQueuedEntityTransfer(UserVisit userVisit, QueuedEntity queuedEntity) {
         var queuedEntityTransfer = get(queuedEntity);
 
         if(queuedEntityTransfer == null) {
@@ -41,7 +41,7 @@ public class QueuedEntityTransferCache
             var entityInstance = entityInstanceControl.getEntityInstanceTransfer(userVisit, queuedEntity.getEntityInstance(), true, true, true, true);
 
             queuedEntityTransfer = new QueuedEntityTransfer(queueType, entityInstance);
-            put(queuedEntity, queuedEntityTransfer);
+            put(userVisit, queuedEntity, queuedEntityTransfer);
         }
 
         return queuedEntityTransfer;

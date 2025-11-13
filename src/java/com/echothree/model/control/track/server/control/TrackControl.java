@@ -76,9 +76,9 @@ public class TrackControl
     
     private TrackTransferCaches trackTransferCaches;
     
-    public TrackTransferCaches getTrackTransferCaches(UserVisit userVisit) {
+    public TrackTransferCaches getTrackTransferCaches() {
         if(trackTransferCaches == null) {
-            trackTransferCaches = new TrackTransferCaches(userVisit, this);
+            trackTransferCaches = new TrackTransferCaches(this);
         }
         
         return trackTransferCaches;
@@ -311,16 +311,16 @@ public class TrackControl
     }
     
    public TrackTransfer getTrackTransfer(UserVisit userVisit, Track track) {
-        return getTrackTransferCaches(userVisit).getTrackTransferCache().getTrackTransfer(track);
+        return getTrackTransferCaches().getTrackTransferCache().getTrackTransfer(userVisit, track);
     }
 
     public List<TrackTransfer> getTrackTransfers(UserVisit userVisit) {
         var tracks = getTracks();
         List<TrackTransfer> trackTransfers = new ArrayList<>(tracks.size());
-        var trackTransferCache = getTrackTransferCaches(userVisit).getTrackTransferCache();
+        var trackTransferCache = getTrackTransferCaches().getTrackTransferCache();
 
         tracks.forEach((track) ->
-                trackTransfers.add(trackTransferCache.getTrackTransfer(track))
+                trackTransfers.add(trackTransferCache.getTrackTransfer(userVisit, track))
         );
 
         return trackTransfers;
@@ -551,16 +551,16 @@ public class TrackControl
     }
 
     public TrackDescriptionTransfer getTrackDescriptionTransfer(UserVisit userVisit, TrackDescription trackDescription) {
-        return getTrackTransferCaches(userVisit).getTrackDescriptionTransferCache().getTrackDescriptionTransfer(trackDescription);
+        return getTrackTransferCaches().getTrackDescriptionTransferCache().getTrackDescriptionTransfer(userVisit, trackDescription);
     }
 
     public List<TrackDescriptionTransfer> getTrackDescriptionTransfersByTrack(UserVisit userVisit, Track track) {
         var trackDescriptions = getTrackDescriptionsByTrack(track);
         List<TrackDescriptionTransfer> trackDescriptionTransfers = new ArrayList<>(trackDescriptions.size());
-        var trackDescriptionTransferCache = getTrackTransferCaches(userVisit).getTrackDescriptionTransferCache();
+        var trackDescriptionTransferCache = getTrackTransferCaches().getTrackDescriptionTransferCache();
 
         trackDescriptions.forEach((trackDescription) ->
-                trackDescriptionTransfers.add(trackDescriptionTransferCache.getTrackDescriptionTransfer(trackDescription))
+                trackDescriptionTransfers.add(trackDescriptionTransferCache.getTrackDescriptionTransfer(userVisit, trackDescription))
         );
 
         return trackDescriptionTransfers;
@@ -713,15 +713,15 @@ public class TrackControl
     }
 
     public UserVisitTrackTransfer getUserVisitTrackTransfer(UserVisit userVisit, UserVisitTrack userVisitTrack) {
-        return getTrackTransferCaches(userVisit).getUserVisitTrackTransferCache().getUserVisitTrackTransfer(userVisitTrack);
+        return getTrackTransferCaches().getUserVisitTrackTransferCache().getUserVisitTrackTransfer(userVisit, userVisitTrack);
     }
 
     public List<UserVisitTrackTransfer> getUserVisitTrackTransfers(UserVisit userVisit, Collection<UserVisitTrack> userVisitTracks) {
         var userVisitTrackTransfers = new ArrayList<UserVisitTrackTransfer>(userVisitTracks.size());
-        var userVisitTrackTransferCache = getTrackTransferCaches(userVisit).getUserVisitTrackTransferCache();
+        var userVisitTrackTransferCache = getTrackTransferCaches().getUserVisitTrackTransferCache();
 
         userVisitTracks.forEach((userVisitTrack) ->
-                userVisitTrackTransfers.add(userVisitTrackTransferCache.getUserVisitTrackTransfer(userVisitTrack))
+                userVisitTrackTransfers.add(userVisitTrackTransferCache.getUserVisitTrackTransfer(userVisit, userVisitTrack))
         );
 
         return userVisitTrackTransfers;

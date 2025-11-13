@@ -63,9 +63,9 @@ public class JobControl
     
     private JobTransferCaches jobTransferCaches;
     
-    public JobTransferCaches getJobTransferCaches(UserVisit userVisit) {
+    public JobTransferCaches getJobTransferCaches() {
         if(jobTransferCaches == null) {
-            jobTransferCaches = new JobTransferCaches(userVisit, this);
+            jobTransferCaches = new JobTransferCaches(this);
         }
         
         return jobTransferCaches;
@@ -167,16 +167,16 @@ public class JobControl
     }
     
     public JobTransfer getJobTransfer(UserVisit userVisit, Job job) {
-        return getJobTransferCaches(userVisit).getJobTransferCache().getJobTransfer(job);
+        return getJobTransferCaches().getJobTransferCache().getJobTransfer(userVisit, job);
     }
     
     public List<JobTransfer> getJobTransfers(UserVisit userVisit) {
         var jobs = getJobs();
         List<JobTransfer> jobTransfers = new ArrayList<>(jobs.size());
-        var jobTransferCache = getJobTransferCaches(userVisit).getJobTransferCache();
+        var jobTransferCache = getJobTransferCaches().getJobTransferCache();
         
         jobs.forEach((job) ->
-                jobTransfers.add(jobTransferCache.getJobTransfer(job))
+                jobTransfers.add(jobTransferCache.getJobTransfer(userVisit, job))
         );
         
         return jobTransfers;
@@ -369,7 +369,7 @@ public class JobControl
     }
     
     public JobDescriptionTransfer getJobDescriptionTransfer(UserVisit userVisit, JobDescription jobDescription) {
-        return getJobTransferCaches(userVisit).getJobDescriptionTransferCache().getJobDescriptionTransfer(jobDescription);
+        return getJobTransferCaches().getJobDescriptionTransferCache().getJobDescriptionTransfer(userVisit, jobDescription);
     }
     
     public List<JobDescriptionTransfer> getJobDescriptionTransfersByJob(UserVisit userVisit, Job job) {
@@ -377,7 +377,7 @@ public class JobControl
         List<JobDescriptionTransfer> jobDescriptionTransfers = new ArrayList<>(jobDescriptions.size());
         
         jobDescriptions.forEach((jobDescription) -> {
-            jobDescriptionTransfers.add(getJobTransferCaches(userVisit).getJobDescriptionTransferCache().getJobDescriptionTransfer(jobDescription));
+            jobDescriptionTransfers.add(getJobTransferCaches().getJobDescriptionTransferCache().getJobDescriptionTransfer(userVisit, jobDescription));
         });
         
         return jobDescriptionTransfers;

@@ -30,14 +30,14 @@ public class AssociateProgramTransferCache
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     
     /** Creates a new instance of AssociateProgramTransferCache */
-    public AssociateProgramTransferCache(UserVisit userVisit, AssociateControl associateControl) {
-        super(userVisit, associateControl);
+    public AssociateProgramTransferCache(AssociateControl associateControl) {
+        super(associateControl);
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public AssociateProgramTransfer getTransfer(AssociateProgram associateProgram) {
+    public AssociateProgramTransfer getTransfer(UserVisit userVisit, AssociateProgram associateProgram) {
         var associateProgramTransfer = get(associateProgram);
         
         if(associateProgramTransfer == null) {
@@ -53,12 +53,12 @@ public class AssociateProgramTransferCache
             var itemDirectSalePercent = PercentUtils.getInstance().formatFractionalPercent(associateProgramDetail.getItemDirectSalePercent());
             var isDefault = associateProgramDetail.getIsDefault();
             var sortOrder = associateProgramDetail.getSortOrder();
-            var description = associateControl.getBestAssociateProgramDescription(associateProgram, getLanguage());
+            var description = associateControl.getBestAssociateProgramDescription(associateProgram, getLanguage(userVisit));
             
             associateProgramTransfer = new AssociateProgramTransfer(associateProgramName, associateSequenceTransfer,
                     associatePartyContactMechanismSequenceTransfer, associateReferralSequenceTransfer, itemIndirectSalePercent,
                     itemDirectSalePercent, isDefault, sortOrder, description);
-            put(associateProgram, associateProgramTransfer);
+            put(userVisit, associateProgram, associateProgramTransfer);
         }
         return associateProgramTransfer;
     }

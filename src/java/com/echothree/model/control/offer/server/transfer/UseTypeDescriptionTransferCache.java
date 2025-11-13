@@ -28,11 +28,11 @@ public class UseTypeDescriptionTransferCache
     UseTypeControl useTypeControl = Session.getModelController(UseTypeControl.class);
 
     /** Creates a new instance of UseTypeDescriptionTransferCache */
-    public UseTypeDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public UseTypeDescriptionTransferCache() {
+        super();
     }
     
-    public UseTypeDescriptionTransfer getUseTypeDescriptionTransfer(UseTypeDescription useTypeDescription) {
+    public UseTypeDescriptionTransfer getUseTypeDescriptionTransfer(UserVisit userVisit, UseTypeDescription useTypeDescription) {
         var useTypeDescriptionTransfer = get(useTypeDescription);
         
         if(useTypeDescriptionTransfer == null) {
@@ -40,7 +40,7 @@ public class UseTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, useTypeDescription.getLanguage());
             
             useTypeDescriptionTransfer = new UseTypeDescriptionTransfer(languageTransfer, useTypeTransfer, useTypeDescription.getDescription());
-            put(useTypeDescription, useTypeDescriptionTransfer);
+            put(userVisit, useTypeDescription, useTypeDescriptionTransfer);
         }
         
         return useTypeDescriptionTransfer;

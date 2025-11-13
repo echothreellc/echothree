@@ -32,43 +32,43 @@ public class RatingTransferCaches
     protected RatingTypeListItemDescriptionTransferCache ratingTypeListItemDescriptionTransferCache;
     
     /** Creates a new instance of RatingTransferCaches */
-    public RatingTransferCaches(UserVisit userVisit, RatingControl ratingControl) {
-        super(userVisit);
+    public RatingTransferCaches(RatingControl ratingControl) {
+        super();
         
         this.ratingControl = ratingControl;
     }
     
     public RatingTransferCache getRatingTransferCache() {
         if(ratingTransferCache == null)
-            ratingTransferCache = new RatingTransferCache(userVisit, ratingControl);
+            ratingTransferCache = new RatingTransferCache(ratingControl);
         
         return ratingTransferCache;
     }
     
     public RatingTypeTransferCache getRatingTypeTransferCache() {
         if(ratingTypeTransferCache == null)
-            ratingTypeTransferCache = new RatingTypeTransferCache(userVisit, ratingControl);
+            ratingTypeTransferCache = new RatingTypeTransferCache(ratingControl);
         
         return ratingTypeTransferCache;
     }
     
     public RatingTypeDescriptionTransferCache getRatingTypeDescriptionTransferCache() {
         if(ratingTypeDescriptionTransferCache == null)
-            ratingTypeDescriptionTransferCache = new RatingTypeDescriptionTransferCache(userVisit, ratingControl);
+            ratingTypeDescriptionTransferCache = new RatingTypeDescriptionTransferCache(ratingControl);
         
         return ratingTypeDescriptionTransferCache;
     }
     
     public RatingTypeListItemTransferCache getRatingTypeListItemTransferCache() {
         if(ratingTypeListItemTransferCache == null)
-            ratingTypeListItemTransferCache = new RatingTypeListItemTransferCache(userVisit, ratingControl);
+            ratingTypeListItemTransferCache = new RatingTypeListItemTransferCache(ratingControl);
         
         return ratingTypeListItemTransferCache;
     }
     
     public RatingTypeListItemDescriptionTransferCache getRatingTypeListItemDescriptionTransferCache() {
         if(ratingTypeListItemDescriptionTransferCache == null)
-            ratingTypeListItemDescriptionTransferCache = new RatingTypeListItemDescriptionTransferCache(userVisit, ratingControl);
+            ratingTypeListItemDescriptionTransferCache = new RatingTypeListItemDescriptionTransferCache(ratingControl);
         
         return ratingTypeListItemDescriptionTransferCache;
     }

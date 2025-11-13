@@ -30,8 +30,8 @@ public class CommunicationSourceTransferCache
     boolean includeRelated;
     
     /** Creates a new instance of CommunicationSourceTransferCache */
-    public CommunicationSourceTransferCache(UserVisit userVisit, CommunicationControl communicationControl) {
-        super(userVisit, communicationControl);
+    public CommunicationSourceTransferCache(CommunicationControl communicationControl) {
+        super(communicationControl);
         
         var options = session.getOptions();
         if(options != null) {
@@ -41,7 +41,7 @@ public class CommunicationSourceTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public CommunicationSourceTransfer getCommunicationSourceTransfer(CommunicationSource communicationSource) {
+    public CommunicationSourceTransfer getCommunicationSourceTransfer(UserVisit userVisit, CommunicationSource communicationSource) {
         var communicationSourceTransfer = get(communicationSource);
         
         if(communicationSourceTransfer == null) {
@@ -50,7 +50,7 @@ public class CommunicationSourceTransferCache
             var communicationSourceTypeTransfer = communicationControl.getCommunicationSourceTypeTransfer(userVisit,
                     communicationSourceDetail.getCommunicationSourceType());
             var sortOrder = communicationSourceDetail.getSortOrder();
-            var description = communicationControl.getBestCommunicationSourceDescription(communicationSource, getLanguage());
+            var description = communicationControl.getBestCommunicationSourceDescription(communicationSource, getLanguage(userVisit));
             CommunicationEmailSourceTransfer communicationEmailSourceTransfer = null;
             
             if(includeRelated) {
@@ -64,7 +64,7 @@ public class CommunicationSourceTransferCache
             
             communicationSourceTransfer = new CommunicationSourceTransfer(communicationSourceName, communicationSourceTypeTransfer, 
                     sortOrder, description, communicationEmailSourceTransfer);
-            put(communicationSource, communicationSourceTransfer);
+            put(userVisit, communicationSource, communicationSourceTransfer);
         }
         
         return communicationSourceTransfer;

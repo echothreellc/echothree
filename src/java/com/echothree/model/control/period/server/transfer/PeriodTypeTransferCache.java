@@ -25,13 +25,13 @@ public class PeriodTypeTransferCache
         extends BasePeriodTransferCache<PeriodType, PeriodTypeTransfer> {
     
     /** Creates a new instance of PeriodTypeTransferCache */
-    public PeriodTypeTransferCache(UserVisit userVisit, PeriodControl periodControl) {
-        super(userVisit, periodControl);
+    public PeriodTypeTransferCache(PeriodControl periodControl) {
+        super(periodControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public PeriodTypeTransfer getPeriodTypeTransfer(PeriodType periodType) {
+    public PeriodTypeTransfer getPeriodTypeTransfer(UserVisit userVisit, PeriodType periodType) {
         var periodTypeTransfer = get(periodType);
         
         if(periodTypeTransfer == null) {
@@ -40,10 +40,10 @@ public class PeriodTypeTransferCache
             var periodTypeName = periodTypeDetail.getPeriodTypeName();
             var isDefault = periodTypeDetail.getIsDefault();
             var sortOrder = periodTypeDetail.getSortOrder();
-            var description = periodControl.getBestPeriodTypeDescription(periodType, getLanguage());
+            var description = periodControl.getBestPeriodTypeDescription(periodType, getLanguage(userVisit));
             
             periodTypeTransfer = new PeriodTypeTransfer(periodKindTransfer, periodTypeName, isDefault, sortOrder, description);
-            put(periodType, periodTypeTransfer);
+            put(userVisit, periodType, periodTypeTransfer);
         }
         
         return periodTypeTransfer;

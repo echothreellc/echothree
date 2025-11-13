@@ -33,13 +33,13 @@ public class ClubTransferCache
     SubscriptionControl subscriptionControl = Session.getModelController(SubscriptionControl.class);
     
     /** Creates a new instance of ClubTransferCache */
-    public ClubTransferCache(UserVisit userVisit, ClubControl clubControl) {
-        super(userVisit, clubControl);
+    public ClubTransferCache(ClubControl clubControl) {
+        super(clubControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public ClubTransfer getClubTransfer(Club club) {
+    public ClubTransfer getClubTransfer(UserVisit userVisit, Club club) {
         var clubTransfer = get(club);
         
         if(clubTransfer == null) {
@@ -52,10 +52,10 @@ public class ClubTransferCache
             var currencyTransfer = currency == null? null: accountingControl.getCurrencyTransfer(userVisit, currency);
             var isDefault = clubDetail.getIsDefault();
             var sortOrder = clubDetail.getSortOrder();
-            var description = clubControl.getBestClubDescription(club, getLanguage());
+            var description = clubControl.getBestClubDescription(club, getLanguage(userVisit));
             
             clubTransfer = new ClubTransfer(clubName, subscriptionTypeTransfer, clubPriceFilterTransfer, currencyTransfer, isDefault, sortOrder, description);
-            put(club, clubTransfer);
+            put(userVisit, club, clubTransfer);
         }
         
         return clubTransfer;

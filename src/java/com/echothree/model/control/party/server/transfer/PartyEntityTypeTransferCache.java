@@ -31,11 +31,11 @@ public class PartyEntityTypeTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of PartyEntityTypeTransferCache */
-    public PartyEntityTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public PartyEntityTypeTransferCache() {
+        super();
     }
     
-    public PartyEntityTypeTransfer getPartyEntityTypeTransfer(PartyEntityType partyEntityType) {
+    public PartyEntityTypeTransfer getPartyEntityTypeTransfer(UserVisit userVisit, PartyEntityType partyEntityType) {
         var partyEntityTypeTransfer = get(partyEntityType);
         
         if(partyEntityTypeTransfer == null) {
@@ -44,7 +44,7 @@ public class PartyEntityTypeTransferCache
             var confirmDelete = partyEntityType.getConfirmDelete();
             
             partyEntityTypeTransfer = new PartyEntityTypeTransfer(party, entityType, confirmDelete);
-            put(partyEntityType, partyEntityTypeTransfer);
+            put(userVisit, partyEntityType, partyEntityTypeTransfer);
         }
         
         return partyEntityTypeTransfer;

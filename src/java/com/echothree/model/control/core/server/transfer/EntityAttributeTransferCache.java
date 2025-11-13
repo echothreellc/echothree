@@ -60,8 +60,8 @@ public class EntityAttributeTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of EntityAttributeTransferCache */
-    public EntityAttributeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityAttributeTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -95,7 +95,7 @@ public class EntityAttributeTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
     
-    public EntityAttributeTransfer getEntityAttributeTransfer(EntityAttribute entityAttribute, EntityInstance entityInstance) {
+    public EntityAttributeTransfer getEntityAttributeTransfer(final UserVisit userVisit, final EntityAttribute entityAttribute, final EntityInstance entityInstance) {
         var entityAttributeTransfer = get(entityAttribute);
         
         if(entityAttributeTransfer == null) {
@@ -106,83 +106,78 @@ public class EntityAttributeTransferCache
             var entityAttributeTypeTransfer = filterEntityAttributeType ? null : coreControl.getEntityAttributeTypeTransfer(userVisit, entityAttributeType);
             var trackRevisions = filterTrackRevisions ? null : entityAttributeDetail.getTrackRevisions();
             var sortOrder = filterSortOrder ? null : entityAttributeDetail.getSortOrder();
-            var description = filterDescription ? null : coreControl.getBestEntityAttributeDescription(entityAttribute, getLanguage());
+            var description = filterDescription ? null : coreControl.getBestEntityAttributeDescription(entityAttribute, getLanguage(userVisit));
             
             entityAttributeTransfer = new EntityAttributeTransfer(entityTypeTransfer, entityAttributeTypeTransfer, entityAttributeName,
                     trackRevisions, sortOrder, description);
 
             var entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
             switch(EntityAttributeTypes.valueOf(entityAttributeTypeName)) {
-                case BLOB:
+                case BLOB -> {
                     if(!filterCheckContentWebAddress) {
                         var entityAttributeBlob = coreControl.getEntityAttributeBlob(entityAttribute);
-                        
+
                         entityAttributeTransfer.setCheckContentWebAddress(entityAttributeBlob.getCheckContentWebAddress());
                     }
-                    break;
-                case STRING:
+                }
+                case STRING -> {
                     if(!filterValidationPattern) {
                         var entityAttributeString = coreControl.getEntityAttributeString(entityAttribute);
-                        
+
                         if(entityAttributeString != null) {
                             entityAttributeTransfer.setValidationPattern(filterValidationPattern ? null : entityAttributeString.getValidationPattern());
                         }
                     }
-                    break;
-                case INTEGER: {
+                }
+                case INTEGER -> {
                     // TODO
-                    
+
                     if(!filterUnitOfMeasureType) {
                         var entityAttributeNumeric = coreControl.getEntityAttributeNumeric(entityAttribute);
-                        
+
                         if(entityAttributeNumeric != null) {
                             if(!filterUnitOfMeasureType) {
                                 var unitOfMeasureType = entityAttributeNumeric.getUnitOfMeasureType();
-                                
+
                                 entityAttributeTransfer.setUnitOfMeasureType(unitOfMeasureType == null ? null : uomControl.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureType));
                             }
                         }
                     }
                 }
-                break;
-                case LONG: {
+                case LONG -> {
                     // TODO
-                    
                     if(!filterUnitOfMeasureType) {
                         var entityAttributeNumeric = coreControl.getEntityAttributeNumeric(entityAttribute);
-                        
+
                         if(entityAttributeNumeric != null) {
                             if(!filterUnitOfMeasureType) {
                                 var unitOfMeasureType = entityAttributeNumeric.getUnitOfMeasureType();
-                                
+
                                 entityAttributeTransfer.setUnitOfMeasureType(unitOfMeasureType == null ? null : uomControl.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureType));
                             }
                         }
                     }
                 }
-                break;
-                case LISTITEM:
-                case MULTIPLELISTITEM:
+                case LISTITEM, MULTIPLELISTITEM -> {
                     if(!filterEntityListItemSequence) {
                         var entityAttributeListItem = coreControl.getEntityAttributeListItem(entityAttribute);
-                        
+
                         if(entityAttributeListItem != null) {
                             if(!filterEntityListItemSequence) {
                                 var entityListItemSequence = entityAttributeListItem.getEntityListItemSequence();
-                                
+
                                 entityAttributeTransfer.setEntityListItemSequence(entityListItemSequence == null ? null : sequenceControl.getSequenceTransfer(userVisit, entityListItemSequence));
                             }
                         }
                     }
-                    break;
-                default:
-                    break;
+                }
+                default -> {}
             }
             
             if(entityInstance == null) {
-                put(entityAttribute, entityAttributeTransfer);
+                put(userVisit, entityAttribute, entityAttributeTransfer);
             } else {
-                setupEntityInstance(entityAttribute, null, entityAttributeTransfer);
+                setupEntityInstance(userVisit, entityAttribute, null, entityAttributeTransfer);
             }
 
             if(includeDefault || (includeValue && entityInstance != null)) {
@@ -237,13 +232,13 @@ public class EntityAttributeTransferCache
                     }
                     case STRING -> {
                         if(includeDefault) {
-                            var entityStringDefault = coreControl.getEntityStringDefault(entityAttribute, getLanguage());
+                            var entityStringDefault = coreControl.getEntityStringDefault(entityAttribute, getLanguage(userVisit));
 
                             entityAttributeTransfer.setEntityStringDefault(entityStringDefault == null ? null : coreControl.getEntityStringDefaultTransfer(userVisit, entityStringDefault));
                         }
 
                         if(includeValue && entityInstance != null) {
-                            var entityStringAttribute = coreControl.getBestEntityStringAttribute(entityAttribute, entityInstance, getLanguage());
+                            var entityStringAttribute = coreControl.getBestEntityStringAttribute(entityAttribute, entityInstance, getLanguage(userVisit));
 
                             entityAttributeTransfer.setEntityStringAttribute(entityStringAttribute == null ? null : coreControl.getEntityStringAttributeTransfer(userVisit, entityStringAttribute, entityInstance));
                         }
@@ -257,14 +252,14 @@ public class EntityAttributeTransferCache
                     }
                     case BLOB -> {
                         if(includeValue && entityInstance != null) {
-                            var entityBlobAttribute = coreControl.getBestEntityBlobAttribute(entityAttribute, entityInstance, getLanguage());
+                            var entityBlobAttribute = coreControl.getBestEntityBlobAttribute(entityAttribute, entityInstance, getLanguage(userVisit));
 
                             entityAttributeTransfer.setEntityBlobAttribute(entityBlobAttribute == null ? null : coreControl.getEntityBlobAttributeTransfer(userVisit, entityBlobAttribute, entityInstance));
                         }
                     }
                     case CLOB -> {
                         if(includeValue && entityInstance != null) {
-                            var entityClobAttribute = coreControl.getBestEntityClobAttribute(entityAttribute, entityInstance, getLanguage());
+                            var entityClobAttribute = coreControl.getBestEntityClobAttribute(entityAttribute, entityInstance, getLanguage(userVisit));
 
                             entityAttributeTransfer.setEntityClobAttribute(entityClobAttribute == null ? null : coreControl.getEntityClobAttributeTransfer(userVisit, entityClobAttribute, entityInstance));
                         }

@@ -30,11 +30,11 @@ public class OfferChainTypeTransferCache
     OfferControl offerControl = Session.getModelController(OfferControl.class);
 
     /** Creates a new instance of OfferChainTypeTransferCache */
-    public OfferChainTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public OfferChainTypeTransferCache() {
+        super();
     }
     
-    public OfferChainTypeTransfer getOfferChainTypeTransfer(OfferChainType offerChainType) {
+    public OfferChainTypeTransfer getOfferChainTypeTransfer(UserVisit userVisit, OfferChainType offerChainType) {
         var offerChainTypeTransfer = get(offerChainType);
         
         if(offerChainTypeTransfer == null) {
@@ -44,7 +44,7 @@ public class OfferChainTypeTransferCache
             var chainTransfer = chain == null? null: chainControl.getChainTransfer(userVisit, chain);
             
             offerChainTypeTransfer = new OfferChainTypeTransfer(offerTransfer, chainTypeTransfer, chainTransfer);
-            put(offerChainType, offerChainTypeTransfer);
+            put(userVisit, offerChainType, offerChainTypeTransfer);
         }
         
         return offerChainTypeTransfer;

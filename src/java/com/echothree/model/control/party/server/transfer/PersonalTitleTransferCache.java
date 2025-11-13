@@ -24,14 +24,14 @@ public class PersonalTitleTransferCache
         extends BasePartyTransferCache<PersonalTitle, PersonalTitleTransfer> {
     
     /** Creates a new instance of PersonalTitleTransferCache */
-    public PersonalTitleTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public PersonalTitleTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
 
     @Override
-    public PersonalTitleTransfer getTransfer(PersonalTitle personalTitle) {
+    public PersonalTitleTransfer getTransfer(UserVisit userVisit, PersonalTitle personalTitle) {
         var personalTitleTransfer = get(personalTitle);
         
         if(personalTitleTransfer == null) {
@@ -43,7 +43,7 @@ public class PersonalTitleTransferCache
             var sortOrder = personalTitleDetail.getSortOrder();
             
             personalTitleTransfer = new PersonalTitleTransfer(personalTitleId, description, isDefault, sortOrder);
-            put(personalTitle, personalTitleTransfer);
+            put(userVisit, personalTitle, personalTitleTransfer);
         }
         
         return personalTitleTransfer;

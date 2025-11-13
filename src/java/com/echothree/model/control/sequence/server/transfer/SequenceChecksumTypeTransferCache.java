@@ -25,21 +25,21 @@ public class SequenceChecksumTypeTransferCache
         extends BaseSequenceTransferCache<SequenceChecksumType, SequenceChecksumTypeTransfer> {
     
     /** Creates a new instance of SequenceChecksumTypeTransferCache */
-    public SequenceChecksumTypeTransferCache(UserVisit userVisit, SequenceControl sequenceControl) {
-        super(userVisit, sequenceControl);
+    public SequenceChecksumTypeTransferCache(SequenceControl sequenceControl) {
+        super(sequenceControl);
     }
     
-    public SequenceChecksumTypeTransfer getSequenceChecksumTypeTransfer(SequenceChecksumType sequenceChecksumType) {
+    public SequenceChecksumTypeTransfer getSequenceChecksumTypeTransfer(UserVisit userVisit, SequenceChecksumType sequenceChecksumType) {
         var sequenceChecksumTypeTransfer = get(sequenceChecksumType);
         
         if(sequenceChecksumTypeTransfer == null) {
             var sequenceChecksumTypeName = sequenceChecksumType.getSequenceChecksumTypeName();
             var isDefault = sequenceChecksumType.getIsDefault();
             var sortOrder = sequenceChecksumType.getSortOrder();
-            var description = sequenceControl.getBestSequenceChecksumTypeDescription(sequenceChecksumType, getLanguage());
+            var description = sequenceControl.getBestSequenceChecksumTypeDescription(sequenceChecksumType, getLanguage(userVisit));
             
             sequenceChecksumTypeTransfer = new SequenceChecksumTypeTransfer(sequenceChecksumTypeName, isDefault, sortOrder, description);
-            put(sequenceChecksumType, sequenceChecksumTypeTransfer);
+            put(userVisit, sequenceChecksumType, sequenceChecksumTypeTransfer);
         }
         return sequenceChecksumTypeTransfer;
     }

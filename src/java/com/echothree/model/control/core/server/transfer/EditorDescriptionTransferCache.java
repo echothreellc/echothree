@@ -28,11 +28,11 @@ public class EditorDescriptionTransferCache
     EditorControl editorControl = Session.getModelController(EditorControl.class);
 
     /** Creates a new instance of EditorDescriptionTransferCache */
-    public EditorDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EditorDescriptionTransferCache() {
+        super();
     }
     
-    public EditorDescriptionTransfer getEditorDescriptionTransfer(EditorDescription editorDescription) {
+    public EditorDescriptionTransfer getEditorDescriptionTransfer(UserVisit userVisit, EditorDescription editorDescription) {
         var editorDescriptionTransfer = get(editorDescription);
         
         if(editorDescriptionTransfer == null) {
@@ -40,7 +40,7 @@ public class EditorDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, editorDescription.getLanguage());
             
             editorDescriptionTransfer = new EditorDescriptionTransfer(languageTransfer, editorTransfer, editorDescription.getDescription());
-            put(editorDescription, editorDescriptionTransfer);
+            put(userVisit, editorDescription, editorDescriptionTransfer);
         }
         return editorDescriptionTransfer;
     }

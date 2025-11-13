@@ -35,11 +35,11 @@ public abstract class BaseWarehouseControl
     
     private WarehouseTransferCaches warehouseTransferCaches;
     
-    public WarehouseTransferCaches getWarehouseTransferCaches(UserVisit userVisit) {
+    public WarehouseTransferCaches getWarehouseTransferCaches() {
         if(warehouseTransferCaches == null) {
             var warehouseControl = Session.getModelController(WarehouseControl.class);
 
-            warehouseTransferCaches = new WarehouseTransferCaches(userVisit, warehouseControl);
+            warehouseTransferCaches = new WarehouseTransferCaches(warehouseControl);
         }
         
         return warehouseTransferCaches;

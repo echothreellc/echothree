@@ -29,8 +29,8 @@ public abstract class BaseWorkEffortDescriptionTransferCache<K extends BaseEntit
     PartyControl partyControl;
     
     /** Creates a new instance of BaseWorkEffortDescriptionTransferCache */
-    protected BaseWorkEffortDescriptionTransferCache(UserVisit userVisit, WorkEffortControl workEffortControl) {
-        super(userVisit, workEffortControl);
+    protected BaseWorkEffortDescriptionTransferCache(WorkEffortControl workEffortControl) {
+        super(workEffortControl);
         
         partyControl = Session.getModelController(PartyControl.class);
     }

@@ -34,11 +34,11 @@ public class ClubItemTransferCache
     UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
     
     /** Creates a new instance of ClubItemTransferCache */
-    public ClubItemTransferCache(UserVisit userVisit, ClubControl clubControl) {
-        super(userVisit, clubControl);
+    public ClubItemTransferCache(ClubControl clubControl) {
+        super(clubControl);
     }
     
-    public ClubItemTransfer getClubItemTransfer(ClubItem clubItem) {
+    public ClubItemTransfer getClubItemTransfer(UserVisit userVisit, ClubItem clubItem) {
         var clubItemTransfer = get(clubItem);
         
         if(clubItemTransfer == null) {
@@ -46,10 +46,10 @@ public class ClubItemTransferCache
             var clubItemType = clubControl.getClubItemTypeTransfer(userVisit, clubItem.getClubItemType());
             var item = itemControl.getItemTransfer(userVisit, clubItem.getItem());
             var unformattedSubscriptionTime = clubItem.getSubscriptionTime();
-            var subscriptionTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedSubscriptionTime);
+            var subscriptionTime = formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedSubscriptionTime);
             
             clubItemTransfer = new ClubItemTransfer(club, clubItemType, item, unformattedSubscriptionTime, subscriptionTime);
-            put(clubItem, clubItemTransfer);
+            put(userVisit, clubItem, clubItemTransfer);
         }
         return clubItemTransfer;
     }

@@ -45,8 +45,8 @@ public class DivisionTransferCache
     boolean includePartyScaleUses;
     
     /** Creates a new instance of DivisionTransferCache */
-    public DivisionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public DivisionTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -62,12 +62,12 @@ public class DivisionTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public DivisionTransfer getTransfer(PartyDivision partyDivision) {
-        return getTransfer(partyDivision.getParty());
+    public DivisionTransfer getTransfer(UserVisit userVisit, PartyDivision partyDivision) {
+        return getTransfer(userVisit, partyDivision.getParty());
     }
 
     @Override
-    public DivisionTransfer getTransfer(Party party) {
+    public DivisionTransfer getTransfer(UserVisit userVisit, Party party) {
         var divisionTransfer = get(party);
         
         if(divisionTransfer == null) {
@@ -95,7 +95,7 @@ public class DivisionTransferCache
             
             divisionTransfer = new DivisionTransfer(partyName, partyTypeTransfer, preferredLanguageTransfer, preferredCurrencyTransfer, preferredTimeZoneTransfer, preferredDateTimeFormatTransfer,
                     personTransfer, partyGroupTransfer, company, divisionName, isDefault, sortOrder);
-            put(party, divisionTransfer);
+            put(userVisit, party, divisionTransfer);
             
             if(includePartyContactMechanisms) {
                 divisionTransfer.setPartyContactMechanisms(new ListWrapper<>(contactControl.getPartyContactMechanismTransfersByParty(userVisit, party)));

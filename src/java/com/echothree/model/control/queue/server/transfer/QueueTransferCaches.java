@@ -30,15 +30,15 @@ public class QueueTransferCaches
     protected QueuedEntityTransferCache queuedEntityTransferCache;
     
     /** Creates a new instance of QueueTransferCaches */
-    public QueueTransferCaches(UserVisit userVisit, QueueControl queueControl) {
-        super(userVisit);
+    public QueueTransferCaches(QueueControl queueControl) {
+        super();
         
         this.queueControl = queueControl;
     }
     
     public QueueTypeTransferCache getQueueTypeTransferCache() {
         if(queueTypeTransferCache == null) {
-            queueTypeTransferCache = new QueueTypeTransferCache(userVisit, queueControl);
+            queueTypeTransferCache = new QueueTypeTransferCache(queueControl);
         }
 
         return queueTypeTransferCache;
@@ -46,7 +46,7 @@ public class QueueTransferCaches
 
     public QueueTypeDescriptionTransferCache getQueueTypeDescriptionTransferCache() {
         if(queueTypeDescriptionTransferCache == null) {
-            queueTypeDescriptionTransferCache = new QueueTypeDescriptionTransferCache(userVisit, queueControl);
+            queueTypeDescriptionTransferCache = new QueueTypeDescriptionTransferCache(queueControl);
         }
 
         return queueTypeDescriptionTransferCache;
@@ -54,7 +54,7 @@ public class QueueTransferCaches
 
     public QueuedEntityTransferCache getQueuedEntityTransferCache() {
         if(queuedEntityTransferCache == null) {
-            queuedEntityTransferCache = new QueuedEntityTransferCache(userVisit, queueControl);
+            queuedEntityTransferCache = new QueuedEntityTransferCache(queueControl);
         }
 
         return queuedEntityTransferCache;

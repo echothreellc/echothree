@@ -28,14 +28,14 @@ public class ShipmentAliasTypeTransferCache
     ShipmentControl shipmentControl = Session.getModelController(ShipmentControl.class);
 
     /** Creates a new instance of ShipmentAliasTypeTransferCache */
-    public ShipmentAliasTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public ShipmentAliasTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
 
     @Override
-    public ShipmentAliasTypeTransfer getTransfer(ShipmentAliasType shipmentAliasType) {
+    public ShipmentAliasTypeTransfer getTransfer(UserVisit userVisit, ShipmentAliasType shipmentAliasType) {
         var shipmentAliasTypeTransfer = get(shipmentAliasType);
         
         if(shipmentAliasTypeTransfer == null) {
@@ -45,10 +45,10 @@ public class ShipmentAliasTypeTransferCache
             var validationPattern = shipmentAliasTypeDetail.getValidationPattern();
             var isDefault = shipmentAliasTypeDetail.getIsDefault();
             var sortOrder = shipmentAliasTypeDetail.getSortOrder();
-            var description = shipmentControl.getBestShipmentAliasTypeDescription(shipmentAliasType, getLanguage());
+            var description = shipmentControl.getBestShipmentAliasTypeDescription(shipmentAliasType, getLanguage(userVisit));
             
             shipmentAliasTypeTransfer = new ShipmentAliasTypeTransfer(shipmentType, shipmentAliasTypeName, validationPattern, isDefault, sortOrder, description);
-            put(shipmentAliasType, shipmentAliasTypeTransfer);
+            put(userVisit, shipmentAliasType, shipmentAliasTypeTransfer);
         }
         
         return shipmentAliasTypeTransfer;

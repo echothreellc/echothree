@@ -30,26 +30,26 @@ public class LocationVolumeTransferCache
     UomControl uomControl;
     
     /** Creates a new instance of LocationVolumeTransferCache */
-    public LocationVolumeTransferCache(UserVisit userVisit, WarehouseControl warehouseControl) {
-        super(userVisit, warehouseControl);
+    public LocationVolumeTransferCache(WarehouseControl warehouseControl) {
+        super(warehouseControl);
         
         uomControl = Session.getModelController(UomControl.class);
     }
     
-    public LocationVolumeTransfer getLocationVolumeTransfer(LocationVolume locationVolume) {
+    public LocationVolumeTransfer getLocationVolumeTransfer(UserVisit userVisit, LocationVolume locationVolume) {
         var locationVolumeTransfer = get(locationVolume);
         
         if(locationVolumeTransfer == null) {
             var locationTransfer = warehouseControl.getLocationTransfer(userVisit, locationVolume.getLocation());
             var volumeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_VOLUME);
-            var height = formatUnitOfMeasure(volumeUnitOfMeasureKind, locationVolume.getHeight());
-            var width = formatUnitOfMeasure(volumeUnitOfMeasureKind, locationVolume.getWidth());
-            var depth = formatUnitOfMeasure(volumeUnitOfMeasureKind, locationVolume.getDepth());
+            var height = formatUnitOfMeasure(userVisit, volumeUnitOfMeasureKind, locationVolume.getHeight());
+            var width = formatUnitOfMeasure(userVisit, volumeUnitOfMeasureKind, locationVolume.getWidth());
+            var depth = formatUnitOfMeasure(userVisit, volumeUnitOfMeasureKind, locationVolume.getDepth());
             Long cubicVolume = locationVolume.getHeight() * locationVolume.getWidth()
                     * locationVolume.getDepth();
             
             locationVolumeTransfer = new LocationVolumeTransfer(locationTransfer, height, width, depth, cubicVolume);
-            put(locationVolume, locationVolumeTransfer);
+            put(userVisit, locationVolume, locationVolumeTransfer);
         }
         
         return locationVolumeTransfer;

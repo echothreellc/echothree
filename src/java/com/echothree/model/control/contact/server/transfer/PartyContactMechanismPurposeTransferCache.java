@@ -25,11 +25,11 @@ public class PartyContactMechanismPurposeTransferCache
         extends BaseContactTransferCache<PartyContactMechanismPurpose, PartyContactMechanismPurposeTransfer> {
     
     /** Creates a new instance of PartyContactMechanismPurposeTransferCache */
-    public PartyContactMechanismPurposeTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    public PartyContactMechanismPurposeTransferCache(ContactControl contactControl) {
+        super(contactControl);
     }
     
-    public PartyContactMechanismPurposeTransfer getPartyContactMechanismPurposeTransfer(PartyContactMechanismPurpose partyContactMechanismPurpose) {
+    public PartyContactMechanismPurposeTransfer getPartyContactMechanismPurposeTransfer(UserVisit userVisit, PartyContactMechanismPurpose partyContactMechanismPurpose) {
         var partyContactMechanismPurposeTransfer = get(partyContactMechanismPurpose);
         
         if(partyContactMechanismPurposeTransfer == null) {
@@ -38,7 +38,7 @@ public class PartyContactMechanismPurposeTransferCache
             var sortOrder = partyContactMechanismPurposeDetail.getSortOrder();
             
             partyContactMechanismPurposeTransfer = new PartyContactMechanismPurposeTransfer(isDefault, sortOrder);
-            put(partyContactMechanismPurpose, partyContactMechanismPurposeTransfer);
+            put(userVisit, partyContactMechanismPurpose, partyContactMechanismPurposeTransfer);
             
             partyContactMechanismPurposeTransfer.setPartyContactMechanism(contactControl.getPartyContactMechanismTransfer(userVisit, partyContactMechanismPurposeDetail.getPartyContactMechanism()));
             partyContactMechanismPurposeTransfer.setContactMechanismPurpose(contactControl.getContactMechanismPurposeTransfer(userVisit, partyContactMechanismPurposeDetail.getContactMechanismPurpose()));

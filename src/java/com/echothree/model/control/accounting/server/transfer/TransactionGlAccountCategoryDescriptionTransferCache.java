@@ -28,21 +28,21 @@ public class TransactionGlAccountCategoryDescriptionTransferCache
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of TransactionGlAccountCategoryDescriptionTransferCache */
-    public TransactionGlAccountCategoryDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public TransactionGlAccountCategoryDescriptionTransferCache() {
+        super();
     }
     
     @Override
-    public TransactionGlAccountCategoryDescriptionTransfer getTransfer(TransactionGlAccountCategoryDescription transactionGlAccountCategoryDescription) {
+    public TransactionGlAccountCategoryDescriptionTransfer getTransfer(UserVisit userVisit, TransactionGlAccountCategoryDescription transactionGlAccountCategoryDescription) {
         var transactionGlAccountCategoryDescriptionTransfer = get(transactionGlAccountCategoryDescription);
         
         if(transactionGlAccountCategoryDescriptionTransfer == null) {
-            var transactionGlAccountCategoryTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getTransactionGlAccountCategoryTransferCache();
-            var transactionGlAccountCategoryTransfer = transactionGlAccountCategoryTransferCache.getTransfer(transactionGlAccountCategoryDescription.getTransactionGlAccountCategory());
+            var transactionGlAccountCategoryTransferCache = accountingControl.getAccountingTransferCaches().getTransactionGlAccountCategoryTransferCache();
+            var transactionGlAccountCategoryTransfer = transactionGlAccountCategoryTransferCache.getTransfer(userVisit, transactionGlAccountCategoryDescription.getTransactionGlAccountCategory());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, transactionGlAccountCategoryDescription.getLanguage());
             
             transactionGlAccountCategoryDescriptionTransfer = new TransactionGlAccountCategoryDescriptionTransfer(languageTransfer, transactionGlAccountCategoryTransfer, transactionGlAccountCategoryDescription.getDescription());
-            put(transactionGlAccountCategoryDescription, transactionGlAccountCategoryDescriptionTransfer);
+            put(userVisit, transactionGlAccountCategoryDescription, transactionGlAccountCategoryDescriptionTransfer);
         }
         
         return transactionGlAccountCategoryDescriptionTransfer;

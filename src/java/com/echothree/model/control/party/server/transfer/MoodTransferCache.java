@@ -30,14 +30,14 @@ public class MoodTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of MoodTransferCache */
-    public MoodTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public MoodTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
 
     @Override
-    public MoodTransfer getTransfer(Mood mood) {
+    public MoodTransfer getTransfer(UserVisit userVisit, Mood mood) {
         var moodTransfer = get(mood);
         
         if(moodTransfer == null) {
@@ -47,10 +47,10 @@ public class MoodTransferCache
             var iconTransfer = icon == null? null: iconControl.getIconTransfer(userVisit, icon);
             var isDefault = moodDetail.getIsDefault();
             var sortOrder = moodDetail.getSortOrder();
-            var description = partyControl.getBestMoodDescription(mood, getLanguage());
+            var description = partyControl.getBestMoodDescription(mood, getLanguage(userVisit));
             
             moodTransfer = new MoodTransfer(moodName, iconTransfer, isDefault, sortOrder, description);
-            put(mood, moodTransfer);
+            put(userVisit, mood, moodTransfer);
         }
         
         return moodTransfer;

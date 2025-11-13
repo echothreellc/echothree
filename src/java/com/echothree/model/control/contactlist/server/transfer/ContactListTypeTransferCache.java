@@ -29,13 +29,13 @@ public class ContactListTypeTransferCache
     ChainControl chainControl = Session.getModelController(ChainControl.class);
 
     /** Creates a new instance of ContactListTypeTransferCache */
-    public ContactListTypeTransferCache(UserVisit userVisit, ContactListControl contactListControl) {
-        super(userVisit, contactListControl);
+    public ContactListTypeTransferCache(ContactListControl contactListControl) {
+        super(contactListControl);
 
         setIncludeEntityInstance(true);
     }
     
-    public ContactListTypeTransfer getContactListTypeTransfer(ContactListType contactListType) {
+    public ContactListTypeTransfer getContactListTypeTransfer(UserVisit userVisit, ContactListType contactListType) {
         var contactListTypeTransfer = get(contactListType);
         
         if(contactListTypeTransfer == null) {
@@ -50,11 +50,11 @@ public class ContactListTypeTransferCache
             var usedForSolicitation = contactListTypeDetail.getUsedForSolicitation();
             var isDefault = contactListTypeDetail.getIsDefault();
             var sortOrder = contactListTypeDetail.getSortOrder();
-            var description = contactListControl.getBestContactListTypeDescription(contactListType, getLanguage());
+            var description = contactListControl.getBestContactListTypeDescription(contactListType, getLanguage(userVisit));
             
             contactListTypeTransfer = new ContactListTypeTransfer(contactListTypeName, confirmationRequestChainTransfer, subscribeChainTransfer,
                     unsubscribeChainTransfer, usedForSolicitation, isDefault, sortOrder, description);
-            put(contactListType, contactListTypeTransfer);
+            put(userVisit, contactListType, contactListTypeTransfer);
         }
         
         return contactListTypeTransfer;

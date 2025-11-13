@@ -29,13 +29,13 @@ public class ReturnTypeTransferCache
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     
     /** Creates a new instance of ReturnTypeTransferCache */
-    public ReturnTypeTransferCache(UserVisit userVisit, ReturnPolicyControl returnPolicyControl) {
-        super(userVisit, returnPolicyControl);
+    public ReturnTypeTransferCache(ReturnPolicyControl returnPolicyControl) {
+        super(returnPolicyControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public ReturnTypeTransfer getReturnTypeTransfer(ReturnType returnType) {
+    public ReturnTypeTransfer getReturnTypeTransfer(UserVisit userVisit, ReturnType returnType) {
         var returnTypeTransfer = get(returnType);
         
         if(returnTypeTransfer == null) {
@@ -46,10 +46,10 @@ public class ReturnTypeTransferCache
             var returnSequenceTransfer = returnSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, returnSequence);
             var isDefault = returnTypeDetail.getIsDefault();
             var sortOrder = returnTypeDetail.getSortOrder();
-            var description = returnPolicyControl.getBestReturnTypeDescription(returnType, getLanguage());
+            var description = returnPolicyControl.getBestReturnTypeDescription(returnType, getLanguage(userVisit));
             
             returnTypeTransfer = new ReturnTypeTransfer(returnKindTransfer, returnTypeName, returnSequenceTransfer, isDefault, sortOrder, description);
-            put(returnType, returnTypeTransfer);
+            put(userVisit, returnType, returnTypeTransfer);
         }
         
         return returnTypeTransfer;

@@ -63,8 +63,8 @@ public class ItemPriceTransferCache
     boolean filterThruTime;
     
     /** Creates a new instance of ItemPriceTransferCache */
-    public ItemPriceTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemPriceTransferCache(ItemControl itemControl) {
+        super(itemControl);
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
@@ -91,7 +91,7 @@ public class ItemPriceTransferCache
         }
     }
 
-    private ItemPriceTransfer getItemPriceTransfer(ItemPrice itemPrice, ItemFixedPrice itemFixedPrice, ItemVariablePrice itemVariablePrice) {
+    private ItemPriceTransfer getItemPriceTransfer(final UserVisit userVisit, ItemPrice itemPrice, ItemFixedPrice itemFixedPrice, ItemVariablePrice itemVariablePrice) {
         var item = itemPrice.getItem();
         var itemTransfer = filterItem ? null : itemControl.getItemTransfer(userVisit, item);
         var inventoryCondition = filterInventoryCondition ? null : itemPrice.getInventoryCondition();
@@ -129,7 +129,7 @@ public class ItemPriceTransferCache
     }
     
     @Override
-    public ListWrapper<HistoryTransfer<ItemPriceTransfer>> getHistory(ItemPrice itemPrice) {
+    public ListWrapper<HistoryTransfer<ItemPriceTransfer>> getHistory(final UserVisit userVisit, ItemPrice itemPrice) {
         List<HistoryTransfer<ItemPriceTransfer>> historyTransfers = null;
         var itemPriceTypeName = itemPrice.getItem().getLastDetail().getItemPriceType().getItemPriceTypeName();
         
@@ -140,11 +140,11 @@ public class ItemPriceTransferCache
             
             for(var itemFixedPrice : itemFixedPriceHistory) {
                 var unformattedFromTime = filterUnformattedFromTime ? null : itemFixedPrice.getFromTime();
-                var fromTime = filterFromTime ? null : formatTypicalDateTime(itemFixedPrice.getFromTime());
+                var fromTime = filterFromTime ? null : formatTypicalDateTime(userVisit, itemFixedPrice.getFromTime());
                 var unformattedThruTime = filterUnformattedThruTime ? null : itemFixedPrice.getThruTime();
-                var thruTime = filterThruTime ? null : formatTypicalDateTime(itemFixedPrice.getThruTime());
+                var thruTime = filterThruTime ? null : formatTypicalDateTime(userVisit, itemFixedPrice.getThruTime());
                 
-                historyTransfers.add(new HistoryTransfer<>(getItemPriceTransfer(itemPrice, itemFixedPrice, null),
+                historyTransfers.add(new HistoryTransfer<>(getItemPriceTransfer(userVisit, itemPrice, itemFixedPrice, null),
                         unformattedFromTime, fromTime, unformattedThruTime, thruTime));
             }
         } else if(ItemPriceTypes.VARIABLE.name().equals(itemPriceTypeName)) {
@@ -154,11 +154,11 @@ public class ItemPriceTransferCache
             
             for(var itemVariablePrice : itemVariablePriceHistory) {
                 var unformattedFromTime = filterUnformattedFromTime ? null : itemVariablePrice.getFromTime();
-                var fromTime = filterFromTime ? null : formatTypicalDateTime(itemVariablePrice.getFromTime());
+                var fromTime = filterFromTime ? null : formatTypicalDateTime(userVisit, itemVariablePrice.getFromTime());
                 var unformattedThruTime = filterUnformattedThruTime ? null : itemVariablePrice.getThruTime();
-                var thruTime = filterThruTime ? null : formatTypicalDateTime(itemVariablePrice.getThruTime());
+                var thruTime = filterThruTime ? null : formatTypicalDateTime(userVisit, itemVariablePrice.getThruTime());
                 
-                historyTransfers.add(new HistoryTransfer<>(getItemPriceTransfer(itemPrice, null, itemVariablePrice),
+                historyTransfers.add(new HistoryTransfer<>(getItemPriceTransfer(userVisit, itemPrice, null, itemVariablePrice),
                         unformattedFromTime, fromTime, unformattedThruTime, thruTime));
             }
         }
@@ -167,7 +167,7 @@ public class ItemPriceTransferCache
     }
     
     @Override
-    public ItemPriceTransfer getTransfer(ItemPrice itemPrice) {
+    public ItemPriceTransfer getTransfer(UserVisit userVisit, ItemPrice itemPrice) {
         var itemPriceTransfer = get(itemPrice);
         
         if(itemPriceTransfer == null) {
@@ -181,9 +181,9 @@ public class ItemPriceTransferCache
                 itemVariablePrice = itemControl.getItemVariablePrice(itemPrice);
             }
             
-            itemPriceTransfer = getItemPriceTransfer(itemPrice, itemFixedPrice, itemVariablePrice);
+            itemPriceTransfer = getItemPriceTransfer(userVisit, itemPrice, itemFixedPrice, itemVariablePrice);
             
-            put(itemPrice, itemPriceTransfer);
+            put(userVisit, itemPrice, itemPriceTransfer);
         }
         
         return itemPriceTransfer;

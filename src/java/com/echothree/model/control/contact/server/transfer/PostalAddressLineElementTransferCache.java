@@ -25,11 +25,11 @@ public class PostalAddressLineElementTransferCache
         extends BaseContactTransferCache<PostalAddressLineElement, PostalAddressLineElementTransfer> {
     
     /** Creates a new instance of PostalAddressLineElementTransferCache */
-    public PostalAddressLineElementTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    public PostalAddressLineElementTransferCache(ContactControl contactControl) {
+        super(contactControl);
     }
     
-    public PostalAddressLineElementTransfer getPostalAddressLineElementTransfer(PostalAddressLineElement postalAddressLineElement) {
+    public PostalAddressLineElementTransfer getPostalAddressLineElementTransfer(UserVisit userVisit, PostalAddressLineElement postalAddressLineElement) {
         var postalAddressLineElementTransfer = get(postalAddressLineElement);
         
         if(postalAddressLineElementTransfer == null) {
@@ -46,7 +46,7 @@ public class PostalAddressLineElementTransferCache
             postalAddressLineElementTransfer = new PostalAddressLineElementTransfer(postalAddressLine,
                     postalAddressLineElementSortOrder, postalAddressElementType, prefix, alwaysIncludePrefix, suffix,
                     alwaysIncludeSuffix);
-            put(postalAddressLineElement, postalAddressLineElementTransfer);
+            put(userVisit, postalAddressLineElement, postalAddressLineElementTransfer);
         }
         
         return postalAddressLineElementTransfer;

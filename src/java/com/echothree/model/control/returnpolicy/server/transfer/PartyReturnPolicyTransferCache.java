@@ -32,11 +32,11 @@ public class PartyReturnPolicyTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of PartyReturnPolicyTransferCache */
-    public PartyReturnPolicyTransferCache(UserVisit userVisit, ReturnPolicyControl returnPolicyControl) {
-        super(userVisit, returnPolicyControl);
+    public PartyReturnPolicyTransferCache(ReturnPolicyControl returnPolicyControl) {
+        super(returnPolicyControl);
     }
 
-    public PartyReturnPolicyTransfer getPartyReturnPolicyTransfer(PartyReturnPolicy partyReturnPolicy) {
+    public PartyReturnPolicyTransfer getPartyReturnPolicyTransfer(UserVisit userVisit, PartyReturnPolicy partyReturnPolicy) {
         var partyReturnPolicyTransfer = get(partyReturnPolicy);
 
         if(partyReturnPolicyTransfer == null) {
@@ -44,11 +44,11 @@ public class PartyReturnPolicyTransferCache
             var returnPolicy = returnPolicyControl.getReturnPolicyTransfer(userVisit, partyReturnPolicy.getReturnPolicy());
 
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(partyReturnPolicy.getPrimaryKey());
-            var createdBy = getPartyPK();
+            var createdBy = getPartyPK(userVisit);
             var partyReturnPolicyStatusTransfer = PartyReturnPolicyLogic.getInstance().getPartyReturnPolicyStatusTransfer(userVisit, entityInstance, createdBy);
 
             partyReturnPolicyTransfer = new PartyReturnPolicyTransfer(party, returnPolicy, partyReturnPolicyStatusTransfer);
-            put(partyReturnPolicy, partyReturnPolicyTransfer, entityInstance);
+            put(userVisit, partyReturnPolicy, partyReturnPolicyTransfer, entityInstance);
         }
 
         return partyReturnPolicyTransfer;

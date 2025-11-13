@@ -34,8 +34,8 @@ public class EntityTimeTransferCache
     boolean filterDeletedTime;
     
     /** Creates a new instance of EntityTimeTransferCache */
-    public EntityTimeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityTimeTransferCache() {
+        super();
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
@@ -52,20 +52,20 @@ public class EntityTimeTransferCache
         }
     }
     
-    public EntityTimeTransfer getEntityTimeTransfer(EntityTime entityTime) {
+    public EntityTimeTransfer getEntityTimeTransfer(UserVisit userVisit, EntityTime entityTime) {
         var entityTimeTransfer = get(entityTime);
         
         if(entityTimeTransfer == null) {
             var unformattedCreatedTime = filterUnformattedCreatedTime ? null : entityTime.getCreatedTime();
-            var createdTime = formatTypicalDateTime(unformattedCreatedTime);
+            var createdTime = formatTypicalDateTime(userVisit, unformattedCreatedTime);
             var unformattedModifiedTime = filterUnformattedModifiedTime ? null : entityTime.getModifiedTime();
-            var modifiedTime = formatTypicalDateTime(unformattedModifiedTime);
+            var modifiedTime = formatTypicalDateTime(userVisit, unformattedModifiedTime);
             var unformattedDeletedTime = filterUnformattedDeletedTime ? null : entityTime.getDeletedTime();
-            var deletedTime = formatTypicalDateTime(unformattedDeletedTime);
+            var deletedTime = formatTypicalDateTime(userVisit, unformattedDeletedTime);
             
             entityTimeTransfer = new EntityTimeTransfer(unformattedCreatedTime, createdTime, unformattedModifiedTime, modifiedTime,
                     unformattedDeletedTime, deletedTime);
-            put(entityTime, entityTimeTransfer);
+            put(userVisit, entityTime, entityTimeTransfer);
         }
 
         return entityTimeTransfer;

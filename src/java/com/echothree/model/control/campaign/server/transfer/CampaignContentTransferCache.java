@@ -33,8 +33,8 @@ public class CampaignContentTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of CampaignContentTransferCache */
-    public CampaignContentTransferCache(UserVisit userVisit, CampaignControl campaignControl) {
-        super(userVisit, campaignControl);
+    public CampaignContentTransferCache(CampaignControl campaignControl) {
+        super(campaignControl);
         
         var options = session.getOptions();
         if(options != null) {
@@ -44,7 +44,7 @@ public class CampaignContentTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public CampaignContentTransfer getCampaignContentTransfer(CampaignContent campaignContent) {
+    public CampaignContentTransfer getCampaignContentTransfer(UserVisit userVisit, CampaignContent campaignContent) {
         var campaignContentTransfer = get(campaignContent);
 
         if(campaignContentTransfer == null) {
@@ -54,7 +54,7 @@ public class CampaignContentTransferCache
             var value = campaignContentDetail.getValue();
             var isDefault = campaignContentDetail.getIsDefault();
             var sortOrder = campaignContentDetail.getSortOrder();
-            var description = campaignControl.getBestCampaignContentDescription(campaignContent, getLanguage());
+            var description = campaignControl.getBestCampaignContentDescription(campaignContent, getLanguage(userVisit));
 
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignContent.getPrimaryKey());
             var campaignContentStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
@@ -62,7 +62,7 @@ public class CampaignContentTransferCache
             
             campaignContentTransfer = new CampaignContentTransfer(campaignContentName, valueSha1Hash, value, isDefault, sortOrder, description,
                     campaignContentStatusTransfer);
-            put(campaignContent, campaignContentTransfer);
+            put(userVisit, campaignContent, campaignContentTransfer);
         }
 
         return campaignContentTransfer;

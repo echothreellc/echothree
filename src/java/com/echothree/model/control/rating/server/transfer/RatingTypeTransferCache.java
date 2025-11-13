@@ -31,13 +31,13 @@ public class RatingTypeTransferCache
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     
     /** Creates a new instance of RatingTypeTransferCache */
-    public RatingTypeTransferCache(UserVisit userVisit, RatingControl ratingControl) {
-        super(userVisit, ratingControl);
+    public RatingTypeTransferCache(RatingControl ratingControl) {
+        super(ratingControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public RatingTypeTransfer getRatingTypeTransfer(RatingType ratingType) {
+    public RatingTypeTransfer getRatingTypeTransfer(UserVisit userVisit, RatingType ratingType) {
         var ratingTypeTransfer = get(ratingType);
         
         if(ratingTypeTransfer == null) {
@@ -47,10 +47,10 @@ public class RatingTypeTransferCache
             var ratingSequence = ratingTypeDetail.getRatingSequence();
             var ratingSequenceTransfer = ratingSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, ratingSequence);
             var sortOrder = ratingTypeDetail.getSortOrder();
-            var description = ratingControl.getBestRatingTypeDescription(ratingType, getLanguage());
+            var description = ratingControl.getBestRatingTypeDescription(ratingType, getLanguage(userVisit));
             
             ratingTypeTransfer = new RatingTypeTransfer(entityTypeTransfer, ratingTypeName, ratingSequenceTransfer, sortOrder, description);
-            put(ratingType, ratingTypeTransfer);
+            put(userVisit, ratingType, ratingTypeTransfer);
         }
         
         return ratingTypeTransfer;

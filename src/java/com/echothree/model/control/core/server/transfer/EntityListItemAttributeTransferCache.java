@@ -31,11 +31,11 @@ public class EntityListItemAttributeTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of EntityListItemAttributeTransferCache */
-    public EntityListItemAttributeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityListItemAttributeTransferCache() {
+        super();
     }
     
-    public EntityListItemAttributeTransfer getEntityListItemAttributeTransfer(EntityListItemAttribute entityListItemAttribute, EntityInstance entityInstance) {
+    public EntityListItemAttributeTransfer getEntityListItemAttributeTransfer(final UserVisit userVisit, final EntityListItemAttribute entityListItemAttribute, final EntityInstance entityInstance) {
         var entityListItemAttributeTransfer = get(entityListItemAttribute);
         
         if(entityListItemAttributeTransfer == null) {
@@ -44,7 +44,7 @@ public class EntityListItemAttributeTransferCache
             var entityListItem = coreControl.getEntityListItemTransfer(userVisit, entityListItemAttribute.getEntityListItem(), entityInstance);
             
             entityListItemAttributeTransfer = new EntityListItemAttributeTransfer(entityAttribute, entityInstanceTransfer, entityListItem);
-            put(entityListItemAttribute, entityListItemAttributeTransfer);
+            put(userVisit, entityListItemAttribute, entityListItemAttributeTransfer);
         }
         
         return entityListItemAttributeTransfer;

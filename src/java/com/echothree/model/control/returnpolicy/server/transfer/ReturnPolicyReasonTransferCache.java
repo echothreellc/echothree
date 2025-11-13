@@ -25,11 +25,11 @@ public class ReturnPolicyReasonTransferCache
         extends BaseReturnPolicyTransferCache<ReturnPolicyReason, ReturnPolicyReasonTransfer> {
     
     /** Creates a new instance of ReturnPolicyReasonTransferCache */
-    public ReturnPolicyReasonTransferCache(UserVisit userVisit, ReturnPolicyControl returnPolicyControl) {
-        super(userVisit, returnPolicyControl);
+    public ReturnPolicyReasonTransferCache(ReturnPolicyControl returnPolicyControl) {
+        super(returnPolicyControl);
     }
     
-    public ReturnPolicyReasonTransfer getReturnPolicyReasonTransfer(ReturnPolicyReason returnPolicyReason) {
+    public ReturnPolicyReasonTransfer getReturnPolicyReasonTransfer(UserVisit userVisit, ReturnPolicyReason returnPolicyReason) {
         var returnPolicyReasonTransfer = get(returnPolicyReason);
         
         if(returnPolicyReasonTransfer == null) {
@@ -39,7 +39,7 @@ public class ReturnPolicyReasonTransferCache
             var sortOrder = returnPolicyReason.getSortOrder();
             
             returnPolicyReasonTransfer = new ReturnPolicyReasonTransfer(returnPolicy, returnReason, isDefault, sortOrder);
-            put(returnPolicyReason, returnPolicyReasonTransfer);
+            put(userVisit, returnPolicyReason, returnPolicyReasonTransfer);
         }
         
         return returnPolicyReasonTransfer;

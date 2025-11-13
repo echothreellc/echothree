@@ -25,11 +25,11 @@ public class PartyTrainingClassSessionPageTransferCache
         extends BaseTrainingTransferCache<PartyTrainingClassSessionPage, PartyTrainingClassSessionPageTransfer> {
     
     /** Creates a new instance of PartyTrainingClassSessionPageTransferCache */
-    public PartyTrainingClassSessionPageTransferCache(UserVisit userVisit, TrainingControl trainingControl) {
-        super(userVisit, trainingControl);
+    public PartyTrainingClassSessionPageTransferCache(TrainingControl trainingControl) {
+        super(trainingControl);
     }
     
-    public PartyTrainingClassSessionPageTransfer getPartyTrainingClassSessionPageTransfer(PartyTrainingClassSessionPage partyTrainingClassSessionPage) {
+    public PartyTrainingClassSessionPageTransfer getPartyTrainingClassSessionPageTransfer(UserVisit userVisit, PartyTrainingClassSessionPage partyTrainingClassSessionPage) {
         var partyTrainingClassSessionPageTransfer = get(partyTrainingClassSessionPage);
         
         if(partyTrainingClassSessionPageTransfer == null) {
@@ -37,14 +37,14 @@ public class PartyTrainingClassSessionPageTransferCache
             var partyTrainingClassSessionPageSequence = partyTrainingClassSessionPage.getPartyTrainingClassSessionPageSequence();
             var trainingClassPage = trainingControl.getTrainingClassPageTransfer(userVisit, partyTrainingClassSessionPage.getTrainingClassPage());
             var unformattedReadingStartTime = partyTrainingClassSessionPage.getReadingStartTime();
-            var readingStartTime = formatTypicalDateTime(unformattedReadingStartTime);
+            var readingStartTime = formatTypicalDateTime(userVisit, unformattedReadingStartTime);
             var unformattedReadingEndTime = partyTrainingClassSessionPage.getReadingEndTime();
-            var readingEndTime = formatTypicalDateTime(unformattedReadingEndTime);
+            var readingEndTime = formatTypicalDateTime(userVisit, unformattedReadingEndTime);
 
 
             partyTrainingClassSessionPageTransfer = new PartyTrainingClassSessionPageTransfer(partyTrainingClassSession, partyTrainingClassSessionPageSequence,
                     trainingClassPage, unformattedReadingStartTime, readingStartTime, unformattedReadingEndTime, readingEndTime);
-            put(partyTrainingClassSessionPage, partyTrainingClassSessionPageTransfer);
+            put(userVisit, partyTrainingClassSessionPage, partyTrainingClassSessionPageTransfer);
         }
         
         return partyTrainingClassSessionPageTransfer;

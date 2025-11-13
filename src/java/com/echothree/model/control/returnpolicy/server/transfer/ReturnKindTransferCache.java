@@ -29,13 +29,13 @@ public class ReturnKindTransferCache
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     
     /** Creates a new instance of ReturnKindTransferCache */
-    public ReturnKindTransferCache(UserVisit userVisit, ReturnPolicyControl returnPolicyControl) {
-        super(userVisit, returnPolicyControl);
+    public ReturnKindTransferCache(ReturnPolicyControl returnPolicyControl) {
+        super(returnPolicyControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public ReturnKindTransfer getReturnKindTransfer(ReturnKind returnKind) {
+    public ReturnKindTransfer getReturnKindTransfer(UserVisit userVisit, ReturnKind returnKind) {
         var returnKindTransfer = get(returnKind);
         
         if(returnKindTransfer == null) {
@@ -45,10 +45,10 @@ public class ReturnKindTransferCache
             var returnSequenceTypeTransfer = returnSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, returnSequenceType);
             var isDefault = returnKindDetail.getIsDefault();
             var sortOrder = returnKindDetail.getSortOrder();
-            var description = returnPolicyControl.getBestReturnKindDescription(returnKind, getLanguage());
+            var description = returnPolicyControl.getBestReturnKindDescription(returnKind, getLanguage(userVisit));
             
             returnKindTransfer = new ReturnKindTransfer(returnKindName, returnSequenceTypeTransfer, isDefault, sortOrder, description);
-            put(returnKind, returnKindTransfer);
+            put(userVisit, returnKind, returnKindTransfer);
         }
         
         return returnKindTransfer;

@@ -41,8 +41,8 @@ public class LocationTransferCache
     boolean includeVolume;
     
     /** Creates a new instance of LocationTransferCache */
-    public LocationTransferCache(UserVisit userVisit, WarehouseControl warehouseControl) {
-        super(userVisit, warehouseControl);
+    public LocationTransferCache(WarehouseControl warehouseControl) {
+        super(warehouseControl);
         
         var options = session.getOptions();
         if(options != null) {
@@ -55,7 +55,7 @@ public class LocationTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public LocationTransfer getLocationTransfer(Location location) {
+    public LocationTransfer getLocationTransfer(UserVisit userVisit, Location location) {
         var locationTransfer = get(location);
         
         if(locationTransfer == null) {
@@ -67,7 +67,7 @@ public class LocationTransferCache
             var locationUseTypeTransfer = locationUseTypeControl.getLocationUseTypeTransfer(userVisit, locationDetail.getLocationUseType());
             var velocity = locationDetail.getVelocity();
             var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupTransfer(userVisit, locationDetail.getInventoryLocationGroup());
-            var description = warehouseControl.getBestLocationDescription(location, getLanguage());
+            var description = warehouseControl.getBestLocationDescription(location, getLanguage(userVisit));
 
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(location.getPrimaryKey());
             var locationStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
@@ -75,7 +75,7 @@ public class LocationTransferCache
             
             locationTransfer = new LocationTransfer(warehouseTransfer, locationName, locationTypeTransfer, locationUseTypeTransfer,
                     velocity, inventoryLocationGroup, description, locationStatusTransfer);
-            put(location, locationTransfer);
+            put(userVisit, location, locationTransfer);
             
             if(includeCapacities) {
                 locationTransfer.setLocationCapacities(new ListWrapper<>(warehouseControl.getLocationCapacityTransfersByLocation(userVisit, location)));

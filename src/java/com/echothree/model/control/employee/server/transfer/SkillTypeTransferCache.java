@@ -25,13 +25,13 @@ public class SkillTypeTransferCache
         extends BaseEmployeeTransferCache<SkillType, SkillTypeTransfer> {
     
     /** Creates a new instance of SkillTypeTransferCache */
-    public SkillTypeTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit, employeeControl);
+    public SkillTypeTransferCache(EmployeeControl employeeControl) {
+        super(employeeControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public SkillTypeTransfer getSkillTypeTransfer(SkillType skillType) {
+    public SkillTypeTransfer getSkillTypeTransfer(UserVisit userVisit, SkillType skillType) {
         var skillTypeTransfer = get(skillType);
         
         if(skillTypeTransfer == null) {
@@ -39,10 +39,10 @@ public class SkillTypeTransferCache
             var skillTypeName = skillTypeDetail.getSkillTypeName();
             var isDefault = skillTypeDetail.getIsDefault();
             var sortOrder = skillTypeDetail.getSortOrder();
-            var description = employeeControl.getBestSkillTypeDescription(skillType, getLanguage());
+            var description = employeeControl.getBestSkillTypeDescription(skillType, getLanguage(userVisit));
             
             skillTypeTransfer = new SkillTypeTransfer(skillTypeName, isDefault, sortOrder, description);
-            put(skillType, skillTypeTransfer);
+            put(userVisit, skillType, skillTypeTransfer);
         }
         
         return skillTypeTransfer;

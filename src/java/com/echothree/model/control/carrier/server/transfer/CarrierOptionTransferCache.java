@@ -29,13 +29,13 @@ public class CarrierOptionTransferCache
     SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
 
     /** Creates a new instance of CarrierOptionTransferCache */
-    public CarrierOptionTransferCache(UserVisit userVisit, CarrierControl carrierControl) {
-        super(userVisit, carrierControl);
+    public CarrierOptionTransferCache(CarrierControl carrierControl) {
+        super(carrierControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public CarrierOptionTransfer getCarrierOptionTransfer(CarrierOption carrierOption) {
+    public CarrierOptionTransfer getCarrierOptionTransfer(UserVisit userVisit, CarrierOption carrierOption) {
         var carrierOptionTransfer = get(carrierOption);
         
         if(carrierOptionTransfer == null) {
@@ -62,12 +62,12 @@ public class CarrierOptionTransferCache
             var requiredShipmentSelectorTransfer = requiredShipmentSelector == null? null: selectorControl.getSelectorTransfer(userVisit, requiredShipmentSelector);
             var isDefault = carrierOptionDetail.getIsDefault();
             var sortOrder = carrierOptionDetail.getSortOrder();
-            var description = carrierControl.getBestCarrierOptionDescription(carrierOption, getLanguage());
+            var description = carrierControl.getBestCarrierOptionDescription(carrierOption, getLanguage(userVisit));
             
             carrierOptionTransfer = new CarrierOptionTransfer(carrier, carrierOptionName, isRecommended, isRequired, recommendedGeoCodeSelectorTransfer,
                     requiredGeoCodeSelectorTransfer, recommendedItemSelectorTransfer, requiredItemSelectorTransfer, recommendedOrderSelectorTransfer,
                     requiredOrderSelectorTransfer, recommendedShipmentSelectorTransfer, requiredShipmentSelectorTransfer, isDefault, sortOrder, description);
-            put(carrierOption, carrierOptionTransfer);
+            put(userVisit, carrierOption, carrierOptionTransfer);
         }
         
         return carrierOptionTransfer;

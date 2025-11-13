@@ -25,20 +25,20 @@ public class SequenceDescriptionTransferCache
         extends BaseSequenceDescriptionTransferCache<SequenceDescription, SequenceDescriptionTransfer> {
     
     /** Creates a new instance of SequenceDescriptionTransferCache */
-    public SequenceDescriptionTransferCache(UserVisit userVisit, SequenceControl sequenceControl) {
-        super(userVisit, sequenceControl);
+    public SequenceDescriptionTransferCache(SequenceControl sequenceControl) {
+        super(sequenceControl);
     }
     
-    public SequenceDescriptionTransfer getSequenceDescriptionTransfer(SequenceDescription sequenceDescription) {
+    public SequenceDescriptionTransfer getSequenceDescriptionTransfer(UserVisit userVisit, SequenceDescription sequenceDescription) {
         var sequenceDescriptionTransfer = get(sequenceDescription);
         
         if(sequenceDescriptionTransfer == null) {
-            var sequenceTransferCache = sequenceControl.getSequenceTransferCaches(userVisit).getSequenceTransferCache();
-            var sequenceTransfer = sequenceTransferCache.getSequenceTransfer(sequenceDescription.getSequence());
+            var sequenceTransferCache = sequenceControl.getSequenceTransferCaches().getSequenceTransferCache();
+            var sequenceTransfer = sequenceTransferCache.getSequenceTransfer(userVisit, sequenceDescription.getSequence());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, sequenceDescription.getLanguage());
             
             sequenceDescriptionTransfer = new SequenceDescriptionTransfer(languageTransfer, sequenceTransfer, sequenceDescription.getDescription());
-            put(sequenceDescription, sequenceDescriptionTransfer);
+            put(userVisit, sequenceDescription, sequenceDescriptionTransfer);
         }
         
         return sequenceDescriptionTransfer;

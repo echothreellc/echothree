@@ -28,13 +28,13 @@ public class OfferNameElementTransferCache
     OfferNameElementControl offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
 
     /** Creates a new instance of OfferNameElementTransferCache */
-    public OfferNameElementTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public OfferNameElementTransferCache() {
+        super();
 
         setIncludeEntityInstance(true);
     }
     
-    public OfferNameElementTransfer getOfferNameElementTransfer(OfferNameElement offerNameElement) {
+    public OfferNameElementTransfer getOfferNameElementTransfer(UserVisit userVisit, OfferNameElement offerNameElement) {
         var offerNameElementTransfer = get(offerNameElement);
         
         if(offerNameElementTransfer == null) {
@@ -43,11 +43,11 @@ public class OfferNameElementTransferCache
             var offset = offerNameElementDetail.getOffset();
             var length = offerNameElementDetail.getLength();
             var validationPattern = offerNameElementDetail.getValidationPattern();
-            var description = offerNameElementControl.getBestOfferNameElementDescription(offerNameElement, getLanguage());
+            var description = offerNameElementControl.getBestOfferNameElementDescription(offerNameElement, getLanguage(userVisit));
             
             offerNameElementTransfer = new OfferNameElementTransfer(offerNameElementName, offset, length, validationPattern,
                     description);
-            put(offerNameElement, offerNameElementTransfer);
+            put(userVisit, offerNameElement, offerNameElementTransfer);
         }
         
         return offerNameElementTransfer;

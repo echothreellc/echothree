@@ -28,11 +28,11 @@ public class ServerDescriptionTransferCache
     ServerControl serverControl = Session.getModelController(ServerControl.class);
 
     /** Creates a new instance of ServerDescriptionTransferCache */
-    public ServerDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public ServerDescriptionTransferCache() {
+        super();
     }
     
-    public ServerDescriptionTransfer getServerDescriptionTransfer(ServerDescription serverDescription) {
+    public ServerDescriptionTransfer getServerDescriptionTransfer(UserVisit userVisit, ServerDescription serverDescription) {
         var serverDescriptionTransfer = get(serverDescription);
         
         if(serverDescriptionTransfer == null) {
@@ -40,7 +40,7 @@ public class ServerDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, serverDescription.getLanguage());
             
             serverDescriptionTransfer = new ServerDescriptionTransfer(languageTransfer, serverTransfer, serverDescription.getDescription());
-            put(serverDescription, serverDescriptionTransfer);
+            put(userVisit, serverDescription, serverDescriptionTransfer);
         }
         return serverDescriptionTransfer;
     }

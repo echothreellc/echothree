@@ -28,12 +28,12 @@ public class TransactionTimeTypeDescriptionTransferCache
     TransactionTimeControl transactionTimeControl = Session.getModelController(TransactionTimeControl.class);
 
     /** Creates a new instance of TransactionTimeTypeDescriptionTransferCache */
-    public TransactionTimeTypeDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public TransactionTimeTypeDescriptionTransferCache() {
+        super();
     }
 
     @Override
-    public TransactionTimeTypeDescriptionTransfer getTransfer(TransactionTimeTypeDescription transactionTimeTypeDescription) {
+    public TransactionTimeTypeDescriptionTransfer getTransfer(UserVisit userVisit, TransactionTimeTypeDescription transactionTimeTypeDescription) {
         var transactionTimeTypeDescriptionTransfer = get(transactionTimeTypeDescription);
         
         if(transactionTimeTypeDescriptionTransfer == null) {
@@ -41,7 +41,7 @@ public class TransactionTimeTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, transactionTimeTypeDescription.getLanguage());
             
             transactionTimeTypeDescriptionTransfer = new TransactionTimeTypeDescriptionTransfer(languageTransfer, transactionTimeTypeTransfer, transactionTimeTypeDescription.getDescription());
-            put(transactionTimeTypeDescription, transactionTimeTypeDescriptionTransfer);
+            put(userVisit, transactionTimeTypeDescription, transactionTimeTypeDescriptionTransfer);
         }
         
         return transactionTimeTypeDescriptionTransfer;

@@ -25,11 +25,11 @@ public class GeoCodeScopeDescriptionTransferCache
         extends BaseGeoDescriptionTransferCache<GeoCodeScopeDescription, GeoCodeScopeDescriptionTransfer> {
     
     /** Creates a new instance of GeoCodeScopeDescriptionTransferCache */
-    public GeoCodeScopeDescriptionTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
+    public GeoCodeScopeDescriptionTransferCache(GeoControl geoControl) {
+        super(geoControl);
     }
     
-    public GeoCodeScopeDescriptionTransfer getGeoCodeScopeDescriptionTransfer(GeoCodeScopeDescription geoCodeScopeDescription) {
+    public GeoCodeScopeDescriptionTransfer getGeoCodeScopeDescriptionTransfer(UserVisit userVisit, GeoCodeScopeDescription geoCodeScopeDescription) {
         var geoCodeScopeDescriptionTransfer = get(geoCodeScopeDescription);
         
         if(geoCodeScopeDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class GeoCodeScopeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, geoCodeScopeDescription.getLanguage());
             
             geoCodeScopeDescriptionTransfer = new GeoCodeScopeDescriptionTransfer(languageTransfer, geoCodeScopeTransfer, geoCodeScopeDescription.getDescription());
-            put(geoCodeScopeDescription, geoCodeScopeDescriptionTransfer);
+            put(userVisit, geoCodeScopeDescription, geoCodeScopeDescriptionTransfer);
         }
         
         return geoCodeScopeDescriptionTransfer;

@@ -26,20 +26,20 @@ public class UnitOfMeasureTypeWeightTransferCache
         extends BaseUomTransferCache<UnitOfMeasureTypeWeight, UnitOfMeasureTypeWeightTransfer> {
     
     /** Creates a new instance of UnitOfMeasureTypeWeightTransferCache */
-    public UnitOfMeasureTypeWeightTransferCache(UserVisit userVisit, UomControl uomControl) {
-        super(userVisit, uomControl);
+    public UnitOfMeasureTypeWeightTransferCache(UomControl uomControl) {
+        super(uomControl);
     }
     
-    public UnitOfMeasureTypeWeightTransfer getUnitOfMeasureTypeWeightTransfer(UnitOfMeasureTypeWeight unitOfMeasureTypeWeight) {
+    public UnitOfMeasureTypeWeightTransfer getUnitOfMeasureTypeWeightTransfer(UserVisit userVisit, UnitOfMeasureTypeWeight unitOfMeasureTypeWeight) {
         var unitOfMeasureTypeWeightTransfer = get(unitOfMeasureTypeWeight);
         
         if(unitOfMeasureTypeWeightTransfer == null) {
             var unitOfMeasureTypeTransfer = uomControl.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureTypeWeight.getUnitOfMeasureType());
             var volumeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_WEIGHT);
-            var weight = formatUnitOfMeasure(volumeUnitOfMeasureKind, unitOfMeasureTypeWeight.getWeight());
+            var weight = formatUnitOfMeasure(userVisit, volumeUnitOfMeasureKind, unitOfMeasureTypeWeight.getWeight());
             
             unitOfMeasureTypeWeightTransfer = new UnitOfMeasureTypeWeightTransfer(unitOfMeasureTypeTransfer, weight);
-            put(unitOfMeasureTypeWeight, unitOfMeasureTypeWeightTransfer);
+            put(userVisit, unitOfMeasureTypeWeight, unitOfMeasureTypeWeightTransfer);
         }
         
         return unitOfMeasureTypeWeightTransfer;

@@ -29,11 +29,11 @@ public class PartyTypeDocumentTypeUsageTypeTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of PartyTypeDocumentTypeUsageTypeTransferCache */
-    public PartyTypeDocumentTypeUsageTypeTransferCache(UserVisit userVisit, DocumentControl documentControl) {
-        super(userVisit, documentControl);
+    public PartyTypeDocumentTypeUsageTypeTransferCache(DocumentControl documentControl) {
+        super(documentControl);
     }
     
-    public PartyTypeDocumentTypeUsageTypeTransfer getPartyTypeDocumentTypeUsageTypeTransfer(PartyTypeDocumentTypeUsageType partyTypeDocumentTypeUsageType) {
+    public PartyTypeDocumentTypeUsageTypeTransfer getPartyTypeDocumentTypeUsageTypeTransfer(UserVisit userVisit, PartyTypeDocumentTypeUsageType partyTypeDocumentTypeUsageType) {
         var partyTypeDocumentTypeUsageTypeTransfer = get(partyTypeDocumentTypeUsageType);
         
         if(partyTypeDocumentTypeUsageTypeTransfer == null) {
@@ -43,7 +43,7 @@ public class PartyTypeDocumentTypeUsageTypeTransferCache
             var sortOrder = partyTypeDocumentTypeUsageType.getSortOrder();
             
             partyTypeDocumentTypeUsageTypeTransfer = new PartyTypeDocumentTypeUsageTypeTransfer(partyTypeTransfer, documentTypeUsageTypeTransfer, isDefault, sortOrder);
-            put(partyTypeDocumentTypeUsageType, partyTypeDocumentTypeUsageTypeTransfer);
+            put(userVisit, partyTypeDocumentTypeUsageType, partyTypeDocumentTypeUsageTypeTransfer);
         }
         
         return partyTypeDocumentTypeUsageTypeTransfer;

@@ -81,8 +81,8 @@ public class EmployeeTransferCache
     boolean includePartySkills;
 
     /** Creates a new instance of EmployeeTransferCache */
-    public EmployeeTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit, employeeControl);
+    public EmployeeTransferCache(EmployeeControl employeeControl) {
+        super(employeeControl);
 
         var options = session.getOptions();
         if(options != null) {
@@ -112,11 +112,11 @@ public class EmployeeTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public EmployeeTransfer getTransfer(PartyEmployee partyEmployee) {
-        return getTransfer(partyEmployee.getParty());
+    public EmployeeTransfer getTransfer(UserVisit userVisit, PartyEmployee partyEmployee) {
+        return getTransfer(userVisit, partyEmployee.getParty());
     }
 
-    public EmployeeTransfer getTransfer(Party party) {
+    public EmployeeTransfer getTransfer(UserVisit userVisit, Party party) {
         var employeeTransfer = get(party);
 
         if(employeeTransfer == null) {
@@ -148,7 +148,7 @@ public class EmployeeTransferCache
 
             employeeTransfer = new EmployeeTransfer(partyName, partyTypeTransfer, preferredLanguageTransfer, preferredCurrencyTransfer, preferredTimeZoneTransfer, preferredDateTimeFormatTransfer,
                     personTransfer, profileTransfer, employeeName, employeeType, employeeStatusTransfer, employeeAvailabilityTransfer);
-            put(party, employeeTransfer, entityInstance);
+            put(userVisit, party, employeeTransfer, entityInstance);
 
             if(includeUserLogin) {
                 employeeTransfer.setUserLogin(userControl.getUserLoginTransfer(userVisit, party));

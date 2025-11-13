@@ -29,11 +29,11 @@ public class ForumMimeTypeTransferCache
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     
     /** Creates a new instance of ForumMimeTypeTransferCache */
-    public ForumMimeTypeTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
+    public ForumMimeTypeTransferCache(ForumControl forumControl) {
+        super(forumControl);
     }
     
-    public ForumMimeTypeTransfer getForumMimeTypeTransfer(ForumMimeType forumMimeType) {
+    public ForumMimeTypeTransfer getForumMimeTypeTransfer(UserVisit userVisit, ForumMimeType forumMimeType) {
         var forumMimeTypeTransfer = get(forumMimeType);
         
         if(forumMimeTypeTransfer == null) {
@@ -43,7 +43,7 @@ public class ForumMimeTypeTransferCache
             var sortOrder = forumMimeType.getSortOrder();
             
             forumMimeTypeTransfer = new ForumMimeTypeTransfer(forum, mimeType, isDefault, sortOrder);
-            put(forumMimeType, forumMimeTypeTransfer);
+            put(userVisit, forumMimeType, forumMimeTypeTransfer);
         }
         
         return forumMimeTypeTransfer;

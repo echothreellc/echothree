@@ -143,16 +143,16 @@ public class PartyEntityTypeControl
     }
 
     public PartyEntityTypeTransfer getPartyEntityTypeTransfer(UserVisit userVisit, PartyEntityType partyEntityType) {
-        return getPartyTransferCaches(userVisit).getPartyEntityTypeTransferCache().getPartyEntityTypeTransfer(partyEntityType);
+        return getPartyTransferCaches().getPartyEntityTypeTransferCache().getPartyEntityTypeTransfer(userVisit, partyEntityType);
     }
 
     public List<PartyEntityTypeTransfer> getPartyEntityTypeTransfersByParty(UserVisit userVisit, Party party) {
         var partyEntityTypes = getPartyEntityTypesByParty(party);
         List<PartyEntityTypeTransfer> partyEntityTypeTransfers = new ArrayList<>(partyEntityTypes.size());
-        var partyEntityTypeTransferCache = getPartyTransferCaches(userVisit).getPartyEntityTypeTransferCache();
+        var partyEntityTypeTransferCache = getPartyTransferCaches().getPartyEntityTypeTransferCache();
 
         partyEntityTypes.forEach((partyEntityType) ->
-                partyEntityTypeTransfers.add(partyEntityTypeTransferCache.getPartyEntityTypeTransfer(partyEntityType))
+                partyEntityTypeTransfers.add(partyEntityTypeTransferCache.getPartyEntityTypeTransfer(userVisit, partyEntityType))
         );
 
         return partyEntityTypeTransfers;

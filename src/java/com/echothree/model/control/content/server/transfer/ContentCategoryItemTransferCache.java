@@ -33,8 +33,8 @@ public class ContentCategoryItemTransferCache
     boolean filterSortOrder;
 
     /** Creates a new instance of ContentCategoryItemTransferCache */
-    public ContentCategoryItemTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    public ContentCategoryItemTransferCache(ContentControl contentControl) {
+        super(contentControl);
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
@@ -49,7 +49,7 @@ public class ContentCategoryItemTransferCache
         }
     }
     
-    public ContentCategoryItemTransfer getContentCategoryItemTransfer(ContentCategoryItem contentCategoryItem) {
+    public ContentCategoryItemTransfer getContentCategoryItemTransfer(UserVisit userVisit, ContentCategoryItem contentCategoryItem) {
         var contentCategoryItemTransfer = get(contentCategoryItem);
         
         if(contentCategoryItemTransfer == null) {
@@ -59,7 +59,7 @@ public class ContentCategoryItemTransferCache
             var sortOrder = filterSortOrder ? null : contentCategoryItem.getSortOrder();
             
             contentCategoryItemTransfer = new ContentCategoryItemTransfer(contentCategory, contentCatalogItem, isDefault, sortOrder);
-            put(contentCategoryItem, contentCategoryItemTransfer);
+            put(userVisit, contentCategoryItem, contentCategoryItemTransfer);
         }
         
         return contentCategoryItemTransfer;

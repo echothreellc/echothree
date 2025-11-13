@@ -29,11 +29,11 @@ public class PartySecurityRoleTemplateTrainingClassTransferCache
     TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
     
     /** Creates a new instance of PartySecurityRoleTemplateTrainingClassTransferCache */
-    public PartySecurityRoleTemplateTrainingClassTransferCache(UserVisit userVisit, SecurityControl securityControl) {
-        super(userVisit, securityControl);
+    public PartySecurityRoleTemplateTrainingClassTransferCache(SecurityControl securityControl) {
+        super(securityControl);
     }
     
-    public PartySecurityRoleTemplateTrainingClassTransfer getPartySecurityRoleTemplateTrainingClassTransfer(PartySecurityRoleTemplateTrainingClass partySecurityRoleTemplateTrainingClass) {
+    public PartySecurityRoleTemplateTrainingClassTransfer getPartySecurityRoleTemplateTrainingClassTransfer(UserVisit userVisit, PartySecurityRoleTemplateTrainingClass partySecurityRoleTemplateTrainingClass) {
         var partySecurityRoleTemplateTrainingClassTransfer = get(partySecurityRoleTemplateTrainingClass);
         
         if(partySecurityRoleTemplateTrainingClassTransfer == null) {
@@ -41,7 +41,7 @@ public class PartySecurityRoleTemplateTrainingClassTransferCache
             var trainingClass = trainingControl.getTrainingClassTransfer(userVisit, partySecurityRoleTemplateTrainingClass.getTrainingClass());
             
             partySecurityRoleTemplateTrainingClassTransfer = new PartySecurityRoleTemplateTrainingClassTransfer(partySecurityRoleTemplate, trainingClass);
-            put(partySecurityRoleTemplateTrainingClass, partySecurityRoleTemplateTrainingClassTransfer);
+            put(userVisit, partySecurityRoleTemplateTrainingClass, partySecurityRoleTemplateTrainingClassTransfer);
         }
         
         return partySecurityRoleTemplateTrainingClassTransfer;

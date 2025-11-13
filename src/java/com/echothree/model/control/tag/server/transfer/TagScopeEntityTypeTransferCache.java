@@ -30,11 +30,11 @@ public class TagScopeEntityTypeTransferCache
     TagControl tagControl = Session.getModelController(TagControl.class);
 
     /** Creates a new instance of TagScopeEntityTypeTransferCache */
-    public TagScopeEntityTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public TagScopeEntityTypeTransferCache() {
+        super();
     }
     
-    public TagScopeEntityTypeTransfer getTagScopeEntityTypeTransfer(TagScopeEntityType tagScopeEntityType) {
+    public TagScopeEntityTypeTransfer getTagScopeEntityTypeTransfer(UserVisit userVisit, TagScopeEntityType tagScopeEntityType) {
         var tagScopeEntityTypeTransfer = get(tagScopeEntityType);
         
         if(tagScopeEntityTypeTransfer == null) {
@@ -42,7 +42,7 @@ public class TagScopeEntityTypeTransferCache
             var entityType = entityTypeControl.getEntityTypeTransfer(userVisit, tagScopeEntityType.getEntityType());
             
             tagScopeEntityTypeTransfer = new TagScopeEntityTypeTransfer(tagScope, entityType);
-            put(tagScopeEntityType, tagScopeEntityTypeTransfer);
+            put(userVisit, tagScopeEntityType, tagScopeEntityTypeTransfer);
         }
         
         return tagScopeEntityTypeTransfer;

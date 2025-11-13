@@ -227,16 +227,16 @@ public class PaymentMethodTypePartyTypeControl
 
     public PaymentMethodTypePartyTypeTransfer getPaymentMethodTypePartyTypeTransfer(final UserVisit userVisit,
             final PaymentMethodTypePartyType paymentMethodTypePartyType) {
-        return getPaymentTransferCaches(userVisit).getPaymentMethodTypePartyTypeTransferCache().getTransfer(paymentMethodTypePartyType);
+        return getPaymentTransferCaches().getPaymentMethodTypePartyTypeTransferCache().getTransfer(userVisit, paymentMethodTypePartyType);
     }
 
     public List<PaymentMethodTypePartyTypeTransfer> getPaymentMethodTypePartyTypeTransfers(final UserVisit userVisit,
             final Collection<PaymentMethodTypePartyType> paymentMethodTypePartyTypes) {
         var paymentMethodTypePartyTypeTransfers = new ArrayList<PaymentMethodTypePartyTypeTransfer>(paymentMethodTypePartyTypes.size());
-        var paymentMethodTypePartyTypeTransferCache = getPaymentTransferCaches(userVisit).getPaymentMethodTypePartyTypeTransferCache();
+        var paymentMethodTypePartyTypeTransferCache = getPaymentTransferCaches().getPaymentMethodTypePartyTypeTransferCache();
 
         paymentMethodTypePartyTypes.forEach((paymentMethodTypePartyType) ->
-                paymentMethodTypePartyTypeTransfers.add(paymentMethodTypePartyTypeTransferCache.getTransfer(paymentMethodTypePartyType))
+                paymentMethodTypePartyTypeTransfers.add(paymentMethodTypePartyTypeTransferCache.getTransfer(userVisit, paymentMethodTypePartyType))
         );
 
         return paymentMethodTypePartyTypeTransfers;

@@ -25,11 +25,11 @@ public class ForumForumThreadTransferCache
         extends BaseForumTransferCache<ForumForumThread, ForumForumThreadTransfer> {
     
     /** Creates a new instance of ForumForumThreadTransferCache */
-    public ForumForumThreadTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
+    public ForumForumThreadTransferCache(ForumControl forumControl) {
+        super(forumControl);
     }
     
-    public ForumForumThreadTransfer getForumForumThreadTransfer(ForumForumThread forumForumThread) {
+    public ForumForumThreadTransfer getForumForumThreadTransfer(UserVisit userVisit, ForumForumThread forumForumThread) {
         var forumForumThreadTransfer = get(forumForumThread);
         
         if(forumForumThreadTransfer == null) {
@@ -39,7 +39,7 @@ public class ForumForumThreadTransferCache
             var sortOrder = forumForumThread.getSortOrder();
             
             forumForumThreadTransfer = new ForumForumThreadTransfer(forum, forumThread, isDefault, sortOrder);
-            put(forumForumThread, forumForumThreadTransfer);
+            put(userVisit, forumForumThread, forumForumThreadTransfer);
         }
         
         return forumForumThreadTransfer;

@@ -28,20 +28,20 @@ public class OrderRoleTypeTransferCache
     OrderRoleControl orderRoleControl = Session.getModelController(OrderRoleControl.class);
 
     /** Creates a new instance of OrderRoleTypeTransferCache */
-    public OrderRoleTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public OrderRoleTypeTransferCache() {
+        super();
     }
     
-    public OrderRoleTypeTransfer getOrderRoleTypeTransfer(OrderRoleType orderRoleType) {
+    public OrderRoleTypeTransfer getOrderRoleTypeTransfer(UserVisit userVisit, OrderRoleType orderRoleType) {
         var orderRoleTypeTransfer = get(orderRoleType);
         
         if(orderRoleTypeTransfer == null) {
             var orderRoleTypeName = orderRoleType.getOrderRoleTypeName();
             var sortOrder = orderRoleType.getSortOrder();
-            var description = orderRoleControl.getBestOrderRoleTypeDescription(orderRoleType, getLanguage());
+            var description = orderRoleControl.getBestOrderRoleTypeDescription(orderRoleType, getLanguage(userVisit));
             
             orderRoleTypeTransfer = new OrderRoleTypeTransfer(orderRoleTypeName, sortOrder, description);
-            put(orderRoleType, orderRoleTypeTransfer);
+            put(userVisit, orderRoleType, orderRoleTypeTransfer);
         }
         
         return orderRoleTypeTransfer;

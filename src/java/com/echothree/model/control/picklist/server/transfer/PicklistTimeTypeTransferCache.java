@@ -25,13 +25,13 @@ public class PicklistTimeTypeTransferCache
         extends BasePicklistTransferCache<PicklistTimeType, PicklistTimeTypeTransfer> {
     
     /** Creates a new instance of PicklistTimeTypeTransferCache */
-    public PicklistTimeTypeTransferCache(UserVisit userVisit, PicklistControl picklistControl) {
-        super(userVisit, picklistControl);
+    public PicklistTimeTypeTransferCache(PicklistControl picklistControl) {
+        super(picklistControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public PicklistTimeTypeTransfer getPicklistTimeTypeTransfer(PicklistTimeType picklistTimeType) {
+    public PicklistTimeTypeTransfer getPicklistTimeTypeTransfer(UserVisit userVisit, PicklistTimeType picklistTimeType) {
         var picklistTimeTypeTransfer = get(picklistTimeType);
         
         if(picklistTimeTypeTransfer == null) {
@@ -39,10 +39,10 @@ public class PicklistTimeTypeTransferCache
             var picklistTimeTypeName = picklistTimeTypeDetail.getPicklistTimeTypeName();
             var isDefault = picklistTimeTypeDetail.getIsDefault();
             var sortOrder = picklistTimeTypeDetail.getSortOrder();
-            var description = picklistControl.getBestPicklistTimeTypeDescription(picklistTimeType, getLanguage());
+            var description = picklistControl.getBestPicklistTimeTypeDescription(picklistTimeType, getLanguage(userVisit));
             
             picklistTimeTypeTransfer = new PicklistTimeTypeTransfer(picklistTimeTypeName, isDefault, sortOrder, description);
-            put(picklistTimeType, picklistTimeTypeTransfer);
+            put(userVisit, picklistTimeType, picklistTimeTypeTransfer);
         }
         
         return picklistTimeTypeTransfer;

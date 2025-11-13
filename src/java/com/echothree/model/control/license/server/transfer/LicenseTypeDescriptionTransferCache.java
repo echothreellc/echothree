@@ -25,11 +25,11 @@ public class LicenseTypeDescriptionTransferCache
         extends BaseLicenseDescriptionTransferCache<LicenseTypeDescription, LicenseTypeDescriptionTransfer> {
     
     /** Creates a new instance of LicenseTypeDescriptionTransferCache */
-    public LicenseTypeDescriptionTransferCache(UserVisit userVisit, LicenseControl licenseControl) {
-        super(userVisit, licenseControl);
+    public LicenseTypeDescriptionTransferCache(LicenseControl licenseControl) {
+        super(licenseControl);
     }
     
-    public LicenseTypeDescriptionTransfer getLicenseTypeDescriptionTransfer(LicenseTypeDescription licenseTypeDescription) {
+    public LicenseTypeDescriptionTransfer getLicenseTypeDescriptionTransfer(UserVisit userVisit, LicenseTypeDescription licenseTypeDescription) {
         var licenseTypeDescriptionTransfer = get(licenseTypeDescription);
         
         if(licenseTypeDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class LicenseTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, licenseTypeDescription.getLanguage());
             
             licenseTypeDescriptionTransfer = new LicenseTypeDescriptionTransfer(languageTransfer, licenseTypeTransfer, licenseTypeDescription.getDescription());
-            put(licenseTypeDescription, licenseTypeDescriptionTransfer);
+            put(userVisit, licenseTypeDescription, licenseTypeDescriptionTransfer);
         }
         return licenseTypeDescriptionTransfer;
     }

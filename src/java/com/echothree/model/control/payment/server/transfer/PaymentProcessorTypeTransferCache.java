@@ -28,14 +28,14 @@ public class PaymentProcessorTypeTransferCache
     PaymentProcessorTypeControl paymentProcessorTypeControl = Session.getModelController(PaymentProcessorTypeControl.class);
 
     /** Creates a new instance of PaymentProcessorTypeTransferCache */
-    public PaymentProcessorTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public PaymentProcessorTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public PaymentProcessorTypeTransfer getTransfer(PaymentProcessorType paymentProcessorType) {
+    public PaymentProcessorTypeTransfer getTransfer(UserVisit userVisit, PaymentProcessorType paymentProcessorType) {
         var paymentProcessorTypeTransfer = get(paymentProcessorType);
         
         if(paymentProcessorTypeTransfer == null) {
@@ -43,10 +43,10 @@ public class PaymentProcessorTypeTransferCache
             var paymentProcessorTypeName = paymentProcessorTypeDetail.getPaymentProcessorTypeName();
             var isDefault = paymentProcessorTypeDetail.getIsDefault();
             var sortOrder = paymentProcessorTypeDetail.getSortOrder();
-            var description = paymentProcessorTypeControl.getBestPaymentProcessorTypeDescription(paymentProcessorType, getLanguage());
+            var description = paymentProcessorTypeControl.getBestPaymentProcessorTypeDescription(paymentProcessorType, getLanguage(userVisit));
             
             paymentProcessorTypeTransfer = new PaymentProcessorTypeTransfer(paymentProcessorTypeName, isDefault, sortOrder, description);
-            put(paymentProcessorType, paymentProcessorTypeTransfer);
+            put(userVisit, paymentProcessorType, paymentProcessorTypeTransfer);
         }
         
         return paymentProcessorTypeTransfer;

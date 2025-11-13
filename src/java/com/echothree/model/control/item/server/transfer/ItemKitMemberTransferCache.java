@@ -32,12 +32,12 @@ public class ItemKitMemberTransferCache
     UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of ItemKitMemberTransferCache */
-    public ItemKitMemberTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemKitMemberTransferCache(ItemControl itemControl) {
+        super(itemControl);
     }
     
     @Override
-    public ItemKitMemberTransfer getTransfer(ItemKitMember itemKitMember) {
+    public ItemKitMemberTransfer getTransfer(UserVisit userVisit, ItemKitMember itemKitMember) {
         var itemKitMemberTransfer = get(itemKitMember);
         
         if(itemKitMemberTransfer == null) {
@@ -51,7 +51,7 @@ public class ItemKitMemberTransferCache
             
             itemKitMemberTransfer = new ItemKitMemberTransfer(item, inventoryCondition, unitOfMeasureType, memberItem, memberInventoryCondition,
                     memberUnitOfMeasureType, quantity);
-            put(itemKitMember, itemKitMemberTransfer);
+            put(userVisit, itemKitMember, itemKitMemberTransfer);
         }
         
         return itemKitMemberTransfer;

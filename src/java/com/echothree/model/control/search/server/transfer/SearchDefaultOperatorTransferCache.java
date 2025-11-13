@@ -26,8 +26,8 @@ public class SearchDefaultOperatorTransferCache
         extends BaseSearchTransferCache<SearchDefaultOperator, SearchDefaultOperatorTransfer> {
 
     /** Creates a new instance of SearchDefaultOperatorTransferCache */
-    public SearchDefaultOperatorTransferCache(UserVisit userVisit, SearchControl searchControl) {
-        super(userVisit, searchControl);
+    public SearchDefaultOperatorTransferCache(SearchControl searchControl) {
+        super(searchControl);
         
         var options = session.getOptions();
         if(options != null) {
@@ -37,7 +37,7 @@ public class SearchDefaultOperatorTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public SearchDefaultOperatorTransfer getSearchDefaultOperatorTransfer(SearchDefaultOperator searchDefaultOperator) {
+    public SearchDefaultOperatorTransfer getSearchDefaultOperatorTransfer(UserVisit userVisit, SearchDefaultOperator searchDefaultOperator) {
         var searchDefaultOperatorTransfer = get(searchDefaultOperator);
 
         if(searchDefaultOperatorTransfer == null) {
@@ -45,10 +45,10 @@ public class SearchDefaultOperatorTransferCache
             var searchDefaultOperatorName = searchDefaultOperatorDetail.getSearchDefaultOperatorName();
             var isDefault = searchDefaultOperatorDetail.getIsDefault();
             var sortOrder = searchDefaultOperatorDetail.getSortOrder();
-            var description = searchControl.getBestSearchDefaultOperatorDescription(searchDefaultOperator, getLanguage());
+            var description = searchControl.getBestSearchDefaultOperatorDescription(searchDefaultOperator, getLanguage(userVisit));
 
             searchDefaultOperatorTransfer = new SearchDefaultOperatorTransfer(searchDefaultOperatorName, isDefault, sortOrder, description);
-            put(searchDefaultOperator, searchDefaultOperatorTransfer);
+            put(userVisit, searchDefaultOperator, searchDefaultOperatorTransfer);
         }
 
         return searchDefaultOperatorTransfer;

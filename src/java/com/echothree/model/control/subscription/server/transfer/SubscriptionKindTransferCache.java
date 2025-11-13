@@ -25,13 +25,13 @@ public class SubscriptionKindTransferCache
         extends BaseSubscriptionTransferCache<SubscriptionKind, SubscriptionKindTransfer> {
     
     /** Creates a new instance of SubscriptionKindTransferCache */
-    public SubscriptionKindTransferCache(UserVisit userVisit, SubscriptionControl subscriptionControl) {
-        super(userVisit, subscriptionControl);
+    public SubscriptionKindTransferCache(SubscriptionControl subscriptionControl) {
+        super(subscriptionControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public SubscriptionKindTransfer getSubscriptionKindTransfer(SubscriptionKind subscriptionKind) {
+    public SubscriptionKindTransfer getSubscriptionKindTransfer(UserVisit userVisit, SubscriptionKind subscriptionKind) {
         var subscriptionKindTransfer = get(subscriptionKind);
         
         if(subscriptionKindTransfer == null) {
@@ -39,10 +39,10 @@ public class SubscriptionKindTransferCache
             var subscriptionKindName = subscriptionKindDetail.getSubscriptionKindName();
             var isDefault = subscriptionKindDetail.getIsDefault();
             var sortOrder = subscriptionKindDetail.getSortOrder();
-            var description = subscriptionControl.getBestSubscriptionKindDescription(subscriptionKind, getLanguage());
+            var description = subscriptionControl.getBestSubscriptionKindDescription(subscriptionKind, getLanguage(userVisit));
             
             subscriptionKindTransfer = new SubscriptionKindTransfer(subscriptionKindName, isDefault, sortOrder, description);
-            put(subscriptionKind, subscriptionKindTransfer);
+            put(userVisit, subscriptionKind, subscriptionKindTransfer);
         }
         
         return subscriptionKindTransfer;

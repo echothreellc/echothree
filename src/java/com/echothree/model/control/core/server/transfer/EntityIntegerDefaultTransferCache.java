@@ -28,11 +28,11 @@ public class EntityIntegerDefaultTransferCache
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of EntityIntegerDefaultTransferCache */
-    public EntityIntegerDefaultTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityIntegerDefaultTransferCache() {
+        super();
     }
     
-    public EntityIntegerDefaultTransfer getEntityIntegerDefaultTransfer(EntityIntegerDefault entityIntegerDefault) {
+    public EntityIntegerDefaultTransfer getEntityIntegerDefaultTransfer(UserVisit userVisit, EntityIntegerDefault entityIntegerDefault) {
         var entityIntegerDefaultTransfer = get(entityIntegerDefault);
         
         if(entityIntegerDefaultTransfer == null) {
@@ -40,7 +40,7 @@ public class EntityIntegerDefaultTransferCache
             var integerAttribute = entityIntegerDefault.getIntegerAttribute();
             
             entityIntegerDefaultTransfer = new EntityIntegerDefaultTransfer(entityAttribute, integerAttribute);
-            put(entityIntegerDefault, entityIntegerDefaultTransfer);
+            put(userVisit, entityIntegerDefault, entityIntegerDefaultTransfer);
         }
         
         return entityIntegerDefaultTransfer;

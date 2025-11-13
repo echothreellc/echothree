@@ -31,21 +31,21 @@ public class EntityTimeAttributeTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of EntityTimeAttributeTransferCache */
-    public EntityTimeAttributeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityTimeAttributeTransferCache() {
+        super();
     }
     
-    public EntityTimeAttributeTransfer getEntityTimeAttributeTransfer(EntityTimeAttribute entityTimeAttribute, EntityInstance entityInstance) {
+    public EntityTimeAttributeTransfer getEntityTimeAttributeTransfer(final UserVisit userVisit, final EntityTimeAttribute entityTimeAttribute, final EntityInstance entityInstance) {
         var entityTimeAttributeTransfer = get(entityTimeAttribute);
         
         if(entityTimeAttributeTransfer == null) {
             var entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityTimeAttribute.getEntityAttribute(), entityInstance) : null;
             var entityInstanceTransfer = entityInstanceControl.getEntityInstanceTransfer(userVisit, entityTimeAttribute.getEntityInstance(), false, false, false, false);
             var unformattedTimeAttribute = entityTimeAttribute.getTimeAttribute();
-            var timeAttribute = formatTypicalDateTime(unformattedTimeAttribute);
+            var timeAttribute = formatTypicalDateTime(userVisit, unformattedTimeAttribute);
             
             entityTimeAttributeTransfer = new EntityTimeAttributeTransfer(entityAttribute, entityInstanceTransfer, timeAttribute, unformattedTimeAttribute);
-            put(entityTimeAttribute, entityTimeAttributeTransfer);
+            put(userVisit, entityTimeAttribute, entityTimeAttributeTransfer);
         }
         
         return entityTimeAttributeTransfer;

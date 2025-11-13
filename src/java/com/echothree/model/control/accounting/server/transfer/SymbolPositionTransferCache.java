@@ -28,14 +28,14 @@ public class SymbolPositionTransferCache
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of SymbolPositionTransferCache */
-    public SymbolPositionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public SymbolPositionTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public SymbolPositionTransfer getTransfer(SymbolPosition symbolPosition) {
+    public SymbolPositionTransfer getTransfer(UserVisit userVisit, SymbolPosition symbolPosition) {
         var symbolPositionTransfer = get(symbolPosition);
         
         if(symbolPositionTransfer == null) {
@@ -43,10 +43,10 @@ public class SymbolPositionTransferCache
             var symbolPositionName = symbolPositionDetail.getSymbolPositionName();
             var isDefault = symbolPositionDetail.getIsDefault();
             var sortOrder = symbolPositionDetail.getSortOrder();
-            var description = accountingControl.getBestSymbolPositionDescription(symbolPosition, getLanguage());
+            var description = accountingControl.getBestSymbolPositionDescription(symbolPosition, getLanguage(userVisit));
             
             symbolPositionTransfer = new SymbolPositionTransfer(symbolPositionName, isDefault, sortOrder, description);
-            put(symbolPosition, symbolPositionTransfer);
+            put(userVisit, symbolPosition, symbolPositionTransfer);
         }
         
         return symbolPositionTransfer;

@@ -25,11 +25,11 @@ public class SubscriptionKindDescriptionTransferCache
         extends BaseSubscriptionDescriptionTransferCache<SubscriptionKindDescription, SubscriptionKindDescriptionTransfer> {
     
     /** Creates a new instance of SubscriptionKindDescriptionTransferCache */
-    public SubscriptionKindDescriptionTransferCache(UserVisit userVisit, SubscriptionControl subscriptionControl) {
-        super(userVisit, subscriptionControl);
+    public SubscriptionKindDescriptionTransferCache(SubscriptionControl subscriptionControl) {
+        super(subscriptionControl);
     }
     
-    public SubscriptionKindDescriptionTransfer getSubscriptionKindDescriptionTransfer(SubscriptionKindDescription subscriptionKindDescription) {
+    public SubscriptionKindDescriptionTransfer getSubscriptionKindDescriptionTransfer(UserVisit userVisit, SubscriptionKindDescription subscriptionKindDescription) {
         var subscriptionKindDescriptionTransfer = get(subscriptionKindDescription);
         
         if(subscriptionKindDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class SubscriptionKindDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, subscriptionKindDescription.getLanguage());
             
             subscriptionKindDescriptionTransfer = new SubscriptionKindDescriptionTransfer(languageTransfer, subscriptionKindTransfer, subscriptionKindDescription.getDescription());
-            put(subscriptionKindDescription, subscriptionKindDescriptionTransfer);
+            put(userVisit, subscriptionKindDescription, subscriptionKindDescriptionTransfer);
         }
         
         return subscriptionKindDescriptionTransfer;

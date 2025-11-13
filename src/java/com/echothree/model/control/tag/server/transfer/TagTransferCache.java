@@ -31,8 +31,8 @@ public class TagTransferCache
     boolean includeUsageCount;
 
     /** Creates a new instance of TagTransferCache */
-    public TagTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public TagTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {
@@ -42,7 +42,7 @@ public class TagTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public TagTransfer getTagTransfer(Tag tag) {
+    public TagTransfer getTagTransfer(UserVisit userVisit, Tag tag) {
         var tagTransfer = get(tag);
         
         if(tagTransfer == null) {
@@ -52,7 +52,7 @@ public class TagTransferCache
             var usageCount = includeUsageCount ? tagControl.countEntityTagsByTag(tag) : null;
             
             tagTransfer = new TagTransfer(tagScope, tagName, usageCount);
-            put(tag, tagTransfer);
+            put(userVisit, tag, tagTransfer);
         }
         
         return tagTransfer;

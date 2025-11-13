@@ -25,11 +25,11 @@ public class InvoiceAliasTypeDescriptionTransferCache
         extends BaseInvoiceDescriptionTransferCache<InvoiceAliasTypeDescription, InvoiceAliasTypeDescriptionTransfer> {
     
     /** Creates a new instance of InvoiceAliasTypeDescriptionTransferCache */
-    public InvoiceAliasTypeDescriptionTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
-        super(userVisit, invoiceControl);
+    public InvoiceAliasTypeDescriptionTransferCache(InvoiceControl invoiceControl) {
+        super(invoiceControl);
     }
     
-    public InvoiceAliasTypeDescriptionTransfer getInvoiceAliasTypeDescriptionTransfer(InvoiceAliasTypeDescription invoiceAliasTypeDescription) {
+    public InvoiceAliasTypeDescriptionTransfer getInvoiceAliasTypeDescriptionTransfer(UserVisit userVisit, InvoiceAliasTypeDescription invoiceAliasTypeDescription) {
         var invoiceAliasTypeDescriptionTransfer = get(invoiceAliasTypeDescription);
         
         if(invoiceAliasTypeDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class InvoiceAliasTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, invoiceAliasTypeDescription.getLanguage());
             
             invoiceAliasTypeDescriptionTransfer = new InvoiceAliasTypeDescriptionTransfer(languageTransfer, invoiceAliasTypeTransfer, invoiceAliasTypeDescription.getDescription());
-            put(invoiceAliasTypeDescription, invoiceAliasTypeDescriptionTransfer);
+            put(userVisit, invoiceAliasTypeDescription, invoiceAliasTypeDescriptionTransfer);
         }
         
         return invoiceAliasTypeDescriptionTransfer;

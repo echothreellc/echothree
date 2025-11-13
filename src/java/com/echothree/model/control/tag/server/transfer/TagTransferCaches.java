@@ -29,41 +29,41 @@ public class TagTransferCaches
     protected EntityTagTransferCache entityTagTransferCache;
     
     /** Creates a new instance of TagTransferCaches */
-    public TagTransferCaches(UserVisit userVisit) {
-        super(userVisit);
+    public TagTransferCaches() {
+        super();
     }
     
     public TagScopeTransferCache getTagScopeTransferCache() {
         if(tagScopeTransferCache == null)
-            tagScopeTransferCache = new TagScopeTransferCache(userVisit);
+            tagScopeTransferCache = new TagScopeTransferCache();
         
         return tagScopeTransferCache;
     }
     
     public TagScopeDescriptionTransferCache getTagScopeDescriptionTransferCache() {
         if(tagScopeDescriptionTransferCache == null)
-            tagScopeDescriptionTransferCache = new TagScopeDescriptionTransferCache(userVisit);
+            tagScopeDescriptionTransferCache = new TagScopeDescriptionTransferCache();
         
         return tagScopeDescriptionTransferCache;
     }
     
     public TagScopeEntityTypeTransferCache getTagScopeEntityTypeTransferCache() {
         if(tagScopeEntityTypeTransferCache == null)
-            tagScopeEntityTypeTransferCache = new TagScopeEntityTypeTransferCache(userVisit);
+            tagScopeEntityTypeTransferCache = new TagScopeEntityTypeTransferCache();
         
         return tagScopeEntityTypeTransferCache;
     }
     
     public TagTransferCache getTagTransferCache() {
         if(tagTransferCache == null)
-            tagTransferCache = new TagTransferCache(userVisit);
+            tagTransferCache = new TagTransferCache();
         
         return tagTransferCache;
     }
     
     public EntityTagTransferCache getEntityTagTransferCache() {
         if(entityTagTransferCache == null)
-            entityTagTransferCache = new EntityTagTransferCache(userVisit);
+            entityTagTransferCache = new EntityTagTransferCache();
         
         return entityTagTransferCache;
     }

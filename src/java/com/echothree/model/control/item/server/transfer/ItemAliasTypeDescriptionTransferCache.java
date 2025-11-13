@@ -25,21 +25,21 @@ public class ItemAliasTypeDescriptionTransferCache
         extends BaseItemDescriptionTransferCache<ItemAliasTypeDescription, ItemAliasTypeDescriptionTransfer> {
     
     /** Creates a new instance of ItemAliasTypeDescriptionTransferCache */
-    public ItemAliasTypeDescriptionTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemAliasTypeDescriptionTransferCache(ItemControl itemControl) {
+        super(itemControl);
     }
     
     @Override
-    public ItemAliasTypeDescriptionTransfer getTransfer(ItemAliasTypeDescription itemAliasTypeDescription) {
+    public ItemAliasTypeDescriptionTransfer getTransfer(UserVisit userVisit, ItemAliasTypeDescription itemAliasTypeDescription) {
         var itemAliasTypeDescriptionTransfer = get(itemAliasTypeDescription);
         
         if(itemAliasTypeDescriptionTransfer == null) {
-            var itemAliasTypeTransferCache = itemControl.getItemTransferCaches(userVisit).getItemAliasTypeTransferCache();
-            var itemAliasTypeTransfer = itemAliasTypeTransferCache.getTransfer(itemAliasTypeDescription.getItemAliasType());
+            var itemAliasTypeTransferCache = itemControl.getItemTransferCaches().getItemAliasTypeTransferCache();
+            var itemAliasTypeTransfer = itemAliasTypeTransferCache.getTransfer(userVisit, itemAliasTypeDescription.getItemAliasType());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, itemAliasTypeDescription.getLanguage());
             
             itemAliasTypeDescriptionTransfer = new ItemAliasTypeDescriptionTransfer(languageTransfer, itemAliasTypeTransfer, itemAliasTypeDescription.getDescription());
-            put(itemAliasTypeDescription, itemAliasTypeDescriptionTransfer);
+            put(userVisit, itemAliasTypeDescription, itemAliasTypeDescriptionTransfer);
         }
         
         return itemAliasTypeDescriptionTransfer;

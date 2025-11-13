@@ -25,20 +25,20 @@ public class InvoiceTimeTransferCache
         extends BaseInvoiceTransferCache<InvoiceTime, InvoiceTimeTransfer> {
     
     /** Creates a new instance of InvoiceTimeTransferCache */
-    public InvoiceTimeTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
-        super(userVisit, invoiceControl);
+    public InvoiceTimeTransferCache(InvoiceControl invoiceControl) {
+        super(invoiceControl);
     }
     
-    public InvoiceTimeTransfer getInvoiceTimeTransfer(InvoiceTime invoiceTime) {
+    public InvoiceTimeTransfer getInvoiceTimeTransfer(UserVisit userVisit, InvoiceTime invoiceTime) {
         var invoiceTimeTransfer = get(invoiceTime);
         
         if(invoiceTimeTransfer == null) {
             var invoiceTimeType = invoiceControl.getInvoiceTimeTypeTransfer(userVisit, invoiceTime.getInvoiceTimeType());
             var unformattedTime = invoiceTime.getTime();
-            var time = formatTypicalDateTime(unformattedTime);
+            var time = formatTypicalDateTime(userVisit, unformattedTime);
             
             invoiceTimeTransfer = new InvoiceTimeTransfer(invoiceTimeType, unformattedTime, time);
-            put(invoiceTime, invoiceTimeTransfer);
+            put(userVisit, invoiceTime, invoiceTimeTransfer);
         }
         
         return invoiceTimeTransfer;

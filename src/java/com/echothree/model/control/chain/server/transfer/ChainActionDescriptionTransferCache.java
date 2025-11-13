@@ -25,11 +25,11 @@ public class ChainActionDescriptionTransferCache
         extends BaseChainDescriptionTransferCache<ChainActionDescription, ChainActionDescriptionTransfer> {
     
     /** Creates a new instance of ChainActionDescriptionTransferCache */
-    public ChainActionDescriptionTransferCache(UserVisit userVisit, ChainControl chainControl) {
-        super(userVisit, chainControl);
+    public ChainActionDescriptionTransferCache(ChainControl chainControl) {
+        super(chainControl);
     }
     
-    public ChainActionDescriptionTransfer getChainActionDescriptionTransfer(ChainActionDescription chainActionDescription) {
+    public ChainActionDescriptionTransfer getChainActionDescriptionTransfer(UserVisit userVisit, ChainActionDescription chainActionDescription) {
         var chainActionDescriptionTransfer = get(chainActionDescription);
         
         if(chainActionDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class ChainActionDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, chainActionDescription.getLanguage());
             
             chainActionDescriptionTransfer = new ChainActionDescriptionTransfer(languageTransfer, chainActionTransfer, chainActionDescription.getDescription());
-            put(chainActionDescription, chainActionDescriptionTransfer);
+            put(userVisit, chainActionDescription, chainActionDescriptionTransfer);
         }
         
         return chainActionDescriptionTransfer;

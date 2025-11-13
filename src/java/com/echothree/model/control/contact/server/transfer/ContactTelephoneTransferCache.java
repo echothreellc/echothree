@@ -33,11 +33,11 @@ public class ContactTelephoneTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
     /** Creates a new instance of ContactTelephoneTransferCache */
-    public ContactTelephoneTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    public ContactTelephoneTransferCache(ContactControl contactControl) {
+        super(contactControl);
     }
     
-    public ContactTelephoneTransfer getContactTelephoneTransfer(ContactTelephone contactTelephone) {
+    public ContactTelephoneTransfer getContactTelephoneTransfer(UserVisit userVisit, ContactTelephone contactTelephone) {
         var contactTelephoneTransfer = get(contactTelephone);
         
         if(contactTelephoneTransfer == null) {
@@ -53,7 +53,7 @@ public class ContactTelephoneTransferCache
             
             contactTelephoneTransfer = new ContactTelephoneTransfer(countryGeoCode, areaCode, telephoneNumber, telephoneExtension,
                     telephoneStatusTransfer);
-            put(contactTelephone, contactTelephoneTransfer);
+            put(userVisit, contactTelephone, contactTelephoneTransfer);
         }
         
         return contactTelephoneTransfer;

@@ -28,8 +28,8 @@ public abstract class BaseRatingTransferCache<K extends BaseEntity, V extends Ba
     RatingControl ratingControl;
     
     /** Creates a new instance of BaseRatingTransferCache */
-    protected BaseRatingTransferCache(UserVisit userVisit, RatingControl ratingControl) {
-        super(userVisit);
+    protected BaseRatingTransferCache(RatingControl ratingControl) {
+        super();
         
         this.ratingControl = ratingControl;
     }

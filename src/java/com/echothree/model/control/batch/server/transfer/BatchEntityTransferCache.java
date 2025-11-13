@@ -29,19 +29,19 @@ public class BatchEntityTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of BatchEntityTransferCache */
-    public BatchEntityTransferCache(UserVisit userVisit, BatchControl batchControl) {
-        super(userVisit, batchControl);
+    public BatchEntityTransferCache(BatchControl batchControl) {
+        super(batchControl);
     }
 
     @Override
-    public BatchEntityTransfer getTransfer(BatchEntity batchEntity) {
+    public BatchEntityTransfer getTransfer(UserVisit userVisit, BatchEntity batchEntity) {
         var batchEntityTransfer = get(batchEntity);
 
         if(batchEntityTransfer == null) {
             var entityInstanceTransfer = entityInstanceControl.getEntityInstanceTransfer(userVisit, batchEntity.getEntityInstance(), false, false, false, false);
 
             batchEntityTransfer = new BatchEntityTransfer(entityInstanceTransfer);
-            put(batchEntity, batchEntityTransfer);
+            put(userVisit, batchEntity, batchEntityTransfer);
         }
 
         return batchEntityTransfer;

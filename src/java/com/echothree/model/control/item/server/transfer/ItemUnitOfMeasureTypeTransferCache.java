@@ -29,14 +29,14 @@ public class ItemUnitOfMeasureTypeTransferCache
     UomControl uomControl;
     
     /** Creates a new instance of ItemUnitOfMeasureTypeTransferCache */
-    public ItemUnitOfMeasureTypeTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemUnitOfMeasureTypeTransferCache(ItemControl itemControl) {
+        super(itemControl);
         
         uomControl = Session.getModelController(UomControl.class);
     }
     
     @Override
-    public ItemUnitOfMeasureTypeTransfer getTransfer(ItemUnitOfMeasureType itemUnitOfMeasureType) {
+    public ItemUnitOfMeasureTypeTransfer getTransfer(UserVisit userVisit, ItemUnitOfMeasureType itemUnitOfMeasureType) {
         var itemUnitOfMeasureTypeTransfer = get(itemUnitOfMeasureType);
         
         if(itemUnitOfMeasureTypeTransfer == null) {
@@ -46,7 +46,7 @@ public class ItemUnitOfMeasureTypeTransferCache
             var sortOrder = itemUnitOfMeasureType.getSortOrder();
             
             itemUnitOfMeasureTypeTransfer = new ItemUnitOfMeasureTypeTransfer(item, unitOfMeasureType, isDefault, sortOrder);
-            put(itemUnitOfMeasureType, itemUnitOfMeasureTypeTransfer);
+            put(userVisit, itemUnitOfMeasureType, itemUnitOfMeasureTypeTransfer);
         }
         
         return itemUnitOfMeasureTypeTransfer;

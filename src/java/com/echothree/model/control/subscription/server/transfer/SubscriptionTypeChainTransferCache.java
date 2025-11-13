@@ -34,21 +34,21 @@ public class SubscriptionTypeChainTransferCache
     UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
     
     /** Creates a new instance of SubscriptionTypeChainTransferCache */
-    public SubscriptionTypeChainTransferCache(UserVisit userVisit, SubscriptionControl subscriptionControl) {
-        super(userVisit, subscriptionControl);
+    public SubscriptionTypeChainTransferCache(SubscriptionControl subscriptionControl) {
+        super(subscriptionControl);
     }
     
-    public SubscriptionTypeChainTransfer getSubscriptionTypeChainTransfer(SubscriptionTypeChain subscriptionTypeChain) {
+    public SubscriptionTypeChainTransfer getSubscriptionTypeChainTransfer(UserVisit userVisit, SubscriptionTypeChain subscriptionTypeChain) {
         var subscriptionTypeChainTransfer = get(subscriptionTypeChain);
         
         if(subscriptionTypeChainTransfer == null) {
             var subscriptionType = subscriptionControl.getSubscriptionTypeTransfer(userVisit, subscriptionTypeChain.getSubscriptionType());
             var chain = chainControl.getChainTransfer(userVisit, subscriptionTypeChain.getChain());
             var unformattedRemainingTime = subscriptionTypeChain.getRemainingTime();
-            var remainingTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedRemainingTime);
+            var remainingTime = formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedRemainingTime);
             
             subscriptionTypeChainTransfer = new SubscriptionTypeChainTransfer(subscriptionType, chain, unformattedRemainingTime, remainingTime);
-            put(subscriptionTypeChain, subscriptionTypeChainTransfer);
+            put(userVisit, subscriptionTypeChain, subscriptionTypeChainTransfer);
         }
         
         return subscriptionTypeChainTransfer;

@@ -25,11 +25,11 @@ public class CampaignDescriptionTransferCache
         extends BaseCampaignDescriptionTransferCache<CampaignDescription, CampaignDescriptionTransfer> {
     
     /** Creates a new instance of CampaignDescriptionTransferCache */
-    public CampaignDescriptionTransferCache(UserVisit userVisit, CampaignControl campaignControl) {
-        super(userVisit, campaignControl);
+    public CampaignDescriptionTransferCache(CampaignControl campaignControl) {
+        super(campaignControl);
     }
     
-    public CampaignDescriptionTransfer getCampaignDescriptionTransfer(CampaignDescription campaignDescription) {
+    public CampaignDescriptionTransfer getCampaignDescriptionTransfer(UserVisit userVisit, CampaignDescription campaignDescription) {
         var campaignDescriptionTransfer = get(campaignDescription);
         
         if(campaignDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class CampaignDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, campaignDescription.getLanguage());
             
             campaignDescriptionTransfer = new CampaignDescriptionTransfer(languageTransfer, campaignTransfer, campaignDescription.getDescription());
-            put(campaignDescription, campaignDescriptionTransfer);
+            put(userVisit, campaignDescription, campaignDescriptionTransfer);
         }
         return campaignDescriptionTransfer;
     }

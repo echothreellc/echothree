@@ -29,11 +29,11 @@ public class EntityAttributeEntityAttributeGroupTransferCache
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of EntityAttributeEntityAttributeGroupTransferCache */
-    public EntityAttributeEntityAttributeGroupTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityAttributeEntityAttributeGroupTransferCache() {
+        super();
     }
     
-    public EntityAttributeEntityAttributeGroupTransfer getEntityAttributeEntityAttributeGroupTransfer(EntityAttributeEntityAttributeGroup entityAttributeEntityAttributeGroup, EntityInstance entityInstance) {
+    public EntityAttributeEntityAttributeGroupTransfer getEntityAttributeEntityAttributeGroupTransfer(final UserVisit userVisit, final EntityAttributeEntityAttributeGroup entityAttributeEntityAttributeGroup, final EntityInstance entityInstance) {
         var entityAttributeEntityAttributeGroupTransfer = get(entityAttributeEntityAttributeGroup);
         
         if(entityAttributeEntityAttributeGroupTransfer == null) {
@@ -42,7 +42,7 @@ public class EntityAttributeEntityAttributeGroupTransferCache
             var sortOrder = entityAttributeEntityAttributeGroup.getSortOrder();
             
             entityAttributeEntityAttributeGroupTransfer = new EntityAttributeEntityAttributeGroupTransfer(entityAttributeTransfer, entityAttributeGroupTransfer, sortOrder);
-            put(entityAttributeEntityAttributeGroup, entityAttributeEntityAttributeGroupTransfer);
+            put(userVisit, entityAttributeEntityAttributeGroup, entityAttributeEntityAttributeGroupTransfer);
         }
         return entityAttributeEntityAttributeGroupTransfer;
     }

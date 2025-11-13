@@ -30,12 +30,12 @@ public class ItemCountryOfOriginTransferCache
     GeoControl geoControl = Session.getModelController(GeoControl.class);
     
     /** Creates a new instance of ItemCountryOfOriginTransferCache */
-    public ItemCountryOfOriginTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemCountryOfOriginTransferCache(ItemControl itemControl) {
+        super(itemControl);
     }
     
     @Override
-    public ItemCountryOfOriginTransfer getTransfer(ItemCountryOfOrigin itemCountryOfOrigin) {
+    public ItemCountryOfOriginTransfer getTransfer(UserVisit userVisit, ItemCountryOfOrigin itemCountryOfOrigin) {
         var itemCountryOfOriginTransfer = get(itemCountryOfOrigin);
         
         if(itemCountryOfOriginTransfer == null) {
@@ -45,7 +45,7 @@ public class ItemCountryOfOriginTransferCache
             var percent = PercentUtils.getInstance().formatFractionalPercent(unformattedPercent);
             
             itemCountryOfOriginTransfer = new ItemCountryOfOriginTransfer(item, countryGeoCode, unformattedPercent, percent);
-            put(itemCountryOfOrigin, itemCountryOfOriginTransfer);
+            put(userVisit, itemCountryOfOrigin, itemCountryOfOriginTransfer);
         }
         
         return itemCountryOfOriginTransfer;

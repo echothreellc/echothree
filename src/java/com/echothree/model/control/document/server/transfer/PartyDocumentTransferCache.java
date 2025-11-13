@@ -29,11 +29,11 @@ public class PartyDocumentTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of PartyDocumentTransferCache */
-    public PartyDocumentTransferCache(UserVisit userVisit, DocumentControl documentControl) {
-        super(userVisit, documentControl);
+    public PartyDocumentTransferCache(DocumentControl documentControl) {
+        super(documentControl);
     }
     
-    public PartyDocumentTransfer getPartyDocumentTransfer(PartyDocument partyDocument) {
+    public PartyDocumentTransfer getPartyDocumentTransfer(UserVisit userVisit, PartyDocument partyDocument) {
         var partyDocumentTransfer = get(partyDocument);
         
         if(partyDocumentTransfer == null) {
@@ -43,7 +43,7 @@ public class PartyDocumentTransferCache
             var sortOrder = partyDocument.getSortOrder();
             
             partyDocumentTransfer = new PartyDocumentTransfer(partyTransfer, documentTransfer, isDefault, sortOrder);
-            put(partyDocument, partyDocumentTransfer);
+            put(userVisit, partyDocument, partyDocumentTransfer);
         }
         
         return partyDocumentTransfer;

@@ -43,15 +43,15 @@ public class SearchTransferCaches
     protected SearchCheckSpellingActionTypeDescriptionTransferCache searchCheckSpellingActionTypeDescriptionTransferCache;
     
     /** Creates a new instance of SearchTransferCaches */
-    public SearchTransferCaches(UserVisit userVisit, SearchControl searchControl) {
-        super(userVisit);
+    public SearchTransferCaches(SearchControl searchControl) {
+        super();
         
         this.searchControl = searchControl;
     }
     
     public SearchKindTransferCache getSearchKindTransferCache() {
         if(searchKindTransferCache == null) {
-            searchKindTransferCache = new SearchKindTransferCache(userVisit, searchControl);
+            searchKindTransferCache = new SearchKindTransferCache(searchControl);
         }
 
         return searchKindTransferCache;
@@ -59,7 +59,7 @@ public class SearchTransferCaches
 
     public SearchKindDescriptionTransferCache getSearchKindDescriptionTransferCache() {
         if(searchKindDescriptionTransferCache == null) {
-            searchKindDescriptionTransferCache = new SearchKindDescriptionTransferCache(userVisit, searchControl);
+            searchKindDescriptionTransferCache = new SearchKindDescriptionTransferCache(searchControl);
         }
 
         return searchKindDescriptionTransferCache;
@@ -67,7 +67,7 @@ public class SearchTransferCaches
 
     public SearchTypeTransferCache getSearchTypeTransferCache() {
         if(searchTypeTransferCache == null) {
-            searchTypeTransferCache = new SearchTypeTransferCache(userVisit, searchControl);
+            searchTypeTransferCache = new SearchTypeTransferCache(searchControl);
         }
 
         return searchTypeTransferCache;
@@ -75,7 +75,7 @@ public class SearchTransferCaches
 
     public SearchTypeDescriptionTransferCache getSearchTypeDescriptionTransferCache() {
         if(searchTypeDescriptionTransferCache == null) {
-            searchTypeDescriptionTransferCache = new SearchTypeDescriptionTransferCache(userVisit, searchControl);
+            searchTypeDescriptionTransferCache = new SearchTypeDescriptionTransferCache(searchControl);
         }
 
         return searchTypeDescriptionTransferCache;
@@ -83,7 +83,7 @@ public class SearchTransferCaches
 
     public SearchSortOrderTransferCache getSearchSortOrderTransferCache() {
         if(searchSortOrderTransferCache == null) {
-            searchSortOrderTransferCache = new SearchSortOrderTransferCache(userVisit, searchControl);
+            searchSortOrderTransferCache = new SearchSortOrderTransferCache(searchControl);
         }
 
         return searchSortOrderTransferCache;
@@ -91,7 +91,7 @@ public class SearchTransferCaches
 
     public SearchSortOrderDescriptionTransferCache getSearchSortOrderDescriptionTransferCache() {
         if(searchSortOrderDescriptionTransferCache == null) {
-            searchSortOrderDescriptionTransferCache = new SearchSortOrderDescriptionTransferCache(userVisit, searchControl);
+            searchSortOrderDescriptionTransferCache = new SearchSortOrderDescriptionTransferCache(searchControl);
         }
 
         return searchSortOrderDescriptionTransferCache;
@@ -99,7 +99,7 @@ public class SearchTransferCaches
 
     public SearchSortDirectionTransferCache getSearchSortDirectionTransferCache() {
         if(searchSortDirectionTransferCache == null) {
-            searchSortDirectionTransferCache = new SearchSortDirectionTransferCache(userVisit, searchControl);
+            searchSortDirectionTransferCache = new SearchSortDirectionTransferCache(searchControl);
         }
 
         return searchSortDirectionTransferCache;
@@ -107,7 +107,7 @@ public class SearchTransferCaches
 
     public SearchSortDirectionDescriptionTransferCache getSearchSortDirectionDescriptionTransferCache() {
         if(searchSortDirectionDescriptionTransferCache == null) {
-            searchSortDirectionDescriptionTransferCache = new SearchSortDirectionDescriptionTransferCache(userVisit, searchControl);
+            searchSortDirectionDescriptionTransferCache = new SearchSortDirectionDescriptionTransferCache(searchControl);
         }
 
         return searchSortDirectionDescriptionTransferCache;
@@ -115,7 +115,7 @@ public class SearchTransferCaches
 
     public SearchDefaultOperatorTransferCache getSearchDefaultOperatorTransferCache() {
         if(searchDefaultOperatorTransferCache == null) {
-            searchDefaultOperatorTransferCache = new SearchDefaultOperatorTransferCache(userVisit, searchControl);
+            searchDefaultOperatorTransferCache = new SearchDefaultOperatorTransferCache(searchControl);
         }
 
         return searchDefaultOperatorTransferCache;
@@ -123,7 +123,7 @@ public class SearchTransferCaches
 
     public SearchDefaultOperatorDescriptionTransferCache getSearchDefaultOperatorDescriptionTransferCache() {
         if(searchDefaultOperatorDescriptionTransferCache == null) {
-            searchDefaultOperatorDescriptionTransferCache = new SearchDefaultOperatorDescriptionTransferCache(userVisit, searchControl);
+            searchDefaultOperatorDescriptionTransferCache = new SearchDefaultOperatorDescriptionTransferCache(searchControl);
         }
 
         return searchDefaultOperatorDescriptionTransferCache;
@@ -131,7 +131,7 @@ public class SearchTransferCaches
 
     public SearchUseTypeTransferCache getSearchUseTypeTransferCache() {
         if(searchUseTypeTransferCache == null) {
-            searchUseTypeTransferCache = new SearchUseTypeTransferCache(userVisit, searchControl);
+            searchUseTypeTransferCache = new SearchUseTypeTransferCache(searchControl);
         }
 
         return searchUseTypeTransferCache;
@@ -139,7 +139,7 @@ public class SearchTransferCaches
 
     public SearchUseTypeDescriptionTransferCache getSearchUseTypeDescriptionTransferCache() {
         if(searchUseTypeDescriptionTransferCache == null) {
-            searchUseTypeDescriptionTransferCache = new SearchUseTypeDescriptionTransferCache(userVisit, searchControl);
+            searchUseTypeDescriptionTransferCache = new SearchUseTypeDescriptionTransferCache(searchControl);
         }
 
         return searchUseTypeDescriptionTransferCache;
@@ -147,7 +147,7 @@ public class SearchTransferCaches
 
     public SearchResultActionTypeTransferCache getSearchResultActionTypeTransferCache() {
         if(searchResultActionTypeTransferCache == null) {
-            searchResultActionTypeTransferCache = new SearchResultActionTypeTransferCache(userVisit, searchControl);
+            searchResultActionTypeTransferCache = new SearchResultActionTypeTransferCache(searchControl);
         }
 
         return searchResultActionTypeTransferCache;
@@ -155,7 +155,7 @@ public class SearchTransferCaches
 
     public SearchResultActionTypeDescriptionTransferCache getSearchResultActionTypeDescriptionTransferCache() {
         if(searchResultActionTypeDescriptionTransferCache == null) {
-            searchResultActionTypeDescriptionTransferCache = new SearchResultActionTypeDescriptionTransferCache(userVisit, searchControl);
+            searchResultActionTypeDescriptionTransferCache = new SearchResultActionTypeDescriptionTransferCache(searchControl);
         }
 
         return searchResultActionTypeDescriptionTransferCache;
@@ -163,7 +163,7 @@ public class SearchTransferCaches
 
     public SearchCheckSpellingActionTypeTransferCache getSearchCheckSpellingActionTypeTransferCache() {
         if(searchCheckSpellingActionTypeTransferCache == null) {
-            searchCheckSpellingActionTypeTransferCache = new SearchCheckSpellingActionTypeTransferCache(userVisit, searchControl);
+            searchCheckSpellingActionTypeTransferCache = new SearchCheckSpellingActionTypeTransferCache(searchControl);
         }
 
         return searchCheckSpellingActionTypeTransferCache;
@@ -171,7 +171,7 @@ public class SearchTransferCaches
 
     public SearchCheckSpellingActionTypeDescriptionTransferCache getSearchCheckSpellingActionTypeDescriptionTransferCache() {
         if(searchCheckSpellingActionTypeDescriptionTransferCache == null) {
-            searchCheckSpellingActionTypeDescriptionTransferCache = new SearchCheckSpellingActionTypeDescriptionTransferCache(userVisit, searchControl);
+            searchCheckSpellingActionTypeDescriptionTransferCache = new SearchCheckSpellingActionTypeDescriptionTransferCache(searchControl);
         }
 
         return searchCheckSpellingActionTypeDescriptionTransferCache;

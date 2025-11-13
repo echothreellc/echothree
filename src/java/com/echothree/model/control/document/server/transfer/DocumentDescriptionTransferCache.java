@@ -25,20 +25,20 @@ public class DocumentDescriptionTransferCache
         extends BaseDocumentDescriptionTransferCache<DocumentDescription, DocumentDescriptionTransfer> {
     
     /** Creates a new instance of DocumentDescriptionTransferCache */
-    public DocumentDescriptionTransferCache(UserVisit userVisit, DocumentControl documentControl) {
-        super(userVisit, documentControl);
+    public DocumentDescriptionTransferCache(DocumentControl documentControl) {
+        super(documentControl);
     }
     
-    public DocumentDescriptionTransfer getDocumentDescriptionTransfer(DocumentDescription documentDescription) {
+    public DocumentDescriptionTransfer getDocumentDescriptionTransfer(UserVisit userVisit, DocumentDescription documentDescription) {
         var documentDescriptionTransfer = get(documentDescription);
         
         if(documentDescriptionTransfer == null) {
-            var documentTransferCache = documentControl.getDocumentTransferCaches(userVisit).getDocumentTransferCache();
-            var documentTransfer = documentTransferCache.getDocumentTransfer(documentDescription.getDocument());
+            var documentTransferCache = documentControl.getDocumentTransferCaches().getDocumentTransferCache();
+            var documentTransfer = documentTransferCache.getDocumentTransfer(userVisit, documentDescription.getDocument());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, documentDescription.getLanguage());
             
             documentDescriptionTransfer = new DocumentDescriptionTransfer(languageTransfer, documentTransfer, documentDescription.getDescription());
-            put(documentDescription, documentDescriptionTransfer);
+            put(userVisit, documentDescription, documentDescriptionTransfer);
         }
         
         return documentDescriptionTransfer;

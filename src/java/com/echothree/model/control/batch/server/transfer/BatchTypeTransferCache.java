@@ -31,21 +31,21 @@ public class BatchTypeTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of BatchTypeTransferCache */
-    public BatchTypeTransferCache(UserVisit userVisit, BatchControl batchControl) {
-        super(userVisit, batchControl);
+    public BatchTypeTransferCache(BatchControl batchControl) {
+        super(batchControl);
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public BatchTypeTransfer getTransfer(BatchType batchType) {
+    public BatchTypeTransfer getTransfer(UserVisit userVisit, BatchType batchType) {
         var batchTypeTransfer = get(batchType);
         
         if(batchTypeTransfer == null) {
             var batchTypeDetail = batchType.getLastDetail();
             var batchTypeName = batchTypeDetail.getBatchTypeName();
             var parentBatchType = batchTypeDetail.getParentBatchType();
-            var parentBatchTypeTransfer = parentBatchType == null? null: getTransfer(parentBatchType);
+            var parentBatchTypeTransfer = parentBatchType == null ? null : getTransfer(userVisit, parentBatchType);
             var batchSequenceType = batchTypeDetail.getBatchSequenceType();
             var batchSequenceTypeTransfer = batchSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, batchSequenceType);
             var batchWorkflow = batchTypeDetail.getBatchWorkflow();
@@ -54,11 +54,11 @@ public class BatchTypeTransferCache
             var batchWorkflowEntranceTransfer = batchWorkflowEntrance == null? null: workflowControl.getWorkflowEntranceTransfer(userVisit, batchWorkflowEntrance);
             var isDefault = batchTypeDetail.getIsDefault();
             var sortOrder = batchTypeDetail.getSortOrder();
-            var description = batchControl.getBestBatchTypeDescription(batchType, getLanguage());
+            var description = batchControl.getBestBatchTypeDescription(batchType, getLanguage(userVisit));
             
             batchTypeTransfer = new BatchTypeTransfer(batchTypeName, parentBatchTypeTransfer, batchSequenceTypeTransfer, batchWorkflowTransfer,
                     batchWorkflowEntranceTransfer, isDefault, sortOrder, description);
-            put(batchType, batchTypeTransfer);
+            put(userVisit, batchType, batchTypeTransfer);
         }
         
         return batchTypeTransfer;

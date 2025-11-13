@@ -25,13 +25,13 @@ public class GeoCodeScopeTransferCache
         extends BaseGeoTransferCache<GeoCodeScope, GeoCodeScopeTransfer> {
     
     /** Creates a new instance of GeoCodeScopeTransferCache */
-    public GeoCodeScopeTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
+    public GeoCodeScopeTransferCache(GeoControl geoControl) {
+        super(geoControl);
 
         setIncludeEntityInstance(true);
     }
     
-    public GeoCodeScopeTransfer getGeoCodeScopeTransfer(GeoCodeScope geoCodeScope) {
+    public GeoCodeScopeTransfer getGeoCodeScopeTransfer(UserVisit userVisit, GeoCodeScope geoCodeScope) {
         var geoCodeScopeTransfer = get(geoCodeScope);
         
         if(geoCodeScopeTransfer == null) {
@@ -39,10 +39,10 @@ public class GeoCodeScopeTransferCache
             var geoCodeScopeName = geoCodeScopeDetail.getGeoCodeScopeName();
             var isDefault = geoCodeScopeDetail.getIsDefault();
             var sortOrder = geoCodeScopeDetail.getSortOrder();
-            var description = geoControl.getBestGeoCodeScopeDescription(geoCodeScope, getLanguage());
+            var description = geoControl.getBestGeoCodeScopeDescription(geoCodeScope, getLanguage(userVisit));
             
             geoCodeScopeTransfer = new GeoCodeScopeTransfer(geoCodeScopeName, isDefault, sortOrder, description);
-            put(geoCodeScope, geoCodeScopeTransfer);
+            put(userVisit, geoCodeScope, geoCodeScopeTransfer);
         }
         
         return geoCodeScopeTransfer;

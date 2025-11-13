@@ -25,21 +25,21 @@ public class ForumRoleTypeTransferCache
         extends BaseForumTransferCache<ForumRoleType, ForumRoleTypeTransfer> {
     
     /** Creates a new instance of ForumRoleTypeTransferCache */
-    public ForumRoleTypeTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
+    public ForumRoleTypeTransferCache(ForumControl forumControl) {
+        super(forumControl);
     }
     
-    public ForumRoleTypeTransfer getForumRoleTypeTransfer(ForumRoleType forumRoleType) {
+    public ForumRoleTypeTransfer getForumRoleTypeTransfer(UserVisit userVisit, ForumRoleType forumRoleType) {
         var forumRoleTypeTransfer = get(forumRoleType);
         
         if(forumRoleTypeTransfer == null) {
             var forumRoleTypeName = forumRoleType.getForumRoleTypeName();
             var isDefault = forumRoleType.getIsDefault();
             var sortOrder = forumRoleType.getSortOrder();
-            var description = forumControl.getBestForumRoleTypeDescription(forumRoleType, getLanguage());
+            var description = forumControl.getBestForumRoleTypeDescription(forumRoleType, getLanguage(userVisit));
             
             forumRoleTypeTransfer = new ForumRoleTypeTransfer(forumRoleTypeName, isDefault, sortOrder, description);
-            put(forumRoleType, forumRoleTypeTransfer);
+            put(userVisit, forumRoleType, forumRoleTypeTransfer);
         }
         
         return forumRoleTypeTransfer;

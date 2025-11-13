@@ -28,21 +28,21 @@ public class GlAccountCategoryDescriptionTransferCache
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of GlAccountCategoryDescriptionTransferCache */
-    public GlAccountCategoryDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public GlAccountCategoryDescriptionTransferCache() {
+        super();
     }
     
     @Override
-    public GlAccountCategoryDescriptionTransfer getTransfer(GlAccountCategoryDescription glAccountCategoryDescription) {
+    public GlAccountCategoryDescriptionTransfer getTransfer(UserVisit userVisit, GlAccountCategoryDescription glAccountCategoryDescription) {
         var glAccountCategoryDescriptionTransfer = get(glAccountCategoryDescription);
         
         if(glAccountCategoryDescriptionTransfer == null) {
-            var glAccountCategoryTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getGlAccountCategoryTransferCache();
-            var glAccountCategoryTransfer = glAccountCategoryTransferCache.getTransfer(glAccountCategoryDescription.getGlAccountCategory());
+            var glAccountCategoryTransferCache = accountingControl.getAccountingTransferCaches().getGlAccountCategoryTransferCache();
+            var glAccountCategoryTransfer = glAccountCategoryTransferCache.getTransfer(userVisit, glAccountCategoryDescription.getGlAccountCategory());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, glAccountCategoryDescription.getLanguage());
             
             glAccountCategoryDescriptionTransfer = new GlAccountCategoryDescriptionTransfer(languageTransfer, glAccountCategoryTransfer, glAccountCategoryDescription.getDescription());
-            put(glAccountCategoryDescription, glAccountCategoryDescriptionTransfer);
+            put(userVisit, glAccountCategoryDescription, glAccountCategoryDescriptionTransfer);
         }
         
         return glAccountCategoryDescriptionTransfer;

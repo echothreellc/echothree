@@ -45,8 +45,8 @@ public class UnitOfMeasureTypeTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of UnitOfMeasureTypeTransferCache */
-    public UnitOfMeasureTypeTransferCache(UserVisit userVisit, UomControl uomControl) {
-        super(userVisit, uomControl);
+    public UnitOfMeasureTypeTransferCache(UomControl uomControl) {
+        super(uomControl);
         
         var options = session.getOptions();
         if(options != null) {
@@ -73,7 +73,7 @@ public class UnitOfMeasureTypeTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
     
-    public UnitOfMeasureTypeTransfer getUnitOfMeasureTypeTransfer(UnitOfMeasureType unitOfMeasureType) {
+    public UnitOfMeasureTypeTransfer getUnitOfMeasureTypeTransfer(UserVisit userVisit, UnitOfMeasureType unitOfMeasureType) {
         var unitOfMeasureTypeTransfer = get(unitOfMeasureType);
         
         if(unitOfMeasureTypeTransfer == null) {
@@ -84,11 +84,11 @@ public class UnitOfMeasureTypeTransferCache
             var suppressSymbolSeparator = filterSuppressSymbolSeparator ? null : unitOfMeasureTypeDetail.getSuppressSymbolSeparator();
             var isDefault = filterIsDefault ? null : unitOfMeasureTypeDetail.getIsDefault();
             var sortOrder = filterSortOrder ? null : unitOfMeasureTypeDetail.getSortOrder();
-            var description = filterDescription ? null : uomControl.getBestSingularUnitOfMeasureTypeDescription(unitOfMeasureType, getLanguage());
+            var description = filterDescription ? null : uomControl.getBestSingularUnitOfMeasureTypeDescription(unitOfMeasureType, getLanguage(userVisit));
             
             unitOfMeasureTypeTransfer = new UnitOfMeasureTypeTransfer(unitOfMeasureKind, unitOfMeasureTypeName, symbolPosition,
                     suppressSymbolSeparator, isDefault, sortOrder, description);
-            put(unitOfMeasureType, unitOfMeasureTypeTransfer);
+            put(userVisit, unitOfMeasureType, unitOfMeasureTypeTransfer);
             
             if(includeVolume) {
                 var unitOfMeasureTypeVolume = uomControl.getUnitOfMeasureTypeVolume(unitOfMeasureType);

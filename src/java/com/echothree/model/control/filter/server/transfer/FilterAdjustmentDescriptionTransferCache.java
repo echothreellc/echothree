@@ -28,12 +28,12 @@ public class FilterAdjustmentDescriptionTransferCache
     FilterControl filterControl = Session.getModelController(FilterControl.class);
 
     /** Creates a new instance of FilterAdjustmentDescriptionTransferCache */
-    public FilterAdjustmentDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public FilterAdjustmentDescriptionTransferCache() {
+        super();
     }
 
     @Override
-    public FilterAdjustmentDescriptionTransfer getTransfer(FilterAdjustmentDescription filterAdjustmentDescription) {
+    public FilterAdjustmentDescriptionTransfer getTransfer(UserVisit userVisit, FilterAdjustmentDescription filterAdjustmentDescription) {
         var filterAdjustmentDescriptionTransfer = get(filterAdjustmentDescription);
         
         if(filterAdjustmentDescriptionTransfer == null) {
@@ -41,7 +41,7 @@ public class FilterAdjustmentDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, filterAdjustmentDescription.getLanguage());
             
             filterAdjustmentDescriptionTransfer = new FilterAdjustmentDescriptionTransfer(languageTransfer, filterAdjustmentTransfer, filterAdjustmentDescription.getDescription());
-            put(filterAdjustmentDescription, filterAdjustmentDescriptionTransfer);
+            put(userVisit, filterAdjustmentDescription, filterAdjustmentDescriptionTransfer);
         }
         
         return filterAdjustmentDescriptionTransfer;

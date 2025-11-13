@@ -29,8 +29,8 @@ public class StateTransferCache
     boolean includeAliases;
     
     /** Creates a new instance of StateTransferCache */
-    public StateTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
+    public StateTransferCache(GeoControl geoControl) {
+        super(geoControl);
         
         var options = session.getOptions();
         if(options != null) {
@@ -40,7 +40,7 @@ public class StateTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public StateTransfer getStateTransfer(GeoCode geoCode) {
+    public StateTransfer getStateTransfer(UserVisit userVisit, GeoCode geoCode) {
         var stateTransfer = get(geoCode);
         
         if(stateTransfer == null) {
@@ -50,7 +50,7 @@ public class StateTransferCache
             var geoCodeScope = geoControl.getGeoCodeScopeTransfer(userVisit, geoCodeDetail.getGeoCodeScope());
             var isDefault = geoCodeDetail.getIsDefault();
             var sortOrder = geoCodeDetail.getSortOrder();
-            var description = geoControl.getBestGeoCodeDescription(geoCode, getLanguage());
+            var description = geoControl.getBestGeoCodeDescription(geoCode, getLanguage(userVisit));
 
             var countryGeoCodeType = geoControl.getGeoCodeTypeByName(GeoCodeTypes.COUNTRY.name());
             var geoCodeRelationships = geoControl.getGeoCodeRelationshipsByFromGeoCodeAndGeoCodeType(geoCode, countryGeoCodeType);
@@ -60,10 +60,10 @@ public class StateTransferCache
             var country = geoControl.getCountryTransfer(userVisit, geoCodeRelationships.getFirst().getToGeoCode());
             
             stateTransfer = new StateTransfer(country, geoCodeName, geoCodeType, geoCodeScope, isDefault, sortOrder, description);
-            put(geoCode, stateTransfer);
+            put(userVisit, geoCode, stateTransfer);
             
             if(includeAliases) {
-                setupGeoCodeAliasTransfers(geoCode, stateTransfer);
+                setupGeoCodeAliasTransfers(userVisit, geoCode, stateTransfer);
             }
         }
         

@@ -25,20 +25,20 @@ public class SecurityRoleDescriptionTransferCache
         extends BaseSecurityDescriptionTransferCache<SecurityRoleDescription, SecurityRoleDescriptionTransfer> {
     
     /** Creates a new instance of SecurityRoleDescriptionTransferCache */
-    public SecurityRoleDescriptionTransferCache(UserVisit userVisit, SecurityControl securityControl) {
-        super(userVisit, securityControl);
+    public SecurityRoleDescriptionTransferCache(SecurityControl securityControl) {
+        super(securityControl);
     }
     
-    public SecurityRoleDescriptionTransfer getSecurityRoleDescriptionTransfer(SecurityRoleDescription securityRoleDescription) {
+    public SecurityRoleDescriptionTransfer getSecurityRoleDescriptionTransfer(UserVisit userVisit, SecurityRoleDescription securityRoleDescription) {
         var securityRoleDescriptionTransfer = get(securityRoleDescription);
         
         if(securityRoleDescriptionTransfer == null) {
-            var securityRoleTransferCache = securityControl.getSecurityTransferCaches(userVisit).getSecurityRoleTransferCache();
-            var securityRoleTransfer = securityRoleTransferCache.getSecurityRoleTransfer(securityRoleDescription.getSecurityRole());
+            var securityRoleTransferCache = securityControl.getSecurityTransferCaches().getSecurityRoleTransferCache();
+            var securityRoleTransfer = securityRoleTransferCache.getSecurityRoleTransfer(userVisit, securityRoleDescription.getSecurityRole());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, securityRoleDescription.getLanguage());
             
             securityRoleDescriptionTransfer = new SecurityRoleDescriptionTransfer(languageTransfer, securityRoleTransfer, securityRoleDescription.getDescription());
-            put(securityRoleDescription, securityRoleDescriptionTransfer);
+            put(userVisit, securityRoleDescription, securityRoleDescriptionTransfer);
         }
         
         return securityRoleDescriptionTransfer;

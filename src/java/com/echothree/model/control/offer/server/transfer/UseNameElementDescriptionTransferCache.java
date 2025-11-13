@@ -28,11 +28,11 @@ public class UseNameElementDescriptionTransferCache
     UseNameElementControl useNameElementControl = Session.getModelController(UseNameElementControl.class);
 
     /** Creates a new instance of UseNameElementDescriptionTransferCache */
-    public UseNameElementDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public UseNameElementDescriptionTransferCache() {
+        super();
     }
     
-    public UseNameElementDescriptionTransfer getUseNameElementDescriptionTransfer(UseNameElementDescription useNameElementDescription) {
+    public UseNameElementDescriptionTransfer getUseNameElementDescriptionTransfer(UserVisit userVisit, UseNameElementDescription useNameElementDescription) {
         var useNameElementDescriptionTransfer = get(useNameElementDescription);
         
         if(useNameElementDescriptionTransfer == null) {
@@ -41,7 +41,7 @@ public class UseNameElementDescriptionTransferCache
             
             useNameElementDescriptionTransfer = new UseNameElementDescriptionTransfer(languageTransfer, useNameElementTransfer,
                     useNameElementDescription.getDescription());
-            put(useNameElementDescription, useNameElementDescriptionTransfer);
+            put(userVisit, useNameElementDescription, useNameElementDescriptionTransfer);
         }
         
         return useNameElementDescriptionTransfer;

@@ -29,12 +29,12 @@ public class HarmonizedTariffScheduleCodeTranslationTransferCache
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     
     /** Creates a new instance of HarmonizedTariffScheduleCodeTranslationTransferCache */
-    public HarmonizedTariffScheduleCodeTranslationTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public HarmonizedTariffScheduleCodeTranslationTransferCache(ItemControl itemControl) {
+        super(itemControl);
     }
     
     @Override
-    public HarmonizedTariffScheduleCodeTranslationTransfer getTransfer(HarmonizedTariffScheduleCodeTranslation harmonizedTariffScheduleCodeTranslation) {
+    public HarmonizedTariffScheduleCodeTranslationTransfer getTransfer(UserVisit userVisit, HarmonizedTariffScheduleCodeTranslation harmonizedTariffScheduleCodeTranslation) {
         var harmonizedTariffScheduleCodeTranslationTransfer = get(harmonizedTariffScheduleCodeTranslation);
         
         if(harmonizedTariffScheduleCodeTranslationTransfer == null) {
@@ -47,7 +47,7 @@ public class HarmonizedTariffScheduleCodeTranslationTransferCache
             
             harmonizedTariffScheduleCodeTranslationTransfer = new HarmonizedTariffScheduleCodeTranslationTransfer(languageTransfer,
                     harmonizedTariffScheduleCodeTransfer, description, overviewMimeTypeTransfer, overview);
-            put(harmonizedTariffScheduleCodeTranslation, harmonizedTariffScheduleCodeTranslationTransfer);
+            put(userVisit, harmonizedTariffScheduleCodeTranslation, harmonizedTariffScheduleCodeTranslationTransfer);
         }
         
         return harmonizedTariffScheduleCodeTranslationTransfer;

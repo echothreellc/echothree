@@ -29,8 +29,8 @@ public abstract class BaseCommunicationDescriptionTransferCache<K extends BaseEn
     PartyControl partyControl;
     
     /** Creates a new instance of BaseCommunicationDescriptionTransferCache */
-    protected BaseCommunicationDescriptionTransferCache(UserVisit userVisit, CommunicationControl communicationControl) {
-        super(userVisit, communicationControl);
+    protected BaseCommunicationDescriptionTransferCache(CommunicationControl communicationControl) {
+        super(communicationControl);
         
         partyControl = Session.getModelController(PartyControl.class);
     }

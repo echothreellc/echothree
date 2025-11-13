@@ -25,28 +25,28 @@ public class LocationNameElementTransferCache
         extends BaseWarehouseTransferCache<LocationNameElement, LocationNameElementTransfer> {
     
     /** Creates a new instance of LocationNameElementTransferCache */
-    public LocationNameElementTransferCache(UserVisit userVisit, WarehouseControl warehouseControl) {
-        super(userVisit, warehouseControl);
+    public LocationNameElementTransferCache(WarehouseControl warehouseControl) {
+        super(warehouseControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public LocationNameElementTransfer getLocationNameElementTransfer(LocationNameElement locationNameElement) {
+    public LocationNameElementTransfer getLocationNameElementTransfer(UserVisit userVisit, LocationNameElement locationNameElement) {
         var locationNameElementTransfer = get(locationNameElement);
         
         if(locationNameElementTransfer == null) {
             var locationNameElementDetail = locationNameElement.getLastDetail();
             var locationNameElementName = locationNameElementDetail.getLocationNameElementName();
-            var locationTypeTransferCache = warehouseControl.getWarehouseTransferCaches(userVisit).getLocationTypeTransferCache();
-            var locationType = locationTypeTransferCache.getLocationTypeTransfer(locationNameElementDetail.getLocationType());
+            var locationTypeTransferCache = warehouseControl.getWarehouseTransferCaches().getLocationTypeTransferCache();
+            var locationType = locationTypeTransferCache.getLocationTypeTransfer(userVisit, locationNameElementDetail.getLocationType());
             var offset = locationNameElementDetail.getOffset();
             var length = locationNameElementDetail.getLength();
             var validationPattern = locationNameElementDetail.getValidationPattern();
-            var description = warehouseControl.getBestLocationNameElementDescription(locationNameElement, getLanguage());
+            var description = warehouseControl.getBestLocationNameElementDescription(locationNameElement, getLanguage(userVisit));
             
             locationNameElementTransfer = new LocationNameElementTransfer(locationNameElementName, locationType, offset, length,
                     validationPattern, description);
-            put(locationNameElement, locationNameElementTransfer);
+            put(userVisit, locationNameElement, locationNameElementTransfer);
         }
         
         return locationNameElementTransfer;

@@ -25,11 +25,11 @@ public class CustomerTypeDescriptionTransferCache
         extends BaseCustomerDescriptionTransferCache<CustomerTypeDescription, CustomerTypeDescriptionTransfer> {
     
     /** Creates a new instance of CustomerTypeDescriptionTransferCache */
-    public CustomerTypeDescriptionTransferCache(UserVisit userVisit, CustomerControl customerControl) {
-        super(userVisit, customerControl);
+    public CustomerTypeDescriptionTransferCache(CustomerControl customerControl) {
+        super(customerControl);
     }
     
-    public CustomerTypeDescriptionTransfer getCustomerTypeDescriptionTransfer(CustomerTypeDescription customerTypeDescription) {
+    public CustomerTypeDescriptionTransfer getCustomerTypeDescriptionTransfer(UserVisit userVisit, CustomerTypeDescription customerTypeDescription) {
         var customerTypeDescriptionTransfer = get(customerTypeDescription);
         
         if(customerTypeDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class CustomerTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, customerTypeDescription.getLanguage());
             
             customerTypeDescriptionTransfer = new CustomerTypeDescriptionTransfer(languageTransfer, customerTypeTransfer, customerTypeDescription.getDescription());
-            put(customerTypeDescription, customerTypeDescriptionTransfer);
+            put(userVisit, customerTypeDescription, customerTypeDescriptionTransfer);
         }
         
         return customerTypeDescriptionTransfer;

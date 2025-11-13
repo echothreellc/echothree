@@ -25,13 +25,13 @@ public class InvoiceTimeTypeTransferCache
         extends BaseInvoiceTransferCache<InvoiceTimeType, InvoiceTimeTypeTransfer> {
     
     /** Creates a new instance of InvoiceTimeTypeTransferCache */
-    public InvoiceTimeTypeTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
-        super(userVisit, invoiceControl);
+    public InvoiceTimeTypeTransferCache(InvoiceControl invoiceControl) {
+        super(invoiceControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public InvoiceTimeTypeTransfer getInvoiceTimeTypeTransfer(InvoiceTimeType invoiceTimeType) {
+    public InvoiceTimeTypeTransfer getInvoiceTimeTypeTransfer(UserVisit userVisit, InvoiceTimeType invoiceTimeType) {
         var invoiceTimeTypeTransfer = get(invoiceTimeType);
         
         if(invoiceTimeTypeTransfer == null) {
@@ -39,10 +39,10 @@ public class InvoiceTimeTypeTransferCache
             var invoiceTimeTypeName = invoiceTimeTypeDetail.getInvoiceTimeTypeName();
             var isDefault = invoiceTimeTypeDetail.getIsDefault();
             var sortOrder = invoiceTimeTypeDetail.getSortOrder();
-            var description = invoiceControl.getBestInvoiceTimeTypeDescription(invoiceTimeType, getLanguage());
+            var description = invoiceControl.getBestInvoiceTimeTypeDescription(invoiceTimeType, getLanguage(userVisit));
             
             invoiceTimeTypeTransfer = new InvoiceTimeTypeTransfer(invoiceTimeTypeName, isDefault, sortOrder, description);
-            put(invoiceTimeType, invoiceTimeTypeTransfer);
+            put(userVisit, invoiceTimeType, invoiceTimeTypeTransfer);
         }
         
         return invoiceTimeTypeTransfer;

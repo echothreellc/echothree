@@ -28,11 +28,11 @@ public class OrderAliasTypeDescriptionTransferCache
     OrderAliasControl orderAliasControl = Session.getModelController(OrderAliasControl.class);
 
     /** Creates a new instance of OrderAliasTypeDescriptionTransferCache */
-    public OrderAliasTypeDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public OrderAliasTypeDescriptionTransferCache() {
+        super();
     }
     
-    public OrderAliasTypeDescriptionTransfer getOrderAliasTypeDescriptionTransfer(OrderAliasTypeDescription orderAliasTypeDescription) {
+    public OrderAliasTypeDescriptionTransfer getOrderAliasTypeDescriptionTransfer(UserVisit userVisit, OrderAliasTypeDescription orderAliasTypeDescription) {
         var orderAliasTypeDescriptionTransfer = get(orderAliasTypeDescription);
         
         if(orderAliasTypeDescriptionTransfer == null) {
@@ -40,7 +40,7 @@ public class OrderAliasTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, orderAliasTypeDescription.getLanguage());
             
             orderAliasTypeDescriptionTransfer = new OrderAliasTypeDescriptionTransfer(languageTransfer, orderAliasTypeTransfer, orderAliasTypeDescription.getDescription());
-            put(orderAliasTypeDescription, orderAliasTypeDescriptionTransfer);
+            put(userVisit, orderAliasTypeDescription, orderAliasTypeDescriptionTransfer);
         }
         
         return orderAliasTypeDescriptionTransfer;

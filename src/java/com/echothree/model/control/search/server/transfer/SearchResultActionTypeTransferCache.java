@@ -26,8 +26,8 @@ public class SearchResultActionTypeTransferCache
         extends BaseSearchTransferCache<SearchResultActionType, SearchResultActionTypeTransfer> {
 
     /** Creates a new instance of SearchResultActionTypeTransferCache */
-    public SearchResultActionTypeTransferCache(UserVisit userVisit, SearchControl searchControl) {
-        super(userVisit, searchControl);
+    public SearchResultActionTypeTransferCache(SearchControl searchControl) {
+        super(searchControl);
         
         var options = session.getOptions();
         if(options != null) {
@@ -37,7 +37,7 @@ public class SearchResultActionTypeTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public SearchResultActionTypeTransfer getSearchResultActionTypeTransfer(SearchResultActionType searchResultActionType) {
+    public SearchResultActionTypeTransfer getSearchResultActionTypeTransfer(UserVisit userVisit, SearchResultActionType searchResultActionType) {
         var searchResultActionTypeTransfer = get(searchResultActionType);
 
         if(searchResultActionTypeTransfer == null) {
@@ -45,10 +45,10 @@ public class SearchResultActionTypeTransferCache
             var searchResultActionTypeName = searchResultActionTypeDetail.getSearchResultActionTypeName();
             var isDefault = searchResultActionTypeDetail.getIsDefault();
             var sortOrder = searchResultActionTypeDetail.getSortOrder();
-            var description = searchControl.getBestSearchResultActionTypeDescription(searchResultActionType, getLanguage());
+            var description = searchControl.getBestSearchResultActionTypeDescription(searchResultActionType, getLanguage(userVisit));
 
             searchResultActionTypeTransfer = new SearchResultActionTypeTransfer(searchResultActionTypeName, isDefault, sortOrder, description);
-            put(searchResultActionType, searchResultActionTypeTransfer);
+            put(userVisit, searchResultActionType, searchResultActionTypeTransfer);
         }
 
         return searchResultActionTypeTransfer;

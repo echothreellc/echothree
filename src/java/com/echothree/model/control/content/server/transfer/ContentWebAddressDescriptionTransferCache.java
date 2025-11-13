@@ -25,20 +25,20 @@ public class ContentWebAddressDescriptionTransferCache
         extends BaseContentDescriptionTransferCache<ContentWebAddressDescription, ContentWebAddressDescriptionTransfer> {
     
     /** Creates a new instance of ContentWebAddressDescriptionTransferCache */
-    public ContentWebAddressDescriptionTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    public ContentWebAddressDescriptionTransferCache(ContentControl contentControl) {
+        super(contentControl);
     }
     
-    public ContentWebAddressDescriptionTransfer getContentWebAddressDescriptionTransfer(ContentWebAddressDescription contentWebAddressDescription) {
+    public ContentWebAddressDescriptionTransfer getContentWebAddressDescriptionTransfer(UserVisit userVisit, ContentWebAddressDescription contentWebAddressDescription) {
         var contentWebAddressDescriptionTransfer = get(contentWebAddressDescription);
         
         if(contentWebAddressDescriptionTransfer == null) {
-            var contentWebAddressTransferCache = contentControl.getContentTransferCaches(userVisit).getContentWebAddressTransferCache();
-            var contentWebAddressTransfer = contentWebAddressTransferCache.getContentWebAddressTransfer(contentWebAddressDescription.getContentWebAddress());
+            var contentWebAddressTransferCache = contentControl.getContentTransferCaches().getContentWebAddressTransferCache();
+            var contentWebAddressTransfer = contentWebAddressTransferCache.getContentWebAddressTransfer(userVisit, contentWebAddressDescription.getContentWebAddress());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, contentWebAddressDescription.getLanguage());
             
             contentWebAddressDescriptionTransfer = new ContentWebAddressDescriptionTransfer(languageTransfer, contentWebAddressTransfer, contentWebAddressDescription.getDescription());
-            put(contentWebAddressDescription, contentWebAddressDescriptionTransfer);
+            put(userVisit, contentWebAddressDescription, contentWebAddressDescriptionTransfer);
         }
         
         return contentWebAddressDescriptionTransfer;

@@ -28,21 +28,21 @@ public class TransactionEntityRoleTypeDescriptionTransferCache
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of TransactionEntityRoleTypeDescriptionTransferCache */
-    public TransactionEntityRoleTypeDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public TransactionEntityRoleTypeDescriptionTransferCache() {
+        super();
     }
     
     @Override
-    public TransactionEntityRoleTypeDescriptionTransfer getTransfer(TransactionEntityRoleTypeDescription transactionEntityRoleTypeDescription) {
+    public TransactionEntityRoleTypeDescriptionTransfer getTransfer(UserVisit userVisit, TransactionEntityRoleTypeDescription transactionEntityRoleTypeDescription) {
         var transactionEntityRoleTypeDescriptionTransfer = get(transactionEntityRoleTypeDescription);
         
         if(transactionEntityRoleTypeDescriptionTransfer == null) {
-            var transactionEntityRoleTypeTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getTransactionEntityRoleTypeTransferCache();
-            var transactionEntityRoleTypeTransfer = transactionEntityRoleTypeTransferCache.getTransfer(transactionEntityRoleTypeDescription.getTransactionEntityRoleType());
+            var transactionEntityRoleTypeTransferCache = accountingControl.getAccountingTransferCaches().getTransactionEntityRoleTypeTransferCache();
+            var transactionEntityRoleTypeTransfer = transactionEntityRoleTypeTransferCache.getTransfer(userVisit, transactionEntityRoleTypeDescription.getTransactionEntityRoleType());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, transactionEntityRoleTypeDescription.getLanguage());
             
             transactionEntityRoleTypeDescriptionTransfer = new TransactionEntityRoleTypeDescriptionTransfer(languageTransfer, transactionEntityRoleTypeTransfer, transactionEntityRoleTypeDescription.getDescription());
-            put(transactionEntityRoleTypeDescription, transactionEntityRoleTypeDescriptionTransfer);
+            put(userVisit, transactionEntityRoleTypeDescription, transactionEntityRoleTypeDescriptionTransfer);
         }
         
         return transactionEntityRoleTypeDescriptionTransfer;

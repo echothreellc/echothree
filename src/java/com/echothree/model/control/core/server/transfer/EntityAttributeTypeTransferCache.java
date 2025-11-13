@@ -34,8 +34,8 @@ public class EntityAttributeTypeTransferCache
     boolean filterDescription;
 
     /** Creates a new instance of EntityAttributeTypeTransferCache */
-    public EntityAttributeTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityAttributeTypeTransferCache() {
+        super();
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
@@ -48,15 +48,15 @@ public class EntityAttributeTypeTransferCache
         }
     }
     
-    public EntityAttributeTypeTransfer getEntityAttributeTypeTransfer(EntityAttributeType entityAttributeType) {
+    public EntityAttributeTypeTransfer getEntityAttributeTypeTransfer(UserVisit userVisit, EntityAttributeType entityAttributeType) {
         var entityAttributeTypeTransfer = get(entityAttributeType);
         
         if(entityAttributeTypeTransfer == null) {
             var entityAttributeTypeName = filterEntityAttributeTypeName ? null : entityAttributeType.getEntityAttributeTypeName();
-            var description = filterDescription ? null : coreControl.getBestEntityAttributeTypeDescription(entityAttributeType, getLanguage());
+            var description = filterDescription ? null : coreControl.getBestEntityAttributeTypeDescription(entityAttributeType, getLanguage(userVisit));
             
             entityAttributeTypeTransfer = new EntityAttributeTypeTransfer(entityAttributeTypeName, description);
-            put(entityAttributeType, entityAttributeTypeTransfer);
+            put(userVisit, entityAttributeType, entityAttributeTypeTransfer);
         }
         return entityAttributeTypeTransfer;
     }

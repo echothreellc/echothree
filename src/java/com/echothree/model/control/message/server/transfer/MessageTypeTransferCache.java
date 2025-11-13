@@ -31,13 +31,13 @@ public class MessageTypeTransferCache
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
 
     /** Creates a new instance of MessageTypeTransferCache */
-    public MessageTypeTransferCache(UserVisit userVisit, MessageControl messageControl) {
-        super(userVisit, messageControl);
+    public MessageTypeTransferCache(MessageControl messageControl) {
+        super(messageControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public MessageTypeTransfer getMessageTypeTransfer(MessageType messageType) {
+    public MessageTypeTransfer getMessageTypeTransfer(UserVisit userVisit, MessageType messageType) {
         var messageTypeTransfer = get(messageType);
         
         if(messageTypeTransfer == null) {
@@ -47,10 +47,10 @@ public class MessageTypeTransferCache
             var mimeTypeUsageType = messageTypeDetail.getMimeTypeUsageType();
             var mimeTypeUsageTypeTransfer = mimeTypeUsageType == null? null: mimeTypeControl.getMimeTypeUsageTypeTransfer(userVisit, mimeTypeUsageType);
             var sortOrder = messageTypeDetail.getSortOrder();
-            var description = messageControl.getBestMessageTypeDescription(messageType, getLanguage());
+            var description = messageControl.getBestMessageTypeDescription(messageType, getLanguage(userVisit));
             
             messageTypeTransfer = new MessageTypeTransfer(entityTypeTransfer, messageTypeName, mimeTypeUsageTypeTransfer, sortOrder, description);
-            put(messageType, messageTypeTransfer);
+            put(userVisit, messageType, messageTypeTransfer);
         }
         
         return messageTypeTransfer;

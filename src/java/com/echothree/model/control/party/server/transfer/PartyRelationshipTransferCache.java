@@ -28,12 +28,12 @@ public class PartyRelationshipTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of PartyRelationshipTransferCache */
-    public PartyRelationshipTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public PartyRelationshipTransferCache() {
+        super();
     }
 
     @Override
-    public PartyRelationshipTransfer getTransfer(PartyRelationship partyRelationship) {
+    public PartyRelationshipTransfer getTransfer(UserVisit userVisit, PartyRelationship partyRelationship) {
         var partyRelationshipTransfer = get(partyRelationship);
         
         if(partyRelationshipTransfer == null) {
@@ -43,7 +43,7 @@ public class PartyRelationshipTransferCache
             var toRoleType = partyControl.getRoleTypeTransfer(userVisit, partyRelationship.getFromRoleType());
             
             partyRelationshipTransfer = new PartyRelationshipTransfer(fromParty, fromRoleType, toParty, toRoleType);
-            put(partyRelationship, partyRelationshipTransfer);
+            put(userVisit, partyRelationship, partyRelationshipTransfer);
         }
         
         return partyRelationshipTransfer;

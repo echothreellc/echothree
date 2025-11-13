@@ -25,12 +25,12 @@ public class HarmonizedTariffScheduleCodeUnitDescriptionTransferCache
         extends BaseItemDescriptionTransferCache<HarmonizedTariffScheduleCodeUnitDescription, HarmonizedTariffScheduleCodeUnitDescriptionTransfer> {
     
     /** Creates a new instance of HarmonizedTariffScheduleCodeUnitDescriptionTransferCache */
-    public HarmonizedTariffScheduleCodeUnitDescriptionTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public HarmonizedTariffScheduleCodeUnitDescriptionTransferCache(ItemControl itemControl) {
+        super(itemControl);
     }
     
     @Override
-    public HarmonizedTariffScheduleCodeUnitDescriptionTransfer getTransfer(HarmonizedTariffScheduleCodeUnitDescription harmonizedTariffScheduleCodeUnitDescription) {
+    public HarmonizedTariffScheduleCodeUnitDescriptionTransfer getTransfer(UserVisit userVisit, HarmonizedTariffScheduleCodeUnitDescription harmonizedTariffScheduleCodeUnitDescription) {
         var harmonizedTariffScheduleCodeUnitDescriptionTransfer = get(harmonizedTariffScheduleCodeUnitDescription);
         
         if(harmonizedTariffScheduleCodeUnitDescriptionTransfer == null) {
@@ -38,7 +38,7 @@ public class HarmonizedTariffScheduleCodeUnitDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, harmonizedTariffScheduleCodeUnitDescription.getLanguage());
             
             harmonizedTariffScheduleCodeUnitDescriptionTransfer = new HarmonizedTariffScheduleCodeUnitDescriptionTransfer(languageTransfer, harmonizedTariffScheduleCodeUnitTransfer, harmonizedTariffScheduleCodeUnitDescription.getDescription());
-            put(harmonizedTariffScheduleCodeUnitDescription, harmonizedTariffScheduleCodeUnitDescriptionTransfer);
+            put(userVisit, harmonizedTariffScheduleCodeUnitDescription, harmonizedTariffScheduleCodeUnitDescriptionTransfer);
         }
         
         return harmonizedTariffScheduleCodeUnitDescriptionTransfer;

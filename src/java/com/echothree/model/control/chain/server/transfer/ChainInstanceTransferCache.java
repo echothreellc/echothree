@@ -31,8 +31,8 @@ public class ChainInstanceTransferCache
     boolean includeChainInstanceEntityRoles;
     
     /** Creates a new instance of ChainInstanceTransferCache */
-    public ChainInstanceTransferCache(UserVisit userVisit, ChainControl chainControl) {
-        super(userVisit, chainControl);
+    public ChainInstanceTransferCache(ChainControl chainControl) {
+        super(chainControl);
         
         var options = session.getOptions();
         if(options != null) {
@@ -43,7 +43,7 @@ public class ChainInstanceTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public ChainInstanceTransfer getChainInstanceTransfer(ChainInstance chainInstance) {
+    public ChainInstanceTransfer getChainInstanceTransfer(UserVisit userVisit, ChainInstance chainInstance) {
         var chainInstanceTransfer = get(chainInstance);
         
         if(chainInstanceTransfer == null) {
@@ -52,7 +52,7 @@ public class ChainInstanceTransferCache
             var chain = chainControl.getChainTransfer(userVisit, chainInstanceDetail.getChain());
             
             chainInstanceTransfer = new ChainInstanceTransfer(chainInstanceName, chain);
-            put(chainInstance, chainInstanceTransfer);
+            put(userVisit, chainInstance, chainInstanceTransfer);
             
             if(includeChainInstanceStatus) {
                 chainInstanceTransfer.setChainInstanceStatus(chainControl.getChainInstanceStatusTransfer(userVisit, chainInstance));

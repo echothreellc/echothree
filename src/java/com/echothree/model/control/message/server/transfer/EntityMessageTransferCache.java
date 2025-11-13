@@ -29,11 +29,11 @@ public class EntityMessageTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     
     /** Creates a new instance of EntityMessageTransferCache */
-    public EntityMessageTransferCache(UserVisit userVisit, MessageControl messageControl) {
-        super(userVisit, messageControl);
+    public EntityMessageTransferCache(MessageControl messageControl) {
+        super(messageControl);
     }
     
-    public EntityMessageTransfer getEntityMessageTransfer(EntityMessage entityMessage) {
+    public EntityMessageTransfer getEntityMessageTransfer(UserVisit userVisit, EntityMessage entityMessage) {
         var entityMessageTransfer = get(entityMessage);
         
         if(entityMessageTransfer == null) {
@@ -41,7 +41,7 @@ public class EntityMessageTransferCache
             var message = messageControl.getMessageTransfer(userVisit, entityMessage.getMessage());
             
             entityMessageTransfer = new EntityMessageTransfer(entityInstance, message);
-            put(entityMessage, entityMessageTransfer);
+            put(userVisit, entityMessage, entityMessageTransfer);
         }
         
         return entityMessageTransfer;

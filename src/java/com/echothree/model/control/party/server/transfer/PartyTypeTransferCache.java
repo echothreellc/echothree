@@ -37,8 +37,8 @@ public class PartyTypeTransferCache
     boolean includePartyAliasTypes;
     
     /** Creates a new instance of PartyTypeTransferCache */
-    public PartyTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public PartyTypeTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -50,24 +50,24 @@ public class PartyTypeTransferCache
     }
 
     @Override
-    public PartyTypeTransfer getTransfer(PartyType partyType) {
+    public PartyTypeTransfer getTransfer(UserVisit userVisit, PartyType partyType) {
         var partyTypeTransfer = get(partyType);
         
         if(partyTypeTransfer == null) {
             var partyTypeName = partyType.getPartyTypeName();
             var parentPartyType = partyType.getParentPartyType();
-            var parentPartyTypeTransfer = parentPartyType == null? null: getTransfer(parentPartyType);
+            var parentPartyTypeTransfer = parentPartyType == null ? null : getTransfer(userVisit, parentPartyType);
             var billingAccountSequenceType = partyType.getBillingAccountSequenceType();
             var billingAccountSequenceTypeTransfer = billingAccountSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, billingAccountSequenceType);
             var allowUserLogins = partyType.getAllowUserLogins();
             var allowPartyAliases = partyType.getAllowPartyAliases();
             var isDefault = partyType.getIsDefault();
             var sortOrder = partyType.getSortOrder();
-            var description = partyControl.getBestPartyTypeDescription(partyType, getLanguage());
+            var description = partyControl.getBestPartyTypeDescription(partyType, getLanguage(userVisit));
             
             partyTypeTransfer = new PartyTypeTransfer(partyTypeName, parentPartyTypeTransfer, billingAccountSequenceTypeTransfer, allowUserLogins,
                     allowPartyAliases, isDefault, sortOrder, description);
-            put(partyType, partyTypeTransfer);
+            put(userVisit, partyType, partyTypeTransfer);
             
             if(includeAuditPolicy) {
                 var partyTypeAuditPolicy = partyControl.getPartyTypeAuditPolicy(partyType);

@@ -26,22 +26,22 @@ public class UnitOfMeasureTypeVolumeTransferCache
         extends BaseUomTransferCache<UnitOfMeasureTypeVolume, UnitOfMeasureTypeVolumeTransfer> {
     
     /** Creates a new instance of UnitOfMeasureTypeVolumeTransferCache */
-    public UnitOfMeasureTypeVolumeTransferCache(UserVisit userVisit, UomControl uomControl) {
-        super(userVisit, uomControl);
+    public UnitOfMeasureTypeVolumeTransferCache(UomControl uomControl) {
+        super(uomControl);
     }
     
-    public UnitOfMeasureTypeVolumeTransfer getUnitOfMeasureTypeVolumeTransfer(UnitOfMeasureTypeVolume unitOfMeasureTypeVolume) {
+    public UnitOfMeasureTypeVolumeTransfer getUnitOfMeasureTypeVolumeTransfer(UserVisit userVisit, UnitOfMeasureTypeVolume unitOfMeasureTypeVolume) {
         var unitOfMeasureTypeVolumeTransfer = get(unitOfMeasureTypeVolume);
         
         if(unitOfMeasureTypeVolumeTransfer == null) {
             var unitOfMeasureTypeTransfer = uomControl.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureTypeVolume.getUnitOfMeasureType());
             var volumeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_VOLUME);
-            var height = formatUnitOfMeasure(volumeUnitOfMeasureKind, unitOfMeasureTypeVolume.getHeight());
-            var width = formatUnitOfMeasure(volumeUnitOfMeasureKind, unitOfMeasureTypeVolume.getWidth());
-            var depth = formatUnitOfMeasure(volumeUnitOfMeasureKind, unitOfMeasureTypeVolume.getDepth());
+            var height = formatUnitOfMeasure(userVisit, volumeUnitOfMeasureKind, unitOfMeasureTypeVolume.getHeight());
+            var width = formatUnitOfMeasure(userVisit, volumeUnitOfMeasureKind, unitOfMeasureTypeVolume.getWidth());
+            var depth = formatUnitOfMeasure(userVisit, volumeUnitOfMeasureKind, unitOfMeasureTypeVolume.getDepth());
             
             unitOfMeasureTypeVolumeTransfer = new UnitOfMeasureTypeVolumeTransfer(unitOfMeasureTypeTransfer, height, width, depth);
-            put(unitOfMeasureTypeVolume, unitOfMeasureTypeVolumeTransfer);
+            put(userVisit, unitOfMeasureTypeVolume, unitOfMeasureTypeVolumeTransfer);
         }
         
         return unitOfMeasureTypeVolumeTransfer;

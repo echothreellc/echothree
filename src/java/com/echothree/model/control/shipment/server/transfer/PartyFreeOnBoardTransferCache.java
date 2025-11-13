@@ -30,12 +30,12 @@ public class PartyFreeOnBoardTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of FreeOnBoardTransferCache */
-    public PartyFreeOnBoardTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public PartyFreeOnBoardTransferCache() {
+        super();
     }
     
     @Override
-    public PartyFreeOnBoardTransfer getTransfer(PartyFreeOnBoard partyFreeOnBoard) {
+    public PartyFreeOnBoardTransfer getTransfer(UserVisit userVisit, PartyFreeOnBoard partyFreeOnBoard) {
         var partyFreeOnBoardTransfer = get(partyFreeOnBoard);
         
         if(partyFreeOnBoardTransfer == null) {
@@ -43,7 +43,7 @@ public class PartyFreeOnBoardTransferCache
             var freeOnBoardTransfer = freeOnBoardControl.getFreeOnBoardTransfer(userVisit, partyFreeOnBoard.getFreeOnBoard());
 
             partyFreeOnBoardTransfer = new PartyFreeOnBoardTransfer(partyTransfer, freeOnBoardTransfer);
-            put(partyFreeOnBoard, partyFreeOnBoardTransfer);
+            put(userVisit, partyFreeOnBoard, partyFreeOnBoardTransfer);
         }
         
         return partyFreeOnBoardTransfer;

@@ -31,13 +31,13 @@ public class OrderPaymentPreferenceTransferCache
     PaymentMethodControl paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
 
     /** Creates a new instance of OrderPaymentPreferenceTransferCache */
-    public OrderPaymentPreferenceTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public OrderPaymentPreferenceTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public OrderPaymentPreferenceTransfer getOrderPaymentPreferenceTransfer(OrderPaymentPreference orderPaymentPreference) {
+    public OrderPaymentPreferenceTransfer getOrderPaymentPreferenceTransfer(UserVisit userVisit, OrderPaymentPreference orderPaymentPreference) {
         var orderPaymentPreferenceTransfer = get(orderPaymentPreference);
         
         if(orderPaymentPreferenceTransfer == null) {
@@ -53,7 +53,7 @@ public class OrderPaymentPreferenceTransferCache
             
             orderPaymentPreferenceTransfer = new OrderPaymentPreferenceTransfer(orderPaymentPreferenceSequence, paymentMethodTransfer,
                     partyPaymentMethodTransfer, wasPresent, unformattedMaximumAmount, maximumAmount,sortOrder);
-            put(orderPaymentPreference, orderPaymentPreferenceTransfer);
+            put(userVisit, orderPaymentPreference, orderPaymentPreferenceTransfer);
         }
         
         return orderPaymentPreferenceTransfer;

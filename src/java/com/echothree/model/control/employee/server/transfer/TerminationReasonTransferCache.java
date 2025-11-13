@@ -25,13 +25,13 @@ public class TerminationReasonTransferCache
         extends BaseEmployeeTransferCache<TerminationReason, TerminationReasonTransfer> {
     
     /** Creates a new instance of TerminationReasonTransferCache */
-    public TerminationReasonTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit, employeeControl);
+    public TerminationReasonTransferCache(EmployeeControl employeeControl) {
+        super(employeeControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public TerminationReasonTransfer getTerminationReasonTransfer(TerminationReason terminationReason) {
+    public TerminationReasonTransfer getTerminationReasonTransfer(UserVisit userVisit, TerminationReason terminationReason) {
         var terminationReasonTransfer = get(terminationReason);
         
         if(terminationReasonTransfer == null) {
@@ -39,10 +39,10 @@ public class TerminationReasonTransferCache
             var terminationReasonName = terminationReasonDetail.getTerminationReasonName();
             var isDefault = terminationReasonDetail.getIsDefault();
             var sortOrder = terminationReasonDetail.getSortOrder();
-            var description = employeeControl.getBestTerminationReasonDescription(terminationReason, getLanguage());
+            var description = employeeControl.getBestTerminationReasonDescription(terminationReason, getLanguage(userVisit));
             
             terminationReasonTransfer = new TerminationReasonTransfer(terminationReasonName, isDefault, sortOrder, description);
-            put(terminationReason, terminationReasonTransfer);
+            put(userVisit, terminationReason, terminationReasonTransfer);
         }
         
         return terminationReasonTransfer;

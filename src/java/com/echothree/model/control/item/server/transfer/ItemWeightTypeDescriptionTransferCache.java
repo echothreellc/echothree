@@ -25,21 +25,21 @@ public class ItemWeightTypeDescriptionTransferCache
         extends BaseItemDescriptionTransferCache<ItemWeightTypeDescription, ItemWeightTypeDescriptionTransfer> {
     
     /** Creates a new instance of ItemWeightTypeDescriptionTransferCache */
-    public ItemWeightTypeDescriptionTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemWeightTypeDescriptionTransferCache(ItemControl itemControl) {
+        super(itemControl);
     }
     
     @Override
-    public ItemWeightTypeDescriptionTransfer getTransfer(ItemWeightTypeDescription itemWeightTypeDescription) {
+    public ItemWeightTypeDescriptionTransfer getTransfer(UserVisit userVisit, ItemWeightTypeDescription itemWeightTypeDescription) {
         var itemWeightTypeDescriptionTransfer = get(itemWeightTypeDescription);
         
         if(itemWeightTypeDescriptionTransfer == null) {
-            var itemWeightTypeTransferCache = itemControl.getItemTransferCaches(userVisit).getItemWeightTypeTransferCache();
-            var itemWeightTypeTransfer = itemWeightTypeTransferCache.getTransfer(itemWeightTypeDescription.getItemWeightType());
+            var itemWeightTypeTransferCache = itemControl.getItemTransferCaches().getItemWeightTypeTransferCache();
+            var itemWeightTypeTransfer = itemWeightTypeTransferCache.getTransfer(userVisit, itemWeightTypeDescription.getItemWeightType());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, itemWeightTypeDescription.getLanguage());
             
             itemWeightTypeDescriptionTransfer = new ItemWeightTypeDescriptionTransfer(languageTransfer, itemWeightTypeTransfer, itemWeightTypeDescription.getDescription());
-            put(itemWeightTypeDescription, itemWeightTypeDescriptionTransfer);
+            put(userVisit, itemWeightTypeDescription, itemWeightTypeDescriptionTransfer);
         }
         
         return itemWeightTypeDescriptionTransfer;

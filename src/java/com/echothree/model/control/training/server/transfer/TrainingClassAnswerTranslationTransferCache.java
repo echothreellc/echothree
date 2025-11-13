@@ -29,11 +29,11 @@ public class TrainingClassAnswerTranslationTransferCache
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     
     /** Creates a new instance of TrainingClassAnswerTranslationTransferCache */
-    public TrainingClassAnswerTranslationTransferCache(UserVisit userVisit, TrainingControl trainingControl) {
-        super(userVisit, trainingControl);
+    public TrainingClassAnswerTranslationTransferCache(TrainingControl trainingControl) {
+        super(trainingControl);
     }
     
-    public TrainingClassAnswerTranslationTransfer getTrainingClassAnswerTranslationTransfer(TrainingClassAnswerTranslation trainingClassAnswerTranslation) {
+    public TrainingClassAnswerTranslationTransfer getTrainingClassAnswerTranslationTransfer(UserVisit userVisit, TrainingClassAnswerTranslation trainingClassAnswerTranslation) {
         var trainingClassAnswerTranslationTransfer = get(trainingClassAnswerTranslation);
         
         if(trainingClassAnswerTranslationTransfer == null) {
@@ -47,7 +47,7 @@ public class TrainingClassAnswerTranslationTransferCache
             
             trainingClassAnswerTranslationTransfer = new TrainingClassAnswerTranslationTransfer(trainingClassAnswerTransfer, languageTransfer,
                     answerMimeTypeTransfer, answer, selectedMimeTypeTransfer, selected);
-            put(trainingClassAnswerTranslation, trainingClassAnswerTranslationTransfer);
+            put(userVisit, trainingClassAnswerTranslation, trainingClassAnswerTranslationTransfer);
         }
         
         return trainingClassAnswerTranslationTransfer;

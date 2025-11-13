@@ -27,13 +27,13 @@ public class InvoiceLineTransferCache
         extends BaseInvoiceTransferCache<InvoiceLine, InvoiceLineTransfer> {
     
     /** Creates a new instance of InvoiceLineTransferCache */
-    public InvoiceLineTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
-        super(userVisit, invoiceControl);
+    public InvoiceLineTransferCache(InvoiceControl invoiceControl) {
+        super(invoiceControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public InvoiceLineTransfer getInvoiceLineTransfer(InvoiceLine invoiceLine) {
+    public InvoiceLineTransfer getInvoiceLineTransfer(UserVisit userVisit, InvoiceLine invoiceLine) {
         var invoiceLineTransfer = get(invoiceLine);
         
         if(invoiceLineTransfer == null) {
@@ -42,7 +42,7 @@ public class InvoiceLineTransferCache
             var invoiceTransfer = invoiceControl.getInvoiceTransfer(userVisit, invoice);
             var invoiceLineSequence = invoiceLineDetail.getInvoiceLineSequence();
             var parentInvoiceLine = invoiceLineDetail.getParentInvoiceLine();
-            var parentInvoiceLineTransfer = parentInvoiceLine == null? null: getInvoiceLineTransfer(parentInvoiceLine);
+            var parentInvoiceLineTransfer = parentInvoiceLine == null ? null : getInvoiceLineTransfer(userVisit, parentInvoiceLine);
             var invoiceLineTypeTransfer = invoiceControl.getInvoiceLineTypeTransfer(userVisit, invoiceLineDetail.getInvoiceLineType());
             var invoiceLineUseTypeTransfer = invoiceControl.getInvoiceLineUseTypeTransfer(userVisit, invoiceLineDetail.getInvoiceLineUseType());
             var description = invoiceLineDetail.getDescription();
@@ -53,7 +53,7 @@ public class InvoiceLineTransferCache
             
             invoiceLineTransfer = new InvoiceLineTransfer(invoiceTransfer, invoiceLineSequence, parentInvoiceLineTransfer, invoiceLineTypeTransfer, invoiceLineUseTypeTransfer, amount,
                     unformattedAmount, description);
-            put(invoiceLine, invoiceLineTransfer);
+            put(userVisit, invoiceLine, invoiceLineTransfer);
 
             var invoiceLineUseTypeName = invoiceLineUseTypeTransfer.getInvoiceLineUseTypeName();
             if(invoiceLineUseTypeName.equals(InvoiceLineUseTypes.ITEM.name())) {

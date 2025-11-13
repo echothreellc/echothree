@@ -29,11 +29,11 @@ public class CancellationPolicyTranslationTransferCache
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     
     /** Creates a new instance of CancellationPolicyTranslationTransferCache */
-    public CancellationPolicyTranslationTransferCache(UserVisit userVisit, CancellationPolicyControl cancellationPolicyControl) {
-        super(userVisit, cancellationPolicyControl);
+    public CancellationPolicyTranslationTransferCache(CancellationPolicyControl cancellationPolicyControl) {
+        super(cancellationPolicyControl);
     }
     
-    public CancellationPolicyTranslationTransfer getCancellationPolicyTranslationTransfer(CancellationPolicyTranslation cancellationPolicyTranslation) {
+    public CancellationPolicyTranslationTransfer getCancellationPolicyTranslationTransfer(UserVisit userVisit, CancellationPolicyTranslation cancellationPolicyTranslation) {
         var cancellationPolicyTranslationTransfer = get(cancellationPolicyTranslation);
         
         if(cancellationPolicyTranslationTransfer == null) {
@@ -46,7 +46,7 @@ public class CancellationPolicyTranslationTransferCache
             
             cancellationPolicyTranslationTransfer = new CancellationPolicyTranslationTransfer(cancellationPolicyTransfer, languageTransfer, description,
                     policyMimeTypeTransfer, policy);
-            put(cancellationPolicyTranslation, cancellationPolicyTranslationTransfer);
+            put(userVisit, cancellationPolicyTranslation, cancellationPolicyTranslationTransfer);
         }
         
         return cancellationPolicyTranslationTransfer;

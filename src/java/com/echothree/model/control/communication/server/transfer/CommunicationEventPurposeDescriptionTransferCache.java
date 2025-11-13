@@ -25,11 +25,11 @@ public class CommunicationEventPurposeDescriptionTransferCache
         extends BaseCommunicationDescriptionTransferCache<CommunicationEventPurposeDescription, CommunicationEventPurposeDescriptionTransfer> {
     
     /** Creates a new instance of CommunicationEventPurposeDescriptionTransferCache */
-    public CommunicationEventPurposeDescriptionTransferCache(UserVisit userVisit, CommunicationControl communicationControl) {
-        super(userVisit, communicationControl);
+    public CommunicationEventPurposeDescriptionTransferCache(CommunicationControl communicationControl) {
+        super(communicationControl);
     }
     
-    public CommunicationEventPurposeDescriptionTransfer getCommunicationEventPurposeDescriptionTransfer(CommunicationEventPurposeDescription communicationEventPurposeDescription) {
+    public CommunicationEventPurposeDescriptionTransfer getCommunicationEventPurposeDescriptionTransfer(UserVisit userVisit, CommunicationEventPurposeDescription communicationEventPurposeDescription) {
         var communicationEventPurposeDescriptionTransfer = get(communicationEventPurposeDescription);
         
         if(communicationEventPurposeDescriptionTransfer == null) {
@@ -38,7 +38,7 @@ public class CommunicationEventPurposeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, communicationEventPurposeDescription.getLanguage());
             
             communicationEventPurposeDescriptionTransfer = new CommunicationEventPurposeDescriptionTransfer(languageTransfer, communicationEventPurposeTransfer, communicationEventPurposeDescription.getDescription());
-            put(communicationEventPurposeDescription, communicationEventPurposeDescriptionTransfer);
+            put(userVisit, communicationEventPurposeDescription, communicationEventPurposeDescriptionTransfer);
         }
         
         return communicationEventPurposeDescriptionTransfer;

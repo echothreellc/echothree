@@ -25,11 +25,11 @@ public class CarrierOptionDescriptionTransferCache
         extends BaseCarrierDescriptionTransferCache<CarrierOptionDescription, CarrierOptionDescriptionTransfer> {
     
     /** Creates a new instance of CarrierOptionDescriptionTransferCache */
-    public CarrierOptionDescriptionTransferCache(UserVisit userVisit, CarrierControl carrierControl) {
-        super(userVisit, carrierControl);
+    public CarrierOptionDescriptionTransferCache(CarrierControl carrierControl) {
+        super(carrierControl);
     }
     
-    public CarrierOptionDescriptionTransfer getCarrierOptionDescriptionTransfer(CarrierOptionDescription carrierOptionDescription) {
+    public CarrierOptionDescriptionTransfer getCarrierOptionDescriptionTransfer(UserVisit userVisit, CarrierOptionDescription carrierOptionDescription) {
         var carrierOptionDescriptionTransfer = get(carrierOptionDescription);
         
         if(carrierOptionDescriptionTransfer == null) {
@@ -39,7 +39,7 @@ public class CarrierOptionDescriptionTransferCache
             
             carrierOptionDescriptionTransfer = new CarrierOptionDescriptionTransfer(languageTransfer, carrierOptionTransfer,
                     description);
-            put(carrierOptionDescription, carrierOptionDescriptionTransfer);
+            put(userVisit, carrierOptionDescription, carrierOptionDescriptionTransfer);
         }
         
         return carrierOptionDescriptionTransfer;

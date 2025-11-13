@@ -220,7 +220,7 @@ public class UseTypeControl
         List<UseTypeTransfer> useTypeTransfers = new ArrayList<>(useTypes.size());
         
         useTypes.forEach((useType) -> {
-            useTypeTransfers.add(getOfferTransferCaches(userVisit).getUseTypeTransferCache().getUseTypeTransfer(useType));
+            useTypeTransfers.add(getOfferTransferCaches().getUseTypeTransferCache().getUseTypeTransfer(userVisit, useType));
         });
         
         return useTypeTransfers;
@@ -231,7 +231,7 @@ public class UseTypeControl
     }
     
     public UseTypeTransfer getUseTypeTransfer(UserVisit userVisit, UseType useType) {
-        return getOfferTransferCaches(userVisit).getUseTypeTransferCache().getUseTypeTransfer(useType);
+        return getOfferTransferCaches().getUseTypeTransferCache().getUseTypeTransfer(userVisit, useType);
     }
     
     public UseTypeChoicesBean getUseTypeChoices(String defaultUseTypeChoice, Language language, boolean allowNullChoice) {
@@ -462,7 +462,7 @@ public class UseTypeControl
     }
     
     public UseTypeDescriptionTransfer getUseTypeDescriptionTransfer(UserVisit userVisit, UseTypeDescription useTypeDescription) {
-        return getOfferTransferCaches(userVisit).getUseTypeDescriptionTransferCache().getUseTypeDescriptionTransfer(useTypeDescription);
+        return getOfferTransferCaches().getUseTypeDescriptionTransferCache().getUseTypeDescriptionTransfer(userVisit, useTypeDescription);
     }
     
     public List<UseTypeDescriptionTransfer> getUseTypeDescriptionTransfersByUseType(UserVisit userVisit, UseType useType) {
@@ -470,7 +470,7 @@ public class UseTypeControl
         List<UseTypeDescriptionTransfer> useTypeDescriptionTransfers = new ArrayList<>(useTypeDescriptions.size());
         
         useTypeDescriptions.forEach((useTypeDescription) -> {
-            useTypeDescriptionTransfers.add(getOfferTransferCaches(userVisit).getUseTypeDescriptionTransferCache().getUseTypeDescriptionTransfer(useTypeDescription));
+            useTypeDescriptionTransfers.add(getOfferTransferCaches().getUseTypeDescriptionTransferCache().getUseTypeDescriptionTransfer(userVisit, useTypeDescription));
         });
         
         return useTypeDescriptionTransfers;

@@ -29,13 +29,13 @@ public class ForumPartyRoleTransferCache
     PartyControl partyControl;
     
     /** Creates a new instance of ForumPartyRoleTransferCache */
-    public ForumPartyRoleTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
+    public ForumPartyRoleTransferCache(ForumControl forumControl) {
+        super(forumControl);
         
         partyControl = Session.getModelController(PartyControl.class);
     }
     
-    public ForumPartyRoleTransfer getForumPartyRoleTransfer(ForumPartyRole forumPartyRole) {
+    public ForumPartyRoleTransfer getForumPartyRoleTransfer(UserVisit userVisit, ForumPartyRole forumPartyRole) {
         var forumPartyRoleTransfer = get(forumPartyRole);
         
         if(forumPartyRoleTransfer == null) {
@@ -44,7 +44,7 @@ public class ForumPartyRoleTransferCache
             var forumRoleType = forumControl.getForumRoleTypeTransfer(userVisit, forumPartyRole.getForumRoleType());
             
             forumPartyRoleTransfer = new ForumPartyRoleTransfer(forum, party, forumRoleType);
-            put(forumPartyRole, forumPartyRoleTransfer);
+            put(userVisit, forumPartyRole, forumPartyRoleTransfer);
         }
         
         return forumPartyRoleTransfer;

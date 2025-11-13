@@ -100,9 +100,9 @@ public class CarrierControl
     
     private CarrierTransferCaches carrierTransferCaches;
     
-    public CarrierTransferCaches getCarrierTransferCaches(UserVisit userVisit) {
+    public CarrierTransferCaches getCarrierTransferCaches() {
         if(carrierTransferCaches == null) {
-            carrierTransferCaches = new CarrierTransferCaches(userVisit, this);
+            carrierTransferCaches = new CarrierTransferCaches(this);
         }
         
         return carrierTransferCaches;
@@ -278,15 +278,15 @@ public class CarrierControl
     }
 
     public CarrierTypeTransfer getCarrierTypeTransfer(UserVisit userVisit, CarrierType carrierType) {
-        return getCarrierTransferCaches(userVisit).getCarrierTypeTransferCache().getCarrierTypeTransfer(carrierType);
+        return getCarrierTransferCaches().getCarrierTypeTransferCache().getCarrierTypeTransfer(userVisit, carrierType);
     }
 
     public List<CarrierTypeTransfer> getCarrierTypeTransfers(UserVisit userVisit, Collection<CarrierType> carrierTypes) {
         List<CarrierTypeTransfer> carrierTypeTransfers = new ArrayList<>(carrierTypes.size());
-        var carrierTypeTransferCache = getCarrierTransferCaches(userVisit).getCarrierTypeTransferCache();
+        var carrierTypeTransferCache = getCarrierTransferCaches().getCarrierTypeTransferCache();
 
         carrierTypes.forEach((carrierType) ->
-                carrierTypeTransfers.add(carrierTypeTransferCache.getCarrierTypeTransfer(carrierType))
+                carrierTypeTransfers.add(carrierTypeTransferCache.getCarrierTypeTransfer(userVisit, carrierType))
         );
 
         return carrierTypeTransfers;
@@ -513,16 +513,16 @@ public class CarrierControl
     }
 
     public CarrierTypeDescriptionTransfer getCarrierTypeDescriptionTransfer(UserVisit userVisit, CarrierTypeDescription carrierTypeDescription) {
-        return getCarrierTransferCaches(userVisit).getCarrierTypeDescriptionTransferCache().getCarrierTypeDescriptionTransfer(carrierTypeDescription);
+        return getCarrierTransferCaches().getCarrierTypeDescriptionTransferCache().getCarrierTypeDescriptionTransfer(userVisit, carrierTypeDescription);
     }
 
     public List<CarrierTypeDescriptionTransfer> getCarrierTypeDescriptionTransfersByCarrierType(UserVisit userVisit, CarrierType carrierType) {
         var carrierTypeDescriptions = getCarrierTypeDescriptionsByCarrierType(carrierType);
         List<CarrierTypeDescriptionTransfer> carrierTypeDescriptionTransfers = new ArrayList<>(carrierTypeDescriptions.size());
-        var carrierTypeDescriptionTransferCache = getCarrierTransferCaches(userVisit).getCarrierTypeDescriptionTransferCache();
+        var carrierTypeDescriptionTransferCache = getCarrierTransferCaches().getCarrierTypeDescriptionTransferCache();
 
         carrierTypeDescriptions.forEach((carrierTypeDescription) ->
-                carrierTypeDescriptionTransfers.add(carrierTypeDescriptionTransferCache.getCarrierTypeDescriptionTransfer(carrierTypeDescription))
+                carrierTypeDescriptionTransfers.add(carrierTypeDescriptionTransferCache.getCarrierTypeDescriptionTransfer(userVisit, carrierTypeDescription))
         );
 
         return carrierTypeDescriptionTransfers;
@@ -752,7 +752,7 @@ public class CarrierControl
     }
     
     public CarrierTransfer getCarrierTransfer(UserVisit userVisit, Carrier carrier) {
-        return getCarrierTransferCaches(userVisit).getCarrierTransferCache().getCarrierTransfer(carrier);
+        return getCarrierTransferCaches().getCarrierTransferCache().getCarrierTransfer(userVisit, carrier);
     }
     
     public CarrierTransfer getCarrierTransfer(UserVisit userVisit, Party party) {
@@ -764,7 +764,7 @@ public class CarrierControl
         List<CarrierTransfer> carrierTransfers = new ArrayList<>(carriers.size());
         
         carriers.forEach((carrier) -> {
-            carrierTransfers.add(getCarrierTransferCaches(userVisit).getCarrierTransferCache().getCarrierTransfer(carrier));
+            carrierTransfers.add(getCarrierTransferCaches().getCarrierTransferCache().getCarrierTransfer(userVisit, carrier));
         });
         
         return carrierTransfers;
@@ -1081,16 +1081,16 @@ public class CarrierControl
     }
     
     public CarrierServiceTransfer getCarrierServiceTransfer(UserVisit userVisit, CarrierService carrierService) {
-        return getCarrierTransferCaches(userVisit).getCarrierServiceTransferCache().getCarrierServiceTransfer(carrierService);
+        return getCarrierTransferCaches().getCarrierServiceTransferCache().getCarrierServiceTransfer(userVisit, carrierService);
     }
     
     public List<CarrierServiceTransfer> getCarrierServiceTransfers(UserVisit userVisit, Party carrierParty) {
         var carrierPartyPriorities = getCarrierServices(carrierParty);
         List<CarrierServiceTransfer> carrierServiceTransfers = new ArrayList<>(carrierPartyPriorities.size());
-        var carrierServiceTransferCache = getCarrierTransferCaches(userVisit).getCarrierServiceTransferCache();
+        var carrierServiceTransferCache = getCarrierTransferCaches().getCarrierServiceTransferCache();
         
         carrierPartyPriorities.forEach((carrierService) ->
-                carrierServiceTransfers.add(carrierServiceTransferCache.getCarrierServiceTransfer(carrierService))
+                carrierServiceTransfers.add(carrierServiceTransferCache.getCarrierServiceTransfer(userVisit, carrierService))
         );
         
         return carrierServiceTransfers;
@@ -1314,16 +1314,16 @@ public class CarrierControl
     }
     
     public CarrierServiceDescriptionTransfer getCarrierServiceDescriptionTransfer(UserVisit userVisit, CarrierServiceDescription carrierServiceDescription) {
-        return getCarrierTransferCaches(userVisit).getCarrierServiceDescriptionTransferCache().getCarrierServiceDescriptionTransfer(carrierServiceDescription);
+        return getCarrierTransferCaches().getCarrierServiceDescriptionTransferCache().getCarrierServiceDescriptionTransfer(userVisit, carrierServiceDescription);
     }
     
     public List<CarrierServiceDescriptionTransfer> getCarrierServiceDescriptionTransfers(UserVisit userVisit, CarrierService carrierService) {
         var carrierServiceDescriptions = getCarrierServiceDescriptionsByCarrierService(carrierService);
         List<CarrierServiceDescriptionTransfer> carrierServiceDescriptionTransfers = new ArrayList<>(carrierServiceDescriptions.size());
-        var carrierServiceDescriptionTransferCache = getCarrierTransferCaches(userVisit).getCarrierServiceDescriptionTransferCache();
+        var carrierServiceDescriptionTransferCache = getCarrierTransferCaches().getCarrierServiceDescriptionTransferCache();
         
         carrierServiceDescriptions.forEach((carrierServiceDescription) ->
-                carrierServiceDescriptionTransfers.add(carrierServiceDescriptionTransferCache.getCarrierServiceDescriptionTransfer(carrierServiceDescription))
+                carrierServiceDescriptionTransfers.add(carrierServiceDescriptionTransferCache.getCarrierServiceDescriptionTransfer(userVisit, carrierServiceDescription))
         );
         
         return carrierServiceDescriptionTransfers;
@@ -1565,16 +1565,16 @@ public class CarrierControl
     }
     
     public CarrierOptionTransfer getCarrierOptionTransfer(UserVisit userVisit, CarrierOption carrierOption) {
-        return getCarrierTransferCaches(userVisit).getCarrierOptionTransferCache().getCarrierOptionTransfer(carrierOption);
+        return getCarrierTransferCaches().getCarrierOptionTransferCache().getCarrierOptionTransfer(userVisit, carrierOption);
     }
     
     public List<CarrierOptionTransfer> getCarrierOptionTransfers(UserVisit userVisit, Party carrierParty) {
         var carrierPartyPriorities = getCarrierOptions(carrierParty);
         List<CarrierOptionTransfer> carrierOptionTransfers = new ArrayList<>(carrierPartyPriorities.size());
-        var carrierOptionTransferCache = getCarrierTransferCaches(userVisit).getCarrierOptionTransferCache();
+        var carrierOptionTransferCache = getCarrierTransferCaches().getCarrierOptionTransferCache();
         
         carrierPartyPriorities.forEach((carrierOption) ->
-                carrierOptionTransfers.add(carrierOptionTransferCache.getCarrierOptionTransfer(carrierOption))
+                carrierOptionTransfers.add(carrierOptionTransferCache.getCarrierOptionTransfer(userVisit, carrierOption))
         );
         
         return carrierOptionTransfers;
@@ -1805,16 +1805,16 @@ public class CarrierControl
     }
     
     public CarrierOptionDescriptionTransfer getCarrierOptionDescriptionTransfer(UserVisit userVisit, CarrierOptionDescription carrierOptionDescription) {
-        return getCarrierTransferCaches(userVisit).getCarrierOptionDescriptionTransferCache().getCarrierOptionDescriptionTransfer(carrierOptionDescription);
+        return getCarrierTransferCaches().getCarrierOptionDescriptionTransferCache().getCarrierOptionDescriptionTransfer(userVisit, carrierOptionDescription);
     }
     
     public List<CarrierOptionDescriptionTransfer> getCarrierOptionDescriptionTransfers(UserVisit userVisit, CarrierOption carrierOption) {
         var carrierOptionDescriptions = getCarrierOptionDescriptionsByCarrierOption(carrierOption);
         List<CarrierOptionDescriptionTransfer> carrierOptionDescriptionTransfers = new ArrayList<>(carrierOptionDescriptions.size());
-        var carrierOptionDescriptionTransferCache = getCarrierTransferCaches(userVisit).getCarrierOptionDescriptionTransferCache();
+        var carrierOptionDescriptionTransferCache = getCarrierTransferCaches().getCarrierOptionDescriptionTransferCache();
         
         carrierOptionDescriptions.forEach((carrierOptionDescription) ->
-                carrierOptionDescriptionTransfers.add(carrierOptionDescriptionTransferCache.getCarrierOptionDescriptionTransfer(carrierOptionDescription))
+                carrierOptionDescriptionTransfers.add(carrierOptionDescriptionTransferCache.getCarrierOptionDescriptionTransfer(userVisit, carrierOptionDescription))
         );
         
         return carrierOptionDescriptionTransfers;
@@ -2003,15 +2003,15 @@ public class CarrierControl
     }
     
     public CarrierServiceOptionTransfer getCarrierServiceOptionTransfer(UserVisit userVisit, CarrierServiceOption carrierServiceOption) {
-        return getCarrierTransferCaches(userVisit).getCarrierServiceOptionTransferCache().getCarrierServiceOptionTransfer(carrierServiceOption);
+        return getCarrierTransferCaches().getCarrierServiceOptionTransferCache().getCarrierServiceOptionTransfer(userVisit, carrierServiceOption);
     }
     
     public List<CarrierServiceOptionTransfer> getCarrierServiceOptionTransfers(UserVisit userVisit, Collection<CarrierServiceOption> carrierServiceOptions) {
         List<CarrierServiceOptionTransfer> carrierServiceOptionTransfers = new ArrayList<>(carrierServiceOptions.size());
-        var carrierServiceOptionTransferCache = getCarrierTransferCaches(userVisit).getCarrierServiceOptionTransferCache();
+        var carrierServiceOptionTransferCache = getCarrierTransferCaches().getCarrierServiceOptionTransferCache();
         
         carrierServiceOptions.forEach((carrierServiceOption) ->
-                carrierServiceOptionTransfers.add(carrierServiceOptionTransferCache.getCarrierServiceOptionTransfer(carrierServiceOption))
+                carrierServiceOptionTransfers.add(carrierServiceOptionTransferCache.getCarrierServiceOptionTransfer(userVisit, carrierServiceOption))
         );
         
         return carrierServiceOptionTransfers;
@@ -2220,15 +2220,15 @@ public class CarrierControl
     }
     
     public PartyCarrierTransfer getPartyCarrierTransfer(UserVisit userVisit, PartyCarrier partyCarrier) {
-        return getCarrierTransferCaches(userVisit).getPartyCarrierTransferCache().getPartyCarrierTransfer(partyCarrier);
+        return getCarrierTransferCaches().getPartyCarrierTransferCache().getPartyCarrierTransfer(userVisit, partyCarrier);
     }
     
     public List<PartyCarrierTransfer> getPartyCarrierTransfersByParty(UserVisit userVisit, List<PartyCarrier> partyCarriers) {
         List<PartyCarrierTransfer> partyCarrierTransfers = new ArrayList<>(partyCarriers.size());
-        var partyCarrierTransferCache = getCarrierTransferCaches(userVisit).getPartyCarrierTransferCache();
+        var partyCarrierTransferCache = getCarrierTransferCaches().getPartyCarrierTransferCache();
 
         partyCarriers.forEach((partyCarrier) ->
-                partyCarrierTransfers.add(partyCarrierTransferCache.getPartyCarrierTransfer(partyCarrier))
+                partyCarrierTransfers.add(partyCarrierTransferCache.getPartyCarrierTransfer(userVisit, partyCarrier))
         );
 
         return partyCarrierTransfers;
@@ -2394,15 +2394,15 @@ public class CarrierControl
     }
 
     public PartyCarrierAccountTransfer getPartyCarrierAccountTransfer(UserVisit userVisit, PartyCarrierAccount partyCarrierAccount) {
-        return getCarrierTransferCaches(userVisit).getPartyCarrierAccountTransferCache().getPartyCarrierAccountTransfer(partyCarrierAccount);
+        return getCarrierTransferCaches().getPartyCarrierAccountTransferCache().getPartyCarrierAccountTransfer(userVisit, partyCarrierAccount);
     }
 
     public List<PartyCarrierAccountTransfer> getPartyCarrierAccountTransfers(UserVisit userVisit, Collection<PartyCarrierAccount> partyCarrierAccounts) {
         List<PartyCarrierAccountTransfer> partyCarrierAccountTransfers = new ArrayList<>(partyCarrierAccounts.size());
-        var partyCarrierAccountTransferCache = getCarrierTransferCaches(userVisit).getPartyCarrierAccountTransferCache();
+        var partyCarrierAccountTransferCache = getCarrierTransferCaches().getPartyCarrierAccountTransferCache();
 
         partyCarrierAccounts.forEach((partyCarrierAccount) ->
-                partyCarrierAccountTransfers.add(partyCarrierAccountTransferCache.getPartyCarrierAccountTransfer(partyCarrierAccount))
+                partyCarrierAccountTransfers.add(partyCarrierAccountTransferCache.getPartyCarrierAccountTransfer(userVisit, partyCarrierAccount))
         );
 
         return partyCarrierAccountTransfers;

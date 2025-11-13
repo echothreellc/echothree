@@ -29,13 +29,13 @@ public class SubscriptionTypeTransferCache
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     
     /** Creates a new instance of SubscriptionTypeTransferCache */
-    public SubscriptionTypeTransferCache(UserVisit userVisit, SubscriptionControl subscriptionControl) {
-        super(userVisit, subscriptionControl);
+    public SubscriptionTypeTransferCache(SubscriptionControl subscriptionControl) {
+        super(subscriptionControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public SubscriptionTypeTransfer getSubscriptionTypeTransfer(SubscriptionType subscriptionType) {
+    public SubscriptionTypeTransfer getSubscriptionTypeTransfer(UserVisit userVisit, SubscriptionType subscriptionType) {
         var subscriptionTypeTransfer = get(subscriptionType);
         
         if(subscriptionTypeTransfer == null) {
@@ -47,11 +47,11 @@ public class SubscriptionTypeTransferCache
             var subscriptionSequenceTransfer = subscriptionSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, subscriptionSequence);
             var isDefault = subscriptionTypeDetail.getIsDefault();
             var sortOrder = subscriptionTypeDetail.getSortOrder();
-            var description = subscriptionControl.getBestSubscriptionTypeDescription(subscriptionType, getLanguage());
+            var description = subscriptionControl.getBestSubscriptionTypeDescription(subscriptionType, getLanguage(userVisit));
             
             subscriptionTypeTransfer = new SubscriptionTypeTransfer(subscriptionKindTransfer, subscriptionTypeName,
                     subscriptionSequenceTransfer, isDefault, sortOrder, description);
-            put(subscriptionType, subscriptionTypeTransfer);
+            put(userVisit, subscriptionType, subscriptionTypeTransfer);
         }
         
         return subscriptionTypeTransfer;

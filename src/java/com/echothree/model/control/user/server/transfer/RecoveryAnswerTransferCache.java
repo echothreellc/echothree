@@ -29,13 +29,13 @@ public class RecoveryAnswerTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of RecoveryAnswerTransferCache */
-    public RecoveryAnswerTransferCache(UserVisit userVisit, UserControl userControl) {
-        super(userVisit, userControl);
+    public RecoveryAnswerTransferCache(UserControl userControl) {
+        super(userControl);
 
         setIncludeEntityInstance(true);
     }
     
-    public RecoveryAnswerTransfer getRecoveryAnswerTransfer(RecoveryAnswer recoveryAnswer) {
+    public RecoveryAnswerTransfer getRecoveryAnswerTransfer(UserVisit userVisit, RecoveryAnswer recoveryAnswer) {
         var recoveryAnswerTransfer = get(recoveryAnswer);
         
         if(recoveryAnswerTransfer == null) {
@@ -45,7 +45,7 @@ public class RecoveryAnswerTransferCache
             var answer = recoveryAnswerDetail.getAnswer();
             
             recoveryAnswerTransfer = new RecoveryAnswerTransfer(party, recoveryQuestion, answer);
-            put(recoveryAnswer, recoveryAnswerTransfer);
+            put(userVisit, recoveryAnswer, recoveryAnswerTransfer);
         }
         
         return recoveryAnswerTransfer;

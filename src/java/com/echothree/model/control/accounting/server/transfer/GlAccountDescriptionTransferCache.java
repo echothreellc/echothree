@@ -28,21 +28,21 @@ public class GlAccountDescriptionTransferCache
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of GlAccountDescriptionTransferCache */
-    public GlAccountDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public GlAccountDescriptionTransferCache() {
+        super();
     }
     
     @Override
-    public GlAccountDescriptionTransfer getTransfer(GlAccountDescription glAccountDescription) {
+    public GlAccountDescriptionTransfer getTransfer(UserVisit userVisit, GlAccountDescription glAccountDescription) {
         var glAccountDescriptionTransfer = get(glAccountDescription);
         
         if(glAccountDescriptionTransfer == null) {
-            var glAccountTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getGlAccountTransferCache();
-            var glAccountTransfer = glAccountTransferCache.getTransfer(glAccountDescription.getGlAccount());
+            var glAccountTransferCache = accountingControl.getAccountingTransferCaches().getGlAccountTransferCache();
+            var glAccountTransfer = glAccountTransferCache.getTransfer(userVisit, glAccountDescription.getGlAccount());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, glAccountDescription.getLanguage());
             
             glAccountDescriptionTransfer = new GlAccountDescriptionTransfer(languageTransfer, glAccountTransfer, glAccountDescription.getDescription());
-            put(glAccountDescription, glAccountDescriptionTransfer);
+            put(userVisit, glAccountDescription, glAccountDescriptionTransfer);
         }
         
         return glAccountDescriptionTransfer;

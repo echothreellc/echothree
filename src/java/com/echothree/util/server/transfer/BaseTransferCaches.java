@@ -16,15 +16,10 @@
 
 package com.echothree.util.server.transfer;
 
-import com.echothree.model.data.user.server.entity.UserVisit;
-
 public class BaseTransferCaches {
     
-    protected UserVisit userVisit;
-    
     /** Creates a new instance of BaseTransferCaches */
-    protected BaseTransferCaches(UserVisit userVisit) {
-        this.userVisit = userVisit;
+    protected BaseTransferCaches() {
     }
     
 }

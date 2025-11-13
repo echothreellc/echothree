@@ -31,11 +31,11 @@ public class EntityBooleanAttributeTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of EntityBooleanAttributeTransferCache */
-    public EntityBooleanAttributeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityBooleanAttributeTransferCache() {
+        super();
     }
     
-    public EntityBooleanAttributeTransfer getEntityBooleanAttributeTransfer(EntityBooleanAttribute entityBooleanAttribute, EntityInstance entityInstance) {
+    public EntityBooleanAttributeTransfer getEntityBooleanAttributeTransfer(final UserVisit userVisit, final EntityBooleanAttribute entityBooleanAttribute, final EntityInstance entityInstance) {
         var entityBooleanAttributeTransfer = get(entityBooleanAttribute);
         
         if(entityBooleanAttributeTransfer == null) {
@@ -44,7 +44,7 @@ public class EntityBooleanAttributeTransferCache
             var booleanAttribute = entityBooleanAttribute.getBooleanAttribute();
             
             entityBooleanAttributeTransfer = new EntityBooleanAttributeTransfer(entityAttribute, entityInstanceTransfer, booleanAttribute);
-            put(entityBooleanAttribute, entityBooleanAttributeTransfer);
+            put(userVisit, entityBooleanAttribute, entityBooleanAttributeTransfer);
         }
         
         return entityBooleanAttributeTransfer;

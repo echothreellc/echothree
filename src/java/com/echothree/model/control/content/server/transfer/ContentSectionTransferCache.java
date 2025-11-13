@@ -40,8 +40,8 @@ public class ContentSectionTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of ContentSectionTransferCache */
-    public ContentSectionTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    public ContentSectionTransferCache(ContentControl contentControl) {
+        super(contentControl);
 
         var options = session.getOptions();
         if(options != null) {
@@ -69,7 +69,7 @@ public class ContentSectionTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
     
-    public ContentSectionTransfer getContentSectionTransfer(ContentSection contentSection) {
+    public ContentSectionTransfer getContentSectionTransfer(UserVisit userVisit, ContentSection contentSection) {
         var contentSectionTransfer = get(contentSection);
         
         if(contentSectionTransfer == null) {
@@ -80,11 +80,11 @@ public class ContentSectionTransferCache
             var parentContentSectionTransfer = parentContentSection == null ? null : contentControl.getContentSectionTransfer(userVisit, parentContentSection);
             var isDefault = filterIsDefault ? null : contentSectionDetail.getIsDefault();
             var sortOrder = filterSortOrder ? null : contentSectionDetail.getSortOrder();
-            var description = filterDescription ? null : contentControl.getBestContentSectionDescription(contentSection, getLanguage());
+            var description = filterDescription ? null : contentControl.getBestContentSectionDescription(contentSection, getLanguage(userVisit));
             
             contentSectionTransfer = new ContentSectionTransfer(contentCollectionTransfer, contentSectionName, parentContentSectionTransfer, isDefault,
                     sortOrder, description);
-            put(contentSection, contentSectionTransfer);
+            put(userVisit, contentSection, contentSectionTransfer);
             
             if(includeContentPages) {
                 contentSectionTransfer.setContentPages(ListWrapperBuilder.getInstance().filter(transferProperties, contentControl.getContentPageTransfers(userVisit, contentSectionDetail.getContentSection())));

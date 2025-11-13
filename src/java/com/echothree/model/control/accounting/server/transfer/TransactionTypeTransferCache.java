@@ -28,24 +28,24 @@ public class TransactionTypeTransferCache
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of TransactionTypeTransferCache */
-    public TransactionTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public TransactionTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public TransactionTypeTransfer getTransfer(TransactionType transactionType) {
+    public TransactionTypeTransfer getTransfer(UserVisit userVisit, TransactionType transactionType) {
         var transactionTypeTransfer = get(transactionType);
         
         if(transactionTypeTransfer == null) {
             var transactionTypeDetail = transactionType.getLastDetail();
             var transactionTypeName = transactionTypeDetail.getTransactionTypeName();
             var sortOrder = transactionTypeDetail.getSortOrder();
-            var description = accountingControl.getBestTransactionTypeDescription(transactionType, getLanguage());
+            var description = accountingControl.getBestTransactionTypeDescription(transactionType, getLanguage(userVisit));
             
             transactionTypeTransfer = new TransactionTypeTransfer(transactionTypeName, sortOrder, description);
-            put(transactionType, transactionTypeTransfer);
+            put(userVisit, transactionType, transactionTypeTransfer);
         }
         
         return transactionTypeTransfer;

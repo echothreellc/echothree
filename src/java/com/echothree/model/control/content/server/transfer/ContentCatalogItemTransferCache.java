@@ -57,8 +57,8 @@ public class ContentCatalogItemTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of ContentCatalogItemTransferCache */
-    public ContentCatalogItemTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    public ContentCatalogItemTransferCache(ContentControl contentControl) {
+        super(contentControl);
 
         var options = session.getOptions();
         if(options != null) {
@@ -91,7 +91,7 @@ public class ContentCatalogItemTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
     
-    public ContentCatalogItemTransfer getContentCatalogItemTransfer(ContentCatalogItem contentCatalogItem) {
+    public ContentCatalogItemTransfer getContentCatalogItemTransfer(UserVisit userVisit, ContentCatalogItem contentCatalogItem) {
         var contentCatalogItemTransfer = get(contentCatalogItem);
         
         if(contentCatalogItemTransfer == null) {
@@ -146,7 +146,7 @@ public class ContentCatalogItemTransferCache
             contentCatalogItemTransfer = new ContentCatalogItemTransfer(contentCatalog, itemTransfer, inventoryConditionTransfer, unitOfMeasureTypeTransfer,
                     currencyTransfer, unformattedUnitPrice, unitPrice, unformattedMinimumUnitPrice, minimumUnitPrice, unformattedMaximumUnitPrice,
                     maximumUnitPrice, unformattedUnitPriceIncrement, unitPriceIncrement);
-            put(contentCatalogItem, contentCatalogItemTransfer);
+            put(userVisit, contentCatalogItem, contentCatalogItemTransfer);
         }
         
         return contentCatalogItemTransfer;

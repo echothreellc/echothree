@@ -28,11 +28,11 @@ public class CommandDescriptionTransferCache
     CommandControl commandControl = Session.getModelController(CommandControl.class);
 
     /** Creates a new instance of CommandDescriptionTransferCache */
-    public CommandDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public CommandDescriptionTransferCache() {
+        super();
     }
     
-    public CommandDescriptionTransfer getCommandDescriptionTransfer(CommandDescription commandDescription) {
+    public CommandDescriptionTransfer getCommandDescriptionTransfer(UserVisit userVisit, CommandDescription commandDescription) {
         var commandDescriptionTransfer = get(commandDescription);
         
         if(commandDescriptionTransfer == null) {
@@ -41,7 +41,7 @@ public class CommandDescriptionTransferCache
             
             commandDescriptionTransfer = new CommandDescriptionTransfer(languageTransfer, commandTransfer,
                     commandDescription.getDescription());
-            put(commandDescription, commandDescriptionTransfer);
+            put(userVisit, commandDescription, commandDescriptionTransfer);
         }
         return commandDescriptionTransfer;
     }

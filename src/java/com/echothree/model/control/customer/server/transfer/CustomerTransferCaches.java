@@ -32,43 +32,43 @@ public class CustomerTransferCaches
     protected CustomerTypeShippingMethodTransferCache customerTypeShippingMethodTransferCache;
     
     /** Creates a new instance of CustomerTransferCaches */
-    public CustomerTransferCaches(UserVisit userVisit, CustomerControl customerControl) {
-        super(userVisit);
+    public CustomerTransferCaches(CustomerControl customerControl) {
+        super();
         
         this.customerControl = customerControl;
     }
     
     public CustomerTypeTransferCache getCustomerTypeTransferCache() {
         if(customerTypeTransferCache == null)
-            customerTypeTransferCache = new CustomerTypeTransferCache(userVisit, customerControl);
+            customerTypeTransferCache = new CustomerTypeTransferCache(customerControl);
         
         return customerTypeTransferCache;
     }
     
     public CustomerTypeDescriptionTransferCache getCustomerTypeDescriptionTransferCache() {
         if(customerTypeDescriptionTransferCache == null)
-            customerTypeDescriptionTransferCache = new CustomerTypeDescriptionTransferCache(userVisit, customerControl);
+            customerTypeDescriptionTransferCache = new CustomerTypeDescriptionTransferCache(customerControl);
         
         return customerTypeDescriptionTransferCache;
     }
     
     public CustomerTransferCache getCustomerTransferCache() {
         if(customerTransferCache == null)
-            customerTransferCache = new CustomerTransferCache(userVisit, customerControl);
+            customerTransferCache = new CustomerTransferCache(customerControl);
         
         return customerTransferCache;
     }
     
     public CustomerTypePaymentMethodTransferCache getCustomerTypePaymentMethodTransferCache() {
         if(customerTypePaymentMethodTransferCache == null)
-            customerTypePaymentMethodTransferCache = new CustomerTypePaymentMethodTransferCache(userVisit, customerControl);
+            customerTypePaymentMethodTransferCache = new CustomerTypePaymentMethodTransferCache(customerControl);
         
         return customerTypePaymentMethodTransferCache;
     }
     
     public CustomerTypeShippingMethodTransferCache getCustomerTypeShippingMethodTransferCache() {
         if(customerTypeShippingMethodTransferCache == null)
-            customerTypeShippingMethodTransferCache = new CustomerTypeShippingMethodTransferCache(userVisit, customerControl);
+            customerTypeShippingMethodTransferCache = new CustomerTypeShippingMethodTransferCache(customerControl);
         
         return customerTypeShippingMethodTransferCache;
     }

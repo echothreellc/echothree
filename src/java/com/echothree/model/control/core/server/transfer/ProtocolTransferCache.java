@@ -28,13 +28,13 @@ public class ProtocolTransferCache
     ServerControl serverControl = Session.getModelController(ServerControl.class);
 
     /** Creates a new instance of ProtocolTransferCache */
-    public ProtocolTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public ProtocolTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public ProtocolTransfer getProtocolTransfer(Protocol protocol) {
+    public ProtocolTransfer getProtocolTransfer(UserVisit userVisit, Protocol protocol) {
         var protocolTransfer = get(protocol);
         
         if(protocolTransfer == null) {
@@ -42,10 +42,10 @@ public class ProtocolTransferCache
             var protocolName = protocolDetail.getProtocolName();
             var isDefault = protocolDetail.getIsDefault();
             var sortOrder = protocolDetail.getSortOrder();
-            var description = serverControl.getBestProtocolDescription(protocol, getLanguage());
+            var description = serverControl.getBestProtocolDescription(protocol, getLanguage(userVisit));
     
             protocolTransfer = new ProtocolTransfer(protocolName, isDefault, sortOrder, description);
-            put(protocol, protocolTransfer);
+            put(userVisit, protocol, protocolTransfer);
         }
         
         return protocolTransfer;

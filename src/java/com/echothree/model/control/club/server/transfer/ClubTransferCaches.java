@@ -31,36 +31,36 @@ public class ClubTransferCaches
     protected ClubDescriptionTransferCache clubDescriptionTransferCache;
     
     /** Creates a new instance of ClubTransferCaches */
-    public ClubTransferCaches(UserVisit userVisit, ClubControl clubControl) {
-        super(userVisit);
+    public ClubTransferCaches(ClubControl clubControl) {
+        super();
         
         this.clubControl = clubControl;
     }
     
     public ClubItemTransferCache getClubItemTransferCache() {
         if(clubItemTransferCache == null)
-            clubItemTransferCache = new ClubItemTransferCache(userVisit, clubControl);
+            clubItemTransferCache = new ClubItemTransferCache(clubControl);
         
         return clubItemTransferCache;
     }
     
     public ClubItemTypeTransferCache getClubItemTypeTransferCache() {
         if(clubItemTypeTransferCache == null)
-            clubItemTypeTransferCache = new ClubItemTypeTransferCache(userVisit, clubControl);
+            clubItemTypeTransferCache = new ClubItemTypeTransferCache(clubControl);
         
         return clubItemTypeTransferCache;
     }
     
     public ClubTransferCache getClubTransferCache() {
         if(clubTransferCache == null)
-            clubTransferCache = new ClubTransferCache(userVisit, clubControl);
+            clubTransferCache = new ClubTransferCache(clubControl);
         
         return clubTransferCache;
     }
     
     public ClubDescriptionTransferCache getClubDescriptionTransferCache() {
         if(clubDescriptionTransferCache == null)
-            clubDescriptionTransferCache = new ClubDescriptionTransferCache(userVisit, clubControl);
+            clubDescriptionTransferCache = new ClubDescriptionTransferCache(clubControl);
         
         return clubDescriptionTransferCache;
     }

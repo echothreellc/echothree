@@ -29,8 +29,8 @@ public class PostalAddressLineTransferCache
     boolean includeElements;
     
     /** Creates a new instance of PostalAddressLineTransferCache */
-    public PostalAddressLineTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    public PostalAddressLineTransferCache(ContactControl contactControl) {
+        super(contactControl);
         
         var options = session.getOptions();
         if(options != null) {
@@ -38,7 +38,7 @@ public class PostalAddressLineTransferCache
         }
     }
     
-    public PostalAddressLineTransfer getPostalAddressLineTransfer(PostalAddressLine postalAddressLine) {
+    public PostalAddressLineTransfer getPostalAddressLineTransfer(UserVisit userVisit, PostalAddressLine postalAddressLine) {
         var postalAddressLineTransfer = get(postalAddressLine);
         
         if(postalAddressLineTransfer == null) {
@@ -53,7 +53,7 @@ public class PostalAddressLineTransferCache
             
             postalAddressLineTransfer = new PostalAddressLineTransfer(postalAddressFormat, postalAddressLineSortOrder, prefix,
                     alwaysIncludePrefix, suffix, alwaysIncludeSuffix, collapseIfEmpty);
-            put(postalAddressLine, postalAddressLineTransfer);
+            put(userVisit, postalAddressLine, postalAddressLineTransfer);
             
             if(includeElements) {
                 postalAddressLineTransfer.setPostalAddressLineElements(new ListWrapper<>(contactControl.getPostalAddressLineElementTransfersByPostalAddressLine(userVisit, postalAddressLine)));

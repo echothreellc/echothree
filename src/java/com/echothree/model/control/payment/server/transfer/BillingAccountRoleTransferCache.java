@@ -32,12 +32,12 @@ public class BillingAccountRoleTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of BillingAccountRoleTransferCache */
-    public BillingAccountRoleTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public BillingAccountRoleTransferCache() {
+        super();
     }
 
     @Override
-    public BillingAccountRoleTransfer getTransfer(BillingAccountRole billingAccountRole) {
+    public BillingAccountRoleTransfer getTransfer(UserVisit userVisit, BillingAccountRole billingAccountRole) {
         var billingAccountRoleTransfer = get(billingAccountRole);
 
         if(billingAccountRoleTransfer == null) {
@@ -47,7 +47,7 @@ public class BillingAccountRoleTransferCache
             var billingAccountRoleType = billingControl.getBillingAccountRoleTypeTransfer(userVisit, billingAccountRole.getBillingAccountRoleType());
 
             billingAccountRoleTransfer = new BillingAccountRoleTransfer(billingAccount, party, partyContactMechanism, billingAccountRoleType);
-            put(billingAccountRole, billingAccountRoleTransfer);
+            put(userVisit, billingAccountRole, billingAccountRoleTransfer);
         }
 
         return billingAccountRoleTransfer;

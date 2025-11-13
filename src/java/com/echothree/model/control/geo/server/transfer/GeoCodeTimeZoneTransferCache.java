@@ -29,13 +29,13 @@ public class GeoCodeTimeZoneTransferCache
     PartyControl partyControl;
     
     /** Creates a new instance of GeoCodeTimeZoneTransferCache */
-    public GeoCodeTimeZoneTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
+    public GeoCodeTimeZoneTransferCache(GeoControl geoControl) {
+        super(geoControl);
         
         partyControl = Session.getModelController(PartyControl.class);
     }
     
-    public GeoCodeTimeZoneTransfer getGeoCodeTimeZoneTransfer(GeoCodeTimeZone geoCodeTimeZone) {
+    public GeoCodeTimeZoneTransfer getGeoCodeTimeZoneTransfer(UserVisit userVisit, GeoCodeTimeZone geoCodeTimeZone) {
         var geoCodeTimeZoneTransfer = get(geoCodeTimeZone);
         
         if(geoCodeTimeZoneTransfer == null) {
@@ -45,7 +45,7 @@ public class GeoCodeTimeZoneTransferCache
             var sortOrder = geoCodeTimeZone.getSortOrder();
             
             geoCodeTimeZoneTransfer = new GeoCodeTimeZoneTransfer(geoCode, timeZone, isDefault, sortOrder);
-            put(geoCodeTimeZone, geoCodeTimeZoneTransfer);
+            put(userVisit, geoCodeTimeZone, geoCodeTimeZoneTransfer);
         }
         
         return geoCodeTimeZoneTransfer;

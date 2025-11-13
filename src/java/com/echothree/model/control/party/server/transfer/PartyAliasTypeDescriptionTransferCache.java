@@ -24,12 +24,12 @@ public class PartyAliasTypeDescriptionTransferCache
         extends BasePartyDescriptionTransferCache<PartyAliasTypeDescription, PartyAliasTypeDescriptionTransfer> {
     
     /** Creates a new instance of PartyAliasTypeDescriptionTransferCache */
-    public PartyAliasTypeDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public PartyAliasTypeDescriptionTransferCache() {
+        super();
     }
 
     @Override
-    public PartyAliasTypeDescriptionTransfer getTransfer(PartyAliasTypeDescription partyAliasTypeDescription) {
+    public PartyAliasTypeDescriptionTransfer getTransfer(UserVisit userVisit, PartyAliasTypeDescription partyAliasTypeDescription) {
         var partyAliasTypeDescriptionTransfer = get(partyAliasTypeDescription);
         
         if(partyAliasTypeDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class PartyAliasTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, partyAliasTypeDescription.getLanguage());
             
             partyAliasTypeDescriptionTransfer = new PartyAliasTypeDescriptionTransfer(languageTransfer, partyAliasTypeTransfer, partyAliasTypeDescription.getDescription());
-            put(partyAliasTypeDescription, partyAliasTypeDescriptionTransfer);
+            put(userVisit, partyAliasTypeDescription, partyAliasTypeDescriptionTransfer);
         }
         
         return partyAliasTypeDescriptionTransfer;

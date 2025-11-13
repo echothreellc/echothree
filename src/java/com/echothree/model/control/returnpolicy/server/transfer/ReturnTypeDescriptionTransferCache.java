@@ -25,11 +25,11 @@ public class ReturnTypeDescriptionTransferCache
         extends BaseReturnPolicyDescriptionTransferCache<ReturnTypeDescription, ReturnTypeDescriptionTransfer> {
     
     /** Creates a new instance of ReturnTypeDescriptionTransferCache */
-    public ReturnTypeDescriptionTransferCache(UserVisit userVisit, ReturnPolicyControl returnPolicyControl) {
-        super(userVisit, returnPolicyControl);
+    public ReturnTypeDescriptionTransferCache(ReturnPolicyControl returnPolicyControl) {
+        super(returnPolicyControl);
     }
     
-    public ReturnTypeDescriptionTransfer getReturnTypeDescriptionTransfer(ReturnTypeDescription returnTypeDescription) {
+    public ReturnTypeDescriptionTransfer getReturnTypeDescriptionTransfer(UserVisit userVisit, ReturnTypeDescription returnTypeDescription) {
         var returnTypeDescriptionTransfer = get(returnTypeDescription);
         
         if(returnTypeDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class ReturnTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, returnTypeDescription.getLanguage());
             
             returnTypeDescriptionTransfer = new ReturnTypeDescriptionTransfer(languageTransfer, returnTypeTransfer, returnTypeDescription.getDescription());
-            put(returnTypeDescription, returnTypeDescriptionTransfer);
+            put(userVisit, returnTypeDescription, returnTypeDescriptionTransfer);
         }
         
         return returnTypeDescriptionTransfer;

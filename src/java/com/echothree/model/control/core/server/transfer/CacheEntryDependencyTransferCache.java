@@ -36,8 +36,8 @@ public class CacheEntryDependencyTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of CacheEntryTransferCache */
-    public CacheEntryDependencyTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public CacheEntryDependencyTransferCache() {
+        super();
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
@@ -50,7 +50,7 @@ public class CacheEntryDependencyTransferCache
         }
     }
     
-    public CacheEntryDependencyTransfer getCacheEntryDependencyTransfer(CacheEntryDependency cacheEntryDependency) {
+    public CacheEntryDependencyTransfer getCacheEntryDependencyTransfer(UserVisit userVisit, CacheEntryDependency cacheEntryDependency) {
         var cacheEntryDependencyTransfer = get(cacheEntryDependency);
         
         if(cacheEntryDependencyTransfer == null) {
@@ -58,7 +58,7 @@ public class CacheEntryDependencyTransferCache
             var entityInstance = filterEntityInstance ? null : entityInstanceControl.getEntityInstanceTransfer(userVisit, cacheEntryDependency.getEntityInstance(), false, false, false, false);
 
             cacheEntryDependencyTransfer = new CacheEntryDependencyTransfer(cacheEntry, entityInstance);
-            put(cacheEntryDependency, cacheEntryDependencyTransfer);
+            put(userVisit, cacheEntryDependency, cacheEntryDependencyTransfer);
         }
         
         return cacheEntryDependencyTransfer;

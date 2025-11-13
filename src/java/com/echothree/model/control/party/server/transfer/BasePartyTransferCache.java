@@ -25,10 +25,10 @@ public abstract class BasePartyTransferCache<K extends BaseEntity, V extends Bas
         extends BaseTransferCache<K, V> {
     
     /** Creates a new instance of BasePartyTransferCache */
-    protected BasePartyTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected BasePartyTransferCache() {
+        super();
     }
 
-    protected abstract V getTransfer(K key);
+    protected abstract V getTransfer(UserVisit userVisit, K key);
 
 }

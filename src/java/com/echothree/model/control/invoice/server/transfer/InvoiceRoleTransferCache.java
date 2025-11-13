@@ -31,14 +31,14 @@ public class InvoiceRoleTransferCache
     PartyControl partyControl;
 
     /** Creates a new instance of InvoiceRoleTransferCache */
-    public InvoiceRoleTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
-        super(userVisit, invoiceControl);
+    public InvoiceRoleTransferCache(InvoiceControl invoiceControl) {
+        super(invoiceControl);
 
         contactControl = Session.getModelController(ContactControl.class);
         partyControl = Session.getModelController(PartyControl.class);
     }
 
-    public InvoiceRoleTransfer getInvoiceRoleTransfer(InvoiceRole invoiceRole) {
+    public InvoiceRoleTransfer getInvoiceRoleTransfer(UserVisit userVisit, InvoiceRole invoiceRole) {
         var invoiceRoleTransfer = get(invoiceRole);
 
         if(invoiceRoleTransfer == null) {
@@ -48,7 +48,7 @@ public class InvoiceRoleTransferCache
             var invoiceRoleType = invoiceControl.getInvoiceRoleTypeTransfer(userVisit, invoiceRole.getInvoiceRoleType());
 
             invoiceRoleTransfer = new InvoiceRoleTransfer(invoice, party, partyContactMechanism, invoiceRoleType);
-            put(invoiceRole, invoiceRoleTransfer);
+            put(userVisit, invoiceRole, invoiceRoleTransfer);
         }
 
         return invoiceRoleTransfer;

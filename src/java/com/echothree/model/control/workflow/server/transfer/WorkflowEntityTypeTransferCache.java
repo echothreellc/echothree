@@ -29,11 +29,11 @@ public class WorkflowEntityTypeTransferCache
     EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
 
     /** Creates a new instance of WorkflowEntityTypeTransferCache */
-    public WorkflowEntityTypeTransferCache(UserVisit userVisit, WorkflowControl workflowControl) {
-        super(userVisit, workflowControl);
+    public WorkflowEntityTypeTransferCache(WorkflowControl workflowControl) {
+        super(workflowControl);
     }
     
-    public WorkflowEntityTypeTransfer getWorkflowEntityTypeTransfer(WorkflowEntityType workflowEntityType) {
+    public WorkflowEntityTypeTransfer getWorkflowEntityTypeTransfer(UserVisit userVisit, WorkflowEntityType workflowEntityType) {
         var workflowEntityTypeTransfer = get(workflowEntityType);
         
         if(workflowEntityTypeTransfer == null) {
@@ -41,7 +41,7 @@ public class WorkflowEntityTypeTransferCache
             var entityType = entityTypeControl.getEntityTypeTransfer(userVisit, workflowEntityType.getEntityType());
             
             workflowEntityTypeTransfer = new WorkflowEntityTypeTransfer(workflow, entityType);
-            put(workflowEntityType, workflowEntityTypeTransfer);
+            put(userVisit, workflowEntityType, workflowEntityTypeTransfer);
         }
         
         return workflowEntityTypeTransfer;

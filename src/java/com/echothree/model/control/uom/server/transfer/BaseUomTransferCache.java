@@ -28,8 +28,8 @@ public abstract class BaseUomTransferCache<K extends BaseEntity, V extends BaseT
     UomControl uomControl;
     
     /** Creates a new instance of BaseUomTransferCache */
-    protected BaseUomTransferCache(UserVisit userVisit, UomControl uomControl) {
-        super(userVisit);
+    protected BaseUomTransferCache(UomControl uomControl) {
+        super();
         
         this.uomControl = uomControl;
     }

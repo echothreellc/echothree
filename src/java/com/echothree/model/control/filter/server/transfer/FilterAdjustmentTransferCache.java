@@ -34,8 +34,8 @@ public class FilterAdjustmentTransferCache
     boolean includeFilterAdjustmentPercents;
     
     /** Creates a new instance of FilterAdjustmentTransferCache */
-    public FilterAdjustmentTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public FilterAdjustmentTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -48,7 +48,7 @@ public class FilterAdjustmentTransferCache
     }
 
     @Override
-    public FilterAdjustmentTransfer getTransfer(FilterAdjustment filterAdjustment) {
+    public FilterAdjustmentTransfer getTransfer(UserVisit userVisit, FilterAdjustment filterAdjustment) {
         var filterAdjustmentTransfer = get(filterAdjustment);
         
         if(filterAdjustmentTransfer == null) {
@@ -60,12 +60,12 @@ public class FilterAdjustmentTransferCache
             var filterAdjustmentTypeTransfer = filterAdjustmentType == null ? null : filterControl.getFilterAdjustmentTypeTransfer(userVisit, filterAdjustmentType);
             var isDefault = filterAdjustmentDetail.getIsDefault();
             var sortOrder = filterAdjustmentDetail.getSortOrder();
-            var description = filterControl.getBestFilterAdjustmentDescription(filterAdjustment, getLanguage());
+            var description = filterControl.getBestFilterAdjustmentDescription(filterAdjustment, getLanguage(userVisit));
             
             filterAdjustmentTransfer = new FilterAdjustmentTransfer(filterKindTransfer, filterAdjustmentName,
                     filterAdjustmentSourceTransfer, filterAdjustmentTypeTransfer, isDefault, sortOrder,
                     description);
-            put(filterAdjustment, filterAdjustmentTransfer);
+            put(userVisit, filterAdjustment, filterAdjustmentTransfer);
             
             if(includeFilterAdjustmentAmounts) {
                 filterAdjustmentTransfer.setFilterAdjustmentAmounts(new ListWrapper<>(filterControl.getFilterAdjustmentAmountTransfers(userVisit, filterAdjustment)));

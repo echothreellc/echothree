@@ -25,11 +25,11 @@ public class PrinterGroupUseTypeDescriptionTransferCache
         extends BasePrinterDescriptionTransferCache<PrinterGroupUseTypeDescription, PrinterGroupUseTypeDescriptionTransfer> {
     
     /** Creates a new instance of PrinterGroupUseTypeDescriptionTransferCache */
-    public PrinterGroupUseTypeDescriptionTransferCache(UserVisit userVisit, PrinterControl printerControl) {
-        super(userVisit, printerControl);
+    public PrinterGroupUseTypeDescriptionTransferCache(PrinterControl printerControl) {
+        super(printerControl);
     }
     
-    public PrinterGroupUseTypeDescriptionTransfer getPrinterGroupUseTypeDescriptionTransfer(PrinterGroupUseTypeDescription printerGroupUseTypeDescription) {
+    public PrinterGroupUseTypeDescriptionTransfer getPrinterGroupUseTypeDescriptionTransfer(UserVisit userVisit, PrinterGroupUseTypeDescription printerGroupUseTypeDescription) {
         var printerGroupUseTypeDescriptionTransfer = get(printerGroupUseTypeDescription);
         
         if(printerGroupUseTypeDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class PrinterGroupUseTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, printerGroupUseTypeDescription.getLanguage());
             
             printerGroupUseTypeDescriptionTransfer = new PrinterGroupUseTypeDescriptionTransfer(languageTransfer, printerGroupUseTypeTransfer, printerGroupUseTypeDescription.getDescription());
-            put(printerGroupUseTypeDescription, printerGroupUseTypeDescriptionTransfer);
+            put(userVisit, printerGroupUseTypeDescription, printerGroupUseTypeDescriptionTransfer);
         }
         
         return printerGroupUseTypeDescriptionTransfer;

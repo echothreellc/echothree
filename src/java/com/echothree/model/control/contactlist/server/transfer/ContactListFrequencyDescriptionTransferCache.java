@@ -25,11 +25,11 @@ public class ContactListFrequencyDescriptionTransferCache
         extends BaseContactListDescriptionTransferCache<ContactListFrequencyDescription, ContactListFrequencyDescriptionTransfer> {
     
     /** Creates a new instance of ContactListFrequencyDescriptionTransferCache */
-    public ContactListFrequencyDescriptionTransferCache(UserVisit userVisit, ContactListControl contactListControl) {
-        super(userVisit, contactListControl);
+    public ContactListFrequencyDescriptionTransferCache(ContactListControl contactListControl) {
+        super(contactListControl);
     }
     
-    public ContactListFrequencyDescriptionTransfer getContactListFrequencyDescriptionTransfer(ContactListFrequencyDescription contactListFrequencyDescription) {
+    public ContactListFrequencyDescriptionTransfer getContactListFrequencyDescriptionTransfer(UserVisit userVisit, ContactListFrequencyDescription contactListFrequencyDescription) {
         var contactListFrequencyDescriptionTransfer = get(contactListFrequencyDescription);
         
         if(contactListFrequencyDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class ContactListFrequencyDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, contactListFrequencyDescription.getLanguage());
             
             contactListFrequencyDescriptionTransfer = new ContactListFrequencyDescriptionTransfer(languageTransfer, contactListFrequencyTransfer, contactListFrequencyDescription.getDescription());
-            put(contactListFrequencyDescription, contactListFrequencyDescriptionTransfer);
+            put(userVisit, contactListFrequencyDescription, contactListFrequencyDescriptionTransfer);
         }
         
         return contactListFrequencyDescriptionTransfer;

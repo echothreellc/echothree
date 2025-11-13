@@ -25,13 +25,13 @@ public class TerminationTypeTransferCache
         extends BaseEmployeeTransferCache<TerminationType, TerminationTypeTransfer> {
     
     /** Creates a new instance of TerminationTypeTransferCache */
-    public TerminationTypeTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit, employeeControl);
+    public TerminationTypeTransferCache(EmployeeControl employeeControl) {
+        super(employeeControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public TerminationTypeTransfer getTerminationTypeTransfer(TerminationType terminationType) {
+    public TerminationTypeTransfer getTerminationTypeTransfer(UserVisit userVisit, TerminationType terminationType) {
         var terminationTypeTransfer = get(terminationType);
         
         if(terminationTypeTransfer == null) {
@@ -39,10 +39,10 @@ public class TerminationTypeTransferCache
             var terminationTypeName = terminationTypeDetail.getTerminationTypeName();
             var isDefault = terminationTypeDetail.getIsDefault();
             var sortOrder = terminationTypeDetail.getSortOrder();
-            var description = employeeControl.getBestTerminationTypeDescription(terminationType, getLanguage());
+            var description = employeeControl.getBestTerminationTypeDescription(terminationType, getLanguage(userVisit));
             
             terminationTypeTransfer = new TerminationTypeTransfer(terminationTypeName, isDefault, sortOrder, description);
-            put(terminationType, terminationTypeTransfer);
+            put(userVisit, terminationType, terminationTypeTransfer);
         }
         
         return terminationTypeTransfer;

@@ -28,8 +28,8 @@ public abstract class BaseSequenceTransferCache<K extends BaseEntity, V extends 
     SequenceControl sequenceControl;
     
     /** Creates a new instance of BaseSequenceTransferCache */
-    protected BaseSequenceTransferCache(UserVisit userVisit, SequenceControl sequenceControl) {
-        super(userVisit);
+    protected BaseSequenceTransferCache(SequenceControl sequenceControl) {
+        super();
         
         this.sequenceControl = sequenceControl;
     }

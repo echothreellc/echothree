@@ -31,8 +31,8 @@ public class MessageTransferCache
     boolean includeClob;
     
     /** Creates a new instance of MessageTransferCache */
-    public MessageTransferCache(UserVisit userVisit, MessageControl messageControl) {
-        super(userVisit, messageControl);
+    public MessageTransferCache(MessageControl messageControl) {
+        super(messageControl);
         
         var options = session.getOptions();
         if(options != null) {
@@ -44,7 +44,7 @@ public class MessageTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public MessageTransfer getMessageTransfer(Message message) {
+    public MessageTransfer getMessageTransfer(UserVisit userVisit, Message message) {
         var messageTransfer = get(message);
         
         if(messageTransfer == null) {
@@ -54,10 +54,10 @@ public class MessageTransferCache
             var includeByDefault = messageDetail.getIncludeByDefault();
             var isDefault = messageDetail.getIsDefault();
             var sortOrder = messageDetail.getSortOrder();
-            var description = messageControl.getBestMessageDescription(message, getLanguage());
+            var description = messageControl.getBestMessageDescription(message, getLanguage(userVisit));
             
             messageTransfer = new MessageTransfer(messageTypeTransfer, messageName, includeByDefault, isDefault, sortOrder, description);
-            put(message, messageTransfer);
+            put(userVisit, message, messageTransfer);
             
             if(includeString) {
                 messageTransfer.setMessageStrings(new ListWrapper<>(messageControl.getMessageStringTransfersByMessage(userVisit, message)));

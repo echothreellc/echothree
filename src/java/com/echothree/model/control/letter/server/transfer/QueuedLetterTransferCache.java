@@ -29,13 +29,13 @@ public class QueuedLetterTransferCache
     ChainControl chainControl;
     
     /** Creates a new instance of QueuedLetterTransferCache */
-    public QueuedLetterTransferCache(UserVisit userVisit, LetterControl letterControl) {
-        super(userVisit, letterControl);
+    public QueuedLetterTransferCache(LetterControl letterControl) {
+        super(letterControl);
         
         chainControl = Session.getModelController(ChainControl.class);
     }
     
-    public QueuedLetterTransfer getQueuedLetterTransfer(QueuedLetter queuedLetter) {
+    public QueuedLetterTransfer getQueuedLetterTransfer(UserVisit userVisit, QueuedLetter queuedLetter) {
         var queuedLetterTransfer = get(queuedLetter);
         
         if(queuedLetterTransfer == null) {
@@ -43,7 +43,7 @@ public class QueuedLetterTransferCache
             var letter = letterControl.getLetterTransfer(userVisit, queuedLetter.getLetter());
             
             queuedLetterTransfer = new QueuedLetterTransfer(chainInstance, letter);
-            put(queuedLetter, queuedLetterTransfer);
+            put(userVisit, queuedLetter, queuedLetterTransfer);
         }
         
         return queuedLetterTransfer;

@@ -152,9 +152,9 @@ public class ChainControl
     
     private ChainTransferCaches chainTransferCaches;
     
-    public ChainTransferCaches getChainTransferCaches(UserVisit userVisit) {
+    public ChainTransferCaches getChainTransferCaches() {
         if(chainTransferCaches == null) {
-            chainTransferCaches = new ChainTransferCaches(userVisit, this);
+            chainTransferCaches = new ChainTransferCaches(this);
         }
         
         return chainTransferCaches;
@@ -329,16 +329,16 @@ public class ChainControl
     }
 
     public ChainKindTransfer getChainKindTransfer(UserVisit userVisit, ChainKind chainKind) {
-        return getChainTransferCaches(userVisit).getChainKindTransferCache().getChainKindTransfer(chainKind);
+        return getChainTransferCaches().getChainKindTransferCache().getChainKindTransfer(userVisit, chainKind);
     }
 
     public List<ChainKindTransfer> getChainKindTransfers(UserVisit userVisit) {
         var chainKinds = getChainKinds();
         List<ChainKindTransfer> chainKindTransfers = new ArrayList<>(chainKinds.size());
-        var chainKindTransferCache = getChainTransferCaches(userVisit).getChainKindTransferCache();
+        var chainKindTransferCache = getChainTransferCaches().getChainKindTransferCache();
 
         chainKinds.forEach((chainKind) ->
-                chainKindTransfers.add(chainKindTransferCache.getChainKindTransfer(chainKind))
+                chainKindTransfers.add(chainKindTransferCache.getChainKindTransfer(userVisit, chainKind))
         );
 
         return chainKindTransfers;
@@ -517,7 +517,7 @@ public class ChainControl
     }
 
     public ChainKindDescriptionTransfer getChainKindDescriptionTransfer(UserVisit userVisit, ChainKindDescription chainKindDescription) {
-        return getChainTransferCaches(userVisit).getChainKindDescriptionTransferCache().getChainKindDescriptionTransfer(chainKindDescription);
+        return getChainTransferCaches().getChainKindDescriptionTransferCache().getChainKindDescriptionTransfer(userVisit, chainKindDescription);
     }
 
     public List<ChainKindDescriptionTransfer> getChainKindDescriptionTransfersByChainKind(UserVisit userVisit, ChainKind chainKind) {
@@ -525,7 +525,7 @@ public class ChainControl
         List<ChainKindDescriptionTransfer> chainKindDescriptionTransfers = new ArrayList<>(chainKindDescriptions.size());
 
         chainKindDescriptions.forEach((chainKindDescription) -> {
-            chainKindDescriptionTransfers.add(getChainTransferCaches(userVisit).getChainKindDescriptionTransferCache().getChainKindDescriptionTransfer(chainKindDescription));
+            chainKindDescriptionTransfers.add(getChainTransferCaches().getChainKindDescriptionTransferCache().getChainKindDescriptionTransfer(userVisit, chainKindDescription));
         });
 
         return chainKindDescriptionTransfers;
@@ -772,16 +772,16 @@ public class ChainControl
     }
 
     public ChainTypeTransfer getChainTypeTransfer(UserVisit userVisit, ChainType chainType) {
-        return getChainTransferCaches(userVisit).getChainTypeTransferCache().getChainTypeTransfer(chainType);
+        return getChainTransferCaches().getChainTypeTransferCache().getChainTypeTransfer(userVisit, chainType);
     }
 
     public List<ChainTypeTransfer> getChainTypeTransfersByChainKind(UserVisit userVisit, ChainKind chainKind) {
         var chainTypes = getChainTypesByChainKind(chainKind);
         List<ChainTypeTransfer> chainTypeTransfers = new ArrayList<>(chainTypes.size());
-        var chainTypeTransferCache = getChainTransferCaches(userVisit).getChainTypeTransferCache();
+        var chainTypeTransferCache = getChainTransferCaches().getChainTypeTransferCache();
 
         chainTypes.forEach((chainType) ->
-                chainTypeTransfers.add(chainTypeTransferCache.getChainTypeTransfer(chainType))
+                chainTypeTransfers.add(chainTypeTransferCache.getChainTypeTransfer(userVisit, chainType))
         );
 
         return chainTypeTransfers;
@@ -980,7 +980,7 @@ public class ChainControl
     }
 
     public ChainTypeDescriptionTransfer getChainTypeDescriptionTransfer(UserVisit userVisit, ChainTypeDescription chainTypeDescription) {
-        return getChainTransferCaches(userVisit).getChainTypeDescriptionTransferCache().getChainTypeDescriptionTransfer(chainTypeDescription);
+        return getChainTransferCaches().getChainTypeDescriptionTransferCache().getChainTypeDescriptionTransfer(userVisit, chainTypeDescription);
     }
 
     public List<ChainTypeDescriptionTransfer> getChainTypeDescriptionTransfersByChainType(UserVisit userVisit, ChainType chainType) {
@@ -988,7 +988,7 @@ public class ChainControl
         List<ChainTypeDescriptionTransfer> chainTypeDescriptionTransfers = new ArrayList<>(chainTypeDescriptions.size());
 
         chainTypeDescriptions.forEach((chainTypeDescription) -> {
-            chainTypeDescriptionTransfers.add(getChainTransferCaches(userVisit).getChainTypeDescriptionTransferCache().getChainTypeDescriptionTransfer(chainTypeDescription));
+            chainTypeDescriptionTransfers.add(getChainTransferCaches().getChainTypeDescriptionTransferCache().getChainTypeDescriptionTransfer(userVisit, chainTypeDescription));
         });
 
         return chainTypeDescriptionTransfers;
@@ -1122,16 +1122,16 @@ public class ChainControl
     }
 
     public ChainEntityRoleTypeTransfer getChainEntityRoleTypeTransfer(UserVisit userVisit, ChainEntityRoleType chainEntityRoleType) {
-        return getChainTransferCaches(userVisit).getChainEntityRoleTypeTransferCache().getChainEntityRoleTypeTransfer(chainEntityRoleType);
+        return getChainTransferCaches().getChainEntityRoleTypeTransferCache().getChainEntityRoleTypeTransfer(userVisit, chainEntityRoleType);
     }
 
     public List<ChainEntityRoleTypeTransfer> getChainEntityRoleTypeTransfersByChainType(UserVisit userVisit, ChainType chainType) {
         var chainEntityRoleTypes = getChainEntityRoleTypes(chainType);
         List<ChainEntityRoleTypeTransfer> chainEntityRoleTypeTransfers = new ArrayList<>(chainEntityRoleTypes.size());
-        var chainEntityRoleTypeTransferCache = getChainTransferCaches(userVisit).getChainEntityRoleTypeTransferCache();
+        var chainEntityRoleTypeTransferCache = getChainTransferCaches().getChainEntityRoleTypeTransferCache();
 
         chainEntityRoleTypes.forEach((chainEntityRoleType) ->
-                chainEntityRoleTypeTransfers.add(chainEntityRoleTypeTransferCache.getChainEntityRoleTypeTransfer(chainEntityRoleType))
+                chainEntityRoleTypeTransfers.add(chainEntityRoleTypeTransferCache.getChainEntityRoleTypeTransfer(userVisit, chainEntityRoleType))
         );
 
         return chainEntityRoleTypeTransfers;
@@ -1284,7 +1284,7 @@ public class ChainControl
     }
 
     public ChainEntityRoleTypeDescriptionTransfer getChainEntityRoleTypeDescriptionTransfer(UserVisit userVisit, ChainEntityRoleTypeDescription chainEntityRoleTypeDescription) {
-        return getChainTransferCaches(userVisit).getChainEntityRoleTypeDescriptionTransferCache().getChainEntityRoleTypeDescriptionTransfer(chainEntityRoleTypeDescription);
+        return getChainTransferCaches().getChainEntityRoleTypeDescriptionTransferCache().getChainEntityRoleTypeDescriptionTransfer(userVisit, chainEntityRoleTypeDescription);
     }
 
     public List<ChainEntityRoleTypeDescriptionTransfer> getChainEntityRoleTypeDescriptionTransfersByChainEntityRoleType(UserVisit userVisit, ChainEntityRoleType chainEntityRoleType) {
@@ -1292,7 +1292,7 @@ public class ChainControl
         List<ChainEntityRoleTypeDescriptionTransfer> chainEntityRoleTypeDescriptionTransfers = new ArrayList<>(chainEntityRoleTypeDescriptions.size());
 
         chainEntityRoleTypeDescriptions.forEach((chainEntityRoleTypeDescription) -> {
-            chainEntityRoleTypeDescriptionTransfers.add(getChainTransferCaches(userVisit).getChainEntityRoleTypeDescriptionTransferCache().getChainEntityRoleTypeDescriptionTransfer(chainEntityRoleTypeDescription));
+            chainEntityRoleTypeDescriptionTransfers.add(getChainTransferCaches().getChainEntityRoleTypeDescriptionTransferCache().getChainEntityRoleTypeDescriptionTransfer(userVisit, chainEntityRoleTypeDescription));
         });
 
         return chainEntityRoleTypeDescriptionTransfers;
@@ -1539,16 +1539,16 @@ public class ChainControl
     }
 
     public ChainTransfer getChainTransfer(UserVisit userVisit, Chain chain) {
-        return getChainTransferCaches(userVisit).getChainTransferCache().getChainTransfer(chain);
+        return getChainTransferCaches().getChainTransferCache().getChainTransfer(userVisit, chain);
     }
 
     public List<ChainTransfer> getChainTransfersByChainType(UserVisit userVisit, ChainType chainType) {
         var chains = getChainsByChainType(chainType);
         List<ChainTransfer> chainTransfers = new ArrayList<>(chains.size());
-        var chainTransferCache = getChainTransferCaches(userVisit).getChainTransferCache();
+        var chainTransferCache = getChainTransferCaches().getChainTransferCache();
 
         chains.forEach((chain) ->
-                chainTransfers.add(chainTransferCache.getChainTransfer(chain))
+                chainTransfers.add(chainTransferCache.getChainTransfer(userVisit, chain))
         );
 
         return chainTransfers;
@@ -1753,7 +1753,7 @@ public class ChainControl
     }
 
     public ChainDescriptionTransfer getChainDescriptionTransfer(UserVisit userVisit, ChainDescription chainDescription) {
-        return getChainTransferCaches(userVisit).getChainDescriptionTransferCache().getChainDescriptionTransfer(chainDescription);
+        return getChainTransferCaches().getChainDescriptionTransferCache().getChainDescriptionTransfer(userVisit, chainDescription);
     }
 
     public List<ChainDescriptionTransfer> getChainDescriptionTransfersByChain(UserVisit userVisit, Chain chain) {
@@ -1761,7 +1761,7 @@ public class ChainControl
         List<ChainDescriptionTransfer> chainDescriptionTransfers = new ArrayList<>(chainDescriptions.size());
 
         chainDescriptions.forEach((chainDescription) -> {
-            chainDescriptionTransfers.add(getChainTransferCaches(userVisit).getChainDescriptionTransferCache().getChainDescriptionTransfer(chainDescription));
+            chainDescriptionTransfers.add(getChainTransferCaches().getChainDescriptionTransferCache().getChainDescriptionTransfer(userVisit, chainDescription));
         });
 
         return chainDescriptionTransfers;
@@ -1974,16 +1974,16 @@ public class ChainControl
     }
 
     public ChainActionSetTransfer getChainActionSetTransfer(UserVisit userVisit, ChainActionSet chainActionSet) {
-        return getChainTransferCaches(userVisit).getChainActionSetTransferCache().getChainActionSetTransfer(chainActionSet);
+        return getChainTransferCaches().getChainActionSetTransferCache().getChainActionSetTransfer(userVisit, chainActionSet);
     }
 
     public List<ChainActionSetTransfer> getChainActionSetTransfersByChain(UserVisit userVisit, Chain chain) {
         var chainActionSets = getChainActionSetsByChain(chain);
         List<ChainActionSetTransfer> chainActionSetTransfers = new ArrayList<>(chainActionSets.size());
-        var chainActionSetTransferCache = getChainTransferCaches(userVisit).getChainActionSetTransferCache();
+        var chainActionSetTransferCache = getChainTransferCaches().getChainActionSetTransferCache();
 
         chainActionSets.forEach((chainActionSet) ->
-                chainActionSetTransfers.add(chainActionSetTransferCache.getChainActionSetTransfer(chainActionSet))
+                chainActionSetTransfers.add(chainActionSetTransferCache.getChainActionSetTransfer(userVisit, chainActionSet))
         );
 
         return chainActionSetTransfers;
@@ -2177,7 +2177,7 @@ public class ChainControl
     }
 
     public ChainActionSetDescriptionTransfer getChainActionSetDescriptionTransfer(UserVisit userVisit, ChainActionSetDescription chainActionSetDescription) {
-        return getChainTransferCaches(userVisit).getChainActionSetDescriptionTransferCache().getChainActionSetDescriptionTransfer(chainActionSetDescription);
+        return getChainTransferCaches().getChainActionSetDescriptionTransferCache().getChainActionSetDescriptionTransfer(userVisit, chainActionSetDescription);
     }
 
     public List<ChainActionSetDescriptionTransfer> getChainActionSetDescriptionTransfersByChainActionSet(UserVisit userVisit, ChainActionSet chainActionSet) {
@@ -2185,7 +2185,7 @@ public class ChainControl
         List<ChainActionSetDescriptionTransfer> chainActionSetDescriptionTransfers = new ArrayList<>(chainActionSetDescriptions.size());
 
         chainActionSetDescriptions.forEach((chainActionSetDescription) -> {
-            chainActionSetDescriptionTransfers.add(getChainTransferCaches(userVisit).getChainActionSetDescriptionTransferCache().getChainActionSetDescriptionTransfer(chainActionSetDescription));
+            chainActionSetDescriptionTransfers.add(getChainTransferCaches().getChainActionSetDescriptionTransferCache().getChainActionSetDescriptionTransfer(userVisit, chainActionSetDescription));
         });
 
         return chainActionSetDescriptionTransfers;
@@ -2394,16 +2394,16 @@ public class ChainControl
     }
 
     public ChainActionTypeTransfer getChainActionTypeTransfer(UserVisit userVisit, ChainActionType chainActionType) {
-        return getChainTransferCaches(userVisit).getChainActionTypeTransferCache().getChainActionTypeTransfer(chainActionType);
+        return getChainTransferCaches().getChainActionTypeTransferCache().getChainActionTypeTransfer(userVisit, chainActionType);
     }
 
     public List<ChainActionTypeTransfer> getChainActionTypeTransfers(UserVisit userVisit) {
         var chainActionTypes = getChainActionTypes();
         List<ChainActionTypeTransfer> chainActionTypeTransfers = new ArrayList<>(chainActionTypes.size());
-        var chainActionTypeTransferCache = getChainTransferCaches(userVisit).getChainActionTypeTransferCache();
+        var chainActionTypeTransferCache = getChainTransferCaches().getChainActionTypeTransferCache();
 
         chainActionTypes.forEach((chainActionType) ->
-                chainActionTypeTransfers.add(chainActionTypeTransferCache.getChainActionTypeTransfer(chainActionType))
+                chainActionTypeTransfers.add(chainActionTypeTransferCache.getChainActionTypeTransfer(userVisit, chainActionType))
         );
 
         return chainActionTypeTransfers;
@@ -2582,7 +2582,7 @@ public class ChainControl
     }
 
     public ChainActionTypeDescriptionTransfer getChainActionTypeDescriptionTransfer(UserVisit userVisit, ChainActionTypeDescription chainActionTypeDescription) {
-        return getChainTransferCaches(userVisit).getChainActionTypeDescriptionTransferCache().getChainActionTypeDescriptionTransfer(chainActionTypeDescription);
+        return getChainTransferCaches().getChainActionTypeDescriptionTransferCache().getChainActionTypeDescriptionTransfer(userVisit, chainActionTypeDescription);
     }
 
     public List<ChainActionTypeDescriptionTransfer> getChainActionTypeDescriptionTransfersByChainActionType(UserVisit userVisit, ChainActionType chainActionType) {
@@ -2590,7 +2590,7 @@ public class ChainControl
         List<ChainActionTypeDescriptionTransfer> chainActionTypeDescriptionTransfers = new ArrayList<>(chainActionTypeDescriptions.size());
 
         chainActionTypeDescriptions.forEach((chainActionTypeDescription) -> {
-            chainActionTypeDescriptionTransfers.add(getChainTransferCaches(userVisit).getChainActionTypeDescriptionTransferCache().getChainActionTypeDescriptionTransfer(chainActionTypeDescription));
+            chainActionTypeDescriptionTransfers.add(getChainTransferCaches().getChainActionTypeDescriptionTransferCache().getChainActionTypeDescriptionTransfer(userVisit, chainActionTypeDescription));
         });
 
         return chainActionTypeDescriptionTransfers;
@@ -2750,16 +2750,16 @@ public class ChainControl
     }
 
     public ChainActionTransfer getChainActionTransfer(UserVisit userVisit, ChainAction chainAction) {
-        return getChainTransferCaches(userVisit).getChainActionTransferCache().getChainActionTransfer(chainAction);
+        return getChainTransferCaches().getChainActionTransferCache().getChainActionTransfer(userVisit, chainAction);
     }
 
     public List<ChainActionTransfer> getChainActionTransfersByChainActionSet(UserVisit userVisit, ChainActionSet chainActionSet) {
         var chainActions = getChainActionsByChainActionSet(chainActionSet);
         List<ChainActionTransfer> chainActionTransfers = new ArrayList<>(chainActions.size());
-        var chainActionTransferCache = getChainTransferCaches(userVisit).getChainActionTransferCache();
+        var chainActionTransferCache = getChainTransferCaches().getChainActionTransferCache();
 
         chainActions.forEach((chainAction) ->
-                chainActionTransfers.add(chainActionTransferCache.getChainActionTransfer(chainAction))
+                chainActionTransfers.add(chainActionTransferCache.getChainActionTransfer(userVisit, chainAction))
         );
 
         return chainActionTransfers;
@@ -2921,7 +2921,7 @@ public class ChainControl
     }
 
     public ChainActionDescriptionTransfer getChainActionDescriptionTransfer(UserVisit userVisit, ChainActionDescription chainActionDescription) {
-        return getChainTransferCaches(userVisit).getChainActionDescriptionTransferCache().getChainActionDescriptionTransfer(chainActionDescription);
+        return getChainTransferCaches().getChainActionDescriptionTransferCache().getChainActionDescriptionTransfer(userVisit, chainActionDescription);
     }
 
     public List<ChainActionDescriptionTransfer> getChainActionDescriptionTransfersByChainAction(UserVisit userVisit, ChainAction chainAction) {
@@ -2929,7 +2929,7 @@ public class ChainControl
         List<ChainActionDescriptionTransfer> chainActionDescriptionTransfers = new ArrayList<>(chainActionDescriptions.size());
 
         chainActionDescriptions.forEach((chainActionDescription) -> {
-            chainActionDescriptionTransfers.add(getChainTransferCaches(userVisit).getChainActionDescriptionTransferCache().getChainActionDescriptionTransfer(chainActionDescription));
+            chainActionDescriptionTransfers.add(getChainTransferCaches().getChainActionDescriptionTransferCache().getChainActionDescriptionTransfer(userVisit, chainActionDescription));
         });
 
         return chainActionDescriptionTransfers;
@@ -3031,7 +3031,7 @@ public class ChainControl
     }
 
     public ChainActionLetterTransfer getChainActionLetterTransfer(UserVisit userVisit, ChainAction chainAction) {
-        return getChainTransferCaches(userVisit).getChainActionLetterTransferCache().getChainActionLetterTransfer(getChainActionLetter(chainAction));
+        return getChainTransferCaches().getChainActionLetterTransferCache().getChainActionLetterTransfer(userVisit, getChainActionLetter(chainAction));
     }
 
     public void updateChainActionLetterFromValue(ChainActionLetterValue chainActionLetterValue, BasePK updatedBy) {
@@ -3119,7 +3119,7 @@ public class ChainControl
     }
 
     public ChainActionSurveyTransfer getChainActionSurveyTransfer(UserVisit userVisit, ChainAction chainAction) {
-        return getChainTransferCaches(userVisit).getChainActionSurveyTransferCache().getChainActionSurveyTransfer(getChainActionSurvey(chainAction));
+        return getChainTransferCaches().getChainActionSurveyTransferCache().getChainActionSurveyTransfer(userVisit, getChainActionSurvey(chainAction));
     }
 
     public void updateChainActionSurveyFromValue(ChainActionSurveyValue chainActionSurveyValue, BasePK updatedBy) {
@@ -3207,7 +3207,7 @@ public class ChainControl
     }
 
     public ChainActionChainActionSetTransfer getChainActionChainActionSetTransfer(UserVisit userVisit, ChainAction chainAction) {
-        return getChainTransferCaches(userVisit).getChainActionChainActionSetTransferCache().getChainActionChainActionSetTransfer(getChainActionChainActionSet(chainAction));
+        return getChainTransferCaches().getChainActionChainActionSetTransferCache().getChainActionChainActionSetTransfer(userVisit, getChainActionChainActionSet(chainAction));
     }
 
     public void updateChainActionChainActionSetFromValue(ChainActionChainActionSetValue chainActionChainActionSetValue, BasePK updatedBy) {
@@ -3348,15 +3348,15 @@ public class ChainControl
     }
     
     public ChainInstanceTransfer getChainInstanceTransfer(UserVisit userVisit, ChainInstance chainInstance) {
-        return getChainTransferCaches(userVisit).getChainInstanceTransferCache().getChainInstanceTransfer(chainInstance);
+        return getChainTransferCaches().getChainInstanceTransferCache().getChainInstanceTransfer(userVisit, chainInstance);
     }
     
     public List<ChainInstanceTransfer> getChainInstanceTransfers(UserVisit userVisit, Collection<ChainInstance> chainInstances) {
         List<ChainInstanceTransfer> chainInstanceTransfers = new ArrayList<>(chainInstances.size());
-        var chainInstanceTransferCache = getChainTransferCaches(userVisit).getChainInstanceTransferCache();
+        var chainInstanceTransferCache = getChainTransferCaches().getChainInstanceTransferCache();
         
         chainInstances.forEach((chainInstance) ->
-                chainInstanceTransfers.add(chainInstanceTransferCache.getChainInstanceTransfer(chainInstance))
+                chainInstanceTransfers.add(chainInstanceTransferCache.getChainInstanceTransfer(userVisit, chainInstance))
         );
         
         return chainInstanceTransfers;
@@ -3517,7 +3517,7 @@ public class ChainControl
     }
 
     public ChainInstanceStatusTransfer getChainInstanceStatusTransfer(UserVisit userVisit, ChainInstanceStatus chainInstanceStatus) {
-        return getChainTransferCaches(userVisit).getChainInstanceStatusTransferCache().getChainInstanceStatusTransfer(chainInstanceStatus);
+        return getChainTransferCaches().getChainInstanceStatusTransferCache().getChainInstanceStatusTransfer(userVisit, chainInstanceStatus);
     }
 
     public ChainInstanceStatusTransfer getChainInstanceStatusTransfer(UserVisit userVisit, ChainInstance chainInstance) {
@@ -3766,15 +3766,15 @@ public class ChainControl
     
     public ChainInstanceEntityRoleTransfer getChainInstanceEntityRoleTransfer(UserVisit userVisit,
             ChainInstanceEntityRole chainInstanceEntityRole) {
-        return getChainTransferCaches(userVisit).getChainInstanceEntityRoleTransferCache().getChainInstanceEntityRoleTransfer(chainInstanceEntityRole);
+        return getChainTransferCaches().getChainInstanceEntityRoleTransferCache().getChainInstanceEntityRoleTransfer(userVisit, chainInstanceEntityRole);
     }
     
     public List<ChainInstanceEntityRoleTransfer> getChainInstanceEntityRoleTransfers(UserVisit userVisit, Collection<ChainInstanceEntityRole> chainInstanceEntityRoles) {
         List<ChainInstanceEntityRoleTransfer> chainInstanceEntityRoleTransfers = new ArrayList<>(chainInstanceEntityRoles.size());
-        var chainInstanceEntityRoleTransferCache = getChainTransferCaches(userVisit).getChainInstanceEntityRoleTransferCache();
+        var chainInstanceEntityRoleTransferCache = getChainTransferCaches().getChainInstanceEntityRoleTransferCache();
         
         chainInstanceEntityRoles.forEach((chainInstanceEntityRole) ->
-                chainInstanceEntityRoleTransfers.add(chainInstanceEntityRoleTransferCache.getChainInstanceEntityRoleTransfer(chainInstanceEntityRole))
+                chainInstanceEntityRoleTransfers.add(chainInstanceEntityRoleTransferCache.getChainInstanceEntityRoleTransfer(userVisit, chainInstanceEntityRole))
         );
         
         return chainInstanceEntityRoleTransfers;

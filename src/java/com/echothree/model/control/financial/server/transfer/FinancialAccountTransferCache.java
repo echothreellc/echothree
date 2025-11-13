@@ -36,8 +36,8 @@ public class FinancialAccountTransferCache
     boolean includeTransactions;
     
     /** Creates a new instance of FinancialAccountTransferCache */
-    public FinancialAccountTransferCache(UserVisit userVisit, FinancialControl financialControl) {
-        super(userVisit, financialControl);
+    public FinancialAccountTransferCache(FinancialControl financialControl) {
+        super(financialControl);
         
         accountingControl = Session.getModelController(AccountingControl.class);
 
@@ -50,7 +50,7 @@ public class FinancialAccountTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public FinancialAccountTransfer getFinancialAccountTransfer(FinancialAccount financialAccount) {
+    public FinancialAccountTransfer getFinancialAccountTransfer(UserVisit userVisit, FinancialAccount financialAccount) {
         var financialAccountTransfer = get(financialAccount);
         
         if(financialAccountTransfer == null) {
@@ -71,7 +71,7 @@ public class FinancialAccountTransferCache
             
             financialAccountTransfer = new FinancialAccountTransfer(financialAccountType, financialAccountName, currencyTransfer, glAccountTransfer, reference,
                     description, unformattedActualBalance, actualBalance, unformattedAvailableBalance, availableBalance);
-            put(financialAccount, financialAccountTransfer);
+            put(userVisit, financialAccount, financialAccountTransfer);
             
             if(includeRoles) {
                 var financialAccountRoleTransfers = financialControl.getFinancialAccountRoleTransfersByFinancialAccount(userVisit, financialAccount);

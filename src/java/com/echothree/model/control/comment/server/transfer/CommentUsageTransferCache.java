@@ -25,16 +25,16 @@ public class CommentUsageTransferCache
         extends BaseCommentTransferCache<CommentUsage, CommentUsageTransfer> {
     
     /** Creates a new instance of CommentUsageTransferCache */
-    public CommentUsageTransferCache(UserVisit userVisit, CommentControl commentControl) {
-        super(userVisit, commentControl);
+    public CommentUsageTransferCache(CommentControl commentControl) {
+        super(commentControl);
     }
     
-    public CommentUsageTransfer getCommentUsageTransfer(CommentUsage commentUsage) {
+    public CommentUsageTransfer getCommentUsageTransfer(UserVisit userVisit, CommentUsage commentUsage) {
         var commentUsageTransfer = get(commentUsage);
         
         if(commentUsageTransfer == null) {
             commentUsageTransfer = new CommentUsageTransfer();
-            put(commentUsage, commentUsageTransfer);
+            put(userVisit, commentUsage, commentUsageTransfer);
             
             commentUsageTransfer.setComment(commentControl.getCommentTransfer(userVisit, commentUsage.getComment()));
             commentUsageTransfer.setCommentUsageType(commentControl.getCommentUsageTypeTransfer(userVisit,

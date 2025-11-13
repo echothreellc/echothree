@@ -29,14 +29,14 @@ public class LotAliasTypeTransferCache
     LotAliasControl lotAliasControl = Session.getModelController(LotAliasControl.class);
 
     /** Creates a new instance of LotAliasTypeTransferCache */
-    public LotAliasTypeTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    public LotAliasTypeTransferCache(InventoryControl inventoryControl) {
+        super(inventoryControl);
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public LotAliasTypeTransfer getTransfer(LotAliasType lotAliasType) {
+    public LotAliasTypeTransfer getTransfer(UserVisit userVisit, LotAliasType lotAliasType) {
         var lotAliasTypeTransfer = get(lotAliasType);
         
         if(lotAliasTypeTransfer == null) {
@@ -45,10 +45,10 @@ public class LotAliasTypeTransferCache
             var validationPattern = lotAliasTypeDetail.getValidationPattern();
             var isDefault = lotAliasTypeDetail.getIsDefault();
             var sortOrder = lotAliasTypeDetail.getSortOrder();
-            var description = lotAliasControl.getBestLotAliasTypeDescription(lotAliasType, getLanguage());
+            var description = lotAliasControl.getBestLotAliasTypeDescription(lotAliasType, getLanguage(userVisit));
             
             lotAliasTypeTransfer = new LotAliasTypeTransfer(lotAliasTypeName, validationPattern, isDefault, sortOrder, description);
-            put(lotAliasType, lotAliasTypeTransfer);
+            put(userVisit, lotAliasType, lotAliasTypeTransfer);
         }
         
         return lotAliasTypeTransfer;

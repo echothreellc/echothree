@@ -25,11 +25,11 @@ public class PicklistAliasTransferCache
         extends BasePicklistTransferCache<PicklistAlias, PicklistAliasTransfer> {
     
     /** Creates a new instance of PicklistAliasTransferCache */
-    public PicklistAliasTransferCache(UserVisit userVisit, PicklistControl picklistControl) {
-        super(userVisit, picklistControl);
+    public PicklistAliasTransferCache(PicklistControl picklistControl) {
+        super(picklistControl);
     }
     
-    public PicklistAliasTransfer getPicklistAliasTransfer(PicklistAlias picklistAlias) {
+    public PicklistAliasTransfer getPicklistAliasTransfer(UserVisit userVisit, PicklistAlias picklistAlias) {
         var picklistAliasTransfer = get(picklistAlias);
         
         if(picklistAliasTransfer == null) {
@@ -38,7 +38,7 @@ public class PicklistAliasTransferCache
             var alias = picklistAlias.getAlias();
             
             picklistAliasTransfer = new PicklistAliasTransfer(picklist, picklistAliasType, alias);
-            put(picklistAlias, picklistAliasTransfer);
+            put(userVisit, picklistAlias, picklistAliasTransfer);
         }
         
         return picklistAliasTransfer;

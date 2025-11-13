@@ -28,14 +28,14 @@ public class FilterKindTransferCache
     FilterControl filterControl = Session.getModelController(FilterControl.class);
 
     /** Creates a new instance of FilterKindTransferCache */
-    public FilterKindTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public FilterKindTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
 
     @Override
-    public FilterKindTransfer getTransfer(FilterKind filterKind) {
+    public FilterKindTransfer getTransfer(UserVisit userVisit, FilterKind filterKind) {
         var filterKindTransfer = get(filterKind);
         
         if(filterKindTransfer == null) {
@@ -43,10 +43,10 @@ public class FilterKindTransferCache
             var filterKindName = filterKindDetail.getFilterKindName();
             var isDefault = filterKindDetail.getIsDefault();
             var sortOrder = filterKindDetail.getSortOrder();
-            var description = filterControl.getBestFilterKindDescription(filterKind, getLanguage());
+            var description = filterControl.getBestFilterKindDescription(filterKind, getLanguage(userVisit));
             
             filterKindTransfer = new FilterKindTransfer(filterKindName, isDefault, sortOrder, description);
-            put(filterKind, filterKindTransfer);
+            put(userVisit, filterKind, filterKindTransfer);
         }
         
         return filterKindTransfer;

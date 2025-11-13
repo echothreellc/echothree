@@ -30,14 +30,14 @@ public class PaymentProcessorTransactionCodeTransferCache
     PaymentProcessorTypeCodeControl paymentProcessorTypeCodeControl = Session.getModelController(PaymentProcessorTypeCodeControl.class);
 
     /** Creates a new instance of PaymentProcessorTypeTransferCache */
-    public PaymentProcessorTransactionCodeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public PaymentProcessorTransactionCodeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public PaymentProcessorTransactionCodeTransfer getTransfer(PaymentProcessorTransactionCode paymentProcessorTransactionCode) {
+    public PaymentProcessorTransactionCodeTransfer getTransfer(UserVisit userVisit, PaymentProcessorTransactionCode paymentProcessorTransactionCode) {
         var paymentProcessorTransactionCodeTransfer = get(paymentProcessorTransactionCode);
         
         if(paymentProcessorTransactionCodeTransfer == null) {
@@ -46,7 +46,7 @@ public class PaymentProcessorTransactionCodeTransferCache
 
             paymentProcessorTransactionCodeTransfer = new PaymentProcessorTransactionCodeTransfer(paymentProcessorTransactionTransfer,
                     paymentProcessorActionTypeTransfer);
-            put(paymentProcessorTransactionCode, paymentProcessorTransactionCodeTransfer);
+            put(userVisit, paymentProcessorTransactionCode, paymentProcessorTransactionCodeTransfer);
         }
         
         return paymentProcessorTransactionCodeTransfer;

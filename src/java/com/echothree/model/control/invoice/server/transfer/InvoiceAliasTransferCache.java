@@ -25,11 +25,11 @@ public class InvoiceAliasTransferCache
         extends BaseInvoiceTransferCache<InvoiceAlias, InvoiceAliasTransfer> {
     
     /** Creates a new instance of InvoiceAliasTransferCache */
-    public InvoiceAliasTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
-        super(userVisit, invoiceControl);
+    public InvoiceAliasTransferCache(InvoiceControl invoiceControl) {
+        super(invoiceControl);
     }
     
-    public InvoiceAliasTransfer getInvoiceAliasTransfer(InvoiceAlias invoiceAlias) {
+    public InvoiceAliasTransfer getInvoiceAliasTransfer(UserVisit userVisit, InvoiceAlias invoiceAlias) {
         var invoiceAliasTransfer = get(invoiceAlias);
         
         if(invoiceAliasTransfer == null) {
@@ -38,7 +38,7 @@ public class InvoiceAliasTransferCache
             var alias = invoiceAlias.getAlias();
             
             invoiceAliasTransfer = new InvoiceAliasTransfer(invoice, invoiceAliasType, alias);
-            put(invoiceAlias, invoiceAliasTransfer);
+            put(userVisit, invoiceAlias, invoiceAliasTransfer);
         }
         
         return invoiceAliasTransfer;

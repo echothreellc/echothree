@@ -27,23 +27,23 @@ public class TermTransferCache
         extends BaseTermTransferCache<Term, TermTransfer> {
     
     /** Creates a new instance of TermTransferCache */
-    public TermTransferCache(UserVisit userVisit, TermControl termControl) {
-        super(userVisit, termControl);
+    public TermTransferCache(TermControl termControl) {
+        super(termControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public TermTransfer getTermTransfer(Term term) {
+    public TermTransfer getTermTransfer(UserVisit userVisit, Term term) {
         var termTransfer = get(term);
         
         if(termTransfer == null) {
             var termDetail = term.getLastDetail();
             var termName = termDetail.getTermName();
-            var termTypeTransferCache = termControl.getTermTransferCaches(userVisit).getTermTypeTransferCache();
-            var termType = termTypeTransferCache.getTermTypeTransfer(termDetail.getTermType());
+            var termTypeTransferCache = termControl.getTermTransferCaches().getTermTypeTransferCache();
+            var termType = termTypeTransferCache.getTermTypeTransfer(userVisit, termDetail.getTermType());
             var isDefault = termDetail.getIsDefault();
             var sortOrder = termDetail.getSortOrder();
-            var description = termControl.getBestTermDescription(term, getLanguage());
+            var description = termControl.getBestTermDescription(term, getLanguage(userVisit));
             String netDueDays = null;
             String discountPercentage = null;
             String discountDays = null;
@@ -69,7 +69,7 @@ public class TermTransferCache
             
             termTransfer = new TermTransfer(termName, termType, isDefault, sortOrder, description,
                     discountPercentage, netDueDays, discountDays, netDueDayOfMonth, dueNextMonthDays, discountBeforeDayOfMonth);
-            put(term, termTransfer);
+            put(userVisit, term, termTransfer);
         }
         return termTransfer;
     }

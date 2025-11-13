@@ -29,11 +29,11 @@ public class EntityDateDefaultTransferCache
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of EntityDateDefaultTransferCache */
-    public EntityDateDefaultTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityDateDefaultTransferCache() {
+        super();
     }
     
-    public EntityDateDefaultTransfer getEntityDateDefaultTransfer(EntityDateDefault entityDateDefault) {
+    public EntityDateDefaultTransfer getEntityDateDefaultTransfer(UserVisit userVisit, EntityDateDefault entityDateDefault) {
         var entityDateDefaultTransfer = get(entityDateDefault);
         
         if(entityDateDefaultTransfer == null) {
@@ -42,7 +42,7 @@ public class EntityDateDefaultTransferCache
             var dateAttribute = DateUtils.getInstance().formatDate(userVisit, unformattedDateAttribute);
             
             entityDateDefaultTransfer = new EntityDateDefaultTransfer(entityAttribute, dateAttribute, unformattedDateAttribute);
-            put(entityDateDefault, entityDateDefaultTransfer);
+            put(userVisit, entityDateDefault, entityDateDefaultTransfer);
         }
         
         return entityDateDefaultTransfer;

@@ -34,15 +34,15 @@ public class VendorItemCostTransferCache
     UomControl uomControl;
     
     /** Creates a new instance of VendorItemCostTransferCache */
-    public VendorItemCostTransferCache(UserVisit userVisit, VendorControl vendorControl) {
-        super(userVisit, vendorControl);
+    public VendorItemCostTransferCache(VendorControl vendorControl) {
+        super(vendorControl);
         
         inventoryControl = Session.getModelController(InventoryControl.class);
         partyControl = Session.getModelController(PartyControl.class);
         uomControl = Session.getModelController(UomControl.class);
     }
     
-    public VendorItemCostTransfer getVendorItemCostTransfer(VendorItemCost vendorItemCost) {
+    public VendorItemCostTransfer getVendorItemCostTransfer(UserVisit userVisit, VendorItemCost vendorItemCost) {
         var vendorItemCostTransfer = get(vendorItemCost);
         
         if(vendorItemCostTransfer == null) {
@@ -56,7 +56,7 @@ public class VendorItemCostTransferCache
             
             vendorItemCostTransfer = new VendorItemCostTransfer(vendorItemTransfer, inventoryConditionTransfer, unitOfMeasureTypeTransfer, unformattedUnitCost,
                     unitCost);
-            put(vendorItemCost, vendorItemCostTransfer);
+            put(userVisit, vendorItemCost, vendorItemCostTransfer);
         }
         
         return vendorItemCostTransfer;

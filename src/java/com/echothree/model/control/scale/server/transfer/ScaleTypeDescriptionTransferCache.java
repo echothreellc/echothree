@@ -25,11 +25,11 @@ public class ScaleTypeDescriptionTransferCache
         extends BaseScaleDescriptionTransferCache<ScaleTypeDescription, ScaleTypeDescriptionTransfer> {
     
     /** Creates a new instance of ScaleTypeDescriptionTransferCache */
-    public ScaleTypeDescriptionTransferCache(UserVisit userVisit, ScaleControl scaleControl) {
-        super(userVisit, scaleControl);
+    public ScaleTypeDescriptionTransferCache(ScaleControl scaleControl) {
+        super(scaleControl);
     }
     
-    public ScaleTypeDescriptionTransfer getScaleTypeDescriptionTransfer(ScaleTypeDescription scaleTypeDescription) {
+    public ScaleTypeDescriptionTransfer getScaleTypeDescriptionTransfer(UserVisit userVisit, ScaleTypeDescription scaleTypeDescription) {
         var scaleTypeDescriptionTransfer = get(scaleTypeDescription);
         
         if(scaleTypeDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class ScaleTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, scaleTypeDescription.getLanguage());
             
             scaleTypeDescriptionTransfer = new ScaleTypeDescriptionTransfer(languageTransfer, scaleTypeTransfer, scaleTypeDescription.getDescription());
-            put(scaleTypeDescription, scaleTypeDescriptionTransfer);
+            put(userVisit, scaleTypeDescription, scaleTypeDescriptionTransfer);
         }
         
         return scaleTypeDescriptionTransfer;

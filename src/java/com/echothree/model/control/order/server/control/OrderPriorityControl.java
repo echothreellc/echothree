@@ -226,15 +226,15 @@ public class OrderPriorityControl
     }
 
     public OrderPriorityTransfer getOrderPriorityTransfer(UserVisit userVisit, OrderPriority orderPriority) {
-        return getOrderTransferCaches(userVisit).getOrderPriorityTransferCache().getOrderPriorityTransfer(orderPriority);
+        return getOrderTransferCaches().getOrderPriorityTransferCache().getOrderPriorityTransfer(userVisit, orderPriority);
     }
 
     public List<OrderPriorityTransfer> getOrderPriorityTransfers(UserVisit userVisit, Collection<OrderPriority> orderPriorities) {
         List<OrderPriorityTransfer> orderPriorityTransfers = new ArrayList<>(orderPriorities.size());
-        var orderPriorityTransferCache = getOrderTransferCaches(userVisit).getOrderPriorityTransferCache();
+        var orderPriorityTransferCache = getOrderTransferCaches().getOrderPriorityTransferCache();
 
         orderPriorities.forEach((orderPriority) ->
-                orderPriorityTransfers.add(orderPriorityTransferCache.getOrderPriorityTransfer(orderPriority))
+                orderPriorityTransfers.add(orderPriorityTransferCache.getOrderPriorityTransfer(userVisit, orderPriority))
         );
 
         return orderPriorityTransfers;
@@ -456,16 +456,16 @@ public class OrderPriorityControl
     }
 
     public OrderPriorityDescriptionTransfer getOrderPriorityDescriptionTransfer(UserVisit userVisit, OrderPriorityDescription orderPriorityDescription) {
-        return getOrderTransferCaches(userVisit).getOrderPriorityDescriptionTransferCache().getOrderPriorityDescriptionTransfer(orderPriorityDescription);
+        return getOrderTransferCaches().getOrderPriorityDescriptionTransferCache().getOrderPriorityDescriptionTransfer(userVisit, orderPriorityDescription);
     }
 
     public List<OrderPriorityDescriptionTransfer> getOrderPriorityDescriptionTransfersByOrderPriority(UserVisit userVisit, OrderPriority orderPriority) {
         var orderPriorityDescriptions = getOrderPriorityDescriptionsByOrderPriority(orderPriority);
         List<OrderPriorityDescriptionTransfer> orderPriorityDescriptionTransfers = new ArrayList<>(orderPriorityDescriptions.size());
-        var orderPriorityDescriptionTransferCache = getOrderTransferCaches(userVisit).getOrderPriorityDescriptionTransferCache();
+        var orderPriorityDescriptionTransferCache = getOrderTransferCaches().getOrderPriorityDescriptionTransferCache();
 
         orderPriorityDescriptions.forEach((orderPriorityDescription) ->
-                orderPriorityDescriptionTransfers.add(orderPriorityDescriptionTransferCache.getOrderPriorityDescriptionTransfer(orderPriorityDescription))
+                orderPriorityDescriptionTransfers.add(orderPriorityDescriptionTransferCache.getOrderPriorityDescriptionTransfer(userVisit, orderPriorityDescription))
         );
 
         return orderPriorityDescriptionTransfers;

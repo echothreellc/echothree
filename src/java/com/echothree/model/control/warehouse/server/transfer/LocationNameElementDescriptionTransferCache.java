@@ -25,20 +25,20 @@ public class LocationNameElementDescriptionTransferCache
         extends BaseWarehouseDescriptionTransferCache<LocationNameElementDescription, LocationNameElementDescriptionTransfer> {
     
     /** Creates a new instance of LocationNameElementDescriptionTransferCache */
-    public LocationNameElementDescriptionTransferCache(UserVisit userVisit, WarehouseControl warehouseControl) {
-        super(userVisit, warehouseControl);
+    public LocationNameElementDescriptionTransferCache(WarehouseControl warehouseControl) {
+        super(warehouseControl);
     }
     
-    public LocationNameElementDescriptionTransfer getLocationNameElementDescriptionTransfer(LocationNameElementDescription locationNameElementDescription) {
+    public LocationNameElementDescriptionTransfer getLocationNameElementDescriptionTransfer(UserVisit userVisit, LocationNameElementDescription locationNameElementDescription) {
         var locationNameElementDescriptionTransfer = get(locationNameElementDescription);
         
         if(locationNameElementDescriptionTransfer == null) {
-            var locationNameElementTransferCache = warehouseControl.getWarehouseTransferCaches(userVisit).getLocationNameElementTransferCache();
-            var locationNameElementTransfer = locationNameElementTransferCache.getLocationNameElementTransfer(locationNameElementDescription.getLocationNameElement());
+            var locationNameElementTransferCache = warehouseControl.getWarehouseTransferCaches().getLocationNameElementTransferCache();
+            var locationNameElementTransfer = locationNameElementTransferCache.getLocationNameElementTransfer(userVisit, locationNameElementDescription.getLocationNameElement());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, locationNameElementDescription.getLanguage());
             
             locationNameElementDescriptionTransfer = new LocationNameElementDescriptionTransfer(languageTransfer, locationNameElementTransfer, locationNameElementDescription.getDescription());
-            put(locationNameElementDescription, locationNameElementDescriptionTransfer);
+            put(userVisit, locationNameElementDescription, locationNameElementDescriptionTransfer);
         }
         
         return locationNameElementDescriptionTransfer;

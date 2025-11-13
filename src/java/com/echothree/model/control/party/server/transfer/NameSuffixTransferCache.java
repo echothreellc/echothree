@@ -24,14 +24,14 @@ public class NameSuffixTransferCache
         extends BasePartyTransferCache<NameSuffix, NameSuffixTransfer> {
     
     /** Creates a new instance of NameSuffixTransferCache */
-    public NameSuffixTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public NameSuffixTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
 
     @Override
-    public NameSuffixTransfer getTransfer(NameSuffix nameSuffix) {
+    public NameSuffixTransfer getTransfer(UserVisit userVisit, NameSuffix nameSuffix) {
         var nameSuffixTransfer = get(nameSuffix);
         
         if(nameSuffixTransfer == null) {
@@ -43,7 +43,7 @@ public class NameSuffixTransferCache
             var sortOrder = nameSuffixDetail.getSortOrder();
             
             nameSuffixTransfer = new NameSuffixTransfer(nameSuffixId, description, isDefault, sortOrder);
-            put(nameSuffix, nameSuffixTransfer);
+            put(userVisit, nameSuffix, nameSuffixTransfer);
         }
         
         return nameSuffixTransfer;

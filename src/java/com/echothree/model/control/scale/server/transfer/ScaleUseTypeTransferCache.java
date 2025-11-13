@@ -29,13 +29,13 @@ public class ScaleUseTypeTransferCache
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of ScaleUseTypeTransferCache */
-    public ScaleUseTypeTransferCache(UserVisit userVisit, ScaleControl scaleControl) {
-        super(userVisit, scaleControl);
+    public ScaleUseTypeTransferCache(ScaleControl scaleControl) {
+        super(scaleControl);
         
         setIncludeEntityInstance(true);
     }
 
-    public ScaleUseTypeTransfer getScaleUseTypeTransfer(ScaleUseType scaleUseType) {
+    public ScaleUseTypeTransfer getScaleUseTypeTransfer(UserVisit userVisit, ScaleUseType scaleUseType) {
         var scaleUseTypeTransfer = get(scaleUseType);
 
         if(scaleUseTypeTransfer == null) {
@@ -43,10 +43,10 @@ public class ScaleUseTypeTransferCache
             var scaleUseTypeName = scaleUseTypeDetail.getScaleUseTypeName();
             var isDefault = scaleUseTypeDetail.getIsDefault();
             var sortOrder = scaleUseTypeDetail.getSortOrder();
-            var description = scaleControl.getBestScaleUseTypeDescription(scaleUseType, getLanguage());
+            var description = scaleControl.getBestScaleUseTypeDescription(scaleUseType, getLanguage(userVisit));
 
             scaleUseTypeTransfer = new ScaleUseTypeTransfer(scaleUseTypeName, isDefault, sortOrder, description);
-            put(scaleUseType, scaleUseTypeTransfer);
+            put(userVisit, scaleUseType, scaleUseTypeTransfer);
         }
 
         return scaleUseTypeTransfer;

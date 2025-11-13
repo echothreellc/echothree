@@ -29,13 +29,13 @@ public class WorkflowDestinationSelectorTransferCache
     SelectorControl selectorControl;
     
     /** Creates a new instance of WorkflowDestinationSelectorTransferCache */
-    public WorkflowDestinationSelectorTransferCache(UserVisit userVisit, WorkflowControl workflowControl) {
-        super(userVisit, workflowControl);
+    public WorkflowDestinationSelectorTransferCache(WorkflowControl workflowControl) {
+        super(workflowControl);
         
         selectorControl = Session.getModelController(SelectorControl.class);
     }
     
-    public WorkflowDestinationSelectorTransfer getWorkflowDestinationSelectorTransfer(WorkflowDestinationSelector workflowDestinationSelector) {
+    public WorkflowDestinationSelectorTransfer getWorkflowDestinationSelectorTransfer(UserVisit userVisit, WorkflowDestinationSelector workflowDestinationSelector) {
         var workflowDestinationSelectorTransfer = get(workflowDestinationSelector);
         
         if(workflowDestinationSelectorTransfer == null) {
@@ -43,7 +43,7 @@ public class WorkflowDestinationSelectorTransferCache
             var selector = selectorControl.getSelectorTransfer(userVisit, workflowDestinationSelector.getSelector());
             
             workflowDestinationSelectorTransfer = new WorkflowDestinationSelectorTransfer(workflowDestination, selector);
-            put(workflowDestinationSelector, workflowDestinationSelectorTransfer);
+            put(userVisit, workflowDestinationSelector, workflowDestinationSelectorTransfer);
         }
         
         return workflowDestinationSelectorTransfer;

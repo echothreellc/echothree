@@ -29,13 +29,13 @@ public class PartyResponsibilityTransferCache
     PartyControl partyControl;
     
     /** Creates a new instance of PartyResponsibilityTransferCache */
-    public PartyResponsibilityTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit, employeeControl);
+    public PartyResponsibilityTransferCache(EmployeeControl employeeControl) {
+        super(employeeControl);
         
         partyControl = Session.getModelController(PartyControl.class);
     }
     
-    public PartyResponsibilityTransfer getPartyResponsibilityTransfer(PartyResponsibility partyResponsibility) {
+    public PartyResponsibilityTransfer getPartyResponsibilityTransfer(UserVisit userVisit, PartyResponsibility partyResponsibility) {
         var partyResponsibilityTransfer = get(partyResponsibility);
         
         if(partyResponsibilityTransfer == null) {
@@ -43,7 +43,7 @@ public class PartyResponsibilityTransferCache
             var responsibilityType = employeeControl.getResponsibilityTypeTransfer(userVisit, partyResponsibility.getResponsibilityType());
             
             partyResponsibilityTransfer = new PartyResponsibilityTransfer(party, responsibilityType);
-            put(partyResponsibility, partyResponsibilityTransfer);
+            put(userVisit, partyResponsibility, partyResponsibilityTransfer);
         }
         
         return partyResponsibilityTransfer;

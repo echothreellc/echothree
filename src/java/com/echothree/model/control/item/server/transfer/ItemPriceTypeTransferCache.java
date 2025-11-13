@@ -35,8 +35,8 @@ public class ItemPriceTypeTransferCache
     /**
      * Creates a new instance of ItemPriceTypeTransferCache
      */
-    public ItemPriceTypeTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemPriceTypeTransferCache(ItemControl itemControl) {
+        super(itemControl);
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
@@ -53,17 +53,17 @@ public class ItemPriceTypeTransferCache
     }
 
     @Override
-    public ItemPriceTypeTransfer getTransfer(ItemPriceType itemPriceType) {
+    public ItemPriceTypeTransfer getTransfer(UserVisit userVisit, ItemPriceType itemPriceType) {
         var itemPriceTypeTransfer = get(itemPriceType);
 
         if(itemPriceTypeTransfer == null) {
             var itemPriceTypeName = filterItemPriceTypeName ? null : itemPriceType.getItemPriceTypeName();
             var isDefault = filterIsDefault ? null : itemPriceType.getIsDefault();
             var sortOrder = filterSortOrder ? null : itemPriceType.getSortOrder();
-            var description = filterDescription ? null : itemControl.getBestItemPriceTypeDescription(itemPriceType, getLanguage());
+            var description = filterDescription ? null : itemControl.getBestItemPriceTypeDescription(itemPriceType, getLanguage(userVisit));
 
             itemPriceTypeTransfer = new ItemPriceTypeTransfer(itemPriceTypeName, isDefault, sortOrder, description);
-            put(itemPriceType, itemPriceTypeTransfer);
+            put(userVisit, itemPriceType, itemPriceTypeTransfer);
         }
 
         return itemPriceTypeTransfer;

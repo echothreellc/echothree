@@ -248,15 +248,15 @@ public class EntityAliasControl
     }
 
     public EntityAliasTypeTransfer getEntityAliasTypeTransfer(UserVisit userVisit, EntityAliasType entityAliasType, EntityInstance entityInstance) {
-        return getCoreTransferCaches(userVisit).getEntityAliasTypeTransferCache().getEntityAliasTypeTransfer(entityAliasType, entityInstance);
+        return getCoreTransferCaches().getEntityAliasTypeTransferCache().getEntityAliasTypeTransfer(userVisit, entityAliasType, entityInstance);
     }
 
     public List<EntityAliasTypeTransfer> getEntityAliasTypeTransfers(UserVisit userVisit, Collection<EntityAliasType> entityAliasTypes, EntityInstance entityInstance) {
         List<EntityAliasTypeTransfer> entityAliasTypeTransfers = new ArrayList<>(entityAliasTypes.size());
-        var entityAliasTypeTransferCache = getCoreTransferCaches(userVisit).getEntityAliasTypeTransferCache();
+        var entityAliasTypeTransferCache = getCoreTransferCaches().getEntityAliasTypeTransferCache();
 
         entityAliasTypes.forEach((entityAliasType) ->
-                entityAliasTypeTransfers.add(entityAliasTypeTransferCache.getEntityAliasTypeTransfer(entityAliasType, entityInstance))
+                entityAliasTypeTransfers.add(entityAliasTypeTransferCache.getEntityAliasTypeTransfer(userVisit, entityAliasType, entityInstance))
         );
 
         return entityAliasTypeTransfers;
@@ -513,17 +513,17 @@ public class EntityAliasControl
     }
 
     public EntityAliasTypeDescriptionTransfer getEntityAliasTypeDescriptionTransfer(UserVisit userVisit, EntityAliasTypeDescription entityAliasTypeDescription, EntityInstance entityInstance) {
-        return getCoreTransferCaches(userVisit).getEntityAliasTypeDescriptionTransferCache().getEntityAliasTypeDescriptionTransfer(entityAliasTypeDescription, entityInstance);
+        return getCoreTransferCaches().getEntityAliasTypeDescriptionTransferCache().getEntityAliasTypeDescriptionTransfer(userVisit, entityAliasTypeDescription, entityInstance);
     }
 
     public List<EntityAliasTypeDescriptionTransfer> getEntityAliasTypeDescriptionTransfersByEntityAliasType(UserVisit userVisit,
             EntityAliasType entityAliasType, EntityInstance entityInstance) {
         var entityAliasTypeDescriptions = getEntityAliasTypeDescriptionsByEntityAliasType(entityAliasType);
         List<EntityAliasTypeDescriptionTransfer> entityAliasTypeDescriptionTransfers = new ArrayList<>(entityAliasTypeDescriptions.size());
-        var entityAliasTypeDescriptionTransferCache = getCoreTransferCaches(userVisit).getEntityAliasTypeDescriptionTransferCache();
+        var entityAliasTypeDescriptionTransferCache = getCoreTransferCaches().getEntityAliasTypeDescriptionTransferCache();
 
         entityAliasTypeDescriptions.forEach((entityAliasTypeDescription) ->
-                entityAliasTypeDescriptionTransfers.add(entityAliasTypeDescriptionTransferCache.getEntityAliasTypeDescriptionTransfer(entityAliasTypeDescription, entityInstance))
+                entityAliasTypeDescriptionTransfers.add(entityAliasTypeDescriptionTransferCache.getEntityAliasTypeDescriptionTransfer(userVisit, entityAliasTypeDescription, entityInstance))
         );
 
         return entityAliasTypeDescriptionTransfers;
@@ -746,15 +746,15 @@ public class EntityAliasControl
     }
 
     public EntityAliasTransfer getEntityAliasTransfer(UserVisit userVisit, EntityAlias entityAlias) {
-        return getCoreTransferCaches(userVisit).getEntityAliasTransferCache().getEntityAliasTransfer(entityAlias);
+        return getCoreTransferCaches().getEntityAliasTransferCache().getEntityAliasTransfer(userVisit, entityAlias);
     }
 
     public List<EntityAliasTransfer> getEntityAliasTransfers(UserVisit userVisit, Collection<EntityAlias> entityAliases) {
         var entityAliasTransfers = new ArrayList<EntityAliasTransfer>(entityAliases.size());
-        var entityAliasTransferCache = getCoreTransferCaches(userVisit).getEntityAliasTransferCache();
+        var entityAliasTransferCache = getCoreTransferCaches().getEntityAliasTransferCache();
 
         entityAliases.forEach((entityAlias) ->
-                entityAliasTransfers.add(entityAliasTransferCache.getEntityAliasTransfer(entityAlias))
+                entityAliasTransfers.add(entityAliasTransferCache.getEntityAliasTransfer(userVisit, entityAlias))
         );
 
         return entityAliasTransfers;

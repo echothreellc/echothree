@@ -25,20 +25,20 @@ public class PartySecurityRoleTemplateDescriptionTransferCache
         extends BaseSecurityDescriptionTransferCache<PartySecurityRoleTemplateDescription, PartySecurityRoleTemplateDescriptionTransfer> {
     
     /** Creates a new instance of PartySecurityRoleTemplateDescriptionTransferCache */
-    public PartySecurityRoleTemplateDescriptionTransferCache(UserVisit userVisit, SecurityControl securityControl) {
-        super(userVisit, securityControl);
+    public PartySecurityRoleTemplateDescriptionTransferCache(SecurityControl securityControl) {
+        super(securityControl);
     }
     
-    public PartySecurityRoleTemplateDescriptionTransfer getPartySecurityRoleTemplateDescriptionTransfer(PartySecurityRoleTemplateDescription partySecurityRoleTemplateDescription) {
+    public PartySecurityRoleTemplateDescriptionTransfer getPartySecurityRoleTemplateDescriptionTransfer(UserVisit userVisit, PartySecurityRoleTemplateDescription partySecurityRoleTemplateDescription) {
         var partySecurityRoleTemplateDescriptionTransfer = get(partySecurityRoleTemplateDescription);
         
         if(partySecurityRoleTemplateDescriptionTransfer == null) {
-            var partySecurityRoleTemplateTransferCache = securityControl.getSecurityTransferCaches(userVisit).getPartySecurityRoleTemplateTransferCache();
-            var partySecurityRoleTemplateTransfer = partySecurityRoleTemplateTransferCache.getPartySecurityRoleTemplateTransfer(partySecurityRoleTemplateDescription.getPartySecurityRoleTemplate());
+            var partySecurityRoleTemplateTransferCache = securityControl.getSecurityTransferCaches().getPartySecurityRoleTemplateTransferCache();
+            var partySecurityRoleTemplateTransfer = partySecurityRoleTemplateTransferCache.getPartySecurityRoleTemplateTransfer(userVisit, partySecurityRoleTemplateDescription.getPartySecurityRoleTemplate());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, partySecurityRoleTemplateDescription.getLanguage());
             
             partySecurityRoleTemplateDescriptionTransfer = new PartySecurityRoleTemplateDescriptionTransfer(languageTransfer, partySecurityRoleTemplateTransfer, partySecurityRoleTemplateDescription.getDescription());
-            put(partySecurityRoleTemplateDescription, partySecurityRoleTemplateDescriptionTransfer);
+            put(userVisit, partySecurityRoleTemplateDescription, partySecurityRoleTemplateDescriptionTransfer);
         }
         
         return partySecurityRoleTemplateDescriptionTransfer;

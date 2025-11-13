@@ -34,8 +34,8 @@ public class ContentCollectionTransferCache
     boolean includeContentSections;
 
     /** Creates a new instance of ContentCollectionTransferCache */
-    public ContentCollectionTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    public ContentCollectionTransferCache(ContentControl contentControl) {
+        super(contentControl);
 
         var options = session.getOptions();
         if(options != null) {
@@ -50,17 +50,17 @@ public class ContentCollectionTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public ContentCollectionTransfer getContentCollectionTransfer(ContentCollection contentCollection) {
+    public ContentCollectionTransfer getContentCollectionTransfer(UserVisit userVisit, ContentCollection contentCollection) {
         var contentCollectionTransfer = get(contentCollection);
         
         if(contentCollectionTransfer == null) {
             var contentCollectionDetail = contentCollection.getLastDetail();
             var contentCollectionName = contentCollectionDetail.getContentCollectionName();
             var defaultOfferUse = offerUseControl.getOfferUseTransfer(userVisit, contentCollectionDetail.getDefaultOfferUse());
-            var description = contentControl.getBestContentCollectionDescription(contentCollection, getLanguage());
+            var description = contentControl.getBestContentCollectionDescription(contentCollection, getLanguage(userVisit));
             
             contentCollectionTransfer = new ContentCollectionTransfer(contentCollectionName, defaultOfferUse, description);
-            put(contentCollection, contentCollectionTransfer);
+            put(userVisit, contentCollection, contentCollectionTransfer);
             
             if(includeContentCatalogs) {
                 contentCollectionTransfer.setContentCatalogs(new ListWrapper<>(contentControl.getContentCatalogTransfers(userVisit, contentCollection)));

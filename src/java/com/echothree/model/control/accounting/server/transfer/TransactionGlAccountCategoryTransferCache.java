@@ -28,14 +28,14 @@ public class TransactionGlAccountCategoryTransferCache
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of TransactionGlAccountCategoryTransferCache */
-    public TransactionGlAccountCategoryTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public TransactionGlAccountCategoryTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public TransactionGlAccountCategoryTransfer getTransfer(TransactionGlAccountCategory transactionGlAccountCategory) {
+    public TransactionGlAccountCategoryTransfer getTransfer(UserVisit userVisit, TransactionGlAccountCategory transactionGlAccountCategory) {
         var transactionGlAccountCategoryTransfer = get(transactionGlAccountCategory);
         
         if(transactionGlAccountCategoryTransfer == null) {
@@ -47,11 +47,11 @@ public class TransactionGlAccountCategoryTransferCache
             var sortOrder = transactionGlAccountCategoryDetail.getSortOrder();
             var transactionGlAccount = accountingControl.getTransactionGlAccount(transactionGlAccountCategory);
             var glAccountTransfer = transactionGlAccount == null? null: accountingControl.getGlAccountTransfer(userVisit, transactionGlAccount.getGlAccount());
-            var description = accountingControl.getBestTransactionGlAccountCategoryDescription(transactionGlAccountCategory, getLanguage());
+            var description = accountingControl.getBestTransactionGlAccountCategoryDescription(transactionGlAccountCategory, getLanguage(userVisit));
             
             transactionGlAccountCategoryTransfer = new TransactionGlAccountCategoryTransfer(transactionTypeTransfer, transactionGlAccountCategoryName,
                     glAccountCategoryTransfer, sortOrder, glAccountTransfer, description);
-            put(transactionGlAccountCategory, transactionGlAccountCategoryTransfer);
+            put(userVisit, transactionGlAccountCategory, transactionGlAccountCategoryTransfer);
         }
         
         return transactionGlAccountCategoryTransfer;

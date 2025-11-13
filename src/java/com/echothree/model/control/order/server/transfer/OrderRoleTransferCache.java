@@ -30,13 +30,13 @@ public class OrderRoleTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of OrderRoleTransferCache */
-    public OrderRoleTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public OrderRoleTransferCache() {
+        super();
 
         setIncludeEntityInstance(true);
     }
     
-    public OrderRoleTransfer getOrderRoleTransfer(OrderRole orderRole) {
+    public OrderRoleTransfer getOrderRoleTransfer(UserVisit userVisit, OrderRole orderRole) {
         var orderRoleTransfer = get(orderRole);
         
         if(orderRoleTransfer == null) {
@@ -44,7 +44,7 @@ public class OrderRoleTransferCache
             var orderRoleType = orderRoleControl.getOrderRoleTypeTransfer(userVisit, orderRole.getOrderRoleType());
 
             orderRoleTransfer = new OrderRoleTransfer(party, orderRoleType);
-            put(orderRole, orderRoleTransfer);
+            put(userVisit, orderRole, orderRoleTransfer);
         }
         
         return orderRoleTransfer;

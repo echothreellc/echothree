@@ -25,23 +25,23 @@ public class InventoryConditionUseTypeTransferCache
         extends BaseInventoryTransferCache<InventoryConditionUseType, InventoryConditionUseTypeTransfer> {
     
     /** Creates a new instance of InventoryConditionUseTypeTransferCache */
-    public InventoryConditionUseTypeTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    public InventoryConditionUseTypeTransferCache(InventoryControl inventoryControl) {
+        super(inventoryControl);
     }
     
     @Override
-    public InventoryConditionUseTypeTransfer getTransfer(InventoryConditionUseType inventoryConditionUseType) {
+    public InventoryConditionUseTypeTransfer getTransfer(UserVisit userVisit, InventoryConditionUseType inventoryConditionUseType) {
         var inventoryConditionUseTypeTransfer = get(inventoryConditionUseType);
         
         if(inventoryConditionUseTypeTransfer == null) {
             var inventoryConditionUseTypeName = inventoryConditionUseType.getInventoryConditionUseTypeName();
             var isDefault = inventoryConditionUseType.getIsDefault();
             var sortOrder = inventoryConditionUseType.getSortOrder();
-            var description = inventoryControl.getBestInventoryConditionUseTypeDescription(inventoryConditionUseType, getLanguage());
+            var description = inventoryControl.getBestInventoryConditionUseTypeDescription(inventoryConditionUseType, getLanguage(userVisit));
             
             inventoryConditionUseTypeTransfer = new InventoryConditionUseTypeTransfer(inventoryConditionUseTypeName, isDefault,
                     sortOrder, description);
-            put(inventoryConditionUseType, inventoryConditionUseTypeTransfer);
+            put(userVisit, inventoryConditionUseType, inventoryConditionUseTypeTransfer);
         }
         
         return inventoryConditionUseTypeTransfer;

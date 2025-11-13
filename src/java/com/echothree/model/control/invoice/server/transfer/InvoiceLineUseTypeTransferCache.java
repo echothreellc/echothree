@@ -25,19 +25,19 @@ public class InvoiceLineUseTypeTransferCache
         extends BaseInvoiceTransferCache<InvoiceLineUseType, InvoiceLineUseTypeTransfer> {
     
     /** Creates a new instance of InvoiceLineUseTypeTransferCache */
-    public InvoiceLineUseTypeTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
-        super(userVisit, invoiceControl);
+    public InvoiceLineUseTypeTransferCache(InvoiceControl invoiceControl) {
+        super(invoiceControl);
     }
     
-    public InvoiceLineUseTypeTransfer getInvoiceLineUseTypeTransfer(InvoiceLineUseType invoiceLineUseType) {
+    public InvoiceLineUseTypeTransfer getInvoiceLineUseTypeTransfer(UserVisit userVisit, InvoiceLineUseType invoiceLineUseType) {
         var invoiceLineUseTypeTransfer = get(invoiceLineUseType);
         
         if(invoiceLineUseTypeTransfer == null) {
             var invoiceLineUseTypeName = invoiceLineUseType.getInvoiceLineUseTypeName();
-            var description = invoiceControl.getBestInvoiceLineUseTypeDescription(invoiceLineUseType, getLanguage());
+            var description = invoiceControl.getBestInvoiceLineUseTypeDescription(invoiceLineUseType, getLanguage(userVisit));
             
             invoiceLineUseTypeTransfer = new InvoiceLineUseTypeTransfer(invoiceLineUseTypeName, description);
-            put(invoiceLineUseType, invoiceLineUseTypeTransfer);
+            put(userVisit, invoiceLineUseType, invoiceLineUseTypeTransfer);
         }
         
         return invoiceLineUseTypeTransfer;

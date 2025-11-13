@@ -38,8 +38,8 @@ public class ForumMessagePartTransferCache
     boolean includeString;
     
     /** Creates a new instance of ForumMessagePartTransferCache */
-    public ForumMessagePartTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
+    public ForumMessagePartTransferCache(ForumControl forumControl) {
+        super(forumControl);
         
         var options = session.getOptions();
         if(options != null) {
@@ -49,7 +49,7 @@ public class ForumMessagePartTransferCache
         }
     }
     
-    public ForumMessagePartTransfer getForumMessagePartTransfer(ForumMessagePart forumMessagePart) {
+    public ForumMessagePartTransfer getForumMessagePartTransfer(UserVisit userVisit, ForumMessagePart forumMessagePart) {
         var forumMessagePartTransfer = get(forumMessagePart);
         
         if(forumMessagePartTransfer == null) {
@@ -101,7 +101,7 @@ public class ForumMessagePartTransferCache
             
             forumMessagePartTransfer = new ForumMessagePartTransfer(forumMessageTransfer, forumMessagePartTypeTransfer,
                     languageTransfer, mimeTypeTransfer, blobMessagePart, clobMessagePart, stringMessagePart);
-            put(forumMessagePart, forumMessagePartTransfer);
+            put(userVisit, forumMessagePart, forumMessagePartTransfer);
         }
         
         return forumMessagePartTransfer;

@@ -25,11 +25,11 @@ public class ContactMechanismAliasTransferCache
         extends BaseContactTransferCache<ContactMechanismAlias, ContactMechanismAliasTransfer> {
     
     /** Creates a new instance of ContactMechanismAliasTransferCache */
-    public ContactMechanismAliasTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    public ContactMechanismAliasTransferCache(ContactControl contactControl) {
+        super(contactControl);
     }
     
-    public ContactMechanismAliasTransfer getContactMechanismAliasTransfer(ContactMechanismAlias contactMechanismAlias) {
+    public ContactMechanismAliasTransfer getContactMechanismAliasTransfer(UserVisit userVisit, ContactMechanismAlias contactMechanismAlias) {
         var contactMechanismAliasTransfer = get(contactMechanismAlias);
         
         if(contactMechanismAliasTransfer == null) {
@@ -40,7 +40,7 @@ public class ContactMechanismAliasTransferCache
             var alias = contactMechanismAlias.getAlias();
             
             contactMechanismAliasTransfer = new ContactMechanismAliasTransfer(contactMechanism, contactMechanismAliasType, alias);
-            put(contactMechanismAlias, contactMechanismAliasTransfer);
+            put(userVisit, contactMechanismAlias, contactMechanismAliasTransfer);
         }
         
         return contactMechanismAliasTransfer;

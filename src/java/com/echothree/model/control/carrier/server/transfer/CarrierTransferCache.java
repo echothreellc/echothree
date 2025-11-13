@@ -49,8 +49,8 @@ public class CarrierTransferCache
     boolean includePartyScaleUses;
     
     /** Creates a new instance of CarrierTransferCache */
-    public CarrierTransferCache(UserVisit userVisit, CarrierControl carrierControl) {
-        super(userVisit, carrierControl);
+    public CarrierTransferCache(CarrierControl carrierControl) {
+        super(carrierControl);
         
         var options = session.getOptions();
         if(options != null) {
@@ -66,11 +66,11 @@ public class CarrierTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public CarrierTransfer getCarrierTransfer(Carrier carrier) {
-        return getCarrierTransfer(carrier.getParty());
+    public CarrierTransfer getCarrierTransfer(UserVisit userVisit, Carrier carrier) {
+        return getCarrierTransfer(userVisit, carrier.getParty());
     }
 
-    public CarrierTransfer getCarrierTransfer(Party party) {
+    public CarrierTransfer getCarrierTransfer(UserVisit userVisit, Party party) {
         var carrierTransfer = get(party);
         
         if(carrierTransfer == null) {
@@ -103,7 +103,7 @@ public class CarrierTransferCache
             carrierTransfer = new CarrierTransfer(partyName, partyTypeTransfer, preferredLanguageTransfer, preferredCurrencyTransfer, preferredTimeZoneTransfer,
                     preferredDateTimeFormatTransfer, personTransfer, partyGroupTransfer, carrierName, carrierType, geoCodeSelectorTransfer, itemSelectorTransfer,
                     accountValidationPattern, isDefault, sortOrder);
-            put(party, carrierTransfer);
+            put(userVisit, party, carrierTransfer);
             
             if(includePartyContactMechanisms) {
                 carrierTransfer.setPartyContactMechanisms(new ListWrapper<>(contactControl.getPartyContactMechanismTransfersByParty(userVisit, party)));

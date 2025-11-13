@@ -29,13 +29,13 @@ public class FinancialAccountTransactionTypeTransferCache
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
     
     /** Creates a new instance of FinancialAccountTransactionTypeTransferCache */
-    public FinancialAccountTransactionTypeTransferCache(UserVisit userVisit, FinancialControl financialControl) {
-        super(userVisit, financialControl);
+    public FinancialAccountTransactionTypeTransferCache(FinancialControl financialControl) {
+        super(financialControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public FinancialAccountTransactionTypeTransfer getFinancialAccountTransactionTypeTransfer(FinancialAccountTransactionType financialAccountTransactionType) {
+    public FinancialAccountTransactionTypeTransfer getFinancialAccountTransactionTypeTransfer(UserVisit userVisit, FinancialAccountTransactionType financialAccountTransactionType) {
         var financialAccountTransactionTypeTransfer = get(financialAccountTransactionType);
         
         if(financialAccountTransactionTypeTransfer == null) {
@@ -43,15 +43,15 @@ public class FinancialAccountTransactionTypeTransferCache
             var financialAccountTypeTransfer = financialControl.getFinancialAccountTypeTransfer(userVisit, financialAccountTransactionTypeDetail.getFinancialAccountType());
             var financialAccountTransactionTypeName = financialAccountTransactionTypeDetail.getFinancialAccountTransactionTypeName();
             var parentFinancialAccountTransactionType = financialAccountTransactionTypeDetail.getParentFinancialAccountTransactionType();
-            var parentFinancialAccountTransactionTypeTransfer = parentFinancialAccountTransactionType == null? null: getFinancialAccountTransactionTypeTransfer(parentFinancialAccountTransactionType);
+            var parentFinancialAccountTransactionTypeTransfer = parentFinancialAccountTransactionType == null ? null : getFinancialAccountTransactionTypeTransfer(userVisit, parentFinancialAccountTransactionType);
             var glAccountTransfer = accountingControl.getGlAccountTransfer(userVisit, financialAccountTransactionTypeDetail.getGlAccount());
             var isDefault = financialAccountTransactionTypeDetail.getIsDefault();
             var sortOrder = financialAccountTransactionTypeDetail.getSortOrder();
-            var description = financialControl.getBestFinancialAccountTransactionTypeDescription(financialAccountTransactionType, getLanguage());
+            var description = financialControl.getBestFinancialAccountTransactionTypeDescription(financialAccountTransactionType, getLanguage(userVisit));
             
             financialAccountTransactionTypeTransfer = new FinancialAccountTransactionTypeTransfer(financialAccountTypeTransfer,
                     financialAccountTransactionTypeName, parentFinancialAccountTransactionTypeTransfer, glAccountTransfer, isDefault, sortOrder, description);
-            put(financialAccountTransactionType, financialAccountTransactionTypeTransfer);
+            put(userVisit, financialAccountTransactionType, financialAccountTransactionTypeTransfer);
         }
         
         return financialAccountTransactionTypeTransfer;

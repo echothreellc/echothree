@@ -31,12 +31,12 @@ public class TransactionGlEntryTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of TransactionGlEntryTransferCache */
-    public TransactionGlEntryTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public TransactionGlEntryTransferCache() {
+        super();
     }
 
     @Override
-    public TransactionGlEntryTransfer getTransfer(TransactionGlEntry transactionGlEntry) {
+    public TransactionGlEntryTransfer getTransfer(UserVisit userVisit, TransactionGlEntry transactionGlEntry) {
         var transactionGlEntryTransfer = get(transactionGlEntry);
 
         if(transactionGlEntryTransfer == null) {
@@ -64,7 +64,7 @@ public class TransactionGlEntryTransferCache
                     unformattedOriginalDebit, originalDebit, unformattedOriginalCredit, originalCredit, unformattedDebit,
                     debit, unformattedCredit, credit);
 
-            put(transactionGlEntry, transactionGlEntryTransfer);
+            put(userVisit, transactionGlEntry, transactionGlEntryTransfer);
         }
 
         return transactionGlEntryTransfer;

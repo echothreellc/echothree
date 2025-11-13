@@ -28,14 +28,14 @@ public class BirthdayFormatTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of BirthdayFormatTransferCache */
-    public BirthdayFormatTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public BirthdayFormatTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
 
     @Override
-    public BirthdayFormatTransfer getTransfer(BirthdayFormat birthdayFormat) {
+    public BirthdayFormatTransfer getTransfer(UserVisit userVisit, BirthdayFormat birthdayFormat) {
         var birthdayFormatTransfer = get(birthdayFormat);
         
         if(birthdayFormatTransfer == null) {
@@ -43,10 +43,10 @@ public class BirthdayFormatTransferCache
             var birthdayFormatName = birthdayFormatDetail.getBirthdayFormatName();
             var isDefault = birthdayFormatDetail.getIsDefault();
             var sortOrder = birthdayFormatDetail.getSortOrder();
-            var description = partyControl.getBestBirthdayFormatDescription(birthdayFormat, getLanguage());
+            var description = partyControl.getBestBirthdayFormatDescription(birthdayFormat, getLanguage(userVisit));
             
             birthdayFormatTransfer = new BirthdayFormatTransfer(birthdayFormatName, isDefault, sortOrder, description);
-            put(birthdayFormat, birthdayFormatTransfer);
+            put(userVisit, birthdayFormat, birthdayFormatTransfer);
         }
         
         return birthdayFormatTransfer;

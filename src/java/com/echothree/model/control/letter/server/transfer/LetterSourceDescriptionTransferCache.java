@@ -25,11 +25,11 @@ public class LetterSourceDescriptionTransferCache
         extends BaseLetterDescriptionTransferCache<LetterSourceDescription, LetterSourceDescriptionTransfer> {
     
     /** Creates a new instance of LetterSourceDescriptionTransferCache */
-    public LetterSourceDescriptionTransferCache(UserVisit userVisit, LetterControl letterControl) {
-        super(userVisit, letterControl);
+    public LetterSourceDescriptionTransferCache(LetterControl letterControl) {
+        super(letterControl);
     }
     
-    public LetterSourceDescriptionTransfer getLetterSourceDescriptionTransfer(LetterSourceDescription letterSourceDescription) {
+    public LetterSourceDescriptionTransfer getLetterSourceDescriptionTransfer(UserVisit userVisit, LetterSourceDescription letterSourceDescription) {
         var letterSourceDescriptionTransfer = get(letterSourceDescription);
         
         if(letterSourceDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class LetterSourceDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, letterSourceDescription.getLanguage());
             
             letterSourceDescriptionTransfer = new LetterSourceDescriptionTransfer(languageTransfer, letterSourceTransfer, letterSourceDescription.getDescription());
-            put(letterSourceDescription, letterSourceDescriptionTransfer);
+            put(userVisit, letterSourceDescription, letterSourceDescriptionTransfer);
         }
         
         return letterSourceDescriptionTransfer;

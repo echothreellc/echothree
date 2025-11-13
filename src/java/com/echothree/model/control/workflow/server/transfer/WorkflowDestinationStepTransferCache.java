@@ -25,11 +25,11 @@ public class WorkflowDestinationStepTransferCache
         extends BaseWorkflowTransferCache<WorkflowDestinationStep, WorkflowDestinationStepTransfer> {
     
     /** Creates a new instance of WorkflowDestinationStepTransferCache */
-    public WorkflowDestinationStepTransferCache(UserVisit userVisit, WorkflowControl workflowControl) {
-        super(userVisit, workflowControl);
+    public WorkflowDestinationStepTransferCache(WorkflowControl workflowControl) {
+        super(workflowControl);
     }
     
-    public WorkflowDestinationStepTransfer getWorkflowDestinationStepTransfer(WorkflowDestinationStep workflowDestinationStep) {
+    public WorkflowDestinationStepTransfer getWorkflowDestinationStepTransfer(UserVisit userVisit, WorkflowDestinationStep workflowDestinationStep) {
         var workflowDestinationStepTransfer = get(workflowDestinationStep);
         
         if(workflowDestinationStepTransfer == null) {
@@ -37,7 +37,7 @@ public class WorkflowDestinationStepTransferCache
             var workflowStep = workflowControl.getWorkflowStepTransfer(userVisit, workflowDestinationStep.getWorkflowStep());
             
             workflowDestinationStepTransfer = new WorkflowDestinationStepTransfer(workflowDestination, workflowStep);
-            put(workflowDestinationStep, workflowDestinationStepTransfer);
+            put(userVisit, workflowDestinationStep, workflowDestinationStepTransfer);
         }
         
         return workflowDestinationStepTransfer;

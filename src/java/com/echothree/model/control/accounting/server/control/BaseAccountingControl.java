@@ -34,9 +34,9 @@ public class BaseAccountingControl
     
     private AccountingTransferCaches accountingTransferCaches;
     
-    public AccountingTransferCaches getAccountingTransferCaches(UserVisit userVisit) {
+    public AccountingTransferCaches getAccountingTransferCaches() {
         if(accountingTransferCaches == null) {
-            accountingTransferCaches = new AccountingTransferCaches(userVisit);
+            accountingTransferCaches = new AccountingTransferCaches();
         }
         
         return accountingTransferCaches;

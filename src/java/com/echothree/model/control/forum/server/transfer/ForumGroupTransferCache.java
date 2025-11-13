@@ -35,8 +35,8 @@ public class ForumGroupTransferCache
     boolean includeForums;
     
     /** Creates a new instance of ForumGroupTransferCache */
-    public ForumGroupTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
+    public ForumGroupTransferCache(ForumControl forumControl) {
+        super(forumControl);
         
         var options = session.getOptions();
         if(options != null) {
@@ -48,7 +48,7 @@ public class ForumGroupTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public ForumGroupTransfer getForumGroupTransfer(ForumGroup forumGroup) {
+    public ForumGroupTransfer getForumGroupTransfer(UserVisit userVisit, ForumGroup forumGroup) {
         var forumGroupTransfer = get(forumGroup);
         
         if(forumGroupTransfer == null) {
@@ -57,10 +57,10 @@ public class ForumGroupTransferCache
             var icon = forumGroupDetail.getIcon();
             var iconTransfer = icon == null? null: iconControl.getIconTransfer(userVisit, icon);
             var sortOrder = forumGroupDetail.getSortOrder();
-            var description = forumControl.getBestForumGroupDescription(forumGroup, getLanguage());
+            var description = forumControl.getBestForumGroupDescription(forumGroup, getLanguage(userVisit));
             
             forumGroupTransfer = new ForumGroupTransfer(forumGroupName, iconTransfer, sortOrder, description);
-            put(forumGroup, forumGroupTransfer);
+            put(userVisit, forumGroup, forumGroupTransfer);
             
             if(includeForums) {
                 var forumGroupForums = forumControl.getForumGroupForumsByForumGroup(forumGroup);

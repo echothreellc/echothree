@@ -33,50 +33,50 @@ public class SequenceTransferCaches
     protected SequenceDescriptionTransferCache sequenceDescriptionTransferCache;
     
     /** Creates a new instance of SequenceTransferCaches */
-    public SequenceTransferCaches(UserVisit userVisit, SequenceControl sequenceControl) {
-        super(userVisit);
+    public SequenceTransferCaches(SequenceControl sequenceControl) {
+        super();
         
         this.sequenceControl = sequenceControl;
     }
     
     public SequenceEncoderTypeTransferCache getSequenceEncoderTypeTransferCache() {
         if(sequenceEncoderTypeTransferCache == null)
-            sequenceEncoderTypeTransferCache = new SequenceEncoderTypeTransferCache(userVisit, sequenceControl);
+            sequenceEncoderTypeTransferCache = new SequenceEncoderTypeTransferCache(sequenceControl);
         
         return sequenceEncoderTypeTransferCache;
     }
     
     public SequenceChecksumTypeTransferCache getSequenceChecksumTypeTransferCache() {
         if(sequenceChecksumTypeTransferCache == null)
-            sequenceChecksumTypeTransferCache = new SequenceChecksumTypeTransferCache(userVisit, sequenceControl);
+            sequenceChecksumTypeTransferCache = new SequenceChecksumTypeTransferCache(sequenceControl);
         
         return sequenceChecksumTypeTransferCache;
     }
     
     public SequenceTypeTransferCache getSequenceTypeTransferCache() {
         if(sequenceTypeTransferCache == null)
-            sequenceTypeTransferCache = new SequenceTypeTransferCache(userVisit, sequenceControl);
+            sequenceTypeTransferCache = new SequenceTypeTransferCache(sequenceControl);
         
         return sequenceTypeTransferCache;
     }
     
     public SequenceTypeDescriptionTransferCache getSequenceTypeDescriptionTransferCache() {
         if(sequenceTypeDescriptionTransferCache == null)
-            sequenceTypeDescriptionTransferCache = new SequenceTypeDescriptionTransferCache(userVisit, sequenceControl);
+            sequenceTypeDescriptionTransferCache = new SequenceTypeDescriptionTransferCache(sequenceControl);
         
         return sequenceTypeDescriptionTransferCache;
     }
     
     public SequenceTransferCache getSequenceTransferCache() {
         if(sequenceTransferCache == null)
-            sequenceTransferCache = new SequenceTransferCache(userVisit, sequenceControl);
+            sequenceTransferCache = new SequenceTransferCache(sequenceControl);
         
         return sequenceTransferCache;
     }
     
     public SequenceDescriptionTransferCache getSequenceDescriptionTransferCache() {
         if(sequenceDescriptionTransferCache == null)
-            sequenceDescriptionTransferCache = new SequenceDescriptionTransferCache(userVisit, sequenceControl);
+            sequenceDescriptionTransferCache = new SequenceDescriptionTransferCache(sequenceControl);
         
         return sequenceDescriptionTransferCache;
     }

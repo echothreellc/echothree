@@ -37,8 +37,8 @@ public class WorkflowStepTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of WorkflowStepTransferCache */
-    public WorkflowStepTransferCache(UserVisit userVisit, WorkflowControl workflowControl) {
-        super(userVisit, workflowControl);
+    public WorkflowStepTransferCache(WorkflowControl workflowControl) {
+        super(workflowControl);
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
@@ -58,7 +58,7 @@ public class WorkflowStepTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
     
-    public WorkflowStepTransfer getWorkflowStepTransfer(WorkflowStep workflowStep) {
+    public WorkflowStepTransfer getWorkflowStepTransfer(UserVisit userVisit, WorkflowStep workflowStep) {
         var workflowStepTransfer = get(workflowStep);
         
         if(workflowStepTransfer == null) {
@@ -69,11 +69,11 @@ public class WorkflowStepTransferCache
             var isDefault = filterIsDefault ? null : workflowStepDetail.getIsDefault();
             var sortOrder = filterSortOrder ? null : workflowStepDetail.getSortOrder();
             var hasDestinations = filterHasDestinations ? null : workflowControl.countWorkflowDestinationsByWorkflowStep(workflowStep) > 0;
-            var description = filterDescription ? null : workflowControl.getBestWorkflowStepDescription(workflowStep, getLanguage());
+            var description = filterDescription ? null : workflowControl.getBestWorkflowStepDescription(workflowStep, getLanguage(userVisit));
             
             workflowStepTransfer = new WorkflowStepTransfer(workflow, workflowStepName, workflowStepType, isDefault, sortOrder,
                     hasDestinations, description);
-            put(workflowStep, workflowStepTransfer);
+            put(userVisit, workflowStep, workflowStepTransfer);
         }
         
         return workflowStepTransfer;

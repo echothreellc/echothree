@@ -36,8 +36,8 @@ public class WorkflowDestinationTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of WorkflowDestinationTransferCache */
-    public WorkflowDestinationTransferCache(UserVisit userVisit, WorkflowControl workflowControl) {
-        super(userVisit, workflowControl);
+    public WorkflowDestinationTransferCache(WorkflowControl workflowControl) {
+        super(workflowControl);
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
@@ -56,7 +56,7 @@ public class WorkflowDestinationTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
     
-    public WorkflowDestinationTransfer getWorkflowDestinationTransfer(WorkflowDestination workflowDestination) {
+    public WorkflowDestinationTransfer getWorkflowDestinationTransfer(UserVisit userVisit, WorkflowDestination workflowDestination) {
         var workflowDestinationTransfer = get(workflowDestination);
         
         if(workflowDestinationTransfer == null) {
@@ -65,11 +65,11 @@ public class WorkflowDestinationTransferCache
             var workflowDestinationName = filterWorkflowDestinationName ? null : workflowDestinationDetail.getWorkflowDestinationName();
             var isDefault = filterIsDefault ? null : workflowDestinationDetail.getIsDefault();
             var sortOrder = filterSortOrder ? null : workflowDestinationDetail.getSortOrder();
-            var description = filterDescription ? null : workflowControl.getBestWorkflowDestinationDescription(workflowDestination, getLanguage());
+            var description = filterDescription ? null : workflowControl.getBestWorkflowDestinationDescription(workflowDestination, getLanguage(userVisit));
             
             workflowDestinationTransfer = new WorkflowDestinationTransfer(workflowStep, workflowDestinationName, isDefault,
                     sortOrder, description);
-            put(workflowDestination, workflowDestinationTransfer);
+            put(userVisit, workflowDestination, workflowDestinationTransfer);
         }
         
         return workflowDestinationTransfer;

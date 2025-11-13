@@ -25,11 +25,11 @@ public class LeaveTypeDescriptionTransferCache
         extends BaseEmployeeDescriptionTransferCache<LeaveTypeDescription, LeaveTypeDescriptionTransfer> {
     
     /** Creates a new instance of LeaveTypeDescriptionTransferCache */
-    public LeaveTypeDescriptionTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit, employeeControl);
+    public LeaveTypeDescriptionTransferCache(EmployeeControl employeeControl) {
+        super(employeeControl);
     }
     
-    public LeaveTypeDescriptionTransfer getLeaveTypeDescriptionTransfer(LeaveTypeDescription leaveTypeDescription) {
+    public LeaveTypeDescriptionTransfer getLeaveTypeDescriptionTransfer(UserVisit userVisit, LeaveTypeDescription leaveTypeDescription) {
         var leaveTypeDescriptionTransfer = get(leaveTypeDescription);
         
         if(leaveTypeDescriptionTransfer == null) {
@@ -38,7 +38,7 @@ public class LeaveTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, leaveTypeDescription.getLanguage());
             
             leaveTypeDescriptionTransfer = new LeaveTypeDescriptionTransfer(languageTransfer, leaveTypeTransfer, leaveTypeDescription.getDescription());
-            put(leaveTypeDescription, leaveTypeDescriptionTransfer);
+            put(userVisit, leaveTypeDescription, leaveTypeDescriptionTransfer);
         }
         
         return leaveTypeDescriptionTransfer;

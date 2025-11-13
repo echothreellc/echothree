@@ -31,12 +31,12 @@ public class LotAliasTransferCache
     LotAliasControl lotAliasControl = Session.getModelController(LotAliasControl.class);
 
     /** Creates a new instance of LotAliasTransferCache */
-    public LotAliasTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    public LotAliasTransferCache(InventoryControl inventoryControl) {
+        super(inventoryControl);
     }
     
     @Override
-    public LotAliasTransfer getTransfer(LotAlias lotAlias) {
+    public LotAliasTransfer getTransfer(UserVisit userVisit, LotAlias lotAlias) {
         var lotAliasTransfer = get(lotAlias);
         
         if(lotAliasTransfer == null) {
@@ -45,7 +45,7 @@ public class LotAliasTransferCache
             var alias = lotAlias.getAlias();
             
             lotAliasTransfer = new LotAliasTransfer(/*lot,*/ lotAliasType, alias);
-            put(lotAlias, lotAliasTransfer);
+            put(userVisit, lotAlias, lotAliasTransfer);
         }
         
         return lotAliasTransfer;

@@ -190,15 +190,15 @@ public class ComponentControl
     }
 
     public ComponentVendorTransfer getComponentVendorTransfer(UserVisit userVisit, ComponentVendor componentVendor) {
-        return getCoreTransferCaches(userVisit).getComponentVendorTransferCache().getComponentVendorTransfer(componentVendor);
+        return getCoreTransferCaches().getComponentVendorTransferCache().getComponentVendorTransfer(userVisit, componentVendor);
     }
 
     public List<ComponentVendorTransfer> getComponentVendorTransfers(UserVisit userVisit, Collection<ComponentVendor> componentVendors) {
         var componentVendorTransfers = new ArrayList<ComponentVendorTransfer>(componentVendors.size());
-        var componentVendorTransferCache = getCoreTransferCaches(userVisit).getComponentVendorTransferCache();
+        var componentVendorTransferCache = getCoreTransferCaches().getComponentVendorTransferCache();
 
         componentVendors.forEach((componentVendor) ->
-                componentVendorTransfers.add(componentVendorTransferCache.getComponentVendorTransfer(componentVendor))
+                componentVendorTransfers.add(componentVendorTransferCache.getComponentVendorTransfer(userVisit, componentVendor))
         );
 
         return componentVendorTransfers;

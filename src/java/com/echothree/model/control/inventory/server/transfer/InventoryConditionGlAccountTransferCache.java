@@ -31,12 +31,12 @@ public class InventoryConditionGlAccountTransferCache
     ItemControl itemControl = Session.getModelController(ItemControl.class);
     
     /** Creates a new instance of InventoryConditionGlAccountTransferCache */
-    public InventoryConditionGlAccountTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    public InventoryConditionGlAccountTransferCache(InventoryControl inventoryControl) {
+        super(inventoryControl);
     }
     
     @Override
-    public InventoryConditionGlAccountTransfer getTransfer(InventoryConditionGlAccount inventoryConditionGlAccount) {
+    public InventoryConditionGlAccountTransfer getTransfer(UserVisit userVisit, InventoryConditionGlAccount inventoryConditionGlAccount) {
         var inventoryConditionGlAccountTransfer = get(inventoryConditionGlAccount);
         
         if(inventoryConditionGlAccountTransfer == null) {
@@ -56,7 +56,7 @@ public class InventoryConditionGlAccountTransferCache
             inventoryConditionGlAccountTransfer = new InventoryConditionGlAccountTransfer(inventoryConditionTransfer,
                     itemAccountingCategoryTransfer, inventoryGlAccountTransfer, salesGlAccountTransfer, returnsGlAccountTransfer,
                     cogsGlAccountTransfer, returnsCogsGlAccountTransfer);
-            put(inventoryConditionGlAccount, inventoryConditionGlAccountTransfer);
+            put(userVisit, inventoryConditionGlAccount, inventoryConditionGlAccountTransfer);
         }
         
         return inventoryConditionGlAccountTransfer;

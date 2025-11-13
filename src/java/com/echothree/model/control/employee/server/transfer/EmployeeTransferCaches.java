@@ -46,29 +46,29 @@ public class EmployeeTransferCaches
     protected PartySkillTransferCache partySkillTransferCache;
     
     /** Creates a new instance of EmployeeTransferCaches */
-    public EmployeeTransferCaches(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit);
+    public EmployeeTransferCaches(EmployeeControl employeeControl) {
+        super();
         
         this.employeeControl = employeeControl;
     }
     
     public EmployeeTypeTransferCache getEmployeeTypeTransferCache() {
         if(employeeTypeTransferCache == null)
-            employeeTypeTransferCache = new EmployeeTypeTransferCache(userVisit, employeeControl);
+            employeeTypeTransferCache = new EmployeeTypeTransferCache(employeeControl);
         
         return employeeTypeTransferCache;
     }
     
     public EmployeeTypeDescriptionTransferCache getEmployeeTypeDescriptionTransferCache() {
         if(employeeTypeDescriptionTransferCache == null)
-            employeeTypeDescriptionTransferCache = new EmployeeTypeDescriptionTransferCache(userVisit, employeeControl);
+            employeeTypeDescriptionTransferCache = new EmployeeTypeDescriptionTransferCache(employeeControl);
         
         return employeeTypeDescriptionTransferCache;
     }
     
     public EmployeeTransferCache getEmployeeTransferCache() {
         if(employeeTransferCache == null) {
-            employeeTransferCache = new EmployeeTransferCache(userVisit, employeeControl);
+            employeeTransferCache = new EmployeeTransferCache(employeeControl);
         }
         
         return employeeTransferCache;
@@ -76,7 +76,7 @@ public class EmployeeTransferCaches
     
     public ResponsibilityTypeTransferCache getResponsibilityTypeTransferCache() {
         if(responsibilityTypeTransferCache == null) {
-            responsibilityTypeTransferCache = new ResponsibilityTypeTransferCache(userVisit, employeeControl);
+            responsibilityTypeTransferCache = new ResponsibilityTypeTransferCache(employeeControl);
         }
         
         return responsibilityTypeTransferCache;
@@ -84,7 +84,7 @@ public class EmployeeTransferCaches
     
     public ResponsibilityTypeDescriptionTransferCache getResponsibilityTypeDescriptionTransferCache() {
         if(responsibilityTypeDescriptionTransferCache == null) {
-            responsibilityTypeDescriptionTransferCache = new ResponsibilityTypeDescriptionTransferCache(userVisit, employeeControl);
+            responsibilityTypeDescriptionTransferCache = new ResponsibilityTypeDescriptionTransferCache(employeeControl);
         }
         
         return responsibilityTypeDescriptionTransferCache;
@@ -92,7 +92,7 @@ public class EmployeeTransferCaches
     
     public SkillTypeTransferCache getSkillTypeTransferCache() {
         if(skillTypeTransferCache == null) {
-            skillTypeTransferCache = new SkillTypeTransferCache(userVisit, employeeControl);
+            skillTypeTransferCache = new SkillTypeTransferCache(employeeControl);
         }
         
         return skillTypeTransferCache;
@@ -100,7 +100,7 @@ public class EmployeeTransferCaches
     
     public SkillTypeDescriptionTransferCache getSkillTypeDescriptionTransferCache() {
         if(skillTypeDescriptionTransferCache == null) {
-            skillTypeDescriptionTransferCache = new SkillTypeDescriptionTransferCache(userVisit, employeeControl);
+            skillTypeDescriptionTransferCache = new SkillTypeDescriptionTransferCache(employeeControl);
         }
         
         return skillTypeDescriptionTransferCache;
@@ -108,7 +108,7 @@ public class EmployeeTransferCaches
     
     public LeaveTypeTransferCache getLeaveTypeTransferCache() {
         if(leaveTypeTransferCache == null) {
-            leaveTypeTransferCache = new LeaveTypeTransferCache(userVisit, employeeControl);
+            leaveTypeTransferCache = new LeaveTypeTransferCache(employeeControl);
         }
 
         return leaveTypeTransferCache;
@@ -116,7 +116,7 @@ public class EmployeeTransferCaches
 
     public LeaveTypeDescriptionTransferCache getLeaveTypeDescriptionTransferCache() {
         if(leaveTypeDescriptionTransferCache == null) {
-            leaveTypeDescriptionTransferCache = new LeaveTypeDescriptionTransferCache(userVisit, employeeControl);
+            leaveTypeDescriptionTransferCache = new LeaveTypeDescriptionTransferCache(employeeControl);
         }
 
         return leaveTypeDescriptionTransferCache;
@@ -124,7 +124,7 @@ public class EmployeeTransferCaches
 
     public LeaveReasonTransferCache getLeaveReasonTransferCache() {
         if(leaveReasonTransferCache == null) {
-            leaveReasonTransferCache = new LeaveReasonTransferCache(userVisit, employeeControl);
+            leaveReasonTransferCache = new LeaveReasonTransferCache(employeeControl);
         }
 
         return leaveReasonTransferCache;
@@ -132,7 +132,7 @@ public class EmployeeTransferCaches
 
     public LeaveReasonDescriptionTransferCache getLeaveReasonDescriptionTransferCache() {
         if(leaveReasonDescriptionTransferCache == null) {
-            leaveReasonDescriptionTransferCache = new LeaveReasonDescriptionTransferCache(userVisit, employeeControl);
+            leaveReasonDescriptionTransferCache = new LeaveReasonDescriptionTransferCache(employeeControl);
         }
 
         return leaveReasonDescriptionTransferCache;
@@ -140,7 +140,7 @@ public class EmployeeTransferCaches
 
     public LeaveTransferCache getLeaveTransferCache() {
         if(leaveTransferCache == null) {
-            leaveTransferCache = new LeaveTransferCache(userVisit, employeeControl);
+            leaveTransferCache = new LeaveTransferCache(employeeControl);
         }
 
         return leaveTransferCache;
@@ -148,7 +148,7 @@ public class EmployeeTransferCaches
 
     public TerminationReasonTransferCache getTerminationReasonTransferCache() {
         if(terminationReasonTransferCache == null) {
-            terminationReasonTransferCache = new TerminationReasonTransferCache(userVisit, employeeControl);
+            terminationReasonTransferCache = new TerminationReasonTransferCache(employeeControl);
         }
         
         return terminationReasonTransferCache;
@@ -156,7 +156,7 @@ public class EmployeeTransferCaches
     
     public TerminationReasonDescriptionTransferCache getTerminationReasonDescriptionTransferCache() {
         if(terminationReasonDescriptionTransferCache == null) {
-            terminationReasonDescriptionTransferCache = new TerminationReasonDescriptionTransferCache(userVisit, employeeControl);
+            terminationReasonDescriptionTransferCache = new TerminationReasonDescriptionTransferCache(employeeControl);
         }
         
         return terminationReasonDescriptionTransferCache;
@@ -164,7 +164,7 @@ public class EmployeeTransferCaches
     
     public TerminationTypeTransferCache getTerminationTypeTransferCache() {
         if(terminationTypeTransferCache == null) {
-            terminationTypeTransferCache = new TerminationTypeTransferCache(userVisit, employeeControl);
+            terminationTypeTransferCache = new TerminationTypeTransferCache(employeeControl);
         }
         
         return terminationTypeTransferCache;
@@ -172,7 +172,7 @@ public class EmployeeTransferCaches
     
     public TerminationTypeDescriptionTransferCache getTerminationTypeDescriptionTransferCache() {
         if(terminationTypeDescriptionTransferCache == null) {
-            terminationTypeDescriptionTransferCache = new TerminationTypeDescriptionTransferCache(userVisit, employeeControl);
+            terminationTypeDescriptionTransferCache = new TerminationTypeDescriptionTransferCache(employeeControl);
         }
         
         return terminationTypeDescriptionTransferCache;
@@ -180,7 +180,7 @@ public class EmployeeTransferCaches
     
     public EmploymentTransferCache getEmploymentTransferCache() {
         if(employmentTransferCache == null) {
-            employmentTransferCache = new EmploymentTransferCache(userVisit, employeeControl);
+            employmentTransferCache = new EmploymentTransferCache(employeeControl);
         }
 
         return employmentTransferCache;
@@ -188,7 +188,7 @@ public class EmployeeTransferCaches
 
     public PartyResponsibilityTransferCache getPartyResponsibilityTransferCache() {
         if(partyResponsibilityTransferCache == null) {
-            partyResponsibilityTransferCache = new PartyResponsibilityTransferCache(userVisit, employeeControl);
+            partyResponsibilityTransferCache = new PartyResponsibilityTransferCache(employeeControl);
         }
         
         return partyResponsibilityTransferCache;
@@ -196,7 +196,7 @@ public class EmployeeTransferCaches
     
     public PartySkillTransferCache getPartySkillTransferCache() {
         if(partySkillTransferCache == null) {
-            partySkillTransferCache = new PartySkillTransferCache(userVisit, employeeControl);
+            partySkillTransferCache = new PartySkillTransferCache(employeeControl);
         }
         
         return partySkillTransferCache;

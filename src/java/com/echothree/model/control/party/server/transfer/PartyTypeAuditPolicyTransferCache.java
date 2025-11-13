@@ -34,14 +34,14 @@ public class PartyTypeAuditPolicyTransferCache
     UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
 
     /** Creates a new instance of PartyTypeAuditPolicyTransferCache */
-    public PartyTypeAuditPolicyTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public PartyTypeAuditPolicyTransferCache() {
+        super();
 
         setIncludeEntityInstance(true);
     }
 
     @Override
-    public PartyTypeAuditPolicyTransfer getTransfer(PartyTypeAuditPolicy partyTypeAuditPolicy) {
+    public PartyTypeAuditPolicyTransfer getTransfer(UserVisit userVisit, PartyTypeAuditPolicy partyTypeAuditPolicy) {
         var partyTypeAuditPolicyTransfer = get(partyTypeAuditPolicy);
 
         if(partyTypeAuditPolicyTransfer == null) {
@@ -49,11 +49,11 @@ public class PartyTypeAuditPolicyTransferCache
             var partyTypeTransfer = partyControl.getPartyTypeTransfer(userVisit, partyTypeAuditPolicyDetail.getPartyType());
             var auditCommands = partyTypeAuditPolicyDetail.getAuditCommands();
             var unformattedRetainUserVisitsTime = partyTypeAuditPolicyDetail.getRetainUserVisitsTime();
-            var retainUserVisitsTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedRetainUserVisitsTime);
+            var retainUserVisitsTime = formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedRetainUserVisitsTime);
 
             partyTypeAuditPolicyTransfer = new PartyTypeAuditPolicyTransfer(partyTypeTransfer, auditCommands, unformattedRetainUserVisitsTime,
                     retainUserVisitsTime);
-            put(partyTypeAuditPolicy, partyTypeAuditPolicyTransfer);
+            put(userVisit, partyTypeAuditPolicy, partyTypeAuditPolicyTransfer);
         }
 
         return partyTypeAuditPolicyTransfer;

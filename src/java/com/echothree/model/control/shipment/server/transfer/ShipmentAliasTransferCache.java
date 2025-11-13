@@ -28,12 +28,12 @@ public class ShipmentAliasTransferCache
     ShipmentControl shipmentControl = Session.getModelController(ShipmentControl.class);
 
     /** Creates a new instance of ShipmentAliasTransferCache */
-    public ShipmentAliasTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public ShipmentAliasTransferCache() {
+        super();
     }
 
     @Override
-    public ShipmentAliasTransfer getTransfer(ShipmentAlias shipmentAlias) {
+    public ShipmentAliasTransfer getTransfer(UserVisit userVisit, ShipmentAlias shipmentAlias) {
         var shipmentAliasTransfer = get(shipmentAlias);
         
         if(shipmentAliasTransfer == null) {
@@ -42,7 +42,7 @@ public class ShipmentAliasTransferCache
             var alias = shipmentAlias.getAlias();
             
             shipmentAliasTransfer = new ShipmentAliasTransfer(/*shipment,*/ shipmentAliasType, alias);
-            put(shipmentAlias, shipmentAliasTransfer);
+            put(userVisit, shipmentAlias, shipmentAliasTransfer);
         }
         
         return shipmentAliasTransfer;

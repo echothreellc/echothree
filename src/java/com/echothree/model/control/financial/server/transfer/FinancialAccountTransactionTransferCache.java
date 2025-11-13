@@ -26,13 +26,13 @@ public class FinancialAccountTransactionTransferCache
         extends BaseFinancialTransferCache<FinancialAccountTransaction, FinancialAccountTransactionTransfer> {
     
     /** Creates a new instance of FinancialAccountTransactionTransferCache */
-    public FinancialAccountTransactionTransferCache(UserVisit userVisit, FinancialControl financialControl) {
-        super(userVisit, financialControl);
+    public FinancialAccountTransactionTransferCache(FinancialControl financialControl) {
+        super(financialControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public FinancialAccountTransactionTransfer getFinancialAccountTransactionTransfer(FinancialAccountTransaction financialAccountTransaction) {
+    public FinancialAccountTransactionTransfer getFinancialAccountTransactionTransfer(UserVisit userVisit, FinancialAccountTransaction financialAccountTransaction) {
         var financialAccountTransactionTransfer = get(financialAccountTransaction);
         
         if(financialAccountTransactionTransfer == null) {
@@ -47,7 +47,7 @@ public class FinancialAccountTransactionTransferCache
             
             financialAccountTransactionTransfer = new FinancialAccountTransactionTransfer(financialAccountTransactionName, financialAccountTransfer,
                     financialAccountTransactionTypeTransfer, unformattedAmount, amount, comment);
-            put(financialAccountTransaction, financialAccountTransactionTransfer);
+            put(userVisit, financialAccountTransaction, financialAccountTransactionTransfer);
         }
         
         return financialAccountTransactionTransfer;

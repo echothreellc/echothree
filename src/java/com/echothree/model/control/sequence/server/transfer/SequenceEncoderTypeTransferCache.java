@@ -25,21 +25,21 @@ public class SequenceEncoderTypeTransferCache
         extends BaseSequenceTransferCache<SequenceEncoderType, SequenceEncoderTypeTransfer> {
     
     /** Creates a new instance of SequenceEncoderTypeTransferCache */
-    public SequenceEncoderTypeTransferCache(UserVisit userVisit, SequenceControl sequenceControl) {
-        super(userVisit, sequenceControl);
+    public SequenceEncoderTypeTransferCache(SequenceControl sequenceControl) {
+        super(sequenceControl);
     }
     
-    public SequenceEncoderTypeTransfer getSequenceEncoderTypeTransfer(SequenceEncoderType sequenceEncoderType) {
+    public SequenceEncoderTypeTransfer getSequenceEncoderTypeTransfer(UserVisit userVisit, SequenceEncoderType sequenceEncoderType) {
         var sequenceEncoderTypeTransfer = get(sequenceEncoderType);
         
         if(sequenceEncoderTypeTransfer == null) {
             var sequenceEncoderTypeName = sequenceEncoderType.getSequenceEncoderTypeName();
             var isDefault = sequenceEncoderType.getIsDefault();
             var sortOrder = sequenceEncoderType.getSortOrder();
-            var description = sequenceControl.getBestSequenceEncoderTypeDescription(sequenceEncoderType, getLanguage());
+            var description = sequenceControl.getBestSequenceEncoderTypeDescription(sequenceEncoderType, getLanguage(userVisit));
             
             sequenceEncoderTypeTransfer = new SequenceEncoderTypeTransfer(sequenceEncoderTypeName, isDefault, sortOrder, description);
-            put(sequenceEncoderType, sequenceEncoderTypeTransfer);
+            put(userVisit, sequenceEncoderType, sequenceEncoderTypeTransfer);
         }
         return sequenceEncoderTypeTransfer;
     }

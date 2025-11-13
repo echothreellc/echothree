@@ -28,11 +28,11 @@ public class EntityTypeDescriptionTransferCache
     EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
 
     /** Creates a new instance of EntityTypeDescriptionTransferCache */
-    public EntityTypeDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityTypeDescriptionTransferCache() {
+        super();
     }
     
-    public EntityTypeDescriptionTransfer getEntityTypeDescriptionTransfer(EntityTypeDescription entityTypeDescription) {
+    public EntityTypeDescriptionTransfer getEntityTypeDescriptionTransfer(UserVisit userVisit, EntityTypeDescription entityTypeDescription) {
         var entityTypeDescriptionTransfer = get(entityTypeDescription);
         
         if(entityTypeDescriptionTransfer == null) {
@@ -41,7 +41,7 @@ public class EntityTypeDescriptionTransferCache
             
             entityTypeDescriptionTransfer = new EntityTypeDescriptionTransfer(languageTransfer, entityTypeTransfer,
                     entityTypeDescription.getDescription());
-            put(entityTypeDescription, entityTypeDescriptionTransfer);
+            put(userVisit, entityTypeDescription, entityTypeDescriptionTransfer);
         }
         return entityTypeDescriptionTransfer;
     }

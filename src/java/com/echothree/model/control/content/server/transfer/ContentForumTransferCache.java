@@ -29,13 +29,13 @@ public class ContentForumTransferCache
     ForumControl forumControl = Session.getModelController(ForumControl.class);
 
     /** Creates a new instance of ContentForumTransferCache */
-    public ContentForumTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    public ContentForumTransferCache(ContentControl contentControl) {
+        super(contentControl);
 
         setIncludeEntityInstance(true);
     }
 
-    public ContentForumTransfer getContentForumTransfer(ContentForum contentForum) {
+    public ContentForumTransfer getContentForumTransfer(UserVisit userVisit, ContentForum contentForum) {
         var contentForumTransfer = get(contentForum);
         
         if(contentForumTransfer == null) {
@@ -45,7 +45,7 @@ public class ContentForumTransferCache
             var isDefault = contentForumDetail.getIsDefault();
             
             contentForumTransfer = new ContentForumTransfer(contentCollection, forum, isDefault);
-            put(contentForum, contentForumTransfer);
+            put(userVisit, contentForum, contentForumTransfer);
         }
         
         return contentForumTransfer;

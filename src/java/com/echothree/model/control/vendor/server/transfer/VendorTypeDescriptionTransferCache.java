@@ -25,11 +25,11 @@ public class VendorTypeDescriptionTransferCache
         extends BaseVendorDescriptionTransferCache<VendorTypeDescription, VendorTypeDescriptionTransfer> {
     
     /** Creates a new instance of VendorTypeDescriptionTransferCache */
-    public VendorTypeDescriptionTransferCache(UserVisit userVisit, VendorControl vendorControl) {
-        super(userVisit, vendorControl);
+    public VendorTypeDescriptionTransferCache(VendorControl vendorControl) {
+        super(vendorControl);
     }
     
-    public VendorTypeDescriptionTransfer getVendorTypeDescriptionTransfer(VendorTypeDescription vendorTypeDescription) {
+    public VendorTypeDescriptionTransfer getVendorTypeDescriptionTransfer(UserVisit userVisit, VendorTypeDescription vendorTypeDescription) {
         var vendorTypeDescriptionTransfer = get(vendorTypeDescription);
         
         if(vendorTypeDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class VendorTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, vendorTypeDescription.getLanguage());
             
             vendorTypeDescriptionTransfer = new VendorTypeDescriptionTransfer(languageTransfer, vendorTypeTransfer, vendorTypeDescription.getDescription());
-            put(vendorTypeDescription, vendorTypeDescriptionTransfer);
+            put(userVisit, vendorTypeDescription, vendorTypeDescriptionTransfer);
         }
         
         return vendorTypeDescriptionTransfer;

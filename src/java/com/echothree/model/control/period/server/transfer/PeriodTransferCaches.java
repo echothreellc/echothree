@@ -33,50 +33,50 @@ public class PeriodTransferCaches
     protected PeriodDescriptionTransferCache periodDescriptionTransferCache;
     
     /** Creates a new instance of PeriodTransferCaches */
-    public PeriodTransferCaches(UserVisit userVisit, PeriodControl periodControl) {
-        super(userVisit);
+    public PeriodTransferCaches(PeriodControl periodControl) {
+        super();
         
         this.periodControl = periodControl;
     }
     
     public PeriodKindTransferCache getPeriodKindTransferCache() {
         if(periodKindTransferCache == null)
-            periodKindTransferCache = new PeriodKindTransferCache(userVisit, periodControl);
+            periodKindTransferCache = new PeriodKindTransferCache(periodControl);
         
         return periodKindTransferCache;
     }
 
     public PeriodKindDescriptionTransferCache getPeriodKindDescriptionTransferCache() {
         if(periodKindDescriptionTransferCache == null)
-            periodKindDescriptionTransferCache = new PeriodKindDescriptionTransferCache(userVisit, periodControl);
+            periodKindDescriptionTransferCache = new PeriodKindDescriptionTransferCache(periodControl);
         
         return periodKindDescriptionTransferCache;
     }
     
     public PeriodTypeTransferCache getPeriodTypeTransferCache() {
         if(periodTypeTransferCache == null)
-            periodTypeTransferCache = new PeriodTypeTransferCache(userVisit, periodControl);
+            periodTypeTransferCache = new PeriodTypeTransferCache(periodControl);
         
         return periodTypeTransferCache;
     }
     
     public PeriodTypeDescriptionTransferCache getPeriodTypeDescriptionTransferCache() {
         if(periodTypeDescriptionTransferCache == null)
-            periodTypeDescriptionTransferCache = new PeriodTypeDescriptionTransferCache(userVisit, periodControl);
+            periodTypeDescriptionTransferCache = new PeriodTypeDescriptionTransferCache(periodControl);
         
         return periodTypeDescriptionTransferCache;
     }
     
     public PeriodTransferCache getPeriodTransferCache() {
         if(periodTransferCache == null)
-            periodTransferCache = new PeriodTransferCache(userVisit, periodControl);
+            periodTransferCache = new PeriodTransferCache(periodControl);
         
         return periodTransferCache;
     }
     
     public PeriodDescriptionTransferCache getPeriodDescriptionTransferCache() {
         if(periodDescriptionTransferCache == null)
-            periodDescriptionTransferCache = new PeriodDescriptionTransferCache(userVisit, periodControl);
+            periodDescriptionTransferCache = new PeriodDescriptionTransferCache(periodControl);
         
         return periodDescriptionTransferCache;
     }

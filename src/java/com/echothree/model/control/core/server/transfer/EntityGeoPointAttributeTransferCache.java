@@ -39,11 +39,11 @@ public class EntityGeoPointAttributeTransferCache
     GeoPointUtils geoPointUtils = GeoPointUtils.getInstance();
     
     /** Creates a new instance of EntityGeoPointAttributeTransferCache */
-    public EntityGeoPointAttributeTransferCache(final UserVisit userVisit) {
-        super(userVisit);
+    public EntityGeoPointAttributeTransferCache() {
+        super();
     }
     
-    public EntityGeoPointAttributeTransfer getEntityGeoPointAttributeTransfer(final EntityGeoPointAttribute entityGeoPointAttribute,
+    public EntityGeoPointAttributeTransfer getEntityGeoPointAttributeTransfer(final UserVisit userVisit, final EntityGeoPointAttribute entityGeoPointAttribute,
             final EntityInstance entityInstance) {
         var entityGeoPointAttributeTransfer = get(entityGeoPointAttribute);
         
@@ -54,12 +54,12 @@ public class EntityGeoPointAttributeTransferCache
             var latitude = geoPointUtils.formatDegrees(unformattedLatitude);
             var unformattedLongitude = entityGeoPointAttribute.getLongitude();
             var longitude = geoPointUtils.formatDegrees(unformattedLongitude);
-            var elevation = formatUnitOfMeasure(elevationUnitOfMeasureKind, entityGeoPointAttribute.getElevation());
-            var altitude = formatUnitOfMeasure(altitudeUnitOfMeasureKind, entityGeoPointAttribute.getAltitude());
+            var elevation = formatUnitOfMeasure(userVisit, elevationUnitOfMeasureKind, entityGeoPointAttribute.getElevation());
+            var altitude = formatUnitOfMeasure(userVisit, altitudeUnitOfMeasureKind, entityGeoPointAttribute.getAltitude());
             
             entityGeoPointAttributeTransfer = new EntityGeoPointAttributeTransfer(entityAttribute, entityInstanceTransfer, unformattedLatitude, latitude,
                     unformattedLongitude, longitude, elevation, altitude);
-            put(entityGeoPointAttribute, entityGeoPointAttributeTransfer);
+            put(userVisit, entityGeoPointAttribute, entityGeoPointAttributeTransfer);
         }
         
         return entityGeoPointAttributeTransfer;

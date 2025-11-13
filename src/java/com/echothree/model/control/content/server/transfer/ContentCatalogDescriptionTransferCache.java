@@ -25,11 +25,11 @@ public class ContentCatalogDescriptionTransferCache
         extends BaseContentDescriptionTransferCache<ContentCatalogDescription, ContentCatalogDescriptionTransfer> {
     
     /** Creates a new instance of ContentCatalogDescriptionTransferCache */
-    public ContentCatalogDescriptionTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    public ContentCatalogDescriptionTransferCache(ContentControl contentControl) {
+        super(contentControl);
     }
     
-    public ContentCatalogDescriptionTransfer getContentCatalogDescriptionTransfer(ContentCatalogDescription contentCatalogDescription) {
+    public ContentCatalogDescriptionTransfer getContentCatalogDescriptionTransfer(UserVisit userVisit, ContentCatalogDescription contentCatalogDescription) {
         var contentCatalogDescriptionTransfer = get(contentCatalogDescription);
         
         if(contentCatalogDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class ContentCatalogDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, contentCatalogDescription.getLanguage());
             
             contentCatalogDescriptionTransfer = new ContentCatalogDescriptionTransfer(languageTransfer, contentCatalogTransfer, contentCatalogDescription.getDescription());
-            put(contentCatalogDescription, contentCatalogDescriptionTransfer);
+            put(userVisit, contentCatalogDescription, contentCatalogDescriptionTransfer);
         }
         
         return contentCatalogDescriptionTransfer;

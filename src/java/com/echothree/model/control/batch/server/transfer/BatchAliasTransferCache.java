@@ -25,14 +25,14 @@ public class BatchAliasTransferCache
         extends BaseBatchTransferCache<BatchAlias, BatchAliasTransfer> {
     
     /** Creates a new instance of BatchAliasTransferCache */
-    public BatchAliasTransferCache(UserVisit userVisit, BatchControl batchControl) {
-        super(userVisit, batchControl);
+    public BatchAliasTransferCache(BatchControl batchControl) {
+        super(batchControl);
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public BatchAliasTransfer getTransfer(BatchAlias batchAlias) {
+    public BatchAliasTransfer getTransfer(UserVisit userVisit, BatchAlias batchAlias) {
         var batchAliasTransfer = get(batchAlias);
         
         if(batchAliasTransfer == null) {
@@ -40,7 +40,7 @@ public class BatchAliasTransferCache
             var alias = batchAlias.getAlias();
             
             batchAliasTransfer = new BatchAliasTransfer(batchAliasType, alias);
-            put(batchAlias, batchAliasTransfer);
+            put(userVisit, batchAlias, batchAliasTransfer);
         }
         
         return batchAliasTransfer;

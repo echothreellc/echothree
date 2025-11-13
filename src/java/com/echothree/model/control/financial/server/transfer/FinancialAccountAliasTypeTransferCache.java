@@ -25,13 +25,13 @@ public class FinancialAccountAliasTypeTransferCache
         extends BaseFinancialTransferCache<FinancialAccountAliasType, FinancialAccountAliasTypeTransfer> {
     
     /** Creates a new instance of FinancialAccountAliasTypeTransferCache */
-    public FinancialAccountAliasTypeTransferCache(UserVisit userVisit, FinancialControl financialControl) {
-        super(userVisit, financialControl);
+    public FinancialAccountAliasTypeTransferCache(FinancialControl financialControl) {
+        super(financialControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public FinancialAccountAliasTypeTransfer getFinancialAccountAliasTypeTransfer(FinancialAccountAliasType financialAccountAliasType) {
+    public FinancialAccountAliasTypeTransfer getFinancialAccountAliasTypeTransfer(UserVisit userVisit, FinancialAccountAliasType financialAccountAliasType) {
         var financialAccountAliasTypeTransfer = get(financialAccountAliasType);
         
         if(financialAccountAliasTypeTransfer == null) {
@@ -41,10 +41,10 @@ public class FinancialAccountAliasTypeTransferCache
             var validationPattern = financialAccountAliasTypeDetail.getValidationPattern();
             var isDefault = financialAccountAliasTypeDetail.getIsDefault();
             var sortOrder = financialAccountAliasTypeDetail.getSortOrder();
-            var description = financialControl.getBestFinancialAccountAliasTypeDescription(financialAccountAliasType, getLanguage());
+            var description = financialControl.getBestFinancialAccountAliasTypeDescription(financialAccountAliasType, getLanguage(userVisit));
             
             financialAccountAliasTypeTransfer = new FinancialAccountAliasTypeTransfer(financialAccountType, financialAccountAliasTypeName, validationPattern, isDefault, sortOrder, description);
-            put(financialAccountAliasType, financialAccountAliasTypeTransfer);
+            put(userVisit, financialAccountAliasType, financialAccountAliasTypeTransfer);
         }
         
         return financialAccountAliasTypeTransfer;

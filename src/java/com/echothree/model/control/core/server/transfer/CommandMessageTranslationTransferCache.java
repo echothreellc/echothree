@@ -30,11 +30,11 @@ public class CommandMessageTranslationTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of CommandMessageTranslationTransferCache */
-    public CommandMessageTranslationTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public CommandMessageTranslationTransferCache() {
+        super();
     }
     
-    public CommandMessageTranslationTransfer getCommandMessageTranslationTransfer(CommandMessageTranslation commandMessageTranslation) {
+    public CommandMessageTranslationTransfer getCommandMessageTranslationTransfer(UserVisit userVisit, CommandMessageTranslation commandMessageTranslation) {
         var commandMessageTranslationTransfer = get(commandMessageTranslation);
         
         if(commandMessageTranslationTransfer == null) {
@@ -43,7 +43,7 @@ public class CommandMessageTranslationTransferCache
             var translation = commandMessageTranslation.getTranslation();
             
             commandMessageTranslationTransfer = new CommandMessageTranslationTransfer(commandMessage, language, translation);
-            put(commandMessageTranslation, commandMessageTranslationTransfer);
+            put(userVisit, commandMessageTranslation, commandMessageTranslationTransfer);
         }
         
         return commandMessageTranslationTransfer;

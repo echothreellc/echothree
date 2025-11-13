@@ -29,13 +29,13 @@ public class SubscriptionTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of SubscriptionTransferCache */
-    public SubscriptionTransferCache(UserVisit userVisit, SubscriptionControl subscriptionControl) {
-        super(userVisit, subscriptionControl);
+    public SubscriptionTransferCache(SubscriptionControl subscriptionControl) {
+        super(subscriptionControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public SubscriptionTransfer getSubscriptionTransfer(Subscription subscription) {
+    public SubscriptionTransfer getSubscriptionTransfer(UserVisit userVisit, Subscription subscription) {
         var subscriptionTransfer = get(subscription);
 
         if(subscriptionTransfer == null) {
@@ -44,13 +44,13 @@ public class SubscriptionTransferCache
             var subscriptionType = subscriptionControl.getSubscriptionTypeTransfer(userVisit, subscriptionDetail.getSubscriptionType());
             var party = partyControl.getPartyTransfer(userVisit, subscriptionDetail.getParty());
             var unformattedStartTime = subscriptionDetail.getStartTime();
-            var startTime = formatTypicalDateTime(unformattedStartTime);
+            var startTime = formatTypicalDateTime(userVisit, unformattedStartTime);
             var unformattedEndTime = subscriptionDetail.getEndTime();
-            var endTime = formatTypicalDateTime(unformattedEndTime);
+            var endTime = formatTypicalDateTime(userVisit, unformattedEndTime);
 
             subscriptionTransfer = new SubscriptionTransfer(subscriptionName, subscriptionType, party, unformattedStartTime, startTime, unformattedEndTime,
                     endTime);
-            put(subscription, subscriptionTransfer);
+            put(userVisit, subscription, subscriptionTransfer);
         }
 
         return subscriptionTransfer;

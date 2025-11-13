@@ -25,11 +25,11 @@ public class SelectorKindDescriptionTransferCache
         extends BaseSelectorDescriptionTransferCache<SelectorKindDescription, SelectorKindDescriptionTransfer> {
     
     /** Creates a new instance of SelectorKindDescriptionTransferCache */
-    public SelectorKindDescriptionTransferCache(UserVisit userVisit, SelectorControl selectorControl) {
-        super(userVisit, selectorControl);
+    public SelectorKindDescriptionTransferCache(SelectorControl selectorControl) {
+        super(selectorControl);
     }
     
-    public SelectorKindDescriptionTransfer getSelectorKindDescriptionTransfer(SelectorKindDescription selectorKindDescription) {
+    public SelectorKindDescriptionTransfer getSelectorKindDescriptionTransfer(UserVisit userVisit, SelectorKindDescription selectorKindDescription) {
         var selectorKindDescriptionTransfer = get(selectorKindDescription);
         
         if(selectorKindDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class SelectorKindDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, selectorKindDescription.getLanguage());
             
             selectorKindDescriptionTransfer = new SelectorKindDescriptionTransfer(languageTransfer, selectorKindTransfer, selectorKindDescription.getDescription());
-            put(selectorKindDescription, selectorKindDescriptionTransfer);
+            put(userVisit, selectorKindDescription, selectorKindDescriptionTransfer);
         }
         
         return selectorKindDescriptionTransfer;

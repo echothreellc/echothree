@@ -57,8 +57,8 @@ public class ItemDescriptionTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of ItemDescriptionTransferCache */
-    public ItemDescriptionTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemDescriptionTransferCache(ItemControl itemControl) {
+        super(itemControl);
 
         var options = session.getOptions();
         if(options != null) {
@@ -92,7 +92,7 @@ public class ItemDescriptionTransferCache
     }
     
     @Override
-    public ItemDescriptionTransfer getTransfer(ItemDescription itemDescription) {
+    public ItemDescriptionTransfer getTransfer(UserVisit userVisit, ItemDescription itemDescription) {
         var itemDescriptionTransfer = get(itemDescription);
         
         if(itemDescriptionTransfer == null) {
@@ -187,7 +187,7 @@ public class ItemDescriptionTransferCache
             
             itemDescriptionTransfer = new ItemDescriptionTransfer(itemDescriptionTypeTransfer, itemTransfer, languageTransfer, mimeTypeTransfer,
                     blobDescription, clobDescription, stringDescription, itemImageTypeTransfer, height, width, scaledFromParent, eTag);
-            put(itemDescription, itemDescriptionTransfer);
+            put(userVisit, itemDescription, itemDescriptionTransfer);
         }
         
         return itemDescriptionTransfer;

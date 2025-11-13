@@ -34,9 +34,9 @@ public abstract class BasePurchaseControl
 
     private PurchaseTransferCaches saleTransferCaches;
 
-    public PurchaseTransferCaches getSaleTransferCaches(UserVisit userVisit) {
+    public PurchaseTransferCaches getSaleTransferCaches() {
         if(saleTransferCaches == null) {
-            saleTransferCaches = new PurchaseTransferCaches(userVisit);
+            saleTransferCaches = new PurchaseTransferCaches();
         }
 
         return saleTransferCaches;

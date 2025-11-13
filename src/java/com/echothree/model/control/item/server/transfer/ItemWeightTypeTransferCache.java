@@ -25,14 +25,14 @@ public class ItemWeightTypeTransferCache
         extends BaseItemTransferCache<ItemWeightType, ItemWeightTypeTransfer> {
     
     /** Creates a new instance of ItemWeightTypeTransferCache */
-    public ItemWeightTypeTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemWeightTypeTransferCache(ItemControl itemControl) {
+        super(itemControl);
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public ItemWeightTypeTransfer getTransfer(ItemWeightType itemWeightType) {
+    public ItemWeightTypeTransfer getTransfer(UserVisit userVisit, ItemWeightType itemWeightType) {
         var itemWeightTypeTransfer = get(itemWeightType);
         
         if(itemWeightTypeTransfer == null) {
@@ -40,11 +40,11 @@ public class ItemWeightTypeTransferCache
             var itemWeightTypeName = itemWeightTypeDetail.getItemWeightTypeName();
             var isDefault = itemWeightTypeDetail.getIsDefault();
             var sortOrder = itemWeightTypeDetail.getSortOrder();
-            var description = itemControl.getBestItemWeightTypeDescription(itemWeightType, getLanguage());
+            var description = itemControl.getBestItemWeightTypeDescription(itemWeightType, getLanguage(userVisit));
             
             itemWeightTypeTransfer = new ItemWeightTypeTransfer(itemWeightTypeName, isDefault, sortOrder,
                     description);
-            put(itemWeightType, itemWeightTypeTransfer);
+            put(userVisit, itemWeightType, itemWeightTypeTransfer);
         }
         
         return itemWeightTypeTransfer;

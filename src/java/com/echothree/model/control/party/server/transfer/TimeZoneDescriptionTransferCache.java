@@ -24,12 +24,12 @@ public class TimeZoneDescriptionTransferCache
         extends BasePartyDescriptionTransferCache<TimeZoneDescription, TimeZoneDescriptionTransfer> {
 
     /** Creates a new instance of TimeZoneDescriptionTransferCache */
-    public TimeZoneDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public TimeZoneDescriptionTransferCache() {
+        super();
     }
 
     @Override
-    public TimeZoneDescriptionTransfer getTransfer(TimeZoneDescription timeZoneDescription) {
+    public TimeZoneDescriptionTransfer getTransfer(UserVisit userVisit, TimeZoneDescription timeZoneDescription) {
         var timeZoneDescriptionTransfer = get(timeZoneDescription);
         
         if(timeZoneDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class TimeZoneDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, timeZoneDescription.getLanguage());
             
             timeZoneDescriptionTransfer = new TimeZoneDescriptionTransfer(languageTransfer, timeZoneTransfer, timeZoneDescription.getDescription());
-            put(timeZoneDescription, timeZoneDescriptionTransfer);
+            put(userVisit, timeZoneDescription, timeZoneDescriptionTransfer);
         }
         
         return timeZoneDescriptionTransfer;

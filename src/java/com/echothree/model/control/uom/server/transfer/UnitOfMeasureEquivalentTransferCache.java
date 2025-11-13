@@ -25,21 +25,21 @@ public class UnitOfMeasureEquivalentTransferCache
         extends BaseUomTransferCache<UnitOfMeasureEquivalent, UnitOfMeasureEquivalentTransfer> {
     
     /** Creates a new instance of UnitOfMeasureEquivalentTransferCache */
-    public UnitOfMeasureEquivalentTransferCache(UserVisit userVisit, UomControl uomControl) {
-        super(userVisit, uomControl);
+    public UnitOfMeasureEquivalentTransferCache(UomControl uomControl) {
+        super(uomControl);
     }
     
-    public UnitOfMeasureEquivalentTransfer getUnitOfMeasureEquivalentTransfer(UnitOfMeasureEquivalent unitOfMeasureEquivalent) {
+    public UnitOfMeasureEquivalentTransfer getUnitOfMeasureEquivalentTransfer(UserVisit userVisit, UnitOfMeasureEquivalent unitOfMeasureEquivalent) {
         var unitOfMeasureEquivalentTransfer = get(unitOfMeasureEquivalent);
         
         if(unitOfMeasureEquivalentTransfer == null) {
-            var unitOfMeasureTypeTransferCache = uomControl.getUomTransferCaches(userVisit).getUnitOfMeasureTypeTransferCache();
-            var fromUnitOfMeasureType = unitOfMeasureTypeTransferCache.getUnitOfMeasureTypeTransfer(unitOfMeasureEquivalent.getFromUnitOfMeasureType());
-            var toUnitOfMeasureType = unitOfMeasureTypeTransferCache.getUnitOfMeasureTypeTransfer(unitOfMeasureEquivalent.getToUnitOfMeasureType());
+            var unitOfMeasureTypeTransferCache = uomControl.getUomTransferCaches().getUnitOfMeasureTypeTransferCache();
+            var fromUnitOfMeasureType = unitOfMeasureTypeTransferCache.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureEquivalent.getFromUnitOfMeasureType());
+            var toUnitOfMeasureType = unitOfMeasureTypeTransferCache.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureEquivalent.getToUnitOfMeasureType());
             var toQuantity = unitOfMeasureEquivalent.getToQuantity();
             
             unitOfMeasureEquivalentTransfer = new UnitOfMeasureEquivalentTransfer(fromUnitOfMeasureType, toUnitOfMeasureType, toQuantity);
-            put(unitOfMeasureEquivalent, unitOfMeasureEquivalentTransfer);
+            put(userVisit, unitOfMeasureEquivalent, unitOfMeasureEquivalentTransfer);
         }
         
         return unitOfMeasureEquivalentTransfer;

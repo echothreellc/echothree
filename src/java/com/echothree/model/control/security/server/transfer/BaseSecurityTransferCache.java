@@ -28,8 +28,8 @@ public abstract class BaseSecurityTransferCache<K extends BaseEntity, V extends 
     SecurityControl securityControl;
     
     /** Creates a new instance of BaseSecurityTransferCache */
-    protected BaseSecurityTransferCache(UserVisit userVisit, SecurityControl securityControl) {
-        super(userVisit);
+    protected BaseSecurityTransferCache(SecurityControl securityControl) {
+        super();
         
         this.securityControl = securityControl;
     }

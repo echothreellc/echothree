@@ -25,14 +25,14 @@ public class HarmonizedTariffScheduleCodeUseTransferCache
         extends BaseItemTransferCache<HarmonizedTariffScheduleCodeUse, HarmonizedTariffScheduleCodeUseTransfer> {
     
     /** Creates a new instance of HarmonizedTariffScheduleCodeUseTransferCache */
-    public HarmonizedTariffScheduleCodeUseTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public HarmonizedTariffScheduleCodeUseTransferCache(ItemControl itemControl) {
+        super(itemControl);
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public HarmonizedTariffScheduleCodeUseTransfer getTransfer(HarmonizedTariffScheduleCodeUse harmonizedTariffScheduleCodeUse) {
+    public HarmonizedTariffScheduleCodeUseTransfer getTransfer(UserVisit userVisit, HarmonizedTariffScheduleCodeUse harmonizedTariffScheduleCodeUse) {
         var harmonizedTariffScheduleCodeUseTransfer = get(harmonizedTariffScheduleCodeUse);
         
         if(harmonizedTariffScheduleCodeUseTransfer == null) {
@@ -40,7 +40,7 @@ public class HarmonizedTariffScheduleCodeUseTransferCache
             var harmonizedTariffScheduleCodeUseType = itemControl.getHarmonizedTariffScheduleCodeUseTypeTransfer(userVisit, harmonizedTariffScheduleCodeUse.getHarmonizedTariffScheduleCodeUseType());
             
             harmonizedTariffScheduleCodeUseTransfer = new HarmonizedTariffScheduleCodeUseTransfer(harmonizedTariffScheduleCode, harmonizedTariffScheduleCodeUseType);
-            put(harmonizedTariffScheduleCodeUse, harmonizedTariffScheduleCodeUseTransfer);
+            put(userVisit, harmonizedTariffScheduleCodeUse, harmonizedTariffScheduleCodeUseTransfer);
         }
         
         return harmonizedTariffScheduleCodeUseTransfer;

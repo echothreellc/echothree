@@ -32,12 +32,12 @@ public class ItemUnitLimitTransferCache
     UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of ItemUnitLimitTransferCache */
-    public ItemUnitLimitTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemUnitLimitTransferCache(ItemControl itemControl) {
+        super(itemControl);
     }
     
     @Override
-    public ItemUnitLimitTransfer getTransfer(ItemUnitLimit itemUnitLimit) {
+    public ItemUnitLimitTransfer getTransfer(UserVisit userVisit, ItemUnitLimit itemUnitLimit) {
         var itemUnitLimitTransfer = get(itemUnitLimit);
         
         if(itemUnitLimitTransfer == null) {
@@ -50,7 +50,7 @@ public class ItemUnitLimitTransferCache
             var maximumQuantity = longMaximumQuantity == null ? null : longMaximumQuantity.toString();
 
             itemUnitLimitTransfer = new ItemUnitLimitTransfer(item, inventoryCondition, unitOfMeasureType, minimumQuantity, maximumQuantity);
-            put(itemUnitLimit, itemUnitLimitTransfer);
+            put(userVisit, itemUnitLimit, itemUnitLimitTransfer);
         }
         
         return itemUnitLimitTransfer;

@@ -47,148 +47,148 @@ public class ForumTransferCaches
     protected ForumThreadTransferCache forumThreadTransferCache;
     
     /** Creates a new instance of ForumTransferCaches */
-    public ForumTransferCaches(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit);
+    public ForumTransferCaches(ForumControl forumControl) {
+        super();
         
         this.forumControl = forumControl;
     }
     
     public ForumTypeTransferCache getForumTypeTransferCache() {
         if(forumTypeTransferCache == null)
-            forumTypeTransferCache = new ForumTypeTransferCache(userVisit, forumControl);
+            forumTypeTransferCache = new ForumTypeTransferCache(forumControl);
         
         return forumTypeTransferCache;
     }
     
     public ForumMessageTypeTransferCache getForumMessageTypeTransferCache() {
         if(forumMessageTypeTransferCache == null)
-            forumMessageTypeTransferCache = new ForumMessageTypeTransferCache(userVisit, forumControl);
+            forumMessageTypeTransferCache = new ForumMessageTypeTransferCache(forumControl);
         
         return forumMessageTypeTransferCache;
     }
     
     public ForumRoleTypeTransferCache getForumRoleTypeTransferCache() {
         if(forumRoleTypeTransferCache == null)
-            forumRoleTypeTransferCache = new ForumRoleTypeTransferCache(userVisit, forumControl);
+            forumRoleTypeTransferCache = new ForumRoleTypeTransferCache(forumControl);
         
         return forumRoleTypeTransferCache;
     }
     
     public ForumGroupDescriptionTransferCache getForumGroupDescriptionTransferCache() {
         if(forumGroupDescriptionTransferCache == null)
-            forumGroupDescriptionTransferCache = new ForumGroupDescriptionTransferCache(userVisit, forumControl);
+            forumGroupDescriptionTransferCache = new ForumGroupDescriptionTransferCache(forumControl);
         
         return forumGroupDescriptionTransferCache;
     }
     
     public ForumDescriptionTransferCache getForumDescriptionTransferCache() {
         if(forumDescriptionTransferCache == null)
-            forumDescriptionTransferCache = new ForumDescriptionTransferCache(userVisit, forumControl);
+            forumDescriptionTransferCache = new ForumDescriptionTransferCache(forumControl);
         
         return forumDescriptionTransferCache;
     }
     
     public ForumGroupTransferCache getForumGroupTransferCache() {
         if(forumGroupTransferCache == null)
-            forumGroupTransferCache = new ForumGroupTransferCache(userVisit, forumControl);
+            forumGroupTransferCache = new ForumGroupTransferCache(forumControl);
         
         return forumGroupTransferCache;
     }
     
     public ForumGroupForumTransferCache getForumGroupForumTransferCache() {
         if(forumGroupForumTransferCache == null)
-            forumGroupForumTransferCache = new ForumGroupForumTransferCache(userVisit, forumControl);
+            forumGroupForumTransferCache = new ForumGroupForumTransferCache(forumControl);
         
         return forumGroupForumTransferCache;
     }
     
     public ForumTransferCache getForumTransferCache() {
         if(forumTransferCache == null)
-            forumTransferCache = new ForumTransferCache(userVisit, forumControl);
+            forumTransferCache = new ForumTransferCache(forumControl);
         
         return forumTransferCache;
     }
     
     public ForumMessagePartTypeTransferCache getForumMessagePartTypeTransferCache() {
         if(forumMessagePartTypeTransferCache == null)
-            forumMessagePartTypeTransferCache = new ForumMessagePartTypeTransferCache(userVisit, forumControl);
+            forumMessagePartTypeTransferCache = new ForumMessagePartTypeTransferCache(forumControl);
         
         return forumMessagePartTypeTransferCache;
     }
     
     public ForumMessageTypePartTypeTransferCache getForumMessageTypePartTypeTransferCache() {
         if(forumMessageTypePartTypeTransferCache == null)
-            forumMessageTypePartTypeTransferCache = new ForumMessageTypePartTypeTransferCache(userVisit, forumControl);
+            forumMessageTypePartTypeTransferCache = new ForumMessageTypePartTypeTransferCache(forumControl);
         
         return forumMessageTypePartTypeTransferCache;
     }
     
     public ForumMimeTypeTransferCache getForumMimeTypeTransferCache() {
         if(forumMimeTypeTransferCache == null)
-            forumMimeTypeTransferCache = new ForumMimeTypeTransferCache(userVisit, forumControl);
+            forumMimeTypeTransferCache = new ForumMimeTypeTransferCache(forumControl);
         
         return forumMimeTypeTransferCache;
     }
     
     public ForumPartyRoleTransferCache getForumPartyRoleTransferCache() {
         if(forumPartyRoleTransferCache == null)
-            forumPartyRoleTransferCache = new ForumPartyRoleTransferCache(userVisit, forumControl);
+            forumPartyRoleTransferCache = new ForumPartyRoleTransferCache(forumControl);
         
         return forumPartyRoleTransferCache;
     }
     
     public ForumPartyTypeRoleTransferCache getForumPartyTypeRoleTransferCache() {
         if(forumPartyTypeRoleTransferCache == null)
-            forumPartyTypeRoleTransferCache = new ForumPartyTypeRoleTransferCache(userVisit, forumControl);
+            forumPartyTypeRoleTransferCache = new ForumPartyTypeRoleTransferCache(forumControl);
         
         return forumPartyTypeRoleTransferCache;
     }
     
     public ForumForumThreadTransferCache getForumForumThreadTransferCache() {
         if(forumForumThreadTransferCache == null)
-            forumForumThreadTransferCache = new ForumForumThreadTransferCache(userVisit, forumControl);
+            forumForumThreadTransferCache = new ForumForumThreadTransferCache(forumControl);
         
         return forumForumThreadTransferCache;
     }
     
     public ForumMessagePartTransferCache getForumMessagePartTransferCache() {
         if(forumMessagePartTransferCache == null)
-            forumMessagePartTransferCache = new ForumMessagePartTransferCache(userVisit, forumControl);
+            forumMessagePartTransferCache = new ForumMessagePartTransferCache(forumControl);
         
         return forumMessagePartTransferCache;
     }
     
     public ForumMessageRoleTransferCache getForumMessageRoleTransferCache() {
         if(forumMessageRoleTransferCache == null)
-            forumMessageRoleTransferCache = new ForumMessageRoleTransferCache(userVisit, forumControl);
+            forumMessageRoleTransferCache = new ForumMessageRoleTransferCache(forumControl);
         
         return forumMessageRoleTransferCache;
     }
     
     public ForumMessageTransferCache getForumMessageTransferCache() {
         if(forumMessageTransferCache == null)
-            forumMessageTransferCache = new ForumMessageTransferCache(userVisit, forumControl);
+            forumMessageTransferCache = new ForumMessageTransferCache(forumControl);
         
         return forumMessageTransferCache;
     }
     
     public ForumMessageAttachmentTransferCache getForumMessageAttachmentTransferCache() {
         if(forumMessageAttachmentTransferCache == null)
-            forumMessageAttachmentTransferCache = new ForumMessageAttachmentTransferCache(userVisit, forumControl);
+            forumMessageAttachmentTransferCache = new ForumMessageAttachmentTransferCache(forumControl);
 
         return forumMessageAttachmentTransferCache;
     }
 
     public ForumMessageAttachmentDescriptionTransferCache getForumMessageAttachmentDescriptionTransferCache() {
         if(forumMessageAttachmentDescriptionTransferCache == null)
-            forumMessageAttachmentDescriptionTransferCache = new ForumMessageAttachmentDescriptionTransferCache(userVisit, forumControl);
+            forumMessageAttachmentDescriptionTransferCache = new ForumMessageAttachmentDescriptionTransferCache(forumControl);
 
         return forumMessageAttachmentDescriptionTransferCache;
     }
 
     public ForumThreadTransferCache getForumThreadTransferCache() {
         if(forumThreadTransferCache == null)
-            forumThreadTransferCache = new ForumThreadTransferCache(userVisit, forumControl);
+            forumThreadTransferCache = new ForumThreadTransferCache(forumControl);
         
         return forumThreadTransferCache;
     }

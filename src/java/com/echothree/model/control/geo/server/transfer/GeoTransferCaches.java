@@ -46,141 +46,141 @@ public class GeoTransferCaches
     protected GeoCodeTypeDescriptionTransferCache geoCodeTypeDescriptionTransferCache;
     
     /** Creates a new instance of GeoTransferCaches */
-    public GeoTransferCaches(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit);
+    public GeoTransferCaches(GeoControl geoControl) {
+        super();
         
         this.geoControl = geoControl;
     }
     
     public CityTransferCache getCityTransferCache() {
         if(cityTransferCache == null)
-            cityTransferCache = new CityTransferCache(userVisit, geoControl);
+            cityTransferCache = new CityTransferCache(geoControl);
         
         return cityTransferCache;
     }
     
     public CountryTransferCache getCountryTransferCache() {
         if(countryTransferCache == null)
-            countryTransferCache = new CountryTransferCache(userVisit, geoControl);
+            countryTransferCache = new CountryTransferCache(geoControl);
         
         return countryTransferCache;
     }
     
     public CountyTransferCache getCountyTransferCache() {
         if(countyTransferCache == null)
-            countyTransferCache = new CountyTransferCache(userVisit, geoControl);
+            countyTransferCache = new CountyTransferCache(geoControl);
         
         return countyTransferCache;
     }
     
     public PostalCodeTransferCache getPostalCodeTransferCache() {
         if(postalCodeTransferCache == null)
-            postalCodeTransferCache = new PostalCodeTransferCache(userVisit, geoControl);
+            postalCodeTransferCache = new PostalCodeTransferCache(geoControl);
         
         return postalCodeTransferCache;
     }
     
     public StateTransferCache getStateTransferCache() {
         if(stateTransferCache == null)
-            stateTransferCache = new StateTransferCache(userVisit, geoControl);
+            stateTransferCache = new StateTransferCache(geoControl);
         
         return stateTransferCache;
     }
     
     public GeoCodeTransferCache getGeoCodeTransferCache() {
         if(geoCodeTransferCache == null)
-            geoCodeTransferCache = new GeoCodeTransferCache(userVisit, geoControl);
+            geoCodeTransferCache = new GeoCodeTransferCache(geoControl);
         
         return geoCodeTransferCache;
     }
     
     public GeoCodeAliasTransferCache getGeoCodeAliasTransferCache() {
         if(geoCodeAliasTransferCache == null)
-            geoCodeAliasTransferCache = new GeoCodeAliasTransferCache(userVisit, geoControl);
+            geoCodeAliasTransferCache = new GeoCodeAliasTransferCache(geoControl);
         
         return geoCodeAliasTransferCache;
     }
     
     public GeoCodeAliasTypeTransferCache getGeoCodeAliasTypeTransferCache() {
         if(geoCodeAliasTypeTransferCache == null)
-            geoCodeAliasTypeTransferCache = new GeoCodeAliasTypeTransferCache(userVisit, geoControl);
+            geoCodeAliasTypeTransferCache = new GeoCodeAliasTypeTransferCache(geoControl);
         
         return geoCodeAliasTypeTransferCache;
     }
     
     public GeoCodeScopeTransferCache getGeoCodeScopeTransferCache() {
         if(geoCodeScopeTransferCache == null)
-            geoCodeScopeTransferCache = new GeoCodeScopeTransferCache(userVisit, geoControl);
+            geoCodeScopeTransferCache = new GeoCodeScopeTransferCache(geoControl);
         
         return geoCodeScopeTransferCache;
     }
     
     public GeoCodeTypeTransferCache getGeoCodeTypeTransferCache() {
         if(geoCodeTypeTransferCache == null)
-            geoCodeTypeTransferCache = new GeoCodeTypeTransferCache(userVisit, geoControl);
+            geoCodeTypeTransferCache = new GeoCodeTypeTransferCache(geoControl);
         
         return geoCodeTypeTransferCache;
     }
     
     public GeoCodeRelationshipTransferCache getGeoCodeRelationshipTransferCache() {
         if(geoCodeRelationshipTransferCache == null)
-            geoCodeRelationshipTransferCache = new GeoCodeRelationshipTransferCache(userVisit, geoControl);
+            geoCodeRelationshipTransferCache = new GeoCodeRelationshipTransferCache(geoControl);
         
         return geoCodeRelationshipTransferCache;
     }
     
     public GeoCodeCurrencyTransferCache getGeoCodeCurrencyTransferCache() {
         if(geoCodeCurrencyTransferCache == null)
-            geoCodeCurrencyTransferCache = new GeoCodeCurrencyTransferCache(userVisit, geoControl);
+            geoCodeCurrencyTransferCache = new GeoCodeCurrencyTransferCache(geoControl);
         
         return geoCodeCurrencyTransferCache;
     }
     
     public GeoCodeLanguageTransferCache getGeoCodeLanguageTransferCache() {
         if(geoCodeLanguageTransferCache == null)
-            geoCodeLanguageTransferCache = new GeoCodeLanguageTransferCache(userVisit, geoControl);
+            geoCodeLanguageTransferCache = new GeoCodeLanguageTransferCache(geoControl);
         
         return geoCodeLanguageTransferCache;
     }
     
     public GeoCodeTimeZoneTransferCache getGeoCodeTimeZoneTransferCache() {
         if(geoCodeTimeZoneTransferCache == null)
-            geoCodeTimeZoneTransferCache = new GeoCodeTimeZoneTransferCache(userVisit, geoControl);
+            geoCodeTimeZoneTransferCache = new GeoCodeTimeZoneTransferCache(geoControl);
         
         return geoCodeTimeZoneTransferCache;
     }
     
     public GeoCodeDateTimeFormatTransferCache getGeoCodeDateTimeFormatTransferCache() {
         if(geoCodeDateTimeFormatTransferCache == null)
-            geoCodeDateTimeFormatTransferCache = new GeoCodeDateTimeFormatTransferCache(userVisit, geoControl);
+            geoCodeDateTimeFormatTransferCache = new GeoCodeDateTimeFormatTransferCache(geoControl);
         
         return geoCodeDateTimeFormatTransferCache;
     }
     
     public GeoCodeDescriptionTransferCache getGeoCodeDescriptionTransferCache() {
         if(geoCodeDescriptionTransferCache == null)
-            geoCodeDescriptionTransferCache = new GeoCodeDescriptionTransferCache(userVisit, geoControl);
+            geoCodeDescriptionTransferCache = new GeoCodeDescriptionTransferCache(geoControl);
         
         return geoCodeDescriptionTransferCache;
     }
     
     public GeoCodeScopeDescriptionTransferCache getGeoCodeScopeDescriptionTransferCache() {
         if(geoCodeScopeDescriptionTransferCache == null)
-            geoCodeScopeDescriptionTransferCache = new GeoCodeScopeDescriptionTransferCache(userVisit, geoControl);
+            geoCodeScopeDescriptionTransferCache = new GeoCodeScopeDescriptionTransferCache(geoControl);
         
         return geoCodeScopeDescriptionTransferCache;
     }
     
     public GeoCodeAliasTypeDescriptionTransferCache getGeoCodeAliasTypeDescriptionTransferCache() {
         if(geoCodeAliasTypeDescriptionTransferCache == null)
-            geoCodeAliasTypeDescriptionTransferCache = new GeoCodeAliasTypeDescriptionTransferCache(userVisit, geoControl);
+            geoCodeAliasTypeDescriptionTransferCache = new GeoCodeAliasTypeDescriptionTransferCache(geoControl);
         
         return geoCodeAliasTypeDescriptionTransferCache;
     }
     
     public GeoCodeTypeDescriptionTransferCache getGeoCodeTypeDescriptionTransferCache() {
         if(geoCodeTypeDescriptionTransferCache == null)
-            geoCodeTypeDescriptionTransferCache = new GeoCodeTypeDescriptionTransferCache(userVisit, geoControl);
+            geoCodeTypeDescriptionTransferCache = new GeoCodeTypeDescriptionTransferCache(geoControl);
         
         return geoCodeTypeDescriptionTransferCache;
     }

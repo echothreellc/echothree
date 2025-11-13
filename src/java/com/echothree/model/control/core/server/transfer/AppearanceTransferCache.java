@@ -37,8 +37,8 @@ public class AppearanceTransferCache
     boolean includeTextTransformations;
     
     /** Creates a new instance of AppearanceTransferCache */
-    public AppearanceTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public AppearanceTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -49,7 +49,7 @@ public class AppearanceTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public AppearanceTransfer getAppearanceTransfer(Appearance appearance) {
+    public AppearanceTransfer getAppearanceTransfer(UserVisit userVisit, Appearance appearance) {
         var appearanceTransfer = get(appearance);
 
         if(appearanceTransfer == null) {
@@ -65,11 +65,11 @@ public class AppearanceTransferCache
             var fontWeightTransfer = fontWeight == null ? null : fontControl.getFontWeightTransfer(userVisit, fontWeight);
             var isDefault = appearanceDetail.getIsDefault();
             var sortOrder = appearanceDetail.getSortOrder();
-            var description = appearanceControl.getBestAppearanceDescription(appearance, getLanguage());
+            var description = appearanceControl.getBestAppearanceDescription(appearance, getLanguage(userVisit));
 
             appearanceTransfer = new AppearanceTransfer(appearanceName, textColorTransfer, backgroundColorTransfer, fontStyleTransfer, fontWeightTransfer,
                     isDefault, sortOrder, description);
-            put(appearance, appearanceTransfer);
+            put(userVisit, appearance, appearanceTransfer);
             
             if(includeTextDecorations) {
                 appearanceTransfer.setAppearanceTextDecorations(new ListWrapper<>(appearanceControl.getAppearanceTextDecorationTransfersByAppearance(userVisit, appearance)));

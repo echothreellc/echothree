@@ -28,13 +28,13 @@ public class ServiceTransferCache
     ServerControl serverControl = Session.getModelController(ServerControl.class);
 
     /** Creates a new instance of ServiceTransferCache */
-    public ServiceTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public ServiceTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public ServiceTransfer getServiceTransfer(Service service) {
+    public ServiceTransfer getServiceTransfer(UserVisit userVisit, Service service) {
         var serviceTransfer = get(service);
         
         if(serviceTransfer == null) {
@@ -44,10 +44,10 @@ public class ServiceTransferCache
             var protocol = serverControl.getProtocolTransfer(userVisit, serviceDetail.getProtocol());
             var isDefault = serviceDetail.getIsDefault();
             var sortOrder = serviceDetail.getSortOrder();
-            var description = serverControl.getBestServiceDescription(service, getLanguage());
+            var description = serverControl.getBestServiceDescription(service, getLanguage(userVisit));
     
             serviceTransfer = new ServiceTransfer(serviceName, port, protocol, isDefault, sortOrder, description);
-            put(service, serviceTransfer);
+            put(userVisit, service, serviceTransfer);
         }
         
         return serviceTransfer;

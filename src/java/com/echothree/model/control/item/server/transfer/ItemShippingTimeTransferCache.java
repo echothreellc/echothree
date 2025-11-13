@@ -39,8 +39,8 @@ public class ItemShippingTimeTransferCache
     boolean filterShippingEndTime;
 
     /** Creates a new instance of ItemShippingTimeTransferCache */
-    public ItemShippingTimeTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemShippingTimeTransferCache(ItemControl itemControl) {
+        super(itemControl);
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
@@ -58,21 +58,21 @@ public class ItemShippingTimeTransferCache
     }
     
     @Override
-    public ItemShippingTimeTransfer getTransfer(ItemShippingTime itemShippingTime) {
+    public ItemShippingTimeTransfer getTransfer(UserVisit userVisit, ItemShippingTime itemShippingTime) {
         var itemShippingTimeTransfer = get(itemShippingTime);
         
         if(itemShippingTimeTransfer == null) {
             var itemTransfer = filterItem ? null : itemControl.getItemTransfer(userVisit, itemShippingTime.getItem());
             var customerTypeTransfer = filterCustomerType ? null : customerControl.getCustomerTypeTransfer(userVisit, itemShippingTime.getCustomerType());
             var unformattedShippingStartTime = itemShippingTime.getShippingStartTime();
-            var shippingStartTime = filterShippingStartTime ? null : formatTypicalDateTime(unformattedShippingStartTime);
+            var shippingStartTime = filterShippingStartTime ? null : formatTypicalDateTime(userVisit, unformattedShippingStartTime);
             var unformattedShippingEndTime = itemShippingTime.getShippingEndTime();
-            var shippingEndTime = filterShippingEndTime ? null : formatTypicalDateTime(unformattedShippingEndTime);
+            var shippingEndTime = filterShippingEndTime ? null : formatTypicalDateTime(userVisit, unformattedShippingEndTime);
             
             itemShippingTimeTransfer = new ItemShippingTimeTransfer(itemTransfer, customerTypeTransfer,
                     filterUnformattedShippingStartTime ? null : unformattedShippingStartTime, shippingStartTime,
                     filterUnformattedShippingEndTime ? null : unformattedShippingStartTime, shippingEndTime);
-            put(itemShippingTime, itemShippingTimeTransfer);
+            put(userVisit, itemShippingTime, itemShippingTimeTransfer);
         }
         
         return itemShippingTimeTransfer;

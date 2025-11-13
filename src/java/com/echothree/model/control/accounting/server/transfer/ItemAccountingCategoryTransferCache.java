@@ -28,21 +28,21 @@ public class ItemAccountingCategoryTransferCache
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of ItemAccountingCategoryTransferCache */
-    public ItemAccountingCategoryTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public ItemAccountingCategoryTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public ItemAccountingCategoryTransfer getTransfer(ItemAccountingCategory itemAccountingCategory) {
+    public ItemAccountingCategoryTransfer getTransfer(UserVisit userVisit, ItemAccountingCategory itemAccountingCategory) {
         var itemAccountingCategoryTransfer = get(itemAccountingCategory);
         
         if(itemAccountingCategoryTransfer == null) {
             var itemAccountingCategoryDetail = itemAccountingCategory.getLastDetail();
             var itemAccountingCategoryName = itemAccountingCategoryDetail.getItemAccountingCategoryName();
             var parentItemAccountingCategory = itemAccountingCategoryDetail.getParentItemAccountingCategory();
-            var parentItemAccountingCategoryTransfer = parentItemAccountingCategory == null? null: getTransfer(parentItemAccountingCategory);
+            var parentItemAccountingCategoryTransfer = parentItemAccountingCategory == null ? null : getTransfer(userVisit, parentItemAccountingCategory);
             var inventoryGlAccount = itemAccountingCategoryDetail.getInventoryGlAccount();
             var inventoryGlAccountTransfer = inventoryGlAccount == null? null: accountingControl.getGlAccountTransfer(userVisit, inventoryGlAccount);
             var salesGlAccount = itemAccountingCategoryDetail.getSalesGlAccount();
@@ -55,13 +55,13 @@ public class ItemAccountingCategoryTransferCache
             var returnsCogsGlAccountTransfer = returnsCogsGlAccount == null? null: accountingControl.getGlAccountTransfer(userVisit, returnsCogsGlAccount);
             var isDefault = itemAccountingCategoryDetail.getIsDefault();
             var sortOrder = itemAccountingCategoryDetail.getSortOrder();
-            var description = accountingControl.getBestItemAccountingCategoryDescription(itemAccountingCategory, getLanguage());
+            var description = accountingControl.getBestItemAccountingCategoryDescription(itemAccountingCategory, getLanguage(userVisit));
             
             itemAccountingCategoryTransfer = new ItemAccountingCategoryTransfer(itemAccountingCategoryName,
                     parentItemAccountingCategoryTransfer, inventoryGlAccountTransfer, salesGlAccountTransfer,
                     returnsGlAccountTransfer, cogsGlAccountTransfer, returnsCogsGlAccountTransfer, isDefault, sortOrder,
                     description);
-            put(itemAccountingCategory, itemAccountingCategoryTransfer);
+            put(userVisit, itemAccountingCategory, itemAccountingCategoryTransfer);
         }
         
         return itemAccountingCategoryTransfer;

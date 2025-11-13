@@ -31,13 +31,13 @@ public class LetterTransferCache
     ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
     
     /** Creates a new instance of LetterTransferCache */
-    public LetterTransferCache(UserVisit userVisit, LetterControl letterControl) {
-        super(userVisit, letterControl);
+    public LetterTransferCache(LetterControl letterControl) {
+        super(letterControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public LetterTransfer getLetterTransfer(Letter letter) {
+    public LetterTransfer getLetterTransfer(UserVisit userVisit, Letter letter) {
         var letterTransfer = get(letter);
         
         if(letterTransfer == null) {
@@ -49,11 +49,11 @@ public class LetterTransferCache
             var contactListTransfer = contactList == null? null: contactListControl.getContactListTransfer(userVisit, contactList);
             var isDefault = letterDetail.getIsDefault();
             var sortOrder = letterDetail.getSortOrder();
-            var description = letterControl.getBestLetterDescription(letter, getLanguage());
+            var description = letterControl.getBestLetterDescription(letter, getLanguage(userVisit));
             
             letterTransfer = new LetterTransfer(chainTypeTransfer, letterName, letterSourceTransfer, contactListTransfer, isDefault,
                     sortOrder, description);
-            put(letter, letterTransfer);
+            put(userVisit, letter, letterTransfer);
         }
         
         return letterTransfer;

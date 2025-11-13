@@ -25,11 +25,11 @@ public class ForumMessageTypePartTypeTransferCache
         extends BaseForumTransferCache<ForumMessageTypePartType, ForumMessageTypePartTypeTransfer> {
     
     /** Creates a new instance of ForumMessageTypePartTypeTransferCache */
-    public ForumMessageTypePartTypeTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
+    public ForumMessageTypePartTypeTransferCache(ForumControl forumControl) {
+        super(forumControl);
     }
     
-    public ForumMessageTypePartTypeTransfer getForumMessageTypePartTypeTransfer(ForumMessageTypePartType forumMessageTypePartType) {
+    public ForumMessageTypePartTypeTransfer getForumMessageTypePartTypeTransfer(UserVisit userVisit, ForumMessageTypePartType forumMessageTypePartType) {
         var forumMessageTypePartTypeTransfer = get(forumMessageTypePartType);
         
         if(forumMessageTypePartTypeTransfer == null) {
@@ -39,7 +39,7 @@ public class ForumMessageTypePartTypeTransferCache
             var forumMessagePartType = forumControl.getForumMessagePartTypeTransfer(userVisit, forumMessageTypePartType.getForumMessagePartType());
             
             forumMessageTypePartTypeTransfer = new ForumMessageTypePartTypeTransfer(forumMessageType, indexDefault, sortOrder, forumMessagePartType);
-            put(forumMessageTypePartType, forumMessageTypePartTypeTransfer);
+            put(userVisit, forumMessageTypePartType, forumMessageTypePartTypeTransfer);
         }
         
         return forumMessageTypePartTypeTransfer;

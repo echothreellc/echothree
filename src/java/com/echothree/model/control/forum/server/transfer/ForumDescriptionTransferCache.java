@@ -25,11 +25,11 @@ public class ForumDescriptionTransferCache
         extends BaseForumDescriptionTransferCache<ForumDescription, ForumDescriptionTransfer> {
     
     /** Creates a new instance of ForumDescriptionTransferCache */
-    public ForumDescriptionTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
+    public ForumDescriptionTransferCache(ForumControl forumControl) {
+        super(forumControl);
     }
     
-    public ForumDescriptionTransfer getForumDescriptionTransfer(ForumDescription forumDescription) {
+    public ForumDescriptionTransfer getForumDescriptionTransfer(UserVisit userVisit, ForumDescription forumDescription) {
         var forumDescriptionTransfer = get(forumDescription);
         
         if(forumDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class ForumDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, forumDescription.getLanguage());
             
             forumDescriptionTransfer = new ForumDescriptionTransfer(languageTransfer, forumTransfer, forumDescription.getDescription());
-            put(forumDescription, forumDescriptionTransfer);
+            put(userVisit, forumDescription, forumDescriptionTransfer);
         }
         
         return forumDescriptionTransfer;

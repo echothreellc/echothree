@@ -29,13 +29,13 @@ public class GeoCodeDateTimeFormatTransferCache
     PartyControl partyControl;
     
     /** Creates a new instance of GeoCodeDateTimeFormatTransferCache */
-    public GeoCodeDateTimeFormatTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
+    public GeoCodeDateTimeFormatTransferCache(GeoControl geoControl) {
+        super(geoControl);
         
         partyControl = Session.getModelController(PartyControl.class);
     }
     
-    public GeoCodeDateTimeFormatTransfer getGeoCodeDateTimeFormatTransfer(GeoCodeDateTimeFormat geoCodeDateTimeFormat) {
+    public GeoCodeDateTimeFormatTransfer getGeoCodeDateTimeFormatTransfer(UserVisit userVisit, GeoCodeDateTimeFormat geoCodeDateTimeFormat) {
         var geoCodeDateTimeFormatTransfer = get(geoCodeDateTimeFormat);
         
         if(geoCodeDateTimeFormatTransfer == null) {
@@ -45,7 +45,7 @@ public class GeoCodeDateTimeFormatTransferCache
             var sortOrder = geoCodeDateTimeFormat.getSortOrder();
             
             geoCodeDateTimeFormatTransfer = new GeoCodeDateTimeFormatTransfer(geoCode, dateTimeFormat, isDefault, sortOrder);
-            put(geoCodeDateTimeFormat, geoCodeDateTimeFormatTransfer);
+            put(userVisit, geoCodeDateTimeFormat, geoCodeDateTimeFormatTransfer);
         }
         
         return geoCodeDateTimeFormatTransfer;

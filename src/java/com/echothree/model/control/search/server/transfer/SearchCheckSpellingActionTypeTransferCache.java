@@ -26,8 +26,8 @@ public class SearchCheckSpellingActionTypeTransferCache
         extends BaseSearchTransferCache<SearchCheckSpellingActionType, SearchCheckSpellingActionTypeTransfer> {
 
     /** Creates a new instance of SearchCheckSpellingActionTypeTransferCache */
-    public SearchCheckSpellingActionTypeTransferCache(UserVisit userVisit, SearchControl searchControl) {
-        super(userVisit, searchControl);
+    public SearchCheckSpellingActionTypeTransferCache(SearchControl searchControl) {
+        super(searchControl);
         
         var options = session.getOptions();
         if(options != null) {
@@ -37,7 +37,7 @@ public class SearchCheckSpellingActionTypeTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public SearchCheckSpellingActionTypeTransfer getSearchCheckSpellingActionTypeTransfer(SearchCheckSpellingActionType searchCheckSpellingActionType) {
+    public SearchCheckSpellingActionTypeTransfer getSearchCheckSpellingActionTypeTransfer(UserVisit userVisit, SearchCheckSpellingActionType searchCheckSpellingActionType) {
         var searchCheckSpellingActionTypeTransfer = get(searchCheckSpellingActionType);
 
         if(searchCheckSpellingActionTypeTransfer == null) {
@@ -45,10 +45,10 @@ public class SearchCheckSpellingActionTypeTransferCache
             var searchCheckSpellingActionTypeName = searchCheckSpellingActionTypeDetail.getSearchCheckSpellingActionTypeName();
             var isDefault = searchCheckSpellingActionTypeDetail.getIsDefault();
             var sortOrder = searchCheckSpellingActionTypeDetail.getSortOrder();
-            var description = searchControl.getBestSearchCheckSpellingActionTypeDescription(searchCheckSpellingActionType, getLanguage());
+            var description = searchControl.getBestSearchCheckSpellingActionTypeDescription(searchCheckSpellingActionType, getLanguage(userVisit));
 
             searchCheckSpellingActionTypeTransfer = new SearchCheckSpellingActionTypeTransfer(searchCheckSpellingActionTypeName, isDefault, sortOrder, description);
-            put(searchCheckSpellingActionType, searchCheckSpellingActionTypeTransfer);
+            put(userVisit, searchCheckSpellingActionType, searchCheckSpellingActionTypeTransfer);
         }
 
         return searchCheckSpellingActionTypeTransfer;

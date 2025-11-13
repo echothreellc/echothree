@@ -25,11 +25,11 @@ public class ClubDescriptionTransferCache
         extends BaseClubDescriptionTransferCache<ClubDescription, ClubDescriptionTransfer> {
     
     /** Creates a new instance of ClubDescriptionTransferCache */
-    public ClubDescriptionTransferCache(UserVisit userVisit, ClubControl clubControl) {
-        super(userVisit, clubControl);
+    public ClubDescriptionTransferCache(ClubControl clubControl) {
+        super(clubControl);
     }
     
-    public ClubDescriptionTransfer getClubDescriptionTransfer(ClubDescription clubDescription) {
+    public ClubDescriptionTransfer getClubDescriptionTransfer(UserVisit userVisit, ClubDescription clubDescription) {
         var clubDescriptionTransfer = get(clubDescription);
         
         if(clubDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class ClubDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, clubDescription.getLanguage());
             
             clubDescriptionTransfer = new ClubDescriptionTransfer(languageTransfer, clubTransfer, clubDescription.getDescription());
-            put(clubDescription, clubDescriptionTransfer);
+            put(userVisit, clubDescription, clubDescriptionTransfer);
         }
         
         return clubDescriptionTransfer;

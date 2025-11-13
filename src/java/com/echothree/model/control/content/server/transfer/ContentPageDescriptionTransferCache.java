@@ -25,11 +25,11 @@ public class ContentPageDescriptionTransferCache
         extends BaseContentDescriptionTransferCache<ContentPageDescription, ContentPageDescriptionTransfer> {
     
     /** Creates a new instance of ContentPageDescriptionTransferCache */
-    public ContentPageDescriptionTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    public ContentPageDescriptionTransferCache(ContentControl contentControl) {
+        super(contentControl);
     }
     
-    public ContentPageDescriptionTransfer getContentPageDescriptionTransfer(ContentPageDescription contentPageDescription) {
+    public ContentPageDescriptionTransfer getContentPageDescriptionTransfer(UserVisit userVisit, ContentPageDescription contentPageDescription) {
         var contentPageDescriptionTransfer = get(contentPageDescription);
         
         if(contentPageDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class ContentPageDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, contentPageDescription.getLanguage());
             
             contentPageDescriptionTransfer = new ContentPageDescriptionTransfer(languageTransfer, contentPageTransfer, contentPageDescription.getDescription());
-            put(contentPageDescription, contentPageDescriptionTransfer);
+            put(userVisit, contentPageDescription, contentPageDescriptionTransfer);
         }
         
         return contentPageDescriptionTransfer;

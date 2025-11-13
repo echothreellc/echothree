@@ -25,20 +25,20 @@ public class UnitOfMeasureKindDescriptionTransferCache
         extends BaseUomDescriptionTransferCache<UnitOfMeasureKindDescription, UnitOfMeasureKindDescriptionTransfer> {
     
     /** Creates a new instance of UnitOfMeasureKindDescriptionTransferCache */
-    public UnitOfMeasureKindDescriptionTransferCache(UserVisit userVisit, UomControl uomControl) {
-        super(userVisit, uomControl);
+    public UnitOfMeasureKindDescriptionTransferCache(UomControl uomControl) {
+        super(uomControl);
     }
     
-    public UnitOfMeasureKindDescriptionTransfer getUnitOfMeasureKindDescriptionTransfer(UnitOfMeasureKindDescription unitOfMeasureKindDescription) {
+    public UnitOfMeasureKindDescriptionTransfer getUnitOfMeasureKindDescriptionTransfer(UserVisit userVisit, UnitOfMeasureKindDescription unitOfMeasureKindDescription) {
         var unitOfMeasureKindDescriptionTransfer = get(unitOfMeasureKindDescription);
         
         if(unitOfMeasureKindDescriptionTransfer == null) {
-            var unitOfMeasureKindTransferCache = uomControl.getUomTransferCaches(userVisit).getUnitOfMeasureKindTransferCache();
-            var unitOfMeasureKindTransfer = unitOfMeasureKindTransferCache.getUnitOfMeasureKindTransfer(unitOfMeasureKindDescription.getUnitOfMeasureKind());
+            var unitOfMeasureKindTransferCache = uomControl.getUomTransferCaches().getUnitOfMeasureKindTransferCache();
+            var unitOfMeasureKindTransfer = unitOfMeasureKindTransferCache.getUnitOfMeasureKindTransfer(userVisit, unitOfMeasureKindDescription.getUnitOfMeasureKind());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, unitOfMeasureKindDescription.getLanguage());
             
             unitOfMeasureKindDescriptionTransfer = new UnitOfMeasureKindDescriptionTransfer(languageTransfer, unitOfMeasureKindTransfer, unitOfMeasureKindDescription.getDescription());
-            put(unitOfMeasureKindDescription, unitOfMeasureKindDescriptionTransfer);
+            put(userVisit, unitOfMeasureKindDescription, unitOfMeasureKindDescriptionTransfer);
         }
         
         return unitOfMeasureKindDescriptionTransfer;

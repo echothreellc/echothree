@@ -194,16 +194,16 @@ public class LotTimeControl
     }
 
     public LotTimeTypeTransfer getLotTimeTypeTransfer(UserVisit userVisit, LotTimeType lotTimeType) {
-        return getInventoryTransferCaches(userVisit).getLotTimeTypeTransferCache().getTransfer(lotTimeType);
+        return getInventoryTransferCaches().getLotTimeTypeTransferCache().getTransfer(userVisit, lotTimeType);
     }
 
     public List<LotTimeTypeTransfer> getLotTimeTypeTransfers(UserVisit userVisit) {
         var lotTimeTypes = getLotTimeTypes();
         List<LotTimeTypeTransfer> lotTimeTypeTransfers = new ArrayList<>(lotTimeTypes.size());
-        var lotTimeTypeTransferCache = getInventoryTransferCaches(userVisit).getLotTimeTypeTransferCache();
+        var lotTimeTypeTransferCache = getInventoryTransferCaches().getLotTimeTypeTransferCache();
 
         lotTimeTypes.forEach((lotTimeType) ->
-                lotTimeTypeTransfers.add(lotTimeTypeTransferCache.getTransfer(lotTimeType))
+                lotTimeTypeTransfers.add(lotTimeTypeTransferCache.getTransfer(userVisit, lotTimeType))
         );
 
         return lotTimeTypeTransfers;
@@ -417,16 +417,16 @@ public class LotTimeControl
     }
 
     public LotTimeTypeDescriptionTransfer getLotTimeTypeDescriptionTransfer(UserVisit userVisit, LotTimeTypeDescription lotTimeTypeDescription) {
-        return getInventoryTransferCaches(userVisit).getLotTimeTypeDescriptionTransferCache().getTransfer(lotTimeTypeDescription);
+        return getInventoryTransferCaches().getLotTimeTypeDescriptionTransferCache().getTransfer(userVisit, lotTimeTypeDescription);
     }
 
     public List<LotTimeTypeDescriptionTransfer> getLotTimeTypeDescriptionTransfersByLotTimeType(UserVisit userVisit, LotTimeType lotTimeType) {
         var lotTimeTypeDescriptions = getLotTimeTypeDescriptionsByLotTimeType(lotTimeType);
         List<LotTimeTypeDescriptionTransfer> lotTimeTypeDescriptionTransfers = new ArrayList<>(lotTimeTypeDescriptions.size());
-        var lotTimeTypeDescriptionTransferCache = getInventoryTransferCaches(userVisit).getLotTimeTypeDescriptionTransferCache();
+        var lotTimeTypeDescriptionTransferCache = getInventoryTransferCaches().getLotTimeTypeDescriptionTransferCache();
 
         lotTimeTypeDescriptions.forEach((lotTimeTypeDescription) ->
-                lotTimeTypeDescriptionTransfers.add(lotTimeTypeDescriptionTransferCache.getTransfer(lotTimeTypeDescription))
+                lotTimeTypeDescriptionTransfers.add(lotTimeTypeDescriptionTransferCache.getTransfer(userVisit, lotTimeTypeDescription))
         );
 
         return lotTimeTypeDescriptionTransfers;
@@ -594,15 +594,15 @@ public class LotTimeControl
     }
 
     public LotTimeTransfer getLotTimeTransfer(UserVisit userVisit, LotTime lotTime) {
-        return getInventoryTransferCaches(userVisit).getLotTimeTransferCache().getTransfer(lotTime);
+        return getInventoryTransferCaches().getLotTimeTransferCache().getTransfer(userVisit, lotTime);
     }
 
     public List<LotTimeTransfer> getLotTimeTransfers(UserVisit userVisit, Collection<LotTime> lotTimes) {
         List<LotTimeTransfer> lotTimeTransfers = new ArrayList<>(lotTimes.size());
-        var lotTimeTransferCache = getInventoryTransferCaches(userVisit).getLotTimeTransferCache();
+        var lotTimeTransferCache = getInventoryTransferCaches().getLotTimeTransferCache();
 
         lotTimes.forEach((lotTime) ->
-                lotTimeTransfers.add(lotTimeTransferCache.getTransfer(lotTime))
+                lotTimeTransfers.add(lotTimeTransferCache.getTransfer(userVisit, lotTime))
         );
 
         return lotTimeTransfers;

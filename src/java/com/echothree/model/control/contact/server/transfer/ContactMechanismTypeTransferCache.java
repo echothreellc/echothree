@@ -25,24 +25,24 @@ public class ContactMechanismTypeTransferCache
         extends BaseContactTransferCache<ContactMechanismType, ContactMechanismTypeTransfer> {
     
     /** Creates a new instance of ContactMechanismTypeTransferCache */
-    public ContactMechanismTypeTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    public ContactMechanismTypeTransferCache(ContactControl contactControl) {
+        super(contactControl);
     }
     
-    public ContactMechanismTypeTransfer getContactMechanismTypeTransfer(ContactMechanismType contactMechanismType) {
+    public ContactMechanismTypeTransfer getContactMechanismTypeTransfer(UserVisit userVisit, ContactMechanismType contactMechanismType) {
         var contactMechanismTypeTransfer = get(contactMechanismType);
         
         if(contactMechanismTypeTransfer == null) {
             var contactMechanismTypeName = contactMechanismType.getContactMechanismTypeName();
             var parentContactMechanismType = contactMechanismType.getParentContactMechanismType();
-            var parentContactMechanismTypeTransfer = parentContactMechanismType == null? null: getContactMechanismTypeTransfer(parentContactMechanismType);
+            var parentContactMechanismTypeTransfer = parentContactMechanismType == null ? null : getContactMechanismTypeTransfer(userVisit, parentContactMechanismType);
             var isDefault = contactMechanismType.getIsDefault();
             var sortOrder = contactMechanismType.getSortOrder();
-            var description = contactControl.getBestContactMechanismTypeDescription(contactMechanismType, getLanguage());
+            var description = contactControl.getBestContactMechanismTypeDescription(contactMechanismType, getLanguage(userVisit));
             
             contactMechanismTypeTransfer = new ContactMechanismTypeTransfer(contactMechanismTypeName,
                     parentContactMechanismTypeTransfer, isDefault, sortOrder, description);
-            put(contactMechanismType, contactMechanismTypeTransfer);
+            put(userVisit, contactMechanismType, contactMechanismTypeTransfer);
         }
         
         return contactMechanismTypeTransfer;

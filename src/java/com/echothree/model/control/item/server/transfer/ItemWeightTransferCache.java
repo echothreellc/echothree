@@ -30,12 +30,12 @@ public class ItemWeightTransferCache
     UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of ItemWeightTransferCache */
-    public ItemWeightTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemWeightTransferCache(ItemControl itemControl) {
+        super(itemControl);
     }
     
     @Override
-    public ItemWeightTransfer getTransfer(ItemWeight itemWeight) {
+    public ItemWeightTransfer getTransfer(UserVisit userVisit, ItemWeight itemWeight) {
         var itemWeightTransfer = get(itemWeight);
         
         if(itemWeightTransfer == null) {
@@ -43,10 +43,10 @@ public class ItemWeightTransferCache
             var unitOfMeasureTypeTransfer = uomControl.getUnitOfMeasureTypeTransfer(userVisit, itemWeight.getUnitOfMeasureType());
             var itemWeightType = itemControl.getItemWeightTypeTransfer(userVisit, itemWeight.getItemWeightType());
             var weightUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_WEIGHT);
-            var weight = formatUnitOfMeasure(weightUnitOfMeasureKind, itemWeight.getWeight());
+            var weight = formatUnitOfMeasure(userVisit, weightUnitOfMeasureKind, itemWeight.getWeight());
             
             itemWeightTransfer = new ItemWeightTransfer(itemTransfer, unitOfMeasureTypeTransfer, itemWeightType, weight);
-            put(itemWeight, itemWeightTransfer);
+            put(userVisit, itemWeight, itemWeightTransfer);
         }
         
         return itemWeightTransfer;

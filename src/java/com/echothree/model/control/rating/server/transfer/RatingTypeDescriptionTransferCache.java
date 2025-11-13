@@ -25,20 +25,20 @@ public class RatingTypeDescriptionTransferCache
         extends BaseRatingDescriptionTransferCache<RatingTypeDescription, RatingTypeDescriptionTransfer> {
     
     /** Creates a new instance of RatingTypeDescriptionTransferCache */
-    public RatingTypeDescriptionTransferCache(UserVisit userVisit, RatingControl ratingControl) {
-        super(userVisit, ratingControl);
+    public RatingTypeDescriptionTransferCache(RatingControl ratingControl) {
+        super(ratingControl);
     }
     
-    public RatingTypeDescriptionTransfer getRatingTypeDescriptionTransfer(RatingTypeDescription ratingTypeDescription) {
+    public RatingTypeDescriptionTransfer getRatingTypeDescriptionTransfer(UserVisit userVisit, RatingTypeDescription ratingTypeDescription) {
         var ratingTypeDescriptionTransfer = get(ratingTypeDescription);
         
         if(ratingTypeDescriptionTransfer == null) {
-            var ratingTypeTransferCache = ratingControl.getRatingTransferCaches(userVisit).getRatingTypeTransferCache();
-            var ratingTypeTransfer = ratingTypeTransferCache.getRatingTypeTransfer(ratingTypeDescription.getRatingType());
+            var ratingTypeTransferCache = ratingControl.getRatingTransferCaches().getRatingTypeTransferCache();
+            var ratingTypeTransfer = ratingTypeTransferCache.getRatingTypeTransfer(userVisit, ratingTypeDescription.getRatingType());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, ratingTypeDescription.getLanguage());
             
             ratingTypeDescriptionTransfer = new RatingTypeDescriptionTransfer(languageTransfer, ratingTypeTransfer, ratingTypeDescription.getDescription());
-            put(ratingTypeDescription, ratingTypeDescriptionTransfer);
+            put(userVisit, ratingTypeDescription, ratingTypeDescriptionTransfer);
         }
         
         return ratingTypeDescriptionTransfer;

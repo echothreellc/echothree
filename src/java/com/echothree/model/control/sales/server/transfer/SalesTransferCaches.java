@@ -25,13 +25,13 @@ public class SalesTransferCaches
     protected SalesOrderBatchTransferCache salesOrderBatchTransferCache;
     
     /** Creates a new instance of SalesTransferCaches */
-    public SalesTransferCaches(UserVisit userVisit) {
-        super(userVisit);
+    public SalesTransferCaches() {
+        super();
     }
     
     public SalesOrderBatchTransferCache getSalesOrderBatchTransferCache() {
         if(salesOrderBatchTransferCache == null)
-            salesOrderBatchTransferCache = new SalesOrderBatchTransferCache(userVisit);
+            salesOrderBatchTransferCache = new SalesOrderBatchTransferCache();
         
         return salesOrderBatchTransferCache;
     }

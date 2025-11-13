@@ -25,21 +25,21 @@ public class PostalAddressElementTypeTransferCache
         extends BaseContactTransferCache<PostalAddressElementType, PostalAddressElementTypeTransfer> {
     
     /** Creates a new instance of PostalAddressElementTypeTransferCache */
-    public PostalAddressElementTypeTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    public PostalAddressElementTypeTransferCache(ContactControl contactControl) {
+        super(contactControl);
     }
     
-    public PostalAddressElementTypeTransfer getPostalAddressElementTypeTransfer(PostalAddressElementType postalAddressElementType) {
+    public PostalAddressElementTypeTransfer getPostalAddressElementTypeTransfer(UserVisit userVisit, PostalAddressElementType postalAddressElementType) {
         var postalAddressElementTypeTransfer = get(postalAddressElementType);
         
         if(postalAddressElementTypeTransfer == null) {
             var postalAddressElementTypeName = postalAddressElementType.getPostalAddressElementTypeName();
             var isDefault = postalAddressElementType.getIsDefault();
             var sortOrder = postalAddressElementType.getSortOrder();
-            var description = contactControl.getBestPostalAddressElementTypeDescription(postalAddressElementType, getLanguage());
+            var description = contactControl.getBestPostalAddressElementTypeDescription(postalAddressElementType, getLanguage(userVisit));
             
             postalAddressElementTypeTransfer = new PostalAddressElementTypeTransfer(postalAddressElementTypeName, isDefault, sortOrder, description);
-            put(postalAddressElementType, postalAddressElementTypeTransfer);
+            put(userVisit, postalAddressElementType, postalAddressElementTypeTransfer);
         }
         
         return postalAddressElementTypeTransfer;

@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.inventory.server.transfer;
 
-import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.inventory.common.InventoryOptions;
 import com.echothree.model.control.inventory.common.transfer.LotAliasTransfer;
 import com.echothree.model.control.inventory.common.transfer.LotTimeTransfer;
@@ -25,8 +24,6 @@ import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.inventory.server.control.LotAliasControl;
 import com.echothree.model.control.inventory.server.control.LotTimeControl;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.inventory.server.entity.Lot;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.MapWrapper;
@@ -43,8 +40,8 @@ public class LotTransferCache
     boolean includeLotTimes;
 
     /** Creates a new instance of LotTransferCache */
-    public LotTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    public LotTransferCache(InventoryControl inventoryControl) {
+        super(inventoryControl);
 
         var options = session.getOptions();
         if(options != null) {
@@ -57,7 +54,7 @@ public class LotTransferCache
     }
     
     @Override
-    public LotTransfer getTransfer(Lot lot) {
+    public LotTransfer getTransfer(UserVisit userVisit, Lot lot) {
         var lotTransfer = get(lot);
         
         if(lotTransfer == null) {
@@ -67,7 +64,7 @@ public class LotTransferCache
             var lotIdentifier = lotDetail.getLotIdentifier();
 
             lotTransfer = new LotTransfer(item, lotIdentifier);
-            put(lot, lotTransfer);
+            put(userVisit, lot, lotTransfer);
 
             if(includeLotAliases) {
                 var lotAliasTransfers = lotAliasControl.getLotAliasTransfersByLot(userVisit, lot);

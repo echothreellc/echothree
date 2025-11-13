@@ -30,8 +30,8 @@ public class ContactMechanismTransferCache
     boolean includeComments;
 
     /** Creates a new instance of ContactMechanismTransferCache */
-    public ContactMechanismTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    public ContactMechanismTransferCache(ContactControl contactControl) {
+        super(contactControl);
 
         var options = session.getOptions();
         if(options != null) {
@@ -44,7 +44,7 @@ public class ContactMechanismTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public ContactMechanismTransfer getContactMechanismTransfer(ContactMechanism contactMechanism) {
+    public ContactMechanismTransfer getContactMechanismTransfer(UserVisit userVisit, ContactMechanism contactMechanism) {
         var contactMechanismTransfer = get(contactMechanism);
         
         if(contactMechanismTransfer == null) {
@@ -55,7 +55,7 @@ public class ContactMechanismTransferCache
             var allowSolicitation = contactMechanismDetail.getAllowSolicitation();
 
             contactMechanismTransfer = new ContactMechanismTransfer(contactMechanismName, contactMechanismType, allowSolicitation);
-            put(contactMechanism, contactMechanismTransfer);
+            put(userVisit, contactMechanism, contactMechanismTransfer);
 
             var contactMechanismTypeName = contactMechanismType.getContactMechanismTypeName();
             
@@ -72,7 +72,7 @@ public class ContactMechanismTransferCache
             }
             
             if(includeComments) {
-                setupComments(contactMechanism, null, contactMechanismTransfer, CommentConstants.CommentType_CONTACT_MECHANISM);
+                setupComments(userVisit, contactMechanism, null, contactMechanismTransfer, CommentConstants.CommentType_CONTACT_MECHANISM);
             }
         }
         

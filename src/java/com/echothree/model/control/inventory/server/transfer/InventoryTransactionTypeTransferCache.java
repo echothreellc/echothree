@@ -33,14 +33,14 @@ public class InventoryTransactionTypeTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of InventoryTransactionTypeTransferCache */
-    public InventoryTransactionTypeTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    public InventoryTransactionTypeTransferCache(InventoryControl inventoryControl) {
+        super(inventoryControl);
         
         setIncludeEntityInstance(true);
     }
 
     @Override
-    public InventoryTransactionTypeTransfer getTransfer(InventoryTransactionType inventoryTransactionType) {
+    public InventoryTransactionTypeTransfer getTransfer(UserVisit userVisit, InventoryTransactionType inventoryTransactionType) {
         var inventoryTransactionTypeTransfer = get(inventoryTransactionType);
         
         if(inventoryTransactionTypeTransfer == null) {
@@ -54,11 +54,11 @@ public class InventoryTransactionTypeTransferCache
             var inventoryTransactionWorkflowEntranceTransfer = inventoryTransactionWorkflowEntrance == null? null: workflowControl.getWorkflowEntranceTransfer(userVisit, inventoryTransactionWorkflowEntrance);
             var isDefault = inventoryTransactionTypeDetail.getIsDefault();
             var sortOrder = inventoryTransactionTypeDetail.getSortOrder();
-            var description = inventoryTransactionTypeControl.getBestInventoryTransactionTypeDescription(inventoryTransactionType, getLanguage());
+            var description = inventoryTransactionTypeControl.getBestInventoryTransactionTypeDescription(inventoryTransactionType, getLanguage(userVisit));
             
             inventoryTransactionTypeTransfer = new InventoryTransactionTypeTransfer(inventoryTransactionTypeName, inventoryTransactionSequenceTypeTransfer, inventoryTransactionWorkflowTransfer,
                     inventoryTransactionWorkflowEntranceTransfer, isDefault, sortOrder, description);
-            put(inventoryTransactionType, inventoryTransactionTypeTransfer);
+            put(userVisit, inventoryTransactionType, inventoryTransactionTypeTransfer);
         }
         
         return inventoryTransactionTypeTransfer;

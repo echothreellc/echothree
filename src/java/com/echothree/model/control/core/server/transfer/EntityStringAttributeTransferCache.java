@@ -35,8 +35,8 @@ public class EntityStringAttributeTransferCache
     boolean includeString;
     
     /** Creates a new instance of EntityStringAttributeTransferCache */
-    public EntityStringAttributeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityStringAttributeTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -44,7 +44,7 @@ public class EntityStringAttributeTransferCache
         }
     }
     
-    public EntityStringAttributeTransfer getEntityStringAttributeTransfer(EntityStringAttribute entityStringAttribute, EntityInstance entityInstance) {
+    public EntityStringAttributeTransfer getEntityStringAttributeTransfer(final UserVisit userVisit, final EntityStringAttribute entityStringAttribute, final EntityInstance entityInstance) {
         var entityStringAttributeTransfer = get(entityStringAttribute);
         
         if(entityStringAttributeTransfer == null) {
@@ -54,7 +54,7 @@ public class EntityStringAttributeTransferCache
             var stringAttribute = includeString ? entityStringAttribute.getStringAttribute() : null;
             
             entityStringAttributeTransfer = new EntityStringAttributeTransfer(entityAttribute, entityInstanceTransfer, language, stringAttribute);
-            put(entityStringAttribute, entityStringAttributeTransfer);
+            put(userVisit, entityStringAttribute, entityStringAttributeTransfer);
         }
         
         return entityStringAttributeTransfer;

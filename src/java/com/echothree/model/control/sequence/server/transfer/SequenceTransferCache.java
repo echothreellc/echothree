@@ -25,29 +25,29 @@ public class SequenceTransferCache
         extends BaseSequenceTransferCache<Sequence, SequenceTransfer> {
     
     /** Creates a new instance of SequenceTransferCache */
-    public SequenceTransferCache(UserVisit userVisit, SequenceControl sequenceControl) {
-        super(userVisit, sequenceControl);
+    public SequenceTransferCache(SequenceControl sequenceControl) {
+        super(sequenceControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public SequenceTransfer getSequenceTransfer(Sequence sequence) {
+    public SequenceTransfer getSequenceTransfer(UserVisit userVisit, Sequence sequence) {
         var sequenceTransfer = get(sequence);
         
         if(sequenceTransfer == null) {
             var sequenceDetail = sequence.getLastDetail();
-            var sequenceTypeTransferCache = sequenceControl.getSequenceTransferCaches(userVisit).getSequenceTypeTransferCache();
-            var sequenceType = sequenceTypeTransferCache.getSequenceTypeTransfer(sequenceDetail.getSequenceType());
+            var sequenceTypeTransferCache = sequenceControl.getSequenceTransferCaches().getSequenceTypeTransferCache();
+            var sequenceType = sequenceTypeTransferCache.getSequenceTypeTransfer(userVisit, sequenceDetail.getSequenceType());
             var sequenceName = sequenceDetail.getSequenceName();
             var mask = sequenceDetail.getMask();
             var chunkSize = sequenceDetail.getChunkSize();
             var isDefault = sequenceDetail.getIsDefault();
             var sortOrder = sequenceDetail.getSortOrder();
             var value = sequenceControl.getSequenceValue(sequence).getValue();
-            var description = sequenceControl.getBestSequenceDescription(sequence, getLanguage());
+            var description = sequenceControl.getBestSequenceDescription(sequence, getLanguage(userVisit));
             
             sequenceTransfer = new SequenceTransfer(sequenceType, sequenceName, mask, chunkSize, isDefault, sortOrder, value, description);
-            put(sequence, sequenceTransfer);
+            put(userVisit, sequence, sequenceTransfer);
         }
         return sequenceTransfer;
     }

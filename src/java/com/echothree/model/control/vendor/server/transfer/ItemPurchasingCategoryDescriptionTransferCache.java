@@ -25,20 +25,20 @@ public class ItemPurchasingCategoryDescriptionTransferCache
         extends BaseVendorDescriptionTransferCache<ItemPurchasingCategoryDescription, ItemPurchasingCategoryDescriptionTransfer> {
     
     /** Creates a new instance of ItemPurchasingCategoryDescriptionTransferCache */
-    public ItemPurchasingCategoryDescriptionTransferCache(UserVisit userVisit, VendorControl vendorControl) {
-        super(userVisit, vendorControl);
+    public ItemPurchasingCategoryDescriptionTransferCache(VendorControl vendorControl) {
+        super(vendorControl);
     }
     
-    public ItemPurchasingCategoryDescriptionTransfer getItemPurchasingCategoryDescriptionTransfer(ItemPurchasingCategoryDescription itemPurchasingCategoryDescription) {
+    public ItemPurchasingCategoryDescriptionTransfer getItemPurchasingCategoryDescriptionTransfer(UserVisit userVisit, ItemPurchasingCategoryDescription itemPurchasingCategoryDescription) {
         var itemPurchasingCategoryDescriptionTransfer = get(itemPurchasingCategoryDescription);
         
         if(itemPurchasingCategoryDescriptionTransfer == null) {
-            var itemPurchasingCategoryTransferCache = vendorControl.getVendorTransferCaches(userVisit).getItemPurchasingCategoryTransferCache();
-            var itemPurchasingCategoryTransfer = itemPurchasingCategoryTransferCache.getItemPurchasingCategoryTransfer(itemPurchasingCategoryDescription.getItemPurchasingCategory());
+            var itemPurchasingCategoryTransferCache = vendorControl.getVendorTransferCaches().getItemPurchasingCategoryTransferCache();
+            var itemPurchasingCategoryTransfer = itemPurchasingCategoryTransferCache.getItemPurchasingCategoryTransfer(userVisit, itemPurchasingCategoryDescription.getItemPurchasingCategory());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, itemPurchasingCategoryDescription.getLanguage());
             
             itemPurchasingCategoryDescriptionTransfer = new ItemPurchasingCategoryDescriptionTransfer(languageTransfer, itemPurchasingCategoryTransfer, itemPurchasingCategoryDescription.getDescription());
-            put(itemPurchasingCategoryDescription, itemPurchasingCategoryDescriptionTransfer);
+            put(userVisit, itemPurchasingCategoryDescription, itemPurchasingCategoryDescriptionTransfer);
         }
         
         return itemPurchasingCategoryDescriptionTransfer;

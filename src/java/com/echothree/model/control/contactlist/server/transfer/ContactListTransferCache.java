@@ -29,13 +29,13 @@ public class ContactListTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of ContactListTransferCache */
-    public ContactListTransferCache(UserVisit userVisit, ContactListControl contactListControl) {
-        super(userVisit, contactListControl);
+    public ContactListTransferCache(ContactListControl contactListControl) {
+        super(contactListControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public ContactListTransfer getContactListTransfer(ContactList contactList) {
+    public ContactListTransfer getContactListTransfer(UserVisit userVisit, ContactList contactList) {
         var contactListTransfer = get(contactList);
         
         if(contactListTransfer == null) {
@@ -48,11 +48,11 @@ public class ContactListTransferCache
             var defaultPartyContactListStatus = workflowControl.getWorkflowEntranceTransfer(userVisit, contactListDetail.getDefaultPartyContactListStatus());
             var isDefault = contactListDetail.getIsDefault();
             var sortOrder = contactListDetail.getSortOrder();
-            var description = contactListControl.getBestContactListDescription(contactList, getLanguage());
+            var description = contactListControl.getBestContactListDescription(contactList, getLanguage(userVisit));
             
             contactListTransfer = new ContactListTransfer(contactListName, contactListGroupTransfer, contactListTypeTransfer, contactListFrequencyTransfer,
                     defaultPartyContactListStatus, isDefault, sortOrder, description);
-            put(contactList, contactListTransfer);
+            put(userVisit, contactList, contactListTransfer);
         }
         
         return contactListTransfer;

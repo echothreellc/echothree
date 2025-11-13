@@ -25,11 +25,11 @@ public class RecoveryQuestionDescriptionTransferCache
         extends BaseUserDescriptionTransferCache<RecoveryQuestionDescription, RecoveryQuestionDescriptionTransfer> {
     
     /** Creates a new instance of RecoveryQuestionDescriptionTransferCache */
-    public RecoveryQuestionDescriptionTransferCache(UserVisit userVisit, UserControl userControl) {
-        super(userVisit, userControl);
+    public RecoveryQuestionDescriptionTransferCache(UserControl userControl) {
+        super(userControl);
     }
     
-    public RecoveryQuestionDescriptionTransfer getRecoveryQuestionDescriptionTransfer(RecoveryQuestionDescription recoveryQuestionDescription) {
+    public RecoveryQuestionDescriptionTransfer getRecoveryQuestionDescriptionTransfer(UserVisit userVisit, RecoveryQuestionDescription recoveryQuestionDescription) {
         var recoveryQuestionDescriptionTransfer = get(recoveryQuestionDescription);
         
         if(recoveryQuestionDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class RecoveryQuestionDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, recoveryQuestionDescription.getLanguage());
             
             recoveryQuestionDescriptionTransfer = new RecoveryQuestionDescriptionTransfer(languageTransfer, recoveryQuestionTransfer, recoveryQuestionDescription.getDescription());
-            put(recoveryQuestionDescription, recoveryQuestionDescriptionTransfer);
+            put(userVisit, recoveryQuestionDescription, recoveryQuestionDescriptionTransfer);
         }
         
         return recoveryQuestionDescriptionTransfer;

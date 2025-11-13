@@ -25,14 +25,14 @@ public class ItemAliasTypeTransferCache
         extends BaseItemTransferCache<ItemAliasType, ItemAliasTypeTransfer> {
     
     /** Creates a new instance of ItemAliasTypeTransferCache */
-    public ItemAliasTypeTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemAliasTypeTransferCache(ItemControl itemControl) {
+        super(itemControl);
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public ItemAliasTypeTransfer getTransfer(ItemAliasType itemAliasType) {
+    public ItemAliasTypeTransfer getTransfer(UserVisit userVisit, ItemAliasType itemAliasType) {
         var itemAliasTypeTransfer = get(itemAliasType);
         
         if(itemAliasTypeTransfer == null) {
@@ -43,11 +43,11 @@ public class ItemAliasTypeTransferCache
             var allowMultiple = itemAliasTypeDetail.getAllowMultiple();
             var isDefault = itemAliasTypeDetail.getIsDefault();
             var sortOrder = itemAliasTypeDetail.getSortOrder();
-            var description = itemControl.getBestItemAliasTypeDescription(itemAliasType, getLanguage());
+            var description = itemControl.getBestItemAliasTypeDescription(itemAliasType, getLanguage(userVisit));
             
             itemAliasTypeTransfer = new ItemAliasTypeTransfer(itemAliasTypeName, validationPattern, itemAliasChecksumType, allowMultiple, isDefault, sortOrder,
                     description);
-            put(itemAliasType, itemAliasTypeTransfer);
+            put(userVisit, itemAliasType, itemAliasTypeTransfer);
         }
         
         return itemAliasTypeTransfer;

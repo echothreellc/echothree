@@ -29,13 +29,13 @@ public class ReturnTypeShippingMethodTransferCache
     ShippingControl shippingControl;
     
     /** Creates a new instance of ReturnTypeShippingMethodTransferCache */
-    public ReturnTypeShippingMethodTransferCache(UserVisit userVisit, ReturnPolicyControl returnPolicyControl) {
-        super(userVisit, returnPolicyControl);
+    public ReturnTypeShippingMethodTransferCache(ReturnPolicyControl returnPolicyControl) {
+        super(returnPolicyControl);
         
         shippingControl = Session.getModelController(ShippingControl.class);
     }
     
-    public ReturnTypeShippingMethodTransfer getReturnTypeShippingMethodTransfer(ReturnTypeShippingMethod returnTypeShippingMethod) {
+    public ReturnTypeShippingMethodTransfer getReturnTypeShippingMethodTransfer(UserVisit userVisit, ReturnTypeShippingMethod returnTypeShippingMethod) {
         var returnTypeShippingMethodTransfer = get(returnTypeShippingMethod);
         
         if(returnTypeShippingMethodTransfer == null) {
@@ -46,7 +46,7 @@ public class ReturnTypeShippingMethodTransferCache
             
             returnTypeShippingMethodTransfer = new ReturnTypeShippingMethodTransfer(returnType, shippingMethod, isDefault,
                     sortOrder);
-            put(returnTypeShippingMethod, returnTypeShippingMethodTransfer);
+            put(userVisit, returnTypeShippingMethod, returnTypeShippingMethodTransfer);
         }
         
         return returnTypeShippingMethodTransfer;

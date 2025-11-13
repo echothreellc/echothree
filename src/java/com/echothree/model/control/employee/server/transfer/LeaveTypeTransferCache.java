@@ -25,13 +25,13 @@ public class LeaveTypeTransferCache
         extends BaseEmployeeTransferCache<LeaveType, LeaveTypeTransfer> {
     
     /** Creates a new instance of LeaveTypeTransferCache */
-    public LeaveTypeTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit, employeeControl);
+    public LeaveTypeTransferCache(EmployeeControl employeeControl) {
+        super(employeeControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public LeaveTypeTransfer getLeaveTypeTransfer(LeaveType leaveType) {
+    public LeaveTypeTransfer getLeaveTypeTransfer(UserVisit userVisit, LeaveType leaveType) {
         var leaveTypeTransfer = get(leaveType);
         
         if(leaveTypeTransfer == null) {
@@ -39,10 +39,10 @@ public class LeaveTypeTransferCache
             var leaveTypeName = leaveTypeDetail.getLeaveTypeName();
             var isDefault = leaveTypeDetail.getIsDefault();
             var sortOrder = leaveTypeDetail.getSortOrder();
-            var description = employeeControl.getBestLeaveTypeDescription(leaveType, getLanguage());
+            var description = employeeControl.getBestLeaveTypeDescription(leaveType, getLanguage(userVisit));
             
             leaveTypeTransfer = new LeaveTypeTransfer(leaveTypeName, isDefault, sortOrder, description);
-            put(leaveType, leaveTypeTransfer);
+            put(userVisit, leaveType, leaveTypeTransfer);
         }
         
         return leaveTypeTransfer;

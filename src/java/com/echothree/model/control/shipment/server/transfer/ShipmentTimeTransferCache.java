@@ -28,21 +28,21 @@ public class ShipmentTimeTransferCache
     ShipmentControl shipmentControl = Session.getModelController(ShipmentControl.class);
 
     /** Creates a new instance of ShipmentTimeTransferCache */
-    public ShipmentTimeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public ShipmentTimeTransferCache() {
+        super();
     }
 
     @Override
-    public ShipmentTimeTransfer getTransfer(ShipmentTime shipmentTime) {
+    public ShipmentTimeTransfer getTransfer(UserVisit userVisit, ShipmentTime shipmentTime) {
         var shipmentTimeTransfer = get(shipmentTime);
         
         if(shipmentTimeTransfer == null) {
             var shipmentTimeType = shipmentControl.getShipmentTimeTypeTransfer(userVisit, shipmentTime.getShipmentTimeType());
             var unformattedTime = shipmentTime.getTime();
-            var time = formatTypicalDateTime(unformattedTime);
+            var time = formatTypicalDateTime(userVisit, unformattedTime);
             
             shipmentTimeTransfer = new ShipmentTimeTransfer(shipmentTimeType, unformattedTime, time);
-            put(shipmentTime, shipmentTimeTransfer);
+            put(userVisit, shipmentTime, shipmentTimeTransfer);
         }
         
         return shipmentTimeTransfer;

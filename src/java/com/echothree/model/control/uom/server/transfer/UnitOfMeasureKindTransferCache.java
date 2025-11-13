@@ -35,8 +35,8 @@ public class UnitOfMeasureKindTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of UnitOfMeasureKindTransferCache */
-    public UnitOfMeasureKindTransferCache(UserVisit userVisit, UomControl uomControl) {
-        super(userVisit, uomControl);
+    public UnitOfMeasureKindTransferCache(UomControl uomControl) {
+        super(uomControl);
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
@@ -55,7 +55,7 @@ public class UnitOfMeasureKindTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
     
-    public UnitOfMeasureKindTransfer getUnitOfMeasureKindTransfer(UnitOfMeasureKind unitOfMeasureKind) {
+    public UnitOfMeasureKindTransfer getUnitOfMeasureKindTransfer(UserVisit userVisit, UnitOfMeasureKind unitOfMeasureKind) {
         var unitOfMeasureKindTransfer = get(unitOfMeasureKind);
         
         if(unitOfMeasureKindTransfer == null) {
@@ -64,10 +64,10 @@ public class UnitOfMeasureKindTransferCache
             var fractionDigits = filterFractionDigits ? null : unitOfMeasureKindDetail.getFractionDigits();
             var isDefault = filterIsDefault ? null : unitOfMeasureKindDetail.getIsDefault();
             var sortOrder = filterSortOrder ? null : unitOfMeasureKindDetail.getSortOrder();
-            var description = filterDescription ? null : uomControl.getBestUnitOfMeasureKindDescription(unitOfMeasureKind, getLanguage());
+            var description = filterDescription ? null : uomControl.getBestUnitOfMeasureKindDescription(unitOfMeasureKind, getLanguage(userVisit));
             
             unitOfMeasureKindTransfer = new UnitOfMeasureKindTransfer(unitOfMeasureKindName, fractionDigits, isDefault, sortOrder, description);
-            put(unitOfMeasureKind, unitOfMeasureKindTransfer);
+            put(userVisit, unitOfMeasureKind, unitOfMeasureKindTransfer);
         }
         return unitOfMeasureKindTransfer;
     }

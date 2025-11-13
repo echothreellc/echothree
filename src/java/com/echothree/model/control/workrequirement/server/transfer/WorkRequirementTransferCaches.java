@@ -33,50 +33,50 @@ public class WorkRequirementTransferCaches
     protected WorkTimeTransferCache workTimeTransferCache;
     
     /** Creates a new instance of WorkRequirementTransferCaches */
-    public WorkRequirementTransferCaches(UserVisit userVisit, WorkRequirementControl workRequirementControl) {
-        super(userVisit);
+    public WorkRequirementTransferCaches(WorkRequirementControl workRequirementControl) {
+        super();
         
         this.workRequirementControl = workRequirementControl;
     }
     
     public WorkRequirementTypeDescriptionTransferCache getWorkRequirementTypeDescriptionTransferCache() {
         if(workRequirementTypeDescriptionTransferCache == null)
-            workRequirementTypeDescriptionTransferCache = new WorkRequirementTypeDescriptionTransferCache(userVisit, workRequirementControl);
+            workRequirementTypeDescriptionTransferCache = new WorkRequirementTypeDescriptionTransferCache(workRequirementControl);
         
         return workRequirementTypeDescriptionTransferCache;
     }
     
     public WorkRequirementTypeTransferCache getWorkRequirementTypeTransferCache() {
         if(workRequirementTypeTransferCache == null)
-            workRequirementTypeTransferCache = new WorkRequirementTypeTransferCache(userVisit, workRequirementControl);
+            workRequirementTypeTransferCache = new WorkRequirementTypeTransferCache(workRequirementControl);
         
         return workRequirementTypeTransferCache;
     }
     
     public WorkRequirementScopeTransferCache getWorkRequirementScopeTransferCache() {
         if(workRequirementScopeTransferCache == null)
-            workRequirementScopeTransferCache = new WorkRequirementScopeTransferCache(userVisit, workRequirementControl);
+            workRequirementScopeTransferCache = new WorkRequirementScopeTransferCache(workRequirementControl);
         
         return workRequirementScopeTransferCache;
     }
     
     public WorkRequirementTransferCache getWorkRequirementTransferCache() {
         if(workRequirementTransferCache == null)
-            workRequirementTransferCache = new WorkRequirementTransferCache(userVisit, workRequirementControl);
+            workRequirementTransferCache = new WorkRequirementTransferCache(workRequirementControl);
         
         return workRequirementTransferCache;
     }
     
     public WorkAssignmentTransferCache getWorkAssignmentTransferCache() {
         if(workAssignmentTransferCache == null)
-            workAssignmentTransferCache = new WorkAssignmentTransferCache(userVisit, workRequirementControl);
+            workAssignmentTransferCache = new WorkAssignmentTransferCache(workRequirementControl);
         
         return workAssignmentTransferCache;
     }
     
     public WorkTimeTransferCache getWorkTimeTransferCache() {
         if(workTimeTransferCache == null)
-            workTimeTransferCache = new WorkTimeTransferCache(userVisit, workRequirementControl);
+            workTimeTransferCache = new WorkTimeTransferCache(workRequirementControl);
         
         return workTimeTransferCache;
     }

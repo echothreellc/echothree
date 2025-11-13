@@ -84,9 +84,9 @@ public class TaxControl
     
     private TaxTransferCaches taxTransferCaches;
     
-    public TaxTransferCaches getTaxTransferCaches(UserVisit userVisit) {
+    public TaxTransferCaches getTaxTransferCaches() {
         if(taxTransferCaches == null) {
-            taxTransferCaches = new TaxTransferCaches(userVisit, this);
+            taxTransferCaches = new TaxTransferCaches(this);
         }
         
         return taxTransferCaches;
@@ -294,15 +294,15 @@ public class TaxControl
     }
     
     public TaxClassificationTransfer getTaxClassificationTransfer(UserVisit userVisit, TaxClassification taxClassification) {
-        return getTaxTransferCaches(userVisit).getTaxClassificationTransferCache().getTransfer(taxClassification);
+        return getTaxTransferCaches().getTaxClassificationTransferCache().getTransfer(userVisit, taxClassification);
     }
 
     public List<TaxClassificationTransfer> getTaxClassificationTransfers(UserVisit userVisit, Collection<TaxClassification> taxClassifications) {
         List<TaxClassificationTransfer> taxClassificationTransfers = new ArrayList<>(taxClassifications.size());
-        var taxClassificationTransferCache = getTaxTransferCaches(userVisit).getTaxClassificationTransferCache();
+        var taxClassificationTransferCache = getTaxTransferCaches().getTaxClassificationTransferCache();
 
         taxClassifications.forEach((taxClassification) ->
-                taxClassificationTransfers.add(taxClassificationTransferCache.getTransfer(taxClassification))
+                taxClassificationTransfers.add(taxClassificationTransferCache.getTransfer(userVisit, taxClassification))
         );
 
         return taxClassificationTransfers;
@@ -493,7 +493,7 @@ public class TaxControl
     }
     
     public TaxClassificationTranslationTransfer getTaxClassificationTranslationTransfer(UserVisit userVisit, TaxClassificationTranslation taxClassificationTranslation) {
-        return getTaxTransferCaches(userVisit).getTaxClassificationTranslationTransferCache().getTransfer(taxClassificationTranslation);
+        return getTaxTransferCaches().getTaxClassificationTranslationTransferCache().getTransfer(userVisit, taxClassificationTranslation);
     }
 
     public List<TaxClassificationTranslationTransfer> getTaxClassificationTranslationTransfersByTaxClassification(UserVisit userVisit, TaxClassification taxClassification) {
@@ -501,7 +501,7 @@ public class TaxControl
         List<TaxClassificationTranslationTransfer> taxClassificationTranslationTransfers = new ArrayList<>(taxClassificationTranslations.size());
 
         taxClassificationTranslations.forEach((taxClassificationTranslation) -> {
-            taxClassificationTranslationTransfers.add(getTaxTransferCaches(userVisit).getTaxClassificationTranslationTransferCache().getTransfer(taxClassificationTranslation));
+            taxClassificationTranslationTransfers.add(getTaxTransferCaches().getTaxClassificationTranslationTransferCache().getTransfer(userVisit, taxClassificationTranslation));
         });
 
         return taxClassificationTranslationTransfers;
@@ -703,15 +703,15 @@ public class TaxControl
     }
 
     public ItemTaxClassificationTransfer getItemTaxClassificationTransfer(UserVisit userVisit, ItemTaxClassification itemTaxClassification) {
-        return getTaxTransferCaches(userVisit).getItemTaxClassificationTransferCache().getTransfer(itemTaxClassification);
+        return getTaxTransferCaches().getItemTaxClassificationTransferCache().getTransfer(userVisit, itemTaxClassification);
     }
 
     public List<ItemTaxClassificationTransfer> getItemTaxClassificationTransfers(UserVisit userVisit, Collection<ItemTaxClassification> itemTaxClassifications) {
         List<ItemTaxClassificationTransfer> itemTaxClassificationTransfers = new ArrayList<>(itemTaxClassifications.size());
-        var itemTaxClassificationTransferCache = getTaxTransferCaches(userVisit).getItemTaxClassificationTransferCache();
+        var itemTaxClassificationTransferCache = getTaxTransferCaches().getItemTaxClassificationTransferCache();
 
         itemTaxClassifications.forEach((itemTaxClassification) ->
-                itemTaxClassificationTransfers.add(itemTaxClassificationTransferCache.getTransfer(itemTaxClassification))
+                itemTaxClassificationTransfers.add(itemTaxClassificationTransferCache.getTransfer(userVisit, itemTaxClassification))
         );
 
         return itemTaxClassificationTransfers;
@@ -921,16 +921,16 @@ public class TaxControl
     }
     
     public TaxTransfer getTaxTransfer(UserVisit userVisit, Tax tax) {
-        return getTaxTransferCaches(userVisit).getTaxTransferCache().getTransfer(tax);
+        return getTaxTransferCaches().getTaxTransferCache().getTransfer(userVisit, tax);
     }
     
     public List<TaxTransfer> getTaxTransfers(UserVisit userVisit) {
         var taxes = getTaxes();
         List<TaxTransfer> taxTransfers = new ArrayList<>(taxes.size());
-        var taxTransferCache = getTaxTransferCaches(userVisit).getTaxTransferCache();
+        var taxTransferCache = getTaxTransferCaches().getTaxTransferCache();
         
         taxes.forEach((tax) ->
-                taxTransfers.add(taxTransferCache.getTransfer(tax))
+                taxTransfers.add(taxTransferCache.getTransfer(userVisit, tax))
         );
         
         return taxTransfers;
@@ -1134,7 +1134,7 @@ public class TaxControl
     }
     
     public TaxDescriptionTransfer getTaxDescriptionTransfer(UserVisit userVisit, TaxDescription taxDescription) {
-        return getTaxTransferCaches(userVisit).getTaxDescriptionTransferCache().getTransfer(taxDescription);
+        return getTaxTransferCaches().getTaxDescriptionTransferCache().getTransfer(userVisit, taxDescription);
     }
     
     public List<TaxDescriptionTransfer> getTaxDescriptionTransfersByTax(UserVisit userVisit, Tax tax) {
@@ -1145,7 +1145,7 @@ public class TaxControl
             taxDescriptionTransfers = new ArrayList<>(taxDescriptions.size());
             
             for(var taxDescription : taxDescriptions) {
-                taxDescriptionTransfers.add(getTaxTransferCaches(userVisit).getTaxDescriptionTransferCache().getTransfer(taxDescription));
+                taxDescriptionTransfers.add(getTaxTransferCaches().getTaxDescriptionTransferCache().getTransfer(userVisit, taxDescription));
             }
         }
         
@@ -1330,14 +1330,14 @@ public class TaxControl
     }
     
     public GeoCodeTaxTransfer getGeoCodeTaxTransfer(UserVisit userVisit, GeoCodeTax geoCodeTax) {
-        return getTaxTransferCaches(userVisit).getGeoCodeTaxTransferCache().getTransfer(geoCodeTax);
+        return getTaxTransferCaches().getGeoCodeTaxTransferCache().getTransfer(userVisit, geoCodeTax);
     }
     
     private List<GeoCodeTaxTransfer> getGeoCodeTaxTransfers(UserVisit userVisit, Collection<GeoCodeTax> geoCodeTaxes) {
         List<GeoCodeTaxTransfer> geoCodeTaxTransfers = new ArrayList<>(geoCodeTaxes.size());
         
         geoCodeTaxes.forEach((geoCodeTax) -> {
-            geoCodeTaxTransfers.add(getTaxTransferCaches(userVisit).getGeoCodeTaxTransferCache().getTransfer(geoCodeTax));
+            geoCodeTaxTransfers.add(getTaxTransferCaches().getGeoCodeTaxTransferCache().getTransfer(userVisit, geoCodeTax));
         });
         
         return geoCodeTaxTransfers;

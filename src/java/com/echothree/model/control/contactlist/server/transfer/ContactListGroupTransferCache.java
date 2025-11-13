@@ -25,13 +25,13 @@ public class ContactListGroupTransferCache
         extends BaseContactListTransferCache<ContactListGroup, ContactListGroupTransfer> {
     
     /** Creates a new instance of ContactListGroupTransferCache */
-    public ContactListGroupTransferCache(UserVisit userVisit, ContactListControl contactListControl) {
-        super(userVisit, contactListControl);
+    public ContactListGroupTransferCache(ContactListControl contactListControl) {
+        super(contactListControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public ContactListGroupTransfer getContactListGroupTransfer(ContactListGroup contactListGroup) {
+    public ContactListGroupTransfer getContactListGroupTransfer(UserVisit userVisit, ContactListGroup contactListGroup) {
         var contactListGroupTransfer = get(contactListGroup);
         
         if(contactListGroupTransfer == null) {
@@ -39,10 +39,10 @@ public class ContactListGroupTransferCache
             var contactListGroupName = contactListGroupDetail.getContactListGroupName();
             var isDefault = contactListGroupDetail.getIsDefault();
             var sortOrder = contactListGroupDetail.getSortOrder();
-            var description = contactListControl.getBestContactListGroupDescription(contactListGroup, getLanguage());
+            var description = contactListControl.getBestContactListGroupDescription(contactListGroup, getLanguage(userVisit));
             
             contactListGroupTransfer = new ContactListGroupTransfer(contactListGroupName, isDefault, sortOrder, description);
-            put(contactListGroup, contactListGroupTransfer);
+            put(userVisit, contactListGroup, contactListGroupTransfer);
         }
         
         return contactListGroupTransfer;

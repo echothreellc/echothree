@@ -25,11 +25,11 @@ public class CommunicationSourceDescriptionTransferCache
         extends BaseCommunicationDescriptionTransferCache<CommunicationSourceDescription, CommunicationSourceDescriptionTransfer> {
     
     /** Creates a new instance of CommunicationSourceDescriptionTransferCache */
-    public CommunicationSourceDescriptionTransferCache(UserVisit userVisit, CommunicationControl communicationControl) {
-        super(userVisit, communicationControl);
+    public CommunicationSourceDescriptionTransferCache(CommunicationControl communicationControl) {
+        super(communicationControl);
     }
     
-    public CommunicationSourceDescriptionTransfer getCommunicationSourceDescriptionTransfer(CommunicationSourceDescription communicationSourceDescription) {
+    public CommunicationSourceDescriptionTransfer getCommunicationSourceDescriptionTransfer(UserVisit userVisit, CommunicationSourceDescription communicationSourceDescription) {
         var communicationSourceDescriptionTransfer = get(communicationSourceDescription);
         
         if(communicationSourceDescriptionTransfer == null) {
@@ -38,7 +38,7 @@ public class CommunicationSourceDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, communicationSourceDescription.getLanguage());
             
             communicationSourceDescriptionTransfer = new CommunicationSourceDescriptionTransfer(languageTransfer, communicationSourceTransfer, communicationSourceDescription.getDescription());
-            put(communicationSourceDescription, communicationSourceDescriptionTransfer);
+            put(userVisit, communicationSourceDescription, communicationSourceDescriptionTransfer);
         }
         
         return communicationSourceDescriptionTransfer;
