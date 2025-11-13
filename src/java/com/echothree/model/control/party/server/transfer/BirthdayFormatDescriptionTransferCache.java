@@ -24,8 +24,8 @@ public class BirthdayFormatDescriptionTransferCache
         extends BasePartyDescriptionTransferCache<BirthdayFormatDescription, BirthdayFormatDescriptionTransfer> {
     
     /** Creates a new instance of BirthdayFormatDescriptionTransferCache */
-    public BirthdayFormatDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public BirthdayFormatDescriptionTransferCache() {
+        super();
     }
 
     @Override

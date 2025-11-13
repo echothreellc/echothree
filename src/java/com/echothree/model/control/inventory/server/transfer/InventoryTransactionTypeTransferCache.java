@@ -33,8 +33,8 @@ public class InventoryTransactionTypeTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of InventoryTransactionTypeTransferCache */
-    public InventoryTransactionTypeTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    public InventoryTransactionTypeTransferCache(InventoryControl inventoryControl) {
+        super(inventoryControl);
         
         setIncludeEntityInstance(true);
     }

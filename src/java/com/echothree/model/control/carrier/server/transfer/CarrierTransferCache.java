@@ -49,8 +49,8 @@ public class CarrierTransferCache
     boolean includePartyScaleUses;
     
     /** Creates a new instance of CarrierTransferCache */
-    public CarrierTransferCache(UserVisit userVisit, CarrierControl carrierControl) {
-        super(userVisit, carrierControl);
+    public CarrierTransferCache(CarrierControl carrierControl) {
+        super(carrierControl);
         
         var options = session.getOptions();
         if(options != null) {

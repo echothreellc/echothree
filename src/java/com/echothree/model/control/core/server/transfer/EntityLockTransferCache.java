@@ -37,8 +37,8 @@ public class EntityLockTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of EntityLockTransferCache */
-    public EntityLockTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityLockTransferCache() {
+        super();
     }
     
     @SuppressWarnings("Finally")

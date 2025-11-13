@@ -25,8 +25,8 @@ public class TrainingClassPageTransferCache
         extends BaseTrainingTransferCache<TrainingClassPage, TrainingClassPageTransfer> {
     
     /** Creates a new instance of TrainingClassPageTransferCache */
-    public TrainingClassPageTransferCache(UserVisit userVisit, TrainingControl trainingControl) {
-        super(userVisit, trainingControl);
+    public TrainingClassPageTransferCache(TrainingControl trainingControl) {
+        super(trainingControl);
         
         setIncludeEntityInstance(true);
     }

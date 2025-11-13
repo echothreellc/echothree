@@ -31,8 +31,8 @@ public class OrderPaymentPreferenceTransferCache
     PaymentMethodControl paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
 
     /** Creates a new instance of OrderPaymentPreferenceTransferCache */
-    public OrderPaymentPreferenceTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public OrderPaymentPreferenceTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

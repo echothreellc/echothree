@@ -31,8 +31,8 @@ public class EventGroupTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of EventGroupTransferCache */
-    public EventGroupTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EventGroupTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

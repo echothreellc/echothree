@@ -28,8 +28,8 @@ public class TransactionTimeTransferCache
     TransactionTimeControl transactionTimeControl = Session.getModelController(TransactionTimeControl.class);
 
     /** Creates a new instance of TransactionTimeTransferCache */
-    public TransactionTimeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public TransactionTimeTransferCache() {
+        super();
     }
 
     @Override

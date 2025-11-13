@@ -29,8 +29,8 @@ public class GeoCodeTimeZoneTransferCache
     PartyControl partyControl;
     
     /** Creates a new instance of GeoCodeTimeZoneTransferCache */
-    public GeoCodeTimeZoneTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
+    public GeoCodeTimeZoneTransferCache(GeoControl geoControl) {
+        super(geoControl);
         
         partyControl = Session.getModelController(PartyControl.class);
     }

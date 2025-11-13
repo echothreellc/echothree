@@ -28,8 +28,8 @@ public class OrderAdjustmentTypeDescriptionTransferCache
     OrderAdjustmentControl orderAdjustmentControl = Session.getModelController(OrderAdjustmentControl.class);
 
     /** Creates a new instance of OrderAdjustmentTypeDescriptionTransferCache */
-    public OrderAdjustmentTypeDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public OrderAdjustmentTypeDescriptionTransferCache() {
+        super();
     }
     
     public OrderAdjustmentTypeDescriptionTransfer getOrderAdjustmentTypeDescriptionTransfer(OrderAdjustmentTypeDescription orderAdjustmentTypeDescription) {

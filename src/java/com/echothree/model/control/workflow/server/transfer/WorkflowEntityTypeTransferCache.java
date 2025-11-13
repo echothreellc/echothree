@@ -29,8 +29,8 @@ public class WorkflowEntityTypeTransferCache
     EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
 
     /** Creates a new instance of WorkflowEntityTypeTransferCache */
-    public WorkflowEntityTypeTransferCache(UserVisit userVisit, WorkflowControl workflowControl) {
-        super(userVisit, workflowControl);
+    public WorkflowEntityTypeTransferCache(WorkflowControl workflowControl) {
+        super(workflowControl);
     }
     
     public WorkflowEntityTypeTransfer getWorkflowEntityTypeTransfer(WorkflowEntityType workflowEntityType) {

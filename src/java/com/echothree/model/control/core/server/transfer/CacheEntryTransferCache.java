@@ -48,8 +48,8 @@ public class CacheEntryTransferCache
     boolean filterUnformattedValidUntilTime;
 
     /** Creates a new instance of CacheEntryTransferCache */
-    public CacheEntryTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public CacheEntryTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {

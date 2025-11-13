@@ -29,8 +29,8 @@ public class ReturnTypeShippingMethodTransferCache
     ShippingControl shippingControl;
     
     /** Creates a new instance of ReturnTypeShippingMethodTransferCache */
-    public ReturnTypeShippingMethodTransferCache(UserVisit userVisit, ReturnPolicyControl returnPolicyControl) {
-        super(userVisit, returnPolicyControl);
+    public ReturnTypeShippingMethodTransferCache(ReturnPolicyControl returnPolicyControl) {
+        super(returnPolicyControl);
         
         shippingControl = Session.getModelController(ShippingControl.class);
     }

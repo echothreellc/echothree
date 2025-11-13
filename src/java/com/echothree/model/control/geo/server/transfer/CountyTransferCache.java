@@ -29,8 +29,8 @@ public class CountyTransferCache
     boolean includeAliases;
     
     /** Creates a new instance of CountyTransferCache */
-    public CountyTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
+    public CountyTransferCache(GeoControl geoControl) {
+        super(geoControl);
         
         var options = session.getOptions();
         if(options != null) {

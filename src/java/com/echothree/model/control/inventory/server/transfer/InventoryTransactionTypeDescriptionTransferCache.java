@@ -29,8 +29,8 @@ public class InventoryTransactionTypeDescriptionTransferCache
     InventoryTransactionTypeControl inventoryTransactionTypeControl = Session.getModelController(InventoryTransactionTypeControl.class);
 
     /** Creates a new instance of InventoryTransactionTypeDescriptionTransferCache */
-    public InventoryTransactionTypeDescriptionTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    public InventoryTransactionTypeDescriptionTransferCache(InventoryControl inventoryControl) {
+        super(inventoryControl);
     }
 
     @Override

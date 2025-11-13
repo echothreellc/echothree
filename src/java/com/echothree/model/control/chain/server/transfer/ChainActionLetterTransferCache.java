@@ -29,8 +29,8 @@ public class ChainActionLetterTransferCache
     LetterControl letterControl = Session.getModelController(LetterControl.class);
     
     /** Creates a new instance of ChainActionLetterTransferCache */
-    public ChainActionLetterTransferCache(UserVisit userVisit, ChainControl chainControl) {
-        super(userVisit, chainControl);
+    public ChainActionLetterTransferCache(ChainControl chainControl) {
+        super(chainControl);
     }
     
     public ChainActionLetterTransfer getChainActionLetterTransfer(ChainActionLetter chainActionLetter) {

@@ -31,8 +31,8 @@ public class MessageBlobTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of MessageBlobTransferCache */
-    public MessageBlobTransferCache(UserVisit userVisit, MessageControl messageControl) {
-        super(userVisit, messageControl);
+    public MessageBlobTransferCache(MessageControl messageControl) {
+        super(messageControl);
     }
     
     public MessageBlobTransfer getMessageBlobTransfer(MessageBlob messageBlob) {

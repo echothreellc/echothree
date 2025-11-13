@@ -25,8 +25,8 @@ public class LicenseTypeDescriptionTransferCache
         extends BaseLicenseDescriptionTransferCache<LicenseTypeDescription, LicenseTypeDescriptionTransfer> {
     
     /** Creates a new instance of LicenseTypeDescriptionTransferCache */
-    public LicenseTypeDescriptionTransferCache(UserVisit userVisit, LicenseControl licenseControl) {
-        super(userVisit, licenseControl);
+    public LicenseTypeDescriptionTransferCache(LicenseControl licenseControl) {
+        super(licenseControl);
     }
     
     public LicenseTypeDescriptionTransfer getLicenseTypeDescriptionTransfer(LicenseTypeDescription licenseTypeDescription) {

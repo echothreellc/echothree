@@ -29,8 +29,8 @@ public class UserSessionTransferCache
     PartyControl partyControl;
     
     /** Creates a new instance of UserSessionTransferCache */
-    public UserSessionTransferCache(UserVisit userVisit, UserControl userControl) {
-        super(userVisit, userControl);
+    public UserSessionTransferCache(UserControl userControl) {
+        super(userControl);
         
         partyControl = Session.getModelController(PartyControl.class);
     }

@@ -29,8 +29,8 @@ public class CityTransferCache
     boolean includeAliases;
     
     /** Creates a new instance of CityTransferCache */
-    public CityTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
+    public CityTransferCache(GeoControl geoControl) {
+        super(geoControl);
         
         var options = session.getOptions();
         if(options != null) {

@@ -25,8 +25,8 @@ public class SkillTypeDescriptionTransferCache
         extends BaseEmployeeDescriptionTransferCache<SkillTypeDescription, SkillTypeDescriptionTransfer> {
     
     /** Creates a new instance of SkillTypeDescriptionTransferCache */
-    public SkillTypeDescriptionTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit, employeeControl);
+    public SkillTypeDescriptionTransferCache(EmployeeControl employeeControl) {
+        super(employeeControl);
     }
     
     public SkillTypeDescriptionTransfer getSkillTypeDescriptionTransfer(SkillTypeDescription skillTypeDescription) {

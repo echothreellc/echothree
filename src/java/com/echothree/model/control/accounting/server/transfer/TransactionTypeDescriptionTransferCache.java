@@ -28,8 +28,8 @@ public class TransactionTypeDescriptionTransferCache
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of TransactionTypeDescriptionTransferCache */
-    public TransactionTypeDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public TransactionTypeDescriptionTransferCache() {
+        super();
     }
     
     @Override

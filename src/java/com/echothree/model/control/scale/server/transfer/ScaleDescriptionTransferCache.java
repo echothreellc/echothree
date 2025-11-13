@@ -25,8 +25,8 @@ public class ScaleDescriptionTransferCache
         extends BaseScaleDescriptionTransferCache<ScaleDescription, ScaleDescriptionTransfer> {
     
     /** Creates a new instance of ScaleDescriptionTransferCache */
-    public ScaleDescriptionTransferCache(UserVisit userVisit, ScaleControl scaleControl) {
-        super(userVisit, scaleControl);
+    public ScaleDescriptionTransferCache(ScaleControl scaleControl) {
+        super(scaleControl);
     }
     
     public ScaleDescriptionTransfer getScaleDescriptionTransfer(ScaleDescription scaleDescription) {

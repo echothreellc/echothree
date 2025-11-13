@@ -30,8 +30,8 @@ public class EntityAppearanceTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of EntityAppearanceTransferCache */
-    public EntityAppearanceTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityAppearanceTransferCache() {
+        super();
     }
     
     public EntityAppearanceTransfer getEntityAppearanceTransfer(EntityAppearance entityAppearance) {

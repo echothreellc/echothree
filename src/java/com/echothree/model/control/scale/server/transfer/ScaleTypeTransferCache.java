@@ -29,8 +29,8 @@ public class ScaleTypeTransferCache
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of ScaleTypeTransferCache */
-    public ScaleTypeTransferCache(UserVisit userVisit, ScaleControl scaleControl) {
-        super(userVisit, scaleControl);
+    public ScaleTypeTransferCache(ScaleControl scaleControl) {
+        super(scaleControl);
         
         setIncludeEntityInstance(true);
     }

@@ -25,8 +25,8 @@ public class PartySecurityRoleTemplateDescriptionTransferCache
         extends BaseSecurityDescriptionTransferCache<PartySecurityRoleTemplateDescription, PartySecurityRoleTemplateDescriptionTransfer> {
     
     /** Creates a new instance of PartySecurityRoleTemplateDescriptionTransferCache */
-    public PartySecurityRoleTemplateDescriptionTransferCache(UserVisit userVisit, SecurityControl securityControl) {
-        super(userVisit, securityControl);
+    public PartySecurityRoleTemplateDescriptionTransferCache(SecurityControl securityControl) {
+        super(securityControl);
     }
     
     public PartySecurityRoleTemplateDescriptionTransfer getPartySecurityRoleTemplateDescriptionTransfer(PartySecurityRoleTemplateDescription partySecurityRoleTemplateDescription) {

@@ -28,8 +28,8 @@ public class OrderTimeTypeTransferCache
     OrderTimeControl orderTimeControl = Session.getModelController(OrderTimeControl.class);
 
     /** Creates a new instance of OrderTimeTypeTransferCache */
-    public OrderTimeTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public OrderTimeTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

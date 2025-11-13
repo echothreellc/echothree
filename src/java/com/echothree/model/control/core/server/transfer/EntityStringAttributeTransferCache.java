@@ -35,8 +35,8 @@ public class EntityStringAttributeTransferCache
     boolean includeString;
     
     /** Creates a new instance of EntityStringAttributeTransferCache */
-    public EntityStringAttributeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityStringAttributeTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {

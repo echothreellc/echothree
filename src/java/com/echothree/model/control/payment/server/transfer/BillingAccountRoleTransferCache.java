@@ -32,8 +32,8 @@ public class BillingAccountRoleTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of BillingAccountRoleTransferCache */
-    public BillingAccountRoleTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public BillingAccountRoleTransferCache() {
+        super();
     }
 
     @Override

@@ -25,8 +25,8 @@ public class ContentWebAddressDescriptionTransferCache
         extends BaseContentDescriptionTransferCache<ContentWebAddressDescription, ContentWebAddressDescriptionTransfer> {
     
     /** Creates a new instance of ContentWebAddressDescriptionTransferCache */
-    public ContentWebAddressDescriptionTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    public ContentWebAddressDescriptionTransferCache(ContentControl contentControl) {
+        super(contentControl);
     }
     
     public ContentWebAddressDescriptionTransfer getContentWebAddressDescriptionTransfer(ContentWebAddressDescription contentWebAddressDescription) {

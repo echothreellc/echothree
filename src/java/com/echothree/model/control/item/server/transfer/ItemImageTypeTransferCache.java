@@ -29,8 +29,8 @@ public class ItemImageTypeTransferCache
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     
     /** Creates a new instance of ItemImageTypeTransferCache */
-    public ItemImageTypeTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemImageTypeTransferCache(ItemControl itemControl) {
+        super(itemControl);
         
         setIncludeEntityInstance(true);
     }

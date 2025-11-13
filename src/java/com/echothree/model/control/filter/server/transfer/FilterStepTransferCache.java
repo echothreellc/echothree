@@ -35,8 +35,8 @@ public class FilterStepTransferCache
     boolean includeFilterStepDestinations;
     
     /** Creates a new instance of FilterStepTransferCache */
-    public FilterStepTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public FilterStepTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {

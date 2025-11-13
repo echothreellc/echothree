@@ -25,8 +25,8 @@ public class LeaveTypeDescriptionTransferCache
         extends BaseEmployeeDescriptionTransferCache<LeaveTypeDescription, LeaveTypeDescriptionTransfer> {
     
     /** Creates a new instance of LeaveTypeDescriptionTransferCache */
-    public LeaveTypeDescriptionTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit, employeeControl);
+    public LeaveTypeDescriptionTransferCache(EmployeeControl employeeControl) {
+        super(employeeControl);
     }
     
     public LeaveTypeDescriptionTransfer getLeaveTypeDescriptionTransfer(LeaveTypeDescription leaveTypeDescription) {

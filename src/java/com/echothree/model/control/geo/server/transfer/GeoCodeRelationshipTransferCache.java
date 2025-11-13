@@ -25,8 +25,8 @@ public class GeoCodeRelationshipTransferCache
         extends BaseGeoTransferCache<GeoCodeRelationship, GeoCodeRelationshipTransfer> {
     
     /** Creates a new instance of GeoCodeRelationshipTransferCache */
-    public GeoCodeRelationshipTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
+    public GeoCodeRelationshipTransferCache(GeoControl geoControl) {
+        super(geoControl);
     }
     
     public GeoCodeRelationshipTransfer getGeoCodeRelationshipTransfer(GeoCodeRelationship geoCodeRelationship) {

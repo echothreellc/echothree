@@ -31,8 +31,8 @@ public class InvoiceRoleTransferCache
     PartyControl partyControl;
 
     /** Creates a new instance of InvoiceRoleTransferCache */
-    public InvoiceRoleTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
-        super(userVisit, invoiceControl);
+    public InvoiceRoleTransferCache(InvoiceControl invoiceControl) {
+        super(invoiceControl);
 
         contactControl = Session.getModelController(ContactControl.class);
         partyControl = Session.getModelController(PartyControl.class);

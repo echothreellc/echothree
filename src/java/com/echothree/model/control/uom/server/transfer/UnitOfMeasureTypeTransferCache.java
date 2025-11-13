@@ -45,8 +45,8 @@ public class UnitOfMeasureTypeTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of UnitOfMeasureTypeTransferCache */
-    public UnitOfMeasureTypeTransferCache(UserVisit userVisit, UomControl uomControl) {
-        super(userVisit, uomControl);
+    public UnitOfMeasureTypeTransferCache(UomControl uomControl) {
+        super(uomControl);
         
         var options = session.getOptions();
         if(options != null) {

@@ -46,8 +46,8 @@ public class ContentCatalogTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of ContentCatalogTransferCache */
-    public ContentCatalogTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    public ContentCatalogTransferCache(ContentControl contentControl) {
+        super(contentControl);
     
         var options = session.getOptions();
         if(options != null) {

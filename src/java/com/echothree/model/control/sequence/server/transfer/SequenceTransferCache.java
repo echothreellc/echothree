@@ -25,8 +25,8 @@ public class SequenceTransferCache
         extends BaseSequenceTransferCache<Sequence, SequenceTransfer> {
     
     /** Creates a new instance of SequenceTransferCache */
-    public SequenceTransferCache(UserVisit userVisit, SequenceControl sequenceControl) {
-        super(userVisit, sequenceControl);
+    public SequenceTransferCache(SequenceControl sequenceControl) {
+        super(sequenceControl);
         
         setIncludeEntityInstance(true);
     }

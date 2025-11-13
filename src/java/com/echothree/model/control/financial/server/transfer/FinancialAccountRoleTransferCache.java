@@ -29,8 +29,8 @@ public class FinancialAccountRoleTransferCache
     PartyControl partyControl;
 
     /** Creates a new instance of FinancialAccountRoleTransferCache */
-    public FinancialAccountRoleTransferCache(UserVisit userVisit, FinancialControl financialControl) {
-        super(userVisit, financialControl);
+    public FinancialAccountRoleTransferCache(FinancialControl financialControl) {
+        super(financialControl);
 
         partyControl = Session.getModelController(PartyControl.class);
     }

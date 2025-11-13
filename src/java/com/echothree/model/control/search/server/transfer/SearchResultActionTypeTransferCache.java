@@ -26,8 +26,8 @@ public class SearchResultActionTypeTransferCache
         extends BaseSearchTransferCache<SearchResultActionType, SearchResultActionTypeTransfer> {
 
     /** Creates a new instance of SearchResultActionTypeTransferCache */
-    public SearchResultActionTypeTransferCache(UserVisit userVisit, SearchControl searchControl) {
-        super(userVisit, searchControl);
+    public SearchResultActionTypeTransferCache(SearchControl searchControl) {
+        super(searchControl);
         
         var options = session.getOptions();
         if(options != null) {

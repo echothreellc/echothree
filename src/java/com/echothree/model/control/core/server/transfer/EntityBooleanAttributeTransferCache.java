@@ -31,8 +31,8 @@ public class EntityBooleanAttributeTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of EntityBooleanAttributeTransferCache */
-    public EntityBooleanAttributeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityBooleanAttributeTransferCache() {
+        super();
     }
     
     public EntityBooleanAttributeTransfer getEntityBooleanAttributeTransfer(EntityBooleanAttribute entityBooleanAttribute, EntityInstance entityInstance) {

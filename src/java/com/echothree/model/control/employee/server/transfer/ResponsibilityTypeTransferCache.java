@@ -25,8 +25,8 @@ public class ResponsibilityTypeTransferCache
         extends BaseEmployeeTransferCache<ResponsibilityType, ResponsibilityTypeTransfer> {
     
     /** Creates a new instance of ResponsibilityTypeTransferCache */
-    public ResponsibilityTypeTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit, employeeControl);
+    public ResponsibilityTypeTransferCache(EmployeeControl employeeControl) {
+        super(employeeControl);
         
         setIncludeEntityInstance(true);
     }

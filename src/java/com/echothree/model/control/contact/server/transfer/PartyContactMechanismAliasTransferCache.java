@@ -29,8 +29,8 @@ public class PartyContactMechanismAliasTransferCache
     PartyControl partyControl;
     
     /** Creates a new instance of PartyContactMechanismAliasTransferCache */
-    public PartyContactMechanismAliasTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    public PartyContactMechanismAliasTransferCache(ContactControl contactControl) {
+        super(contactControl);
         
         partyControl = Session.getModelController(PartyControl.class);
     }

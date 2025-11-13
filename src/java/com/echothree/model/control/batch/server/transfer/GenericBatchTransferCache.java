@@ -35,8 +35,8 @@ public abstract class GenericBatchTransferCache<V extends GenericBatchTransfer>
     boolean includeEntities;
     
     /** Creates a new instance of GenericBatchTransferCache */
-    public GenericBatchTransferCache(UserVisit userVisit, BatchControl batchControl) {
-        super(userVisit, batchControl);
+    public GenericBatchTransferCache(BatchControl batchControl) {
+        super(batchControl);
         
         var options = session.getOptions();
         if(options != null) {

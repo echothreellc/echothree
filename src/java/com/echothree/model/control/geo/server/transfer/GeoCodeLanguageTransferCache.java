@@ -29,8 +29,8 @@ public class GeoCodeLanguageTransferCache
     PartyControl partyControl;
     
     /** Creates a new instance of GeoCodeLanguageTransferCache */
-    public GeoCodeLanguageTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
+    public GeoCodeLanguageTransferCache(GeoControl geoControl) {
+        super(geoControl);
         
         partyControl = Session.getModelController(PartyControl.class);
     }

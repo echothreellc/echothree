@@ -25,8 +25,8 @@ public class ForumGroupForumTransferCache
         extends BaseForumTransferCache<ForumGroupForum, ForumGroupForumTransfer> {
     
     /** Creates a new instance of ForumGroupForumTransferCache */
-    public ForumGroupForumTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
+    public ForumGroupForumTransferCache(ForumControl forumControl) {
+        super(forumControl);
     }
     
     public ForumGroupForumTransfer getForumGroupForumTransfer(ForumGroupForum forumGroupForum) {

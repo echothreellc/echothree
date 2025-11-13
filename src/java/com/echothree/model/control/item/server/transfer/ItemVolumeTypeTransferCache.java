@@ -25,8 +25,8 @@ public class ItemVolumeTypeTransferCache
         extends BaseItemTransferCache<ItemVolumeType, ItemVolumeTypeTransfer> {
     
     /** Creates a new instance of ItemVolumeTypeTransferCache */
-    public ItemVolumeTypeTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemVolumeTypeTransferCache(ItemControl itemControl) {
+        super(itemControl);
         
         setIncludeEntityInstance(true);
     }

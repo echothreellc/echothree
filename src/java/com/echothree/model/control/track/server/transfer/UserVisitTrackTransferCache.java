@@ -29,8 +29,8 @@ public class UserVisitTrackTransferCache
     UserControl userControl = Session.getModelController(UserControl.class);
     
     /** Creates a new instance of UserVisitTrackTransferCache */
-    public UserVisitTrackTransferCache(UserVisit userVisit, TrackControl trackControl) {
-        super(userVisit, trackControl);
+    public UserVisitTrackTransferCache(TrackControl trackControl) {
+        super(trackControl);
     }
 
     public UserVisitTrackTransfer getUserVisitTrackTransfer(UserVisitTrack userVisitTrack) {

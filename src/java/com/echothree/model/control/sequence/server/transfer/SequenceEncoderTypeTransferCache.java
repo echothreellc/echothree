@@ -25,8 +25,8 @@ public class SequenceEncoderTypeTransferCache
         extends BaseSequenceTransferCache<SequenceEncoderType, SequenceEncoderTypeTransfer> {
     
     /** Creates a new instance of SequenceEncoderTypeTransferCache */
-    public SequenceEncoderTypeTransferCache(UserVisit userVisit, SequenceControl sequenceControl) {
-        super(userVisit, sequenceControl);
+    public SequenceEncoderTypeTransferCache(SequenceControl sequenceControl) {
+        super(sequenceControl);
     }
     
     public SequenceEncoderTypeTransfer getSequenceEncoderTypeTransfer(SequenceEncoderType sequenceEncoderType) {

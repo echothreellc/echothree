@@ -36,8 +36,8 @@ public class LanguageTransferCache
     boolean filterDescription;
     
     /** Creates a new instance of LanguageTransferCache */
-    public LanguageTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public LanguageTransferCache() {
+        super();
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {

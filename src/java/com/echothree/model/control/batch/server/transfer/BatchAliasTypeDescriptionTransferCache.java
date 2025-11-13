@@ -25,8 +25,8 @@ public class BatchAliasTypeDescriptionTransferCache
         extends BaseBatchDescriptionTransferCache<BatchAliasTypeDescription, BatchAliasTypeDescriptionTransfer> {
     
     /** Creates a new instance of BatchAliasTypeDescriptionTransferCache */
-    public BatchAliasTypeDescriptionTransferCache(UserVisit userVisit, BatchControl batchControl) {
-        super(userVisit, batchControl);
+    public BatchAliasTypeDescriptionTransferCache(BatchControl batchControl) {
+        super(batchControl);
     }
     
     @Override

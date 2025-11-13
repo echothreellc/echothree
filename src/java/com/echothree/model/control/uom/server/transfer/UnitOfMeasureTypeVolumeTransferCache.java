@@ -26,8 +26,8 @@ public class UnitOfMeasureTypeVolumeTransferCache
         extends BaseUomTransferCache<UnitOfMeasureTypeVolume, UnitOfMeasureTypeVolumeTransfer> {
     
     /** Creates a new instance of UnitOfMeasureTypeVolumeTransferCache */
-    public UnitOfMeasureTypeVolumeTransferCache(UserVisit userVisit, UomControl uomControl) {
-        super(userVisit, uomControl);
+    public UnitOfMeasureTypeVolumeTransferCache(UomControl uomControl) {
+        super(uomControl);
     }
     
     public UnitOfMeasureTypeVolumeTransfer getUnitOfMeasureTypeVolumeTransfer(UnitOfMeasureTypeVolume unitOfMeasureTypeVolume) {

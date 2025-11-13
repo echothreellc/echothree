@@ -25,8 +25,8 @@ public class GeoCodeTypeDescriptionTransferCache
         extends BaseGeoDescriptionTransferCache<GeoCodeTypeDescription, GeoCodeTypeDescriptionTransfer> {
     
     /** Creates a new instance of GeoCodeTypeDescriptionTransferCache */
-    public GeoCodeTypeDescriptionTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
+    public GeoCodeTypeDescriptionTransferCache(GeoControl geoControl) {
+        super(geoControl);
     }
     
     public GeoCodeTypeDescriptionTransfer getGeoCodeTypeDescriptionTransfer(GeoCodeTypeDescription geoCodeTypeDescription) {

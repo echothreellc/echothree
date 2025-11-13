@@ -31,8 +31,8 @@ public class EntityLongAttributeTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of EntityLongAttributeTransferCache */
-    public EntityLongAttributeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityLongAttributeTransferCache() {
+        super();
     }
     
     public EntityLongAttributeTransfer getEntityLongAttributeTransfer(EntityLongAttribute entityLongAttribute, EntityInstance entityInstance) {

@@ -26,8 +26,8 @@ public class ContentWebAddressTransferCache
         extends BaseContentTransferCache<ContentWebAddress, ContentWebAddressTransfer> {
     
     /** Creates a new instance of ContentWebAddressTransferCache */
-    public ContentWebAddressTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    public ContentWebAddressTransferCache(ContentControl contentControl) {
+        super(contentControl);
         
         var options = session.getOptions();
         if(options != null) {

@@ -44,8 +44,8 @@ public class MimeTypeTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of MimeTypeTransferCache */
-    public MimeTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public MimeTypeTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {

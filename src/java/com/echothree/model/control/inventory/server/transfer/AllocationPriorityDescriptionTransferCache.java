@@ -25,8 +25,8 @@ public class AllocationPriorityDescriptionTransferCache
         extends BaseInventoryDescriptionTransferCache<AllocationPriorityDescription, AllocationPriorityDescriptionTransfer> {
     
     /** Creates a new instance of AllocationPriorityDescriptionTransferCache */
-    public AllocationPriorityDescriptionTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    public AllocationPriorityDescriptionTransferCache(InventoryControl inventoryControl) {
+        super(inventoryControl);
     }
     
     @Override

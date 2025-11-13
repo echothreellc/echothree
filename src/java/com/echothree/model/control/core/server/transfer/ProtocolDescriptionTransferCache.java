@@ -28,8 +28,8 @@ public class ProtocolDescriptionTransferCache
     ServerControl serverControl = Session.getModelController(ServerControl.class);
 
     /** Creates a new instance of ProtocolDescriptionTransferCache */
-    public ProtocolDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public ProtocolDescriptionTransferCache() {
+        super();
     }
     
     public ProtocolDescriptionTransfer getProtocolDescriptionTransfer(ProtocolDescription protocolDescription) {

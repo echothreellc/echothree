@@ -25,8 +25,8 @@ public class VendorTypeDescriptionTransferCache
         extends BaseVendorDescriptionTransferCache<VendorTypeDescription, VendorTypeDescriptionTransfer> {
     
     /** Creates a new instance of VendorTypeDescriptionTransferCache */
-    public VendorTypeDescriptionTransferCache(UserVisit userVisit, VendorControl vendorControl) {
-        super(userVisit, vendorControl);
+    public VendorTypeDescriptionTransferCache(VendorControl vendorControl) {
+        super(vendorControl);
     }
     
     public VendorTypeDescriptionTransfer getVendorTypeDescriptionTransfer(VendorTypeDescription vendorTypeDescription) {

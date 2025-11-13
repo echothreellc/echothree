@@ -25,8 +25,8 @@ public class LocationNameElementDescriptionTransferCache
         extends BaseWarehouseDescriptionTransferCache<LocationNameElementDescription, LocationNameElementDescriptionTransfer> {
     
     /** Creates a new instance of LocationNameElementDescriptionTransferCache */
-    public LocationNameElementDescriptionTransferCache(UserVisit userVisit, WarehouseControl warehouseControl) {
-        super(userVisit, warehouseControl);
+    public LocationNameElementDescriptionTransferCache(WarehouseControl warehouseControl) {
+        super(warehouseControl);
     }
     
     public LocationNameElementDescriptionTransfer getLocationNameElementDescriptionTransfer(LocationNameElementDescription locationNameElementDescription) {

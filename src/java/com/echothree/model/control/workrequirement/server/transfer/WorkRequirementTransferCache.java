@@ -38,8 +38,8 @@ public class WorkRequirementTransferCache
     boolean includeWorkTimes;
     
     /** Creates a new instance of WorkRequirementTransferCache */
-    public WorkRequirementTransferCache(UserVisit userVisit, WorkRequirementControl workRequirementControl) {
-        super(userVisit, workRequirementControl);
+    public WorkRequirementTransferCache(WorkRequirementControl workRequirementControl) {
+        super(workRequirementControl);
 
         var options = session.getOptions();
         if(options != null) {

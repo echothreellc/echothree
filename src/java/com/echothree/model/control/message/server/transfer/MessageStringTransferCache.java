@@ -29,8 +29,8 @@ public class MessageStringTransferCache
     PartyControl partyControl;
     
     /** Creates a new instance of MessageStringTransferCache */
-    public MessageStringTransferCache(UserVisit userVisit, MessageControl messageControl) {
-        super(userVisit, messageControl);
+    public MessageStringTransferCache(MessageControl messageControl) {
+        super(messageControl);
         
         partyControl = Session.getModelController(PartyControl.class);
     }

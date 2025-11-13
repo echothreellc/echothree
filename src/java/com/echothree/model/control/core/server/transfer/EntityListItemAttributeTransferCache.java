@@ -31,8 +31,8 @@ public class EntityListItemAttributeTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of EntityListItemAttributeTransferCache */
-    public EntityListItemAttributeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityListItemAttributeTransferCache() {
+        super();
     }
     
     public EntityListItemAttributeTransfer getEntityListItemAttributeTransfer(EntityListItemAttribute entityListItemAttribute, EntityInstance entityInstance) {

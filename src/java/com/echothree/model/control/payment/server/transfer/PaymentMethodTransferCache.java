@@ -37,8 +37,8 @@ public class PaymentMethodTransferCache
     boolean includeComments;
 
     /** Creates a new instance of PaymentMethodTransferCache */
-    public PaymentMethodTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public PaymentMethodTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {

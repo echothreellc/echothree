@@ -25,8 +25,8 @@ public class PostalAddressElementTypeTransferCache
         extends BaseContactTransferCache<PostalAddressElementType, PostalAddressElementTypeTransfer> {
     
     /** Creates a new instance of PostalAddressElementTypeTransferCache */
-    public PostalAddressElementTypeTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    public PostalAddressElementTypeTransferCache(ContactControl contactControl) {
+        super(contactControl);
     }
     
     public PostalAddressElementTypeTransfer getPostalAddressElementTypeTransfer(PostalAddressElementType postalAddressElementType) {

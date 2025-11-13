@@ -29,8 +29,8 @@ public class LetterContactMechanismPurposeTransferCache
     ContactControl contactControl;
     
     /** Creates a new instance of LetterContactMechanismPurposeTransferCache */
-    public LetterContactMechanismPurposeTransferCache(UserVisit userVisit, LetterControl letterControl) {
-        super(userVisit, letterControl);
+    public LetterContactMechanismPurposeTransferCache(LetterControl letterControl) {
+        super(letterControl);
         
         contactControl = Session.getModelController(ContactControl.class);
     }

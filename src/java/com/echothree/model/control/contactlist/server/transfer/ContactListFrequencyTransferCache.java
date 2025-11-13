@@ -25,8 +25,8 @@ public class ContactListFrequencyTransferCache
         extends BaseContactListTransferCache<ContactListFrequency, ContactListFrequencyTransfer> {
     
     /** Creates a new instance of ContactListFrequencyTransferCache */
-    public ContactListFrequencyTransferCache(UserVisit userVisit, ContactListControl contactListControl) {
-        super(userVisit, contactListControl);
+    public ContactListFrequencyTransferCache(ContactListControl contactListControl) {
+        super(contactListControl);
         
         setIncludeEntityInstance(true);
     }

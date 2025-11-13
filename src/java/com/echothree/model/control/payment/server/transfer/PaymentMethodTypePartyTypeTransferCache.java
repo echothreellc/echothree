@@ -32,8 +32,8 @@ public class PaymentMethodTypePartyTypeTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
     /** Creates a new instance of PaymentMethodTypePartyTypeTransferCache */
-    public PaymentMethodTypePartyTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public PaymentMethodTypePartyTypeTransferCache() {
+        super();
     }
 
     @Override

@@ -25,8 +25,8 @@ public class ItemWeightTypeTransferCache
         extends BaseItemTransferCache<ItemWeightType, ItemWeightTypeTransfer> {
     
     /** Creates a new instance of ItemWeightTypeTransferCache */
-    public ItemWeightTypeTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemWeightTypeTransferCache(ItemControl itemControl) {
+        super(itemControl);
         
         setIncludeEntityInstance(true);
     }

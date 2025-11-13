@@ -29,8 +29,8 @@ public class ContactListContactMechanismPurposeTransferCache
     final ContactControl contactControl = Session.getModelController(ContactControl.class);
     
     /** Creates a new instance of ContactListContactMechanismPurposeTransferCache */
-    public ContactListContactMechanismPurposeTransferCache(UserVisit userVisit, ContactListControl contactListControl) {
-        super(userVisit, contactListControl);
+    public ContactListContactMechanismPurposeTransferCache(ContactListControl contactListControl) {
+        super(contactListControl);
     }
     
     public ContactListContactMechanismPurposeTransfer getContactListContactMechanismPurposeTransfer(final ContactListContactMechanismPurpose contactListContactMechanismPurpose) {

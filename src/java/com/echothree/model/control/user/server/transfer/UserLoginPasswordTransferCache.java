@@ -30,8 +30,8 @@ public class UserLoginPasswordTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of UserLoginPasswordTransferCache */
-    public UserLoginPasswordTransferCache(UserVisit userVisit, UserControl userControl) {
-        super(userVisit, userControl);
+    public UserLoginPasswordTransferCache(UserControl userControl) {
+        super(userControl);
     }
     
     public UserLoginPasswordTransfer getUserLoginPasswordTransfer(UserLoginPassword userLoginPassword) {

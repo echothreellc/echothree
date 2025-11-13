@@ -25,8 +25,8 @@ public class PeriodTypeTransferCache
         extends BasePeriodTransferCache<PeriodType, PeriodTypeTransfer> {
     
     /** Creates a new instance of PeriodTypeTransferCache */
-    public PeriodTypeTransferCache(UserVisit userVisit, PeriodControl periodControl) {
-        super(userVisit, periodControl);
+    public PeriodTypeTransferCache(PeriodControl periodControl) {
+        super(periodControl);
         
         setIncludeEntityInstance(true);
     }

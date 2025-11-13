@@ -29,8 +29,8 @@ public class RecoveryAnswerTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of RecoveryAnswerTransferCache */
-    public RecoveryAnswerTransferCache(UserVisit userVisit, UserControl userControl) {
-        super(userVisit, userControl);
+    public RecoveryAnswerTransferCache(UserControl userControl) {
+        super(userControl);
 
         setIncludeEntityInstance(true);
     }

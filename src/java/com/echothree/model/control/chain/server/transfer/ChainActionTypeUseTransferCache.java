@@ -26,8 +26,8 @@ public class ChainActionTypeUseTransferCache
         extends BaseChainTransferCache<ChainActionTypeUse, ChainActionTypeUseTransfer> {
     
     /** Creates a new instance of ChainActionTypeUseTransferCache */
-    public ChainActionTypeUseTransferCache(UserVisit userVisit, ChainControl chainControl) {
-        super(userVisit, chainControl);
+    public ChainActionTypeUseTransferCache(ChainControl chainControl) {
+        super(chainControl);
     }
     
     public ChainActionTypeUseTransfer getChainActionTypeUseTransfer(ChainActionTypeUse chainActionTypeUse) {

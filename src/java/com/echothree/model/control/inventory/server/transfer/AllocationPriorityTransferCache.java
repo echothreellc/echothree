@@ -25,8 +25,8 @@ public class AllocationPriorityTransferCache
         extends BaseInventoryTransferCache<AllocationPriority, AllocationPriorityTransfer> {
     
     /** Creates a new instance of AllocationPriorityTransferCache */
-    public AllocationPriorityTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    public AllocationPriorityTransferCache(InventoryControl inventoryControl) {
+        super(inventoryControl);
         
         setIncludeEntityInstance(true);
     }

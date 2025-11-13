@@ -28,8 +28,8 @@ public class FreeOnBoardTransferCache
     FreeOnBoardControl freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
 
     /** Creates a new instance of FreeOnBoardTransferCache */
-    public FreeOnBoardTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public FreeOnBoardTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

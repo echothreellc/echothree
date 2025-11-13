@@ -32,8 +32,8 @@ public class WorkflowEntityStatusTransferCache
     boolean includeTriggerTime;
 
     /** Creates a new instance of WorkflowEntityStatusTransferCache */
-    public WorkflowEntityStatusTransferCache(UserVisit userVisit, WorkflowControl workflowControl) {
-        super(userVisit, workflowControl);
+    public WorkflowEntityStatusTransferCache(WorkflowControl workflowControl) {
+        super(workflowControl);
 
         workEffortControl = Session.getModelController(WorkEffortControl.class);
 

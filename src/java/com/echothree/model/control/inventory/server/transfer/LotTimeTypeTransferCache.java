@@ -29,8 +29,8 @@ public class LotTimeTypeTransferCache
     LotTimeControl lotTimeControl = Session.getModelController(LotTimeControl.class);
 
     /** Creates a new instance of LotTimeTypeTransferCache */
-    public LotTimeTypeTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    public LotTimeTypeTransferCache(InventoryControl inventoryControl) {
+        super(inventoryControl);
         
         setIncludeEntityInstance(true);
     }

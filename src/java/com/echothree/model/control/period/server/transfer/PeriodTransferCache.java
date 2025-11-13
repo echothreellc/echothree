@@ -34,8 +34,8 @@ public class PeriodTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of PeriodTransferCache */
-    public PeriodTransferCache(UserVisit userVisit, PeriodControl periodControl) {
-        super(userVisit, periodControl);
+    public PeriodTransferCache(PeriodControl periodControl) {
+        super(periodControl);
         
         setIncludeEntityInstance(true);
     }

@@ -25,8 +25,8 @@ public class ItemVolumeTypeDescriptionTransferCache
         extends BaseItemDescriptionTransferCache<ItemVolumeTypeDescription, ItemVolumeTypeDescriptionTransfer> {
     
     /** Creates a new instance of ItemVolumeTypeDescriptionTransferCache */
-    public ItemVolumeTypeDescriptionTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemVolumeTypeDescriptionTransferCache(ItemControl itemControl) {
+        super(itemControl);
     }
     
     @Override

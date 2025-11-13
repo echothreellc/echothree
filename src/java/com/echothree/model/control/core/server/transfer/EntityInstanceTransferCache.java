@@ -50,8 +50,8 @@ public class EntityInstanceTransferCache
     boolean filterDescription;
     
     /** Creates a new instance of EntityInstanceTransferCache */
-    public EntityInstanceTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityInstanceTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {

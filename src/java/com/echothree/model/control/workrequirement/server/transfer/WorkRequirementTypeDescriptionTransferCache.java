@@ -25,8 +25,8 @@ public class WorkRequirementTypeDescriptionTransferCache
         extends BaseWorkRequirementDescriptionTransferCache<WorkRequirementTypeDescription, WorkRequirementTypeDescriptionTransfer> {
     
     /** Creates a new instance of WorkRequirementTypeDescriptionTransferCache */
-    public WorkRequirementTypeDescriptionTransferCache(UserVisit userVisit, WorkRequirementControl workRequirementControl) {
-        super(userVisit, workRequirementControl);
+    public WorkRequirementTypeDescriptionTransferCache(WorkRequirementControl workRequirementControl) {
+        super(workRequirementControl);
     }
     
     public WorkRequirementTypeDescriptionTransfer getWorkRequirementTypeDescriptionTransfer(WorkRequirementTypeDescription workRequirementTypeDescription) {

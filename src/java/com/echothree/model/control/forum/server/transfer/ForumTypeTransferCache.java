@@ -25,8 +25,8 @@ public class ForumTypeTransferCache
         extends BaseForumTransferCache<ForumType, ForumTypeTransfer> {
     
     /** Creates a new instance of ForumTypeTransferCache */
-    public ForumTypeTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
+    public ForumTypeTransferCache(ForumControl forumControl) {
+        super(forumControl);
     }
     
     public ForumTypeTransfer getForumTypeTransfer(ForumType forumType) {

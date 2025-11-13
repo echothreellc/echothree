@@ -29,8 +29,8 @@ public class WorkflowEntranceSecurityRoleTransferCache
     SecurityControl securityControl;
     
     /** Creates a new instance of WorkflowEntranceSecurityRoleTransferCache */
-    public WorkflowEntranceSecurityRoleTransferCache(UserVisit userVisit, WorkflowControl workflowControl) {
-        super(userVisit, workflowControl);
+    public WorkflowEntranceSecurityRoleTransferCache(WorkflowControl workflowControl) {
+        super(workflowControl);
         
         securityControl = Session.getModelController(SecurityControl.class);
     }

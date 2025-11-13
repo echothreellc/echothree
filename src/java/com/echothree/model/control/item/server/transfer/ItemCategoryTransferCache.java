@@ -25,8 +25,8 @@ public class ItemCategoryTransferCache
         extends BaseItemTransferCache<ItemCategory, ItemCategoryTransfer> {
     
     /** Creates a new instance of ItemCategoryTransferCache */
-    public ItemCategoryTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemCategoryTransferCache(ItemControl itemControl) {
+        super(itemControl);
         
         setIncludeEntityInstance(true);
     }

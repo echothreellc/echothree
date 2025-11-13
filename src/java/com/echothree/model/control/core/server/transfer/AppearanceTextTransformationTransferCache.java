@@ -30,8 +30,8 @@ public class AppearanceTextTransformationTransferCache
     TextControl textControl = Session.getModelController(TextControl.class);
 
     /** Creates a new instance of AppearanceTextTransformationTransferCache */
-    public AppearanceTextTransformationTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public AppearanceTextTransformationTransferCache() {
+        super();
     }
 
     public AppearanceTextTransformationTransfer getAppearanceTextTransformationTransfer(AppearanceTextTransformation appearanceTextTransformation) {

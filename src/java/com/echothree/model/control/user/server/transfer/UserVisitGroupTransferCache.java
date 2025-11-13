@@ -32,8 +32,8 @@ public class UserVisitGroupTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
     /** Creates a new instance of UserVisitGroupTransferCache */
-    public UserVisitGroupTransferCache(UserVisit userVisit, UserControl userControl) {
-        super(userVisit, userControl);
+    public UserVisitGroupTransferCache(UserControl userControl) {
+        super(userControl);
 
         setIncludeEntityInstance(true);
     }

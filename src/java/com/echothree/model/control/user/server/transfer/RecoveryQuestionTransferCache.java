@@ -25,8 +25,8 @@ public class RecoveryQuestionTransferCache
         extends BaseUserTransferCache<RecoveryQuestion, RecoveryQuestionTransfer> {
     
     /** Creates a new instance of RecoveryQuestionTransferCache */
-    public RecoveryQuestionTransferCache(UserVisit userVisit, UserControl userControl) {
-        super(userVisit, userControl);
+    public RecoveryQuestionTransferCache(UserControl userControl) {
+        super(userControl);
 
         setIncludeEntityInstance(true);
     }

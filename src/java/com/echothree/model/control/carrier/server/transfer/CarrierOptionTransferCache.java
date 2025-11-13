@@ -29,8 +29,8 @@ public class CarrierOptionTransferCache
     SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
 
     /** Creates a new instance of CarrierOptionTransferCache */
-    public CarrierOptionTransferCache(UserVisit userVisit, CarrierControl carrierControl) {
-        super(userVisit, carrierControl);
+    public CarrierOptionTransferCache(CarrierControl carrierControl) {
+        super(carrierControl);
         
         setIncludeEntityInstance(true);
     }

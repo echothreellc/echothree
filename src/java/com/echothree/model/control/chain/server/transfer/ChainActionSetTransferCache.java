@@ -25,8 +25,8 @@ public class ChainActionSetTransferCache
         extends BaseChainTransferCache<ChainActionSet, ChainActionSetTransfer> {
 
     /** Creates a new instance of ChainActionSetTransferCache */
-    public ChainActionSetTransferCache(UserVisit userVisit, ChainControl chainControl) {
-        super(userVisit, chainControl);
+    public ChainActionSetTransferCache(ChainControl chainControl) {
+        super(chainControl);
         
         setIncludeEntityInstance(true);
     }

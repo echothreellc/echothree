@@ -34,8 +34,8 @@ public class ForumMessageAttachmentTransferCache
     boolean includeETag;
     
     /** Creates a new instance of ForumMessageAttachmentTransferCache */
-    public ForumMessageAttachmentTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
+    public ForumMessageAttachmentTransferCache(ForumControl forumControl) {
+        super(forumControl);
         
         var options = session.getOptions();
         if(options != null) {

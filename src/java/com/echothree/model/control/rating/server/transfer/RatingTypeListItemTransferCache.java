@@ -25,8 +25,8 @@ public class RatingTypeListItemTransferCache
         extends BaseRatingTransferCache<RatingTypeListItem, RatingTypeListItemTransfer> {
     
     /** Creates a new instance of RatingTypeListItemTransferCache */
-    public RatingTypeListItemTransferCache(UserVisit userVisit, RatingControl ratingControl) {
-        super(userVisit, ratingControl);
+    public RatingTypeListItemTransferCache(RatingControl ratingControl) {
+        super(ratingControl);
         
         setIncludeEntityInstance(true);
     }

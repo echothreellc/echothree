@@ -25,8 +25,8 @@ public class SecurityRoleTransferCache
         extends BaseSecurityTransferCache<SecurityRole, SecurityRoleTransfer> {
     
     /** Creates a new instance of SecurityRoleTransferCache */
-    public SecurityRoleTransferCache(UserVisit userVisit, SecurityControl securityControl) {
-        super(userVisit, securityControl);
+    public SecurityRoleTransferCache(SecurityControl securityControl) {
+        super(securityControl);
         
         setIncludeEntityInstance(true);
     }

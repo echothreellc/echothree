@@ -29,8 +29,8 @@ public class PostalAddressLineTransferCache
     boolean includeElements;
     
     /** Creates a new instance of PostalAddressLineTransferCache */
-    public PostalAddressLineTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    public PostalAddressLineTransferCache(ContactControl contactControl) {
+        super(contactControl);
         
         var options = session.getOptions();
         if(options != null) {

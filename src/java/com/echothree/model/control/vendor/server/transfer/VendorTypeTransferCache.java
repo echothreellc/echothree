@@ -37,8 +37,8 @@ public class VendorTypeTransferCache
     TermControl termControl = Session.getModelController(TermControl.class);
 
     /** Creates a new instance of VendorTypeTransferCache */
-    public VendorTypeTransferCache(UserVisit userVisit, VendorControl vendorControl) {
-        super(userVisit, vendorControl);
+    public VendorTypeTransferCache(VendorControl vendorControl) {
+        super(vendorControl);
         
         setIncludeEntityInstance(true);
     }

@@ -25,8 +25,8 @@ public class CommentUsageTypeTransferCache
         extends BaseCommentTransferCache<CommentUsageType, CommentUsageTypeTransfer> {
     
     /** Creates a new instance of CommentUsageTypeTransferCache */
-    public CommentUsageTypeTransferCache(UserVisit userVisit, CommentControl commentControl) {
-        super(userVisit, commentControl);
+    public CommentUsageTypeTransferCache(CommentControl commentControl) {
+        super(commentControl);
         
         setIncludeEntityInstance(true);
     }

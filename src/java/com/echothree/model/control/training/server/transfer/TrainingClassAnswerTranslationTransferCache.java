@@ -29,8 +29,8 @@ public class TrainingClassAnswerTranslationTransferCache
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     
     /** Creates a new instance of TrainingClassAnswerTranslationTransferCache */
-    public TrainingClassAnswerTranslationTransferCache(UserVisit userVisit, TrainingControl trainingControl) {
-        super(userVisit, trainingControl);
+    public TrainingClassAnswerTranslationTransferCache(TrainingControl trainingControl) {
+        super(trainingControl);
     }
     
     public TrainingClassAnswerTranslationTransfer getTrainingClassAnswerTranslationTransfer(TrainingClassAnswerTranslation trainingClassAnswerTranslation) {

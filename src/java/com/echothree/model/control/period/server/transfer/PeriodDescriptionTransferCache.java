@@ -25,8 +25,8 @@ public class PeriodDescriptionTransferCache
         extends BasePeriodDescriptionTransferCache<PeriodDescription, PeriodDescriptionTransfer> {
     
     /** Creates a new instance of PeriodDescriptionTransferCache */
-    public PeriodDescriptionTransferCache(UserVisit userVisit, PeriodControl periodControl) {
-        super(userVisit, periodControl);
+    public PeriodDescriptionTransferCache(PeriodControl periodControl) {
+        super(periodControl);
     }
     
     public PeriodDescriptionTransfer getPeriodDescriptionTransfer(PeriodDescription periodDescription) {

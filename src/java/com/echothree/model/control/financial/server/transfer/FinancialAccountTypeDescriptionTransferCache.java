@@ -25,8 +25,8 @@ public class FinancialAccountTypeDescriptionTransferCache
         extends BaseFinancialDescriptionTransferCache<FinancialAccountTypeDescription, FinancialAccountTypeDescriptionTransfer> {
     
     /** Creates a new instance of FinancialAccountTypeDescriptionTransferCache */
-    public FinancialAccountTypeDescriptionTransferCache(UserVisit userVisit, FinancialControl financialControl) {
-        super(userVisit, financialControl);
+    public FinancialAccountTypeDescriptionTransferCache(FinancialControl financialControl) {
+        super(financialControl);
     }
     
     public FinancialAccountTypeDescriptionTransfer getFinancialAccountTypeDescriptionTransfer(FinancialAccountTypeDescription financialAccountTypeDescription) {

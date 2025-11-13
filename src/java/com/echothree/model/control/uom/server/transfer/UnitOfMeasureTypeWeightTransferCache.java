@@ -26,8 +26,8 @@ public class UnitOfMeasureTypeWeightTransferCache
         extends BaseUomTransferCache<UnitOfMeasureTypeWeight, UnitOfMeasureTypeWeightTransfer> {
     
     /** Creates a new instance of UnitOfMeasureTypeWeightTransferCache */
-    public UnitOfMeasureTypeWeightTransferCache(UserVisit userVisit, UomControl uomControl) {
-        super(userVisit, uomControl);
+    public UnitOfMeasureTypeWeightTransferCache(UomControl uomControl) {
+        super(uomControl);
     }
     
     public UnitOfMeasureTypeWeightTransfer getUnitOfMeasureTypeWeightTransfer(UnitOfMeasureTypeWeight unitOfMeasureTypeWeight) {

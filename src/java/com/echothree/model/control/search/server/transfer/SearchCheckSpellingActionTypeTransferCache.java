@@ -26,8 +26,8 @@ public class SearchCheckSpellingActionTypeTransferCache
         extends BaseSearchTransferCache<SearchCheckSpellingActionType, SearchCheckSpellingActionTypeTransfer> {
 
     /** Creates a new instance of SearchCheckSpellingActionTypeTransferCache */
-    public SearchCheckSpellingActionTypeTransferCache(UserVisit userVisit, SearchControl searchControl) {
-        super(userVisit, searchControl);
+    public SearchCheckSpellingActionTypeTransferCache(SearchControl searchControl) {
+        super(searchControl);
         
         var options = session.getOptions();
         if(options != null) {

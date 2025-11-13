@@ -36,8 +36,8 @@ public class TransactionGroupTransferCache
     boolean includeTransactions;
     
     /** Creates a new instance of TransactionGroupTransferCache */
-    public TransactionGroupTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public TransactionGroupTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {

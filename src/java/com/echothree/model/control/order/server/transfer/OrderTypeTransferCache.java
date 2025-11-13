@@ -32,8 +32,8 @@ public class OrderTypeTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of OrderTypeTransferCache */
-    public OrderTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public OrderTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

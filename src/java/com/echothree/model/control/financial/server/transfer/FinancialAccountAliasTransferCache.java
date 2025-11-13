@@ -25,8 +25,8 @@ public class FinancialAccountAliasTransferCache
         extends BaseFinancialTransferCache<FinancialAccountAlias, FinancialAccountAliasTransfer> {
     
     /** Creates a new instance of FinancialAccountAliasTransferCache */
-    public FinancialAccountAliasTransferCache(UserVisit userVisit, FinancialControl financialControl) {
-        super(userVisit, financialControl);
+    public FinancialAccountAliasTransferCache(FinancialControl financialControl) {
+        super(financialControl);
     }
     
     public FinancialAccountAliasTransfer getFinancialAccountAliasTransfer(FinancialAccountAlias financialAccountAlias) {

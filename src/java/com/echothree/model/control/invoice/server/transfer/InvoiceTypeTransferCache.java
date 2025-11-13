@@ -25,8 +25,8 @@ public class InvoiceTypeTransferCache
         extends BaseInvoiceTransferCache<InvoiceType, InvoiceTypeTransfer> {
     
     /** Creates a new instance of InvoiceTypeTransferCache */
-    public InvoiceTypeTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
-        super(userVisit, invoiceControl);
+    public InvoiceTypeTransferCache(InvoiceControl invoiceControl) {
+        super(invoiceControl);
         
         setIncludeEntityInstance(true);
     }

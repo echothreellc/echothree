@@ -25,8 +25,8 @@ public class CarrierTypeTransferCache
         extends BaseCarrierTransferCache<CarrierType, CarrierTypeTransfer> {
 
     /** Creates a new instance of CarrierTypeTransferCache */
-    public CarrierTypeTransferCache(UserVisit userVisit, CarrierControl carrierControl) {
-        super(userVisit, carrierControl);
+    public CarrierTypeTransferCache(CarrierControl carrierControl) {
+        super(carrierControl);
         
         setIncludeEntityInstance(true);
     }

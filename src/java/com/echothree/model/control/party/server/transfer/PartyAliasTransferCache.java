@@ -28,8 +28,8 @@ public class PartyAliasTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of PartyAliasTransferCache */
-    public PartyAliasTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public PartyAliasTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

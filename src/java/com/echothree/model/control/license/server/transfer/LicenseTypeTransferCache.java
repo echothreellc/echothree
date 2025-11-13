@@ -26,8 +26,8 @@ public class LicenseTypeTransferCache
         extends BaseLicenseTransferCache<LicenseType, LicenseTypeTransfer> {
 
     /** Creates a new instance of LicenseTypeTransferCache */
-    public LicenseTypeTransferCache(UserVisit userVisit, LicenseControl licenseControl) {
-        super(userVisit, licenseControl);
+    public LicenseTypeTransferCache(LicenseControl licenseControl) {
+        super(licenseControl);
         
         var options = session.getOptions();
         if(options != null) {

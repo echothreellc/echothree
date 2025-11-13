@@ -25,8 +25,8 @@ public class TerminationReasonDescriptionTransferCache
         extends BaseEmployeeDescriptionTransferCache<TerminationReasonDescription, TerminationReasonDescriptionTransfer> {
     
     /** Creates a new instance of TerminationReasonDescriptionTransferCache */
-    public TerminationReasonDescriptionTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit, employeeControl);
+    public TerminationReasonDescriptionTransferCache(EmployeeControl employeeControl) {
+        super(employeeControl);
     }
     
     public TerminationReasonDescriptionTransfer getTerminationReasonDescriptionTransfer(TerminationReasonDescription terminationReasonDescription) {

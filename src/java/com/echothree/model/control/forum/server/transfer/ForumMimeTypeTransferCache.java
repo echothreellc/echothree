@@ -29,8 +29,8 @@ public class ForumMimeTypeTransferCache
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     
     /** Creates a new instance of ForumMimeTypeTransferCache */
-    public ForumMimeTypeTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
+    public ForumMimeTypeTransferCache(ForumControl forumControl) {
+        super(forumControl);
     }
     
     public ForumMimeTypeTransfer getForumMimeTypeTransfer(ForumMimeType forumMimeType) {

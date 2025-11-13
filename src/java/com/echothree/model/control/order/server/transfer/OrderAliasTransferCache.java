@@ -28,8 +28,8 @@ public class OrderAliasTransferCache
     OrderAliasControl orderAliasControl = Session.getModelController(OrderAliasControl.class);
 
     /** Creates a new instance of OrderAliasTransferCache */
-    public OrderAliasTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public OrderAliasTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

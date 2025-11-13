@@ -30,8 +30,8 @@ public class ChainActionChainActionSetTransferCache
     UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of ChainActionChainActionSetTransferCache */
-    public ChainActionChainActionSetTransferCache(UserVisit userVisit, ChainControl chainControl) {
-        super(userVisit, chainControl);
+    public ChainActionChainActionSetTransferCache(ChainControl chainControl) {
+        super(chainControl);
     }
     
     public ChainActionChainActionSetTransfer getChainActionChainActionSetTransfer(ChainActionChainActionSet chainActionChainActionSet) {

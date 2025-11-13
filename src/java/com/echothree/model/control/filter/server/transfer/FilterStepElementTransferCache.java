@@ -29,8 +29,8 @@ public class FilterStepElementTransferCache
     FilterControl filterControl = Session.getModelController(FilterControl.class);
 
     /** Creates a new instance of FilterStepElementTransferCache */
-    public FilterStepElementTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public FilterStepElementTransferCache() {
+        super();
     }
 
     @Override

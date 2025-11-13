@@ -29,8 +29,8 @@ public class ContactListTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of ContactListTransferCache */
-    public ContactListTransferCache(UserVisit userVisit, ContactListControl contactListControl) {
-        super(userVisit, contactListControl);
+    public ContactListTransferCache(ContactListControl contactListControl) {
+        super(contactListControl);
         
         setIncludeEntityInstance(true);
     }

@@ -25,8 +25,8 @@ public class PartyContactMechanismRelationshipTransferCache
         extends BaseContactTransferCache<PartyContactMechanismRelationship, PartyContactMechanismRelationshipTransfer> {
     
     /** Creates a new instance of PartyContactMechanismRelationshipTransferCache */
-    public PartyContactMechanismRelationshipTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    public PartyContactMechanismRelationshipTransferCache(ContactControl contactControl) {
+        super(contactControl);
     }
     
     public PartyContactMechanismRelationshipTransfer getPartyContactMechanismRelationshipTransfer(PartyContactMechanismRelationship partyContactMechanismRelationship) {

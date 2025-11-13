@@ -30,8 +30,8 @@ public class LocationVolumeTransferCache
     UomControl uomControl;
     
     /** Creates a new instance of LocationVolumeTransferCache */
-    public LocationVolumeTransferCache(UserVisit userVisit, WarehouseControl warehouseControl) {
-        super(userVisit, warehouseControl);
+    public LocationVolumeTransferCache(WarehouseControl warehouseControl) {
+        super(warehouseControl);
         
         uomControl = Session.getModelController(UomControl.class);
     }

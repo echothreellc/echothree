@@ -29,8 +29,8 @@ public class RatingTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     
     /** Creates a new instance of RatingTransferCache */
-    public RatingTransferCache(UserVisit userVisit, RatingControl ratingControl) {
-        super(userVisit, ratingControl);
+    public RatingTransferCache(RatingControl ratingControl) {
+        super(ratingControl);
     }
     
     public RatingTransfer getRatingTransfer(Rating rating) {

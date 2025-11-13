@@ -25,8 +25,8 @@ public class UnitOfMeasureEquivalentTransferCache
         extends BaseUomTransferCache<UnitOfMeasureEquivalent, UnitOfMeasureEquivalentTransfer> {
     
     /** Creates a new instance of UnitOfMeasureEquivalentTransferCache */
-    public UnitOfMeasureEquivalentTransferCache(UserVisit userVisit, UomControl uomControl) {
-        super(userVisit, uomControl);
+    public UnitOfMeasureEquivalentTransferCache(UomControl uomControl) {
+        super(uomControl);
     }
     
     public UnitOfMeasureEquivalentTransfer getUnitOfMeasureEquivalentTransfer(UnitOfMeasureEquivalent unitOfMeasureEquivalent) {

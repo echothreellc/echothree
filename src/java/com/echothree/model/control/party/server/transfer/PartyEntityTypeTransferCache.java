@@ -31,8 +31,8 @@ public class PartyEntityTypeTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of PartyEntityTypeTransferCache */
-    public PartyEntityTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public PartyEntityTypeTransferCache() {
+        super();
     }
     
     public PartyEntityTypeTransfer getPartyEntityTypeTransfer(PartyEntityType partyEntityType) {

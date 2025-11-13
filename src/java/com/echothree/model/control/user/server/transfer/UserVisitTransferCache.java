@@ -40,8 +40,8 @@ public class UserVisitTransferCache
     boolean includeUserVisitCampaigns;
     
     /** Creates a new instance of UserVisitTransferCache */
-    public UserVisitTransferCache(UserVisit userVisit, UserControl userControl) {
-        super(userVisit, userControl);
+    public UserVisitTransferCache(UserControl userControl) {
+        super(userControl);
 
         var options = session.getOptions();
         if(options != null) {

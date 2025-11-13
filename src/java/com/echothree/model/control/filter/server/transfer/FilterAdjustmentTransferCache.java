@@ -34,8 +34,8 @@ public class FilterAdjustmentTransferCache
     boolean includeFilterAdjustmentPercents;
     
     /** Creates a new instance of FilterAdjustmentTransferCache */
-    public FilterAdjustmentTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public FilterAdjustmentTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {

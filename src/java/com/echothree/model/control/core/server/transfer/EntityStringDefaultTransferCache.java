@@ -32,8 +32,8 @@ public class EntityStringDefaultTransferCache
     boolean includeString;
 
     /** Creates a new instance of EntityStringDefaultTransferCache */
-    public EntityStringDefaultTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityStringDefaultTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {

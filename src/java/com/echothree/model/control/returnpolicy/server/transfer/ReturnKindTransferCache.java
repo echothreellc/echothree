@@ -29,8 +29,8 @@ public class ReturnKindTransferCache
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     
     /** Creates a new instance of ReturnKindTransferCache */
-    public ReturnKindTransferCache(UserVisit userVisit, ReturnPolicyControl returnPolicyControl) {
-        super(userVisit, returnPolicyControl);
+    public ReturnKindTransferCache(ReturnPolicyControl returnPolicyControl) {
+        super(returnPolicyControl);
         
         setIncludeEntityInstance(true);
     }

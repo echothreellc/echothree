@@ -25,8 +25,8 @@ public class CarrierServiceOptionTransferCache
         extends BaseCarrierTransferCache<CarrierServiceOption, CarrierServiceOptionTransfer> {
     
     /** Creates a new instance of CarrierServiceOptionTransferCache */
-    public CarrierServiceOptionTransferCache(UserVisit userVisit, CarrierControl carrierControl) {
-        super(userVisit, carrierControl);
+    public CarrierServiceOptionTransferCache(CarrierControl carrierControl) {
+        super(carrierControl);
     }
     
     public CarrierServiceOptionTransfer getCarrierServiceOptionTransfer(CarrierServiceOption carrierServiceOption) {

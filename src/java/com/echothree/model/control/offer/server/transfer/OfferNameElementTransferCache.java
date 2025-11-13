@@ -28,8 +28,8 @@ public class OfferNameElementTransferCache
     OfferNameElementControl offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
 
     /** Creates a new instance of OfferNameElementTransferCache */
-    public OfferNameElementTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public OfferNameElementTransferCache() {
+        super();
 
         setIncludeEntityInstance(true);
     }

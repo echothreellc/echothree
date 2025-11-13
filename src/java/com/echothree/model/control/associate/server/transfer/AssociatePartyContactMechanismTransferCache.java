@@ -29,8 +29,8 @@ public class AssociatePartyContactMechanismTransferCache
     ContactControl contactControl = Session.getModelController(ContactControl.class);
     
     /** Creates a new instance of AssociatePartyContactMechanismTransferCache */
-    public AssociatePartyContactMechanismTransferCache(UserVisit userVisit, AssociateControl associateControl) {
-        super(userVisit, associateControl);
+    public AssociatePartyContactMechanismTransferCache(AssociateControl associateControl) {
+        super(associateControl);
         
         setIncludeEntityInstance(true);
     }

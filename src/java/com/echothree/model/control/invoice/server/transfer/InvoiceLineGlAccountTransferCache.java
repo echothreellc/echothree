@@ -29,8 +29,8 @@ public class InvoiceLineGlAccountTransferCache
     AccountingControl accountingControl;
 
     /** Creates a new instance of InvoiceLineGlAccountTransferCache */
-    public InvoiceLineGlAccountTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
-        super(userVisit, invoiceControl);
+    public InvoiceLineGlAccountTransferCache(InvoiceControl invoiceControl) {
+        super(invoiceControl);
 
         accountingControl = Session.getModelController(AccountingControl.class);
     }

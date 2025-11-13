@@ -39,8 +39,8 @@ public class PrinterGroupTransferCache
     boolean includePrinters;
     
     /** Creates a new instance of PrinterGroupTransferCache */
-    public PrinterGroupTransferCache(UserVisit userVisit, PrinterControl printerControl) {
-        super(userVisit, printerControl);
+    public PrinterGroupTransferCache(PrinterControl printerControl) {
+        super(printerControl);
 
         var options = session.getOptions();
         if(options != null) {

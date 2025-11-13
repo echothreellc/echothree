@@ -25,8 +25,8 @@ public class SkillTypeTransferCache
         extends BaseEmployeeTransferCache<SkillType, SkillTypeTransfer> {
     
     /** Creates a new instance of SkillTypeTransferCache */
-    public SkillTypeTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit, employeeControl);
+    public SkillTypeTransferCache(EmployeeControl employeeControl) {
+        super(employeeControl);
         
         setIncludeEntityInstance(true);
     }

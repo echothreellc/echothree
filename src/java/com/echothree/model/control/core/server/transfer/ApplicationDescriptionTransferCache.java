@@ -28,8 +28,8 @@ public class ApplicationDescriptionTransferCache
     ApplicationControl applicationControl = Session.getModelController(ApplicationControl.class);
 
     /** Creates a new instance of ApplicationDescriptionTransferCache */
-    public ApplicationDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public ApplicationDescriptionTransferCache() {
+        super();
     }
     
     public ApplicationDescriptionTransfer getApplicationDescriptionTransfer(ApplicationDescription applicationDescription) {

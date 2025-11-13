@@ -29,8 +29,8 @@ public class UserVisitCampaignTransferCache
     UserControl userControl = Session.getModelController(UserControl.class);
     
     /** Creates a new instance of UserVisitCampaignTransferCache */
-    public UserVisitCampaignTransferCache(UserVisit userVisit, CampaignControl campaignControl) {
-        super(userVisit, campaignControl);
+    public UserVisitCampaignTransferCache(CampaignControl campaignControl) {
+        super(campaignControl);
     }
 
     public UserVisitCampaignTransfer getUserVisitCampaignTransfer(UserVisitCampaign userVisitCampaign) {

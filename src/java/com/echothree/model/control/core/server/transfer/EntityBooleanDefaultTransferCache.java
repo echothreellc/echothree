@@ -28,8 +28,8 @@ public class EntityBooleanDefaultTransferCache
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of EntityBooleanDefaultTransferCache */
-    public EntityBooleanDefaultTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityBooleanDefaultTransferCache() {
+        super();
     }
     
     public EntityBooleanDefaultTransfer getEntityBooleanDefaultTransfer(EntityBooleanDefault entityBooleanDefault) {

@@ -25,8 +25,8 @@ public class ChainDescriptionTransferCache
         extends BaseChainDescriptionTransferCache<ChainDescription, ChainDescriptionTransfer> {
     
     /** Creates a new instance of ChainDescriptionTransferCache */
-    public ChainDescriptionTransferCache(UserVisit userVisit, ChainControl chainControl) {
-        super(userVisit, chainControl);
+    public ChainDescriptionTransferCache(ChainControl chainControl) {
+        super(chainControl);
     }
     
     public ChainDescriptionTransfer getChainDescriptionTransfer(ChainDescription chainDescription) {

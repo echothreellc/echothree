@@ -28,8 +28,8 @@ public class TransactionGlAccountTransferCache
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of TransactionGlAccountTransferCache */
-    public TransactionGlAccountTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public TransactionGlAccountTransferCache() {
+        super();
     }
     
     @Override

@@ -29,8 +29,8 @@ public class ContactListTypeTransferCache
     ChainControl chainControl = Session.getModelController(ChainControl.class);
 
     /** Creates a new instance of ContactListTypeTransferCache */
-    public ContactListTypeTransferCache(UserVisit userVisit, ContactListControl contactListControl) {
-        super(userVisit, contactListControl);
+    public ContactListTypeTransferCache(ContactListControl contactListControl) {
+        super(contactListControl);
 
         setIncludeEntityInstance(true);
     }

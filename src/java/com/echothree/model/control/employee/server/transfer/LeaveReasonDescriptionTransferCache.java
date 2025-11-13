@@ -25,8 +25,8 @@ public class LeaveReasonDescriptionTransferCache
         extends BaseEmployeeDescriptionTransferCache<LeaveReasonDescription, LeaveReasonDescriptionTransfer> {
     
     /** Creates a new instance of LeaveReasonDescriptionTransferCache */
-    public LeaveReasonDescriptionTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit, employeeControl);
+    public LeaveReasonDescriptionTransferCache(EmployeeControl employeeControl) {
+        super(employeeControl);
     }
     
     public LeaveReasonDescriptionTransfer getLeaveReasonDescriptionTransfer(LeaveReasonDescription leaveReasonDescription) {

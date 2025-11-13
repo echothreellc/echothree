@@ -30,8 +30,8 @@ public class PartyFreeOnBoardTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of FreeOnBoardTransferCache */
-    public PartyFreeOnBoardTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public PartyFreeOnBoardTransferCache() {
+        super();
     }
     
     @Override

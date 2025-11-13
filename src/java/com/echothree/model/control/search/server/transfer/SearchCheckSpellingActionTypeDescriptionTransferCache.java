@@ -25,8 +25,8 @@ public class SearchCheckSpellingActionTypeDescriptionTransferCache
         extends BaseSearchDescriptionTransferCache<SearchCheckSpellingActionTypeDescription, SearchCheckSpellingActionTypeDescriptionTransfer> {
     
     /** Creates a new instance of SearchCheckSpellingActionTypeDescriptionTransferCache */
-    public SearchCheckSpellingActionTypeDescriptionTransferCache(UserVisit userVisit, SearchControl searchControl) {
-        super(userVisit, searchControl);
+    public SearchCheckSpellingActionTypeDescriptionTransferCache(SearchControl searchControl) {
+        super(searchControl);
     }
     
     public SearchCheckSpellingActionTypeDescriptionTransfer getSearchCheckSpellingActionTypeDescriptionTransfer(SearchCheckSpellingActionTypeDescription searchCheckSpellingActionTypeDescription) {

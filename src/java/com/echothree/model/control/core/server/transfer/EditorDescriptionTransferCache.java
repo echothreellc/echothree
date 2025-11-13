@@ -28,8 +28,8 @@ public class EditorDescriptionTransferCache
     EditorControl editorControl = Session.getModelController(EditorControl.class);
 
     /** Creates a new instance of EditorDescriptionTransferCache */
-    public EditorDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EditorDescriptionTransferCache() {
+        super();
     }
     
     public EditorDescriptionTransfer getEditorDescriptionTransfer(EditorDescription editorDescription) {

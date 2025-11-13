@@ -25,8 +25,8 @@ public class WorkEffortScopeDescriptionTransferCache
         extends BaseWorkEffortDescriptionTransferCache<WorkEffortScopeDescription, WorkEffortScopeDescriptionTransfer> {
     
     /** Creates a new instance of WorkEffortScopeDescriptionTransferCache */
-    public WorkEffortScopeDescriptionTransferCache(UserVisit userVisit, WorkEffortControl workEffortControl) {
-        super(userVisit, workEffortControl);
+    public WorkEffortScopeDescriptionTransferCache(WorkEffortControl workEffortControl) {
+        super(workEffortControl);
     }
     
     public WorkEffortScopeDescriptionTransfer getWorkEffortScopeDescriptionTransfer(WorkEffortScopeDescription workEffortScopeDescription) {

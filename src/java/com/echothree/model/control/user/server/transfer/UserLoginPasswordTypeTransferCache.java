@@ -25,8 +25,8 @@ public class UserLoginPasswordTypeTransferCache
         extends BaseUserTransferCache<UserLoginPasswordType, UserLoginPasswordTypeTransfer> {
     
     /** Creates a new instance of UserLoginPasswordTypeTransferCache */
-    public UserLoginPasswordTypeTransferCache(UserVisit userVisit, UserControl userControl) {
-        super(userVisit, userControl);
+    public UserLoginPasswordTypeTransferCache(UserControl userControl) {
+        super(userControl);
     }
     
     public UserLoginPasswordTypeTransfer getUserLoginPasswordTypeTransfer(UserLoginPasswordType userLoginPasswordType) {

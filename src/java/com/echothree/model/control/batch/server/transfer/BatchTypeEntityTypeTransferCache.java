@@ -29,8 +29,8 @@ public class BatchTypeEntityTypeTransferCache
     EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
 
     /** Creates a new instance of BatchTypeEntityTypeTransferCache */
-    public BatchTypeEntityTypeTransferCache(UserVisit userVisit, BatchControl batchControl) {
-        super(userVisit, batchControl);
+    public BatchTypeEntityTypeTransferCache(BatchControl batchControl) {
+        super(batchControl);
     }
     
     @Override

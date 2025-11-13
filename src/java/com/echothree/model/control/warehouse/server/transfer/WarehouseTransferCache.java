@@ -51,8 +51,8 @@ public class WarehouseTransferCache
     boolean includePartyScaleUses;
     
     /** Creates a new instance of WarehouseTransferCache */
-    public WarehouseTransferCache(UserVisit userVisit, WarehouseControl warehouseControl) {
-        super(userVisit, warehouseControl);
+    public WarehouseTransferCache(WarehouseControl warehouseControl) {
+        super(warehouseControl);
         
         var options = session.getOptions();
         if(options != null) {

@@ -33,8 +33,8 @@ public class TrackTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of TrackTransferCache */
-    public TrackTransferCache(UserVisit userVisit, TrackControl trackControl) {
-        super(userVisit, trackControl);
+    public TrackTransferCache(TrackControl trackControl) {
+        super(trackControl);
         
         var options = session.getOptions();
         if(options != null) {

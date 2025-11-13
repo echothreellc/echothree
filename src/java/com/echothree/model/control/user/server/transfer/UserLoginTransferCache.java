@@ -33,8 +33,8 @@ public class UserLoginTransferCache
     boolean includeUserLoginPasswords;
 
     /** Creates a new instance of UserLoginTransferCache */
-    public UserLoginTransferCache(UserVisit userVisit, UserControl userControl) {
-        super(userVisit, userControl);
+    public UserLoginTransferCache(UserControl userControl) {
+        super(userControl);
 
         var options = session.getOptions();
         if(options != null) {

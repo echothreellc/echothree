@@ -31,8 +31,8 @@ public class MessageTransferCache
     boolean includeClob;
     
     /** Creates a new instance of MessageTransferCache */
-    public MessageTransferCache(UserVisit userVisit, MessageControl messageControl) {
-        super(userVisit, messageControl);
+    public MessageTransferCache(MessageControl messageControl) {
+        super(messageControl);
         
         var options = session.getOptions();
         if(options != null) {

@@ -25,8 +25,8 @@ public class BatchAliasTypeTransferCache
         extends BaseBatchTransferCache<BatchAliasType, BatchAliasTypeTransfer> {
     
     /** Creates a new instance of BatchAliasTypeTransferCache */
-    public BatchAliasTypeTransferCache(UserVisit userVisit, BatchControl batchControl) {
-        super(userVisit, batchControl);
+    public BatchAliasTypeTransferCache(BatchControl batchControl) {
+        super(batchControl);
         
         setIncludeEntityInstance(true);
     }

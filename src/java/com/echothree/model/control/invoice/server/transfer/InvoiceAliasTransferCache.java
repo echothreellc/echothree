@@ -25,8 +25,8 @@ public class InvoiceAliasTransferCache
         extends BaseInvoiceTransferCache<InvoiceAlias, InvoiceAliasTransfer> {
     
     /** Creates a new instance of InvoiceAliasTransferCache */
-    public InvoiceAliasTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
-        super(userVisit, invoiceControl);
+    public InvoiceAliasTransferCache(InvoiceControl invoiceControl) {
+        super(invoiceControl);
     }
     
     public InvoiceAliasTransfer getInvoiceAliasTransfer(InvoiceAlias invoiceAlias) {

@@ -25,8 +25,8 @@ public class ContactMechanismAliasTypeDescriptionTransferCache
         extends BaseContactDescriptionTransferCache<ContactMechanismAliasTypeDescription, ContactMechanismAliasTypeDescriptionTransfer> {
     
     /** Creates a new instance of ContactMechanismAliasTypeDescriptionTransferCache */
-    public ContactMechanismAliasTypeDescriptionTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    public ContactMechanismAliasTypeDescriptionTransferCache(ContactControl contactControl) {
+        super(contactControl);
     }
     
     public ContactMechanismAliasTypeDescriptionTransfer getContactMechanismAliasTypeDescriptionTransfer(ContactMechanismAliasTypeDescription contactMechanismAliasTypeDescription) {

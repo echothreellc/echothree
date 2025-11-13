@@ -28,8 +28,8 @@ public class ServerTransferCache
     ServerControl serverControl = Session.getModelController(ServerControl.class);
 
     /** Creates a new instance of ServerTransferCache */
-    public ServerTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public ServerTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

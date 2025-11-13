@@ -25,8 +25,8 @@ public class InvoiceRoleTypeTransferCache
         extends BaseInvoiceTransferCache<InvoiceRoleType, InvoiceRoleTypeTransfer> {
     
     /** Creates a new instance of InvoiceRoleTypeTransferCache */
-    public InvoiceRoleTypeTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
-        super(userVisit, invoiceControl);
+    public InvoiceRoleTypeTransferCache(InvoiceControl invoiceControl) {
+        super(invoiceControl);
     }
     
     public InvoiceRoleTypeTransfer getInvoiceRoleTypeTransfer(InvoiceRoleType invoiceRoleType) {

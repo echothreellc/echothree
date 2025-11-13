@@ -31,8 +31,8 @@ public class LetterSourceTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of LetterSourceTransferCache */
-    public LetterSourceTransferCache(UserVisit userVisit, LetterControl letterControl) {
-        super(userVisit, letterControl);
+    public LetterSourceTransferCache(LetterControl letterControl) {
+        super(letterControl);
         
         setIncludeEntityInstance(true);
     }

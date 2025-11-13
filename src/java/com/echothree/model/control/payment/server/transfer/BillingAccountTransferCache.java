@@ -34,8 +34,8 @@ public class BillingAccountTransferCache
     boolean includeRoles;
 
     /** Creates a new instance of BillingAccountTransferCache */
-    public BillingAccountTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public BillingAccountTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {

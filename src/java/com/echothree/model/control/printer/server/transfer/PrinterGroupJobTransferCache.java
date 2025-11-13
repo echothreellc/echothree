@@ -34,8 +34,8 @@ public class PrinterGroupJobTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of PrinterGroupJobTransferCache */
-    public PrinterGroupJobTransferCache(UserVisit userVisit, PrinterControl printerControl) {
-        super(userVisit, printerControl);
+    public PrinterGroupJobTransferCache(PrinterControl printerControl) {
+        super(printerControl);
         
         setIncludeEntityInstance(true);
     }

@@ -32,8 +32,8 @@ public class QueueTypeTransferCache
     boolean includeQueuedEntities;
     
     /** Creates a new instance of QueueTypeTransferCache */
-    public QueueTypeTransferCache(UserVisit userVisit, QueueControl queueControl) {
-        super(userVisit, queueControl);
+    public QueueTypeTransferCache(QueueControl queueControl) {
+        super(queueControl);
         
         var options = session.getOptions();
         if(options != null) {

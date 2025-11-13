@@ -25,8 +25,8 @@ public class LetterSourceDescriptionTransferCache
         extends BaseLetterDescriptionTransferCache<LetterSourceDescription, LetterSourceDescriptionTransfer> {
     
     /** Creates a new instance of LetterSourceDescriptionTransferCache */
-    public LetterSourceDescriptionTransferCache(UserVisit userVisit, LetterControl letterControl) {
-        super(userVisit, letterControl);
+    public LetterSourceDescriptionTransferCache(LetterControl letterControl) {
+        super(letterControl);
     }
     
     public LetterSourceDescriptionTransfer getLetterSourceDescriptionTransfer(LetterSourceDescription letterSourceDescription) {

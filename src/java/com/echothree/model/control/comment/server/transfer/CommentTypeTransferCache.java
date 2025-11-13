@@ -35,8 +35,8 @@ public class CommentTypeTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of CommentTypeTransferCache */
-    public CommentTypeTransferCache(UserVisit userVisit, CommentControl commentControl) {
-        super(userVisit, commentControl);
+    public CommentTypeTransferCache(CommentControl commentControl) {
+        super(commentControl);
         
         setIncludeEntityInstance(true);
     }

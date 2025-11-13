@@ -30,8 +30,8 @@ public class ContactMechanismTransferCache
     boolean includeComments;
 
     /** Creates a new instance of ContactMechanismTransferCache */
-    public ContactMechanismTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    public ContactMechanismTransferCache(ContactControl contactControl) {
+        super(contactControl);
 
         var options = session.getOptions();
         if(options != null) {

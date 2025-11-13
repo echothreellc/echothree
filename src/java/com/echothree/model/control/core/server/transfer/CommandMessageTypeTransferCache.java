@@ -28,8 +28,8 @@ public class CommandMessageTypeTransferCache
     CommandControl commandControl = Session.getModelController(CommandControl.class);
 
     /** Creates a new instance of CommandMessageTypeTransferCache */
-    public CommandMessageTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public CommandMessageTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

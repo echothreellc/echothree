@@ -56,8 +56,8 @@ public class CompanyTransferCache
     boolean hasInvoiceLimits;
     
     /** Creates a new instance of CompanyTransferCache */
-    public CompanyTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public CompanyTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {

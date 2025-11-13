@@ -25,8 +25,8 @@ public class PostalAddressFormatDescriptionTransferCache
         extends BaseContactDescriptionTransferCache<PostalAddressFormatDescription, PostalAddressFormatDescriptionTransfer> {
     
     /** Creates a new instance of PostalAddressFormatDescriptionTransferCache */
-    public PostalAddressFormatDescriptionTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    public PostalAddressFormatDescriptionTransferCache(ContactControl contactControl) {
+        super(contactControl);
     }
     
     public PostalAddressFormatDescriptionTransfer getPostalAddressFormatDescriptionTransfer(PostalAddressFormatDescription postalAddressFormatDescription) {

@@ -31,8 +31,8 @@ public class RatingTypeTransferCache
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     
     /** Creates a new instance of RatingTypeTransferCache */
-    public RatingTypeTransferCache(UserVisit userVisit, RatingControl ratingControl) {
-        super(userVisit, ratingControl);
+    public RatingTypeTransferCache(RatingControl ratingControl) {
+        super(ratingControl);
         
         setIncludeEntityInstance(true);
     }

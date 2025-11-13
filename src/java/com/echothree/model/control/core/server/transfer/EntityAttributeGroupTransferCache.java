@@ -34,8 +34,8 @@ public class EntityAttributeGroupTransferCache
     boolean includeEntityAttributes;
     
     /** Creates a new instance of EntityAttributeGroupTransferCache */
-    public EntityAttributeGroupTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityAttributeGroupTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {

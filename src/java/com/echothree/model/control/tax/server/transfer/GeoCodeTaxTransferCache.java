@@ -27,8 +27,8 @@ public class GeoCodeTaxTransferCache
         extends BaseTaxTransferCache<GeoCodeTax, GeoCodeTaxTransfer> {
     
     /** Creates a new instance of GeoCodeTaxTransferCache */
-    public GeoCodeTaxTransferCache(UserVisit userVisit, TaxControl taxControl) {
-        super(userVisit, taxControl);
+    public GeoCodeTaxTransferCache(TaxControl taxControl) {
+        super(taxControl);
     }
     
     @Override

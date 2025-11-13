@@ -43,8 +43,8 @@ public class CommentTransferCache
     boolean includeWorkflowStep;
     
     /** Creates a new instance of CommentTransferCache */
-    public CommentTransferCache(UserVisit userVisit, CommentControl commentControl) {
-        super(userVisit, commentControl);
+    public CommentTransferCache(CommentControl commentControl) {
+        super(commentControl);
 
         var options = session.getOptions();
         if(options != null) {

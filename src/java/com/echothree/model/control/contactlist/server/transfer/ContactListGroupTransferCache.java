@@ -25,8 +25,8 @@ public class ContactListGroupTransferCache
         extends BaseContactListTransferCache<ContactListGroup, ContactListGroupTransfer> {
     
     /** Creates a new instance of ContactListGroupTransferCache */
-    public ContactListGroupTransferCache(UserVisit userVisit, ContactListControl contactListControl) {
-        super(userVisit, contactListControl);
+    public ContactListGroupTransferCache(ContactListControl contactListControl) {
+        super(contactListControl);
         
         setIncludeEntityInstance(true);
     }

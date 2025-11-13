@@ -29,8 +29,8 @@ public class PostalAddressFormatTransferCache
     boolean includeLines;
     
     /** Creates a new instance of PostalAddressFormatTransferCache */
-    public PostalAddressFormatTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    public PostalAddressFormatTransferCache(ContactControl contactControl) {
+        super(contactControl);
         
         var options = session.getOptions();
         if(options != null) {

@@ -42,8 +42,8 @@ public class LeaveTransferCache
     UnitOfMeasureUtils unitOfMeasureUtils;
 
     /** Creates a new instance of LeaveTransferCache */
-    public LeaveTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit, employeeControl);
+    public LeaveTransferCache(EmployeeControl employeeControl) {
+        super(employeeControl);
         
         setIncludeEntityInstance(true);
         

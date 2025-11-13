@@ -29,8 +29,8 @@ public class SubscriptionTypeTransferCache
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     
     /** Creates a new instance of SubscriptionTypeTransferCache */
-    public SubscriptionTypeTransferCache(UserVisit userVisit, SubscriptionControl subscriptionControl) {
-        super(userVisit, subscriptionControl);
+    public SubscriptionTypeTransferCache(SubscriptionControl subscriptionControl) {
+        super(subscriptionControl);
         
         setIncludeEntityInstance(true);
     }

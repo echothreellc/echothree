@@ -29,8 +29,8 @@ public class QueuedEntityTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         
     /** Creates a new instance of QueuedEntityTransferCache */
-    public QueuedEntityTransferCache(UserVisit userVisit, QueueControl queueControl) {
-        super(userVisit, queueControl);
+    public QueuedEntityTransferCache(QueueControl queueControl) {
+        super(queueControl);
     }
 
     public QueuedEntityTransfer getQueuedEntityTransfer(QueuedEntity queuedEntity) {

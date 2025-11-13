@@ -29,8 +29,8 @@ public class EntityMessageTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     
     /** Creates a new instance of EntityMessageTransferCache */
-    public EntityMessageTransferCache(UserVisit userVisit, MessageControl messageControl) {
-        super(userVisit, messageControl);
+    public EntityMessageTransferCache(MessageControl messageControl) {
+        super(messageControl);
     }
     
     public EntityMessageTransfer getEntityMessageTransfer(EntityMessage entityMessage) {

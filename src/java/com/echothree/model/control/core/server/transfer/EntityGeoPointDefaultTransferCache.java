@@ -37,7 +37,7 @@ public class EntityGeoPointDefaultTransferCache
     
     /** Creates a new instance of EntityGeoPointDefaultTransferCache */
     public EntityGeoPointDefaultTransferCache(final UserVisit userVisit) {
-        super(userVisit);
+        super();
     }
     
     public EntityGeoPointDefaultTransfer getEntityGeoPointDefaultTransfer(final EntityGeoPointDefault entityGeoPointDefault) {

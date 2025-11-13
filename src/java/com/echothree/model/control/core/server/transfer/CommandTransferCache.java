@@ -30,8 +30,8 @@ public class CommandTransferCache
     ComponentControl componentControl = Session.getModelController(ComponentControl.class);
 
     /** Creates a new instance of CommandTransferCache */
-    public CommandTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public CommandTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

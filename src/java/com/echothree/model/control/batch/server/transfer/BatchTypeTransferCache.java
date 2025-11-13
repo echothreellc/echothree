@@ -31,8 +31,8 @@ public class BatchTypeTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of BatchTypeTransferCache */
-    public BatchTypeTransferCache(UserVisit userVisit, BatchControl batchControl) {
-        super(userVisit, batchControl);
+    public BatchTypeTransferCache(BatchControl batchControl) {
+        super(batchControl);
         
         setIncludeEntityInstance(true);
     }

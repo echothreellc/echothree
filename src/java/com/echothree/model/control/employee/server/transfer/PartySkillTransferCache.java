@@ -29,8 +29,8 @@ public class PartySkillTransferCache
     PartyControl partyControl;
     
     /** Creates a new instance of PartySkillTransferCache */
-    public PartySkillTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit, employeeControl);
+    public PartySkillTransferCache(EmployeeControl employeeControl) {
+        super(employeeControl);
         
         partyControl = Session.getModelController(PartyControl.class);
     }

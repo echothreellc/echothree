@@ -32,8 +32,8 @@ public class OrderShipmentGroupTransferCache
     ShippingControl shippingControl = Session.getModelController(ShippingControl.class);;
     
     /** Creates a new instance of OrderShipmentGroupTransferCache */
-    public OrderShipmentGroupTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public OrderShipmentGroupTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

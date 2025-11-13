@@ -25,8 +25,8 @@ public class ItemInventoryTypeTransferCache
         extends BaseItemTransferCache<ItemInventoryType, ItemInventoryTypeTransfer> {
     
     /** Creates a new instance of ItemInventoryTypeTransferCache */
-    public ItemInventoryTypeTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemInventoryTypeTransferCache(ItemControl itemControl) {
+        super(itemControl);
     }
     
     @Override

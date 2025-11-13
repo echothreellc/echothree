@@ -25,8 +25,8 @@ public class CarrierServiceDescriptionTransferCache
         extends BaseCarrierDescriptionTransferCache<CarrierServiceDescription, CarrierServiceDescriptionTransfer> {
     
     /** Creates a new instance of CarrierServiceDescriptionTransferCache */
-    public CarrierServiceDescriptionTransferCache(UserVisit userVisit, CarrierControl carrierControl) {
-        super(userVisit, carrierControl);
+    public CarrierServiceDescriptionTransferCache(CarrierControl carrierControl) {
+        super(carrierControl);
     }
     
     public CarrierServiceDescriptionTransfer getCarrierServiceDescriptionTransfer(CarrierServiceDescription carrierServiceDescription) {

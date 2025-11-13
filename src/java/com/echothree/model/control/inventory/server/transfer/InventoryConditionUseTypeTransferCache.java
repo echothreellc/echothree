@@ -25,8 +25,8 @@ public class InventoryConditionUseTypeTransferCache
         extends BaseInventoryTransferCache<InventoryConditionUseType, InventoryConditionUseTypeTransfer> {
     
     /** Creates a new instance of InventoryConditionUseTypeTransferCache */
-    public InventoryConditionUseTypeTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    public InventoryConditionUseTypeTransferCache(InventoryControl inventoryControl) {
+        super(inventoryControl);
     }
     
     @Override

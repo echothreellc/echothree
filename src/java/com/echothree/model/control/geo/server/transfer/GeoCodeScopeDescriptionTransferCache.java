@@ -25,8 +25,8 @@ public class GeoCodeScopeDescriptionTransferCache
         extends BaseGeoDescriptionTransferCache<GeoCodeScopeDescription, GeoCodeScopeDescriptionTransfer> {
     
     /** Creates a new instance of GeoCodeScopeDescriptionTransferCache */
-    public GeoCodeScopeDescriptionTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
+    public GeoCodeScopeDescriptionTransferCache(GeoControl geoControl) {
+        super(geoControl);
     }
     
     public GeoCodeScopeDescriptionTransfer getGeoCodeScopeDescriptionTransfer(GeoCodeScopeDescription geoCodeScopeDescription) {

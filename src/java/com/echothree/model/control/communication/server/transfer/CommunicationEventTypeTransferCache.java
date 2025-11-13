@@ -25,8 +25,8 @@ public class CommunicationEventTypeTransferCache
         extends BaseCommunicationTransferCache<CommunicationEventType, CommunicationEventTypeTransfer> {
     
     /** Creates a new instance of CommunicationEventTypeTransferCache */
-    public CommunicationEventTypeTransferCache(UserVisit userVisit, CommunicationControl communicationControl) {
-        super(userVisit, communicationControl);
+    public CommunicationEventTypeTransferCache(CommunicationControl communicationControl) {
+        super(communicationControl);
     }
     
     public CommunicationEventTypeTransfer getCommunicationEventTypeTransfer(CommunicationEventType communicationEventType) {

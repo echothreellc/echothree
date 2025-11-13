@@ -30,8 +30,8 @@ public class IndexTypeTransferCache
     EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
 
     /** Creates a new instance of IndexTypeTransferCache */
-    public IndexTypeTransferCache(UserVisit userVisit, IndexControl indexControl) {
-        super(userVisit, indexControl);
+    public IndexTypeTransferCache(IndexControl indexControl) {
+        super(indexControl);
         
         var options = session.getOptions();
         if(options != null) {

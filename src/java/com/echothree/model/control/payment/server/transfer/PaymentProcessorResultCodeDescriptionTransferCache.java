@@ -28,8 +28,8 @@ public class PaymentProcessorResultCodeDescriptionTransferCache
     PaymentProcessorResultCodeControl paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
 
     /** Creates a new instance of PaymentProcessorResultCodeDescriptionTransferCache */
-    public PaymentProcessorResultCodeDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public PaymentProcessorResultCodeDescriptionTransferCache() {
+        super();
     }
     
     @Override

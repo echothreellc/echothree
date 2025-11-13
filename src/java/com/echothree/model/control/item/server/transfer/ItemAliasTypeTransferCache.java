@@ -25,8 +25,8 @@ public class ItemAliasTypeTransferCache
         extends BaseItemTransferCache<ItemAliasType, ItemAliasTypeTransfer> {
     
     /** Creates a new instance of ItemAliasTypeTransferCache */
-    public ItemAliasTypeTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemAliasTypeTransferCache(ItemControl itemControl) {
+        super(itemControl);
         
         setIncludeEntityInstance(true);
     }

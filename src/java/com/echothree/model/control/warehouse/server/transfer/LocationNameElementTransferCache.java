@@ -25,8 +25,8 @@ public class LocationNameElementTransferCache
         extends BaseWarehouseTransferCache<LocationNameElement, LocationNameElementTransfer> {
     
     /** Creates a new instance of LocationNameElementTransferCache */
-    public LocationNameElementTransferCache(UserVisit userVisit, WarehouseControl warehouseControl) {
-        super(userVisit, warehouseControl);
+    public LocationNameElementTransferCache(WarehouseControl warehouseControl) {
+        super(warehouseControl);
         
         setIncludeEntityInstance(true);
     }

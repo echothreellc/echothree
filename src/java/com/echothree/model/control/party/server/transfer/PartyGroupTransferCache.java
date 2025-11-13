@@ -24,8 +24,8 @@ public class PartyGroupTransferCache
         extends BasePartyTransferCache<PartyGroup, PartyGroupTransfer> {
     
     /** Creates a new instance of PartyGroupTransferCache */
-    public PartyGroupTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public PartyGroupTransferCache() {
+        super();
     }
 
     @Override

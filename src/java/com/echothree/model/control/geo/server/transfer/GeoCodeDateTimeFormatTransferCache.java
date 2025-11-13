@@ -29,8 +29,8 @@ public class GeoCodeDateTimeFormatTransferCache
     PartyControl partyControl;
     
     /** Creates a new instance of GeoCodeDateTimeFormatTransferCache */
-    public GeoCodeDateTimeFormatTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
+    public GeoCodeDateTimeFormatTransferCache(GeoControl geoControl) {
+        super(geoControl);
         
         partyControl = Session.getModelController(PartyControl.class);
     }

@@ -45,8 +45,8 @@ public class EntityAliasTypeTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of EntityAliasTypeTransferCache */
-    public EntityAliasTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityAliasTypeTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {

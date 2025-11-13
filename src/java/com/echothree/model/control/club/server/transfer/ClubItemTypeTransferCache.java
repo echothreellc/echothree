@@ -25,8 +25,8 @@ public class ClubItemTypeTransferCache
         extends BaseClubTransferCache<ClubItemType, ClubItemTypeTransfer> {
     
     /** Creates a new instance of ClubItemTypeTransferCache */
-    public ClubItemTypeTransferCache(UserVisit userVisit, ClubControl clubControl) {
-        super(userVisit, clubControl);
+    public ClubItemTypeTransferCache(ClubControl clubControl) {
+        super(clubControl);
     }
     
     public ClubItemTypeTransfer getClubItemTypeTransfer(ClubItemType clubItemType) {

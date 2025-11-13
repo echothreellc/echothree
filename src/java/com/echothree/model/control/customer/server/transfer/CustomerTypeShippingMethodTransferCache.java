@@ -27,8 +27,8 @@ public class CustomerTypeShippingMethodTransferCache
         extends BaseCustomerTransferCache<CustomerTypeShippingMethod, CustomerTypeShippingMethodTransfer> {
     
     /** Creates a new instance of CustomerTypeShippingMethodTransferCache */
-    public CustomerTypeShippingMethodTransferCache(UserVisit userVisit, CustomerControl customerControl) {
-        super(userVisit, customerControl);
+    public CustomerTypeShippingMethodTransferCache(CustomerControl customerControl) {
+        super(customerControl);
     }
     
     public CustomerTypeShippingMethodTransfer getCustomerTypeShippingMethodTransfer(CustomerTypeShippingMethod customerTypeShippingMethod) {

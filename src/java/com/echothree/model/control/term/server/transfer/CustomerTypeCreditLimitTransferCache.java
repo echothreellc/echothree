@@ -32,8 +32,8 @@ public class CustomerTypeCreditLimitTransferCache
     CustomerControl customerControl;
     
     /** Creates a new instance of CustomerTypeCreditLimitTransferCache */
-    public CustomerTypeCreditLimitTransferCache(UserVisit userVisit, TermControl termControl) {
-        super(userVisit, termControl);
+    public CustomerTypeCreditLimitTransferCache(TermControl termControl) {
+        super(termControl);
         
         accountingControl = Session.getModelController(AccountingControl.class);
         customerControl = Session.getModelController(CustomerControl.class);

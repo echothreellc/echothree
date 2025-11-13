@@ -32,8 +32,8 @@ public class ItemKitMemberTransferCache
     UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of ItemKitMemberTransferCache */
-    public ItemKitMemberTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemKitMemberTransferCache(ItemControl itemControl) {
+        super(itemControl);
     }
     
     @Override

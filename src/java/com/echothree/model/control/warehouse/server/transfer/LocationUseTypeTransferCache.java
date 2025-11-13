@@ -29,8 +29,8 @@ public class LocationUseTypeTransferCache
     LocationUseTypeControl locationUseTypeControl = Session.getModelController(LocationUseTypeControl.class);
 
     /** Creates a new instance of LocationUseTypeTransferCache */
-    public LocationUseTypeTransferCache(UserVisit userVisit, WarehouseControl warehouseControl) {
-        super(userVisit, warehouseControl);
+    public LocationUseTypeTransferCache(WarehouseControl warehouseControl) {
+        super(warehouseControl);
     }
     
     public LocationUseTypeTransfer getLocationUseTypeTransfer(LocationUseType locationUseType) {

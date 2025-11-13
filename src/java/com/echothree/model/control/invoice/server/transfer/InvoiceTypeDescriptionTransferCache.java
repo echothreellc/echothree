@@ -25,8 +25,8 @@ public class InvoiceTypeDescriptionTransferCache
         extends BaseInvoiceDescriptionTransferCache<InvoiceTypeDescription, InvoiceTypeDescriptionTransfer> {
     
     /** Creates a new instance of InvoiceTypeDescriptionTransferCache */
-    public InvoiceTypeDescriptionTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
-        super(userVisit, invoiceControl);
+    public InvoiceTypeDescriptionTransferCache(InvoiceControl invoiceControl) {
+        super(invoiceControl);
     }
     
     public InvoiceTypeDescriptionTransfer getInvoiceTypeDescriptionTransfer(InvoiceTypeDescription invoiceTypeDescription) {

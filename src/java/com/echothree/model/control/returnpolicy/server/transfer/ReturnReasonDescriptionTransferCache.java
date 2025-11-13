@@ -25,8 +25,8 @@ public class ReturnReasonDescriptionTransferCache
         extends BaseReturnPolicyDescriptionTransferCache<ReturnReasonDescription, ReturnReasonDescriptionTransfer> {
     
     /** Creates a new instance of ReturnReasonDescriptionTransferCache */
-    public ReturnReasonDescriptionTransferCache(UserVisit userVisit, ReturnPolicyControl returnPolicyControl) {
-        super(userVisit, returnPolicyControl);
+    public ReturnReasonDescriptionTransferCache(ReturnPolicyControl returnPolicyControl) {
+        super(returnPolicyControl);
     }
     
     public ReturnReasonDescriptionTransfer getReturnReasonDescriptionTransfer(ReturnReasonDescription returnReasonDescription) {

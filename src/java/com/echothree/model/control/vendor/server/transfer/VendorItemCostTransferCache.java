@@ -34,8 +34,8 @@ public class VendorItemCostTransferCache
     UomControl uomControl;
     
     /** Creates a new instance of VendorItemCostTransferCache */
-    public VendorItemCostTransferCache(UserVisit userVisit, VendorControl vendorControl) {
-        super(userVisit, vendorControl);
+    public VendorItemCostTransferCache(VendorControl vendorControl) {
+        super(vendorControl);
         
         inventoryControl = Session.getModelController(InventoryControl.class);
         partyControl = Session.getModelController(PartyControl.class);

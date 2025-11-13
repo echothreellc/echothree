@@ -36,8 +36,8 @@ public class MimeTypeUsageTypeTransferCache
     boolean filterDescription;
     
     /** Creates a new instance of MimeTypeUsageTypeTransferCache */
-    public MimeTypeUsageTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public MimeTypeUsageTypeTransferCache() {
+        super();
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {

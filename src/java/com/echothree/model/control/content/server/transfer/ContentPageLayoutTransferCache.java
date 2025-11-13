@@ -25,8 +25,8 @@ public class ContentPageLayoutTransferCache
         extends BaseContentTransferCache<ContentPageLayout, ContentPageLayoutTransfer> {
     
     /** Creates a new instance of ContentPageLayoutTransferCache */
-    public ContentPageLayoutTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    public ContentPageLayoutTransferCache(ContentControl contentControl) {
+        super(contentControl);
         
         setIncludeEntityInstance(true);
     }

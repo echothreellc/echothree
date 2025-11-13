@@ -28,8 +28,8 @@ public class UseTypeDescriptionTransferCache
     UseTypeControl useTypeControl = Session.getModelController(UseTypeControl.class);
 
     /** Creates a new instance of UseTypeDescriptionTransferCache */
-    public UseTypeDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public UseTypeDescriptionTransferCache() {
+        super();
     }
     
     public UseTypeDescriptionTransfer getUseTypeDescriptionTransfer(UseTypeDescription useTypeDescription) {

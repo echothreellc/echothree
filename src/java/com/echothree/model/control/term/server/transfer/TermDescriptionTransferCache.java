@@ -25,8 +25,8 @@ public class TermDescriptionTransferCache
         extends BaseTermDescriptionTransferCache<TermDescription, TermDescriptionTransfer> {
     
     /** Creates a new instance of TermDescriptionTransferCache */
-    public TermDescriptionTransferCache(UserVisit userVisit, TermControl termControl) {
-        super(userVisit, termControl);
+    public TermDescriptionTransferCache(TermControl termControl) {
+        super(termControl);
     }
     
     public TermDescriptionTransfer getTermDescriptionTransfer(TermDescription termDescription) {

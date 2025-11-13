@@ -31,8 +31,8 @@ public class ComponentVendorTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of ComponentVendorTransferCache */
-    public ComponentVendorTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public ComponentVendorTransferCache() {
+        super();
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {

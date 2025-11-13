@@ -30,8 +30,8 @@ public class AppearanceTextDecorationTransferCache
     TextControl textControl = Session.getModelController(TextControl.class);
 
     /** Creates a new instance of AppearanceTextDecorationTransferCache */
-    public AppearanceTextDecorationTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public AppearanceTextDecorationTransferCache() {
+        super();
     }
 
     public AppearanceTextDecorationTransfer getAppearanceTextDecorationTransfer(AppearanceTextDecoration appearanceTextDecoration) {

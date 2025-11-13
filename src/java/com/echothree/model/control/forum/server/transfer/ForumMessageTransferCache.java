@@ -36,8 +36,8 @@ public class ForumMessageTransferCache
     boolean includeForumMessageAttachments;
 
     /** Creates a new instance of ForumMessageTransferCache */
-    public ForumMessageTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
+    public ForumMessageTransferCache(ForumControl forumControl) {
+        super(forumControl);
 
         var options = session.getOptions();
         if(options != null) {

@@ -25,8 +25,8 @@ public class WorkflowEntranceDescriptionTransferCache
         extends BaseWorkflowDescriptionTransferCache<WorkflowEntranceDescription, WorkflowEntranceDescriptionTransfer> {
     
     /** Creates a new instance of WorkflowEntranceDescriptionTransferCache */
-    public WorkflowEntranceDescriptionTransferCache(UserVisit userVisit, WorkflowControl workflowControl) {
-        super(userVisit, workflowControl);
+    public WorkflowEntranceDescriptionTransferCache(WorkflowControl workflowControl) {
+        super(workflowControl);
     }
     
     public WorkflowEntranceDescriptionTransfer getWorkflowEntranceDescriptionTransfer(WorkflowEntranceDescription workflowEntranceDescription) {

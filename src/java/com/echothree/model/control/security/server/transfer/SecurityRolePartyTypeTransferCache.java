@@ -31,8 +31,8 @@ public class SecurityRolePartyTypeTransferCache
     SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
         
     /** Creates a new instance of SecurityRolePartyTypeTransferCache */
-    public SecurityRolePartyTypeTransferCache(UserVisit userVisit, SecurityControl securityControl) {
-        super(userVisit, securityControl);
+    public SecurityRolePartyTypeTransferCache(SecurityControl securityControl) {
+        super(securityControl);
     }
     
     public SecurityRolePartyTypeTransfer getSecurityRolePartyTypeTransfer(SecurityRolePartyType securityRolePartyType) {

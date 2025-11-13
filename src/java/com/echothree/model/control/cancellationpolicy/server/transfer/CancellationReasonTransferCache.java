@@ -25,8 +25,8 @@ public class CancellationReasonTransferCache
         extends BaseCancellationPolicyTransferCache<CancellationReason, CancellationReasonTransfer> {
     
     /** Creates a new instance of CancellationReasonTransferCache */
-    public CancellationReasonTransferCache(UserVisit userVisit, CancellationPolicyControl cancellationPolicyControl) {
-        super(userVisit, cancellationPolicyControl);
+    public CancellationReasonTransferCache(CancellationPolicyControl cancellationPolicyControl) {
+        super(cancellationPolicyControl);
         
         setIncludeEntityInstance(true);
     }

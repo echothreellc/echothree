@@ -25,8 +25,8 @@ public class PartyTrainingClassSessionSectionTransferCache
         extends BaseTrainingTransferCache<PartyTrainingClassSessionSection, PartyTrainingClassSessionSectionTransfer> {
     
     /** Creates a new instance of PartyTrainingClassSessionSectionTransferCache */
-    public PartyTrainingClassSessionSectionTransferCache(UserVisit userVisit, TrainingControl trainingControl) {
-        super(userVisit, trainingControl);
+    public PartyTrainingClassSessionSectionTransferCache(TrainingControl trainingControl) {
+        super(trainingControl);
     }
     
     public PartyTrainingClassSessionSectionTransfer getPartyTrainingClassSessionSectionTransfer(PartyTrainingClassSessionSection partyTrainingClassSessionSection) {

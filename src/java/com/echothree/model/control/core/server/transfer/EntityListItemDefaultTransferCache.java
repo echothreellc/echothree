@@ -29,8 +29,8 @@ public class EntityListItemDefaultTransferCache
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of EntityListItemDefaultTransferCache */
-    public EntityListItemDefaultTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityListItemDefaultTransferCache() {
+        super();
     }
     
     public EntityListItemDefaultTransfer getEntityListItemDefaultTransfer(EntityListItemDefault entityListItemDefault) {

@@ -25,8 +25,8 @@ public class JobDescriptionTransferCache
         extends BaseJobDescriptionTransferCache<JobDescription, JobDescriptionTransfer> {
     
     /** Creates a new instance of JobDescriptionTransferCache */
-    public JobDescriptionTransferCache(UserVisit userVisit, JobControl jobControl) {
-        super(userVisit, jobControl);
+    public JobDescriptionTransferCache(JobControl jobControl) {
+        super(jobControl);
     }
     
     public JobDescriptionTransfer getJobDescriptionTransfer(JobDescription jobDescription) {

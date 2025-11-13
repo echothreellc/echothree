@@ -25,8 +25,8 @@ public class IconUsageTransferCache
         extends BaseIconTransferCache<IconUsage, IconUsageTransfer> {
     
     /** Creates a new instance of IconUsageTransferCache */
-    public IconUsageTransferCache(UserVisit userVisit, IconControl iconControl) {
-        super(userVisit, iconControl);
+    public IconUsageTransferCache(IconControl iconControl) {
+        super(iconControl);
     }
     
     public IconUsageTransfer getIconUsageTransfer(IconUsage iconUsage) {

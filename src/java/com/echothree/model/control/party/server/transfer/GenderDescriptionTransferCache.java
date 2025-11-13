@@ -24,8 +24,8 @@ public class GenderDescriptionTransferCache
         extends BasePartyDescriptionTransferCache<GenderDescription, GenderDescriptionTransfer> {
     
     /** Creates a new instance of GenderDescriptionTransferCache */
-    public GenderDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public GenderDescriptionTransferCache() {
+        super();
     }
 
     @Override

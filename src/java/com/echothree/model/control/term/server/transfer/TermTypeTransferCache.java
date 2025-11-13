@@ -25,8 +25,8 @@ public class TermTypeTransferCache
         extends BaseTermTransferCache<TermType, TermTypeTransfer> {
     
     /** Creates a new instance of TermTypeTransferCache */
-    public TermTypeTransferCache(UserVisit userVisit, TermControl termControl) {
-        super(userVisit, termControl);
+    public TermTypeTransferCache(TermControl termControl) {
+        super(termControl);
     }
     
     public TermTypeTransfer getTermTypeTransfer(TermType termType) {

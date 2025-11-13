@@ -39,8 +39,8 @@ public class PartyContactMechanismTransferCache
     boolean includePartyContactMechanismRelationshipsByToPartyContactMechanism;
     
     /** Creates a new instance of PartyContactMechanismTransferCache */
-    public PartyContactMechanismTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    public PartyContactMechanismTransferCache(ContactControl contactControl) {
+        super(contactControl);
         
         var options = session.getOptions();
         if(options != null) {

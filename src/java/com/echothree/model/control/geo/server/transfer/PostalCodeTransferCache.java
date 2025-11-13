@@ -29,8 +29,8 @@ public class PostalCodeTransferCache
     boolean includeAliases;
     
     /** Creates a new instance of PostalCodeTransferCache */
-    public PostalCodeTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
+    public PostalCodeTransferCache(GeoControl geoControl) {
+        super(geoControl);
         
         var options = session.getOptions();
         if(options != null) {

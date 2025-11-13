@@ -25,8 +25,8 @@ public class DocumentTypeDescriptionTransferCache
         extends BaseDocumentDescriptionTransferCache<DocumentTypeDescription, DocumentTypeDescriptionTransfer> {
     
     /** Creates a new instance of DocumentTypeDescriptionTransferCache */
-    public DocumentTypeDescriptionTransferCache(UserVisit userVisit, DocumentControl documentControl) {
-        super(userVisit, documentControl);
+    public DocumentTypeDescriptionTransferCache(DocumentControl documentControl) {
+        super(documentControl);
     }
     
     public DocumentTypeDescriptionTransfer getDocumentTypeDescriptionTransfer(DocumentTypeDescription documentTypeDescription) {

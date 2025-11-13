@@ -25,8 +25,8 @@ public class CampaignDescriptionTransferCache
         extends BaseCampaignDescriptionTransferCache<CampaignDescription, CampaignDescriptionTransfer> {
     
     /** Creates a new instance of CampaignDescriptionTransferCache */
-    public CampaignDescriptionTransferCache(UserVisit userVisit, CampaignControl campaignControl) {
-        super(userVisit, campaignControl);
+    public CampaignDescriptionTransferCache(CampaignControl campaignControl) {
+        super(campaignControl);
     }
     
     public CampaignDescriptionTransfer getCampaignDescriptionTransfer(CampaignDescription campaignDescription) {

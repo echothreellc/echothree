@@ -31,8 +31,8 @@ public class ChainInstanceTransferCache
     boolean includeChainInstanceEntityRoles;
     
     /** Creates a new instance of ChainInstanceTransferCache */
-    public ChainInstanceTransferCache(UserVisit userVisit, ChainControl chainControl) {
-        super(userVisit, chainControl);
+    public ChainInstanceTransferCache(ChainControl chainControl) {
+        super(chainControl);
         
         var options = session.getOptions();
         if(options != null) {

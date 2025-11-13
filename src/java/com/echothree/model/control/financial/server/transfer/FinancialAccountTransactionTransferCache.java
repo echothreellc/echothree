@@ -26,8 +26,8 @@ public class FinancialAccountTransactionTransferCache
         extends BaseFinancialTransferCache<FinancialAccountTransaction, FinancialAccountTransactionTransfer> {
     
     /** Creates a new instance of FinancialAccountTransactionTransferCache */
-    public FinancialAccountTransactionTransferCache(UserVisit userVisit, FinancialControl financialControl) {
-        super(userVisit, financialControl);
+    public FinancialAccountTransactionTransferCache(FinancialControl financialControl) {
+        super(financialControl);
         
         setIncludeEntityInstance(true);
     }

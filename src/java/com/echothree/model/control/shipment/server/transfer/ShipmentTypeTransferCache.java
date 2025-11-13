@@ -32,8 +32,8 @@ public class ShipmentTypeTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of ShipmentTypeTransferCache */
-    public ShipmentTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public ShipmentTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

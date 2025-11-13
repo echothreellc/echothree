@@ -30,8 +30,8 @@ public class MoodTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of MoodTransferCache */
-    public MoodTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public MoodTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

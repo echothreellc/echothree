@@ -29,8 +29,8 @@ public class ItemUnitOfMeasureTypeTransferCache
     UomControl uomControl;
     
     /** Creates a new instance of ItemUnitOfMeasureTypeTransferCache */
-    public ItemUnitOfMeasureTypeTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemUnitOfMeasureTypeTransferCache(ItemControl itemControl) {
+        super(itemControl);
         
         uomControl = Session.getModelController(UomControl.class);
     }

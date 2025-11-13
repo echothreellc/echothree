@@ -29,8 +29,8 @@ public class StateTransferCache
     boolean includeAliases;
     
     /** Creates a new instance of StateTransferCache */
-    public StateTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
+    public StateTransferCache(GeoControl geoControl) {
+        super(geoControl);
         
         var options = session.getOptions();
         if(options != null) {

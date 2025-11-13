@@ -39,8 +39,8 @@ public class WorkRequirementScopeTransferCache
     boolean includeWorkRequirements;
     
     /** Creates a new instance of WorkRequirementScopeTransferCache */
-    public WorkRequirementScopeTransferCache(UserVisit userVisit, WorkRequirementControl workRequirementControl) {
-        super(userVisit, workRequirementControl);
+    public WorkRequirementScopeTransferCache(WorkRequirementControl workRequirementControl) {
+        super(workRequirementControl);
 
         var options = session.getOptions();
         if(options != null) {

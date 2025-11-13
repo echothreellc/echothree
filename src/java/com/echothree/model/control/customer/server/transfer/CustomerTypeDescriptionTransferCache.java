@@ -25,8 +25,8 @@ public class CustomerTypeDescriptionTransferCache
         extends BaseCustomerDescriptionTransferCache<CustomerTypeDescription, CustomerTypeDescriptionTransfer> {
     
     /** Creates a new instance of CustomerTypeDescriptionTransferCache */
-    public CustomerTypeDescriptionTransferCache(UserVisit userVisit, CustomerControl customerControl) {
-        super(userVisit, customerControl);
+    public CustomerTypeDescriptionTransferCache(CustomerControl customerControl) {
+        super(customerControl);
     }
     
     public CustomerTypeDescriptionTransfer getCustomerTypeDescriptionTransfer(CustomerTypeDescription customerTypeDescription) {

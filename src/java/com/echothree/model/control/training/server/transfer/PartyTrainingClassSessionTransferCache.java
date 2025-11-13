@@ -33,8 +33,8 @@ public class PartyTrainingClassSessionTransferCache
     boolean includePartyTrainingClassSessionQuestions;
     
     /** Creates a new instance of PartyTrainingClassSessionTransferCache */
-    public PartyTrainingClassSessionTransferCache(UserVisit userVisit, TrainingControl trainingControl) {
-        super(userVisit, trainingControl);
+    public PartyTrainingClassSessionTransferCache(TrainingControl trainingControl) {
+        super(trainingControl);
         
         var options = session.getOptions();
         if(options != null) {

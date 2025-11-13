@@ -25,8 +25,8 @@ public class ForumRoleTypeTransferCache
         extends BaseForumTransferCache<ForumRoleType, ForumRoleTypeTransfer> {
     
     /** Creates a new instance of ForumRoleTypeTransferCache */
-    public ForumRoleTypeTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
+    public ForumRoleTypeTransferCache(ForumControl forumControl) {
+        super(forumControl);
     }
     
     public ForumRoleTypeTransfer getForumRoleTypeTransfer(ForumRoleType forumRoleType) {

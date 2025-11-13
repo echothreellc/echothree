@@ -29,8 +29,8 @@ public class PartyAliasTypeTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of PartyAliasTypeTransferCache */
-    public PartyAliasTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public PartyAliasTypeTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {

@@ -29,8 +29,8 @@ public class GeoCodeCurrencyTransferCache
     AccountingControl accountingControl;
     
     /** Creates a new instance of GeoCodeCurrencyTransferCache */
-    public GeoCodeCurrencyTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
+    public GeoCodeCurrencyTransferCache(GeoControl geoControl) {
+        super(geoControl);
         
         accountingControl = Session.getModelController(AccountingControl.class);
     }

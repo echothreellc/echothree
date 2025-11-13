@@ -29,8 +29,8 @@ public class ContentForumTransferCache
     ForumControl forumControl = Session.getModelController(ForumControl.class);
 
     /** Creates a new instance of ContentForumTransferCache */
-    public ContentForumTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    public ContentForumTransferCache(ContentControl contentControl) {
+        super(contentControl);
 
         setIncludeEntityInstance(true);
     }

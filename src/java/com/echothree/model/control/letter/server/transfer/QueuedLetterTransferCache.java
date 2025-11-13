@@ -29,8 +29,8 @@ public class QueuedLetterTransferCache
     ChainControl chainControl;
     
     /** Creates a new instance of QueuedLetterTransferCache */
-    public QueuedLetterTransferCache(UserVisit userVisit, LetterControl letterControl) {
-        super(userVisit, letterControl);
+    public QueuedLetterTransferCache(LetterControl letterControl) {
+        super(letterControl);
         
         chainControl = Session.getModelController(ChainControl.class);
     }

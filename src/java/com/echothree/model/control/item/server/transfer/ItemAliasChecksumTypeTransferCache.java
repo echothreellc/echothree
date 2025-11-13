@@ -25,8 +25,8 @@ public class ItemAliasChecksumTypeTransferCache
         extends BaseItemTransferCache<ItemAliasChecksumType, ItemAliasChecksumTypeTransfer> {
     
     /** Creates a new instance of ItemAliasChecksumTypeTransferCache */
-    public ItemAliasChecksumTypeTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemAliasChecksumTypeTransferCache(ItemControl itemControl) {
+        super(itemControl);
     }
     
     @Override

@@ -34,8 +34,8 @@ public class ItemUnitPriceLimitTransferCache
     UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of ItemUnitPriceLimitTransferCache */
-    public ItemUnitPriceLimitTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemUnitPriceLimitTransferCache(ItemControl itemControl) {
+        super(itemControl);
     }
     
     @Override

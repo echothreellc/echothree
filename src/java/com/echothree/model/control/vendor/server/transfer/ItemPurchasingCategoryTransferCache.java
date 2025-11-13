@@ -25,8 +25,8 @@ public class ItemPurchasingCategoryTransferCache
         extends BaseVendorTransferCache<ItemPurchasingCategory, ItemPurchasingCategoryTransfer> {
     
     /** Creates a new instance of ItemPurchasingCategoryTransferCache */
-    public ItemPurchasingCategoryTransferCache(UserVisit userVisit, VendorControl vendorControl) {
-        super(userVisit, vendorControl);
+    public ItemPurchasingCategoryTransferCache(VendorControl vendorControl) {
+        super(vendorControl);
         
         setIncludeEntityInstance(true);
     }

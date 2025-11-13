@@ -29,8 +29,8 @@ public class TaxClassificationTranslationTransferCache
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     
     /** Creates a new instance of TaxClassificationTranslationTransferCache */
-    public TaxClassificationTranslationTransferCache(UserVisit userVisit, TaxControl taxControl) {
-        super(userVisit, taxControl);
+    public TaxClassificationTranslationTransferCache(TaxControl taxControl) {
+        super(taxControl);
     }
     
     @Override

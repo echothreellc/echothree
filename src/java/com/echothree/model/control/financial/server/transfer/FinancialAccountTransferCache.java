@@ -36,8 +36,8 @@ public class FinancialAccountTransferCache
     boolean includeTransactions;
     
     /** Creates a new instance of FinancialAccountTransferCache */
-    public FinancialAccountTransferCache(UserVisit userVisit, FinancialControl financialControl) {
-        super(userVisit, financialControl);
+    public FinancialAccountTransferCache(FinancialControl financialControl) {
+        super(financialControl);
         
         accountingControl = Session.getModelController(AccountingControl.class);
 

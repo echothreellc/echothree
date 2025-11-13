@@ -35,8 +35,8 @@ public class ForumThreadTransferCache
     boolean hasForumMessageLimits;
     
     /** Creates a new instance of ForumThreadTransferCache */
-    public ForumThreadTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
+    public ForumThreadTransferCache(ForumControl forumControl) {
+        super(forumControl);
         
         iconControl = Session.getModelController(IconControl.class);
         

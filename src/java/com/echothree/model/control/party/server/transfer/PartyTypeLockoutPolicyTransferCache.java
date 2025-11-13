@@ -34,8 +34,8 @@ public class PartyTypeLockoutPolicyTransferCache
     UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
 
     /** Creates a new instance of PartyTypeLockoutPolicyTransferCache */
-    public PartyTypeLockoutPolicyTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public PartyTypeLockoutPolicyTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

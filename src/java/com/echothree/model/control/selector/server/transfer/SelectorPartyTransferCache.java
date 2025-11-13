@@ -29,8 +29,8 @@ public class SelectorPartyTransferCache
     PartyControl partyControl;
     
     /** Creates a new instance of SelectorPartyTransferCache */
-    public SelectorPartyTransferCache(UserVisit userVisit, SelectorControl selectorControl) {
-        super(userVisit, selectorControl);
+    public SelectorPartyTransferCache(SelectorControl selectorControl) {
+        super(selectorControl);
         
         partyControl = Session.getModelController(PartyControl.class);
     }

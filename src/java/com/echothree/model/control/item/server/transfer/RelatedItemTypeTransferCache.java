@@ -25,8 +25,8 @@ public class RelatedItemTypeTransferCache
         extends BaseItemTransferCache<RelatedItemType, RelatedItemTypeTransfer> {
     
     /** Creates a new instance of RelatedItemTypeTransferCache */
-    public RelatedItemTypeTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public RelatedItemTypeTransferCache(ItemControl itemControl) {
+        super(itemControl);
         
         setIncludeEntityInstance(true);
     }

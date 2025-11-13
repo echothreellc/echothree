@@ -25,8 +25,8 @@ public class ContentPageAreaTypeTransferCache
         extends BaseContentTransferCache<ContentPageAreaType, ContentPageAreaTypeTransfer> {
     
     /** Creates a new instance of ContentPageAreaTypeTransferCache */
-    public ContentPageAreaTypeTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    public ContentPageAreaTypeTransferCache(ContentControl contentControl) {
+        super(contentControl);
     }
     
     public ContentPageAreaTypeTransfer getTransfer(ContentPageAreaType contentPageAreaType) {

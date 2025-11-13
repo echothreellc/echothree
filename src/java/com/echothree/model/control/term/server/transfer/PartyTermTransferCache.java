@@ -29,8 +29,8 @@ public class PartyTermTransferCache
     PartyControl partyControl;
     
     /** Creates a new instance of PartyTermTransferCache */
-    public PartyTermTransferCache(UserVisit userVisit, TermControl termControl) {
-        super(userVisit, termControl);
+    public PartyTermTransferCache(TermControl termControl) {
+        super(termControl);
         
         partyControl = Session.getModelController(PartyControl.class);
     }

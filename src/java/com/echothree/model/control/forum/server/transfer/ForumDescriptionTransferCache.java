@@ -25,8 +25,8 @@ public class ForumDescriptionTransferCache
         extends BaseForumDescriptionTransferCache<ForumDescription, ForumDescriptionTransfer> {
     
     /** Creates a new instance of ForumDescriptionTransferCache */
-    public ForumDescriptionTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
+    public ForumDescriptionTransferCache(ForumControl forumControl) {
+        super(forumControl);
     }
     
     public ForumDescriptionTransfer getForumDescriptionTransfer(ForumDescription forumDescription) {

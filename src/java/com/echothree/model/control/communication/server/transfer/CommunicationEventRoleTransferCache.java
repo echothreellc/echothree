@@ -29,8 +29,8 @@ public class CommunicationEventRoleTransferCache
     PartyControl partyControl;
     
     /** Creates a new instance of CommunicationEventRoleTransferCache */
-    public CommunicationEventRoleTransferCache(UserVisit userVisit, CommunicationControl communicationControl) {
-        super(userVisit, communicationControl);
+    public CommunicationEventRoleTransferCache(CommunicationControl communicationControl) {
+        super(communicationControl);
         
         partyControl = Session.getModelController(PartyControl.class);
     }

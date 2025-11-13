@@ -25,8 +25,8 @@ public class InvoiceAliasTypeTransferCache
         extends BaseInvoiceTransferCache<InvoiceAliasType, InvoiceAliasTypeTransfer> {
     
     /** Creates a new instance of InvoiceAliasTypeTransferCache */
-    public InvoiceAliasTypeTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
-        super(userVisit, invoiceControl);
+    public InvoiceAliasTypeTransferCache(InvoiceControl invoiceControl) {
+        super(invoiceControl);
         
         setIncludeEntityInstance(true);
     }

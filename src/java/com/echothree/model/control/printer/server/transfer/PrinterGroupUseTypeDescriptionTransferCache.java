@@ -25,8 +25,8 @@ public class PrinterGroupUseTypeDescriptionTransferCache
         extends BasePrinterDescriptionTransferCache<PrinterGroupUseTypeDescription, PrinterGroupUseTypeDescriptionTransfer> {
     
     /** Creates a new instance of PrinterGroupUseTypeDescriptionTransferCache */
-    public PrinterGroupUseTypeDescriptionTransferCache(UserVisit userVisit, PrinterControl printerControl) {
-        super(userVisit, printerControl);
+    public PrinterGroupUseTypeDescriptionTransferCache(PrinterControl printerControl) {
+        super(printerControl);
     }
     
     public PrinterGroupUseTypeDescriptionTransfer getPrinterGroupUseTypeDescriptionTransfer(PrinterGroupUseTypeDescription printerGroupUseTypeDescription) {

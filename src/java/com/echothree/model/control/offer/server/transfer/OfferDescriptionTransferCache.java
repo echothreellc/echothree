@@ -28,8 +28,8 @@ public class OfferDescriptionTransferCache
     OfferControl offerControl = Session.getModelController(OfferControl.class);
 
     /** Creates a new instance of OfferDescriptionTransferCache */
-    public OfferDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public OfferDescriptionTransferCache() {
+        super();
     }
     
     public OfferDescriptionTransfer getOfferDescriptionTransfer(OfferDescription offerDescription) {

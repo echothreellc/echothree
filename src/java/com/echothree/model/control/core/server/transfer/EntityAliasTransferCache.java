@@ -30,8 +30,8 @@ public class EntityAliasTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of EntityAliasTransferCache */
-    public EntityAliasTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityAliasTransferCache() {
+        super();
     }
     
     public EntityAliasTransfer getEntityAliasTransfer(EntityAlias entityAlias) {

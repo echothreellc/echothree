@@ -25,8 +25,8 @@ public class SelectorDescriptionTransferCache
         extends BaseSelectorDescriptionTransferCache<SelectorDescription, SelectorDescriptionTransfer> {
     
     /** Creates a new instance of SelectorDescriptionTransferCache */
-    public SelectorDescriptionTransferCache(UserVisit userVisit, SelectorControl selectorControl) {
-        super(userVisit, selectorControl);
+    public SelectorDescriptionTransferCache(SelectorControl selectorControl) {
+        super(selectorControl);
     }
     
     public SelectorDescriptionTransfer getSelectorDescriptionTransfer(SelectorDescription selectorDescription) {

@@ -28,8 +28,8 @@ public class ProtocolTransferCache
     ServerControl serverControl = Session.getModelController(ServerControl.class);
 
     /** Creates a new instance of ProtocolTransferCache */
-    public ProtocolTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public ProtocolTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

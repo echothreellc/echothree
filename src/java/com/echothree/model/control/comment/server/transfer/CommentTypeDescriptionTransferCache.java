@@ -25,8 +25,8 @@ public class CommentTypeDescriptionTransferCache
         extends BaseCommentDescriptionTransferCache<CommentTypeDescription, CommentTypeDescriptionTransfer> {
     
     /** Creates a new instance of CommentTypeDescriptionTransferCache */
-    public CommentTypeDescriptionTransferCache(UserVisit userVisit, CommentControl commentControl) {
-        super(userVisit, commentControl);
+    public CommentTypeDescriptionTransferCache(CommentControl commentControl) {
+        super(commentControl);
     }
     
     public CommentTypeDescriptionTransfer getCommentTypeDescriptionTransfer(CommentTypeDescription commentTypeDescription) {

@@ -40,7 +40,7 @@ public class EntityGeoPointAttributeTransferCache
     
     /** Creates a new instance of EntityGeoPointAttributeTransferCache */
     public EntityGeoPointAttributeTransferCache(final UserVisit userVisit) {
-        super(userVisit);
+        super();
     }
     
     public EntityGeoPointAttributeTransfer getEntityGeoPointAttributeTransfer(final EntityGeoPointAttribute entityGeoPointAttribute,

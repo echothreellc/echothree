@@ -68,8 +68,8 @@ public class CustomerTypeTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of CustomerTypeTransferCache */
-    public CustomerTypeTransferCache(UserVisit userVisit, CustomerControl customerControl) {
-        super(userVisit, customerControl);
+    public CustomerTypeTransferCache(CustomerControl customerControl) {
+        super(customerControl);
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {

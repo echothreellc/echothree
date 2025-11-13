@@ -29,8 +29,8 @@ public class CustomerTypePaymentMethodTransferCache
     PaymentMethodControl paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
 
     /** Creates a new instance of CustomerTypePaymentMethodTransferCache */
-    public CustomerTypePaymentMethodTransferCache(UserVisit userVisit, CustomerControl customerControl) {
-        super(userVisit, customerControl);
+    public CustomerTypePaymentMethodTransferCache(CustomerControl customerControl) {
+        super(customerControl);
     }
     
     public CustomerTypePaymentMethodTransfer getCustomerTypePaymentMethodTransfer(CustomerTypePaymentMethod customerTypePaymentMethod) {

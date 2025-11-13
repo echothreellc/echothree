@@ -28,8 +28,8 @@ public class UseNameElementDescriptionTransferCache
     UseNameElementControl useNameElementControl = Session.getModelController(UseNameElementControl.class);
 
     /** Creates a new instance of UseNameElementDescriptionTransferCache */
-    public UseNameElementDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public UseNameElementDescriptionTransferCache() {
+        super();
     }
     
     public UseNameElementDescriptionTransfer getUseNameElementDescriptionTransfer(UseNameElementDescription useNameElementDescription) {

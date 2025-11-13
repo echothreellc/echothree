@@ -28,8 +28,8 @@ public class MimeTypeFileExtensionTransferCache
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
 
     /** Creates a new instance of MimeTypeFileExtensionTransferCache */
-    public MimeTypeFileExtensionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public MimeTypeFileExtensionTransferCache() {
+        super();
     }
     
     public MimeTypeFileExtensionTransfer getMimeTypeFileExtensionTransfer(MimeTypeFileExtension mimeTypeFileExtension) {

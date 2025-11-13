@@ -25,8 +25,8 @@ public class PicklistAliasTransferCache
         extends BasePicklistTransferCache<PicklistAlias, PicklistAliasTransfer> {
     
     /** Creates a new instance of PicklistAliasTransferCache */
-    public PicklistAliasTransferCache(UserVisit userVisit, PicklistControl picklistControl) {
-        super(userVisit, picklistControl);
+    public PicklistAliasTransferCache(PicklistControl picklistControl) {
+        super(picklistControl);
     }
     
     public PicklistAliasTransfer getPicklistAliasTransfer(PicklistAlias picklistAlias) {

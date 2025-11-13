@@ -28,8 +28,8 @@ public class PaymentProcessorDescriptionTransferCache
     PaymentProcessorControl paymentProcessorControl = Session.getModelController(com.echothree.model.control.payment.server.control.PaymentProcessorControl.class);
 
     /** Creates a new instance of PaymentProcessorDescriptionTransferCache */
-    public PaymentProcessorDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public PaymentProcessorDescriptionTransferCache() {
+        super();
     }
 
     @Override

@@ -29,8 +29,8 @@ public class TaxClassificationTransferCache
     GeoControl geoControl = Session.getModelController(GeoControl.class);
     
     /** Creates a new instance of TaxClassificationTransferCache */
-    public TaxClassificationTransferCache(UserVisit userVisit, TaxControl taxControl) {
-        super(userVisit, taxControl);
+    public TaxClassificationTransferCache(TaxControl taxControl) {
+        super(taxControl);
         
         setIncludeEntityInstance(true);
     }

@@ -25,8 +25,8 @@ public class QueueTypeDescriptionTransferCache
         extends BaseQueueDescriptionTransferCache<QueueTypeDescription, QueueTypeDescriptionTransfer> {
     
     /** Creates a new instance of QueueTypeDescriptionTransferCache */
-    public QueueTypeDescriptionTransferCache(UserVisit userVisit, QueueControl queueControl) {
-        super(userVisit, queueControl);
+    public QueueTypeDescriptionTransferCache(QueueControl queueControl) {
+        super(queueControl);
     }
     
     public QueueTypeDescriptionTransfer getQueueTypeDescriptionTransfer(QueueTypeDescription queueTypeDescription) {

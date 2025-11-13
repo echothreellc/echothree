@@ -28,8 +28,8 @@ public class GeoCodeTransferCache
     boolean includeAliases;
     
     /** Creates a new instance of GeoCodeTransferCache */
-    public GeoCodeTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
+    public GeoCodeTransferCache(GeoControl geoControl) {
+        super(geoControl);
         
         var options = session.getOptions();
         if(options != null) {

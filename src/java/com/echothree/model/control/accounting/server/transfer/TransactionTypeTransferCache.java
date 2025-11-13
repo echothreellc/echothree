@@ -28,8 +28,8 @@ public class TransactionTypeTransferCache
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of TransactionTypeTransferCache */
-    public TransactionTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public TransactionTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

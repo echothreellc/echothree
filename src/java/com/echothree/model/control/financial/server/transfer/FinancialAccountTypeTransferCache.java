@@ -33,8 +33,8 @@ public class FinancialAccountTypeTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of FinancialAccountTypeTransferCache */
-    public FinancialAccountTypeTransferCache(UserVisit userVisit, FinancialControl financialControl) {
-        super(userVisit, financialControl);
+    public FinancialAccountTypeTransferCache(FinancialControl financialControl) {
+        super(financialControl);
         
         setIncludeEntityInstance(true);
     }

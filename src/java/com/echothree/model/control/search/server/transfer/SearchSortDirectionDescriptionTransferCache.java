@@ -25,8 +25,8 @@ public class SearchSortDirectionDescriptionTransferCache
         extends BaseSearchDescriptionTransferCache<SearchSortDirectionDescription, SearchSortDirectionDescriptionTransfer> {
     
     /** Creates a new instance of SearchSortDirectionDescriptionTransferCache */
-    public SearchSortDirectionDescriptionTransferCache(UserVisit userVisit, SearchControl searchControl) {
-        super(userVisit, searchControl);
+    public SearchSortDirectionDescriptionTransferCache(SearchControl searchControl) {
+        super(searchControl);
     }
     
     public SearchSortDirectionDescriptionTransfer getSearchSortDirectionDescriptionTransfer(SearchSortDirectionDescription searchSortDirectionDescription) {

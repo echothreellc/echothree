@@ -25,8 +25,8 @@ public class ContentSectionDescriptionTransferCache
         extends BaseContentDescriptionTransferCache<ContentSectionDescription, ContentSectionDescriptionTransfer> {
     
     /** Creates a new instance of ContentSectionDescriptionTransferCache */
-    public ContentSectionDescriptionTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    public ContentSectionDescriptionTransferCache(ContentControl contentControl) {
+        super(contentControl);
     }
     
     public ContentSectionDescriptionTransfer getContentSectionDescriptionTransfer(ContentSectionDescription contentSectionDescription) {

@@ -39,8 +39,8 @@ public class ItemShippingTimeTransferCache
     boolean filterShippingEndTime;
 
     /** Creates a new instance of ItemShippingTimeTransferCache */
-    public ItemShippingTimeTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemShippingTimeTransferCache(ItemControl itemControl) {
+        super(itemControl);
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {

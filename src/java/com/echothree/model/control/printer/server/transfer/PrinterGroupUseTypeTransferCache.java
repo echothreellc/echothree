@@ -29,8 +29,8 @@ public class PrinterGroupUseTypeTransferCache
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of PrinterGroupUseTypeTransferCache */
-    public PrinterGroupUseTypeTransferCache(UserVisit userVisit, PrinterControl printerControl) {
-        super(userVisit, printerControl);
+    public PrinterGroupUseTypeTransferCache(PrinterControl printerControl) {
+        super(printerControl);
         
         setIncludeEntityInstance(true);
     }

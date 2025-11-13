@@ -28,8 +28,8 @@ public class GlAccountCategoryDescriptionTransferCache
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of GlAccountCategoryDescriptionTransferCache */
-    public GlAccountCategoryDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public GlAccountCategoryDescriptionTransferCache() {
+        super();
     }
     
     @Override

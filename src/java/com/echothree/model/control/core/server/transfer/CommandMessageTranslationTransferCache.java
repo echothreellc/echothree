@@ -30,8 +30,8 @@ public class CommandMessageTranslationTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of CommandMessageTranslationTransferCache */
-    public CommandMessageTranslationTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public CommandMessageTranslationTransferCache() {
+        super();
     }
     
     public CommandMessageTranslationTransfer getCommandMessageTranslationTransfer(CommandMessageTranslation commandMessageTranslation) {

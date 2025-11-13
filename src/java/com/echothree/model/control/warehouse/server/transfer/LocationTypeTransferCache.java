@@ -25,8 +25,8 @@ public class LocationTypeTransferCache
         extends BaseWarehouseTransferCache<LocationType, LocationTypeTransfer> {
     
     /** Creates a new instance of LocationTypeTransferCache */
-    public LocationTypeTransferCache(UserVisit userVisit, WarehouseControl warehouseControl) {
-        super(userVisit, warehouseControl);
+    public LocationTypeTransferCache(WarehouseControl warehouseControl) {
+        super(warehouseControl);
         
         setIncludeEntityInstance(true);
     }

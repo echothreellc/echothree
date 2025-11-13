@@ -31,8 +31,8 @@ public class EntityCollectionAttributeTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of EntityCollectionAttributeTransferCache */
-    public EntityCollectionAttributeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityCollectionAttributeTransferCache() {
+        super();
     }
     
     public EntityCollectionAttributeTransfer getEntityCollectionAttributeTransfer(EntityCollectionAttribute entityCollectionAttribute, EntityInstance entityInstance) {

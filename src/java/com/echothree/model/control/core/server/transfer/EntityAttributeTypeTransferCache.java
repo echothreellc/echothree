@@ -34,8 +34,8 @@ public class EntityAttributeTypeTransferCache
     boolean filterDescription;
 
     /** Creates a new instance of EntityAttributeTypeTransferCache */
-    public EntityAttributeTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityAttributeTypeTransferCache() {
+        super();
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {

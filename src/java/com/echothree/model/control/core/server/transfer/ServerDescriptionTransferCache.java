@@ -28,8 +28,8 @@ public class ServerDescriptionTransferCache
     ServerControl serverControl = Session.getModelController(ServerControl.class);
 
     /** Creates a new instance of ServerDescriptionTransferCache */
-    public ServerDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public ServerDescriptionTransferCache() {
+        super();
     }
     
     public ServerDescriptionTransfer getServerDescriptionTransfer(ServerDescription serverDescription) {

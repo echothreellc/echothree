@@ -25,8 +25,8 @@ public class PartyContactMechanismPurposeTransferCache
         extends BaseContactTransferCache<PartyContactMechanismPurpose, PartyContactMechanismPurposeTransfer> {
     
     /** Creates a new instance of PartyContactMechanismPurposeTransferCache */
-    public PartyContactMechanismPurposeTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    public PartyContactMechanismPurposeTransferCache(ContactControl contactControl) {
+        super(contactControl);
     }
     
     public PartyContactMechanismPurposeTransfer getPartyContactMechanismPurposeTransfer(PartyContactMechanismPurpose partyContactMechanismPurpose) {

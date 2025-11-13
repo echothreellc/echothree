@@ -28,8 +28,8 @@ public class ShipmentAliasTypeDescriptionTransferCache
     ShipmentControl shipmentControl = Session.getModelController(ShipmentControl.class);
 
     /** Creates a new instance of ShipmentAliasTypeDescriptionTransferCache */
-    public ShipmentAliasTypeDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public ShipmentAliasTypeDescriptionTransferCache() {
+        super();
     }
 
     @Override

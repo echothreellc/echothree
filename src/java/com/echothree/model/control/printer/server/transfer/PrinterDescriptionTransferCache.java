@@ -25,8 +25,8 @@ public class PrinterDescriptionTransferCache
         extends BasePrinterDescriptionTransferCache<PrinterDescription, PrinterDescriptionTransfer> {
     
     /** Creates a new instance of PrinterDescriptionTransferCache */
-    public PrinterDescriptionTransferCache(UserVisit userVisit, PrinterControl printerControl) {
-        super(userVisit, printerControl);
+    public PrinterDescriptionTransferCache(PrinterControl printerControl) {
+        super(printerControl);
     }
     
     public PrinterDescriptionTransfer getPrinterDescriptionTransfer(PrinterDescription printerDescription) {

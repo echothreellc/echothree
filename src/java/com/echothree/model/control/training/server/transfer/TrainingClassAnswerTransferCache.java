@@ -25,8 +25,8 @@ public class TrainingClassAnswerTransferCache
         extends BaseTrainingTransferCache<TrainingClassAnswer, TrainingClassAnswerTransfer> {
     
     /** Creates a new instance of TrainingClassAnswerTransferCache */
-    public TrainingClassAnswerTransferCache(UserVisit userVisit, TrainingControl trainingControl) {
-        super(userVisit, trainingControl);
+    public TrainingClassAnswerTransferCache(TrainingControl trainingControl) {
+        super(trainingControl);
         
         setIncludeEntityInstance(true);
     }

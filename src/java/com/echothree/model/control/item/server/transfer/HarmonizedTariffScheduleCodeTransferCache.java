@@ -34,8 +34,8 @@ public class HarmonizedTariffScheduleCodeTransferCache
     boolean includeHarmonizedTariffScheduleCodeUses;
     
     /** Creates a new instance of HarmonizedTariffScheduleCodeTransferCache */
-    public HarmonizedTariffScheduleCodeTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public HarmonizedTariffScheduleCodeTransferCache(ItemControl itemControl) {
+        super(itemControl);
         
         var options = session.getOptions();
         if(options != null) {

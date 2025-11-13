@@ -30,8 +30,8 @@ public class ItemCountryOfOriginTransferCache
     GeoControl geoControl = Session.getModelController(GeoControl.class);
     
     /** Creates a new instance of ItemCountryOfOriginTransferCache */
-    public ItemCountryOfOriginTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemCountryOfOriginTransferCache(ItemControl itemControl) {
+        super(itemControl);
     }
     
     @Override

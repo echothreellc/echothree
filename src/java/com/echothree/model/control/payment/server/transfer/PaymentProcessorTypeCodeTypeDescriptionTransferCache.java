@@ -28,8 +28,8 @@ public class PaymentProcessorTypeCodeTypeDescriptionTransferCache
     PaymentProcessorTypeCodeTypeControl paymentProcessorTypeCodeType = Session.getModelController(PaymentProcessorTypeCodeTypeControl.class);
 
     /** Creates a new instance of PaymentProcessorTypeDescriptionTransferCache */
-    public PaymentProcessorTypeCodeTypeDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public PaymentProcessorTypeCodeTypeDescriptionTransferCache() {
+        super();
     }
     
     @Override

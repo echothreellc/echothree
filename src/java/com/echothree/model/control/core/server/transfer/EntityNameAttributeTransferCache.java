@@ -31,8 +31,8 @@ public class EntityNameAttributeTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of EntityNameAttributeTransferCache */
-    public EntityNameAttributeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityNameAttributeTransferCache() {
+        super();
     }
     
     public EntityNameAttributeTransfer getEntityNameAttributeTransfer(EntityNameAttribute entityNameAttribute, EntityInstance entityInstance) {

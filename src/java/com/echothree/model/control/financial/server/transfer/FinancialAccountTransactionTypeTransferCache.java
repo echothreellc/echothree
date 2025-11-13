@@ -29,8 +29,8 @@ public class FinancialAccountTransactionTypeTransferCache
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
     
     /** Creates a new instance of FinancialAccountTransactionTypeTransferCache */
-    public FinancialAccountTransactionTypeTransferCache(UserVisit userVisit, FinancialControl financialControl) {
-        super(userVisit, financialControl);
+    public FinancialAccountTransactionTypeTransferCache(FinancialControl financialControl) {
+        super(financialControl);
         
         setIncludeEntityInstance(true);
     }

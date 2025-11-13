@@ -29,8 +29,8 @@ public class ForumMessageRoleTransferCache
     PartyControl partyControl;
     
     /** Creates a new instance of ForumMessageRoleTransferCache */
-    public ForumMessageRoleTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
+    public ForumMessageRoleTransferCache(ForumControl forumControl) {
+        super(forumControl);
         
         partyControl = Session.getModelController(PartyControl.class);
     }

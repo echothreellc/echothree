@@ -26,7 +26,7 @@ public class ContactInet4AddressTransferCache
     
     /** Creates a new instance of ContactInet4AddressTransferCache */
     public ContactInet4AddressTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+        super(contactControl);
     }
     
     public ContactInet4AddressTransfer getContactInet4AddressTransfer(ContactInet4Address contactInet4Address) {

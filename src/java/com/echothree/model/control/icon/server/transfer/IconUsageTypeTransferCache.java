@@ -25,8 +25,8 @@ public class IconUsageTypeTransferCache
         extends BaseIconTransferCache<IconUsageType, IconUsageTypeTransfer> {
     
     /** Creates a new instance of IconUsageTypeTransferCache */
-    public IconUsageTypeTransferCache(UserVisit userVisit, IconControl iconControl) {
-        super(userVisit, iconControl);
+    public IconUsageTypeTransferCache(IconControl iconControl) {
+        super(iconControl);
         
         setIncludeEntityInstance(true);
     }

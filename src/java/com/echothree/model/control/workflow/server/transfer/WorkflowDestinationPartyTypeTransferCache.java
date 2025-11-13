@@ -29,8 +29,8 @@ public class WorkflowDestinationPartyTypeTransferCache
     PartyControl partyControl;
     
     /** Creates a new instance of WorkflowDestinationPartyTypeTransferCache */
-    public WorkflowDestinationPartyTypeTransferCache(UserVisit userVisit, WorkflowControl workflowControl) {
-        super(userVisit, workflowControl);
+    public WorkflowDestinationPartyTypeTransferCache(WorkflowControl workflowControl) {
+        super(workflowControl);
         
         partyControl = Session.getModelController(PartyControl.class);
     }

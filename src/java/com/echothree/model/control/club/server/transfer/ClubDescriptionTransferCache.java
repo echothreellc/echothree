@@ -25,8 +25,8 @@ public class ClubDescriptionTransferCache
         extends BaseClubDescriptionTransferCache<ClubDescription, ClubDescriptionTransfer> {
     
     /** Creates a new instance of ClubDescriptionTransferCache */
-    public ClubDescriptionTransferCache(UserVisit userVisit, ClubControl clubControl) {
-        super(userVisit, clubControl);
+    public ClubDescriptionTransferCache(ClubControl clubControl) {
+        super(clubControl);
     }
     
     public ClubDescriptionTransfer getClubDescriptionTransfer(ClubDescription clubDescription) {

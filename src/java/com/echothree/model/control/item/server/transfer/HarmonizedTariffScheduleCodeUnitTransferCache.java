@@ -25,8 +25,8 @@ public class HarmonizedTariffScheduleCodeUnitTransferCache
         extends BaseItemTransferCache<HarmonizedTariffScheduleCodeUnit, HarmonizedTariffScheduleCodeUnitTransfer> {
     
     /** Creates a new instance of HarmonizedTariffScheduleCodeUnitTransferCache */
-    public HarmonizedTariffScheduleCodeUnitTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public HarmonizedTariffScheduleCodeUnitTransferCache(ItemControl itemControl) {
+        super(itemControl);
         
         setIncludeEntityInstance(true);
     }

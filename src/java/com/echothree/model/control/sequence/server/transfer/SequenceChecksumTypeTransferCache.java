@@ -25,8 +25,8 @@ public class SequenceChecksumTypeTransferCache
         extends BaseSequenceTransferCache<SequenceChecksumType, SequenceChecksumTypeTransfer> {
     
     /** Creates a new instance of SequenceChecksumTypeTransferCache */
-    public SequenceChecksumTypeTransferCache(UserVisit userVisit, SequenceControl sequenceControl) {
-        super(userVisit, sequenceControl);
+    public SequenceChecksumTypeTransferCache(SequenceControl sequenceControl) {
+        super(sequenceControl);
     }
     
     public SequenceChecksumTypeTransfer getSequenceChecksumTypeTransfer(SequenceChecksumType sequenceChecksumType) {

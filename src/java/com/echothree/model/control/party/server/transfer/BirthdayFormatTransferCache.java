@@ -28,8 +28,8 @@ public class BirthdayFormatTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of BirthdayFormatTransferCache */
-    public BirthdayFormatTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public BirthdayFormatTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

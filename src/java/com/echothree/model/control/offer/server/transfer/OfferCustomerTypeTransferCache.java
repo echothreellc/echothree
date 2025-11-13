@@ -30,8 +30,8 @@ public class OfferCustomerTypeTransferCache
     OfferControl offerControl = Session.getModelController(OfferControl.class);
 
     /** Creates a new instance of OfferCustomerTypeTransferCache */
-    public OfferCustomerTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public OfferCustomerTypeTransferCache() {
+        super();
     }
     
     public OfferCustomerTypeTransfer getOfferCustomerTypeTransfer(OfferCustomerType offerCustomerType) {

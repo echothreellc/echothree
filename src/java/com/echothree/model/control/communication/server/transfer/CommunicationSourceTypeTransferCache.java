@@ -25,8 +25,8 @@ public class CommunicationSourceTypeTransferCache
         extends BaseCommunicationTransferCache<CommunicationSourceType, CommunicationSourceTypeTransfer> {
     
     /** Creates a new instance of CommunicationSourceTypeTransferCache */
-    public CommunicationSourceTypeTransferCache(UserVisit userVisit, CommunicationControl communicationControl) {
-        super(userVisit, communicationControl);
+    public CommunicationSourceTypeTransferCache(CommunicationControl communicationControl) {
+        super(communicationControl);
     }
     
     public CommunicationSourceTypeTransfer getCommunicationSourceTypeTransfer(CommunicationSourceType communicationSourceType) {

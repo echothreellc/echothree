@@ -25,8 +25,8 @@ public class IndexDescriptionTransferCache
         extends BaseIndexDescriptionTransferCache<IndexDescription, IndexDescriptionTransfer> {
     
     /** Creates a new instance of IndexDescriptionTransferCache */
-    public IndexDescriptionTransferCache(UserVisit userVisit, IndexControl indexControl) {
-        super(userVisit, indexControl);
+    public IndexDescriptionTransferCache(IndexControl indexControl) {
+        super(indexControl);
     }
     
     public IndexDescriptionTransfer getIndexDescriptionTransfer(IndexDescription indexDescription) {

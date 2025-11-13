@@ -25,8 +25,8 @@ public class SecurityRoleGroupDescriptionTransferCache
         extends BaseSecurityDescriptionTransferCache<SecurityRoleGroupDescription, SecurityRoleGroupDescriptionTransfer> {
     
     /** Creates a new instance of SecurityRoleGroupDescriptionTransferCache */
-    public SecurityRoleGroupDescriptionTransferCache(UserVisit userVisit, SecurityControl securityControl) {
-        super(userVisit, securityControl);
+    public SecurityRoleGroupDescriptionTransferCache(SecurityControl securityControl) {
+        super(securityControl);
     }
     
     public SecurityRoleGroupDescriptionTransfer getSecurityRoleGroupDescriptionTransfer(SecurityRoleGroupDescription securityRoleGroupDescription) {

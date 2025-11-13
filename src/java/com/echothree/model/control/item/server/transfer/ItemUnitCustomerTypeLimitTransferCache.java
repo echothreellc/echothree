@@ -33,8 +33,8 @@ public class ItemUnitCustomerTypeLimitTransferCache
     CustomerControl customerControl = Session.getModelController(CustomerControl.class);
     
     /** Creates a new instance of ItemUnitCustomerTypeLimitTransferCache */
-    public ItemUnitCustomerTypeLimitTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemUnitCustomerTypeLimitTransferCache(ItemControl itemControl) {
+        super(itemControl);
     }
     
     @Override

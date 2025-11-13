@@ -38,8 +38,8 @@ public class PaymentProcessorTransactionTransferCache
     boolean includePaymentProcessorTransactionCodes;
     
     /** Creates a new instance of PaymentProcessorTransactionTransferCache */
-    public PaymentProcessorTransactionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public PaymentProcessorTransactionTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {

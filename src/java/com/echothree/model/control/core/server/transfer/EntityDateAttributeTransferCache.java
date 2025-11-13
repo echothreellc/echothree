@@ -32,8 +32,8 @@ public class EntityDateAttributeTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of EntityDateAttributeTransferCache */
-    public EntityDateAttributeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityDateAttributeTransferCache() {
+        super();
     }
     
     public EntityDateAttributeTransfer getEntityDateAttributeTransfer(EntityDateAttribute entityDateAttribute, EntityInstance entityInstance) {

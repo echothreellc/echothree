@@ -29,8 +29,8 @@ public class LotAliasTypeDescriptionTransferCache
     LotAliasControl lotAliasControl = Session.getModelController(LotAliasControl.class);
 
     /** Creates a new instance of LotAliasTypeDescriptionTransferCache */
-    public LotAliasTypeDescriptionTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    public LotAliasTypeDescriptionTransferCache(InventoryControl inventoryControl) {
+        super(inventoryControl);
     }
     
     @Override

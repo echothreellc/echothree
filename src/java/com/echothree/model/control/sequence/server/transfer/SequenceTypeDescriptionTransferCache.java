@@ -25,8 +25,8 @@ public class SequenceTypeDescriptionTransferCache
         extends BaseSequenceDescriptionTransferCache<SequenceTypeDescription, SequenceTypeDescriptionTransfer> {
     
     /** Creates a new instance of SequenceTypeDescriptionTransferCache */
-    public SequenceTypeDescriptionTransferCache(UserVisit userVisit, SequenceControl sequenceControl) {
-        super(userVisit, sequenceControl);
+    public SequenceTypeDescriptionTransferCache(SequenceControl sequenceControl) {
+        super(sequenceControl);
     }
     
     public SequenceTypeDescriptionTransfer getSequenceTypeDescriptionTransfer(SequenceTypeDescription sequenceTypeDescription) {

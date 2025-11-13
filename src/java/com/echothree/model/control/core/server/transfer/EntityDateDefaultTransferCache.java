@@ -29,8 +29,8 @@ public class EntityDateDefaultTransferCache
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of EntityDateDefaultTransferCache */
-    public EntityDateDefaultTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityDateDefaultTransferCache() {
+        super();
     }
     
     public EntityDateDefaultTransfer getEntityDateDefaultTransfer(EntityDateDefault entityDateDefault) {

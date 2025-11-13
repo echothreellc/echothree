@@ -29,8 +29,8 @@ public class ChainInstanceStatusTransferCache
     CoreControl coreControl = Session.getModelController(CoreControl.class);
     
     /** Creates a new instance of ChainInstanceStatusTransferCache */
-    public ChainInstanceStatusTransferCache(UserVisit userVisit, ChainControl chainControl) {
-        super(userVisit, chainControl);
+    public ChainInstanceStatusTransferCache(ChainControl chainControl) {
+        super(chainControl);
     }
     
     public ChainInstanceStatusTransfer getChainInstanceStatusTransfer(ChainInstanceStatus chainInstanceStatus) {

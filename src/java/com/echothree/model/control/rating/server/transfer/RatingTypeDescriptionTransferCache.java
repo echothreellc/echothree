@@ -25,8 +25,8 @@ public class RatingTypeDescriptionTransferCache
         extends BaseRatingDescriptionTransferCache<RatingTypeDescription, RatingTypeDescriptionTransfer> {
     
     /** Creates a new instance of RatingTypeDescriptionTransferCache */
-    public RatingTypeDescriptionTransferCache(UserVisit userVisit, RatingControl ratingControl) {
-        super(userVisit, ratingControl);
+    public RatingTypeDescriptionTransferCache(RatingControl ratingControl) {
+        super(ratingControl);
     }
     
     public RatingTypeDescriptionTransfer getRatingTypeDescriptionTransfer(RatingTypeDescription ratingTypeDescription) {

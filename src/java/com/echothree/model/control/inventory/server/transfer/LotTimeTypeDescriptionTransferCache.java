@@ -29,8 +29,8 @@ public class LotTimeTypeDescriptionTransferCache
     LotTimeControl lotTimeControl = Session.getModelController(LotTimeControl.class);
 
     /** Creates a new instance of LotTimeTypeDescriptionTransferCache */
-    public LotTimeTypeDescriptionTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    public LotTimeTypeDescriptionTransferCache(InventoryControl inventoryControl) {
+        super(inventoryControl);
     }
     
     @Override

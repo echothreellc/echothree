@@ -25,8 +25,8 @@ public class UserLoginPasswordEncoderTypeTransferCache
         extends BaseUserTransferCache<UserLoginPasswordEncoderType, UserLoginPasswordEncoderTypeTransfer> {
     
     /** Creates a new instance of UserLoginPasswordEncoderTypeTransferCache */
-    public UserLoginPasswordEncoderTypeTransferCache(UserVisit userVisit, UserControl userControl) {
-        super(userVisit, userControl);
+    public UserLoginPasswordEncoderTypeTransferCache(UserControl userControl) {
+        super(userControl);
     }
     
     public UserLoginPasswordEncoderTypeTransfer getUserLoginPasswordEncoderTypeTransfer(UserLoginPasswordEncoderType userLoginPasswordEncoderType) {

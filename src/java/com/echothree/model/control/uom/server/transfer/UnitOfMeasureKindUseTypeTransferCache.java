@@ -25,8 +25,8 @@ public class UnitOfMeasureKindUseTypeTransferCache
         extends BaseUomTransferCache<UnitOfMeasureKindUseType, UnitOfMeasureKindUseTypeTransfer> {
     
     /** Creates a new instance of UnitOfMeasureKindUseTypeTransferCache */
-    public UnitOfMeasureKindUseTypeTransferCache(UserVisit userVisit, UomControl uomControl) {
-        super(userVisit, uomControl);
+    public UnitOfMeasureKindUseTypeTransferCache(UomControl uomControl) {
+        super(uomControl);
     }
     
     public UnitOfMeasureKindUseTypeTransfer getUnitOfMeasureKindUseTypeTransfer(UnitOfMeasureKindUseType unitOfMeasureKindUseType) {

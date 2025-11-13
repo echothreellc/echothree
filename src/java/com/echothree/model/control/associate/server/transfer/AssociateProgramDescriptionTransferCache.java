@@ -25,8 +25,8 @@ public class AssociateProgramDescriptionTransferCache
         extends BaseAssociateDescriptionTransferCache<AssociateProgramDescription, AssociateProgramDescriptionTransfer> {
     
     /** Creates a new instance of AssociateProgramDescriptionTransferCache */
-    public AssociateProgramDescriptionTransferCache(UserVisit userVisit, AssociateControl associateControl) {
-        super(userVisit, associateControl);
+    public AssociateProgramDescriptionTransferCache(AssociateControl associateControl) {
+        super(associateControl);
     }
     
     @Override

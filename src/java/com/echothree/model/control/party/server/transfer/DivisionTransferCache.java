@@ -45,8 +45,8 @@ public class DivisionTransferCache
     boolean includePartyScaleUses;
     
     /** Creates a new instance of DivisionTransferCache */
-    public DivisionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public DivisionTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {

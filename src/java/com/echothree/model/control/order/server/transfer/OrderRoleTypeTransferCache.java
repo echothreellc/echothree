@@ -28,8 +28,8 @@ public class OrderRoleTypeTransferCache
     OrderRoleControl orderRoleControl = Session.getModelController(OrderRoleControl.class);
 
     /** Creates a new instance of OrderRoleTypeTransferCache */
-    public OrderRoleTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public OrderRoleTypeTransferCache() {
+        super();
     }
     
     public OrderRoleTypeTransfer getOrderRoleTypeTransfer(OrderRoleType orderRoleType) {

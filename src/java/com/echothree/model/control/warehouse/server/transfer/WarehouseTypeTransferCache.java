@@ -26,8 +26,8 @@ public class WarehouseTypeTransferCache
         extends BaseWarehouseTransferCache<WarehouseType, WarehouseTypeTransfer> {
 
     /** Creates a new instance of WarehouseTypeTransferCache */
-    public WarehouseTypeTransferCache(UserVisit userVisit, WarehouseControl warehouseControl) {
-        super(userVisit, warehouseControl);
+    public WarehouseTypeTransferCache(WarehouseControl warehouseControl) {
+        super(warehouseControl);
 
         var options = session.getOptions();
         if(options != null) {

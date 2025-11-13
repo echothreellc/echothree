@@ -25,8 +25,8 @@ public class TaxDescriptionTransferCache
         extends BaseTaxDescriptionTransferCache<TaxDescription, TaxDescriptionTransfer> {
     
     /** Creates a new instance of TaxDescriptionTransferCache */
-    public TaxDescriptionTransferCache(UserVisit userVisit, TaxControl taxControl) {
-        super(userVisit, taxControl);
+    public TaxDescriptionTransferCache(TaxControl taxControl) {
+        super(taxControl);
     }
     
     @Override

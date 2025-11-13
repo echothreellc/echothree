@@ -25,8 +25,8 @@ public class PicklistTimeTypeDescriptionTransferCache
         extends BasePicklistDescriptionTransferCache<PicklistTimeTypeDescription, PicklistTimeTypeDescriptionTransfer> {
     
     /** Creates a new instance of PicklistTimeTypeDescriptionTransferCache */
-    public PicklistTimeTypeDescriptionTransferCache(UserVisit userVisit, PicklistControl picklistControl) {
-        super(userVisit, picklistControl);
+    public PicklistTimeTypeDescriptionTransferCache(PicklistControl picklistControl) {
+        super(picklistControl);
     }
     
     public PicklistTimeTypeDescriptionTransfer getPicklistTimeTypeDescriptionTransfer(PicklistTimeTypeDescription picklistTimeTypeDescription) {

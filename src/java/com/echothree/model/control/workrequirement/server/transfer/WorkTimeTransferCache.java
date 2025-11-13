@@ -34,8 +34,8 @@ public class WorkTimeTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of WorkTimeTransferCache */
-    public WorkTimeTransferCache(UserVisit userVisit, WorkRequirementControl workRequirementControl) {
-        super(userVisit, workRequirementControl);
+    public WorkTimeTransferCache(WorkRequirementControl workRequirementControl) {
+        super(workRequirementControl);
 
         setIncludeEntityInstance(true);
     }

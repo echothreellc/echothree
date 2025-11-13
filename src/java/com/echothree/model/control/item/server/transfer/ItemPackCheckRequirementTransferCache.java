@@ -29,8 +29,8 @@ public class ItemPackCheckRequirementTransferCache
     UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of ItemPackCheckRequirementTransferCache */
-    public ItemPackCheckRequirementTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemPackCheckRequirementTransferCache(ItemControl itemControl) {
+        super(itemControl);
     }
     
     @Override

@@ -38,8 +38,8 @@ public class ForumMessagePartTransferCache
     boolean includeString;
     
     /** Creates a new instance of ForumMessagePartTransferCache */
-    public ForumMessagePartTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
+    public ForumMessagePartTransferCache(ForumControl forumControl) {
+        super(forumControl);
         
         var options = session.getOptions();
         if(options != null) {

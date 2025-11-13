@@ -25,8 +25,8 @@ public class CommunicationEventPurposeTransferCache
         extends BaseCommunicationTransferCache<CommunicationEventPurpose, CommunicationEventPurposeTransfer> {
     
     /** Creates a new instance of CommunicationEventPurposeTransferCache */
-    public CommunicationEventPurposeTransferCache(UserVisit userVisit, CommunicationControl communicationControl) {
-        super(userVisit, communicationControl);
+    public CommunicationEventPurposeTransferCache(CommunicationControl communicationControl) {
+        super(communicationControl);
         
         setIncludeEntityInstance(true);
     }

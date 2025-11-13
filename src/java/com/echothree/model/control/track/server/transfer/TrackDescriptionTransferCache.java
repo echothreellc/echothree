@@ -25,8 +25,8 @@ public class TrackDescriptionTransferCache
         extends BaseTrackDescriptionTransferCache<TrackDescription, TrackDescriptionTransfer> {
     
     /** Creates a new instance of TrackDescriptionTransferCache */
-    public TrackDescriptionTransferCache(UserVisit userVisit, TrackControl trackControl) {
-        super(userVisit, trackControl);
+    public TrackDescriptionTransferCache(TrackControl trackControl) {
+        super(trackControl);
     }
     
     public TrackDescriptionTransfer getTrackDescriptionTransfer(TrackDescription trackDescription) {

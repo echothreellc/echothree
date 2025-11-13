@@ -28,8 +28,8 @@ public class PersonTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of PersonTransferCache */
-    public PersonTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public PersonTransferCache() {
+        super();
     }
 
     @Override

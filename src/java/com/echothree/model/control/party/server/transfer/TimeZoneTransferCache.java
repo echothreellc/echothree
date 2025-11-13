@@ -38,8 +38,8 @@ public class TimeZoneTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of TimeZoneTransferCache */
-    public TimeZoneTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public TimeZoneTransferCache() {
+        super();
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {

@@ -25,8 +25,8 @@ public class SearchTypeTransferCache
         extends BaseSearchTransferCache<SearchType, SearchTypeTransfer> {
     
     /** Creates a new instance of SearchTypeTransferCache */
-    public SearchTypeTransferCache(UserVisit userVisit, SearchControl searchControl) {
-        super(userVisit, searchControl);
+    public SearchTypeTransferCache(SearchControl searchControl) {
+        super(searchControl);
         
         setIncludeEntityInstance(true);
     }

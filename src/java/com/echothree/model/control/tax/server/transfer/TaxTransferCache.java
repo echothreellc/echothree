@@ -31,8 +31,8 @@ public class TaxTransferCache
     ContactControl contactControl = Session.getModelController(ContactControl.class);
     
     /** Creates a new instance of TaxTransferCache */
-    public TaxTransferCache(UserVisit userVisit, TaxControl taxControl) {
-        super(userVisit, taxControl);
+    public TaxTransferCache(TaxControl taxControl) {
+        super(taxControl);
         
         setIncludeEntityInstance(true);
     }

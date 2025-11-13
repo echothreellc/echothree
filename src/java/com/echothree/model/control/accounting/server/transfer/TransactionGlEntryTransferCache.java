@@ -31,8 +31,8 @@ public class TransactionGlEntryTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of TransactionGlEntryTransferCache */
-    public TransactionGlEntryTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public TransactionGlEntryTransferCache() {
+        super();
     }
 
     @Override

@@ -25,8 +25,8 @@ public class ItemDescriptionTypeUseTypeTransferCache
         extends BaseItemTransferCache<ItemDescriptionTypeUseType, ItemDescriptionTypeUseTypeTransfer> {
     
     /** Creates a new instance of ItemDescriptionTypeUseTypeTransferCache */
-    public ItemDescriptionTypeUseTypeTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemDescriptionTypeUseTypeTransferCache(ItemControl itemControl) {
+        super(itemControl);
         
         setIncludeEntityInstance(true);
     }

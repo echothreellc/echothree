@@ -25,8 +25,8 @@ public class ChainEntityRoleTypeDescriptionTransferCache
         extends BaseChainDescriptionTransferCache<ChainEntityRoleTypeDescription, ChainEntityRoleTypeDescriptionTransfer> {
     
     /** Creates a new instance of ChainEntityRoleTypeDescriptionTransferCache */
-    public ChainEntityRoleTypeDescriptionTransferCache(UserVisit userVisit, ChainControl chainControl) {
-        super(userVisit, chainControl);
+    public ChainEntityRoleTypeDescriptionTransferCache(ChainControl chainControl) {
+        super(chainControl);
     }
     
     public ChainEntityRoleTypeDescriptionTransfer getChainEntityRoleTypeDescriptionTransfer(ChainEntityRoleTypeDescription chainEntityRoleTypeDescription) {

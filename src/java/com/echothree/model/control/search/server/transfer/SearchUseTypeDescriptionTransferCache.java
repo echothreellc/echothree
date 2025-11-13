@@ -25,8 +25,8 @@ public class SearchUseTypeDescriptionTransferCache
         extends BaseSearchDescriptionTransferCache<SearchUseTypeDescription, SearchUseTypeDescriptionTransfer> {
     
     /** Creates a new instance of SearchUseTypeDescriptionTransferCache */
-    public SearchUseTypeDescriptionTransferCache(UserVisit userVisit, SearchControl searchControl) {
-        super(userVisit, searchControl);
+    public SearchUseTypeDescriptionTransferCache(SearchControl searchControl) {
+        super(searchControl);
     }
     
     public SearchUseTypeDescriptionTransfer getSearchUseTypeDescriptionTransfer(SearchUseTypeDescription searchUseTypeDescription) {

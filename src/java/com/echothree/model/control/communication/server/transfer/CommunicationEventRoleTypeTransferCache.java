@@ -25,8 +25,8 @@ public class CommunicationEventRoleTypeTransferCache
         extends BaseCommunicationTransferCache<CommunicationEventRoleType, CommunicationEventRoleTypeTransfer> {
     
     /** Creates a new instance of CommunicationEventRoleTypeTransferCache */
-    public CommunicationEventRoleTypeTransferCache(UserVisit userVisit, CommunicationControl communicationControl) {
-        super(userVisit, communicationControl);
+    public CommunicationEventRoleTypeTransferCache(CommunicationControl communicationControl) {
+        super(communicationControl);
     }
     
     public CommunicationEventRoleTypeTransfer getCommunicationEventRoleTypeTransfer(CommunicationEventRoleType communicationEventRoleType) {

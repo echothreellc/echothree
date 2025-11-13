@@ -30,8 +30,8 @@ public class AppearanceDescriptionTransferCache
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of AppearanceDescriptionTransferCache */
-    public AppearanceDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public AppearanceDescriptionTransferCache() {
+        super();
     }
     
     public AppearanceDescriptionTransfer getAppearanceDescriptionTransfer(AppearanceDescription appearanceDescription) {

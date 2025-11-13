@@ -25,8 +25,8 @@ public class EmployeeTypeTransferCache
         extends BaseEmployeeTransferCache<EmployeeType, EmployeeTypeTransfer> {
     
     /** Creates a new instance of EmployeeTypeTransferCache */
-    public EmployeeTypeTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit, employeeControl);
+    public EmployeeTypeTransferCache(EmployeeControl employeeControl) {
+        super(employeeControl);
         
         setIncludeEntityInstance(true);
     }

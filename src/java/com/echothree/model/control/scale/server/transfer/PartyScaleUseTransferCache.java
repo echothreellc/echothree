@@ -29,8 +29,8 @@ public class PartyScaleUseTransferCache
     PartyControl partyControl;
     
     /** Creates a new instance of PartyScaleUseTransferCache */
-    public PartyScaleUseTransferCache(UserVisit userVisit, ScaleControl scaleControl) {
-        super(userVisit, scaleControl);
+    public PartyScaleUseTransferCache(ScaleControl scaleControl) {
+        super(scaleControl);
         partyControl = Session.getModelController(PartyControl.class);
     }
     

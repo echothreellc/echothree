@@ -53,8 +53,8 @@ public class DateTimeFormatTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of DateTimeFormatTransferCache */
-    public DateTimeFormatTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public DateTimeFormatTransferCache() {
+        super();
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {

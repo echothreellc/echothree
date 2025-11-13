@@ -40,8 +40,8 @@ public class EntityListItemTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of EntityListItemTransferCache */
-    public EntityListItemTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityListItemTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {

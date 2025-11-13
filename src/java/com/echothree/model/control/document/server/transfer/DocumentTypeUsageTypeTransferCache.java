@@ -25,8 +25,8 @@ public class DocumentTypeUsageTypeTransferCache
         extends BaseDocumentTransferCache<DocumentTypeUsageType, DocumentTypeUsageTypeTransfer> {
     
     /** Creates a new instance of DocumentTypeUsageTypeTransferCache */
-    public DocumentTypeUsageTypeTransferCache(UserVisit userVisit, DocumentControl documentControl) {
-        super(userVisit, documentControl);
+    public DocumentTypeUsageTypeTransferCache(DocumentControl documentControl) {
+        super(documentControl);
         
         setIncludeEntityInstance(true);
     }

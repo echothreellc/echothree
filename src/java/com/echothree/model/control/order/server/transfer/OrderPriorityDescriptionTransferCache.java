@@ -28,8 +28,8 @@ public class OrderPriorityDescriptionTransferCache
     OrderPriorityControl orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
 
     /** Creates a new instance of OrderPriorityDescriptionTransferCache */
-    public OrderPriorityDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public OrderPriorityDescriptionTransferCache() {
+        super();
     }
     
     public OrderPriorityDescriptionTransfer getOrderPriorityDescriptionTransfer(OrderPriorityDescription orderPriorityDescription) {

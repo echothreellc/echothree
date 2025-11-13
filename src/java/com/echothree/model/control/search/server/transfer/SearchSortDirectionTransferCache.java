@@ -26,8 +26,8 @@ public class SearchSortDirectionTransferCache
         extends BaseSearchTransferCache<SearchSortDirection, SearchSortDirectionTransfer> {
 
     /** Creates a new instance of SearchSortDirectionTransferCache */
-    public SearchSortDirectionTransferCache(UserVisit userVisit, SearchControl searchControl) {
-        super(userVisit, searchControl);
+    public SearchSortDirectionTransferCache(SearchControl searchControl) {
+        super(searchControl);
         
         var options = session.getOptions();
         if(options != null) {

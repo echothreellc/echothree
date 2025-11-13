@@ -25,8 +25,8 @@ public class WorkflowStepTypeTransferCache
         extends BaseWorkflowTransferCache<WorkflowStepType, WorkflowStepTypeTransfer> {
     
     /** Creates a new instance of WorkflowStepTypeTransferCache */
-    public WorkflowStepTypeTransferCache(UserVisit userVisit, WorkflowControl workflowControl) {
-        super(userVisit, workflowControl);
+    public WorkflowStepTypeTransferCache(WorkflowControl workflowControl) {
+        super(workflowControl);
     }
     
     public WorkflowStepTypeTransfer getWorkflowStepTypeTransfer(WorkflowStepType workflowStepType) {

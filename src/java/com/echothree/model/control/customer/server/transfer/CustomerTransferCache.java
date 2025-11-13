@@ -104,8 +104,8 @@ public class CustomerTransferCache
     boolean hasCommunicationEventLimits;
 
     /** Creates a new instance of CustomerTransferCache */
-    public CustomerTransferCache(UserVisit userVisit, CustomerControl customerControl) {
-        super(userVisit, customerControl);
+    public CustomerTransferCache(CustomerControl customerControl) {
+        super(customerControl);
 
         var options = session.getOptions();
         if(options != null) {

@@ -35,8 +35,8 @@ public class UnitOfMeasureKindTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of UnitOfMeasureKindTransferCache */
-    public UnitOfMeasureKindTransferCache(UserVisit userVisit, UomControl uomControl) {
-        super(userVisit, uomControl);
+    public UnitOfMeasureKindTransferCache(UomControl uomControl) {
+        super(uomControl);
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {

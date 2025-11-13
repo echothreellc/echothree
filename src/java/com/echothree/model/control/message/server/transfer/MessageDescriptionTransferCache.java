@@ -25,8 +25,8 @@ public class MessageDescriptionTransferCache
         extends BaseMessageDescriptionTransferCache<MessageDescription, MessageDescriptionTransfer> {
     
     /** Creates a new instance of MessageDescriptionTransferCache */
-    public MessageDescriptionTransferCache(UserVisit userVisit, MessageControl messageControl) {
-        super(userVisit, messageControl);
+    public MessageDescriptionTransferCache(MessageControl messageControl) {
+        super(messageControl);
     }
     
     public MessageDescriptionTransfer getMessageDescriptionTransfer(MessageDescription messageDescription) {

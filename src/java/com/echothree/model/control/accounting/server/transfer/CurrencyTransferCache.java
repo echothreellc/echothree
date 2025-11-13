@@ -51,8 +51,8 @@ public class CurrencyTransferCache
     boolean filterDescription;
     
     /** Creates a new instance of CurrencyTransferCache */
-    public CurrencyTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public CurrencyTransferCache() {
+        super();
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {

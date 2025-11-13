@@ -30,8 +30,8 @@ public class ShippingMethodCarrierServiceTransferCache
     ShippingControl shippingControl = Session.getModelController(ShippingControl.class);
 
     /** Creates a new instance of ShippingMethodCarrierServiceTransferCache */
-    public ShippingMethodCarrierServiceTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public ShippingMethodCarrierServiceTransferCache() {
+        super();
     }
     
     public ShippingMethodCarrierServiceTransfer getShippingMethodCarrierServiceTransfer(ShippingMethodCarrierService shippingMethodCarrierService) {

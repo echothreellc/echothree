@@ -24,8 +24,8 @@ public class NameSuffixTransferCache
         extends BasePartyTransferCache<NameSuffix, NameSuffixTransfer> {
     
     /** Creates a new instance of NameSuffixTransferCache */
-    public NameSuffixTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public NameSuffixTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

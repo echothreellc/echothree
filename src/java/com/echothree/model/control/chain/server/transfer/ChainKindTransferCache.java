@@ -25,8 +25,8 @@ public class ChainKindTransferCache
         extends BaseChainTransferCache<ChainKind, ChainKindTransfer> {
     
     /** Creates a new instance of ChainKindTransferCache */
-    public ChainKindTransferCache(UserVisit userVisit, ChainControl chainControl) {
-        super(userVisit, chainControl);
+    public ChainKindTransferCache(ChainControl chainControl) {
+        super(chainControl);
         
         setIncludeEntityInstance(true);
     }

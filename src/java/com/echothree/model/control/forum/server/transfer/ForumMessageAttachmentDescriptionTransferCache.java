@@ -25,8 +25,8 @@ public class ForumMessageAttachmentDescriptionTransferCache
         extends BaseForumDescriptionTransferCache<ForumMessageAttachmentDescription, ForumMessageAttachmentDescriptionTransfer> {
     
     /** Creates a new instance of ForumMessageAttachmentDescriptionTransferCache */
-    public ForumMessageAttachmentDescriptionTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
+    public ForumMessageAttachmentDescriptionTransferCache(ForumControl forumControl) {
+        super(forumControl);
     }
     
     public ForumMessageAttachmentDescriptionTransfer getForumMessageAttachmentDescriptionTransfer(ForumMessageAttachmentDescription forumMessageAttachmentDescription) {

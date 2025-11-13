@@ -25,8 +25,8 @@ public class WishlistPriorityTransferCache
         extends BaseWishlistTransferCache<WishlistPriority, WishlistPriorityTransfer> {
     
     /** Creates a new instance of WishlistPriorityTransferCache */
-    public WishlistPriorityTransferCache(UserVisit userVisit, WishlistControl wishlistControl) {
-        super(userVisit, wishlistControl);
+    public WishlistPriorityTransferCache(WishlistControl wishlistControl) {
+        super(wishlistControl);
         
         setIncludeEntityInstance(true);
     }

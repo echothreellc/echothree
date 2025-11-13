@@ -37,8 +37,8 @@ public class AppearanceTransferCache
     boolean includeTextTransformations;
     
     /** Creates a new instance of AppearanceTransferCache */
-    public AppearanceTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public AppearanceTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {

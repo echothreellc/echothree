@@ -25,8 +25,8 @@ public class SubscriptionTypeDescriptionTransferCache
         extends BaseSubscriptionDescriptionTransferCache<SubscriptionTypeDescription, SubscriptionTypeDescriptionTransfer> {
     
     /** Creates a new instance of SubscriptionTypeDescriptionTransferCache */
-    public SubscriptionTypeDescriptionTransferCache(UserVisit userVisit, SubscriptionControl subscriptionControl) {
-        super(userVisit, subscriptionControl);
+    public SubscriptionTypeDescriptionTransferCache(SubscriptionControl subscriptionControl) {
+        super(subscriptionControl);
     }
     
     public SubscriptionTypeDescriptionTransfer getSubscriptionTypeDescriptionTransfer(SubscriptionTypeDescription subscriptionTypeDescription) {

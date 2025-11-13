@@ -31,8 +31,8 @@ public class CommunicationEventTransferCache
     DocumentControl documentControl = Session.getModelController(DocumentControl.class);
     
     /** Creates a new instance of CommunicationEventTransferCache */
-    public CommunicationEventTransferCache(UserVisit userVisit, CommunicationControl communicationControl) {
-        super(userVisit, communicationControl);
+    public CommunicationEventTransferCache(CommunicationControl communicationControl) {
+        super(communicationControl);
         
         setIncludeEntityInstance(true);
     }

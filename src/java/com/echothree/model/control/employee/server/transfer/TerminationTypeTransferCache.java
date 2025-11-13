@@ -25,8 +25,8 @@ public class TerminationTypeTransferCache
         extends BaseEmployeeTransferCache<TerminationType, TerminationTypeTransfer> {
     
     /** Creates a new instance of TerminationTypeTransferCache */
-    public TerminationTypeTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit, employeeControl);
+    public TerminationTypeTransferCache(EmployeeControl employeeControl) {
+        super(employeeControl);
         
         setIncludeEntityInstance(true);
     }

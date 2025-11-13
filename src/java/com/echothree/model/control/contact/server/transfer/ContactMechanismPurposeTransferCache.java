@@ -25,8 +25,8 @@ public class ContactMechanismPurposeTransferCache
         extends BaseContactTransferCache<ContactMechanismPurpose, ContactMechanismPurposeTransfer> {
     
     /** Creates a new instance of ContactMechanismPurposeTransferCache */
-    public ContactMechanismPurposeTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    public ContactMechanismPurposeTransferCache(ContactControl contactControl) {
+        super(contactControl);
     }
     
     public ContactMechanismPurposeTransfer getContactMechanismPurposeTransfer(ContactMechanismPurpose contactMechanismPurpose) {

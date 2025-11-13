@@ -39,8 +39,8 @@ public class ForumTransferCache
     boolean includeFutureForumThreads;
     
     /** Creates a new instance of ForumTransferCache */
-    public ForumTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
+    public ForumTransferCache(ForumControl forumControl) {
+        super(forumControl);
         
         var options = session.getOptions();
         if(options != null) {

@@ -33,8 +33,8 @@ public class CommunicationEmailSourceTransferCache
     WorkEffortControl workEffortControl = Session.getModelController(WorkEffortControl.class);
     
     /** Creates a new instance of CommunicationEmailSourceTransferCache */
-    public CommunicationEmailSourceTransferCache(UserVisit userVisit, CommunicationControl communicationControl) {
-        super(userVisit, communicationControl);
+    public CommunicationEmailSourceTransferCache(CommunicationControl communicationControl) {
+        super(communicationControl);
     }
     
     public CommunicationEmailSourceTransfer getCommunicationEmailSourceTransfer(CommunicationEmailSource communicationEmailSource) {

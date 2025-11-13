@@ -35,8 +35,8 @@ public class ItemPriceTypeTransferCache
     /**
      * Creates a new instance of ItemPriceTypeTransferCache
      */
-    public ItemPriceTypeTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemPriceTypeTransferCache(ItemControl itemControl) {
+        super(itemControl);
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {

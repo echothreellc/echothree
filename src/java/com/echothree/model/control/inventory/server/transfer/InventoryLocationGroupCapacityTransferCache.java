@@ -27,8 +27,8 @@ public class InventoryLocationGroupCapacityTransferCache
         extends BaseInventoryTransferCache<InventoryLocationGroupCapacity, InventoryLocationGroupCapacityTransfer> {
     
     /** Creates a new instance of InventoryLocationGroupCapacityTransferCache */
-    public InventoryLocationGroupCapacityTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    public InventoryLocationGroupCapacityTransferCache(InventoryControl inventoryControl) {
+        super(inventoryControl);
     }
     
     @Override

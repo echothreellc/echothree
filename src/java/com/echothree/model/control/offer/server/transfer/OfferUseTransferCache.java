@@ -32,8 +32,8 @@ public class OfferUseTransferCache
     UseControl useControl = Session.getModelController(UseControl.class);
 
     /** Creates a new instance of OfferUseTransferCache */
-    public OfferUseTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public OfferUseTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

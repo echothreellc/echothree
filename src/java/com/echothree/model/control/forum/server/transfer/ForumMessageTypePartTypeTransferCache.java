@@ -25,8 +25,8 @@ public class ForumMessageTypePartTypeTransferCache
         extends BaseForumTransferCache<ForumMessageTypePartType, ForumMessageTypePartTypeTransfer> {
     
     /** Creates a new instance of ForumMessageTypePartTypeTransferCache */
-    public ForumMessageTypePartTypeTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
+    public ForumMessageTypePartTypeTransferCache(ForumControl forumControl) {
+        super(forumControl);
     }
     
     public ForumMessageTypePartTypeTransfer getForumMessageTypePartTypeTransfer(ForumMessageTypePartType forumMessageTypePartType) {

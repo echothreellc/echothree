@@ -47,8 +47,8 @@ public class ContentPageAreaTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of ContentPageAreaTransferCache */
-    public ContentPageAreaTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    public ContentPageAreaTransferCache(ContentControl contentControl) {
+        super(contentControl);
 
         var options = session.getOptions();
         if(options != null) {

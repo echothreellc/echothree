@@ -25,8 +25,8 @@ public class LeaveReasonTransferCache
         extends BaseEmployeeTransferCache<LeaveReason, LeaveReasonTransfer> {
     
     /** Creates a new instance of LeaveReasonTransferCache */
-    public LeaveReasonTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit, employeeControl);
+    public LeaveReasonTransferCache(EmployeeControl employeeControl) {
+        super(employeeControl);
         
         setIncludeEntityInstance(true);
     }

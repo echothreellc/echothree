@@ -34,8 +34,8 @@ public class PartyTypePasswordStringPolicyTransferCache
     UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
     
     /** Creates a new instance of PartyTypePasswordStringPolicyTransferCache */
-    public PartyTypePasswordStringPolicyTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public PartyTypePasswordStringPolicyTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

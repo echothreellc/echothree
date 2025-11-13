@@ -26,8 +26,8 @@ public class SearchDefaultOperatorTransferCache
         extends BaseSearchTransferCache<SearchDefaultOperator, SearchDefaultOperatorTransfer> {
 
     /** Creates a new instance of SearchDefaultOperatorTransferCache */
-    public SearchDefaultOperatorTransferCache(UserVisit userVisit, SearchControl searchControl) {
-        super(userVisit, searchControl);
+    public SearchDefaultOperatorTransferCache(SearchControl searchControl) {
+        super(searchControl);
         
         var options = session.getOptions();
         if(options != null) {

@@ -33,8 +33,8 @@ public class EntityVisitTransferCache
     boolean includeVisitedTime;
 
     /** Creates a new instance of EntityVisitTransferCache */
-    public EntityVisitTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityVisitTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {

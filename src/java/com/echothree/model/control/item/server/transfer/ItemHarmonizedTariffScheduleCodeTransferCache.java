@@ -30,8 +30,8 @@ public class ItemHarmonizedTariffScheduleCodeTransferCache
     GeoControl geoControl = Session.getModelController(GeoControl.class);
     
     /** Creates a new instance of ItemHarmonizedTariffScheduleCodeTransferCache */
-    public ItemHarmonizedTariffScheduleCodeTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemHarmonizedTariffScheduleCodeTransferCache(ItemControl itemControl) {
+        super(itemControl);
         
         var options = session.getOptions();
         if(options != null) {

@@ -25,8 +25,8 @@ public class SearchDefaultOperatorDescriptionTransferCache
         extends BaseSearchDescriptionTransferCache<SearchDefaultOperatorDescription, SearchDefaultOperatorDescriptionTransfer> {
     
     /** Creates a new instance of SearchDefaultOperatorDescriptionTransferCache */
-    public SearchDefaultOperatorDescriptionTransferCache(UserVisit userVisit, SearchControl searchControl) {
-        super(userVisit, searchControl);
+    public SearchDefaultOperatorDescriptionTransferCache(SearchControl searchControl) {
+        super(searchControl);
     }
     
     public SearchDefaultOperatorDescriptionTransfer getSearchDefaultOperatorDescriptionTransfer(SearchDefaultOperatorDescription searchDefaultOperatorDescription) {

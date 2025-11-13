@@ -28,8 +28,8 @@ public class CommandDescriptionTransferCache
     CommandControl commandControl = Session.getModelController(CommandControl.class);
 
     /** Creates a new instance of CommandDescriptionTransferCache */
-    public CommandDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public CommandDescriptionTransferCache() {
+        super();
     }
     
     public CommandDescriptionTransfer getCommandDescriptionTransfer(CommandDescription commandDescription) {

@@ -32,8 +32,8 @@ public class ContactWebAddressTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
     /** Creates a new instance of ContactWebAddressTransferCache */
-    public ContactWebAddressTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    public ContactWebAddressTransferCache(ContactControl contactControl) {
+        super(contactControl);
     }
     
     public ContactWebAddressTransfer getContactWebAddressTransfer(ContactWebAddress contactWebAddress) {

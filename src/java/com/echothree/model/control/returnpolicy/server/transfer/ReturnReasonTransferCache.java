@@ -25,8 +25,8 @@ public class ReturnReasonTransferCache
         extends BaseReturnPolicyTransferCache<ReturnReason, ReturnReasonTransfer> {
     
     /** Creates a new instance of ReturnReasonTransferCache */
-    public ReturnReasonTransferCache(UserVisit userVisit, ReturnPolicyControl returnPolicyControl) {
-        super(userVisit, returnPolicyControl);
+    public ReturnReasonTransferCache(ReturnPolicyControl returnPolicyControl) {
+        super(returnPolicyControl);
         
         setIncludeEntityInstance(true);
     }

@@ -73,8 +73,8 @@ public class EntityTypeTransferCache
     boolean includeEntityInstances;
 
     /** Creates a new instance of EntityTypeTransferCache */
-    public EntityTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityTypeTransferCache() {
+        super();
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {

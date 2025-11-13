@@ -34,8 +34,8 @@ public class ShippingMethodTransferCache
     boolean includeComments;
     
     /** Creates a new instance of ShippingMethodTransferCache */
-    public ShippingMethodTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public ShippingMethodTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {

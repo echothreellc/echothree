@@ -28,8 +28,8 @@ public class GenderTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of GenderTransferCache */
-    public GenderTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public GenderTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

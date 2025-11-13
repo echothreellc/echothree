@@ -25,8 +25,8 @@ public class InventoryLocationGroupDescriptionTransferCache
         extends BaseInventoryDescriptionTransferCache<InventoryLocationGroupDescription, InventoryLocationGroupDescriptionTransfer> {
     
     /** Creates a new instance of InventoryLocationGroupDescriptionTransferCache */
-    public InventoryLocationGroupDescriptionTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    public InventoryLocationGroupDescriptionTransferCache(InventoryControl inventoryControl) {
+        super(inventoryControl);
     }
     
     @Override

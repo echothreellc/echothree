@@ -31,8 +31,8 @@ public class PartyCarrierAccountTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of PartyCarrierAccountTransferCache */
-    public PartyCarrierAccountTransferCache(UserVisit userVisit, CarrierControl carrierControl) {
-        super(userVisit, carrierControl);
+    public PartyCarrierAccountTransferCache(CarrierControl carrierControl) {
+        super(carrierControl);
     }
     
     public PartyCarrierAccountTransfer getPartyCarrierAccountTransfer(PartyCarrierAccount partyCarrierAccount) {

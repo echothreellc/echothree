@@ -25,8 +25,8 @@ public class IndexFieldTransferCache
         extends BaseIndexTransferCache<IndexField, IndexFieldTransfer> {
     
     /** Creates a new instance of IndexFieldTransferCache */
-    public IndexFieldTransferCache(UserVisit userVisit, IndexControl indexControl) {
-        super(userVisit, indexControl);
+    public IndexFieldTransferCache(IndexControl indexControl) {
+        super(indexControl);
         
         setIncludeEntityInstance(true);
     }

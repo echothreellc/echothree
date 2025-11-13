@@ -29,8 +29,8 @@ public class AssociateReferralTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     
     /** Creates a new instance of AssociateReferralTransferCache */
-    public AssociateReferralTransferCache(UserVisit userVisit, AssociateControl associateControl) {
-        super(userVisit, associateControl);
+    public AssociateReferralTransferCache(AssociateControl associateControl) {
+        super(associateControl);
         
         setIncludeEntityInstance(true);
     }

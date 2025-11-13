@@ -30,8 +30,8 @@ public class ChainActionSurveyTransferCache
     SurveyControl surveyControl = Session.getModelController(SurveyControl.class);
     
     /** Creates a new instance of ChainActionSurveyTransferCache */
-    public ChainActionSurveyTransferCache(UserVisit userVisit, ChainControl chainControl) {
-        super(userVisit, chainControl);
+    public ChainActionSurveyTransferCache(ChainControl chainControl) {
+        super(chainControl);
     }
     
     public ChainActionSurveyTransfer getChainActionSurveyTransfer(ChainActionSurvey chainActionSurvey) {

@@ -31,8 +31,8 @@ public class AssociateTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of AssociateTransferCache */
-    public AssociateTransferCache(UserVisit userVisit, AssociateControl associateControl) {
-        super(userVisit, associateControl);
+    public AssociateTransferCache(AssociateControl associateControl) {
+        super(associateControl);
         
         setIncludeEntityInstance(true);
     }

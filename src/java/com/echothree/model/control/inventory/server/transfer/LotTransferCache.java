@@ -40,8 +40,8 @@ public class LotTransferCache
     boolean includeLotTimes;
 
     /** Creates a new instance of LotTransferCache */
-    public LotTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    public LotTransferCache(InventoryControl inventoryControl) {
+        super(inventoryControl);
 
         var options = session.getOptions();
         if(options != null) {

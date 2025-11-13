@@ -24,8 +24,8 @@ public class TimeZoneDescriptionTransferCache
         extends BasePartyDescriptionTransferCache<TimeZoneDescription, TimeZoneDescriptionTransfer> {
 
     /** Creates a new instance of TimeZoneDescriptionTransferCache */
-    public TimeZoneDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public TimeZoneDescriptionTransferCache() {
+        super();
     }
 
     @Override

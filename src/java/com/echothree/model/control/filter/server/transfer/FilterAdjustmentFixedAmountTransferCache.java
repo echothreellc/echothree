@@ -34,8 +34,8 @@ public class FilterAdjustmentFixedAmountTransferCache
     UomControl uomControl = Session.getModelController(UomControl.class);
 
     /** Creates a new instance of FilterAdjustmentFixedAmountTransferCache */
-    public FilterAdjustmentFixedAmountTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public FilterAdjustmentFixedAmountTransferCache() {
+        super();
     }
 
     @Override

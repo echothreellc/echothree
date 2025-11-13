@@ -29,8 +29,8 @@ public class PartyDocumentTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of PartyDocumentTransferCache */
-    public PartyDocumentTransferCache(UserVisit userVisit, DocumentControl documentControl) {
-        super(userVisit, documentControl);
+    public PartyDocumentTransferCache(DocumentControl documentControl) {
+        super(documentControl);
     }
     
     public PartyDocumentTransfer getPartyDocumentTransfer(PartyDocument partyDocument) {

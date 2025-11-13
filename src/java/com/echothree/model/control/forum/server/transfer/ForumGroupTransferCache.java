@@ -35,8 +35,8 @@ public class ForumGroupTransferCache
     boolean includeForums;
     
     /** Creates a new instance of ForumGroupTransferCache */
-    public ForumGroupTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
+    public ForumGroupTransferCache(ForumControl forumControl) {
+        super(forumControl);
         
         var options = session.getOptions();
         if(options != null) {

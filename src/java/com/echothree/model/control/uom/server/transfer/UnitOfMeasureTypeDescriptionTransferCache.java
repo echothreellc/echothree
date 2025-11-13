@@ -25,8 +25,8 @@ public class UnitOfMeasureTypeDescriptionTransferCache
         extends BaseUomDescriptionTransferCache<UnitOfMeasureTypeDescription, UnitOfMeasureTypeDescriptionTransfer> {
     
     /** Creates a new instance of UnitOfMeasureTypeDescriptionTransferCache */
-    public UnitOfMeasureTypeDescriptionTransferCache(UserVisit userVisit, UomControl uomControl) {
-        super(userVisit, uomControl);
+    public UnitOfMeasureTypeDescriptionTransferCache(UomControl uomControl) {
+        super(uomControl);
     }
     
     public UnitOfMeasureTypeDescriptionTransfer getUnitOfMeasureTypeDescriptionTransfer(UnitOfMeasureTypeDescription unitOfMeasureTypeDescription) {

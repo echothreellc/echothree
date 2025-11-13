@@ -25,8 +25,8 @@ public class RecoveryQuestionDescriptionTransferCache
         extends BaseUserDescriptionTransferCache<RecoveryQuestionDescription, RecoveryQuestionDescriptionTransfer> {
     
     /** Creates a new instance of RecoveryQuestionDescriptionTransferCache */
-    public RecoveryQuestionDescriptionTransferCache(UserVisit userVisit, UserControl userControl) {
-        super(userVisit, userControl);
+    public RecoveryQuestionDescriptionTransferCache(UserControl userControl) {
+        super(userControl);
     }
     
     public RecoveryQuestionDescriptionTransfer getRecoveryQuestionDescriptionTransfer(RecoveryQuestionDescription recoveryQuestionDescription) {

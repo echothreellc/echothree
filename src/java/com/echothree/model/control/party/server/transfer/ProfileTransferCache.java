@@ -34,7 +34,7 @@ public class ProfileTransferCache
 
     /** Creates a new instance of ProfileTransferCache */
     public ProfileTransferCache(final UserVisit userVisit) {
-        super(userVisit);
+        super();
     }
 
     @Override

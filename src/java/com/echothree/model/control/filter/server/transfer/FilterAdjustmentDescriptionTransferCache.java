@@ -28,8 +28,8 @@ public class FilterAdjustmentDescriptionTransferCache
     FilterControl filterControl = Session.getModelController(FilterControl.class);
 
     /** Creates a new instance of FilterAdjustmentDescriptionTransferCache */
-    public FilterAdjustmentDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public FilterAdjustmentDescriptionTransferCache() {
+        super();
     }
 
     @Override

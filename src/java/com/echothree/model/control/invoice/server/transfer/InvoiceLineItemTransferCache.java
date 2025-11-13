@@ -33,8 +33,8 @@ public class InvoiceLineItemTransferCache
     UomControl uomControl;
 
     /** Creates a new instance of InvoiceLineItemTransferCache */
-    public InvoiceLineItemTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
-        super(userVisit, invoiceControl);
+    public InvoiceLineItemTransferCache(InvoiceControl invoiceControl) {
+        super(invoiceControl);
 
         inventoryControl = Session.getModelController(InventoryControl.class);
         itemControl = Session.getModelController(ItemControl.class);

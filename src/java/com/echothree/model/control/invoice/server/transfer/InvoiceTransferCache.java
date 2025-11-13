@@ -51,8 +51,8 @@ public class InvoiceTransferCache
     DateTimeFormatter shortDateFormatter;
     
     /** Creates a new instance of InvoiceTransferCache */
-    public InvoiceTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
-        super(userVisit, invoiceControl);
+    public InvoiceTransferCache(InvoiceControl invoiceControl) {
+        super(invoiceControl);
 
         var options = session.getOptions();
         if(options != null) {

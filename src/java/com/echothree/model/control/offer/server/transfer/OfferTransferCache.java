@@ -56,8 +56,8 @@ public class OfferTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of OfferTransferCache */
-    public OfferTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public OfferTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {

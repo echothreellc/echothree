@@ -28,8 +28,8 @@ public class EventTypeTransferCache
     EventControl eventControl = Session.getModelController(EventControl.class);
 
     /** Creates a new instance of EventTypeTransferCache */
-    public EventTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EventTypeTransferCache() {
+        super();
     }
     
     public EventTypeTransfer getEventTypeTransfer(EventType eventType) {

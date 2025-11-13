@@ -28,8 +28,8 @@ public class EntityTypeDescriptionTransferCache
     EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
 
     /** Creates a new instance of EntityTypeDescriptionTransferCache */
-    public EntityTypeDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityTypeDescriptionTransferCache() {
+        super();
     }
     
     public EntityTypeDescriptionTransfer getEntityTypeDescriptionTransfer(EntityTypeDescription entityTypeDescription) {

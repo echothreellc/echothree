@@ -29,8 +29,8 @@ public class SubscriptionTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of SubscriptionTransferCache */
-    public SubscriptionTransferCache(UserVisit userVisit, SubscriptionControl subscriptionControl) {
-        super(userVisit, subscriptionControl);
+    public SubscriptionTransferCache(SubscriptionControl subscriptionControl) {
+        super(subscriptionControl);
         
         setIncludeEntityInstance(true);
     }

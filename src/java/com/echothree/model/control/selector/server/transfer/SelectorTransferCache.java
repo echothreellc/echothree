@@ -25,8 +25,8 @@ public class SelectorTransferCache
         extends BaseSelectorTransferCache<Selector, SelectorTransfer> {
     
     /** Creates a new instance of SelectorTransferCache */
-    public SelectorTransferCache(UserVisit userVisit, SelectorControl selectorControl) {
-        super(userVisit, selectorControl);
+    public SelectorTransferCache(SelectorControl selectorControl) {
+        super(selectorControl);
         
         setIncludeEntityInstance(true);
     }

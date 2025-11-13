@@ -31,8 +31,8 @@ public class EntityMultipleListItemAttributeTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of EntityMultipleListItemAttributeTransferCache */
-    public EntityMultipleListItemAttributeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityMultipleListItemAttributeTransferCache() {
+        super();
     }
     
     public EntityMultipleListItemAttributeTransfer getEntityMultipleListItemAttributeTransfer(EntityMultipleListItemAttribute entityMultipleListItemAttribute, EntityInstance entityInstance) {

@@ -37,8 +37,8 @@ public class WishlistLineTransferCache
     UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of WishlistLineTransferCache */
-    public WishlistLineTransferCache(UserVisit userVisit, WishlistControl wishlistControl) {
-        super(userVisit, wishlistControl);
+    public WishlistLineTransferCache(WishlistControl wishlistControl) {
+        super(wishlistControl);
         
         setIncludeEntityInstance(true);
     }

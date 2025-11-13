@@ -25,8 +25,8 @@ public class ContactListGroupDescriptionTransferCache
         extends BaseContactListDescriptionTransferCache<ContactListGroupDescription, ContactListGroupDescriptionTransfer> {
     
     /** Creates a new instance of ContactListGroupDescriptionTransferCache */
-    public ContactListGroupDescriptionTransferCache(UserVisit userVisit, ContactListControl contactListControl) {
-        super(userVisit, contactListControl);
+    public ContactListGroupDescriptionTransferCache(ContactListControl contactListControl) {
+        super(contactListControl);
     }
     
     public ContactListGroupDescriptionTransfer getContactListGroupDescriptionTransfer(ContactListGroupDescription contactListGroupDescription) {

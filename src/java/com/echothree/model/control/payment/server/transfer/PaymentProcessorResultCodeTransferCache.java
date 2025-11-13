@@ -28,8 +28,8 @@ public class PaymentProcessorResultCodeTransferCache
     PaymentProcessorResultCodeControl paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
 
     /** Creates a new instance of PaymentProcessorResultCodeTransferCache */
-    public PaymentProcessorResultCodeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public PaymentProcessorResultCodeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

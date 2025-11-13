@@ -28,8 +28,8 @@ public class ShipmentTimeTypeTransferCache
     ShipmentControl shipmentControl = Session.getModelController(ShipmentControl.class);
 
     /** Creates a new instance of ShipmentTimeTypeTransferCache */
-    public ShipmentTimeTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public ShipmentTimeTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

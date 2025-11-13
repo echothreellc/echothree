@@ -34,8 +34,8 @@ public class ClubItemTransferCache
     UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
     
     /** Creates a new instance of ClubItemTransferCache */
-    public ClubItemTransferCache(UserVisit userVisit, ClubControl clubControl) {
-        super(userVisit, clubControl);
+    public ClubItemTransferCache(ClubControl clubControl) {
+        super(clubControl);
     }
     
     public ClubItemTransfer getClubItemTransfer(ClubItem clubItem) {

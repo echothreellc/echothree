@@ -42,8 +42,8 @@ public class WorkEffortTypeTransferCache
     boolean includeWorkEffortScopes;
     
     /** Creates a new instance of WorkEffortTypeTransferCache */
-    public WorkEffortTypeTransferCache(UserVisit userVisit, WorkEffortControl workEffortControl) {
-        super(userVisit, workEffortControl);
+    public WorkEffortTypeTransferCache(WorkEffortControl workEffortControl) {
+        super(workEffortControl);
 
         var options = session.getOptions();
         if(options != null) {

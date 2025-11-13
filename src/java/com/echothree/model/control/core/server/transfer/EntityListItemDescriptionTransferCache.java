@@ -29,8 +29,8 @@ public class EntityListItemDescriptionTransferCache
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of EntityListItemDescriptionTransferCache */
-    public EntityListItemDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityListItemDescriptionTransferCache() {
+        super();
     }
     
     public EntityListItemDescriptionTransfer getEntityListItemDescriptionTransfer(EntityListItemDescription entityListItemDescription, EntityInstance entityInstance) {

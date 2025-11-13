@@ -25,8 +25,8 @@ public class ItemUseTypeTransferCache
         extends BaseItemTransferCache<ItemUseType, ItemUseTypeTransfer> {
     
     /** Creates a new instance of ItemUseTypeTransferCache */
-    public ItemUseTypeTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemUseTypeTransferCache(ItemControl itemControl) {
+        super(itemControl);
     }
     
     @Override

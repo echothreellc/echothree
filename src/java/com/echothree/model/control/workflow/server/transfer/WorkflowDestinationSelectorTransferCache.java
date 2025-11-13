@@ -29,8 +29,8 @@ public class WorkflowDestinationSelectorTransferCache
     SelectorControl selectorControl;
     
     /** Creates a new instance of WorkflowDestinationSelectorTransferCache */
-    public WorkflowDestinationSelectorTransferCache(UserVisit userVisit, WorkflowControl workflowControl) {
-        super(userVisit, workflowControl);
+    public WorkflowDestinationSelectorTransferCache(WorkflowControl workflowControl) {
+        super(workflowControl);
         
         selectorControl = Session.getModelController(SelectorControl.class);
     }

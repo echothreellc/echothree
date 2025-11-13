@@ -28,8 +28,8 @@ public class CurrencyDescriptionTransferCache
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of CurrencyDescriptionTransferCache */
-    public CurrencyDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public CurrencyDescriptionTransferCache() {
+        super();
     }
     
     @Override

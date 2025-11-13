@@ -31,8 +31,8 @@ public class CountryTransferCache
     boolean includeAliases;
     
     /** Creates a new instance of CountryTransferCache */
-    public CountryTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
+    public CountryTransferCache(GeoControl geoControl) {
+        super(geoControl);
         
         var options = session.getOptions();
         if(options != null) {

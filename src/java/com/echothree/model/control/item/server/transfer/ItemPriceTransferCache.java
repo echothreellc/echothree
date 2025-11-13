@@ -63,8 +63,8 @@ public class ItemPriceTransferCache
     boolean filterThruTime;
     
     /** Creates a new instance of ItemPriceTransferCache */
-    public ItemPriceTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemPriceTransferCache(ItemControl itemControl) {
+        super(itemControl);
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {

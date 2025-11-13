@@ -25,8 +25,8 @@ public class ResponsibilityTypeDescriptionTransferCache
         extends BaseEmployeeDescriptionTransferCache<ResponsibilityTypeDescription, ResponsibilityTypeDescriptionTransfer> {
     
     /** Creates a new instance of ResponsibilityTypeDescriptionTransferCache */
-    public ResponsibilityTypeDescriptionTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit, employeeControl);
+    public ResponsibilityTypeDescriptionTransferCache(EmployeeControl employeeControl) {
+        super(employeeControl);
     }
     
     public ResponsibilityTypeDescriptionTransfer getResponsibilityTypeDescriptionTransfer(ResponsibilityTypeDescription responsibilityTypeDescription) {

@@ -29,8 +29,8 @@ public class CustomerTypeContactListTransferCache
     CustomerControl customerControl = Session.getModelController(CustomerControl.class);
     
     /** Creates a new instance of CustomerTypeContactListTransferCache */
-    public CustomerTypeContactListTransferCache(UserVisit userVisit, ContactListControl contactListControl) {
-        super(userVisit, contactListControl);
+    public CustomerTypeContactListTransferCache(ContactListControl contactListControl) {
+        super(contactListControl);
     }
     
     public CustomerTypeContactListTransfer getCustomerTypeContactListTransfer(CustomerTypeContactList customerTypeContactList) {

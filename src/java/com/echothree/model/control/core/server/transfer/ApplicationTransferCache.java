@@ -29,8 +29,8 @@ public class ApplicationTransferCache
     ApplicationControl applicationControl = Session.getModelController(ApplicationControl.class);
 
     /** Creates a new instance of ApplicationTransferCache */
-    public ApplicationTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public ApplicationTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {

@@ -25,8 +25,8 @@ public class ItemPurchasingCategoryDescriptionTransferCache
         extends BaseVendorDescriptionTransferCache<ItemPurchasingCategoryDescription, ItemPurchasingCategoryDescriptionTransfer> {
     
     /** Creates a new instance of ItemPurchasingCategoryDescriptionTransferCache */
-    public ItemPurchasingCategoryDescriptionTransferCache(UserVisit userVisit, VendorControl vendorControl) {
-        super(userVisit, vendorControl);
+    public ItemPurchasingCategoryDescriptionTransferCache(VendorControl vendorControl) {
+        super(vendorControl);
     }
     
     public ItemPurchasingCategoryDescriptionTransfer getItemPurchasingCategoryDescriptionTransfer(ItemPurchasingCategoryDescription itemPurchasingCategoryDescription) {

@@ -37,8 +37,8 @@ public class InventoryLocationGroupTransferCache
     boolean includeVolume;
     
     /** Creates a new instance of InventoryLocationGroupTransferCache */
-    public InventoryLocationGroupTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    public InventoryLocationGroupTransferCache(InventoryControl inventoryControl) {
+        super(inventoryControl);
         
         var options = session.getOptions();
         if(options != null) {

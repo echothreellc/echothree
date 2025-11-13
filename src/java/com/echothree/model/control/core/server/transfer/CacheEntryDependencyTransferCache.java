@@ -36,8 +36,8 @@ public class CacheEntryDependencyTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of CacheEntryTransferCache */
-    public CacheEntryDependencyTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public CacheEntryDependencyTransferCache() {
+        super();
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {

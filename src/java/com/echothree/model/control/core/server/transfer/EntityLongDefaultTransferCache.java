@@ -28,8 +28,8 @@ public class EntityLongDefaultTransferCache
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of EntityLongDefaultTransferCache */
-    public EntityLongDefaultTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityLongDefaultTransferCache() {
+        super();
     }
     
     public EntityLongDefaultTransfer getEntityLongDefaultTransfer(EntityLongDefault entityLongDefault) {
