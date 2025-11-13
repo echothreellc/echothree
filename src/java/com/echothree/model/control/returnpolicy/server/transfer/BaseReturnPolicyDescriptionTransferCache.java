@@ -29,8 +29,8 @@ public abstract class BaseReturnPolicyDescriptionTransferCache<K extends BaseEnt
     PartyControl partyControl;
     
     /** Creates a new instance of BaseReturnPolicyDescriptionTransferCache */
-    protected BaseReturnPolicyDescriptionTransferCache( ReturnPolicyControl returnPolicyControl) {
-        super(userVisit, returnPolicyControl);
+    protected BaseReturnPolicyDescriptionTransferCache(ReturnPolicyControl returnPolicyControl) {
+        super(returnPolicyControl);
         
         partyControl = Session.getModelController(PartyControl.class);
     }

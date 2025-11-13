@@ -29,8 +29,8 @@ public abstract class BaseWorkRequirementDescriptionTransferCache<K extends Base
     PartyControl partyControl;
     
     /** Creates a new instance of BaseWorkRequirementDescriptionTransferCache */
-    protected BaseWorkRequirementDescriptionTransferCache( WorkRequirementControl workRequirementControl) {
-        super(userVisit, workRequirementControl);
+    protected BaseWorkRequirementDescriptionTransferCache(WorkRequirementControl workRequirementControl) {
+        super(workRequirementControl);
         
         partyControl = Session.getModelController(PartyControl.class);
     }

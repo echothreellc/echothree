@@ -28,7 +28,7 @@ public abstract class BaseIndexTransferCache<K extends BaseEntity, V extends Bas
     IndexControl indexControl;
     
     /** Creates a new instance of BaseIndexTransferCache */
-    protected BaseIndexTransferCache( IndexControl indexControl) {
+    protected BaseIndexTransferCache(IndexControl indexControl) {
         super();
         
         this.indexControl = indexControl;

@@ -28,7 +28,7 @@ public abstract class BaseJobTransferCache<K extends BaseEntity, V extends BaseT
     JobControl jobControl;
     
     /** Creates a new instance of BaseJobTransferCache */
-    protected BaseJobTransferCache( JobControl jobControl) {
+    protected BaseJobTransferCache(JobControl jobControl) {
         super();
         
         this.jobControl = jobControl;

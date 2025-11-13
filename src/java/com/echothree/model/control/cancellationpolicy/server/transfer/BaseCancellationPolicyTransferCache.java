@@ -28,7 +28,7 @@ public abstract class BaseCancellationPolicyTransferCache<K extends BaseEntity, 
     CancellationPolicyControl cancellationPolicyControl;
     
     /** Creates a new instance of BaseCancellationPolicyTransferCache */
-    protected BaseCancellationPolicyTransferCache( CancellationPolicyControl cancellationPolicyControl) {
+    protected BaseCancellationPolicyTransferCache(CancellationPolicyControl cancellationPolicyControl) {
         super();
         
         this.cancellationPolicyControl = cancellationPolicyControl;

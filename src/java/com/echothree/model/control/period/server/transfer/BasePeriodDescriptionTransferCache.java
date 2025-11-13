@@ -29,8 +29,8 @@ public abstract class BasePeriodDescriptionTransferCache<K extends BaseEntity, V
     PartyControl partyControl;
     
     /** Creates a new instance of BasePeriodDescriptionTransferCache */
-    protected BasePeriodDescriptionTransferCache( PeriodControl periodControl) {
-        super(userVisit, periodControl);
+    protected BasePeriodDescriptionTransferCache(PeriodControl periodControl) {
+        super(periodControl);
         
         partyControl = Session.getModelController(PartyControl.class);
     }

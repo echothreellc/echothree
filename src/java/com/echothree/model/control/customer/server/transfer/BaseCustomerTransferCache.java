@@ -28,7 +28,7 @@ public abstract class BaseCustomerTransferCache<K extends BaseEntity, V extends 
     CustomerControl customerControl;
     
     /** Creates a new instance of BaseCustomerTransferCache */
-    protected BaseCustomerTransferCache( CustomerControl customerControl) {
+    protected BaseCustomerTransferCache(CustomerControl customerControl) {
         super();
         
         this.customerControl = customerControl;

@@ -29,8 +29,8 @@ public abstract class BaseDocumentDescriptionTransferCache<K extends BaseEntity,
     PartyControl partyControl;
     
     /** Creates a new instance of BaseDocumentDescriptionTransferCache */
-    protected BaseDocumentDescriptionTransferCache( DocumentControl documentControl) {
-        super(userVisit, documentControl);
+    protected BaseDocumentDescriptionTransferCache(DocumentControl documentControl) {
+        super(documentControl);
         
         partyControl = Session.getModelController(PartyControl.class);
     }

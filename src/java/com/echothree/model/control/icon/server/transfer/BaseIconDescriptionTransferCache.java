@@ -29,8 +29,8 @@ public abstract class BaseIconDescriptionTransferCache<K extends BaseEntity, V e
     PartyControl partyControl;
     
     /** Creates a new instance of BaseIconDescriptionTransferCache */
-    protected BaseIconDescriptionTransferCache( IconControl iconControl) {
-        super(userVisit, iconControl);
+    protected BaseIconDescriptionTransferCache(IconControl iconControl) {
+        super(iconControl);
         
         partyControl = Session.getModelController(PartyControl.class);
     }

@@ -28,7 +28,7 @@ public abstract class BaseWorkEffortTransferCache<K extends BaseEntity, V extend
     WorkEffortControl workEffortControl;
     
     /** Creates a new instance of BaseWorkEffortTransferCache */
-    protected BaseWorkEffortTransferCache( WorkEffortControl workEffortControl) {
+    protected BaseWorkEffortTransferCache(WorkEffortControl workEffortControl) {
         super();
         
         this.workEffortControl = workEffortControl;
