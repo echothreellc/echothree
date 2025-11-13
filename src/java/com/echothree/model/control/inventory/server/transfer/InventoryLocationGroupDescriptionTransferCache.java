@@ -35,7 +35,7 @@ public class InventoryLocationGroupDescriptionTransferCache
         
         if(inventoryLocationGroupDescriptionTransfer == null) {
             var inventoryLocationGroupTransferCache = inventoryControl.getInventoryTransferCaches().getInventoryLocationGroupTransferCache();
-            var inventoryLocationGroupTransfer = inventoryLocationGroupTransferCache.getTransfer(inventoryLocationGroupDescription.getInventoryLocationGroup());
+            var inventoryLocationGroupTransfer = inventoryLocationGroupTransferCache.getTransfer(userVisit, inventoryLocationGroupDescription.getInventoryLocationGroup());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, inventoryLocationGroupDescription.getLanguage());
             
             inventoryLocationGroupDescriptionTransfer = new InventoryLocationGroupDescriptionTransfer(languageTransfer, inventoryLocationGroupTransfer, inventoryLocationGroupDescription.getDescription());

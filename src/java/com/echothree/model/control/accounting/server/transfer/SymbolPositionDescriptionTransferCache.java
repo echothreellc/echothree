@@ -38,7 +38,7 @@ public class SymbolPositionDescriptionTransferCache
         
         if(symbolPositionDescriptionTransfer == null) {
             var symbolPositionTransferCache = accountingControl.getAccountingTransferCaches().getSymbolPositionTransferCache();
-            var symbolPositionTransfer = symbolPositionTransferCache.getTransfer(symbolPositionDescription.getSymbolPosition());
+            var symbolPositionTransfer = symbolPositionTransferCache.getTransfer(userVisit, symbolPositionDescription.getSymbolPosition());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, symbolPositionDescription.getLanguage());
             
             symbolPositionDescriptionTransfer = new SymbolPositionDescriptionTransfer(languageTransfer, symbolPositionTransfer, symbolPositionDescription.getDescription());

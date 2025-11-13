@@ -38,7 +38,7 @@ public class InventoryLocationGroupCapacityTransferCache
         if(inventoryLocationGroupCapacityTransfer == null) {
             var partyControl = Session.getModelController(UomControl.class);
             var inventoryLocationGroupTransferCache = inventoryControl.getInventoryTransferCaches().getInventoryLocationGroupTransferCache();
-            var inventoryLocationGroupTransfer = inventoryLocationGroupTransferCache.getTransfer(inventoryLocationGroupCapacity.getInventoryLocationGroup());
+            var inventoryLocationGroupTransfer = inventoryLocationGroupTransferCache.getTransfer(userVisit, inventoryLocationGroupCapacity.getInventoryLocationGroup());
             var unitOfMeasureTypeTransferCache = partyControl.getUomTransferCaches().getUnitOfMeasureTypeTransferCache();
             var unitOfMeasureType = inventoryLocationGroupCapacity.getUnitOfMeasureType();
             var unitOfMeasureTypeTransfer = unitOfMeasureTypeTransferCache.getUnitOfMeasureTypeTransfer(unitOfMeasureType);

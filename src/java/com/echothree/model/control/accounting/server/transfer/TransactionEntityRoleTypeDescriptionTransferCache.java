@@ -38,7 +38,7 @@ public class TransactionEntityRoleTypeDescriptionTransferCache
         
         if(transactionEntityRoleTypeDescriptionTransfer == null) {
             var transactionEntityRoleTypeTransferCache = accountingControl.getAccountingTransferCaches().getTransactionEntityRoleTypeTransferCache();
-            var transactionEntityRoleTypeTransfer = transactionEntityRoleTypeTransferCache.getTransfer(transactionEntityRoleTypeDescription.getTransactionEntityRoleType());
+            var transactionEntityRoleTypeTransfer = transactionEntityRoleTypeTransferCache.getTransfer(userVisit, transactionEntityRoleTypeDescription.getTransactionEntityRoleType());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, transactionEntityRoleTypeDescription.getLanguage());
             
             transactionEntityRoleTypeDescriptionTransfer = new TransactionEntityRoleTypeDescriptionTransfer(languageTransfer, transactionEntityRoleTypeTransfer, transactionEntityRoleTypeDescription.getDescription());

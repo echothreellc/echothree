@@ -35,7 +35,7 @@ public class ItemCategoryDescriptionTransferCache
         
         if(itemCategoryDescriptionTransfer == null) {
             var itemCategoryTransferCache = itemControl.getItemTransferCaches().getItemCategoryTransferCache();
-            var itemCategoryTransfer = itemCategoryTransferCache.getTransfer(itemCategoryDescription.getItemCategory());
+            var itemCategoryTransfer = itemCategoryTransferCache.getTransfer(userVisit, itemCategoryDescription.getItemCategory());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, itemCategoryDescription.getLanguage());
             
             itemCategoryDescriptionTransfer = new ItemCategoryDescriptionTransfer(languageTransfer, itemCategoryTransfer, itemCategoryDescription.getDescription());

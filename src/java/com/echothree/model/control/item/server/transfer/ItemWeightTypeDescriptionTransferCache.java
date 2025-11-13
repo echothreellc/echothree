@@ -35,7 +35,7 @@ public class ItemWeightTypeDescriptionTransferCache
         
         if(itemWeightTypeDescriptionTransfer == null) {
             var itemWeightTypeTransferCache = itemControl.getItemTransferCaches().getItemWeightTypeTransferCache();
-            var itemWeightTypeTransfer = itemWeightTypeTransferCache.getTransfer(itemWeightTypeDescription.getItemWeightType());
+            var itemWeightTypeTransfer = itemWeightTypeTransferCache.getTransfer(userVisit, itemWeightTypeDescription.getItemWeightType());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, itemWeightTypeDescription.getLanguage());
             
             itemWeightTypeDescriptionTransfer = new ItemWeightTypeDescriptionTransfer(languageTransfer, itemWeightTypeTransfer, itemWeightTypeDescription.getDescription());

@@ -35,7 +35,7 @@ public class ItemAliasTypeDescriptionTransferCache
         
         if(itemAliasTypeDescriptionTransfer == null) {
             var itemAliasTypeTransferCache = itemControl.getItemTransferCaches().getItemAliasTypeTransferCache();
-            var itemAliasTypeTransfer = itemAliasTypeTransferCache.getTransfer(itemAliasTypeDescription.getItemAliasType());
+            var itemAliasTypeTransfer = itemAliasTypeTransferCache.getTransfer(userVisit, itemAliasTypeDescription.getItemAliasType());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, itemAliasTypeDescription.getLanguage());
             
             itemAliasTypeDescriptionTransfer = new ItemAliasTypeDescriptionTransfer(languageTransfer, itemAliasTypeTransfer, itemAliasTypeDescription.getDescription());
