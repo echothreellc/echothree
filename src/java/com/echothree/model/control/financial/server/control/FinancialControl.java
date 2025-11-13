@@ -188,7 +188,7 @@ public class FinancialControl
     
     public FinancialAccountRoleTypeTransfer getFinancialAccountRoleTypeTransfer(UserVisit userVisit,
             FinancialAccountRoleType financialAccountRoleType) {
-        return getFinancialTransferCaches(userVisit).getFinancialAccountRoleTypeTransferCache().getFinancialAccountRoleTypeTransfer(financialAccountRoleType);
+        return getFinancialTransferCaches().getFinancialAccountRoleTypeTransferCache().getFinancialAccountRoleTypeTransfer(userVisit, financialAccountRoleType);
     }
     
     private List<FinancialAccountRoleTypeTransfer> getFinancialAccountRoleTypeTransfers(final UserVisit userVisit, final List<FinancialAccountRoleType> financialAccountRoleTypes) {
@@ -436,7 +436,7 @@ public class FinancialControl
     }
 
     public FinancialAccountTypeTransfer getFinancialAccountTypeTransfer(UserVisit userVisit, FinancialAccountType financialAccountType) {
-        return getFinancialTransferCaches(userVisit).getFinancialAccountTypeTransferCache().getFinancialAccountTypeTransfer(financialAccountType);
+        return getFinancialTransferCaches().getFinancialAccountTypeTransferCache().getFinancialAccountTypeTransfer(userVisit, financialAccountType);
     }
     
     public List<FinancialAccountTypeTransfer> getFinancialAccountTypeTransfers(UserVisit userVisit) {
@@ -711,7 +711,7 @@ public class FinancialControl
     }
     
     public FinancialAccountTypeDescriptionTransfer getFinancialAccountTypeDescriptionTransfer(UserVisit userVisit, FinancialAccountTypeDescription financialAccountTypeDescription) {
-        return getFinancialTransferCaches(userVisit).getFinancialAccountTypeDescriptionTransferCache().getFinancialAccountTypeDescriptionTransfer(financialAccountTypeDescription);
+        return getFinancialTransferCaches().getFinancialAccountTypeDescriptionTransferCache().getFinancialAccountTypeDescriptionTransfer(userVisit, financialAccountTypeDescription);
     }
     
     public List<FinancialAccountTypeDescriptionTransfer> getFinancialAccountTypeDescriptionTransfersByFinancialAccountType(UserVisit userVisit, FinancialAccountType financialAccountType) {
@@ -947,7 +947,7 @@ public class FinancialControl
 
     public FinancialAccountTransactionTypeTransfer getFinancialAccountTransactionTypeTransfer(UserVisit userVisit,
             FinancialAccountTransactionType financialAccountTransactionType) {
-        return getFinancialTransferCaches(userVisit).getFinancialAccountTransactionTypeTransferCache().getFinancialAccountTransactionTypeTransfer(financialAccountTransactionType);
+        return getFinancialTransferCaches().getFinancialAccountTransactionTypeTransferCache().getFinancialAccountTransactionTypeTransfer(userVisit, financialAccountTransactionType);
     }
     
     public List<FinancialAccountTransactionTypeTransfer> getFinancialAccountTransactionTypeTransfers(UserVisit userVisit,
@@ -1229,7 +1229,7 @@ public class FinancialControl
     
     public FinancialAccountTransactionTypeDescriptionTransfer getFinancialAccountTransactionTypeDescriptionTransfer(UserVisit userVisit,
             FinancialAccountTransactionTypeDescription financialAccountTransactionTypeDescription) {
-        return getFinancialTransferCaches(userVisit).getFinancialAccountTransactionTypeDescriptionTransferCache().getFinancialAccountTransactionTypeDescriptionTransfer(financialAccountTransactionTypeDescription);
+        return getFinancialTransferCaches().getFinancialAccountTransactionTypeDescriptionTransferCache().getFinancialAccountTransactionTypeDescriptionTransfer(userVisit, financialAccountTransactionTypeDescription);
     }
     
     public List<FinancialAccountTransactionTypeDescriptionTransfer> getFinancialAccountTransactionTypeDescriptionTransfersByFinancialAccountTransactionType(UserVisit userVisit,
@@ -1421,7 +1421,7 @@ public class FinancialControl
     }
     
     public FinancialAccountAliasTypeTransfer getFinancialAccountAliasTypeTransfer(UserVisit userVisit, FinancialAccountAliasType financialAccountAliasType) {
-        return getFinancialTransferCaches(userVisit).getFinancialAccountAliasTypeTransferCache().getFinancialAccountAliasTypeTransfer(financialAccountAliasType);
+        return getFinancialTransferCaches().getFinancialAccountAliasTypeTransferCache().getFinancialAccountAliasTypeTransfer(userVisit, financialAccountAliasType);
     }
     
     public List<FinancialAccountAliasTypeTransfer> getFinancialAccountAliasTypeTransfers(UserVisit userVisit, FinancialAccountType financialAccountType) {
@@ -1666,7 +1666,7 @@ public class FinancialControl
     
     public FinancialAccountAliasTypeDescriptionTransfer getFinancialAccountAliasTypeDescriptionTransfer(UserVisit userVisit,
             FinancialAccountAliasTypeDescription financialAccountAliasTypeDescription) {
-        return getFinancialTransferCaches(userVisit).getFinancialAccountAliasTypeDescriptionTransferCache().getFinancialAccountAliasTypeDescriptionTransfer(financialAccountAliasTypeDescription);
+        return getFinancialTransferCaches().getFinancialAccountAliasTypeDescriptionTransferCache().getFinancialAccountAliasTypeDescriptionTransfer(userVisit, financialAccountAliasTypeDescription);
     }
     
     public List<FinancialAccountAliasTypeDescriptionTransfer> getFinancialAccountAliasTypeDescriptionTransfersByFinancialAccountAliasType(UserVisit userVisit,
@@ -1992,7 +1992,7 @@ public class FinancialControl
     }
     
     public FinancialAccountTransfer getFinancialAccountTransfer(UserVisit userVisit, FinancialAccount financialAccount) {
-        return getFinancialTransferCaches(userVisit).getFinancialAccountTransferCache().getFinancialAccountTransfer(financialAccount);
+        return getFinancialTransferCaches().getFinancialAccountTransferCache().getFinancialAccountTransfer(userVisit, financialAccount);
     }
     
     public List<FinancialAccountTransfer> getFinancialAccountTransfers(UserVisit userVisit, FinancialAccountType financialAccountType) {
@@ -2229,7 +2229,7 @@ public class FinancialControl
     }
     
     public FinancialAccountAliasTransfer getFinancialAccountAliasTransfer(UserVisit userVisit, FinancialAccountAlias financialAccountAlias) {
-        return getFinancialTransferCaches(userVisit).getFinancialAccountAliasTransferCache().getFinancialAccountAliasTransfer(financialAccountAlias);
+        return getFinancialTransferCaches().getFinancialAccountAliasTransferCache().getFinancialAccountAliasTransfer(userVisit, financialAccountAlias);
     }
     
     public List<FinancialAccountAliasTransfer> getFinancialAccountAliasTransfersByFinancialAccount(UserVisit userVisit, FinancialAccount financialAccount) {
@@ -2409,7 +2409,7 @@ public class FinancialControl
     }
     
     public FinancialAccountTransactionTransfer getFinancialAccountTransactionTransfer(UserVisit userVisit, FinancialAccountTransaction financialAccountTransaction) {
-        return getFinancialTransferCaches(userVisit).getFinancialAccountTransactionTransferCache().getFinancialAccountTransactionTransfer(financialAccountTransaction);
+        return getFinancialTransferCaches().getFinancialAccountTransactionTransferCache().getFinancialAccountTransactionTransfer(userVisit, financialAccountTransaction);
     }
     
     public List<FinancialAccountTransactionTransfer> getFinancialAccountTransactionTransfersByFinancialAccount(UserVisit userVisit, FinancialAccount financialAccount) {

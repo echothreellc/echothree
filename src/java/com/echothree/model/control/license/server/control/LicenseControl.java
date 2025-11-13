@@ -213,7 +213,7 @@ public class LicenseControl
     }
 
    public LicenseTypeTransfer getLicenseTypeTransfer(UserVisit userVisit, LicenseType licenseType) {
-        return getLicenseTransferCaches(userVisit).getLicenseTypeTransferCache().getLicenseTypeTransfer(licenseType);
+        return getLicenseTransferCaches().getLicenseTypeTransferCache().getLicenseTypeTransfer(userVisit, licenseType);
     }
 
     public List<LicenseTypeTransfer> getLicenseTypeTransfers(UserVisit userVisit) {
@@ -450,7 +450,7 @@ public class LicenseControl
     }
 
     public LicenseTypeDescriptionTransfer getLicenseTypeDescriptionTransfer(UserVisit userVisit, LicenseTypeDescription licenseTypeDescription) {
-        return getLicenseTransferCaches(userVisit).getLicenseTypeDescriptionTransferCache().getLicenseTypeDescriptionTransfer(licenseTypeDescription);
+        return getLicenseTransferCaches().getLicenseTypeDescriptionTransferCache().getLicenseTypeDescriptionTransfer(userVisit, licenseTypeDescription);
     }
 
     public List<LicenseTypeDescriptionTransfer> getLicenseTypeDescriptionTransfersByLicenseType(UserVisit userVisit, LicenseType licenseType) {

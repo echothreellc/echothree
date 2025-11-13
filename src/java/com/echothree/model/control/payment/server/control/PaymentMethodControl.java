@@ -311,7 +311,7 @@ public class PaymentMethodControl
     }
 
     public PaymentMethodTransfer getPaymentMethodTransfer(UserVisit userVisit, PaymentMethod paymentMethod) {
-        return getPaymentTransferCaches(userVisit).getPaymentMethodTransferCache().getTransfer(paymentMethod);
+        return getPaymentTransferCaches().getPaymentMethodTransferCache().getTransfer(userVisit, paymentMethod);
     }
     
     public List<PaymentMethodTransfer> getPaymentMethodTransfers(UserVisit userVisit, Collection<PaymentMethod> paymentMethods) {
@@ -545,7 +545,7 @@ public class PaymentMethodControl
     }
     
     public PaymentMethodDescriptionTransfer getPaymentMethodDescriptionTransfer(UserVisit userVisit, PaymentMethodDescription paymentMethodDescription) {
-        return getPaymentTransferCaches(userVisit).getPaymentMethodDescriptionTransferCache().getTransfer(paymentMethodDescription);
+        return getPaymentTransferCaches().getPaymentMethodDescriptionTransferCache().getTransfer(userVisit, paymentMethodDescription);
     }
     
     public List<PaymentMethodDescriptionTransfer> getPaymentMethodDescriptionTransfers(UserVisit userVisit, PaymentMethod paymentMethod) {

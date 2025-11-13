@@ -180,7 +180,7 @@ public class WorkEffortControl
     }
     
     public WorkEffortTypeTransfer getWorkEffortTypeTransfer(UserVisit userVisit, WorkEffortType workEffortType) {
-        return getWorkEffortTransferCaches(userVisit).getWorkEffortTypeTransferCache().getWorkEffortTypeTransfer(workEffortType);
+        return getWorkEffortTransferCaches().getWorkEffortTypeTransferCache().getWorkEffortTypeTransfer(userVisit, workEffortType);
     }
     
     public List<WorkEffortTypeTransfer> getWorkEffortTypeTransfers(UserVisit userVisit) {
@@ -358,7 +358,7 @@ public class WorkEffortControl
     }
     
     public WorkEffortTypeDescriptionTransfer getWorkEffortTypeDescriptionTransfer(UserVisit userVisit, WorkEffortTypeDescription workEffortTypeDescription) {
-        return getWorkEffortTransferCaches(userVisit).getWorkEffortTypeDescriptionTransferCache().getWorkEffortTypeDescriptionTransfer(workEffortTypeDescription);
+        return getWorkEffortTransferCaches().getWorkEffortTypeDescriptionTransferCache().getWorkEffortTypeDescriptionTransfer(userVisit, workEffortTypeDescription);
     }
     
     public List<WorkEffortTypeDescriptionTransfer> getWorkEffortTypeDescriptionTransfers(UserVisit userVisit, WorkEffortType workEffortType) {
@@ -608,7 +608,7 @@ public class WorkEffortControl
     }
     
     public WorkEffortScopeTransfer getWorkEffortScopeTransfer(UserVisit userVisit, WorkEffortScope workEffortScope) {
-        return getWorkEffortTransferCaches(userVisit).getWorkEffortScopeTransferCache().getWorkEffortScopeTransfer(workEffortScope);
+        return getWorkEffortTransferCaches().getWorkEffortScopeTransferCache().getWorkEffortScopeTransfer(userVisit, workEffortScope);
     }
     
     public List<WorkEffortScopeTransfer> getWorkEffortScopeTransfers(UserVisit userVisit, WorkEffortType workEffortType) {
@@ -844,7 +844,7 @@ public class WorkEffortControl
     }
     
     public WorkEffortScopeDescriptionTransfer getWorkEffortScopeDescriptionTransfer(UserVisit userVisit, WorkEffortScopeDescription workEffortScopeDescription) {
-        return getWorkEffortTransferCaches(userVisit).getWorkEffortScopeDescriptionTransferCache().getWorkEffortScopeDescriptionTransfer(workEffortScopeDescription);
+        return getWorkEffortTransferCaches().getWorkEffortScopeDescriptionTransferCache().getWorkEffortScopeDescriptionTransfer(userVisit, workEffortScopeDescription);
     }
     
     public List<WorkEffortScopeDescriptionTransfer> getWorkEffortScopeDescriptionTransfers(UserVisit userVisit, WorkEffortScope workEffortScope) {
@@ -1084,7 +1084,7 @@ public class WorkEffortControl
     }
     
     public WorkEffortTransfer getWorkEffortTransfer(UserVisit userVisit, WorkEffort workEffort) {
-        return getWorkEffortTransferCaches(userVisit).getWorkEffortTransferCache().getWorkEffortTransfer(workEffort);
+        return getWorkEffortTransferCaches().getWorkEffortTransferCache().getWorkEffortTransfer(userVisit, workEffort);
     }
     
     public List<WorkEffortTransfer> getWorkEffortTransfers(UserVisit userVisit, Collection<WorkEffort> workEfforts) {

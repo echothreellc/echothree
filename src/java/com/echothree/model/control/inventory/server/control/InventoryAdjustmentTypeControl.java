@@ -219,7 +219,7 @@ public class InventoryAdjustmentTypeControl
     }
 
     public InventoryAdjustmentTypeTransfer getInventoryAdjustmentTypeTransfer(UserVisit userVisit, InventoryAdjustmentType inventoryAdjustmentType) {
-        return getInventoryTransferCaches(userVisit).getInventoryAdjustmentTypeTransferCache().getTransfer(inventoryAdjustmentType);
+        return getInventoryTransferCaches().getInventoryAdjustmentTypeTransferCache().getTransfer(userVisit, inventoryAdjustmentType);
     }
 
     public List<InventoryAdjustmentTypeTransfer> getInventoryAdjustmentTypeTransfers(UserVisit userVisit, Collection<InventoryAdjustmentType> inventoryAdjustmentTypes) {
@@ -461,7 +461,7 @@ public class InventoryAdjustmentTypeControl
     }
 
     public InventoryAdjustmentTypeDescriptionTransfer getInventoryAdjustmentTypeDescriptionTransfer(UserVisit userVisit, InventoryAdjustmentTypeDescription inventoryAdjustmentTypeDescription) {
-        return getInventoryTransferCaches(userVisit).getInventoryAdjustmentTypeDescriptionTransferCache().getTransfer(inventoryAdjustmentTypeDescription);
+        return getInventoryTransferCaches().getInventoryAdjustmentTypeDescriptionTransferCache().getTransfer(userVisit, inventoryAdjustmentTypeDescription);
     }
 
     public List<InventoryAdjustmentTypeDescriptionTransfer> getInventoryAdjustmentTypeDescriptionTransfersByInventoryAdjustmentType(UserVisit userVisit, InventoryAdjustmentType inventoryAdjustmentType) {

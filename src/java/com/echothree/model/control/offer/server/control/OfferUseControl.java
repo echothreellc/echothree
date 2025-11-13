@@ -290,7 +290,7 @@ public class OfferUseControl
     }
 
     public OfferUseTransfer getOfferUseTransfer(UserVisit userVisit, OfferUse offerUse) {
-        return getOfferTransferCaches(userVisit).getOfferUseTransferCache().getOfferUseTransfer(offerUse);
+        return getOfferTransferCaches().getOfferUseTransferCache().getOfferUseTransfer(userVisit, offerUse);
     }
 
     public void updateOfferUseFromValue(OfferUseDetailValue offerUseDetailValue, BasePK updatedBy) {

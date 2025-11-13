@@ -194,7 +194,7 @@ public class CommandControl
     }
 
     public CommandTransfer getCommandTransfer(UserVisit userVisit, Command command) {
-        return getCoreTransferCaches(userVisit).getCommandTransferCache().getCommandTransfer(command);
+        return getCoreTransferCaches().getCommandTransferCache().getCommandTransfer(userVisit, command);
     }
 
     private List<CommandTransfer> getCommandTransfers(UserVisit userVisit, Collection<Command> commands) {
@@ -382,7 +382,7 @@ public class CommandControl
     }
 
     public CommandDescriptionTransfer getCommandDescriptionTransfer(UserVisit userVisit, CommandDescription commandDescription) {
-        return getCoreTransferCaches(userVisit).getCommandDescriptionTransferCache().getCommandDescriptionTransfer(commandDescription);
+        return getCoreTransferCaches().getCommandDescriptionTransferCache().getCommandDescriptionTransfer(userVisit, commandDescription);
     }
 
     public List<CommandDescriptionTransfer> getCommandDescriptionTransfersByCommand(UserVisit userVisit,
@@ -609,7 +609,7 @@ public class CommandControl
     }
 
     public CommandMessageTypeTransfer getCommandMessageTypeTransfer(UserVisit userVisit, CommandMessageType commandMessageType) {
-        return getCoreTransferCaches(userVisit).getCommandMessageTypeTransferCache().getCommandMessageTypeTransfer(commandMessageType);
+        return getCoreTransferCaches().getCommandMessageTypeTransferCache().getCommandMessageTypeTransfer(userVisit, commandMessageType);
     }
 
     public List<CommandMessageTypeTransfer> getCommandMessageTypeTransfers(UserVisit userVisit) {
@@ -823,7 +823,7 @@ public class CommandControl
     }
 
     public CommandMessageTypeDescriptionTransfer getCommandMessageTypeDescriptionTransfer(UserVisit userVisit, CommandMessageTypeDescription commandMessageTypeDescription) {
-        return getCoreTransferCaches(userVisit).getCommandMessageTypeDescriptionTransferCache().getCommandMessageTypeDescriptionTransfer(commandMessageTypeDescription);
+        return getCoreTransferCaches().getCommandMessageTypeDescriptionTransferCache().getCommandMessageTypeDescriptionTransfer(userVisit, commandMessageTypeDescription);
     }
 
     public List<CommandMessageTypeDescriptionTransfer> getCommandMessageTypeDescriptionTransfers(UserVisit userVisit, CommandMessageType commandMessageType) {
@@ -989,7 +989,7 @@ public class CommandControl
     }
 
     public CommandMessageTransfer getCommandMessageTransfer(UserVisit userVisit, CommandMessage commandMessage) {
-        return getCoreTransferCaches(userVisit).getCommandMessageTransferCache().getCommandMessageTransfer(commandMessage);
+        return getCoreTransferCaches().getCommandMessageTransferCache().getCommandMessageTransfer(userVisit, commandMessage);
     }
 
     private List<CommandMessageTransfer> getCommandMessageTransfers(UserVisit userVisit, Collection<CommandMessage> commandMessages) {
@@ -1182,7 +1182,7 @@ public class CommandControl
     }
 
     public CommandMessageTranslationTransfer getCommandMessageTranslationTransfer(UserVisit userVisit, CommandMessageTranslation commandMessageTranslation) {
-        return getCoreTransferCaches(userVisit).getCommandMessageTranslationTransferCache().getCommandMessageTranslationTransfer(commandMessageTranslation);
+        return getCoreTransferCaches().getCommandMessageTranslationTransferCache().getCommandMessageTranslationTransfer(userVisit, commandMessageTranslation);
     }
 
     public void updateCommandMessageTranslationFromValue(CommandMessageTranslationValue commandMessageTranslationValue, BasePK updatedBy) {

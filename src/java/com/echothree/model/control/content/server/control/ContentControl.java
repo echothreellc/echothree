@@ -294,7 +294,7 @@ public class ContentControl
     }
     
     public ContentPageAreaTypeTransfer getContentPageAreaTypeTransfer(UserVisit userVisit, ContentPageAreaType contentPageAreaType) {
-        return getContentTransferCaches(userVisit).getContentPageAreaTypeTransferCache().getTransfer(contentPageAreaType);
+        return getContentTransferCaches().getContentPageAreaTypeTransferCache().getTransfer(userVisit, contentPageAreaType);
     }
     
     public List<ContentPageAreaTypeTransfer> getContentPageAreaTypeTransfers(UserVisit userVisit, Collection<ContentPageAreaType> contentPageAreaTypes) {
@@ -556,7 +556,7 @@ public class ContentControl
     }
     
     public ContentPageLayoutTransfer getContentPageLayoutTransfer(UserVisit userVisit, ContentPageLayout contentPageLayout) {
-        return getContentTransferCaches(userVisit).getContentPageLayoutTransferCache().getTransfer(contentPageLayout);
+        return getContentTransferCaches().getContentPageLayoutTransferCache().getTransfer(userVisit, contentPageLayout);
     }
     
     public List<ContentPageLayoutTransfer> getContentPageLayoutTransfers(UserVisit userVisit, Collection<ContentPageLayout> contentPageLayouts) {
@@ -800,7 +800,7 @@ public class ContentControl
     }
     
     public ContentPageLayoutDescriptionTransfer getContentPageLayoutDescriptionTransfer(UserVisit userVisit, ContentPageLayoutDescription contentPageLayoutDescription) {
-        return getContentTransferCaches(userVisit).getContentPageLayoutDescriptionTransferCache().getTransfer(contentPageLayoutDescription);
+        return getContentTransferCaches().getContentPageLayoutDescriptionTransferCache().getTransfer(userVisit, contentPageLayoutDescription);
     }
     
     public List<ContentPageLayoutDescriptionTransfer> getContentPageLayoutDescriptionTransfersByContentPageLayout(UserVisit userVisit, ContentPageLayout contentPageLayout) {
@@ -923,7 +923,7 @@ public class ContentControl
     }
     
     public ContentPageLayoutAreaTransfer getContentPageLayoutAreaTransfer(UserVisit userVisit, ContentPageLayoutArea contentPageLayoutArea) {
-        return getContentTransferCaches(userVisit).getContentPageLayoutAreaTransferCache().getContentPageLayoutAreaTransfer(contentPageLayoutArea);
+        return getContentTransferCaches().getContentPageLayoutAreaTransferCache().getContentPageLayoutAreaTransfer(userVisit, contentPageLayoutArea);
     }
     
     // --------------------------------------------------------------------------------
@@ -1113,7 +1113,7 @@ public class ContentControl
     }
     
     public ContentCollectionTransfer getContentCollectionTransfer(UserVisit userVisit, ContentCollection contentCollection) {
-        return getContentTransferCaches(userVisit).getContentCollectionTransferCache().getContentCollectionTransfer(contentCollection);
+        return getContentTransferCaches().getContentCollectionTransferCache().getContentCollectionTransfer(userVisit, contentCollection);
     }
     
     public List<ContentCollectionTransfer> getContentCollectionTransfers(UserVisit userVisit, Collection<ContentCollection> contentCollections) {
@@ -1286,7 +1286,7 @@ public class ContentControl
     }
     
     public ContentCollectionDescriptionTransfer getContentCollectionDescriptionTransfer(UserVisit userVisit, ContentCollectionDescription contentCollectionDescription) {
-        return getContentTransferCaches(userVisit).getContentCollectionDescriptionTransferCache().getContentCollectionDescriptionTransfer(contentCollectionDescription);
+        return getContentTransferCaches().getContentCollectionDescriptionTransferCache().getContentCollectionDescriptionTransfer(userVisit, contentCollectionDescription);
     }
     
     public List<ContentCollectionDescriptionTransfer> getContentCollectionDescriptionTransfers(UserVisit userVisit, ContentCollection contentCollection) {
@@ -1593,7 +1593,7 @@ public class ContentControl
     }
     
     public ContentSectionTransfer getContentSectionTransfer(UserVisit userVisit, ContentSection contentSection) {
-        return getContentTransferCaches(userVisit).getContentSectionTransferCache().getContentSectionTransfer(contentSection);
+        return getContentTransferCaches().getContentSectionTransferCache().getContentSectionTransfer(userVisit, contentSection);
     }
     
     public List<ContentSectionTransfer> getContentSectionTransfers(UserVisit userVisit, Collection<ContentSection> contentSections) {
@@ -1861,7 +1861,7 @@ public class ContentControl
     }
     
     public ContentSectionDescriptionTransfer getContentSectionDescriptionTransfer(UserVisit userVisit, ContentSectionDescription contentSectionDescription) {
-        return getContentTransferCaches(userVisit).getContentSectionDescriptionTransferCache().getContentSectionDescriptionTransfer(contentSectionDescription);
+        return getContentTransferCaches().getContentSectionDescriptionTransferCache().getContentSectionDescriptionTransfer(userVisit, contentSectionDescription);
     }
     
     public List<ContentSectionDescriptionTransfer> getContentSectionDescriptionTransfers(UserVisit userVisit, ContentSection contentSection) {
@@ -2129,7 +2129,7 @@ public class ContentControl
     }
     
     public ContentPageTransfer getContentPageTransfer(UserVisit userVisit, ContentPage contentPage) {
-        return getContentTransferCaches(userVisit).getContentPageTransferCache().getContentPageTransfer(contentPage);
+        return getContentTransferCaches().getContentPageTransferCache().getContentPageTransfer(userVisit, contentPage);
     }
     
     public List<ContentPageTransfer> getContentPageTransfers(UserVisit userVisit, Collection<ContentPage> contentPages) {
@@ -2356,7 +2356,7 @@ public class ContentControl
     }
     
     public ContentPageDescriptionTransfer getContentPageDescriptionTransfer(UserVisit userVisit, ContentPageDescription contentPageDescription) {
-        return getContentTransferCaches(userVisit).getContentPageDescriptionTransferCache().getContentPageDescriptionTransfer(contentPageDescription);
+        return getContentTransferCaches().getContentPageDescriptionTransferCache().getContentPageDescriptionTransfer(userVisit, contentPageDescription);
     }
     
     public List<ContentPageDescriptionTransfer> getContentPageDescriptionTransfers(UserVisit userVisit, ContentPage contentPage) {
@@ -2578,7 +2578,7 @@ public class ContentControl
     }
     
     public ContentPageAreaTransfer getContentPageAreaTransfer(UserVisit userVisit, ContentPageArea contentPageArea) {
-        return getContentTransferCaches(userVisit).getContentPageAreaTransferCache().getContentPageAreaTransfer(contentPageArea);
+        return getContentTransferCaches().getContentPageAreaTransferCache().getContentPageAreaTransfer(userVisit, contentPageArea);
     }
     
     public List<ContentPageAreaTransfer> getContentPageAreaTransfers(UserVisit userVisit, Collection<ContentPageArea> contentPageAreas) {
@@ -2969,7 +2969,7 @@ public class ContentControl
     }
     
     public ContentCatalogTransfer getContentCatalogTransfer(UserVisit userVisit, ContentCatalog contentCatalog) {
-        return getContentTransferCaches(userVisit).getContentCatalogTransferCache().getContentCatalogTransfer(contentCatalog);
+        return getContentTransferCaches().getContentCatalogTransferCache().getContentCatalogTransfer(userVisit, contentCatalog);
     }
     
     public List<ContentCatalogTransfer> getContentCatalogTransfers(UserVisit userVisit, Collection<ContentCatalog> contentCatalogs) {
@@ -3193,7 +3193,7 @@ public class ContentControl
     }
     
     public ContentCatalogDescriptionTransfer getContentCatalogDescriptionTransfer(UserVisit userVisit, ContentCatalogDescription contentCatalogDescription) {
-        return getContentTransferCaches(userVisit).getContentCatalogDescriptionTransferCache().getContentCatalogDescriptionTransfer(contentCatalogDescription);
+        return getContentTransferCaches().getContentCatalogDescriptionTransferCache().getContentCatalogDescriptionTransfer(userVisit, contentCatalogDescription);
     }
     
     public List<ContentCatalogDescriptionTransfer> getContentCatalogDescriptionTransfers(UserVisit userVisit, ContentCatalog contentCatalog) {
@@ -3565,7 +3565,7 @@ public class ContentControl
     }
 
     public ContentCatalogItemTransfer getContentCatalogItemTransfer(UserVisit userVisit, ContentCatalogItem contentCatalogItem) {
-        return getContentTransferCaches(userVisit).getContentCatalogItemTransferCache().getContentCatalogItemTransfer(contentCatalogItem);
+        return getContentTransferCaches().getContentCatalogItemTransferCache().getContentCatalogItemTransfer(userVisit, contentCatalogItem);
     }
 
     public List<ContentCatalogItemTransfer> getContentCatalogItemTransfers(UserVisit userVisit, ContentCatalog contentCatalog) {
@@ -4173,7 +4173,7 @@ public class ContentControl
     }
     
     public ContentCategoryTransfer getContentCategoryTransfer(UserVisit userVisit, ContentCategory contentCategory) {
-        return getContentTransferCaches(userVisit).getContentCategoryTransferCache().getContentCategoryTransfer(contentCategory);
+        return getContentTransferCaches().getContentCategoryTransferCache().getContentCategoryTransfer(userVisit, contentCategory);
     }
     
     public List<ContentCategoryTransfer> getContentCategoryTransfers(UserVisit userVisit, ContentCatalog contentCatalog) {
@@ -4439,7 +4439,7 @@ public class ContentControl
     }
     
     public ContentCategoryDescriptionTransfer getContentCategoryDescriptionTransfer(UserVisit userVisit, ContentCategoryDescription contentCategoryDescription) {
-        return getContentTransferCaches(userVisit).getContentCategoryDescriptionTransferCache().getContentCategoryDescriptionTransfer(contentCategoryDescription);
+        return getContentTransferCaches().getContentCategoryDescriptionTransferCache().getContentCategoryDescriptionTransfer(userVisit, contentCategoryDescription);
     }
     
     public List<ContentCategoryDescriptionTransfer> getContentCategoryDescriptionTransfers(UserVisit userVisit, ContentCategory contentCategory) {
@@ -4701,7 +4701,7 @@ public class ContentControl
     }
     
     public ContentCategoryItemTransfer getContentCategoryItemTransfer(UserVisit userVisit, ContentCategoryItem contentCategoryItem) {
-        return getContentTransferCaches(userVisit).getContentCategoryItemTransferCache().getContentCategoryItemTransfer(contentCategoryItem);
+        return getContentTransferCaches().getContentCategoryItemTransferCache().getContentCategoryItemTransfer(userVisit, contentCategoryItem);
     }
     
     public List<ContentCategoryItemTransfer> getContentCategoryItemTransfers(UserVisit userVisit, Collection<ContentCategoryItem> contentCategoryItems) {
@@ -4974,7 +4974,7 @@ public class ContentControl
     }
     
     public ContentForumTransfer getContentForumTransfer(UserVisit userVisit, ContentForum contentForum) {
-        return getContentTransferCaches(userVisit).getContentForumTransferCache().getContentForumTransfer(contentForum);
+        return getContentTransferCaches().getContentForumTransferCache().getContentForumTransfer(userVisit, contentForum);
     }
     
     public List<ContentForumTransfer> getContentForumTransfers(UserVisit userVisit, Collection<ContentForum> contentForums) {
@@ -5294,7 +5294,7 @@ public class ContentControl
     }
     
     public ContentWebAddressTransfer getContentWebAddressTransfer(UserVisit userVisit, ContentWebAddress contentWebAddress) {
-        return getContentTransferCaches(userVisit).getContentWebAddressTransferCache().getContentWebAddressTransfer(contentWebAddress);
+        return getContentTransferCaches().getContentWebAddressTransferCache().getContentWebAddressTransfer(userVisit, contentWebAddress);
     }
     
     public void updateContentWebAddressFromValue(ContentWebAddressDetailValue contentWebAddressDetailValue, BasePK updatedBy) {
@@ -5454,7 +5454,7 @@ public class ContentControl
     }
     
     public ContentWebAddressDescriptionTransfer getContentWebAddressDescriptionTransfer(UserVisit userVisit, ContentWebAddressDescription contentWebAddressDescription) {
-        return getContentTransferCaches(userVisit).getContentWebAddressDescriptionTransferCache().getContentWebAddressDescriptionTransfer(contentWebAddressDescription);
+        return getContentTransferCaches().getContentWebAddressDescriptionTransferCache().getContentWebAddressDescriptionTransfer(userVisit, contentWebAddressDescription);
     }
     
     public List<ContentWebAddressDescriptionTransfer> getContentWebAddressDescriptionTransfers(UserVisit userVisit, ContentWebAddress contentWebAddress) {

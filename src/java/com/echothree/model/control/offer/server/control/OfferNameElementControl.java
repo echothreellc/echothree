@@ -169,7 +169,7 @@ public class OfferNameElementControl
     }
     
     public OfferNameElementTransfer getOfferNameElementTransfer(UserVisit userVisit, OfferNameElement offerNameElement) {
-        return getOfferTransferCaches(userVisit).getOfferNameElementTransferCache().getOfferNameElementTransfer(offerNameElement);
+        return getOfferTransferCaches().getOfferNameElementTransferCache().getOfferNameElementTransfer(userVisit, offerNameElement);
     }
     
     public List<OfferNameElementTransfer> getOfferNameElementTransfers(UserVisit userVisit, Collection<OfferNameElement> offerNameElements) {
@@ -345,7 +345,7 @@ public class OfferNameElementControl
     
     public OfferNameElementDescriptionTransfer getOfferNameElementDescriptionTransfer(UserVisit userVisit,
             OfferNameElementDescription offerNameElementDescription) {
-        return getOfferTransferCaches(userVisit).getOfferNameElementDescriptionTransferCache().getOfferNameElementDescriptionTransfer(offerNameElementDescription);
+        return getOfferTransferCaches().getOfferNameElementDescriptionTransferCache().getOfferNameElementDescriptionTransfer(userVisit, offerNameElementDescription);
     }
     
     public List<OfferNameElementDescriptionTransfer> getOfferNameElementDescriptionTransfersByOfferNameElement(UserVisit userVisit, OfferNameElement offerNameElement) {

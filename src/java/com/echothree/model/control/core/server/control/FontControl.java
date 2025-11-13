@@ -224,7 +224,7 @@ public class FontControl
     }
 
     public FontStyleTransfer getFontStyleTransfer(UserVisit userVisit, FontStyle fontStyle) {
-        return getCoreTransferCaches(userVisit).getFontStyleTransferCache().getFontStyleTransfer(fontStyle);
+        return getCoreTransferCaches().getFontStyleTransferCache().getFontStyleTransfer(userVisit, fontStyle);
     }
 
     public List<FontStyleTransfer> getFontStyleTransfers(UserVisit userVisit, Collection<FontStyle> entities) {
@@ -466,7 +466,7 @@ public class FontControl
     }
 
     public FontStyleDescriptionTransfer getFontStyleDescriptionTransfer(UserVisit userVisit, FontStyleDescription fontStyleDescription) {
-        return getCoreTransferCaches(userVisit).getFontStyleDescriptionTransferCache().getFontStyleDescriptionTransfer(fontStyleDescription);
+        return getCoreTransferCaches().getFontStyleDescriptionTransferCache().getFontStyleDescriptionTransfer(userVisit, fontStyleDescription);
     }
 
     public List<FontStyleDescriptionTransfer> getFontStyleDescriptionTransfersByFontStyle(UserVisit userVisit, FontStyle fontStyle) {
@@ -676,7 +676,7 @@ public class FontControl
     }
 
     public FontWeightTransfer getFontWeightTransfer(UserVisit userVisit, FontWeight fontWeight) {
-        return getCoreTransferCaches(userVisit).getFontWeightTransferCache().getFontWeightTransfer(fontWeight);
+        return getCoreTransferCaches().getFontWeightTransferCache().getFontWeightTransfer(userVisit, fontWeight);
     }
 
     public List<FontWeightTransfer> getFontWeightTransfers(UserVisit userVisit, Collection<FontWeight> entities) {
@@ -918,7 +918,7 @@ public class FontControl
     }
 
     public FontWeightDescriptionTransfer getFontWeightDescriptionTransfer(UserVisit userVisit, FontWeightDescription fontWeightDescription) {
-        return getCoreTransferCaches(userVisit).getFontWeightDescriptionTransferCache().getFontWeightDescriptionTransfer(fontWeightDescription);
+        return getCoreTransferCaches().getFontWeightDescriptionTransferCache().getFontWeightDescriptionTransfer(userVisit, fontWeightDescription);
     }
 
     public List<FontWeightDescriptionTransfer> getFontWeightDescriptionTransfersByFontWeight(UserVisit userVisit, FontWeight fontWeight) {

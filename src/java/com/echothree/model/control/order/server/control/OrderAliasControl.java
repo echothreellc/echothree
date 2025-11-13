@@ -195,7 +195,7 @@ public class OrderAliasControl
     }
 
     public OrderAliasTypeTransfer getOrderAliasTypeTransfer(UserVisit userVisit, OrderAliasType orderAliasType) {
-        return getOrderTransferCaches(userVisit).getOrderAliasTypeTransferCache().getOrderAliasTypeTransfer(orderAliasType);
+        return getOrderTransferCaches().getOrderAliasTypeTransferCache().getOrderAliasTypeTransfer(userVisit, orderAliasType);
     }
 
     public List<OrderAliasTypeTransfer> getOrderAliasTypeTransfers(UserVisit userVisit, OrderType orderType) {
@@ -433,7 +433,7 @@ public class OrderAliasControl
     }
 
     public OrderAliasTypeDescriptionTransfer getOrderAliasTypeDescriptionTransfer(UserVisit userVisit, OrderAliasTypeDescription orderAliasTypeDescription) {
-        return getOrderTransferCaches(userVisit).getOrderAliasTypeDescriptionTransferCache().getOrderAliasTypeDescriptionTransfer(orderAliasTypeDescription);
+        return getOrderTransferCaches().getOrderAliasTypeDescriptionTransferCache().getOrderAliasTypeDescriptionTransfer(userVisit, orderAliasTypeDescription);
     }
 
     public List<OrderAliasTypeDescriptionTransfer> getOrderAliasTypeDescriptionTransfersByOrderAliasType(UserVisit userVisit, OrderAliasType orderAliasType) {
@@ -626,7 +626,7 @@ public class OrderAliasControl
     }
 
     public OrderAliasTransfer getOrderAliasTransfer(UserVisit userVisit, OrderAlias orderAlias) {
-        return getOrderTransferCaches(userVisit).getOrderAliasTransferCache().getOrderAliasTransfer(orderAlias);
+        return getOrderTransferCaches().getOrderAliasTransferCache().getOrderAliasTransfer(userVisit, orderAlias);
     }
 
     public List<OrderAliasTransfer> getOrderAliasTransfersByOrder(UserVisit userVisit, Order order) {

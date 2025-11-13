@@ -213,7 +213,7 @@ public class ColorControl
     }
 
     public ColorTransfer getColorTransfer(UserVisit userVisit, Color color) {
-        return getCoreTransferCaches(userVisit).getColorTransferCache().getColorTransfer(color);
+        return getCoreTransferCaches().getColorTransferCache().getColorTransfer(userVisit, color);
     }
 
     public List<ColorTransfer> getColorTransfers(UserVisit userVisit, Collection<Color> entities) {
@@ -458,7 +458,7 @@ public class ColorControl
     }
 
     public ColorDescriptionTransfer getColorDescriptionTransfer(UserVisit userVisit, ColorDescription colorDescription) {
-        return getCoreTransferCaches(userVisit).getColorDescriptionTransferCache().getColorDescriptionTransfer(colorDescription);
+        return getCoreTransferCaches().getColorDescriptionTransferCache().getColorDescriptionTransfer(userVisit, colorDescription);
     }
 
     public List<ColorDescriptionTransfer> getColorDescriptionTransfersByColor(UserVisit userVisit, Color color) {

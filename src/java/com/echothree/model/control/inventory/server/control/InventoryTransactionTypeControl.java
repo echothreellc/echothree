@@ -223,7 +223,7 @@ public class InventoryTransactionTypeControl
     }
 
     public InventoryTransactionTypeTransfer getInventoryTransactionTypeTransfer(UserVisit userVisit, InventoryTransactionType inventoryTransactionType) {
-        return getInventoryTransferCaches(userVisit).getInventoryTransactionTypeTransferCache().getTransfer(inventoryTransactionType);
+        return getInventoryTransferCaches().getInventoryTransactionTypeTransferCache().getTransfer(userVisit, inventoryTransactionType);
     }
 
     public List<InventoryTransactionTypeTransfer> getInventoryTransactionTypeTransfers(UserVisit userVisit, Collection<InventoryTransactionType> inventoryTransactionTypes) {
@@ -468,7 +468,7 @@ public class InventoryTransactionTypeControl
     }
 
     public InventoryTransactionTypeDescriptionTransfer getInventoryTransactionTypeDescriptionTransfer(UserVisit userVisit, InventoryTransactionTypeDescription inventoryTransactionTypeDescription) {
-        return getInventoryTransferCaches(userVisit).getInventoryTransactionTypeDescriptionTransferCache().getTransfer(inventoryTransactionTypeDescription);
+        return getInventoryTransferCaches().getInventoryTransactionTypeDescriptionTransferCache().getTransfer(userVisit, inventoryTransactionTypeDescription);
     }
 
     public List<InventoryTransactionTypeDescriptionTransfer> getInventoryTransactionTypeDescriptionTransfersByInventoryTransactionType(UserVisit userVisit, InventoryTransactionType inventoryTransactionType) {

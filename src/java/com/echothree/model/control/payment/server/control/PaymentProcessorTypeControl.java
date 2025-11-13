@@ -183,7 +183,7 @@ public class PaymentProcessorTypeControl
 
     public PaymentProcessorTypeTransfer getPaymentProcessorTypeTransfer(final UserVisit userVisit,
             final PaymentProcessorType paymentProcessorType) {
-        return getPaymentTransferCaches(userVisit).getPaymentProcessorTypeTransferCache().getTransfer(paymentProcessorType);
+        return getPaymentTransferCaches().getPaymentProcessorTypeTransferCache().getTransfer(userVisit, paymentProcessorType);
     }
 
     public List<PaymentProcessorTypeTransfer> getPaymentProcessorTypeTransfers(final UserVisit userVisit,
@@ -412,7 +412,7 @@ public class PaymentProcessorTypeControl
 
     public PaymentProcessorTypeDescriptionTransfer getPaymentProcessorTypeDescriptionTransfer(final UserVisit userVisit,
             final PaymentProcessorTypeDescription paymentProcessorTypeDescription) {
-        return getPaymentTransferCaches(userVisit).getPaymentProcessorTypeDescriptionTransferCache().getTransfer(paymentProcessorTypeDescription);
+        return getPaymentTransferCaches().getPaymentProcessorTypeDescriptionTransferCache().getTransfer(userVisit, paymentProcessorTypeDescription);
     }
 
     public List<PaymentProcessorTypeDescriptionTransfer> getPaymentProcessorTypeDescriptionTransfersByPaymentProcessorType(final UserVisit userVisit,

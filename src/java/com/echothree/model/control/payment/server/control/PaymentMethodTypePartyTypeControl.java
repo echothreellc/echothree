@@ -227,7 +227,7 @@ public class PaymentMethodTypePartyTypeControl
 
     public PaymentMethodTypePartyTypeTransfer getPaymentMethodTypePartyTypeTransfer(final UserVisit userVisit,
             final PaymentMethodTypePartyType paymentMethodTypePartyType) {
-        return getPaymentTransferCaches(userVisit).getPaymentMethodTypePartyTypeTransferCache().getTransfer(paymentMethodTypePartyType);
+        return getPaymentTransferCaches().getPaymentMethodTypePartyTypeTransferCache().getTransfer(userVisit, paymentMethodTypePartyType);
     }
 
     public List<PaymentMethodTypePartyTypeTransfer> getPaymentMethodTypePartyTypeTransfers(final UserVisit userVisit,

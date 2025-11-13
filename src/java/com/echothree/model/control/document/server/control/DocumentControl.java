@@ -291,7 +291,7 @@ public class DocumentControl
     }
 
     public DocumentTypeTransfer getDocumentTypeTransfer(UserVisit userVisit, DocumentType documentType) {
-        return getDocumentTransferCaches(userVisit).getDocumentTypeTransferCache().getDocumentTypeTransfer(documentType);
+        return getDocumentTransferCaches().getDocumentTypeTransferCache().getDocumentTypeTransfer(userVisit, documentType);
     }
     
     public List<DocumentTypeTransfer> getDocumentTypeTransfers(UserVisit userVisit) {
@@ -561,7 +561,7 @@ public class DocumentControl
     }
     
     public DocumentTypeDescriptionTransfer getDocumentTypeDescriptionTransfer(UserVisit userVisit, DocumentTypeDescription documentTypeDescription) {
-        return getDocumentTransferCaches(userVisit).getDocumentTypeDescriptionTransferCache().getDocumentTypeDescriptionTransfer(documentTypeDescription);
+        return getDocumentTransferCaches().getDocumentTypeDescriptionTransferCache().getDocumentTypeDescriptionTransfer(userVisit, documentTypeDescription);
     }
     
     public List<DocumentTypeDescriptionTransfer> getDocumentTypeDescriptionTransfersByDocumentType(UserVisit userVisit, DocumentType documentType) {
@@ -749,7 +749,7 @@ public class DocumentControl
     }
 
     public DocumentTypeUsageTypeTransfer getDocumentTypeUsageTypeTransfer(UserVisit userVisit, DocumentTypeUsageType documentTypeUsageType) {
-        return getDocumentTransferCaches(userVisit).getDocumentTypeUsageTypeTransferCache().getDocumentTypeUsageTypeTransfer(documentTypeUsageType);
+        return getDocumentTransferCaches().getDocumentTypeUsageTypeTransferCache().getDocumentTypeUsageTypeTransfer(userVisit, documentTypeUsageType);
     }
 
     public List<DocumentTypeUsageTypeTransfer> getDocumentTypeUsageTypeTransfers(UserVisit userVisit) {
@@ -989,7 +989,7 @@ public class DocumentControl
     }
 
     public DocumentTypeUsageTypeDescriptionTransfer getDocumentTypeUsageTypeDescriptionTransfer(UserVisit userVisit, DocumentTypeUsageTypeDescription documentTypeUsageTypeDescription) {
-        return getDocumentTransferCaches(userVisit).getDocumentTypeUsageTypeDescriptionTransferCache().getDocumentTypeUsageTypeDescriptionTransfer(documentTypeUsageTypeDescription);
+        return getDocumentTransferCaches().getDocumentTypeUsageTypeDescriptionTransferCache().getDocumentTypeUsageTypeDescriptionTransfer(userVisit, documentTypeUsageTypeDescription);
     }
 
     public List<DocumentTypeUsageTypeDescriptionTransfer> getDocumentTypeUsageTypeDescriptionTransfersByDocumentTypeUsageType(UserVisit userVisit, DocumentTypeUsageType documentTypeUsageType) {
@@ -1203,7 +1203,7 @@ public class DocumentControl
     }
 
     public DocumentTypeUsageTransfer getDocumentTypeUsageTransfer(UserVisit userVisit, DocumentTypeUsage documentTypeUsage) {
-        return getDocumentTransferCaches(userVisit).getDocumentTypeUsageTransferCache().getDocumentTypeUsageTransfer(documentTypeUsage);
+        return getDocumentTransferCaches().getDocumentTypeUsageTransferCache().getDocumentTypeUsageTransfer(userVisit, documentTypeUsage);
     }
 
     public List<DocumentTypeUsageTransfer> getDocumentTypeUsageTransfers(UserVisit userVisit, Collection<DocumentTypeUsage> documentTypeUsages) {
@@ -1432,7 +1432,7 @@ public class DocumentControl
     }
 
     public DocumentTransfer getDocumentTransfer(UserVisit userVisit, Document document) {
-        return getDocumentTransferCaches(userVisit).getDocumentTransferCache().getDocumentTransfer(document);
+        return getDocumentTransferCaches().getDocumentTransferCache().getDocumentTransfer(userVisit, document);
     }
     
     public void updateDocumentFromValue(DocumentDetailValue documentDetailValue, BasePK updatedBy) {
@@ -1809,7 +1809,7 @@ public class DocumentControl
     }
     
     public DocumentDescriptionTransfer getDocumentDescriptionTransfer(UserVisit userVisit, DocumentDescription documentDescription) {
-        return getDocumentTransferCaches(userVisit).getDocumentDescriptionTransferCache().getDocumentDescriptionTransfer(documentDescription);
+        return getDocumentTransferCaches().getDocumentDescriptionTransferCache().getDocumentDescriptionTransfer(userVisit, documentDescription);
     }
     
     public List<DocumentDescriptionTransfer> getDocumentDescriptionTransfersByDocument(UserVisit userVisit, Document document) {
@@ -1820,7 +1820,7 @@ public class DocumentControl
             documentDescriptionTransfers = new ArrayList<>(documentDescriptions.size());
             
             for(var documentDescription : documentDescriptions) {
-                documentDescriptionTransfers.add(getDocumentTransferCaches(userVisit).getDocumentDescriptionTransferCache().getDocumentDescriptionTransfer(documentDescription));
+                documentDescriptionTransfers.add(getDocumentTransferCaches().getDocumentDescriptionTransferCache().getDocumentDescriptionTransfer(userVisit, documentDescription));
             }
         }
         
@@ -2025,7 +2025,7 @@ public class DocumentControl
     }
 
     public PartyTypeDocumentTypeUsageTypeTransfer getPartyTypeDocumentTypeUsageTypeTransfer(UserVisit userVisit, PartyTypeDocumentTypeUsageType partyTypeDocumentTypeUsageType) {
-        return getDocumentTransferCaches(userVisit).getPartyTypeDocumentTypeUsageTypeTransferCache().getPartyTypeDocumentTypeUsageTypeTransfer(partyTypeDocumentTypeUsageType);
+        return getDocumentTransferCaches().getPartyTypeDocumentTypeUsageTypeTransferCache().getPartyTypeDocumentTypeUsageTypeTransfer(userVisit, partyTypeDocumentTypeUsageType);
     }
 
     public List<PartyTypeDocumentTypeUsageTypeTransfer> getPartyTypeDocumentTypeUsageTypeTransfers(UserVisit userVisit, Collection<PartyTypeDocumentTypeUsageType> partyTypeDocumentTypeUsageTypes) {
@@ -2349,7 +2349,7 @@ public class DocumentControl
     }
 
     public PartyDocumentTransfer getPartyDocumentTransfer(UserVisit userVisit, PartyDocument partyDocument) {
-        return getDocumentTransferCaches(userVisit).getPartyDocumentTransferCache().getPartyDocumentTransfer(partyDocument);
+        return getDocumentTransferCaches().getPartyDocumentTransferCache().getPartyDocumentTransfer(userVisit, partyDocument);
     }
 
     public List<PartyDocumentTransfer> getPartyDocumentTransfers(UserVisit userVisit, Collection<PartyDocument> partyDocuments) {

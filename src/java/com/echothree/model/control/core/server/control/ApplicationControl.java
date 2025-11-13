@@ -214,7 +214,7 @@ public class ApplicationControl
     }
 
     public ApplicationTransfer getApplicationTransfer(UserVisit userVisit, Application application) {
-        return getCoreTransferCaches(userVisit).getApplicationTransferCache().getApplicationTransfer(application);
+        return getCoreTransferCaches().getApplicationTransferCache().getApplicationTransfer(userVisit, application);
     }
 
     public List<ApplicationTransfer> getApplicationTransfers(UserVisit userVisit) {
@@ -453,7 +453,7 @@ public class ApplicationControl
     }
 
     public ApplicationDescriptionTransfer getApplicationDescriptionTransfer(UserVisit userVisit, ApplicationDescription applicationDescription) {
-        return getCoreTransferCaches(userVisit).getApplicationDescriptionTransferCache().getApplicationDescriptionTransfer(applicationDescription);
+        return getCoreTransferCaches().getApplicationDescriptionTransferCache().getApplicationDescriptionTransfer(userVisit, applicationDescription);
     }
 
     public List<ApplicationDescriptionTransfer> getApplicationDescriptionTransfersByApplication(UserVisit userVisit, Application application) {
@@ -677,7 +677,7 @@ public class ApplicationControl
     }
 
     public ApplicationEditorTransfer getApplicationEditorTransfer(UserVisit userVisit, ApplicationEditor applicationEditor) {
-        return getCoreTransferCaches(userVisit).getApplicationEditorTransferCache().getApplicationEditorTransfer(applicationEditor);
+        return getCoreTransferCaches().getApplicationEditorTransferCache().getApplicationEditorTransfer(userVisit, applicationEditor);
     }
 
     public List<ApplicationEditorTransfer> getApplicationEditorTransfers(List<ApplicationEditor> applicationEditors, UserVisit userVisit) {
@@ -1014,7 +1014,7 @@ public class ApplicationControl
     }
 
     public ApplicationEditorUseTransfer getApplicationEditorUseTransfer(UserVisit userVisit, ApplicationEditorUse applicationEditorUse) {
-        return getCoreTransferCaches(userVisit).getApplicationEditorUseTransferCache().getApplicationEditorUseTransfer(applicationEditorUse);
+        return getCoreTransferCaches().getApplicationEditorUseTransferCache().getApplicationEditorUseTransfer(userVisit, applicationEditorUse);
     }
 
     public List<ApplicationEditorUseTransfer> getApplicationEditorUseTransfers(List<ApplicationEditorUse> applicationEditorUses, UserVisit userVisit) {
@@ -1276,7 +1276,7 @@ public class ApplicationControl
     }
 
     public ApplicationEditorUseDescriptionTransfer getApplicationEditorUseDescriptionTransfer(UserVisit userVisit, ApplicationEditorUseDescription applicationEditorUseDescription) {
-        return getCoreTransferCaches(userVisit).getApplicationEditorUseDescriptionTransferCache().getApplicationEditorUseDescriptionTransfer(applicationEditorUseDescription);
+        return getCoreTransferCaches().getApplicationEditorUseDescriptionTransferCache().getApplicationEditorUseDescriptionTransfer(userVisit, applicationEditorUseDescription);
     }
 
     public List<ApplicationEditorUseDescriptionTransfer> getApplicationEditorUseDescriptionTransfersByApplicationEditorUse(UserVisit userVisit, ApplicationEditorUse applicationEditorUse) {

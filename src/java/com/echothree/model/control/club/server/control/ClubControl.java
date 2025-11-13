@@ -277,7 +277,7 @@ public class ClubControl
     }
     
     public ClubTransfer getClubTransfer(UserVisit userVisit, Club club) {
-        return getClubTransferCaches(userVisit).getClubTransferCache().getClubTransfer(club);
+        return getClubTransferCaches().getClubTransferCache().getClubTransfer(userVisit, club);
     }
     
     public List<ClubTransfer> getClubTransfers(UserVisit userVisit) {
@@ -497,7 +497,7 @@ public class ClubControl
     
     public ClubDescriptionTransfer getClubDescriptionTransfer(UserVisit userVisit,
             ClubDescription clubDescription) {
-        return getClubTransferCaches(userVisit).getClubDescriptionTransferCache().getClubDescriptionTransfer(clubDescription);
+        return getClubTransferCaches().getClubDescriptionTransferCache().getClubDescriptionTransfer(userVisit, clubDescription);
     }
     
     public List<ClubDescriptionTransfer> getClubDescriptionTransfersByClub(UserVisit userVisit,
@@ -612,7 +612,7 @@ public class ClubControl
     }
     
     public ClubItemTypeTransfer getClubItemTypeTransfer(UserVisit userVisit, ClubItemType clubItemType) {
-        return getClubTransferCaches(userVisit).getClubItemTypeTransferCache().getClubItemTypeTransfer(clubItemType);
+        return getClubTransferCaches().getClubItemTypeTransferCache().getClubItemTypeTransfer(userVisit, clubItemType);
     }
     
     public List<ClubItemTypeTransfer> getClubItemTypeTransfers(UserVisit userVisit) {
@@ -810,7 +810,7 @@ public class ClubControl
     }
     
     public ClubItemTransfer getClubItemTransfer(UserVisit userVisit, ClubItem clubItem) {
-        return getClubTransferCaches(userVisit).getClubItemTransferCache().getClubItemTransfer(clubItem);
+        return getClubTransferCaches().getClubItemTransferCache().getClubItemTransfer(userVisit, clubItem);
     }
     
     private List<ClubItemTransfer> getClubItemTransfers(UserVisit userVisit, Collection<ClubItem> clubItems) {

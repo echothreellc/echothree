@@ -220,7 +220,7 @@ public class TermControl
     }
 
     public TermTypeTransfer getTermTypeTransfer(UserVisit userVisit, TermType termType) {
-        return getTermTransferCaches(userVisit).getTermTypeTransferCache().getTermTypeTransfer(termType);
+        return getTermTransferCaches().getTermTypeTransferCache().getTermTypeTransfer(userVisit, termType);
     }
 
     public List<TermTypeTransfer> getTermTypeTransfers(UserVisit userVisit, Collection<TermType> termTypes) {
@@ -512,7 +512,7 @@ public class TermControl
     }
     
     public TermTransfer getTermTransfer(UserVisit userVisit, Term term) {
-        return getTermTransferCaches(userVisit).getTermTransferCache().getTermTransfer(term);
+        return getTermTransferCaches().getTermTransferCache().getTermTransfer(userVisit, term);
     }
 
     public List<TermTransfer> getTermTransfers(UserVisit userVisit, Collection<Term> terms) {
@@ -727,7 +727,7 @@ public class TermControl
     }
     
     public TermDescriptionTransfer getTermDescriptionTransfer(UserVisit userVisit, TermDescription termDescription) {
-        return getTermTransferCaches(userVisit).getTermDescriptionTransferCache().getTermDescriptionTransfer(termDescription);
+        return getTermTransferCaches().getTermDescriptionTransferCache().getTermDescriptionTransfer(userVisit, termDescription);
     }
     
     public List<TermDescriptionTransfer> getTermDescriptionTransfersByTerm(UserVisit userVisit, Term term) {
@@ -735,7 +735,7 @@ public class TermControl
         List<TermDescriptionTransfer> termDescriptionTransfers = new ArrayList<>(termDescriptions.size());
         
         termDescriptions.forEach((termDescription) -> {
-            termDescriptionTransfers.add(getTermTransferCaches(userVisit).getTermDescriptionTransferCache().getTermDescriptionTransfer(termDescription));
+            termDescriptionTransfers.add(getTermTransferCaches().getTermDescriptionTransferCache().getTermDescriptionTransfer(userVisit, termDescription));
         });
         
         return termDescriptionTransfers;
@@ -1066,7 +1066,7 @@ public class TermControl
     }
     
     public CustomerTypeCreditLimitTransfer getCustomerTypeCreditLimitTransfer(UserVisit userVisit, CustomerTypeCreditLimit customerTypeCreditLimit) {
-        return getTermTransferCaches(userVisit).getCustomerTypeCreditLimitTransferCache().getCustomerTypeCreditLimitTransfer(customerTypeCreditLimit);
+        return getTermTransferCaches().getCustomerTypeCreditLimitTransferCache().getCustomerTypeCreditLimitTransfer(userVisit, customerTypeCreditLimit);
     }
     
     public List<CustomerTypeCreditLimitTransfer> getCustomerTypeCreditLimitTransfersByCustomerType(UserVisit userVisit, CustomerType customerType) {
@@ -1217,7 +1217,7 @@ public class TermControl
     }
     
     public PartyCreditLimitTransfer getPartyCreditLimitTransfer(UserVisit userVisit, PartyCreditLimit partyCreditLimit) {
-        return getTermTransferCaches(userVisit).getPartyCreditLimitTransferCache().getPartyCreditLimitTransfer(partyCreditLimit);
+        return getTermTransferCaches().getPartyCreditLimitTransferCache().getPartyCreditLimitTransfer(userVisit, partyCreditLimit);
     }
     
     public List<PartyCreditLimitTransfer> getPartyCreditLimitTransfersByParty(UserVisit userVisit, Party party) {
@@ -1368,11 +1368,11 @@ public class TermControl
     public PartyTermTransfer getPartyTermTransfer(UserVisit userVisit, Party party) {
         var partyTerm = getPartyTerm(party);
         
-        return partyTerm == null? null: getTermTransferCaches(userVisit).getPartyTermTransferCache().getPartyTermTransfer(partyTerm);
+        return partyTerm == null? null: getTermTransferCaches().getPartyTermTransferCache().getPartyTermTransfer(userVisit, partyTerm);
     }
     
     public PartyTermTransfer getPartyTermTransfer(UserVisit userVisit, PartyTerm partyTerm) {
-        return getTermTransferCaches(userVisit).getPartyTermTransferCache().getPartyTermTransfer(partyTerm);
+        return getTermTransferCaches().getPartyTermTransferCache().getPartyTermTransfer(userVisit, partyTerm);
     }
     
     public void updatePartyTermFromValue(PartyTermValue partyTermValue, BasePK updatedBy) {

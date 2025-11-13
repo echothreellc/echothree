@@ -226,7 +226,7 @@ public class OrderPriorityControl
     }
 
     public OrderPriorityTransfer getOrderPriorityTransfer(UserVisit userVisit, OrderPriority orderPriority) {
-        return getOrderTransferCaches(userVisit).getOrderPriorityTransferCache().getOrderPriorityTransfer(orderPriority);
+        return getOrderTransferCaches().getOrderPriorityTransferCache().getOrderPriorityTransfer(userVisit, orderPriority);
     }
 
     public List<OrderPriorityTransfer> getOrderPriorityTransfers(UserVisit userVisit, Collection<OrderPriority> orderPriorities) {
@@ -456,7 +456,7 @@ public class OrderPriorityControl
     }
 
     public OrderPriorityDescriptionTransfer getOrderPriorityDescriptionTransfer(UserVisit userVisit, OrderPriorityDescription orderPriorityDescription) {
-        return getOrderTransferCaches(userVisit).getOrderPriorityDescriptionTransferCache().getOrderPriorityDescriptionTransfer(orderPriorityDescription);
+        return getOrderTransferCaches().getOrderPriorityDescriptionTransferCache().getOrderPriorityDescriptionTransfer(userVisit, orderPriorityDescription);
     }
 
     public List<OrderPriorityDescriptionTransfer> getOrderPriorityDescriptionTransfersByOrderPriority(UserVisit userVisit, OrderPriority orderPriority) {

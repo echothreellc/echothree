@@ -181,7 +181,7 @@ public class PaymentProcessorResultCodeControl
 
     public PaymentProcessorResultCodeTransfer getPaymentProcessorResultCodeTransfer(final UserVisit userVisit,
             final PaymentProcessorResultCode paymentProcessorResultCode) {
-        return getPaymentTransferCaches(userVisit).getPaymentProcessorResultCodeTransferCache().getTransfer(paymentProcessorResultCode);
+        return getPaymentTransferCaches().getPaymentProcessorResultCodeTransferCache().getTransfer(userVisit, paymentProcessorResultCode);
     }
 
     public List<PaymentProcessorResultCodeTransfer> getPaymentProcessorResultCodeTransfers(final UserVisit userVisit,
@@ -408,7 +408,7 @@ public class PaymentProcessorResultCodeControl
 
     public PaymentProcessorResultCodeDescriptionTransfer getPaymentProcessorResultCodeDescriptionTransfer(final UserVisit userVisit,
             final PaymentProcessorResultCodeDescription paymentProcessorResultCodeDescription) {
-        return getPaymentTransferCaches(userVisit).getPaymentProcessorResultCodeDescriptionTransferCache().getTransfer(paymentProcessorResultCodeDescription);
+        return getPaymentTransferCaches().getPaymentProcessorResultCodeDescriptionTransferCache().getTransfer(userVisit, paymentProcessorResultCodeDescription);
     }
 
     public List<PaymentProcessorResultCodeDescriptionTransfer> getPaymentProcessorResultCodeDescriptionTransfersByPaymentProcessorResultCode(final UserVisit userVisit,

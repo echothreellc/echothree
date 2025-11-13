@@ -224,7 +224,7 @@ public class PaymentProcessorTypeActionControl
 
     public PaymentProcessorTypeActionTransfer getPaymentProcessorTypeActionTransfer(final UserVisit userVisit,
             final PaymentProcessorTypeAction paymentProcessorTypeAction) {
-        return getPaymentTransferCaches(userVisit).getPaymentProcessorTypeActionTransferCache().getTransfer(paymentProcessorTypeAction);
+        return getPaymentTransferCaches().getPaymentProcessorTypeActionTransferCache().getTransfer(userVisit, paymentProcessorTypeAction);
     }
 
     public List<PaymentProcessorTypeActionTransfer> getPaymentProcessorTypeActionTransfers(final UserVisit userVisit,

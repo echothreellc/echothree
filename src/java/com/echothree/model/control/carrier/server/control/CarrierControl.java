@@ -278,7 +278,7 @@ public class CarrierControl
     }
 
     public CarrierTypeTransfer getCarrierTypeTransfer(UserVisit userVisit, CarrierType carrierType) {
-        return getCarrierTransferCaches(userVisit).getCarrierTypeTransferCache().getCarrierTypeTransfer(carrierType);
+        return getCarrierTransferCaches().getCarrierTypeTransferCache().getCarrierTypeTransfer(userVisit, carrierType);
     }
 
     public List<CarrierTypeTransfer> getCarrierTypeTransfers(UserVisit userVisit, Collection<CarrierType> carrierTypes) {
@@ -513,7 +513,7 @@ public class CarrierControl
     }
 
     public CarrierTypeDescriptionTransfer getCarrierTypeDescriptionTransfer(UserVisit userVisit, CarrierTypeDescription carrierTypeDescription) {
-        return getCarrierTransferCaches(userVisit).getCarrierTypeDescriptionTransferCache().getCarrierTypeDescriptionTransfer(carrierTypeDescription);
+        return getCarrierTransferCaches().getCarrierTypeDescriptionTransferCache().getCarrierTypeDescriptionTransfer(userVisit, carrierTypeDescription);
     }
 
     public List<CarrierTypeDescriptionTransfer> getCarrierTypeDescriptionTransfersByCarrierType(UserVisit userVisit, CarrierType carrierType) {
@@ -752,7 +752,7 @@ public class CarrierControl
     }
     
     public CarrierTransfer getCarrierTransfer(UserVisit userVisit, Carrier carrier) {
-        return getCarrierTransferCaches(userVisit).getCarrierTransferCache().getCarrierTransfer(carrier);
+        return getCarrierTransferCaches().getCarrierTransferCache().getCarrierTransfer(userVisit, carrier);
     }
     
     public CarrierTransfer getCarrierTransfer(UserVisit userVisit, Party party) {
@@ -764,7 +764,7 @@ public class CarrierControl
         List<CarrierTransfer> carrierTransfers = new ArrayList<>(carriers.size());
         
         carriers.forEach((carrier) -> {
-            carrierTransfers.add(getCarrierTransferCaches(userVisit).getCarrierTransferCache().getCarrierTransfer(carrier));
+            carrierTransfers.add(getCarrierTransferCaches().getCarrierTransferCache().getCarrierTransfer(userVisit, carrier));
         });
         
         return carrierTransfers;
@@ -1081,7 +1081,7 @@ public class CarrierControl
     }
     
     public CarrierServiceTransfer getCarrierServiceTransfer(UserVisit userVisit, CarrierService carrierService) {
-        return getCarrierTransferCaches(userVisit).getCarrierServiceTransferCache().getCarrierServiceTransfer(carrierService);
+        return getCarrierTransferCaches().getCarrierServiceTransferCache().getCarrierServiceTransfer(userVisit, carrierService);
     }
     
     public List<CarrierServiceTransfer> getCarrierServiceTransfers(UserVisit userVisit, Party carrierParty) {
@@ -1314,7 +1314,7 @@ public class CarrierControl
     }
     
     public CarrierServiceDescriptionTransfer getCarrierServiceDescriptionTransfer(UserVisit userVisit, CarrierServiceDescription carrierServiceDescription) {
-        return getCarrierTransferCaches(userVisit).getCarrierServiceDescriptionTransferCache().getCarrierServiceDescriptionTransfer(carrierServiceDescription);
+        return getCarrierTransferCaches().getCarrierServiceDescriptionTransferCache().getCarrierServiceDescriptionTransfer(userVisit, carrierServiceDescription);
     }
     
     public List<CarrierServiceDescriptionTransfer> getCarrierServiceDescriptionTransfers(UserVisit userVisit, CarrierService carrierService) {
@@ -1565,7 +1565,7 @@ public class CarrierControl
     }
     
     public CarrierOptionTransfer getCarrierOptionTransfer(UserVisit userVisit, CarrierOption carrierOption) {
-        return getCarrierTransferCaches(userVisit).getCarrierOptionTransferCache().getCarrierOptionTransfer(carrierOption);
+        return getCarrierTransferCaches().getCarrierOptionTransferCache().getCarrierOptionTransfer(userVisit, carrierOption);
     }
     
     public List<CarrierOptionTransfer> getCarrierOptionTransfers(UserVisit userVisit, Party carrierParty) {
@@ -1805,7 +1805,7 @@ public class CarrierControl
     }
     
     public CarrierOptionDescriptionTransfer getCarrierOptionDescriptionTransfer(UserVisit userVisit, CarrierOptionDescription carrierOptionDescription) {
-        return getCarrierTransferCaches(userVisit).getCarrierOptionDescriptionTransferCache().getCarrierOptionDescriptionTransfer(carrierOptionDescription);
+        return getCarrierTransferCaches().getCarrierOptionDescriptionTransferCache().getCarrierOptionDescriptionTransfer(userVisit, carrierOptionDescription);
     }
     
     public List<CarrierOptionDescriptionTransfer> getCarrierOptionDescriptionTransfers(UserVisit userVisit, CarrierOption carrierOption) {
@@ -2003,7 +2003,7 @@ public class CarrierControl
     }
     
     public CarrierServiceOptionTransfer getCarrierServiceOptionTransfer(UserVisit userVisit, CarrierServiceOption carrierServiceOption) {
-        return getCarrierTransferCaches(userVisit).getCarrierServiceOptionTransferCache().getCarrierServiceOptionTransfer(carrierServiceOption);
+        return getCarrierTransferCaches().getCarrierServiceOptionTransferCache().getCarrierServiceOptionTransfer(userVisit, carrierServiceOption);
     }
     
     public List<CarrierServiceOptionTransfer> getCarrierServiceOptionTransfers(UserVisit userVisit, Collection<CarrierServiceOption> carrierServiceOptions) {
@@ -2220,7 +2220,7 @@ public class CarrierControl
     }
     
     public PartyCarrierTransfer getPartyCarrierTransfer(UserVisit userVisit, PartyCarrier partyCarrier) {
-        return getCarrierTransferCaches(userVisit).getPartyCarrierTransferCache().getPartyCarrierTransfer(partyCarrier);
+        return getCarrierTransferCaches().getPartyCarrierTransferCache().getPartyCarrierTransfer(userVisit, partyCarrier);
     }
     
     public List<PartyCarrierTransfer> getPartyCarrierTransfersByParty(UserVisit userVisit, List<PartyCarrier> partyCarriers) {
@@ -2394,7 +2394,7 @@ public class CarrierControl
     }
 
     public PartyCarrierAccountTransfer getPartyCarrierAccountTransfer(UserVisit userVisit, PartyCarrierAccount partyCarrierAccount) {
-        return getCarrierTransferCaches(userVisit).getPartyCarrierAccountTransferCache().getPartyCarrierAccountTransfer(partyCarrierAccount);
+        return getCarrierTransferCaches().getPartyCarrierAccountTransferCache().getPartyCarrierAccountTransfer(userVisit, partyCarrierAccount);
     }
 
     public List<PartyCarrierAccountTransfer> getPartyCarrierAccountTransfers(UserVisit userVisit, Collection<PartyCarrierAccount> partyCarrierAccounts) {

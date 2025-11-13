@@ -198,7 +198,7 @@ public class EditorControl
     }
 
     public EditorTransfer getEditorTransfer(UserVisit userVisit, Editor editor) {
-        return getCoreTransferCaches(userVisit).getEditorTransferCache().getEditorTransfer(editor);
+        return getCoreTransferCaches().getEditorTransferCache().getEditorTransfer(userVisit, editor);
     }
 
     public List<EditorTransfer> getEditorTransfers(UserVisit userVisit) {
@@ -446,7 +446,7 @@ public class EditorControl
     }
 
     public EditorDescriptionTransfer getEditorDescriptionTransfer(UserVisit userVisit, EditorDescription editorDescription) {
-        return getCoreTransferCaches(userVisit).getEditorDescriptionTransferCache().getEditorDescriptionTransfer(editorDescription);
+        return getCoreTransferCaches().getEditorDescriptionTransferCache().getEditorDescriptionTransfer(userVisit, editorDescription);
     }
 
     public List<EditorDescriptionTransfer> getEditorDescriptionTransfersByEditor(UserVisit userVisit, Editor editor) {

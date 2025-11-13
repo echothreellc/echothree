@@ -203,7 +203,7 @@ public class MessageControl
     }
     
     public MessageTypeTransfer getMessageTypeTransfer(UserVisit userVisit, MessageType messageType) {
-        return getMessageTransferCaches(userVisit).getMessageTypeTransferCache().getMessageTypeTransfer(messageType);
+        return getMessageTransferCaches().getMessageTypeTransferCache().getMessageTypeTransfer(userVisit, messageType);
     }
     
     public List<MessageTypeTransfer> getMessageTypeTransfers(UserVisit userVisit, EntityType entityType) {
@@ -382,7 +382,7 @@ public class MessageControl
     }
     
     public MessageTypeDescriptionTransfer getMessageTypeDescriptionTransfer(UserVisit userVisit, MessageTypeDescription messageTypeDescription) {
-        return getMessageTransferCaches(userVisit).getMessageTypeDescriptionTransferCache().getMessageTypeDescriptionTransfer(messageTypeDescription);
+        return getMessageTransferCaches().getMessageTypeDescriptionTransferCache().getMessageTypeDescriptionTransfer(userVisit, messageTypeDescription);
     }
     
     public List<MessageTypeDescriptionTransfer> getMessageTypeDescriptionTransfers(UserVisit userVisit, MessageType messageType) {
@@ -629,7 +629,7 @@ public class MessageControl
     }
     
     public MessageTransfer getMessageTransfer(UserVisit userVisit, Message message) {
-        return getMessageTransferCaches(userVisit).getMessageTransferCache().getMessageTransfer(message);
+        return getMessageTransferCaches().getMessageTransferCache().getMessageTransfer(userVisit, message);
     }
     
     public List<MessageTransfer> getMessageTransfers(UserVisit userVisit, MessageType messageType) {
@@ -852,7 +852,7 @@ public class MessageControl
     }
     
     public MessageDescriptionTransfer getMessageDescriptionTransfer(UserVisit userVisit, MessageDescription messageDescription) {
-        return getMessageTransferCaches(userVisit).getMessageDescriptionTransferCache().getMessageDescriptionTransfer(messageDescription);
+        return getMessageTransferCaches().getMessageDescriptionTransferCache().getMessageDescriptionTransfer(userVisit, messageDescription);
     }
     
     public List<MessageDescriptionTransfer> getMessageDescriptionTransfers(UserVisit userVisit, Message message) {
@@ -1489,7 +1489,7 @@ public class MessageControl
     }
     
     public EntityMessageTransfer getEntityMessageTransfer(UserVisit userVisit, EntityMessage entityMessage) {
-        return getMessageTransferCaches(userVisit).getEntityMessageTransferCache().getEntityMessageTransfer(entityMessage);
+        return getMessageTransferCaches().getEntityMessageTransferCache().getEntityMessageTransfer(userVisit, entityMessage);
     }
     
     public List<EntityMessageTransfer> getEntityMessageTransfers(UserVisit userVisit, Collection<EntityMessage> entityMessages) {

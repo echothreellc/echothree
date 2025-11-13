@@ -235,7 +235,7 @@ public class OrderTimeControl
     }
 
     public OrderTimeTypeTransfer getOrderTimeTypeTransfer(UserVisit userVisit, OrderTimeType orderTimeType) {
-        return getOrderTransferCaches(userVisit).getOrderTimeTypeTransferCache().getOrderTimeTypeTransfer(orderTimeType);
+        return getOrderTransferCaches().getOrderTimeTypeTransferCache().getOrderTimeTypeTransfer(userVisit, orderTimeType);
     }
 
     public List<OrderTimeTypeTransfer> getOrderTimeTypeTransfers(UserVisit userVisit, Collection<OrderTimeType> orderTimeTypes) {
@@ -465,7 +465,7 @@ public class OrderTimeControl
     }
 
     public OrderTimeTypeDescriptionTransfer getOrderTimeTypeDescriptionTransfer(UserVisit userVisit, OrderTimeTypeDescription orderTimeTypeDescription) {
-        return getOrderTransferCaches(userVisit).getOrderTimeTypeDescriptionTransferCache().getOrderTimeTypeDescriptionTransfer(orderTimeTypeDescription);
+        return getOrderTransferCaches().getOrderTimeTypeDescriptionTransferCache().getOrderTimeTypeDescriptionTransfer(userVisit, orderTimeTypeDescription);
     }
 
     public List<OrderTimeTypeDescriptionTransfer> getOrderTimeTypeDescriptionTransfersByOrderTimeType(UserVisit userVisit, OrderTimeType orderTimeType) {
@@ -650,7 +650,7 @@ public class OrderTimeControl
     }
 
     public OrderTimeTransfer getOrderTimeTransfer(UserVisit userVisit, OrderTime orderTime) {
-        return getOrderTransferCaches(userVisit).getOrderTimeTransferCache().getOrderTimeTransfer(orderTime);
+        return getOrderTransferCaches().getOrderTimeTransferCache().getOrderTimeTransfer(userVisit, orderTime);
     }
 
     public List<OrderTimeTransfer> getOrderTimeTransfers(UserVisit userVisit, Collection<OrderTime> orderTimes) {
@@ -850,7 +850,7 @@ public class OrderTimeControl
     }
 
     public OrderLineTimeTransfer getOrderLineTimeTransfer(UserVisit userVisit, OrderLineTime orderLineTime) {
-        return getOrderTransferCaches(userVisit).getOrderLineTimeTransferCache().getOrderLineTimeTransfer(orderLineTime);
+        return getOrderTransferCaches().getOrderLineTimeTransferCache().getOrderLineTimeTransfer(userVisit, orderLineTime);
     }
 
     public List<OrderLineTimeTransfer> getOrderLineTimeTransfers(UserVisit userVisit, Collection<OrderLineTime> orderLineTimes) {

@@ -293,7 +293,7 @@ public class CoreControl
     }
     
     public EntityAttributeTypeTransfer getEntityAttributeTypeTransfer(UserVisit userVisit, EntityAttributeType entityAttributeType) {
-        return getCoreTransferCaches(userVisit).getEntityAttributeTypeTransferCache().getEntityAttributeTypeTransfer(entityAttributeType);
+        return getCoreTransferCaches().getEntityAttributeTypeTransferCache().getEntityAttributeTypeTransfer(userVisit, entityAttributeType);
     }
     
     public List<EntityAttributeTypeTransfer> getEntityAttributeTypeTransfers(UserVisit userVisit, Collection<EntityAttributeType> entityAttributeTypes) {
@@ -303,7 +303,7 @@ public class CoreControl
             entityAttributeTypeTransfers = new ArrayList<>(entityAttributeTypes.size());
             
             for(var entityAttributeType : entityAttributeTypes) {
-                entityAttributeTypeTransfers.add(getCoreTransferCaches(userVisit).getEntityAttributeTypeTransferCache().getEntityAttributeTypeTransfer(entityAttributeType));
+                entityAttributeTypeTransfers.add(getCoreTransferCaches().getEntityAttributeTypeTransferCache().getEntityAttributeTypeTransfer(userVisit, entityAttributeType));
             }
         }
         
@@ -4039,7 +4039,7 @@ public class CoreControl
     }
 
     public EntityBooleanDefaultTransfer getEntityBooleanDefaultTransfer(UserVisit userVisit, EntityBooleanDefault entityBooleanDefault) {
-        return getCoreTransferCaches(userVisit).getEntityBooleanDefaultTransferCache().getEntityBooleanDefaultTransfer(entityBooleanDefault);
+        return getCoreTransferCaches().getEntityBooleanDefaultTransferCache().getEntityBooleanDefaultTransfer(userVisit, entityBooleanDefault);
     }
 
     public void updateEntityBooleanDefaultFromValue(EntityBooleanDefaultValue entityBooleanDefaultValue, BasePK updatedBy) {
@@ -4362,7 +4362,7 @@ public class CoreControl
     }
 
     public EntityDateDefaultTransfer getEntityDateDefaultTransfer(UserVisit userVisit, EntityDateDefault entityDateDefault) {
-        return getCoreTransferCaches(userVisit).getEntityDateDefaultTransferCache().getEntityDateDefaultTransfer(entityDateDefault);
+        return getCoreTransferCaches().getEntityDateDefaultTransferCache().getEntityDateDefaultTransfer(userVisit, entityDateDefault);
     }
 
     public void updateEntityDateDefaultFromValue(EntityDateDefaultValue entityDateDefaultValue, BasePK updatedBy) {
@@ -4684,7 +4684,7 @@ public class CoreControl
     }
 
     public EntityIntegerDefaultTransfer getEntityIntegerDefaultTransfer(UserVisit userVisit, EntityIntegerDefault entityIntegerDefault) {
-        return getCoreTransferCaches(userVisit).getEntityIntegerDefaultTransferCache().getEntityIntegerDefaultTransfer(entityIntegerDefault);
+        return getCoreTransferCaches().getEntityIntegerDefaultTransferCache().getEntityIntegerDefaultTransfer(userVisit, entityIntegerDefault);
     }
 
     public void updateEntityIntegerDefaultFromValue(EntityIntegerDefaultValue entityIntegerDefaultValue, BasePK updatedBy) {
@@ -5045,7 +5045,7 @@ public class CoreControl
     }
 
     public EntityListItemDefaultTransfer getEntityListItemDefaultTransfer(UserVisit userVisit, EntityListItemDefault entityListItemDefault) {
-        return getCoreTransferCaches(userVisit).getEntityListItemDefaultTransferCache().getEntityListItemDefaultTransfer(entityListItemDefault);
+        return getCoreTransferCaches().getEntityListItemDefaultTransferCache().getEntityListItemDefaultTransfer(userVisit, entityListItemDefault);
     }
 
     public void updateEntityListItemDefaultFromValue(EntityListItemDefaultValue entityListItemDefaultValue, BasePK updatedBy) {
@@ -5386,7 +5386,7 @@ public class CoreControl
     }
 
     public EntityLongDefaultTransfer getEntityLongDefaultTransfer(UserVisit userVisit, EntityLongDefault entityLongDefault) {
-        return getCoreTransferCaches(userVisit).getEntityLongDefaultTransferCache().getEntityLongDefaultTransfer(entityLongDefault);
+        return getCoreTransferCaches().getEntityLongDefaultTransferCache().getEntityLongDefaultTransfer(userVisit, entityLongDefault);
     }
 
     public void updateEntityLongDefaultFromValue(EntityLongDefaultValue entityLongDefaultValue, BasePK updatedBy) {
@@ -5777,7 +5777,7 @@ public class CoreControl
     }
 
     public EntityMultipleListItemDefaultTransfer getEntityMultipleListItemDefaultTransfer(UserVisit userVisit, EntityMultipleListItemDefault entityMultipleListItemDefault) {
-        return getCoreTransferCaches(userVisit).getEntityMultipleListItemDefaultTransferCache().getEntityMultipleListItemDefaultTransfer(entityMultipleListItemDefault);
+        return getCoreTransferCaches().getEntityMultipleListItemDefaultTransferCache().getEntityMultipleListItemDefaultTransfer(userVisit, entityMultipleListItemDefault);
     }
 
     public List<EntityMultipleListItemDefaultTransfer> getEntityMultipleListItemDefaultTransfers(UserVisit userVisit, Collection<EntityMultipleListItemDefault> entityMultipleListItemDefaults) {
@@ -6364,7 +6364,7 @@ public class CoreControl
 
 
     public EntityStringDefaultTransfer getEntityStringDefaultTransfer(UserVisit userVisit, EntityStringDefault entityStringDefault) {
-        return getCoreTransferCaches(userVisit).getEntityStringDefaultTransferCache().getEntityStringDefaultTransfer(entityStringDefault);
+        return getCoreTransferCaches().getEntityStringDefaultTransferCache().getEntityStringDefaultTransfer(userVisit, entityStringDefault);
     }
 
     public void updateEntityStringDefaultFromValue(EntityStringDefaultValue entityStringDefaultValue, BasePK updatedBy) {
@@ -6703,7 +6703,7 @@ public class CoreControl
     }
 
     public EntityGeoPointDefaultTransfer getEntityGeoPointDefaultTransfer(UserVisit userVisit, EntityGeoPointDefault entityGeoPointDefault) {
-        return getCoreTransferCaches(userVisit).getEntityGeoPointDefaultTransferCache().getEntityGeoPointDefaultTransfer(entityGeoPointDefault);
+        return getCoreTransferCaches().getEntityGeoPointDefaultTransferCache().getEntityGeoPointDefaultTransfer(userVisit, entityGeoPointDefault);
     }
 
     public void updateEntityGeoPointDefaultFromValue(EntityGeoPointDefaultValue entityGeoPointDefaultValue, BasePK updatedBy) {
@@ -7029,7 +7029,7 @@ public class CoreControl
     }
 
     public EntityTimeDefaultTransfer getEntityTimeDefaultTransfer(UserVisit userVisit, EntityTimeDefault entityTimeDefault) {
-        return getCoreTransferCaches(userVisit).getEntityTimeDefaultTransferCache().getEntityTimeDefaultTransfer(entityTimeDefault);
+        return getCoreTransferCaches().getEntityTimeDefaultTransferCache().getEntityTimeDefaultTransfer(userVisit, entityTimeDefault);
     }
 
     public void updateEntityTimeDefaultFromValue(EntityTimeDefaultValue entityTimeDefaultValue, BasePK updatedBy) {

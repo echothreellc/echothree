@@ -150,7 +150,7 @@ public class PaymentProcessorActionControl
 
     public PaymentProcessorActionTransfer getPaymentProcessorActionTransfer(final UserVisit userVisit,
             final PaymentProcessorAction paymentProcessorAction) {
-        return getPaymentTransferCaches(userVisit).getPaymentProcessorActionTransferCache().getTransfer(paymentProcessorAction);
+        return getPaymentTransferCaches().getPaymentProcessorActionTransferCache().getTransfer(userVisit, paymentProcessorAction);
     }
 
     public List<PaymentProcessorActionTransfer> getPaymentProcessorActionTransfers(final UserVisit userVisit,

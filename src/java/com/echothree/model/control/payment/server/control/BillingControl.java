@@ -98,7 +98,7 @@ public class BillingControl
     
     public BillingAccountRoleTypeTransfer getBillingAccountRoleTypeTransfer(UserVisit userVisit,
             BillingAccountRoleType billingAccountRoleType) {
-        return getPaymentTransferCaches(userVisit).getBillingAccountRoleTypeTransferCache().getTransfer(billingAccountRoleType);
+        return getPaymentTransferCaches().getBillingAccountRoleTypeTransferCache().getTransfer(userVisit, billingAccountRoleType);
     }
 
     private List<BillingAccountRoleTypeTransfer> getBillingAccountRoleTypeTransfers(final UserVisit userVisit, final List<BillingAccountRoleType> billingAccountRoleTypes) {
@@ -385,7 +385,7 @@ public class BillingControl
     }
     
     public BillingAccountTransfer getBillingAccountTransfer(UserVisit userVisit, BillingAccount billingAccount) {
-        return getPaymentTransferCaches(userVisit).getBillingAccountTransferCache().getTransfer(billingAccount);
+        return getPaymentTransferCaches().getBillingAccountTransferCache().getTransfer(userVisit, billingAccount);
     }
     
     public List<BillingAccountTransfer> getBillingAccountTransfers(UserVisit userVisit, Collection<BillingAccount> billingAccounts) {
@@ -610,7 +610,7 @@ public class BillingControl
     }
     
     public BillingAccountRoleTransfer getBillingAccountRoleTransfer(UserVisit userVisit, BillingAccountRole billingAccountRole) {
-        return getPaymentTransferCaches(userVisit).getBillingAccountRoleTransferCache().getTransfer(billingAccountRole);
+        return getPaymentTransferCaches().getBillingAccountRoleTransferCache().getTransfer(userVisit, billingAccountRole);
     }
     
     public List<BillingAccountRoleTransfer> getBillingAccountRoleTransfers(UserVisit userVisit, Collection<BillingAccountRole> billingAccountRoles) {

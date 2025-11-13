@@ -294,7 +294,7 @@ public class UomControl
     }
     
     public UnitOfMeasureKindTransfer getUnitOfMeasureKindTransfer(UserVisit userVisit, UnitOfMeasureKind unitOfMeasureKind) {
-        return getUomTransferCaches(userVisit).getUnitOfMeasureKindTransferCache().getUnitOfMeasureKindTransfer(unitOfMeasureKind);
+        return getUomTransferCaches().getUnitOfMeasureKindTransferCache().getUnitOfMeasureKindTransfer(userVisit, unitOfMeasureKind);
     }
     
     public List<UnitOfMeasureKindTransfer> getUnitOfMeasureKindTransfers(UserVisit userVisit, Collection<UnitOfMeasureKind> unitOfMeasureKinds) {
@@ -598,7 +598,7 @@ public class UomControl
     }
     
     public UnitOfMeasureKindDescriptionTransfer getUnitOfMeasureKindDescriptionTransfer(UserVisit userVisit, UnitOfMeasureKindDescription unitOfMeasureKindDescription) {
-        return getUomTransferCaches(userVisit).getUnitOfMeasureKindDescriptionTransferCache().getUnitOfMeasureKindDescriptionTransfer(unitOfMeasureKindDescription);
+        return getUomTransferCaches().getUnitOfMeasureKindDescriptionTransferCache().getUnitOfMeasureKindDescriptionTransfer(userVisit, unitOfMeasureKindDescription);
     }
     
     public List<UnitOfMeasureKindDescriptionTransfer> getUnitOfMeasureKindDescriptionTransfers(UserVisit userVisit, UnitOfMeasureKind unitOfMeasureKind) {
@@ -841,7 +841,7 @@ public class UomControl
     }
     
     public UnitOfMeasureTypeTransfer getUnitOfMeasureTypeTransfer(UserVisit userVisit, UnitOfMeasureType unitOfMeasureType) {
-        return getUomTransferCaches(userVisit).getUnitOfMeasureTypeTransferCache().getUnitOfMeasureTypeTransfer(unitOfMeasureType);
+        return getUomTransferCaches().getUnitOfMeasureTypeTransferCache().getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureType);
     }
     
     public List<UnitOfMeasureTypeTransfer> getUnitOfMeasureTypeTransfers(UserVisit userVisit, Collection<UnitOfMeasureType> unitOfMeasureTypes) {
@@ -1150,7 +1150,7 @@ public class UomControl
     }
     
     public UnitOfMeasureTypeDescriptionTransfer getUnitOfMeasureTypeDescriptionTransfer(UserVisit userVisit, UnitOfMeasureTypeDescription unitOfMeasureTypeDescription) {
-        return getUomTransferCaches(userVisit).getUnitOfMeasureTypeDescriptionTransferCache().getUnitOfMeasureTypeDescriptionTransfer(unitOfMeasureTypeDescription);
+        return getUomTransferCaches().getUnitOfMeasureTypeDescriptionTransferCache().getUnitOfMeasureTypeDescriptionTransfer(userVisit, unitOfMeasureTypeDescription);
     }
     
     public List<UnitOfMeasureTypeDescriptionTransfer> getUnitOfMeasureTypeDescriptionTransfers(UserVisit userVisit, UnitOfMeasureType unitOfMeasureType) {
@@ -1259,7 +1259,7 @@ public class UomControl
     }
     
     public UnitOfMeasureTypeVolumeTransfer getUnitOfMeasureTypeVolumeTransfer(UserVisit userVisit, UnitOfMeasureTypeVolume unitOfMeasureTypeVolume) {
-        return unitOfMeasureTypeVolume == null? null: getUomTransferCaches(userVisit).getUnitOfMeasureTypeVolumeTransferCache().getUnitOfMeasureTypeVolumeTransfer(unitOfMeasureTypeVolume);
+        return unitOfMeasureTypeVolume == null? null: getUomTransferCaches().getUnitOfMeasureTypeVolumeTransferCache().getUnitOfMeasureTypeVolumeTransfer(userVisit, unitOfMeasureTypeVolume);
     }
     
     public UnitOfMeasureTypeVolumeTransfer getUnitOfMeasureTypeVolumeTransfer(UserVisit userVisit, UnitOfMeasureType unitOfMeasureType) {
@@ -1357,7 +1357,7 @@ public class UomControl
     }
     
     public UnitOfMeasureTypeWeightTransfer getUnitOfMeasureTypeWeightTransfer(UserVisit userVisit, UnitOfMeasureTypeWeight unitOfMeasureTypeWeight) {
-        return unitOfMeasureTypeWeight == null? null: getUomTransferCaches(userVisit).getUnitOfMeasureTypeWeightTransferCache().getUnitOfMeasureTypeWeightTransfer(unitOfMeasureTypeWeight);
+        return unitOfMeasureTypeWeight == null? null: getUomTransferCaches().getUnitOfMeasureTypeWeightTransferCache().getUnitOfMeasureTypeWeightTransfer(userVisit, unitOfMeasureTypeWeight);
     }
     
     public UnitOfMeasureTypeWeightTransfer getUnitOfMeasureTypeWeightTransfer(UserVisit userVisit, UnitOfMeasureType unitOfMeasureType) {
@@ -1600,7 +1600,7 @@ public class UomControl
     
     public UnitOfMeasureEquivalentTransfer getUnitOfMeasureEquivalentTransfer(UserVisit userVisit,
             UnitOfMeasureEquivalent unitOfMeasureEquivalent) {
-        return getUomTransferCaches(userVisit).getUnitOfMeasureEquivalentTransferCache().getUnitOfMeasureEquivalentTransfer(unitOfMeasureEquivalent);
+        return getUomTransferCaches().getUnitOfMeasureEquivalentTransferCache().getUnitOfMeasureEquivalentTransfer(userVisit, unitOfMeasureEquivalent);
     }
     
     private List<UnitOfMeasureEquivalentTransfer> getUnitOfMeasureEquivalentTransfers(final UserVisit userVisit,
@@ -1771,7 +1771,7 @@ public class UomControl
     
     public UnitOfMeasureKindUseTypeTransfer getUnitOfMeasureKindUseTypeTransfer(UserVisit userVisit,
             UnitOfMeasureKindUseType unitOfMeasureKindUseType) {
-        return getUomTransferCaches(userVisit).getUnitOfMeasureKindUseTypeTransferCache().getUnitOfMeasureKindUseTypeTransfer(unitOfMeasureKindUseType);
+        return getUomTransferCaches().getUnitOfMeasureKindUseTypeTransferCache().getUnitOfMeasureKindUseTypeTransfer(userVisit, unitOfMeasureKindUseType);
     }
     
     public List<UnitOfMeasureKindUseTypeTransfer> getUnitOfMeasureKindUseTypeTransfers(UserVisit userVisit, Collection<UnitOfMeasureKindUseType> unitOfMeasureKindUseTypes) {
@@ -2115,7 +2115,7 @@ public class UomControl
     }
     
     public UnitOfMeasureKindUseTransfer getUnitOfMeasureKindUseTransfer(UserVisit userVisit, UnitOfMeasureKindUse unitOfMeasureKindUse) {
-        return unitOfMeasureKindUse == null? null: getUomTransferCaches(userVisit).getUnitOfMeasureKindUseTransferCache().getUnitOfMeasureKindUseTransfer(unitOfMeasureKindUse);
+        return unitOfMeasureKindUse == null? null: getUomTransferCaches().getUnitOfMeasureKindUseTransferCache().getUnitOfMeasureKindUseTransfer(userVisit, unitOfMeasureKindUse);
     }
     
     public List<UnitOfMeasureKindUseTransfer> getUnitOfMeasureKindUseTransfers(final UserVisit userVisit,

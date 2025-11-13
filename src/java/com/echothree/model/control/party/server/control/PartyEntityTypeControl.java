@@ -143,7 +143,7 @@ public class PartyEntityTypeControl
     }
 
     public PartyEntityTypeTransfer getPartyEntityTypeTransfer(UserVisit userVisit, PartyEntityType partyEntityType) {
-        return getPartyTransferCaches(userVisit).getPartyEntityTypeTransferCache().getPartyEntityTypeTransfer(partyEntityType);
+        return getPartyTransferCaches().getPartyEntityTypeTransferCache().getPartyEntityTypeTransfer(userVisit, partyEntityType);
     }
 
     public List<PartyEntityTypeTransfer> getPartyEntityTypeTransfersByParty(UserVisit userVisit, Party party) {

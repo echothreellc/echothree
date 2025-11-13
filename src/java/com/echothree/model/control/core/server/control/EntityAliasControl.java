@@ -746,7 +746,7 @@ public class EntityAliasControl
     }
 
     public EntityAliasTransfer getEntityAliasTransfer(UserVisit userVisit, EntityAlias entityAlias) {
-        return getCoreTransferCaches(userVisit).getEntityAliasTransferCache().getEntityAliasTransfer(entityAlias);
+        return getCoreTransferCaches().getEntityAliasTransferCache().getEntityAliasTransfer(userVisit, entityAlias);
     }
 
     public List<EntityAliasTransfer> getEntityAliasTransfers(UserVisit userVisit, Collection<EntityAlias> entityAliases) {

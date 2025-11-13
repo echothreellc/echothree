@@ -223,7 +223,7 @@ public class OrderTypeControl
     }
 
     public OrderTypeTransfer getOrderTypeTransfer(UserVisit userVisit, OrderType orderType) {
-        return getOrderTransferCaches(userVisit).getOrderTypeTransferCache().getOrderTypeTransfer(orderType);
+        return getOrderTransferCaches().getOrderTypeTransferCache().getOrderTypeTransfer(userVisit, orderType);
     }
 
     public List<OrderTypeTransfer> getOrderTypeTransfers(UserVisit userVisit, Collection<OrderType> orderTypes) {
@@ -470,7 +470,7 @@ public class OrderTypeControl
     }
 
     public OrderTypeDescriptionTransfer getOrderTypeDescriptionTransfer(UserVisit userVisit, OrderTypeDescription orderTypeDescription) {
-        return getOrderTransferCaches(userVisit).getOrderTypeDescriptionTransferCache().getOrderTypeDescriptionTransfer(orderTypeDescription);
+        return getOrderTransferCaches().getOrderTypeDescriptionTransferCache().getOrderTypeDescriptionTransfer(userVisit, orderTypeDescription);
     }
 
     public List<OrderTypeDescriptionTransfer> getOrderTypeDescriptionTransfersByOrderType(UserVisit userVisit, OrderType orderType) {

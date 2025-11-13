@@ -251,7 +251,7 @@ public class ShippingControl
     }
     
     public ShippingMethodTransfer getShippingMethodTransfer(UserVisit userVisit, ShippingMethod shippingMethod) {
-        return getShippingTransferCaches(userVisit).getShippingMethodTransferCache().getShippingMethodTransfer(shippingMethod);
+        return getShippingTransferCaches().getShippingMethodTransferCache().getShippingMethodTransfer(userVisit, shippingMethod);
     }
 
     public List<ShippingMethodTransfer> getShippingMethodTransfers(UserVisit userVisit, Collection<ShippingMethod> entities) {
@@ -434,7 +434,7 @@ public class ShippingControl
     }
     
     public ShippingMethodDescriptionTransfer getShippingMethodDescriptionTransfer(UserVisit userVisit, ShippingMethodDescription shippingMethodDescription) {
-        return getShippingTransferCaches(userVisit).getShippingMethodDescriptionTransferCache().getShippingMethodDescriptionTransfer(shippingMethodDescription);
+        return getShippingTransferCaches().getShippingMethodDescriptionTransferCache().getShippingMethodDescriptionTransfer(userVisit, shippingMethodDescription);
     }
     
     public List<ShippingMethodDescriptionTransfer> getShippingMethodDescriptionTransfers(UserVisit userVisit, ShippingMethod shippingMethod) {
@@ -629,7 +629,7 @@ public class ShippingControl
     
     public ShippingMethodCarrierServiceTransfer getShippingMethodCarrierServiceTransfer(UserVisit userVisit,
             ShippingMethodCarrierService shippingMethodCarrierService) {
-        return getShippingTransferCaches(userVisit).getShippingMethodCarrierServiceTransferCache().getShippingMethodCarrierServiceTransfer(shippingMethodCarrierService);
+        return getShippingTransferCaches().getShippingMethodCarrierServiceTransferCache().getShippingMethodCarrierServiceTransfer(userVisit, shippingMethodCarrierService);
     }
     
     public List<ShippingMethodCarrierServiceTransfer> getShippingMethodCarrierServiceTransfers(UserVisit userVisit,

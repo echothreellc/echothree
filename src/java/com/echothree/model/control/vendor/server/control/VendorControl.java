@@ -326,7 +326,7 @@ public class VendorControl
     }
     
     public VendorTypeTransfer getVendorTypeTransfer(UserVisit userVisit, VendorType vendorType) {
-        return getVendorTransferCaches(userVisit).getVendorTypeTransferCache().getVendorTypeTransfer(vendorType);
+        return getVendorTransferCaches().getVendorTypeTransferCache().getVendorTypeTransfer(userVisit, vendorType);
     }
 
     public List<VendorTypeTransfer> getVendorTypeTransfers(UserVisit userVisit, Collection<VendorType> vendorTypes) {
@@ -558,7 +558,7 @@ public class VendorControl
     }
     
     public VendorTypeDescriptionTransfer getVendorTypeDescriptionTransfer(UserVisit userVisit, VendorTypeDescription vendorTypeDescription) {
-        return getVendorTransferCaches(userVisit).getVendorTypeDescriptionTransferCache().getVendorTypeDescriptionTransfer(vendorTypeDescription);
+        return getVendorTransferCaches().getVendorTypeDescriptionTransferCache().getVendorTypeDescriptionTransfer(userVisit, vendorTypeDescription);
     }
     
     public List<VendorTypeDescriptionTransfer> getVendorTypeDescriptionTransfers(UserVisit userVisit, VendorType vendorType) {
@@ -848,11 +848,11 @@ public class VendorControl
     }
 
     public VendorTransfer getVendorTransfer(UserVisit userVisit, Vendor vendor) {
-        return getVendorTransferCaches(userVisit).getVendorTransferCache().getTransfer(vendor);
+        return getVendorTransferCaches().getVendorTransferCache().getTransfer(userVisit, vendor);
     }
     
     public VendorTransfer getVendorTransfer(UserVisit userVisit, Party party) {
-        return getVendorTransferCaches(userVisit).getVendorTransferCache().getTransfer(party);
+        return getVendorTransferCaches().getVendorTransferCache().getTransfer(userVisit, party);
     }
 
     public List<VendorTransfer> getVendorTransfers(UserVisit userVisit, Collection<Vendor> vendors) {
@@ -1191,7 +1191,7 @@ public class VendorControl
     }
 
     public VendorItemTransfer getVendorItemTransfer(UserVisit userVisit, VendorItem vendorItem) {
-        return getVendorTransferCaches(userVisit).getVendorItemTransferCache().getVendorItemTransfer(vendorItem);
+        return getVendorTransferCaches().getVendorItemTransferCache().getVendorItemTransfer(userVisit, vendorItem);
     }
     
     public List<VendorItemTransfer> getVendorItemTransfers(UserVisit userVisit, Collection<VendorItem> vendorItems) {
@@ -1484,7 +1484,7 @@ public class VendorControl
     }
     
     public VendorItemCostTransfer getVendorItemCostTransfer(UserVisit userVisit, VendorItemCost vendorItemCost) {
-        return getVendorTransferCaches(userVisit).getVendorItemCostTransferCache().getVendorItemCostTransfer(vendorItemCost);
+        return getVendorTransferCaches().getVendorItemCostTransferCache().getVendorItemCostTransfer(userVisit, vendorItemCost);
     }
     
     public List<VendorItemCostTransfer> getVendorItemCostTransfers(UserVisit userVisit, Collection<VendorItemCost> vendorItemCosts) {
@@ -1746,7 +1746,7 @@ public class VendorControl
     }
 
     public ItemPurchasingCategoryTransfer getItemPurchasingCategoryTransfer(UserVisit userVisit, ItemPurchasingCategory itemPurchasingCategory) {
-        return getVendorTransferCaches(userVisit).getItemPurchasingCategoryTransferCache().getItemPurchasingCategoryTransfer(itemPurchasingCategory);
+        return getVendorTransferCaches().getItemPurchasingCategoryTransferCache().getItemPurchasingCategoryTransfer(userVisit, itemPurchasingCategory);
     }
 
     public List<ItemPurchasingCategoryTransfer> getItemPurchasingCategoryTransfers(UserVisit userVisit, Collection<ItemPurchasingCategory> itemPurchasingCategories) {
@@ -2035,7 +2035,7 @@ public class VendorControl
     }
     
     public ItemPurchasingCategoryDescriptionTransfer getItemPurchasingCategoryDescriptionTransfer(UserVisit userVisit, ItemPurchasingCategoryDescription itemPurchasingCategoryDescription) {
-        return getVendorTransferCaches(userVisit).getItemPurchasingCategoryDescriptionTransferCache().getItemPurchasingCategoryDescriptionTransfer(itemPurchasingCategoryDescription);
+        return getVendorTransferCaches().getItemPurchasingCategoryDescriptionTransferCache().getItemPurchasingCategoryDescriptionTransfer(userVisit, itemPurchasingCategoryDescription);
     }
     
     public List<ItemPurchasingCategoryDescriptionTransfer> getItemPurchasingCategoryDescriptionTransfersByItemPurchasingCategory(UserVisit userVisit, ItemPurchasingCategory itemPurchasingCategory) {

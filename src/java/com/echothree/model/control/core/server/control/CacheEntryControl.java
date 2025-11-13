@@ -145,7 +145,7 @@ public class CacheEntryControl
     }
 
     public CacheEntryTransfer getCacheEntryTransfer(UserVisit userVisit, CacheEntry cacheEntry) {
-        return getCoreTransferCaches(userVisit).getCacheEntryTransferCache().getCacheEntryTransfer(cacheEntry);
+        return getCoreTransferCaches().getCacheEntryTransferCache().getCacheEntryTransfer(userVisit, cacheEntry);
     }
 
     public CacheEntryTransfer getCacheEntryTransferByCacheEntryKey(UserVisit userVisit, String cacheEntryKey) {
@@ -374,7 +374,7 @@ public class CacheEntryControl
     }
 
     public CacheEntryDependencyTransfer getCacheEntryDependencyTransfer(UserVisit userVisit, CacheEntryDependency cacheEntryDependency) {
-        return getCoreTransferCaches(userVisit).getCacheEntryDependencyTransferCache().getCacheEntryDependencyTransfer(cacheEntryDependency);
+        return getCoreTransferCaches().getCacheEntryDependencyTransferCache().getCacheEntryDependencyTransfer(userVisit, cacheEntryDependency);
     }
 
     public List<CacheEntryDependencyTransfer> getCacheEntryDependencyTransfers(UserVisit userVisit, Collection<CacheEntryDependency> cacheEntries) {

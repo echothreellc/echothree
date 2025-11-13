@@ -314,7 +314,7 @@ public class UserControl
     }
     
     public UserKeyTransfer getUserKeyTransfer(UserVisit userVisit, UserKey userKey) {
-        return getUserTransferCaches(userVisit).getUserKeyTransferCache().getUserKeyTransfer(userKey);
+        return getUserTransferCaches().getUserKeyTransferCache().getUserKeyTransfer(userVisit, userKey);
     }
     
     public void updateUserKeyFromValue(UserKeyDetailValue userKeyDetailValue) {
@@ -584,7 +584,7 @@ public class UserControl
     }
     
     public UserVisitGroupTransfer getUserVisitGroupTransfer(UserVisit userVisit, UserVisitGroup userVisitGroup) {
-        return getUserTransferCaches(userVisit).getUserVisitGroupTransferCache().getUserVisitGroupTransfer(userVisitGroup);
+        return getUserTransferCaches().getUserVisitGroupTransferCache().getUserVisitGroupTransfer(userVisit, userVisitGroup);
     }
     
     public List<UserVisitGroupTransfer> getUserVisitGroupTransfers(UserVisit userVisit, Collection<UserVisitGroup> userVisitGroups) {
@@ -984,7 +984,7 @@ public class UserControl
     }
     
     public UserVisitTransfer getUserVisitTransfer(UserVisit userVisit, UserVisit userVisitEntity) {
-        return getUserTransferCaches(userVisit).getUserVisitTransferCache().getUserVisitTransfer(userVisitEntity);
+        return getUserTransferCaches().getUserVisitTransferCache().getUserVisitTransfer(userVisit, userVisitEntity);
     }
 
     private static final Map<EntityPermission, String> getAbandonedUserVisitsQueries;
@@ -1277,7 +1277,7 @@ public class UserControl
     }
 
     public UserSessionTransfer getUserSessionTransfer(UserVisit userVisit, UserSession userSession) {
-        return getUserTransferCaches(userVisit).getUserSessionTransferCache().getUserSessionTransfer(userSession);
+        return getUserTransferCaches().getUserSessionTransferCache().getUserSessionTransfer(userVisit, userSession);
     }
     
     public void deleteUserSession(UserSession userSession) {
@@ -1489,7 +1489,7 @@ public class UserControl
     }
     
     public RecoveryQuestionTransfer getRecoveryQuestionTransfer(UserVisit userVisit, RecoveryQuestion recoveryQuestion) {
-        return getUserTransferCaches(userVisit).getRecoveryQuestionTransferCache().getRecoveryQuestionTransfer(recoveryQuestion);
+        return getUserTransferCaches().getRecoveryQuestionTransferCache().getRecoveryQuestionTransfer(userVisit, recoveryQuestion);
     }
     
     public List<RecoveryQuestionTransfer> getRecoveryQuestionTransfers(UserVisit userVisit, Collection<RecoveryQuestion> recoveryQuestions) {
@@ -1709,7 +1709,7 @@ public class UserControl
     }
     
     public RecoveryQuestionDescriptionTransfer getRecoveryQuestionDescriptionTransfer(UserVisit userVisit, RecoveryQuestionDescription recoveryQuestionDescription) {
-        return getUserTransferCaches(userVisit).getRecoveryQuestionDescriptionTransferCache().getRecoveryQuestionDescriptionTransfer(recoveryQuestionDescription);
+        return getUserTransferCaches().getRecoveryQuestionDescriptionTransferCache().getRecoveryQuestionDescriptionTransfer(userVisit, recoveryQuestionDescription);
     }
     
     public List<RecoveryQuestionDescriptionTransfer> getRecoveryQuestionDescriptionTransfers(UserVisit userVisit, RecoveryQuestion recoveryQuestion) {
@@ -1876,7 +1876,7 @@ public class UserControl
     }
     
     public RecoveryAnswerTransfer getRecoveryAnswerTransfer(UserVisit userVisit, RecoveryAnswer recoveryAnswer) {
-        return getUserTransferCaches(userVisit).getRecoveryAnswerTransferCache().getRecoveryAnswerTransfer(recoveryAnswer);
+        return getUserTransferCaches().getRecoveryAnswerTransferCache().getRecoveryAnswerTransfer(userVisit, recoveryAnswer);
     }
     
     public void updateRecoveryAnswerFromValue(RecoveryAnswerDetailValue recoveryAnswerDetailValue, BasePK updatedBy) {
@@ -1969,7 +1969,7 @@ public class UserControl
     }
     
     public UserLoginPasswordEncoderTypeTransfer getUserLoginPasswordEncoderTypeTransfer(UserVisit userVisit, UserLoginPasswordEncoderType userLoginPasswordEncoderType) {
-        return getUserTransferCaches(userVisit).getUserLoginPasswordEncoderTypeTransferCache().getUserLoginPasswordEncoderTypeTransfer(userLoginPasswordEncoderType);
+        return getUserTransferCaches().getUserLoginPasswordEncoderTypeTransferCache().getUserLoginPasswordEncoderTypeTransfer(userVisit, userLoginPasswordEncoderType);
     }
 
     // --------------------------------------------------------------------------------
@@ -2057,7 +2057,7 @@ public class UserControl
     }
     
     public UserLoginPasswordTypeTransfer getUserLoginPasswordTypeTransfer(UserVisit userVisit, UserLoginPasswordType userLoginPasswordType) {
-        return getUserTransferCaches(userVisit).getUserLoginPasswordTypeTransferCache().getUserLoginPasswordTypeTransfer(userLoginPasswordType);
+        return getUserTransferCaches().getUserLoginPasswordTypeTransferCache().getUserLoginPasswordTypeTransfer(userVisit, userLoginPasswordType);
     }
 
     // --------------------------------------------------------------------------------
@@ -2197,7 +2197,7 @@ public class UserControl
     }
 
     public UserLoginPasswordTransfer getUserLoginPasswordTransfer(UserVisit userVisit, UserLoginPassword userLoginPassword) {
-        return getUserTransferCaches(userVisit).getUserLoginPasswordTransferCache().getUserLoginPasswordTransfer(userLoginPassword);
+        return getUserTransferCaches().getUserLoginPasswordTransferCache().getUserLoginPasswordTransfer(userVisit, userLoginPassword);
     }
 
     public List<UserLoginPasswordTransfer> getUserLoginPasswordTransfers(UserVisit userVisit, Collection<UserLoginPassword> userLoginPasswords) {
@@ -2491,7 +2491,7 @@ public class UserControl
     }
     
     public UserLoginTransfer getUserLoginTransfer(UserVisit userVisit, UserLogin userLogin) {
-        return getUserTransferCaches(userVisit).getUserLoginTransferCache().getUserLoginTransfer(userLogin);
+        return getUserTransferCaches().getUserLoginTransferCache().getUserLoginTransfer(userVisit, userLogin);
     }
     
     public void updateUserLoginFromValue(UserLoginValue userLoginValue, BasePK updatedBy) {

@@ -354,7 +354,7 @@ public class AccountingControl
     }
     
     public CurrencyTransfer getCurrencyTransfer(UserVisit userVisit, Currency currency) {
-        return getAccountingTransferCaches(userVisit).getCurrencyTransferCache().getTransfer(currency);
+        return getAccountingTransferCaches().getCurrencyTransferCache().getTransfer(userVisit, currency);
     }
     
     public List<CurrencyTransfer> getCurrencyTransfers(UserVisit userVisit, Collection<Currency> currencies) {
@@ -364,7 +364,7 @@ public class AccountingControl
             currencyTransfers = new ArrayList<>(currencies.size());
             
             for(var currency : currencies) {
-                currencyTransfers.add(getAccountingTransferCaches(userVisit).getCurrencyTransferCache().getTransfer(currency));
+                currencyTransfers.add(getAccountingTransferCaches().getCurrencyTransferCache().getTransfer(userVisit, currency));
             }
         }
         
@@ -675,7 +675,7 @@ public class AccountingControl
     }
 
     public ItemAccountingCategoryTransfer getItemAccountingCategoryTransfer(UserVisit userVisit, ItemAccountingCategory itemAccountingCategory) {
-        return getAccountingTransferCaches(userVisit).getItemAccountingCategoryTransferCache().getTransfer(itemAccountingCategory);
+        return getAccountingTransferCaches().getItemAccountingCategoryTransferCache().getTransfer(userVisit, itemAccountingCategory);
     }
 
     public List<ItemAccountingCategoryTransfer> getItemAccountingCategoryTransfers(UserVisit userVisit, Collection<ItemAccountingCategory> itemAccountingCategories) {
@@ -977,7 +977,7 @@ public class AccountingControl
     
     public ItemAccountingCategoryDescriptionTransfer getItemAccountingCategoryDescriptionTransfer(UserVisit userVisit,
             ItemAccountingCategoryDescription itemAccountingCategoryDescription) {
-        return getAccountingTransferCaches(userVisit).getItemAccountingCategoryDescriptionTransferCache().getTransfer(itemAccountingCategoryDescription);
+        return getAccountingTransferCaches().getItemAccountingCategoryDescriptionTransferCache().getTransfer(userVisit, itemAccountingCategoryDescription);
     }
     
     public List<ItemAccountingCategoryDescriptionTransfer> getItemAccountingCategoryDescriptionTransfersByItemAccountingCategory(UserVisit userVisit,
@@ -1129,7 +1129,7 @@ public class AccountingControl
     }
     
     public GlAccountTypeTransfer getGlAccountTypeTransfer(UserVisit userVisit, GlAccountType glAccountType) {
-        return getAccountingTransferCaches(userVisit).getGlAccountTypeTransferCache().getTransfer(glAccountType);
+        return getAccountingTransferCaches().getGlAccountTypeTransferCache().getTransfer(userVisit, glAccountType);
     }
 
     public List<GlAccountTypeTransfer> getGlAccountTypeTransfers(UserVisit userVisit, Collection<GlAccountType> glAccountTypes) {
@@ -1388,7 +1388,7 @@ public class AccountingControl
     }
 
     public GlAccountClassTransfer getGlAccountClassTransfer(UserVisit userVisit, GlAccountClass glAccountClass) {
-        return getAccountingTransferCaches(userVisit).getGlAccountClassTransferCache().getTransfer(glAccountClass);
+        return getAccountingTransferCaches().getGlAccountClassTransferCache().getTransfer(userVisit, glAccountClass);
     }
 
     public List<GlAccountClassTransfer> getGlAccountClassTransfers(UserVisit userVisit, Collection<GlAccountClass> glAccountClasses) {
@@ -1675,7 +1675,7 @@ public class AccountingControl
     }
     
     public GlAccountClassDescriptionTransfer getGlAccountClassDescriptionTransfer(UserVisit userVisit, GlAccountClassDescription glAccountClassDescription) {
-        return getAccountingTransferCaches(userVisit).getGlAccountClassDescriptionTransferCache().getTransfer(glAccountClassDescription);
+        return getAccountingTransferCaches().getGlAccountClassDescriptionTransferCache().getTransfer(userVisit, glAccountClassDescription);
     }
     
     public List<GlAccountClassDescriptionTransfer> getGlAccountClassDescriptionTransfersByGlAccountClass(UserVisit userVisit, GlAccountClass glAccountClass) {
@@ -1920,7 +1920,7 @@ public class AccountingControl
     }
 
     public GlAccountCategoryTransfer getGlAccountCategoryTransfer(UserVisit userVisit, GlAccountCategory glAccountCategory) {
-        return getAccountingTransferCaches(userVisit).getGlAccountCategoryTransferCache().getTransfer(glAccountCategory);
+        return getAccountingTransferCaches().getGlAccountCategoryTransferCache().getTransfer(userVisit, glAccountCategory);
     }
 
     public List<GlAccountCategoryTransfer> getGlAccountCategoryTransfers(UserVisit userVisit, Collection<GlAccountCategory> glAccountCategories) {
@@ -2208,7 +2208,7 @@ public class AccountingControl
     }
     
     public GlAccountCategoryDescriptionTransfer getGlAccountCategoryDescriptionTransfer(UserVisit userVisit, GlAccountCategoryDescription glAccountCategoryDescription) {
-        return getAccountingTransferCaches(userVisit).getGlAccountCategoryDescriptionTransferCache().getTransfer(glAccountCategoryDescription);
+        return getAccountingTransferCaches().getGlAccountCategoryDescriptionTransferCache().getTransfer(userVisit, glAccountCategoryDescription);
     }
     
     public List<GlAccountCategoryDescriptionTransfer> getGlAccountCategoryDescriptionTransfersByGlAccountCategory(UserVisit userVisit, GlAccountCategory glAccountCategory) {
@@ -2437,7 +2437,7 @@ public class AccountingControl
     }
     
     public GlResourceTypeTransfer getGlResourceTypeTransfer(UserVisit userVisit, GlResourceType glResourceType) {
-        return getAccountingTransferCaches(userVisit).getGlResourceTypeTransferCache().getTransfer(glResourceType);
+        return getAccountingTransferCaches().getGlResourceTypeTransferCache().getTransfer(userVisit, glResourceType);
     }
 
     public List<GlResourceTypeTransfer> getGlResourceTypeTransfers(UserVisit userVisit, Collection<GlResourceType> glResourceTypes) {
@@ -2681,7 +2681,7 @@ public class AccountingControl
     }
     
     public GlResourceTypeDescriptionTransfer getGlResourceTypeDescriptionTransfer(UserVisit userVisit, GlResourceTypeDescription glResourceTypeDescription) {
-        return getAccountingTransferCaches(userVisit).getGlResourceTypeDescriptionTransferCache().getTransfer(glResourceTypeDescription);
+        return getAccountingTransferCaches().getGlResourceTypeDescriptionTransferCache().getTransfer(userVisit, glResourceTypeDescription);
     }
     
     public List<GlResourceTypeDescriptionTransfer> getGlResourceTypeDescriptionTransfersByGlResourceType(UserVisit userVisit, GlResourceType glResourceType) {
@@ -3157,7 +3157,7 @@ public class AccountingControl
     }
 
     public GlAccountTransfer getGlAccountTransfer(UserVisit userVisit, GlAccount glAccount) {
-        return getAccountingTransferCaches(userVisit).getGlAccountTransferCache().getTransfer(glAccount);
+        return getAccountingTransferCaches().getGlAccountTransferCache().getTransfer(userVisit, glAccount);
     }
     
     public List<GlAccountTransfer> getGlAccountTransfers(UserVisit userVisit, Collection<GlAccount> glAccounts) {
@@ -3528,7 +3528,7 @@ public class AccountingControl
     }
     
     public GlAccountDescriptionTransfer getGlAccountDescriptionTransfer(UserVisit userVisit, GlAccountDescription glAccountDescription) {
-        return getAccountingTransferCaches(userVisit).getGlAccountDescriptionTransferCache().getTransfer(glAccountDescription);
+        return getAccountingTransferCaches().getGlAccountDescriptionTransferCache().getTransfer(userVisit, glAccountDescription);
     }
     
     public List<GlAccountDescriptionTransfer> getGlAccountDescriptionTransfersByGlAccount(UserVisit userVisit, GlAccount glAccount) {
@@ -3741,7 +3741,7 @@ public class AccountingControl
     }
     
     public TransactionTypeTransfer getTransactionTypeTransfer(UserVisit userVisit, TransactionType transactionType) {
-        return getAccountingTransferCaches(userVisit).getTransactionTypeTransferCache().getTransfer(transactionType);
+        return getAccountingTransferCaches().getTransactionTypeTransferCache().getTransfer(userVisit, transactionType);
     }
     
     public List<TransactionTypeTransfer> getTransactionTypeTransfers(UserVisit userVisit, Collection<TransactionType> transactionTypes) {
@@ -3915,7 +3915,7 @@ public class AccountingControl
     }
     
     public TransactionTypeDescriptionTransfer getTransactionTypeDescriptionTransfer(UserVisit userVisit, TransactionTypeDescription transactionTypeDescription) {
-        return getAccountingTransferCaches(userVisit).getTransactionTypeDescriptionTransferCache().getTransfer(transactionTypeDescription);
+        return getAccountingTransferCaches().getTransactionTypeDescriptionTransferCache().getTransfer(userVisit, transactionTypeDescription);
     }
     
     public List<TransactionTypeDescriptionTransfer> getTransactionTypeDescriptionTransfersByTransactionType(UserVisit userVisit, TransactionType transactionType) {
@@ -4093,7 +4093,7 @@ public class AccountingControl
     }
     
     public TransactionGlAccountCategoryTransfer getTransactionGlAccountCategoryTransfer(UserVisit userVisit, TransactionGlAccountCategory transactionGlAccountCategory) {
-        return getAccountingTransferCaches(userVisit).getTransactionGlAccountCategoryTransferCache().getTransfer(transactionGlAccountCategory);
+        return getAccountingTransferCaches().getTransactionGlAccountCategoryTransferCache().getTransfer(userVisit, transactionGlAccountCategory);
     }
     
     public List<TransactionGlAccountCategoryTransfer> getTransactionGlAccountCategoryTransfers(UserVisit userVisit, Collection<TransactionGlAccountCategory> transactionGlAccountCategories) {
@@ -4274,7 +4274,7 @@ public class AccountingControl
     }
     
     public TransactionGlAccountCategoryDescriptionTransfer getTransactionGlAccountCategoryDescriptionTransfer(UserVisit userVisit, TransactionGlAccountCategoryDescription transactionGlAccountCategoryDescription) {
-        return getAccountingTransferCaches(userVisit).getTransactionGlAccountCategoryDescriptionTransferCache().getTransfer(transactionGlAccountCategoryDescription);
+        return getAccountingTransferCaches().getTransactionGlAccountCategoryDescriptionTransferCache().getTransfer(userVisit, transactionGlAccountCategoryDescription);
     }
     
     public List<TransactionGlAccountCategoryDescriptionTransfer> getTransactionGlAccountCategoryDescriptionTransfersByTransactionGlAccountCategory(UserVisit userVisit, TransactionGlAccountCategory transactionGlAccountCategory) {
@@ -4492,7 +4492,7 @@ public class AccountingControl
     }
     
     public TransactionEntityRoleTypeTransfer getTransactionEntityRoleTypeTransfer(UserVisit userVisit, TransactionEntityRoleType transactionEntityRoleType) {
-        return getAccountingTransferCaches(userVisit).getTransactionEntityRoleTypeTransferCache().getTransfer(transactionEntityRoleType);
+        return getAccountingTransferCaches().getTransactionEntityRoleTypeTransferCache().getTransfer(userVisit, transactionEntityRoleType);
     }
     
     public List<TransactionEntityRoleTypeTransfer> getTransactionEntityRoleTypeTransfers(UserVisit userVisit, Collection<TransactionEntityRoleType> transactionEntityRoleTypes) {
@@ -4679,7 +4679,7 @@ public class AccountingControl
     }
     
     public TransactionEntityRoleTypeDescriptionTransfer getTransactionEntityRoleTypeDescriptionTransfer(UserVisit userVisit, TransactionEntityRoleTypeDescription transactionEntityRoleTypeDescription) {
-        return getAccountingTransferCaches(userVisit).getTransactionEntityRoleTypeDescriptionTransferCache().getTransfer(transactionEntityRoleTypeDescription);
+        return getAccountingTransferCaches().getTransactionEntityRoleTypeDescriptionTransferCache().getTransfer(userVisit, transactionEntityRoleTypeDescription);
     }
     
     public List<TransactionEntityRoleTypeDescriptionTransfer> getTransactionEntityRoleTypeDescriptionTransfersByTransactionEntityRoleType(UserVisit userVisit, TransactionEntityRoleType transactionEntityRoleType) {
@@ -4827,7 +4827,7 @@ public class AccountingControl
     }
     
     public TransactionGlAccountTransfer getTransactionGlAccountTransfer(UserVisit userVisit, TransactionGlAccount transactionGlAccount) {
-        return getAccountingTransferCaches(userVisit).getTransactionGlAccountTransferCache().getTransfer(transactionGlAccount);
+        return getAccountingTransferCaches().getTransactionGlAccountTransferCache().getTransfer(userVisit, transactionGlAccount);
     }
     
     public void updateTransactionGlAccountFromValue(TransactionGlAccountValue transactionGlAccountValue, BasePK updatedBy) {
@@ -5045,7 +5045,7 @@ public class AccountingControl
     }
     
     public TransactionGroupTransfer getTransactionGroupTransfer(UserVisit userVisit, TransactionGroup transactionGroup) {
-        return getAccountingTransferCaches(userVisit).getTransactionGroupTransferCache().getTransfer(transactionGroup);
+        return getAccountingTransferCaches().getTransactionGroupTransferCache().getTransfer(userVisit, transactionGroup);
     }
     
     public List<TransactionGroupTransfer> getTransactionGroupTransfers(UserVisit userVisit, Collection<TransactionGroup> transactionGroups) {
@@ -5284,7 +5284,7 @@ public class AccountingControl
     }
     
     public TransactionTransfer getTransactionTransfer(UserVisit userVisit, Transaction transaction) {
-        return getAccountingTransferCaches(userVisit).getTransactionTransferCache().getTransfer(transaction);
+        return getAccountingTransferCaches().getTransactionTransferCache().getTransfer(userVisit, transaction);
     }
     
     public List<TransactionTransfer> getTransactionTransfers(UserVisit userVisit, Collection<Transaction> transactions) {
@@ -5440,7 +5440,7 @@ public class AccountingControl
     }
     
     public TransactionGlEntryTransfer getTransactionGlEntryTransfer(UserVisit userVisit, TransactionGlEntry transactionGlEntry) {
-        return getAccountingTransferCaches(userVisit).getTransactionGlEntryTransferCache().getTransfer(transactionGlEntry);
+        return getAccountingTransferCaches().getTransactionGlEntryTransferCache().getTransfer(userVisit, transactionGlEntry);
     }
     
     public List<TransactionGlEntryTransfer> getTransactionGlEntryTransfers(UserVisit userVisit, Collection<TransactionGlEntry> transactionGlEntries) {
@@ -5582,7 +5582,7 @@ public class AccountingControl
     }
     
     public TransactionEntityRoleTransfer getTransactionEntityRoleTransfer(UserVisit userVisit, TransactionEntityRole transactionEntityRole) {
-        return getAccountingTransferCaches(userVisit).getTransactionEntityRoleTransferCache().getTransfer(transactionEntityRole);
+        return getAccountingTransferCaches().getTransactionEntityRoleTransferCache().getTransfer(userVisit, transactionEntityRole);
     }
     
     public List<TransactionEntityRoleTransfer> getTransactionEntityRoleTransfers(UserVisit userVisit, Collection<TransactionEntityRole> transactionEntityRoles) {
@@ -5801,7 +5801,7 @@ public class AccountingControl
     }
     
     public SymbolPositionTransfer getSymbolPositionTransfer(UserVisit userVisit, SymbolPosition symbolPosition) {
-        return getAccountingTransferCaches(userVisit).getSymbolPositionTransferCache().getTransfer(symbolPosition);
+        return getAccountingTransferCaches().getSymbolPositionTransferCache().getTransfer(userVisit, symbolPosition);
     }
     
     public List<SymbolPositionTransfer> getSymbolPositionTransfers(UserVisit userVisit, Collection<SymbolPosition> symbolPositions) {
@@ -6044,7 +6044,7 @@ public class AccountingControl
     }
     
     public SymbolPositionDescriptionTransfer getSymbolPositionDescriptionTransfer(UserVisit userVisit, SymbolPositionDescription symbolPositionDescription) {
-        return getAccountingTransferCaches(userVisit).getSymbolPositionDescriptionTransferCache().getTransfer(symbolPositionDescription);
+        return getAccountingTransferCaches().getSymbolPositionDescriptionTransferCache().getTransfer(userVisit, symbolPositionDescription);
     }
     
     public List<SymbolPositionDescriptionTransfer> getSymbolPositionDescriptionTransfersBySymbolPosition(UserVisit userVisit, SymbolPosition symbolPosition) {

@@ -151,7 +151,7 @@ public class PaymentProcessorTransactionCodeControl
 
     public PaymentProcessorTransactionCodeTransfer getPaymentProcessorTransactionCodeTransfer(final UserVisit userVisit,
             final PaymentProcessorTransactionCode paymentProcessorTransactionCode) {
-        return getPaymentTransferCaches(userVisit).getPaymentProcessorTransactionCodeTransferCache().getTransfer(paymentProcessorTransactionCode);
+        return getPaymentTransferCaches().getPaymentProcessorTransactionCodeTransferCache().getTransfer(userVisit, paymentProcessorTransactionCode);
     }
 
     public List<PaymentProcessorTransactionCodeTransfer> getPaymentProcessorTransactionCodeTransfers(final UserVisit userVisit,

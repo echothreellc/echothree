@@ -209,7 +209,7 @@ public class PartyApplicationEditorUseControl
     }
 
     public PartyApplicationEditorUseTransfer getPartyApplicationEditorUseTransfer(UserVisit userVisit, PartyApplicationEditorUse partyApplicationEditorUse) {
-        return getPartyTransferCaches(userVisit).getPartyApplicationEditorUseTransferCache().getPartyApplicationEditorUseTransfer(partyApplicationEditorUse);
+        return getPartyTransferCaches().getPartyApplicationEditorUseTransferCache().getPartyApplicationEditorUseTransfer(userVisit, partyApplicationEditorUse);
     }
 
     public List<PartyApplicationEditorUseTransfer> getPartyApplicationEditorUseTransfers(List<PartyApplicationEditorUse> partyApplicationEditorUses, UserVisit userVisit) {

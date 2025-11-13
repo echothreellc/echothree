@@ -167,7 +167,7 @@ public class LotControl
 
     public LotTransfer getLotTransfer(final UserVisit userVisit,
             final Lot lot) {
-        return getInventoryTransferCaches(userVisit).getLotTransferCache().getTransfer(lot);
+        return getInventoryTransferCaches().getLotTransferCache().getTransfer(userVisit, lot);
     }
 
     public List<LotTransfer> getLotTransfers(final UserVisit userVisit, final Collection<Lot> lots) {

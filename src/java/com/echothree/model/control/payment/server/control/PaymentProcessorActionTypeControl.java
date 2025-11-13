@@ -181,7 +181,7 @@ public class PaymentProcessorActionTypeControl
 
     public PaymentProcessorActionTypeTransfer getPaymentProcessorActionTypeTransfer(final UserVisit userVisit,
             final PaymentProcessorActionType paymentProcessorActionType) {
-        return getPaymentTransferCaches(userVisit).getPaymentProcessorActionTypeTransferCache().getTransfer(paymentProcessorActionType);
+        return getPaymentTransferCaches().getPaymentProcessorActionTypeTransferCache().getTransfer(userVisit, paymentProcessorActionType);
     }
 
     public List<PaymentProcessorActionTypeTransfer> getPaymentProcessorActionTypeTransfers(final UserVisit userVisit,
@@ -410,7 +410,7 @@ public class PaymentProcessorActionTypeControl
 
     public PaymentProcessorActionTypeDescriptionTransfer getPaymentProcessorActionTypeDescriptionTransfer(final UserVisit userVisit,
             final PaymentProcessorActionTypeDescription paymentProcessorActionTypeDescription) {
-        return getPaymentTransferCaches(userVisit).getPaymentProcessorActionTypeDescriptionTransferCache().getTransfer(paymentProcessorActionTypeDescription);
+        return getPaymentTransferCaches().getPaymentProcessorActionTypeDescriptionTransferCache().getTransfer(userVisit, paymentProcessorActionTypeDescription);
     }
 
     public List<PaymentProcessorActionTypeDescriptionTransfer> getPaymentProcessorActionTypeDescriptionTransfersByPaymentProcessorActionType(final UserVisit userVisit,

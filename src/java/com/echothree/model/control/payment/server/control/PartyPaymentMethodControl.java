@@ -250,7 +250,7 @@ public class PartyPaymentMethodControl
     }
 
     public PartyPaymentMethodTransfer getPartyPaymentMethodTransfer(UserVisit userVisit, PartyPaymentMethod partyPaymentMethod) {
-        return getPaymentTransferCaches(userVisit).getPartyPaymentMethodTransferCache().getTransfer(partyPaymentMethod);
+        return getPaymentTransferCaches().getPartyPaymentMethodTransferCache().getTransfer(userVisit, partyPaymentMethod);
     }
 
     public List<PartyPaymentMethodTransfer> getPartyPaymentMethodTransfers(UserVisit userVisit, Collection<PartyPaymentMethod> partyPaymentMethods) {
@@ -926,7 +926,7 @@ public class PartyPaymentMethodControl
     
     public PartyPaymentMethodContactMechanismTransfer getPartyPaymentMethodContactMechanismTransfer(UserVisit userVisit,
             PartyPaymentMethodContactMechanism partyPaymentMethodContactMechanism) {
-        return getPaymentTransferCaches(userVisit).getPartyPaymentMethodContactMechanismTransferCache().getTransfer(partyPaymentMethodContactMechanism);
+        return getPaymentTransferCaches().getPartyPaymentMethodContactMechanismTransferCache().getTransfer(userVisit, partyPaymentMethodContactMechanism);
     }
     
     public List<PartyPaymentMethodContactMechanismTransfer> getPartyPaymentMethodContactMechanismTransfers(UserVisit userVisit,

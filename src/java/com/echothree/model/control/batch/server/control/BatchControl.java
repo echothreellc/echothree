@@ -273,7 +273,7 @@ public class BatchControl
     }
 
     public BatchTypeTransfer getBatchTypeTransfer(UserVisit userVisit, BatchType batchType) {
-        return getBatchTransferCaches(userVisit).getBatchTypeTransferCache().getTransfer(batchType);
+        return getBatchTransferCaches().getBatchTypeTransferCache().getTransfer(userVisit, batchType);
     }
     
     public List<BatchTypeTransfer> getBatchTypeTransfers(UserVisit userVisit) {
@@ -546,7 +546,7 @@ public class BatchControl
     }
     
     public BatchTypeDescriptionTransfer getBatchTypeDescriptionTransfer(UserVisit userVisit, BatchTypeDescription batchTypeDescription) {
-        return getBatchTransferCaches(userVisit).getBatchTypeDescriptionTransferCache().getTransfer(batchTypeDescription);
+        return getBatchTransferCaches().getBatchTypeDescriptionTransferCache().getTransfer(userVisit, batchTypeDescription);
     }
     
     public List<BatchTypeDescriptionTransfer> getBatchTypeDescriptionTransfersByBatchType(UserVisit userVisit, BatchType batchType) {
@@ -719,7 +719,7 @@ public class BatchControl
     }
 
     public BatchTypeEntityTypeTransfer getBatchTypeEntityTypeTransfer(UserVisit userVisit, BatchTypeEntityType batchTypeEntityType) {
-        return getBatchTransferCaches(userVisit).getBatchTypeEntityTypeTransferCache().getTransfer(batchTypeEntityType);
+        return getBatchTransferCaches().getBatchTypeEntityTypeTransferCache().getTransfer(userVisit, batchTypeEntityType);
     }
 
     public List<BatchTypeEntityTypeTransfer> getBatchTypeEntityTypeTransfers(UserVisit userVisit, Collection<BatchTypeEntityType> batchTypeEntityTypes) {
@@ -901,7 +901,7 @@ public class BatchControl
     }
     
     public BatchAliasTypeTransfer getBatchAliasTypeTransfer(UserVisit userVisit, BatchAliasType batchAliasType) {
-        return getBatchTransferCaches(userVisit).getBatchAliasTypeTransferCache().getTransfer(batchAliasType);
+        return getBatchTransferCaches().getBatchAliasTypeTransferCache().getTransfer(userVisit, batchAliasType);
     }
     
     public List<BatchAliasTypeTransfer> getBatchAliasTypeTransfers(UserVisit userVisit, BatchType batchType) {
@@ -1139,7 +1139,7 @@ public class BatchControl
     }
     
     public BatchAliasTypeDescriptionTransfer getBatchAliasTypeDescriptionTransfer(UserVisit userVisit, BatchAliasTypeDescription batchAliasTypeDescription) {
-        return getBatchTransferCaches(userVisit).getBatchAliasTypeDescriptionTransferCache().getTransfer(batchAliasTypeDescription);
+        return getBatchTransferCaches().getBatchAliasTypeDescriptionTransferCache().getTransfer(userVisit, batchAliasTypeDescription);
     }
     
     public List<BatchAliasTypeDescriptionTransfer> getBatchAliasTypeDescriptionTransfersByBatchAliasType(UserVisit userVisit, BatchAliasType batchAliasType) {
@@ -1324,7 +1324,7 @@ public class BatchControl
     }
 
     public BatchTransfer getBatchTransfer(UserVisit userVisit, Batch batch) {
-        return getBatchTransferCaches(userVisit).getBatchTransferCache().getTransfer(batch);
+        return getBatchTransferCaches().getBatchTransferCache().getTransfer(userVisit, batch);
     }
     
     public List<BatchTransfer> getBatchTransfers(UserVisit userVisit, BatchType batchType) {
@@ -1528,7 +1528,7 @@ public class BatchControl
     }
     
     public BatchAliasTransfer getBatchAliasTransfer(UserVisit userVisit, BatchAlias batchAlias) {
-        return getBatchTransferCaches(userVisit).getBatchAliasTransferCache().getTransfer(batchAlias);
+        return getBatchTransferCaches().getBatchAliasTransferCache().getTransfer(userVisit, batchAlias);
     }
     
     public List<BatchAliasTransfer> getBatchAliasTransfersByBatch(UserVisit userVisit, Batch batch) {
@@ -1705,7 +1705,7 @@ public class BatchControl
     }
 
     public BatchEntityTransfer getBatchEntityTransfer(UserVisit userVisit, BatchEntity batchEntity) {
-        return getBatchTransferCaches(userVisit).getBatchEntityTransferCache().getTransfer(batchEntity);
+        return getBatchTransferCaches().getBatchEntityTransferCache().getTransfer(userVisit, batchEntity);
     }
 
     public List<BatchEntityTransfer> getBatchEntityTransfers(UserVisit userVisit, Collection<BatchEntity> batchEntities) {

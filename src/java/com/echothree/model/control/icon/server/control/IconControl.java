@@ -194,7 +194,7 @@ public class IconControl
     }
     
     public IconTransfer getIconTransfer(UserVisit userVisit, Icon icon) {
-        return getIconTransferCaches(userVisit).getIconTransferCache().getIconTransfer(icon);
+        return getIconTransferCaches().getIconTransferCache().getIconTransfer(userVisit, icon);
     }
     
     public List<IconTransfer> getIconTransfers(UserVisit userVisit) {
@@ -391,7 +391,7 @@ public class IconControl
     }
     
     public IconUsageTypeTransfer getIconUsageTypeTransfer(UserVisit userVisit, IconUsageType iconUsageType) {
-        return getIconTransferCaches(userVisit).getIconUsageTypeTransferCache().getIconUsageTypeTransfer(iconUsageType);
+        return getIconTransferCaches().getIconUsageTypeTransferCache().getIconUsageTypeTransfer(userVisit, iconUsageType);
     }
     
     public List<IconUsageTypeTransfer> getIconUsageTypeTransfers(UserVisit userVisit) {
@@ -595,7 +595,7 @@ public class IconControl
     }
     
     public IconUsageTypeDescriptionTransfer getIconUsageTypeDescriptionTransfer(UserVisit userVisit, IconUsageTypeDescription iconUsageTypeDescription) {
-        return getIconTransferCaches(userVisit).getIconUsageTypeDescriptionTransferCache().getIconUsageTypeDescriptionTransfer(iconUsageTypeDescription);
+        return getIconTransferCaches().getIconUsageTypeDescriptionTransferCache().getIconUsageTypeDescriptionTransfer(userVisit, iconUsageTypeDescription);
     }
     
     public List<IconUsageTypeDescriptionTransfer> getIconUsageTypeDescriptionTransfersByIconUsageType(UserVisit userVisit, IconUsageType iconUsageType) {
@@ -603,7 +603,7 @@ public class IconControl
         List<IconUsageTypeDescriptionTransfer> iconUsageTypeDescriptionTransfers = new ArrayList<>(iconUsageTypeDescriptions.size());
         
         iconUsageTypeDescriptions.forEach((iconUsageTypeDescription) -> {
-            iconUsageTypeDescriptionTransfers.add(getIconTransferCaches(userVisit).getIconUsageTypeDescriptionTransferCache().getIconUsageTypeDescriptionTransfer(iconUsageTypeDescription));
+            iconUsageTypeDescriptionTransfers.add(getIconTransferCaches().getIconUsageTypeDescriptionTransferCache().getIconUsageTypeDescriptionTransfer(userVisit, iconUsageTypeDescription));
         });
         
         return iconUsageTypeDescriptionTransfers;
@@ -859,7 +859,7 @@ public class IconControl
     }
     
     public IconUsageTransfer getIconUsageTransfer(UserVisit userVisit, IconUsage iconUsage) {
-        return getIconTransferCaches(userVisit).getIconUsageTransferCache().getIconUsageTransfer(iconUsage);
+        return getIconTransferCaches().getIconUsageTransferCache().getIconUsageTransfer(userVisit, iconUsage);
     }
     
     private void updateIconUsageFromValue(IconUsageValue iconUsageValue, boolean checkDefault, BasePK updatedBy) {

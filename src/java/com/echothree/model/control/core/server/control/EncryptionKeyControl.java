@@ -246,7 +246,7 @@ public class EncryptionKeyControl
     }
 
     public BaseEncryptionKeyTransfer getBaseEncryptionKeyTransfer(UserVisit userVisit, BaseEncryptionKey baseEncryptionKey) {
-        return getCoreTransferCaches(userVisit).getBaseEncryptionKeyTransferCache().getBaseEncryptionKeyTransfer(baseEncryptionKey);
+        return getCoreTransferCaches().getBaseEncryptionKeyTransferCache().getBaseEncryptionKeyTransfer(userVisit, baseEncryptionKey);
     }
 
     public BaseEncryptionKeyTransfer getActiveBaseEncryptionKeyTransfer(UserVisit userVisit) {

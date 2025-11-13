@@ -224,7 +224,7 @@ public class TextControl
     }
 
     public TextDecorationTransfer getTextDecorationTransfer(UserVisit userVisit, TextDecoration textDecoration) {
-        return getCoreTransferCaches(userVisit).getTextDecorationTransferCache().getTextDecorationTransfer(textDecoration);
+        return getCoreTransferCaches().getTextDecorationTransferCache().getTextDecorationTransfer(userVisit, textDecoration);
     }
 
     public List<TextDecorationTransfer> getTextDecorationTransfers(UserVisit userVisit, Collection<TextDecoration> entities) {
@@ -466,7 +466,7 @@ public class TextControl
     }
 
     public TextDecorationDescriptionTransfer getTextDecorationDescriptionTransfer(UserVisit userVisit, TextDecorationDescription textDecorationDescription) {
-        return getCoreTransferCaches(userVisit).getTextDecorationDescriptionTransferCache().getTextDecorationDescriptionTransfer(textDecorationDescription);
+        return getCoreTransferCaches().getTextDecorationDescriptionTransferCache().getTextDecorationDescriptionTransfer(userVisit, textDecorationDescription);
     }
 
     public List<TextDecorationDescriptionTransfer> getTextDecorationDescriptionTransfersByTextDecoration(UserVisit userVisit, TextDecoration textDecoration) {
@@ -676,7 +676,7 @@ public class TextControl
     }
 
     public TextTransformationTransfer getTextTransformationTransfer(UserVisit userVisit, TextTransformation textTransformation) {
-        return getCoreTransferCaches(userVisit).getTextTransformationTransferCache().getTextTransformationTransfer(textTransformation);
+        return getCoreTransferCaches().getTextTransformationTransferCache().getTextTransformationTransfer(userVisit, textTransformation);
     }
 
     public List<TextTransformationTransfer> getTextTransformationTransfers(UserVisit userVisit, Collection<TextTransformation> entities) {
@@ -918,7 +918,7 @@ public class TextControl
     }
 
     public TextTransformationDescriptionTransfer getTextTransformationDescriptionTransfer(UserVisit userVisit, TextTransformationDescription textTransformationDescription) {
-        return getCoreTransferCaches(userVisit).getTextTransformationDescriptionTransferCache().getTextTransformationDescriptionTransfer(textTransformationDescription);
+        return getCoreTransferCaches().getTextTransformationDescriptionTransferCache().getTextTransformationDescriptionTransfer(userVisit, textTransformationDescription);
     }
 
     public List<TextTransformationDescriptionTransfer> getTextTransformationDescriptionTransfersByTextTransformation(UserVisit userVisit, TextTransformation textTransformation) {

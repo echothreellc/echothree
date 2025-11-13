@@ -237,7 +237,7 @@ public class PaymentProcessorControl
     }
     
     public PaymentProcessorTransfer getPaymentProcessorTransfer(UserVisit userVisit, PaymentProcessor paymentProcessor) {
-        return getPaymentTransferCaches(userVisit).getPaymentProcessorTransferCache().getTransfer(paymentProcessor);
+        return getPaymentTransferCaches().getPaymentProcessorTransferCache().getTransfer(userVisit, paymentProcessor);
     }
 
     public List<PaymentProcessorTransfer> getPaymentProcessorTransfers(UserVisit userVisit, Collection<PaymentProcessor> paymentProcessors) {
@@ -457,7 +457,7 @@ public class PaymentProcessorControl
     }
     
     public PaymentProcessorDescriptionTransfer getPaymentProcessorDescriptionTransfer(UserVisit userVisit, PaymentProcessorDescription paymentProcessorDescription) {
-        return getPaymentTransferCaches(userVisit).getPaymentProcessorDescriptionTransferCache().getTransfer(paymentProcessorDescription);
+        return getPaymentTransferCaches().getPaymentProcessorDescriptionTransferCache().getTransfer(userVisit, paymentProcessorDescription);
     }
     
     public List<PaymentProcessorDescriptionTransfer> getPaymentProcessorDescriptionTransfers(UserVisit userVisit, PaymentProcessor paymentProcessor) {

@@ -190,7 +190,7 @@ public class FreeOnBoardControl
 
     public FreeOnBoardTransfer getFreeOnBoardTransfer(final UserVisit userVisit,
             final FreeOnBoard freeOnBoard) {
-        return getShipmentTransferCaches(userVisit).getFreeOnBoardTransferCache().getTransfer(freeOnBoard);
+        return getShipmentTransferCaches().getFreeOnBoardTransferCache().getTransfer(userVisit, freeOnBoard);
     }
 
     public List<FreeOnBoardTransfer> getFreeOnBoardTransfers(final UserVisit userVisit,
@@ -417,7 +417,7 @@ public class FreeOnBoardControl
 
     public FreeOnBoardDescriptionTransfer getFreeOnBoardDescriptionTransfer(final UserVisit userVisit,
             final FreeOnBoardDescription freeOnBoardDescription) {
-        return getShipmentTransferCaches(userVisit).getFreeOnBoardDescriptionTransferCache().getTransfer(freeOnBoardDescription);
+        return getShipmentTransferCaches().getFreeOnBoardDescriptionTransferCache().getTransfer(userVisit, freeOnBoardDescription);
     }
 
     public List<FreeOnBoardDescriptionTransfer> getFreeOnBoardDescriptionTransfersByFreeOnBoard(final UserVisit userVisit,

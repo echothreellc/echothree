@@ -213,7 +213,7 @@ public class ServerControl
     }
 
     public ProtocolTransfer getProtocolTransfer(UserVisit userVisit, Protocol protocol) {
-        return getCoreTransferCaches(userVisit).getProtocolTransferCache().getProtocolTransfer(protocol);
+        return getCoreTransferCaches().getProtocolTransferCache().getProtocolTransfer(userVisit, protocol);
     }
 
     public List<ProtocolTransfer> getProtocolTransfers(UserVisit userVisit) {
@@ -451,7 +451,7 @@ public class ServerControl
     }
 
     public ProtocolDescriptionTransfer getProtocolDescriptionTransfer(UserVisit userVisit, ProtocolDescription protocolDescription) {
-        return getCoreTransferCaches(userVisit).getProtocolDescriptionTransferCache().getProtocolDescriptionTransfer(protocolDescription);
+        return getCoreTransferCaches().getProtocolDescriptionTransferCache().getProtocolDescriptionTransfer(userVisit, protocolDescription);
     }
 
     public List<ProtocolDescriptionTransfer> getProtocolDescriptionTransfersByProtocol(UserVisit userVisit, Protocol protocol) {
@@ -672,7 +672,7 @@ public class ServerControl
     }
 
     public ServiceTransfer getServiceTransfer(UserVisit userVisit, Service service) {
-        return getCoreTransferCaches(userVisit).getServiceTransferCache().getServiceTransfer(service);
+        return getCoreTransferCaches().getServiceTransferCache().getServiceTransfer(userVisit, service);
     }
 
     public List<ServiceTransfer> getServiceTransfers(UserVisit userVisit) {
@@ -916,7 +916,7 @@ public class ServerControl
     }
 
     public ServiceDescriptionTransfer getServiceDescriptionTransfer(UserVisit userVisit, ServiceDescription serviceDescription) {
-        return getCoreTransferCaches(userVisit).getServiceDescriptionTransferCache().getServiceDescriptionTransfer(serviceDescription);
+        return getCoreTransferCaches().getServiceDescriptionTransferCache().getServiceDescriptionTransfer(userVisit, serviceDescription);
     }
 
     public List<ServiceDescriptionTransfer> getServiceDescriptionTransfersByService(UserVisit userVisit, Service service) {
@@ -1103,7 +1103,7 @@ public class ServerControl
     }
 
     public ServerTransfer getServerTransfer(UserVisit userVisit, Server server) {
-        return getCoreTransferCaches(userVisit).getServerTransferCache().getServerTransfer(server);
+        return getCoreTransferCaches().getServerTransferCache().getServerTransfer(userVisit, server);
     }
 
     public List<ServerTransfer> getServerTransfers(UserVisit userVisit) {
@@ -1341,7 +1341,7 @@ public class ServerControl
     }
 
     public ServerDescriptionTransfer getServerDescriptionTransfer(UserVisit userVisit, ServerDescription serverDescription) {
-        return getCoreTransferCaches(userVisit).getServerDescriptionTransferCache().getServerDescriptionTransfer(serverDescription);
+        return getCoreTransferCaches().getServerDescriptionTransferCache().getServerDescriptionTransfer(userVisit, serverDescription);
     }
 
     public List<ServerDescriptionTransfer> getServerDescriptionTransfersByServer(UserVisit userVisit, Server server) {
@@ -1505,7 +1505,7 @@ public class ServerControl
     }
 
     public ServerServiceTransfer getServerServiceTransfer(UserVisit userVisit, ServerService serverService) {
-        return getCoreTransferCaches(userVisit).getServerServiceTransferCache().getServerServiceTransfer(serverService);
+        return getCoreTransferCaches().getServerServiceTransferCache().getServerServiceTransfer(userVisit, serverService);
     }
 
     public List<ServerServiceTransfer> getServerServiceTransfersByServer(UserVisit userVisit, Server server) {

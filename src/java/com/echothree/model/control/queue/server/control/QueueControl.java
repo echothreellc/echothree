@@ -236,7 +236,7 @@ public class QueueControl
     }
 
    public QueueTypeTransfer getQueueTypeTransfer(UserVisit userVisit, QueueType queueType) {
-        return getQueueTransferCaches(userVisit).getQueueTypeTransferCache().getQueueTypeTransfer(queueType);
+        return getQueueTransferCaches().getQueueTypeTransferCache().getQueueTypeTransfer(userVisit, queueType);
     }
 
     public List<QueueTypeTransfer> getQueueTypeTransfers(UserVisit userVisit, Collection<QueueType> queueTypes) {
@@ -477,7 +477,7 @@ public class QueueControl
     }
 
     public QueueTypeDescriptionTransfer getQueueTypeDescriptionTransfer(UserVisit userVisit, QueueTypeDescription queueTypeDescription) {
-        return getQueueTransferCaches(userVisit).getQueueTypeDescriptionTransferCache().getQueueTypeDescriptionTransfer(queueTypeDescription);
+        return getQueueTransferCaches().getQueueTypeDescriptionTransferCache().getQueueTypeDescriptionTransfer(userVisit, queueTypeDescription);
     }
 
     public List<QueueTypeDescriptionTransfer> getQueueTypeDescriptionTransfersByQueueType(UserVisit userVisit, QueueType queueType) {
@@ -700,7 +700,7 @@ public class QueueControl
     }
     
     public QueuedEntityTransfer getQueuedEntityTransfer(UserVisit userVisit, QueuedEntity queuedEntity) {
-        return getQueueTransferCaches(userVisit).getQueuedEntityTransferCache().getQueuedEntityTransfer(queuedEntity);
+        return getQueueTransferCaches().getQueuedEntityTransferCache().getQueuedEntityTransfer(userVisit, queuedEntity);
     }
     
     public List<QueuedEntityTransfer> getQueuedEntityTransfers(UserVisit userVisit, Collection<QueuedEntity> queuedEntities) {

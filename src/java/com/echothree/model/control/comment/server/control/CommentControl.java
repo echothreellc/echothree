@@ -212,7 +212,7 @@ public class CommentControl
     }
     
     public CommentTypeTransfer getCommentTypeTransfer(UserVisit userVisit, CommentType commentType) {
-        return getCommentTransferCaches(userVisit).getCommentTypeTransferCache().getCommentTypeTransfer(commentType);
+        return getCommentTransferCaches().getCommentTypeTransferCache().getCommentTypeTransfer(userVisit, commentType);
     }
     
     public List<CommentTypeTransfer> getCommentTypeTransfers(UserVisit userVisit, EntityType entityType) {
@@ -396,7 +396,7 @@ public class CommentControl
     }
     
     public CommentTypeDescriptionTransfer getCommentTypeDescriptionTransfer(UserVisit userVisit, CommentTypeDescription commentTypeDescription) {
-        return getCommentTransferCaches(userVisit).getCommentTypeDescriptionTransferCache().getCommentTypeDescriptionTransfer(commentTypeDescription);
+        return getCommentTransferCaches().getCommentTypeDescriptionTransferCache().getCommentTypeDescriptionTransfer(userVisit, commentTypeDescription);
     }
     
     public List<CommentTypeDescriptionTransfer> getCommentTypeDescriptionTransfers(UserVisit userVisit, CommentType commentType) {
@@ -556,7 +556,7 @@ public class CommentControl
     }
     
     public CommentUsageTypeTransfer getCommentUsageTypeTransfer(UserVisit userVisit, CommentUsageType commentUsageType) {
-        return getCommentTransferCaches(userVisit).getCommentUsageTypeTransferCache().getCommentUsageTypeTransfer(commentUsageType);
+        return getCommentTransferCaches().getCommentUsageTypeTransferCache().getCommentUsageTypeTransfer(userVisit, commentUsageType);
     }
     
     public List<CommentUsageTypeTransfer> getCommentUsageTypeTransfers(UserVisit userVisit, CommentType commentType) {
@@ -739,7 +739,7 @@ public class CommentControl
     }
     
     public CommentUsageTypeDescriptionTransfer getCommentUsageTypeDescriptionTransfer(UserVisit userVisit, CommentUsageTypeDescription commentUsageTypeDescription) {
-        return getCommentTransferCaches(userVisit).getCommentUsageTypeDescriptionTransferCache().getCommentUsageTypeDescriptionTransfer(commentUsageTypeDescription);
+        return getCommentTransferCaches().getCommentUsageTypeDescriptionTransferCache().getCommentUsageTypeDescriptionTransfer(userVisit, commentUsageTypeDescription);
     }
     
     public List<CommentUsageTypeDescriptionTransfer> getCommentUsageTypeDescriptionTransfers(UserVisit userVisit, CommentUsageType commentUsageType) {
@@ -1015,7 +1015,7 @@ public class CommentControl
     }
     
     public CommentTransfer getCommentTransfer(UserVisit userVisit, Comment comment) {
-        return getCommentTransferCaches(userVisit).getCommentTransferCache().getCommentTransfer(comment);
+        return getCommentTransferCaches().getCommentTransferCache().getCommentTransfer(userVisit, comment);
     }
     
     public List<CommentTransfer> getCommentTransfers(UserVisit userVisit, Collection<Comment> comments) {
@@ -1567,7 +1567,7 @@ public class CommentControl
     }
     
     public CommentUsageTransfer getCommentUsageTransfer(UserVisit userVisit, CommentUsage commentUsage) {
-        return getCommentTransferCaches(userVisit).getCommentUsageTransferCache().getCommentUsageTransfer(commentUsage);
+        return getCommentTransferCaches().getCommentUsageTransferCache().getCommentUsageTransfer(userVisit, commentUsage);
     }
     
     public List<CommentUsageTransfer> getCommentUsageTransfersByComment(UserVisit userVisit, Comment comment) {

@@ -301,7 +301,7 @@ public class WishlistControl
     }
     
     public WishlistTypeTransfer getWishlistTypeTransfer(UserVisit userVisit, WishlistType wishlistType) {
-        return getWishlistTransferCaches(userVisit).getWishlistTypeTransferCache().getWishlistTypeTransfer(wishlistType);
+        return getWishlistTransferCaches().getWishlistTypeTransferCache().getWishlistTypeTransfer(userVisit, wishlistType);
     }
 
     public List<WishlistTypeTransfer> getWishlistTypeTransfers(UserVisit userVisit, Collection<WishlistType> wishlistTypes) {
@@ -517,7 +517,7 @@ public class WishlistControl
     }
     
     public WishlistTypeDescriptionTransfer getWishlistTypeDescriptionTransfer(UserVisit userVisit, WishlistTypeDescription wishlistTypeDescription) {
-        return getWishlistTransferCaches(userVisit).getWishlistTypeDescriptionTransferCache().getWishlistTypeDescriptionTransfer(wishlistTypeDescription);
+        return getWishlistTransferCaches().getWishlistTypeDescriptionTransferCache().getWishlistTypeDescriptionTransfer(userVisit, wishlistTypeDescription);
     }
     
     public List<WishlistTypeDescriptionTransfer> getWishlistTypeDescriptionTransfers(UserVisit userVisit, WishlistType wishlistType) {
@@ -794,7 +794,7 @@ public class WishlistControl
     }
     
     public WishlistPriorityTransfer getWishlistPriorityTransfer(UserVisit userVisit, WishlistPriority wishlistPriority) {
-        return getWishlistTransferCaches(userVisit).getWishlistPriorityTransferCache().getWishlistPriorityTransfer(wishlistPriority);
+        return getWishlistTransferCaches().getWishlistPriorityTransferCache().getWishlistPriorityTransfer(userVisit, wishlistPriority);
     }
 
     public List<WishlistPriorityTransfer> getWishlistPriorityTransfers(UserVisit userVisit, Collection<WishlistPriority> wishlistPriorities) {
@@ -1016,7 +1016,7 @@ public class WishlistControl
     }
     
     public WishlistPriorityDescriptionTransfer getWishlistPriorityDescriptionTransfer(UserVisit userVisit, WishlistPriorityDescription wishlistPriorityDescription) {
-        return getWishlistTransferCaches(userVisit).getWishlistPriorityDescriptionTransferCache().getWishlistPriorityDescriptionTransfer(wishlistPriorityDescription);
+        return getWishlistTransferCaches().getWishlistPriorityDescriptionTransferCache().getWishlistPriorityDescriptionTransfer(userVisit, wishlistPriorityDescription);
     }
     
     public List<WishlistPriorityDescriptionTransfer> getWishlistPriorityDescriptionTransfers(UserVisit userVisit, WishlistPriority wishlistPriority) {
@@ -1494,7 +1494,7 @@ public class WishlistControl
     }
     
     public WishlistTransfer getWishlistTransfer(UserVisit userVisit, Order order) {
-        return getWishlistTransferCaches(userVisit).getWishlistTransferCache().getWishlistTransfer(order);
+        return getWishlistTransferCaches().getWishlistTransferCache().getWishlistTransfer(userVisit, order);
     }
     
     private List<Order> getOrdersByWishlistType(WishlistType wishlistType, EntityPermission entityPermission) {
@@ -1765,7 +1765,7 @@ public class WishlistControl
     }
     
     public WishlistLineTransfer getWishlistLineTransfer(UserVisit userVisit, OrderLine orderLine) {
-        return getWishlistTransferCaches(userVisit).getWishlistLineTransferCache().getWishlistLineTransfer(orderLine);
+        return getWishlistTransferCaches().getWishlistLineTransferCache().getWishlistLineTransfer(userVisit, orderLine);
     }
     
     public List<WishlistLineTransfer> getWishlistLineTransfers(UserVisit userVisit, Collection<OrderLine> orderLines) {

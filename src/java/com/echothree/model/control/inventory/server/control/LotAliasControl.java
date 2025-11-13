@@ -193,7 +193,7 @@ public class LotAliasControl
     }
 
     public LotAliasTypeTransfer getLotAliasTypeTransfer(UserVisit userVisit, LotAliasType lotAliasType) {
-        return getInventoryTransferCaches(userVisit).getLotAliasTypeTransferCache().getTransfer(lotAliasType);
+        return getInventoryTransferCaches().getLotAliasTypeTransferCache().getTransfer(userVisit, lotAliasType);
     }
 
     public List<LotAliasTypeTransfer> getLotAliasTypeTransfers(UserVisit userVisit) {
@@ -424,7 +424,7 @@ public class LotAliasControl
     }
 
     public LotAliasTypeDescriptionTransfer getLotAliasTypeDescriptionTransfer(UserVisit userVisit, LotAliasTypeDescription lotAliasTypeDescription) {
-        return getInventoryTransferCaches(userVisit).getLotAliasTypeDescriptionTransferCache().getTransfer(lotAliasTypeDescription);
+        return getInventoryTransferCaches().getLotAliasTypeDescriptionTransferCache().getTransfer(userVisit, lotAliasTypeDescription);
     }
 
     public List<LotAliasTypeDescriptionTransfer> getLotAliasTypeDescriptionTransfersByLotAliasType(UserVisit userVisit, LotAliasType lotAliasType) {
@@ -617,7 +617,7 @@ public class LotAliasControl
     }
 
     public LotAliasTransfer getLotAliasTransfer(UserVisit userVisit, LotAlias lotAlias) {
-        return getInventoryTransferCaches(userVisit).getLotAliasTransferCache().getTransfer(lotAlias);
+        return getInventoryTransferCaches().getLotAliasTransferCache().getTransfer(userVisit, lotAlias);
     }
 
     public List<LotAliasTransfer> getLotAliasTransfersByLot(UserVisit userVisit, Lot lot) {

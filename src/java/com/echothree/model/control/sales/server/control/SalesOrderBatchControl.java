@@ -103,7 +103,7 @@ public class SalesOrderBatchControl
     }
 
     public SalesOrderBatchTransfer getSalesOrderBatchTransfer(UserVisit userVisit, Batch batch) {
-        return getSaleTransferCaches(userVisit).getSalesOrderBatchTransferCache().getTransfer(batch);
+        return getSaleTransferCaches().getSalesOrderBatchTransferCache().getTransfer(userVisit, batch);
     }
 
     public List<SalesOrderBatchTransfer> getSalesOrderBatchTransfers(UserVisit userVisit) {

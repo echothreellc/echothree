@@ -312,7 +312,7 @@ public class EntityTypeControl
     }
 
     public EntityTypeTransfer getEntityTypeTransfer(UserVisit userVisit, EntityType entityType) {
-        return getCoreTransferCaches(userVisit).getEntityTypeTransferCache().getEntityTypeTransfer(entityType);
+        return getCoreTransferCaches().getEntityTypeTransferCache().getEntityTypeTransfer(userVisit, entityType);
     }
 
     public List<EntityTypeTransfer> getEntityTypeTransfers(UserVisit userVisit, Collection<EntityType> entityTypes) {
@@ -519,7 +519,7 @@ public class EntityTypeControl
     }
 
     public EntityTypeDescriptionTransfer getEntityTypeDescriptionTransfer(UserVisit userVisit, EntityTypeDescription entityTypeDescription) {
-        return getCoreTransferCaches(userVisit).getEntityTypeDescriptionTransferCache().getEntityTypeDescriptionTransfer(entityTypeDescription);
+        return getCoreTransferCaches().getEntityTypeDescriptionTransferCache().getEntityTypeDescriptionTransfer(userVisit, entityTypeDescription);
     }
 
     public List<EntityTypeDescriptionTransfer> getEntityTypeDescriptionTransfersByEntityType(UserVisit userVisit,

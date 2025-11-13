@@ -264,7 +264,7 @@ public class AssociateControl
     }
     
     public AssociateProgramTransfer getAssociateProgramTransfer(UserVisit userVisit, AssociateProgram associateProgram) {
-        return getAssociateTransferCaches(userVisit).getAssociateProgramTransferCache().getTransfer(associateProgram);
+        return getAssociateTransferCaches().getAssociateProgramTransferCache().getTransfer(userVisit, associateProgram);
     }
     
     public List<AssociateProgramTransfer> getAssociateProgramTransfers(UserVisit userVisit) {
@@ -476,7 +476,7 @@ public class AssociateControl
     }
     
     public AssociateProgramDescriptionTransfer getAssociateProgramDescriptionTransfer(UserVisit userVisit, AssociateProgramDescription associateProgramDescription) {
-        return getAssociateTransferCaches(userVisit).getAssociateProgramDescriptionTransferCache().getTransfer(associateProgramDescription);
+        return getAssociateTransferCaches().getAssociateProgramDescriptionTransferCache().getTransfer(userVisit, associateProgramDescription);
     }
     
     public List<AssociateProgramDescriptionTransfer> getAssociateProgramDescriptionTransfersByAssociateProgram(UserVisit userVisit, AssociateProgram associateProgram) {
@@ -667,7 +667,7 @@ public class AssociateControl
     }
     
     public AssociateTransfer getAssociateTransfer(UserVisit userVisit, Associate associate) {
-        return getAssociateTransferCaches(userVisit).getAssociateTransferCache().getTransfer(associate);
+        return getAssociateTransferCaches().getAssociateTransferCache().getTransfer(userVisit, associate);
     }
     
     public List<AssociateTransfer> getAssociateTransfers(List<Associate> associates, UserVisit userVisit) {
@@ -975,7 +975,7 @@ public class AssociateControl
     }
     
     public AssociatePartyContactMechanismTransfer getAssociatePartyContactMechanismTransfer(UserVisit userVisit, AssociatePartyContactMechanism associatePartyContactMechanism) {
-        return getAssociateTransferCaches(userVisit).getAssociatePartyContactMechanismTransferCache().getTransfer(associatePartyContactMechanism);
+        return getAssociateTransferCaches().getAssociatePartyContactMechanismTransferCache().getTransfer(userVisit, associatePartyContactMechanism);
     }
     
     public List<AssociatePartyContactMechanismTransfer> getAssociatePartyContactMechanismTransfers(List<AssociatePartyContactMechanism> associatePartyContactMechanisms, UserVisit userVisit) {
@@ -1292,7 +1292,7 @@ public class AssociateControl
     }
     
     public AssociateReferralTransfer getAssociateReferralTransfer(UserVisit userVisit, AssociateReferral associateReferral) {
-        return getAssociateTransferCaches(userVisit).getAssociateReferralTransferCache().getTransfer(associateReferral);
+        return getAssociateTransferCaches().getAssociateReferralTransferCache().getTransfer(userVisit, associateReferral);
     }
     
     public List<AssociateReferralTransfer> getAssociateReferralTransfers(List<AssociateReferral> associateReferrals, UserVisit userVisit) {

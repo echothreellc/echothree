@@ -200,7 +200,7 @@ public class OrderLineAdjustmentControl
     }
 
     public OrderLineAdjustmentTypeTransfer getOrderLineAdjustmentTypeTransfer(UserVisit userVisit, OrderLineAdjustmentType orderLineAdjustmentType) {
-        return getOrderTransferCaches(userVisit).getOrderLineAdjustmentTypeTransferCache().getOrderLineAdjustmentTypeTransfer(orderLineAdjustmentType);
+        return getOrderTransferCaches().getOrderLineAdjustmentTypeTransferCache().getOrderLineAdjustmentTypeTransfer(userVisit, orderLineAdjustmentType);
     }
 
     public List<OrderLineAdjustmentTypeTransfer> getOrderLineAdjustmentTypeTransfers(UserVisit userVisit, OrderType orderType) {
@@ -427,7 +427,7 @@ public class OrderLineAdjustmentControl
     }
 
     public OrderLineAdjustmentTypeDescriptionTransfer getOrderLineAdjustmentTypeDescriptionTransfer(UserVisit userVisit, OrderLineAdjustmentTypeDescription orderLineAdjustmentTypeDescription) {
-        return getOrderTransferCaches(userVisit).getOrderLineAdjustmentTypeDescriptionTransferCache().getOrderLineAdjustmentTypeDescriptionTransfer(orderLineAdjustmentTypeDescription);
+        return getOrderTransferCaches().getOrderLineAdjustmentTypeDescriptionTransferCache().getOrderLineAdjustmentTypeDescriptionTransfer(userVisit, orderLineAdjustmentTypeDescription);
     }
 
     public List<OrderLineAdjustmentTypeDescriptionTransfer> getOrderLineAdjustmentTypeDescriptionTransfersByOrderLineAdjustmentType(UserVisit userVisit, OrderLineAdjustmentType orderLineAdjustmentType) {

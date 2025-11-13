@@ -269,7 +269,7 @@ public class ShipmentControl
     }
 
     public ShipmentTypeTransfer getShipmentTypeTransfer(UserVisit userVisit, ShipmentType shipmentType) {
-        return getShipmentTransferCaches(userVisit).getShipmentTypeTransferCache().getTransfer(shipmentType);
+        return getShipmentTransferCaches().getShipmentTypeTransferCache().getTransfer(userVisit, shipmentType);
     }
 
     public List<ShipmentTypeTransfer> getShipmentTypeTransfers(UserVisit userVisit) {
@@ -543,7 +543,7 @@ public class ShipmentControl
     }
 
     public ShipmentTypeDescriptionTransfer getShipmentTypeDescriptionTransfer(UserVisit userVisit, ShipmentTypeDescription shipmentTypeDescription) {
-        return getShipmentTransferCaches(userVisit).getShipmentTypeDescriptionTransferCache().getTransfer(shipmentTypeDescription);
+        return getShipmentTransferCaches().getShipmentTypeDescriptionTransferCache().getTransfer(userVisit, shipmentTypeDescription);
     }
 
     public List<ShipmentTypeDescriptionTransfer> getShipmentTypeDescriptionTransfersByShipmentType(UserVisit userVisit, ShipmentType shipmentType) {
@@ -735,7 +735,7 @@ public class ShipmentControl
     }
 
     public ShipmentTimeTypeTransfer getShipmentTimeTypeTransfer(UserVisit userVisit, ShipmentTimeType shipmentTimeType) {
-        return getShipmentTransferCaches(userVisit).getShipmentTimeTypeTransferCache().getTransfer(shipmentTimeType);
+        return getShipmentTransferCaches().getShipmentTimeTypeTransferCache().getTransfer(userVisit, shipmentTimeType);
     }
 
     public List<ShipmentTimeTypeTransfer> getShipmentTimeTypeTransfers(UserVisit userVisit, ShipmentType shipmentType) {
@@ -962,7 +962,7 @@ public class ShipmentControl
     }
 
     public ShipmentTimeTypeDescriptionTransfer getShipmentTimeTypeDescriptionTransfer(UserVisit userVisit, ShipmentTimeTypeDescription shipmentTimeTypeDescription) {
-        return getShipmentTransferCaches(userVisit).getShipmentTimeTypeDescriptionTransferCache().getTransfer(shipmentTimeTypeDescription);
+        return getShipmentTransferCaches().getShipmentTimeTypeDescriptionTransferCache().getTransfer(userVisit, shipmentTimeTypeDescription);
     }
 
     public List<ShipmentTimeTypeDescriptionTransfer> getShipmentTimeTypeDescriptionTransfersByShipmentTimeType(UserVisit userVisit, ShipmentTimeType shipmentTimeType) {
@@ -1227,7 +1227,7 @@ public class ShipmentControl
     }
     
     public ShipmentTypeShippingMethodTransfer getShipmentTypeShippingMethodTransfer(UserVisit userVisit, ShipmentTypeShippingMethod shipmentTypeShippingMethod) {
-        return getShipmentTransferCaches(userVisit).getShipmentTypeShippingMethodTransferCache().getTransfer(shipmentTypeShippingMethod);
+        return getShipmentTransferCaches().getShipmentTypeShippingMethodTransferCache().getTransfer(userVisit, shipmentTypeShippingMethod);
     }
     
     private void updateShipmentTypeShippingMethodFromValue(ShipmentTypeShippingMethodValue shipmentTypeShippingMethodValue, boolean checkDefault, BasePK updatedBy) {
@@ -1438,7 +1438,7 @@ public class ShipmentControl
     }
 
     public ShipmentTimeTransfer getShipmentTimeTransfer(UserVisit userVisit, ShipmentTime shipmentTime) {
-        return getShipmentTransferCaches(userVisit).getShipmentTimeTransferCache().getTransfer(shipmentTime);
+        return getShipmentTransferCaches().getShipmentTimeTransferCache().getTransfer(userVisit, shipmentTime);
     }
 
     public List<ShipmentTimeTransfer> getShipmentTimeTransfers(UserVisit userVisit, Collection<ShipmentTime> shipmentTimes) {
@@ -1639,7 +1639,7 @@ public class ShipmentControl
     }
 
     public ShipmentAliasTypeTransfer getShipmentAliasTypeTransfer(UserVisit userVisit, ShipmentAliasType shipmentAliasType) {
-        return getShipmentTransferCaches(userVisit).getShipmentAliasTypeTransferCache().getTransfer(shipmentAliasType);
+        return getShipmentTransferCaches().getShipmentAliasTypeTransferCache().getTransfer(userVisit, shipmentAliasType);
     }
 
     public List<ShipmentAliasTypeTransfer> getShipmentAliasTypeTransfers(UserVisit userVisit, ShipmentType shipmentType) {
@@ -1877,7 +1877,7 @@ public class ShipmentControl
     }
 
     public ShipmentAliasTypeDescriptionTransfer getShipmentAliasTypeDescriptionTransfer(UserVisit userVisit, ShipmentAliasTypeDescription shipmentAliasTypeDescription) {
-        return getShipmentTransferCaches(userVisit).getShipmentAliasTypeDescriptionTransferCache().getTransfer(shipmentAliasTypeDescription);
+        return getShipmentTransferCaches().getShipmentAliasTypeDescriptionTransferCache().getTransfer(userVisit, shipmentAliasTypeDescription);
     }
 
     public List<ShipmentAliasTypeDescriptionTransfer> getShipmentAliasTypeDescriptionTransfersByShipmentAliasType(UserVisit userVisit, ShipmentAliasType shipmentAliasType) {
@@ -2070,7 +2070,7 @@ public class ShipmentControl
     }
 
     public ShipmentAliasTransfer getShipmentAliasTransfer(UserVisit userVisit, ShipmentAlias shipmentAlias) {
-        return getShipmentTransferCaches(userVisit).getShipmentAliasTransferCache().getTransfer(shipmentAlias);
+        return getShipmentTransferCaches().getShipmentAliasTransferCache().getTransfer(userVisit, shipmentAlias);
     }
 
     public List<ShipmentAliasTransfer> getShipmentAliasTransfersByShipment(UserVisit userVisit, Shipment shipment) {

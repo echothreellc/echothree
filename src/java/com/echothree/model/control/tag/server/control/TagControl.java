@@ -314,7 +314,7 @@ public class TagControl
     }
     
     public TagScopeTransfer getTagScopeTransfer(UserVisit userVisit, TagScope tagScope) {
-        return getTagTransferCaches(userVisit).getTagScopeTransferCache().getTagScopeTransfer(tagScope);
+        return getTagTransferCaches().getTagScopeTransferCache().getTagScopeTransfer(userVisit, tagScope);
     }
     
     public List<TagScopeTransfer> getTagScopeTransfers(UserVisit userVisit, Collection<TagScope> tagScopes) {
@@ -531,7 +531,7 @@ public class TagControl
     }
     
     public TagScopeDescriptionTransfer getTagScopeDescriptionTransfer(UserVisit userVisit, TagScopeDescription tagScopeDescription) {
-        return getTagTransferCaches(userVisit).getTagScopeDescriptionTransferCache().getTagScopeDescriptionTransfer(tagScopeDescription);
+        return getTagTransferCaches().getTagScopeDescriptionTransferCache().getTagScopeDescriptionTransfer(userVisit, tagScopeDescription);
     }
     
     public List<TagScopeDescriptionTransfer> getTagScopeDescriptionTransfers(UserVisit userVisit, TagScope tagScope) {
@@ -746,7 +746,7 @@ public class TagControl
     }
     
     public TagScopeEntityTypeTransfer getTagScopeEntityTypeTransfer(UserVisit userVisit, TagScopeEntityType tagScopeEntityType) {
-        return getTagTransferCaches(userVisit).getTagScopeEntityTypeTransferCache().getTagScopeEntityTypeTransfer(tagScopeEntityType);
+        return getTagTransferCaches().getTagScopeEntityTypeTransferCache().getTagScopeEntityTypeTransfer(userVisit, tagScopeEntityType);
     }
     
     public List<TagScopeEntityTypeTransfer> getTagScopeEntityTypeTransfers(UserVisit userVisit, Collection<TagScopeEntityType> tagScopeEntityTypes) {
@@ -1002,7 +1002,7 @@ public class TagControl
     }
     
     public TagTransfer getTagTransfer(UserVisit userVisit, Tag tag) {
-        return getTagTransferCaches(userVisit).getTagTransferCache().getTagTransfer(tag);
+        return getTagTransferCaches().getTagTransferCache().getTagTransfer(userVisit, tag);
     }
     
     public List<TagTransfer> getTagTransfers(UserVisit userVisit, Collection<Tag> tags) {
@@ -1230,7 +1230,7 @@ public class TagControl
     }
     
     public EntityTagTransfer getEntityTagTransfer(UserVisit userVisit, EntityTag entityTag) {
-        return getTagTransferCaches(userVisit).getEntityTagTransferCache().getEntityTagTransfer(entityTag);
+        return getTagTransferCaches().getEntityTagTransferCache().getEntityTagTransfer(userVisit, entityTag);
     }
     
     public List<EntityTagTransfer> getEntityTagTransfers(UserVisit userVisit, Collection<EntityTag> entityTags) {

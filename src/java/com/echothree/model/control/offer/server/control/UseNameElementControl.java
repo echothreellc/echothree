@@ -169,7 +169,7 @@ public class UseNameElementControl
     }
 
     public UseNameElementTransfer getUseNameElementTransfer(UserVisit userVisit, UseNameElement useNameElement) {
-        return getOfferTransferCaches(userVisit).getUseNameElementTransferCache().getUseNameElementTransfer(useNameElement);
+        return getOfferTransferCaches().getUseNameElementTransferCache().getUseNameElementTransfer(userVisit, useNameElement);
     }
 
     public List<UseNameElementTransfer> getUseNameElementTransfers(UserVisit userVisit, Collection<UseNameElement> useNameElements) {
@@ -345,7 +345,7 @@ public class UseNameElementControl
 
     public UseNameElementDescriptionTransfer getUseNameElementDescriptionTransfer(UserVisit userVisit,
             UseNameElementDescription useNameElementDescription) {
-        return getOfferTransferCaches(userVisit).getUseNameElementDescriptionTransferCache().getUseNameElementDescriptionTransfer(useNameElementDescription);
+        return getOfferTransferCaches().getUseNameElementDescriptionTransferCache().getUseNameElementDescriptionTransfer(userVisit, useNameElementDescription);
     }
 
     public List<UseNameElementDescriptionTransfer> getUseNameElementDescriptionTransfersByUseNameElement(UserVisit userVisit, UseNameElement useNameElement) {

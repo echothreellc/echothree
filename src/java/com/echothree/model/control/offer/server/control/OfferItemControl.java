@@ -203,7 +203,7 @@ public class OfferItemControl
     }
 
     public OfferItemTransfer getOfferItemTransfer(UserVisit userVisit, OfferItem offerItem) {
-        return getOfferTransferCaches(userVisit).getOfferItemTransferCache().getOfferItemTransfer(offerItem);
+        return getOfferTransferCaches().getOfferItemTransferCache().getOfferItemTransfer(userVisit, offerItem);
     }
 
     public List<OfferItemTransfer> getOfferItemTransfers(UserVisit userVisit, Collection<OfferItem> offerItems) {
@@ -463,7 +463,7 @@ public class OfferItemControl
     }
 
     public OfferItemPriceTransfer getOfferItemPriceTransfer(UserVisit userVisit, OfferItemPrice offerItemPrice) {
-        return getOfferTransferCaches(userVisit).getOfferItemPriceTransferCache().getTransfer(offerItemPrice);
+        return getOfferTransferCaches().getOfferItemPriceTransferCache().getTransfer(userVisit, offerItemPrice);
     }
 
     public List<OfferItemPriceTransfer> getOfferItemPriceTransfers(UserVisit userVisit, Collection<OfferItemPrice> offerItemPrices) {

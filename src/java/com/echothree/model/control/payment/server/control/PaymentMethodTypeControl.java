@@ -183,7 +183,7 @@ public class PaymentMethodTypeControl
 
     public PaymentMethodTypeTransfer getPaymentMethodTypeTransfer(final UserVisit userVisit,
             final PaymentMethodType paymentMethodType) {
-        return getPaymentTransferCaches(userVisit).getPaymentMethodTypeTransferCache().getTransfer(paymentMethodType);
+        return getPaymentTransferCaches().getPaymentMethodTypeTransferCache().getTransfer(userVisit, paymentMethodType);
     }
 
     public List<PaymentMethodTypeTransfer> getPaymentMethodTypeTransfers(final UserVisit userVisit,
@@ -410,7 +410,7 @@ public class PaymentMethodTypeControl
 
     public PaymentMethodTypeDescriptionTransfer getPaymentMethodTypeDescriptionTransfer(final UserVisit userVisit,
             final PaymentMethodTypeDescription paymentMethodTypeDescription) {
-        return getPaymentTransferCaches(userVisit).getPaymentMethodTypeDescriptionTransferCache().getTransfer(paymentMethodTypeDescription);
+        return getPaymentTransferCaches().getPaymentMethodTypeDescriptionTransferCache().getTransfer(userVisit, paymentMethodTypeDescription);
     }
 
     public List<PaymentMethodTypeDescriptionTransfer> getPaymentMethodTypeDescriptionTransfersByPaymentMethodType(final UserVisit userVisit,

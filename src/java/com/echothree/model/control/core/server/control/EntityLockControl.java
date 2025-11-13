@@ -57,7 +57,7 @@ public class EntityLockControl
     public EntityLockTransfer getEntityLockTransfer(UserVisit userVisit, BasePK lockTarget) {
         var coreControl = Session.getModelController(CoreControl.class);
 
-        return coreControl.getCoreTransferCaches(userVisit).getEntityLockTransferCache().getEntityLockTransfer(lockTarget);
+        return coreControl.getCoreTransferCaches().getEntityLockTransferCache().getEntityLockTransfer(userVisit, lockTarget);
     }
     
     public EntityLockTransfer getEntityLockTransferByEntityInstance(UserVisit userVisit, EntityInstance entityInstance) {

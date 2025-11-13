@@ -167,7 +167,7 @@ public class JobControl
     }
     
     public JobTransfer getJobTransfer(UserVisit userVisit, Job job) {
-        return getJobTransferCaches(userVisit).getJobTransferCache().getJobTransfer(job);
+        return getJobTransferCaches().getJobTransferCache().getJobTransfer(userVisit, job);
     }
     
     public List<JobTransfer> getJobTransfers(UserVisit userVisit) {
@@ -369,7 +369,7 @@ public class JobControl
     }
     
     public JobDescriptionTransfer getJobDescriptionTransfer(UserVisit userVisit, JobDescription jobDescription) {
-        return getJobTransferCaches(userVisit).getJobDescriptionTransferCache().getJobDescriptionTransfer(jobDescription);
+        return getJobTransferCaches().getJobDescriptionTransferCache().getJobDescriptionTransfer(userVisit, jobDescription);
     }
     
     public List<JobDescriptionTransfer> getJobDescriptionTransfersByJob(UserVisit userVisit, Job job) {
@@ -377,7 +377,7 @@ public class JobControl
         List<JobDescriptionTransfer> jobDescriptionTransfers = new ArrayList<>(jobDescriptions.size());
         
         jobDescriptions.forEach((jobDescription) -> {
-            jobDescriptionTransfers.add(getJobTransferCaches(userVisit).getJobDescriptionTransferCache().getJobDescriptionTransfer(jobDescription));
+            jobDescriptionTransfers.add(getJobTransferCaches().getJobDescriptionTransferCache().getJobDescriptionTransfer(userVisit, jobDescription));
         });
         
         return jobDescriptionTransfers;

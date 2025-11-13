@@ -311,7 +311,7 @@ public class TrackControl
     }
     
    public TrackTransfer getTrackTransfer(UserVisit userVisit, Track track) {
-        return getTrackTransferCaches(userVisit).getTrackTransferCache().getTrackTransfer(track);
+        return getTrackTransferCaches().getTrackTransferCache().getTrackTransfer(userVisit, track);
     }
 
     public List<TrackTransfer> getTrackTransfers(UserVisit userVisit) {
@@ -551,7 +551,7 @@ public class TrackControl
     }
 
     public TrackDescriptionTransfer getTrackDescriptionTransfer(UserVisit userVisit, TrackDescription trackDescription) {
-        return getTrackTransferCaches(userVisit).getTrackDescriptionTransferCache().getTrackDescriptionTransfer(trackDescription);
+        return getTrackTransferCaches().getTrackDescriptionTransferCache().getTrackDescriptionTransfer(userVisit, trackDescription);
     }
 
     public List<TrackDescriptionTransfer> getTrackDescriptionTransfersByTrack(UserVisit userVisit, Track track) {
@@ -713,7 +713,7 @@ public class TrackControl
     }
 
     public UserVisitTrackTransfer getUserVisitTrackTransfer(UserVisit userVisit, UserVisitTrack userVisitTrack) {
-        return getTrackTransferCaches(userVisit).getUserVisitTrackTransferCache().getUserVisitTrackTransfer(userVisitTrack);
+        return getTrackTransferCaches().getUserVisitTrackTransferCache().getUserVisitTrackTransfer(userVisit, userVisitTrack);
     }
 
     public List<UserVisitTrackTransfer> getUserVisitTrackTransfers(UserVisit userVisit, Collection<UserVisitTrack> userVisitTracks) {

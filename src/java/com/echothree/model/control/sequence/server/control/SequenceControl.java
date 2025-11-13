@@ -365,7 +365,7 @@ public class SequenceControl
     }
     
     public SequenceTypeTransfer getSequenceTypeTransfer(UserVisit userVisit, SequenceType sequenceType) {
-        return getSequenceTransferCaches(userVisit).getSequenceTypeTransferCache().getSequenceTypeTransfer(sequenceType);
+        return getSequenceTransferCaches().getSequenceTypeTransferCache().getSequenceTypeTransfer(userVisit, sequenceType);
     }
 
     public List<SequenceTypeTransfer> getSequenceTypeTransfers(UserVisit userVisit, Collection<SequenceType> sequenceTypes) {
@@ -579,7 +579,7 @@ public class SequenceControl
     }
     
     public SequenceTypeDescriptionTransfer getSequenceTypeDescriptionTransfer(UserVisit userVisit, SequenceTypeDescription sequenceTypeDescription) {
-        return getSequenceTransferCaches(userVisit).getSequenceTypeDescriptionTransferCache().getSequenceTypeDescriptionTransfer(sequenceTypeDescription);
+        return getSequenceTransferCaches().getSequenceTypeDescriptionTransferCache().getSequenceTypeDescriptionTransfer(userVisit, sequenceTypeDescription);
     }
     
     public List<SequenceTypeDescriptionTransfer> getSequenceTypeDescriptionTransfers(UserVisit userVisit, SequenceType sequenceType) {
@@ -668,7 +668,7 @@ public class SequenceControl
     }
 
     public SequenceChecksumTypeTransfer getSequenceChecksumTypeTransfer(UserVisit userVisit, SequenceChecksumType sequenceChecksumType) {
-        return getSequenceTransferCaches(userVisit).getSequenceChecksumTypeTransferCache().getSequenceChecksumTypeTransfer(sequenceChecksumType);
+        return getSequenceTransferCaches().getSequenceChecksumTypeTransferCache().getSequenceChecksumTypeTransfer(userVisit, sequenceChecksumType);
     }
 
     public List<SequenceChecksumTypeTransfer> getSequenceChecksumTypeTransfers(UserVisit userVisit, Collection<SequenceChecksumType> sequenceChecksumTypes) {
@@ -806,7 +806,7 @@ public class SequenceControl
     }
 
     public SequenceEncoderTypeTransfer getSequenceEncoderTypeTransfer(UserVisit userVisit, SequenceEncoderType sequenceEncoderType) {
-        return getSequenceTransferCaches(userVisit).getSequenceEncoderTypeTransferCache().getSequenceEncoderTypeTransfer(sequenceEncoderType);
+        return getSequenceTransferCaches().getSequenceEncoderTypeTransferCache().getSequenceEncoderTypeTransfer(userVisit, sequenceEncoderType);
     }
 
     public List<SequenceEncoderTypeTransfer> getSequenceEncoderTypeTransfers(UserVisit userVisit, Collection<SequenceEncoderType> sequenceEncoderTypes) {
@@ -1138,7 +1138,7 @@ public class SequenceControl
     }
     
     public SequenceTransfer getSequenceTransfer(UserVisit userVisit, Sequence sequence) {
-        return getSequenceTransferCaches(userVisit).getSequenceTransferCache().getSequenceTransfer(sequence);
+        return getSequenceTransferCaches().getSequenceTransferCache().getSequenceTransfer(userVisit, sequence);
     }
 
     public List<SequenceTransfer> getSequenceTransfers(UserVisit userVisit, Collection<Sequence> sequences) {
@@ -1366,7 +1366,7 @@ public class SequenceControl
     }
     
     public SequenceDescriptionTransfer getSequenceDescriptionTransfer(UserVisit userVisit, SequenceDescription sequenceDescription) {
-        return getSequenceTransferCaches(userVisit).getSequenceDescriptionTransferCache().getSequenceDescriptionTransfer(sequenceDescription);
+        return getSequenceTransferCaches().getSequenceDescriptionTransferCache().getSequenceDescriptionTransfer(userVisit, sequenceDescription);
     }
     
     public List<SequenceDescriptionTransfer> getSequenceDescriptionTransfers(UserVisit userVisit, Sequence sequence) {
