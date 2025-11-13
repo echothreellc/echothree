@@ -38,7 +38,7 @@ public class ProfileTransferCache
     }
 
     @Override
-    public ProfileTransfer getTransfer(final Profile profile) {
+    public ProfileTransfer getTransfer(final UserVisit userVisit, final Profile profile) {
         var profileTransfer = get(profile);
         
         if(profileTransfer == null) {
