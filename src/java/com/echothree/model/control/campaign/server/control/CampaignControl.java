@@ -128,7 +128,7 @@ public class CampaignControl
     
     private CampaignTransferCaches campaignTransferCaches;
     
-    public CampaignTransferCaches getCampaignTransferCaches(UserVisit userVisit) {
+    public CampaignTransferCaches getCampaignTransferCaches() {
         if(campaignTransferCaches == null) {
             campaignTransferCaches = new CampaignTransferCaches(userVisit, this);
         }

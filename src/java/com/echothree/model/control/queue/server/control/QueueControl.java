@@ -67,7 +67,7 @@ public class QueueControl
     
     private QueueTransferCaches queueTransferCaches;
     
-    public QueueTransferCaches getQueueTransferCaches(UserVisit userVisit) {
+    public QueueTransferCaches getQueueTransferCaches() {
         if(queueTransferCaches == null) {
             queueTransferCaches = new QueueTransferCaches(userVisit, this);
         }

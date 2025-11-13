@@ -152,7 +152,7 @@ public class ChainControl
     
     private ChainTransferCaches chainTransferCaches;
     
-    public ChainTransferCaches getChainTransferCaches(UserVisit userVisit) {
+    public ChainTransferCaches getChainTransferCaches() {
         if(chainTransferCaches == null) {
             chainTransferCaches = new ChainTransferCaches(userVisit, this);
         }

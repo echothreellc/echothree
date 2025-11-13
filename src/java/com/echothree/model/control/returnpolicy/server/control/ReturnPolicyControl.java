@@ -120,7 +120,7 @@ public class ReturnPolicyControl
     
     private ReturnPolicyTransferCaches returnPolicyTransferCaches;
     
-    public ReturnPolicyTransferCaches getReturnPolicyTransferCaches(UserVisit userVisit) {
+    public ReturnPolicyTransferCaches getReturnPolicyTransferCaches() {
         if(returnPolicyTransferCaches == null) {
             returnPolicyTransferCaches = new ReturnPolicyTransferCaches(userVisit, this);
         }

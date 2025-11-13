@@ -70,7 +70,7 @@ public class ClubControl
     
     private ClubTransferCaches clubTransferCaches;
     
-    public ClubTransferCaches getClubTransferCaches(UserVisit userVisit) {
+    public ClubTransferCaches getClubTransferCaches() {
         if(clubTransferCaches == null) {
             clubTransferCaches = new ClubTransferCaches(userVisit, this);
         }

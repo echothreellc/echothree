@@ -63,7 +63,7 @@ public class JobControl
     
     private JobTransferCaches jobTransferCaches;
     
-    public JobTransferCaches getJobTransferCaches(UserVisit userVisit) {
+    public JobTransferCaches getJobTransferCaches() {
         if(jobTransferCaches == null) {
             jobTransferCaches = new JobTransferCaches(userVisit, this);
         }

@@ -88,7 +88,7 @@ public class SubscriptionControl
     
     private SubscriptionTransferCaches subscriptionTransferCaches;
     
-    public SubscriptionTransferCaches getSubscriptionTransferCaches(UserVisit userVisit) {
+    public SubscriptionTransferCaches getSubscriptionTransferCaches() {
         if(subscriptionTransferCaches == null) {
             subscriptionTransferCaches = new SubscriptionTransferCaches(userVisit, this);
         }

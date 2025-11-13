@@ -98,7 +98,7 @@ public class UomControl
     
     private UomTransferCaches uomTransferCaches;
     
-    public UomTransferCaches getUomTransferCaches(UserVisit userVisit) {
+    public UomTransferCaches getUomTransferCaches() {
         if(uomTransferCaches == null) {
             uomTransferCaches = new UomTransferCaches(userVisit, this);
         }

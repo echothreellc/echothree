@@ -100,7 +100,7 @@ public class CarrierControl
     
     private CarrierTransferCaches carrierTransferCaches;
     
-    public CarrierTransferCaches getCarrierTransferCaches(UserVisit userVisit) {
+    public CarrierTransferCaches getCarrierTransferCaches() {
         if(carrierTransferCaches == null) {
             carrierTransferCaches = new CarrierTransferCaches(userVisit, this);
         }

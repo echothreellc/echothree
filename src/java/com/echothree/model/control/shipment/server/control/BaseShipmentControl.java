@@ -34,9 +34,9 @@ public abstract class BaseShipmentControl
     
     private ShipmentTransferCaches shipmentTransferCaches;
     
-    public ShipmentTransferCaches getShipmentTransferCaches(UserVisit userVisit) {
+    public ShipmentTransferCaches getShipmentTransferCaches() {
         if(shipmentTransferCaches == null) {
-            shipmentTransferCaches = new ShipmentTransferCaches(userVisit);
+            shipmentTransferCaches = new ShipmentTransferCaches();
         }
         
         return shipmentTransferCaches;

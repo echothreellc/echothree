@@ -173,7 +173,7 @@ public class SearchControl
 
     private SearchTransferCaches searchTransferCaches;
 
-    public SearchTransferCaches getSearchTransferCaches(UserVisit userVisit) {
+    public SearchTransferCaches getSearchTransferCaches() {
         if(searchTransferCaches == null) {
             searchTransferCaches = new SearchTransferCaches(userVisit, this);
         }

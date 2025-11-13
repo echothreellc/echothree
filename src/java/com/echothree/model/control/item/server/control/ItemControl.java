@@ -360,7 +360,7 @@ public class ItemControl
     
     private ItemTransferCaches itemTransferCaches;
     
-    public ItemTransferCaches getItemTransferCaches(UserVisit userVisit) {
+    public ItemTransferCaches getItemTransferCaches() {
         if(itemTransferCaches == null) {
             itemTransferCaches = new ItemTransferCaches(userVisit, this);
         }

@@ -86,7 +86,7 @@ public class LetterControl
     
     private LetterTransferCaches letterTransferCaches;
     
-    public LetterTransferCaches getLetterTransferCaches(UserVisit userVisit) {
+    public LetterTransferCaches getLetterTransferCaches() {
         if(letterTransferCaches == null) {
             letterTransferCaches = new LetterTransferCaches(userVisit, this);
         }

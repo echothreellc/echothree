@@ -59,7 +59,7 @@ public class LicenseControl
     
     private LicenseTransferCaches licenseTransferCaches;
     
-    public LicenseTransferCaches getLicenseTransferCaches(UserVisit userVisit) {
+    public LicenseTransferCaches getLicenseTransferCaches() {
         if(licenseTransferCaches == null) {
             licenseTransferCaches = new LicenseTransferCaches(userVisit, this);
         }

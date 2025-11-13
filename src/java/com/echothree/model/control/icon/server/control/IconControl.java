@@ -68,7 +68,7 @@ public class IconControl
     
     private IconTransferCaches iconTransferCaches;
     
-    public IconTransferCaches getIconTransferCaches(UserVisit userVisit) {
+    public IconTransferCaches getIconTransferCaches() {
         if(iconTransferCaches == null) {
             iconTransferCaches = new IconTransferCaches(userVisit, this);
         }

@@ -129,7 +129,7 @@ public class ContactListControl
     
     private ContactListTransferCaches contactListTransferCaches;
     
-    public ContactListTransferCaches getContactListTransferCaches(UserVisit userVisit) {
+    public ContactListTransferCaches getContactListTransferCaches() {
         if(contactListTransferCaches == null) {
             contactListTransferCaches = new ContactListTransferCaches(userVisit, this);
         }

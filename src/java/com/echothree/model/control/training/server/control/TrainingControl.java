@@ -150,7 +150,7 @@ public class TrainingControl
     
     private TrainingTransferCaches trainingTransferCaches;
     
-    public TrainingTransferCaches getTrainingTransferCaches(UserVisit userVisit) {
+    public TrainingTransferCaches getTrainingTransferCaches() {
         if(trainingTransferCaches == null) {
             trainingTransferCaches = new TrainingTransferCaches(userVisit, this);
         }

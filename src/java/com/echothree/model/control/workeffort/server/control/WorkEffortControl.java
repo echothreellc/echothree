@@ -75,7 +75,7 @@ public class WorkEffortControl
     
     private WorkEffortTransferCaches workEffortTransferCaches;
     
-    public WorkEffortTransferCaches getWorkEffortTransferCaches(UserVisit userVisit) {
+    public WorkEffortTransferCaches getWorkEffortTransferCaches() {
         if(workEffortTransferCaches == null) {
             workEffortTransferCaches = new WorkEffortTransferCaches(userVisit, this);
         }

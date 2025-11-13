@@ -76,7 +76,7 @@ public class TrackControl
     
     private TrackTransferCaches trackTransferCaches;
     
-    public TrackTransferCaches getTrackTransferCaches(UserVisit userVisit) {
+    public TrackTransferCaches getTrackTransferCaches() {
         if(trackTransferCaches == null) {
             trackTransferCaches = new TrackTransferCaches(userVisit, this);
         }

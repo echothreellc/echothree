@@ -81,7 +81,7 @@ public class AssociateControl
     
     private AssociateTransferCaches associateTransferCaches;
     
-    public AssociateTransferCaches getAssociateTransferCaches(UserVisit userVisit) {
+    public AssociateTransferCaches getAssociateTransferCaches() {
         if(associateTransferCaches == null) {
             associateTransferCaches = new AssociateTransferCaches(userVisit, this);
         }

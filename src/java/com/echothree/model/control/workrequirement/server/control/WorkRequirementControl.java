@@ -103,7 +103,7 @@ public class WorkRequirementControl
     
     private WorkRequirementTransferCaches workRequirementTransferCaches;
     
-    public WorkRequirementTransferCaches getWorkRequirementTransferCaches(UserVisit userVisit) {
+    public WorkRequirementTransferCaches getWorkRequirementTransferCaches() {
         if(workRequirementTransferCaches == null) {
             workRequirementTransferCaches = new WorkRequirementTransferCaches(userVisit, this);
         }

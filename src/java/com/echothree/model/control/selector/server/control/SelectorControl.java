@@ -175,7 +175,7 @@ public class SelectorControl
     
     private SelectorTransferCaches selectorTransferCaches;
     
-    public SelectorTransferCaches getSelectorTransferCaches(UserVisit userVisit) {
+    public SelectorTransferCaches getSelectorTransferCaches() {
         if(selectorTransferCaches == null) {
             selectorTransferCaches = new SelectorTransferCaches(userVisit, this);
         }

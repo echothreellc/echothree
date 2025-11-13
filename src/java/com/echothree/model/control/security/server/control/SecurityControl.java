@@ -111,7 +111,7 @@ public class SecurityControl
 
     private SecurityTransferCaches securityTransferCaches;
 
-    public SecurityTransferCaches getSecurityTransferCaches(UserVisit userVisit) {
+    public SecurityTransferCaches getSecurityTransferCaches() {
         if(securityTransferCaches == null) {
             securityTransferCaches = new SecurityTransferCaches(userVisit, this);
         }

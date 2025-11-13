@@ -93,7 +93,7 @@ public class WishlistControl
     
     private WishlistTransferCaches wishlistTransferCaches;
     
-    public WishlistTransferCaches getWishlistTransferCaches(UserVisit userVisit) {
+    public WishlistTransferCaches getWishlistTransferCaches() {
         if(wishlistTransferCaches == null) {
             wishlistTransferCaches = new WishlistTransferCaches(userVisit, this);
         }

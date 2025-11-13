@@ -148,9 +148,9 @@ public class FilterControl
     
     private FilterTransferCaches filterTransferCaches;
     
-    public FilterTransferCaches getFilterTransferCaches(UserVisit userVisit) {
+    public FilterTransferCaches getFilterTransferCaches() {
         if(filterTransferCaches == null) {
-            filterTransferCaches = new FilterTransferCaches(userVisit);
+            filterTransferCaches = new FilterTransferCaches();
         }
         
         return filterTransferCaches;

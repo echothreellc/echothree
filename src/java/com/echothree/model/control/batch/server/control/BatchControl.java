@@ -91,7 +91,7 @@ public class BatchControl
     
     private BatchTransferCaches batchTransferCaches;
     
-    public BatchTransferCaches getBatchTransferCaches(UserVisit userVisit) {
+    public BatchTransferCaches getBatchTransferCaches() {
         if(batchTransferCaches == null) {
             batchTransferCaches = new BatchTransferCaches(userVisit, this);
         }

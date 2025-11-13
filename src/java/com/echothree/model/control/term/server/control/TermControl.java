@@ -91,7 +91,7 @@ public class TermControl
     
     private TermTransferCaches termTransferCaches;
     
-    public TermTransferCaches getTermTransferCaches(UserVisit userVisit) {
+    public TermTransferCaches getTermTransferCaches() {
         if(termTransferCaches == null) {
             termTransferCaches = new TermTransferCaches(userVisit, this);
         }

@@ -111,7 +111,7 @@ public class CancellationPolicyControl
     
     private CancellationPolicyTransferCaches cancellationPolicyTransferCaches;
     
-    public CancellationPolicyTransferCaches getCancellationPolicyTransferCaches(UserVisit userVisit) {
+    public CancellationPolicyTransferCaches getCancellationPolicyTransferCaches() {
         if(cancellationPolicyTransferCaches == null) {
             cancellationPolicyTransferCaches = new CancellationPolicyTransferCaches(userVisit, this);
         }

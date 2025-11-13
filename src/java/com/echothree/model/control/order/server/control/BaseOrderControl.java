@@ -34,9 +34,9 @@ public class BaseOrderControl
     
     private OrderTransferCaches orderTransferCaches;
     
-    public OrderTransferCaches getOrderTransferCaches(UserVisit userVisit) {
+    public OrderTransferCaches getOrderTransferCaches() {
         if(orderTransferCaches == null) {
-            orderTransferCaches = new OrderTransferCaches(userVisit);
+            orderTransferCaches = new OrderTransferCaches();
         }
         
         return orderTransferCaches;

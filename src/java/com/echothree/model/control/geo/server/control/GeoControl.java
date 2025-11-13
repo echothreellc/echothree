@@ -136,7 +136,7 @@ public class GeoControl
     
     private GeoTransferCaches geoTransferCaches;
     
-    public GeoTransferCaches getGeoTransferCaches(UserVisit userVisit) {
+    public GeoTransferCaches getGeoTransferCaches() {
         if(geoTransferCaches == null) {
             geoTransferCaches = new GeoTransferCaches(userVisit, this);
         }
