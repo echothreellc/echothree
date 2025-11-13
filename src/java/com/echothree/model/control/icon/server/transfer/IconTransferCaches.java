@@ -31,36 +31,36 @@ public class IconTransferCaches
     protected IconUsageTransferCache iconUsageTransferCache;
     
     /** Creates a new instance of IconTransferCaches */
-    public IconTransferCaches(UserVisit userVisit, IconControl iconControl) {
-        super(userVisit);
+    public IconTransferCaches(IconControl iconControl) {
+        super();
         
         this.iconControl = iconControl;
     }
     
     public IconTransferCache getIconTransferCache() {
         if(iconTransferCache == null)
-            iconTransferCache = new IconTransferCache(userVisit, iconControl);
+            iconTransferCache = new IconTransferCache(iconControl);
         
         return iconTransferCache;
     }
     
     public IconUsageTypeTransferCache getIconUsageTypeTransferCache() {
         if(iconUsageTypeTransferCache == null)
-            iconUsageTypeTransferCache = new IconUsageTypeTransferCache(userVisit, iconControl);
+            iconUsageTypeTransferCache = new IconUsageTypeTransferCache(iconControl);
         
         return iconUsageTypeTransferCache;
     }
     
     public IconUsageTypeDescriptionTransferCache getIconUsageTypeDescriptionTransferCache() {
         if(iconUsageTypeDescriptionTransferCache == null)
-            iconUsageTypeDescriptionTransferCache = new IconUsageTypeDescriptionTransferCache(userVisit, iconControl);
+            iconUsageTypeDescriptionTransferCache = new IconUsageTypeDescriptionTransferCache(iconControl);
         
         return iconUsageTypeDescriptionTransferCache;
     }
     
     public IconUsageTransferCache getIconUsageTransferCache() {
         if(iconUsageTransferCache == null)
-            iconUsageTransferCache = new IconUsageTransferCache(userVisit, iconControl);
+            iconUsageTransferCache = new IconUsageTransferCache(iconControl);
         
         return iconUsageTransferCache;
     }

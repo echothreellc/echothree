@@ -33,50 +33,50 @@ public class LetterTransferCaches
     protected LetterContactMechanismPurposeTransferCache letterContactMechanismPurposeTransferCache;
     
     /** Creates a new instance of LetterTransferCaches */
-    public LetterTransferCaches(UserVisit userVisit, LetterControl letterControl) {
-        super(userVisit);
+    public LetterTransferCaches(LetterControl letterControl) {
+        super();
         
         this.letterControl = letterControl;
     }
     
     public LetterTransferCache getLetterTransferCache() {
         if(letterTransferCache == null)
-            letterTransferCache = new LetterTransferCache(userVisit, letterControl);
+            letterTransferCache = new LetterTransferCache(letterControl);
         
         return letterTransferCache;
     }
     
     public LetterDescriptionTransferCache getLetterDescriptionTransferCache() {
         if(letterDescriptionTransferCache == null)
-            letterDescriptionTransferCache = new LetterDescriptionTransferCache(userVisit, letterControl);
+            letterDescriptionTransferCache = new LetterDescriptionTransferCache(letterControl);
         
         return letterDescriptionTransferCache;
     }
     
     public LetterSourceTransferCache getLetterSourceTransferCache() {
         if(letterSourceTransferCache == null)
-            letterSourceTransferCache = new LetterSourceTransferCache(userVisit, letterControl);
+            letterSourceTransferCache = new LetterSourceTransferCache(letterControl);
         
         return letterSourceTransferCache;
     }
     
     public LetterSourceDescriptionTransferCache getLetterSourceDescriptionTransferCache() {
         if(letterSourceDescriptionTransferCache == null)
-            letterSourceDescriptionTransferCache = new LetterSourceDescriptionTransferCache(userVisit, letterControl);
+            letterSourceDescriptionTransferCache = new LetterSourceDescriptionTransferCache(letterControl);
         
         return letterSourceDescriptionTransferCache;
     }
     
     public QueuedLetterTransferCache getQueuedLetterTransferCache() {
         if(queuedLetterTransferCache == null)
-            queuedLetterTransferCache = new QueuedLetterTransferCache(userVisit, letterControl);
+            queuedLetterTransferCache = new QueuedLetterTransferCache(letterControl);
         
         return queuedLetterTransferCache;
     }
     
     public LetterContactMechanismPurposeTransferCache getLetterContactMechanismPurposeTransferCache() {
         if(letterContactMechanismPurposeTransferCache == null)
-            letterContactMechanismPurposeTransferCache = new LetterContactMechanismPurposeTransferCache(userVisit, letterControl);
+            letterContactMechanismPurposeTransferCache = new LetterContactMechanismPurposeTransferCache(letterControl);
         
         return letterContactMechanismPurposeTransferCache;
     }

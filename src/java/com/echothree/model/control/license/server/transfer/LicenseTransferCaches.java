@@ -29,15 +29,15 @@ public class LicenseTransferCaches
     protected LicenseTypeDescriptionTransferCache licenseTypeDescriptionTransferCache;
     
     /** Creates a new instance of LicenseTransferCaches */
-    public LicenseTransferCaches(UserVisit userVisit, LicenseControl licenseControl) {
-        super(userVisit);
+    public LicenseTransferCaches(LicenseControl licenseControl) {
+        super();
         
         this.licenseControl = licenseControl;
     }
     
     public LicenseTypeTransferCache getLicenseTypeTransferCache() {
         if(licenseTypeTransferCache == null) {
-            licenseTypeTransferCache = new LicenseTypeTransferCache(userVisit, licenseControl);
+            licenseTypeTransferCache = new LicenseTypeTransferCache(licenseControl);
         }
 
         return licenseTypeTransferCache;
@@ -45,7 +45,7 @@ public class LicenseTransferCaches
 
     public LicenseTypeDescriptionTransferCache getLicenseTypeDescriptionTransferCache() {
         if(licenseTypeDescriptionTransferCache == null) {
-            licenseTypeDescriptionTransferCache = new LicenseTypeDescriptionTransferCache(userVisit, licenseControl);
+            licenseTypeDescriptionTransferCache = new LicenseTypeDescriptionTransferCache(licenseControl);
         }
 
         return licenseTypeDescriptionTransferCache;

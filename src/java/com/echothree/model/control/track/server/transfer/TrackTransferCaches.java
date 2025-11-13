@@ -30,15 +30,15 @@ public class TrackTransferCaches
     protected UserVisitTrackTransferCache userVisitTrackTransferCache;
     
     /** Creates a new instance of TrackTransferCaches */
-    public TrackTransferCaches(UserVisit userVisit, TrackControl trackControl) {
-        super(userVisit);
+    public TrackTransferCaches(TrackControl trackControl) {
+        super();
         
         this.trackControl = trackControl;
     }
     
     public TrackTransferCache getTrackTransferCache() {
         if(trackTransferCache == null) {
-            trackTransferCache = new TrackTransferCache(userVisit, trackControl);
+            trackTransferCache = new TrackTransferCache(trackControl);
         }
 
         return trackTransferCache;
@@ -46,7 +46,7 @@ public class TrackTransferCaches
 
     public TrackDescriptionTransferCache getTrackDescriptionTransferCache() {
         if(trackDescriptionTransferCache == null) {
-            trackDescriptionTransferCache = new TrackDescriptionTransferCache(userVisit, trackControl);
+            trackDescriptionTransferCache = new TrackDescriptionTransferCache(trackControl);
         }
 
         return trackDescriptionTransferCache;
@@ -54,7 +54,7 @@ public class TrackTransferCaches
 
     public UserVisitTrackTransferCache getUserVisitTrackTransferCache() {
         if(userVisitTrackTransferCache == null) {
-            userVisitTrackTransferCache = new UserVisitTrackTransferCache(userVisit, trackControl);
+            userVisitTrackTransferCache = new UserVisitTrackTransferCache(trackControl);
         }
 
         return userVisitTrackTransferCache;

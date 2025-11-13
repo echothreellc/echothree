@@ -58,223 +58,223 @@ public class PartyTransferCaches
     protected PartyApplicationEditorUseTransferCache partyApplicationEditorUseTransferCache;
 
     /** Creates a new instance of PartyTransferCaches */
-    public PartyTransferCaches(UserVisit userVisit) {
-        super(userVisit);
+    public PartyTransferCaches() {
+        super();
     }
     
     public CompanyTransferCache getCompanyTransferCache() {
         if(companyTransferCache == null)
-            companyTransferCache = new CompanyTransferCache(userVisit);
+            companyTransferCache = new CompanyTransferCache();
         
         return companyTransferCache;
     }
     
     public DivisionTransferCache getDivisionTransferCache() {
         if(divisionTransferCache == null)
-            divisionTransferCache = new DivisionTransferCache(userVisit);
+            divisionTransferCache = new DivisionTransferCache();
         
         return divisionTransferCache;
     }
     
     public DepartmentTransferCache getDepartmentTransferCache() {
         if(departmentTransferCache == null)
-            departmentTransferCache = new DepartmentTransferCache(userVisit);
+            departmentTransferCache = new DepartmentTransferCache();
         
         return departmentTransferCache;
     }
     
     public LanguageTransferCache getLanguageTransferCache() {
         if(languageTransferCache == null)
-            languageTransferCache = new LanguageTransferCache(userVisit);
+            languageTransferCache = new LanguageTransferCache();
         
         return languageTransferCache;
     }
     
     public DateTimeFormatTransferCache getDateTimeFormatTransferCache() {
         if(dateTimeFormatTransferCache == null)
-            dateTimeFormatTransferCache = new DateTimeFormatTransferCache(userVisit);
+            dateTimeFormatTransferCache = new DateTimeFormatTransferCache();
         
         return dateTimeFormatTransferCache;
     }
     
     public PartyTypeTransferCache getPartyTypeTransferCache() {
         if(partyTypeTransferCache == null)
-            partyTypeTransferCache = new PartyTypeTransferCache(userVisit);
+            partyTypeTransferCache = new PartyTypeTransferCache();
         
         return partyTypeTransferCache;
     }
     
     public TimeZoneTransferCache getTimeZoneTransferCache() {
         if(timeZoneTransferCache == null)
-            timeZoneTransferCache = new TimeZoneTransferCache(userVisit);
+            timeZoneTransferCache = new TimeZoneTransferCache();
         
         return timeZoneTransferCache;
     }
     
     public NameSuffixTransferCache getNameSuffixTransferCache() {
         if(nameSuffixTransferCache == null)
-            nameSuffixTransferCache = new NameSuffixTransferCache(userVisit);
+            nameSuffixTransferCache = new NameSuffixTransferCache();
         
         return nameSuffixTransferCache;
     }
     
     public PartyGroupTransferCache getPartyGroupTransferCache() {
         if(partyGroupTransferCache == null)
-            partyGroupTransferCache = new PartyGroupTransferCache(userVisit);
+            partyGroupTransferCache = new PartyGroupTransferCache();
         
         return partyGroupTransferCache;
     }
     
     public ProfileTransferCache getProfileTransferCache() {
         if(profileTransferCache == null)
-            profileTransferCache = new ProfileTransferCache(userVisit);
+            profileTransferCache = new ProfileTransferCache();
         
         return profileTransferCache;
     }
     
     public PersonTransferCache getPersonTransferCache() {
         if(personTransferCache == null)
-            personTransferCache = new PersonTransferCache(userVisit);
+            personTransferCache = new PersonTransferCache();
         
         return personTransferCache;
     }
     
     public PersonalTitleTransferCache getPersonalTitleTransferCache() {
         if(personalTitleTransferCache == null)
-            personalTitleTransferCache = new PersonalTitleTransferCache(userVisit);
+            personalTitleTransferCache = new PersonalTitleTransferCache();
         
         return personalTitleTransferCache;
     }
     
     public PartyTransferCache getPartyTransferCache() {
         if(partyTransferCache == null)
-            partyTransferCache = new PartyTransferCache(userVisit);
+            partyTransferCache = new PartyTransferCache();
         
         return partyTransferCache;
     }
     
     public DateTimeFormatDescriptionTransferCache getDateTimeFormatDescriptionTransferCache() {
         if(dateTimeFormatDescriptionTransferCache == null)
-            dateTimeFormatDescriptionTransferCache = new DateTimeFormatDescriptionTransferCache(userVisit);
+            dateTimeFormatDescriptionTransferCache = new DateTimeFormatDescriptionTransferCache();
         
         return dateTimeFormatDescriptionTransferCache;
     }
     
     public TimeZoneDescriptionTransferCache getTimeZoneDescriptionTransferCache() {
         if(timeZoneDescriptionTransferCache == null)
-            timeZoneDescriptionTransferCache = new TimeZoneDescriptionTransferCache(userVisit);
+            timeZoneDescriptionTransferCache = new TimeZoneDescriptionTransferCache();
         
         return timeZoneDescriptionTransferCache;
     }
     
     public PartyRelationshipTransferCache getPartyRelationshipTransferCache() {
         if(partyRelationshipTransferCache == null)
-            partyRelationshipTransferCache = new PartyRelationshipTransferCache(userVisit);
+            partyRelationshipTransferCache = new PartyRelationshipTransferCache();
         
         return partyRelationshipTransferCache;
     }
     
     public RoleTypeTransferCache getRoleTypeTransferCache() {
         if(roleTypeTransferCache == null)
-            roleTypeTransferCache = new RoleTypeTransferCache(userVisit);
+            roleTypeTransferCache = new RoleTypeTransferCache();
         
         return roleTypeTransferCache;
     }
     
     public PartyTypeAuditPolicyTransferCache getPartyTypeAuditPolicyTransferCache() {
         if(partyTypeAuditPolicyTransferCache == null)
-            partyTypeAuditPolicyTransferCache = new PartyTypeAuditPolicyTransferCache(userVisit);
+            partyTypeAuditPolicyTransferCache = new PartyTypeAuditPolicyTransferCache();
         
         return partyTypeAuditPolicyTransferCache;
     }
     
     public PartyTypeLockoutPolicyTransferCache getPartyTypeLockoutPolicyTransferCache() {
         if(partyTypeLockoutPolicyTransferCache == null)
-            partyTypeLockoutPolicyTransferCache = new PartyTypeLockoutPolicyTransferCache(userVisit);
+            partyTypeLockoutPolicyTransferCache = new PartyTypeLockoutPolicyTransferCache();
         
         return partyTypeLockoutPolicyTransferCache;
     }
     
     public PartyTypePasswordStringPolicyTransferCache getPartyTypePasswordStringPolicyTransferCache() {
         if(partyTypePasswordStringPolicyTransferCache == null)
-            partyTypePasswordStringPolicyTransferCache = new PartyTypePasswordStringPolicyTransferCache(userVisit);
+            partyTypePasswordStringPolicyTransferCache = new PartyTypePasswordStringPolicyTransferCache();
         
         return partyTypePasswordStringPolicyTransferCache;
     }
     
     public GenderTransferCache getGenderTransferCache() {
         if(genderTransferCache == null)
-            genderTransferCache = new GenderTransferCache(userVisit);
+            genderTransferCache = new GenderTransferCache();
         
         return genderTransferCache;
     }
     
     public GenderDescriptionTransferCache getGenderDescriptionTransferCache() {
         if(genderDescriptionTransferCache == null)
-            genderDescriptionTransferCache = new GenderDescriptionTransferCache(userVisit);
+            genderDescriptionTransferCache = new GenderDescriptionTransferCache();
         
         return genderDescriptionTransferCache;
     }
     
     public MoodTransferCache getMoodTransferCache() {
         if(moodTransferCache == null)
-            moodTransferCache = new MoodTransferCache(userVisit);
+            moodTransferCache = new MoodTransferCache();
 
         return moodTransferCache;
     }
 
     public MoodDescriptionTransferCache getMoodDescriptionTransferCache() {
         if(moodDescriptionTransferCache == null)
-            moodDescriptionTransferCache = new MoodDescriptionTransferCache(userVisit);
+            moodDescriptionTransferCache = new MoodDescriptionTransferCache();
 
         return moodDescriptionTransferCache;
     }
 
     public BirthdayFormatTransferCache getBirthdayFormatTransferCache() {
         if(birthdayFormatTransferCache == null)
-            birthdayFormatTransferCache = new BirthdayFormatTransferCache(userVisit);
+            birthdayFormatTransferCache = new BirthdayFormatTransferCache();
 
         return birthdayFormatTransferCache;
     }
 
     public BirthdayFormatDescriptionTransferCache getBirthdayFormatDescriptionTransferCache() {
         if(birthdayFormatDescriptionTransferCache == null)
-            birthdayFormatDescriptionTransferCache = new BirthdayFormatDescriptionTransferCache(userVisit);
+            birthdayFormatDescriptionTransferCache = new BirthdayFormatDescriptionTransferCache();
 
         return birthdayFormatDescriptionTransferCache;
     }
 
     public PartyAliasTypeTransferCache getPartyAliasTypeTransferCache() {
         if(partyAliasTypeTransferCache == null)
-            partyAliasTypeTransferCache = new PartyAliasTypeTransferCache(userVisit);
+            partyAliasTypeTransferCache = new PartyAliasTypeTransferCache();
 
         return partyAliasTypeTransferCache;
     }
 
     public PartyAliasTypeDescriptionTransferCache getPartyAliasTypeDescriptionTransferCache() {
         if(partyAliasTypeDescriptionTransferCache == null)
-            partyAliasTypeDescriptionTransferCache = new PartyAliasTypeDescriptionTransferCache(userVisit);
+            partyAliasTypeDescriptionTransferCache = new PartyAliasTypeDescriptionTransferCache();
 
         return partyAliasTypeDescriptionTransferCache;
     }
 
     public PartyAliasTransferCache getPartyAliasTransferCache() {
         if(partyAliasTransferCache == null)
-            partyAliasTransferCache = new PartyAliasTransferCache(userVisit);
+            partyAliasTransferCache = new PartyAliasTransferCache();
 
         return partyAliasTransferCache;
     }
 
     public PartyEntityTypeTransferCache getPartyEntityTypeTransferCache() {
         if(partyEntityTypeTransferCache == null)
-            partyEntityTypeTransferCache = new PartyEntityTypeTransferCache(userVisit);
+            partyEntityTypeTransferCache = new PartyEntityTypeTransferCache();
 
         return partyEntityTypeTransferCache;
     }
 
     public PartyApplicationEditorUseTransferCache getPartyApplicationEditorUseTransferCache() {
         if(partyApplicationEditorUseTransferCache == null)
-            partyApplicationEditorUseTransferCache = new PartyApplicationEditorUseTransferCache(userVisit);
+            partyApplicationEditorUseTransferCache = new PartyApplicationEditorUseTransferCache();
 
         return partyApplicationEditorUseTransferCache;
     }

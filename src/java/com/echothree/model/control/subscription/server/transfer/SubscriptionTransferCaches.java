@@ -33,50 +33,50 @@ public class SubscriptionTransferCaches
     protected SubscriptionTypeChainTransferCache subscriptionTypeChainTransferCache;
     
     /** Creates a new instance of SubscriptionTransferCaches */
-    public SubscriptionTransferCaches(UserVisit userVisit, SubscriptionControl subscriptionControl) {
-        super(userVisit);
+    public SubscriptionTransferCaches(SubscriptionControl subscriptionControl) {
+        super();
         
         this.subscriptionControl = subscriptionControl;
     }
     
     public SubscriptionKindTransferCache getSubscriptionKindTransferCache() {
         if(subscriptionKindTransferCache == null)
-            subscriptionKindTransferCache = new SubscriptionKindTransferCache(userVisit, subscriptionControl);
+            subscriptionKindTransferCache = new SubscriptionKindTransferCache(subscriptionControl);
 
         return subscriptionKindTransferCache;
     }
 
     public SubscriptionKindDescriptionTransferCache getSubscriptionKindDescriptionTransferCache() {
         if(subscriptionKindDescriptionTransferCache == null)
-            subscriptionKindDescriptionTransferCache = new SubscriptionKindDescriptionTransferCache(userVisit, subscriptionControl);
+            subscriptionKindDescriptionTransferCache = new SubscriptionKindDescriptionTransferCache(subscriptionControl);
 
         return subscriptionKindDescriptionTransferCache;
     }
 
     public SubscriptionTypeTransferCache getSubscriptionTypeTransferCache() {
         if(subscriptionTypeTransferCache == null)
-            subscriptionTypeTransferCache = new SubscriptionTypeTransferCache(userVisit, subscriptionControl);
+            subscriptionTypeTransferCache = new SubscriptionTypeTransferCache(subscriptionControl);
         
         return subscriptionTypeTransferCache;
     }
     
     public SubscriptionTypeDescriptionTransferCache getSubscriptionTypeDescriptionTransferCache() {
         if(subscriptionTypeDescriptionTransferCache == null)
-            subscriptionTypeDescriptionTransferCache = new SubscriptionTypeDescriptionTransferCache(userVisit, subscriptionControl);
+            subscriptionTypeDescriptionTransferCache = new SubscriptionTypeDescriptionTransferCache(subscriptionControl);
         
         return subscriptionTypeDescriptionTransferCache;
     }
     
     public SubscriptionTransferCache getSubscriptionTransferCache() {
         if(subscriptionTransferCache == null)
-            subscriptionTransferCache = new SubscriptionTransferCache(userVisit, subscriptionControl);
+            subscriptionTransferCache = new SubscriptionTransferCache(subscriptionControl);
         
         return subscriptionTransferCache;
     }
     
     public SubscriptionTypeChainTransferCache getSubscriptionTypeChainTransferCache() {
         if(subscriptionTypeChainTransferCache == null)
-            subscriptionTypeChainTransferCache = new SubscriptionTypeChainTransferCache(userVisit, subscriptionControl);
+            subscriptionTypeChainTransferCache = new SubscriptionTypeChainTransferCache(subscriptionControl);
         
         return subscriptionTypeChainTransferCache;
     }

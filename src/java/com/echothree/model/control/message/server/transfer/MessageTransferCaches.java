@@ -35,64 +35,64 @@ public class MessageTransferCaches
     protected EntityMessageTransferCache entityMessageTransferCache;
     
     /** Creates a new instance of MessageTransferCaches */
-    public MessageTransferCaches(UserVisit userVisit, MessageControl messageControl) {
-        super(userVisit);
+    public MessageTransferCaches(MessageControl messageControl) {
+        super();
         
         this.messageControl = messageControl;
     }
     
     public MessageTypeTransferCache getMessageTypeTransferCache() {
         if(messageTypeTransferCache == null)
-            messageTypeTransferCache = new MessageTypeTransferCache(userVisit, messageControl);
+            messageTypeTransferCache = new MessageTypeTransferCache(messageControl);
         
         return messageTypeTransferCache;
     }
     
     public MessageTypeDescriptionTransferCache getMessageTypeDescriptionTransferCache() {
         if(messageTypeDescriptionTransferCache == null)
-            messageTypeDescriptionTransferCache = new MessageTypeDescriptionTransferCache(userVisit, messageControl);
+            messageTypeDescriptionTransferCache = new MessageTypeDescriptionTransferCache(messageControl);
         
         return messageTypeDescriptionTransferCache;
     }
     
     public MessageTransferCache getMessageTransferCache() {
         if(messageTransferCache == null)
-            messageTransferCache = new MessageTransferCache(userVisit, messageControl);
+            messageTransferCache = new MessageTransferCache(messageControl);
         
         return messageTransferCache;
     }
     
     public MessageStringTransferCache getMessageStringTransferCache() {
         if(messageStringTransferCache == null)
-            messageStringTransferCache = new MessageStringTransferCache(userVisit, messageControl);
+            messageStringTransferCache = new MessageStringTransferCache(messageControl);
         
         return messageStringTransferCache;
     }
     
     public MessageBlobTransferCache getMessageBlobTransferCache() {
         if(messageBlobTransferCache == null)
-            messageBlobTransferCache = new MessageBlobTransferCache(userVisit, messageControl);
+            messageBlobTransferCache = new MessageBlobTransferCache(messageControl);
         
         return messageBlobTransferCache;
     }
     
     public MessageClobTransferCache getMessageClobTransferCache() {
         if(messageClobTransferCache == null)
-            messageClobTransferCache = new MessageClobTransferCache(userVisit, messageControl);
+            messageClobTransferCache = new MessageClobTransferCache(messageControl);
         
         return messageClobTransferCache;
     }
     
     public MessageDescriptionTransferCache getMessageDescriptionTransferCache() {
         if(messageDescriptionTransferCache == null)
-            messageDescriptionTransferCache = new MessageDescriptionTransferCache(userVisit, messageControl);
+            messageDescriptionTransferCache = new MessageDescriptionTransferCache(messageControl);
         
         return messageDescriptionTransferCache;
     }
     
     public EntityMessageTransferCache getEntityMessageTransferCache() {
         if(entityMessageTransferCache == null)
-            entityMessageTransferCache = new EntityMessageTransferCache(userVisit, messageControl);
+            entityMessageTransferCache = new EntityMessageTransferCache(messageControl);
         
         return entityMessageTransferCache;
     }

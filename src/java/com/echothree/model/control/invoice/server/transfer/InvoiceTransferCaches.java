@@ -44,127 +44,127 @@ public class InvoiceTransferCaches
     protected InvoiceTimeTransferCache invoiceTimeTransferCache;
     
     /** Creates a new instance of InvoiceTransferCaches */
-    public InvoiceTransferCaches(UserVisit userVisit, InvoiceControl invoiceControl) {
-        super(userVisit);
+    public InvoiceTransferCaches(InvoiceControl invoiceControl) {
+        super();
         
         this.invoiceControl = invoiceControl;
     }
     
     public InvoiceLineUseTypeTransferCache getInvoiceLineUseTypeTransferCache() {
         if(invoiceLineUseTypeTransferCache == null)
-            invoiceLineUseTypeTransferCache = new InvoiceLineUseTypeTransferCache(userVisit, invoiceControl);
+            invoiceLineUseTypeTransferCache = new InvoiceLineUseTypeTransferCache(invoiceControl);
         
         return invoiceLineUseTypeTransferCache;
     }
     
     public InvoiceRoleTypeTransferCache getInvoiceRoleTypeTransferCache() {
         if(invoiceRoleTypeTransferCache == null)
-            invoiceRoleTypeTransferCache = new InvoiceRoleTypeTransferCache(userVisit, invoiceControl);
+            invoiceRoleTypeTransferCache = new InvoiceRoleTypeTransferCache(invoiceControl);
         
         return invoiceRoleTypeTransferCache;
     }
     
     public InvoiceRoleTransferCache getInvoiceRoleTransferCache() {
         if(invoiceRoleTransferCache == null)
-            invoiceRoleTransferCache = new InvoiceRoleTransferCache(userVisit, invoiceControl);
+            invoiceRoleTransferCache = new InvoiceRoleTransferCache(invoiceControl);
         
         return invoiceRoleTransferCache;
     }
     
     public InvoiceTypeTransferCache getInvoiceTypeTransferCache() {
         if(invoiceTypeTransferCache == null)
-            invoiceTypeTransferCache = new InvoiceTypeTransferCache(userVisit, invoiceControl);
+            invoiceTypeTransferCache = new InvoiceTypeTransferCache(invoiceControl);
         
         return invoiceTypeTransferCache;
     }
     
     public InvoiceTypeDescriptionTransferCache getInvoiceTypeDescriptionTransferCache() {
         if(invoiceTypeDescriptionTransferCache == null)
-            invoiceTypeDescriptionTransferCache = new InvoiceTypeDescriptionTransferCache(userVisit, invoiceControl);
+            invoiceTypeDescriptionTransferCache = new InvoiceTypeDescriptionTransferCache(invoiceControl);
         
         return invoiceTypeDescriptionTransferCache;
     }
     
     public InvoiceAliasTypeTransferCache getInvoiceAliasTypeTransferCache() {
         if(invoiceAliasTypeTransferCache == null)
-            invoiceAliasTypeTransferCache = new InvoiceAliasTypeTransferCache(userVisit, invoiceControl);
+            invoiceAliasTypeTransferCache = new InvoiceAliasTypeTransferCache(invoiceControl);
         
         return invoiceAliasTypeTransferCache;
     }
     
     public InvoiceAliasTypeDescriptionTransferCache getInvoiceAliasTypeDescriptionTransferCache() {
         if(invoiceAliasTypeDescriptionTransferCache == null)
-            invoiceAliasTypeDescriptionTransferCache = new InvoiceAliasTypeDescriptionTransferCache(userVisit, invoiceControl);
+            invoiceAliasTypeDescriptionTransferCache = new InvoiceAliasTypeDescriptionTransferCache(invoiceControl);
         
         return invoiceAliasTypeDescriptionTransferCache;
     }
     
     public InvoiceLineTypeTransferCache getInvoiceLineTypeTransferCache() {
         if(invoiceLineTypeTransferCache == null)
-            invoiceLineTypeTransferCache = new InvoiceLineTypeTransferCache(userVisit, invoiceControl);
+            invoiceLineTypeTransferCache = new InvoiceLineTypeTransferCache(invoiceControl);
         
         return invoiceLineTypeTransferCache;
     }
     
     public InvoiceLineTypeDescriptionTransferCache getInvoiceLineTypeDescriptionTransferCache() {
         if(invoiceLineTypeDescriptionTransferCache == null)
-            invoiceLineTypeDescriptionTransferCache = new InvoiceLineTypeDescriptionTransferCache(userVisit, invoiceControl);
+            invoiceLineTypeDescriptionTransferCache = new InvoiceLineTypeDescriptionTransferCache(invoiceControl);
         
         return invoiceLineTypeDescriptionTransferCache;
     }
     
     public InvoiceTransferCache getInvoiceTransferCache() {
         if(invoiceTransferCache == null)
-            invoiceTransferCache = new InvoiceTransferCache(userVisit, invoiceControl);
+            invoiceTransferCache = new InvoiceTransferCache(invoiceControl);
         
         return invoiceTransferCache;
     }
     
     public InvoiceAliasTransferCache getInvoiceAliasTransferCache() {
         if(invoiceAliasTransferCache == null)
-            invoiceAliasTransferCache = new InvoiceAliasTransferCache(userVisit, invoiceControl);
+            invoiceAliasTransferCache = new InvoiceAliasTransferCache(invoiceControl);
         
         return invoiceAliasTransferCache;
     }
     
     public InvoiceLineTransferCache getInvoiceLineTransferCache() {
         if(invoiceLineTransferCache == null)
-            invoiceLineTransferCache = new InvoiceLineTransferCache(userVisit, invoiceControl);
+            invoiceLineTransferCache = new InvoiceLineTransferCache(invoiceControl);
         
         return invoiceLineTransferCache;
     }
     
     public InvoiceLineGlAccountTransferCache getInvoiceLineGlAccountTransferCache() {
         if(invoiceLineGlAccountTransferCache == null)
-            invoiceLineGlAccountTransferCache = new InvoiceLineGlAccountTransferCache(userVisit, invoiceControl);
+            invoiceLineGlAccountTransferCache = new InvoiceLineGlAccountTransferCache(invoiceControl);
         
         return invoiceLineGlAccountTransferCache;
     }
     
     public InvoiceLineItemTransferCache getInvoiceLineItemTransferCache() {
         if(invoiceLineItemTransferCache == null)
-            invoiceLineItemTransferCache = new InvoiceLineItemTransferCache(userVisit, invoiceControl);
+            invoiceLineItemTransferCache = new InvoiceLineItemTransferCache(invoiceControl);
         
         return invoiceLineItemTransferCache;
     }
     
     public InvoiceTimeTypeTransferCache getInvoiceTimeTypeTransferCache() {
         if(invoiceTimeTypeTransferCache == null)
-            invoiceTimeTypeTransferCache = new InvoiceTimeTypeTransferCache(userVisit, invoiceControl);
+            invoiceTimeTypeTransferCache = new InvoiceTimeTypeTransferCache(invoiceControl);
 
         return invoiceTimeTypeTransferCache;
     }
 
     public InvoiceTimeTransferCache getInvoiceTimeTransferCache() {
         if(invoiceTimeTransferCache == null)
-            invoiceTimeTransferCache = new InvoiceTimeTransferCache(userVisit, invoiceControl);
+            invoiceTimeTransferCache = new InvoiceTimeTransferCache(invoiceControl);
 
         return invoiceTimeTransferCache;
     }
 
     public InvoiceTimeTypeDescriptionTransferCache getInvoiceTimeTypeDescriptionTransferCache() {
         if(invoiceTimeTypeDescriptionTransferCache == null)
-            invoiceTimeTypeDescriptionTransferCache = new InvoiceTimeTypeDescriptionTransferCache(userVisit, invoiceControl);
+            invoiceTimeTypeDescriptionTransferCache = new InvoiceTimeTypeDescriptionTransferCache(invoiceControl);
 
         return invoiceTimeTypeDescriptionTransferCache;
     }

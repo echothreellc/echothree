@@ -36,71 +36,71 @@ public class DocumentTransferCaches
     protected PartyDocumentTransferCache partyDocumentTransferCache;
     
     /** Creates a new instance of DocumentTransferCaches */
-    public DocumentTransferCaches(UserVisit userVisit, DocumentControl documentControl) {
-        super(userVisit);
+    public DocumentTransferCaches(DocumentControl documentControl) {
+        super();
         
         this.documentControl = documentControl;
     }
     
     public DocumentTypeTransferCache getDocumentTypeTransferCache() {
         if(documentTypeTransferCache == null)
-            documentTypeTransferCache = new DocumentTypeTransferCache(userVisit, documentControl);
+            documentTypeTransferCache = new DocumentTypeTransferCache(documentControl);
 
         return documentTypeTransferCache;
     }
 
     public DocumentTypeDescriptionTransferCache getDocumentTypeDescriptionTransferCache() {
         if(documentTypeDescriptionTransferCache == null)
-            documentTypeDescriptionTransferCache = new DocumentTypeDescriptionTransferCache(userVisit, documentControl);
+            documentTypeDescriptionTransferCache = new DocumentTypeDescriptionTransferCache(documentControl);
 
         return documentTypeDescriptionTransferCache;
     }
 
     public DocumentTypeUsageTypeTransferCache getDocumentTypeUsageTypeTransferCache() {
         if(documentTypeUsageTypeTransferCache == null)
-            documentTypeUsageTypeTransferCache = new DocumentTypeUsageTypeTransferCache(userVisit, documentControl);
+            documentTypeUsageTypeTransferCache = new DocumentTypeUsageTypeTransferCache(documentControl);
 
         return documentTypeUsageTypeTransferCache;
     }
 
     public DocumentTypeUsageTypeDescriptionTransferCache getDocumentTypeUsageTypeDescriptionTransferCache() {
         if(documentTypeUsageTypeDescriptionTransferCache == null)
-            documentTypeUsageTypeDescriptionTransferCache = new DocumentTypeUsageTypeDescriptionTransferCache(userVisit, documentControl);
+            documentTypeUsageTypeDescriptionTransferCache = new DocumentTypeUsageTypeDescriptionTransferCache(documentControl);
 
         return documentTypeUsageTypeDescriptionTransferCache;
     }
 
     public DocumentTypeUsageTransferCache getDocumentTypeUsageTransferCache() {
         if(documentTypeUsageTransferCache == null)
-            documentTypeUsageTransferCache = new DocumentTypeUsageTransferCache(userVisit, documentControl);
+            documentTypeUsageTransferCache = new DocumentTypeUsageTransferCache(documentControl);
 
         return documentTypeUsageTransferCache;
     }
 
     public DocumentTransferCache getDocumentTransferCache() {
         if(documentTransferCache == null)
-            documentTransferCache = new DocumentTransferCache(userVisit, documentControl);
+            documentTransferCache = new DocumentTransferCache(documentControl);
         
         return documentTransferCache;
     }
     
     public DocumentDescriptionTransferCache getDocumentDescriptionTransferCache() {
         if(documentDescriptionTransferCache == null)
-            documentDescriptionTransferCache = new DocumentDescriptionTransferCache(userVisit, documentControl);
+            documentDescriptionTransferCache = new DocumentDescriptionTransferCache(documentControl);
 
         return documentDescriptionTransferCache;
     }
 
     public PartyTypeDocumentTypeUsageTypeTransferCache getPartyTypeDocumentTypeUsageTypeTransferCache() {
         if(partyTypeDocumentTypeUsageTypeTransferCache == null)
-            partyTypeDocumentTypeUsageTypeTransferCache = new PartyTypeDocumentTypeUsageTypeTransferCache(userVisit, documentControl);
+            partyTypeDocumentTypeUsageTypeTransferCache = new PartyTypeDocumentTypeUsageTypeTransferCache(documentControl);
 
         return partyTypeDocumentTypeUsageTypeTransferCache;
     }
 
     public PartyDocumentTransferCache getPartyDocumentTransferCache() {
         if(partyDocumentTransferCache == null)
-            partyDocumentTransferCache = new PartyDocumentTransferCache(userVisit, documentControl);
+            partyDocumentTransferCache = new PartyDocumentTransferCache(documentControl);
 
         return partyDocumentTransferCache;
     }

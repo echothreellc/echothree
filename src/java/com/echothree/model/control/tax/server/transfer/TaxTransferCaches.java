@@ -33,15 +33,15 @@ public class TaxTransferCaches
     protected GeoCodeTaxTransferCache geoCodeTaxTransferCache;
     
     /** Creates a new instance of TaxTransferCaches */
-    public TaxTransferCaches(UserVisit userVisit, TaxControl taxControl) {
-        super(userVisit);
+    public TaxTransferCaches(TaxControl taxControl) {
+        super();
         
         this.taxControl = taxControl;
     }
     
     public TaxClassificationTransferCache getTaxClassificationTransferCache() {
         if(taxClassificationTransferCache == null) {
-            taxClassificationTransferCache = new TaxClassificationTransferCache(userVisit, taxControl);
+            taxClassificationTransferCache = new TaxClassificationTransferCache(taxControl);
         }
 
         return taxClassificationTransferCache;
@@ -49,7 +49,7 @@ public class TaxTransferCaches
                                                                 
     public TaxClassificationTranslationTransferCache getTaxClassificationTranslationTransferCache() {
         if(taxClassificationTranslationTransferCache == null) {
-            taxClassificationTranslationTransferCache = new TaxClassificationTranslationTransferCache(userVisit, taxControl);
+            taxClassificationTranslationTransferCache = new TaxClassificationTranslationTransferCache(taxControl);
         }
 
         return taxClassificationTranslationTransferCache;
@@ -57,7 +57,7 @@ public class TaxTransferCaches
     
     public ItemTaxClassificationTransferCache getItemTaxClassificationTransferCache() {
         if(itemTaxClassificationTransferCache == null) {
-            itemTaxClassificationTransferCache = new ItemTaxClassificationTransferCache(userVisit, taxControl);
+            itemTaxClassificationTransferCache = new ItemTaxClassificationTransferCache(taxControl);
         }
 
         return itemTaxClassificationTransferCache;
@@ -65,21 +65,21 @@ public class TaxTransferCaches
 
     public TaxTransferCache getTaxTransferCache() {
         if(taxTransferCache == null)
-            taxTransferCache = new TaxTransferCache(userVisit, taxControl);
+            taxTransferCache = new TaxTransferCache(taxControl);
         
         return taxTransferCache;
     }
     
     public TaxDescriptionTransferCache getTaxDescriptionTransferCache() {
         if(taxDescriptionTransferCache == null)
-            taxDescriptionTransferCache = new TaxDescriptionTransferCache(userVisit, taxControl);
+            taxDescriptionTransferCache = new TaxDescriptionTransferCache(taxControl);
         
         return taxDescriptionTransferCache;
     }
     
     public GeoCodeTaxTransferCache getGeoCodeTaxTransferCache() {
         if(geoCodeTaxTransferCache == null)
-            geoCodeTaxTransferCache = new GeoCodeTaxTransferCache(userVisit, taxControl);
+            geoCodeTaxTransferCache = new GeoCodeTaxTransferCache(taxControl);
         
         return geoCodeTaxTransferCache;
     }

@@ -36,71 +36,71 @@ public class UomTransferCaches
     protected UnitOfMeasureTypeWeightTransferCache uomTypeWeightTransferCache;
     
     /** Creates a new instance of UomTransferCaches */
-    public UomTransferCaches(UserVisit userVisit, UomControl uomControl) {
-        super(userVisit);
+    public UomTransferCaches(UomControl uomControl) {
+        super();
         
         this.uomControl = uomControl;
     }
     
     public UnitOfMeasureKindTransferCache getUnitOfMeasureKindTransferCache() {
         if(uomKindTransferCache == null)
-            uomKindTransferCache = new UnitOfMeasureKindTransferCache(userVisit, uomControl);
+            uomKindTransferCache = new UnitOfMeasureKindTransferCache(uomControl);
         
         return uomKindTransferCache;
     }
     
     public UnitOfMeasureTypeTransferCache getUnitOfMeasureTypeTransferCache() {
         if(uomTypeTransferCache == null)
-            uomTypeTransferCache = new UnitOfMeasureTypeTransferCache(userVisit, uomControl);
+            uomTypeTransferCache = new UnitOfMeasureTypeTransferCache(uomControl);
         
         return uomTypeTransferCache;
     }
     
     public UnitOfMeasureKindDescriptionTransferCache getUnitOfMeasureKindDescriptionTransferCache() {
         if(uomKindDescriptionTransferCache == null)
-            uomKindDescriptionTransferCache = new UnitOfMeasureKindDescriptionTransferCache(userVisit, uomControl);
+            uomKindDescriptionTransferCache = new UnitOfMeasureKindDescriptionTransferCache(uomControl);
         
         return uomKindDescriptionTransferCache;
     }
     
     public UnitOfMeasureTypeDescriptionTransferCache getUnitOfMeasureTypeDescriptionTransferCache() {
         if(uomTypeDescriptionTransferCache == null)
-            uomTypeDescriptionTransferCache = new UnitOfMeasureTypeDescriptionTransferCache(userVisit, uomControl);
+            uomTypeDescriptionTransferCache = new UnitOfMeasureTypeDescriptionTransferCache(uomControl);
         
         return uomTypeDescriptionTransferCache;
     }
     
     public UnitOfMeasureKindUseTransferCache getUnitOfMeasureKindUseTransferCache() {
         if(uomKindUseTransferCache == null)
-            uomKindUseTransferCache = new UnitOfMeasureKindUseTransferCache(userVisit, uomControl);
+            uomKindUseTransferCache = new UnitOfMeasureKindUseTransferCache(uomControl);
         
         return uomKindUseTransferCache;
     }
     
     public UnitOfMeasureKindUseTypeTransferCache getUnitOfMeasureKindUseTypeTransferCache() {
         if(uomKindUseTypeTransferCache == null)
-            uomKindUseTypeTransferCache = new UnitOfMeasureKindUseTypeTransferCache(userVisit, uomControl);
+            uomKindUseTypeTransferCache = new UnitOfMeasureKindUseTypeTransferCache(uomControl);
         
         return uomKindUseTypeTransferCache;
     }
     
     public UnitOfMeasureEquivalentTransferCache getUnitOfMeasureEquivalentTransferCache() {
         if(uomEquivalentTransferCache == null)
-            uomEquivalentTransferCache = new UnitOfMeasureEquivalentTransferCache(userVisit, uomControl);
+            uomEquivalentTransferCache = new UnitOfMeasureEquivalentTransferCache(uomControl);
         
         return uomEquivalentTransferCache;
     }
     
     public UnitOfMeasureTypeVolumeTransferCache getUnitOfMeasureTypeVolumeTransferCache() {
         if(uomTypeVolumeTransferCache == null)
-            uomTypeVolumeTransferCache = new UnitOfMeasureTypeVolumeTransferCache(userVisit, uomControl);
+            uomTypeVolumeTransferCache = new UnitOfMeasureTypeVolumeTransferCache(uomControl);
         
         return uomTypeVolumeTransferCache;
     }
     
     public UnitOfMeasureTypeWeightTransferCache getUnitOfMeasureTypeWeightTransferCache() {
         if(uomTypeWeightTransferCache == null)
-            uomTypeWeightTransferCache = new UnitOfMeasureTypeWeightTransferCache(userVisit, uomControl);
+            uomTypeWeightTransferCache = new UnitOfMeasureTypeWeightTransferCache(uomControl);
         
         return uomTypeWeightTransferCache;
     }

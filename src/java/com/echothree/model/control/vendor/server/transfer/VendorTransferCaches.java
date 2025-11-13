@@ -34,57 +34,57 @@ public class VendorTransferCaches
     protected ItemPurchasingCategoryTransferCache itemPurchasingCategoryTransferCache;
     
     /** Creates a new instance of VendorTransferCaches */
-    public VendorTransferCaches(UserVisit userVisit, VendorControl vendorControl) {
-        super(userVisit);
+    public VendorTransferCaches(VendorControl vendorControl) {
+        super();
         
         this.vendorControl = vendorControl;
     }
     
     public VendorTypeTransferCache getVendorTypeTransferCache() {
         if(vendorTypeTransferCache == null)
-            vendorTypeTransferCache = new VendorTypeTransferCache(userVisit, vendorControl);
+            vendorTypeTransferCache = new VendorTypeTransferCache(vendorControl);
         
         return vendorTypeTransferCache;
     }
     
     public VendorTypeDescriptionTransferCache getVendorTypeDescriptionTransferCache() {
         if(vendorTypeDescriptionTransferCache == null)
-            vendorTypeDescriptionTransferCache = new VendorTypeDescriptionTransferCache(userVisit, vendorControl);
+            vendorTypeDescriptionTransferCache = new VendorTypeDescriptionTransferCache(vendorControl);
         
         return vendorTypeDescriptionTransferCache;
     }
     
     public VendorTransferCache getVendorTransferCache() {
         if(vendorTransferCache == null)
-            vendorTransferCache = new VendorTransferCache(userVisit, vendorControl);
+            vendorTransferCache = new VendorTransferCache(vendorControl);
         
         return vendorTransferCache;
     }
     
     public VendorItemTransferCache getVendorItemTransferCache() {
         if(vendorItemTransferCache == null)
-            vendorItemTransferCache = new VendorItemTransferCache(userVisit, vendorControl);
+            vendorItemTransferCache = new VendorItemTransferCache(vendorControl);
         
         return vendorItemTransferCache;
     }
     
     public VendorItemCostTransferCache getVendorItemCostTransferCache() {
         if(vendorItemCostTransferCache == null)
-            vendorItemCostTransferCache = new VendorItemCostTransferCache(userVisit, vendorControl);
+            vendorItemCostTransferCache = new VendorItemCostTransferCache(vendorControl);
         
         return vendorItemCostTransferCache;
     }
     
     public ItemPurchasingCategoryDescriptionTransferCache getItemPurchasingCategoryDescriptionTransferCache() {
         if(itemPurchasingCategoryDescriptionTransferCache == null)
-            itemPurchasingCategoryDescriptionTransferCache = new ItemPurchasingCategoryDescriptionTransferCache(userVisit, vendorControl);
+            itemPurchasingCategoryDescriptionTransferCache = new ItemPurchasingCategoryDescriptionTransferCache(vendorControl);
         
         return itemPurchasingCategoryDescriptionTransferCache;
     }
     
     public ItemPurchasingCategoryTransferCache getItemPurchasingCategoryTransferCache() {
         if(itemPurchasingCategoryTransferCache == null)
-            itemPurchasingCategoryTransferCache = new ItemPurchasingCategoryTransferCache(userVisit, vendorControl);
+            itemPurchasingCategoryTransferCache = new ItemPurchasingCategoryTransferCache(vendorControl);
         
         return itemPurchasingCategoryTransferCache;
     }

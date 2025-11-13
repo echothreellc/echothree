@@ -37,78 +37,78 @@ public class CarrierTransferCaches
     CarrierServiceOptionTransferCache carrierServiceOptionTransferCache;
     
     /** Creates a new instance of CarrierTransferCaches */
-    public CarrierTransferCaches(UserVisit userVisit, CarrierControl carrierControl) {
-        super(userVisit);
+    public CarrierTransferCaches(CarrierControl carrierControl) {
+        super();
         
         this.carrierControl = carrierControl;
     }
     
     public CarrierTransferCache getCarrierTransferCache() {
         if(carrierTransferCache == null)
-            carrierTransferCache = new CarrierTransferCache(userVisit, carrierControl);
+            carrierTransferCache = new CarrierTransferCache(carrierControl);
         
         return carrierTransferCache;
     }
     
     public CarrierTypeTransferCache getCarrierTypeTransferCache() {
         if(carrierTypeTransferCache == null)
-            carrierTypeTransferCache = new CarrierTypeTransferCache(userVisit, carrierControl);
+            carrierTypeTransferCache = new CarrierTypeTransferCache(carrierControl);
         
         return carrierTypeTransferCache;
     }
     
     public CarrierTypeDescriptionTransferCache getCarrierTypeDescriptionTransferCache() {
         if(carrierTypeDescriptionTransferCache == null)
-            carrierTypeDescriptionTransferCache = new CarrierTypeDescriptionTransferCache(userVisit, carrierControl);
+            carrierTypeDescriptionTransferCache = new CarrierTypeDescriptionTransferCache(carrierControl);
 
         return carrierTypeDescriptionTransferCache;
     }
 
     public CarrierServiceDescriptionTransferCache getCarrierServiceDescriptionTransferCache() {
         if(carrierServiceDescriptionTransferCache == null)
-            carrierServiceDescriptionTransferCache = new CarrierServiceDescriptionTransferCache(userVisit, carrierControl);
+            carrierServiceDescriptionTransferCache = new CarrierServiceDescriptionTransferCache(carrierControl);
 
         return carrierServiceDescriptionTransferCache;
     }
 
     public CarrierServiceTransferCache getCarrierServiceTransferCache() {
         if(carrierServiceTransferCache == null)
-            carrierServiceTransferCache = new CarrierServiceTransferCache(userVisit, carrierControl);
+            carrierServiceTransferCache = new CarrierServiceTransferCache(carrierControl);
         
         return carrierServiceTransferCache;
     }
     
     public CarrierOptionDescriptionTransferCache getCarrierOptionDescriptionTransferCache() {
         if(carrierOptionDescriptionTransferCache == null)
-            carrierOptionDescriptionTransferCache = new CarrierOptionDescriptionTransferCache(userVisit, carrierControl);
+            carrierOptionDescriptionTransferCache = new CarrierOptionDescriptionTransferCache(carrierControl);
         
         return carrierOptionDescriptionTransferCache;
     }
     
     public CarrierOptionTransferCache getCarrierOptionTransferCache() {
         if(carrierOptionTransferCache == null)
-            carrierOptionTransferCache = new CarrierOptionTransferCache(userVisit, carrierControl);
+            carrierOptionTransferCache = new CarrierOptionTransferCache(carrierControl);
         
         return carrierOptionTransferCache;
     }
     
     public PartyCarrierTransferCache getPartyCarrierTransferCache() {
         if(partyCarrierTransferCache == null)
-            partyCarrierTransferCache = new PartyCarrierTransferCache(userVisit, carrierControl);
+            partyCarrierTransferCache = new PartyCarrierTransferCache(carrierControl);
 
         return partyCarrierTransferCache;
     }
 
     public PartyCarrierAccountTransferCache getPartyCarrierAccountTransferCache() {
         if(partyCarrierAccountTransferCache == null)
-            partyCarrierAccountTransferCache = new PartyCarrierAccountTransferCache(userVisit, carrierControl);
+            partyCarrierAccountTransferCache = new PartyCarrierAccountTransferCache(carrierControl);
 
         return partyCarrierAccountTransferCache;
     }
 
     public CarrierServiceOptionTransferCache getCarrierServiceOptionTransferCache() {
         if(carrierServiceOptionTransferCache == null)
-            carrierServiceOptionTransferCache = new CarrierServiceOptionTransferCache(userVisit, carrierControl);
+            carrierServiceOptionTransferCache = new CarrierServiceOptionTransferCache(carrierControl);
         
         return carrierServiceOptionTransferCache;
     }

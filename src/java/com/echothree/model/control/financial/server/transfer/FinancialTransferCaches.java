@@ -38,85 +38,85 @@ public class FinancialTransferCaches
     protected FinancialAccountTransactionTransferCache financialAccountTransactionTransferCache;
     
     /** Creates a new instance of FinancialTransferCaches */
-    public FinancialTransferCaches(UserVisit userVisit, FinancialControl financialControl) {
-        super(userVisit);
+    public FinancialTransferCaches(FinancialControl financialControl) {
+        super();
         
         this.financialControl = financialControl;
     }
     
     public FinancialAccountRoleTypeTransferCache getFinancialAccountRoleTypeTransferCache() {
         if(financialAccountRoleTypeTransferCache == null)
-            financialAccountRoleTypeTransferCache = new FinancialAccountRoleTypeTransferCache(userVisit, financialControl);
+            financialAccountRoleTypeTransferCache = new FinancialAccountRoleTypeTransferCache(financialControl);
         
         return financialAccountRoleTypeTransferCache;
     }
     
     public FinancialAccountTypeTransferCache getFinancialAccountTypeTransferCache() {
         if(financialAccountTypeTransferCache == null)
-            financialAccountTypeTransferCache = new FinancialAccountTypeTransferCache(userVisit, financialControl);
+            financialAccountTypeTransferCache = new FinancialAccountTypeTransferCache(financialControl);
         
         return financialAccountTypeTransferCache;
     }
     
     public FinancialAccountTypeDescriptionTransferCache getFinancialAccountTypeDescriptionTransferCache() {
         if(financialAccountTypeDescriptionTransferCache == null)
-            financialAccountTypeDescriptionTransferCache = new FinancialAccountTypeDescriptionTransferCache(userVisit, financialControl);
+            financialAccountTypeDescriptionTransferCache = new FinancialAccountTypeDescriptionTransferCache(financialControl);
         
         return financialAccountTypeDescriptionTransferCache;
     }
     
     public FinancialAccountTransactionTypeTransferCache getFinancialAccountTransactionTypeTransferCache() {
         if(financialAccountTransactionTypeTransferCache == null)
-            financialAccountTransactionTypeTransferCache = new FinancialAccountTransactionTypeTransferCache(userVisit, financialControl);
+            financialAccountTransactionTypeTransferCache = new FinancialAccountTransactionTypeTransferCache(financialControl);
         
         return financialAccountTransactionTypeTransferCache;
     }
     
     public FinancialAccountTransactionTypeDescriptionTransferCache getFinancialAccountTransactionTypeDescriptionTransferCache() {
         if(financialAccountTransactionTypeDescriptionTransferCache == null)
-            financialAccountTransactionTypeDescriptionTransferCache = new FinancialAccountTransactionTypeDescriptionTransferCache(userVisit, financialControl);
+            financialAccountTransactionTypeDescriptionTransferCache = new FinancialAccountTransactionTypeDescriptionTransferCache(financialControl);
         
         return financialAccountTransactionTypeDescriptionTransferCache;
     }
     
     public FinancialAccountAliasTypeTransferCache getFinancialAccountAliasTypeTransferCache() {
         if(financialAccountAliasTypeTransferCache == null)
-            financialAccountAliasTypeTransferCache = new FinancialAccountAliasTypeTransferCache(userVisit, financialControl);
+            financialAccountAliasTypeTransferCache = new FinancialAccountAliasTypeTransferCache(financialControl);
         
         return financialAccountAliasTypeTransferCache;
     }
     
     public FinancialAccountAliasTypeDescriptionTransferCache getFinancialAccountAliasTypeDescriptionTransferCache() {
         if(financialAccountAliasTypeDescriptionTransferCache == null)
-            financialAccountAliasTypeDescriptionTransferCache = new FinancialAccountAliasTypeDescriptionTransferCache(userVisit, financialControl);
+            financialAccountAliasTypeDescriptionTransferCache = new FinancialAccountAliasTypeDescriptionTransferCache(financialControl);
         
         return financialAccountAliasTypeDescriptionTransferCache;
     }
     
     public FinancialAccountRoleTransferCache getFinancialAccountRoleTransferCache() {
         if(financialAccountRoleTransferCache == null)
-            financialAccountRoleTransferCache = new FinancialAccountRoleTransferCache(userVisit, financialControl);
+            financialAccountRoleTransferCache = new FinancialAccountRoleTransferCache(financialControl);
         
         return financialAccountRoleTransferCache;
     }
     
     public FinancialAccountTransferCache getFinancialAccountTransferCache() {
         if(financialAccountTransferCache == null)
-            financialAccountTransferCache = new FinancialAccountTransferCache(userVisit, financialControl);
+            financialAccountTransferCache = new FinancialAccountTransferCache(financialControl);
         
         return financialAccountTransferCache;
     }
     
     public FinancialAccountAliasTransferCache getFinancialAccountAliasTransferCache() {
         if(financialAccountAliasTransferCache == null)
-            financialAccountAliasTransferCache = new FinancialAccountAliasTransferCache(userVisit, financialControl);
+            financialAccountAliasTransferCache = new FinancialAccountAliasTransferCache(financialControl);
         
         return financialAccountAliasTransferCache;
     }
     
     public FinancialAccountTransactionTransferCache getFinancialAccountTransactionTransferCache() {
         if(financialAccountTransactionTransferCache == null)
-            financialAccountTransactionTransferCache = new FinancialAccountTransactionTransferCache(userVisit, financialControl);
+            financialAccountTransactionTransferCache = new FinancialAccountTransactionTransferCache(financialControl);
         
         return financialAccountTransactionTransferCache;
     }

@@ -34,57 +34,57 @@ public class ScaleTransferCaches
     protected PartyScaleUseTransferCache partyScaleUseTransferCache;
     
     /** Creates a new instance of ScaleTransferCaches */
-    public ScaleTransferCaches(UserVisit userVisit, ScaleControl scaleControl) {
-        super(userVisit);
+    public ScaleTransferCaches(ScaleControl scaleControl) {
+        super();
         
         this.scaleControl = scaleControl;
     }
     
     public ScaleTypeTransferCache getScaleTypeTransferCache() {
         if(scaleTypeTransferCache == null)
-            scaleTypeTransferCache = new ScaleTypeTransferCache(userVisit, scaleControl);
+            scaleTypeTransferCache = new ScaleTypeTransferCache(scaleControl);
 
         return scaleTypeTransferCache;
     }
 
     public ScaleTypeDescriptionTransferCache getScaleTypeDescriptionTransferCache() {
         if(scaleTypeDescriptionTransferCache == null)
-            scaleTypeDescriptionTransferCache = new ScaleTypeDescriptionTransferCache(userVisit, scaleControl);
+            scaleTypeDescriptionTransferCache = new ScaleTypeDescriptionTransferCache(scaleControl);
 
         return scaleTypeDescriptionTransferCache;
     }
 
     public ScaleTransferCache getScaleTransferCache() {
         if(scaleTransferCache == null)
-            scaleTransferCache = new ScaleTransferCache(userVisit, scaleControl);
+            scaleTransferCache = new ScaleTransferCache(scaleControl);
         
         return scaleTransferCache;
     }
     
     public ScaleDescriptionTransferCache getScaleDescriptionTransferCache() {
         if(scaleDescriptionTransferCache == null)
-            scaleDescriptionTransferCache = new ScaleDescriptionTransferCache(userVisit, scaleControl);
+            scaleDescriptionTransferCache = new ScaleDescriptionTransferCache(scaleControl);
         
         return scaleDescriptionTransferCache;
     }
     
     public ScaleUseTypeTransferCache getScaleUseTypeTransferCache() {
         if(scaleUseTypeTransferCache == null)
-            scaleUseTypeTransferCache = new ScaleUseTypeTransferCache(userVisit, scaleControl);
+            scaleUseTypeTransferCache = new ScaleUseTypeTransferCache(scaleControl);
 
         return scaleUseTypeTransferCache;
     }
 
     public ScaleUseTypeDescriptionTransferCache getScaleUseTypeDescriptionTransferCache() {
         if(scaleUseTypeDescriptionTransferCache == null)
-            scaleUseTypeDescriptionTransferCache = new ScaleUseTypeDescriptionTransferCache(userVisit, scaleControl);
+            scaleUseTypeDescriptionTransferCache = new ScaleUseTypeDescriptionTransferCache(scaleControl);
 
         return scaleUseTypeDescriptionTransferCache;
     }
 
     public PartyScaleUseTransferCache getPartyScaleUseTransferCache() {
         if(partyScaleUseTransferCache == null)
-            partyScaleUseTransferCache = new PartyScaleUseTransferCache(userVisit, scaleControl);
+            partyScaleUseTransferCache = new PartyScaleUseTransferCache(scaleControl);
         
         return partyScaleUseTransferCache;
     }
