@@ -34,9 +34,9 @@ public abstract class BaseCoreControl
     
     private CoreTransferCaches coreTransferCaches;
     
-    public CoreTransferCaches getCoreTransferCaches(UserVisit userVisit) {
+    public CoreTransferCaches getCoreTransferCaches() {
         if(coreTransferCaches == null) {
-            coreTransferCaches = new CoreTransferCaches(userVisit);
+            coreTransferCaches = new CoreTransferCaches();
         }
         
         return coreTransferCaches;

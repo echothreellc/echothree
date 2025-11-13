@@ -24,12 +24,12 @@ public class GenderDescriptionTransferCache
         extends BasePartyDescriptionTransferCache<GenderDescription, GenderDescriptionTransfer> {
     
     /** Creates a new instance of GenderDescriptionTransferCache */
-    public GenderDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public GenderDescriptionTransferCache() {
+        super();
     }
 
     @Override
-    public GenderDescriptionTransfer getTransfer(GenderDescription genderDescription) {
+    public GenderDescriptionTransfer getTransfer(UserVisit userVisit, GenderDescription genderDescription) {
         var genderDescriptionTransfer = get(genderDescription);
         
         if(genderDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class GenderDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, genderDescription.getLanguage());
             
             genderDescriptionTransfer = new GenderDescriptionTransfer(languageTransfer, genderTransfer, genderDescription.getDescription());
-            put(genderDescription, genderDescriptionTransfer);
+            put(userVisit, genderDescription, genderDescriptionTransfer);
         }
         
         return genderDescriptionTransfer;

@@ -25,13 +25,13 @@ public class SelectorKindTransferCache
         extends BaseSelectorTransferCache<SelectorKind, SelectorKindTransfer> {
     
     /** Creates a new instance of SelectorKindTransferCache */
-    public SelectorKindTransferCache(UserVisit userVisit, SelectorControl selectorControl) {
-        super(userVisit, selectorControl);
+    public SelectorKindTransferCache(SelectorControl selectorControl) {
+        super(selectorControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public SelectorKindTransfer getSelectorKindTransfer(SelectorKind selectorKind) {
+    public SelectorKindTransfer getSelectorKindTransfer(UserVisit userVisit, SelectorKind selectorKind) {
         var selectorKindTransfer = get(selectorKind);
         
         if(selectorKindTransfer == null) {
@@ -39,10 +39,10 @@ public class SelectorKindTransferCache
             var selectorKindName = selectorKindDetail.getSelectorKindName();
             var isDefault = selectorKindDetail.getIsDefault();
             var sortOrder = selectorKindDetail.getSortOrder();
-            var description = selectorControl.getBestSelectorKindDescription(selectorKind, getLanguage());
+            var description = selectorControl.getBestSelectorKindDescription(selectorKind, getLanguage(userVisit));
             
             selectorKindTransfer = new SelectorKindTransfer(selectorKindName, isDefault, sortOrder, description);
-            put(selectorKind, selectorKindTransfer);
+            put(userVisit, selectorKind, selectorKindTransfer);
         }
         
         return selectorKindTransfer;

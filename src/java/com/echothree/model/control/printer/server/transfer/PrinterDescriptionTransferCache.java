@@ -25,11 +25,11 @@ public class PrinterDescriptionTransferCache
         extends BasePrinterDescriptionTransferCache<PrinterDescription, PrinterDescriptionTransfer> {
     
     /** Creates a new instance of PrinterDescriptionTransferCache */
-    public PrinterDescriptionTransferCache(UserVisit userVisit, PrinterControl printerControl) {
-        super(userVisit, printerControl);
+    public PrinterDescriptionTransferCache(PrinterControl printerControl) {
+        super(printerControl);
     }
     
-    public PrinterDescriptionTransfer getPrinterDescriptionTransfer(PrinterDescription printerDescription) {
+    public PrinterDescriptionTransfer getPrinterDescriptionTransfer(UserVisit userVisit, PrinterDescription printerDescription) {
         var printerDescriptionTransfer = get(printerDescription);
         
         if(printerDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class PrinterDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, printerDescription.getLanguage());
             
             printerDescriptionTransfer = new PrinterDescriptionTransfer(languageTransfer, printerTransfer, printerDescription.getDescription());
-            put(printerDescription, printerDescriptionTransfer);
+            put(userVisit, printerDescription, printerDescriptionTransfer);
         }
         
         return printerDescriptionTransfer;

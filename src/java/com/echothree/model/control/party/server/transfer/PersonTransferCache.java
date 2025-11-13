@@ -28,12 +28,12 @@ public class PersonTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of PersonTransferCache */
-    public PersonTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public PersonTransferCache() {
+        super();
     }
 
     @Override
-    public PersonTransfer getTransfer(Person person) {
+    public PersonTransfer getTransfer(UserVisit userVisit, Person person) {
         var personTransfer = get(person);
         
         if(personTransfer == null) {
@@ -46,7 +46,7 @@ public class PersonTransferCache
             var nameSuffixTransfer = nameSuffix == null? null: partyControl.getNameSuffixTransfer(userVisit, nameSuffix);
             
             personTransfer = new PersonTransfer(personalTitleTransfer, firstName, middleName, lastName, nameSuffixTransfer);
-            put(person, personTransfer);
+            put(userVisit, person, personTransfer);
         }
         
         return personTransfer;

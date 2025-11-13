@@ -25,13 +25,13 @@ public class InvoiceAliasTypeTransferCache
         extends BaseInvoiceTransferCache<InvoiceAliasType, InvoiceAliasTypeTransfer> {
     
     /** Creates a new instance of InvoiceAliasTypeTransferCache */
-    public InvoiceAliasTypeTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
-        super(userVisit, invoiceControl);
+    public InvoiceAliasTypeTransferCache(InvoiceControl invoiceControl) {
+        super(invoiceControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public InvoiceAliasTypeTransfer getInvoiceAliasTypeTransfer(InvoiceAliasType invoiceAliasType) {
+    public InvoiceAliasTypeTransfer getInvoiceAliasTypeTransfer(UserVisit userVisit, InvoiceAliasType invoiceAliasType) {
         var invoiceAliasTypeTransfer = get(invoiceAliasType);
         
         if(invoiceAliasTypeTransfer == null) {
@@ -41,10 +41,10 @@ public class InvoiceAliasTypeTransferCache
             var validationPattern = invoiceAliasTypeDetail.getValidationPattern();
             var isDefault = invoiceAliasTypeDetail.getIsDefault();
             var sortOrder = invoiceAliasTypeDetail.getSortOrder();
-            var description = invoiceControl.getBestInvoiceAliasTypeDescription(invoiceAliasType, getLanguage());
+            var description = invoiceControl.getBestInvoiceAliasTypeDescription(invoiceAliasType, getLanguage(userVisit));
             
             invoiceAliasTypeTransfer = new InvoiceAliasTypeTransfer(invoiceType, invoiceAliasTypeName, validationPattern, isDefault, sortOrder, description);
-            put(invoiceAliasType, invoiceAliasTypeTransfer);
+            put(userVisit, invoiceAliasType, invoiceAliasTypeTransfer);
         }
         
         return invoiceAliasTypeTransfer;

@@ -213,15 +213,15 @@ public class ColorControl
     }
 
     public ColorTransfer getColorTransfer(UserVisit userVisit, Color color) {
-        return getCoreTransferCaches(userVisit).getColorTransferCache().getColorTransfer(color);
+        return getCoreTransferCaches().getColorTransferCache().getColorTransfer(userVisit, color);
     }
 
     public List<ColorTransfer> getColorTransfers(UserVisit userVisit, Collection<Color> entities) {
         List<ColorTransfer> transfers = new ArrayList<>(entities.size());
-        var transferCache = getCoreTransferCaches(userVisit).getColorTransferCache();
+        var transferCache = getCoreTransferCaches().getColorTransferCache();
 
         entities.forEach((entity) ->
-                transfers.add(transferCache.getColorTransfer(entity))
+                transfers.add(transferCache.getColorTransfer(userVisit, entity))
         );
 
         return transfers;
@@ -458,16 +458,16 @@ public class ColorControl
     }
 
     public ColorDescriptionTransfer getColorDescriptionTransfer(UserVisit userVisit, ColorDescription colorDescription) {
-        return getCoreTransferCaches(userVisit).getColorDescriptionTransferCache().getColorDescriptionTransfer(colorDescription);
+        return getCoreTransferCaches().getColorDescriptionTransferCache().getColorDescriptionTransfer(userVisit, colorDescription);
     }
 
     public List<ColorDescriptionTransfer> getColorDescriptionTransfersByColor(UserVisit userVisit, Color color) {
         var colorDescriptions = getColorDescriptionsByColor(color);
         List<ColorDescriptionTransfer> colorDescriptionTransfers = new ArrayList<>(colorDescriptions.size());
-        var colorDescriptionTransferCache = getCoreTransferCaches(userVisit).getColorDescriptionTransferCache();
+        var colorDescriptionTransferCache = getCoreTransferCaches().getColorDescriptionTransferCache();
 
         colorDescriptions.forEach((colorDescription) ->
-                colorDescriptionTransfers.add(colorDescriptionTransferCache.getColorDescriptionTransfer(colorDescription))
+                colorDescriptionTransfers.add(colorDescriptionTransferCache.getColorDescriptionTransfer(userVisit, colorDescription))
         );
 
         return colorDescriptionTransfers;

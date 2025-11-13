@@ -50,188 +50,188 @@ public class PaymentTransferCaches
     protected PaymentProcessorTransactionCodeTransferCache paymentProcessorTransactionCodeTransferCache;
     
     /** Creates a new instance of PaymentTransferCaches */
-    public PaymentTransferCaches(UserVisit userVisit) {
-        super(userVisit);
+    public PaymentTransferCaches() {
+        super();
     }
 
     public PaymentMethodTypeTransferCache getPaymentMethodTypeTransferCache() {
         if(paymentMethodTypeTransferCache == null)
-            paymentMethodTypeTransferCache = new PaymentMethodTypeTransferCache(userVisit);
+            paymentMethodTypeTransferCache = new PaymentMethodTypeTransferCache();
 
         return paymentMethodTypeTransferCache;
     }
 
     public PaymentMethodTypeDescriptionTransferCache getPaymentMethodTypeDescriptionTransferCache() {
         if(paymentMethodTypeDescriptionTransferCache == null)
-            paymentMethodTypeDescriptionTransferCache = new PaymentMethodTypeDescriptionTransferCache(userVisit);
+            paymentMethodTypeDescriptionTransferCache = new PaymentMethodTypeDescriptionTransferCache();
 
         return paymentMethodTypeDescriptionTransferCache;
     }
 
     public PaymentMethodTypePartyTypeTransferCache getPaymentMethodTypePartyTypeTransferCache() {
         if(paymentMethodTypePartyTypeTransferCache == null)
-            paymentMethodTypePartyTypeTransferCache = new PaymentMethodTypePartyTypeTransferCache(userVisit);
+            paymentMethodTypePartyTypeTransferCache = new PaymentMethodTypePartyTypeTransferCache();
 
         return paymentMethodTypePartyTypeTransferCache;
     }
 
     public PaymentMethodTransferCache getPaymentMethodTransferCache() {
         if(paymentMethodTransferCache == null)
-            paymentMethodTransferCache = new PaymentMethodTransferCache(userVisit);
+            paymentMethodTransferCache = new PaymentMethodTransferCache();
         
         return paymentMethodTransferCache;
     }
     
     public PaymentMethodDescriptionTransferCache getPaymentMethodDescriptionTransferCache() {
         if(paymentMethodDescriptionTransferCache == null)
-            paymentMethodDescriptionTransferCache = new PaymentMethodDescriptionTransferCache(userVisit);
+            paymentMethodDescriptionTransferCache = new PaymentMethodDescriptionTransferCache();
         
         return paymentMethodDescriptionTransferCache;
     }
     
     public BillingAccountTransferCache getBillingAccountTransferCache() {
         if(billingAccountTransferCache == null)
-            billingAccountTransferCache = new BillingAccountTransferCache(userVisit);
+            billingAccountTransferCache = new BillingAccountTransferCache();
         
         return billingAccountTransferCache;
     }
     
     public BillingAccountRoleTypeTransferCache getBillingAccountRoleTypeTransferCache() {
         if(billingAccountRoleTypeTransferCache == null)
-            billingAccountRoleTypeTransferCache = new BillingAccountRoleTypeTransferCache(userVisit);
+            billingAccountRoleTypeTransferCache = new BillingAccountRoleTypeTransferCache();
         
         return billingAccountRoleTypeTransferCache;
     }
     
     public BillingAccountRoleTransferCache getBillingAccountRoleTransferCache() {
         if(billingAccountRoleTransferCache == null)
-            billingAccountRoleTransferCache = new BillingAccountRoleTransferCache(userVisit);
+            billingAccountRoleTransferCache = new BillingAccountRoleTransferCache();
         
         return billingAccountRoleTransferCache;
     }
     
     public PartyPaymentMethodTransferCache getPartyPaymentMethodTransferCache() {
         if(partyPaymentMethodTransferCache == null)
-            partyPaymentMethodTransferCache = new PartyPaymentMethodTransferCache(userVisit);
+            partyPaymentMethodTransferCache = new PartyPaymentMethodTransferCache();
         
         return partyPaymentMethodTransferCache;
     }
 
     public PaymentProcessorTypeTransferCache getPaymentProcessorTypeTransferCache() {
         if(paymentProcessorTypeTransferCache == null)
-            paymentProcessorTypeTransferCache = new PaymentProcessorTypeTransferCache(userVisit);
+            paymentProcessorTypeTransferCache = new PaymentProcessorTypeTransferCache();
 
         return paymentProcessorTypeTransferCache;
     }
 
     public PaymentProcessorTypeDescriptionTransferCache getPaymentProcessorTypeDescriptionTransferCache() {
         if(paymentProcessorTypeDescriptionTransferCache == null)
-            paymentProcessorTypeDescriptionTransferCache = new PaymentProcessorTypeDescriptionTransferCache(userVisit);
+            paymentProcessorTypeDescriptionTransferCache = new PaymentProcessorTypeDescriptionTransferCache();
 
         return paymentProcessorTypeDescriptionTransferCache;
     }
 
     public PaymentProcessorTransferCache getPaymentProcessorTransferCache() {
         if(paymentProcessorTransferCache == null)
-            paymentProcessorTransferCache = new PaymentProcessorTransferCache(userVisit);
+            paymentProcessorTransferCache = new PaymentProcessorTransferCache();
         
         return paymentProcessorTransferCache;
     }
     
     public PaymentProcessorDescriptionTransferCache getPaymentProcessorDescriptionTransferCache() {
         if(paymentProcessorDescriptionTransferCache == null)
-            paymentProcessorDescriptionTransferCache = new PaymentProcessorDescriptionTransferCache(userVisit);
+            paymentProcessorDescriptionTransferCache = new PaymentProcessorDescriptionTransferCache();
         
         return paymentProcessorDescriptionTransferCache;
     }
     
     public PartyPaymentMethodContactMechanismTransferCache getPartyPaymentMethodContactMechanismTransferCache() {
         if(partyPaymentMethodContactMechanismTransferCache == null)
-            partyPaymentMethodContactMechanismTransferCache = new PartyPaymentMethodContactMechanismTransferCache(userVisit);
+            partyPaymentMethodContactMechanismTransferCache = new PartyPaymentMethodContactMechanismTransferCache();
         
         return partyPaymentMethodContactMechanismTransferCache;
     }
 
     public PaymentProcessorActionTypeTransferCache getPaymentProcessorActionTypeTransferCache() {
         if(paymentProcessorActionTypeTransferCache == null)
-            paymentProcessorActionTypeTransferCache = new PaymentProcessorActionTypeTransferCache(userVisit);
+            paymentProcessorActionTypeTransferCache = new PaymentProcessorActionTypeTransferCache();
 
         return paymentProcessorActionTypeTransferCache;
     }
 
     public PaymentProcessorActionTypeDescriptionTransferCache getPaymentProcessorActionTypeDescriptionTransferCache() {
         if(paymentProcessorActionTypeDescriptionTransferCache == null)
-            paymentProcessorActionTypeDescriptionTransferCache = new PaymentProcessorActionTypeDescriptionTransferCache(userVisit);
+            paymentProcessorActionTypeDescriptionTransferCache = new PaymentProcessorActionTypeDescriptionTransferCache();
 
         return paymentProcessorActionTypeDescriptionTransferCache;
     }
 
     public PaymentProcessorResultCodeTransferCache getPaymentProcessorResultCodeTransferCache() {
         if(paymentProcessorResultCodeTransferCache == null)
-            paymentProcessorResultCodeTransferCache = new PaymentProcessorResultCodeTransferCache(userVisit);
+            paymentProcessorResultCodeTransferCache = new PaymentProcessorResultCodeTransferCache();
 
         return paymentProcessorResultCodeTransferCache;
     }
 
     public PaymentProcessorResultCodeDescriptionTransferCache getPaymentProcessorResultCodeDescriptionTransferCache() {
         if(paymentProcessorResultCodeDescriptionTransferCache == null)
-            paymentProcessorResultCodeDescriptionTransferCache = new PaymentProcessorResultCodeDescriptionTransferCache(userVisit);
+            paymentProcessorResultCodeDescriptionTransferCache = new PaymentProcessorResultCodeDescriptionTransferCache();
 
         return paymentProcessorResultCodeDescriptionTransferCache;
     }
 
     public PaymentProcessorTypeCodeTypeTransferCache getPaymentProcessorTypeCodeTypeTransferCache() {
         if(paymentProcessorTypeCodeTypeTransferCache == null)
-            paymentProcessorTypeCodeTypeTransferCache = new PaymentProcessorTypeCodeTypeTransferCache(userVisit);
+            paymentProcessorTypeCodeTypeTransferCache = new PaymentProcessorTypeCodeTypeTransferCache();
 
         return paymentProcessorTypeCodeTypeTransferCache;
     }
 
     public PaymentProcessorTypeCodeTypeDescriptionTransferCache getPaymentProcessorTypeCodeTypeDescriptionTransferCache() {
         if(paymentProcessorTypeCodeTypeDescriptionTransferCache == null)
-            paymentProcessorTypeCodeTypeDescriptionTransferCache = new PaymentProcessorTypeCodeTypeDescriptionTransferCache(userVisit);
+            paymentProcessorTypeCodeTypeDescriptionTransferCache = new PaymentProcessorTypeCodeTypeDescriptionTransferCache();
 
         return paymentProcessorTypeCodeTypeDescriptionTransferCache;
     }
 
     public PaymentProcessorTypeCodeTransferCache getPaymentProcessorTypeCodeTransferCache() {
         if(paymentProcessorTypeCodeTransferCache == null)
-            paymentProcessorTypeCodeTransferCache = new PaymentProcessorTypeCodeTransferCache(userVisit);
+            paymentProcessorTypeCodeTransferCache = new PaymentProcessorTypeCodeTransferCache();
 
         return paymentProcessorTypeCodeTransferCache;
     }
 
     public PaymentProcessorTypeCodeDescriptionTransferCache getPaymentProcessorTypeCodeDescriptionTransferCache() {
         if(paymentProcessorTypeCodeDescriptionTransferCache == null)
-            paymentProcessorTypeCodeDescriptionTransferCache = new PaymentProcessorTypeCodeDescriptionTransferCache(userVisit);
+            paymentProcessorTypeCodeDescriptionTransferCache = new PaymentProcessorTypeCodeDescriptionTransferCache();
 
         return paymentProcessorTypeCodeDescriptionTransferCache;
     }
 
     public PaymentProcessorTypeActionTransferCache getPaymentProcessorTypeActionTransferCache() {
         if(paymentProcessorTypeActionTransferCache == null)
-            paymentProcessorTypeActionTransferCache = new PaymentProcessorTypeActionTransferCache(userVisit);
+            paymentProcessorTypeActionTransferCache = new PaymentProcessorTypeActionTransferCache();
 
         return paymentProcessorTypeActionTransferCache;
     }
 
     public PaymentProcessorActionTransferCache getPaymentProcessorActionTransferCache() {
         if(paymentProcessorActionTransferCache == null)
-            paymentProcessorActionTransferCache = new PaymentProcessorActionTransferCache(userVisit);
+            paymentProcessorActionTransferCache = new PaymentProcessorActionTransferCache();
 
         return paymentProcessorActionTransferCache;
     }
 
     public PaymentProcessorTransactionTransferCache getPaymentProcessorTransactionTransferCache() {
         if(paymentProcessorTransactionTransferCache == null)
-            paymentProcessorTransactionTransferCache = new PaymentProcessorTransactionTransferCache(userVisit);
+            paymentProcessorTransactionTransferCache = new PaymentProcessorTransactionTransferCache();
 
         return paymentProcessorTransactionTransferCache;
     }
 
     public PaymentProcessorTransactionCodeTransferCache getPaymentProcessorTransactionCodeTransferCache() {
         if(paymentProcessorTransactionCodeTransferCache == null)
-            paymentProcessorTransactionCodeTransferCache = new PaymentProcessorTransactionCodeTransferCache(userVisit);
+            paymentProcessorTransactionCodeTransferCache = new PaymentProcessorTransactionCodeTransferCache();
 
         return paymentProcessorTransactionCodeTransferCache;
     }

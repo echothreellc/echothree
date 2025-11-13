@@ -25,13 +25,13 @@ public class GeoCodeAliasTypeTransferCache
         extends BaseGeoTransferCache<GeoCodeAliasType, GeoCodeAliasTypeTransfer> {
     
     /** Creates a new instance of GeoCodeAliasTypeTransferCache */
-    public GeoCodeAliasTypeTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
+    public GeoCodeAliasTypeTransferCache(GeoControl geoControl) {
+        super(geoControl);
 
         setIncludeEntityInstance(true);
     }
     
-    public GeoCodeAliasTypeTransfer getGeoCodeAliasTypeTransfer(GeoCodeAliasType geoCodeAliasType) {
+    public GeoCodeAliasTypeTransfer getGeoCodeAliasTypeTransfer(UserVisit userVisit, GeoCodeAliasType geoCodeAliasType) {
         var geoCodeAliasTypeTransfer = get(geoCodeAliasType);
         
         if(geoCodeAliasTypeTransfer == null) {
@@ -42,11 +42,11 @@ public class GeoCodeAliasTypeTransferCache
             var isRequired = geoCodeAliasTypeDetail.getIsRequired();
             var isDefault = geoCodeAliasTypeDetail.getIsDefault();
             var sortOrder = geoCodeAliasTypeDetail.getSortOrder();
-            var description = geoControl.getBestGeoCodeAliasTypeDescription(geoCodeAliasType, getLanguage());
+            var description = geoControl.getBestGeoCodeAliasTypeDescription(geoCodeAliasType, getLanguage(userVisit));
             
             geoCodeAliasTypeTransfer = new GeoCodeAliasTypeTransfer(geoCodeType, geoCodeAliasTypeName, validationPattern, isRequired, isDefault, sortOrder,
                     description);
-            put(geoCodeAliasType, geoCodeAliasTypeTransfer);
+            put(userVisit, geoCodeAliasType, geoCodeAliasTypeTransfer);
         }
         
         return geoCodeAliasTypeTransfer;

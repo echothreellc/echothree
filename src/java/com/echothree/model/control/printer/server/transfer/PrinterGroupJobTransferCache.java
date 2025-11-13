@@ -34,13 +34,13 @@ public class PrinterGroupJobTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of PrinterGroupJobTransferCache */
-    public PrinterGroupJobTransferCache(UserVisit userVisit, PrinterControl printerControl) {
-        super(userVisit, printerControl);
+    public PrinterGroupJobTransferCache(PrinterControl printerControl) {
+        super(printerControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public PrinterGroupJobTransfer getPrinterGroupJobTransfer(PrinterGroupJob printerGroupJob) {
+    public PrinterGroupJobTransfer getPrinterGroupJobTransfer(UserVisit userVisit, PrinterGroupJob printerGroupJob) {
         var printerGroupJobTransfer = get(printerGroupJob);
         
         if(printerGroupJobTransfer == null) {
@@ -57,7 +57,7 @@ public class PrinterGroupJobTransferCache
             
             printerGroupJobTransfer = new PrinterGroupJobTransfer(printerGroupJobName, printerGroupTransfer, documentTransfer, copies, priority,
                     printerGroupJobStatusTransfer);
-            put(printerGroupJob, printerGroupJobTransfer);
+            put(userVisit, printerGroupJob, printerGroupJobTransfer);
         }
         
         return printerGroupJobTransfer;

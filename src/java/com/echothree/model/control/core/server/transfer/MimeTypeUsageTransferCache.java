@@ -28,11 +28,11 @@ public class MimeTypeUsageTransferCache
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
 
     /** Creates a new instance of MimeTypeUsageTransferCache */
-    public MimeTypeUsageTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public MimeTypeUsageTransferCache() {
+        super();
     }
     
-    public MimeTypeUsageTransfer getMimeTypeUsageTransfer(MimeTypeUsage mimeTypeUsage) {
+    public MimeTypeUsageTransfer getMimeTypeUsageTransfer(UserVisit userVisit, MimeTypeUsage mimeTypeUsage) {
         var mimeTypeUsageTransfer = get(mimeTypeUsage);
         
         if(mimeTypeUsageTransfer == null) {
@@ -41,7 +41,7 @@ public class MimeTypeUsageTransferCache
                     mimeTypeUsage.getMimeTypeUsageType());
             
             mimeTypeUsageTransfer = new MimeTypeUsageTransfer(mimeType, mimeTypeUsageType);
-            put(mimeTypeUsage, mimeTypeUsageTransfer);
+            put(userVisit, mimeTypeUsage, mimeTypeUsageTransfer);
         }
         
         return mimeTypeUsageTransfer;

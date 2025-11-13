@@ -34,8 +34,8 @@ public class ForumMessageAttachmentTransferCache
     boolean includeETag;
     
     /** Creates a new instance of ForumMessageAttachmentTransferCache */
-    public ForumMessageAttachmentTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
+    public ForumMessageAttachmentTransferCache(ForumControl forumControl) {
+        super(forumControl);
         
         var options = session.getOptions();
         if(options != null) {
@@ -47,7 +47,7 @@ public class ForumMessageAttachmentTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public ForumMessageAttachmentTransfer getForumMessageAttachmentTransfer(ForumMessageAttachment forumMessageAttachment) {
+    public ForumMessageAttachmentTransfer getForumMessageAttachmentTransfer(UserVisit userVisit, ForumMessageAttachment forumMessageAttachment) {
         var forumMessageAttachmentTransfer = get(forumMessageAttachment);
         
         if(forumMessageAttachmentTransfer == null) {
@@ -55,7 +55,7 @@ public class ForumMessageAttachmentTransferCache
             var forumMessage = forumControl.getForumMessageTransfer(userVisit, forumMessageAttachmentDetail.getForumMessage());
             var forumMessageAttachmentSequence = forumMessageAttachmentDetail.getForumMessageAttachmentSequence();
             var mimeType = mimeTypeControl.getMimeTypeTransfer(userVisit, forumMessageAttachmentDetail.getMimeType());
-            var description = forumControl.getBestForumMessageAttachmentDescription(forumMessageAttachment, getLanguage());
+            var description = forumControl.getBestForumMessageAttachmentDescription(forumMessageAttachment, getLanguage(userVisit));
             ByteArray blob = null;
             String clob = null;
             String eTag = null;
@@ -90,7 +90,7 @@ public class ForumMessageAttachmentTransferCache
 
             forumMessageAttachmentTransfer = new ForumMessageAttachmentTransfer(forumMessage, forumMessageAttachmentSequence, mimeType, description, blob, clob,
                     eTag);
-            put(forumMessageAttachment, forumMessageAttachmentTransfer);
+            put(userVisit, forumMessageAttachment, forumMessageAttachmentTransfer);
         }
         
         return forumMessageAttachmentTransfer;

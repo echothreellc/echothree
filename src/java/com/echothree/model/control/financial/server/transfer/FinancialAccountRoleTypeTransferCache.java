@@ -25,20 +25,20 @@ public class FinancialAccountRoleTypeTransferCache
         extends BaseFinancialTransferCache<FinancialAccountRoleType, FinancialAccountRoleTypeTransfer> {
     
     /** Creates a new instance of FinancialAccountRoleTypeTransferCache */
-    public FinancialAccountRoleTypeTransferCache(UserVisit userVisit, FinancialControl financialControl) {
-        super(userVisit, financialControl);
+    public FinancialAccountRoleTypeTransferCache(FinancialControl financialControl) {
+        super(financialControl);
     }
     
-    public FinancialAccountRoleTypeTransfer getFinancialAccountRoleTypeTransfer(FinancialAccountRoleType financialAccountRoleType) {
+    public FinancialAccountRoleTypeTransfer getFinancialAccountRoleTypeTransfer(UserVisit userVisit, FinancialAccountRoleType financialAccountRoleType) {
         var financialAccountRoleTypeTransfer = get(financialAccountRoleType);
         
         if(financialAccountRoleTypeTransfer == null) {
             var financialAccountRoleTypeName = financialAccountRoleType.getFinancialAccountRoleTypeName();
             var sortOrder = financialAccountRoleType.getSortOrder();
-            var description = financialControl.getBestFinancialAccountRoleTypeDescription(financialAccountRoleType, getLanguage());
+            var description = financialControl.getBestFinancialAccountRoleTypeDescription(financialAccountRoleType, getLanguage(userVisit));
             
             financialAccountRoleTypeTransfer = new FinancialAccountRoleTypeTransfer(financialAccountRoleTypeName, sortOrder, description);
-            put(financialAccountRoleType, financialAccountRoleTypeTransfer);
+            put(userVisit, financialAccountRoleType, financialAccountRoleTypeTransfer);
         }
         
         return financialAccountRoleTypeTransfer;

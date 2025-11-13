@@ -25,11 +25,11 @@ public class PicklistTypeDescriptionTransferCache
         extends BasePicklistDescriptionTransferCache<PicklistTypeDescription, PicklistTypeDescriptionTransfer> {
     
     /** Creates a new instance of PicklistTypeDescriptionTransferCache */
-    public PicklistTypeDescriptionTransferCache(UserVisit userVisit, PicklistControl picklistControl) {
-        super(userVisit, picklistControl);
+    public PicklistTypeDescriptionTransferCache(PicklistControl picklistControl) {
+        super(picklistControl);
     }
     
-    public PicklistTypeDescriptionTransfer getPicklistTypeDescriptionTransfer(PicklistTypeDescription picklistTypeDescription) {
+    public PicklistTypeDescriptionTransfer getPicklistTypeDescriptionTransfer(UserVisit userVisit, PicklistTypeDescription picklistTypeDescription) {
         var picklistTypeDescriptionTransfer = get(picklistTypeDescription);
         
         if(picklistTypeDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class PicklistTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, picklistTypeDescription.getLanguage());
             
             picklistTypeDescriptionTransfer = new PicklistTypeDescriptionTransfer(languageTransfer, picklistTypeTransfer, picklistTypeDescription.getDescription());
-            put(picklistTypeDescription, picklistTypeDescriptionTransfer);
+            put(userVisit, picklistTypeDescription, picklistTypeDescriptionTransfer);
         }
         
         return picklistTypeDescriptionTransfer;

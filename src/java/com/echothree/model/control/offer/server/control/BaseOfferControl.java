@@ -34,9 +34,9 @@ public class BaseOfferControl
     
     private OfferTransferCaches offerTransferCaches;
     
-    public OfferTransferCaches getOfferTransferCaches(UserVisit userVisit) {
+    public OfferTransferCaches getOfferTransferCaches() {
         if(offerTransferCaches == null) {
-            offerTransferCaches = new OfferTransferCaches(userVisit);
+            offerTransferCaches = new OfferTransferCaches();
         }
         
         return offerTransferCaches;

@@ -31,13 +31,13 @@ public class EventGroupTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of EventGroupTransferCache */
-    public EventGroupTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EventGroupTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public EventGroupTransfer getEventGroupTransfer(EventGroup eventGroup) {
+    public EventGroupTransfer getEventGroupTransfer(UserVisit userVisit, EventGroup eventGroup) {
         var eventGroupTransfer = get(eventGroup);
         
         if(eventGroupTransfer == null) {
@@ -49,7 +49,7 @@ public class EventGroupTransferCache
                     EventGroupStatusConstants.Workflow_EVENT_GROUP_STATUS, entityInstance);
             
             eventGroupTransfer = new EventGroupTransfer(eventGroupName, eventGroupStatusTransfer);
-            put(eventGroup, eventGroupTransfer);
+            put(userVisit, eventGroup, eventGroupTransfer);
         }
         
         return eventGroupTransfer;

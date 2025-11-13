@@ -25,11 +25,11 @@ public class GeoCodeRelationshipTransferCache
         extends BaseGeoTransferCache<GeoCodeRelationship, GeoCodeRelationshipTransfer> {
     
     /** Creates a new instance of GeoCodeRelationshipTransferCache */
-    public GeoCodeRelationshipTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
+    public GeoCodeRelationshipTransferCache(GeoControl geoControl) {
+        super(geoControl);
     }
     
-    public GeoCodeRelationshipTransfer getGeoCodeRelationshipTransfer(GeoCodeRelationship geoCodeRelationship) {
+    public GeoCodeRelationshipTransfer getGeoCodeRelationshipTransfer(UserVisit userVisit, GeoCodeRelationship geoCodeRelationship) {
         var geoCodeRelationshipTransfer = get(geoCodeRelationship);
         
         if(geoCodeRelationshipTransfer == null) {
@@ -37,7 +37,7 @@ public class GeoCodeRelationshipTransferCache
             var toGeoCode = geoControl.getGeoCodeTransfer(userVisit, geoCodeRelationship.getToGeoCode());
             
             geoCodeRelationshipTransfer = new GeoCodeRelationshipTransfer(fromGeoCode, toGeoCode);
-            put(geoCodeRelationship, geoCodeRelationshipTransfer);
+            put(userVisit, geoCodeRelationship, geoCodeRelationshipTransfer);
         }
         
         return geoCodeRelationshipTransfer;

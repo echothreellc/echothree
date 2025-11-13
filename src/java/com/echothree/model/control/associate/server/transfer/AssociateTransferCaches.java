@@ -32,43 +32,43 @@ public class AssociateTransferCaches
     protected AssociateReferralTransferCache associateReferralTransferCache;
     
     /** Creates a new instance of AssociateTransferCaches */
-    public AssociateTransferCaches(UserVisit userVisit, AssociateControl associateControl) {
-        super(userVisit);
+    public AssociateTransferCaches(AssociateControl associateControl) {
+        super();
         
         this.associateControl = associateControl;
     }
     
     public AssociateProgramTransferCache getAssociateProgramTransferCache() {
         if(associateProgramTransferCache == null)
-            associateProgramTransferCache = new AssociateProgramTransferCache(userVisit, associateControl);
+            associateProgramTransferCache = new AssociateProgramTransferCache(associateControl);
         
         return associateProgramTransferCache;
     }
     
     public AssociateProgramDescriptionTransferCache getAssociateProgramDescriptionTransferCache() {
         if(associateProgramDescriptionTransferCache == null)
-            associateProgramDescriptionTransferCache = new AssociateProgramDescriptionTransferCache(userVisit, associateControl);
+            associateProgramDescriptionTransferCache = new AssociateProgramDescriptionTransferCache(associateControl);
         
         return associateProgramDescriptionTransferCache;
     }
     
     public AssociateTransferCache getAssociateTransferCache() {
         if(associateTransferCache == null)
-            associateTransferCache = new AssociateTransferCache(userVisit, associateControl);
+            associateTransferCache = new AssociateTransferCache(associateControl);
         
         return associateTransferCache;
     }
     
     public AssociatePartyContactMechanismTransferCache getAssociatePartyContactMechanismTransferCache() {
         if(associatePartyContactMechanismTransferCache == null)
-            associatePartyContactMechanismTransferCache = new AssociatePartyContactMechanismTransferCache(userVisit, associateControl);
+            associatePartyContactMechanismTransferCache = new AssociatePartyContactMechanismTransferCache(associateControl);
         
         return associatePartyContactMechanismTransferCache;
     }
     
     public AssociateReferralTransferCache getAssociateReferralTransferCache() {
         if(associateReferralTransferCache == null)
-            associateReferralTransferCache = new AssociateReferralTransferCache(userVisit, associateControl);
+            associateReferralTransferCache = new AssociateReferralTransferCache(associateControl);
         
         return associateReferralTransferCache;
     }

@@ -29,11 +29,11 @@ public class EntityLongRangeDescriptionTransferCache
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of EntityLongRangeDescriptionTransferCache */
-    public EntityLongRangeDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityLongRangeDescriptionTransferCache() {
+        super();
     }
     
-    public EntityLongRangeDescriptionTransfer getEntityLongRangeDescriptionTransfer(EntityLongRangeDescription entityLongRangeDescription, EntityInstance entityInstance) {
+    public EntityLongRangeDescriptionTransfer getEntityLongRangeDescriptionTransfer(final UserVisit userVisit, final EntityLongRangeDescription entityLongRangeDescription, final EntityInstance entityInstance) {
         var entityLongRangeDescriptionTransfer = get(entityLongRangeDescription);
         
         if(entityLongRangeDescriptionTransfer == null) {
@@ -42,7 +42,7 @@ public class EntityLongRangeDescriptionTransferCache
             
             entityLongRangeDescriptionTransfer = new EntityLongRangeDescriptionTransfer(languageTransfer, entityLongRangeTransfer,
                     entityLongRangeDescription.getDescription());
-            put(entityLongRangeDescription, entityLongRangeDescriptionTransfer);
+            put(userVisit, entityLongRangeDescription, entityLongRangeDescriptionTransfer);
         }
         return entityLongRangeDescriptionTransfer;
     }

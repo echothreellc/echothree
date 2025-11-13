@@ -28,21 +28,21 @@ public class TransactionTimeTransferCache
     TransactionTimeControl transactionTimeControl = Session.getModelController(TransactionTimeControl.class);
 
     /** Creates a new instance of TransactionTimeTransferCache */
-    public TransactionTimeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public TransactionTimeTransferCache() {
+        super();
     }
 
     @Override
-    public TransactionTimeTransfer getTransfer(TransactionTime transactionTime) {
+    public TransactionTimeTransfer getTransfer(UserVisit userVisit, TransactionTime transactionTime) {
         var transactionTimeTransfer = get(transactionTime);
         
         if(transactionTimeTransfer == null) {
             var transactionTimeType = transactionTimeControl.getTransactionTimeTypeTransfer(userVisit, transactionTime.getTransactionTimeType());
             var unformattedTime = transactionTime.getTime();
-            var time = formatTypicalDateTime(unformattedTime);
+            var time = formatTypicalDateTime(userVisit, unformattedTime);
             
             transactionTimeTransfer = new TransactionTimeTransfer(transactionTimeType, unformattedTime, time);
-            put(transactionTime, transactionTimeTransfer);
+            put(userVisit, transactionTime, transactionTimeTransfer);
         }
         
         return transactionTimeTransfer;

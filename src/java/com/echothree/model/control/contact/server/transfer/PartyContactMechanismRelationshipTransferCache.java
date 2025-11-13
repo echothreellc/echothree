@@ -25,11 +25,11 @@ public class PartyContactMechanismRelationshipTransferCache
         extends BaseContactTransferCache<PartyContactMechanismRelationship, PartyContactMechanismRelationshipTransfer> {
     
     /** Creates a new instance of PartyContactMechanismRelationshipTransferCache */
-    public PartyContactMechanismRelationshipTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    public PartyContactMechanismRelationshipTransferCache(ContactControl contactControl) {
+        super(contactControl);
     }
     
-    public PartyContactMechanismRelationshipTransfer getPartyContactMechanismRelationshipTransfer(PartyContactMechanismRelationship partyContactMechanismRelationship) {
+    public PartyContactMechanismRelationshipTransfer getPartyContactMechanismRelationshipTransfer(UserVisit userVisit, PartyContactMechanismRelationship partyContactMechanismRelationship) {
         var partyContactMechanismRelationshipTransfer = get(partyContactMechanismRelationship);
         
         if(partyContactMechanismRelationshipTransfer == null) {
@@ -37,7 +37,7 @@ public class PartyContactMechanismRelationshipTransferCache
             var toPartyContactMechanism = contactControl.getPartyContactMechanismTransfer(userVisit, partyContactMechanismRelationship.getToPartyContactMechanism());
             
             partyContactMechanismRelationshipTransfer = new PartyContactMechanismRelationshipTransfer(fromPartyContactMechanism, toPartyContactMechanism);
-            put(partyContactMechanismRelationship, partyContactMechanismRelationshipTransfer);
+            put(userVisit, partyContactMechanismRelationship, partyContactMechanismRelationshipTransfer);
         }
         
         return partyContactMechanismRelationshipTransfer;

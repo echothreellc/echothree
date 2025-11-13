@@ -31,14 +31,14 @@ public class AssociateTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of AssociateTransferCache */
-    public AssociateTransferCache(UserVisit userVisit, AssociateControl associateControl) {
-        super(userVisit, associateControl);
+    public AssociateTransferCache(AssociateControl associateControl) {
+        super(associateControl);
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public AssociateTransfer getTransfer(Associate associate) {
+    public AssociateTransfer getTransfer(UserVisit userVisit, Associate associate) {
         var associateTransfer = get(associate);
         
         if(associateTransfer == null) {
@@ -51,7 +51,7 @@ public class AssociateTransferCache
             var summary = associateDetail.getSummary();
             
             associateTransfer = new AssociateTransfer(associateProgram, associateName, party, description, summaryMimeType, summary);
-            put(associate, associateTransfer);
+            put(userVisit, associate, associateTransfer);
         }
         return associateTransfer;
     }

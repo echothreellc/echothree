@@ -144,14 +144,14 @@ public class LocationUseTypeControl
     }
 
     public LocationUseTypeTransfer getLocationUseTypeTransfer(UserVisit userVisit, LocationUseType locationUseType) {
-        return getWarehouseTransferCaches(userVisit).getLocationUseTypeTransferCache().getLocationUseTypeTransfer(locationUseType);
+        return getWarehouseTransferCaches().getLocationUseTypeTransferCache().getLocationUseTypeTransfer(userVisit, locationUseType);
     }
 
     public List<LocationUseTypeTransfer> getLocationUseTypeTransfers(UserVisit userVisit, Collection<LocationUseType> locationUseTypes) {
         List<LocationUseTypeTransfer> locationUseTypeTransfers = new ArrayList<>(locationUseTypes.size());
 
         locationUseTypes.forEach((locationUseType) -> {
-            locationUseTypeTransfers.add(getWarehouseTransferCaches(userVisit).getLocationUseTypeTransferCache().getLocationUseTypeTransfer(locationUseType));
+            locationUseTypeTransfers.add(getWarehouseTransferCaches().getLocationUseTypeTransferCache().getLocationUseTypeTransfer(userVisit, locationUseType));
         });
 
         return locationUseTypeTransfers;

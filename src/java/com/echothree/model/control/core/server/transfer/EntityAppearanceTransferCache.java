@@ -30,11 +30,11 @@ public class EntityAppearanceTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of EntityAppearanceTransferCache */
-    public EntityAppearanceTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityAppearanceTransferCache() {
+        super();
     }
     
-    public EntityAppearanceTransfer getEntityAppearanceTransfer(EntityAppearance entityAppearance) {
+    public EntityAppearanceTransfer getEntityAppearanceTransfer(UserVisit userVisit, EntityAppearance entityAppearance) {
         var entityAppearanceTransfer = get(entityAppearance);
         
         if(entityAppearanceTransfer == null) {
@@ -42,7 +42,7 @@ public class EntityAppearanceTransferCache
             var appearance = appearanceControl.getAppearanceTransfer(userVisit, entityAppearance.getAppearance());
             
             entityAppearanceTransfer = new EntityAppearanceTransfer(entityInstance, appearance);
-            put(entityAppearance, entityAppearanceTransfer);
+            put(userVisit, entityAppearance, entityAppearanceTransfer);
         }
         
         return entityAppearanceTransfer;

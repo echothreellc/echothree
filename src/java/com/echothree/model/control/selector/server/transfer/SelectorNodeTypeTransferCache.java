@@ -25,19 +25,19 @@ public class SelectorNodeTypeTransferCache
         extends BaseSelectorTransferCache<SelectorNodeType, SelectorNodeTypeTransfer> {
     
     /** Creates a new instance of SelectorNodeTypeTransferCache */
-    public SelectorNodeTypeTransferCache(UserVisit userVisit, SelectorControl selectorControl) {
-        super(userVisit, selectorControl);
+    public SelectorNodeTypeTransferCache(SelectorControl selectorControl) {
+        super(selectorControl);
     }
     
-    public SelectorNodeTypeTransfer getSelectorNodeTypeTransfer(SelectorNodeType selectorNodeType) {
+    public SelectorNodeTypeTransfer getSelectorNodeTypeTransfer(UserVisit userVisit, SelectorNodeType selectorNodeType) {
         var selectorNodeTypeTransfer = get(selectorNodeType);
         
         if(selectorNodeTypeTransfer == null) {
             var selectorNodeTypeName = selectorNodeType.getSelectorNodeTypeName();
-            var description = selectorControl.getBestSelectorNodeTypeDescription(selectorNodeType, getLanguage());
+            var description = selectorControl.getBestSelectorNodeTypeDescription(selectorNodeType, getLanguage(userVisit));
             
             selectorNodeTypeTransfer = new SelectorNodeTypeTransfer(selectorNodeTypeName, description);
-            put(selectorNodeType, selectorNodeTypeTransfer);
+            put(userVisit, selectorNodeType, selectorNodeTypeTransfer);
         }
         return selectorNodeTypeTransfer;
     }

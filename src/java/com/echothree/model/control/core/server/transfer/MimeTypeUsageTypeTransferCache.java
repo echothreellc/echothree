@@ -36,8 +36,8 @@ public class MimeTypeUsageTypeTransferCache
     boolean filterDescription;
     
     /** Creates a new instance of MimeTypeUsageTypeTransferCache */
-    public MimeTypeUsageTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public MimeTypeUsageTypeTransferCache() {
+        super();
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
@@ -52,17 +52,17 @@ public class MimeTypeUsageTypeTransferCache
         }
     }
     
-    public MimeTypeUsageTypeTransfer getMimeTypeUsageTypeTransfer(MimeTypeUsageType mimeTypeUsageType) {
+    public MimeTypeUsageTypeTransfer getMimeTypeUsageTypeTransfer(UserVisit userVisit, MimeTypeUsageType mimeTypeUsageType) {
         var mimeTypeUsageTypeTransfer = get(mimeTypeUsageType);
         
         if(mimeTypeUsageTypeTransfer == null) {
             var mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();
             var isDefault = mimeTypeUsageType.getIsDefault();
             var sortOrder = mimeTypeUsageType.getSortOrder();
-            var description = mimeTypeControl.getBestMimeTypeUsageTypeDescription(mimeTypeUsageType, getLanguage());
+            var description = mimeTypeControl.getBestMimeTypeUsageTypeDescription(mimeTypeUsageType, getLanguage(userVisit));
             
             mimeTypeUsageTypeTransfer = new MimeTypeUsageTypeTransfer(mimeTypeUsageTypeName, isDefault, sortOrder, description);
-            put(mimeTypeUsageType, mimeTypeUsageTypeTransfer);
+            put(userVisit, mimeTypeUsageType, mimeTypeUsageTypeTransfer);
         }
         
         return mimeTypeUsageTypeTransfer;

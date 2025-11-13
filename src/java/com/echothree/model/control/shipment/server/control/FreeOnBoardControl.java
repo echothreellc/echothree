@@ -190,16 +190,16 @@ public class FreeOnBoardControl
 
     public FreeOnBoardTransfer getFreeOnBoardTransfer(final UserVisit userVisit,
             final FreeOnBoard freeOnBoard) {
-        return getShipmentTransferCaches(userVisit).getFreeOnBoardTransferCache().getTransfer(freeOnBoard);
+        return getShipmentTransferCaches().getFreeOnBoardTransferCache().getTransfer(userVisit, freeOnBoard);
     }
 
     public List<FreeOnBoardTransfer> getFreeOnBoardTransfers(final UserVisit userVisit,
             final Collection<FreeOnBoard> freeOnBoards) {
         var freeOnBoardTransfers = new ArrayList<FreeOnBoardTransfer>(freeOnBoards.size());
-        var freeOnBoardTransferCache = getShipmentTransferCaches(userVisit).getFreeOnBoardTransferCache();
+        var freeOnBoardTransferCache = getShipmentTransferCaches().getFreeOnBoardTransferCache();
 
         freeOnBoards.forEach((freeOnBoard) ->
-                freeOnBoardTransfers.add(freeOnBoardTransferCache.getTransfer(freeOnBoard))
+                freeOnBoardTransfers.add(freeOnBoardTransferCache.getTransfer(userVisit, freeOnBoard))
         );
 
         return freeOnBoardTransfers;
@@ -417,17 +417,17 @@ public class FreeOnBoardControl
 
     public FreeOnBoardDescriptionTransfer getFreeOnBoardDescriptionTransfer(final UserVisit userVisit,
             final FreeOnBoardDescription freeOnBoardDescription) {
-        return getShipmentTransferCaches(userVisit).getFreeOnBoardDescriptionTransferCache().getTransfer(freeOnBoardDescription);
+        return getShipmentTransferCaches().getFreeOnBoardDescriptionTransferCache().getTransfer(userVisit, freeOnBoardDescription);
     }
 
     public List<FreeOnBoardDescriptionTransfer> getFreeOnBoardDescriptionTransfersByFreeOnBoard(final UserVisit userVisit,
             final FreeOnBoard freeOnBoard) {
         var freeOnBoardDescriptions = getFreeOnBoardDescriptionsByFreeOnBoard(freeOnBoard);
         var freeOnBoardDescriptionTransfers = new ArrayList<FreeOnBoardDescriptionTransfer>(freeOnBoardDescriptions.size());
-        var freeOnBoardDescriptionTransferCache = getShipmentTransferCaches(userVisit).getFreeOnBoardDescriptionTransferCache();
+        var freeOnBoardDescriptionTransferCache = getShipmentTransferCaches().getFreeOnBoardDescriptionTransferCache();
 
         freeOnBoardDescriptions.forEach((freeOnBoardDescription) ->
-                freeOnBoardDescriptionTransfers.add(freeOnBoardDescriptionTransferCache.getTransfer(freeOnBoardDescription))
+                freeOnBoardDescriptionTransfers.add(freeOnBoardDescriptionTransferCache.getTransfer(userVisit, freeOnBoardDescription))
         );
 
         return freeOnBoardDescriptionTransfers;

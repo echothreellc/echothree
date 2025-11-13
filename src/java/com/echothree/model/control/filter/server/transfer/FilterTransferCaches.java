@@ -43,139 +43,139 @@ public class FilterTransferCaches
     protected FilterStepElementDescriptionTransferCache filterStepElementDescriptionTransferCache;
     
     /** Creates a new instance of FilterTransferCaches */
-    public FilterTransferCaches(UserVisit userVisit) {
-        super(userVisit);
+    public FilterTransferCaches() {
+        super();
     }
     
     public FilterKindTransferCache getFilterKindTransferCache() {
         if(filterKindTransferCache == null)
-            filterKindTransferCache = new FilterKindTransferCache(userVisit);
+            filterKindTransferCache = new FilterKindTransferCache();
 
         return filterKindTransferCache;
     }
 
     public FilterKindDescriptionTransferCache getFilterKindDescriptionTransferCache() {
         if(filterKindDescriptionTransferCache == null)
-            filterKindDescriptionTransferCache = new FilterKindDescriptionTransferCache(userVisit);
+            filterKindDescriptionTransferCache = new FilterKindDescriptionTransferCache();
 
         return filterKindDescriptionTransferCache;
     }
 
     public FilterTypeTransferCache getFilterTypeTransferCache() {
         if(filterTypeTransferCache == null)
-            filterTypeTransferCache = new FilterTypeTransferCache(userVisit);
+            filterTypeTransferCache = new FilterTypeTransferCache();
 
         return filterTypeTransferCache;
     }
 
     public FilterTypeDescriptionTransferCache getFilterTypeDescriptionTransferCache() {
         if(filterTypeDescriptionTransferCache == null)
-            filterTypeDescriptionTransferCache = new FilterTypeDescriptionTransferCache(userVisit);
+            filterTypeDescriptionTransferCache = new FilterTypeDescriptionTransferCache();
 
         return filterTypeDescriptionTransferCache;
     }
 
     public FilterAdjustmentTypeTransferCache getFilterAdjustmentTypeTransferCache() {
         if(filterAdjustmentTypeTransferCache == null)
-            filterAdjustmentTypeTransferCache = new FilterAdjustmentTypeTransferCache(userVisit);
+            filterAdjustmentTypeTransferCache = new FilterAdjustmentTypeTransferCache();
         
         return filterAdjustmentTypeTransferCache;
     }
     
     public FilterAdjustmentSourceTransferCache getFilterAdjustmentSourceTransferCache() {
         if(filterAdjustmentSourceTransferCache == null)
-            filterAdjustmentSourceTransferCache = new FilterAdjustmentSourceTransferCache(userVisit);
+            filterAdjustmentSourceTransferCache = new FilterAdjustmentSourceTransferCache();
         
         return filterAdjustmentSourceTransferCache;
     }
     
     public FilterAdjustmentTransferCache getFilterAdjustmentTransferCache() {
         if(filterAdjustmentTransferCache == null)
-            filterAdjustmentTransferCache = new FilterAdjustmentTransferCache(userVisit);
+            filterAdjustmentTransferCache = new FilterAdjustmentTransferCache();
         
         return filterAdjustmentTransferCache;
     }
     
     public FilterTransferCache getFilterTransferCache() {
         if(filterTransferCache == null)
-            filterTransferCache = new FilterTransferCache(userVisit);
+            filterTransferCache = new FilterTransferCache();
         
         return filterTransferCache;
     }
     
     public FilterDescriptionTransferCache getFilterDescriptionTransferCache() {
         if(filterDescriptionTransferCache == null)
-            filterDescriptionTransferCache = new FilterDescriptionTransferCache(userVisit);
+            filterDescriptionTransferCache = new FilterDescriptionTransferCache();
         
         return filterDescriptionTransferCache;
     }
     
     public FilterAdjustmentDescriptionTransferCache getFilterAdjustmentDescriptionTransferCache() {
         if(filterAdjustmentDescriptionTransferCache == null)
-            filterAdjustmentDescriptionTransferCache = new FilterAdjustmentDescriptionTransferCache(userVisit);
+            filterAdjustmentDescriptionTransferCache = new FilterAdjustmentDescriptionTransferCache();
         
         return filterAdjustmentDescriptionTransferCache;
     }
     
     public FilterAdjustmentAmountTransferCache getFilterAdjustmentAmountTransferCache() {
         if(filterAdjustmentAmountTransferCache == null)
-            filterAdjustmentAmountTransferCache = new FilterAdjustmentAmountTransferCache(userVisit);
+            filterAdjustmentAmountTransferCache = new FilterAdjustmentAmountTransferCache();
         
         return filterAdjustmentAmountTransferCache;
     }
     
     public FilterAdjustmentFixedAmountTransferCache getFilterAdjustmentFixedAmountTransferCache() {
         if(filterAdjustmentFixedAmountTransferCache == null)
-            filterAdjustmentFixedAmountTransferCache = new FilterAdjustmentFixedAmountTransferCache(userVisit);
+            filterAdjustmentFixedAmountTransferCache = new FilterAdjustmentFixedAmountTransferCache();
         
         return filterAdjustmentFixedAmountTransferCache;
     }
     
     public FilterAdjustmentPercentTransferCache getFilterAdjustmentPercentTransferCache() {
         if(filterAdjustmentPercentTransferCache == null)
-            filterAdjustmentPercentTransferCache = new FilterAdjustmentPercentTransferCache(userVisit);
+            filterAdjustmentPercentTransferCache = new FilterAdjustmentPercentTransferCache();
         
         return filterAdjustmentPercentTransferCache;
     }
     
     public FilterStepTransferCache getFilterStepTransferCache() {
         if(filterStepTransferCache == null)
-            filterStepTransferCache = new FilterStepTransferCache(userVisit);
+            filterStepTransferCache = new FilterStepTransferCache();
         
         return filterStepTransferCache;
     }
     
     public FilterStepDescriptionTransferCache getFilterStepDescriptionTransferCache() {
         if(filterStepDescriptionTransferCache == null)
-            filterStepDescriptionTransferCache = new FilterStepDescriptionTransferCache(userVisit);
+            filterStepDescriptionTransferCache = new FilterStepDescriptionTransferCache();
         
         return filterStepDescriptionTransferCache;
     }
     
     public FilterEntranceStepTransferCache getFilterEntranceStepTransferCache() {
         if(filterEntranceStepTransferCache == null)
-            filterEntranceStepTransferCache = new FilterEntranceStepTransferCache(userVisit);
+            filterEntranceStepTransferCache = new FilterEntranceStepTransferCache();
         
         return filterEntranceStepTransferCache;
     }
     
     public FilterStepDestinationTransferCache getFilterStepDestinationTransferCache() {
         if(filterStepDestinationTransferCache == null)
-            filterStepDestinationTransferCache = new FilterStepDestinationTransferCache(userVisit);
+            filterStepDestinationTransferCache = new FilterStepDestinationTransferCache();
         
         return filterStepDestinationTransferCache;
     }
     
     public FilterStepElementTransferCache getFilterStepElementTransferCache() {
         if(filterStepElementTransferCache == null)
-            filterStepElementTransferCache = new FilterStepElementTransferCache(userVisit);
+            filterStepElementTransferCache = new FilterStepElementTransferCache();
         
         return filterStepElementTransferCache;
     }
     
     public FilterStepElementDescriptionTransferCache getFilterStepElementDescriptionTransferCache() {
         if(filterStepElementDescriptionTransferCache == null)
-            filterStepElementDescriptionTransferCache = new FilterStepElementDescriptionTransferCache(userVisit);
+            filterStepElementDescriptionTransferCache = new FilterStepElementDescriptionTransferCache();
         
         return filterStepElementDescriptionTransferCache;
     }

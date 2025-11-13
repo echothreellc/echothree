@@ -25,21 +25,21 @@ public class ForumTypeTransferCache
         extends BaseForumTransferCache<ForumType, ForumTypeTransfer> {
     
     /** Creates a new instance of ForumTypeTransferCache */
-    public ForumTypeTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
+    public ForumTypeTransferCache(ForumControl forumControl) {
+        super(forumControl);
     }
     
-    public ForumTypeTransfer getForumTypeTransfer(ForumType forumType) {
+    public ForumTypeTransfer getForumTypeTransfer(UserVisit userVisit, ForumType forumType) {
         var forumTypeTransfer = get(forumType);
         
         if(forumTypeTransfer == null) {
             var forumTypeName = forumType.getForumTypeName();
             var isDefault = forumType.getIsDefault();
             var sortOrder = forumType.getSortOrder();
-            var description = forumControl.getBestForumTypeDescription(forumType, getLanguage());
+            var description = forumControl.getBestForumTypeDescription(forumType, getLanguage(userVisit));
             
             forumTypeTransfer = new ForumTypeTransfer(forumTypeName, isDefault, sortOrder, description);
-            put(forumType, forumTypeTransfer);
+            put(userVisit, forumType, forumTypeTransfer);
         }
         
         return forumTypeTransfer;

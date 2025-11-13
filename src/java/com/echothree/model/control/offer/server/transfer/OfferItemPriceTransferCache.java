@@ -21,7 +21,6 @@ import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.offer.common.OfferProperties;
 import com.echothree.model.control.offer.common.transfer.OfferItemPriceTransfer;
-import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.offer.server.entity.OfferItemFixedPrice;
@@ -43,7 +42,6 @@ public class OfferItemPriceTransferCache
     
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
     InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
-    OfferControl offerControl = Session.getModelController(OfferControl.class);
     OfferItemControl offerItemControl = Session.getModelController(OfferItemControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
     
@@ -66,8 +64,8 @@ public class OfferItemPriceTransferCache
     boolean filterThruTime;
     
     /** Creates a new instance of OfferItemPriceTransferCache */
-    public OfferItemPriceTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public OfferItemPriceTransferCache() {
+        super();
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
@@ -94,7 +92,7 @@ public class OfferItemPriceTransferCache
         }
     }
     
-    private OfferItemPriceTransfer getOfferItemPriceTransfer(OfferItemPrice offerItemPrice, OfferItemFixedPrice offerItemFixedPrice,
+    private OfferItemPriceTransfer getOfferItemPriceTransfer(final UserVisit userVisit, OfferItemPrice offerItemPrice, OfferItemFixedPrice offerItemFixedPrice,
             OfferItemVariablePrice offerItemVariablePrice) {
         var offerItem = filterOfferItem ? null : offerItemPrice.getOfferItem();
         var offerItemTransfer = offerItem == null ? null : offerItemControl.getOfferItemTransfer(userVisit, offerItem);
@@ -133,7 +131,7 @@ public class OfferItemPriceTransferCache
     }
     
     @Override
-    public ListWrapper<HistoryTransfer<OfferItemPriceTransfer>> getHistory(OfferItemPrice offerItemPrice) {
+    public ListWrapper<HistoryTransfer<OfferItemPriceTransfer>> getHistory(final UserVisit userVisit, OfferItemPrice offerItemPrice) {
         List<HistoryTransfer<OfferItemPriceTransfer>> historyTransfers = null;
         var itemPriceTypeName = offerItemPrice.getOfferItem().getItem().getLastDetail().getItemPriceType().getItemPriceTypeName();
         
@@ -144,11 +142,11 @@ public class OfferItemPriceTransferCache
             
             for(var offerItemFixedPrice : offerItemFixedPriceHistory) {
                 var unformattedFromTime = filterUnformattedFromTime ? null : offerItemFixedPrice.getFromTime();
-                var fromTime = filterFromTime ? null : formatTypicalDateTime(offerItemFixedPrice.getFromTime());
+                var fromTime = filterFromTime ? null : formatTypicalDateTime(userVisit, offerItemFixedPrice.getFromTime());
                 var unformattedThruTime = filterUnformattedThruTime ? null : offerItemFixedPrice.getThruTime();
-                var thruTime = filterThruTime ? null : formatTypicalDateTime(offerItemFixedPrice.getThruTime());
+                var thruTime = filterThruTime ? null : formatTypicalDateTime(userVisit, offerItemFixedPrice.getThruTime());
                 
-                historyTransfers.add(new HistoryTransfer<>(getOfferItemPriceTransfer(offerItemPrice, offerItemFixedPrice, null),
+                historyTransfers.add(new HistoryTransfer<>(getOfferItemPriceTransfer(userVisit, offerItemPrice, offerItemFixedPrice, null),
                         unformattedFromTime, fromTime, unformattedThruTime, thruTime));
             }
         } else if(ItemPriceTypes.VARIABLE.name().equals(itemPriceTypeName)) {
@@ -158,11 +156,11 @@ public class OfferItemPriceTransferCache
             
             for(var offerItemVariablePrice : offerItemVariablePriceHistory) {
                 var unformattedFromTime = filterUnformattedFromTime ? null : offerItemVariablePrice.getFromTime();
-                var fromTime = filterFromTime ? null : formatTypicalDateTime(offerItemVariablePrice.getFromTime());
+                var fromTime = filterFromTime ? null : formatTypicalDateTime(userVisit, offerItemVariablePrice.getFromTime());
                 var unformattedThruTime = filterUnformattedThruTime ? null : offerItemVariablePrice.getThruTime();
-                var thruTime = filterThruTime ? null : formatTypicalDateTime(offerItemVariablePrice.getThruTime());
+                var thruTime = filterThruTime ? null : formatTypicalDateTime(userVisit, offerItemVariablePrice.getThruTime());
                 
-                historyTransfers.add(new HistoryTransfer<>(getOfferItemPriceTransfer(offerItemPrice, null, offerItemVariablePrice),
+                historyTransfers.add(new HistoryTransfer<>(getOfferItemPriceTransfer(userVisit, offerItemPrice, null, offerItemVariablePrice),
                         unformattedFromTime, fromTime, unformattedThruTime, thruTime));
             }
         }
@@ -170,7 +168,7 @@ public class OfferItemPriceTransferCache
         return new ListWrapper<>(historyTransfers);
     }
     
-    public OfferItemPriceTransfer getTransfer(OfferItemPrice offerItemPrice) {
+    public OfferItemPriceTransfer getTransfer(UserVisit userVisit, OfferItemPrice offerItemPrice) {
         var offerItemPriceTransfer = get(offerItemPrice);
         
         if(offerItemPriceTransfer == null) {
@@ -184,9 +182,9 @@ public class OfferItemPriceTransferCache
                 offerItemVariablePrice = offerItemControl.getOfferItemVariablePrice(offerItemPrice);
             }
             
-            offerItemPriceTransfer = getOfferItemPriceTransfer(offerItemPrice, offerItemFixedPrice, offerItemVariablePrice);
+            offerItemPriceTransfer = getOfferItemPriceTransfer(userVisit, offerItemPrice, offerItemFixedPrice, offerItemVariablePrice);
             
-            put(offerItemPrice, offerItemPriceTransfer);
+            put(userVisit, offerItemPrice, offerItemPriceTransfer);
         }
         
         return offerItemPriceTransfer;

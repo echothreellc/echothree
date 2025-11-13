@@ -30,11 +30,11 @@ public class ShippingMethodCarrierServiceTransferCache
     ShippingControl shippingControl = Session.getModelController(ShippingControl.class);
 
     /** Creates a new instance of ShippingMethodCarrierServiceTransferCache */
-    public ShippingMethodCarrierServiceTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public ShippingMethodCarrierServiceTransferCache() {
+        super();
     }
     
-    public ShippingMethodCarrierServiceTransfer getShippingMethodCarrierServiceTransfer(ShippingMethodCarrierService shippingMethodCarrierService) {
+    public ShippingMethodCarrierServiceTransfer getShippingMethodCarrierServiceTransfer(UserVisit userVisit, ShippingMethodCarrierService shippingMethodCarrierService) {
         var shippingMethodCarrierServiceTransfer = get(shippingMethodCarrierService);
         
         if(shippingMethodCarrierServiceTransfer == null) {
@@ -42,7 +42,7 @@ public class ShippingMethodCarrierServiceTransferCache
             var carrierService = carrierControl.getCarrierServiceTransfer(userVisit, shippingMethodCarrierService.getCarrierService());
             
             shippingMethodCarrierServiceTransfer = new ShippingMethodCarrierServiceTransfer(shippingMethod, carrierService);
-            put(shippingMethodCarrierService, shippingMethodCarrierServiceTransfer);
+            put(userVisit, shippingMethodCarrierService, shippingMethodCarrierServiceTransfer);
         }
         
         return shippingMethodCarrierServiceTransfer;

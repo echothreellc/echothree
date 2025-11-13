@@ -25,11 +25,11 @@ public class UnitOfMeasureKindUseTypeTransferCache
         extends BaseUomTransferCache<UnitOfMeasureKindUseType, UnitOfMeasureKindUseTypeTransfer> {
     
     /** Creates a new instance of UnitOfMeasureKindUseTypeTransferCache */
-    public UnitOfMeasureKindUseTypeTransferCache(UserVisit userVisit, UomControl uomControl) {
-        super(userVisit, uomControl);
+    public UnitOfMeasureKindUseTypeTransferCache(UomControl uomControl) {
+        super(uomControl);
     }
     
-    public UnitOfMeasureKindUseTypeTransfer getUnitOfMeasureKindUseTypeTransfer(UnitOfMeasureKindUseType unitOfMeasureKindUseType) {
+    public UnitOfMeasureKindUseTypeTransfer getUnitOfMeasureKindUseTypeTransfer(UserVisit userVisit, UnitOfMeasureKindUseType unitOfMeasureKindUseType) {
         var unitOfMeasureKindUseTypeTransfer = get(unitOfMeasureKindUseType);
         
         if(unitOfMeasureKindUseTypeTransfer == null) {
@@ -38,11 +38,11 @@ public class UnitOfMeasureKindUseTypeTransferCache
             var allowFractionDigits = unitOfMeasureKindUseType.getAllowFractionDigits();
             var isDefault = unitOfMeasureKindUseType.getIsDefault();
             var sortOrder = unitOfMeasureKindUseType.getSortOrder();
-            var description = uomControl.getBestUnitOfMeasureKindUseTypeDescription(unitOfMeasureKindUseType, getLanguage());
+            var description = uomControl.getBestUnitOfMeasureKindUseTypeDescription(unitOfMeasureKindUseType, getLanguage(userVisit));
             
             unitOfMeasureKindUseTypeTransfer = new UnitOfMeasureKindUseTypeTransfer(unitOfMeasureKindUseTypeName, allowMultiple, allowFractionDigits, isDefault,
                     sortOrder, description);
-            put(unitOfMeasureKindUseType, unitOfMeasureKindUseTypeTransfer);
+            put(userVisit, unitOfMeasureKindUseType, unitOfMeasureKindUseTypeTransfer);
         }
         
         return unitOfMeasureKindUseTypeTransfer;

@@ -25,11 +25,11 @@ public class FinancialAccountTypeDescriptionTransferCache
         extends BaseFinancialDescriptionTransferCache<FinancialAccountTypeDescription, FinancialAccountTypeDescriptionTransfer> {
     
     /** Creates a new instance of FinancialAccountTypeDescriptionTransferCache */
-    public FinancialAccountTypeDescriptionTransferCache(UserVisit userVisit, FinancialControl financialControl) {
-        super(userVisit, financialControl);
+    public FinancialAccountTypeDescriptionTransferCache(FinancialControl financialControl) {
+        super(financialControl);
     }
     
-    public FinancialAccountTypeDescriptionTransfer getFinancialAccountTypeDescriptionTransfer(FinancialAccountTypeDescription financialAccountTypeDescription) {
+    public FinancialAccountTypeDescriptionTransfer getFinancialAccountTypeDescriptionTransfer(UserVisit userVisit, FinancialAccountTypeDescription financialAccountTypeDescription) {
         var financialAccountTypeDescriptionTransfer = get(financialAccountTypeDescription);
         
         if(financialAccountTypeDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class FinancialAccountTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, financialAccountTypeDescription.getLanguage());
             
             financialAccountTypeDescriptionTransfer = new FinancialAccountTypeDescriptionTransfer(languageTransfer, financialAccountTypeTransfer, financialAccountTypeDescription.getDescription());
-            put(financialAccountTypeDescription, financialAccountTypeDescriptionTransfer);
+            put(userVisit, financialAccountTypeDescription, financialAccountTypeDescriptionTransfer);
         }
         
         return financialAccountTypeDescriptionTransfer;

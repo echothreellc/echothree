@@ -73,15 +73,15 @@ public class ItemTransferCaches
     protected ItemHarmonizedTariffScheduleCodeTransferCache itemHarmonizedTariffScheduleCodeTransferCache;
     
     /** Creates a new instance of ItemTransferCaches */
-    public ItemTransferCaches(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit);
+    public ItemTransferCaches(ItemControl itemControl) {
+        super();
         
         this.itemControl = itemControl;
     }
     
     public ItemTypeTransferCache getItemTypeTransferCache() {
         if(itemTypeTransferCache == null) {
-            itemTypeTransferCache = new ItemTypeTransferCache(userVisit, itemControl);
+            itemTypeTransferCache = new ItemTypeTransferCache(itemControl);
         }
         
         return itemTypeTransferCache;
@@ -89,7 +89,7 @@ public class ItemTransferCaches
     
     public ItemDeliveryTypeTransferCache getItemDeliveryTypeTransferCache() {
         if(itemDeliveryTypeTransferCache == null) {
-            itemDeliveryTypeTransferCache = new ItemDeliveryTypeTransferCache(userVisit, itemControl);
+            itemDeliveryTypeTransferCache = new ItemDeliveryTypeTransferCache(itemControl);
         }
         
         return itemDeliveryTypeTransferCache;
@@ -97,7 +97,7 @@ public class ItemTransferCaches
     
     public ItemInventoryTypeTransferCache getItemInventoryTypeTransferCache() {
         if(itemInventoryTypeTransferCache == null) {
-            itemInventoryTypeTransferCache = new ItemInventoryTypeTransferCache(userVisit, itemControl);
+            itemInventoryTypeTransferCache = new ItemInventoryTypeTransferCache(itemControl);
         }
         
         return itemInventoryTypeTransferCache;
@@ -105,7 +105,7 @@ public class ItemTransferCaches
     
     public RelatedItemTypeTransferCache getRelatedItemTypeTransferCache() {
         if(relatedItemTypeTransferCache == null) {
-            relatedItemTypeTransferCache = new RelatedItemTypeTransferCache(userVisit, itemControl);
+            relatedItemTypeTransferCache = new RelatedItemTypeTransferCache(itemControl);
         }
 
         return relatedItemTypeTransferCache;
@@ -113,7 +113,7 @@ public class ItemTransferCaches
 
     public RelatedItemTypeDescriptionTransferCache getRelatedItemTypeDescriptionTransferCache() {
         if(relatedItemTypeDescriptionTransferCache == null) {
-            relatedItemTypeDescriptionTransferCache = new RelatedItemTypeDescriptionTransferCache(userVisit, itemControl);
+            relatedItemTypeDescriptionTransferCache = new RelatedItemTypeDescriptionTransferCache(itemControl);
         }
 
         return relatedItemTypeDescriptionTransferCache;
@@ -121,7 +121,7 @@ public class ItemTransferCaches
 
     public RelatedItemTransferCache getRelatedItemTransferCache() {
         if(relatedItemTransferCache == null) {
-            relatedItemTransferCache = new RelatedItemTransferCache(userVisit, itemControl);
+            relatedItemTransferCache = new RelatedItemTransferCache(itemControl);
         }
         
         return relatedItemTransferCache;
@@ -129,7 +129,7 @@ public class ItemTransferCaches
     
     public ItemUseTypeTransferCache getItemUseTypeTransferCache() {
         if(itemUseTypeTransferCache == null) {
-            itemUseTypeTransferCache = new ItemUseTypeTransferCache(userVisit, itemControl);
+            itemUseTypeTransferCache = new ItemUseTypeTransferCache(itemControl);
         }
         
         return itemUseTypeTransferCache;
@@ -137,7 +137,7 @@ public class ItemTransferCaches
     
     public ItemPriceTypeTransferCache getItemPriceTypeTransferCache() {
         if(itemPriceTypeTransferCache == null) {
-            itemPriceTypeTransferCache = new ItemPriceTypeTransferCache(userVisit, itemControl);
+            itemPriceTypeTransferCache = new ItemPriceTypeTransferCache(itemControl);
         }
         
         return itemPriceTypeTransferCache;
@@ -145,7 +145,7 @@ public class ItemTransferCaches
     
     public ItemTransferCache getItemTransferCache() {
         if(itemTransferCache == null) {
-            itemTransferCache = new ItemTransferCache(userVisit, itemControl);
+            itemTransferCache = new ItemTransferCache(itemControl);
         }
         
         return itemTransferCache;
@@ -153,7 +153,7 @@ public class ItemTransferCaches
     
     public ItemUnitOfMeasureTypeTransferCache getItemUnitOfMeasureTypeTransferCache() {
         if(itemUnitOfMeasureTypeTransferCache == null) {
-            itemUnitOfMeasureTypeTransferCache = new ItemUnitOfMeasureTypeTransferCache(userVisit, itemControl);
+            itemUnitOfMeasureTypeTransferCache = new ItemUnitOfMeasureTypeTransferCache(itemControl);
         }
         
         return itemUnitOfMeasureTypeTransferCache;
@@ -161,7 +161,7 @@ public class ItemTransferCaches
     
     public ItemPriceTransferCache getItemPriceTransferCache() {
         if(itemPriceTransferCache == null) {
-            itemPriceTransferCache = new ItemPriceTransferCache(userVisit, itemControl);
+            itemPriceTransferCache = new ItemPriceTransferCache(itemControl);
         }
         
         return itemPriceTransferCache;
@@ -169,7 +169,7 @@ public class ItemTransferCaches
 
     public ItemVolumeTypeTransferCache getItemVolumeTypeTransferCache() {
         if(itemVolumeTypeTransferCache == null) {
-            itemVolumeTypeTransferCache = new ItemVolumeTypeTransferCache(userVisit, itemControl);
+            itemVolumeTypeTransferCache = new ItemVolumeTypeTransferCache(itemControl);
         }
 
         return itemVolumeTypeTransferCache;
@@ -177,7 +177,7 @@ public class ItemTransferCaches
 
     public ItemVolumeTypeDescriptionTransferCache getItemVolumeTypeDescriptionTransferCache() {
         if(itemVolumeTypeDescriptionTransferCache == null) {
-            itemVolumeTypeDescriptionTransferCache = new ItemVolumeTypeDescriptionTransferCache(userVisit, itemControl);
+            itemVolumeTypeDescriptionTransferCache = new ItemVolumeTypeDescriptionTransferCache(itemControl);
         }
 
         return itemVolumeTypeDescriptionTransferCache;
@@ -185,7 +185,7 @@ public class ItemTransferCaches
 
     public ItemVolumeTransferCache getItemVolumeTransferCache() {
         if(itemVolumeTransferCache == null) {
-            itemVolumeTransferCache = new ItemVolumeTransferCache(userVisit, itemControl);
+            itemVolumeTransferCache = new ItemVolumeTransferCache(itemControl);
         }
         
         return itemVolumeTransferCache;
@@ -193,7 +193,7 @@ public class ItemTransferCaches
     
     public ItemShippingTimeTransferCache getItemShippingTimeTransferCache() {
         if(itemShippingTimeTransferCache == null) {
-            itemShippingTimeTransferCache = new ItemShippingTimeTransferCache(userVisit, itemControl);
+            itemShippingTimeTransferCache = new ItemShippingTimeTransferCache(itemControl);
         }
         
         return itemShippingTimeTransferCache;
@@ -201,7 +201,7 @@ public class ItemTransferCaches
     
     public ItemAliasTransferCache getItemAliasTransferCache() {
         if(itemAliasTransferCache == null) {
-            itemAliasTransferCache = new ItemAliasTransferCache(userVisit, itemControl);
+            itemAliasTransferCache = new ItemAliasTransferCache(itemControl);
         }
         
         return itemAliasTransferCache;
@@ -209,7 +209,7 @@ public class ItemTransferCaches
     
     public ItemAliasChecksumTypeTransferCache getItemAliasChecksumTypeTransferCache() {
         if(itemAliasChecksumTypeTransferCache == null) {
-            itemAliasChecksumTypeTransferCache = new ItemAliasChecksumTypeTransferCache(userVisit, itemControl);
+            itemAliasChecksumTypeTransferCache = new ItemAliasChecksumTypeTransferCache(itemControl);
         }
 
         return itemAliasChecksumTypeTransferCache;
@@ -217,7 +217,7 @@ public class ItemTransferCaches
 
     public ItemAliasTypeTransferCache getItemAliasTypeTransferCache() {
         if(itemAliasTypeTransferCache == null) {
-            itemAliasTypeTransferCache = new ItemAliasTypeTransferCache(userVisit, itemControl);
+            itemAliasTypeTransferCache = new ItemAliasTypeTransferCache(itemControl);
         }
 
         return itemAliasTypeTransferCache;
@@ -225,7 +225,7 @@ public class ItemTransferCaches
 
     public ItemAliasTypeDescriptionTransferCache getItemAliasTypeDescriptionTransferCache() {
         if(itemAliasTypeDescriptionTransferCache == null) {
-            itemAliasTypeDescriptionTransferCache = new ItemAliasTypeDescriptionTransferCache(userVisit, itemControl);
+            itemAliasTypeDescriptionTransferCache = new ItemAliasTypeDescriptionTransferCache(itemControl);
         }
         
         return itemAliasTypeDescriptionTransferCache;
@@ -233,7 +233,7 @@ public class ItemTransferCaches
     
     public ItemDescriptionTransferCache getItemDescriptionTransferCache() {
         if(itemDescriptionTransferCache == null) {
-            itemDescriptionTransferCache = new ItemDescriptionTransferCache(userVisit, itemControl);
+            itemDescriptionTransferCache = new ItemDescriptionTransferCache(itemControl);
         }
         
         return itemDescriptionTransferCache;
@@ -241,7 +241,7 @@ public class ItemTransferCaches
     
     public ItemDescriptionTypeTransferCache getItemDescriptionTypeTransferCache() {
         if(itemDescriptionTypeTransferCache == null) {
-            itemDescriptionTypeTransferCache = new ItemDescriptionTypeTransferCache(userVisit, itemControl);
+            itemDescriptionTypeTransferCache = new ItemDescriptionTypeTransferCache(itemControl);
         }
 
         return itemDescriptionTypeTransferCache;
@@ -249,7 +249,7 @@ public class ItemTransferCaches
 
     public ItemDescriptionTypeDescriptionTransferCache getItemDescriptionTypeDescriptionTransferCache() {
         if(itemDescriptionTypeDescriptionTransferCache == null) {
-            itemDescriptionTypeDescriptionTransferCache = new ItemDescriptionTypeDescriptionTransferCache(userVisit, itemControl);
+            itemDescriptionTypeDescriptionTransferCache = new ItemDescriptionTypeDescriptionTransferCache(itemControl);
         }
 
         return itemDescriptionTypeDescriptionTransferCache;
@@ -257,7 +257,7 @@ public class ItemTransferCaches
 
     public ItemDescriptionTypeUseTypeTransferCache getItemDescriptionTypeUseTypeTransferCache() {
         if(itemDescriptionTypeUseTypeTransferCache == null) {
-            itemDescriptionTypeUseTypeTransferCache = new ItemDescriptionTypeUseTypeTransferCache(userVisit, itemControl);
+            itemDescriptionTypeUseTypeTransferCache = new ItemDescriptionTypeUseTypeTransferCache(itemControl);
         }
 
         return itemDescriptionTypeUseTypeTransferCache;
@@ -265,7 +265,7 @@ public class ItemTransferCaches
 
     public ItemDescriptionTypeUseTypeDescriptionTransferCache getItemDescriptionTypeUseTypeDescriptionTransferCache() {
         if(itemDescriptionTypeUseTypeDescriptionTransferCache == null) {
-            itemDescriptionTypeUseTypeDescriptionTransferCache = new ItemDescriptionTypeUseTypeDescriptionTransferCache(userVisit, itemControl);
+            itemDescriptionTypeUseTypeDescriptionTransferCache = new ItemDescriptionTypeUseTypeDescriptionTransferCache(itemControl);
         }
 
         return itemDescriptionTypeUseTypeDescriptionTransferCache;
@@ -273,7 +273,7 @@ public class ItemTransferCaches
 
     public ItemDescriptionTypeUseTransferCache getItemDescriptionTypeUseTransferCache() {
         if(itemDescriptionTypeUseTransferCache == null) {
-            itemDescriptionTypeUseTransferCache = new ItemDescriptionTypeUseTransferCache(userVisit, itemControl);
+            itemDescriptionTypeUseTransferCache = new ItemDescriptionTypeUseTransferCache(itemControl);
         }
 
         return itemDescriptionTypeUseTransferCache;
@@ -281,7 +281,7 @@ public class ItemTransferCaches
 
     public ItemWeightTypeTransferCache getItemWeightTypeTransferCache() {
         if(itemWeightTypeTransferCache == null) {
-            itemWeightTypeTransferCache = new ItemWeightTypeTransferCache(userVisit, itemControl);
+            itemWeightTypeTransferCache = new ItemWeightTypeTransferCache(itemControl);
         }
 
         return itemWeightTypeTransferCache;
@@ -289,7 +289,7 @@ public class ItemTransferCaches
 
     public ItemWeightTypeDescriptionTransferCache getItemWeightTypeDescriptionTransferCache() {
         if(itemWeightTypeDescriptionTransferCache == null) {
-            itemWeightTypeDescriptionTransferCache = new ItemWeightTypeDescriptionTransferCache(userVisit, itemControl);
+            itemWeightTypeDescriptionTransferCache = new ItemWeightTypeDescriptionTransferCache(itemControl);
         }
 
         return itemWeightTypeDescriptionTransferCache;
@@ -297,7 +297,7 @@ public class ItemTransferCaches
 
     public ItemWeightTransferCache getItemWeightTransferCache() {
         if(itemWeightTransferCache == null) {
-            itemWeightTransferCache = new ItemWeightTransferCache(userVisit, itemControl);
+            itemWeightTransferCache = new ItemWeightTransferCache(itemControl);
         }
 
         return itemWeightTransferCache;
@@ -305,7 +305,7 @@ public class ItemTransferCaches
 
     public ItemCategoryDescriptionTransferCache getItemCategoryDescriptionTransferCache() {
         if(itemCategoryDescriptionTransferCache == null) {
-            itemCategoryDescriptionTransferCache = new ItemCategoryDescriptionTransferCache(userVisit, itemControl);
+            itemCategoryDescriptionTransferCache = new ItemCategoryDescriptionTransferCache(itemControl);
         }
         
         return itemCategoryDescriptionTransferCache;
@@ -313,7 +313,7 @@ public class ItemTransferCaches
     
     public ItemCategoryTransferCache getItemCategoryTransferCache() {
         if(itemCategoryTransferCache == null) {
-            itemCategoryTransferCache = new ItemCategoryTransferCache(userVisit, itemControl);
+            itemCategoryTransferCache = new ItemCategoryTransferCache(itemControl);
         }
         
         return itemCategoryTransferCache;
@@ -321,7 +321,7 @@ public class ItemTransferCaches
     
     public ItemKitMemberTransferCache getItemKitMemberTransferCache() {
         if(itemKitMemberTransferCache == null) {
-            itemKitMemberTransferCache = new ItemKitMemberTransferCache(userVisit, itemControl);
+            itemKitMemberTransferCache = new ItemKitMemberTransferCache(itemControl);
         }
         
         return itemKitMemberTransferCache;
@@ -329,7 +329,7 @@ public class ItemTransferCaches
     
     public ItemCountryOfOriginTransferCache getItemCountryOfOriginTransferCache() {
         if(itemCountryOfOriginTransferCache == null) {
-            itemCountryOfOriginTransferCache = new ItemCountryOfOriginTransferCache(userVisit, itemControl);
+            itemCountryOfOriginTransferCache = new ItemCountryOfOriginTransferCache(itemControl);
         }
         
         return itemCountryOfOriginTransferCache;
@@ -337,7 +337,7 @@ public class ItemTransferCaches
     
     public ItemPackCheckRequirementTransferCache getItemPackCheckRequirementTransferCache() {
         if(itemPackCheckRequirementTransferCache == null) {
-            itemPackCheckRequirementTransferCache = new ItemPackCheckRequirementTransferCache(userVisit, itemControl);
+            itemPackCheckRequirementTransferCache = new ItemPackCheckRequirementTransferCache(itemControl);
         }
         
         return itemPackCheckRequirementTransferCache;
@@ -345,7 +345,7 @@ public class ItemTransferCaches
     
     public ItemUnitCustomerTypeLimitTransferCache getItemUnitCustomerTypeLimitTransferCache() {
         if(itemUnitCustomerTypeLimitTransferCache == null) {
-            itemUnitCustomerTypeLimitTransferCache = new ItemUnitCustomerTypeLimitTransferCache(userVisit, itemControl);
+            itemUnitCustomerTypeLimitTransferCache = new ItemUnitCustomerTypeLimitTransferCache(itemControl);
         }
         
         return itemUnitCustomerTypeLimitTransferCache;
@@ -353,7 +353,7 @@ public class ItemTransferCaches
     
     public ItemUnitLimitTransferCache getItemUnitLimitTransferCache() {
         if(itemUnitLimitTransferCache == null) {
-            itemUnitLimitTransferCache = new ItemUnitLimitTransferCache(userVisit, itemControl);
+            itemUnitLimitTransferCache = new ItemUnitLimitTransferCache(itemControl);
         }
         
         return itemUnitLimitTransferCache;
@@ -361,7 +361,7 @@ public class ItemTransferCaches
     
     public ItemUnitPriceLimitTransferCache getItemUnitPriceLimitTransferCache() {
         if(itemUnitPriceLimitTransferCache == null) {
-            itemUnitPriceLimitTransferCache = new ItemUnitPriceLimitTransferCache(userVisit, itemControl);
+            itemUnitPriceLimitTransferCache = new ItemUnitPriceLimitTransferCache(itemControl);
         }
         
         return itemUnitPriceLimitTransferCache;
@@ -369,7 +369,7 @@ public class ItemTransferCaches
     
     public ItemImageTypeTransferCache getItemImageTypeTransferCache() {
         if(itemImageTypeTransferCache == null) {
-            itemImageTypeTransferCache = new ItemImageTypeTransferCache(userVisit, itemControl);
+            itemImageTypeTransferCache = new ItemImageTypeTransferCache(itemControl);
         }
 
         return itemImageTypeTransferCache;
@@ -377,7 +377,7 @@ public class ItemTransferCaches
 
     public ItemImageTypeDescriptionTransferCache getItemImageTypeDescriptionTransferCache() {
         if(itemImageTypeDescriptionTransferCache == null) {
-            itemImageTypeDescriptionTransferCache = new ItemImageTypeDescriptionTransferCache(userVisit, itemControl);
+            itemImageTypeDescriptionTransferCache = new ItemImageTypeDescriptionTransferCache(itemControl);
         }
 
         return itemImageTypeDescriptionTransferCache;
@@ -385,7 +385,7 @@ public class ItemTransferCaches
 
     public HarmonizedTariffScheduleCodeTransferCache getHarmonizedTariffScheduleCodeTransferCache() {
         if(harmonizedTariffScheduleCodeTransferCache == null) {
-            harmonizedTariffScheduleCodeTransferCache = new HarmonizedTariffScheduleCodeTransferCache(userVisit, itemControl);
+            harmonizedTariffScheduleCodeTransferCache = new HarmonizedTariffScheduleCodeTransferCache(itemControl);
         }
 
         return harmonizedTariffScheduleCodeTransferCache;
@@ -393,7 +393,7 @@ public class ItemTransferCaches
                                                                 
     public HarmonizedTariffScheduleCodeTranslationTransferCache getHarmonizedTariffScheduleCodeTranslationTransferCache() {
         if(harmonizedTariffScheduleCodeTranslationTransferCache == null) {
-            harmonizedTariffScheduleCodeTranslationTransferCache = new HarmonizedTariffScheduleCodeTranslationTransferCache(userVisit, itemControl);
+            harmonizedTariffScheduleCodeTranslationTransferCache = new HarmonizedTariffScheduleCodeTranslationTransferCache(itemControl);
         }
 
         return harmonizedTariffScheduleCodeTranslationTransferCache;
@@ -401,7 +401,7 @@ public class ItemTransferCaches
 
     public HarmonizedTariffScheduleCodeUnitTransferCache getHarmonizedTariffScheduleCodeUnitTransferCache() {
         if(harmonizedTariffScheduleCodeUnitTransferCache == null) {
-            harmonizedTariffScheduleCodeUnitTransferCache = new HarmonizedTariffScheduleCodeUnitTransferCache(userVisit, itemControl);
+            harmonizedTariffScheduleCodeUnitTransferCache = new HarmonizedTariffScheduleCodeUnitTransferCache(itemControl);
         }
 
         return harmonizedTariffScheduleCodeUnitTransferCache;
@@ -409,7 +409,7 @@ public class ItemTransferCaches
                                                                 
     public HarmonizedTariffScheduleCodeUnitDescriptionTransferCache getHarmonizedTariffScheduleCodeUnitDescriptionTransferCache() {
         if(harmonizedTariffScheduleCodeUnitDescriptionTransferCache == null) {
-            harmonizedTariffScheduleCodeUnitDescriptionTransferCache = new HarmonizedTariffScheduleCodeUnitDescriptionTransferCache(userVisit, itemControl);
+            harmonizedTariffScheduleCodeUnitDescriptionTransferCache = new HarmonizedTariffScheduleCodeUnitDescriptionTransferCache(itemControl);
         }
 
         return harmonizedTariffScheduleCodeUnitDescriptionTransferCache;
@@ -417,7 +417,7 @@ public class ItemTransferCaches
 
     public HarmonizedTariffScheduleCodeUseTypeTransferCache getHarmonizedTariffScheduleCodeUseTypeTransferCache() {
         if(harmonizedTariffScheduleCodeUseTypeTransferCache == null) {
-            harmonizedTariffScheduleCodeUseTypeTransferCache = new HarmonizedTariffScheduleCodeUseTypeTransferCache(userVisit, itemControl);
+            harmonizedTariffScheduleCodeUseTypeTransferCache = new HarmonizedTariffScheduleCodeUseTypeTransferCache(itemControl);
         }
 
         return harmonizedTariffScheduleCodeUseTypeTransferCache;
@@ -425,7 +425,7 @@ public class ItemTransferCaches
                                                                 
     public HarmonizedTariffScheduleCodeUseTypeDescriptionTransferCache getHarmonizedTariffScheduleCodeUseTypeDescriptionTransferCache() {
         if(harmonizedTariffScheduleCodeUseTypeDescriptionTransferCache == null) {
-            harmonizedTariffScheduleCodeUseTypeDescriptionTransferCache = new HarmonizedTariffScheduleCodeUseTypeDescriptionTransferCache(userVisit, itemControl);
+            harmonizedTariffScheduleCodeUseTypeDescriptionTransferCache = new HarmonizedTariffScheduleCodeUseTypeDescriptionTransferCache(itemControl);
         }
 
         return harmonizedTariffScheduleCodeUseTypeDescriptionTransferCache;
@@ -433,7 +433,7 @@ public class ItemTransferCaches
 
     public HarmonizedTariffScheduleCodeUseTransferCache getHarmonizedTariffScheduleCodeUseTransferCache() {
         if(harmonizedTariffScheduleCodeUseTransferCache == null) {
-            harmonizedTariffScheduleCodeUseTransferCache = new HarmonizedTariffScheduleCodeUseTransferCache(userVisit, itemControl);
+            harmonizedTariffScheduleCodeUseTransferCache = new HarmonizedTariffScheduleCodeUseTransferCache(itemControl);
         }
 
         return harmonizedTariffScheduleCodeUseTransferCache;
@@ -441,7 +441,7 @@ public class ItemTransferCaches
     
     public ItemHarmonizedTariffScheduleCodeTransferCache getItemHarmonizedTariffScheduleCodeTransferCache() {
         if(itemHarmonizedTariffScheduleCodeTransferCache == null) {
-            itemHarmonizedTariffScheduleCodeTransferCache = new ItemHarmonizedTariffScheduleCodeTransferCache(userVisit, itemControl);
+            itemHarmonizedTariffScheduleCodeTransferCache = new ItemHarmonizedTariffScheduleCodeTransferCache(itemControl);
         }
 
         return itemHarmonizedTariffScheduleCodeTransferCache;

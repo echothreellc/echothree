@@ -29,13 +29,13 @@ public class WorkflowDestinationPartyTypeTransferCache
     PartyControl partyControl;
     
     /** Creates a new instance of WorkflowDestinationPartyTypeTransferCache */
-    public WorkflowDestinationPartyTypeTransferCache(UserVisit userVisit, WorkflowControl workflowControl) {
-        super(userVisit, workflowControl);
+    public WorkflowDestinationPartyTypeTransferCache(WorkflowControl workflowControl) {
+        super(workflowControl);
         
         partyControl = Session.getModelController(PartyControl.class);
     }
     
-    public WorkflowDestinationPartyTypeTransfer getWorkflowDestinationPartyTypeTransfer(WorkflowDestinationPartyType workflowDestinationPartyType) {
+    public WorkflowDestinationPartyTypeTransfer getWorkflowDestinationPartyTypeTransfer(UserVisit userVisit, WorkflowDestinationPartyType workflowDestinationPartyType) {
         var workflowDestinationPartyTypeTransfer = get(workflowDestinationPartyType);
         
         if(workflowDestinationPartyTypeTransfer == null) {
@@ -43,7 +43,7 @@ public class WorkflowDestinationPartyTypeTransferCache
             var partyType = partyControl.getPartyTypeTransfer(userVisit, workflowDestinationPartyType.getPartyType());
             
             workflowDestinationPartyTypeTransfer = new WorkflowDestinationPartyTypeTransfer(workflowDestination, partyType);
-            put(workflowDestinationPartyType, workflowDestinationPartyTypeTransfer);
+            put(userVisit, workflowDestinationPartyType, workflowDestinationPartyTypeTransfer);
         }
         
         return workflowDestinationPartyTypeTransfer;

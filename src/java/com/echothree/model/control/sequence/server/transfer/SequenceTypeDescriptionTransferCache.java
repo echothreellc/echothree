@@ -25,20 +25,20 @@ public class SequenceTypeDescriptionTransferCache
         extends BaseSequenceDescriptionTransferCache<SequenceTypeDescription, SequenceTypeDescriptionTransfer> {
     
     /** Creates a new instance of SequenceTypeDescriptionTransferCache */
-    public SequenceTypeDescriptionTransferCache(UserVisit userVisit, SequenceControl sequenceControl) {
-        super(userVisit, sequenceControl);
+    public SequenceTypeDescriptionTransferCache(SequenceControl sequenceControl) {
+        super(sequenceControl);
     }
     
-    public SequenceTypeDescriptionTransfer getSequenceTypeDescriptionTransfer(SequenceTypeDescription sequenceTypeDescription) {
+    public SequenceTypeDescriptionTransfer getSequenceTypeDescriptionTransfer(UserVisit userVisit, SequenceTypeDescription sequenceTypeDescription) {
         var sequenceTypeDescriptionTransfer = get(sequenceTypeDescription);
         
         if(sequenceTypeDescriptionTransfer == null) {
-            var sequenceTypeTransferCache = sequenceControl.getSequenceTransferCaches(userVisit).getSequenceTypeTransferCache();
-            var sequenceTypeTransfer = sequenceTypeTransferCache.getSequenceTypeTransfer(sequenceTypeDescription.getSequenceType());
+            var sequenceTypeTransferCache = sequenceControl.getSequenceTransferCaches().getSequenceTypeTransferCache();
+            var sequenceTypeTransfer = sequenceTypeTransferCache.getSequenceTypeTransfer(userVisit, sequenceTypeDescription.getSequenceType());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, sequenceTypeDescription.getLanguage());
             
             sequenceTypeDescriptionTransfer = new SequenceTypeDescriptionTransfer(languageTransfer, sequenceTypeTransfer, sequenceTypeDescription.getDescription());
-            put(sequenceTypeDescription, sequenceTypeDescriptionTransfer);
+            put(userVisit, sequenceTypeDescription, sequenceTypeDescriptionTransfer);
         }
         
         return sequenceTypeDescriptionTransfer;

@@ -28,13 +28,13 @@ public class OrderPriorityTransferCache
     OrderPriorityControl orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
 
     /** Creates a new instance of OrderPriorityTransferCache */
-    public OrderPriorityTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public OrderPriorityTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public OrderPriorityTransfer getOrderPriorityTransfer(OrderPriority orderPriority) {
+    public OrderPriorityTransfer getOrderPriorityTransfer(UserVisit userVisit, OrderPriority orderPriority) {
         var orderPriorityTransfer = get(orderPriority);
         
         if(orderPriorityTransfer == null) {
@@ -43,10 +43,10 @@ public class OrderPriorityTransferCache
             var priority = orderPriorityDetail.getPriority();
             var isDefault = orderPriorityDetail.getIsDefault();
             var sortOrder = orderPriorityDetail.getSortOrder();
-            var description = orderPriorityControl.getBestOrderPriorityDescription(orderPriority, getLanguage());
+            var description = orderPriorityControl.getBestOrderPriorityDescription(orderPriority, getLanguage(userVisit));
             
             orderPriorityTransfer = new OrderPriorityTransfer(orderPriorityName, priority, isDefault, sortOrder, description);
-            put(orderPriority, orderPriorityTransfer);
+            put(userVisit, orderPriority, orderPriorityTransfer);
         }
         
         return orderPriorityTransfer;

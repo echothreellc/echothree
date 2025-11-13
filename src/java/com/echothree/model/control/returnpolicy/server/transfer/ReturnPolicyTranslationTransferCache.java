@@ -29,11 +29,11 @@ public class ReturnPolicyTranslationTransferCache
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     
     /** Creates a new instance of ReturnPolicyTranslationTransferCache */
-    public ReturnPolicyTranslationTransferCache(UserVisit userVisit, ReturnPolicyControl returnPolicyControl) {
-        super(userVisit, returnPolicyControl);
+    public ReturnPolicyTranslationTransferCache(ReturnPolicyControl returnPolicyControl) {
+        super(returnPolicyControl);
     }
     
-    public ReturnPolicyTranslationTransfer getReturnPolicyTranslationTransfer(ReturnPolicyTranslation returnPolicyTranslation) {
+    public ReturnPolicyTranslationTransfer getReturnPolicyTranslationTransfer(UserVisit userVisit, ReturnPolicyTranslation returnPolicyTranslation) {
         var returnPolicyTranslationTransfer = get(returnPolicyTranslation);
         
         if(returnPolicyTranslationTransfer == null) {
@@ -46,7 +46,7 @@ public class ReturnPolicyTranslationTransferCache
             
             returnPolicyTranslationTransfer = new ReturnPolicyTranslationTransfer(returnPolicyTransfer, languageTransfer, description,
                     policyMimeTypeTransfer, policy);
-            put(returnPolicyTranslation, returnPolicyTranslationTransfer);
+            put(userVisit, returnPolicyTranslation, returnPolicyTranslationTransfer);
         }
         
         return returnPolicyTranslationTransfer;

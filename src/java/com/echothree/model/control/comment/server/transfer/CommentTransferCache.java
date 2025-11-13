@@ -43,8 +43,8 @@ public class CommentTransferCache
     boolean includeWorkflowStep;
     
     /** Creates a new instance of CommentTransferCache */
-    public CommentTransferCache(UserVisit userVisit, CommentControl commentControl) {
-        super(userVisit, commentControl);
+    public CommentTransferCache(CommentControl commentControl) {
+        super(commentControl);
 
         var options = session.getOptions();
         if(options != null) {
@@ -58,7 +58,7 @@ public class CommentTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public CommentTransfer getCommentTransfer(Comment comment) {
+    public CommentTransfer getCommentTransfer(UserVisit userVisit, Comment comment) {
         var commentTransfer = get(comment);
         
         if(commentTransfer == null) {
@@ -67,7 +67,7 @@ public class CommentTransferCache
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(comment.getPrimaryKey());
             
             commentTransfer = new CommentTransfer();
-            put(comment, commentTransfer, entityInstance);
+            put(userVisit, comment, commentTransfer, entityInstance);
             
             commentTransfer.setCommentName(commentDetail.getCommentName());
             commentTransfer.setCommentType(commentControl.getCommentTypeTransfer(userVisit, commentType));

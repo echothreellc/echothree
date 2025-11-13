@@ -29,22 +29,22 @@ public class JobTransferCaches
     protected JobTransferCache jobTransferCache;
     
     /** Creates a new instance of JobTransferCaches */
-    public JobTransferCaches(UserVisit userVisit, JobControl jobControl) {
-        super(userVisit);
+    public JobTransferCaches(JobControl jobControl) {
+        super();
         
         this.jobControl = jobControl;
     }
     
     public JobDescriptionTransferCache getJobDescriptionTransferCache() {
         if(jobDescriptionTransferCache == null)
-            jobDescriptionTransferCache = new JobDescriptionTransferCache(userVisit, jobControl);
+            jobDescriptionTransferCache = new JobDescriptionTransferCache(jobControl);
         
         return jobDescriptionTransferCache;
     }
     
     public JobTransferCache getJobTransferCache() {
         if(jobTransferCache == null)
-            jobTransferCache = new JobTransferCache(userVisit, jobControl);
+            jobTransferCache = new JobTransferCache(jobControl);
         
         return jobTransferCache;
     }

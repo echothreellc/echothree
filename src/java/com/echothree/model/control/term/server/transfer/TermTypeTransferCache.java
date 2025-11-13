@@ -25,21 +25,21 @@ public class TermTypeTransferCache
         extends BaseTermTransferCache<TermType, TermTypeTransfer> {
     
     /** Creates a new instance of TermTypeTransferCache */
-    public TermTypeTransferCache(UserVisit userVisit, TermControl termControl) {
-        super(userVisit, termControl);
+    public TermTypeTransferCache(TermControl termControl) {
+        super(termControl);
     }
     
-    public TermTypeTransfer getTermTypeTransfer(TermType termType) {
+    public TermTypeTransfer getTermTypeTransfer(UserVisit userVisit, TermType termType) {
         var termTypeTransfer = get(termType);
         
         if(termTypeTransfer == null) {
             var termTypeName = termType.getTermTypeName();
             var isDefault = termType.getIsDefault();
             var sortOrder = termType.getSortOrder();
-            var description = termControl.getBestTermTypeDescription(termType, getLanguage());
+            var description = termControl.getBestTermTypeDescription(termType, getLanguage(userVisit));
             
             termTypeTransfer = new TermTypeTransfer(termTypeName, isDefault, sortOrder, description);
-            put(termType, termTypeTransfer);
+            put(userVisit, termType, termTypeTransfer);
         }
         
         return termTypeTransfer;

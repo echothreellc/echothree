@@ -311,15 +311,15 @@ public class PaymentMethodControl
     }
 
     public PaymentMethodTransfer getPaymentMethodTransfer(UserVisit userVisit, PaymentMethod paymentMethod) {
-        return getPaymentTransferCaches(userVisit).getPaymentMethodTransferCache().getTransfer(paymentMethod);
+        return getPaymentTransferCaches().getPaymentMethodTransferCache().getTransfer(userVisit, paymentMethod);
     }
     
     public List<PaymentMethodTransfer> getPaymentMethodTransfers(UserVisit userVisit, Collection<PaymentMethod> paymentMethods) {
         List<PaymentMethodTransfer> paymentMethodTransfers = new ArrayList<>(paymentMethods.size());
-        var paymentMethodTransferCache = getPaymentTransferCaches(userVisit).getPaymentMethodTransferCache();
+        var paymentMethodTransferCache = getPaymentTransferCaches().getPaymentMethodTransferCache();
 
         paymentMethods.forEach((paymentMethod) ->
-                paymentMethodTransfers.add(paymentMethodTransferCache.getTransfer(paymentMethod))
+                paymentMethodTransfers.add(paymentMethodTransferCache.getTransfer(userVisit, paymentMethod))
         );
 
         return paymentMethodTransfers;
@@ -545,16 +545,16 @@ public class PaymentMethodControl
     }
     
     public PaymentMethodDescriptionTransfer getPaymentMethodDescriptionTransfer(UserVisit userVisit, PaymentMethodDescription paymentMethodDescription) {
-        return getPaymentTransferCaches(userVisit).getPaymentMethodDescriptionTransferCache().getTransfer(paymentMethodDescription);
+        return getPaymentTransferCaches().getPaymentMethodDescriptionTransferCache().getTransfer(userVisit, paymentMethodDescription);
     }
     
     public List<PaymentMethodDescriptionTransfer> getPaymentMethodDescriptionTransfers(UserVisit userVisit, PaymentMethod paymentMethod) {
         var paymentMethodDescriptions = getPaymentMethodDescriptions(paymentMethod);
         List<PaymentMethodDescriptionTransfer> paymentMethodDescriptionTransfers = new ArrayList<>(paymentMethodDescriptions.size());
-        var paymentMethodDescriptionTransferCache = getPaymentTransferCaches(userVisit).getPaymentMethodDescriptionTransferCache();
+        var paymentMethodDescriptionTransferCache = getPaymentTransferCaches().getPaymentMethodDescriptionTransferCache();
         
         paymentMethodDescriptions.forEach((paymentMethodDescription) ->
-                paymentMethodDescriptionTransfers.add(paymentMethodDescriptionTransferCache.getTransfer(paymentMethodDescription))
+                paymentMethodDescriptionTransfers.add(paymentMethodDescriptionTransferCache.getTransfer(userVisit, paymentMethodDescription))
         );
         
         return paymentMethodDescriptionTransfers;

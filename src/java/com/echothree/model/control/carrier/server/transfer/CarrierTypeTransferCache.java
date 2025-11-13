@@ -25,13 +25,13 @@ public class CarrierTypeTransferCache
         extends BaseCarrierTransferCache<CarrierType, CarrierTypeTransfer> {
 
     /** Creates a new instance of CarrierTypeTransferCache */
-    public CarrierTypeTransferCache(UserVisit userVisit, CarrierControl carrierControl) {
-        super(userVisit, carrierControl);
+    public CarrierTypeTransferCache(CarrierControl carrierControl) {
+        super(carrierControl);
         
         setIncludeEntityInstance(true);
     }
 
-    public CarrierTypeTransfer getCarrierTypeTransfer(CarrierType carrierType) {
+    public CarrierTypeTransfer getCarrierTypeTransfer(UserVisit userVisit, CarrierType carrierType) {
         var carrierTypeTransfer = get(carrierType);
 
         if(carrierTypeTransfer == null) {
@@ -39,10 +39,10 @@ public class CarrierTypeTransferCache
             var carrierTypeName = carrierTypeDetail.getCarrierTypeName();
             var isDefault = carrierTypeDetail.getIsDefault();
             var sortOrder = carrierTypeDetail.getSortOrder();
-            var description = carrierControl.getBestCarrierTypeDescription(carrierType, getLanguage());
+            var description = carrierControl.getBestCarrierTypeDescription(carrierType, getLanguage(userVisit));
 
             carrierTypeTransfer = new CarrierTypeTransfer(carrierTypeName, isDefault, sortOrder, description);
-            put(carrierType, carrierTypeTransfer);
+            put(userVisit, carrierType, carrierTypeTransfer);
         }
 
         return carrierTypeTransfer;

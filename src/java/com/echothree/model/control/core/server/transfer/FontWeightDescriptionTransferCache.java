@@ -28,11 +28,11 @@ public class FontWeightDescriptionTransferCache
     FontControl fontControl = Session.getModelController(FontControl.class);
 
     /** Creates a new instance of FontWeightDescriptionTransferCache */
-    public FontWeightDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public FontWeightDescriptionTransferCache() {
+        super();
     }
     
-    public FontWeightDescriptionTransfer getFontWeightDescriptionTransfer(FontWeightDescription fontWeightDescription) {
+    public FontWeightDescriptionTransfer getFontWeightDescriptionTransfer(UserVisit userVisit, FontWeightDescription fontWeightDescription) {
         var fontWeightDescriptionTransfer = get(fontWeightDescription);
         
         if(fontWeightDescriptionTransfer == null) {
@@ -40,7 +40,7 @@ public class FontWeightDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, fontWeightDescription.getLanguage());
             
             fontWeightDescriptionTransfer = new FontWeightDescriptionTransfer(languageTransfer, fontWeightTransfer, fontWeightDescription.getDescription());
-            put(fontWeightDescription, fontWeightDescriptionTransfer);
+            put(userVisit, fontWeightDescription, fontWeightDescriptionTransfer);
         }
         return fontWeightDescriptionTransfer;
     }

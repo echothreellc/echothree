@@ -25,11 +25,11 @@ public class TrackDescriptionTransferCache
         extends BaseTrackDescriptionTransferCache<TrackDescription, TrackDescriptionTransfer> {
     
     /** Creates a new instance of TrackDescriptionTransferCache */
-    public TrackDescriptionTransferCache(UserVisit userVisit, TrackControl trackControl) {
-        super(userVisit, trackControl);
+    public TrackDescriptionTransferCache(TrackControl trackControl) {
+        super(trackControl);
     }
     
-    public TrackDescriptionTransfer getTrackDescriptionTransfer(TrackDescription trackDescription) {
+    public TrackDescriptionTransfer getTrackDescriptionTransfer(UserVisit userVisit, TrackDescription trackDescription) {
         var trackDescriptionTransfer = get(trackDescription);
         
         if(trackDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class TrackDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, trackDescription.getLanguage());
             
             trackDescriptionTransfer = new TrackDescriptionTransfer(languageTransfer, trackTransfer, trackDescription.getDescription());
-            put(trackDescription, trackDescriptionTransfer);
+            put(userVisit, trackDescription, trackDescriptionTransfer);
         }
         return trackDescriptionTransfer;
     }

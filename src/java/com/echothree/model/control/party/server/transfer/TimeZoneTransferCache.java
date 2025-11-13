@@ -38,8 +38,8 @@ public class TimeZoneTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of TimeZoneTransferCache */
-    public TimeZoneTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public TimeZoneTransferCache() {
+        super();
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
@@ -59,7 +59,7 @@ public class TimeZoneTransferCache
     }
 
     @Override
-    public TimeZoneTransfer getTransfer(TimeZone timeZone) {
+    public TimeZoneTransfer getTransfer(UserVisit userVisit, TimeZone timeZone) {
         var timeZoneTransfer = get(timeZone);
         
         if(timeZoneTransfer == null) {
@@ -68,10 +68,10 @@ public class TimeZoneTransferCache
             var unixTimeZoneName = filterUnixTimeZoneName ? null : timeZoneDetail.getUnixTimeZoneName();
             var isDefault = filterIsDefault ? null : timeZoneDetail.getIsDefault();
             var sortOrder = filterSortOrder ? null : timeZoneDetail.getSortOrder();
-            var description = filterDescription ? null : partyControl.getBestTimeZoneDescription(timeZone, getLanguage());
+            var description = filterDescription ? null : partyControl.getBestTimeZoneDescription(timeZone, getLanguage(userVisit));
             
             timeZoneTransfer = new TimeZoneTransfer(javaTimeZoneName, unixTimeZoneName, isDefault, sortOrder, description);
-            put(timeZone, timeZoneTransfer);
+            put(userVisit, timeZone, timeZoneTransfer);
         }
         
         return timeZoneTransfer;

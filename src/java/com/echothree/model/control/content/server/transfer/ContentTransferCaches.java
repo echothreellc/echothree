@@ -47,148 +47,148 @@ public class ContentTransferCaches
     protected ContentCatalogItemTransferCache contentCatalogItemTransferCache;
     
     /** Creates a new instance of ContentTransferCaches */
-    public ContentTransferCaches(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit);
+    public ContentTransferCaches(ContentControl contentControl) {
+        super();
         
         this.contentControl = contentControl;
     }
     
     public ContentCatalogTransferCache getContentCatalogTransferCache() {
         if(contentCatalogTransferCache == null)
-            contentCatalogTransferCache = new ContentCatalogTransferCache(userVisit, contentControl);
+            contentCatalogTransferCache = new ContentCatalogTransferCache(contentControl);
         
         return contentCatalogTransferCache;
     }
     
     public ContentCatalogDescriptionTransferCache getContentCatalogDescriptionTransferCache() {
         if(contentCatalogDescriptionTransferCache == null)
-            contentCatalogDescriptionTransferCache = new ContentCatalogDescriptionTransferCache(userVisit, contentControl);
+            contentCatalogDescriptionTransferCache = new ContentCatalogDescriptionTransferCache(contentControl);
         
         return contentCatalogDescriptionTransferCache;
     }
     
     public ContentCategoryTransferCache getContentCategoryTransferCache() {
         if(contentCategoryTransferCache == null)
-            contentCategoryTransferCache = new ContentCategoryTransferCache(userVisit, contentControl);
+            contentCategoryTransferCache = new ContentCategoryTransferCache(contentControl);
         
         return contentCategoryTransferCache;
     }
     
     public ContentCategoryDescriptionTransferCache getContentCategoryDescriptionTransferCache() {
         if(contentCategoryDescriptionTransferCache == null)
-            contentCategoryDescriptionTransferCache = new ContentCategoryDescriptionTransferCache(userVisit, contentControl);
+            contentCategoryDescriptionTransferCache = new ContentCategoryDescriptionTransferCache(contentControl);
         
         return contentCategoryDescriptionTransferCache;
     }
     
     public ContentCollectionTransferCache getContentCollectionTransferCache() {
         if(contentCollectionTransferCache == null)
-            contentCollectionTransferCache = new ContentCollectionTransferCache(userVisit, contentControl);
+            contentCollectionTransferCache = new ContentCollectionTransferCache(contentControl);
         
         return contentCollectionTransferCache;
     }
     
     public ContentCollectionDescriptionTransferCache getContentCollectionDescriptionTransferCache() {
         if(contentCollectionDescriptionTransferCache == null)
-            contentCollectionDescriptionTransferCache = new ContentCollectionDescriptionTransferCache(userVisit, contentControl);
+            contentCollectionDescriptionTransferCache = new ContentCollectionDescriptionTransferCache(contentControl);
         
         return contentCollectionDescriptionTransferCache;
     }
     
     public ContentPageLayoutTransferCache getContentPageLayoutTransferCache() {
         if(contentPageLayoutTransferCache == null)
-            contentPageLayoutTransferCache = new ContentPageLayoutTransferCache(userVisit, contentControl);
+            contentPageLayoutTransferCache = new ContentPageLayoutTransferCache(contentControl);
         
         return contentPageLayoutTransferCache;
     }
     
     public ContentPageLayoutDescriptionTransferCache getContentPageLayoutDescriptionTransferCache() {
         if(contentPageLayoutDescriptionTransferCache == null)
-            contentPageLayoutDescriptionTransferCache = new ContentPageLayoutDescriptionTransferCache(userVisit, contentControl);
+            contentPageLayoutDescriptionTransferCache = new ContentPageLayoutDescriptionTransferCache(contentControl);
         
         return contentPageLayoutDescriptionTransferCache;
     }
     
     public ContentPageTransferCache getContentPageTransferCache() {
         if(contentPageTransferCache == null)
-            contentPageTransferCache = new ContentPageTransferCache(userVisit, contentControl);
+            contentPageTransferCache = new ContentPageTransferCache(contentControl);
         
         return contentPageTransferCache;
     }
     
     public ContentPageDescriptionTransferCache getContentPageDescriptionTransferCache() {
         if(contentPageDescriptionTransferCache == null)
-            contentPageDescriptionTransferCache = new ContentPageDescriptionTransferCache(userVisit, contentControl);
+            contentPageDescriptionTransferCache = new ContentPageDescriptionTransferCache(contentControl);
         
         return contentPageDescriptionTransferCache;
     }
     
     public ContentSectionTransferCache getContentSectionTransferCache() {
         if(contentSectionTransferCache == null)
-            contentSectionTransferCache = new ContentSectionTransferCache(userVisit, contentControl);
+            contentSectionTransferCache = new ContentSectionTransferCache(contentControl);
         
         return contentSectionTransferCache;
     }
     
     public ContentSectionDescriptionTransferCache getContentSectionDescriptionTransferCache() {
         if(contentSectionDescriptionTransferCache == null)
-            contentSectionDescriptionTransferCache = new ContentSectionDescriptionTransferCache(userVisit, contentControl);
+            contentSectionDescriptionTransferCache = new ContentSectionDescriptionTransferCache(contentControl);
         
         return contentSectionDescriptionTransferCache;
     }
     
     public ContentWebAddressTransferCache getContentWebAddressTransferCache() {
         if(contentWebAddressTransferCache == null)
-            contentWebAddressTransferCache = new ContentWebAddressTransferCache(userVisit, contentControl);
+            contentWebAddressTransferCache = new ContentWebAddressTransferCache(contentControl);
         
         return contentWebAddressTransferCache;
     }
     
     public ContentWebAddressDescriptionTransferCache getContentWebAddressDescriptionTransferCache() {
         if(contentWebAddressDescriptionTransferCache == null)
-            contentWebAddressDescriptionTransferCache = new ContentWebAddressDescriptionTransferCache(userVisit, contentControl);
+            contentWebAddressDescriptionTransferCache = new ContentWebAddressDescriptionTransferCache(contentControl);
         
         return contentWebAddressDescriptionTransferCache;
     }
     
     public ContentPageAreaTransferCache getContentPageAreaTransferCache() {
         if(contentPageAreaTransferCache == null)
-            contentPageAreaTransferCache = new ContentPageAreaTransferCache(userVisit, contentControl);
+            contentPageAreaTransferCache = new ContentPageAreaTransferCache(contentControl);
         
         return contentPageAreaTransferCache;
     }
     
     public ContentPageAreaTypeTransferCache getContentPageAreaTypeTransferCache() {
         if(contentPageAreaTypeTransferCache == null)
-            contentPageAreaTypeTransferCache = new ContentPageAreaTypeTransferCache(userVisit, contentControl);
+            contentPageAreaTypeTransferCache = new ContentPageAreaTypeTransferCache(contentControl);
         
         return contentPageAreaTypeTransferCache;
     }
     
     public ContentPageLayoutAreaTransferCache getContentPageLayoutAreaTransferCache() {
         if(contentPageLayoutAreaTransferCache == null)
-            contentPageLayoutAreaTransferCache = new ContentPageLayoutAreaTransferCache(userVisit, contentControl);
+            contentPageLayoutAreaTransferCache = new ContentPageLayoutAreaTransferCache(contentControl);
         
         return contentPageLayoutAreaTransferCache;
     }
     
     public ContentForumTransferCache getContentForumTransferCache() {
         if(contentForumTransferCache == null)
-            contentForumTransferCache = new ContentForumTransferCache(userVisit, contentControl);
+            contentForumTransferCache = new ContentForumTransferCache(contentControl);
         
         return contentForumTransferCache;
     }
     
     public ContentCategoryItemTransferCache getContentCategoryItemTransferCache() {
         if(contentCategoryItemTransferCache == null)
-            contentCategoryItemTransferCache = new ContentCategoryItemTransferCache(userVisit, contentControl);
+            contentCategoryItemTransferCache = new ContentCategoryItemTransferCache(contentControl);
         
         return contentCategoryItemTransferCache;
     }
     
     public ContentCatalogItemTransferCache getContentCatalogItemTransferCache() {
         if(contentCatalogItemTransferCache == null)
-            contentCatalogItemTransferCache = new ContentCatalogItemTransferCache(userVisit, contentControl);
+            contentCatalogItemTransferCache = new ContentCatalogItemTransferCache(contentControl);
         
         return contentCatalogItemTransferCache;
     }

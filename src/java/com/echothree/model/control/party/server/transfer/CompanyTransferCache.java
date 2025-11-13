@@ -56,8 +56,8 @@ public class CompanyTransferCache
     boolean hasInvoiceLimits;
     
     /** Creates a new instance of CompanyTransferCache */
-    public CompanyTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public CompanyTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -80,12 +80,12 @@ public class CompanyTransferCache
         hasInvoiceLimits = session.hasLimit(InvoiceFactory.class);
     }
     
-    public CompanyTransfer getTransfer(PartyCompany partyCompany) {
-        return getTransfer(partyCompany.getParty());
+    public CompanyTransfer getTransfer(UserVisit userVisit, PartyCompany partyCompany) {
+        return getTransfer(userVisit, partyCompany.getParty());
     }
 
     @Override
-    public CompanyTransfer getTransfer(Party party) {
+    public CompanyTransfer getTransfer(UserVisit userVisit, Party party) {
         var companyTransfer = get(party);
         
         if(companyTransfer == null) {
@@ -111,7 +111,7 @@ public class CompanyTransferCache
             
             companyTransfer = new CompanyTransfer(partyName, partyTypeTransfer, preferredLanguageTransfer, preferredCurrencyTransfer, preferredTimeZoneTransfer, preferredDateTimeFormatTransfer,
                     personTransfer, partyGroupTransfer, companyName, isDefault, sortOrder);
-            put(party, companyTransfer);
+            put(userVisit, party, companyTransfer);
             
             if(includePartyContactMechanisms) {
                 companyTransfer.setPartyContactMechanisms(new ListWrapper<>(contactControl.getPartyContactMechanismTransfersByParty(userVisit, party)));

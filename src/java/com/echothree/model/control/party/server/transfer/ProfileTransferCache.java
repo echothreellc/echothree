@@ -33,12 +33,12 @@ public class ProfileTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of ProfileTransferCache */
-    public ProfileTransferCache(final UserVisit userVisit) {
-        super(userVisit);
+    public ProfileTransferCache() {
+        super();
     }
 
     @Override
-    public ProfileTransfer getTransfer(final Profile profile) {
+    public ProfileTransfer getTransfer(final UserVisit userVisit, final Profile profile) {
         var profileTransfer = get(profile);
         
         if(profileTransfer == null) {
@@ -65,7 +65,7 @@ public class ProfileTransferCache
             profileTransfer = new ProfileTransfer(nickname, iconTransfer, pronunciation, genderTransfer, pronouns, birthday,
                     unformattedBirthday, birthdayFormat, occupation, hobbies, location, bioMimeTypeTransfer, bio,
                     signatureMimeTypeTransfer, signature);
-            put(profile, profileTransfer);
+            put(userVisit, profile, profileTransfer);
         }
         
         return profileTransfer;

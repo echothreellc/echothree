@@ -25,20 +25,20 @@ public class TermDescriptionTransferCache
         extends BaseTermDescriptionTransferCache<TermDescription, TermDescriptionTransfer> {
     
     /** Creates a new instance of TermDescriptionTransferCache */
-    public TermDescriptionTransferCache(UserVisit userVisit, TermControl termControl) {
-        super(userVisit, termControl);
+    public TermDescriptionTransferCache(TermControl termControl) {
+        super(termControl);
     }
     
-    public TermDescriptionTransfer getTermDescriptionTransfer(TermDescription termDescription) {
+    public TermDescriptionTransfer getTermDescriptionTransfer(UserVisit userVisit, TermDescription termDescription) {
         var termDescriptionTransfer = get(termDescription);
         
         if(termDescriptionTransfer == null) {
-            var termTransferCache = termControl.getTermTransferCaches(userVisit).getTermTransferCache();
-            var termTransfer = termTransferCache.getTermTransfer(termDescription.getTerm());
+            var termTransferCache = termControl.getTermTransferCaches().getTermTransferCache();
+            var termTransfer = termTransferCache.getTermTransfer(userVisit, termDescription.getTerm());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, termDescription.getLanguage());
             
             termDescriptionTransfer = new TermDescriptionTransfer(languageTransfer, termTransfer, termDescription.getDescription());
-            put(termDescription, termDescriptionTransfer);
+            put(userVisit, termDescription, termDescriptionTransfer);
         }
         
         return termDescriptionTransfer;

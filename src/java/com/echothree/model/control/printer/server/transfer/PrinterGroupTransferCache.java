@@ -39,8 +39,8 @@ public class PrinterGroupTransferCache
     boolean includePrinters;
     
     /** Creates a new instance of PrinterGroupTransferCache */
-    public PrinterGroupTransferCache(UserVisit userVisit, PrinterControl printerControl) {
-        super(userVisit, printerControl);
+    public PrinterGroupTransferCache(PrinterControl printerControl) {
+        super(printerControl);
 
         var options = session.getOptions();
         if(options != null) {
@@ -50,7 +50,7 @@ public class PrinterGroupTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public PrinterGroupTransfer getPrinterGroupTransfer(PrinterGroup printerGroup) {
+    public PrinterGroupTransfer getPrinterGroupTransfer(UserVisit userVisit, PrinterGroup printerGroup) {
         var printerGroupTransfer = get(printerGroup);
         
         if(printerGroupTransfer == null) {
@@ -61,7 +61,7 @@ public class PrinterGroupTransferCache
             var keepPrintedJobsTime = UnitOfMeasureUtils.getInstance().formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedKeepPrintedJobsTime);
             var isDefault = printerGroupDetail.getIsDefault();
             var sortOrder = printerGroupDetail.getSortOrder();
-            var description = printerControl.getBestPrinterGroupDescription(printerGroup, getLanguage());
+            var description = printerControl.getBestPrinterGroupDescription(printerGroup, getLanguage(userVisit));
 
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(printerGroup.getPrimaryKey());
             var printerGroupStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
@@ -69,7 +69,7 @@ public class PrinterGroupTransferCache
             
             printerGroupTransfer = new PrinterGroupTransfer(printerGroupName, unformattedKeepPrintedJobsTime, keepPrintedJobsTime, isDefault, sortOrder,
                     printerGroupStatusTransfer, description);
-            put(printerGroup, printerGroupTransfer);
+            put(userVisit, printerGroup, printerGroupTransfer);
 
             if(includePrinters) {
                 printerGroupTransfer.setPrinters(new ListWrapper<>(printerControl.getPrinterTransfersByPrinterGroup(userVisit, printerGroup)));

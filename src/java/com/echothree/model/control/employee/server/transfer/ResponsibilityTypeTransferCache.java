@@ -25,13 +25,13 @@ public class ResponsibilityTypeTransferCache
         extends BaseEmployeeTransferCache<ResponsibilityType, ResponsibilityTypeTransfer> {
     
     /** Creates a new instance of ResponsibilityTypeTransferCache */
-    public ResponsibilityTypeTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit, employeeControl);
+    public ResponsibilityTypeTransferCache(EmployeeControl employeeControl) {
+        super(employeeControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public ResponsibilityTypeTransfer getResponsibilityTypeTransfer(ResponsibilityType responsibilityType) {
+    public ResponsibilityTypeTransfer getResponsibilityTypeTransfer(UserVisit userVisit, ResponsibilityType responsibilityType) {
         var responsibilityTypeTransfer = get(responsibilityType);
         
         if(responsibilityTypeTransfer == null) {
@@ -39,10 +39,10 @@ public class ResponsibilityTypeTransferCache
             var responsibilityTypeName = responsibilityTypeDetail.getResponsibilityTypeName();
             var isDefault = responsibilityTypeDetail.getIsDefault();
             var sortOrder = responsibilityTypeDetail.getSortOrder();
-            var description = employeeControl.getBestResponsibilityTypeDescription(responsibilityType, getLanguage());
+            var description = employeeControl.getBestResponsibilityTypeDescription(responsibilityType, getLanguage(userVisit));
             
             responsibilityTypeTransfer = new ResponsibilityTypeTransfer(responsibilityTypeName, isDefault, sortOrder, description);
-            put(responsibilityType, responsibilityTypeTransfer);
+            put(userVisit, responsibilityType, responsibilityTypeTransfer);
         }
         
         return responsibilityTypeTransfer;

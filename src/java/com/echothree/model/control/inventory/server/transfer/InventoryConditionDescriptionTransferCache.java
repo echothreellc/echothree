@@ -25,21 +25,21 @@ public class InventoryConditionDescriptionTransferCache
         extends BaseInventoryDescriptionTransferCache<InventoryConditionDescription, InventoryConditionDescriptionTransfer> {
     
     /** Creates a new instance of InventoryConditionDescriptionTransferCache */
-    public InventoryConditionDescriptionTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    public InventoryConditionDescriptionTransferCache(InventoryControl inventoryControl) {
+        super(inventoryControl);
     }
     
     @Override
-    public InventoryConditionDescriptionTransfer getTransfer(InventoryConditionDescription inventoryConditionDescription) {
+    public InventoryConditionDescriptionTransfer getTransfer(UserVisit userVisit, InventoryConditionDescription inventoryConditionDescription) {
         var inventoryConditionDescriptionTransfer = get(inventoryConditionDescription);
         
         if(inventoryConditionDescriptionTransfer == null) {
-            var inventoryConditionTransferCache = inventoryControl.getInventoryTransferCaches(userVisit).getInventoryConditionTransferCache();
-            var inventoryConditionTransfer = inventoryConditionTransferCache.getTransfer(inventoryConditionDescription.getInventoryCondition());
+            var inventoryConditionTransferCache = inventoryControl.getInventoryTransferCaches().getInventoryConditionTransferCache();
+            var inventoryConditionTransfer = inventoryConditionTransferCache.getTransfer(userVisit, inventoryConditionDescription.getInventoryCondition());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, inventoryConditionDescription.getLanguage());
             
             inventoryConditionDescriptionTransfer = new InventoryConditionDescriptionTransfer(languageTransfer, inventoryConditionTransfer, inventoryConditionDescription.getDescription());
-            put(inventoryConditionDescription, inventoryConditionDescriptionTransfer);
+            put(userVisit, inventoryConditionDescription, inventoryConditionDescriptionTransfer);
         }
         
         return inventoryConditionDescriptionTransfer;

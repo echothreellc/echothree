@@ -34,13 +34,13 @@ public class PeriodTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of PeriodTransferCache */
-    public PeriodTransferCache(UserVisit userVisit, PeriodControl periodControl) {
-        super(userVisit, periodControl);
+    public PeriodTransferCache(PeriodControl periodControl) {
+        super(periodControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public PeriodTransfer getPeriodTransfer(Period period) {
+    public PeriodTransfer getPeriodTransfer(UserVisit userVisit, Period period) {
         var periodTransfer = get(period);
         
         if(periodTransfer == null) {
@@ -52,10 +52,10 @@ public class PeriodTransferCache
             var periodType = periodDetail.getPeriodType();
             var periodTypeTransfer = periodType == null? null: periodControl.getPeriodTypeTransfer(userVisit, periodType);
             var unformattedStartTime = periodDetail.getStartTime();
-            var startTime = formatTypicalDateTime(unformattedStartTime);
+            var startTime = formatTypicalDateTime(userVisit, unformattedStartTime);
             var unformattedEndTime = periodDetail.getEndTime();
-            var endTime = formatTypicalDateTime(unformattedEndTime);
-            var description = periodControl.getBestPeriodDescription(period, getLanguage());
+            var endTime = formatTypicalDateTime(userVisit, unformattedEndTime);
+            var description = periodControl.getBestPeriodDescription(period, getLanguage(userVisit));
             WorkflowEntityStatusTransfer status = null;
 
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(period.getPrimaryKey());
@@ -67,7 +67,7 @@ public class PeriodTransferCache
             
             periodTransfer = new PeriodTransfer(periodKindTransfer, periodName, parentPeriodTransfer, periodTypeTransfer, unformattedStartTime, startTime, unformattedEndTime,
                     endTime, description, status);
-            put(period, periodTransfer);
+            put(userVisit, period, periodTransfer);
         }
         
         return periodTransfer;

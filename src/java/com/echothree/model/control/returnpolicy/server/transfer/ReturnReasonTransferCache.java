@@ -25,13 +25,13 @@ public class ReturnReasonTransferCache
         extends BaseReturnPolicyTransferCache<ReturnReason, ReturnReasonTransfer> {
     
     /** Creates a new instance of ReturnReasonTransferCache */
-    public ReturnReasonTransferCache(UserVisit userVisit, ReturnPolicyControl returnPolicyControl) {
-        super(userVisit, returnPolicyControl);
+    public ReturnReasonTransferCache(ReturnPolicyControl returnPolicyControl) {
+        super(returnPolicyControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public ReturnReasonTransfer getReturnReasonTransfer(ReturnReason returnReason) {
+    public ReturnReasonTransfer getReturnReasonTransfer(UserVisit userVisit, ReturnReason returnReason) {
         var returnReasonTransfer = get(returnReason);
         
         if(returnReasonTransfer == null) {
@@ -40,10 +40,10 @@ public class ReturnReasonTransferCache
             var returnReasonName = returnReasonDetail.getReturnReasonName();
             var isDefault = returnReasonDetail.getIsDefault();
             var sortOrder = returnReasonDetail.getSortOrder();
-            var description = returnPolicyControl.getBestReturnReasonDescription(returnReason, getLanguage());
+            var description = returnPolicyControl.getBestReturnReasonDescription(returnReason, getLanguage(userVisit));
             
             returnReasonTransfer = new ReturnReasonTransfer(returnKind, returnReasonName, isDefault, sortOrder, description);
-            put(returnReason, returnReasonTransfer);
+            put(userVisit, returnReason, returnReasonTransfer);
         }
         
         return returnReasonTransfer;

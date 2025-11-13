@@ -28,14 +28,14 @@ public class PartyAliasTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of PartyAliasTransferCache */
-    public PartyAliasTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public PartyAliasTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
 
     @Override
-    public PartyAliasTransfer getTransfer(PartyAlias partyAlias) {
+    public PartyAliasTransfer getTransfer(UserVisit userVisit, PartyAlias partyAlias) {
         var partyAliasTransfer = get(partyAlias);
         
         if(partyAliasTransfer == null) {
@@ -44,7 +44,7 @@ public class PartyAliasTransferCache
             var alias = partyAlias.getAlias();
             
             partyAliasTransfer = new PartyAliasTransfer(party, partyAliasType, alias);
-            put(partyAlias, partyAliasTransfer);
+            put(userVisit, partyAlias, partyAliasTransfer);
         }
         
         return partyAliasTransfer;

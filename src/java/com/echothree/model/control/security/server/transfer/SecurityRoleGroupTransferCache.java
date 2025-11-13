@@ -31,8 +31,8 @@ public class SecurityRoleGroupTransferCache
     boolean includeSecurityRoles;
 
     /** Creates a new instance of SecurityRoleGroupTransferCache */
-    public SecurityRoleGroupTransferCache(UserVisit userVisit, SecurityControl securityControl) {
-        super(userVisit, securityControl);
+    public SecurityRoleGroupTransferCache(SecurityControl securityControl) {
+        super(securityControl);
 
         var options = session.getOptions();
         if(options != null) {
@@ -43,20 +43,20 @@ public class SecurityRoleGroupTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public SecurityRoleGroupTransfer getSecurityRoleGroupTransfer(SecurityRoleGroup securityRoleGroup) {
+    public SecurityRoleGroupTransfer getSecurityRoleGroupTransfer(UserVisit userVisit, SecurityRoleGroup securityRoleGroup) {
         var securityRoleGroupTransfer = get(securityRoleGroup);
 
         if(securityRoleGroupTransfer == null) {
             var securityRoleGroupDetail = securityRoleGroup.getLastDetail();
             var securityRoleGroupName = securityRoleGroupDetail.getSecurityRoleGroupName();
             var parentSecurityRoleGroup = securityRoleGroupDetail.getParentSecurityRoleGroup();
-            var parentSecurityRoleGroupTransfer = parentSecurityRoleGroup == null ? null : getSecurityRoleGroupTransfer(parentSecurityRoleGroup);
+            var parentSecurityRoleGroupTransfer = parentSecurityRoleGroup == null ? null : getSecurityRoleGroupTransfer(userVisit, parentSecurityRoleGroup);
             var isDefault = securityRoleGroupDetail.getIsDefault();
             var sortOrder = securityRoleGroupDetail.getSortOrder();
-            var description = securityControl.getBestSecurityRoleGroupDescription(securityRoleGroup, getLanguage());
+            var description = securityControl.getBestSecurityRoleGroupDescription(securityRoleGroup, getLanguage(userVisit));
 
             securityRoleGroupTransfer = new SecurityRoleGroupTransfer(securityRoleGroupName, parentSecurityRoleGroupTransfer, isDefault, sortOrder, description);
-            put(securityRoleGroup, securityRoleGroupTransfer);
+            put(userVisit, securityRoleGroup, securityRoleGroupTransfer);
 
             if(includeSecurityRolesCount) {
                 securityRoleGroupTransfer.setSecurityRoleCount(securityControl.countSecurityRolesBySecurityRoleGroup(securityRoleGroup));

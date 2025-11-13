@@ -31,11 +31,11 @@ public class EntityCollectionAttributeTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of EntityCollectionAttributeTransferCache */
-    public EntityCollectionAttributeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityCollectionAttributeTransferCache() {
+        super();
     }
     
-    public EntityCollectionAttributeTransfer getEntityCollectionAttributeTransfer(EntityCollectionAttribute entityCollectionAttribute, EntityInstance entityInstance) {
+    public EntityCollectionAttributeTransfer getEntityCollectionAttributeTransfer(final UserVisit userVisit, final EntityCollectionAttribute entityCollectionAttribute, final EntityInstance entityInstance) {
         var entityCollectionAttributeTransfer = get(entityCollectionAttribute);
         
         if(entityCollectionAttributeTransfer == null) {
@@ -44,7 +44,7 @@ public class EntityCollectionAttributeTransferCache
             var entityInstanceAttribute = entityInstanceControl.getEntityInstanceTransfer(userVisit, entityCollectionAttribute.getEntityInstanceAttribute(), false, false, false, false);
             
             entityCollectionAttributeTransfer = new EntityCollectionAttributeTransfer(entityAttribute, entityInstanceTransfer, entityInstanceAttribute);
-            put(entityCollectionAttribute, entityCollectionAttributeTransfer);
+            put(userVisit, entityCollectionAttribute, entityCollectionAttributeTransfer);
         }
         
         return entityCollectionAttributeTransfer;

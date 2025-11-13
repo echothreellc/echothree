@@ -25,20 +25,20 @@ public class RatingTypeListItemDescriptionTransferCache
         extends BaseRatingDescriptionTransferCache<RatingTypeListItemDescription, RatingTypeListItemDescriptionTransfer> {
     
     /** Creates a new instance of RatingTypeListItemDescriptionTransferCache */
-    public RatingTypeListItemDescriptionTransferCache(UserVisit userVisit, RatingControl ratingControl) {
-        super(userVisit, ratingControl);
+    public RatingTypeListItemDescriptionTransferCache(RatingControl ratingControl) {
+        super(ratingControl);
     }
     
-    public RatingTypeListItemDescriptionTransfer getRatingTypeListItemDescriptionTransfer(RatingTypeListItemDescription ratingTypeListItemDescription) {
+    public RatingTypeListItemDescriptionTransfer getRatingTypeListItemDescriptionTransfer(UserVisit userVisit, RatingTypeListItemDescription ratingTypeListItemDescription) {
         var ratingTypeListItemDescriptionTransfer = get(ratingTypeListItemDescription);
         
         if(ratingTypeListItemDescriptionTransfer == null) {
-            var ratingTypeListItemTransferCache = ratingControl.getRatingTransferCaches(userVisit).getRatingTypeListItemTransferCache();
-            var ratingTypeListItemTransfer = ratingTypeListItemTransferCache.getRatingTypeListItemTransfer(ratingTypeListItemDescription.getRatingTypeListItem());
+            var ratingTypeListItemTransferCache = ratingControl.getRatingTransferCaches().getRatingTypeListItemTransferCache();
+            var ratingTypeListItemTransfer = ratingTypeListItemTransferCache.getRatingTypeListItemTransfer(userVisit, ratingTypeListItemDescription.getRatingTypeListItem());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, ratingTypeListItemDescription.getLanguage());
             
             ratingTypeListItemDescriptionTransfer = new RatingTypeListItemDescriptionTransfer(languageTransfer, ratingTypeListItemTransfer, ratingTypeListItemDescription.getDescription());
-            put(ratingTypeListItemDescription, ratingTypeListItemDescriptionTransfer);
+            put(userVisit, ratingTypeListItemDescription, ratingTypeListItemDescriptionTransfer);
         }
         
         return ratingTypeListItemDescriptionTransfer;

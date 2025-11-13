@@ -28,11 +28,11 @@ public class SourceTransferCache
     OfferUseControl offerUseControl = Session.getModelController(OfferUseControl.class);
 
     /** Creates a new instance of SourceTransferCache */
-    public SourceTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public SourceTransferCache() {
+        super();
     }
     
-    public SourceTransfer getSourceTransfer(Source source) {
+    public SourceTransfer getSourceTransfer(UserVisit userVisit, Source source) {
         var sourceTransfer = get(source);
         
         if(sourceTransfer == null) {
@@ -43,7 +43,7 @@ public class SourceTransferCache
             var sortOrder = sourceDetail.getSortOrder();
             
             sourceTransfer = new SourceTransfer(sourceName, offerUseTransfer, isDefault, sortOrder);
-            put(source, sourceTransfer);
+            put(userVisit, source, sourceTransfer);
         }
         
         return sourceTransfer;

@@ -28,8 +28,8 @@ public abstract class BaseContactListTransferCache<K extends BaseEntity, V exten
     ContactListControl contactListControl;
     
     /** Creates a new instance of BaseContactListTransferCache */
-    protected BaseContactListTransferCache(UserVisit userVisit, ContactListControl contactListControl) {
-        super(userVisit);
+    protected BaseContactListTransferCache(ContactListControl contactListControl) {
+        super();
         
         this.contactListControl = contactListControl;
     }

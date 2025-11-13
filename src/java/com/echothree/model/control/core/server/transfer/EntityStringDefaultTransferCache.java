@@ -32,8 +32,8 @@ public class EntityStringDefaultTransferCache
     boolean includeString;
 
     /** Creates a new instance of EntityStringDefaultTransferCache */
-    public EntityStringDefaultTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityStringDefaultTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {
@@ -41,7 +41,7 @@ public class EntityStringDefaultTransferCache
         }
     }
     
-    public EntityStringDefaultTransfer getEntityStringDefaultTransfer(EntityStringDefault entityStringDefault) {
+    public EntityStringDefaultTransfer getEntityStringDefaultTransfer(UserVisit userVisit, EntityStringDefault entityStringDefault) {
         var entityStringDefaultTransfer = get(entityStringDefault);
         
         if(entityStringDefaultTransfer == null) {
@@ -50,7 +50,7 @@ public class EntityStringDefaultTransferCache
             var stringAttribute = includeString ? entityStringDefault.getStringAttribute() : null;
 
             entityStringDefaultTransfer = new EntityStringDefaultTransfer(entityAttribute, language, stringAttribute);
-            put(entityStringDefault, entityStringDefaultTransfer);
+            put(userVisit, entityStringDefault, entityStringDefaultTransfer);
         }
         
         return entityStringDefaultTransfer;

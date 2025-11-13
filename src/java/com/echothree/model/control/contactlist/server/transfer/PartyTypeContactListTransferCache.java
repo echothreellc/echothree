@@ -29,11 +29,11 @@ public class PartyTypeContactListTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of PartyTypeContactListTransferCache */
-    public PartyTypeContactListTransferCache(UserVisit userVisit, ContactListControl contactListControl) {
-        super(userVisit, contactListControl);
+    public PartyTypeContactListTransferCache(ContactListControl contactListControl) {
+        super(contactListControl);
     }
     
-    public PartyTypeContactListTransfer getPartyTypeContactListTransfer(PartyTypeContactList partyTypeContactList) {
+    public PartyTypeContactListTransfer getPartyTypeContactListTransfer(UserVisit userVisit, PartyTypeContactList partyTypeContactList) {
         var partyTypeContactListTransfer = get(partyTypeContactList);
         
         if(partyTypeContactListTransfer == null) {
@@ -42,7 +42,7 @@ public class PartyTypeContactListTransferCache
             var addWhenCreated = partyTypeContactList.getAddWhenCreated();
             
             partyTypeContactListTransfer = new PartyTypeContactListTransfer(partyTypeTransfer, contactListTransfer, addWhenCreated);
-            put(partyTypeContactList, partyTypeContactListTransfer);
+            put(userVisit, partyTypeContactList, partyTypeContactListTransfer);
         }
         
         return partyTypeContactListTransfer;

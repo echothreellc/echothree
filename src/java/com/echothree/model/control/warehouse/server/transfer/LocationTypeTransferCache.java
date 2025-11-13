@@ -25,27 +25,27 @@ public class LocationTypeTransferCache
         extends BaseWarehouseTransferCache<LocationType, LocationTypeTransfer> {
     
     /** Creates a new instance of LocationTypeTransferCache */
-    public LocationTypeTransferCache(UserVisit userVisit, WarehouseControl warehouseControl) {
-        super(userVisit, warehouseControl);
+    public LocationTypeTransferCache(WarehouseControl warehouseControl) {
+        super(warehouseControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public LocationTypeTransfer getLocationTypeTransfer(LocationType locationType) {
+    public LocationTypeTransfer getLocationTypeTransfer(UserVisit userVisit, LocationType locationType) {
         var locationTypeTransfer = get(locationType);
         
         if(locationTypeTransfer == null) {
             var locationTypeDetail = locationType.getLastDetail();
-            var warehouseTransferCache = warehouseControl.getWarehouseTransferCaches(userVisit).getWarehouseTransferCache();
+            var warehouseTransferCache = warehouseControl.getWarehouseTransferCaches().getWarehouseTransferCache();
             var warehouse = warehouseControl.getWarehouse(locationTypeDetail.getWarehouseParty());
-            var warehouseTransfer = warehouseTransferCache.getWarehouseTransfer(warehouse);
+            var warehouseTransfer = warehouseTransferCache.getWarehouseTransfer(userVisit, warehouse);
             var locationTypeName = locationTypeDetail.getLocationTypeName();
             var isDefault = locationTypeDetail.getIsDefault();
             var sortOrder = locationTypeDetail.getSortOrder();
-            var description = warehouseControl.getBestLocationTypeDescription(locationType, getLanguage());
+            var description = warehouseControl.getBestLocationTypeDescription(locationType, getLanguage(userVisit));
             
             locationTypeTransfer = new LocationTypeTransfer(warehouseTransfer, locationTypeName, isDefault, sortOrder, description);
-            put(locationType, locationTypeTransfer);
+            put(userVisit, locationType, locationTypeTransfer);
         }
         
         return locationTypeTransfer;

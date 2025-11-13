@@ -25,21 +25,21 @@ public class TaxDescriptionTransferCache
         extends BaseTaxDescriptionTransferCache<TaxDescription, TaxDescriptionTransfer> {
     
     /** Creates a new instance of TaxDescriptionTransferCache */
-    public TaxDescriptionTransferCache(UserVisit userVisit, TaxControl taxControl) {
-        super(userVisit, taxControl);
+    public TaxDescriptionTransferCache(TaxControl taxControl) {
+        super(taxControl);
     }
     
     @Override
-    public TaxDescriptionTransfer getTransfer(TaxDescription taxDescription) {
+    public TaxDescriptionTransfer getTransfer(UserVisit userVisit, TaxDescription taxDescription) {
         var taxDescriptionTransfer = get(taxDescription);
         
         if(taxDescriptionTransfer == null) {
-            var taxTransferCache = taxControl.getTaxTransferCaches(userVisit).getTaxTransferCache();
-            var taxTransfer = taxTransferCache.getTransfer(taxDescription.getTax());
+            var taxTransferCache = taxControl.getTaxTransferCaches().getTaxTransferCache();
+            var taxTransfer = taxTransferCache.getTransfer(userVisit, taxDescription.getTax());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, taxDescription.getLanguage());
             
             taxDescriptionTransfer = new TaxDescriptionTransfer(languageTransfer, taxTransfer, taxDescription.getDescription());
-            put(taxDescription, taxDescriptionTransfer);
+            put(userVisit, taxDescription, taxDescriptionTransfer);
         }
         
         return taxDescriptionTransfer;

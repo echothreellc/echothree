@@ -25,11 +25,11 @@ public class WishlistPriorityDescriptionTransferCache
         extends BaseWishlistDescriptionTransferCache<WishlistPriorityDescription, WishlistPriorityDescriptionTransfer> {
     
     /** Creates a new instance of WishlistPriorityDescriptionTransferCache */
-    public WishlistPriorityDescriptionTransferCache(UserVisit userVisit, WishlistControl wishlistControl) {
-        super(userVisit, wishlistControl);
+    public WishlistPriorityDescriptionTransferCache(WishlistControl wishlistControl) {
+        super(wishlistControl);
     }
     
-    public WishlistPriorityDescriptionTransfer getWishlistPriorityDescriptionTransfer(WishlistPriorityDescription wishlistPriorityDescription) {
+    public WishlistPriorityDescriptionTransfer getWishlistPriorityDescriptionTransfer(UserVisit userVisit, WishlistPriorityDescription wishlistPriorityDescription) {
         var wishlistPriorityDescriptionTransfer = get(wishlistPriorityDescription);
         
         if(wishlistPriorityDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class WishlistPriorityDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, wishlistPriorityDescription.getLanguage());
             
             wishlistPriorityDescriptionTransfer = new WishlistPriorityDescriptionTransfer(languageTransfer, wishlistPriorityTransfer, wishlistPriorityDescription.getDescription());
-            put(wishlistPriorityDescription, wishlistPriorityDescriptionTransfer);
+            put(userVisit, wishlistPriorityDescription, wishlistPriorityDescriptionTransfer);
         }
         
         return wishlistPriorityDescriptionTransfer;

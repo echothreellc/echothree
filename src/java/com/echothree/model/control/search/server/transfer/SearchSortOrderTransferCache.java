@@ -25,13 +25,13 @@ public class SearchSortOrderTransferCache
         extends BaseSearchTransferCache<SearchSortOrder, SearchSortOrderTransfer> {
     
     /** Creates a new instance of SearchSortOrderTransferCache */
-    public SearchSortOrderTransferCache(UserVisit userVisit, SearchControl searchControl) {
-        super(userVisit, searchControl);
+    public SearchSortOrderTransferCache(SearchControl searchControl) {
+        super(searchControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public SearchSortOrderTransfer getSearchSortOrderTransfer(SearchSortOrder searchSortOrder) {
+    public SearchSortOrderTransfer getSearchSortOrderTransfer(UserVisit userVisit, SearchSortOrder searchSortOrder) {
         var searchSortOrderTransfer = get(searchSortOrder);
         
         if(searchSortOrderTransfer == null) {
@@ -40,10 +40,10 @@ public class SearchSortOrderTransferCache
             var searchSortOrderName = searchSortOrderDetail.getSearchSortOrderName();
             var isDefault = searchSortOrderDetail.getIsDefault();
             var sortOrder = searchSortOrderDetail.getSortOrder();
-            var description = searchControl.getBestSearchSortOrderDescription(searchSortOrder, getLanguage());
+            var description = searchControl.getBestSearchSortOrderDescription(searchSortOrder, getLanguage(userVisit));
             
             searchSortOrderTransfer = new SearchSortOrderTransfer(searchKindTransfer, searchSortOrderName, isDefault, sortOrder, description);
-            put(searchSortOrder, searchSortOrderTransfer);
+            put(userVisit, searchSortOrder, searchSortOrderTransfer);
         }
         
         return searchSortOrderTransfer;

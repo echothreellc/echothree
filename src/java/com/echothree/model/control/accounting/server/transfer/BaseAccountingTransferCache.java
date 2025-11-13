@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.accounting.server.transfer;
 
-import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;
@@ -26,10 +25,10 @@ public abstract class BaseAccountingTransferCache<K extends BaseEntity, V extend
         extends BaseTransferCache<K, V> {
     
     /** Creates a new instance of BaseAccountingTransferCache */
-    protected BaseAccountingTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected BaseAccountingTransferCache() {
+        super();
     }
     
-    protected abstract V getTransfer(K key);
+    protected abstract V getTransfer(UserVisit userVisit, K key);
 
 }

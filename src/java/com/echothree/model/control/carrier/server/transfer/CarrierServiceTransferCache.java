@@ -29,13 +29,13 @@ public class CarrierServiceTransferCache
     SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
     
     /** Creates a new instance of CarrierServiceTransferCache */
-    public CarrierServiceTransferCache(UserVisit userVisit, CarrierControl carrierControl) {
-        super(userVisit, carrierControl);
+    public CarrierServiceTransferCache(CarrierControl carrierControl) {
+        super(carrierControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public CarrierServiceTransfer getCarrierServiceTransfer(CarrierService carrierService) {
+    public CarrierServiceTransfer getCarrierServiceTransfer(UserVisit userVisit, CarrierService carrierService) {
         var carrierServiceTransfer = get(carrierService);
         
         if(carrierServiceTransfer == null) {
@@ -48,11 +48,11 @@ public class CarrierServiceTransferCache
             var itemSelectorTransfer = itemSelector == null? null: selectorControl.getSelectorTransfer(userVisit, itemSelector);
             var isDefault = carrierServiceDetail.getIsDefault();
             var sortOrder = carrierServiceDetail.getSortOrder();
-            var description = carrierControl.getBestCarrierServiceDescription(carrierService, getLanguage());
+            var description = carrierControl.getBestCarrierServiceDescription(carrierService, getLanguage(userVisit));
             
             carrierServiceTransfer = new CarrierServiceTransfer(carrier, carrierServiceName, geoCodeSelectorTransfer, itemSelectorTransfer, isDefault,
                     sortOrder, description);
-            put(carrierService, carrierServiceTransfer);
+            put(userVisit, carrierService, carrierServiceTransfer);
         }
         
         return carrierServiceTransfer;

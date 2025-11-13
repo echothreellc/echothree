@@ -31,14 +31,14 @@ public class TaxTransferCache
     ContactControl contactControl = Session.getModelController(ContactControl.class);
     
     /** Creates a new instance of TaxTransferCache */
-    public TaxTransferCache(UserVisit userVisit, TaxControl taxControl) {
-        super(userVisit, taxControl);
+    public TaxTransferCache(TaxControl taxControl) {
+        super(taxControl);
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public TaxTransfer getTransfer(Tax tax) {
+    public TaxTransfer getTransfer(UserVisit userVisit, Tax tax) {
         var taxTransfer = get(tax);
         
         if(taxTransfer == null) {
@@ -49,10 +49,10 @@ public class TaxTransferCache
             var percent = formatFractionalPercent(taxDetail.getPercent());
             var isDefault = taxDetail.getIsDefault();
             var sortOrder = taxDetail.getSortOrder();
-            var description = taxControl.getBestTaxDescription(tax, getLanguage());
+            var description = taxControl.getBestTaxDescription(tax, getLanguage(userVisit));
             
             taxTransfer = new TaxTransfer(taxName, contactMechanismPurpose, glAccount, percent, isDefault, sortOrder, description);
-            put(tax, taxTransfer);
+            put(userVisit, tax, taxTransfer);
         }
         
         return taxTransfer;

@@ -25,21 +25,21 @@ public class ForumMessageTypeTransferCache
         extends BaseForumTransferCache<ForumMessageType, ForumMessageTypeTransfer> {
     
     /** Creates a new instance of ForumMessageTypeTransferCache */
-    public ForumMessageTypeTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
+    public ForumMessageTypeTransferCache(ForumControl forumControl) {
+        super(forumControl);
     }
     
-    public ForumMessageTypeTransfer getForumMessageTypeTransfer(ForumMessageType forumMessageType) {
+    public ForumMessageTypeTransfer getForumMessageTypeTransfer(UserVisit userVisit, ForumMessageType forumMessageType) {
         var forumMessageTypeTransfer = get(forumMessageType);
         
         if(forumMessageTypeTransfer == null) {
             var forumMessageTypeName = forumMessageType.getForumMessageTypeName();
             var isDefault = forumMessageType.getIsDefault();
             var sortOrder = forumMessageType.getSortOrder();
-            var description = forumControl.getBestForumMessageTypeDescription(forumMessageType, getLanguage());
+            var description = forumControl.getBestForumMessageTypeDescription(forumMessageType, getLanguage(userVisit));
             
             forumMessageTypeTransfer = new ForumMessageTypeTransfer(forumMessageTypeName, isDefault, sortOrder, description);
-            put(forumMessageType, forumMessageTypeTransfer);
+            put(userVisit, forumMessageType, forumMessageTypeTransfer);
         }
         
         return forumMessageTypeTransfer;

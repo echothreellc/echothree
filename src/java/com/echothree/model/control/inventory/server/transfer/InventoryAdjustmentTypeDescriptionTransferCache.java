@@ -29,12 +29,12 @@ public class InventoryAdjustmentTypeDescriptionTransferCache
     InventoryAdjustmentTypeControl inventoryAdjustmentTypeControl = Session.getModelController(InventoryAdjustmentTypeControl.class);
 
     /** Creates a new instance of InventoryAdjustmentTypeDescriptionTransferCache */
-    public InventoryAdjustmentTypeDescriptionTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    public InventoryAdjustmentTypeDescriptionTransferCache(InventoryControl inventoryControl) {
+        super(inventoryControl);
     }
 
     @Override
-    public InventoryAdjustmentTypeDescriptionTransfer getTransfer(InventoryAdjustmentTypeDescription inventoryAdjustmentTypeDescription) {
+    public InventoryAdjustmentTypeDescriptionTransfer getTransfer(UserVisit userVisit, InventoryAdjustmentTypeDescription inventoryAdjustmentTypeDescription) {
         var inventoryAdjustmentTypeDescriptionTransfer = get(inventoryAdjustmentTypeDescription);
         
         if(inventoryAdjustmentTypeDescriptionTransfer == null) {
@@ -42,7 +42,7 @@ public class InventoryAdjustmentTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, inventoryAdjustmentTypeDescription.getLanguage());
             
             inventoryAdjustmentTypeDescriptionTransfer = new InventoryAdjustmentTypeDescriptionTransfer(languageTransfer, inventoryAdjustmentTypeTransfer, inventoryAdjustmentTypeDescription.getDescription());
-            put(inventoryAdjustmentTypeDescription, inventoryAdjustmentTypeDescriptionTransfer);
+            put(userVisit, inventoryAdjustmentTypeDescription, inventoryAdjustmentTypeDescriptionTransfer);
         }
         
         return inventoryAdjustmentTypeDescriptionTransfer;

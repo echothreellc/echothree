@@ -32,11 +32,11 @@ public class EntityDateAttributeTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of EntityDateAttributeTransferCache */
-    public EntityDateAttributeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityDateAttributeTransferCache() {
+        super();
     }
     
-    public EntityDateAttributeTransfer getEntityDateAttributeTransfer(EntityDateAttribute entityDateAttribute, EntityInstance entityInstance) {
+    public EntityDateAttributeTransfer getEntityDateAttributeTransfer(final UserVisit userVisit, final EntityDateAttribute entityDateAttribute, final EntityInstance entityInstance) {
         var entityDateAttributeTransfer = get(entityDateAttribute);
         
         if(entityDateAttributeTransfer == null) {
@@ -46,7 +46,7 @@ public class EntityDateAttributeTransferCache
             var dateAttribute = DateUtils.getInstance().formatDate(userVisit, unformattedDateAttribute);
             
             entityDateAttributeTransfer = new EntityDateAttributeTransfer(entityAttribute, entityInstanceTransfer, dateAttribute, unformattedDateAttribute);
-            put(entityDateAttribute, entityDateAttributeTransfer);
+            put(userVisit, entityDateAttribute, entityDateAttributeTransfer);
         }
         
         return entityDateAttributeTransfer;

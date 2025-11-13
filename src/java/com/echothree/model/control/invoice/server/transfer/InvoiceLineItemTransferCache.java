@@ -33,15 +33,15 @@ public class InvoiceLineItemTransferCache
     UomControl uomControl;
 
     /** Creates a new instance of InvoiceLineItemTransferCache */
-    public InvoiceLineItemTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
-        super(userVisit, invoiceControl);
+    public InvoiceLineItemTransferCache(InvoiceControl invoiceControl) {
+        super(invoiceControl);
 
         inventoryControl = Session.getModelController(InventoryControl.class);
         itemControl = Session.getModelController(ItemControl.class);
         uomControl = Session.getModelController(UomControl.class);
     }
 
-    public InvoiceLineItemTransfer getInvoiceLineItemTransfer(InvoiceLineItem invoiceLineItem) {
+    public InvoiceLineItemTransfer getInvoiceLineItemTransfer(UserVisit userVisit, InvoiceLineItem invoiceLineItem) {
         var invoiceLineItemTransfer = get(invoiceLineItem);
 
         if(invoiceLineItemTransfer == null) {
@@ -52,7 +52,7 @@ public class InvoiceLineItemTransferCache
             var quantity = invoiceLineItem.getQuantity();
             
             invoiceLineItemTransfer = new InvoiceLineItemTransfer(invoiceLine, item, inventoryCondition, unitOfMeasureType, quantity);
-            put(invoiceLineItem, invoiceLineItemTransfer);
+            put(userVisit, invoiceLineItem, invoiceLineItemTransfer);
         }
 
         return invoiceLineItemTransfer;

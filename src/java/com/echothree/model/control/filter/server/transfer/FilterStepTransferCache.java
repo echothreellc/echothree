@@ -35,8 +35,8 @@ public class FilterStepTransferCache
     boolean includeFilterStepDestinations;
     
     /** Creates a new instance of FilterStepTransferCache */
-    public FilterStepTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public FilterStepTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -48,7 +48,7 @@ public class FilterStepTransferCache
     }
 
     @Override
-    public FilterStepTransfer getTransfer(FilterStep filterStep) {
+    public FilterStepTransfer getTransfer(UserVisit userVisit, FilterStep filterStep) {
         var filterStepTransfer = get(filterStep);
         
         if(filterStepTransfer == null) {
@@ -57,10 +57,10 @@ public class FilterStepTransferCache
             var filterStepName = filterStepDetail.getFilterStepName();
             var filterItemSelector = filterStepDetail.getFilterItemSelector();
             var filterItemSelectorTransfer = filterItemSelector == null? null: selectorControl.getSelectorTransfer(userVisit, filterItemSelector);
-            var description = filterControl.getBestFilterStepDescription(filterStep, getLanguage());
+            var description = filterControl.getBestFilterStepDescription(filterStep, getLanguage(userVisit));
             
             filterStepTransfer = new FilterStepTransfer(filter, filterStepName, filterItemSelectorTransfer, description);
-            put(filterStep, filterStepTransfer);
+            put(userVisit, filterStep, filterStepTransfer);
             
             if(includeFilterStepElements) {
                 filterStepTransfer.setFilterStepElements(new ListWrapper<>(filterControl.getFilterStepElementTransfersByFilterStep(userVisit, filterStep)));

@@ -29,18 +29,18 @@ public class RatingTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     
     /** Creates a new instance of RatingTransferCache */
-    public RatingTransferCache(UserVisit userVisit, RatingControl ratingControl) {
-        super(userVisit, ratingControl);
+    public RatingTransferCache(RatingControl ratingControl) {
+        super(ratingControl);
     }
     
-    public RatingTransfer getRatingTransfer(Rating rating) {
+    public RatingTransfer getRatingTransfer(UserVisit userVisit, Rating rating) {
         var ratingTransfer = get(rating);
         
         if(ratingTransfer == null) {
             var ratingDetail = rating.getLastDetail();
             
             ratingTransfer = new RatingTransfer();
-            put(rating, ratingTransfer);
+            put(userVisit, rating, ratingTransfer);
             
             ratingTransfer.setRatingName(ratingDetail.getRatingName());
             ratingTransfer.setRatingTypeListItem(ratingControl.getRatingTypeListItemTransfer(userVisit, ratingDetail.getRatingTypeListItem()));

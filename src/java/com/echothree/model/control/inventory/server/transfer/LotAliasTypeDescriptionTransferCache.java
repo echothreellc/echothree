@@ -29,12 +29,12 @@ public class LotAliasTypeDescriptionTransferCache
     LotAliasControl lotAliasControl = Session.getModelController(LotAliasControl.class);
 
     /** Creates a new instance of LotAliasTypeDescriptionTransferCache */
-    public LotAliasTypeDescriptionTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    public LotAliasTypeDescriptionTransferCache(InventoryControl inventoryControl) {
+        super(inventoryControl);
     }
     
     @Override
-    public LotAliasTypeDescriptionTransfer getTransfer(LotAliasTypeDescription lotAliasTypeDescription) {
+    public LotAliasTypeDescriptionTransfer getTransfer(UserVisit userVisit, LotAliasTypeDescription lotAliasTypeDescription) {
         var lotAliasTypeDescriptionTransfer = get(lotAliasTypeDescription);
         
         if(lotAliasTypeDescriptionTransfer == null) {
@@ -42,7 +42,7 @@ public class LotAliasTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, lotAliasTypeDescription.getLanguage());
             
             lotAliasTypeDescriptionTransfer = new LotAliasTypeDescriptionTransfer(languageTransfer, lotAliasTypeTransfer, lotAliasTypeDescription.getDescription());
-            put(lotAliasTypeDescription, lotAliasTypeDescriptionTransfer);
+            put(userVisit, lotAliasTypeDescription, lotAliasTypeDescriptionTransfer);
         }
         
         return lotAliasTypeDescriptionTransfer;

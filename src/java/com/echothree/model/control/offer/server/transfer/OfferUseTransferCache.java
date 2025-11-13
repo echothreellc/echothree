@@ -32,13 +32,13 @@ public class OfferUseTransferCache
     UseControl useControl = Session.getModelController(UseControl.class);
 
     /** Creates a new instance of OfferUseTransferCache */
-    public OfferUseTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public OfferUseTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public OfferUseTransfer getOfferUseTransfer(OfferUse offerUse) {
+    public OfferUseTransfer getOfferUseTransfer(UserVisit userVisit, OfferUse offerUse) {
         var offerUseTransfer = get(offerUse);
         
         if(offerUseTransfer == null) {
@@ -49,7 +49,7 @@ public class OfferUseTransferCache
             var salesOrderSequenceTransfer = salesOrderSequence == null? null:sequenceControl.getSequenceTransfer(userVisit, salesOrderSequence);
             
             offerUseTransfer = new OfferUseTransfer(offerTransfer, useTransfer, salesOrderSequenceTransfer);
-            put(offerUse, offerUseTransfer);
+            put(userVisit, offerUse, offerUseTransfer);
         }
         
         return offerUseTransfer;

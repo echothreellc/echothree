@@ -29,13 +29,13 @@ public class LetterContactMechanismPurposeTransferCache
     ContactControl contactControl;
     
     /** Creates a new instance of LetterContactMechanismPurposeTransferCache */
-    public LetterContactMechanismPurposeTransferCache(UserVisit userVisit, LetterControl letterControl) {
-        super(userVisit, letterControl);
+    public LetterContactMechanismPurposeTransferCache(LetterControl letterControl) {
+        super(letterControl);
         
         contactControl = Session.getModelController(ContactControl.class);
     }
     
-    public LetterContactMechanismPurposeTransfer getLetterContactMechanismPurposeTransfer(LetterContactMechanismPurpose letterContactMechanismPurpose) {
+    public LetterContactMechanismPurposeTransfer getLetterContactMechanismPurposeTransfer(UserVisit userVisit, LetterContactMechanismPurpose letterContactMechanismPurpose) {
         var letterContactMechanismPurposeTransfer = get(letterContactMechanismPurpose);
         
         if(letterContactMechanismPurposeTransfer == null) {
@@ -46,7 +46,7 @@ public class LetterContactMechanismPurposeTransferCache
             
             letterContactMechanismPurposeTransfer = new LetterContactMechanismPurposeTransfer(letter, contactMechanismPurpose,
                     priority);
-            put(letterContactMechanismPurpose, letterContactMechanismPurposeTransfer);
+            put(userVisit, letterContactMechanismPurpose, letterContactMechanismPurposeTransfer);
         }
         
         return letterContactMechanismPurposeTransfer;

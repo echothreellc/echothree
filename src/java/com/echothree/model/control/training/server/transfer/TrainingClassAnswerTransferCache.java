@@ -25,13 +25,13 @@ public class TrainingClassAnswerTransferCache
         extends BaseTrainingTransferCache<TrainingClassAnswer, TrainingClassAnswerTransfer> {
     
     /** Creates a new instance of TrainingClassAnswerTransferCache */
-    public TrainingClassAnswerTransferCache(UserVisit userVisit, TrainingControl trainingControl) {
-        super(userVisit, trainingControl);
+    public TrainingClassAnswerTransferCache(TrainingControl trainingControl) {
+        super(trainingControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public TrainingClassAnswerTransfer getTrainingClassAnswerTransfer(TrainingClassAnswer trainingClassAnswer) {
+    public TrainingClassAnswerTransfer getTrainingClassAnswerTransfer(UserVisit userVisit, TrainingClassAnswer trainingClassAnswer) {
         var trainingClassAnswerTransfer = get(trainingClassAnswer);
         
         if(trainingClassAnswerTransfer == null) {
@@ -42,7 +42,7 @@ public class TrainingClassAnswerTransferCache
             var sortOrder = trainingClassAnswerDetail.getSortOrder();
             
             trainingClassAnswerTransfer = new TrainingClassAnswerTransfer(trainingClassQuestion, trainingClassAnswerName, isCorrect, sortOrder);
-            put(trainingClassAnswer, trainingClassAnswerTransfer);
+            put(userVisit, trainingClassAnswer, trainingClassAnswerTransfer);
         }
         
         return trainingClassAnswerTransfer;

@@ -37,12 +37,12 @@ public class PartyPaymentMethodContactMechanismTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of PartyPaymentMethodContactMechanismTransferCache */
-    public PartyPaymentMethodContactMechanismTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public PartyPaymentMethodContactMechanismTransferCache() {
+        super();
     }
 
     @Override
-    public PartyPaymentMethodContactMechanismTransfer getTransfer(PartyPaymentMethodContactMechanism partyPaymentMethodContactMechanism) {
+    public PartyPaymentMethodContactMechanismTransfer getTransfer(UserVisit userVisit, PartyPaymentMethodContactMechanism partyPaymentMethodContactMechanism) {
         var partyPaymentMethodContactMechanismTransfer = get(partyPaymentMethodContactMechanism);
         
         if(partyPaymentMethodContactMechanismTransfer == null) {
@@ -60,7 +60,7 @@ public class PartyPaymentMethodContactMechanismTransferCache
             
             partyPaymentMethodContactMechanismTransfer = new PartyPaymentMethodContactMechanismTransfer(partyPaymentMethodTransfer,
                     partyContactMechanismPurposeTransfer, partyPaymentMethodContactMechanismStatusTransfer);
-            put(partyPaymentMethodContactMechanism, partyPaymentMethodContactMechanismTransfer);
+            put(userVisit, partyPaymentMethodContactMechanism, partyPaymentMethodContactMechanismTransfer);
         }
         return partyPaymentMethodContactMechanismTransfer;
     }

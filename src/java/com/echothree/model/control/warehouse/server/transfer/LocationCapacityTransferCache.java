@@ -29,25 +29,25 @@ public class LocationCapacityTransferCache
     UomControl uomControl;
     
     /** Creates a new instance of LocationCapacityTransferCache */
-    public LocationCapacityTransferCache(UserVisit userVisit, WarehouseControl warehouseControl) {
-        super(userVisit, warehouseControl);
+    public LocationCapacityTransferCache(WarehouseControl warehouseControl) {
+        super(warehouseControl);
         
         uomControl = Session.getModelController(UomControl.class);
     }
     
-    public LocationCapacityTransfer getLocationCapacityTransfer(LocationCapacity locationCapacity) {
+    public LocationCapacityTransfer getLocationCapacityTransfer(UserVisit userVisit, LocationCapacity locationCapacity) {
         var locationCapacityTransfer = get(locationCapacity);
         
         if(locationCapacityTransfer == null) {
-            var locationTransferCache = warehouseControl.getWarehouseTransferCaches(userVisit).getLocationTransferCache();
-            var locationTransfer = locationTransferCache.getLocationTransfer(locationCapacity.getLocation());
-            var unitOfMeasureTypeTransferCache = uomControl.getUomTransferCaches(userVisit).getUnitOfMeasureTypeTransferCache();
+            var locationTransferCache = warehouseControl.getWarehouseTransferCaches().getLocationTransferCache();
+            var locationTransfer = locationTransferCache.getLocationTransfer(userVisit, locationCapacity.getLocation());
+            var unitOfMeasureTypeTransferCache = uomControl.getUomTransferCaches().getUnitOfMeasureTypeTransferCache();
             var unitOfMeasureType = locationCapacity.getUnitOfMeasureType();
-            var unitOfMeasureTypeTransfer = unitOfMeasureTypeTransferCache.getUnitOfMeasureTypeTransfer(unitOfMeasureType);
+            var unitOfMeasureTypeTransfer = unitOfMeasureTypeTransferCache.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureType);
             var capacity = locationCapacity.getCapacity();
             
             locationCapacityTransfer = new LocationCapacityTransfer(locationTransfer, unitOfMeasureTypeTransfer, capacity);
-            put(locationCapacity, locationCapacityTransfer);
+            put(userVisit, locationCapacity, locationCapacityTransfer);
         }
         
         return locationCapacityTransfer;

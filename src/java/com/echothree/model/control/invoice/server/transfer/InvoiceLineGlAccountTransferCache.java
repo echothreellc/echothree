@@ -29,13 +29,13 @@ public class InvoiceLineGlAccountTransferCache
     AccountingControl accountingControl;
 
     /** Creates a new instance of InvoiceLineGlAccountTransferCache */
-    public InvoiceLineGlAccountTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
-        super(userVisit, invoiceControl);
+    public InvoiceLineGlAccountTransferCache(InvoiceControl invoiceControl) {
+        super(invoiceControl);
 
         accountingControl = Session.getModelController(AccountingControl.class);
     }
 
-    public InvoiceLineGlAccountTransfer getInvoiceLineGlAccountTransfer(InvoiceLineGlAccount invoiceLineGlAccount) {
+    public InvoiceLineGlAccountTransfer getInvoiceLineGlAccountTransfer(UserVisit userVisit, InvoiceLineGlAccount invoiceLineGlAccount) {
         var invoiceLineGlAccountTransfer = get(invoiceLineGlAccount);
 
         if(invoiceLineGlAccountTransfer == null) {
@@ -43,7 +43,7 @@ public class InvoiceLineGlAccountTransferCache
             var glAccount = accountingControl.getGlAccountTransfer(userVisit, invoiceLineGlAccount.getGlAccount());
 
             invoiceLineGlAccountTransfer = new InvoiceLineGlAccountTransfer(invoiceLine, glAccount);
-            put(invoiceLineGlAccount, invoiceLineGlAccountTransfer);
+            put(userVisit, invoiceLineGlAccount, invoiceLineGlAccountTransfer);
         }
 
         return invoiceLineGlAccountTransfer;

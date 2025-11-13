@@ -25,26 +25,26 @@ public class SelectorTransferCache
         extends BaseSelectorTransferCache<Selector, SelectorTransfer> {
     
     /** Creates a new instance of SelectorTransferCache */
-    public SelectorTransferCache(UserVisit userVisit, SelectorControl selectorControl) {
-        super(userVisit, selectorControl);
+    public SelectorTransferCache(SelectorControl selectorControl) {
+        super(selectorControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public SelectorTransfer getSelectorTransfer(Selector selector) {
+    public SelectorTransfer getSelectorTransfer(UserVisit userVisit, Selector selector) {
         var selectorTransfer = get(selector);
         
         if(selectorTransfer == null) {
             var selectorDetail = selector.getLastDetail();
-            var selectorTypeTransferCache = selectorControl.getSelectorTransferCaches(userVisit).getSelectorTypeTransferCache();
-            var selectorType = selectorTypeTransferCache.getSelectorTypeTransfer(selectorDetail.getSelectorType());
+            var selectorTypeTransferCache = selectorControl.getSelectorTransferCaches().getSelectorTypeTransferCache();
+            var selectorType = selectorTypeTransferCache.getSelectorTypeTransfer(userVisit, selectorDetail.getSelectorType());
             var selectorName = selectorDetail.getSelectorName();
             var isDefault = selectorDetail.getIsDefault();
             var sortOrder = selectorDetail.getSortOrder();
-            var description = selectorControl.getBestSelectorDescription(selector, getLanguage());
+            var description = selectorControl.getBestSelectorDescription(selector, getLanguage(userVisit));
             
             selectorTransfer = new SelectorTransfer(selectorType, selectorName, isDefault, sortOrder, description);
-            put(selector, selectorTransfer);
+            put(userVisit, selector, selectorTransfer);
         }
         return selectorTransfer;
     }

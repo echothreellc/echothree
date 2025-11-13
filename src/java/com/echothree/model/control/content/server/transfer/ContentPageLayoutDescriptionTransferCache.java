@@ -25,20 +25,20 @@ public class ContentPageLayoutDescriptionTransferCache
         extends BaseContentDescriptionTransferCache<ContentPageLayoutDescription, ContentPageLayoutDescriptionTransfer> {
     
     /** Creates a new instance of ContentPageLayoutDescriptionTransferCache */
-    public ContentPageLayoutDescriptionTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    public ContentPageLayoutDescriptionTransferCache(ContentControl contentControl) {
+        super(contentControl);
     }
     
-    public ContentPageLayoutDescriptionTransfer getTransfer(ContentPageLayoutDescription contentPageLayoutDescription) {
+    public ContentPageLayoutDescriptionTransfer getTransfer(UserVisit userVisit, ContentPageLayoutDescription contentPageLayoutDescription) {
         var contentPageLayoutDescriptionTransfer = get(contentPageLayoutDescription);
         
         if(contentPageLayoutDescriptionTransfer == null) {
-            var contentPageLayoutTransferCache = contentControl.getContentTransferCaches(userVisit).getContentPageLayoutTransferCache();
-            var contentPageLayoutTransfer = contentPageLayoutTransferCache.getTransfer(contentPageLayoutDescription.getContentPageLayout());
+            var contentPageLayoutTransferCache = contentControl.getContentTransferCaches().getContentPageLayoutTransferCache();
+            var contentPageLayoutTransfer = contentPageLayoutTransferCache.getTransfer(userVisit, contentPageLayoutDescription.getContentPageLayout());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, contentPageLayoutDescription.getLanguage());
             
             contentPageLayoutDescriptionTransfer = new ContentPageLayoutDescriptionTransfer(languageTransfer, contentPageLayoutTransfer, contentPageLayoutDescription.getDescription());
-            put(contentPageLayoutDescription, contentPageLayoutDescriptionTransfer);
+            put(userVisit, contentPageLayoutDescription, contentPageLayoutDescriptionTransfer);
         }
         
         return contentPageLayoutDescriptionTransfer;

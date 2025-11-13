@@ -24,12 +24,12 @@ public class BirthdayFormatDescriptionTransferCache
         extends BasePartyDescriptionTransferCache<BirthdayFormatDescription, BirthdayFormatDescriptionTransfer> {
     
     /** Creates a new instance of BirthdayFormatDescriptionTransferCache */
-    public BirthdayFormatDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public BirthdayFormatDescriptionTransferCache() {
+        super();
     }
 
     @Override
-    public BirthdayFormatDescriptionTransfer getTransfer(BirthdayFormatDescription birthdayFormatDescription) {
+    public BirthdayFormatDescriptionTransfer getTransfer(UserVisit userVisit, BirthdayFormatDescription birthdayFormatDescription) {
         var birthdayFormatDescriptionTransfer = get(birthdayFormatDescription);
         
         if(birthdayFormatDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class BirthdayFormatDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, birthdayFormatDescription.getLanguage());
             
             birthdayFormatDescriptionTransfer = new BirthdayFormatDescriptionTransfer(languageTransfer, birthdayFormatTransfer, birthdayFormatDescription.getDescription());
-            put(birthdayFormatDescription, birthdayFormatDescriptionTransfer);
+            put(userVisit, birthdayFormatDescription, birthdayFormatDescriptionTransfer);
         }
         
         return birthdayFormatDescriptionTransfer;

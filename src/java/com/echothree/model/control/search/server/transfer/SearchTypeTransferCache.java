@@ -25,13 +25,13 @@ public class SearchTypeTransferCache
         extends BaseSearchTransferCache<SearchType, SearchTypeTransfer> {
     
     /** Creates a new instance of SearchTypeTransferCache */
-    public SearchTypeTransferCache(UserVisit userVisit, SearchControl searchControl) {
-        super(userVisit, searchControl);
+    public SearchTypeTransferCache(SearchControl searchControl) {
+        super(searchControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public SearchTypeTransfer getSearchTypeTransfer(SearchType searchType) {
+    public SearchTypeTransfer getSearchTypeTransfer(UserVisit userVisit, SearchType searchType) {
         var searchTypeTransfer = get(searchType);
         
         if(searchTypeTransfer == null) {
@@ -40,10 +40,10 @@ public class SearchTypeTransferCache
             var searchTypeName = searchTypeDetail.getSearchTypeName();
             var isDefault = searchTypeDetail.getIsDefault();
             var sortOrder = searchTypeDetail.getSortOrder();
-            var description = searchControl.getBestSearchTypeDescription(searchType, getLanguage());
+            var description = searchControl.getBestSearchTypeDescription(searchType, getLanguage(userVisit));
             
             searchTypeTransfer = new SearchTypeTransfer(searchKindTransfer, searchTypeName, isDefault, sortOrder, description);
-            put(searchType, searchTypeTransfer);
+            put(userVisit, searchType, searchTypeTransfer);
         }
         
         return searchTypeTransfer;

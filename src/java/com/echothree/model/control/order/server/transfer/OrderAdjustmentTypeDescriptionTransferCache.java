@@ -28,11 +28,11 @@ public class OrderAdjustmentTypeDescriptionTransferCache
     OrderAdjustmentControl orderAdjustmentControl = Session.getModelController(OrderAdjustmentControl.class);
 
     /** Creates a new instance of OrderAdjustmentTypeDescriptionTransferCache */
-    public OrderAdjustmentTypeDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public OrderAdjustmentTypeDescriptionTransferCache() {
+        super();
     }
     
-    public OrderAdjustmentTypeDescriptionTransfer getOrderAdjustmentTypeDescriptionTransfer(OrderAdjustmentTypeDescription orderAdjustmentTypeDescription) {
+    public OrderAdjustmentTypeDescriptionTransfer getOrderAdjustmentTypeDescriptionTransfer(UserVisit userVisit, OrderAdjustmentTypeDescription orderAdjustmentTypeDescription) {
         var orderAdjustmentTypeDescriptionTransfer = get(orderAdjustmentTypeDescription);
         
         if(orderAdjustmentTypeDescriptionTransfer == null) {
@@ -40,7 +40,7 @@ public class OrderAdjustmentTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, orderAdjustmentTypeDescription.getLanguage());
             
             orderAdjustmentTypeDescriptionTransfer = new OrderAdjustmentTypeDescriptionTransfer(languageTransfer, orderAdjustmentTypeTransfer, orderAdjustmentTypeDescription.getDescription());
-            put(orderAdjustmentTypeDescription, orderAdjustmentTypeDescriptionTransfer);
+            put(userVisit, orderAdjustmentTypeDescription, orderAdjustmentTypeDescriptionTransfer);
         }
         
         return orderAdjustmentTypeDescriptionTransfer;

@@ -25,11 +25,11 @@ public class WorkflowDestinationDescriptionTransferCache
         extends BaseWorkflowDescriptionTransferCache<WorkflowDestinationDescription, WorkflowDestinationDescriptionTransfer> {
     
     /** Creates a new instance of WorkflowDestinationDescriptionTransferCache */
-    public WorkflowDestinationDescriptionTransferCache(UserVisit userVisit, WorkflowControl workflowControl) {
-        super(userVisit, workflowControl);
+    public WorkflowDestinationDescriptionTransferCache(WorkflowControl workflowControl) {
+        super(workflowControl);
     }
     
-    public WorkflowDestinationDescriptionTransfer getWorkflowDestinationDescriptionTransfer(WorkflowDestinationDescription workflowDestinationDescription) {
+    public WorkflowDestinationDescriptionTransfer getWorkflowDestinationDescriptionTransfer(UserVisit userVisit, WorkflowDestinationDescription workflowDestinationDescription) {
         var workflowDestinationDescriptionTransfer = get(workflowDestinationDescription);
         
         if(workflowDestinationDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class WorkflowDestinationDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, workflowDestinationDescription.getLanguage());
             
             workflowDestinationDescriptionTransfer = new WorkflowDestinationDescriptionTransfer(languageTransfer, workflowDestinationTransfer, workflowDestinationDescription.getDescription());
-            put(workflowDestinationDescription, workflowDestinationDescriptionTransfer);
+            put(userVisit, workflowDestinationDescription, workflowDestinationDescriptionTransfer);
         }
         
         return workflowDestinationDescriptionTransfer;

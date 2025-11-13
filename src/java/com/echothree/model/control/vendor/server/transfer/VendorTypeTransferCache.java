@@ -37,13 +37,13 @@ public class VendorTypeTransferCache
     TermControl termControl = Session.getModelController(TermControl.class);
 
     /** Creates a new instance of VendorTypeTransferCache */
-    public VendorTypeTransferCache(UserVisit userVisit, VendorControl vendorControl) {
-        super(userVisit, vendorControl);
+    public VendorTypeTransferCache(VendorControl vendorControl) {
+        super(vendorControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public VendorTypeTransfer getVendorTypeTransfer(VendorType vendorType) {
+    public VendorTypeTransfer getVendorTypeTransfer(UserVisit userVisit, VendorType vendorType) {
         var vendorTypeTransfer = get(vendorType);
         
         if(vendorTypeTransfer == null) {
@@ -68,12 +68,12 @@ public class VendorTypeTransferCache
             var defaultReferenceValidationPattern = vendorTypeDetail.getDefaultReferenceValidationPattern();
             var isDefault = vendorTypeDetail.getIsDefault();
             var sortOrder = vendorTypeDetail.getSortOrder();
-            var description = vendorControl.getBestVendorTypeDescription(vendorType, getLanguage());
+            var description = vendorControl.getBestVendorTypeDescription(vendorType, getLanguage(userVisit));
             
             vendorTypeTransfer = new VendorTypeTransfer(vendorTypeName, defaultTermTransfer, defaultFreeOnBoardTransfer, defaultCancellationPolicyTransfer, defaultReturnPolicyTransfer,
                     defaultApGlAccountTransfer, defaultHoldUntilComplete, defaultAllowBackorders, defaultAllowSubstitutions, defaultAllowCombiningShipments,
                     defaultRequireReference, defaultAllowReferenceDuplicates, defaultReferenceValidationPattern, isDefault, sortOrder, description);
-            put(vendorType, vendorTypeTransfer);
+            put(userVisit, vendorType, vendorTypeTransfer);
         }
         
         return vendorTypeTransfer;

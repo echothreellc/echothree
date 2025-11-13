@@ -25,20 +25,20 @@ public class LocationDescriptionTransferCache
         extends BaseWarehouseDescriptionTransferCache<LocationDescription, LocationDescriptionTransfer> {
     
     /** Creates a new instance of LocationDescriptionTransferCache */
-    public LocationDescriptionTransferCache(UserVisit userVisit, WarehouseControl warehouseControl) {
-        super(userVisit, warehouseControl);
+    public LocationDescriptionTransferCache(WarehouseControl warehouseControl) {
+        super(warehouseControl);
     }
     
-    public LocationDescriptionTransfer getLocationDescriptionTransfer(LocationDescription locationDescription) {
+    public LocationDescriptionTransfer getLocationDescriptionTransfer(UserVisit userVisit, LocationDescription locationDescription) {
         var locationDescriptionTransfer = get(locationDescription);
         
         if(locationDescriptionTransfer == null) {
-            var locationTransferCache = warehouseControl.getWarehouseTransferCaches(userVisit).getLocationTransferCache();
-            var locationTransfer = locationTransferCache.getLocationTransfer(locationDescription.getLocation());
+            var locationTransferCache = warehouseControl.getWarehouseTransferCaches().getLocationTransferCache();
+            var locationTransfer = locationTransferCache.getLocationTransfer(userVisit, locationDescription.getLocation());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, locationDescription.getLanguage());
             
             locationDescriptionTransfer = new LocationDescriptionTransfer(languageTransfer, locationTransfer, locationDescription.getDescription());
-            put(locationDescription, locationDescriptionTransfer);
+            put(userVisit, locationDescription, locationDescriptionTransfer);
         }
         
         return locationDescriptionTransfer;

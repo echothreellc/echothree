@@ -29,13 +29,13 @@ public class CommunicationEventRoleTransferCache
     PartyControl partyControl;
     
     /** Creates a new instance of CommunicationEventRoleTransferCache */
-    public CommunicationEventRoleTransferCache(UserVisit userVisit, CommunicationControl communicationControl) {
-        super(userVisit, communicationControl);
+    public CommunicationEventRoleTransferCache(CommunicationControl communicationControl) {
+        super(communicationControl);
         
         partyControl = Session.getModelController(PartyControl.class);
     }
     
-    public CommunicationEventRoleTransfer getCommunicationEventRoleTransfer(CommunicationEventRole communicationEventRole) {
+    public CommunicationEventRoleTransfer getCommunicationEventRoleTransfer(UserVisit userVisit, CommunicationEventRole communicationEventRole) {
         var communicationEventRoleTransfer = get(communicationEventRole);
         
         if(communicationEventRoleTransfer == null) {
@@ -47,7 +47,7 @@ public class CommunicationEventRoleTransferCache
             
             communicationEventRoleTransfer = new CommunicationEventRoleTransfer(communicationEvent, party,
                     communicationEventRoleType);
-            put(communicationEventRole, communicationEventRoleTransfer);
+            put(userVisit, communicationEventRole, communicationEventRoleTransfer);
         }
         
         return communicationEventRoleTransfer;

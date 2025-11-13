@@ -28,21 +28,21 @@ public class CurrencyDescriptionTransferCache
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of CurrencyDescriptionTransferCache */
-    public CurrencyDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public CurrencyDescriptionTransferCache() {
+        super();
     }
     
     @Override
-    public CurrencyDescriptionTransfer getTransfer(CurrencyDescription currencyDescription) {
+    public CurrencyDescriptionTransfer getTransfer(UserVisit userVisit, CurrencyDescription currencyDescription) {
         var currencyDescriptionTransfer = get(currencyDescription);
         
         if(currencyDescriptionTransfer == null) {
-            var currencyTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getCurrencyTransferCache();
-            var currencyTransfer = currencyTransferCache.getTransfer(currencyDescription.getCurrency());
+            var currencyTransferCache = accountingControl.getAccountingTransferCaches().getCurrencyTransferCache();
+            var currencyTransfer = currencyTransferCache.getTransfer(userVisit, currencyDescription.getCurrency());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, currencyDescription.getLanguage());
             
             currencyDescriptionTransfer = new CurrencyDescriptionTransfer(languageTransfer, currencyTransfer, currencyDescription.getDescription());
-            put(currencyDescription, currencyDescriptionTransfer);
+            put(userVisit, currencyDescription, currencyDescriptionTransfer);
         }
         
         return currencyDescriptionTransfer;

@@ -33,50 +33,50 @@ public class CommentTransferCaches
     protected CommentUsageTransferCache commentUsageTransferCache;
     
     /** Creates a new instance of CommentTransferCaches */
-    public CommentTransferCaches(UserVisit userVisit, CommentControl commentControl) {
-        super(userVisit);
+    public CommentTransferCaches(CommentControl commentControl) {
+        super();
         
         this.commentControl = commentControl;
     }
     
     public CommentTypeTransferCache getCommentTypeTransferCache() {
         if(commentTypeTransferCache == null)
-            commentTypeTransferCache = new CommentTypeTransferCache(userVisit, commentControl);
+            commentTypeTransferCache = new CommentTypeTransferCache(commentControl);
         
         return commentTypeTransferCache;
     }
     
     public CommentTypeDescriptionTransferCache getCommentTypeDescriptionTransferCache() {
         if(commentTypeDescriptionTransferCache == null)
-            commentTypeDescriptionTransferCache = new CommentTypeDescriptionTransferCache(userVisit, commentControl);
+            commentTypeDescriptionTransferCache = new CommentTypeDescriptionTransferCache(commentControl);
         
         return commentTypeDescriptionTransferCache;
     }
     
     public CommentUsageTypeTransferCache getCommentUsageTypeTransferCache() {
         if(commentUsageTypeTransferCache == null)
-            commentUsageTypeTransferCache = new CommentUsageTypeTransferCache(userVisit, commentControl);
+            commentUsageTypeTransferCache = new CommentUsageTypeTransferCache(commentControl);
         
         return commentUsageTypeTransferCache;
     }
     
     public CommentUsageTypeDescriptionTransferCache getCommentUsageTypeDescriptionTransferCache() {
         if(commentUsageTypeDescriptionTransferCache == null)
-            commentUsageTypeDescriptionTransferCache = new CommentUsageTypeDescriptionTransferCache(userVisit, commentControl);
+            commentUsageTypeDescriptionTransferCache = new CommentUsageTypeDescriptionTransferCache(commentControl);
         
         return commentUsageTypeDescriptionTransferCache;
     }
     
     public CommentTransferCache getCommentTransferCache() {
         if(commentTransferCache == null)
-            commentTransferCache = new CommentTransferCache(userVisit, commentControl);
+            commentTransferCache = new CommentTransferCache(commentControl);
         
         return commentTransferCache;
     }
     
     public CommentUsageTransferCache getCommentUsageTransferCache() {
         if(commentUsageTransferCache == null)
-            commentUsageTransferCache = new CommentUsageTransferCache(userVisit, commentControl);
+            commentUsageTransferCache = new CommentUsageTransferCache(commentControl);
         
         return commentUsageTransferCache;
     }

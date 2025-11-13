@@ -25,11 +25,11 @@ public class GeoCodeTypeDescriptionTransferCache
         extends BaseGeoDescriptionTransferCache<GeoCodeTypeDescription, GeoCodeTypeDescriptionTransfer> {
     
     /** Creates a new instance of GeoCodeTypeDescriptionTransferCache */
-    public GeoCodeTypeDescriptionTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
+    public GeoCodeTypeDescriptionTransferCache(GeoControl geoControl) {
+        super(geoControl);
     }
     
-    public GeoCodeTypeDescriptionTransfer getGeoCodeTypeDescriptionTransfer(GeoCodeTypeDescription geoCodeTypeDescription) {
+    public GeoCodeTypeDescriptionTransfer getGeoCodeTypeDescriptionTransfer(UserVisit userVisit, GeoCodeTypeDescription geoCodeTypeDescription) {
         var geoCodeTypeDescriptionTransfer = get(geoCodeTypeDescription);
         
         if(geoCodeTypeDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class GeoCodeTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, geoCodeTypeDescription.getLanguage());
             
             geoCodeTypeDescriptionTransfer = new GeoCodeTypeDescriptionTransfer(languageTransfer, geoCodeTypeTransfer, geoCodeTypeDescription.getDescription());
-            put(geoCodeTypeDescription, geoCodeTypeDescriptionTransfer);
+            put(userVisit, geoCodeTypeDescription, geoCodeTypeDescriptionTransfer);
         }
         
         return geoCodeTypeDescriptionTransfer;

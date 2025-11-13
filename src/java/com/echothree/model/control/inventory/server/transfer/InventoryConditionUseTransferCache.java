@@ -25,12 +25,12 @@ public class InventoryConditionUseTransferCache
         extends BaseInventoryTransferCache<InventoryConditionUse, InventoryConditionUseTransfer> {
     
     /** Creates a new instance of InventoryConditionUseTransferCache */
-    public InventoryConditionUseTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    public InventoryConditionUseTransferCache(InventoryControl inventoryControl) {
+        super(inventoryControl);
     }
     
     @Override
-    public InventoryConditionUseTransfer getTransfer(InventoryConditionUse inventoryConditionUse) {
+    public InventoryConditionUseTransfer getTransfer(UserVisit userVisit, InventoryConditionUse inventoryConditionUse) {
         var inventoryConditionUseTransfer = get(inventoryConditionUse);
         
         if(inventoryConditionUseTransfer == null) {
@@ -41,7 +41,7 @@ public class InventoryConditionUseTransferCache
             var isDefault = inventoryConditionUse.getIsDefault();
             
             inventoryConditionUseTransfer = new InventoryConditionUseTransfer(inventoryConditionUseType, inventoryCondition, isDefault);
-            put(inventoryConditionUse, inventoryConditionUseTransfer);
+            put(userVisit, inventoryConditionUse, inventoryConditionUseTransfer);
         }
         
         return inventoryConditionUseTransfer;

@@ -25,13 +25,13 @@ public class CancellationReasonTransferCache
         extends BaseCancellationPolicyTransferCache<CancellationReason, CancellationReasonTransfer> {
     
     /** Creates a new instance of CancellationReasonTransferCache */
-    public CancellationReasonTransferCache(UserVisit userVisit, CancellationPolicyControl cancellationPolicyControl) {
-        super(userVisit, cancellationPolicyControl);
+    public CancellationReasonTransferCache(CancellationPolicyControl cancellationPolicyControl) {
+        super(cancellationPolicyControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public CancellationReasonTransfer getCancellationReasonTransfer(CancellationReason cancellationReason) {
+    public CancellationReasonTransfer getCancellationReasonTransfer(UserVisit userVisit, CancellationReason cancellationReason) {
         var cancellationReasonTransfer = get(cancellationReason);
         
         if(cancellationReasonTransfer == null) {
@@ -40,10 +40,10 @@ public class CancellationReasonTransferCache
             var cancellationReasonName = cancellationReasonDetail.getCancellationReasonName();
             var isDefault = cancellationReasonDetail.getIsDefault();
             var sortOrder = cancellationReasonDetail.getSortOrder();
-            var description = cancellationPolicyControl.getBestCancellationReasonDescription(cancellationReason, getLanguage());
+            var description = cancellationPolicyControl.getBestCancellationReasonDescription(cancellationReason, getLanguage(userVisit));
             
             cancellationReasonTransfer = new CancellationReasonTransfer(cancellationKind, cancellationReasonName, isDefault, sortOrder, description);
-            put(cancellationReason, cancellationReasonTransfer);
+            put(userVisit, cancellationReason, cancellationReasonTransfer);
         }
         
         return cancellationReasonTransfer;

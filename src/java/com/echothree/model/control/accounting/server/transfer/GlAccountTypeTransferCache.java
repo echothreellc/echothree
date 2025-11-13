@@ -28,22 +28,22 @@ public class GlAccountTypeTransferCache
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of GlAccountTypeTransferCache */
-    public GlAccountTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public GlAccountTypeTransferCache() {
+        super();
     }
     
     @Override
-    public GlAccountTypeTransfer getTransfer(GlAccountType glAccountType) {
+    public GlAccountTypeTransfer getTransfer(UserVisit userVisit, GlAccountType glAccountType) {
         var glAccountTypeTransfer = get(glAccountType);
         
         if(glAccountTypeTransfer == null) {
             var glAccountTypeName = glAccountType.getGlAccountTypeName();
             var isDefault = glAccountType.getIsDefault();
             var sortOrder = glAccountType.getSortOrder();
-            var description = accountingControl.getBestGlAccountTypeDescription(glAccountType, getLanguage());
+            var description = accountingControl.getBestGlAccountTypeDescription(glAccountType, getLanguage(userVisit));
             
             glAccountTypeTransfer = new GlAccountTypeTransfer(glAccountTypeName, isDefault, sortOrder, description);
-            put(glAccountType, glAccountTypeTransfer);
+            put(userVisit, glAccountType, glAccountTypeTransfer);
         }
         return glAccountTypeTransfer;
     }

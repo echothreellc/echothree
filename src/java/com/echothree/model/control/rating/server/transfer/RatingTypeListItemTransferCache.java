@@ -25,13 +25,13 @@ public class RatingTypeListItemTransferCache
         extends BaseRatingTransferCache<RatingTypeListItem, RatingTypeListItemTransfer> {
     
     /** Creates a new instance of RatingTypeListItemTransferCache */
-    public RatingTypeListItemTransferCache(UserVisit userVisit, RatingControl ratingControl) {
-        super(userVisit, ratingControl);
+    public RatingTypeListItemTransferCache(RatingControl ratingControl) {
+        super(ratingControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public RatingTypeListItemTransfer getRatingTypeListItemTransfer(RatingTypeListItem ratingTypeListItem) {
+    public RatingTypeListItemTransfer getRatingTypeListItemTransfer(UserVisit userVisit, RatingTypeListItem ratingTypeListItem) {
         var ratingTypeListItemTransfer = get(ratingTypeListItem);
         
         if(ratingTypeListItemTransfer == null) {
@@ -40,10 +40,10 @@ public class RatingTypeListItemTransferCache
             var ratingTypeListItemName = ratingTypeListItemDetail.getRatingTypeListItemName();
             var isDefault = ratingTypeListItemDetail.getIsDefault();
             var sortOrder = ratingTypeListItemDetail.getSortOrder();
-            var description = ratingControl.getBestRatingTypeListItemDescription(ratingTypeListItem, getLanguage());
+            var description = ratingControl.getBestRatingTypeListItemDescription(ratingTypeListItem, getLanguage(userVisit));
             
             ratingTypeListItemTransfer = new RatingTypeListItemTransfer(ratingType, ratingTypeListItemName, isDefault, sortOrder, description);
-            put(ratingTypeListItem, ratingTypeListItemTransfer);
+            put(userVisit, ratingTypeListItem, ratingTypeListItemTransfer);
         }
         
         return ratingTypeListItemTransfer;

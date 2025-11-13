@@ -25,20 +25,20 @@ public class MessageDescriptionTransferCache
         extends BaseMessageDescriptionTransferCache<MessageDescription, MessageDescriptionTransfer> {
     
     /** Creates a new instance of MessageDescriptionTransferCache */
-    public MessageDescriptionTransferCache(UserVisit userVisit, MessageControl messageControl) {
-        super(userVisit, messageControl);
+    public MessageDescriptionTransferCache(MessageControl messageControl) {
+        super(messageControl);
     }
     
-    public MessageDescriptionTransfer getMessageDescriptionTransfer(MessageDescription messageDescription) {
+    public MessageDescriptionTransfer getMessageDescriptionTransfer(UserVisit userVisit, MessageDescription messageDescription) {
         var messageDescriptionTransfer = get(messageDescription);
         
         if(messageDescriptionTransfer == null) {
-            var messageTransferCache = messageControl.getMessageTransferCaches(userVisit).getMessageTransferCache();
-            var messageTransfer = messageTransferCache.getMessageTransfer(messageDescription.getMessage());
+            var messageTransferCache = messageControl.getMessageTransferCaches().getMessageTransferCache();
+            var messageTransfer = messageTransferCache.getMessageTransfer(userVisit, messageDescription.getMessage());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, messageDescription.getLanguage());
             
             messageDescriptionTransfer = new MessageDescriptionTransfer(languageTransfer, messageTransfer, messageDescription.getDescription());
-            put(messageDescription, messageDescriptionTransfer);
+            put(userVisit, messageDescription, messageDescriptionTransfer);
         }
         
         return messageDescriptionTransfer;

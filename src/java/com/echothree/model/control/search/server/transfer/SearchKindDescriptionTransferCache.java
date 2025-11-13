@@ -25,11 +25,11 @@ public class SearchKindDescriptionTransferCache
         extends BaseSearchDescriptionTransferCache<SearchKindDescription, SearchKindDescriptionTransfer> {
     
     /** Creates a new instance of SearchKindDescriptionTransferCache */
-    public SearchKindDescriptionTransferCache(UserVisit userVisit, SearchControl searchControl) {
-        super(userVisit, searchControl);
+    public SearchKindDescriptionTransferCache(SearchControl searchControl) {
+        super(searchControl);
     }
     
-    public SearchKindDescriptionTransfer getSearchKindDescriptionTransfer(SearchKindDescription searchKindDescription) {
+    public SearchKindDescriptionTransfer getSearchKindDescriptionTransfer(UserVisit userVisit, SearchKindDescription searchKindDescription) {
         var searchKindDescriptionTransfer = get(searchKindDescription);
         
         if(searchKindDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class SearchKindDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, searchKindDescription.getLanguage());
             
             searchKindDescriptionTransfer = new SearchKindDescriptionTransfer(languageTransfer, searchKindTransfer, searchKindDescription.getDescription());
-            put(searchKindDescription, searchKindDescriptionTransfer);
+            put(userVisit, searchKindDescription, searchKindDescriptionTransfer);
         }
         
         return searchKindDescriptionTransfer;

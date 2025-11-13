@@ -25,13 +25,13 @@ public class InvoiceLineTypeTransferCache
         extends BaseInvoiceTransferCache<InvoiceLineType, InvoiceLineTypeTransfer> {
     
     /** Creates a new instance of InvoiceLineTypeTransferCache */
-    public InvoiceLineTypeTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
-        super(userVisit, invoiceControl);
+    public InvoiceLineTypeTransferCache(InvoiceControl invoiceControl) {
+        super(invoiceControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public InvoiceLineTypeTransfer getInvoiceLineTypeTransfer(InvoiceLineType invoiceLineType) {
+    public InvoiceLineTypeTransfer getInvoiceLineTypeTransfer(UserVisit userVisit, InvoiceLineType invoiceLineType) {
         var invoiceLineTypeTransfer = get(invoiceLineType);
         
         if(invoiceLineTypeTransfer == null) {
@@ -39,14 +39,14 @@ public class InvoiceLineTypeTransferCache
             var invoiceType = invoiceControl.getInvoiceTypeTransfer(userVisit, invoiceLineTypeDetail.getInvoiceType());
             var invoiceLineTypeName = invoiceLineTypeDetail.getInvoiceLineTypeName();
             var parentInvoiceLineType = invoiceLineTypeDetail.getParentInvoiceLineType();
-            var parentInvoiceLineTypeTransfer = parentInvoiceLineType == null? null: getInvoiceLineTypeTransfer(parentInvoiceLineType);
+            var parentInvoiceLineTypeTransfer = parentInvoiceLineType == null ? null : getInvoiceLineTypeTransfer(userVisit, parentInvoiceLineType);
             var isDefault = invoiceLineTypeDetail.getIsDefault();
             var sortOrder = invoiceLineTypeDetail.getSortOrder();
-            var description = invoiceControl.getBestInvoiceLineTypeDescription(invoiceLineType, getLanguage());
+            var description = invoiceControl.getBestInvoiceLineTypeDescription(invoiceLineType, getLanguage(userVisit));
             
             invoiceLineTypeTransfer = new InvoiceLineTypeTransfer(invoiceType, invoiceLineTypeName, parentInvoiceLineTypeTransfer,
                     isDefault, sortOrder, description);
-            put(invoiceLineType, invoiceLineTypeTransfer);
+            put(userVisit, invoiceLineType, invoiceLineTypeTransfer);
         }
         
         return invoiceLineTypeTransfer;

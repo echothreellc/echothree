@@ -25,11 +25,11 @@ public class WarehouseTypeDescriptionTransferCache
         extends BaseWarehouseDescriptionTransferCache<WarehouseTypeDescription, WarehouseTypeDescriptionTransfer> {
 
     /** Creates a new instance of WarehouseTypeDescriptionTransferCache */
-    public WarehouseTypeDescriptionTransferCache(UserVisit userVisit, WarehouseControl warehouseControl) {
-        super(userVisit, warehouseControl);
+    public WarehouseTypeDescriptionTransferCache(WarehouseControl warehouseControl) {
+        super(warehouseControl);
     }
 
-    public WarehouseTypeDescriptionTransfer getTransfer(WarehouseTypeDescription warehouseTypeDescription) {
+    public WarehouseTypeDescriptionTransfer getTransfer(UserVisit userVisit, WarehouseTypeDescription warehouseTypeDescription) {
         var warehouseTypeDescriptionTransfer = get(warehouseTypeDescription);
         
         if(warehouseTypeDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class WarehouseTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, warehouseTypeDescription.getLanguage());
             
             warehouseTypeDescriptionTransfer = new WarehouseTypeDescriptionTransfer(languageTransfer, warehouseTypeTransfer, warehouseTypeDescription.getDescription());
-            put(warehouseTypeDescription, warehouseTypeDescriptionTransfer);
+            put(userVisit, warehouseTypeDescription, warehouseTypeDescriptionTransfer);
         }
         
         return warehouseTypeDescriptionTransfer;

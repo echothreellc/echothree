@@ -25,14 +25,14 @@ public class InventoryConditionTransferCache
         extends BaseInventoryTransferCache<InventoryCondition, InventoryConditionTransfer> {
     
     /** Creates a new instance of InventoryConditionTransferCache */
-    public InventoryConditionTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    public InventoryConditionTransferCache(InventoryControl inventoryControl) {
+        super(inventoryControl);
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public InventoryConditionTransfer getTransfer(InventoryCondition inventoryCondition) {
+    public InventoryConditionTransfer getTransfer(UserVisit userVisit, InventoryCondition inventoryCondition) {
         var inventoryConditionTransfer = get(inventoryCondition);
         
         if(inventoryConditionTransfer == null) {
@@ -40,10 +40,10 @@ public class InventoryConditionTransferCache
             var inventoryConditionName = inventoryConditionDetail.getInventoryConditionName();
             var isDefault = inventoryConditionDetail.getIsDefault();
             var sortOrder = inventoryConditionDetail.getSortOrder();
-            var description = inventoryControl.getBestInventoryConditionDescription(inventoryCondition, getLanguage());
+            var description = inventoryControl.getBestInventoryConditionDescription(inventoryCondition, getLanguage(userVisit));
             
             inventoryConditionTransfer = new InventoryConditionTransfer(inventoryConditionName, isDefault, sortOrder, description);
-            put(inventoryCondition, inventoryConditionTransfer);
+            put(userVisit, inventoryCondition, inventoryConditionTransfer);
         }
         
         return inventoryConditionTransfer;

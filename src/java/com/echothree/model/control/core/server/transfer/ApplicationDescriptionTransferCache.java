@@ -28,11 +28,11 @@ public class ApplicationDescriptionTransferCache
     ApplicationControl applicationControl = Session.getModelController(ApplicationControl.class);
 
     /** Creates a new instance of ApplicationDescriptionTransferCache */
-    public ApplicationDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public ApplicationDescriptionTransferCache() {
+        super();
     }
     
-    public ApplicationDescriptionTransfer getApplicationDescriptionTransfer(ApplicationDescription applicationDescription) {
+    public ApplicationDescriptionTransfer getApplicationDescriptionTransfer(UserVisit userVisit, ApplicationDescription applicationDescription) {
         var applicationDescriptionTransfer = get(applicationDescription);
         
         if(applicationDescriptionTransfer == null) {
@@ -40,7 +40,7 @@ public class ApplicationDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, applicationDescription.getLanguage());
             
             applicationDescriptionTransfer = new ApplicationDescriptionTransfer(languageTransfer, applicationTransfer, applicationDescription.getDescription());
-            put(applicationDescription, applicationDescriptionTransfer);
+            put(userVisit, applicationDescription, applicationDescriptionTransfer);
         }
         return applicationDescriptionTransfer;
     }

@@ -31,13 +31,13 @@ public class CommunicationEventTransferCache
     DocumentControl documentControl = Session.getModelController(DocumentControl.class);
     
     /** Creates a new instance of CommunicationEventTransferCache */
-    public CommunicationEventTransferCache(UserVisit userVisit, CommunicationControl communicationControl) {
-        super(userVisit, communicationControl);
+    public CommunicationEventTransferCache(CommunicationControl communicationControl) {
+        super(communicationControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public CommunicationEventTransfer getCommunicationEventTransfer(CommunicationEvent communicationEvent) {
+    public CommunicationEventTransfer getCommunicationEventTransfer(UserVisit userVisit, CommunicationEvent communicationEvent) {
         var communicationEventTransfer = get(communicationEvent);
         
         if(communicationEventTransfer == null) {
@@ -59,8 +59,8 @@ public class CommunicationEventTransferCache
             communicationEventTransfer = new CommunicationEventTransfer(communicationEventName, communicationEventTypeTransfer,
                     communicationSourceTransfer, communicationEventPurposeTransfer, originalCommunicationEventTransfer,
                     parentCommunicationEventTransfer, partyContactMechanismTransfer, documentTransfer);
-            put(communicationEvent, communicationEventTransfer);
-            setupOwnedWorkEfforts(communicationEvent, null, communicationEventTransfer);
+            put(userVisit, communicationEvent, communicationEventTransfer);
+            setupOwnedWorkEfforts(userVisit, communicationEvent, null, communicationEventTransfer);
         }
         
         return communicationEventTransfer;

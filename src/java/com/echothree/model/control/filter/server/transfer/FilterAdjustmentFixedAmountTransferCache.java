@@ -34,12 +34,12 @@ public class FilterAdjustmentFixedAmountTransferCache
     UomControl uomControl = Session.getModelController(UomControl.class);
 
     /** Creates a new instance of FilterAdjustmentFixedAmountTransferCache */
-    public FilterAdjustmentFixedAmountTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public FilterAdjustmentFixedAmountTransferCache() {
+        super();
     }
 
     @Override
-    public FilterAdjustmentFixedAmountTransfer getTransfer(FilterAdjustmentFixedAmount filterAdjustmentFixedAmount) {
+    public FilterAdjustmentFixedAmountTransfer getTransfer(UserVisit userVisit, FilterAdjustmentFixedAmount filterAdjustmentFixedAmount) {
         var filterAdjustmentFixedAmountTransfer = get(filterAdjustmentFixedAmount);
         
         if(filterAdjustmentFixedAmountTransfer == null) {
@@ -60,7 +60,7 @@ public class FilterAdjustmentFixedAmountTransferCache
             filterAdjustmentFixedAmountTransfer = new FilterAdjustmentFixedAmountTransfer(filterAdjustmentTransfer, unitOfMeasureTypeTransfer, currencyTransfer,
                     unformattedUnitAmount, unitAmount);
             
-            put(filterAdjustmentFixedAmount, filterAdjustmentFixedAmountTransfer);
+            put(userVisit, filterAdjustmentFixedAmount, filterAdjustmentFixedAmountTransfer);
         }
         
         return filterAdjustmentFixedAmountTransfer;

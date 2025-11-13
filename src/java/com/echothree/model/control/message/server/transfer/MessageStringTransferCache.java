@@ -29,13 +29,13 @@ public class MessageStringTransferCache
     PartyControl partyControl;
     
     /** Creates a new instance of MessageStringTransferCache */
-    public MessageStringTransferCache(UserVisit userVisit, MessageControl messageControl) {
-        super(userVisit, messageControl);
+    public MessageStringTransferCache(MessageControl messageControl) {
+        super(messageControl);
         
         partyControl = Session.getModelController(PartyControl.class);
     }
     
-    public MessageStringTransfer getMessageStringTransfer(MessageString messageString) {
+    public MessageStringTransfer getMessageStringTransfer(UserVisit userVisit, MessageString messageString) {
         var messageStringTransfer = get(messageString);
         
         if(messageStringTransfer == null) {
@@ -44,7 +44,7 @@ public class MessageStringTransferCache
             var string = messageString.getString();
             
             messageStringTransfer = new MessageStringTransfer(message, language, string);
-            put(messageString, messageStringTransfer);
+            put(userVisit, messageString, messageStringTransfer);
         }
         
         return messageStringTransfer;

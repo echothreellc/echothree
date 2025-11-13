@@ -48,155 +48,155 @@ public class ChainTransferCaches
     protected ChainActionChainActionSetTransferCache chainActionChainActionSetTransferCache;
     
     /** Creates a new instance of ChainTransferCaches */
-    public ChainTransferCaches(UserVisit userVisit, ChainControl chainControl) {
-        super(userVisit);
+    public ChainTransferCaches(ChainControl chainControl) {
+        super();
         
         this.chainControl = chainControl;
     }
     
     public ChainKindTransferCache getChainKindTransferCache() {
         if(chainKindTransferCache == null)
-            chainKindTransferCache = new ChainKindTransferCache(userVisit, chainControl);
+            chainKindTransferCache = new ChainKindTransferCache(chainControl);
 
         return chainKindTransferCache;
     }
 
     public ChainKindDescriptionTransferCache getChainKindDescriptionTransferCache() {
         if(chainKindDescriptionTransferCache == null)
-            chainKindDescriptionTransferCache = new ChainKindDescriptionTransferCache(userVisit, chainControl);
+            chainKindDescriptionTransferCache = new ChainKindDescriptionTransferCache(chainControl);
 
         return chainKindDescriptionTransferCache;
     }
 
     public ChainTypeTransferCache getChainTypeTransferCache() {
         if(chainTypeTransferCache == null)
-            chainTypeTransferCache = new ChainTypeTransferCache(userVisit, chainControl);
+            chainTypeTransferCache = new ChainTypeTransferCache(chainControl);
 
         return chainTypeTransferCache;
     }
 
     public ChainTypeDescriptionTransferCache getChainTypeDescriptionTransferCache() {
         if(chainTypeDescriptionTransferCache == null)
-            chainTypeDescriptionTransferCache = new ChainTypeDescriptionTransferCache(userVisit, chainControl);
+            chainTypeDescriptionTransferCache = new ChainTypeDescriptionTransferCache(chainControl);
 
         return chainTypeDescriptionTransferCache;
     }
 
     public ChainTransferCache getChainTransferCache() {
         if(chainTransferCache == null)
-            chainTransferCache = new ChainTransferCache(userVisit, chainControl);
+            chainTransferCache = new ChainTransferCache(chainControl);
         
         return chainTransferCache;
     }
     
     public ChainDescriptionTransferCache getChainDescriptionTransferCache() {
         if(chainDescriptionTransferCache == null)
-            chainDescriptionTransferCache = new ChainDescriptionTransferCache(userVisit, chainControl);
+            chainDescriptionTransferCache = new ChainDescriptionTransferCache(chainControl);
         
         return chainDescriptionTransferCache;
     }
     
     public ChainEntityRoleTypeTransferCache getChainEntityRoleTypeTransferCache() {
         if(chainEntityRoleTypeTransferCache == null)
-            chainEntityRoleTypeTransferCache = new ChainEntityRoleTypeTransferCache(userVisit, chainControl);
+            chainEntityRoleTypeTransferCache = new ChainEntityRoleTypeTransferCache(chainControl);
         
         return chainEntityRoleTypeTransferCache;
     }
     
     public ChainEntityRoleTypeDescriptionTransferCache getChainEntityRoleTypeDescriptionTransferCache() {
         if(chainEntityRoleTypeDescriptionTransferCache == null)
-            chainEntityRoleTypeDescriptionTransferCache = new ChainEntityRoleTypeDescriptionTransferCache(userVisit, chainControl);
+            chainEntityRoleTypeDescriptionTransferCache = new ChainEntityRoleTypeDescriptionTransferCache(chainControl);
 
         return chainEntityRoleTypeDescriptionTransferCache;
     }
 
     public ChainInstanceTransferCache getChainInstanceTransferCache() {
         if(chainInstanceTransferCache == null)
-            chainInstanceTransferCache = new ChainInstanceTransferCache(userVisit, chainControl);
+            chainInstanceTransferCache = new ChainInstanceTransferCache(chainControl);
         
         return chainInstanceTransferCache;
     }
     
     public ChainInstanceEntityRoleTransferCache getChainInstanceEntityRoleTransferCache() {
         if(chainInstanceEntityRoleTransferCache == null)
-            chainInstanceEntityRoleTransferCache = new ChainInstanceEntityRoleTransferCache(userVisit, chainControl);
+            chainInstanceEntityRoleTransferCache = new ChainInstanceEntityRoleTransferCache(chainControl);
         
         return chainInstanceEntityRoleTransferCache;
     }
     
     public ChainActionTypeTransferCache getChainActionTypeTransferCache() {
         if(chainActionTypeTransferCache == null)
-            chainActionTypeTransferCache = new ChainActionTypeTransferCache(userVisit, chainControl);
+            chainActionTypeTransferCache = new ChainActionTypeTransferCache(chainControl);
 
         return chainActionTypeTransferCache;
     }
 
     public ChainActionTypeDescriptionTransferCache getChainActionTypeDescriptionTransferCache() {
         if(chainActionTypeDescriptionTransferCache == null)
-            chainActionTypeDescriptionTransferCache = new ChainActionTypeDescriptionTransferCache(userVisit, chainControl);
+            chainActionTypeDescriptionTransferCache = new ChainActionTypeDescriptionTransferCache(chainControl);
 
         return chainActionTypeDescriptionTransferCache;
     }
 
     public ChainActionTypeUseTransferCache getChainActionTypeUseTransferCache() {
         if(chainActionTypeUseTransferCache == null)
-            chainActionTypeUseTransferCache = new ChainActionTypeUseTransferCache(userVisit, chainControl);
+            chainActionTypeUseTransferCache = new ChainActionTypeUseTransferCache(chainControl);
         
         return chainActionTypeUseTransferCache;
     }
     
         public ChainActionSetDescriptionTransferCache getChainActionSetDescriptionTransferCache() {
         if(chainActionSetDescriptionTransferCache == null)
-            chainActionSetDescriptionTransferCache = new ChainActionSetDescriptionTransferCache(userVisit, chainControl);
+            chainActionSetDescriptionTransferCache = new ChainActionSetDescriptionTransferCache(chainControl);
         
         return chainActionSetDescriptionTransferCache;
     }
     
     public ChainActionDescriptionTransferCache getChainActionDescriptionTransferCache() {
         if(chainActionDescriptionTransferCache == null)
-            chainActionDescriptionTransferCache = new ChainActionDescriptionTransferCache(userVisit, chainControl);
+            chainActionDescriptionTransferCache = new ChainActionDescriptionTransferCache(chainControl);
         
         return chainActionDescriptionTransferCache;
     }
     
     public ChainActionSetTransferCache getChainActionSetTransferCache() {
         if(chainActionSetTransferCache == null)
-            chainActionSetTransferCache = new ChainActionSetTransferCache(userVisit, chainControl);
+            chainActionSetTransferCache = new ChainActionSetTransferCache(chainControl);
         
         return chainActionSetTransferCache;
     }
     
     public ChainActionTransferCache getChainActionTransferCache() {
         if(chainActionTransferCache == null)
-            chainActionTransferCache = new ChainActionTransferCache(userVisit, chainControl);
+            chainActionTransferCache = new ChainActionTransferCache(chainControl);
         
         return chainActionTransferCache;
     }
     
     public ChainInstanceStatusTransferCache getChainInstanceStatusTransferCache() {
         if(chainInstanceStatusTransferCache == null)
-            chainInstanceStatusTransferCache = new ChainInstanceStatusTransferCache(userVisit, chainControl);
+            chainInstanceStatusTransferCache = new ChainInstanceStatusTransferCache(chainControl);
         
         return chainInstanceStatusTransferCache;
     }
     
     public ChainActionLetterTransferCache getChainActionLetterTransferCache() {
         if(chainActionLetterTransferCache == null)
-            chainActionLetterTransferCache = new ChainActionLetterTransferCache(userVisit, chainControl);
+            chainActionLetterTransferCache = new ChainActionLetterTransferCache(chainControl);
         
         return chainActionLetterTransferCache;
     }
     
     public ChainActionSurveyTransferCache getChainActionSurveyTransferCache() {
         if(chainActionSurveyTransferCache == null)
-            chainActionSurveyTransferCache = new ChainActionSurveyTransferCache(userVisit, chainControl);
+            chainActionSurveyTransferCache = new ChainActionSurveyTransferCache(chainControl);
         
         return chainActionSurveyTransferCache;
     }
     
     public ChainActionChainActionSetTransferCache getChainActionChainActionSetTransferCache() {
         if(chainActionChainActionSetTransferCache == null)
-            chainActionChainActionSetTransferCache = new ChainActionChainActionSetTransferCache(userVisit, chainControl);
+            chainActionChainActionSetTransferCache = new ChainActionChainActionSetTransferCache(chainControl);
         
         return chainActionChainActionSetTransferCache;
     }

@@ -28,13 +28,13 @@ public class ServerTransferCache
     ServerControl serverControl = Session.getModelController(ServerControl.class);
 
     /** Creates a new instance of ServerTransferCache */
-    public ServerTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public ServerTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
 
-    public ServerTransfer getServerTransfer(Server server) {
+    public ServerTransfer getServerTransfer(UserVisit userVisit, Server server) {
         var serverTransfer = get(server);
 
         if(serverTransfer == null) {
@@ -42,10 +42,10 @@ public class ServerTransferCache
             var serverName = serverDetail.getServerName();
             var isDefault = serverDetail.getIsDefault();
             var sortOrder = serverDetail.getSortOrder();
-            var description = serverControl.getBestServerDescription(server, getLanguage());
+            var description = serverControl.getBestServerDescription(server, getLanguage(userVisit));
 
             serverTransfer = new ServerTransfer(serverName, isDefault, sortOrder, description);
-            put(server, serverTransfer);
+            put(userVisit, server, serverTransfer);
         }
 
         return serverTransfer;

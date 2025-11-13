@@ -29,11 +29,11 @@ public class EntityAliasTypeDescriptionTransferCache
     EntityAliasControl entityAliasControl = Session.getModelController(EntityAliasControl.class);
 
     /** Creates a new instance of EntityAliasTypeDescriptionTransferCache */
-    public EntityAliasTypeDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityAliasTypeDescriptionTransferCache() {
+        super();
     }
     
-    public EntityAliasTypeDescriptionTransfer getEntityAliasTypeDescriptionTransfer(EntityAliasTypeDescription entityAliasTypeDescription, EntityInstance entityInstance) {
+    public EntityAliasTypeDescriptionTransfer getEntityAliasTypeDescriptionTransfer(final UserVisit userVisit, final EntityAliasTypeDescription entityAliasTypeDescription, final EntityInstance entityInstance) {
         var entityAliasTypeDescriptionTransfer = get(entityAliasTypeDescription);
         
         if(entityAliasTypeDescriptionTransfer == null) {
@@ -41,7 +41,7 @@ public class EntityAliasTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, entityAliasTypeDescription.getLanguage());
             
             entityAliasTypeDescriptionTransfer = new EntityAliasTypeDescriptionTransfer(languageTransfer, entityAliasTypeTransfer, entityAliasTypeDescription.getDescription());
-            put(entityAliasTypeDescription, entityAliasTypeDescriptionTransfer);
+            put(userVisit, entityAliasTypeDescription, entityAliasTypeDescriptionTransfer);
         }
         return entityAliasTypeDescriptionTransfer;
     }

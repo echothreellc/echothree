@@ -34,9 +34,9 @@ public abstract class BaseTagControl
 
     private TagTransferCaches tagTransferCaches;
 
-    public TagTransferCaches getTagTransferCaches(UserVisit userVisit) {
+    public TagTransferCaches getTagTransferCaches() {
         if(tagTransferCaches == null) {
-            tagTransferCaches = new TagTransferCaches(userVisit);
+            tagTransferCaches = new TagTransferCaches();
         }
 
         return tagTransferCaches;

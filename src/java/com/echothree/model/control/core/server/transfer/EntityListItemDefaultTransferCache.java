@@ -29,11 +29,11 @@ public class EntityListItemDefaultTransferCache
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of EntityListItemDefaultTransferCache */
-    public EntityListItemDefaultTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityListItemDefaultTransferCache() {
+        super();
     }
     
-    public EntityListItemDefaultTransfer getEntityListItemDefaultTransfer(EntityListItemDefault entityListItemDefault) {
+    public EntityListItemDefaultTransfer getEntityListItemDefaultTransfer(UserVisit userVisit, EntityListItemDefault entityListItemDefault) {
         var entityListItemDefaultTransfer = get(entityListItemDefault);
         
         if(entityListItemDefaultTransfer == null) {
@@ -41,7 +41,7 @@ public class EntityListItemDefaultTransferCache
             var entityListItem = coreControl.getEntityListItemTransfer(userVisit, entityListItemDefault.getEntityListItem(), null);
             
             entityListItemDefaultTransfer = new EntityListItemDefaultTransfer(entityAttribute, entityListItem);
-            put(entityListItemDefault, entityListItemDefaultTransfer);
+            put(userVisit, entityListItemDefault, entityListItemDefaultTransfer);
         }
         
         return entityListItemDefaultTransfer;

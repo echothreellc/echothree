@@ -28,8 +28,8 @@ public abstract class BaseEmployeeTransferCache<K extends BaseEntity, V extends 
     EmployeeControl employeeControl;
     
     /** Creates a new instance of BaseEmployeeTransferCache */
-    protected BaseEmployeeTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit);
+    protected BaseEmployeeTransferCache(EmployeeControl employeeControl) {
+        super();
         
         this.employeeControl = employeeControl;
     }

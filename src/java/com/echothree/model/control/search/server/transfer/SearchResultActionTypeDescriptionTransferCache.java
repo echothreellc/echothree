@@ -25,11 +25,11 @@ public class SearchResultActionTypeDescriptionTransferCache
         extends BaseSearchDescriptionTransferCache<SearchResultActionTypeDescription, SearchResultActionTypeDescriptionTransfer> {
     
     /** Creates a new instance of SearchResultActionTypeDescriptionTransferCache */
-    public SearchResultActionTypeDescriptionTransferCache(UserVisit userVisit, SearchControl searchControl) {
-        super(userVisit, searchControl);
+    public SearchResultActionTypeDescriptionTransferCache(SearchControl searchControl) {
+        super(searchControl);
     }
     
-    public SearchResultActionTypeDescriptionTransfer getSearchResultActionTypeDescriptionTransfer(SearchResultActionTypeDescription searchResultActionTypeDescription) {
+    public SearchResultActionTypeDescriptionTransfer getSearchResultActionTypeDescriptionTransfer(UserVisit userVisit, SearchResultActionTypeDescription searchResultActionTypeDescription) {
         var searchResultActionTypeDescriptionTransfer = get(searchResultActionTypeDescription);
         
         if(searchResultActionTypeDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class SearchResultActionTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, searchResultActionTypeDescription.getLanguage());
             
             searchResultActionTypeDescriptionTransfer = new SearchResultActionTypeDescriptionTransfer(languageTransfer, searchResultActionTypeTransfer, searchResultActionTypeDescription.getDescription());
-            put(searchResultActionTypeDescription, searchResultActionTypeDescriptionTransfer);
+            put(userVisit, searchResultActionTypeDescription, searchResultActionTypeDescriptionTransfer);
         }
         return searchResultActionTypeDescriptionTransfer;
     }

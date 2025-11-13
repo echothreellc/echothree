@@ -25,14 +25,14 @@ public class ItemVolumeTypeTransferCache
         extends BaseItemTransferCache<ItemVolumeType, ItemVolumeTypeTransfer> {
     
     /** Creates a new instance of ItemVolumeTypeTransferCache */
-    public ItemVolumeTypeTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemVolumeTypeTransferCache(ItemControl itemControl) {
+        super(itemControl);
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public ItemVolumeTypeTransfer getTransfer(ItemVolumeType itemVolumeType) {
+    public ItemVolumeTypeTransfer getTransfer(UserVisit userVisit, ItemVolumeType itemVolumeType) {
         var itemVolumeTypeTransfer = get(itemVolumeType);
         
         if(itemVolumeTypeTransfer == null) {
@@ -40,11 +40,11 @@ public class ItemVolumeTypeTransferCache
             var itemVolumeTypeName = itemVolumeTypeDetail.getItemVolumeTypeName();
             var isDefault = itemVolumeTypeDetail.getIsDefault();
             var sortOrder = itemVolumeTypeDetail.getSortOrder();
-            var description = itemControl.getBestItemVolumeTypeDescription(itemVolumeType, getLanguage());
+            var description = itemControl.getBestItemVolumeTypeDescription(itemVolumeType, getLanguage(userVisit));
             
             itemVolumeTypeTransfer = new ItemVolumeTypeTransfer(itemVolumeTypeName, isDefault, sortOrder,
                     description);
-            put(itemVolumeType, itemVolumeTypeTransfer);
+            put(userVisit, itemVolumeType, itemVolumeTypeTransfer);
         }
         
         return itemVolumeTypeTransfer;

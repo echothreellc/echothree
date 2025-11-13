@@ -25,11 +25,11 @@ public class WorkEffortTypeDescriptionTransferCache
         extends BaseWorkEffortDescriptionTransferCache<WorkEffortTypeDescription, WorkEffortTypeDescriptionTransfer> {
     
     /** Creates a new instance of WorkEffortTypeDescriptionTransferCache */
-    public WorkEffortTypeDescriptionTransferCache(UserVisit userVisit, WorkEffortControl workEffortControl) {
-        super(userVisit, workEffortControl);
+    public WorkEffortTypeDescriptionTransferCache(WorkEffortControl workEffortControl) {
+        super(workEffortControl);
     }
     
-    public WorkEffortTypeDescriptionTransfer getWorkEffortTypeDescriptionTransfer(WorkEffortTypeDescription workEffortTypeDescription) {
+    public WorkEffortTypeDescriptionTransfer getWorkEffortTypeDescriptionTransfer(UserVisit userVisit, WorkEffortTypeDescription workEffortTypeDescription) {
         var workEffortTypeDescriptionTransfer = get(workEffortTypeDescription);
         
         if(workEffortTypeDescriptionTransfer == null) {
@@ -39,7 +39,7 @@ public class WorkEffortTypeDescriptionTransferCache
             
             workEffortTypeDescriptionTransfer = new WorkEffortTypeDescriptionTransfer(languageTransfer, workEffortTypeTransfer,
                     description);
-            put(workEffortTypeDescription, workEffortTypeDescriptionTransfer);
+            put(userVisit, workEffortTypeDescription, workEffortTypeDescriptionTransfer);
         }
         
         return workEffortTypeDescriptionTransfer;

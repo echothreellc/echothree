@@ -28,12 +28,12 @@ public abstract class BaseItemTransferCache<K extends BaseEntity, V extends Base
     ItemControl itemControl;
 
     /** Creates a new instance of BaseItemTransferCache */
-    protected BaseItemTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit);
+    protected BaseItemTransferCache(ItemControl itemControl) {
+        super();
 
         this.itemControl = itemControl;
     }
 
-    protected abstract V getTransfer(K key);
+    protected abstract V getTransfer(UserVisit userVisit, K key);
     
 }

@@ -98,9 +98,9 @@ public class UomControl
     
     private UomTransferCaches uomTransferCaches;
     
-    public UomTransferCaches getUomTransferCaches(UserVisit userVisit) {
+    public UomTransferCaches getUomTransferCaches() {
         if(uomTransferCaches == null) {
-            uomTransferCaches = new UomTransferCaches(userVisit, this);
+            uomTransferCaches = new UomTransferCaches(this);
         }
         
         return uomTransferCaches;
@@ -294,15 +294,15 @@ public class UomControl
     }
     
     public UnitOfMeasureKindTransfer getUnitOfMeasureKindTransfer(UserVisit userVisit, UnitOfMeasureKind unitOfMeasureKind) {
-        return getUomTransferCaches(userVisit).getUnitOfMeasureKindTransferCache().getUnitOfMeasureKindTransfer(unitOfMeasureKind);
+        return getUomTransferCaches().getUnitOfMeasureKindTransferCache().getUnitOfMeasureKindTransfer(userVisit, unitOfMeasureKind);
     }
     
     public List<UnitOfMeasureKindTransfer> getUnitOfMeasureKindTransfers(UserVisit userVisit, Collection<UnitOfMeasureKind> unitOfMeasureKinds) {
         List<UnitOfMeasureKindTransfer> unitOfMeasureKindTransfers = new ArrayList<>(unitOfMeasureKinds.size());
-        var unitOfMeasureKindTransferCache = getUomTransferCaches(userVisit).getUnitOfMeasureKindTransferCache();
+        var unitOfMeasureKindTransferCache = getUomTransferCaches().getUnitOfMeasureKindTransferCache();
         
         unitOfMeasureKinds.forEach((unitOfMeasureKind) ->
-                unitOfMeasureKindTransfers.add(unitOfMeasureKindTransferCache.getUnitOfMeasureKindTransfer(unitOfMeasureKind))
+                unitOfMeasureKindTransfers.add(unitOfMeasureKindTransferCache.getUnitOfMeasureKindTransfer(userVisit, unitOfMeasureKind))
         );
         
         return unitOfMeasureKindTransfers;
@@ -598,16 +598,16 @@ public class UomControl
     }
     
     public UnitOfMeasureKindDescriptionTransfer getUnitOfMeasureKindDescriptionTransfer(UserVisit userVisit, UnitOfMeasureKindDescription unitOfMeasureKindDescription) {
-        return getUomTransferCaches(userVisit).getUnitOfMeasureKindDescriptionTransferCache().getUnitOfMeasureKindDescriptionTransfer(unitOfMeasureKindDescription);
+        return getUomTransferCaches().getUnitOfMeasureKindDescriptionTransferCache().getUnitOfMeasureKindDescriptionTransfer(userVisit, unitOfMeasureKindDescription);
     }
     
     public List<UnitOfMeasureKindDescriptionTransfer> getUnitOfMeasureKindDescriptionTransfers(UserVisit userVisit, UnitOfMeasureKind unitOfMeasureKind) {
         var unitOfMeasureKindDescriptions = getUnitOfMeasureKindDescriptionsByUnitOfMeasureKind(unitOfMeasureKind);
         List<UnitOfMeasureKindDescriptionTransfer> unitOfMeasureKindDescriptionTransfers = new ArrayList<>(unitOfMeasureKindDescriptions.size());
-        var unitOfMeasureKindDescriptionTransferCache = getUomTransferCaches(userVisit).getUnitOfMeasureKindDescriptionTransferCache();
+        var unitOfMeasureKindDescriptionTransferCache = getUomTransferCaches().getUnitOfMeasureKindDescriptionTransferCache();
         
         unitOfMeasureKindDescriptions.forEach((unitOfMeasureKindDescription) ->
-                unitOfMeasureKindDescriptionTransfers.add(unitOfMeasureKindDescriptionTransferCache.getUnitOfMeasureKindDescriptionTransfer(unitOfMeasureKindDescription))
+                unitOfMeasureKindDescriptionTransfers.add(unitOfMeasureKindDescriptionTransferCache.getUnitOfMeasureKindDescriptionTransfer(userVisit, unitOfMeasureKindDescription))
         );
         
         return unitOfMeasureKindDescriptionTransfers;
@@ -841,15 +841,15 @@ public class UomControl
     }
     
     public UnitOfMeasureTypeTransfer getUnitOfMeasureTypeTransfer(UserVisit userVisit, UnitOfMeasureType unitOfMeasureType) {
-        return getUomTransferCaches(userVisit).getUnitOfMeasureTypeTransferCache().getUnitOfMeasureTypeTransfer(unitOfMeasureType);
+        return getUomTransferCaches().getUnitOfMeasureTypeTransferCache().getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureType);
     }
     
     public List<UnitOfMeasureTypeTransfer> getUnitOfMeasureTypeTransfers(UserVisit userVisit, Collection<UnitOfMeasureType> unitOfMeasureTypes) {
         List<UnitOfMeasureTypeTransfer> unitOfMeasureTypeTransfers = new ArrayList<>(unitOfMeasureTypes.size());
-        var unitOfMeasureTypeTransferCache = getUomTransferCaches(userVisit).getUnitOfMeasureTypeTransferCache();
+        var unitOfMeasureTypeTransferCache = getUomTransferCaches().getUnitOfMeasureTypeTransferCache();
         
         unitOfMeasureTypes.forEach((unitOfMeasureType) ->
-                unitOfMeasureTypeTransfers.add(unitOfMeasureTypeTransferCache.getUnitOfMeasureTypeTransfer(unitOfMeasureType))
+                unitOfMeasureTypeTransfers.add(unitOfMeasureTypeTransferCache.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureType))
         );
         
         return unitOfMeasureTypeTransfers;
@@ -1150,16 +1150,16 @@ public class UomControl
     }
     
     public UnitOfMeasureTypeDescriptionTransfer getUnitOfMeasureTypeDescriptionTransfer(UserVisit userVisit, UnitOfMeasureTypeDescription unitOfMeasureTypeDescription) {
-        return getUomTransferCaches(userVisit).getUnitOfMeasureTypeDescriptionTransferCache().getUnitOfMeasureTypeDescriptionTransfer(unitOfMeasureTypeDescription);
+        return getUomTransferCaches().getUnitOfMeasureTypeDescriptionTransferCache().getUnitOfMeasureTypeDescriptionTransfer(userVisit, unitOfMeasureTypeDescription);
     }
     
     public List<UnitOfMeasureTypeDescriptionTransfer> getUnitOfMeasureTypeDescriptionTransfers(UserVisit userVisit, UnitOfMeasureType unitOfMeasureType) {
         var unitOfMeasureTypeDescriptions = getUnitOfMeasureTypeDescriptionsByUnitOfMeasureType(unitOfMeasureType);
         List<UnitOfMeasureTypeDescriptionTransfer> unitOfMeasureTypeDescriptionTransfers = new ArrayList<>(unitOfMeasureTypeDescriptions.size());
-        var unitOfMeasureTypeDescriptionTransferCache = getUomTransferCaches(userVisit).getUnitOfMeasureTypeDescriptionTransferCache();
+        var unitOfMeasureTypeDescriptionTransferCache = getUomTransferCaches().getUnitOfMeasureTypeDescriptionTransferCache();
         
         unitOfMeasureTypeDescriptions.forEach((unitOfMeasureTypeDescription) ->
-                unitOfMeasureTypeDescriptionTransfers.add(unitOfMeasureTypeDescriptionTransferCache.getUnitOfMeasureTypeDescriptionTransfer(unitOfMeasureTypeDescription))
+                unitOfMeasureTypeDescriptionTransfers.add(unitOfMeasureTypeDescriptionTransferCache.getUnitOfMeasureTypeDescriptionTransfer(userVisit, unitOfMeasureTypeDescription))
         );
         
         return unitOfMeasureTypeDescriptionTransfers;
@@ -1259,7 +1259,7 @@ public class UomControl
     }
     
     public UnitOfMeasureTypeVolumeTransfer getUnitOfMeasureTypeVolumeTransfer(UserVisit userVisit, UnitOfMeasureTypeVolume unitOfMeasureTypeVolume) {
-        return unitOfMeasureTypeVolume == null? null: getUomTransferCaches(userVisit).getUnitOfMeasureTypeVolumeTransferCache().getUnitOfMeasureTypeVolumeTransfer(unitOfMeasureTypeVolume);
+        return unitOfMeasureTypeVolume == null? null: getUomTransferCaches().getUnitOfMeasureTypeVolumeTransferCache().getUnitOfMeasureTypeVolumeTransfer(userVisit, unitOfMeasureTypeVolume);
     }
     
     public UnitOfMeasureTypeVolumeTransfer getUnitOfMeasureTypeVolumeTransfer(UserVisit userVisit, UnitOfMeasureType unitOfMeasureType) {
@@ -1357,7 +1357,7 @@ public class UomControl
     }
     
     public UnitOfMeasureTypeWeightTransfer getUnitOfMeasureTypeWeightTransfer(UserVisit userVisit, UnitOfMeasureTypeWeight unitOfMeasureTypeWeight) {
-        return unitOfMeasureTypeWeight == null? null: getUomTransferCaches(userVisit).getUnitOfMeasureTypeWeightTransferCache().getUnitOfMeasureTypeWeightTransfer(unitOfMeasureTypeWeight);
+        return unitOfMeasureTypeWeight == null? null: getUomTransferCaches().getUnitOfMeasureTypeWeightTransferCache().getUnitOfMeasureTypeWeightTransfer(userVisit, unitOfMeasureTypeWeight);
     }
     
     public UnitOfMeasureTypeWeightTransfer getUnitOfMeasureTypeWeightTransfer(UserVisit userVisit, UnitOfMeasureType unitOfMeasureType) {
@@ -1600,16 +1600,16 @@ public class UomControl
     
     public UnitOfMeasureEquivalentTransfer getUnitOfMeasureEquivalentTransfer(UserVisit userVisit,
             UnitOfMeasureEquivalent unitOfMeasureEquivalent) {
-        return getUomTransferCaches(userVisit).getUnitOfMeasureEquivalentTransferCache().getUnitOfMeasureEquivalentTransfer(unitOfMeasureEquivalent);
+        return getUomTransferCaches().getUnitOfMeasureEquivalentTransferCache().getUnitOfMeasureEquivalentTransfer(userVisit, unitOfMeasureEquivalent);
     }
     
     private List<UnitOfMeasureEquivalentTransfer> getUnitOfMeasureEquivalentTransfers(final UserVisit userVisit,
             final List<UnitOfMeasureEquivalent> unitOfMeasureEquivalents) {
         List<UnitOfMeasureEquivalentTransfer> unitOfMeasureEquivalentTransfers = new ArrayList<>(unitOfMeasureEquivalents.size());
-        var unitOfMeasureEquivalentTransferCache = getUomTransferCaches(userVisit).getUnitOfMeasureEquivalentTransferCache();
+        var unitOfMeasureEquivalentTransferCache = getUomTransferCaches().getUnitOfMeasureEquivalentTransferCache();
         
         unitOfMeasureEquivalents.forEach((unitOfMeasureEquivalent) ->
-                unitOfMeasureEquivalentTransfers.add(unitOfMeasureEquivalentTransferCache.getUnitOfMeasureEquivalentTransfer(unitOfMeasureEquivalent))
+                unitOfMeasureEquivalentTransfers.add(unitOfMeasureEquivalentTransferCache.getUnitOfMeasureEquivalentTransfer(userVisit, unitOfMeasureEquivalent))
         );
         
         return unitOfMeasureEquivalentTransfers;
@@ -1771,15 +1771,15 @@ public class UomControl
     
     public UnitOfMeasureKindUseTypeTransfer getUnitOfMeasureKindUseTypeTransfer(UserVisit userVisit,
             UnitOfMeasureKindUseType unitOfMeasureKindUseType) {
-        return getUomTransferCaches(userVisit).getUnitOfMeasureKindUseTypeTransferCache().getUnitOfMeasureKindUseTypeTransfer(unitOfMeasureKindUseType);
+        return getUomTransferCaches().getUnitOfMeasureKindUseTypeTransferCache().getUnitOfMeasureKindUseTypeTransfer(userVisit, unitOfMeasureKindUseType);
     }
     
     public List<UnitOfMeasureKindUseTypeTransfer> getUnitOfMeasureKindUseTypeTransfers(UserVisit userVisit, Collection<UnitOfMeasureKindUseType> unitOfMeasureKindUseTypes) {
         List<UnitOfMeasureKindUseTypeTransfer> unitOfMeasureKindUseTypeTransfers = new ArrayList<>(unitOfMeasureKindUseTypes.size());
-        var unitOfMeasureKindUseTypeTransferCache = getUomTransferCaches(userVisit).getUnitOfMeasureKindUseTypeTransferCache();
+        var unitOfMeasureKindUseTypeTransferCache = getUomTransferCaches().getUnitOfMeasureKindUseTypeTransferCache();
         
         unitOfMeasureKindUseTypes.forEach((unitOfMeasureKindUseType) ->
-                unitOfMeasureKindUseTypeTransfers.add(unitOfMeasureKindUseTypeTransferCache.getUnitOfMeasureKindUseTypeTransfer(unitOfMeasureKindUseType))
+                unitOfMeasureKindUseTypeTransfers.add(unitOfMeasureKindUseTypeTransferCache.getUnitOfMeasureKindUseTypeTransfer(userVisit, unitOfMeasureKindUseType))
         );
         
         return unitOfMeasureKindUseTypeTransfers;
@@ -2115,16 +2115,16 @@ public class UomControl
     }
     
     public UnitOfMeasureKindUseTransfer getUnitOfMeasureKindUseTransfer(UserVisit userVisit, UnitOfMeasureKindUse unitOfMeasureKindUse) {
-        return unitOfMeasureKindUse == null? null: getUomTransferCaches(userVisit).getUnitOfMeasureKindUseTransferCache().getUnitOfMeasureKindUseTransfer(unitOfMeasureKindUse);
+        return unitOfMeasureKindUse == null? null: getUomTransferCaches().getUnitOfMeasureKindUseTransferCache().getUnitOfMeasureKindUseTransfer(userVisit, unitOfMeasureKindUse);
     }
     
     public List<UnitOfMeasureKindUseTransfer> getUnitOfMeasureKindUseTransfers(final UserVisit userVisit,
             final Collection<UnitOfMeasureKindUse> unitOfMeasureKindUses) {
         List<UnitOfMeasureKindUseTransfer> unitOfMeasureKindUseTransfers = new ArrayList<>(unitOfMeasureKindUses.size());
-        var unitOfMeasureKindUseTransferCache = getUomTransferCaches(userVisit).getUnitOfMeasureKindUseTransferCache();
+        var unitOfMeasureKindUseTransferCache = getUomTransferCaches().getUnitOfMeasureKindUseTransferCache();
         
         unitOfMeasureKindUses.forEach((unitOfMeasureKindUse) ->
-                unitOfMeasureKindUseTransfers.add(unitOfMeasureKindUseTransferCache.getUnitOfMeasureKindUseTransfer(unitOfMeasureKindUse))
+                unitOfMeasureKindUseTransfers.add(unitOfMeasureKindUseTransferCache.getUnitOfMeasureKindUseTransfer(userVisit, unitOfMeasureKindUse))
         );
         
         return unitOfMeasureKindUseTransfers;

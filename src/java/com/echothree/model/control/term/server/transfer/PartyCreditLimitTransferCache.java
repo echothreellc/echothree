@@ -32,14 +32,14 @@ public class PartyCreditLimitTransferCache
     PartyControl partyControl;
     
     /** Creates a new instance of PartyCreditLimitTransferCache */
-    public PartyCreditLimitTransferCache(UserVisit userVisit, TermControl termControl) {
-        super(userVisit, termControl);
+    public PartyCreditLimitTransferCache(TermControl termControl) {
+        super(termControl);
         
         accountingControl = Session.getModelController(AccountingControl.class);
         partyControl = Session.getModelController(PartyControl.class);
     }
     
-    public PartyCreditLimitTransfer getPartyCreditLimitTransfer(PartyCreditLimit partyCreditLimit) {
+    public PartyCreditLimitTransfer getPartyCreditLimitTransfer(UserVisit userVisit, PartyCreditLimit partyCreditLimit) {
         var partyCreditLimitTransfer = get(partyCreditLimit);
         
         if(partyCreditLimitTransfer == null) {
@@ -51,7 +51,7 @@ public class PartyCreditLimitTransferCache
             
             partyCreditLimitTransfer = new PartyCreditLimitTransfer(partyTransfer, currencyTransfer, creditLimit,
                     potentialCreditLimit);
-            put(partyCreditLimit, partyCreditLimitTransfer);
+            put(userVisit, partyCreditLimit, partyCreditLimitTransfer);
         }
         
         return partyCreditLimitTransfer;

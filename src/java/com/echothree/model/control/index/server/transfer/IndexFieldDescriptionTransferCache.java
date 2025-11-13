@@ -25,11 +25,11 @@ public class IndexFieldDescriptionTransferCache
         extends BaseIndexDescriptionTransferCache<IndexFieldDescription, IndexFieldDescriptionTransfer> {
     
     /** Creates a new instance of IndexFieldDescriptionTransferCache */
-    public IndexFieldDescriptionTransferCache(UserVisit userVisit, IndexControl indexControl) {
-        super(userVisit, indexControl);
+    public IndexFieldDescriptionTransferCache(IndexControl indexControl) {
+        super(indexControl);
     }
     
-    public IndexFieldDescriptionTransfer getIndexFieldDescriptionTransfer(IndexFieldDescription indexFieldDescription) {
+    public IndexFieldDescriptionTransfer getIndexFieldDescriptionTransfer(UserVisit userVisit, IndexFieldDescription indexFieldDescription) {
         var indexFieldDescriptionTransfer = get(indexFieldDescription);
         
         if(indexFieldDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class IndexFieldDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, indexFieldDescription.getLanguage());
             
             indexFieldDescriptionTransfer = new IndexFieldDescriptionTransfer(languageTransfer, indexFieldTransfer, indexFieldDescription.getDescription());
-            put(indexFieldDescription, indexFieldDescriptionTransfer);
+            put(userVisit, indexFieldDescription, indexFieldDescriptionTransfer);
         }
         
         return indexFieldDescriptionTransfer;

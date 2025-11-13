@@ -31,12 +31,9 @@ import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatus
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.invoice.server.entity.Invoice;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.string.DateTimeFormatType;
-import com.echothree.util.common.string.DateTimeFormatter;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.Session;
-import com.echothree.util.server.string.DateUtils;
 
 public class InvoiceTransferCache
         extends BaseInvoiceTransferCache<Invoice, InvoiceTransfer> {
@@ -48,11 +45,10 @@ public class InvoiceTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     boolean includeLines;
     boolean includeRoles;
-    DateTimeFormatter shortDateFormatter;
-    
+
     /** Creates a new instance of InvoiceTransferCache */
-    public InvoiceTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
-        super(userVisit, invoiceControl);
+    public InvoiceTransferCache(InvoiceControl invoiceControl) {
+        super(invoiceControl);
 
         var options = session.getOptions();
         if(options != null) {
@@ -61,11 +57,9 @@ public class InvoiceTransferCache
         }
 
         setIncludeEntityInstance(true);
-        
-        shortDateFormatter = DateUtils.getInstance().getDateTimeFormatter(userVisit, DateTimeFormatType.SHORT_DATE);
     }
 
-    private InvoiceTransfer setInvoiceTimes(Invoice invoice, InvoiceTransfer invoiceTransfer) {
+    private InvoiceTransfer setInvoiceTimes(UserVisit userVisit, Invoice invoice, InvoiceTransfer invoiceTransfer) {
         var invoiceTimeTransfers = invoiceControl.getInvoiceTimeTransfersByInvoice(userVisit, invoice);
         var invoiceTimes = new MapWrapper<InvoiceTimeTransfer>(invoiceTimeTransfers.size());
 
@@ -78,7 +72,7 @@ public class InvoiceTransferCache
         return invoiceTransfer;
     }
 
-    private InvoiceTransfer setInvoiceRoles(Invoice invoice, InvoiceTransfer invoiceTransfer) {
+    private InvoiceTransfer setInvoiceRoles(UserVisit userVisit, Invoice invoice, InvoiceTransfer invoiceTransfer) {
         var invoiceRoleTransfers = invoiceControl.getInvoiceRoleTransfersByInvoice(userVisit, invoice);
         var invoiceRoles = new MapWrapper<InvoiceRoleTransfer>(invoiceRoleTransfers.size());
 
@@ -91,7 +85,7 @@ public class InvoiceTransferCache
         return invoiceTransfer;
     }
 
-    public InvoiceTransfer getInvoiceTransfer(Invoice invoice) {
+    public InvoiceTransfer getInvoiceTransfer(UserVisit userVisit, Invoice invoice) {
         var invoiceTransfer = get(invoice);
         
         if(invoiceTransfer == null) {
@@ -111,16 +105,15 @@ public class InvoiceTransferCache
                 invoiceStatus = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit, PurchaseInvoiceStatusConstants.Workflow_PURCHASE_INVOICE_STATUS, entityInstance);
             }
             
-            invoiceTransfer = setInvoiceTimes(invoice, new InvoiceTransfer(invoiceType, invoiceName, billingAccount, glAccount, term, reference, description, invoiceStatus));
-            put(invoice, invoiceTransfer, entityInstance);
-            
+            invoiceTransfer = setInvoiceTimes(userVisit, invoice, new InvoiceTransfer(invoiceType, invoiceName, billingAccount, glAccount, term, reference, description, invoiceStatus));
+            put(userVisit, invoice, invoiceTransfer, entityInstance);
 
             if(includeLines) {
                 invoiceTransfer.setInvoiceLines(new ListWrapper<>(invoiceControl.getInvoiceLineTransfersByInvoice(userVisit, invoice)));
             }
 
             if(includeRoles) {
-                setInvoiceRoles(invoice, invoiceTransfer);
+                setInvoiceRoles(userVisit, invoice, invoiceTransfer);
             }
         }
         

@@ -30,13 +30,13 @@ public class UserKeyTransferCache
     PartyControl partyControl;
     
     /** Creates a new instance of UserKeyTransferCache */
-    public UserKeyTransferCache(UserVisit userVisit, UserControl userControl) {
-        super(userVisit, userControl);
+    public UserKeyTransferCache(UserControl userControl) {
+        super(userControl);
         
         partyControl = Session.getModelController(PartyControl.class);
     }
     
-    public UserKeyTransfer getUserKeyTransfer(UserKey userKey) {
+    public UserKeyTransfer getUserKeyTransfer(UserVisit userVisit, UserKey userKey) {
         var userKeyTransfer = get(userKey);
         
         if(userKeyTransfer == null) {
@@ -48,7 +48,7 @@ public class UserKeyTransferCache
             var partyRelationshipTransfer = partyRelationship == null? null: partyControl.getPartyRelationshipTransfer(userVisit, partyRelationship);
             
             userKeyTransfer = new UserKeyTransfer(userKeyName, partyTransfer, partyRelationshipTransfer);
-            put(userKey, userKeyTransfer);
+            put(userVisit, userKey, userKeyTransfer);
         }
         
         return userKeyTransfer;

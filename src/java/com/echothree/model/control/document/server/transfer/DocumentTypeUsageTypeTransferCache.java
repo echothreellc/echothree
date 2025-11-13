@@ -25,13 +25,13 @@ public class DocumentTypeUsageTypeTransferCache
         extends BaseDocumentTransferCache<DocumentTypeUsageType, DocumentTypeUsageTypeTransfer> {
     
     /** Creates a new instance of DocumentTypeUsageTypeTransferCache */
-    public DocumentTypeUsageTypeTransferCache(UserVisit userVisit, DocumentControl documentControl) {
-        super(userVisit, documentControl);
+    public DocumentTypeUsageTypeTransferCache(DocumentControl documentControl) {
+        super(documentControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public DocumentTypeUsageTypeTransfer getDocumentTypeUsageTypeTransfer(DocumentTypeUsageType documentTypeUsageType) {
+    public DocumentTypeUsageTypeTransfer getDocumentTypeUsageTypeTransfer(UserVisit userVisit, DocumentTypeUsageType documentTypeUsageType) {
         var documentTypeUsageTypeTransfer = get(documentTypeUsageType);
         
         if(documentTypeUsageTypeTransfer == null) {
@@ -39,10 +39,10 @@ public class DocumentTypeUsageTypeTransferCache
             var documentTypeUsageTypeName = documentTypeUsageTypeDetail.getDocumentTypeUsageTypeName();
             var isDefault = documentTypeUsageTypeDetail.getIsDefault();
             var sortOrder = documentTypeUsageTypeDetail.getSortOrder();
-            var description = documentControl.getBestDocumentTypeUsageTypeDescription(documentTypeUsageType, getLanguage());
+            var description = documentControl.getBestDocumentTypeUsageTypeDescription(documentTypeUsageType, getLanguage(userVisit));
             
             documentTypeUsageTypeTransfer = new DocumentTypeUsageTypeTransfer(documentTypeUsageTypeName, isDefault, sortOrder, description);
-            put(documentTypeUsageType, documentTypeUsageTypeTransfer);
+            put(userVisit, documentTypeUsageType, documentTypeUsageTypeTransfer);
         }
         return documentTypeUsageTypeTransfer;
     }

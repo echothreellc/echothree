@@ -91,9 +91,9 @@ public class TermControl
     
     private TermTransferCaches termTransferCaches;
     
-    public TermTransferCaches getTermTransferCaches(UserVisit userVisit) {
+    public TermTransferCaches getTermTransferCaches() {
         if(termTransferCaches == null) {
-            termTransferCaches = new TermTransferCaches(userVisit, this);
+            termTransferCaches = new TermTransferCaches(this);
         }
         
         return termTransferCaches;
@@ -220,15 +220,15 @@ public class TermControl
     }
 
     public TermTypeTransfer getTermTypeTransfer(UserVisit userVisit, TermType termType) {
-        return getTermTransferCaches(userVisit).getTermTypeTransferCache().getTermTypeTransfer(termType);
+        return getTermTransferCaches().getTermTypeTransferCache().getTermTypeTransfer(userVisit, termType);
     }
 
     public List<TermTypeTransfer> getTermTypeTransfers(UserVisit userVisit, Collection<TermType> termTypes) {
         List<TermTypeTransfer> termTypeTransfers = new ArrayList<>(termTypes.size());
-        var termTypeTransferCache = getTermTransferCaches(userVisit).getTermTypeTransferCache();
+        var termTypeTransferCache = getTermTransferCaches().getTermTypeTransferCache();
 
         termTypes.forEach((termType) ->
-                termTypeTransfers.add(termTypeTransferCache.getTermTypeTransfer(termType))
+                termTypeTransfers.add(termTypeTransferCache.getTermTypeTransfer(userVisit, termType))
         );
 
         return termTypeTransfers;
@@ -512,15 +512,15 @@ public class TermControl
     }
     
     public TermTransfer getTermTransfer(UserVisit userVisit, Term term) {
-        return getTermTransferCaches(userVisit).getTermTransferCache().getTermTransfer(term);
+        return getTermTransferCaches().getTermTransferCache().getTermTransfer(userVisit, term);
     }
 
     public List<TermTransfer> getTermTransfers(UserVisit userVisit, Collection<Term> terms) {
         List<TermTransfer> termTransfers = new ArrayList<>(terms.size());
-        var termTransferCache = getTermTransferCaches(userVisit).getTermTransferCache();
+        var termTransferCache = getTermTransferCaches().getTermTransferCache();
 
         terms.forEach((term) ->
-                termTransfers.add(termTransferCache.getTermTransfer(term))
+                termTransfers.add(termTransferCache.getTermTransfer(userVisit, term))
         );
 
         return termTransfers;
@@ -727,7 +727,7 @@ public class TermControl
     }
     
     public TermDescriptionTransfer getTermDescriptionTransfer(UserVisit userVisit, TermDescription termDescription) {
-        return getTermTransferCaches(userVisit).getTermDescriptionTransferCache().getTermDescriptionTransfer(termDescription);
+        return getTermTransferCaches().getTermDescriptionTransferCache().getTermDescriptionTransfer(userVisit, termDescription);
     }
     
     public List<TermDescriptionTransfer> getTermDescriptionTransfersByTerm(UserVisit userVisit, Term term) {
@@ -735,7 +735,7 @@ public class TermControl
         List<TermDescriptionTransfer> termDescriptionTransfers = new ArrayList<>(termDescriptions.size());
         
         termDescriptions.forEach((termDescription) -> {
-            termDescriptionTransfers.add(getTermTransferCaches(userVisit).getTermDescriptionTransferCache().getTermDescriptionTransfer(termDescription));
+            termDescriptionTransfers.add(getTermTransferCaches().getTermDescriptionTransferCache().getTermDescriptionTransfer(userVisit, termDescription));
         });
         
         return termDescriptionTransfers;
@@ -1066,16 +1066,16 @@ public class TermControl
     }
     
     public CustomerTypeCreditLimitTransfer getCustomerTypeCreditLimitTransfer(UserVisit userVisit, CustomerTypeCreditLimit customerTypeCreditLimit) {
-        return getTermTransferCaches(userVisit).getCustomerTypeCreditLimitTransferCache().getCustomerTypeCreditLimitTransfer(customerTypeCreditLimit);
+        return getTermTransferCaches().getCustomerTypeCreditLimitTransferCache().getCustomerTypeCreditLimitTransfer(userVisit, customerTypeCreditLimit);
     }
     
     public List<CustomerTypeCreditLimitTransfer> getCustomerTypeCreditLimitTransfersByCustomerType(UserVisit userVisit, CustomerType customerType) {
         var customerTypeCreditLimits = getCustomerTypeCreditLimitsByCustomerType(customerType);
         List<CustomerTypeCreditLimitTransfer> customerTypeCreditLimitTransfers = new ArrayList<>(customerTypeCreditLimits.size());
-        var customerTypeCreditLimitTransferCache = getTermTransferCaches(userVisit).getCustomerTypeCreditLimitTransferCache();
+        var customerTypeCreditLimitTransferCache = getTermTransferCaches().getCustomerTypeCreditLimitTransferCache();
         
         customerTypeCreditLimits.forEach((customerTypeCreditLimit) ->
-                customerTypeCreditLimitTransfers.add(customerTypeCreditLimitTransferCache.getCustomerTypeCreditLimitTransfer(customerTypeCreditLimit))
+                customerTypeCreditLimitTransfers.add(customerTypeCreditLimitTransferCache.getCustomerTypeCreditLimitTransfer(userVisit, customerTypeCreditLimit))
         );
         
         return customerTypeCreditLimitTransfers;
@@ -1217,16 +1217,16 @@ public class TermControl
     }
     
     public PartyCreditLimitTransfer getPartyCreditLimitTransfer(UserVisit userVisit, PartyCreditLimit partyCreditLimit) {
-        return getTermTransferCaches(userVisit).getPartyCreditLimitTransferCache().getPartyCreditLimitTransfer(partyCreditLimit);
+        return getTermTransferCaches().getPartyCreditLimitTransferCache().getPartyCreditLimitTransfer(userVisit, partyCreditLimit);
     }
     
     public List<PartyCreditLimitTransfer> getPartyCreditLimitTransfersByParty(UserVisit userVisit, Party party) {
         var partyCreditLimits = getPartyCreditLimitsByParty(party);
         List<PartyCreditLimitTransfer> partyCreditLimitTransfers = new ArrayList<>(partyCreditLimits.size());
-        var partyCreditLimitTransferCache = getTermTransferCaches(userVisit).getPartyCreditLimitTransferCache();
+        var partyCreditLimitTransferCache = getTermTransferCaches().getPartyCreditLimitTransferCache();
         
         partyCreditLimits.forEach((partyCreditLimit) ->
-                partyCreditLimitTransfers.add(partyCreditLimitTransferCache.getPartyCreditLimitTransfer(partyCreditLimit))
+                partyCreditLimitTransfers.add(partyCreditLimitTransferCache.getPartyCreditLimitTransfer(userVisit, partyCreditLimit))
         );
         
         return partyCreditLimitTransfers;
@@ -1368,11 +1368,11 @@ public class TermControl
     public PartyTermTransfer getPartyTermTransfer(UserVisit userVisit, Party party) {
         var partyTerm = getPartyTerm(party);
         
-        return partyTerm == null? null: getTermTransferCaches(userVisit).getPartyTermTransferCache().getPartyTermTransfer(partyTerm);
+        return partyTerm == null? null: getTermTransferCaches().getPartyTermTransferCache().getPartyTermTransfer(userVisit, partyTerm);
     }
     
     public PartyTermTransfer getPartyTermTransfer(UserVisit userVisit, PartyTerm partyTerm) {
-        return getTermTransferCaches(userVisit).getPartyTermTransferCache().getPartyTermTransfer(partyTerm);
+        return getTermTransferCaches().getPartyTermTransferCache().getPartyTermTransfer(userVisit, partyTerm);
     }
     
     public void updatePartyTermFromValue(PartyTermValue partyTermValue, BasePK updatedBy) {

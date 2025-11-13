@@ -25,11 +25,11 @@ public class ContactMechanismAliasTypeDescriptionTransferCache
         extends BaseContactDescriptionTransferCache<ContactMechanismAliasTypeDescription, ContactMechanismAliasTypeDescriptionTransfer> {
     
     /** Creates a new instance of ContactMechanismAliasTypeDescriptionTransferCache */
-    public ContactMechanismAliasTypeDescriptionTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    public ContactMechanismAliasTypeDescriptionTransferCache(ContactControl contactControl) {
+        super(contactControl);
     }
     
-    public ContactMechanismAliasTypeDescriptionTransfer getContactMechanismAliasTypeDescriptionTransfer(ContactMechanismAliasTypeDescription contactMechanismAliasTypeDescription) {
+    public ContactMechanismAliasTypeDescriptionTransfer getContactMechanismAliasTypeDescriptionTransfer(UserVisit userVisit, ContactMechanismAliasTypeDescription contactMechanismAliasTypeDescription) {
         var contactMechanismAliasTypeDescriptionTransfer = get(contactMechanismAliasTypeDescription);
         
         if(contactMechanismAliasTypeDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class ContactMechanismAliasTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, contactMechanismAliasTypeDescription.getLanguage());
             
             contactMechanismAliasTypeDescriptionTransfer = new ContactMechanismAliasTypeDescriptionTransfer(languageTransfer, contactMechanismAliasTypeTransfer, contactMechanismAliasTypeDescription.getDescription());
-            put(contactMechanismAliasTypeDescription, contactMechanismAliasTypeDescriptionTransfer);
+            put(userVisit, contactMechanismAliasTypeDescription, contactMechanismAliasTypeDescriptionTransfer);
         }
         
         return contactMechanismAliasTypeDescriptionTransfer;

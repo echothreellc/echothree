@@ -28,11 +28,11 @@ public class TagScopeDescriptionTransferCache
     TagControl tagControl = Session.getModelController(TagControl.class);
 
     /** Creates a new instance of TagScopeDescriptionTransferCache */
-    public TagScopeDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public TagScopeDescriptionTransferCache() {
+        super();
     }
     
-    public TagScopeDescriptionTransfer getTagScopeDescriptionTransfer(TagScopeDescription tagScopeDescription) {
+    public TagScopeDescriptionTransfer getTagScopeDescriptionTransfer(UserVisit userVisit, TagScopeDescription tagScopeDescription) {
         var tagScopeDescriptionTransfer = get(tagScopeDescription);
         
         if(tagScopeDescriptionTransfer == null) {
@@ -40,7 +40,7 @@ public class TagScopeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, tagScopeDescription.getLanguage());
             
             tagScopeDescriptionTransfer = new TagScopeDescriptionTransfer(languageTransfer, tagScopeTransfer, tagScopeDescription.getDescription());
-            put(tagScopeDescription, tagScopeDescriptionTransfer);
+            put(userVisit, tagScopeDescription, tagScopeDescriptionTransfer);
         }
         
         return tagScopeDescriptionTransfer;

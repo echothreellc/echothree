@@ -29,14 +29,14 @@ public class AssociateReferralTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     
     /** Creates a new instance of AssociateReferralTransferCache */
-    public AssociateReferralTransferCache(UserVisit userVisit, AssociateControl associateControl) {
-        super(userVisit, associateControl);
+    public AssociateReferralTransferCache(AssociateControl associateControl) {
+        super(associateControl);
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public AssociateReferralTransfer getTransfer(AssociateReferral associateReferral) {
+    public AssociateReferralTransfer getTransfer(UserVisit userVisit, AssociateReferral associateReferral) {
         var associateReferralTransfer = get(associateReferral);
         
         if(associateReferralTransfer == null) {
@@ -48,11 +48,11 @@ public class AssociateReferralTransferCache
             var targetEntityInstance = associateReferralDetail.getTargetEntityInstance();
             var targetEntityInstanceTransfer = targetEntityInstance == null ? null : entityInstanceControl.getEntityInstanceTransfer(userVisit, targetEntityInstance, false, false, false, false);
             var unformattedAssociateReferralTime = associateReferralDetail.getAssociateReferralTime();
-            var associateReferralTime = formatTypicalDateTime(unformattedAssociateReferralTime);
+            var associateReferralTime = formatTypicalDateTime(userVisit, unformattedAssociateReferralTime);
 
             associateReferralTransfer = new AssociateReferralTransfer(associateReferralName, associateTransfer, associatePartyContactMechanismTransfer,
                     targetEntityInstanceTransfer, unformattedAssociateReferralTime, associateReferralTime);
-            put(associateReferral, associateReferralTransfer);
+            put(userVisit, associateReferral, associateReferralTransfer);
         }
         
         return associateReferralTransfer;

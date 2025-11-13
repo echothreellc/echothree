@@ -25,11 +25,11 @@ public class FinancialAccountAliasTransferCache
         extends BaseFinancialTransferCache<FinancialAccountAlias, FinancialAccountAliasTransfer> {
     
     /** Creates a new instance of FinancialAccountAliasTransferCache */
-    public FinancialAccountAliasTransferCache(UserVisit userVisit, FinancialControl financialControl) {
-        super(userVisit, financialControl);
+    public FinancialAccountAliasTransferCache(FinancialControl financialControl) {
+        super(financialControl);
     }
     
-    public FinancialAccountAliasTransfer getFinancialAccountAliasTransfer(FinancialAccountAlias financialAccountAlias) {
+    public FinancialAccountAliasTransfer getFinancialAccountAliasTransfer(UserVisit userVisit, FinancialAccountAlias financialAccountAlias) {
         var financialAccountAliasTransfer = get(financialAccountAlias);
         
         if(financialAccountAliasTransfer == null) {
@@ -38,7 +38,7 @@ public class FinancialAccountAliasTransferCache
             var alias = financialAccountAlias.getAlias();
             
             financialAccountAliasTransfer = new FinancialAccountAliasTransfer(financial, financialAccountAliasType, alias);
-            put(financialAccountAlias, financialAccountAliasTransfer);
+            put(userVisit, financialAccountAlias, financialAccountAliasTransfer);
         }
         
         return financialAccountAliasTransfer;

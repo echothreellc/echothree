@@ -30,30 +30,30 @@ public class EventTransferCache
     EventControl eventControl = Session.getModelController(EventControl.class);
 
     /** Creates a new instance of EventTransferCache */
-    public EventTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EventTransferCache() {
+        super();
     }
     
-    public EventTransfer getEventTransfer(Event event) {
+    public EventTransfer getEventTransfer(UserVisit userVisit, Event event) {
         var eventTransfer = get(event);
         
         if(eventTransfer == null) {
-            var entityInstanceTransferCache = coreControl.getCoreTransferCaches(userVisit).getEntityInstanceTransferCache();
+            var entityInstanceTransferCache = coreControl.getCoreTransferCaches().getEntityInstanceTransferCache();
             var unformattedEventTime = event.getEventTime();
-            var eventTime = formatTypicalDateTime(unformattedEventTime);
+            var eventTime = formatTypicalDateTime(userVisit, unformattedEventTime);
             var eventTimeSequence = event.getEventTimeSequence();
-            var entityInstanceTransfer = entityInstanceTransferCache.getEntityInstanceTransfer(event.getEntityInstance(), false, false, false, false);
+            var entityInstanceTransfer = entityInstanceTransferCache.getEntityInstanceTransfer(userVisit, event.getEntityInstance(), false, false, false, false);
             var eventTypeTransfer = eventControl.getEventTypeTransfer(userVisit, event.getEventType());
             var relatedEntityInstance = event.getRelatedEntityInstance();
-            var relatedEntityInstanceTransfer = relatedEntityInstance == null ? null : entityInstanceTransferCache.getEntityInstanceTransfer(relatedEntityInstance, false, false, false, false);
+            var relatedEntityInstanceTransfer = relatedEntityInstance == null ? null : entityInstanceTransferCache.getEntityInstanceTransfer(userVisit, relatedEntityInstance, false, false, false, false);
             var relatedEventType = event.getRelatedEventType();
             var relatedEventTypeTransfer = relatedEventType == null ? null : eventControl.getEventTypeTransfer(userVisit, relatedEventType);
             var createdBy = event.getCreatedBy();
-            var createdByTransfer = createdBy == null ? null : entityInstanceTransferCache.getEntityInstanceTransfer(createdBy, false, false, false, false);
+            var createdByTransfer = createdBy == null ? null : entityInstanceTransferCache.getEntityInstanceTransfer(userVisit, createdBy, false, false, false, false);
 
             eventTransfer = new EventTransfer(unformattedEventTime, eventTime, eventTimeSequence, entityInstanceTransfer, eventTypeTransfer,
                     relatedEntityInstanceTransfer, relatedEventTypeTransfer, createdByTransfer);
-            put(event, eventTransfer);
+            put(userVisit, event, eventTransfer);
         }
         
         return eventTransfer;

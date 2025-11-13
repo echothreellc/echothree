@@ -25,13 +25,13 @@ public class TrainingClassPageTransferCache
         extends BaseTrainingTransferCache<TrainingClassPage, TrainingClassPageTransfer> {
     
     /** Creates a new instance of TrainingClassPageTransferCache */
-    public TrainingClassPageTransferCache(UserVisit userVisit, TrainingControl trainingControl) {
-        super(userVisit, trainingControl);
+    public TrainingClassPageTransferCache(TrainingControl trainingControl) {
+        super(trainingControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public TrainingClassPageTransfer getTrainingClassPageTransfer(TrainingClassPage trainingClassPage) {
+    public TrainingClassPageTransfer getTrainingClassPageTransfer(UserVisit userVisit, TrainingClassPage trainingClassPage) {
         var trainingClassPageTransfer = get(trainingClassPage);
         
         if(trainingClassPageTransfer == null) {
@@ -39,11 +39,11 @@ public class TrainingClassPageTransferCache
             var trainingClassSection = trainingControl.getTrainingClassSectionTransfer(userVisit, trainingClassPageDetail.getTrainingClassSection());
             var trainingClassPageName = trainingClassPageDetail.getTrainingClassPageName();
             var sortOrder = trainingClassPageDetail.getSortOrder();
-            var trainingClassPageTranslation = trainingControl.getBestTrainingClassPageTranslation(trainingClassPage, getLanguage());
+            var trainingClassPageTranslation = trainingControl.getBestTrainingClassPageTranslation(trainingClassPage, getLanguage(userVisit));
             var description = trainingClassPageTranslation == null ? trainingClassPageName : trainingClassPageTranslation.getDescription();
             
             trainingClassPageTransfer = new TrainingClassPageTransfer(trainingClassSection, trainingClassPageName, sortOrder, description);
-            put(trainingClassPage, trainingClassPageTransfer);
+            put(userVisit, trainingClassPage, trainingClassPageTransfer);
         }
         
         return trainingClassPageTransfer;

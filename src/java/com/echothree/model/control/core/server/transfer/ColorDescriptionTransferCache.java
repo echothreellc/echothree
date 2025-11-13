@@ -28,11 +28,11 @@ public class ColorDescriptionTransferCache
     ColorControl colorControl = Session.getModelController(ColorControl.class);
 
     /** Creates a new instance of ColorDescriptionTransferCache */
-    public ColorDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public ColorDescriptionTransferCache() {
+        super();
     }
     
-    public ColorDescriptionTransfer getColorDescriptionTransfer(ColorDescription colorDescription) {
+    public ColorDescriptionTransfer getColorDescriptionTransfer(UserVisit userVisit, ColorDescription colorDescription) {
         var colorDescriptionTransfer = get(colorDescription);
         
         if(colorDescriptionTransfer == null) {
@@ -40,7 +40,7 @@ public class ColorDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, colorDescription.getLanguage());
             
             colorDescriptionTransfer = new ColorDescriptionTransfer(languageTransfer, colorTransfer, colorDescription.getDescription());
-            put(colorDescription, colorDescriptionTransfer);
+            put(userVisit, colorDescription, colorDescriptionTransfer);
         }
         return colorDescriptionTransfer;
     }

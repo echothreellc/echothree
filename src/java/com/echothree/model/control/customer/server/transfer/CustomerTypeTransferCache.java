@@ -68,8 +68,8 @@ public class CustomerTypeTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of CustomerTypeTransferCache */
-    public CustomerTypeTransferCache(UserVisit userVisit, CustomerControl customerControl) {
-        super(userVisit, customerControl);
+    public CustomerTypeTransferCache(CustomerControl customerControl) {
+        super(customerControl);
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
@@ -103,7 +103,7 @@ public class CustomerTypeTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
 
-    public CustomerTypeTransfer getCustomerTypeTransfer(CustomerType customerType) {
+    public CustomerTypeTransfer getCustomerTypeTransfer(UserVisit userVisit, CustomerType customerType) {
         var customerTypeTransfer = get(customerType);
 
         if(customerTypeTransfer == null) {
@@ -135,14 +135,14 @@ public class CustomerTypeTransferCache
             var allocationPriorityTransfer = allocationPriority == null ? null : inventoryControl.getAllocationPriorityTransfer(userVisit, allocationPriority);
             var isDefault = filterIsDefault ? null : customerTypeDetail.getIsDefault();
             var sortOrder = filterSortOrder ? null : customerTypeDetail.getSortOrder();
-            var description = filterDescription ? null : customerControl.getBestCustomerTypeDescription(customerType, getLanguage());
+            var description = filterDescription ? null : customerControl.getBestCustomerTypeDescription(customerType, getLanguage(userVisit));
 
             customerTypeTransfer = new CustomerTypeTransfer(customerTypeName, customerSequenceTransfer, defaultOfferUseTransfer,
                     defaultTermTransfer, defaultFreeOnBoardTransfer, defaultCancellationPolicyTransfer, defaultReturnPolicyTransfer,
                     defaultArGlAccountTransfer, defaultHoldUntilComplete, defaultAllowBackorders, defaultAllowSubstitutions,
                     defaultAllowCombiningShipments, defaultRequireReference, defaultAllowReferenceDuplicates,
                     defaultReferenceValidationPattern, defaultTaxable, allocationPriorityTransfer, isDefault, sortOrder, description);
-            put(customerType, customerTypeTransfer);
+            put(userVisit, customerType, customerTypeTransfer);
         }
 
         return customerTypeTransfer;

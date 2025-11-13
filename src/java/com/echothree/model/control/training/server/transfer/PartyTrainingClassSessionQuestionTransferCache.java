@@ -29,8 +29,8 @@ public class PartyTrainingClassSessionQuestionTransferCache
     boolean includePartyTrainingClassSessionAnswers;
     
     /** Creates a new instance of PartyTrainingClassSessionQuestionTransferCache */
-    public PartyTrainingClassSessionQuestionTransferCache(UserVisit userVisit, TrainingControl trainingControl) {
-        super(userVisit, trainingControl);
+    public PartyTrainingClassSessionQuestionTransferCache(TrainingControl trainingControl) {
+        super(trainingControl);
         
         var options = session.getOptions();
         if(options != null) {
@@ -40,7 +40,7 @@ public class PartyTrainingClassSessionQuestionTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public PartyTrainingClassSessionQuestionTransfer getPartyTrainingClassSessionQuestionTransfer(PartyTrainingClassSessionQuestion partyTrainingClassSessionQuestion) {
+    public PartyTrainingClassSessionQuestionTransfer getPartyTrainingClassSessionQuestionTransfer(UserVisit userVisit, PartyTrainingClassSessionQuestion partyTrainingClassSessionQuestion) {
         var partyTrainingClassSessionQuestionTransfer = get(partyTrainingClassSessionQuestion);
         
         if(partyTrainingClassSessionQuestionTransfer == null) {
@@ -51,7 +51,7 @@ public class PartyTrainingClassSessionQuestionTransferCache
 
             partyTrainingClassSessionQuestionTransfer = new PartyTrainingClassSessionQuestionTransfer(partyTrainingClassSessionTransfer,
                     trainingClassQuestionTransfer, sortOrder);
-            put(partyTrainingClassSessionQuestion, partyTrainingClassSessionQuestionTransfer);
+            put(userVisit, partyTrainingClassSessionQuestion, partyTrainingClassSessionQuestionTransfer);
             
             if(includePartyTrainingClassSessionAnswers) {
                 partyTrainingClassSessionQuestionTransfer.setPartyTrainingClassSessionAnswers(new ListWrapper<>(trainingControl.getPartyTrainingClassSessionAnswerTransfersByPartyTrainingClassSessionQuestion(userVisit, partyTrainingClassSessionQuestion)));

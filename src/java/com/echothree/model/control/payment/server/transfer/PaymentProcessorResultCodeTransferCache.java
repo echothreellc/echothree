@@ -28,14 +28,14 @@ public class PaymentProcessorResultCodeTransferCache
     PaymentProcessorResultCodeControl paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
 
     /** Creates a new instance of PaymentProcessorResultCodeTransferCache */
-    public PaymentProcessorResultCodeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public PaymentProcessorResultCodeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public PaymentProcessorResultCodeTransfer getTransfer(PaymentProcessorResultCode paymentProcessorResultCode) {
+    public PaymentProcessorResultCodeTransfer getTransfer(UserVisit userVisit, PaymentProcessorResultCode paymentProcessorResultCode) {
         var paymentProcessorResultCodeTransfer = get(paymentProcessorResultCode);
         
         if(paymentProcessorResultCodeTransfer == null) {
@@ -43,10 +43,10 @@ public class PaymentProcessorResultCodeTransferCache
             var paymentProcessorResultCodeName = paymentProcessorResultCodeDetail.getPaymentProcessorResultCodeName();
             var isDefault = paymentProcessorResultCodeDetail.getIsDefault();
             var sortOrder = paymentProcessorResultCodeDetail.getSortOrder();
-            var description = paymentProcessorResultCodeControl.getBestPaymentProcessorResultCodeDescription(paymentProcessorResultCode, getLanguage());
+            var description = paymentProcessorResultCodeControl.getBestPaymentProcessorResultCodeDescription(paymentProcessorResultCode, getLanguage(userVisit));
             
             paymentProcessorResultCodeTransfer = new PaymentProcessorResultCodeTransfer(paymentProcessorResultCodeName, isDefault, sortOrder, description);
-            put(paymentProcessorResultCode, paymentProcessorResultCodeTransfer);
+            put(userVisit, paymentProcessorResultCode, paymentProcessorResultCodeTransfer);
         }
         
         return paymentProcessorResultCodeTransfer;

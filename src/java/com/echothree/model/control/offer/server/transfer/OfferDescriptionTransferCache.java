@@ -28,11 +28,11 @@ public class OfferDescriptionTransferCache
     OfferControl offerControl = Session.getModelController(OfferControl.class);
 
     /** Creates a new instance of OfferDescriptionTransferCache */
-    public OfferDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public OfferDescriptionTransferCache() {
+        super();
     }
     
-    public OfferDescriptionTransfer getOfferDescriptionTransfer(OfferDescription offerDescription) {
+    public OfferDescriptionTransfer getOfferDescriptionTransfer(UserVisit userVisit, OfferDescription offerDescription) {
         var offerDescriptionTransfer = get(offerDescription);
         
         if(offerDescriptionTransfer == null) {
@@ -40,7 +40,7 @@ public class OfferDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, offerDescription.getLanguage());
             
             offerDescriptionTransfer = new OfferDescriptionTransfer(languageTransfer, offerTransfer, offerDescription.getDescription());
-            put(offerDescription, offerDescriptionTransfer);
+            put(userVisit, offerDescription, offerDescriptionTransfer);
         }
         
         return offerDescriptionTransfer;

@@ -36,71 +36,71 @@ public class SecurityTransferCaches
     protected PartySecurityRoleTemplateTrainingClassTransferCache partySecurityRoleTemplateTrainingClassTransferCache;
     
     /** Creates a new instance of SecurityTransferCaches */
-    public SecurityTransferCaches(UserVisit userVisit, SecurityControl securityControl) {
-        super(userVisit);
+    public SecurityTransferCaches(SecurityControl securityControl) {
+        super();
         
         this.securityControl = securityControl;
     }
     
     public SecurityRoleGroupTransferCache getSecurityRoleGroupTransferCache() {
         if(securityRoleGroupTransferCache == null)
-            securityRoleGroupTransferCache = new SecurityRoleGroupTransferCache(userVisit, securityControl);
+            securityRoleGroupTransferCache = new SecurityRoleGroupTransferCache(securityControl);
         
         return securityRoleGroupTransferCache;
     }
     
     public SecurityRoleGroupDescriptionTransferCache getSecurityRoleGroupDescriptionTransferCache() {
         if(securityRoleGroupDescriptionTransferCache == null)
-            securityRoleGroupDescriptionTransferCache = new SecurityRoleGroupDescriptionTransferCache(userVisit, securityControl);
+            securityRoleGroupDescriptionTransferCache = new SecurityRoleGroupDescriptionTransferCache(securityControl);
         
         return securityRoleGroupDescriptionTransferCache;
     }
     
     public SecurityRoleTransferCache getSecurityRoleTransferCache() {
         if(securityRoleTransferCache == null)
-            securityRoleTransferCache = new SecurityRoleTransferCache(userVisit, securityControl);
+            securityRoleTransferCache = new SecurityRoleTransferCache(securityControl);
         
         return securityRoleTransferCache;
     }
     
     public SecurityRoleDescriptionTransferCache getSecurityRoleDescriptionTransferCache() {
         if(securityRoleDescriptionTransferCache == null)
-            securityRoleDescriptionTransferCache = new SecurityRoleDescriptionTransferCache(userVisit, securityControl);
+            securityRoleDescriptionTransferCache = new SecurityRoleDescriptionTransferCache(securityControl);
         
         return securityRoleDescriptionTransferCache;
     }
     
     public SecurityRolePartyTypeTransferCache getSecurityRolePartyTypeTransferCache() {
         if(securityRolePartyTypeTransferCache == null)
-            securityRolePartyTypeTransferCache = new SecurityRolePartyTypeTransferCache(userVisit, securityControl);
+            securityRolePartyTypeTransferCache = new SecurityRolePartyTypeTransferCache(securityControl);
         
         return securityRolePartyTypeTransferCache;
     }
     
     public PartySecurityRoleTemplateTransferCache getPartySecurityRoleTemplateTransferCache() {
         if(partySecurityRoleTemplateTransferCache == null)
-            partySecurityRoleTemplateTransferCache = new PartySecurityRoleTemplateTransferCache(userVisit, securityControl);
+            partySecurityRoleTemplateTransferCache = new PartySecurityRoleTemplateTransferCache(securityControl);
         
         return partySecurityRoleTemplateTransferCache;
     }
     
     public PartySecurityRoleTemplateDescriptionTransferCache getPartySecurityRoleTemplateDescriptionTransferCache() {
         if(partySecurityRoleTemplateDescriptionTransferCache == null)
-            partySecurityRoleTemplateDescriptionTransferCache = new PartySecurityRoleTemplateDescriptionTransferCache(userVisit, securityControl);
+            partySecurityRoleTemplateDescriptionTransferCache = new PartySecurityRoleTemplateDescriptionTransferCache(securityControl);
         
         return partySecurityRoleTemplateDescriptionTransferCache;
     }
     
     public PartySecurityRoleTemplateRoleTransferCache getPartySecurityRoleTemplateRoleTransferCache() {
         if(partySecurityRoleTemplateRoleTransferCache == null)
-            partySecurityRoleTemplateRoleTransferCache = new PartySecurityRoleTemplateRoleTransferCache(userVisit, securityControl);
+            partySecurityRoleTemplateRoleTransferCache = new PartySecurityRoleTemplateRoleTransferCache(securityControl);
         
         return partySecurityRoleTemplateRoleTransferCache;
     }
     
     public PartySecurityRoleTemplateTrainingClassTransferCache getPartySecurityRoleTemplateTrainingClassTransferCache() {
         if(partySecurityRoleTemplateTrainingClassTransferCache == null)
-            partySecurityRoleTemplateTrainingClassTransferCache = new PartySecurityRoleTemplateTrainingClassTransferCache(userVisit, securityControl);
+            partySecurityRoleTemplateTrainingClassTransferCache = new PartySecurityRoleTemplateTrainingClassTransferCache(securityControl);
         
         return partySecurityRoleTemplateTrainingClassTransferCache;
     }

@@ -25,12 +25,12 @@ public class ItemDescriptionTypeDescriptionTransferCache
         extends BaseItemDescriptionTransferCache<ItemDescriptionTypeDescription, ItemDescriptionTypeDescriptionTransfer> {
     
     /** Creates a new instance of ItemDescriptionTypeDescriptionTransferCache */
-    public ItemDescriptionTypeDescriptionTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemDescriptionTypeDescriptionTransferCache(ItemControl itemControl) {
+        super(itemControl);
     }
     
     @Override
-    public ItemDescriptionTypeDescriptionTransfer getTransfer(ItemDescriptionTypeDescription itemDescriptionTypeDescription) {
+    public ItemDescriptionTypeDescriptionTransfer getTransfer(UserVisit userVisit, ItemDescriptionTypeDescription itemDescriptionTypeDescription) {
         var itemDescriptionTypeDescriptionTransfer = get(itemDescriptionTypeDescription);
         
         if(itemDescriptionTypeDescriptionTransfer == null) {
@@ -38,7 +38,7 @@ public class ItemDescriptionTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, itemDescriptionTypeDescription.getLanguage());
             
             itemDescriptionTypeDescriptionTransfer = new ItemDescriptionTypeDescriptionTransfer(languageTransfer, itemDescriptionTypeTransfer, itemDescriptionTypeDescription.getDescription());
-            put(itemDescriptionTypeDescription, itemDescriptionTypeDescriptionTransfer);
+            put(userVisit, itemDescriptionTypeDescription, itemDescriptionTypeDescriptionTransfer);
         }
         
         return itemDescriptionTypeDescriptionTransfer;

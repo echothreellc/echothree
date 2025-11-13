@@ -29,8 +29,8 @@ public abstract class BaseSelectorDescriptionTransferCache<K extends BaseEntity,
     PartyControl partyControl;
     
     /** Creates a new instance of BaseSelectorDescriptionTransferCache */
-    protected BaseSelectorDescriptionTransferCache(UserVisit userVisit, SelectorControl selectorControl) {
-        super(userVisit, selectorControl);
+    protected BaseSelectorDescriptionTransferCache(SelectorControl selectorControl) {
+        super(selectorControl);
         
         partyControl = Session.getModelController(PartyControl.class);
     }

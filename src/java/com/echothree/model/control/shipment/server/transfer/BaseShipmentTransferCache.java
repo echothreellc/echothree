@@ -25,10 +25,10 @@ public abstract class BaseShipmentTransferCache<K extends BaseEntity, V extends 
         extends BaseTransferCache<K, V> {
     
     /** Creates a new instance of BaseShipmentTransferCache */
-    protected BaseShipmentTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected BaseShipmentTransferCache() {
+        super();
     }
 
-    protected abstract V getTransfer(K key);
+    protected abstract V getTransfer(UserVisit userVisit, K key);
 
 }

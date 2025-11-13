@@ -25,20 +25,20 @@ public class ForumMessageAttachmentDescriptionTransferCache
         extends BaseForumDescriptionTransferCache<ForumMessageAttachmentDescription, ForumMessageAttachmentDescriptionTransfer> {
     
     /** Creates a new instance of ForumMessageAttachmentDescriptionTransferCache */
-    public ForumMessageAttachmentDescriptionTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
+    public ForumMessageAttachmentDescriptionTransferCache(ForumControl forumControl) {
+        super(forumControl);
     }
     
-    public ForumMessageAttachmentDescriptionTransfer getForumMessageAttachmentDescriptionTransfer(ForumMessageAttachmentDescription forumMessageAttachmentDescription) {
+    public ForumMessageAttachmentDescriptionTransfer getForumMessageAttachmentDescriptionTransfer(UserVisit userVisit, ForumMessageAttachmentDescription forumMessageAttachmentDescription) {
         var forumMessageAttachmentDescriptionTransfer = get(forumMessageAttachmentDescription);
         
         if(forumMessageAttachmentDescriptionTransfer == null) {
-            var forumMessageAttachmentTransferCache = forumControl.getForumTransferCaches(userVisit).getForumMessageAttachmentTransferCache();
-            var forumMessageAttachmentTransfer = forumMessageAttachmentTransferCache.getForumMessageAttachmentTransfer(forumMessageAttachmentDescription.getForumMessageAttachment());
+            var forumMessageAttachmentTransferCache = forumControl.getForumTransferCaches().getForumMessageAttachmentTransferCache();
+            var forumMessageAttachmentTransfer = forumMessageAttachmentTransferCache.getForumMessageAttachmentTransfer(userVisit, forumMessageAttachmentDescription.getForumMessageAttachment());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, forumMessageAttachmentDescription.getLanguage());
             
             forumMessageAttachmentDescriptionTransfer = new ForumMessageAttachmentDescriptionTransfer(languageTransfer, forumMessageAttachmentTransfer, forumMessageAttachmentDescription.getDescription());
-            put(forumMessageAttachmentDescription, forumMessageAttachmentDescriptionTransfer);
+            put(userVisit, forumMessageAttachmentDescription, forumMessageAttachmentDescriptionTransfer);
         }
         
         return forumMessageAttachmentDescriptionTransfer;

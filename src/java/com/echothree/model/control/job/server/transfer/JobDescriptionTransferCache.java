@@ -25,11 +25,11 @@ public class JobDescriptionTransferCache
         extends BaseJobDescriptionTransferCache<JobDescription, JobDescriptionTransfer> {
     
     /** Creates a new instance of JobDescriptionTransferCache */
-    public JobDescriptionTransferCache(UserVisit userVisit, JobControl jobControl) {
-        super(userVisit, jobControl);
+    public JobDescriptionTransferCache(JobControl jobControl) {
+        super(jobControl);
     }
     
-    public JobDescriptionTransfer getJobDescriptionTransfer(JobDescription jobDescription) {
+    public JobDescriptionTransfer getJobDescriptionTransfer(UserVisit userVisit, JobDescription jobDescription) {
         var jobDescriptionTransfer = get(jobDescription);
         
         if(jobDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class JobDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, jobDescription.getLanguage());
             
             jobDescriptionTransfer = new JobDescriptionTransfer(languageTransfer, jobTransfer, jobDescription.getDescription());
-            put(jobDescription, jobDescriptionTransfer);
+            put(userVisit, jobDescription, jobDescriptionTransfer);
         }
         
         return jobDescriptionTransfer;

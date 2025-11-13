@@ -32,14 +32,14 @@ public class CustomerTypeCreditLimitTransferCache
     CustomerControl customerControl;
     
     /** Creates a new instance of CustomerTypeCreditLimitTransferCache */
-    public CustomerTypeCreditLimitTransferCache(UserVisit userVisit, TermControl termControl) {
-        super(userVisit, termControl);
+    public CustomerTypeCreditLimitTransferCache(TermControl termControl) {
+        super(termControl);
         
         accountingControl = Session.getModelController(AccountingControl.class);
         customerControl = Session.getModelController(CustomerControl.class);
     }
     
-    public CustomerTypeCreditLimitTransfer getCustomerTypeCreditLimitTransfer(CustomerTypeCreditLimit customerTypeCreditLimit) {
+    public CustomerTypeCreditLimitTransfer getCustomerTypeCreditLimitTransfer(UserVisit userVisit, CustomerTypeCreditLimit customerTypeCreditLimit) {
         var customerTypeCreditLimitTransfer = get(customerTypeCreditLimit);
         
         if(customerTypeCreditLimitTransfer == null) {
@@ -52,7 +52,7 @@ public class CustomerTypeCreditLimitTransferCache
             
             customerTypeCreditLimitTransfer = new CustomerTypeCreditLimitTransfer(customerTypeTransfer, currencyTransfer,
                     creditLimit, potentialCreditLimit);
-            put(customerTypeCreditLimit, customerTypeCreditLimitTransfer);
+            put(userVisit, customerTypeCreditLimit, customerTypeCreditLimitTransfer);
         }
         
         return customerTypeCreditLimitTransfer;

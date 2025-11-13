@@ -28,11 +28,11 @@ public class CommandMessageTypeDescriptionTransferCache
     CommandControl commandControl = Session.getModelController(CommandControl.class);
 
     /** Creates a new instance of CommandMessageTypeDescriptionTransferCache */
-    public CommandMessageTypeDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public CommandMessageTypeDescriptionTransferCache() {
+        super();
     }
     
-    public CommandMessageTypeDescriptionTransfer getCommandMessageTypeDescriptionTransfer(CommandMessageTypeDescription commandMessageTypeDescription) {
+    public CommandMessageTypeDescriptionTransfer getCommandMessageTypeDescriptionTransfer(UserVisit userVisit, CommandMessageTypeDescription commandMessageTypeDescription) {
         var commandMessageTypeDescriptionTransfer = get(commandMessageTypeDescription);
         
         if(commandMessageTypeDescriptionTransfer == null) {
@@ -40,7 +40,7 @@ public class CommandMessageTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, commandMessageTypeDescription.getLanguage());
             
             commandMessageTypeDescriptionTransfer = new CommandMessageTypeDescriptionTransfer(languageTransfer, commandMessageTypeTransfer, commandMessageTypeDescription.getDescription());
-            put(commandMessageTypeDescription, commandMessageTypeDescriptionTransfer);
+            put(userVisit, commandMessageTypeDescription, commandMessageTypeDescriptionTransfer);
         }
         
         return commandMessageTypeDescriptionTransfer;

@@ -28,12 +28,12 @@ public class ShipmentTypeDescriptionTransferCache
     ShipmentControl shipmentControl = Session.getModelController(ShipmentControl.class);
 
     /** Creates a new instance of ShipmentTypeDescriptionTransferCache */
-    public ShipmentTypeDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public ShipmentTypeDescriptionTransferCache() {
+        super();
     }
 
     @Override
-    public ShipmentTypeDescriptionTransfer getTransfer(ShipmentTypeDescription shipmentTypeDescription) {
+    public ShipmentTypeDescriptionTransfer getTransfer(UserVisit userVisit, ShipmentTypeDescription shipmentTypeDescription) {
         var shipmentTypeDescriptionTransfer = get(shipmentTypeDescription);
         
         if(shipmentTypeDescriptionTransfer == null) {
@@ -41,7 +41,7 @@ public class ShipmentTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, shipmentTypeDescription.getLanguage());
             
             shipmentTypeDescriptionTransfer = new ShipmentTypeDescriptionTransfer(languageTransfer, shipmentTypeTransfer, shipmentTypeDescription.getDescription());
-            put(shipmentTypeDescription, shipmentTypeDescriptionTransfer);
+            put(userVisit, shipmentTypeDescription, shipmentTypeDescriptionTransfer);
         }
         
         return shipmentTypeDescriptionTransfer;

@@ -30,13 +30,13 @@ public class UseTransferCache
     UseTypeControl useTypeControl = Session.getModelController(UseTypeControl.class);
 
     /** Creates a new instance of UseTransferCache */
-    public UseTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public UseTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public UseTransfer getUseTransfer(Use use) {
+    public UseTransfer getUseTransfer(UserVisit userVisit, Use use) {
         var useTransfer = get(use);
         
         if(useTransfer == null) {
@@ -45,10 +45,10 @@ public class UseTransferCache
             var useType = useTypeControl.getUseTypeTransfer(userVisit, useDetail.getUseType());
             var isDefault = useDetail.getIsDefault();
             var sortOrder = useDetail.getSortOrder();
-            var description = useControl.getBestUseDescription(use, getLanguage());
+            var description = useControl.getBestUseDescription(use, getLanguage(userVisit));
             
             useTransfer = new UseTransfer(useName, useType, isDefault, sortOrder, description);
-            put(use, useTransfer);
+            put(userVisit, use, useTransfer);
         }
         
         return useTransfer;

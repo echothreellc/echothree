@@ -30,12 +30,12 @@ public class ShipmentTypeShippingMethodTransferCache
     ShippingControl shippingControl = Session.getModelController(ShippingControl.class);
 
     /** Creates a new instance of ShipmentTypeShippingMethodTransferCache */
-    public ShipmentTypeShippingMethodTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public ShipmentTypeShippingMethodTransferCache() {
+        super();
     }
 
     @Override
-    public ShipmentTypeShippingMethodTransfer getTransfer(ShipmentTypeShippingMethod shipmentTypeShippingMethod) {
+    public ShipmentTypeShippingMethodTransfer getTransfer(UserVisit userVisit, ShipmentTypeShippingMethod shipmentTypeShippingMethod) {
         var shipmentTypeShippingMethodTransfer = get(shipmentTypeShippingMethod);
         
         if(shipmentTypeShippingMethodTransfer == null) {
@@ -46,7 +46,7 @@ public class ShipmentTypeShippingMethodTransferCache
             
             shipmentTypeShippingMethodTransfer = new ShipmentTypeShippingMethodTransfer(shipmentType, shippingMethod, isDefault,
                     sortOrder);
-            put(shipmentTypeShippingMethod, shipmentTypeShippingMethodTransfer);
+            put(userVisit, shipmentTypeShippingMethod, shipmentTypeShippingMethodTransfer);
         }
         
         return shipmentTypeShippingMethodTransfer;

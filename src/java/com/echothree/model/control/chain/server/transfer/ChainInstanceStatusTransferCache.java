@@ -29,23 +29,23 @@ public class ChainInstanceStatusTransferCache
     CoreControl coreControl = Session.getModelController(CoreControl.class);
     
     /** Creates a new instance of ChainInstanceStatusTransferCache */
-    public ChainInstanceStatusTransferCache(UserVisit userVisit, ChainControl chainControl) {
-        super(userVisit, chainControl);
+    public ChainInstanceStatusTransferCache(ChainControl chainControl) {
+        super(chainControl);
     }
     
-    public ChainInstanceStatusTransfer getChainInstanceStatusTransfer(ChainInstanceStatus chainInstanceStatus) {
+    public ChainInstanceStatusTransfer getChainInstanceStatusTransfer(UserVisit userVisit, ChainInstanceStatus chainInstanceStatus) {
         var chainInstanceStatusTransfer = get(chainInstanceStatus);
         
         if(chainInstanceStatusTransfer == null) {
             var chainInstance = chainControl.getChainInstanceTransfer(userVisit, chainInstanceStatus.getChainInstance());
             var nextChainActionSet = chainControl.getChainActionSetTransfer(userVisit, chainInstanceStatus.getNextChainActionSet());
             var unformattedNextChainActionSetTime = chainInstanceStatus.getNextChainActionSetTime();
-            var nextChainActionSetTime = formatTypicalDateTime(unformattedNextChainActionSetTime);
+            var nextChainActionSetTime = formatTypicalDateTime(userVisit, unformattedNextChainActionSetTime);
             var queuedLetterSequence = chainInstanceStatus.getQueuedLetterSequence();
             
             chainInstanceStatusTransfer = new ChainInstanceStatusTransfer(chainInstance, nextChainActionSet, unformattedNextChainActionSetTime,
                     nextChainActionSetTime, queuedLetterSequence);
-            put(chainInstanceStatus, chainInstanceStatusTransfer);
+            put(userVisit, chainInstanceStatus, chainInstanceStatusTransfer);
         }
         
         return chainInstanceStatusTransfer;

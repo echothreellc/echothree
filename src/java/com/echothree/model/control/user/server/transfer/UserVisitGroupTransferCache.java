@@ -32,13 +32,13 @@ public class UserVisitGroupTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
     /** Creates a new instance of UserVisitGroupTransferCache */
-    public UserVisitGroupTransferCache(UserVisit userVisit, UserControl userControl) {
-        super(userVisit, userControl);
+    public UserVisitGroupTransferCache(UserControl userControl) {
+        super(userControl);
 
         setIncludeEntityInstance(true);
     }
 
-    public UserVisitGroupTransfer getUserVisitGroupTransfer(UserVisitGroup userVisitGroup) {
+    public UserVisitGroupTransfer getUserVisitGroupTransfer(UserVisit userVisit, UserVisitGroup userVisitGroup) {
         var userVisitGroupTransfer = get(userVisitGroup);
 
         if(userVisitGroupTransfer == null) {
@@ -50,7 +50,7 @@ public class UserVisitGroupTransferCache
                     UserVisitGroupStatusConstants.Workflow_USER_VISIT_GROUP_STATUS, entityInstance);
 
             userVisitGroupTransfer = new UserVisitGroupTransfer(userVisitGroupName, userVisitGroupStatusTransfer);
-            put(userVisitGroup, userVisitGroupTransfer);
+            put(userVisit, userVisitGroup, userVisitGroupTransfer);
         }
 
         return userVisitGroupTransfer;

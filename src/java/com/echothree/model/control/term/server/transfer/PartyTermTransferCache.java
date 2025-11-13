@@ -29,13 +29,13 @@ public class PartyTermTransferCache
     PartyControl partyControl;
     
     /** Creates a new instance of PartyTermTransferCache */
-    public PartyTermTransferCache(UserVisit userVisit, TermControl termControl) {
-        super(userVisit, termControl);
+    public PartyTermTransferCache(TermControl termControl) {
+        super(termControl);
         
         partyControl = Session.getModelController(PartyControl.class);
     }
     
-    public PartyTermTransfer getPartyTermTransfer(PartyTerm partyTerm) {
+    public PartyTermTransfer getPartyTermTransfer(UserVisit userVisit, PartyTerm partyTerm) {
         var partyTermTransfer = get(partyTerm);
         
         if(partyTermTransfer == null) {
@@ -44,7 +44,7 @@ public class PartyTermTransferCache
             var taxable = partyTerm.getTaxable();
             
             partyTermTransfer = new PartyTermTransfer(party, term, taxable);
-            put(partyTerm, partyTermTransfer);
+            put(userVisit, partyTerm, partyTermTransfer);
         }
         
         return partyTermTransfer;

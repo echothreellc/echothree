@@ -28,11 +28,11 @@ public class EntityLongDefaultTransferCache
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of EntityLongDefaultTransferCache */
-    public EntityLongDefaultTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityLongDefaultTransferCache() {
+        super();
     }
     
-    public EntityLongDefaultTransfer getEntityLongDefaultTransfer(EntityLongDefault entityLongDefault) {
+    public EntityLongDefaultTransfer getEntityLongDefaultTransfer(UserVisit userVisit, EntityLongDefault entityLongDefault) {
         var entityLongDefaultTransfer = get(entityLongDefault);
         
         if(entityLongDefaultTransfer == null) {
@@ -40,7 +40,7 @@ public class EntityLongDefaultTransferCache
             var longAttribute = entityLongDefault.getLongAttribute();
             
             entityLongDefaultTransfer = new EntityLongDefaultTransfer(entityAttribute, longAttribute);
-            put(entityLongDefault, entityLongDefaultTransfer);
+            put(userVisit, entityLongDefault, entityLongDefaultTransfer);
         }
         
         return entityLongDefaultTransfer;

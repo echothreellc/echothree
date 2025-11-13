@@ -29,14 +29,14 @@ public class ItemAliasTransferCache
     UomControl uomControl;
     
     /** Creates a new instance of ItemAliasTransferCache */
-    public ItemAliasTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemAliasTransferCache(ItemControl itemControl) {
+        super(itemControl);
         
         uomControl = Session.getModelController(UomControl.class);
     }
     
     @Override
-    public ItemAliasTransfer getTransfer(ItemAlias itemAlias) {
+    public ItemAliasTransfer getTransfer(UserVisit userVisit, ItemAlias itemAlias) {
         var itemAliasTransfer = get(itemAlias);
         
         if(itemAliasTransfer == null) {
@@ -46,7 +46,7 @@ public class ItemAliasTransferCache
             var alias = itemAlias.getAlias();
             
             itemAliasTransfer = new ItemAliasTransfer(item, unitOfMeasureType, itemAliasType, alias);
-            put(itemAlias, itemAliasTransfer);
+            put(userVisit, itemAlias, itemAliasTransfer);
         }
         
         return itemAliasTransfer;

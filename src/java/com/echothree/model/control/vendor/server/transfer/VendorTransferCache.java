@@ -101,8 +101,8 @@ public class VendorTransferCache
     boolean hasCommunicationEventLimits;
 
     /** Creates a new instance of VendorTransferCache */
-    public VendorTransferCache(UserVisit userVisit, VendorControl vendorControl) {
-        super(userVisit, vendorControl);
+    public VendorTransferCache(VendorControl vendorControl) {
+        super(vendorControl);
 
         var options = session.getOptions();
         if(options != null) {
@@ -138,11 +138,11 @@ public class VendorTransferCache
         hasCommunicationEventLimits = session.hasLimit(CommunicationEventFactory.class);
     }
 
-    public VendorTransfer getTransfer(Vendor vendor) {
-        return getTransfer(vendor.getParty());
+    public VendorTransfer getTransfer(UserVisit userVisit, Vendor vendor) {
+        return getTransfer(userVisit, vendor.getParty());
     }
 
-    public VendorTransfer getTransfer(Party party) {
+    public VendorTransfer getTransfer(UserVisit userVisit, Party party) {
         var vendorTransfer = get(party);
 
         if(vendorTransfer == null) {
@@ -198,7 +198,7 @@ public class VendorTransferCache
                     maximumPurchaseOrderAmount, useItemPurchasingCategories, defaultItemAliasTypeTransfer, cancellationPolicyTransfer, returnPolicyTransfer,
                     apGlAccountTransfer, holdUntilComplete, allowBackorders, allowSubstitutions, allowCombiningShipments, requireReference,
                     allowReferenceDuplicates, referenceValidationPattern, vendorStatusTransfer);
-            put(party, vendorTransfer);
+            put(userVisit, party, vendorTransfer);
 
             if(includeUserLogin) {
                 vendorTransfer.setUserLogin(userControl.getUserLoginTransfer(userVisit, party));
@@ -269,7 +269,7 @@ public class VendorTransferCache
             }
 
             if(includePurchasingComments) {
-                setupComments(null, entityInstance, vendorTransfer, CommentConstants.CommentType_VENDOR_PURCHASING);
+                setupComments(userVisit, null, entityInstance, vendorTransfer, CommentConstants.CommentType_VENDOR_PURCHASING);
             }
 
             if(includePartyCreditLimits) {

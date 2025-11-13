@@ -29,13 +29,13 @@ public class GeoCodeLanguageTransferCache
     PartyControl partyControl;
     
     /** Creates a new instance of GeoCodeLanguageTransferCache */
-    public GeoCodeLanguageTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
+    public GeoCodeLanguageTransferCache(GeoControl geoControl) {
+        super(geoControl);
         
         partyControl = Session.getModelController(PartyControl.class);
     }
     
-    public GeoCodeLanguageTransfer getGeoCodeLanguageTransfer(GeoCodeLanguage geoCodeLanguage) {
+    public GeoCodeLanguageTransfer getGeoCodeLanguageTransfer(UserVisit userVisit, GeoCodeLanguage geoCodeLanguage) {
         var geoCodeLanguageTransfer = get(geoCodeLanguage);
         
         if(geoCodeLanguageTransfer == null) {
@@ -45,7 +45,7 @@ public class GeoCodeLanguageTransferCache
             var sortOrder = geoCodeLanguage.getSortOrder();
             
             geoCodeLanguageTransfer = new GeoCodeLanguageTransfer(geoCode, language, isDefault, sortOrder);
-            put(geoCodeLanguage, geoCodeLanguageTransfer);
+            put(userVisit, geoCodeLanguage, geoCodeLanguageTransfer);
         }
         
         return geoCodeLanguageTransfer;

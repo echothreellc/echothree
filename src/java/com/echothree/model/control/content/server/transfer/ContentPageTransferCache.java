@@ -43,8 +43,8 @@ public class ContentPageTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of ContentPageTransferCache */
-    public ContentPageTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    public ContentPageTransferCache(ContentControl contentControl) {
+        super(contentControl);
 
         var options = session.getOptions();
         if(options != null) {
@@ -72,7 +72,7 @@ public class ContentPageTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
 
-    public ContentPageTransfer getContentPageTransfer(ContentPage contentPage) {
+    public ContentPageTransfer getContentPageTransfer(UserVisit userVisit, ContentPage contentPage) {
         var contentPageTransfer = get(contentPage);
         
         if(contentPageTransfer == null) {
@@ -82,13 +82,13 @@ public class ContentPageTransferCache
             var contentPageLayout = filterContentPageLayout ? null : contentControl.getContentPageLayoutTransfer(userVisit, contentPageDetail.getContentPageLayout());
             var isDefault = filterIsDefault ? null : contentPageDetail.getIsDefault();
             var sortOrder = filterSortOrder ? null : contentPageDetail.getSortOrder();
-            var description = filterDescription ? null : contentControl.getBestContentPageDescription(contentPage, getLanguage());
+            var description = filterDescription ? null : contentControl.getBestContentPageDescription(contentPage, getLanguage(userVisit));
             
             contentPageTransfer = new ContentPageTransfer(contentSection, contentPageName, contentPageLayout, isDefault, sortOrder, description);
-            put(contentPage, contentPageTransfer);
+            put(userVisit, contentPage, contentPageTransfer);
 
             if(includeContentPageAreas) {
-                var contentPageAreaTransfers = contentControl.getContentPageAreaTransfersByContentPage(userVisit, contentPage, getLanguage());
+                var contentPageAreaTransfers = contentControl.getContentPageAreaTransfersByContentPage(userVisit, contentPage, getLanguage(userVisit));
                 Map<String, ContentPageAreaTransfer> contentPageAreas = new LinkedHashMap<>(contentPageAreaTransfers.size());
 
                 contentPageAreaTransfers.forEach((contentPageAreaTransfer) -> {

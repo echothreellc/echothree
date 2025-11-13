@@ -29,12 +29,12 @@ public class PartyScaleUseTransferCache
     PartyControl partyControl;
     
     /** Creates a new instance of PartyScaleUseTransferCache */
-    public PartyScaleUseTransferCache(UserVisit userVisit, ScaleControl scaleControl) {
-        super(userVisit, scaleControl);
+    public PartyScaleUseTransferCache(ScaleControl scaleControl) {
+        super(scaleControl);
         partyControl = Session.getModelController(PartyControl.class);
     }
     
-    public PartyScaleUseTransfer getPartyScaleUseTransfer(PartyScaleUse partyScaleUse) {
+    public PartyScaleUseTransfer getPartyScaleUseTransfer(UserVisit userVisit, PartyScaleUse partyScaleUse) {
         var partyScaleUseTransfer = get(partyScaleUse);
         
         if(partyScaleUseTransfer == null) {
@@ -43,7 +43,7 @@ public class PartyScaleUseTransferCache
             var scale = scaleControl.getScaleTransfer(userVisit, partyScaleUse.getScale());
             
             partyScaleUseTransfer = new PartyScaleUseTransfer(party, scaleUseType, scale);
-            put(partyScaleUse, partyScaleUseTransfer);
+            put(userVisit, partyScaleUse, partyScaleUseTransfer);
         }
         
         return partyScaleUseTransfer;

@@ -36,90 +36,90 @@ public class ShipmentTransferCaches
     protected PartyFreeOnBoardTransferCache partyFreeOnBoardTransferCache;
 
     /** Creates a new instance of ShipmentTransferCaches */
-    public ShipmentTransferCaches(UserVisit userVisit) {
-        super(userVisit);
+    public ShipmentTransferCaches() {
+        super();
     }
     
     public ShipmentTypeTransferCache getShipmentTypeTransferCache() {
         if(shipmentTypeTransferCache == null)
-            shipmentTypeTransferCache = new ShipmentTypeTransferCache(userVisit);
+            shipmentTypeTransferCache = new ShipmentTypeTransferCache();
         
         return shipmentTypeTransferCache;
     }
     
     public ShipmentTypeDescriptionTransferCache getShipmentTypeDescriptionTransferCache() {
         if(shipmentTypeDescriptionTransferCache == null)
-            shipmentTypeDescriptionTransferCache = new ShipmentTypeDescriptionTransferCache(userVisit);
+            shipmentTypeDescriptionTransferCache = new ShipmentTypeDescriptionTransferCache();
 
         return shipmentTypeDescriptionTransferCache;
     }
 
     public ShipmentTypeShippingMethodTransferCache getShipmentTypeShippingMethodTransferCache() {
         if(shipmentTypeShippingMethodTransferCache == null)
-            shipmentTypeShippingMethodTransferCache = new ShipmentTypeShippingMethodTransferCache(userVisit);
+            shipmentTypeShippingMethodTransferCache = new ShipmentTypeShippingMethodTransferCache();
 
         return shipmentTypeShippingMethodTransferCache;
     }
 
     public ShipmentAliasTypeTransferCache getShipmentAliasTypeTransferCache() {
         if(shipmentAliasTypeTransferCache == null)
-            shipmentAliasTypeTransferCache = new ShipmentAliasTypeTransferCache(userVisit);
+            shipmentAliasTypeTransferCache = new ShipmentAliasTypeTransferCache();
         
         return shipmentAliasTypeTransferCache;
     }
     
     public ShipmentAliasTypeDescriptionTransferCache getShipmentAliasTypeDescriptionTransferCache() {
         if(shipmentAliasTypeDescriptionTransferCache == null)
-            shipmentAliasTypeDescriptionTransferCache = new ShipmentAliasTypeDescriptionTransferCache(userVisit);
+            shipmentAliasTypeDescriptionTransferCache = new ShipmentAliasTypeDescriptionTransferCache();
         
         return shipmentAliasTypeDescriptionTransferCache;
     }
     
     public ShipmentAliasTransferCache getShipmentAliasTransferCache() {
         if(shipmentAliasTransferCache == null)
-            shipmentAliasTransferCache = new ShipmentAliasTransferCache(userVisit);
+            shipmentAliasTransferCache = new ShipmentAliasTransferCache();
         
         return shipmentAliasTransferCache;
     }
     
     public ShipmentTimeTypeTransferCache getShipmentTimeTypeTransferCache() {
         if(shipmentTimeTypeTransferCache == null)
-            shipmentTimeTypeTransferCache = new ShipmentTimeTypeTransferCache(userVisit);
+            shipmentTimeTypeTransferCache = new ShipmentTimeTypeTransferCache();
 
         return shipmentTimeTypeTransferCache;
     }
 
     public ShipmentTimeTransferCache getShipmentTimeTransferCache() {
         if(shipmentTimeTransferCache == null)
-            shipmentTimeTransferCache = new ShipmentTimeTransferCache(userVisit);
+            shipmentTimeTransferCache = new ShipmentTimeTransferCache();
 
         return shipmentTimeTransferCache;
     }
 
     public ShipmentTimeTypeDescriptionTransferCache getShipmentTimeTypeDescriptionTransferCache() {
         if(shipmentTimeTypeDescriptionTransferCache == null)
-            shipmentTimeTypeDescriptionTransferCache = new ShipmentTimeTypeDescriptionTransferCache(userVisit);
+            shipmentTimeTypeDescriptionTransferCache = new ShipmentTimeTypeDescriptionTransferCache();
 
         return shipmentTimeTypeDescriptionTransferCache;
     }
 
     public FreeOnBoardTransferCache getFreeOnBoardTransferCache() {
         if(freeOnBoardTransferCache == null)
-            freeOnBoardTransferCache = new FreeOnBoardTransferCache(userVisit);
+            freeOnBoardTransferCache = new FreeOnBoardTransferCache();
 
         return freeOnBoardTransferCache;
     }
 
     public FreeOnBoardDescriptionTransferCache getFreeOnBoardDescriptionTransferCache() {
         if(freeOnBoardDescriptionTransferCache == null)
-            freeOnBoardDescriptionTransferCache = new FreeOnBoardDescriptionTransferCache(userVisit);
+            freeOnBoardDescriptionTransferCache = new FreeOnBoardDescriptionTransferCache();
 
         return freeOnBoardDescriptionTransferCache;
     }
 
     public PartyFreeOnBoardTransferCache getPartyFreeOnBoardTransferCache() {
         if(partyFreeOnBoardTransferCache == null)
-            partyFreeOnBoardTransferCache = new PartyFreeOnBoardTransferCache(userVisit);
+            partyFreeOnBoardTransferCache = new PartyFreeOnBoardTransferCache();
 
         return partyFreeOnBoardTransferCache;
     }

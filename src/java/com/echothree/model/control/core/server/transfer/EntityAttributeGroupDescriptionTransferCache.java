@@ -29,11 +29,11 @@ public class EntityAttributeGroupDescriptionTransferCache
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of EntityAttributeGroupDescriptionTransferCache */
-    public EntityAttributeGroupDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityAttributeGroupDescriptionTransferCache() {
+        super();
     }
     
-    public EntityAttributeGroupDescriptionTransfer getEntityAttributeGroupDescriptionTransfer(EntityAttributeGroupDescription entityAttributeGroupDescription, EntityInstance entityInstance) {
+    public EntityAttributeGroupDescriptionTransfer getEntityAttributeGroupDescriptionTransfer(final UserVisit userVisit, final EntityAttributeGroupDescription entityAttributeGroupDescription, final EntityInstance entityInstance) {
         var entityAttributeGroupDescriptionTransfer = get(entityAttributeGroupDescription);
         
         if(entityAttributeGroupDescriptionTransfer == null) {
@@ -41,7 +41,7 @@ public class EntityAttributeGroupDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, entityAttributeGroupDescription.getLanguage());
             
             entityAttributeGroupDescriptionTransfer = new EntityAttributeGroupDescriptionTransfer(languageTransfer, entityAttributeGroupTransfer, entityAttributeGroupDescription.getDescription());
-            put(entityAttributeGroupDescription, entityAttributeGroupDescriptionTransfer);
+            put(userVisit, entityAttributeGroupDescription, entityAttributeGroupDescriptionTransfer);
         }
         
         return entityAttributeGroupDescriptionTransfer;

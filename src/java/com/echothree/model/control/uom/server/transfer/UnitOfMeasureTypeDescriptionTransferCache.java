@@ -25,22 +25,22 @@ public class UnitOfMeasureTypeDescriptionTransferCache
         extends BaseUomDescriptionTransferCache<UnitOfMeasureTypeDescription, UnitOfMeasureTypeDescriptionTransfer> {
     
     /** Creates a new instance of UnitOfMeasureTypeDescriptionTransferCache */
-    public UnitOfMeasureTypeDescriptionTransferCache(UserVisit userVisit, UomControl uomControl) {
-        super(userVisit, uomControl);
+    public UnitOfMeasureTypeDescriptionTransferCache(UomControl uomControl) {
+        super(uomControl);
     }
     
-    public UnitOfMeasureTypeDescriptionTransfer getUnitOfMeasureTypeDescriptionTransfer(UnitOfMeasureTypeDescription unitOfMeasureTypeDescription) {
+    public UnitOfMeasureTypeDescriptionTransfer getUnitOfMeasureTypeDescriptionTransfer(UserVisit userVisit, UnitOfMeasureTypeDescription unitOfMeasureTypeDescription) {
         var unitOfMeasureTypeDescriptionTransfer = get(unitOfMeasureTypeDescription);
         
         if(unitOfMeasureTypeDescriptionTransfer == null) {
-            var unitOfMeasureTypeTransferCache = uomControl.getUomTransferCaches(userVisit).getUnitOfMeasureTypeTransferCache();
-            var unitOfMeasureTypeTransfer = unitOfMeasureTypeTransferCache.getUnitOfMeasureTypeTransfer(unitOfMeasureTypeDescription.getUnitOfMeasureType());
+            var unitOfMeasureTypeTransferCache = uomControl.getUomTransferCaches().getUnitOfMeasureTypeTransferCache();
+            var unitOfMeasureTypeTransfer = unitOfMeasureTypeTransferCache.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureTypeDescription.getUnitOfMeasureType());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, unitOfMeasureTypeDescription.getLanguage());
             
             unitOfMeasureTypeDescriptionTransfer = new UnitOfMeasureTypeDescriptionTransfer(languageTransfer,
                     unitOfMeasureTypeTransfer, unitOfMeasureTypeDescription.getSingularDescription(),
                     unitOfMeasureTypeDescription.getPluralDescription(), unitOfMeasureTypeDescription.getSymbol());
-            put(unitOfMeasureTypeDescription, unitOfMeasureTypeDescriptionTransfer);
+            put(userVisit, unitOfMeasureTypeDescription, unitOfMeasureTypeDescriptionTransfer);
         }
         
         return unitOfMeasureTypeDescriptionTransfer;

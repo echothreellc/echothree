@@ -40,118 +40,118 @@ public class OfferTransferCaches
     protected OfferChainTypeTransferCache offerChainTypeTransferCache;
     
     /** Creates a new instance of OfferTransferCaches */
-    public OfferTransferCaches(UserVisit userVisit) {
-        super(userVisit);
+    public OfferTransferCaches() {
+        super();
     }
     
     public OfferTransferCache getOfferTransferCache() {
         if(offerTransferCache == null)
-            offerTransferCache = new OfferTransferCache(userVisit);
+            offerTransferCache = new OfferTransferCache();
         
         return offerTransferCache;
     }
     
     public OfferDescriptionTransferCache getOfferDescriptionTransferCache() {
         if(offerDescriptionTransferCache == null)
-            offerDescriptionTransferCache = new OfferDescriptionTransferCache(userVisit);
+            offerDescriptionTransferCache = new OfferDescriptionTransferCache();
         
         return offerDescriptionTransferCache;
     }
     
     public OfferUseTransferCache getOfferUseTransferCache() {
         if(offerUseTransferCache == null)
-            offerUseTransferCache = new OfferUseTransferCache(userVisit);
+            offerUseTransferCache = new OfferUseTransferCache();
         
         return offerUseTransferCache;
     }
     
     public SourceTransferCache getSourceTransferCache() {
         if(sourceTransferCache == null)
-            sourceTransferCache = new SourceTransferCache(userVisit);
+            sourceTransferCache = new SourceTransferCache();
         
         return sourceTransferCache;
     }
     
     public OfferItemPriceTransferCache getOfferItemPriceTransferCache() {
         if(offerItemPriceTransferCache == null)
-            offerItemPriceTransferCache = new OfferItemPriceTransferCache(userVisit);
+            offerItemPriceTransferCache = new OfferItemPriceTransferCache();
         
         return offerItemPriceTransferCache;
     }
     
     public OfferItemTransferCache getOfferItemTransferCache() {
         if(offerItemTransferCache == null)
-            offerItemTransferCache = new OfferItemTransferCache(userVisit);
+            offerItemTransferCache = new OfferItemTransferCache();
         
         return offerItemTransferCache;
     }
     
     public OfferNameElementDescriptionTransferCache getOfferNameElementDescriptionTransferCache() {
         if(offerNameElementDescriptionTransferCache == null)
-            offerNameElementDescriptionTransferCache = new OfferNameElementDescriptionTransferCache(userVisit);
+            offerNameElementDescriptionTransferCache = new OfferNameElementDescriptionTransferCache();
         
         return offerNameElementDescriptionTransferCache;
     }
     
     public OfferNameElementTransferCache getOfferNameElementTransferCache() {
         if(offerNameElementTransferCache == null)
-            offerNameElementTransferCache = new OfferNameElementTransferCache(userVisit);
+            offerNameElementTransferCache = new OfferNameElementTransferCache();
         
         return offerNameElementTransferCache;
     }
     
     public UseNameElementDescriptionTransferCache getUseNameElementDescriptionTransferCache() {
         if(useNameElementDescriptionTransferCache == null)
-            useNameElementDescriptionTransferCache = new UseNameElementDescriptionTransferCache(userVisit);
+            useNameElementDescriptionTransferCache = new UseNameElementDescriptionTransferCache();
         
         return useNameElementDescriptionTransferCache;
     }
     
     public UseNameElementTransferCache getUseNameElementTransferCache() {
         if(useNameElementTransferCache == null)
-            useNameElementTransferCache = new UseNameElementTransferCache(userVisit);
+            useNameElementTransferCache = new UseNameElementTransferCache();
         
         return useNameElementTransferCache;
     }
     
     public UseDescriptionTransferCache getUseDescriptionTransferCache() {
         if(useDescriptionTransferCache == null)
-            useDescriptionTransferCache = new UseDescriptionTransferCache(userVisit);
+            useDescriptionTransferCache = new UseDescriptionTransferCache();
         
         return useDescriptionTransferCache;
     }
     
     public UseTransferCache getUseTransferCache() {
         if(useTransferCache == null)
-            useTransferCache = new UseTransferCache(userVisit);
+            useTransferCache = new UseTransferCache();
         
         return useTransferCache;
     }
     
     public UseTypeDescriptionTransferCache getUseTypeDescriptionTransferCache() {
         if(useTypeDescriptionTransferCache == null)
-            useTypeDescriptionTransferCache = new UseTypeDescriptionTransferCache(userVisit);
+            useTypeDescriptionTransferCache = new UseTypeDescriptionTransferCache();
         
         return useTypeDescriptionTransferCache;
     }
     
     public UseTypeTransferCache getUseTypeTransferCache() {
         if(useTypeTransferCache == null)
-            useTypeTransferCache = new UseTypeTransferCache(userVisit);
+            useTypeTransferCache = new UseTypeTransferCache();
         
         return useTypeTransferCache;
     }
     
     public OfferCustomerTypeTransferCache getOfferCustomerTypeTransferCache() {
         if(offerCustomerTypeTransferCache == null)
-            offerCustomerTypeTransferCache = new OfferCustomerTypeTransferCache(userVisit);
+            offerCustomerTypeTransferCache = new OfferCustomerTypeTransferCache();
         
         return offerCustomerTypeTransferCache;
     }
     
     public OfferChainTypeTransferCache getOfferChainTypeTransferCache() {
         if(offerChainTypeTransferCache == null)
-            offerChainTypeTransferCache = new OfferChainTypeTransferCache(userVisit);
+            offerChainTypeTransferCache = new OfferChainTypeTransferCache();
         
         return offerChainTypeTransferCache;
     }

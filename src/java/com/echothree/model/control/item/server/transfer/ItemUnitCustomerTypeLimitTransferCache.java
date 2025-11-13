@@ -33,12 +33,12 @@ public class ItemUnitCustomerTypeLimitTransferCache
     CustomerControl customerControl = Session.getModelController(CustomerControl.class);
     
     /** Creates a new instance of ItemUnitCustomerTypeLimitTransferCache */
-    public ItemUnitCustomerTypeLimitTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemUnitCustomerTypeLimitTransferCache(ItemControl itemControl) {
+        super(itemControl);
     }
     
     @Override
-    public ItemUnitCustomerTypeLimitTransfer getTransfer(ItemUnitCustomerTypeLimit itemUnitCustomerTypeLimit) {
+    public ItemUnitCustomerTypeLimitTransfer getTransfer(UserVisit userVisit, ItemUnitCustomerTypeLimit itemUnitCustomerTypeLimit) {
         var itemUnitCustomerTypeLimitTransfer = get(itemUnitCustomerTypeLimit);
         
         if(itemUnitCustomerTypeLimitTransfer == null) {
@@ -53,7 +53,7 @@ public class ItemUnitCustomerTypeLimitTransferCache
             
             itemUnitCustomerTypeLimitTransfer = new ItemUnitCustomerTypeLimitTransfer(item, inventoryCondition, unitOfMeasureType, customerType,
                     minimumQuantity, maximumQuantity);
-            put(itemUnitCustomerTypeLimit, itemUnitCustomerTypeLimitTransfer);
+            put(userVisit, itemUnitCustomerTypeLimit, itemUnitCustomerTypeLimitTransfer);
         }
         
         return itemUnitCustomerTypeLimitTransfer;

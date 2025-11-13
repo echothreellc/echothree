@@ -29,8 +29,8 @@ public class PartyAliasTypeTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of PartyAliasTypeTransferCache */
-    public PartyAliasTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public PartyAliasTypeTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {
@@ -43,7 +43,7 @@ public class PartyAliasTypeTransferCache
     }
 
     @Override
-    public PartyAliasTypeTransfer getTransfer(PartyAliasType partyAliasType) {
+    public PartyAliasTypeTransfer getTransfer(UserVisit userVisit, PartyAliasType partyAliasType) {
         var partyAliasTypeTransfer = get(partyAliasType);
         
         if(partyAliasTypeTransfer == null) {
@@ -53,10 +53,10 @@ public class PartyAliasTypeTransferCache
             var validationPattern = partyAliasTypeDetail.getValidationPattern();
             var isDefault = partyAliasTypeDetail.getIsDefault();
             var sortOrder = partyAliasTypeDetail.getSortOrder();
-            var description = partyControl.getBestPartyAliasTypeDescription(partyAliasType, getLanguage());
+            var description = partyControl.getBestPartyAliasTypeDescription(partyAliasType, getLanguage(userVisit));
             
             partyAliasTypeTransfer = new PartyAliasTypeTransfer(partyType, partyAliasTypeName, validationPattern, isDefault, sortOrder, description);
-            put(partyAliasType, partyAliasTypeTransfer);
+            put(userVisit, partyAliasType, partyAliasTypeTransfer);
         }
         
         return partyAliasTypeTransfer;

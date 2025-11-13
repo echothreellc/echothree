@@ -38,8 +38,8 @@ public class PaymentProcessorTransferCache
     boolean includePaymentProcessorTransactions;
 
     /** Creates a new instance of PaymentProcessorTransferCache */
-    public PaymentProcessorTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public PaymentProcessorTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {
@@ -52,7 +52,7 @@ public class PaymentProcessorTransferCache
     }
 
     @Override
-    public PaymentProcessorTransfer getTransfer(PaymentProcessor paymentProcessor) {
+    public PaymentProcessorTransfer getTransfer(UserVisit userVisit, PaymentProcessor paymentProcessor) {
         var paymentProcessorTransfer = get(paymentProcessor);
         
         if(paymentProcessorTransfer == null) {
@@ -61,13 +61,13 @@ public class PaymentProcessorTransferCache
             var paymentProcessorType = paymentProcessorTypeControl.getPaymentProcessorTypeTransfer(userVisit, paymentProcessorDetail.getPaymentProcessorType());
             var isDefault = paymentProcessorDetail.getIsDefault();
             var sortOrder = paymentProcessorDetail.getSortOrder();
-            var description = paymentProcessorControl.getBestPaymentProcessorDescription(paymentProcessor, getLanguage());
+            var description = paymentProcessorControl.getBestPaymentProcessorDescription(paymentProcessor, getLanguage(userVisit));
             
             paymentProcessorTransfer = new PaymentProcessorTransfer(paymentProcessorName, paymentProcessorType, isDefault, sortOrder, description);
-            put(paymentProcessor, paymentProcessorTransfer);
+            put(userVisit, paymentProcessor, paymentProcessorTransfer);
 
             if(includeComments) {
-                setupComments(paymentProcessor, null, paymentProcessorTransfer, CommentConstants.CommentType_PAYMENT_PROCESSOR);
+                setupComments(userVisit, paymentProcessor, null, paymentProcessorTransfer, CommentConstants.CommentType_PAYMENT_PROCESSOR);
             }
             
             if(includePaymentProcessorTransactions) {

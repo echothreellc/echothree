@@ -33,11 +33,11 @@ public class ContactEmailAddressTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
     /** Creates a new instance of ContactEmailAddressTransferCache */
-    public ContactEmailAddressTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    public ContactEmailAddressTransferCache(ContactControl contactControl) {
+        super(contactControl);
     }
     
-    public ContactEmailAddressTransfer getContactEmailAddressTransfer(ContactEmailAddress contactEmailAddress) {
+    public ContactEmailAddressTransfer getContactEmailAddressTransfer(UserVisit userVisit, ContactEmailAddress contactEmailAddress) {
         var contactEmailAddressTransfer = get(contactEmailAddress);
         
         if(contactEmailAddressTransfer == null) {
@@ -50,7 +50,7 @@ public class ContactEmailAddressTransferCache
                     EmailAddressVerificationConstants.Workflow_EMAIL_ADDRESS_VERIFICATION, entityInstance);
             
             contactEmailAddressTransfer = new ContactEmailAddressTransfer(emailAddress, emailAddressStatusTransfer, emailAddressVerificationTransfer);
-            put(contactEmailAddress, contactEmailAddressTransfer);
+            put(userVisit, contactEmailAddress, contactEmailAddressTransfer);
         }
         
         return contactEmailAddressTransfer;

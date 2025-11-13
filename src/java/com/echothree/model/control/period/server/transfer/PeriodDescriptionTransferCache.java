@@ -25,11 +25,11 @@ public class PeriodDescriptionTransferCache
         extends BasePeriodDescriptionTransferCache<PeriodDescription, PeriodDescriptionTransfer> {
     
     /** Creates a new instance of PeriodDescriptionTransferCache */
-    public PeriodDescriptionTransferCache(UserVisit userVisit, PeriodControl periodControl) {
-        super(userVisit, periodControl);
+    public PeriodDescriptionTransferCache(PeriodControl periodControl) {
+        super(periodControl);
     }
     
-    public PeriodDescriptionTransfer getPeriodDescriptionTransfer(PeriodDescription periodDescription) {
+    public PeriodDescriptionTransfer getPeriodDescriptionTransfer(UserVisit userVisit, PeriodDescription periodDescription) {
         var periodDescriptionTransfer = get(periodDescription);
         
         if(periodDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class PeriodDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, periodDescription.getLanguage());
             
             periodDescriptionTransfer = new PeriodDescriptionTransfer(languageTransfer, periodTransfer, periodDescription.getDescription());
-            put(periodDescription, periodDescriptionTransfer);
+            put(userVisit, periodDescription, periodDescriptionTransfer);
         }
         
         return periodDescriptionTransfer;

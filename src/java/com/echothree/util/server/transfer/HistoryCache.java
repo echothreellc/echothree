@@ -16,6 +16,7 @@
 
 package com.echothree.util.server.transfer;
 
+import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.common.transfer.HistoryTransfer;
 import com.echothree.util.common.transfer.ListWrapper;
@@ -23,6 +24,6 @@ import com.echothree.util.server.persistence.BaseEntity;
 
 public interface HistoryCache<K extends BaseEntity, V extends BaseTransfer> {
     
-    public ListWrapper<HistoryTransfer<V>> getHistory(K key);
+    public ListWrapper<HistoryTransfer<V>> getHistory(UserVisit userVisit, K key);
     
 }

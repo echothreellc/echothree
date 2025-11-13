@@ -25,23 +25,23 @@ public class ContentPageLayoutAreaTransferCache
         extends BaseContentTransferCache<ContentPageLayoutArea, ContentPageLayoutAreaTransfer> {
     
     /** Creates a new instance of ContentPageLayoutAreaTransferCache */
-    public ContentPageLayoutAreaTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    public ContentPageLayoutAreaTransferCache(ContentControl contentControl) {
+        super(contentControl);
     }
     
-    public ContentPageLayoutAreaTransfer getContentPageLayoutAreaTransfer(ContentPageLayoutArea contentPageLayoutArea) {
+    public ContentPageLayoutAreaTransfer getContentPageLayoutAreaTransfer(UserVisit userVisit, ContentPageLayoutArea contentPageLayoutArea) {
         var contentPageLayoutAreaTransfer = get(contentPageLayoutArea);
         
         if(contentPageLayoutAreaTransfer == null) {
-            var contentTransferCaches = contentControl.getContentTransferCaches(userVisit);
-            var contentPageLayoutTransfer = contentTransferCaches.getContentPageLayoutTransferCache().getTransfer(contentPageLayoutArea.getContentPageLayout());
-            var contentPageAreaTypeTransfer = contentTransferCaches.getContentPageAreaTypeTransferCache().getTransfer(contentPageLayoutArea.getContentPageAreaType());
+            var contentTransferCaches = contentControl.getContentTransferCaches();
+            var contentPageLayoutTransfer = contentTransferCaches.getContentPageLayoutTransferCache().getTransfer(userVisit, contentPageLayoutArea.getContentPageLayout());
+            var contentPageAreaTypeTransfer = contentTransferCaches.getContentPageAreaTypeTransferCache().getTransfer(userVisit, contentPageLayoutArea.getContentPageAreaType());
             var showDescriptionField = contentPageLayoutArea.getShowDescriptionField();
             var sortOrder = contentPageLayoutArea.getSortOrder();
-            var description = contentControl.getBestContentPageLayoutAreaDescription(contentPageLayoutArea, getLanguage());
+            var description = contentControl.getBestContentPageLayoutAreaDescription(contentPageLayoutArea, getLanguage(userVisit));
             
             contentPageLayoutAreaTransfer = new ContentPageLayoutAreaTransfer(contentPageLayoutTransfer, contentPageAreaTypeTransfer, showDescriptionField, sortOrder, description);
-            put(contentPageLayoutArea, contentPageLayoutAreaTransfer);
+            put(userVisit, contentPageLayoutArea, contentPageLayoutAreaTransfer);
         }
         
         return contentPageLayoutAreaTransfer;

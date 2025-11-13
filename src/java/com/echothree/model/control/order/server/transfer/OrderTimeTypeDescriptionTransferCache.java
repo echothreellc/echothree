@@ -28,11 +28,11 @@ public class OrderTimeTypeDescriptionTransferCache
     OrderTimeControl orderTimeControl = Session.getModelController(OrderTimeControl.class);
 
     /** Creates a new instance of OrderTimeTypeDescriptionTransferCache */
-    public OrderTimeTypeDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public OrderTimeTypeDescriptionTransferCache() {
+        super();
     }
     
-    public OrderTimeTypeDescriptionTransfer getOrderTimeTypeDescriptionTransfer(OrderTimeTypeDescription orderTimeTypeDescription) {
+    public OrderTimeTypeDescriptionTransfer getOrderTimeTypeDescriptionTransfer(UserVisit userVisit, OrderTimeTypeDescription orderTimeTypeDescription) {
         var orderTimeTypeDescriptionTransfer = get(orderTimeTypeDescription);
         
         if(orderTimeTypeDescriptionTransfer == null) {
@@ -40,7 +40,7 @@ public class OrderTimeTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, orderTimeTypeDescription.getLanguage());
             
             orderTimeTypeDescriptionTransfer = new OrderTimeTypeDescriptionTransfer(languageTransfer, orderTimeTypeTransfer, orderTimeTypeDescription.getDescription());
-            put(orderTimeTypeDescription, orderTimeTypeDescriptionTransfer);
+            put(userVisit, orderTimeTypeDescription, orderTimeTypeDescriptionTransfer);
         }
         
         return orderTimeTypeDescriptionTransfer;

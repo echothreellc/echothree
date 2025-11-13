@@ -34,8 +34,8 @@ public class EntityAttributeGroupTransferCache
     boolean includeEntityAttributes;
     
     /** Creates a new instance of EntityAttributeGroupTransferCache */
-    public EntityAttributeGroupTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityAttributeGroupTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -45,7 +45,7 @@ public class EntityAttributeGroupTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public EntityAttributeGroupTransfer getEntityAttributeGroupTransfer(EntityAttributeGroup entityAttributeGroup, EntityInstance entityInstance) {
+    public EntityAttributeGroupTransfer getEntityAttributeGroupTransfer(final UserVisit userVisit, final EntityAttributeGroup entityAttributeGroup, final EntityInstance entityInstance) {
         var entityAttributeGroupTransfer = get(entityAttributeGroup);
         
         if(entityAttributeGroupTransfer == null) {
@@ -53,13 +53,13 @@ public class EntityAttributeGroupTransferCache
             var entityAttributeGroupName = entityAttributeGroupDetail.getEntityAttributeGroupName();
             var isDefault = entityAttributeGroupDetail.getIsDefault();
             var sortOrder = entityAttributeGroupDetail.getSortOrder();
-            var description = coreControl.getBestEntityAttributeGroupDescription(entityAttributeGroup, getLanguage());
+            var description = coreControl.getBestEntityAttributeGroupDescription(entityAttributeGroup, getLanguage(userVisit));
             
             entityAttributeGroupTransfer = new EntityAttributeGroupTransfer(entityAttributeGroupName, isDefault, sortOrder, description);
             if(entityInstance == null) {
-                put(entityAttributeGroup, entityAttributeGroupTransfer);
+                put(userVisit, entityAttributeGroup, entityAttributeGroupTransfer);
             } else {
-                setupEntityInstance(entityAttributeGroup, null, entityAttributeGroupTransfer);
+                setupEntityInstance(userVisit, entityAttributeGroup, null, entityAttributeGroupTransfer);
             }
             
             if(includeEntityAttributes) {

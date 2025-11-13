@@ -25,13 +25,13 @@ public class PicklistAliasTypeTransferCache
         extends BasePicklistTransferCache<PicklistAliasType, PicklistAliasTypeTransfer> {
     
     /** Creates a new instance of PicklistAliasTypeTransferCache */
-    public PicklistAliasTypeTransferCache(UserVisit userVisit, PicklistControl picklistControl) {
-        super(userVisit, picklistControl);
+    public PicklistAliasTypeTransferCache(PicklistControl picklistControl) {
+        super(picklistControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public PicklistAliasTypeTransfer getPicklistAliasTypeTransfer(PicklistAliasType picklistAliasType) {
+    public PicklistAliasTypeTransfer getPicklistAliasTypeTransfer(UserVisit userVisit, PicklistAliasType picklistAliasType) {
         var picklistAliasTypeTransfer = get(picklistAliasType);
         
         if(picklistAliasTypeTransfer == null) {
@@ -41,10 +41,10 @@ public class PicklistAliasTypeTransferCache
             var validationPattern = picklistAliasTypeDetail.getValidationPattern();
             var isDefault = picklistAliasTypeDetail.getIsDefault();
             var sortOrder = picklistAliasTypeDetail.getSortOrder();
-            var description = picklistControl.getBestPicklistAliasTypeDescription(picklistAliasType, getLanguage());
+            var description = picklistControl.getBestPicklistAliasTypeDescription(picklistAliasType, getLanguage(userVisit));
             
             picklistAliasTypeTransfer = new PicklistAliasTypeTransfer(picklistType, picklistAliasTypeName, validationPattern, isDefault, sortOrder, description);
-            put(picklistAliasType, picklistAliasTypeTransfer);
+            put(userVisit, picklistAliasType, picklistAliasTypeTransfer);
         }
         
         return picklistAliasTypeTransfer;

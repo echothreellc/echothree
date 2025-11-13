@@ -25,13 +25,13 @@ public class WishlistPriorityTransferCache
         extends BaseWishlistTransferCache<WishlistPriority, WishlistPriorityTransfer> {
     
     /** Creates a new instance of WishlistPriorityTransferCache */
-    public WishlistPriorityTransferCache(UserVisit userVisit, WishlistControl wishlistControl) {
-        super(userVisit, wishlistControl);
+    public WishlistPriorityTransferCache(WishlistControl wishlistControl) {
+        super(wishlistControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public WishlistPriorityTransfer getWishlistPriorityTransfer(WishlistPriority wishlistPriority) {
+    public WishlistPriorityTransfer getWishlistPriorityTransfer(UserVisit userVisit, WishlistPriority wishlistPriority) {
         var wishlistPriorityTransfer = get(wishlistPriority);
         
         if(wishlistPriorityTransfer == null) {
@@ -40,11 +40,11 @@ public class WishlistPriorityTransferCache
             var wishlistPriorityName = wishlistPriorityDetail.getWishlistPriorityName();
             var isDefault = wishlistPriorityDetail.getIsDefault();
             var sortOrder = wishlistPriorityDetail.getSortOrder();
-            var description = wishlistControl.getBestWishlistPriorityDescription(wishlistPriority, getLanguage());
+            var description = wishlistControl.getBestWishlistPriorityDescription(wishlistPriority, getLanguage(userVisit));
             
             wishlistPriorityTransfer = new WishlistPriorityTransfer(wishlistType, wishlistPriorityName, isDefault,
                     sortOrder, description);
-            put(wishlistPriority, wishlistPriorityTransfer);
+            put(userVisit, wishlistPriority, wishlistPriorityTransfer);
         }
         
         return wishlistPriorityTransfer;

@@ -25,11 +25,11 @@ public class IconUsageTransferCache
         extends BaseIconTransferCache<IconUsage, IconUsageTransfer> {
     
     /** Creates a new instance of IconUsageTransferCache */
-    public IconUsageTransferCache(UserVisit userVisit, IconControl iconControl) {
-        super(userVisit, iconControl);
+    public IconUsageTransferCache(IconControl iconControl) {
+        super(iconControl);
     }
     
-    public IconUsageTransfer getIconUsageTransfer(IconUsage iconUsage) {
+    public IconUsageTransfer getIconUsageTransfer(UserVisit userVisit, IconUsage iconUsage) {
         var iconUsageTransfer = get(iconUsage);
         
         if(iconUsageTransfer == null) {
@@ -39,7 +39,7 @@ public class IconUsageTransferCache
             var sortOrder = iconUsageType.getSortOrder();
             
             iconUsageTransfer = new IconUsageTransfer(icon, iconUsageType, isDefault, sortOrder);
-            put(iconUsage, iconUsageTransfer);
+            put(userVisit, iconUsage, iconUsageTransfer);
         }
         return iconUsageTransfer;
     }

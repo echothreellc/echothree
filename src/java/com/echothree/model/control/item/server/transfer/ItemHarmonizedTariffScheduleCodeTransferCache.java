@@ -30,8 +30,8 @@ public class ItemHarmonizedTariffScheduleCodeTransferCache
     GeoControl geoControl = Session.getModelController(GeoControl.class);
     
     /** Creates a new instance of ItemHarmonizedTariffScheduleCodeTransferCache */
-    public ItemHarmonizedTariffScheduleCodeTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemHarmonizedTariffScheduleCodeTransferCache(ItemControl itemControl) {
+        super(itemControl);
         
         var options = session.getOptions();
         if(options != null) {
@@ -43,7 +43,7 @@ public class ItemHarmonizedTariffScheduleCodeTransferCache
     }
     
     @Override
-    public ItemHarmonizedTariffScheduleCodeTransfer getTransfer(ItemHarmonizedTariffScheduleCode itemHarmonizedTariffScheduleCode) {
+    public ItemHarmonizedTariffScheduleCodeTransfer getTransfer(UserVisit userVisit, ItemHarmonizedTariffScheduleCode itemHarmonizedTariffScheduleCode) {
         var itemHarmonizedTariffScheduleCodeTransfer = get(itemHarmonizedTariffScheduleCode);
         
         if(itemHarmonizedTariffScheduleCodeTransfer == null) {
@@ -55,7 +55,7 @@ public class ItemHarmonizedTariffScheduleCodeTransferCache
             
             itemHarmonizedTariffScheduleCodeTransfer = new ItemHarmonizedTariffScheduleCodeTransfer(item, countryGeoCode, harmonizedTariffScheduleCodeUseType,
                     harmonizedTariffScheduleCode);
-            put(itemHarmonizedTariffScheduleCode, itemHarmonizedTariffScheduleCodeTransfer);
+            put(userVisit, itemHarmonizedTariffScheduleCode, itemHarmonizedTariffScheduleCodeTransfer);
         }
         
         return itemHarmonizedTariffScheduleCodeTransfer;

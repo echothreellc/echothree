@@ -28,13 +28,13 @@ public class TextDecorationTransferCache
     TextControl textControl = Session.getModelController(TextControl.class);
 
     /** Creates a new instance of TextDecorationTransferCache */
-    public TextDecorationTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public TextDecorationTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
 
-    public TextDecorationTransfer getTextDecorationTransfer(TextDecoration textDecoration) {
+    public TextDecorationTransfer getTextDecorationTransfer(UserVisit userVisit, TextDecoration textDecoration) {
         var textDecorationTransfer = get(textDecoration);
 
         if(textDecorationTransfer == null) {
@@ -42,10 +42,10 @@ public class TextDecorationTransferCache
             var textDecorationName = textDecorationDetail.getTextDecorationName();
             var isDefault = textDecorationDetail.getIsDefault();
             var sortOrder = textDecorationDetail.getSortOrder();
-            var description = textControl.getBestTextDecorationDescription(textDecoration, getLanguage());
+            var description = textControl.getBestTextDecorationDescription(textDecoration, getLanguage(userVisit));
 
             textDecorationTransfer = new TextDecorationTransfer(textDecorationName, isDefault, sortOrder, description);
-            put(textDecoration, textDecorationTransfer);
+            put(userVisit, textDecoration, textDecorationTransfer);
         }
 
         return textDecorationTransfer;

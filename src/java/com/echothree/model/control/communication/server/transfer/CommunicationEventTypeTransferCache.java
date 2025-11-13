@@ -25,21 +25,21 @@ public class CommunicationEventTypeTransferCache
         extends BaseCommunicationTransferCache<CommunicationEventType, CommunicationEventTypeTransfer> {
     
     /** Creates a new instance of CommunicationEventTypeTransferCache */
-    public CommunicationEventTypeTransferCache(UserVisit userVisit, CommunicationControl communicationControl) {
-        super(userVisit, communicationControl);
+    public CommunicationEventTypeTransferCache(CommunicationControl communicationControl) {
+        super(communicationControl);
     }
     
-    public CommunicationEventTypeTransfer getCommunicationEventTypeTransfer(CommunicationEventType communicationEventType) {
+    public CommunicationEventTypeTransfer getCommunicationEventTypeTransfer(UserVisit userVisit, CommunicationEventType communicationEventType) {
         var communicationEventTypeTransfer = get(communicationEventType);
         
         if(communicationEventTypeTransfer == null) {
             var communicationEventTypeName = communicationEventType.getCommunicationEventTypeName();
             var isDefault = communicationEventType.getIsDefault();
             var sortOrder = communicationEventType.getSortOrder();
-            var description = communicationControl.getBestCommunicationEventTypeDescription(communicationEventType, getLanguage());
+            var description = communicationControl.getBestCommunicationEventTypeDescription(communicationEventType, getLanguage(userVisit));
             
             communicationEventTypeTransfer = new CommunicationEventTypeTransfer(communicationEventTypeName, isDefault, sortOrder, description);
-            put(communicationEventType, communicationEventTypeTransfer);
+            put(userVisit, communicationEventType, communicationEventTypeTransfer);
         }
         
         return communicationEventTypeTransfer;

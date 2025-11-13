@@ -35,64 +35,64 @@ public class PicklistTransferCaches
     protected PicklistTimeTransferCache picklistTimeTransferCache;
     
     /** Creates a new instance of PicklistTransferCaches */
-    public PicklistTransferCaches(UserVisit userVisit, PicklistControl picklistControl) {
-        super(userVisit);
+    public PicklistTransferCaches(PicklistControl picklistControl) {
+        super();
         
         this.picklistControl = picklistControl;
     }
     
     public PicklistTypeTransferCache getPicklistTypeTransferCache() {
         if(picklistTypeTransferCache == null)
-            picklistTypeTransferCache = new PicklistTypeTransferCache(userVisit, picklistControl);
+            picklistTypeTransferCache = new PicklistTypeTransferCache(picklistControl);
         
         return picklistTypeTransferCache;
     }
     
     public PicklistTypeDescriptionTransferCache getPicklistTypeDescriptionTransferCache() {
         if(picklistTypeDescriptionTransferCache == null)
-            picklistTypeDescriptionTransferCache = new PicklistTypeDescriptionTransferCache(userVisit, picklistControl);
+            picklistTypeDescriptionTransferCache = new PicklistTypeDescriptionTransferCache(picklistControl);
         
         return picklistTypeDescriptionTransferCache;
     }
     
     public PicklistAliasTypeTransferCache getPicklistAliasTypeTransferCache() {
         if(picklistAliasTypeTransferCache == null)
-            picklistAliasTypeTransferCache = new PicklistAliasTypeTransferCache(userVisit, picklistControl);
+            picklistAliasTypeTransferCache = new PicklistAliasTypeTransferCache(picklistControl);
         
         return picklistAliasTypeTransferCache;
     }
     
     public PicklistAliasTypeDescriptionTransferCache getPicklistAliasTypeDescriptionTransferCache() {
         if(picklistAliasTypeDescriptionTransferCache == null)
-            picklistAliasTypeDescriptionTransferCache = new PicklistAliasTypeDescriptionTransferCache(userVisit, picklistControl);
+            picklistAliasTypeDescriptionTransferCache = new PicklistAliasTypeDescriptionTransferCache(picklistControl);
         
         return picklistAliasTypeDescriptionTransferCache;
     }
     
     public PicklistAliasTransferCache getPicklistAliasTransferCache() {
         if(picklistAliasTransferCache == null)
-            picklistAliasTransferCache = new PicklistAliasTransferCache(userVisit, picklistControl);
+            picklistAliasTransferCache = new PicklistAliasTransferCache(picklistControl);
         
         return picklistAliasTransferCache;
     }
     
     public PicklistTimeTypeTransferCache getPicklistTimeTypeTransferCache() {
         if(picklistTimeTypeTransferCache == null)
-            picklistTimeTypeTransferCache = new PicklistTimeTypeTransferCache(userVisit, picklistControl);
+            picklistTimeTypeTransferCache = new PicklistTimeTypeTransferCache(picklistControl);
 
         return picklistTimeTypeTransferCache;
     }
 
     public PicklistTimeTransferCache getPicklistTimeTransferCache() {
         if(picklistTimeTransferCache == null)
-            picklistTimeTransferCache = new PicklistTimeTransferCache(userVisit, picklistControl);
+            picklistTimeTransferCache = new PicklistTimeTransferCache(picklistControl);
 
         return picklistTimeTransferCache;
     }
 
     public PicklistTimeTypeDescriptionTransferCache getPicklistTimeTypeDescriptionTransferCache() {
         if(picklistTimeTypeDescriptionTransferCache == null)
-            picklistTimeTypeDescriptionTransferCache = new PicklistTimeTypeDescriptionTransferCache(userVisit, picklistControl);
+            picklistTimeTypeDescriptionTransferCache = new PicklistTimeTypeDescriptionTransferCache(picklistControl);
 
         return picklistTimeTypeDescriptionTransferCache;
     }

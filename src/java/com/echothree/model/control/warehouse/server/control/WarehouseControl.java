@@ -307,15 +307,15 @@ public class WarehouseControl
     }
 
     public WarehouseTypeTransfer getWarehouseTypeTransfer(UserVisit userVisit, WarehouseType warehouseType) {
-        return getWarehouseTransferCaches(userVisit).getWarehouseTypeTransferCache().getTransfer(warehouseType);
+        return getWarehouseTransferCaches().getWarehouseTypeTransferCache().getTransfer(userVisit, warehouseType);
     }
 
     public List<WarehouseTypeTransfer> getWarehouseTypeTransfers(UserVisit userVisit, Collection<WarehouseType> warehouseTypes) {
         List<WarehouseTypeTransfer> warehouseTypeTransfers = new ArrayList<>(warehouseTypes.size());
-        var warehouseTypeTransferCache = getWarehouseTransferCaches(userVisit).getWarehouseTypeTransferCache();
+        var warehouseTypeTransferCache = getWarehouseTransferCaches().getWarehouseTypeTransferCache();
 
         warehouseTypes.forEach((warehouseType) ->
-                warehouseTypeTransfers.add(warehouseTypeTransferCache.getTransfer(warehouseType))
+                warehouseTypeTransfers.add(warehouseTypeTransferCache.getTransfer(userVisit, warehouseType))
         );
 
         return warehouseTypeTransfers;
@@ -498,7 +498,7 @@ public class WarehouseControl
     }
 
     public WarehouseTypeDescriptionTransfer getWarehouseTypeDescriptionTransfer(UserVisit userVisit, WarehouseTypeDescription warehouseTypeDescription) {
-        return getWarehouseTransferCaches(userVisit).getWarehouseTypeDescriptionTransferCache().getTransfer(warehouseTypeDescription);
+        return getWarehouseTransferCaches().getWarehouseTypeDescriptionTransferCache().getTransfer(userVisit, warehouseTypeDescription);
     }
 
     public List<WarehouseTypeDescriptionTransfer> getWarehouseTypeDescriptionTransfersByWarehouseType(UserVisit userVisit, WarehouseType warehouseType) {
@@ -506,7 +506,7 @@ public class WarehouseControl
         List<WarehouseTypeDescriptionTransfer> warehouseTypeDescriptionTransfers = new ArrayList<>(warehouseTypeDescriptions.size());
 
         warehouseTypeDescriptions.forEach((warehouseTypeDescription) ->
-                warehouseTypeDescriptionTransfers.add(getWarehouseTransferCaches(userVisit).getWarehouseTypeDescriptionTransferCache().getTransfer(warehouseTypeDescription))
+                warehouseTypeDescriptionTransfers.add(getWarehouseTransferCaches().getWarehouseTypeDescriptionTransferCache().getTransfer(userVisit, warehouseTypeDescription))
         );
 
         return warehouseTypeDescriptionTransfers;
@@ -783,7 +783,7 @@ public class WarehouseControl
     }
 
     public WarehouseTransfer getWarehouseTransfer(UserVisit userVisit, Warehouse warehouse) {
-        return getWarehouseTransferCaches(userVisit).getWarehouseTransferCache().getWarehouseTransfer(warehouse);
+        return getWarehouseTransferCaches().getWarehouseTransferCache().getWarehouseTransfer(userVisit, warehouse);
     }
     
     public WarehouseTransfer getWarehouseTransfer(UserVisit userVisit, Party party) {
@@ -794,7 +794,7 @@ public class WarehouseControl
         List<WarehouseTransfer> warehouseTransfers = new ArrayList<>(warehouses.size());
 
         warehouses.forEach((warehouse) -> {
-            warehouseTransfers.add(getWarehouseTransferCaches(userVisit).getWarehouseTransferCache().getWarehouseTransfer(warehouse));
+            warehouseTransfers.add(getWarehouseTransferCaches().getWarehouseTransferCache().getWarehouseTransfer(userVisit, warehouse));
         });
 
         return warehouseTransfers;
@@ -1036,7 +1036,7 @@ public class WarehouseControl
     }
     
     public LocationTypeTransfer getLocationTypeTransfer(UserVisit userVisit, LocationType locationType) {
-        return getWarehouseTransferCaches(userVisit).getLocationTypeTransferCache().getLocationTypeTransfer(locationType);
+        return getWarehouseTransferCaches().getLocationTypeTransferCache().getLocationTypeTransfer(userVisit, locationType);
     }
     
     public List<LocationTypeTransfer> getLocationTypeTransfersByWarehouseParty(UserVisit userVisit, Party warehouseParty) {
@@ -1047,7 +1047,7 @@ public class WarehouseControl
             locationTypeTransfers = new ArrayList<>(locationTypes.size());
             
             for(var locationType : locationTypes) {
-                locationTypeTransfers.add(getWarehouseTransferCaches(userVisit).getLocationTypeTransferCache().getLocationTypeTransfer(locationType));
+                locationTypeTransfers.add(getWarehouseTransferCaches().getLocationTypeTransferCache().getLocationTypeTransfer(userVisit, locationType));
             }
         }
         
@@ -1301,7 +1301,7 @@ public class WarehouseControl
     }
     
     public LocationTypeDescriptionTransfer getLocationTypeDescriptionTransfer(UserVisit userVisit, LocationTypeDescription locationTypeDescription) {
-        return getWarehouseTransferCaches(userVisit).getLocationTypeDescriptionTransferCache().getLocationTypeDescriptionTransfer(locationTypeDescription);
+        return getWarehouseTransferCaches().getLocationTypeDescriptionTransferCache().getLocationTypeDescriptionTransfer(userVisit, locationTypeDescription);
     }
     
     public List<LocationTypeDescriptionTransfer> getLocationTypeDescriptionTransfersByLocationType(UserVisit userVisit, LocationType locationType) {
@@ -1312,7 +1312,7 @@ public class WarehouseControl
             locationTypeDescriptionTransfers = new ArrayList<>(locationTypeDescriptions.size());
             
             for(var locationTypeDescription  : locationTypeDescriptions) {
-                locationTypeDescriptionTransfers.add(getWarehouseTransferCaches(userVisit).getLocationTypeDescriptionTransferCache().getLocationTypeDescriptionTransfer(locationTypeDescription));
+                locationTypeDescriptionTransfers.add(getWarehouseTransferCaches().getLocationTypeDescriptionTransferCache().getLocationTypeDescriptionTransfer(userVisit, locationTypeDescription));
             }
         }
         
@@ -1478,16 +1478,16 @@ public class WarehouseControl
     }
     
     public LocationNameElementTransfer getLocationNameElementTransfer(UserVisit userVisit, LocationNameElement locationNameElement) {
-        return getWarehouseTransferCaches(userVisit).getLocationNameElementTransferCache().getLocationNameElementTransfer(locationNameElement);
+        return getWarehouseTransferCaches().getLocationNameElementTransferCache().getLocationNameElementTransfer(userVisit, locationNameElement);
     }
     
     public List<LocationNameElementTransfer> getLocationNameElementTransfersByLocationType(UserVisit userVisit, LocationType locationType) {
         var locationNameElements = getLocationNameElementsByLocationType(locationType);
         List<LocationNameElementTransfer> locationNameElementTransfers = new ArrayList<>(locationNameElements.size());
-        var locationNameElementTransferCache = getWarehouseTransferCaches(userVisit).getLocationNameElementTransferCache();
+        var locationNameElementTransferCache = getWarehouseTransferCaches().getLocationNameElementTransferCache();
         
         locationNameElements.forEach((locationNameElement) ->
-                locationNameElementTransfers.add(locationNameElementTransferCache.getLocationNameElementTransfer(locationNameElement))
+                locationNameElementTransfers.add(locationNameElementTransferCache.getLocationNameElementTransfer(userVisit, locationNameElement))
         );
         
         return locationNameElementTransfers;
@@ -1659,7 +1659,7 @@ public class WarehouseControl
     }
     
     public LocationNameElementDescriptionTransfer getLocationNameElementDescriptionTransfer(UserVisit userVisit, LocationNameElementDescription locationNameElementDescription) {
-        return getWarehouseTransferCaches(userVisit).getLocationNameElementDescriptionTransferCache().getLocationNameElementDescriptionTransfer(locationNameElementDescription);
+        return getWarehouseTransferCaches().getLocationNameElementDescriptionTransferCache().getLocationNameElementDescriptionTransfer(userVisit, locationNameElementDescription);
     }
     
     public List<LocationNameElementDescriptionTransfer> getLocationNameElementDescriptionTransfersByLocationNameElement(UserVisit userVisit, LocationNameElement locationNameElement) {
@@ -1670,7 +1670,7 @@ public class WarehouseControl
             locationNameElementDescriptionTransfers = new ArrayList<>(locationNameElementDescriptions.size());
             
             for(var locationNameElementDescription : locationNameElementDescriptions) {
-                locationNameElementDescriptionTransfers.add(getWarehouseTransferCaches(userVisit).getLocationNameElementDescriptionTransferCache().getLocationNameElementDescriptionTransfer(locationNameElementDescription));
+                locationNameElementDescriptionTransfers.add(getWarehouseTransferCaches().getLocationNameElementDescriptionTransferCache().getLocationNameElementDescriptionTransfer(userVisit, locationNameElementDescription));
             }
         }
         
@@ -1971,7 +1971,7 @@ public class WarehouseControl
     }
     
     public LocationTransfer getLocationTransfer(UserVisit userVisit, Location location) {
-        return getWarehouseTransferCaches(userVisit).getLocationTransferCache().getLocationTransfer(location);
+        return getWarehouseTransferCaches().getLocationTransferCache().getLocationTransfer(userVisit, location);
     }
     
     public List<LocationTransfer> getLocationTransfersByWarehouseParty(UserVisit userVisit, Party warehouseParty) {
@@ -1982,7 +1982,7 @@ public class WarehouseControl
             locationTransfers = new ArrayList<>(locations.size());
             
             for(var location : locations) {
-                locationTransfers.add(getWarehouseTransferCaches(userVisit).getLocationTransferCache().getLocationTransfer(location));
+                locationTransfers.add(getWarehouseTransferCaches().getLocationTransferCache().getLocationTransfer(userVisit, location));
             }
         }
         
@@ -2223,7 +2223,7 @@ public class WarehouseControl
     }
     
     public LocationDescriptionTransfer getLocationDescriptionTransfer(UserVisit userVisit, LocationDescription locationDescription) {
-        return getWarehouseTransferCaches(userVisit).getLocationDescriptionTransferCache().getLocationDescriptionTransfer(locationDescription);
+        return getWarehouseTransferCaches().getLocationDescriptionTransferCache().getLocationDescriptionTransfer(userVisit, locationDescription);
     }
     
     public List<LocationDescriptionTransfer> getLocationDescriptionTransfersByLocation(UserVisit userVisit, Location location) {
@@ -2234,7 +2234,7 @@ public class WarehouseControl
             locationDescriptionTransfers = new ArrayList<>(locationDescriptions.size());
             
             for(var locationDescription : locationDescriptions) {
-                locationDescriptionTransfers.add(getWarehouseTransferCaches(userVisit).getLocationDescriptionTransferCache().getLocationDescriptionTransfer(locationDescription));
+                locationDescriptionTransfers.add(getWarehouseTransferCaches().getLocationDescriptionTransferCache().getLocationDescriptionTransfer(userVisit, locationDescription));
             }
         }
         
@@ -2332,13 +2332,13 @@ public class WarehouseControl
     }
     
     public LocationVolumeTransfer getLocationVolumeTransfer(UserVisit userVisit, LocationVolume locationVolume) {
-        return locationVolume == null? null: getWarehouseTransferCaches(userVisit).getLocationVolumeTransferCache().getLocationVolumeTransfer(locationVolume);
+        return locationVolume == null? null: getWarehouseTransferCaches().getLocationVolumeTransferCache().getLocationVolumeTransfer(userVisit, locationVolume);
     }
     
     public LocationVolumeTransfer getLocationVolumeTransfer(UserVisit userVisit, Location location) {
         var locationVolume = getLocationVolume(location);
         
-        return locationVolume == null? null: getWarehouseTransferCaches(userVisit).getLocationVolumeTransferCache().getLocationVolumeTransfer(locationVolume);
+        return locationVolume == null? null: getWarehouseTransferCaches().getLocationVolumeTransferCache().getLocationVolumeTransfer(userVisit, locationVolume);
     }
     
     public void updateLocationVolumeFromValue(LocationVolumeValue locationVolumeValue, BasePK updatedBy) {
@@ -2500,16 +2500,16 @@ public class WarehouseControl
     }
     
     public LocationCapacityTransfer getLocationCapacityTransfer(UserVisit userVisit, LocationCapacity locationCapacity) {
-        return getWarehouseTransferCaches(userVisit).getLocationCapacityTransferCache().getLocationCapacityTransfer(locationCapacity);
+        return getWarehouseTransferCaches().getLocationCapacityTransferCache().getLocationCapacityTransfer(userVisit, locationCapacity);
     }
     
     public List<LocationCapacityTransfer> getLocationCapacityTransfersByLocation(UserVisit userVisit, Location location) {
         var locationCapacities = getLocationCapacitiesByLocation(location);
         List<LocationCapacityTransfer> locationCapacityTransfers = new ArrayList<>(locationCapacities.size());
-        var locationCapacityTransferCache = getWarehouseTransferCaches(userVisit).getLocationCapacityTransferCache();
+        var locationCapacityTransferCache = getWarehouseTransferCaches().getLocationCapacityTransferCache();
         
         locationCapacities.forEach((locationCapacity) ->
-                locationCapacityTransfers.add(locationCapacityTransferCache.getLocationCapacityTransfer(locationCapacity))
+                locationCapacityTransfers.add(locationCapacityTransferCache.getLocationCapacityTransfer(userVisit, locationCapacity))
         );
         
         return locationCapacityTransfers;

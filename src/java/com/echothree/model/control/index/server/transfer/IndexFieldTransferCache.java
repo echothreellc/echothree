@@ -25,13 +25,13 @@ public class IndexFieldTransferCache
         extends BaseIndexTransferCache<IndexField, IndexFieldTransfer> {
     
     /** Creates a new instance of IndexFieldTransferCache */
-    public IndexFieldTransferCache(UserVisit userVisit, IndexControl indexControl) {
-        super(userVisit, indexControl);
+    public IndexFieldTransferCache(IndexControl indexControl) {
+        super(indexControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public IndexFieldTransfer getIndexFieldTransfer(IndexField indexField) {
+    public IndexFieldTransfer getIndexFieldTransfer(UserVisit userVisit, IndexField indexField) {
         var indexFieldTransfer = get(indexField);
         
         if(indexFieldTransfer == null) {
@@ -40,10 +40,10 @@ public class IndexFieldTransferCache
             var indexFieldName = indexFieldDetail.getIndexFieldName();
             var isDefault = indexFieldDetail.getIsDefault();
             var sortOrder = indexFieldDetail.getSortOrder();
-            var description = indexControl.getBestIndexFieldDescription(indexField, getLanguage());
+            var description = indexControl.getBestIndexFieldDescription(indexField, getLanguage(userVisit));
             
             indexFieldTransfer = new IndexFieldTransfer(indexTypeTransfer, indexFieldName, isDefault, sortOrder, description);
-            put(indexField, indexFieldTransfer);
+            put(userVisit, indexField, indexFieldTransfer);
         }
         
         return indexFieldTransfer;

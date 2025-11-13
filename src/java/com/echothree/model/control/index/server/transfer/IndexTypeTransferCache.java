@@ -30,8 +30,8 @@ public class IndexTypeTransferCache
     EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
 
     /** Creates a new instance of IndexTypeTransferCache */
-    public IndexTypeTransferCache(UserVisit userVisit, IndexControl indexControl) {
-        super(userVisit, indexControl);
+    public IndexTypeTransferCache(IndexControl indexControl) {
+        super(indexControl);
         
         var options = session.getOptions();
         if(options != null) {
@@ -41,7 +41,7 @@ public class IndexTypeTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public IndexTypeTransfer getIndexTypeTransfer(IndexType indexType) {
+    public IndexTypeTransfer getIndexTypeTransfer(UserVisit userVisit, IndexType indexType) {
         var indexTypeTransfer = get(indexType);
 
         if(indexTypeTransfer == null) {
@@ -51,10 +51,10 @@ public class IndexTypeTransferCache
             var entityTypeTransfer = entityType == null ? null : entityTypeControl.getEntityTypeTransfer(userVisit, entityType);
             var isDefault = indexTypeDetail.getIsDefault();
             var sortOrder = indexTypeDetail.getSortOrder();
-            var description = indexControl.getBestIndexTypeDescription(indexType, getLanguage());
+            var description = indexControl.getBestIndexTypeDescription(indexType, getLanguage(userVisit));
 
             indexTypeTransfer = new IndexTypeTransfer(indexTypeName, entityTypeTransfer, isDefault, sortOrder, description);
-            put(indexType, indexTypeTransfer);
+            put(userVisit, indexType, indexTypeTransfer);
         }
 
         return indexTypeTransfer;

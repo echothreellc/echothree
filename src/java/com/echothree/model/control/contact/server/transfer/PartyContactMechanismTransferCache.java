@@ -39,8 +39,8 @@ public class PartyContactMechanismTransferCache
     boolean includePartyContactMechanismRelationshipsByToPartyContactMechanism;
     
     /** Creates a new instance of PartyContactMechanismTransferCache */
-    public PartyContactMechanismTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    public PartyContactMechanismTransferCache(ContactControl contactControl) {
+        super(contactControl);
         
         var options = session.getOptions();
         if(options != null) {
@@ -54,7 +54,7 @@ public class PartyContactMechanismTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public PartyContactMechanismTransfer getPartyContactMechanismTransfer(PartyContactMechanism partyContactMechanism) {
+    public PartyContactMechanismTransfer getPartyContactMechanismTransfer(UserVisit userVisit, PartyContactMechanism partyContactMechanism) {
         var partyContactMechanismTransfer = get(partyContactMechanism);
         
         if(partyContactMechanismTransfer == null) {
@@ -66,7 +66,7 @@ public class PartyContactMechanismTransferCache
             var description = partyContactMechanismDetail.getDescription();
             
             partyContactMechanismTransfer = new PartyContactMechanismTransfer(party, contactMechanism, isDefault, sortOrder, description);
-            put(partyContactMechanism, partyContactMechanismTransfer);
+            put(userVisit, partyContactMechanism, partyContactMechanismTransfer);
 
             if(includePartyContactMechanismPurposes) {
                 partyContactMechanismTransfer.setPartyContactMechanismPurposes(new ListWrapper<>(contactControl.getPartyContactMechanismPurposeTransfersByPartyContactMechanism(userVisit, partyContactMechanism)));

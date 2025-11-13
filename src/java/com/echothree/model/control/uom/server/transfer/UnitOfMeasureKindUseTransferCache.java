@@ -25,11 +25,11 @@ public class UnitOfMeasureKindUseTransferCache
         extends BaseUomTransferCache<UnitOfMeasureKindUse, UnitOfMeasureKindUseTransfer> {
     
     /** Creates a new instance of UnitOfMeasureKindUseTransferCache */
-    public UnitOfMeasureKindUseTransferCache(UserVisit userVisit, UomControl uomControl) {
-        super(userVisit, uomControl);
+    public UnitOfMeasureKindUseTransferCache(UomControl uomControl) {
+        super(uomControl);
     }
     
-    public UnitOfMeasureKindUseTransfer getUnitOfMeasureKindUseTransfer(UnitOfMeasureKindUse unitOfMeasureKindUse) {
+    public UnitOfMeasureKindUseTransfer getUnitOfMeasureKindUseTransfer(UserVisit userVisit, UnitOfMeasureKindUse unitOfMeasureKindUse) {
         var unitOfMeasureKindUseTransfer = get(unitOfMeasureKindUse);
         
         if(unitOfMeasureKindUseTransfer == null) {
@@ -40,7 +40,7 @@ public class UnitOfMeasureKindUseTransferCache
             
             unitOfMeasureKindUseTransfer = new UnitOfMeasureKindUseTransfer(unitOfMeasureKindUseType, unitOfMeasureKind, isDefault,
                     sortOrder);
-            put(unitOfMeasureKindUse, unitOfMeasureKindUseTransfer);
+            put(userVisit, unitOfMeasureKindUse, unitOfMeasureKindUseTransfer);
         }
         
         return unitOfMeasureKindUseTransfer;

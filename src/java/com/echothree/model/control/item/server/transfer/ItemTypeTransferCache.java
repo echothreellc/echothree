@@ -25,22 +25,22 @@ public class ItemTypeTransferCache
         extends BaseItemTransferCache<ItemType, ItemTypeTransfer> {
     
     /** Creates a new instance of ItemTypeTransferCache */
-    public ItemTypeTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemTypeTransferCache(ItemControl itemControl) {
+        super(itemControl);
     }
     
     @Override
-    public ItemTypeTransfer getTransfer(ItemType itemType) {
+    public ItemTypeTransfer getTransfer(UserVisit userVisit, ItemType itemType) {
         var itemTypeTransfer = get(itemType);
         
         if(itemTypeTransfer == null) {
             var itemTypeName = itemType.getItemTypeName();
             var isDefault = itemType.getIsDefault();
             var sortOrder = itemType.getSortOrder();
-            var description = itemControl.getBestItemTypeDescription(itemType, getLanguage());
+            var description = itemControl.getBestItemTypeDescription(itemType, getLanguage(userVisit));
             
             itemTypeTransfer = new ItemTypeTransfer(itemTypeName, isDefault, sortOrder, description);
-            put(itemType, itemTypeTransfer);
+            put(userVisit, itemType, itemTypeTransfer);
         }
         
         return itemTypeTransfer;

@@ -33,14 +33,14 @@ public class InventoryAdjustmentTypeTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of InventoryAdjustmentTypeTransferCache */
-    public InventoryAdjustmentTypeTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    public InventoryAdjustmentTypeTransferCache(InventoryControl inventoryControl) {
+        super(inventoryControl);
         
         setIncludeEntityInstance(true);
     }
 
     @Override
-    public InventoryAdjustmentTypeTransfer getTransfer(InventoryAdjustmentType inventoryAdjustmentType) {
+    public InventoryAdjustmentTypeTransfer getTransfer(UserVisit userVisit, InventoryAdjustmentType inventoryAdjustmentType) {
         var inventoryAdjustmentTypeTransfer = get(inventoryAdjustmentType);
         
         if(inventoryAdjustmentTypeTransfer == null) {
@@ -48,11 +48,11 @@ public class InventoryAdjustmentTypeTransferCache
             var inventoryAdjustmentTypeName = inventoryAdjustmentTypeDetail.getInventoryAdjustmentTypeName();
             var isDefault = inventoryAdjustmentTypeDetail.getIsDefault();
             var sortOrder = inventoryAdjustmentTypeDetail.getSortOrder();
-            var description = inventoryAdjustmentTypeControl.getBestInventoryAdjustmentTypeDescription(inventoryAdjustmentType, getLanguage());
+            var description = inventoryAdjustmentTypeControl.getBestInventoryAdjustmentTypeDescription(inventoryAdjustmentType, getLanguage(userVisit));
             
             inventoryAdjustmentTypeTransfer = new InventoryAdjustmentTypeTransfer(inventoryAdjustmentTypeName, isDefault,
                     sortOrder, description);
-            put(inventoryAdjustmentType, inventoryAdjustmentTypeTransfer);
+            put(userVisit, inventoryAdjustmentType, inventoryAdjustmentTypeTransfer);
         }
         
         return inventoryAdjustmentTypeTransfer;

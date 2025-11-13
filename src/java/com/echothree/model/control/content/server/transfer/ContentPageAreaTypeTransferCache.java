@@ -25,19 +25,19 @@ public class ContentPageAreaTypeTransferCache
         extends BaseContentTransferCache<ContentPageAreaType, ContentPageAreaTypeTransfer> {
     
     /** Creates a new instance of ContentPageAreaTypeTransferCache */
-    public ContentPageAreaTypeTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    public ContentPageAreaTypeTransferCache(ContentControl contentControl) {
+        super(contentControl);
     }
     
-    public ContentPageAreaTypeTransfer getTransfer(ContentPageAreaType contentPageAreaType) {
+    public ContentPageAreaTypeTransfer getTransfer(UserVisit userVisit, ContentPageAreaType contentPageAreaType) {
         var contentPageAreaTypeTransfer = get(contentPageAreaType);
         
         if(contentPageAreaTypeTransfer == null) {
             var contentPageAreaTypeName = contentPageAreaType.getContentPageAreaTypeName();
-            var description = contentControl.getBestContentPageAreaTypeDescription(contentPageAreaType, getLanguage());
+            var description = contentControl.getBestContentPageAreaTypeDescription(contentPageAreaType, getLanguage(userVisit));
             
             contentPageAreaTypeTransfer = new ContentPageAreaTypeTransfer(contentPageAreaTypeName, description);
-            put(contentPageAreaType, contentPageAreaTypeTransfer);
+            put(userVisit, contentPageAreaType, contentPageAreaTypeTransfer);
         }
         
         return contentPageAreaTypeTransfer;

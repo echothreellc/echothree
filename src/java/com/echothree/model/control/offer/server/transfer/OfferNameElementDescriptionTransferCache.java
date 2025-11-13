@@ -28,11 +28,11 @@ public class OfferNameElementDescriptionTransferCache
     OfferNameElementControl offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
 
     /** Creates a new instance of OfferNameElementDescriptionTransferCache */
-    public OfferNameElementDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public OfferNameElementDescriptionTransferCache() {
+        super();
     }
     
-    public OfferNameElementDescriptionTransfer getOfferNameElementDescriptionTransfer(OfferNameElementDescription offerNameElementDescription) {
+    public OfferNameElementDescriptionTransfer getOfferNameElementDescriptionTransfer(UserVisit userVisit, OfferNameElementDescription offerNameElementDescription) {
         var offerNameElementDescriptionTransfer = get(offerNameElementDescription);
         
         if(offerNameElementDescriptionTransfer == null) {
@@ -41,7 +41,7 @@ public class OfferNameElementDescriptionTransferCache
             
             offerNameElementDescriptionTransfer = new OfferNameElementDescriptionTransfer(languageTransfer, offerNameElementTransfer,
                     offerNameElementDescription.getDescription());
-            put(offerNameElementDescription, offerNameElementDescriptionTransfer);
+            put(userVisit, offerNameElementDescription, offerNameElementDescriptionTransfer);
         }
         
         return offerNameElementDescriptionTransfer;

@@ -143,11 +143,11 @@ public class PartyFreeOnBoardControl
     public PartyFreeOnBoardTransfer getPartyFreeOnBoardTransfer(UserVisit userVisit, Party party) {
         var partyFreeOnBoard = getPartyFreeOnBoard(party);
 
-        return partyFreeOnBoard == null? null: getShipmentTransferCaches(userVisit).getPartyFreeOnBoardTransferCache().getTransfer(partyFreeOnBoard);
+        return partyFreeOnBoard == null? null: getShipmentTransferCaches().getPartyFreeOnBoardTransferCache().getTransfer(userVisit, partyFreeOnBoard);
     }
 
     public PartyFreeOnBoardTransfer getPartyFreeOnBoardTransfer(UserVisit userVisit, PartyFreeOnBoard partyFreeOnBoard) {
-        return getShipmentTransferCaches(userVisit).getPartyFreeOnBoardTransferCache().getTransfer(partyFreeOnBoard);
+        return getShipmentTransferCaches().getPartyFreeOnBoardTransferCache().getTransfer(userVisit, partyFreeOnBoard);
     }
 
     public void updatePartyFreeOnBoardFromValue(PartyFreeOnBoardValue partyFreeOnBoardValue, BasePK updatedBy) {

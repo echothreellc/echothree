@@ -33,8 +33,8 @@ public class CommandMessageTransferCache
     boolean includeTranslations;
     
     /** Creates a new instance of CommandMessageTransferCache */
-    public CommandMessageTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public CommandMessageTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -44,18 +44,18 @@ public class CommandMessageTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public CommandMessageTransfer getCommandMessageTransfer(CommandMessage commandMessage) {
+    public CommandMessageTransfer getCommandMessageTransfer(UserVisit userVisit, CommandMessage commandMessage) {
         var commandMessageTransfer = get(commandMessage);
         
         if(commandMessageTransfer == null) {
             var commandMessageDetail = commandMessage.getLastDetail();
             var commandMessageType = commandControl.getCommandMessageTypeTransfer(userVisit, commandMessageDetail.getCommandMessageType());
             var commandMessageKey = commandMessageDetail.getCommandMessageKey();
-            var commandMessageTranslation = commandControl.getBestCommandMessageTranslation(commandMessage, getLanguage());
+            var commandMessageTranslation = commandControl.getBestCommandMessageTranslation(commandMessage, getLanguage(userVisit));
             var translation = commandMessageTranslation == null ? null : commandMessageTranslation.getTranslation();
     
             commandMessageTransfer = new CommandMessageTransfer(commandMessageType, commandMessageKey, translation);
-            put(commandMessage, commandMessageTransfer);
+            put(userVisit, commandMessage, commandMessageTransfer);
             
             if(includeTranslations) {
                 var commandMessageTranslationTransfers = commandControl.getCommandMessageTranslationTransfersByCommandMessage(userVisit, commandMessage);

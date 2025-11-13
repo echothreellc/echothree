@@ -28,12 +28,12 @@ public class FilterEntranceStepTransferCache
     FilterControl filterControl = Session.getModelController(FilterControl.class);
 
     /** Creates a new instance of FilterEntranceStepTransferCache */
-    public FilterEntranceStepTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public FilterEntranceStepTransferCache() {
+        super();
     }
 
     @Override
-    public FilterEntranceStepTransfer getTransfer(FilterEntranceStep filterEntranceStep) {
+    public FilterEntranceStepTransfer getTransfer(UserVisit userVisit, FilterEntranceStep filterEntranceStep) {
         var filterEntranceStepTransfer = get(filterEntranceStep);
         
         if(filterEntranceStepTransfer == null) {
@@ -41,7 +41,7 @@ public class FilterEntranceStepTransferCache
             var filterStep = filterControl.getFilterStepTransfer(userVisit, filterEntranceStep.getFilterStep());
             
             filterEntranceStepTransfer = new FilterEntranceStepTransfer(filter, filterStep);
-            put(filterEntranceStep, filterEntranceStepTransfer);
+            put(userVisit, filterEntranceStep, filterEntranceStepTransfer);
         }
         
         return filterEntranceStepTransfer;

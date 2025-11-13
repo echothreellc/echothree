@@ -25,12 +25,12 @@ public class AssociateProgramDescriptionTransferCache
         extends BaseAssociateDescriptionTransferCache<AssociateProgramDescription, AssociateProgramDescriptionTransfer> {
     
     /** Creates a new instance of AssociateProgramDescriptionTransferCache */
-    public AssociateProgramDescriptionTransferCache(UserVisit userVisit, AssociateControl associateControl) {
-        super(userVisit, associateControl);
+    public AssociateProgramDescriptionTransferCache(AssociateControl associateControl) {
+        super(associateControl);
     }
     
     @Override
-    public AssociateProgramDescriptionTransfer getTransfer(AssociateProgramDescription associateProgramDescription) {
+    public AssociateProgramDescriptionTransfer getTransfer(UserVisit userVisit, AssociateProgramDescription associateProgramDescription) {
         var associateProgramDescriptionTransfer = get(associateProgramDescription);
         
         if(associateProgramDescriptionTransfer == null) {
@@ -38,7 +38,7 @@ public class AssociateProgramDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, associateProgramDescription.getLanguage());
             
             associateProgramDescriptionTransfer = new AssociateProgramDescriptionTransfer(languageTransfer, associateProgramTransfer, associateProgramDescription.getDescription());
-            put(associateProgramDescription, associateProgramDescriptionTransfer);
+            put(userVisit, associateProgramDescription, associateProgramDescriptionTransfer);
         }
         
         return associateProgramDescriptionTransfer;

@@ -74,8 +74,8 @@ public class PartyTransferCache
     boolean includePartySkills;
     
     /** Creates a new instance of PartyTransferCache */
-    public PartyTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public PartyTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -105,7 +105,7 @@ public class PartyTransferCache
     }
 
     @Override
-    public PartyTransfer getTransfer(Party party) {
+    public PartyTransfer getTransfer(UserVisit userVisit, Party party) {
         var partyTransfer = get(party);
         
         if(partyTransfer == null) {
@@ -129,7 +129,7 @@ public class PartyTransferCache
             
             partyTransfer = new PartyTransfer(partyName, partyTypeTransfer, preferredLanguageTransfer, preferredCurrencyTransfer, preferredTimeZoneTransfer, preferredDateTimeFormatTransfer,
                     personTransfer, partyGroupTransfer, profileTransfer);
-            put(party, partyTransfer);
+            put(userVisit, party, partyTransfer);
             
             if(includeUserLogin) {
                 partyTransfer.setUserLogin(userControl.getUserLoginTransfer(userVisit, party));
@@ -140,7 +140,7 @@ public class PartyTransferCache
             }
             
             if(includeDescription) {
-                partyTransfer.setDescription(partyControl.getBestPartyDescription(party, getLanguage()));
+                partyTransfer.setDescription(partyControl.getBestPartyDescription(party, getLanguage(userVisit)));
             }
             
             if(includePartyContactMechanisms) {

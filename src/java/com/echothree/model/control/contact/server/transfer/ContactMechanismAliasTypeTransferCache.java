@@ -25,11 +25,11 @@ public class ContactMechanismAliasTypeTransferCache
         extends BaseContactTransferCache<ContactMechanismAliasType, ContactMechanismAliasTypeTransfer> {
     
     /** Creates a new instance of ContactMechanismAliasTypeTransferCache */
-    public ContactMechanismAliasTypeTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    public ContactMechanismAliasTypeTransferCache(ContactControl contactControl) {
+        super(contactControl);
     }
     
-    public ContactMechanismAliasTypeTransfer getContactMechanismAliasTypeTransfer(ContactMechanismAliasType contactMechanismAliasType) {
+    public ContactMechanismAliasTypeTransfer getContactMechanismAliasTypeTransfer(UserVisit userVisit, ContactMechanismAliasType contactMechanismAliasType) {
         var contactMechanismAliasTypeTransfer = get(contactMechanismAliasType);
         
         if(contactMechanismAliasTypeTransfer == null) {
@@ -38,11 +38,11 @@ public class ContactMechanismAliasTypeTransferCache
             var validationPattern = contactMechanismAliasTypeDetail.getValidationPattern();
             var isDefault = contactMechanismAliasTypeDetail.getIsDefault();
             var sortOrder = contactMechanismAliasTypeDetail.getSortOrder();
-            var description = contactControl.getBestContactMechanismAliasTypeDescription(contactMechanismAliasType, getLanguage());
+            var description = contactControl.getBestContactMechanismAliasTypeDescription(contactMechanismAliasType, getLanguage(userVisit));
             
             contactMechanismAliasTypeTransfer = new ContactMechanismAliasTypeTransfer(contactMechanismAliasTypeName, validationPattern, isDefault, sortOrder,
                     description);
-            put(contactMechanismAliasType, contactMechanismAliasTypeTransfer);
+            put(userVisit, contactMechanismAliasType, contactMechanismAliasTypeTransfer);
         }
         
         return contactMechanismAliasTypeTransfer;

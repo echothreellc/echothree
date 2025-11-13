@@ -36,8 +36,8 @@ public class LanguageTransferCache
     boolean filterDescription;
     
     /** Creates a new instance of LanguageTransferCache */
-    public LanguageTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public LanguageTransferCache() {
+        super();
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
@@ -53,17 +53,17 @@ public class LanguageTransferCache
     }
 
     @Override
-    public LanguageTransfer getTransfer(Language language) {
+    public LanguageTransfer getTransfer(UserVisit userVisit, Language language) {
         var languageTransfer = get(language);
         
         if(languageTransfer == null) {
             var languageIsoName = filterLanguageIsoName ? null : language.getLanguageIsoName();
             var isDefault = filterisDefault ? null : language.getIsDefault();
             var sortOrder = filterSortOrder ? null : language.getSortOrder();
-            var description = filterDescription ? null : partyControl.getBestLanguageDescription(language, getLanguage());
+            var description = filterDescription ? null : partyControl.getBestLanguageDescription(language, getLanguage(userVisit));
             
             languageTransfer = new LanguageTransfer(languageIsoName, isDefault, sortOrder, description);
-            put(language, languageTransfer);
+            put(userVisit, language, languageTransfer);
         }
         
         return languageTransfer;

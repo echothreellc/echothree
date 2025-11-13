@@ -27,12 +27,12 @@ public class GeoCodeTaxTransferCache
         extends BaseTaxTransferCache<GeoCodeTax, GeoCodeTaxTransfer> {
     
     /** Creates a new instance of GeoCodeTaxTransferCache */
-    public GeoCodeTaxTransferCache(UserVisit userVisit, TaxControl taxControl) {
-        super(userVisit, taxControl);
+    public GeoCodeTaxTransferCache(TaxControl taxControl) {
+        super(taxControl);
     }
     
     @Override
-    public GeoCodeTaxTransfer getTransfer(GeoCodeTax geoCodeTax) {
+    public GeoCodeTaxTransfer getTransfer(UserVisit userVisit, GeoCodeTax geoCodeTax) {
         var geoCodeTaxTransfer = get(geoCodeTax);
         
         if(geoCodeTaxTransfer == null) {
@@ -41,7 +41,7 @@ public class GeoCodeTaxTransferCache
             var tax = taxControl.getTaxTransfer(userVisit, geoCodeTax.getTax());
             
             geoCodeTaxTransfer = new GeoCodeTaxTransfer(geoCode, tax);
-            put(geoCodeTax, geoCodeTaxTransfer);
+            put(userVisit, geoCodeTax, geoCodeTaxTransfer);
         }
         return geoCodeTaxTransfer;
     }

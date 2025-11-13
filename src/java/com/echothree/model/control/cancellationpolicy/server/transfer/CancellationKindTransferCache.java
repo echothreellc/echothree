@@ -29,13 +29,13 @@ public class CancellationKindTransferCache
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     
     /** Creates a new instance of CancellationKindTransferCache */
-    public CancellationKindTransferCache(UserVisit userVisit, CancellationPolicyControl cancellationPolicyControl) {
-        super(userVisit, cancellationPolicyControl);
+    public CancellationKindTransferCache(CancellationPolicyControl cancellationPolicyControl) {
+        super(cancellationPolicyControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public CancellationKindTransfer getCancellationKindTransfer(CancellationKind cancellationKind) {
+    public CancellationKindTransfer getCancellationKindTransfer(UserVisit userVisit, CancellationKind cancellationKind) {
         var cancellationKindTransfer = get(cancellationKind);
         
         if(cancellationKindTransfer == null) {
@@ -45,10 +45,10 @@ public class CancellationKindTransferCache
             var cancellationSequenceTypeTransfer = cancellationSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, cancellationSequenceType);
             var isDefault = cancellationKindDetail.getIsDefault();
             var sortOrder = cancellationKindDetail.getSortOrder();
-            var description = cancellationPolicyControl.getBestCancellationKindDescription(cancellationKind, getLanguage());
+            var description = cancellationPolicyControl.getBestCancellationKindDescription(cancellationKind, getLanguage(userVisit));
             
             cancellationKindTransfer = new CancellationKindTransfer(cancellationKindName, cancellationSequenceTypeTransfer, isDefault, sortOrder, description);
-            put(cancellationKind, cancellationKindTransfer);
+            put(userVisit, cancellationKind, cancellationKindTransfer);
         }
         
         return cancellationKindTransfer;

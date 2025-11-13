@@ -39,8 +39,8 @@ public class EntityBlobAttributeTransferCache
     boolean includeETag;
     
     /** Creates a new instance of EntityBlobAttributeTransferCache */
-    public EntityBlobAttributeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityBlobAttributeTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -49,7 +49,7 @@ public class EntityBlobAttributeTransferCache
         }
     }
     
-    public EntityBlobAttributeTransfer getEntityBlobAttributeTransfer(EntityBlobAttribute entityBlobAttribute, EntityInstance entityInstance) {
+    public EntityBlobAttributeTransfer getEntityBlobAttributeTransfer(final UserVisit userVisit, final EntityBlobAttribute entityBlobAttribute, final EntityInstance entityInstance) {
         var entityBlobAttributeTransfer = get(entityBlobAttribute);
         
         if(entityBlobAttributeTransfer == null) {
@@ -73,7 +73,7 @@ public class EntityBlobAttributeTransferCache
             }
             
             entityBlobAttributeTransfer = new EntityBlobAttributeTransfer(entityAttribute, entityInstanceTransfer, language, blobAttribute, mimeType, eTag);
-            put(entityBlobAttribute, entityBlobAttributeTransfer);
+            put(userVisit, entityBlobAttribute, entityBlobAttributeTransfer);
         }
         
         return entityBlobAttributeTransfer;

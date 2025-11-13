@@ -29,21 +29,21 @@ public class LotTimeTransferCache
     LotTimeControl lotTimeControl = Session.getModelController(LotTimeControl.class);
 
     /** Creates a new instance of LotTimeTransferCache */
-    public LotTimeTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    public LotTimeTransferCache(InventoryControl inventoryControl) {
+        super(inventoryControl);
     }
     
     @Override
-    public LotTimeTransfer getTransfer(LotTime lotTime) {
+    public LotTimeTransfer getTransfer(UserVisit userVisit, LotTime lotTime) {
         var lotTimeTransfer = get(lotTime);
         
         if(lotTimeTransfer == null) {
             var lotTimeType = lotTimeControl.getLotTimeTypeTransfer(userVisit, lotTime.getLotTimeType());
             var unformattedTime = lotTime.getTime();
-            var time = formatTypicalDateTime(unformattedTime);
+            var time = formatTypicalDateTime(userVisit, unformattedTime);
             
             lotTimeTransfer = new LotTimeTransfer(lotTimeType, unformattedTime, time);
-            put(lotTime, lotTimeTransfer);
+            put(userVisit, lotTime, lotTimeTransfer);
         }
         
         return lotTimeTransfer;

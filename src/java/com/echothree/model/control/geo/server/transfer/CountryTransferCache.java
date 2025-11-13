@@ -31,8 +31,8 @@ public class CountryTransferCache
     boolean includeAliases;
     
     /** Creates a new instance of CountryTransferCache */
-    public CountryTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
+    public CountryTransferCache(GeoControl geoControl) {
+        super(geoControl);
         
         var options = session.getOptions();
         if(options != null) {
@@ -42,7 +42,7 @@ public class CountryTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public CountryTransfer getCountryTransfer(GeoCode geoCode) {
+    public CountryTransfer getCountryTransfer(UserVisit userVisit, GeoCode geoCode) {
         var countryTransfer = get(geoCode);
         
         if(countryTransfer == null) {
@@ -70,17 +70,17 @@ public class CountryTransferCache
             var postalCodeLength = geoCodeCountry.getPostalCodeLength();
             var postalCodeGeoCodeLength = geoCodeCountry.getPostalCodeGeoCodeLength();
             var postalCodeExample = geoCodeCountry.getPostalCodeExample();
-            var description = geoControl.getBestGeoCodeDescription(geoCode, getLanguage());
+            var description = geoControl.getBestGeoCodeDescription(geoCode, getLanguage(userVisit));
             
             countryTransfer = new CountryTransfer(geoCodeName, geoCodeType, geoCodeScope, isDefault, sortOrder, telephoneCode,
                     areaCodePattern, areaCodeRequired, areaCodeExample, telephoneNumberPattern, telephoneNumberExample,
                     postalAddressFormat, cityRequired, cityGeoCodeRequired, stateRequired, stateGeoCodeRequired, postalCodePattern,
                     postalCodeRequired, postalCodeGeoCodeRequired, postalCodeLength, postalCodeGeoCodeLength, postalCodeExample,
                     description);
-            put(geoCode, countryTransfer);
+            put(userVisit, geoCode, countryTransfer);
             
             if(includeAliases) {
-                setupGeoCodeAliasTransfers(geoCode, countryTransfer);
+                setupGeoCodeAliasTransfers(userVisit, geoCode, countryTransfer);
             }
         }
         

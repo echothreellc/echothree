@@ -34,9 +34,9 @@ public abstract class BasePaymentControl
     
     private PaymentTransferCaches paymentTransferCaches;
     
-    public PaymentTransferCaches getPaymentTransferCaches(UserVisit userVisit) {
+    public PaymentTransferCaches getPaymentTransferCaches() {
         if(paymentTransferCaches == null) {
-            paymentTransferCaches = new PaymentTransferCaches(userVisit);
+            paymentTransferCaches = new PaymentTransferCaches();
         }
         
         return paymentTransferCaches;

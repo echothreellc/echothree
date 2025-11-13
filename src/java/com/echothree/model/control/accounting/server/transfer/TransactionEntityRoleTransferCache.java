@@ -30,12 +30,12 @@ public class TransactionEntityRoleTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     
     /** Creates a new instance of TransactionEntityRoleTransferCache */
-    public TransactionEntityRoleTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public TransactionEntityRoleTransferCache() {
+        super();
     }
     
     @Override
-    public TransactionEntityRoleTransfer getTransfer(TransactionEntityRole transactionEntityRole) {
+    public TransactionEntityRoleTransfer getTransfer(UserVisit userVisit, TransactionEntityRole transactionEntityRole) {
         var transactionEntityRoleTransfer = get(transactionEntityRole);
         
         if(transactionEntityRoleTransfer == null) {
@@ -44,7 +44,7 @@ public class TransactionEntityRoleTransferCache
             var entityInstance = entityInstanceControl.getEntityInstanceTransfer(userVisit, transactionEntityRole.getEntityInstance(), false, false, false, false);
             
             transactionEntityRoleTransfer = new TransactionEntityRoleTransfer(transaction, transactionEntityRoleType, entityInstance);
-            put(transactionEntityRole, transactionEntityRoleTransfer);
+            put(userVisit, transactionEntityRole, transactionEntityRoleTransfer);
         }
         
         return transactionEntityRoleTransfer;

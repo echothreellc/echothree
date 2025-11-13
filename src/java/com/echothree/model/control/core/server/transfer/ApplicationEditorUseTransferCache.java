@@ -28,13 +28,13 @@ public class ApplicationEditorUseTransferCache
     ApplicationControl applicationControl = Session.getModelController(ApplicationControl.class);
 
     /** Creates a new instance of ApplicationEditorUseTransferCache */
-    public ApplicationEditorUseTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public ApplicationEditorUseTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
 
-    public ApplicationEditorUseTransfer getApplicationEditorUseTransfer(ApplicationEditorUse applicationEditorUse) {
+    public ApplicationEditorUseTransfer getApplicationEditorUseTransfer(UserVisit userVisit, ApplicationEditorUse applicationEditorUse) {
         var applicationEditorUseTransfer = get(applicationEditorUse);
 
         if(applicationEditorUseTransfer == null) {
@@ -47,11 +47,11 @@ public class ApplicationEditorUseTransferCache
             var defaultWidth = applicationEditorUseDetail.getDefaultWidth();
             var isDefault = applicationEditorUseDetail.getIsDefault();
             var sortOrder = applicationEditorUseDetail.getSortOrder();
-            var description = applicationControl.getBestApplicationEditorUseDescription(applicationEditorUse, getLanguage());
+            var description = applicationControl.getBestApplicationEditorUseDescription(applicationEditorUse, getLanguage(userVisit));
 
             applicationEditorUseTransfer = new ApplicationEditorUseTransfer(applicationTransfer, applicationEditorUseName, defaultApplicationEditorTransfer,
                     defaultHeight, defaultWidth, isDefault, sortOrder, description);
-            put(applicationEditorUse, applicationEditorUseTransfer);
+            put(userVisit, applicationEditorUse, applicationEditorUseTransfer);
         }
 
         return applicationEditorUseTransfer;

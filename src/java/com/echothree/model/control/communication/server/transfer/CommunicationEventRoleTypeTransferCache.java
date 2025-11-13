@@ -25,21 +25,21 @@ public class CommunicationEventRoleTypeTransferCache
         extends BaseCommunicationTransferCache<CommunicationEventRoleType, CommunicationEventRoleTypeTransfer> {
     
     /** Creates a new instance of CommunicationEventRoleTypeTransferCache */
-    public CommunicationEventRoleTypeTransferCache(UserVisit userVisit, CommunicationControl communicationControl) {
-        super(userVisit, communicationControl);
+    public CommunicationEventRoleTypeTransferCache(CommunicationControl communicationControl) {
+        super(communicationControl);
     }
     
-    public CommunicationEventRoleTypeTransfer getCommunicationEventRoleTypeTransfer(CommunicationEventRoleType communicationEventRoleType) {
+    public CommunicationEventRoleTypeTransfer getCommunicationEventRoleTypeTransfer(UserVisit userVisit, CommunicationEventRoleType communicationEventRoleType) {
         var communicationEventRoleTypeTransfer = get(communicationEventRoleType);
         
         if(communicationEventRoleTypeTransfer == null) {
             var communicationEventRoleTypeName = communicationEventRoleType.getCommunicationEventRoleTypeName();
             var sortOrder = communicationEventRoleType.getSortOrder();
-            var description = communicationControl.getBestCommunicationEventRoleTypeDescription(communicationEventRoleType, getLanguage());
+            var description = communicationControl.getBestCommunicationEventRoleTypeDescription(communicationEventRoleType, getLanguage(userVisit));
             
             communicationEventRoleTypeTransfer = new CommunicationEventRoleTypeTransfer(communicationEventRoleTypeName, sortOrder,
                     description);
-            put(communicationEventRoleType, communicationEventRoleTypeTransfer);
+            put(userVisit, communicationEventRoleType, communicationEventRoleTypeTransfer);
         }
         
         return communicationEventRoleTypeTransfer;

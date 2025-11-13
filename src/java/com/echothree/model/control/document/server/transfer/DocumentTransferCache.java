@@ -34,8 +34,8 @@ public class DocumentTransferCache
     boolean includeETag;
     
     /** Creates a new instance of DocumentTransferCache */
-    public DocumentTransferCache(UserVisit userVisit, DocumentControl documentControl) {
-        super(userVisit, documentControl);
+    public DocumentTransferCache(DocumentControl documentControl) {
+        super(documentControl);
         
         var options = session.getOptions();
         if(options != null) {
@@ -47,7 +47,7 @@ public class DocumentTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public DocumentTransfer getDocumentTransfer(Document document) {
+    public DocumentTransfer getDocumentTransfer(UserVisit userVisit, Document document) {
         var documentTransfer = get(document);
         
         if(documentTransfer == null) {
@@ -56,7 +56,7 @@ public class DocumentTransferCache
             var documentType = documentControl.getDocumentTypeTransfer(userVisit, documentDetail.getDocumentType());
             var mimeType = mimeTypeControl.getMimeTypeTransfer(userVisit, documentDetail.getMimeType());
             var pages = documentDetail.getPages();
-            var description = documentControl.getBestDocumentDescription(document, getLanguage());
+            var description = documentControl.getBestDocumentDescription(document, getLanguage(userVisit));
             ByteArray blob = null;
             String clob = null;
             String eTag = null;
@@ -89,7 +89,7 @@ public class DocumentTransferCache
             }
 
             documentTransfer = new DocumentTransfer(documentName, documentType, mimeType, pages, description, blob, clob, eTag);
-            put(document, documentTransfer);
+            put(userVisit, document, documentTransfer);
         }
         
         return documentTransfer;

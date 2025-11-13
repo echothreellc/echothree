@@ -28,21 +28,21 @@ public class ItemAccountingCategoryDescriptionTransferCache
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of ItemAccountingCategoryDescriptionTransferCache */
-    public ItemAccountingCategoryDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public ItemAccountingCategoryDescriptionTransferCache() {
+        super();
     }
     
     @Override
-    public ItemAccountingCategoryDescriptionTransfer getTransfer(ItemAccountingCategoryDescription itemAccountingCategoryDescription) {
+    public ItemAccountingCategoryDescriptionTransfer getTransfer(UserVisit userVisit, ItemAccountingCategoryDescription itemAccountingCategoryDescription) {
         var itemAccountingCategoryDescriptionTransfer = get(itemAccountingCategoryDescription);
         
         if(itemAccountingCategoryDescriptionTransfer == null) {
-            var itemAccountingCategoryTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getItemAccountingCategoryTransferCache();
-            var itemAccountingCategoryTransfer = itemAccountingCategoryTransferCache.getTransfer(itemAccountingCategoryDescription.getItemAccountingCategory());
+            var itemAccountingCategoryTransferCache = accountingControl.getAccountingTransferCaches().getItemAccountingCategoryTransferCache();
+            var itemAccountingCategoryTransfer = itemAccountingCategoryTransferCache.getTransfer(userVisit, itemAccountingCategoryDescription.getItemAccountingCategory());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, itemAccountingCategoryDescription.getLanguage());
             
             itemAccountingCategoryDescriptionTransfer = new ItemAccountingCategoryDescriptionTransfer(languageTransfer, itemAccountingCategoryTransfer, itemAccountingCategoryDescription.getDescription());
-            put(itemAccountingCategoryDescription, itemAccountingCategoryDescriptionTransfer);
+            put(userVisit, itemAccountingCategoryDescription, itemAccountingCategoryDescriptionTransfer);
         }
         
         return itemAccountingCategoryDescriptionTransfer;

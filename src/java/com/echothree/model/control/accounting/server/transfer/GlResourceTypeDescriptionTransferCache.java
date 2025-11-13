@@ -28,21 +28,21 @@ public class GlResourceTypeDescriptionTransferCache
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of GlResourceTypeDescriptionTransferCache */
-    public GlResourceTypeDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public GlResourceTypeDescriptionTransferCache() {
+        super();
     }
     
     @Override
-    public GlResourceTypeDescriptionTransfer getTransfer(GlResourceTypeDescription glResourceTypeDescription) {
+    public GlResourceTypeDescriptionTransfer getTransfer(UserVisit userVisit, GlResourceTypeDescription glResourceTypeDescription) {
         var glResourceTypeDescriptionTransfer = get(glResourceTypeDescription);
         
         if(glResourceTypeDescriptionTransfer == null) {
-            var glResourceTypeTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getGlResourceTypeTransferCache();
-            var glResourceTypeTransfer = glResourceTypeTransferCache.getTransfer(glResourceTypeDescription.getGlResourceType());
+            var glResourceTypeTransferCache = accountingControl.getAccountingTransferCaches().getGlResourceTypeTransferCache();
+            var glResourceTypeTransfer = glResourceTypeTransferCache.getTransfer(userVisit, glResourceTypeDescription.getGlResourceType());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, glResourceTypeDescription.getLanguage());
             
             glResourceTypeDescriptionTransfer = new GlResourceTypeDescriptionTransfer(languageTransfer, glResourceTypeTransfer, glResourceTypeDescription.getDescription());
-            put(glResourceTypeDescription, glResourceTypeDescriptionTransfer);
+            put(userVisit, glResourceTypeDescription, glResourceTypeDescriptionTransfer);
         }
         
         return glResourceTypeDescriptionTransfer;

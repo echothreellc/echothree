@@ -38,8 +38,8 @@ public class PartyContactListTransferCache
     boolean includeComments;
     
     /** Creates a new instance of PartyContactListTransferCache */
-    public PartyContactListTransferCache(UserVisit userVisit, ContactListControl contactListControl) {
-        super(userVisit, contactListControl);
+    public PartyContactListTransferCache(ContactListControl contactListControl) {
+        super(contactListControl);
         
         var options = session.getOptions();
         if(options != null) {
@@ -51,7 +51,7 @@ public class PartyContactListTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public PartyContactListTransfer getPartyContactListTransfer(PartyContactList partyContactList) {
+    public PartyContactListTransfer getPartyContactListTransfer(UserVisit userVisit, PartyContactList partyContactList) {
         var partyContactListTransfer = get(partyContactList);
         
         if(partyContactListTransfer == null) {
@@ -64,7 +64,7 @@ public class PartyContactListTransferCache
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(partyContactList.getPrimaryKey());
             
             partyContactListTransfer = new PartyContactListTransfer(partyTransfer, contactListTransfer, preferredContactListContactMechanismPurposeTransfer);
-            put(partyContactList, partyContactListTransfer, entityInstance);
+            put(userVisit, partyContactList, partyContactListTransfer, entityInstance);
             
             if(includeStatus) {
                 var workflow = contactList.getLastDetail().getDefaultPartyContactListStatus().getLastDetail().getWorkflow();
@@ -76,7 +76,7 @@ public class PartyContactListTransferCache
             }
 
             if(includeComments) {
-                setupComments(partyContactList, entityInstance, partyContactListTransfer, CommentConstants.CommentType_PARTY_CONTACT_LIST);
+                setupComments(userVisit, partyContactList, entityInstance, partyContactListTransfer, CommentConstants.CommentType_PARTY_CONTACT_LIST);
             }
         }
         

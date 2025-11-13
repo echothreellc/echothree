@@ -25,12 +25,12 @@ public class BatchAliasTypeDescriptionTransferCache
         extends BaseBatchDescriptionTransferCache<BatchAliasTypeDescription, BatchAliasTypeDescriptionTransfer> {
     
     /** Creates a new instance of BatchAliasTypeDescriptionTransferCache */
-    public BatchAliasTypeDescriptionTransferCache(UserVisit userVisit, BatchControl batchControl) {
-        super(userVisit, batchControl);
+    public BatchAliasTypeDescriptionTransferCache(BatchControl batchControl) {
+        super(batchControl);
     }
     
     @Override
-    public BatchAliasTypeDescriptionTransfer getTransfer(BatchAliasTypeDescription batchAliasTypeDescription) {
+    public BatchAliasTypeDescriptionTransfer getTransfer(UserVisit userVisit, BatchAliasTypeDescription batchAliasTypeDescription) {
         var batchAliasTypeDescriptionTransfer = get(batchAliasTypeDescription);
         
         if(batchAliasTypeDescriptionTransfer == null) {
@@ -38,7 +38,7 @@ public class BatchAliasTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, batchAliasTypeDescription.getLanguage());
             
             batchAliasTypeDescriptionTransfer = new BatchAliasTypeDescriptionTransfer(languageTransfer, batchAliasTypeTransfer, batchAliasTypeDescription.getDescription());
-            put(batchAliasTypeDescription, batchAliasTypeDescriptionTransfer);
+            put(userVisit, batchAliasTypeDescription, batchAliasTypeDescriptionTransfer);
         }
         
         return batchAliasTypeDescriptionTransfer;

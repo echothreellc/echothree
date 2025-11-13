@@ -25,13 +25,13 @@ public class PartySecurityRoleTemplateTransferCache
         extends BaseSecurityTransferCache<PartySecurityRoleTemplate, PartySecurityRoleTemplateTransfer> {
     
     /** Creates a new instance of PartySecurityRoleTemplateTransferCache */
-    public PartySecurityRoleTemplateTransferCache(UserVisit userVisit, SecurityControl securityControl) {
-        super(userVisit, securityControl);
+    public PartySecurityRoleTemplateTransferCache(SecurityControl securityControl) {
+        super(securityControl);
 
         setIncludeEntityInstance(true);
     }
     
-    public PartySecurityRoleTemplateTransfer getPartySecurityRoleTemplateTransfer(PartySecurityRoleTemplate partySecurityRoleTemplate) {
+    public PartySecurityRoleTemplateTransfer getPartySecurityRoleTemplateTransfer(UserVisit userVisit, PartySecurityRoleTemplate partySecurityRoleTemplate) {
         var partySecurityRoleTemplateTransfer = get(partySecurityRoleTemplate);
         
         if(partySecurityRoleTemplateTransfer == null) {
@@ -39,11 +39,11 @@ public class PartySecurityRoleTemplateTransferCache
             var partySecurityRoleTemplateName = partySecurityRoleTemplateDetail.getPartySecurityRoleTemplateName();
             var isDefault = partySecurityRoleTemplateDetail.getIsDefault();
             var sortOrder = partySecurityRoleTemplateDetail.getSortOrder();
-            var description = securityControl.getBestPartySecurityRoleTemplateDescription(partySecurityRoleTemplate, getLanguage());
+            var description = securityControl.getBestPartySecurityRoleTemplateDescription(partySecurityRoleTemplate, getLanguage(userVisit));
             
             partySecurityRoleTemplateTransfer = new PartySecurityRoleTemplateTransfer(partySecurityRoleTemplateName, isDefault,
                     sortOrder, description);
-            put(partySecurityRoleTemplate, partySecurityRoleTemplateTransfer);
+            put(userVisit, partySecurityRoleTemplate, partySecurityRoleTemplateTransfer);
         }
         
         return partySecurityRoleTemplateTransfer;

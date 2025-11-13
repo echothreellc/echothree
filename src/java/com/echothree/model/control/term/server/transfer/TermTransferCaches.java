@@ -33,50 +33,50 @@ public class TermTransferCaches
     protected PartyCreditLimitTransferCache partyCreditLimitTransferCache;
     
     /** Creates a new instance of TermTransferCaches */
-    public TermTransferCaches(UserVisit userVisit, TermControl termControl) {
-        super(userVisit);
+    public TermTransferCaches(TermControl termControl) {
+        super();
         
         this.termControl = termControl;
     }
     
     public TermTypeTransferCache getTermTypeTransferCache() {
         if(termTypeTransferCache == null)
-            termTypeTransferCache = new TermTypeTransferCache(userVisit, termControl);
+            termTypeTransferCache = new TermTypeTransferCache(termControl);
         
         return termTypeTransferCache;
     }
     
     public TermTransferCache getTermTransferCache() {
         if(termTransferCache == null)
-            termTransferCache = new TermTransferCache(userVisit, termControl);
+            termTransferCache = new TermTransferCache(termControl);
         
         return termTransferCache;
     }
     
     public TermDescriptionTransferCache getTermDescriptionTransferCache() {
         if(termDescriptionTransferCache == null)
-            termDescriptionTransferCache = new TermDescriptionTransferCache(userVisit, termControl);
+            termDescriptionTransferCache = new TermDescriptionTransferCache(termControl);
         
         return termDescriptionTransferCache;
     }
     
     public PartyTermTransferCache getPartyTermTransferCache() {
         if(partyTermTransferCache == null)
-            partyTermTransferCache = new PartyTermTransferCache(userVisit, termControl);
+            partyTermTransferCache = new PartyTermTransferCache(termControl);
         
         return partyTermTransferCache;
     }
     
     public CustomerTypeCreditLimitTransferCache getCustomerTypeCreditLimitTransferCache() {
         if(customerTypeCreditLimitTransferCache == null)
-            customerTypeCreditLimitTransferCache = new CustomerTypeCreditLimitTransferCache(userVisit, termControl);
+            customerTypeCreditLimitTransferCache = new CustomerTypeCreditLimitTransferCache(termControl);
         
         return customerTypeCreditLimitTransferCache;
     }
     
     public PartyCreditLimitTransferCache getPartyCreditLimitTransferCache() {
         if(partyCreditLimitTransferCache == null)
-            partyCreditLimitTransferCache = new PartyCreditLimitTransferCache(userVisit, termControl);
+            partyCreditLimitTransferCache = new PartyCreditLimitTransferCache(termControl);
         
         return partyCreditLimitTransferCache;
     }

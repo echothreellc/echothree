@@ -28,13 +28,13 @@ public class ColorTransferCache
     ColorControl colorControl = Session.getModelController(ColorControl.class);
 
     /** Creates a new instance of ColorTransferCache */
-    public ColorTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public ColorTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
 
-    public ColorTransfer getColorTransfer(Color color) {
+    public ColorTransfer getColorTransfer(UserVisit userVisit, Color color) {
         var colorTransfer = get(color);
 
         if(colorTransfer == null) {
@@ -45,10 +45,10 @@ public class ColorTransferCache
             var blue = colorDetail.getBlue();
             var isDefault = colorDetail.getIsDefault();
             var sortOrder = colorDetail.getSortOrder();
-            var description = colorControl.getBestColorDescription(color, getLanguage());
+            var description = colorControl.getBestColorDescription(color, getLanguage(userVisit));
 
             colorTransfer = new ColorTransfer(colorName, red, green, blue, isDefault, sortOrder, description);
-            put(color, colorTransfer);
+            put(userVisit, color, colorTransfer);
         }
 
         return colorTransfer;

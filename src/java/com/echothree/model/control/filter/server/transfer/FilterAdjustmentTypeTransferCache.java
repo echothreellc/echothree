@@ -28,22 +28,22 @@ public class FilterAdjustmentTypeTransferCache
     FilterControl filterControl = Session.getModelController(FilterControl.class);
 
     /** Creates a new instance of FilterAdjustmentTypeTransferCache */
-    public FilterAdjustmentTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public FilterAdjustmentTypeTransferCache() {
+        super();
     }
 
     @Override
-    public FilterAdjustmentTypeTransfer getTransfer(FilterAdjustmentType filterAdjustmentType) {
+    public FilterAdjustmentTypeTransfer getTransfer(UserVisit userVisit, FilterAdjustmentType filterAdjustmentType) {
         var filterAdjustmentTypeTransfer = get(filterAdjustmentType);
         
         if(filterAdjustmentTypeTransfer == null) {
             var filterAdjustmentTypeName = filterAdjustmentType.getFilterAdjustmentTypeName();
             var isDefault = filterAdjustmentType.getIsDefault();
             var sortOrder = filterAdjustmentType.getSortOrder();
-            var description = filterControl.getBestFilterAdjustmentTypeDescription(filterAdjustmentType, getLanguage());
+            var description = filterControl.getBestFilterAdjustmentTypeDescription(filterAdjustmentType, getLanguage(userVisit));
             
             filterAdjustmentTypeTransfer = new FilterAdjustmentTypeTransfer(filterAdjustmentTypeName, isDefault, sortOrder, description);
-            put(filterAdjustmentType, filterAdjustmentTypeTransfer);
+            put(userVisit, filterAdjustmentType, filterAdjustmentTypeTransfer);
         }
         return filterAdjustmentTypeTransfer;
     }

@@ -33,8 +33,8 @@ public class PartyTrainingClassSessionTransferCache
     boolean includePartyTrainingClassSessionQuestions;
     
     /** Creates a new instance of PartyTrainingClassSessionTransferCache */
-    public PartyTrainingClassSessionTransferCache(UserVisit userVisit, TrainingControl trainingControl) {
-        super(userVisit, trainingControl);
+    public PartyTrainingClassSessionTransferCache(TrainingControl trainingControl) {
+        super(trainingControl);
         
         var options = session.getOptions();
         if(options != null) {
@@ -45,7 +45,7 @@ public class PartyTrainingClassSessionTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public PartyTrainingClassSessionTransfer getPartyTrainingClassSessionTransfer(PartyTrainingClassSession partyTrainingClassSession) {
+    public PartyTrainingClassSessionTransfer getPartyTrainingClassSessionTransfer(UserVisit userVisit, PartyTrainingClassSession partyTrainingClassSession) {
         var partyTrainingClassSessionTransfer = get(partyTrainingClassSession);
         
         if(partyTrainingClassSessionTransfer == null) {
@@ -69,7 +69,7 @@ public class PartyTrainingClassSessionTransferCache
             
             partyTrainingClassSessionTransfer = new PartyTrainingClassSessionTransfer(partyTrainingClassTransfer, partyTrainingClassSessionSequence,
                     lastPartyTrainingClassSessionSectionTransfer, lastPartyTrainingClassSessionPageTransfer, lastPartyTrainingClassSessionQuestionTransfer);
-            put(partyTrainingClassSession, partyTrainingClassSessionTransfer);
+            put(userVisit, partyTrainingClassSession, partyTrainingClassSessionTransfer);
             
             if(includePartyTrainingClassSessionPages) {
                 partyTrainingClassSessionTransfer.setPartyTrainingClassSessionPages(new ListWrapper<>(trainingControl.getPartyTrainingClassSessionPageTransfersByPartyTrainingClassSession(userVisit, partyTrainingClassSession)));

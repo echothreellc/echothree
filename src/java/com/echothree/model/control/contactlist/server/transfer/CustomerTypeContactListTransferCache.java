@@ -29,11 +29,11 @@ public class CustomerTypeContactListTransferCache
     CustomerControl customerControl = Session.getModelController(CustomerControl.class);
     
     /** Creates a new instance of CustomerTypeContactListTransferCache */
-    public CustomerTypeContactListTransferCache(UserVisit userVisit, ContactListControl contactListControl) {
-        super(userVisit, contactListControl);
+    public CustomerTypeContactListTransferCache(ContactListControl contactListControl) {
+        super(contactListControl);
     }
     
-    public CustomerTypeContactListTransfer getCustomerTypeContactListTransfer(CustomerTypeContactList customerTypeContactList) {
+    public CustomerTypeContactListTransfer getCustomerTypeContactListTransfer(UserVisit userVisit, CustomerTypeContactList customerTypeContactList) {
         var customerTypeContactListTransfer = get(customerTypeContactList);
         
         if(customerTypeContactListTransfer == null) {
@@ -42,7 +42,7 @@ public class CustomerTypeContactListTransferCache
             var addWhenCreated = customerTypeContactList.getAddWhenCreated();
             
             customerTypeContactListTransfer = new CustomerTypeContactListTransfer(customerTypeTransfer, contactListTransfer, addWhenCreated);
-            put(customerTypeContactList, customerTypeContactListTransfer);
+            put(userVisit, customerTypeContactList, customerTypeContactListTransfer);
         }
         
         return customerTypeContactListTransfer;

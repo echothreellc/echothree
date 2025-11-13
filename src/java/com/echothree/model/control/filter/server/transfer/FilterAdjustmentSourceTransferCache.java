@@ -28,12 +28,12 @@ public class FilterAdjustmentSourceTransferCache
     FilterControl filterControl = Session.getModelController(FilterControl.class);
 
     /** Creates a new instance of FilterAdjustmentSourceTransferCache */
-    public FilterAdjustmentSourceTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public FilterAdjustmentSourceTransferCache() {
+        super();
     }
 
     @Override
-    public FilterAdjustmentSourceTransfer getTransfer(FilterAdjustmentSource filterAdjustmentSource) {
+    public FilterAdjustmentSourceTransfer getTransfer(UserVisit userVisit, FilterAdjustmentSource filterAdjustmentSource) {
         var filterAdjustmentSourceTransfer = get(filterAdjustmentSource);
         
         if(filterAdjustmentSourceTransfer == null) {
@@ -41,11 +41,11 @@ public class FilterAdjustmentSourceTransferCache
             var allowedForInitialAmount = filterAdjustmentSource.getAllowedForInitialAmount();
             var isDefault = filterAdjustmentSource.getIsDefault();
             var sortOrder = filterAdjustmentSource.getSortOrder();
-            var description = filterControl.getBestFilterAdjustmentSourceDescription(filterAdjustmentSource, getLanguage());
+            var description = filterControl.getBestFilterAdjustmentSourceDescription(filterAdjustmentSource, getLanguage(userVisit));
             
             filterAdjustmentSourceTransfer = new FilterAdjustmentSourceTransfer(filterAdjustmentSourceName, allowedForInitialAmount, isDefault,
             sortOrder, description);
-            put(filterAdjustmentSource, filterAdjustmentSourceTransfer);
+            put(userVisit, filterAdjustmentSource, filterAdjustmentSourceTransfer);
         }
         return filterAdjustmentSourceTransfer;
     }

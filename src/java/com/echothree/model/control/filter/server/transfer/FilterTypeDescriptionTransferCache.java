@@ -28,12 +28,12 @@ public class FilterTypeDescriptionTransferCache
     FilterControl filterControl = Session.getModelController(FilterControl.class);
 
     /** Creates a new instance of FilterTypeDescriptionTransferCache */
-    public FilterTypeDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public FilterTypeDescriptionTransferCache() {
+        super();
     }
 
     @Override
-    public FilterTypeDescriptionTransfer getTransfer(FilterTypeDescription filterTypeDescription) {
+    public FilterTypeDescriptionTransfer getTransfer(UserVisit userVisit, FilterTypeDescription filterTypeDescription) {
         var filterTypeDescriptionTransfer = get(filterTypeDescription);
         
         if(filterTypeDescriptionTransfer == null) {
@@ -41,7 +41,7 @@ public class FilterTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, filterTypeDescription.getLanguage());
             
             filterTypeDescriptionTransfer = new FilterTypeDescriptionTransfer(languageTransfer, filterTypeTransfer, filterTypeDescription.getDescription());
-            put(filterTypeDescription, filterTypeDescriptionTransfer);
+            put(userVisit, filterTypeDescription, filterTypeDescriptionTransfer);
         }
         
         return filterTypeDescriptionTransfer;

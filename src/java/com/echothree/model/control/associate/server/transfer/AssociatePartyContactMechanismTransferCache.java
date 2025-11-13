@@ -29,14 +29,14 @@ public class AssociatePartyContactMechanismTransferCache
     ContactControl contactControl = Session.getModelController(ContactControl.class);
     
     /** Creates a new instance of AssociatePartyContactMechanismTransferCache */
-    public AssociatePartyContactMechanismTransferCache(UserVisit userVisit, AssociateControl associateControl) {
-        super(userVisit, associateControl);
+    public AssociatePartyContactMechanismTransferCache(AssociateControl associateControl) {
+        super(associateControl);
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public AssociatePartyContactMechanismTransfer getTransfer(AssociatePartyContactMechanism associatePartyContactMechanism) {
+    public AssociatePartyContactMechanismTransfer getTransfer(UserVisit userVisit, AssociatePartyContactMechanism associatePartyContactMechanism) {
         var associatePartyContactMechanismTransfer = get(associatePartyContactMechanism);
         
         if(associatePartyContactMechanismTransfer == null) {
@@ -49,7 +49,7 @@ public class AssociatePartyContactMechanismTransferCache
             
             associatePartyContactMechanismTransfer = new AssociatePartyContactMechanismTransfer(associate, associatePartyContactMechanismName,
                     partyContactMechanism, isDefault, sortOrder);
-            put(associatePartyContactMechanism, associatePartyContactMechanismTransfer);
+            put(userVisit, associatePartyContactMechanism, associatePartyContactMechanismTransfer);
         }
         return associatePartyContactMechanismTransfer;
     }

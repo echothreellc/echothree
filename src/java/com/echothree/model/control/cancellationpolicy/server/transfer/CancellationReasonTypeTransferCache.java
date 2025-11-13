@@ -25,11 +25,11 @@ public class CancellationReasonTypeTransferCache
         extends BaseCancellationPolicyTransferCache<CancellationReasonType, CancellationReasonTypeTransfer> {
     
     /** Creates a new instance of CancellationReasonTypeTransferCache */
-    public CancellationReasonTypeTransferCache(UserVisit userVisit, CancellationPolicyControl cancellationPolicyControl) {
-        super(userVisit, cancellationPolicyControl);
+    public CancellationReasonTypeTransferCache(CancellationPolicyControl cancellationPolicyControl) {
+        super(cancellationPolicyControl);
     }
     
-    public CancellationReasonTypeTransfer getCancellationReasonTypeTransfer(CancellationReasonType cancellationReasonType) {
+    public CancellationReasonTypeTransfer getCancellationReasonTypeTransfer(UserVisit userVisit, CancellationReasonType cancellationReasonType) {
         var cancellationReasonTypeTransfer = get(cancellationReasonType);
         
         if(cancellationReasonTypeTransfer == null) {
@@ -39,7 +39,7 @@ public class CancellationReasonTypeTransferCache
             var sortOrder = cancellationReasonType.getSortOrder();
             
             cancellationReasonTypeTransfer = new CancellationReasonTypeTransfer(cancellationReason, cancellationType, isDefault, sortOrder);
-            put(cancellationReasonType, cancellationReasonTypeTransfer);
+            put(userVisit, cancellationReasonType, cancellationReasonTypeTransfer);
         }
         
         return cancellationReasonTypeTransfer;

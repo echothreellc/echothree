@@ -31,8 +31,8 @@ public class TrainingClassSectionTransferCache
     boolean includeTrainingClassQuestions;
     
     /** Creates a new instance of TrainingClassSectionTransferCache */
-    public TrainingClassSectionTransferCache(UserVisit userVisit, TrainingControl trainingControl) {
-        super(userVisit, trainingControl);
+    public TrainingClassSectionTransferCache(TrainingControl trainingControl) {
+        super(trainingControl);
         
         var options = session.getOptions();
         if(options != null) {
@@ -43,7 +43,7 @@ public class TrainingClassSectionTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public TrainingClassSectionTransfer getTrainingClassSectionTransfer(TrainingClassSection trainingClassSection) {
+    public TrainingClassSectionTransfer getTrainingClassSectionTransfer(UserVisit userVisit, TrainingClassSection trainingClassSection) {
         var trainingClassSectionTransfer = get(trainingClassSection);
         
         if(trainingClassSectionTransfer == null) {
@@ -54,12 +54,12 @@ public class TrainingClassSectionTransferCache
             var percentageToPass = PercentUtils.getInstance().formatFractionalPercent(unformattedPercentageToPass);
             var questionCount = trainingClassSectionDetail.getQuestionCount();
             var sortOrder = trainingClassSectionDetail.getSortOrder();
-            var trainingClassSectionTranslation = trainingControl.getBestTrainingClassSectionTranslation(trainingClassSection, getLanguage());
+            var trainingClassSectionTranslation = trainingControl.getBestTrainingClassSectionTranslation(trainingClassSection, getLanguage(userVisit));
             var description = trainingClassSectionTranslation == null ? trainingClassSectionName : trainingClassSectionTranslation.getDescription();
             
             trainingClassSectionTransfer = new TrainingClassSectionTransfer(trainingClass, trainingClassSectionName, unformattedPercentageToPass,
                     percentageToPass, questionCount, sortOrder, description);
-            put(trainingClassSection, trainingClassSectionTransfer);
+            put(userVisit, trainingClassSection, trainingClassSectionTransfer);
             
             if(includeTrainingClassPages) {
                 trainingClassSectionTransfer.setTrainingClassPages(new ListWrapper<>(trainingControl.getTrainingClassPageTransfers(userVisit, trainingClassSection)));

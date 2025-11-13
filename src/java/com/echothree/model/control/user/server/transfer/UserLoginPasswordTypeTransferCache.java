@@ -25,20 +25,20 @@ public class UserLoginPasswordTypeTransferCache
         extends BaseUserTransferCache<UserLoginPasswordType, UserLoginPasswordTypeTransfer> {
     
     /** Creates a new instance of UserLoginPasswordTypeTransferCache */
-    public UserLoginPasswordTypeTransferCache(UserVisit userVisit, UserControl userControl) {
-        super(userVisit, userControl);
+    public UserLoginPasswordTypeTransferCache(UserControl userControl) {
+        super(userControl);
     }
     
-    public UserLoginPasswordTypeTransfer getUserLoginPasswordTypeTransfer(UserLoginPasswordType userLoginPasswordType) {
+    public UserLoginPasswordTypeTransfer getUserLoginPasswordTypeTransfer(UserVisit userVisit, UserLoginPasswordType userLoginPasswordType) {
         var userLoginPasswordTypeTransfer = get(userLoginPasswordType);
         
         if(userLoginPasswordTypeTransfer == null) {
             var userLoginPasswordTypeName = userLoginPasswordType.getUserLoginPasswordTypeName();
             var userLoginPasswordEncoderType = userControl.getUserLoginPasswordEncoderTypeTransfer(userVisit, userLoginPasswordType.getUserLoginPasswordEncoderType());
-            var description = userControl.getBestUserLoginPasswordTypeDescription(userLoginPasswordType, getLanguage());
+            var description = userControl.getBestUserLoginPasswordTypeDescription(userLoginPasswordType, getLanguage(userVisit));
             
             userLoginPasswordTypeTransfer = new UserLoginPasswordTypeTransfer(userLoginPasswordTypeName, userLoginPasswordEncoderType, description);
-            put(userLoginPasswordType, userLoginPasswordTypeTransfer);
+            put(userVisit, userLoginPasswordType, userLoginPasswordTypeTransfer);
         }
         
         return userLoginPasswordTypeTransfer;

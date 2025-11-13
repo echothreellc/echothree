@@ -28,8 +28,8 @@ public abstract class BaseCampaignTransferCache<K extends BaseEntity, V extends 
     CampaignControl campaignControl;
     
     /** Creates a new instance of BaseCampaignTransferCache */
-    protected BaseCampaignTransferCache(UserVisit userVisit, CampaignControl campaignControl) {
-        super(userVisit);
+    protected BaseCampaignTransferCache(CampaignControl campaignControl) {
+        super();
         
         this.campaignControl = campaignControl;
     }

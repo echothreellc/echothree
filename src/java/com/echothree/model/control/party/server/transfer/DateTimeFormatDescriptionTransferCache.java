@@ -24,12 +24,12 @@ public class DateTimeFormatDescriptionTransferCache
         extends BasePartyDescriptionTransferCache<DateTimeFormatDescription, DateTimeFormatDescriptionTransfer> {
     
     /** Creates a new instance of DateTimeFormatDescriptionTransferCache */
-    public DateTimeFormatDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public DateTimeFormatDescriptionTransferCache() {
+        super();
     }
 
     @Override
-    public DateTimeFormatDescriptionTransfer getTransfer(DateTimeFormatDescription dateTimeFormatDescription) {
+    public DateTimeFormatDescriptionTransfer getTransfer(UserVisit userVisit, DateTimeFormatDescription dateTimeFormatDescription) {
         var dateTimeFormatDescriptionTransfer = get(dateTimeFormatDescription);
         
         if(dateTimeFormatDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class DateTimeFormatDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, dateTimeFormatDescription.getLanguage());
             
             dateTimeFormatDescriptionTransfer = new DateTimeFormatDescriptionTransfer(languageTransfer, dateTimeFormatTransfer, dateTimeFormatDescription.getDescription());
-            put(dateTimeFormatDescription, dateTimeFormatDescriptionTransfer);
+            put(userVisit, dateTimeFormatDescription, dateTimeFormatDescriptionTransfer);
         }
         
         return dateTimeFormatDescriptionTransfer;

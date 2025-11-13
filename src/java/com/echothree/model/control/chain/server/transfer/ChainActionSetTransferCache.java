@@ -25,13 +25,13 @@ public class ChainActionSetTransferCache
         extends BaseChainTransferCache<ChainActionSet, ChainActionSetTransfer> {
 
     /** Creates a new instance of ChainActionSetTransferCache */
-    public ChainActionSetTransferCache(UserVisit userVisit, ChainControl chainControl) {
-        super(userVisit, chainControl);
+    public ChainActionSetTransferCache(ChainControl chainControl) {
+        super(chainControl);
         
         setIncludeEntityInstance(true);
     }
 
-    public ChainActionSetTransfer getChainActionSetTransfer(ChainActionSet chainActionSet) {
+    public ChainActionSetTransfer getChainActionSetTransfer(UserVisit userVisit, ChainActionSet chainActionSet) {
         var chainActionSetTransfer = get(chainActionSet);
 
         if(chainActionSetTransfer == null) {
@@ -40,10 +40,10 @@ public class ChainActionSetTransferCache
             var chainActionSetName = chainActionSetDetail.getChainActionSetName();
             var isDefault = chainActionSetDetail.getIsDefault();
             var sortOrder = chainActionSetDetail.getSortOrder();
-            var description = chainControl.getBestChainActionSetDescription(chainActionSet, getLanguage());
+            var description = chainControl.getBestChainActionSetDescription(chainActionSet, getLanguage(userVisit));
 
             chainActionSetTransfer = new ChainActionSetTransfer(chainTransfer, chainActionSetName, isDefault, sortOrder, description);
-            put(chainActionSet, chainActionSetTransfer);
+            put(userVisit, chainActionSet, chainActionSetTransfer);
         }
 
         return chainActionSetTransfer;

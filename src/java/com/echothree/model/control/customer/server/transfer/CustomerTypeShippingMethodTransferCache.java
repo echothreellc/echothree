@@ -27,11 +27,11 @@ public class CustomerTypeShippingMethodTransferCache
         extends BaseCustomerTransferCache<CustomerTypeShippingMethod, CustomerTypeShippingMethodTransfer> {
     
     /** Creates a new instance of CustomerTypeShippingMethodTransferCache */
-    public CustomerTypeShippingMethodTransferCache(UserVisit userVisit, CustomerControl customerControl) {
-        super(userVisit, customerControl);
+    public CustomerTypeShippingMethodTransferCache(CustomerControl customerControl) {
+        super(customerControl);
     }
     
-    public CustomerTypeShippingMethodTransfer getCustomerTypeShippingMethodTransfer(CustomerTypeShippingMethod customerTypeShippingMethod) {
+    public CustomerTypeShippingMethodTransfer getCustomerTypeShippingMethodTransfer(UserVisit userVisit, CustomerTypeShippingMethod customerTypeShippingMethod) {
         var customerTypeShippingMethodTransfer = get(customerTypeShippingMethod);
         
         if(customerTypeShippingMethodTransfer == null) {
@@ -44,7 +44,7 @@ public class CustomerTypeShippingMethodTransferCache
             
             customerTypeShippingMethodTransfer = new CustomerTypeShippingMethodTransfer(customerType, shippingMethod, defaultSelectionPriority, isDefault,
                     sortOrder);
-            put(customerTypeShippingMethod, customerTypeShippingMethodTransfer);
+            put(userVisit, customerTypeShippingMethod, customerTypeShippingMethodTransfer);
         }
         
         return customerTypeShippingMethodTransfer;

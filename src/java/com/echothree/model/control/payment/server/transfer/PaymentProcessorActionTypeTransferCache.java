@@ -28,14 +28,14 @@ public class PaymentProcessorActionTypeTransferCache
     PaymentProcessorActionTypeControl paymentProcessorActionTypeControl = Session.getModelController(PaymentProcessorActionTypeControl.class);
 
     /** Creates a new instance of PaymentProcessorActionTypeTransferCache */
-    public PaymentProcessorActionTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public PaymentProcessorActionTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public PaymentProcessorActionTypeTransfer getTransfer(PaymentProcessorActionType paymentProcessorActionType) {
+    public PaymentProcessorActionTypeTransfer getTransfer(UserVisit userVisit, PaymentProcessorActionType paymentProcessorActionType) {
         var paymentProcessorActionTypeTransfer = get(paymentProcessorActionType);
         
         if(paymentProcessorActionTypeTransfer == null) {
@@ -43,10 +43,10 @@ public class PaymentProcessorActionTypeTransferCache
             var paymentProcessorActionTypeName = paymentProcessorActionTypeDetail.getPaymentProcessorActionTypeName();
             var isDefault = paymentProcessorActionTypeDetail.getIsDefault();
             var sortOrder = paymentProcessorActionTypeDetail.getSortOrder();
-            var description = paymentProcessorActionTypeControl.getBestPaymentProcessorActionTypeDescription(paymentProcessorActionType, getLanguage());
+            var description = paymentProcessorActionTypeControl.getBestPaymentProcessorActionTypeDescription(paymentProcessorActionType, getLanguage(userVisit));
             
             paymentProcessorActionTypeTransfer = new PaymentProcessorActionTypeTransfer(paymentProcessorActionTypeName, isDefault, sortOrder, description);
-            put(paymentProcessorActionType, paymentProcessorActionTypeTransfer);
+            put(userVisit, paymentProcessorActionType, paymentProcessorActionTypeTransfer);
         }
         
         return paymentProcessorActionTypeTransfer;

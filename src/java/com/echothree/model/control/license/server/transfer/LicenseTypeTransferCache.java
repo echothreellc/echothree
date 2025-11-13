@@ -26,8 +26,8 @@ public class LicenseTypeTransferCache
         extends BaseLicenseTransferCache<LicenseType, LicenseTypeTransfer> {
 
     /** Creates a new instance of LicenseTypeTransferCache */
-    public LicenseTypeTransferCache(UserVisit userVisit, LicenseControl licenseControl) {
-        super(userVisit, licenseControl);
+    public LicenseTypeTransferCache(LicenseControl licenseControl) {
+        super(licenseControl);
         
         var options = session.getOptions();
         if(options != null) {
@@ -37,7 +37,7 @@ public class LicenseTypeTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public LicenseTypeTransfer getLicenseTypeTransfer(LicenseType licenseType) {
+    public LicenseTypeTransfer getLicenseTypeTransfer(UserVisit userVisit, LicenseType licenseType) {
         var licenseTypeTransfer = get(licenseType);
 
         if(licenseTypeTransfer == null) {
@@ -45,10 +45,10 @@ public class LicenseTypeTransferCache
             var licenseTypeName = licenseTypeDetail.getLicenseTypeName();
             var isDefault = licenseTypeDetail.getIsDefault();
             var sortOrder = licenseTypeDetail.getSortOrder();
-            var description = licenseControl.getBestLicenseTypeDescription(licenseType, getLanguage());
+            var description = licenseControl.getBestLicenseTypeDescription(licenseType, getLanguage(userVisit));
 
             licenseTypeTransfer = new LicenseTypeTransfer(licenseTypeName, isDefault, sortOrder, description);
-            put(licenseType, licenseTypeTransfer);
+            put(userVisit, licenseType, licenseTypeTransfer);
         }
 
         return licenseTypeTransfer;

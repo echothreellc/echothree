@@ -29,8 +29,8 @@ public abstract class BaseCancellationPolicyDescriptionTransferCache<K extends B
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of BaseCancellationPolicyDescriptionTransferCache */
-    protected BaseCancellationPolicyDescriptionTransferCache(UserVisit userVisit, CancellationPolicyControl cancellationPolicyControl) {
-        super(userVisit, cancellationPolicyControl);
+    protected BaseCancellationPolicyDescriptionTransferCache(CancellationPolicyControl cancellationPolicyControl) {
+        super(cancellationPolicyControl);
     }
     
 }

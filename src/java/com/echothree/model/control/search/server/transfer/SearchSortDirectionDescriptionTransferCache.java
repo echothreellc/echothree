@@ -25,11 +25,11 @@ public class SearchSortDirectionDescriptionTransferCache
         extends BaseSearchDescriptionTransferCache<SearchSortDirectionDescription, SearchSortDirectionDescriptionTransfer> {
     
     /** Creates a new instance of SearchSortDirectionDescriptionTransferCache */
-    public SearchSortDirectionDescriptionTransferCache(UserVisit userVisit, SearchControl searchControl) {
-        super(userVisit, searchControl);
+    public SearchSortDirectionDescriptionTransferCache(SearchControl searchControl) {
+        super(searchControl);
     }
     
-    public SearchSortDirectionDescriptionTransfer getSearchSortDirectionDescriptionTransfer(SearchSortDirectionDescription searchSortDirectionDescription) {
+    public SearchSortDirectionDescriptionTransfer getSearchSortDirectionDescriptionTransfer(UserVisit userVisit, SearchSortDirectionDescription searchSortDirectionDescription) {
         var searchSortDirectionDescriptionTransfer = get(searchSortDirectionDescription);
         
         if(searchSortDirectionDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class SearchSortDirectionDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, searchSortDirectionDescription.getLanguage());
             
             searchSortDirectionDescriptionTransfer = new SearchSortDirectionDescriptionTransfer(languageTransfer, searchSortDirectionTransfer, searchSortDirectionDescription.getDescription());
-            put(searchSortDirectionDescription, searchSortDirectionDescriptionTransfer);
+            put(userVisit, searchSortDirectionDescription, searchSortDirectionDescriptionTransfer);
         }
         return searchSortDirectionDescriptionTransfer;
     }

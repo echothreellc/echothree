@@ -28,21 +28,21 @@ public class SymbolPositionDescriptionTransferCache
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of SymbolPositionDescriptionTransferCache */
-    public SymbolPositionDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public SymbolPositionDescriptionTransferCache() {
+        super();
     }
     
     @Override
-    public SymbolPositionDescriptionTransfer getTransfer(SymbolPositionDescription symbolPositionDescription) {
+    public SymbolPositionDescriptionTransfer getTransfer(UserVisit userVisit, SymbolPositionDescription symbolPositionDescription) {
         var symbolPositionDescriptionTransfer = get(symbolPositionDescription);
         
         if(symbolPositionDescriptionTransfer == null) {
-            var symbolPositionTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getSymbolPositionTransferCache();
-            var symbolPositionTransfer = symbolPositionTransferCache.getTransfer(symbolPositionDescription.getSymbolPosition());
+            var symbolPositionTransferCache = accountingControl.getAccountingTransferCaches().getSymbolPositionTransferCache();
+            var symbolPositionTransfer = symbolPositionTransferCache.getTransfer(userVisit, symbolPositionDescription.getSymbolPosition());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, symbolPositionDescription.getLanguage());
             
             symbolPositionDescriptionTransfer = new SymbolPositionDescriptionTransfer(languageTransfer, symbolPositionTransfer, symbolPositionDescription.getDescription());
-            put(symbolPositionDescription, symbolPositionDescriptionTransfer);
+            put(userVisit, symbolPositionDescription, symbolPositionDescriptionTransfer);
         }
         
         return symbolPositionDescriptionTransfer;

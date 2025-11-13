@@ -25,11 +25,11 @@ public class DocumentTypeUsageTransferCache
         extends BaseDocumentTransferCache<DocumentTypeUsage, DocumentTypeUsageTransfer> {
     
     /** Creates a new instance of DocumentTypeUsageTransferCache */
-    public DocumentTypeUsageTransferCache(UserVisit userVisit, DocumentControl documentControl) {
-        super(userVisit, documentControl);
+    public DocumentTypeUsageTransferCache(DocumentControl documentControl) {
+        super(documentControl);
     }
     
-    public DocumentTypeUsageTransfer getDocumentTypeUsageTransfer(DocumentTypeUsage documentTypeUsage) {
+    public DocumentTypeUsageTransfer getDocumentTypeUsageTransfer(UserVisit userVisit, DocumentTypeUsage documentTypeUsage) {
         var documentTypeUsageTransfer = get(documentTypeUsage);
         
         if(documentTypeUsageTransfer == null) {
@@ -41,7 +41,7 @@ public class DocumentTypeUsageTransferCache
             
             documentTypeUsageTransfer = new DocumentTypeUsageTransfer(documentTypeUsageTypeTransfer, documentTypeTransfer, isDefault, sortOrder,
                     maximumInstances);
-            put(documentTypeUsage, documentTypeUsageTransfer);
+            put(userVisit, documentTypeUsage, documentTypeUsageTransfer);
         }
         
         return documentTypeUsageTransfer;

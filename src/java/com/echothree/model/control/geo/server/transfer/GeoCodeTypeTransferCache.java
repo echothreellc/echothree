@@ -25,13 +25,13 @@ public class GeoCodeTypeTransferCache
         extends BaseGeoTransferCache<GeoCodeType, GeoCodeTypeTransfer> {
     
     /** Creates a new instance of GeoCodeTypeTransferCache */
-    public GeoCodeTypeTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
+    public GeoCodeTypeTransferCache(GeoControl geoControl) {
+        super(geoControl);
 
         setIncludeEntityInstance(true);
     }
     
-    public GeoCodeTypeTransfer getGeoCodeTypeTransfer(GeoCodeType geoCodeType) {
+    public GeoCodeTypeTransfer getGeoCodeTypeTransfer(UserVisit userVisit, GeoCodeType geoCodeType) {
         var geoCodeTypeTransfer = get(geoCodeType);
         
         if(geoCodeTypeTransfer == null) {
@@ -42,11 +42,11 @@ public class GeoCodeTypeTransferCache
                     parentGeoCodeType);
             var isDefault = geoCodeTypeDetail.getIsDefault();
             var sortOrder = geoCodeTypeDetail.getSortOrder();
-            var description = geoControl.getBestGeoCodeTypeDescription(geoCodeType, getLanguage());
+            var description = geoControl.getBestGeoCodeTypeDescription(geoCodeType, getLanguage(userVisit));
             
             geoCodeTypeTransfer = new GeoCodeTypeTransfer(geoCodeTypeName, parentGeoCodeTypeTransfer, isDefault, sortOrder,
                     description);
-            put(geoCodeType, geoCodeTypeTransfer);
+            put(userVisit, geoCodeType, geoCodeTypeTransfer);
         }
         
         return geoCodeTypeTransfer;

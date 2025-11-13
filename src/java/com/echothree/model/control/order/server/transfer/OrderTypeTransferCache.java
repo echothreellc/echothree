@@ -32,13 +32,13 @@ public class OrderTypeTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of OrderTypeTransferCache */
-    public OrderTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public OrderTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public OrderTypeTransfer getOrderTypeTransfer(OrderType orderType) {
+    public OrderTypeTransfer getOrderTypeTransfer(UserVisit userVisit, OrderType orderType) {
         var orderTypeTransfer = get(orderType);
         
         if(orderTypeTransfer == null) {
@@ -52,11 +52,11 @@ public class OrderTypeTransferCache
             var orderWorkflowEntranceTransfer = orderWorkflowEntrance == null? null: workflowControl.getWorkflowEntranceTransfer(userVisit, orderWorkflowEntrance);
             var isDefault = orderTypeDetail.getIsDefault();
             var sortOrder = orderTypeDetail.getSortOrder();
-            var description = orderTypeControl.getBestOrderTypeDescription(orderType, getLanguage());
+            var description = orderTypeControl.getBestOrderTypeDescription(orderType, getLanguage(userVisit));
             
             orderTypeTransfer = new OrderTypeTransfer(orderTypeName, orderSequenceTypeTransfer, orderWorkflowTransfer,
                     orderWorkflowEntranceTransfer, isDefault, sortOrder, description);
-            put(orderType, orderTypeTransfer);
+            put(userVisit, orderType, orderTypeTransfer);
         }
         
         return orderTypeTransfer;

@@ -25,13 +25,13 @@ public class WishlistTypeTransferCache
         extends BaseWishlistTransferCache<WishlistType, WishlistTypeTransfer> {
     
     /** Creates a new instance of WishlistTypeTransferCache */
-    public WishlistTypeTransferCache(UserVisit userVisit, WishlistControl wishlistControl) {
-        super(userVisit, wishlistControl);
+    public WishlistTypeTransferCache(WishlistControl wishlistControl) {
+        super(wishlistControl);
 
         setIncludeEntityInstance(true);
     }
     
-    public WishlistTypeTransfer getWishlistTypeTransfer(WishlistType wishlistType) {
+    public WishlistTypeTransfer getWishlistTypeTransfer(UserVisit userVisit, WishlistType wishlistType) {
         var wishlistTypeTransfer = get(wishlistType);
         
         if(wishlistTypeTransfer == null) {
@@ -39,10 +39,10 @@ public class WishlistTypeTransferCache
             var wishlistTypeName = wishlistTypeDetail.getWishlistTypeName();
             var isDefault = wishlistTypeDetail.getIsDefault();
             var sortOrder = wishlistTypeDetail.getSortOrder();
-            var description = wishlistControl.getBestWishlistTypeDescription(wishlistType, getLanguage());
+            var description = wishlistControl.getBestWishlistTypeDescription(wishlistType, getLanguage(userVisit));
             
             wishlistTypeTransfer = new WishlistTypeTransfer(wishlistTypeName, isDefault, sortOrder, description);
-            put(wishlistType, wishlistTypeTransfer);
+            put(userVisit, wishlistType, wishlistTypeTransfer);
         }
         
         return wishlistTypeTransfer;

@@ -25,11 +25,11 @@ public class TerminationReasonDescriptionTransferCache
         extends BaseEmployeeDescriptionTransferCache<TerminationReasonDescription, TerminationReasonDescriptionTransfer> {
     
     /** Creates a new instance of TerminationReasonDescriptionTransferCache */
-    public TerminationReasonDescriptionTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit, employeeControl);
+    public TerminationReasonDescriptionTransferCache(EmployeeControl employeeControl) {
+        super(employeeControl);
     }
     
-    public TerminationReasonDescriptionTransfer getTerminationReasonDescriptionTransfer(TerminationReasonDescription terminationReasonDescription) {
+    public TerminationReasonDescriptionTransfer getTerminationReasonDescriptionTransfer(UserVisit userVisit, TerminationReasonDescription terminationReasonDescription) {
         var terminationReasonDescriptionTransfer = get(terminationReasonDescription);
         
         if(terminationReasonDescriptionTransfer == null) {
@@ -38,7 +38,7 @@ public class TerminationReasonDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, terminationReasonDescription.getLanguage());
             
             terminationReasonDescriptionTransfer = new TerminationReasonDescriptionTransfer(languageTransfer, terminationReasonTransfer, terminationReasonDescription.getDescription());
-            put(terminationReasonDescription, terminationReasonDescriptionTransfer);
+            put(userVisit, terminationReasonDescription, terminationReasonDescriptionTransfer);
         }
         
         return terminationReasonDescriptionTransfer;

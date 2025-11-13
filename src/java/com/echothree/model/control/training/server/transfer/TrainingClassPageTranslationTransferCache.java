@@ -29,11 +29,11 @@ public class TrainingClassPageTranslationTransferCache
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     
     /** Creates a new instance of TrainingClassPageTranslationTransferCache */
-    public TrainingClassPageTranslationTransferCache(UserVisit userVisit, TrainingControl trainingControl) {
-        super(userVisit, trainingControl);
+    public TrainingClassPageTranslationTransferCache(TrainingControl trainingControl) {
+        super(trainingControl);
     }
     
-    public TrainingClassPageTranslationTransfer getTrainingClassPageTranslationTransfer(TrainingClassPageTranslation trainingClassPageTranslation) {
+    public TrainingClassPageTranslationTransfer getTrainingClassPageTranslationTransfer(UserVisit userVisit, TrainingClassPageTranslation trainingClassPageTranslation) {
         var trainingClassPageTranslationTransfer = get(trainingClassPageTranslation);
         
         if(trainingClassPageTranslationTransfer == null) {
@@ -45,7 +45,7 @@ public class TrainingClassPageTranslationTransferCache
             
             trainingClassPageTranslationTransfer = new TrainingClassPageTranslationTransfer(trainingClassPageTransfer, languageTransfer, description,
                     pageMimeTypeTransfer, page);
-            put(trainingClassPageTranslation, trainingClassPageTranslationTransfer);
+            put(userVisit, trainingClassPageTranslation, trainingClassPageTranslationTransfer);
         }
         
         return trainingClassPageTranslationTransfer;

@@ -27,27 +27,27 @@ public class ShippingTransferCaches
     ShippingMethodCarrierServiceTransferCache shippingMethodCarrierServiceTransferCache;
     
     /** Creates a new instance of ShippingTransferCaches */
-    public ShippingTransferCaches(UserVisit userVisit) {
-        super(userVisit);
+    public ShippingTransferCaches() {
+        super();
     }
     
     public ShippingMethodDescriptionTransferCache getShippingMethodDescriptionTransferCache() {
         if(shippingMethodDescriptionTransferCache == null)
-            shippingMethodDescriptionTransferCache = new ShippingMethodDescriptionTransferCache(userVisit);
+            shippingMethodDescriptionTransferCache = new ShippingMethodDescriptionTransferCache();
         
         return shippingMethodDescriptionTransferCache;
     }
     
     public ShippingMethodTransferCache getShippingMethodTransferCache() {
         if(shippingMethodTransferCache == null)
-            shippingMethodTransferCache = new ShippingMethodTransferCache(userVisit);
+            shippingMethodTransferCache = new ShippingMethodTransferCache();
         
         return shippingMethodTransferCache;
     }
     
     public ShippingMethodCarrierServiceTransferCache getShippingMethodCarrierServiceTransferCache() {
         if(shippingMethodCarrierServiceTransferCache == null)
-            shippingMethodCarrierServiceTransferCache = new ShippingMethodCarrierServiceTransferCache(userVisit);
+            shippingMethodCarrierServiceTransferCache = new ShippingMethodCarrierServiceTransferCache();
         
         return shippingMethodCarrierServiceTransferCache;
     }

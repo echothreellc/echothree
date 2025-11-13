@@ -25,11 +25,11 @@ public class DocumentTypeUsageTypeDescriptionTransferCache
         extends BaseDocumentDescriptionTransferCache<DocumentTypeUsageTypeDescription, DocumentTypeUsageTypeDescriptionTransfer> {
     
     /** Creates a new instance of DocumentTypeUsageTypeDescriptionTransferCache */
-    public DocumentTypeUsageTypeDescriptionTransferCache(UserVisit userVisit, DocumentControl documentControl) {
-        super(userVisit, documentControl);
+    public DocumentTypeUsageTypeDescriptionTransferCache(DocumentControl documentControl) {
+        super(documentControl);
     }
     
-    public DocumentTypeUsageTypeDescriptionTransfer getDocumentTypeUsageTypeDescriptionTransfer(DocumentTypeUsageTypeDescription documentTypeUsageTypeDescription) {
+    public DocumentTypeUsageTypeDescriptionTransfer getDocumentTypeUsageTypeDescriptionTransfer(UserVisit userVisit, DocumentTypeUsageTypeDescription documentTypeUsageTypeDescription) {
         var documentTypeUsageTypeDescriptionTransfer = get(documentTypeUsageTypeDescription);
         
         if(documentTypeUsageTypeDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class DocumentTypeUsageTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, documentTypeUsageTypeDescription.getLanguage());
             
             documentTypeUsageTypeDescriptionTransfer = new DocumentTypeUsageTypeDescriptionTransfer(languageTransfer, documentTypeUsageTypeTransfer, documentTypeUsageTypeDescription.getDescription());
-            put(documentTypeUsageTypeDescription, documentTypeUsageTypeDescriptionTransfer);
+            put(userVisit, documentTypeUsageTypeDescription, documentTypeUsageTypeDescriptionTransfer);
         }
         
         return documentTypeUsageTypeDescriptionTransfer;

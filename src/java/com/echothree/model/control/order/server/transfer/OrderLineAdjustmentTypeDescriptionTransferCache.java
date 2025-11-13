@@ -28,11 +28,11 @@ public class OrderLineAdjustmentTypeDescriptionTransferCache
     OrderLineAdjustmentControl orderLineAdjustmentControl = Session.getModelController(OrderLineAdjustmentControl.class);
 
     /** Creates a new instance of OrderLineAdjustmentTypeDescriptionTransferCache */
-    public OrderLineAdjustmentTypeDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public OrderLineAdjustmentTypeDescriptionTransferCache() {
+        super();
     }
     
-    public OrderLineAdjustmentTypeDescriptionTransfer getOrderLineAdjustmentTypeDescriptionTransfer(OrderLineAdjustmentTypeDescription orderLineAdjustmentTypeDescription) {
+    public OrderLineAdjustmentTypeDescriptionTransfer getOrderLineAdjustmentTypeDescriptionTransfer(UserVisit userVisit, OrderLineAdjustmentTypeDescription orderLineAdjustmentTypeDescription) {
         var orderLineAdjustmentTypeDescriptionTransfer = get(orderLineAdjustmentTypeDescription);
         
         if(orderLineAdjustmentTypeDescriptionTransfer == null) {
@@ -40,7 +40,7 @@ public class OrderLineAdjustmentTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, orderLineAdjustmentTypeDescription.getLanguage());
             
             orderLineAdjustmentTypeDescriptionTransfer = new OrderLineAdjustmentTypeDescriptionTransfer(languageTransfer, orderLineAdjustmentTypeTransfer, orderLineAdjustmentTypeDescription.getDescription());
-            put(orderLineAdjustmentTypeDescription, orderLineAdjustmentTypeDescriptionTransfer);
+            put(userVisit, orderLineAdjustmentTypeDescription, orderLineAdjustmentTypeDescriptionTransfer);
         }
         
         return orderLineAdjustmentTypeDescriptionTransfer;

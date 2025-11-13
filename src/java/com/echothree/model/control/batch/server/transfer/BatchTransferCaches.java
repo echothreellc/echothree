@@ -35,64 +35,64 @@ public class BatchTransferCaches
     protected BatchEntityTransferCache batchEntityTransferCache;
     
     /** Creates a new instance of BatchTransferCaches */
-    public BatchTransferCaches(UserVisit userVisit, BatchControl batchControl) {
-        super(userVisit);
+    public BatchTransferCaches(BatchControl batchControl) {
+        super();
         
         this.batchControl = batchControl;
     }
     
     public BatchTypeTransferCache getBatchTypeTransferCache() {
         if(batchTypeTransferCache == null)
-            batchTypeTransferCache = new BatchTypeTransferCache(userVisit, batchControl);
+            batchTypeTransferCache = new BatchTypeTransferCache(batchControl);
         
         return batchTypeTransferCache;
     }
     
     public BatchTypeDescriptionTransferCache getBatchTypeDescriptionTransferCache() {
         if(batchTypeDescriptionTransferCache == null)
-            batchTypeDescriptionTransferCache = new BatchTypeDescriptionTransferCache(userVisit, batchControl);
+            batchTypeDescriptionTransferCache = new BatchTypeDescriptionTransferCache(batchControl);
 
         return batchTypeDescriptionTransferCache;
     }
 
     public BatchTypeEntityTypeTransferCache getBatchTypeEntityTypeTransferCache() {
         if(batchTypeEntityTypeTransferCache == null)
-            batchTypeEntityTypeTransferCache = new BatchTypeEntityTypeTransferCache(userVisit, batchControl);
+            batchTypeEntityTypeTransferCache = new BatchTypeEntityTypeTransferCache(batchControl);
 
         return batchTypeEntityTypeTransferCache;
     }
 
     public BatchAliasTypeTransferCache getBatchAliasTypeTransferCache() {
         if(batchAliasTypeTransferCache == null)
-            batchAliasTypeTransferCache = new BatchAliasTypeTransferCache(userVisit, batchControl);
+            batchAliasTypeTransferCache = new BatchAliasTypeTransferCache(batchControl);
         
         return batchAliasTypeTransferCache;
     }
     
     public BatchAliasTypeDescriptionTransferCache getBatchAliasTypeDescriptionTransferCache() {
         if(batchAliasTypeDescriptionTransferCache == null)
-            batchAliasTypeDescriptionTransferCache = new BatchAliasTypeDescriptionTransferCache(userVisit, batchControl);
+            batchAliasTypeDescriptionTransferCache = new BatchAliasTypeDescriptionTransferCache(batchControl);
         
         return batchAliasTypeDescriptionTransferCache;
     }
     
     public BatchTransferCache getBatchTransferCache() {
         if(batchTransferCache == null)
-            batchTransferCache = new BatchTransferCache(userVisit, batchControl);
+            batchTransferCache = new BatchTransferCache(batchControl);
         
         return batchTransferCache;
     }
     
     public BatchAliasTransferCache getBatchAliasTransferCache() {
         if(batchAliasTransferCache == null)
-            batchAliasTransferCache = new BatchAliasTransferCache(userVisit, batchControl);
+            batchAliasTransferCache = new BatchAliasTransferCache(batchControl);
 
         return batchAliasTransferCache;
     }
 
     public BatchEntityTransferCache getBatchEntityTransferCache() {
         if(batchEntityTransferCache == null)
-            batchEntityTransferCache = new BatchEntityTransferCache(userVisit, batchControl);
+            batchEntityTransferCache = new BatchEntityTransferCache(batchControl);
 
         return batchEntityTransferCache;
     }

@@ -25,20 +25,20 @@ public class SelectorNodeDescriptionTransferCache
         extends BaseSelectorDescriptionTransferCache<SelectorNodeDescription, SelectorNodeDescriptionTransfer> {
     
     /** Creates a new instance of SelectorNodeDescriptionTransferCache */
-    public SelectorNodeDescriptionTransferCache(UserVisit userVisit, SelectorControl selectorControl) {
-        super(userVisit, selectorControl);
+    public SelectorNodeDescriptionTransferCache(SelectorControl selectorControl) {
+        super(selectorControl);
     }
     
-    public SelectorNodeDescriptionTransfer getSelectorNodeDescriptionTransfer(SelectorNodeDescription selectorNodeDescription) {
+    public SelectorNodeDescriptionTransfer getSelectorNodeDescriptionTransfer(UserVisit userVisit, SelectorNodeDescription selectorNodeDescription) {
         var selectorNodeDescriptionTransfer = get(selectorNodeDescription);
         
         if(selectorNodeDescriptionTransfer == null) {
-            var selectorNodeTransferCache = selectorControl.getSelectorTransferCaches(userVisit).getSelectorNodeTransferCache();
-            var selectorNodeTransfer = selectorNodeTransferCache.getSelectorNodeTransfer(selectorNodeDescription.getSelectorNode());
+            var selectorNodeTransferCache = selectorControl.getSelectorTransferCaches().getSelectorNodeTransferCache();
+            var selectorNodeTransfer = selectorNodeTransferCache.getSelectorNodeTransfer(userVisit, selectorNodeDescription.getSelectorNode());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, selectorNodeDescription.getLanguage());
             
             selectorNodeDescriptionTransfer = new SelectorNodeDescriptionTransfer(languageTransfer, selectorNodeTransfer, selectorNodeDescription.getDescription());
-            put(selectorNodeDescription, selectorNodeDescriptionTransfer);
+            put(userVisit, selectorNodeDescription, selectorNodeDescriptionTransfer);
         }
         
         return selectorNodeDescriptionTransfer;

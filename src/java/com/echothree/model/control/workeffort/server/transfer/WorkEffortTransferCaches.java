@@ -32,43 +32,43 @@ public class WorkEffortTransferCaches
     protected WorkEffortScopeDescriptionTransferCache workEffortScopeDescriptionTransferCache;
     
     /** Creates a new instance of WorkEffortTransferCaches */
-    public WorkEffortTransferCaches(UserVisit userVisit, WorkEffortControl workEffortControl) {
-        super(userVisit);
+    public WorkEffortTransferCaches(WorkEffortControl workEffortControl) {
+        super();
         
         this.workEffortControl = workEffortControl;
     }
     
     public WorkEffortTransferCache getWorkEffortTransferCache() {
         if(workEffortTransferCache == null)
-            workEffortTransferCache = new WorkEffortTransferCache(userVisit, workEffortControl);
+            workEffortTransferCache = new WorkEffortTransferCache(workEffortControl);
         
         return workEffortTransferCache;
     }
     
     public WorkEffortTypeTransferCache getWorkEffortTypeTransferCache() {
         if(workEffortTypeTransferCache == null)
-            workEffortTypeTransferCache = new WorkEffortTypeTransferCache(userVisit, workEffortControl);
+            workEffortTypeTransferCache = new WorkEffortTypeTransferCache(workEffortControl);
         
         return workEffortTypeTransferCache;
     }
     
     public WorkEffortTypeDescriptionTransferCache getWorkEffortTypeDescriptionTransferCache() {
         if(workEffortTypeDescriptionTransferCache == null)
-            workEffortTypeDescriptionTransferCache = new WorkEffortTypeDescriptionTransferCache(userVisit, workEffortControl);
+            workEffortTypeDescriptionTransferCache = new WorkEffortTypeDescriptionTransferCache(workEffortControl);
         
         return workEffortTypeDescriptionTransferCache;
     }
     
     public WorkEffortScopeTransferCache getWorkEffortScopeTransferCache() {
         if(workEffortScopeTransferCache == null)
-            workEffortScopeTransferCache = new WorkEffortScopeTransferCache(userVisit, workEffortControl);
+            workEffortScopeTransferCache = new WorkEffortScopeTransferCache(workEffortControl);
         
         return workEffortScopeTransferCache;
     }
     
     public WorkEffortScopeDescriptionTransferCache getWorkEffortScopeDescriptionTransferCache() {
         if(workEffortScopeDescriptionTransferCache == null)
-            workEffortScopeDescriptionTransferCache = new WorkEffortScopeDescriptionTransferCache(userVisit, workEffortControl);
+            workEffortScopeDescriptionTransferCache = new WorkEffortScopeDescriptionTransferCache(workEffortControl);
         
         return workEffortScopeDescriptionTransferCache;
     }

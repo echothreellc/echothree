@@ -29,8 +29,8 @@ public abstract class BaseSubscriptionDescriptionTransferCache<K extends BaseEnt
     PartyControl partyControl;
     
     /** Creates a new instance of BaseSubscriptionDescriptionTransferCache */
-    protected BaseSubscriptionDescriptionTransferCache(UserVisit userVisit, SubscriptionControl subscriptionControl) {
-        super(userVisit, subscriptionControl);
+    protected BaseSubscriptionDescriptionTransferCache(SubscriptionControl subscriptionControl) {
+        super(subscriptionControl);
         
         partyControl = Session.getModelController(PartyControl.class);
     }

@@ -25,11 +25,11 @@ public class SkillTypeDescriptionTransferCache
         extends BaseEmployeeDescriptionTransferCache<SkillTypeDescription, SkillTypeDescriptionTransfer> {
     
     /** Creates a new instance of SkillTypeDescriptionTransferCache */
-    public SkillTypeDescriptionTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit, employeeControl);
+    public SkillTypeDescriptionTransferCache(EmployeeControl employeeControl) {
+        super(employeeControl);
     }
     
-    public SkillTypeDescriptionTransfer getSkillTypeDescriptionTransfer(SkillTypeDescription skillTypeDescription) {
+    public SkillTypeDescriptionTransfer getSkillTypeDescriptionTransfer(UserVisit userVisit, SkillTypeDescription skillTypeDescription) {
         var skillTypeDescriptionTransfer = get(skillTypeDescription);
         
         if(skillTypeDescriptionTransfer == null) {
@@ -38,7 +38,7 @@ public class SkillTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, skillTypeDescription.getLanguage());
             
             skillTypeDescriptionTransfer = new SkillTypeDescriptionTransfer(languageTransfer, skillTypeTransfer, skillTypeDescription.getDescription());
-            put(skillTypeDescription, skillTypeDescriptionTransfer);
+            put(userVisit, skillTypeDescription, skillTypeDescriptionTransfer);
         }
         
         return skillTypeDescriptionTransfer;

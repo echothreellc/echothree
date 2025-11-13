@@ -298,7 +298,7 @@ public class EntityInstanceControl
 
     public EntityInstanceTransfer getEntityInstanceTransfer(UserVisit userVisit, EntityInstance entityInstance, boolean includeEntityAppearance,
             boolean includeEntityVisit, boolean includeNames, boolean includeUuid) {
-        return getCoreTransferCaches(userVisit).getEntityInstanceTransferCache().getEntityInstanceTransfer(entityInstance, includeEntityAppearance,
+        return getCoreTransferCaches().getEntityInstanceTransferCache().getEntityInstanceTransfer(userVisit, entityInstance, includeEntityAppearance,
                 includeEntityVisit, includeNames, includeUuid);
     }
 
@@ -311,10 +311,10 @@ public class EntityInstanceControl
     public List<EntityInstanceTransfer> getEntityInstanceTransfers(UserVisit userVisit, Collection<EntityInstance> entityInstances,
             boolean includeEntityAppearance, boolean includeEntityVisit, boolean includeNames, boolean includeUuid) {
         var entityInstanceTransfers = new ArrayList<EntityInstanceTransfer>(entityInstances.size());
-        var entityInstanceTransferCache = getCoreTransferCaches(userVisit).getEntityInstanceTransferCache();
+        var entityInstanceTransferCache = getCoreTransferCaches().getEntityInstanceTransferCache();
 
         entityInstances.forEach((entityInstance) ->
-                entityInstanceTransfers.add(entityInstanceTransferCache.getEntityInstanceTransfer(entityInstance,
+                entityInstanceTransfers.add(entityInstanceTransferCache.getEntityInstanceTransfer(userVisit, entityInstance,
                         includeEntityAppearance, includeEntityVisit, includeNames, includeUuid))
         );
 

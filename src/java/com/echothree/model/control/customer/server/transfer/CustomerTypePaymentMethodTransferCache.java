@@ -29,11 +29,11 @@ public class CustomerTypePaymentMethodTransferCache
     PaymentMethodControl paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
 
     /** Creates a new instance of CustomerTypePaymentMethodTransferCache */
-    public CustomerTypePaymentMethodTransferCache(UserVisit userVisit, CustomerControl customerControl) {
-        super(userVisit, customerControl);
+    public CustomerTypePaymentMethodTransferCache(CustomerControl customerControl) {
+        super(customerControl);
     }
     
-    public CustomerTypePaymentMethodTransfer getCustomerTypePaymentMethodTransfer(CustomerTypePaymentMethod customerTypePaymentMethod) {
+    public CustomerTypePaymentMethodTransfer getCustomerTypePaymentMethodTransfer(UserVisit userVisit, CustomerTypePaymentMethod customerTypePaymentMethod) {
         var customerTypePaymentMethodTransfer = get(customerTypePaymentMethod);
         
         if(customerTypePaymentMethodTransfer == null) {
@@ -45,7 +45,7 @@ public class CustomerTypePaymentMethodTransferCache
             
             customerTypePaymentMethodTransfer = new CustomerTypePaymentMethodTransfer(customerType, paymentMethod, defaultSelectionPriority, isDefault,
                     sortOrder);
-            put(customerTypePaymentMethod, customerTypePaymentMethodTransfer);
+            put(userVisit, customerTypePaymentMethod, customerTypePaymentMethodTransfer);
         }
         
         return customerTypePaymentMethodTransfer;

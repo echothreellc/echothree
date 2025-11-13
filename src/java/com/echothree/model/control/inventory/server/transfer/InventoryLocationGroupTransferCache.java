@@ -37,8 +37,8 @@ public class InventoryLocationGroupTransferCache
     boolean includeVolume;
     
     /** Creates a new instance of InventoryLocationGroupTransferCache */
-    public InventoryLocationGroupTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    public InventoryLocationGroupTransferCache(InventoryControl inventoryControl) {
+        super(inventoryControl);
         
         var options = session.getOptions();
         if(options != null) {
@@ -50,7 +50,7 @@ public class InventoryLocationGroupTransferCache
     }
     
     @Override
-    public InventoryLocationGroupTransfer getTransfer(InventoryLocationGroup inventoryLocationGroup) {
+    public InventoryLocationGroupTransfer getTransfer(UserVisit userVisit, InventoryLocationGroup inventoryLocationGroup) {
         var inventoryLocationGroupTransfer = get(inventoryLocationGroup);
         
         if(inventoryLocationGroupTransfer == null) {
@@ -58,11 +58,11 @@ public class InventoryLocationGroupTransferCache
             var inventoryLocationGroupDetail = inventoryLocationGroup.getLastDetail();
             var warehouseParty = inventoryLocationGroupDetail.getWarehouseParty();
             var warehouse = warehouseControl.getWarehouse(warehouseParty);
-            var warehouseTransfer = warehouseControl.getWarehouseTransferCaches(userVisit).getWarehouseTransferCache().getWarehouseTransfer(warehouse);
+            var warehouseTransfer = warehouseControl.getWarehouseTransferCaches().getWarehouseTransferCache().getWarehouseTransfer(userVisit, warehouse);
             var inventoryLocationGroupName = inventoryLocationGroupDetail.getInventoryLocationGroupName();
             var isDefault = inventoryLocationGroupDetail.getIsDefault();
             var sortOrder = inventoryLocationGroupDetail.getSortOrder();
-            var description = inventoryControl.getBestInventoryLocationGroupDescription(inventoryLocationGroup, getLanguage());
+            var description = inventoryControl.getBestInventoryLocationGroupDescription(inventoryLocationGroup, getLanguage(userVisit));
 
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(inventoryLocationGroup.getPrimaryKey());
             var inventoryLocationGroupStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
@@ -70,7 +70,7 @@ public class InventoryLocationGroupTransferCache
             
             inventoryLocationGroupTransfer = new InventoryLocationGroupTransfer(warehouseTransfer, inventoryLocationGroupName, isDefault, sortOrder,
                     description, inventoryLocationGroupStatusTransfer);
-            put(inventoryLocationGroup, inventoryLocationGroupTransfer);
+            put(userVisit, inventoryLocationGroup, inventoryLocationGroupTransfer);
             
             if(includeCapacities) {
                 inventoryLocationGroupTransfer.setInventoryLocationGroupCapacities(new ListWrapper<>(inventoryControl.getInventoryLocationGroupCapacityTransfersByInventoryLocationGroup(userVisit, inventoryLocationGroup)));

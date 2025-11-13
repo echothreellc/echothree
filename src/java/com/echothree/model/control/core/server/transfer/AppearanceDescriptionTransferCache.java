@@ -30,11 +30,11 @@ public class AppearanceDescriptionTransferCache
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of AppearanceDescriptionTransferCache */
-    public AppearanceDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public AppearanceDescriptionTransferCache() {
+        super();
     }
     
-    public AppearanceDescriptionTransfer getAppearanceDescriptionTransfer(AppearanceDescription appearanceDescription) {
+    public AppearanceDescriptionTransfer getAppearanceDescriptionTransfer(UserVisit userVisit, AppearanceDescription appearanceDescription) {
         var appearanceDescriptionTransfer = get(appearanceDescription);
         
         if(appearanceDescriptionTransfer == null) {
@@ -42,7 +42,7 @@ public class AppearanceDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, appearanceDescription.getLanguage());
             
             appearanceDescriptionTransfer = new AppearanceDescriptionTransfer(languageTransfer, appearanceTransfer, appearanceDescription.getDescription());
-            put(appearanceDescription, appearanceDescriptionTransfer);
+            put(userVisit, appearanceDescription, appearanceDescriptionTransfer);
         }
         return appearanceDescriptionTransfer;
     }

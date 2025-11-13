@@ -25,20 +25,20 @@ public class SecurityRoleGroupDescriptionTransferCache
         extends BaseSecurityDescriptionTransferCache<SecurityRoleGroupDescription, SecurityRoleGroupDescriptionTransfer> {
     
     /** Creates a new instance of SecurityRoleGroupDescriptionTransferCache */
-    public SecurityRoleGroupDescriptionTransferCache(UserVisit userVisit, SecurityControl securityControl) {
-        super(userVisit, securityControl);
+    public SecurityRoleGroupDescriptionTransferCache(SecurityControl securityControl) {
+        super(securityControl);
     }
     
-    public SecurityRoleGroupDescriptionTransfer getSecurityRoleGroupDescriptionTransfer(SecurityRoleGroupDescription securityRoleGroupDescription) {
+    public SecurityRoleGroupDescriptionTransfer getSecurityRoleGroupDescriptionTransfer(UserVisit userVisit, SecurityRoleGroupDescription securityRoleGroupDescription) {
         var securityRoleGroupDescriptionTransfer = get(securityRoleGroupDescription);
         
         if(securityRoleGroupDescriptionTransfer == null) {
-            var securityRoleGroupTransferCache = securityControl.getSecurityTransferCaches(userVisit).getSecurityRoleGroupTransferCache();
-            var securityRoleGroupTransfer = securityRoleGroupTransferCache.getSecurityRoleGroupTransfer(securityRoleGroupDescription.getSecurityRoleGroup());
+            var securityRoleGroupTransferCache = securityControl.getSecurityTransferCaches().getSecurityRoleGroupTransferCache();
+            var securityRoleGroupTransfer = securityRoleGroupTransferCache.getSecurityRoleGroupTransfer(userVisit, securityRoleGroupDescription.getSecurityRoleGroup());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, securityRoleGroupDescription.getLanguage());
             
             securityRoleGroupDescriptionTransfer = new SecurityRoleGroupDescriptionTransfer(languageTransfer, securityRoleGroupTransfer, securityRoleGroupDescription.getDescription());
-            put(securityRoleGroupDescription, securityRoleGroupDescriptionTransfer);
+            put(userVisit, securityRoleGroupDescription, securityRoleGroupDescriptionTransfer);
         }
         
         return securityRoleGroupDescriptionTransfer;

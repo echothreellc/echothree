@@ -29,13 +29,13 @@ public class IconTransferCache
     DocumentControl documentControl = Session.getModelController(DocumentControl.class);
     
     /** Creates a new instance of IconTransferCache */
-    public IconTransferCache(UserVisit userVisit, IconControl iconControl) {
-        super(userVisit, iconControl);
+    public IconTransferCache(IconControl iconControl) {
+        super(iconControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public IconTransfer getIconTransfer(Icon icon) {
+    public IconTransfer getIconTransfer(UserVisit userVisit, Icon icon) {
         var iconTransfer = get(icon);
         
         if(iconTransfer == null) {
@@ -46,7 +46,7 @@ public class IconTransferCache
             var sortOrder = iconDetail.getSortOrder();
             
             iconTransfer = new IconTransfer(iconName, document, isDefault, sortOrder);
-            put(icon, iconTransfer);
+            put(userVisit, icon, iconTransfer);
         }
         
         return iconTransfer;

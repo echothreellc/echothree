@@ -28,12 +28,12 @@ public class PaymentProcessorTypeCodeDescriptionTransferCache
     PaymentProcessorTypeCodeControl paymentProcessorTypeCodeControl = Session.getModelController(PaymentProcessorTypeCodeControl.class);
 
     /** Creates a new instance of PaymentProcessorTypeDescriptionTransferCache */
-    public PaymentProcessorTypeCodeDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public PaymentProcessorTypeCodeDescriptionTransferCache() {
+        super();
     }
     
     @Override
-    public PaymentProcessorTypeCodeDescriptionTransfer getTransfer(PaymentProcessorTypeCodeDescription paymentProcessorTypeCodeDescription) {
+    public PaymentProcessorTypeCodeDescriptionTransfer getTransfer(UserVisit userVisit, PaymentProcessorTypeCodeDescription paymentProcessorTypeCodeDescription) {
         var paymentProcessorTypeCodeDescriptionTransfer = get(paymentProcessorTypeCodeDescription);
         
         if(paymentProcessorTypeCodeDescriptionTransfer == null) {
@@ -41,7 +41,7 @@ public class PaymentProcessorTypeCodeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, paymentProcessorTypeCodeDescription.getLanguage());
             
             paymentProcessorTypeCodeDescriptionTransfer = new PaymentProcessorTypeCodeDescriptionTransfer(languageTransfer, paymentProcessorTypeCodeTransfer, paymentProcessorTypeCodeDescription.getDescription());
-            put(paymentProcessorTypeCodeDescription, paymentProcessorTypeCodeDescriptionTransfer);
+            put(userVisit, paymentProcessorTypeCodeDescription, paymentProcessorTypeCodeDescriptionTransfer);
         }
         
         return paymentProcessorTypeCodeDescriptionTransfer;

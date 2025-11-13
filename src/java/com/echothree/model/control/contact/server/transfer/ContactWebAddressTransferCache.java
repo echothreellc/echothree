@@ -32,11 +32,11 @@ public class ContactWebAddressTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
     /** Creates a new instance of ContactWebAddressTransferCache */
-    public ContactWebAddressTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    public ContactWebAddressTransferCache(ContactControl contactControl) {
+        super(contactControl);
     }
     
-    public ContactWebAddressTransfer getContactWebAddressTransfer(ContactWebAddress contactWebAddress) {
+    public ContactWebAddressTransfer getContactWebAddressTransfer(UserVisit userVisit, ContactWebAddress contactWebAddress) {
         var contactWebAddressTransfer = get(contactWebAddress);
         
         if(contactWebAddressTransfer == null) {
@@ -47,7 +47,7 @@ public class ContactWebAddressTransferCache
                     WebAddressStatusConstants.Workflow_WEB_ADDRESS_STATUS, entityInstance);
             
             contactWebAddressTransfer = new ContactWebAddressTransfer(url, webAddressStatusTransfer);
-            put(contactWebAddress, contactWebAddressTransfer);
+            put(userVisit, contactWebAddress, contactWebAddressTransfer);
         }
         
         return contactWebAddressTransfer;

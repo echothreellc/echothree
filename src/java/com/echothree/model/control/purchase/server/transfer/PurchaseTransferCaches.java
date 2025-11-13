@@ -23,8 +23,8 @@ public class PurchaseTransferCaches
         extends BaseTransferCaches {
 
     /** Creates a new instance of PurchaseTransferCaches */
-    public PurchaseTransferCaches(UserVisit userVisit) {
-        super(userVisit);
+    public PurchaseTransferCaches() {
+        super();
     }
 
 }

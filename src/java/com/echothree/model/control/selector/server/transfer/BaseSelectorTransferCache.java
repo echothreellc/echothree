@@ -28,8 +28,8 @@ public abstract class BaseSelectorTransferCache<K extends BaseEntity, V extends 
     SelectorControl selectorControl;
     
     /** Creates a new instance of BaseSelectorTransferCache */
-    protected BaseSelectorTransferCache(UserVisit userVisit, SelectorControl selectorControl) {
-        super(userVisit);
+    protected BaseSelectorTransferCache(SelectorControl selectorControl) {
+        super();
         
         this.selectorControl = selectorControl;
     }

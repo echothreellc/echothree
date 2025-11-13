@@ -55,8 +55,8 @@ public class ItemDescriptionTypeTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of ItemDescriptionTypeTransferCache */
-    public ItemDescriptionTypeTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemDescriptionTypeTransferCache(ItemControl itemControl) {
+        super(itemControl);
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
@@ -90,7 +90,7 @@ public class ItemDescriptionTypeTransferCache
     }
     
     @Override
-    public ItemDescriptionTypeTransfer getTransfer(ItemDescriptionType itemDescriptionType) {
+    public ItemDescriptionTypeTransfer getTransfer(UserVisit userVisit, ItemDescriptionType itemDescriptionType) {
         var itemDescriptionTypeTransfer = get(itemDescriptionType);
         
         if(itemDescriptionTypeTransfer == null) {
@@ -106,7 +106,7 @@ public class ItemDescriptionTypeTransferCache
             var indexDefault = filterIndexDefault ? null : itemDescriptionTypeDetail.getIndexDefault();
             var isDefault = filterIsDefault ? null : itemDescriptionTypeDetail.getIsDefault();
             var sortOrder = filterSortOrder ? null : itemDescriptionTypeDetail.getSortOrder();
-            var description = filterDescription ? null : itemControl.getBestItemDescriptionTypeDescription(itemDescriptionType, getLanguage());
+            var description = filterDescription ? null : itemControl.getBestItemDescriptionTypeDescription(itemDescriptionType, getLanguage(userVisit));
             Integer minimumHeight = null;
             Integer minimumWidth = null;
             Integer maximumHeight = null;
@@ -135,7 +135,7 @@ public class ItemDescriptionTypeTransferCache
             itemDescriptionTypeTransfer = new ItemDescriptionTypeTransfer(itemDescriptionTypeName, parentItemDescriptionTypeTransfer, useParentIfMissing,
                     mimeTypeUsageTypeTransfer, checkContentWebAddress, includeInIndex, indexDefault, isDefault, sortOrder, description, minimumHeight,
                     minimumWidth, maximumHeight, maximumWidth, preferredHeight, preferredWidth, preferredMimeTypeTransfer, quality, scaleFromParent);
-            put(itemDescriptionType, itemDescriptionTypeTransfer);
+            put(userVisit, itemDescriptionType, itemDescriptionTypeTransfer);
         }
         
         return itemDescriptionTypeTransfer;

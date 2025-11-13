@@ -28,13 +28,13 @@ public class OrderAdjustmentTypeTransferCache
     OrderAdjustmentControl orderAdjustmentControl = Session.getModelController(OrderAdjustmentControl.class);
 
     /** Creates a new instance of OrderAdjustmentTypeTransferCache */
-    public OrderAdjustmentTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public OrderAdjustmentTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public OrderAdjustmentTypeTransfer getOrderAdjustmentTypeTransfer(OrderAdjustmentType orderAdjustmentType) {
+    public OrderAdjustmentTypeTransfer getOrderAdjustmentTypeTransfer(UserVisit userVisit, OrderAdjustmentType orderAdjustmentType) {
         var orderAdjustmentTypeTransfer = get(orderAdjustmentType);
         
         if(orderAdjustmentTypeTransfer == null) {
@@ -42,10 +42,10 @@ public class OrderAdjustmentTypeTransferCache
             var orderAdjustmentTypeName = orderAdjustmentTypeDetail.getOrderAdjustmentTypeName();
             var isDefault = orderAdjustmentTypeDetail.getIsDefault();
             var sortOrder = orderAdjustmentTypeDetail.getSortOrder();
-            var description = orderAdjustmentControl.getBestOrderAdjustmentTypeDescription(orderAdjustmentType, getLanguage());
+            var description = orderAdjustmentControl.getBestOrderAdjustmentTypeDescription(orderAdjustmentType, getLanguage(userVisit));
             
             orderAdjustmentTypeTransfer = new OrderAdjustmentTypeTransfer(orderAdjustmentTypeName, isDefault, sortOrder, description);
-            put(orderAdjustmentType, orderAdjustmentTypeTransfer);
+            put(userVisit, orderAdjustmentType, orderAdjustmentTypeTransfer);
         }
         
         return orderAdjustmentTypeTransfer;

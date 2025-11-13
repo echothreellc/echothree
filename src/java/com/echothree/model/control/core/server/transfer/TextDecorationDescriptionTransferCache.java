@@ -28,11 +28,11 @@ public class TextDecorationDescriptionTransferCache
     TextControl textControl = Session.getModelController(TextControl.class);
 
     /** Creates a new instance of TextDecorationDescriptionTransferCache */
-    public TextDecorationDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public TextDecorationDescriptionTransferCache() {
+        super();
     }
     
-    public TextDecorationDescriptionTransfer getTextDecorationDescriptionTransfer(TextDecorationDescription textDecorationDescription) {
+    public TextDecorationDescriptionTransfer getTextDecorationDescriptionTransfer(UserVisit userVisit, TextDecorationDescription textDecorationDescription) {
         var textDecorationDescriptionTransfer = get(textDecorationDescription);
         
         if(textDecorationDescriptionTransfer == null) {
@@ -40,7 +40,7 @@ public class TextDecorationDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, textDecorationDescription.getLanguage());
             
             textDecorationDescriptionTransfer = new TextDecorationDescriptionTransfer(languageTransfer, textDecorationTransfer, textDecorationDescription.getDescription());
-            put(textDecorationDescription, textDecorationDescriptionTransfer);
+            put(userVisit, textDecorationDescription, textDecorationDescriptionTransfer);
         }
         return textDecorationDescriptionTransfer;
     }

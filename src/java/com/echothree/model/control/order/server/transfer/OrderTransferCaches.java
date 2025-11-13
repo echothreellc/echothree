@@ -43,139 +43,139 @@ public class OrderTransferCaches
     protected OrderPriorityDescriptionTransferCache orderPriorityDescriptionTransferCache;
     
     /** Creates a new instance of OrderTransferCaches */
-    public OrderTransferCaches(UserVisit userVisit) {
-        super(userVisit);
+    public OrderTransferCaches() {
+        super();
     }
     
     public OrderTypeTransferCache getOrderTypeTransferCache() {
         if(orderTypeTransferCache == null)
-            orderTypeTransferCache = new OrderTypeTransferCache(userVisit);
+            orderTypeTransferCache = new OrderTypeTransferCache();
         
         return orderTypeTransferCache;
     }
     
     public OrderTypeDescriptionTransferCache getOrderTypeDescriptionTransferCache() {
         if(orderTypeDescriptionTransferCache == null)
-            orderTypeDescriptionTransferCache = new OrderTypeDescriptionTransferCache(userVisit);
+            orderTypeDescriptionTransferCache = new OrderTypeDescriptionTransferCache();
 
         return orderTypeDescriptionTransferCache;
     }
 
     public OrderTimeTypeTransferCache getOrderTimeTypeTransferCache() {
         if(orderTimeTypeTransferCache == null)
-            orderTimeTypeTransferCache = new OrderTimeTypeTransferCache(userVisit);
+            orderTimeTypeTransferCache = new OrderTimeTypeTransferCache();
 
         return orderTimeTypeTransferCache;
     }
 
     public OrderTimeTypeDescriptionTransferCache getOrderTimeTypeDescriptionTransferCache() {
         if(orderTimeTypeDescriptionTransferCache == null)
-            orderTimeTypeDescriptionTransferCache = new OrderTimeTypeDescriptionTransferCache(userVisit);
+            orderTimeTypeDescriptionTransferCache = new OrderTimeTypeDescriptionTransferCache();
 
         return orderTimeTypeDescriptionTransferCache;
     }
 
     public OrderPaymentPreferenceTransferCache getOrderPaymentPreferenceTransferCache() {
         if(orderPaymentPreferenceTransferCache == null)
-            orderPaymentPreferenceTransferCache = new OrderPaymentPreferenceTransferCache(userVisit);
+            orderPaymentPreferenceTransferCache = new OrderPaymentPreferenceTransferCache();
 
         return orderPaymentPreferenceTransferCache;
     }
 
     public OrderShipmentGroupTransferCache getOrderShipmentGroupTransferCache() {
         if(orderShipmentGroupTransferCache == null)
-            orderShipmentGroupTransferCache = new OrderShipmentGroupTransferCache(userVisit);
+            orderShipmentGroupTransferCache = new OrderShipmentGroupTransferCache();
 
         return orderShipmentGroupTransferCache;
     }
 
     public OrderTimeTransferCache getOrderTimeTransferCache() {
         if(orderTimeTransferCache == null)
-            orderTimeTransferCache = new OrderTimeTransferCache(userVisit);
+            orderTimeTransferCache = new OrderTimeTransferCache();
 
         return orderTimeTransferCache;
     }
 
     public OrderLineTimeTransferCache getOrderLineTimeTransferCache() {
         if(orderLineTimeTransferCache == null)
-            orderLineTimeTransferCache = new OrderLineTimeTransferCache(userVisit);
+            orderLineTimeTransferCache = new OrderLineTimeTransferCache();
 
         return orderLineTimeTransferCache;
     }
 
     public OrderAdjustmentTypeTransferCache getOrderAdjustmentTypeTransferCache() {
         if(orderAdjustmentTypeTransferCache == null)
-            orderAdjustmentTypeTransferCache = new OrderAdjustmentTypeTransferCache(userVisit);
+            orderAdjustmentTypeTransferCache = new OrderAdjustmentTypeTransferCache();
 
         return orderAdjustmentTypeTransferCache;
     }
 
     public OrderAdjustmentTypeDescriptionTransferCache getOrderAdjustmentTypeDescriptionTransferCache() {
         if(orderAdjustmentTypeDescriptionTransferCache == null)
-            orderAdjustmentTypeDescriptionTransferCache = new OrderAdjustmentTypeDescriptionTransferCache(userVisit);
+            orderAdjustmentTypeDescriptionTransferCache = new OrderAdjustmentTypeDescriptionTransferCache();
 
         return orderAdjustmentTypeDescriptionTransferCache;
     }
 
     public OrderLineAdjustmentTypeTransferCache getOrderLineAdjustmentTypeTransferCache() {
         if(orderLineAdjustmentTypeTransferCache == null)
-            orderLineAdjustmentTypeTransferCache = new OrderLineAdjustmentTypeTransferCache(userVisit);
+            orderLineAdjustmentTypeTransferCache = new OrderLineAdjustmentTypeTransferCache();
 
         return orderLineAdjustmentTypeTransferCache;
     }
 
     public OrderLineAdjustmentTypeDescriptionTransferCache getOrderLineAdjustmentTypeDescriptionTransferCache() {
         if(orderLineAdjustmentTypeDescriptionTransferCache == null)
-            orderLineAdjustmentTypeDescriptionTransferCache = new OrderLineAdjustmentTypeDescriptionTransferCache(userVisit);
+            orderLineAdjustmentTypeDescriptionTransferCache = new OrderLineAdjustmentTypeDescriptionTransferCache();
 
         return orderLineAdjustmentTypeDescriptionTransferCache;
     }
 
     public OrderRoleTypeTransferCache getOrderRoleTypeTransferCache() {
         if(orderRoleTypeTransferCache == null)
-            orderRoleTypeTransferCache = new OrderRoleTypeTransferCache(userVisit);
+            orderRoleTypeTransferCache = new OrderRoleTypeTransferCache();
 
         return orderRoleTypeTransferCache;
     }
 
     public OrderRoleTransferCache getOrderRoleTransferCache() {
         if(orderRoleTransferCache == null)
-            orderRoleTransferCache = new OrderRoleTransferCache(userVisit);
+            orderRoleTransferCache = new OrderRoleTransferCache();
 
         return orderRoleTransferCache;
     }
 
     public OrderAliasTypeTransferCache getOrderAliasTypeTransferCache() {
         if(orderAliasTypeTransferCache == null)
-            orderAliasTypeTransferCache = new OrderAliasTypeTransferCache(userVisit);
+            orderAliasTypeTransferCache = new OrderAliasTypeTransferCache();
 
         return orderAliasTypeTransferCache;
     }
 
     public OrderAliasTypeDescriptionTransferCache getOrderAliasTypeDescriptionTransferCache() {
         if(orderAliasTypeDescriptionTransferCache == null)
-            orderAliasTypeDescriptionTransferCache = new OrderAliasTypeDescriptionTransferCache(userVisit);
+            orderAliasTypeDescriptionTransferCache = new OrderAliasTypeDescriptionTransferCache();
 
         return orderAliasTypeDescriptionTransferCache;
     }
 
     public OrderAliasTransferCache getOrderAliasTransferCache() {
         if(orderAliasTransferCache == null)
-            orderAliasTransferCache = new OrderAliasTransferCache(userVisit);
+            orderAliasTransferCache = new OrderAliasTransferCache();
 
         return orderAliasTransferCache;
     }
 
     public OrderPriorityTransferCache getOrderPriorityTransferCache() {
         if(orderPriorityTransferCache == null)
-            orderPriorityTransferCache = new OrderPriorityTransferCache(userVisit);
+            orderPriorityTransferCache = new OrderPriorityTransferCache();
 
         return orderPriorityTransferCache;
     }
 
     public OrderPriorityDescriptionTransferCache getOrderPriorityDescriptionTransferCache() {
         if(orderPriorityDescriptionTransferCache == null)
-            orderPriorityDescriptionTransferCache = new OrderPriorityDescriptionTransferCache(userVisit);
+            orderPriorityDescriptionTransferCache = new OrderPriorityDescriptionTransferCache();
 
         return orderPriorityDescriptionTransferCache;
     }

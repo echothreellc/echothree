@@ -28,11 +28,11 @@ public class TextTransformationDescriptionTransferCache
     TextControl textControl = Session.getModelController(TextControl.class);
 
     /** Creates a new instance of TextTransformationDescriptionTransferCache */
-    public TextTransformationDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public TextTransformationDescriptionTransferCache() {
+        super();
     }
     
-    public TextTransformationDescriptionTransfer getTextTransformationDescriptionTransfer(TextTransformationDescription textTransformationDescription) {
+    public TextTransformationDescriptionTransfer getTextTransformationDescriptionTransfer(UserVisit userVisit, TextTransformationDescription textTransformationDescription) {
         var textTransformationDescriptionTransfer = get(textTransformationDescription);
         
         if(textTransformationDescriptionTransfer == null) {
@@ -40,7 +40,7 @@ public class TextTransformationDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, textTransformationDescription.getLanguage());
             
             textTransformationDescriptionTransfer = new TextTransformationDescriptionTransfer(languageTransfer, textTransformationTransfer, textTransformationDescription.getDescription());
-            put(textTransformationDescription, textTransformationDescriptionTransfer);
+            put(userVisit, textTransformationDescription, textTransformationDescriptionTransfer);
         }
         return textTransformationDescriptionTransfer;
     }

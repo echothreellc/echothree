@@ -30,11 +30,11 @@ public class EntityTagTransferCache
     TagControl tagControl = Session.getModelController(TagControl.class);
 
     /** Creates a new instance of EntityTagTransferCache */
-    public EntityTagTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityTagTransferCache() {
+        super();
     }
     
-    public EntityTagTransfer getEntityTagTransfer(EntityTag entityTag) {
+    public EntityTagTransfer getEntityTagTransfer(UserVisit userVisit, EntityTag entityTag) {
         var entityTagTransfer = get(entityTag);
         
         if(entityTagTransfer == null) {
@@ -42,7 +42,7 @@ public class EntityTagTransferCache
             var tag = tagControl.getTagTransfer(userVisit, entityTag.getTag());
             
             entityTagTransfer = new EntityTagTransfer(taggedEntityInstance, tag);
-            put(entityTag, entityTagTransfer);
+            put(userVisit, entityTag, entityTagTransfer);
         }
         
         return entityTagTransfer;

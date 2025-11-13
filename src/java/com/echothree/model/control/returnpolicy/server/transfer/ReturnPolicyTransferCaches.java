@@ -39,92 +39,92 @@ public class ReturnPolicyTransferCaches
     protected ReturnTypeShippingMethodTransferCache returnTypeShippingMethodTransferCache;
     
     /** Creates a new instance of ReturnPolicyTransferCaches */
-    public ReturnPolicyTransferCaches(UserVisit userVisit, ReturnPolicyControl returnPolicyControl) {
-        super(userVisit);
+    public ReturnPolicyTransferCaches(ReturnPolicyControl returnPolicyControl) {
+        super();
         
         this.returnPolicyControl = returnPolicyControl;
     }
     
     public ReturnPolicyTransferCache getReturnPolicyTransferCache() {
         if(returnPolicyTransferCache == null)
-            returnPolicyTransferCache = new ReturnPolicyTransferCache(userVisit, returnPolicyControl);
+            returnPolicyTransferCache = new ReturnPolicyTransferCache(returnPolicyControl);
         
         return returnPolicyTransferCache;
     }
     
     public ReturnPolicyTranslationTransferCache getReturnPolicyTranslationTransferCache() {
         if(returnPolicyTranslationTransferCache == null)
-            returnPolicyTranslationTransferCache = new ReturnPolicyTranslationTransferCache(userVisit, returnPolicyControl);
+            returnPolicyTranslationTransferCache = new ReturnPolicyTranslationTransferCache(returnPolicyControl);
         
         return returnPolicyTranslationTransferCache;
     }
     
     public PartyReturnPolicyTransferCache getPartyReturnPolicyTransferCache() {
         if(partyReturnPolicyTransferCache == null)
-            partyReturnPolicyTransferCache = new PartyReturnPolicyTransferCache(userVisit, returnPolicyControl);
+            partyReturnPolicyTransferCache = new PartyReturnPolicyTransferCache(returnPolicyControl);
         
         return partyReturnPolicyTransferCache;
     }
     
     public ReturnKindDescriptionTransferCache getReturnKindDescriptionTransferCache() {
         if(returnKindDescriptionTransferCache == null)
-            returnKindDescriptionTransferCache = new ReturnKindDescriptionTransferCache(userVisit, returnPolicyControl);
+            returnKindDescriptionTransferCache = new ReturnKindDescriptionTransferCache(returnPolicyControl);
         
         return returnKindDescriptionTransferCache;
     }
     
     public ReturnReasonDescriptionTransferCache getReturnReasonDescriptionTransferCache() {
         if(returnReasonDescriptionTransferCache == null)
-            returnReasonDescriptionTransferCache = new ReturnReasonDescriptionTransferCache(userVisit, returnPolicyControl);
+            returnReasonDescriptionTransferCache = new ReturnReasonDescriptionTransferCache(returnPolicyControl);
         
         return returnReasonDescriptionTransferCache;
     }
     
     public ReturnTypeDescriptionTransferCache getReturnTypeDescriptionTransferCache() {
         if(returnTypeDescriptionTransferCache == null)
-            returnTypeDescriptionTransferCache = new ReturnTypeDescriptionTransferCache(userVisit, returnPolicyControl);
+            returnTypeDescriptionTransferCache = new ReturnTypeDescriptionTransferCache(returnPolicyControl);
         
         return returnTypeDescriptionTransferCache;
     }
     
     public ReturnKindTransferCache getReturnKindTransferCache() {
         if(returnKindTransferCache == null)
-            returnKindTransferCache = new ReturnKindTransferCache(userVisit, returnPolicyControl);
+            returnKindTransferCache = new ReturnKindTransferCache(returnPolicyControl);
         
         return returnKindTransferCache;
     }
     
     public ReturnReasonTransferCache getReturnReasonTransferCache() {
         if(returnReasonTransferCache == null)
-            returnReasonTransferCache = new ReturnReasonTransferCache(userVisit, returnPolicyControl);
+            returnReasonTransferCache = new ReturnReasonTransferCache(returnPolicyControl);
         
         return returnReasonTransferCache;
     }
     
     public ReturnTypeTransferCache getReturnTypeTransferCache() {
         if(returnTypeTransferCache == null)
-            returnTypeTransferCache = new ReturnTypeTransferCache(userVisit, returnPolicyControl);
+            returnTypeTransferCache = new ReturnTypeTransferCache(returnPolicyControl);
         
         return returnTypeTransferCache;
     }
     
     public ReturnPolicyReasonTransferCache getReturnPolicyReasonTransferCache() {
         if(returnPolicyReasonTransferCache == null)
-            returnPolicyReasonTransferCache = new ReturnPolicyReasonTransferCache(userVisit, returnPolicyControl);
+            returnPolicyReasonTransferCache = new ReturnPolicyReasonTransferCache(returnPolicyControl);
         
         return returnPolicyReasonTransferCache;
     }
     
     public ReturnReasonTypeTransferCache getReturnReasonTypeTransferCache() {
         if(returnReasonTypeTransferCache == null)
-            returnReasonTypeTransferCache = new ReturnReasonTypeTransferCache(userVisit, returnPolicyControl);
+            returnReasonTypeTransferCache = new ReturnReasonTypeTransferCache(returnPolicyControl);
         
         return returnReasonTypeTransferCache;
     }
     
     public ReturnTypeShippingMethodTransferCache getReturnTypeShippingMethodTransferCache() {
         if(returnTypeShippingMethodTransferCache == null)
-            returnTypeShippingMethodTransferCache = new ReturnTypeShippingMethodTransferCache(userVisit, returnPolicyControl);
+            returnTypeShippingMethodTransferCache = new ReturnTypeShippingMethodTransferCache(returnPolicyControl);
         
         return returnTypeShippingMethodTransferCache;
     }

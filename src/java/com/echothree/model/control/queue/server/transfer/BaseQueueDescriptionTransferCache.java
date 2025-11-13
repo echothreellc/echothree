@@ -29,8 +29,8 @@ public abstract class BaseQueueDescriptionTransferCache<K extends BaseEntity, V 
     PartyControl partyControl;
     
     /** Creates a new instance of BaseQueueDescriptionTransferCache */
-    protected BaseQueueDescriptionTransferCache(UserVisit userVisit, QueueControl queueControl) {
-        super(userVisit, queueControl);
+    protected BaseQueueDescriptionTransferCache(QueueControl queueControl) {
+        super(queueControl);
         
         partyControl = Session.getModelController(PartyControl.class);
     }

@@ -31,13 +31,13 @@ public class PartyApplicationEditorUseTransferCache
     ApplicationControl applicationControl = Session.getModelController(ApplicationControl.class);
 
     /** Creates a new instance of PartyApplicationEditorUseTransferCache */
-    public PartyApplicationEditorUseTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public PartyApplicationEditorUseTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
 
-    public PartyApplicationEditorUseTransfer getPartyApplicationEditorUseTransfer(PartyApplicationEditorUse partyApplicationEditorUse) {
+    public PartyApplicationEditorUseTransfer getPartyApplicationEditorUseTransfer(UserVisit userVisit, PartyApplicationEditorUse partyApplicationEditorUse) {
         var partyApplicationEditorUseTransfer = get(partyApplicationEditorUse);
 
         if(partyApplicationEditorUseTransfer == null) {
@@ -51,7 +51,7 @@ public class PartyApplicationEditorUseTransferCache
 
             partyApplicationEditorUseTransfer = new PartyApplicationEditorUseTransfer(partyTransfer, applicationEditorUseTransfer, applicationEditorTransfer,
                     preferredHeight, preferredWidth);
-            put(partyApplicationEditorUse, partyApplicationEditorUseTransfer);
+            put(userVisit, partyApplicationEditorUse, partyApplicationEditorUseTransfer);
         }
 
         return partyApplicationEditorUseTransfer;

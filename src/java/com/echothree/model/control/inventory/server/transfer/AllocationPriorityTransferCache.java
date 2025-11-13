@@ -25,14 +25,14 @@ public class AllocationPriorityTransferCache
         extends BaseInventoryTransferCache<AllocationPriority, AllocationPriorityTransfer> {
     
     /** Creates a new instance of AllocationPriorityTransferCache */
-    public AllocationPriorityTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    public AllocationPriorityTransferCache(InventoryControl inventoryControl) {
+        super(inventoryControl);
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public AllocationPriorityTransfer getTransfer(AllocationPriority allocationPriority) {
+    public AllocationPriorityTransfer getTransfer(UserVisit userVisit, AllocationPriority allocationPriority) {
         var allocationPriorityTransfer = get(allocationPriority);
         
         if(allocationPriorityTransfer == null) {
@@ -41,10 +41,10 @@ public class AllocationPriorityTransferCache
             var priority = allocationPriorityDetail.getPriority();
             var isDefault = allocationPriorityDetail.getIsDefault();
             var sortOrder = allocationPriorityDetail.getSortOrder();
-            var description = inventoryControl.getBestAllocationPriorityDescription(allocationPriority, getLanguage());
+            var description = inventoryControl.getBestAllocationPriorityDescription(allocationPriority, getLanguage(userVisit));
             
             allocationPriorityTransfer = new AllocationPriorityTransfer(allocationPriorityName, priority, isDefault, sortOrder, description);
-            put(allocationPriority, allocationPriorityTransfer);
+            put(userVisit, allocationPriority, allocationPriorityTransfer);
         }
         
         return allocationPriorityTransfer;

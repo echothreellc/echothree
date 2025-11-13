@@ -30,11 +30,11 @@ public class UserLoginPasswordTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of UserLoginPasswordTransferCache */
-    public UserLoginPasswordTransferCache(UserVisit userVisit, UserControl userControl) {
-        super(userVisit, userControl);
+    public UserLoginPasswordTransferCache(UserControl userControl) {
+        super(userControl);
     }
     
-    public UserLoginPasswordTransfer getUserLoginPasswordTransfer(UserLoginPassword userLoginPassword) {
+    public UserLoginPasswordTransfer getUserLoginPasswordTransfer(UserVisit userVisit, UserLoginPassword userLoginPassword) {
         var userLoginPasswordTransfer = get(userLoginPassword);
         
         if(userLoginPasswordTransfer == null) {
@@ -59,12 +59,12 @@ public class UserLoginPasswordTransferCache
                 }
 
                 unformattedChangedTime = userLoginPasswordString.getChangedTime();
-                changedTime = formatTypicalDateTime(unformattedChangedTime);
+                changedTime = formatTypicalDateTime(userVisit, unformattedChangedTime);
                 wasReset = userLoginPasswordString.getWasReset();
             }
 
             userLoginPasswordTransfer = new UserLoginPasswordTransfer(party, userLoginPasswordType, password, unformattedChangedTime, changedTime, wasReset);
-            put(userLoginPassword, userLoginPasswordTransfer);
+            put(userVisit, userLoginPassword, userLoginPasswordTransfer);
         }
         
         return userLoginPasswordTransfer;

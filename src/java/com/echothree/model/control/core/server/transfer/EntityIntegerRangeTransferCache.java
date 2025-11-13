@@ -41,8 +41,8 @@ public class EntityIntegerRangeTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of EntityIntegerRangeTransferCache */
-    public EntityIntegerRangeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityIntegerRangeTransferCache() {
+        super();
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
@@ -63,7 +63,7 @@ public class EntityIntegerRangeTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
     
-    public EntityIntegerRangeTransfer getEntityIntegerRangeTransfer(EntityIntegerRange entityIntegerRange, EntityInstance entityInstance) {
+    public EntityIntegerRangeTransfer getEntityIntegerRangeTransfer(final UserVisit userVisit, final EntityIntegerRange entityIntegerRange, final EntityInstance entityInstance) {
         var entityIntegerRangeTransfer = get(entityIntegerRange);
         
         if(entityIntegerRangeTransfer == null) {
@@ -74,11 +74,11 @@ public class EntityIntegerRangeTransferCache
             var maximumIntegerValue = filterMaximumIntegerValue ? null : entityIntegerRangeDetail.getMaximumIntegerValue();
             var isDefault = filterIsDefault ? null : entityIntegerRangeDetail.getIsDefault();
             var sortOrder = filterSortOrder ? null : entityIntegerRangeDetail.getSortOrder();
-            var description = coreControl.getBestEntityIntegerRangeDescription(entityIntegerRange, getLanguage());
+            var description = coreControl.getBestEntityIntegerRangeDescription(entityIntegerRange, getLanguage(userVisit));
             
             entityIntegerRangeTransfer = new EntityIntegerRangeTransfer(entityAttributeTransfer, entityIntegerRangeName, minimumIntegerValue, maximumIntegerValue, isDefault,
                     sortOrder, description);
-            put(entityIntegerRange, entityIntegerRangeTransfer);
+            put(userVisit, entityIntegerRange, entityIntegerRangeTransfer);
         }
         return entityIntegerRangeTransfer;
     }

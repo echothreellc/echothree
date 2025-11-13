@@ -28,21 +28,21 @@ public class GlAccountTransferCache
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of GlAccountTransferCache */
-    public GlAccountTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public GlAccountTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public GlAccountTransfer getTransfer(GlAccount glAccount) {
+    public GlAccountTransfer getTransfer(UserVisit userVisit, GlAccount glAccount) {
         var glAccountTransfer = get(glAccount);
         
         if(glAccountTransfer == null) {
             var glAccountDetail = glAccount.getLastDetail();
             var glAccountName = glAccountDetail.getGlAccountName();
             var parentGlAccount = glAccountDetail.getParentGlAccount();
-            var parentGlAccountTransfer = parentGlAccount == null? null: getTransfer(parentGlAccount);
+            var parentGlAccountTransfer = parentGlAccount == null ? null : getTransfer(userVisit, parentGlAccount);
             var glAccountTypeTransfer = accountingControl.getGlAccountTypeTransfer(userVisit, glAccountDetail.getGlAccountType());
             var glAccountClassTransfer = accountingControl.getGlAccountClassTransfer(userVisit, glAccountDetail.getGlAccountClass());
             var glAccountCategory = glAccountDetail.getGlAccountCategory();
@@ -50,12 +50,12 @@ public class GlAccountTransferCache
             var glResourceTypeTransfer = accountingControl.getGlResourceTypeTransfer(userVisit, glAccountDetail.getGlResourceType());
             var currencyTransfer = accountingControl.getCurrencyTransfer(userVisit, glAccountDetail.getCurrency());
             var isDefault = glAccountDetail.getIsDefault();
-            var description = accountingControl.getBestGlAccountDescription(glAccount, getLanguage());
+            var description = accountingControl.getBestGlAccountDescription(glAccount, getLanguage(userVisit));
             
             glAccountTransfer = new GlAccountTransfer(glAccountName, parentGlAccountTransfer, glAccountTypeTransfer,
                     glAccountClassTransfer, glAccountCategoryTransfer, glResourceTypeTransfer, currencyTransfer, isDefault,
                     description);
-            put(glAccount, glAccountTransfer);
+            put(userVisit, glAccount, glAccountTransfer);
         }
         
         return glAccountTransfer;

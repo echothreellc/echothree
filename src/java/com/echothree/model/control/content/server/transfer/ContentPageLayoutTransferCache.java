@@ -25,13 +25,13 @@ public class ContentPageLayoutTransferCache
         extends BaseContentTransferCache<ContentPageLayout, ContentPageLayoutTransfer> {
     
     /** Creates a new instance of ContentPageLayoutTransferCache */
-    public ContentPageLayoutTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    public ContentPageLayoutTransferCache(ContentControl contentControl) {
+        super(contentControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public ContentPageLayoutTransfer getTransfer(ContentPageLayout contentPageLayout) {
+    public ContentPageLayoutTransfer getTransfer(UserVisit userVisit, ContentPageLayout contentPageLayout) {
         var contentPageLayoutTransfer = get(contentPageLayout);
         
         if(contentPageLayoutTransfer == null) {
@@ -39,10 +39,10 @@ public class ContentPageLayoutTransferCache
             var contentPageLayoutName = contentPageLayoutDetail.getContentPageLayoutName();
             var isDefault = contentPageLayoutDetail.getIsDefault();
             var sortOrder = contentPageLayoutDetail.getSortOrder();
-            var description = contentControl.getBestContentPageLayoutDescription(contentPageLayout, getLanguage());
+            var description = contentControl.getBestContentPageLayoutDescription(contentPageLayout, getLanguage(userVisit));
             
             contentPageLayoutTransfer = new ContentPageLayoutTransfer(contentPageLayoutName, isDefault, sortOrder, description);
-            put(contentPageLayout, contentPageLayoutTransfer);
+            put(userVisit, contentPageLayout, contentPageLayoutTransfer);
         }
         
         return contentPageLayoutTransfer;

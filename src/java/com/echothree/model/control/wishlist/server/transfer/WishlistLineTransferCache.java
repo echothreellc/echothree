@@ -37,13 +37,13 @@ public class WishlistLineTransferCache
     UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of WishlistLineTransferCache */
-    public WishlistLineTransferCache(UserVisit userVisit, WishlistControl wishlistControl) {
-        super(userVisit, wishlistControl);
+    public WishlistLineTransferCache(WishlistControl wishlistControl) {
+        super(wishlistControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public WishlistLineTransfer getWishlistLineTransfer(OrderLine orderLine) {
+    public WishlistLineTransfer getWishlistLineTransfer(UserVisit userVisit, OrderLine orderLine) {
         var wishlistLineTransfer = get(orderLine);
         
         if(wishlistLineTransfer == null) {
@@ -66,7 +66,7 @@ public class WishlistLineTransferCache
             
             wishlistLineTransfer = new WishlistLineTransfer(wishlist, orderLineSequence, item, inventoryCondition, unitOfMeasureType, quantity,
                     unformattedUnitAmount, unitAmount, description, offerUse, wishlistPriority, associateReferral, comment);
-            put(orderLine, wishlistLineTransfer);
+            put(userVisit, orderLine, wishlistLineTransfer);
         }
         
         return wishlistLineTransfer;

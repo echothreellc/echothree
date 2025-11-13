@@ -30,13 +30,13 @@ public class CommandTransferCache
     ComponentControl componentControl = Session.getModelController(ComponentControl.class);
 
     /** Creates a new instance of CommandTransferCache */
-    public CommandTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public CommandTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public CommandTransfer getCommandTransfer(Command command) {
+    public CommandTransfer getCommandTransfer(UserVisit userVisit, Command command) {
         var commandTransfer = get(command);
         
         if(commandTransfer == null) {
@@ -44,10 +44,10 @@ public class CommandTransferCache
             var componentVendor = componentControl.getComponentVendorTransfer(userVisit, commandDetail.getComponentVendor());
             var commandName = commandDetail.getCommandName();
             var sortOrder = commandDetail.getSortOrder();
-            var description = commandControl.getBestCommandDescription(command, getLanguage());
+            var description = commandControl.getBestCommandDescription(command, getLanguage(userVisit));
     
             commandTransfer = new CommandTransfer(componentVendor, commandName, sortOrder, description);
-            put(command, commandTransfer);
+            put(userVisit, command, commandTransfer);
         }
         
         return commandTransfer;

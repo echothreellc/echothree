@@ -28,11 +28,11 @@ public class ShippingMethodDescriptionTransferCache
     ShippingControl shippingControl = Session.getModelController(ShippingControl.class);
 
     /** Creates a new instance of ShippingMethodDescriptionTransferCache */
-    public ShippingMethodDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public ShippingMethodDescriptionTransferCache() {
+        super();
     }
     
-    public ShippingMethodDescriptionTransfer getShippingMethodDescriptionTransfer(ShippingMethodDescription shippingMethodDescription) {
+    public ShippingMethodDescriptionTransfer getShippingMethodDescriptionTransfer(UserVisit userVisit, ShippingMethodDescription shippingMethodDescription) {
         var shippingMethodDescriptionTransfer = get(shippingMethodDescription);
         
         if(shippingMethodDescriptionTransfer == null) {
@@ -42,7 +42,7 @@ public class ShippingMethodDescriptionTransferCache
             
             shippingMethodDescriptionTransfer = new ShippingMethodDescriptionTransfer(languageTransfer, shippingMethodTransfer,
                     description);
-            put(shippingMethodDescription, shippingMethodDescriptionTransfer);
+            put(userVisit, shippingMethodDescription, shippingMethodDescriptionTransfer);
         }
         
         return shippingMethodDescriptionTransfer;

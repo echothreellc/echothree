@@ -24,19 +24,19 @@ public class PartyGroupTransferCache
         extends BasePartyTransferCache<PartyGroup, PartyGroupTransfer> {
     
     /** Creates a new instance of PartyGroupTransferCache */
-    public PartyGroupTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public PartyGroupTransferCache() {
+        super();
     }
 
     @Override
-    public PartyGroupTransfer getTransfer(PartyGroup partyGroup) {
+    public PartyGroupTransfer getTransfer(UserVisit userVisit, PartyGroup partyGroup) {
         var partyGroupTransfer = get(partyGroup);
         
         if(partyGroupTransfer == null) {
             var name = partyGroup.getName();
             
             partyGroupTransfer = new PartyGroupTransfer(name);
-            put(partyGroup, partyGroupTransfer);
+            put(userVisit, partyGroup, partyGroupTransfer);
         }
         
         return partyGroupTransfer;

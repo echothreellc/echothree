@@ -39,92 +39,92 @@ public class WarehouseTransferCaches
     WarehouseTypeDescriptionTransferCache warehouseTypeDescriptionTransferCache;
     
     /** Creates a new instance of WarehouseTransferCaches */
-    public WarehouseTransferCaches(UserVisit userVisit, WarehouseControl warehouseControl) {
-        super(userVisit);
+    public WarehouseTransferCaches(WarehouseControl warehouseControl) {
+        super();
         
         this.warehouseControl = warehouseControl;
     }
     
     public LocationDescriptionTransferCache getLocationDescriptionTransferCache() {
         if(locationDescriptionTransferCache == null)
-            locationDescriptionTransferCache = new LocationDescriptionTransferCache(userVisit, warehouseControl);
+            locationDescriptionTransferCache = new LocationDescriptionTransferCache(warehouseControl);
         
         return locationDescriptionTransferCache;
     }
     
     public LocationNameElementDescriptionTransferCache getLocationNameElementDescriptionTransferCache() {
         if(locationNameElementDescriptionTransferCache == null)
-            locationNameElementDescriptionTransferCache = new LocationNameElementDescriptionTransferCache(userVisit, warehouseControl);
+            locationNameElementDescriptionTransferCache = new LocationNameElementDescriptionTransferCache(warehouseControl);
         
         return locationNameElementDescriptionTransferCache;
     }
     
     public LocationNameElementTransferCache getLocationNameElementTransferCache() {
         if(locationNameElementTransferCache == null)
-            locationNameElementTransferCache = new LocationNameElementTransferCache(userVisit, warehouseControl);
+            locationNameElementTransferCache = new LocationNameElementTransferCache(warehouseControl);
         
         return locationNameElementTransferCache;
     }
     
     public LocationTransferCache getLocationTransferCache() {
         if(locationTransferCache == null)
-            locationTransferCache = new LocationTransferCache(userVisit, warehouseControl);
+            locationTransferCache = new LocationTransferCache(warehouseControl);
         
         return locationTransferCache;
     }
     
     public LocationTypeDescriptionTransferCache getLocationTypeDescriptionTransferCache() {
         if(locationTypeDescriptionTransferCache == null)
-            locationTypeDescriptionTransferCache = new LocationTypeDescriptionTransferCache(userVisit, warehouseControl);
+            locationTypeDescriptionTransferCache = new LocationTypeDescriptionTransferCache(warehouseControl);
         
         return locationTypeDescriptionTransferCache;
     }
     
     public LocationTypeTransferCache getLocationTypeTransferCache() {
         if(locationTypeTransferCache == null)
-            locationTypeTransferCache = new LocationTypeTransferCache(userVisit, warehouseControl);
+            locationTypeTransferCache = new LocationTypeTransferCache(warehouseControl);
         
         return locationTypeTransferCache;
     }
     
     public LocationUseTypeTransferCache getLocationUseTypeTransferCache() {
         if(locationUseTypeTransferCache == null)
-            locationUseTypeTransferCache = new LocationUseTypeTransferCache(userVisit, warehouseControl);
+            locationUseTypeTransferCache = new LocationUseTypeTransferCache(warehouseControl);
         
         return locationUseTypeTransferCache;
     }
     
     public WarehouseTransferCache getWarehouseTransferCache() {
         if(warehouseTransferCache == null)
-            warehouseTransferCache = new WarehouseTransferCache(userVisit, warehouseControl);
+            warehouseTransferCache = new WarehouseTransferCache(warehouseControl);
         
         return warehouseTransferCache;
     }
     
     public LocationVolumeTransferCache getLocationVolumeTransferCache() {
         if(locationVolumeTransferCache == null)
-            locationVolumeTransferCache = new LocationVolumeTransferCache(userVisit, warehouseControl);
+            locationVolumeTransferCache = new LocationVolumeTransferCache(warehouseControl);
         
         return locationVolumeTransferCache;
     }
     
     public LocationCapacityTransferCache getLocationCapacityTransferCache() {
         if(locationCapacityTransferCache == null)
-            locationCapacityTransferCache = new LocationCapacityTransferCache(userVisit, warehouseControl);
+            locationCapacityTransferCache = new LocationCapacityTransferCache(warehouseControl);
         
         return locationCapacityTransferCache;
     }
 
     public WarehouseTypeTransferCache getWarehouseTypeTransferCache() {
         if(warehouseTypeTransferCache == null)
-            warehouseTypeTransferCache = new WarehouseTypeTransferCache(userVisit, warehouseControl);
+            warehouseTypeTransferCache = new WarehouseTypeTransferCache(warehouseControl);
 
         return warehouseTypeTransferCache;
     }
 
     public WarehouseTypeDescriptionTransferCache getWarehouseTypeDescriptionTransferCache() {
         if(warehouseTypeDescriptionTransferCache == null)
-            warehouseTypeDescriptionTransferCache = new WarehouseTypeDescriptionTransferCache(userVisit, warehouseControl);
+            warehouseTypeDescriptionTransferCache = new WarehouseTypeDescriptionTransferCache(warehouseControl);
 
         return warehouseTypeDescriptionTransferCache;
     }

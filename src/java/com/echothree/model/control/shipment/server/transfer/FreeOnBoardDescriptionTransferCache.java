@@ -28,12 +28,12 @@ public class FreeOnBoardDescriptionTransferCache
     FreeOnBoardControl freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
 
     /** Creates a new instance of FreeOnBoardDescriptionTransferCache */
-    public FreeOnBoardDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public FreeOnBoardDescriptionTransferCache() {
+        super();
     }
     
     @Override
-    public FreeOnBoardDescriptionTransfer getTransfer(FreeOnBoardDescription freeOnBoardDescription) {
+    public FreeOnBoardDescriptionTransfer getTransfer(UserVisit userVisit, FreeOnBoardDescription freeOnBoardDescription) {
         var freeOnBoardDescriptionTransfer = get(freeOnBoardDescription);
         
         if(freeOnBoardDescriptionTransfer == null) {
@@ -41,7 +41,7 @@ public class FreeOnBoardDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, freeOnBoardDescription.getLanguage());
             
             freeOnBoardDescriptionTransfer = new FreeOnBoardDescriptionTransfer(languageTransfer, freeOnBoardTransfer, freeOnBoardDescription.getDescription());
-            put(freeOnBoardDescription, freeOnBoardDescriptionTransfer);
+            put(userVisit, freeOnBoardDescription, freeOnBoardDescriptionTransfer);
         }
         
         return freeOnBoardDescriptionTransfer;

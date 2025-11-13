@@ -50,169 +50,169 @@ public class InventoryTransferCaches
     protected InventoryAdjustmentTypeDescriptionTransferCache inventoryAdjustmentTypeDescriptionTransferCache;
 
     /** Creates a new instance of InventoryTransferCaches */
-    public InventoryTransferCaches(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit);
+    public InventoryTransferCaches(InventoryControl inventoryControl) {
+        super();
         
         this.inventoryControl = inventoryControl;
     }
     
     public InventoryLocationGroupTransferCache getInventoryLocationGroupTransferCache() {
         if(inventoryLocationGroupTransferCache == null)
-            inventoryLocationGroupTransferCache = new InventoryLocationGroupTransferCache(userVisit, inventoryControl);
+            inventoryLocationGroupTransferCache = new InventoryLocationGroupTransferCache(inventoryControl);
         
         return inventoryLocationGroupTransferCache;
     }
     
     public InventoryLocationGroupDescriptionTransferCache getInventoryLocationGroupDescriptionTransferCache() {
         if(inventoryLocationGroupDescriptionTransferCache == null)
-            inventoryLocationGroupDescriptionTransferCache = new InventoryLocationGroupDescriptionTransferCache(userVisit, inventoryControl);
+            inventoryLocationGroupDescriptionTransferCache = new InventoryLocationGroupDescriptionTransferCache(inventoryControl);
         
         return inventoryLocationGroupDescriptionTransferCache;
     }
     
     public InventoryConditionTransferCache getInventoryConditionTransferCache() {
         if(inventoryConditionTransferCache == null)
-            inventoryConditionTransferCache = new InventoryConditionTransferCache(userVisit, inventoryControl);
+            inventoryConditionTransferCache = new InventoryConditionTransferCache(inventoryControl);
         
         return inventoryConditionTransferCache;
     }
     
     public InventoryConditionDescriptionTransferCache getInventoryConditionDescriptionTransferCache() {
         if(inventoryConditionDescriptionTransferCache == null)
-            inventoryConditionDescriptionTransferCache = new InventoryConditionDescriptionTransferCache(userVisit, inventoryControl);
+            inventoryConditionDescriptionTransferCache = new InventoryConditionDescriptionTransferCache(inventoryControl);
         
         return inventoryConditionDescriptionTransferCache;
     }
     
     public InventoryLocationGroupCapacityTransferCache getInventoryLocationGroupCapacityTransferCache() {
         if(inventoryLocationGroupCapacityTransferCache == null)
-            inventoryLocationGroupCapacityTransferCache = new InventoryLocationGroupCapacityTransferCache(userVisit, inventoryControl);
+            inventoryLocationGroupCapacityTransferCache = new InventoryLocationGroupCapacityTransferCache(inventoryControl);
         
         return inventoryLocationGroupCapacityTransferCache;
     }
     
     public InventoryLocationGroupVolumeTransferCache getInventoryLocationGroupVolumeTransferCache() {
         if(inventoryLocationGroupVolumeTransferCache == null)
-            inventoryLocationGroupVolumeTransferCache = new InventoryLocationGroupVolumeTransferCache(userVisit, inventoryControl);
+            inventoryLocationGroupVolumeTransferCache = new InventoryLocationGroupVolumeTransferCache(inventoryControl);
         
         return inventoryLocationGroupVolumeTransferCache;
     }
     
     public PartyInventoryLevelTransferCache getPartyInventoryLevelTransferCache() {
         if(partyInventoryLevelTransferCache == null)
-            partyInventoryLevelTransferCache = new PartyInventoryLevelTransferCache(userVisit, inventoryControl);
+            partyInventoryLevelTransferCache = new PartyInventoryLevelTransferCache(inventoryControl);
         
         return partyInventoryLevelTransferCache;
     }
     
     public InventoryConditionUseTransferCache getInventoryConditionUseTransferCache() {
         if(inventoryKindUseTransferCache == null)
-            inventoryKindUseTransferCache = new InventoryConditionUseTransferCache(userVisit, inventoryControl);
+            inventoryKindUseTransferCache = new InventoryConditionUseTransferCache(inventoryControl);
         
         return inventoryKindUseTransferCache;
     }
     
     public InventoryConditionUseTypeTransferCache getInventoryConditionUseTypeTransferCache() {
         if(inventoryConditionUseTypeTransferCache == null)
-            inventoryConditionUseTypeTransferCache = new InventoryConditionUseTypeTransferCache(userVisit, inventoryControl);
+            inventoryConditionUseTypeTransferCache = new InventoryConditionUseTypeTransferCache(inventoryControl);
         
         return inventoryConditionUseTypeTransferCache;
     }
     
     public InventoryConditionGlAccountTransferCache getInventoryConditionGlAccountTransferCache() {
         if(inventoryConditionGlAccountTransferCache == null)
-            inventoryConditionGlAccountTransferCache = new InventoryConditionGlAccountTransferCache(userVisit, inventoryControl);
+            inventoryConditionGlAccountTransferCache = new InventoryConditionGlAccountTransferCache(inventoryControl);
         
         return inventoryConditionGlAccountTransferCache;
     }
     
     public LotAliasTypeTransferCache getLotAliasTypeTransferCache() {
         if(lotAliasTypeTransferCache == null)
-            lotAliasTypeTransferCache = new LotAliasTypeTransferCache(userVisit, inventoryControl);
+            lotAliasTypeTransferCache = new LotAliasTypeTransferCache(inventoryControl);
 
         return lotAliasTypeTransferCache;
     }
 
     public LotAliasTypeDescriptionTransferCache getLotAliasTypeDescriptionTransferCache() {
         if(lotAliasTypeDescriptionTransferCache == null)
-            lotAliasTypeDescriptionTransferCache = new LotAliasTypeDescriptionTransferCache(userVisit, inventoryControl);
+            lotAliasTypeDescriptionTransferCache = new LotAliasTypeDescriptionTransferCache(inventoryControl);
 
         return lotAliasTypeDescriptionTransferCache;
     }
 
     public LotAliasTransferCache getLotAliasTransferCache() {
         if(lotAliasTransferCache == null)
-            lotAliasTransferCache = new LotAliasTransferCache(userVisit, inventoryControl);
+            lotAliasTransferCache = new LotAliasTransferCache(inventoryControl);
 
         return lotAliasTransferCache;
     }
 
     public LotTimeTypeTransferCache getLotTimeTypeTransferCache() {
         if(lotTimeTypeTransferCache == null)
-            lotTimeTypeTransferCache = new LotTimeTypeTransferCache(userVisit, inventoryControl);
+            lotTimeTypeTransferCache = new LotTimeTypeTransferCache(inventoryControl);
 
         return lotTimeTypeTransferCache;
     }
 
     public LotTimeTransferCache getLotTimeTransferCache() {
         if(lotTimeTransferCache == null)
-            lotTimeTransferCache = new LotTimeTransferCache(userVisit, inventoryControl);
+            lotTimeTransferCache = new LotTimeTransferCache(inventoryControl);
 
         return lotTimeTransferCache;
     }
 
     public LotTimeTypeDescriptionTransferCache getLotTimeTypeDescriptionTransferCache() {
         if(lotTimeTypeDescriptionTransferCache == null)
-            lotTimeTypeDescriptionTransferCache = new LotTimeTypeDescriptionTransferCache(userVisit, inventoryControl);
+            lotTimeTypeDescriptionTransferCache = new LotTimeTypeDescriptionTransferCache(inventoryControl);
 
         return lotTimeTypeDescriptionTransferCache;
     }
 
     public AllocationPriorityTransferCache getAllocationPriorityTransferCache() {
         if(allocationPriorityTransferCache == null)
-            allocationPriorityTransferCache = new AllocationPriorityTransferCache(userVisit, inventoryControl);
+            allocationPriorityTransferCache = new AllocationPriorityTransferCache(inventoryControl);
 
         return allocationPriorityTransferCache;
     }
 
     public AllocationPriorityDescriptionTransferCache getAllocationPriorityDescriptionTransferCache() {
         if(allocationPriorityDescriptionTransferCache == null)
-            allocationPriorityDescriptionTransferCache = new AllocationPriorityDescriptionTransferCache(userVisit, inventoryControl);
+            allocationPriorityDescriptionTransferCache = new AllocationPriorityDescriptionTransferCache(inventoryControl);
 
         return allocationPriorityDescriptionTransferCache;
     }
 
     public LotTransferCache getLotTransferCache() {
         if(lotTransferCache == null)
-            lotTransferCache = new LotTransferCache(userVisit, inventoryControl);
+            lotTransferCache = new LotTransferCache(inventoryControl);
 
         return lotTransferCache;
     }
 
     public InventoryTransactionTypeTransferCache getInventoryTransactionTypeTransferCache() {
         if(inventoryTransactionTypeTransferCache == null)
-            inventoryTransactionTypeTransferCache = new InventoryTransactionTypeTransferCache(userVisit, inventoryControl);
+            inventoryTransactionTypeTransferCache = new InventoryTransactionTypeTransferCache(inventoryControl);
 
         return inventoryTransactionTypeTransferCache;
     }
 
     public InventoryTransactionTypeDescriptionTransferCache getInventoryTransactionTypeDescriptionTransferCache() {
         if(inventoryTransactionTypeDescriptionTransferCache == null)
-            inventoryTransactionTypeDescriptionTransferCache = new InventoryTransactionTypeDescriptionTransferCache(userVisit, inventoryControl);
+            inventoryTransactionTypeDescriptionTransferCache = new InventoryTransactionTypeDescriptionTransferCache(inventoryControl);
 
         return inventoryTransactionTypeDescriptionTransferCache;
     }
 
     public InventoryAdjustmentTypeTransferCache getInventoryAdjustmentTypeTransferCache() {
         if(inventoryAdjustmentTypeTransferCache == null)
-            inventoryAdjustmentTypeTransferCache = new InventoryAdjustmentTypeTransferCache(userVisit, inventoryControl);
+            inventoryAdjustmentTypeTransferCache = new InventoryAdjustmentTypeTransferCache(inventoryControl);
 
         return inventoryAdjustmentTypeTransferCache;
     }
 
     public InventoryAdjustmentTypeDescriptionTransferCache getInventoryAdjustmentTypeDescriptionTransferCache() {
         if(inventoryAdjustmentTypeDescriptionTransferCache == null)
-            inventoryAdjustmentTypeDescriptionTransferCache = new InventoryAdjustmentTypeDescriptionTransferCache(userVisit, inventoryControl);
+            inventoryAdjustmentTypeDescriptionTransferCache = new InventoryAdjustmentTypeDescriptionTransferCache(inventoryControl);
 
         return inventoryAdjustmentTypeDescriptionTransferCache;
     }

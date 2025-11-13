@@ -25,14 +25,14 @@ public class RelatedItemTransferCache
         extends BaseItemTransferCache<RelatedItem, RelatedItemTransfer> {
     
     /** Creates a new instance of RelatedItemTransferCache */
-    public RelatedItemTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public RelatedItemTransferCache(ItemControl itemControl) {
+        super(itemControl);
 
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public RelatedItemTransfer getTransfer(RelatedItem relatedItem) {
+    public RelatedItemTransfer getTransfer(UserVisit userVisit, RelatedItem relatedItem) {
         var relatedItemTransfer = get(relatedItem);
         
         if(relatedItemTransfer == null) {
@@ -43,7 +43,7 @@ public class RelatedItemTransferCache
             var sortOrder = relatedItemDetail.getSortOrder();
             
             relatedItemTransfer = new RelatedItemTransfer(relatedItemType, fromItem, toItem, sortOrder);
-            put(relatedItem, relatedItemTransfer);
+            put(userVisit, relatedItem, relatedItemTransfer);
         }
         
         return relatedItemTransfer;

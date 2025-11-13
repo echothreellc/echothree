@@ -25,11 +25,11 @@ public class CancellationReasonDescriptionTransferCache
         extends BaseCancellationPolicyDescriptionTransferCache<CancellationReasonDescription, CancellationReasonDescriptionTransfer> {
     
     /** Creates a new instance of CancellationReasonDescriptionTransferCache */
-    public CancellationReasonDescriptionTransferCache(UserVisit userVisit, CancellationPolicyControl cancellationPolicyControl) {
-        super(userVisit, cancellationPolicyControl);
+    public CancellationReasonDescriptionTransferCache(CancellationPolicyControl cancellationPolicyControl) {
+        super(cancellationPolicyControl);
     }
     
-    public CancellationReasonDescriptionTransfer getCancellationReasonDescriptionTransfer(CancellationReasonDescription cancellationReasonDescription) {
+    public CancellationReasonDescriptionTransfer getCancellationReasonDescriptionTransfer(UserVisit userVisit, CancellationReasonDescription cancellationReasonDescription) {
         var cancellationReasonDescriptionTransfer = get(cancellationReasonDescription);
         
         if(cancellationReasonDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class CancellationReasonDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, cancellationReasonDescription.getLanguage());
             
             cancellationReasonDescriptionTransfer = new CancellationReasonDescriptionTransfer(languageTransfer, cancellationReasonTransfer, cancellationReasonDescription.getDescription());
-            put(cancellationReasonDescription, cancellationReasonDescriptionTransfer);
+            put(userVisit, cancellationReasonDescription, cancellationReasonDescriptionTransfer);
         }
         
         return cancellationReasonDescriptionTransfer;

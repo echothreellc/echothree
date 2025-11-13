@@ -29,13 +29,13 @@ public class SelectorPartyTransferCache
     PartyControl partyControl;
     
     /** Creates a new instance of SelectorPartyTransferCache */
-    public SelectorPartyTransferCache(UserVisit userVisit, SelectorControl selectorControl) {
-        super(userVisit, selectorControl);
+    public SelectorPartyTransferCache(SelectorControl selectorControl) {
+        super(selectorControl);
         
         partyControl = Session.getModelController(PartyControl.class);
     }
     
-    public SelectorPartyTransfer getSelectorPartyTransfer(SelectorParty selectorParty) {
+    public SelectorPartyTransfer getSelectorPartyTransfer(UserVisit userVisit, SelectorParty selectorParty) {
         var selectorPartyTransfer = get(selectorParty);
         
         if(selectorPartyTransfer == null) {
@@ -43,7 +43,7 @@ public class SelectorPartyTransferCache
             var partyTransfer = partyControl.getPartyTransfer(userVisit, selectorParty.getParty());
             
             selectorPartyTransfer = new SelectorPartyTransfer(selectorTransfer, partyTransfer);
-            put(selectorParty, selectorPartyTransfer);
+            put(userVisit, selectorParty, selectorPartyTransfer);
         }
         
         return selectorPartyTransfer;

@@ -25,12 +25,12 @@ public class AllocationPriorityDescriptionTransferCache
         extends BaseInventoryDescriptionTransferCache<AllocationPriorityDescription, AllocationPriorityDescriptionTransfer> {
     
     /** Creates a new instance of AllocationPriorityDescriptionTransferCache */
-    public AllocationPriorityDescriptionTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    public AllocationPriorityDescriptionTransferCache(InventoryControl inventoryControl) {
+        super(inventoryControl);
     }
     
     @Override
-    public AllocationPriorityDescriptionTransfer getTransfer(AllocationPriorityDescription allocationPriorityDescription) {
+    public AllocationPriorityDescriptionTransfer getTransfer(UserVisit userVisit, AllocationPriorityDescription allocationPriorityDescription) {
         var allocationPriorityDescriptionTransfer = get(allocationPriorityDescription);
         
         if(allocationPriorityDescriptionTransfer == null) {
@@ -38,7 +38,7 @@ public class AllocationPriorityDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, allocationPriorityDescription.getLanguage());
             
             allocationPriorityDescriptionTransfer = new AllocationPriorityDescriptionTransfer(languageTransfer, allocationPriorityTransfer, allocationPriorityDescription.getDescription());
-            put(allocationPriorityDescription, allocationPriorityDescriptionTransfer);
+            put(userVisit, allocationPriorityDescription, allocationPriorityDescriptionTransfer);
         }
         
         return allocationPriorityDescriptionTransfer;

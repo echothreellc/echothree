@@ -25,14 +25,14 @@ public class ItemDescriptionTypeUseTypeTransferCache
         extends BaseItemTransferCache<ItemDescriptionTypeUseType, ItemDescriptionTypeUseTypeTransfer> {
     
     /** Creates a new instance of ItemDescriptionTypeUseTypeTransferCache */
-    public ItemDescriptionTypeUseTypeTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    public ItemDescriptionTypeUseTypeTransferCache(ItemControl itemControl) {
+        super(itemControl);
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public ItemDescriptionTypeUseTypeTransfer getTransfer(ItemDescriptionTypeUseType itemDescriptionTypeUseType) {
+    public ItemDescriptionTypeUseTypeTransfer getTransfer(UserVisit userVisit, ItemDescriptionTypeUseType itemDescriptionTypeUseType) {
         var itemDescriptionTypeUseTypeTransfer = get(itemDescriptionTypeUseType);
         
         if(itemDescriptionTypeUseTypeTransfer == null) {
@@ -40,10 +40,10 @@ public class ItemDescriptionTypeUseTypeTransferCache
             var itemDescriptionTypeUseTypeName = itemDescriptionTypeUseTypeDetail.getItemDescriptionTypeUseTypeName();
             var isDefault = itemDescriptionTypeUseTypeDetail.getIsDefault();
             var sortOrder = itemDescriptionTypeUseTypeDetail.getSortOrder();
-            var description = itemControl.getBestItemDescriptionTypeUseTypeDescription(itemDescriptionTypeUseType, getLanguage());
+            var description = itemControl.getBestItemDescriptionTypeUseTypeDescription(itemDescriptionTypeUseType, getLanguage(userVisit));
             
             itemDescriptionTypeUseTypeTransfer = new ItemDescriptionTypeUseTypeTransfer(itemDescriptionTypeUseTypeName, isDefault, sortOrder, description);
-            put(itemDescriptionTypeUseType, itemDescriptionTypeUseTypeTransfer);
+            put(userVisit, itemDescriptionTypeUseType, itemDescriptionTypeUseTypeTransfer);
         }
         
         return itemDescriptionTypeUseTypeTransfer;

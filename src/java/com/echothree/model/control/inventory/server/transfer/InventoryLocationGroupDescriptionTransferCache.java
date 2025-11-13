@@ -25,21 +25,21 @@ public class InventoryLocationGroupDescriptionTransferCache
         extends BaseInventoryDescriptionTransferCache<InventoryLocationGroupDescription, InventoryLocationGroupDescriptionTransfer> {
     
     /** Creates a new instance of InventoryLocationGroupDescriptionTransferCache */
-    public InventoryLocationGroupDescriptionTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    public InventoryLocationGroupDescriptionTransferCache(InventoryControl inventoryControl) {
+        super(inventoryControl);
     }
     
     @Override
-    public InventoryLocationGroupDescriptionTransfer getTransfer(InventoryLocationGroupDescription inventoryLocationGroupDescription) {
+    public InventoryLocationGroupDescriptionTransfer getTransfer(UserVisit userVisit, InventoryLocationGroupDescription inventoryLocationGroupDescription) {
         var inventoryLocationGroupDescriptionTransfer = get(inventoryLocationGroupDescription);
         
         if(inventoryLocationGroupDescriptionTransfer == null) {
-            var inventoryLocationGroupTransferCache = inventoryControl.getInventoryTransferCaches(userVisit).getInventoryLocationGroupTransferCache();
-            var inventoryLocationGroupTransfer = inventoryLocationGroupTransferCache.getTransfer(inventoryLocationGroupDescription.getInventoryLocationGroup());
+            var inventoryLocationGroupTransferCache = inventoryControl.getInventoryTransferCaches().getInventoryLocationGroupTransferCache();
+            var inventoryLocationGroupTransfer = inventoryLocationGroupTransferCache.getTransfer(userVisit, inventoryLocationGroupDescription.getInventoryLocationGroup());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, inventoryLocationGroupDescription.getLanguage());
             
             inventoryLocationGroupDescriptionTransfer = new InventoryLocationGroupDescriptionTransfer(languageTransfer, inventoryLocationGroupTransfer, inventoryLocationGroupDescription.getDescription());
-            put(inventoryLocationGroupDescription, inventoryLocationGroupDescriptionTransfer);
+            put(userVisit, inventoryLocationGroupDescription, inventoryLocationGroupDescriptionTransfer);
         }
         
         return inventoryLocationGroupDescriptionTransfer;

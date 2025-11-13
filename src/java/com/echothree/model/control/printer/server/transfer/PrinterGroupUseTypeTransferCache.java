@@ -29,13 +29,13 @@ public class PrinterGroupUseTypeTransferCache
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of PrinterGroupUseTypeTransferCache */
-    public PrinterGroupUseTypeTransferCache(UserVisit userVisit, PrinterControl printerControl) {
-        super(userVisit, printerControl);
+    public PrinterGroupUseTypeTransferCache(PrinterControl printerControl) {
+        super(printerControl);
         
         setIncludeEntityInstance(true);
     }
 
-    public PrinterGroupUseTypeTransfer getPrinterGroupUseTypeTransfer(PrinterGroupUseType printerGroupUseType) {
+    public PrinterGroupUseTypeTransfer getPrinterGroupUseTypeTransfer(UserVisit userVisit, PrinterGroupUseType printerGroupUseType) {
         var printerGroupUseTypeTransfer = get(printerGroupUseType);
 
         if(printerGroupUseTypeTransfer == null) {
@@ -43,10 +43,10 @@ public class PrinterGroupUseTypeTransferCache
             var printerGroupUseTypeName = printerGroupUseTypeDetail.getPrinterGroupUseTypeName();
             var isDefault = printerGroupUseTypeDetail.getIsDefault();
             var sortOrder = printerGroupUseTypeDetail.getSortOrder();
-            var description = printerControl.getBestPrinterGroupUseTypeDescription(printerGroupUseType, getLanguage());
+            var description = printerControl.getBestPrinterGroupUseTypeDescription(printerGroupUseType, getLanguage(userVisit));
 
             printerGroupUseTypeTransfer = new PrinterGroupUseTypeTransfer(printerGroupUseTypeName, isDefault, sortOrder, description);
-            put(printerGroupUseType, printerGroupUseTypeTransfer);
+            put(userVisit, printerGroupUseType, printerGroupUseTypeTransfer);
         }
 
         return printerGroupUseTypeTransfer;

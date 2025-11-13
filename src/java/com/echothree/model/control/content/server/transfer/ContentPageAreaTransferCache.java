@@ -47,8 +47,8 @@ public class ContentPageAreaTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of ContentPageAreaTransferCache */
-    public ContentPageAreaTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    public ContentPageAreaTransferCache(ContentControl contentControl) {
+        super(contentControl);
 
         var options = session.getOptions();
         if(options != null) {
@@ -74,7 +74,7 @@ public class ContentPageAreaTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
 
-    public ContentPageAreaTransfer getContentPageAreaTransfer(ContentPageArea contentPageArea) {
+    public ContentPageAreaTransfer getContentPageAreaTransfer(UserVisit userVisit, ContentPageArea contentPageArea) {
         var contentPageAreaTransfer = get(contentPageArea);
         
         if(contentPageAreaTransfer == null) {
@@ -125,7 +125,7 @@ public class ContentPageAreaTransferCache
 
             contentPageAreaTransfer = new ContentPageAreaTransfer(contentPageTransfer, contentPageLayoutAreaTransfer, languageTransfer, mimeTypeTransfer,
                     blob, clob, string, url);
-            put(contentPageArea, contentPageAreaTransfer);
+            put(userVisit, contentPageArea, contentPageAreaTransfer);
         }
         
         return contentPageAreaTransfer;

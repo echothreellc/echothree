@@ -28,13 +28,13 @@ public class FontStyleTransferCache
     FontControl fontControl = Session.getModelController(FontControl.class);
 
     /** Creates a new instance of FontStyleTransferCache */
-    public FontStyleTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public FontStyleTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
 
-    public FontStyleTransfer getFontStyleTransfer(FontStyle fontStyle) {
+    public FontStyleTransfer getFontStyleTransfer(UserVisit userVisit, FontStyle fontStyle) {
         var fontStyleTransfer = get(fontStyle);
 
         if(fontStyleTransfer == null) {
@@ -42,10 +42,10 @@ public class FontStyleTransferCache
             var fontStyleName = fontStyleDetail.getFontStyleName();
             var isDefault = fontStyleDetail.getIsDefault();
             var sortOrder = fontStyleDetail.getSortOrder();
-            var description = fontControl.getBestFontStyleDescription(fontStyle, getLanguage());
+            var description = fontControl.getBestFontStyleDescription(fontStyle, getLanguage(userVisit));
 
             fontStyleTransfer = new FontStyleTransfer(fontStyleName, isDefault, sortOrder, description);
-            put(fontStyle, fontStyleTransfer);
+            put(userVisit, fontStyle, fontStyleTransfer);
         }
 
         return fontStyleTransfer;

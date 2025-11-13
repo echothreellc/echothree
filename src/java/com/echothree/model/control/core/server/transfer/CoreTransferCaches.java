@@ -116,650 +116,650 @@ public class CoreTransferCaches
     protected EntityAppearanceTransferCache entityAppearanceTransferCache;
     
     /** Creates a new instance of CoreTransferCaches */
-    public CoreTransferCaches(UserVisit userVisit) {
-        super(userVisit);
+    public CoreTransferCaches() {
+        super();
     }
     
     public ComponentVendorTransferCache getComponentVendorTransferCache() {
         if(componentVendorTransferCache == null)
-            componentVendorTransferCache = new ComponentVendorTransferCache(userVisit);
+            componentVendorTransferCache = new ComponentVendorTransferCache();
 
         return componentVendorTransferCache;
     }
 
     public EntityTypeTransferCache getEntityTypeTransferCache() {
         if(entityTypeTransferCache == null)
-            entityTypeTransferCache = new EntityTypeTransferCache(userVisit);
+            entityTypeTransferCache = new EntityTypeTransferCache();
         
         return entityTypeTransferCache;
     }
     
     public EntityTypeDescriptionTransferCache getEntityTypeDescriptionTransferCache() {
         if(entityTypeDescriptionTransferCache == null)
-            entityTypeDescriptionTransferCache = new EntityTypeDescriptionTransferCache(userVisit);
+            entityTypeDescriptionTransferCache = new EntityTypeDescriptionTransferCache();
         
         return entityTypeDescriptionTransferCache;
     }
     
     public CommandTransferCache getCommandTransferCache() {
         if(commandTransferCache == null)
-            commandTransferCache = new CommandTransferCache(userVisit);
+            commandTransferCache = new CommandTransferCache();
         
         return commandTransferCache;
     }
     
     public CommandDescriptionTransferCache getCommandDescriptionTransferCache() {
         if(commandDescriptionTransferCache == null)
-            commandDescriptionTransferCache = new CommandDescriptionTransferCache(userVisit);
+            commandDescriptionTransferCache = new CommandDescriptionTransferCache();
         
         return commandDescriptionTransferCache;
     }
     
     public CommandMessageTransferCache getCommandMessageTransferCache() {
         if(commandMessageTransferCache == null)
-            commandMessageTransferCache = new CommandMessageTransferCache(userVisit);
+            commandMessageTransferCache = new CommandMessageTransferCache();
         
         return commandMessageTransferCache;
     }
     
     public CommandMessageTranslationTransferCache getCommandMessageTranslationTransferCache() {
         if(commandMessageTranslationTransferCache == null)
-            commandMessageTranslationTransferCache = new CommandMessageTranslationTransferCache(userVisit);
+            commandMessageTranslationTransferCache = new CommandMessageTranslationTransferCache();
         
         return commandMessageTranslationTransferCache;
     }
 
     public EntityAliasTransferCache getEntityAliasTransferCache() {
         if(entityAliasTransferCache == null)
-            entityAliasTransferCache = new EntityAliasTransferCache(userVisit);
+            entityAliasTransferCache = new EntityAliasTransferCache();
 
         return entityAliasTransferCache;
     }
 
     public EntityAliasTypeTransferCache getEntityAliasTypeTransferCache() {
         if(entityAliasTypeTransferCache == null)
-            entityAliasTypeTransferCache = new EntityAliasTypeTransferCache(userVisit);
+            entityAliasTypeTransferCache = new EntityAliasTypeTransferCache();
 
         return entityAliasTypeTransferCache;
     }
 
     public EntityAliasTypeDescriptionTransferCache getEntityAliasTypeDescriptionTransferCache() {
         if(entityAliasTypeDescriptionTransferCache == null)
-            entityAliasTypeDescriptionTransferCache = new EntityAliasTypeDescriptionTransferCache(userVisit);
+            entityAliasTypeDescriptionTransferCache = new EntityAliasTypeDescriptionTransferCache();
 
         return entityAliasTypeDescriptionTransferCache;
     }
 
     public EntityAttributeTransferCache getEntityAttributeTransferCache() {
         if(entityAttributeTransferCache == null)
-            entityAttributeTransferCache = new EntityAttributeTransferCache(userVisit);
+            entityAttributeTransferCache = new EntityAttributeTransferCache();
 
         return entityAttributeTransferCache;
     }
 
     public EntityAttributeDescriptionTransferCache getEntityAttributeDescriptionTransferCache() {
         if(entityAttributeDescriptionTransferCache == null)
-            entityAttributeDescriptionTransferCache = new EntityAttributeDescriptionTransferCache(userVisit);
+            entityAttributeDescriptionTransferCache = new EntityAttributeDescriptionTransferCache();
 
         return entityAttributeDescriptionTransferCache;
     }
 
     public EntityAttributeEntityAttributeGroupTransferCache getEntityAttributeEntityAttributeGroupTransferCache() {
         if(entityAttributeEntityAttributeGroupTransferCache == null)
-            entityAttributeEntityAttributeGroupTransferCache = new EntityAttributeEntityAttributeGroupTransferCache(userVisit);
+            entityAttributeEntityAttributeGroupTransferCache = new EntityAttributeEntityAttributeGroupTransferCache();
         
         return entityAttributeEntityAttributeGroupTransferCache;
     }
     
     public EntityAttributeGroupTransferCache getEntityAttributeGroupTransferCache() {
         if(entityAttributeGroupTransferCache == null)
-            entityAttributeGroupTransferCache = new EntityAttributeGroupTransferCache(userVisit);
+            entityAttributeGroupTransferCache = new EntityAttributeGroupTransferCache();
         
         return entityAttributeGroupTransferCache;
     }
     
     public EntityAttributeGroupDescriptionTransferCache getEntityAttributeGroupDescriptionTransferCache() {
         if(entityAttributeGroupDescriptionTransferCache == null)
-            entityAttributeGroupDescriptionTransferCache = new EntityAttributeGroupDescriptionTransferCache(userVisit);
+            entityAttributeGroupDescriptionTransferCache = new EntityAttributeGroupDescriptionTransferCache();
         
         return entityAttributeGroupDescriptionTransferCache;
     }
     
     public EntityListItemTransferCache getEntityListItemTransferCache() {
         if(entityListItemTransferCache == null)
-            entityListItemTransferCache = new EntityListItemTransferCache(userVisit);
+            entityListItemTransferCache = new EntityListItemTransferCache();
         
         return entityListItemTransferCache;
     }
     
     public EntityListItemDescriptionTransferCache getEntityListItemDescriptionTransferCache() {
         if(entityListItemDescriptionTransferCache == null)
-            entityListItemDescriptionTransferCache = new EntityListItemDescriptionTransferCache(userVisit);
+            entityListItemDescriptionTransferCache = new EntityListItemDescriptionTransferCache();
         
         return entityListItemDescriptionTransferCache;
     }
     
     public EntityIntegerRangeTransferCache getEntityIntegerRangeTransferCache() {
         if(entityIntegerRangeTransferCache == null)
-            entityIntegerRangeTransferCache = new EntityIntegerRangeTransferCache(userVisit);
+            entityIntegerRangeTransferCache = new EntityIntegerRangeTransferCache();
         
         return entityIntegerRangeTransferCache;
     }
     
     public EntityIntegerRangeDescriptionTransferCache getEntityIntegerRangeDescriptionTransferCache() {
         if(entityIntegerRangeDescriptionTransferCache == null)
-            entityIntegerRangeDescriptionTransferCache = new EntityIntegerRangeDescriptionTransferCache(userVisit);
+            entityIntegerRangeDescriptionTransferCache = new EntityIntegerRangeDescriptionTransferCache();
         
         return entityIntegerRangeDescriptionTransferCache;
     }
     
     public EntityLongRangeTransferCache getEntityLongRangeTransferCache() {
         if(entityLongRangeTransferCache == null)
-            entityLongRangeTransferCache = new EntityLongRangeTransferCache(userVisit);
+            entityLongRangeTransferCache = new EntityLongRangeTransferCache();
         
         return entityLongRangeTransferCache;
     }
     
     public EntityLongRangeDescriptionTransferCache getEntityLongRangeDescriptionTransferCache() {
         if(entityLongRangeDescriptionTransferCache == null)
-            entityLongRangeDescriptionTransferCache = new EntityLongRangeDescriptionTransferCache(userVisit);
+            entityLongRangeDescriptionTransferCache = new EntityLongRangeDescriptionTransferCache();
         
         return entityLongRangeDescriptionTransferCache;
     }
     
     public EntityAttributeTypeTransferCache getEntityAttributeTypeTransferCache() {
         if(entityAttributeTypeTransferCache == null)
-            entityAttributeTypeTransferCache = new EntityAttributeTypeTransferCache(userVisit);
+            entityAttributeTypeTransferCache = new EntityAttributeTypeTransferCache();
         
         return entityAttributeTypeTransferCache;
     }
     
     public EventTypeTransferCache getEventTypeTransferCache() {
         if(eventTypeTransferCache == null)
-            eventTypeTransferCache = new EventTypeTransferCache(userVisit);
+            eventTypeTransferCache = new EventTypeTransferCache();
         
         return eventTypeTransferCache;
     }
     
     public MimeTypeTransferCache getMimeTypeTransferCache() {
         if(mimeTypeTransferCache == null)
-            mimeTypeTransferCache = new MimeTypeTransferCache(userVisit);
+            mimeTypeTransferCache = new MimeTypeTransferCache();
 
         return mimeTypeTransferCache;
     }
 
     public MimeTypeDescriptionTransferCache getMimeTypeDescriptionTransferCache() {
         if(mimeTypeDescriptionTransferCache == null)
-            mimeTypeDescriptionTransferCache = new MimeTypeDescriptionTransferCache(userVisit);
+            mimeTypeDescriptionTransferCache = new MimeTypeDescriptionTransferCache();
 
         return mimeTypeDescriptionTransferCache;
     }
 
     public EntityTimeTransferCache getEntityTimeTransferCache() {
         if(entityTimeTransferCache == null)
-            entityTimeTransferCache = new EntityTimeTransferCache(userVisit);
+            entityTimeTransferCache = new EntityTimeTransferCache();
 
         return entityTimeTransferCache;
     }
 
     public EntityVisitTransferCache getEntityVisitTransferCache() {
         if(entityVisitTransferCache == null)
-            entityVisitTransferCache = new EntityVisitTransferCache(userVisit);
+            entityVisitTransferCache = new EntityVisitTransferCache();
 
         return entityVisitTransferCache;
     }
 
     public EntityInstanceTransferCache getEntityInstanceTransferCache() {
         if(entityInstanceTransferCache == null)
-            entityInstanceTransferCache = new EntityInstanceTransferCache(userVisit);
+            entityInstanceTransferCache = new EntityInstanceTransferCache();
         
         return entityInstanceTransferCache;
     }
     
     public EventGroupTransferCache getEventGroupTransferCache() {
         if(eventGroupTransferCache == null)
-            eventGroupTransferCache = new EventGroupTransferCache(userVisit);
+            eventGroupTransferCache = new EventGroupTransferCache();
         
         return eventGroupTransferCache;
     }
     
     public EventTransferCache getEventTransferCache() {
         if(eventTransferCache == null)
-            eventTransferCache = new EventTransferCache(userVisit);
+            eventTransferCache = new EventTransferCache();
         
         return eventTransferCache;
     }
     
     public EntityLockTransferCache getEntityLockTransferCache() {
         if(entityLockTransferCache == null)
-            entityLockTransferCache = new EntityLockTransferCache(userVisit);
+            entityLockTransferCache = new EntityLockTransferCache();
         
         return entityLockTransferCache;
     }
     
     public MimeTypeUsageTypeTransferCache getMimeTypeUsageTypeTransferCache() {
         if(mimeTypeUsageTypeTransferCache == null)
-            mimeTypeUsageTypeTransferCache = new MimeTypeUsageTypeTransferCache(userVisit);
+            mimeTypeUsageTypeTransferCache = new MimeTypeUsageTypeTransferCache();
         
         return mimeTypeUsageTypeTransferCache;
     }
     
     public MimeTypeUsageTransferCache getMimeTypeUsageTransferCache() {
         if(mimeTypeUsageTransferCache == null)
-            mimeTypeUsageTransferCache = new MimeTypeUsageTransferCache(userVisit);
+            mimeTypeUsageTransferCache = new MimeTypeUsageTransferCache();
         
         return mimeTypeUsageTransferCache;
     }
     
     public ServerTransferCache getServerTransferCache() {
         if(serverTransferCache == null)
-            serverTransferCache = new ServerTransferCache(userVisit);
+            serverTransferCache = new ServerTransferCache();
 
         return serverTransferCache;
     }
 
     public ServerDescriptionTransferCache getServerDescriptionTransferCache() {
         if(serverDescriptionTransferCache == null)
-            serverDescriptionTransferCache = new ServerDescriptionTransferCache(userVisit);
+            serverDescriptionTransferCache = new ServerDescriptionTransferCache();
 
         return serverDescriptionTransferCache;
     }
 
     public ServerServiceTransferCache getServerServiceTransferCache() {
         if(serverServiceTransferCache == null)
-            serverServiceTransferCache = new ServerServiceTransferCache(userVisit);
+            serverServiceTransferCache = new ServerServiceTransferCache();
 
         return serverServiceTransferCache;
     }
 
     public MimeTypeFileExtensionTransferCache getMimeTypeFileExtensionTransferCache() {
         if(mimeTypeFileExtensionTransferCache == null)
-            mimeTypeFileExtensionTransferCache = new MimeTypeFileExtensionTransferCache(userVisit);
+            mimeTypeFileExtensionTransferCache = new MimeTypeFileExtensionTransferCache();
         
         return mimeTypeFileExtensionTransferCache;
     }
     
     public EntityBlobAttributeTransferCache getEntityBlobAttributeTransferCache() {
         if(entityBlobAttributeTransferCache == null)
-            entityBlobAttributeTransferCache = new EntityBlobAttributeTransferCache(userVisit);
+            entityBlobAttributeTransferCache = new EntityBlobAttributeTransferCache();
         
         return entityBlobAttributeTransferCache;
     }
 
     public EntityBooleanDefaultTransferCache getEntityBooleanDefaultTransferCache() {
         if(entityBooleanDefaultTransferCache == null)
-            entityBooleanDefaultTransferCache = new EntityBooleanDefaultTransferCache(userVisit);
+            entityBooleanDefaultTransferCache = new EntityBooleanDefaultTransferCache();
 
         return entityBooleanDefaultTransferCache;
     }
 
     public EntityBooleanAttributeTransferCache getEntityBooleanAttributeTransferCache() {
         if(entityBooleanAttributeTransferCache == null)
-            entityBooleanAttributeTransferCache = new EntityBooleanAttributeTransferCache(userVisit);
+            entityBooleanAttributeTransferCache = new EntityBooleanAttributeTransferCache();
 
         return entityBooleanAttributeTransferCache;
     }
 
     public EntityClobAttributeTransferCache getEntityClobAttributeTransferCache() {
         if(entityClobAttributeTransferCache == null)
-            entityClobAttributeTransferCache = new EntityClobAttributeTransferCache(userVisit);
+            entityClobAttributeTransferCache = new EntityClobAttributeTransferCache();
         
         return entityClobAttributeTransferCache;
     }
 
     public EntityDateDefaultTransferCache getEntityDateDefaultTransferCache() {
         if(entityDateDefaultTransferCache == null)
-            entityDateDefaultTransferCache = new EntityDateDefaultTransferCache(userVisit);
+            entityDateDefaultTransferCache = new EntityDateDefaultTransferCache();
 
         return entityDateDefaultTransferCache;
     }
 
     public EntityDateAttributeTransferCache getEntityDateAttributeTransferCache() {
         if(entityDateAttributeTransferCache == null)
-            entityDateAttributeTransferCache = new EntityDateAttributeTransferCache(userVisit);
+            entityDateAttributeTransferCache = new EntityDateAttributeTransferCache();
 
         return entityDateAttributeTransferCache;
     }
 
     public EntityIntegerDefaultTransferCache getEntityIntegerDefaultTransferCache() {
         if(entityIntegerDefaultTransferCache == null)
-            entityIntegerDefaultTransferCache = new EntityIntegerDefaultTransferCache(userVisit);
+            entityIntegerDefaultTransferCache = new EntityIntegerDefaultTransferCache();
 
         return entityIntegerDefaultTransferCache;
     }
 
     public EntityIntegerAttributeTransferCache getEntityIntegerAttributeTransferCache() {
         if(entityIntegerAttributeTransferCache == null)
-            entityIntegerAttributeTransferCache = new EntityIntegerAttributeTransferCache(userVisit);
+            entityIntegerAttributeTransferCache = new EntityIntegerAttributeTransferCache();
         
         return entityIntegerAttributeTransferCache;
     }
 
     public EntityListItemDefaultTransferCache getEntityListItemDefaultTransferCache() {
         if(entityListItemDefaultTransferCache == null)
-            entityListItemDefaultTransferCache = new EntityListItemDefaultTransferCache(userVisit);
+            entityListItemDefaultTransferCache = new EntityListItemDefaultTransferCache();
 
         return entityListItemDefaultTransferCache;
     }
 
     public EntityListItemAttributeTransferCache getEntityListItemAttributeTransferCache() {
         if(entityListItemAttributeTransferCache == null)
-            entityListItemAttributeTransferCache = new EntityListItemAttributeTransferCache(userVisit);
+            entityListItemAttributeTransferCache = new EntityListItemAttributeTransferCache();
 
         return entityListItemAttributeTransferCache;
     }
 
     public EntityLongDefaultTransferCache getEntityLongDefaultTransferCache() {
         if(entityLongDefaultTransferCache == null)
-            entityLongDefaultTransferCache = new EntityLongDefaultTransferCache(userVisit);
+            entityLongDefaultTransferCache = new EntityLongDefaultTransferCache();
 
         return entityLongDefaultTransferCache;
     }
 
     public EntityLongAttributeTransferCache getEntityLongAttributeTransferCache() {
         if(entityLongAttributeTransferCache == null)
-            entityLongAttributeTransferCache = new EntityLongAttributeTransferCache(userVisit);
+            entityLongAttributeTransferCache = new EntityLongAttributeTransferCache();
         
         return entityLongAttributeTransferCache;
     }
 
     public EntityMultipleListItemDefaultTransferCache getEntityMultipleListItemDefaultTransferCache() {
         if(entityMultipleListItemDefaultTransferCache == null)
-            entityMultipleListItemDefaultTransferCache = new EntityMultipleListItemDefaultTransferCache(userVisit);
+            entityMultipleListItemDefaultTransferCache = new EntityMultipleListItemDefaultTransferCache();
 
         return entityMultipleListItemDefaultTransferCache;
     }
 
     public EntityMultipleListItemAttributeTransferCache getEntityMultipleListItemAttributeTransferCache() {
         if(entityMultipleListItemAttributeTransferCache == null)
-            entityMultipleListItemAttributeTransferCache = new EntityMultipleListItemAttributeTransferCache(userVisit);
+            entityMultipleListItemAttributeTransferCache = new EntityMultipleListItemAttributeTransferCache();
 
         return entityMultipleListItemAttributeTransferCache;
     }
 
     public EntityNameAttributeTransferCache getEntityNameAttributeTransferCache() {
         if(entityNameAttributeTransferCache == null)
-            entityNameAttributeTransferCache = new EntityNameAttributeTransferCache(userVisit);
+            entityNameAttributeTransferCache = new EntityNameAttributeTransferCache();
         
         return entityNameAttributeTransferCache;
     }
 
     public EntityGeoPointDefaultTransferCache getEntityGeoPointDefaultTransferCache() {
         if(entityGeoPointDefaultTransferCache == null)
-            entityGeoPointDefaultTransferCache = new EntityGeoPointDefaultTransferCache(userVisit);
+            entityGeoPointDefaultTransferCache = new EntityGeoPointDefaultTransferCache();
 
         return entityGeoPointDefaultTransferCache;
     }
 
     public EntityGeoPointAttributeTransferCache getEntityGeoPointAttributeTransferCache() {
         if(entityGeoPointAttributeTransferCache == null)
-            entityGeoPointAttributeTransferCache = new EntityGeoPointAttributeTransferCache(userVisit);
+            entityGeoPointAttributeTransferCache = new EntityGeoPointAttributeTransferCache();
 
         return entityGeoPointAttributeTransferCache;
     }
 
     public EntityStringDefaultTransferCache getEntityStringDefaultTransferCache() {
         if(entityStringDefaultTransferCache == null)
-            entityStringDefaultTransferCache = new EntityStringDefaultTransferCache(userVisit);
+            entityStringDefaultTransferCache = new EntityStringDefaultTransferCache();
 
         return entityStringDefaultTransferCache;
     }
 
     public EntityStringAttributeTransferCache getEntityStringAttributeTransferCache() {
         if(entityStringAttributeTransferCache == null)
-            entityStringAttributeTransferCache = new EntityStringAttributeTransferCache(userVisit);
+            entityStringAttributeTransferCache = new EntityStringAttributeTransferCache();
 
         return entityStringAttributeTransferCache;
     }
 
     public EntityTimeDefaultTransferCache getEntityTimeDefaultTransferCache() {
         if(entityTimeDefaultTransferCache == null)
-            entityTimeDefaultTransferCache = new EntityTimeDefaultTransferCache(userVisit);
+            entityTimeDefaultTransferCache = new EntityTimeDefaultTransferCache();
 
         return entityTimeDefaultTransferCache;
     }
 
     public EntityTimeAttributeTransferCache getEntityTimeAttributeTransferCache() {
         if(entityTimeAttributeTransferCache == null)
-            entityTimeAttributeTransferCache = new EntityTimeAttributeTransferCache(userVisit);
+            entityTimeAttributeTransferCache = new EntityTimeAttributeTransferCache();
 
         return entityTimeAttributeTransferCache;
     }
 
     public EntityAttributeEntityTypeTransferCache getEntityAttributeEntityTypeTransferCache() {
         if(entityAttributeEntityTypeTransferCache == null)
-            entityAttributeEntityTypeTransferCache = new EntityAttributeEntityTypeTransferCache(userVisit);
+            entityAttributeEntityTypeTransferCache = new EntityAttributeEntityTypeTransferCache();
         
         return entityAttributeEntityTypeTransferCache;
     }
     
     public EntityEntityAttributeTransferCache getEntityEntityAttributeTransferCache() {
         if(entityEntityAttributeTransferCache == null)
-            entityEntityAttributeTransferCache = new EntityEntityAttributeTransferCache(userVisit);
+            entityEntityAttributeTransferCache = new EntityEntityAttributeTransferCache();
         
         return entityEntityAttributeTransferCache;
     }
     
     public EntityCollectionAttributeTransferCache getEntityCollectionAttributeTransferCache() {
         if(entityCollectionAttributeTransferCache == null)
-            entityCollectionAttributeTransferCache = new EntityCollectionAttributeTransferCache(userVisit);
+            entityCollectionAttributeTransferCache = new EntityCollectionAttributeTransferCache();
         
         return entityCollectionAttributeTransferCache;
     }
     
     public CommandMessageTypeTransferCache getCommandMessageTypeTransferCache() {
         if(commandMessageTypeTransferCache == null)
-            commandMessageTypeTransferCache = new CommandMessageTypeTransferCache(userVisit);
+            commandMessageTypeTransferCache = new CommandMessageTypeTransferCache();
         
         return commandMessageTypeTransferCache;
     }
     
     public CommandMessageTypeDescriptionTransferCache getCommandMessageTypeDescriptionTransferCache() {
         if(commandMessageTypeDescriptionTransferCache == null)
-            commandMessageTypeDescriptionTransferCache = new CommandMessageTypeDescriptionTransferCache(userVisit);
+            commandMessageTypeDescriptionTransferCache = new CommandMessageTypeDescriptionTransferCache();
         
         return commandMessageTypeDescriptionTransferCache;
     }
     
     public BaseEncryptionKeyTransferCache getBaseEncryptionKeyTransferCache() {
         if(baseEncryptionKeyTransferCache == null)
-            baseEncryptionKeyTransferCache = new BaseEncryptionKeyTransferCache(userVisit);
+            baseEncryptionKeyTransferCache = new BaseEncryptionKeyTransferCache();
         
         return baseEncryptionKeyTransferCache;
     }
     
     public ProtocolTransferCache getProtocolTransferCache() {
         if(protocolTransferCache == null)
-            protocolTransferCache = new ProtocolTransferCache(userVisit);
+            protocolTransferCache = new ProtocolTransferCache();
 
         return protocolTransferCache;
     }
 
     public ProtocolDescriptionTransferCache getProtocolDescriptionTransferCache() {
         if(protocolDescriptionTransferCache == null)
-            protocolDescriptionTransferCache = new ProtocolDescriptionTransferCache(userVisit);
+            protocolDescriptionTransferCache = new ProtocolDescriptionTransferCache();
 
         return protocolDescriptionTransferCache;
     }
 
     public ServiceTransferCache getServiceTransferCache() {
         if(serviceTransferCache == null)
-            serviceTransferCache = new ServiceTransferCache(userVisit);
+            serviceTransferCache = new ServiceTransferCache();
 
         return serviceTransferCache;
     }
 
     public ServiceDescriptionTransferCache getServiceDescriptionTransferCache() {
         if(serviceDescriptionTransferCache == null)
-            serviceDescriptionTransferCache = new ServiceDescriptionTransferCache(userVisit);
+            serviceDescriptionTransferCache = new ServiceDescriptionTransferCache();
 
         return serviceDescriptionTransferCache;
     }
 
     public CacheEntryTransferCache getCacheEntryTransferCache() {
         if(cacheEntryTransferCache == null)
-            cacheEntryTransferCache = new CacheEntryTransferCache(userVisit);
+            cacheEntryTransferCache = new CacheEntryTransferCache();
 
         return cacheEntryTransferCache;
     }
 
     public CacheEntryDependencyTransferCache getCacheEntryDependencyTransferCache() {
         if(cacheEntryDependencyTransferCache == null)
-            cacheEntryDependencyTransferCache = new CacheEntryDependencyTransferCache(userVisit);
+            cacheEntryDependencyTransferCache = new CacheEntryDependencyTransferCache();
 
         return cacheEntryDependencyTransferCache;
     }
 
     public ApplicationTransferCache getApplicationTransferCache() {
         if(applicationTransferCache == null)
-            applicationTransferCache = new ApplicationTransferCache(userVisit);
+            applicationTransferCache = new ApplicationTransferCache();
 
         return applicationTransferCache;
     }
 
     public ApplicationDescriptionTransferCache getApplicationDescriptionTransferCache() {
         if(applicationDescriptionTransferCache == null)
-            applicationDescriptionTransferCache = new ApplicationDescriptionTransferCache(userVisit);
+            applicationDescriptionTransferCache = new ApplicationDescriptionTransferCache();
 
         return applicationDescriptionTransferCache;
     }
 
     public EditorTransferCache getEditorTransferCache() {
         if(editorTransferCache == null)
-            editorTransferCache = new EditorTransferCache(userVisit);
+            editorTransferCache = new EditorTransferCache();
 
         return editorTransferCache;
     }
 
     public EditorDescriptionTransferCache getEditorDescriptionTransferCache() {
         if(editorDescriptionTransferCache == null)
-            editorDescriptionTransferCache = new EditorDescriptionTransferCache(userVisit);
+            editorDescriptionTransferCache = new EditorDescriptionTransferCache();
 
         return editorDescriptionTransferCache;
     }
 
     public ApplicationEditorTransferCache getApplicationEditorTransferCache() {
         if(applicationEditorTransferCache == null)
-            applicationEditorTransferCache = new ApplicationEditorTransferCache(userVisit);
+            applicationEditorTransferCache = new ApplicationEditorTransferCache();
 
         return applicationEditorTransferCache;
     }
 
     public ApplicationEditorUseTransferCache getApplicationEditorUseTransferCache() {
         if(applicationEditorUseTransferCache == null)
-            applicationEditorUseTransferCache = new ApplicationEditorUseTransferCache(userVisit);
+            applicationEditorUseTransferCache = new ApplicationEditorUseTransferCache();
 
         return applicationEditorUseTransferCache;
     }
 
     public ApplicationEditorUseDescriptionTransferCache getApplicationEditorUseDescriptionTransferCache() {
         if(applicationEditorUseDescriptionTransferCache == null)
-            applicationEditorUseDescriptionTransferCache = new ApplicationEditorUseDescriptionTransferCache(userVisit);
+            applicationEditorUseDescriptionTransferCache = new ApplicationEditorUseDescriptionTransferCache();
 
         return applicationEditorUseDescriptionTransferCache;
     }
 
     public ColorTransferCache getColorTransferCache() {
         if(colorTransferCache == null)
-            colorTransferCache = new ColorTransferCache(userVisit);
+            colorTransferCache = new ColorTransferCache();
 
         return colorTransferCache;
     }
 
     public ColorDescriptionTransferCache getColorDescriptionTransferCache() {
         if(colorDescriptionTransferCache == null)
-            colorDescriptionTransferCache = new ColorDescriptionTransferCache(userVisit);
+            colorDescriptionTransferCache = new ColorDescriptionTransferCache();
 
         return colorDescriptionTransferCache;
     }
 
     public FontStyleTransferCache getFontStyleTransferCache() {
         if(fontStyleTransferCache == null)
-            fontStyleTransferCache = new FontStyleTransferCache(userVisit);
+            fontStyleTransferCache = new FontStyleTransferCache();
 
         return fontStyleTransferCache;
     }
 
     public FontStyleDescriptionTransferCache getFontStyleDescriptionTransferCache() {
         if(fontStyleDescriptionTransferCache == null)
-            fontStyleDescriptionTransferCache = new FontStyleDescriptionTransferCache(userVisit);
+            fontStyleDescriptionTransferCache = new FontStyleDescriptionTransferCache();
 
         return fontStyleDescriptionTransferCache;
     }
 
     public FontWeightTransferCache getFontWeightTransferCache() {
         if(fontWeightTransferCache == null)
-            fontWeightTransferCache = new FontWeightTransferCache(userVisit);
+            fontWeightTransferCache = new FontWeightTransferCache();
 
         return fontWeightTransferCache;
     }
 
     public FontWeightDescriptionTransferCache getFontWeightDescriptionTransferCache() {
         if(fontWeightDescriptionTransferCache == null)
-            fontWeightDescriptionTransferCache = new FontWeightDescriptionTransferCache(userVisit);
+            fontWeightDescriptionTransferCache = new FontWeightDescriptionTransferCache();
 
         return fontWeightDescriptionTransferCache;
     }
 
     public TextDecorationTransferCache getTextDecorationTransferCache() {
         if(textDecorationTransferCache == null)
-            textDecorationTransferCache = new TextDecorationTransferCache(userVisit);
+            textDecorationTransferCache = new TextDecorationTransferCache();
 
         return textDecorationTransferCache;
     }
 
     public TextDecorationDescriptionTransferCache getTextDecorationDescriptionTransferCache() {
         if(textDecorationDescriptionTransferCache == null)
-            textDecorationDescriptionTransferCache = new TextDecorationDescriptionTransferCache(userVisit);
+            textDecorationDescriptionTransferCache = new TextDecorationDescriptionTransferCache();
 
         return textDecorationDescriptionTransferCache;
     }
 
     public TextTransformationTransferCache getTextTransformationTransferCache() {
         if(textTransformationTransferCache == null)
-            textTransformationTransferCache = new TextTransformationTransferCache(userVisit);
+            textTransformationTransferCache = new TextTransformationTransferCache();
 
         return textTransformationTransferCache;
     }
 
     public TextTransformationDescriptionTransferCache getTextTransformationDescriptionTransferCache() {
         if(textTransformationDescriptionTransferCache == null)
-            textTransformationDescriptionTransferCache = new TextTransformationDescriptionTransferCache(userVisit);
+            textTransformationDescriptionTransferCache = new TextTransformationDescriptionTransferCache();
 
         return textTransformationDescriptionTransferCache;
     }
 
     public AppearanceTransferCache getAppearanceTransferCache() {
         if(appearanceTransferCache == null)
-            appearanceTransferCache = new AppearanceTransferCache(userVisit);
+            appearanceTransferCache = new AppearanceTransferCache();
 
         return appearanceTransferCache;
     }
 
     public AppearanceDescriptionTransferCache getAppearanceDescriptionTransferCache() {
         if(appearanceDescriptionTransferCache == null)
-            appearanceDescriptionTransferCache = new AppearanceDescriptionTransferCache(userVisit);
+            appearanceDescriptionTransferCache = new AppearanceDescriptionTransferCache();
 
         return appearanceDescriptionTransferCache;
     }
 
     public AppearanceTextDecorationTransferCache getAppearanceTextDecorationTransferCache() {
         if(appearanceTextDecorationTransferCache == null)
-            appearanceTextDecorationTransferCache = new AppearanceTextDecorationTransferCache(userVisit);
+            appearanceTextDecorationTransferCache = new AppearanceTextDecorationTransferCache();
 
         return appearanceTextDecorationTransferCache;
     }
 
     public AppearanceTextTransformationTransferCache getAppearanceTextTransformationTransferCache() {
         if(appearanceTextTransformationTransferCache == null)
-            appearanceTextTransformationTransferCache = new AppearanceTextTransformationTransferCache(userVisit);
+            appearanceTextTransformationTransferCache = new AppearanceTextTransformationTransferCache();
 
         return appearanceTextTransformationTransferCache;
     }
 
     public EntityAppearanceTransferCache getEntityAppearanceTransferCache() {
         if(entityAppearanceTransferCache == null)
-            entityAppearanceTransferCache = new EntityAppearanceTransferCache(userVisit);
+            entityAppearanceTransferCache = new EntityAppearanceTransferCache();
         
         return entityAppearanceTransferCache;
     }

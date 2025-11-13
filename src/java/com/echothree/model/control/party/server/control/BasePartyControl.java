@@ -34,9 +34,9 @@ public class BasePartyControl
     
     private PartyTransferCaches partyTransferCaches;
     
-    public PartyTransferCaches getPartyTransferCaches(UserVisit userVisit) {
+    public PartyTransferCaches getPartyTransferCaches() {
         if(partyTransferCaches == null) {
-            partyTransferCaches = new PartyTransferCaches(userVisit);
+            partyTransferCaches = new PartyTransferCaches();
         }
         
         return partyTransferCaches;

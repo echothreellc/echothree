@@ -26,8 +26,8 @@ public class WarehouseTypeTransferCache
         extends BaseWarehouseTransferCache<WarehouseType, WarehouseTypeTransfer> {
 
     /** Creates a new instance of WarehouseTypeTransferCache */
-    public WarehouseTypeTransferCache(UserVisit userVisit, WarehouseControl warehouseControl) {
-        super(userVisit, warehouseControl);
+    public WarehouseTypeTransferCache(WarehouseControl warehouseControl) {
+        super(warehouseControl);
 
         var options = session.getOptions();
         if(options != null) {
@@ -39,7 +39,7 @@ public class WarehouseTypeTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public WarehouseTypeTransfer getTransfer(WarehouseType warehouseType) {
+    public WarehouseTypeTransfer getTransfer(UserVisit userVisit, WarehouseType warehouseType) {
         var warehouseTypeTransfer = get(warehouseType);
         
         if(warehouseTypeTransfer == null) {
@@ -48,11 +48,11 @@ public class WarehouseTypeTransferCache
             var priority = warehouseTypeDetail.getPriority();
             var isDefault = warehouseTypeDetail.getIsDefault();
             var sortOrder = warehouseTypeDetail.getSortOrder();
-            var description = warehouseControl.getBestWarehouseTypeDescription(warehouseType, getLanguage());
+            var description = warehouseControl.getBestWarehouseTypeDescription(warehouseType, getLanguage(userVisit));
             
             warehouseTypeTransfer = new WarehouseTypeTransfer(warehouseTypeName, priority, isDefault, sortOrder,
                     description);
-            put(warehouseType, warehouseTypeTransfer);
+            put(userVisit, warehouseType, warehouseTypeTransfer);
         }
         
         return warehouseTypeTransfer;

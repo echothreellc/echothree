@@ -31,11 +31,11 @@ public class MessageClobTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of MessageClobTransferCache */
-    public MessageClobTransferCache(UserVisit userVisit, MessageControl messageControl) {
-        super(userVisit, messageControl);
+    public MessageClobTransferCache(MessageControl messageControl) {
+        super(messageControl);
     }
     
-    public MessageClobTransfer getMessageClobTransfer(MessageClob messageClob) {
+    public MessageClobTransfer getMessageClobTransfer(UserVisit userVisit, MessageClob messageClob) {
         var messageClobTransfer = get(messageClob);
         
         if(messageClobTransfer == null) {
@@ -45,7 +45,7 @@ public class MessageClobTransferCache
             var clob = messageClob.getClob();
             
             messageClobTransfer = new MessageClobTransfer(message, language, mimeType, clob);
-            put(messageClob, messageClobTransfer);
+            put(userVisit, messageClob, messageClobTransfer);
         }
         
         return messageClobTransfer;

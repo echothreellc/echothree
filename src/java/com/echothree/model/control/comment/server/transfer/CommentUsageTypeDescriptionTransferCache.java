@@ -25,20 +25,20 @@ public class CommentUsageTypeDescriptionTransferCache
         extends BaseCommentDescriptionTransferCache<CommentUsageTypeDescription, CommentUsageTypeDescriptionTransfer> {
     
     /** Creates a new instance of CommentUsageTypeDescriptionTransferCache */
-    public CommentUsageTypeDescriptionTransferCache(UserVisit userVisit, CommentControl commentControl) {
-        super(userVisit, commentControl);
+    public CommentUsageTypeDescriptionTransferCache(CommentControl commentControl) {
+        super(commentControl);
     }
     
-    public CommentUsageTypeDescriptionTransfer getCommentUsageTypeDescriptionTransfer(CommentUsageTypeDescription commentUsageTypeDescription) {
+    public CommentUsageTypeDescriptionTransfer getCommentUsageTypeDescriptionTransfer(UserVisit userVisit, CommentUsageTypeDescription commentUsageTypeDescription) {
         var commentUsageTypeDescriptionTransfer = get(commentUsageTypeDescription);
         
         if(commentUsageTypeDescriptionTransfer == null) {
-            var commentUsageTypeTransferCache = commentControl.getCommentTransferCaches(userVisit).getCommentUsageTypeTransferCache();
-            var commentUsageTypeTransfer = commentUsageTypeTransferCache.getCommentUsageTypeTransfer(commentUsageTypeDescription.getCommentUsageType());
+            var commentUsageTypeTransferCache = commentControl.getCommentTransferCaches().getCommentUsageTypeTransferCache();
+            var commentUsageTypeTransfer = commentUsageTypeTransferCache.getCommentUsageTypeTransfer(userVisit, commentUsageTypeDescription.getCommentUsageType());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, commentUsageTypeDescription.getLanguage());
             
             commentUsageTypeDescriptionTransfer = new CommentUsageTypeDescriptionTransfer(languageTransfer, commentUsageTypeTransfer, commentUsageTypeDescription.getDescription());
-            put(commentUsageTypeDescription, commentUsageTypeDescriptionTransfer);
+            put(userVisit, commentUsageTypeDescription, commentUsageTypeDescriptionTransfer);
         }
         
         return commentUsageTypeDescriptionTransfer;

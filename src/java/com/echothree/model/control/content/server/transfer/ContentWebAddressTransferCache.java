@@ -26,8 +26,8 @@ public class ContentWebAddressTransferCache
         extends BaseContentTransferCache<ContentWebAddress, ContentWebAddressTransfer> {
     
     /** Creates a new instance of ContentWebAddressTransferCache */
-    public ContentWebAddressTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    public ContentWebAddressTransferCache(ContentControl contentControl) {
+        super(contentControl);
         
         var options = session.getOptions();
         if(options != null) {
@@ -39,17 +39,17 @@ public class ContentWebAddressTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public ContentWebAddressTransfer getContentWebAddressTransfer(ContentWebAddress contentWebAddress) {
+    public ContentWebAddressTransfer getContentWebAddressTransfer(UserVisit userVisit, ContentWebAddress contentWebAddress) {
         var contentWebAddressTransfer = get(contentWebAddress);
         
         if(contentWebAddressTransfer == null) {
             var contentWebAddressDetail = contentWebAddress.getLastDetail();
             var contentWebAddressName = contentWebAddressDetail.getContentWebAddressName();
             var contentCollectionTransfer = contentControl.getContentCollectionTransfer(userVisit, contentWebAddressDetail.getContentCollection());
-            var description = contentControl.getBestContentWebAddressDescription(contentWebAddress, getLanguage());
+            var description = contentControl.getBestContentWebAddressDescription(contentWebAddress, getLanguage(userVisit));
             
             contentWebAddressTransfer = new ContentWebAddressTransfer(contentWebAddressName, contentCollectionTransfer, description);
-            put(contentWebAddress, contentWebAddressTransfer);
+            put(userVisit, contentWebAddress, contentWebAddressTransfer);
         }
         
         return contentWebAddressTransfer;

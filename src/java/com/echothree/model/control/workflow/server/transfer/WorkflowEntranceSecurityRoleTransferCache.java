@@ -29,13 +29,13 @@ public class WorkflowEntranceSecurityRoleTransferCache
     SecurityControl securityControl;
     
     /** Creates a new instance of WorkflowEntranceSecurityRoleTransferCache */
-    public WorkflowEntranceSecurityRoleTransferCache(UserVisit userVisit, WorkflowControl workflowControl) {
-        super(userVisit, workflowControl);
+    public WorkflowEntranceSecurityRoleTransferCache(WorkflowControl workflowControl) {
+        super(workflowControl);
         
         securityControl = Session.getModelController(SecurityControl.class);
     }
     
-    public WorkflowEntranceSecurityRoleTransfer getWorkflowEntranceSecurityRoleTransfer(WorkflowEntranceSecurityRole workflowEntranceSecurityRole) {
+    public WorkflowEntranceSecurityRoleTransfer getWorkflowEntranceSecurityRoleTransfer(UserVisit userVisit, WorkflowEntranceSecurityRole workflowEntranceSecurityRole) {
         var workflowEntranceSecurityRoleTransfer = get(workflowEntranceSecurityRole);
         
         if(workflowEntranceSecurityRoleTransfer == null) {
@@ -43,7 +43,7 @@ public class WorkflowEntranceSecurityRoleTransferCache
             var securityRole = securityControl.getSecurityRoleTransfer(userVisit, workflowEntranceSecurityRole.getSecurityRole());
             
             workflowEntranceSecurityRoleTransfer = new WorkflowEntranceSecurityRoleTransfer(workflowEntrancePartyType, securityRole);
-            put(workflowEntranceSecurityRole, workflowEntranceSecurityRoleTransfer);
+            put(userVisit, workflowEntranceSecurityRole, workflowEntranceSecurityRoleTransfer);
         }
         
         return workflowEntranceSecurityRoleTransfer;

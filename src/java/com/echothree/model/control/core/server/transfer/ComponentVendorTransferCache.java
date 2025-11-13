@@ -31,8 +31,8 @@ public class ComponentVendorTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of ComponentVendorTransferCache */
-    public ComponentVendorTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public ComponentVendorTransferCache() {
+        super();
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
@@ -48,7 +48,7 @@ public class ComponentVendorTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
     
-    public ComponentVendorTransfer getComponentVendorTransfer(ComponentVendor componentVendor) {
+    public ComponentVendorTransfer getComponentVendorTransfer(UserVisit userVisit, ComponentVendor componentVendor) {
         var componentVendorTransfer = get(componentVendor);
         
         if(componentVendorTransfer == null) {
@@ -57,7 +57,7 @@ public class ComponentVendorTransferCache
             var description = filterDescription ? null : componentVendorDetail.getDescription();
             
             componentVendorTransfer = new ComponentVendorTransfer(componentVendorName, description);
-            put(componentVendor, componentVendorTransfer);
+            put(userVisit, componentVendor, componentVendorTransfer);
         }
         
         return componentVendorTransfer;

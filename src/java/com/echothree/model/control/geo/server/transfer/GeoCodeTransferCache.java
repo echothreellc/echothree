@@ -28,8 +28,8 @@ public class GeoCodeTransferCache
     boolean includeAliases;
     
     /** Creates a new instance of GeoCodeTransferCache */
-    public GeoCodeTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
+    public GeoCodeTransferCache(GeoControl geoControl) {
+        super(geoControl);
         
         var options = session.getOptions();
         if(options != null) {
@@ -39,7 +39,7 @@ public class GeoCodeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public GeoCodeTransfer getGeoCodeTransfer(GeoCode geoCode) {
+    public GeoCodeTransfer getGeoCodeTransfer(UserVisit userVisit, GeoCode geoCode) {
         var geoCodeTransfer = get(geoCode);
         
         if(geoCodeTransfer == null) {
@@ -49,13 +49,13 @@ public class GeoCodeTransferCache
             var geoCodeScope = geoControl.getGeoCodeScopeTransfer(userVisit, geoCodeDetail.getGeoCodeScope());
             var isDefault = geoCodeDetail.getIsDefault();
             var sortOrder = geoCodeDetail.getSortOrder();
-            var description = geoControl.getBestGeoCodeDescription(geoCode, getLanguage());
+            var description = geoControl.getBestGeoCodeDescription(geoCode, getLanguage(userVisit));
             
             geoCodeTransfer = new GeoCodeTransfer(geoCodeName, geoCodeType, geoCodeScope, isDefault, sortOrder, description);
-            put(geoCode, geoCodeTransfer);
+            put(userVisit, geoCode, geoCodeTransfer);
             
             if(includeAliases) {
-                setupGeoCodeAliasTransfers(geoCode, geoCodeTransfer);
+                setupGeoCodeAliasTransfers(userVisit, geoCode, geoCodeTransfer);
             }
         }
         

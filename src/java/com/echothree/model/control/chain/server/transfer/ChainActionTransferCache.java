@@ -29,8 +29,8 @@ public class ChainActionTransferCache
     boolean includeRelated;
 
     /** Creates a new instance of ChainActionTransferCache */
-    public ChainActionTransferCache(UserVisit userVisit, ChainControl chainControl) {
-        super(userVisit, chainControl);
+    public ChainActionTransferCache(ChainControl chainControl) {
+        super(chainControl);
 
         var options = session.getOptions();
         if(options != null) {
@@ -40,7 +40,7 @@ public class ChainActionTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public ChainActionTransfer getChainActionTransfer(ChainAction chainAction) {
+    public ChainActionTransfer getChainActionTransfer(UserVisit userVisit, ChainAction chainAction) {
         var chainActionTransfer = get(chainAction);
 
         if(chainActionTransfer == null) {
@@ -50,10 +50,10 @@ public class ChainActionTransferCache
             var chainActionType = chainActionDetail.getChainActionType();
             var chainActionTypeTransfer = chainControl.getChainActionTypeTransfer(userVisit, chainActionType);
             var sortOrder = chainActionDetail.getSortOrder();
-            var description = chainControl.getBestChainActionDescription(chainAction, getLanguage());
+            var description = chainControl.getBestChainActionDescription(chainAction, getLanguage(userVisit));
 
             chainActionTransfer = new ChainActionTransfer(chainActionSetTransfer, chainActionName, chainActionTypeTransfer, sortOrder, description);
-            put(chainAction, chainActionTransfer);
+            put(userVisit, chainAction, chainActionTransfer);
 
             if(includeRelated) {
                 var chainActionTypeName = chainActionType.getLastDetail().getChainActionTypeName();

@@ -25,11 +25,11 @@ public class TerminationTypeDescriptionTransferCache
         extends BaseEmployeeDescriptionTransferCache<TerminationTypeDescription, TerminationTypeDescriptionTransfer> {
     
     /** Creates a new instance of TerminationTypeDescriptionTransferCache */
-    public TerminationTypeDescriptionTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit, employeeControl);
+    public TerminationTypeDescriptionTransferCache(EmployeeControl employeeControl) {
+        super(employeeControl);
     }
     
-    public TerminationTypeDescriptionTransfer getTerminationTypeDescriptionTransfer(TerminationTypeDescription terminationTypeDescription) {
+    public TerminationTypeDescriptionTransfer getTerminationTypeDescriptionTransfer(UserVisit userVisit, TerminationTypeDescription terminationTypeDescription) {
         var terminationTypeDescriptionTransfer = get(terminationTypeDescription);
         
         if(terminationTypeDescriptionTransfer == null) {
@@ -38,7 +38,7 @@ public class TerminationTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, terminationTypeDescription.getLanguage());
             
             terminationTypeDescriptionTransfer = new TerminationTypeDescriptionTransfer(languageTransfer, terminationTypeTransfer, terminationTypeDescription.getDescription());
-            put(terminationTypeDescription, terminationTypeDescriptionTransfer);
+            put(userVisit, terminationTypeDescription, terminationTypeDescriptionTransfer);
         }
         
         return terminationTypeDescriptionTransfer;

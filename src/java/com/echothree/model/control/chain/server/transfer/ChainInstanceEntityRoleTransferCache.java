@@ -29,11 +29,11 @@ public class ChainInstanceEntityRoleTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     
     /** Creates a new instance of ChainInstanceEntityRoleTransferCache */
-    public ChainInstanceEntityRoleTransferCache(UserVisit userVisit, ChainControl chainControl) {
-        super(userVisit, chainControl);
+    public ChainInstanceEntityRoleTransferCache(ChainControl chainControl) {
+        super(chainControl);
     }
     
-    public ChainInstanceEntityRoleTransfer getChainInstanceEntityRoleTransfer(ChainInstanceEntityRole chainInstanceEntityRole) {
+    public ChainInstanceEntityRoleTransfer getChainInstanceEntityRoleTransfer(UserVisit userVisit, ChainInstanceEntityRole chainInstanceEntityRole) {
         var chainInstanceEntityRoleTransfer = get(chainInstanceEntityRole);
         
         if(chainInstanceEntityRoleTransfer == null) {
@@ -42,7 +42,7 @@ public class ChainInstanceEntityRoleTransferCache
             var entityInstance = entityInstanceControl.getEntityInstanceTransfer(userVisit, chainInstanceEntityRole.getEntityInstance(), false, false, false, false);
             
             chainInstanceEntityRoleTransfer = new ChainInstanceEntityRoleTransfer(chainInstance, chainEntityRoleType, entityInstance);
-            put(chainInstanceEntityRole, chainInstanceEntityRoleTransfer);
+            put(userVisit, chainInstanceEntityRole, chainInstanceEntityRoleTransfer);
         }
         
         return chainInstanceEntityRoleTransfer;

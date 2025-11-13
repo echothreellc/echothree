@@ -30,11 +30,11 @@ public class EntityAliasTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of EntityAliasTransferCache */
-    public EntityAliasTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    public EntityAliasTransferCache() {
+        super();
     }
     
-    public EntityAliasTransfer getEntityAliasTransfer(EntityAlias entityAlias) {
+    public EntityAliasTransfer getEntityAliasTransfer(UserVisit userVisit, EntityAlias entityAlias) {
         var entityAliasTransfer = get(entityAlias);
         
         if(entityAliasTransfer == null) {
@@ -44,7 +44,7 @@ public class EntityAliasTransferCache
             var entityInstanceTransfer = entityInstanceControl.getEntityInstanceTransfer(userVisit, entityAlias.getEntityInstance(), false, false, false, false);
             
             entityAliasTransfer = new EntityAliasTransfer(entityAliasType, alias, entityInstanceTransfer);
-            put(entityAlias, entityAliasTransfer);
+            put(userVisit, entityAlias, entityAliasTransfer);
         }
         
         return entityAliasTransfer;

@@ -29,13 +29,13 @@ public class PartyContactMechanismAliasTransferCache
     PartyControl partyControl;
     
     /** Creates a new instance of PartyContactMechanismAliasTransferCache */
-    public PartyContactMechanismAliasTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    public PartyContactMechanismAliasTransferCache(ContactControl contactControl) {
+        super(contactControl);
         
         partyControl = Session.getModelController(PartyControl.class);
     }
     
-    public PartyContactMechanismAliasTransfer getPartyContactMechanismAliasTransfer(PartyContactMechanismAlias partyContactMechanismAlias) {
+    public PartyContactMechanismAliasTransfer getPartyContactMechanismAliasTransfer(UserVisit userVisit, PartyContactMechanismAlias partyContactMechanismAlias) {
         var partyContactMechanismAliasTransfer = get(partyContactMechanismAlias);
         
         if(partyContactMechanismAliasTransfer == null) {
@@ -48,7 +48,7 @@ public class PartyContactMechanismAliasTransferCache
             
             partyContactMechanismAliasTransfer = new PartyContactMechanismAliasTransfer(party, contactMechanism,
                     contactMechanismAliasType, alias);
-            put(partyContactMechanismAlias, partyContactMechanismAliasTransfer);
+            put(userVisit, partyContactMechanismAlias, partyContactMechanismAliasTransfer);
         }
         
         return partyContactMechanismAliasTransfer;

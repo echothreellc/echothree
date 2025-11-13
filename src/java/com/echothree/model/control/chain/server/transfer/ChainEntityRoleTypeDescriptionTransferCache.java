@@ -25,11 +25,11 @@ public class ChainEntityRoleTypeDescriptionTransferCache
         extends BaseChainDescriptionTransferCache<ChainEntityRoleTypeDescription, ChainEntityRoleTypeDescriptionTransfer> {
     
     /** Creates a new instance of ChainEntityRoleTypeDescriptionTransferCache */
-    public ChainEntityRoleTypeDescriptionTransferCache(UserVisit userVisit, ChainControl chainControl) {
-        super(userVisit, chainControl);
+    public ChainEntityRoleTypeDescriptionTransferCache(ChainControl chainControl) {
+        super(chainControl);
     }
     
-    public ChainEntityRoleTypeDescriptionTransfer getChainEntityRoleTypeDescriptionTransfer(ChainEntityRoleTypeDescription chainEntityRoleTypeDescription) {
+    public ChainEntityRoleTypeDescriptionTransfer getChainEntityRoleTypeDescriptionTransfer(UserVisit userVisit, ChainEntityRoleTypeDescription chainEntityRoleTypeDescription) {
         var chainEntityRoleTypeDescriptionTransfer = get(chainEntityRoleTypeDescription);
         
         if(chainEntityRoleTypeDescriptionTransfer == null) {
@@ -37,7 +37,7 @@ public class ChainEntityRoleTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, chainEntityRoleTypeDescription.getLanguage());
             
             chainEntityRoleTypeDescriptionTransfer = new ChainEntityRoleTypeDescriptionTransfer(languageTransfer, chainEntityRoleTypeTransfer, chainEntityRoleTypeDescription.getDescription());
-            put(chainEntityRoleTypeDescription, chainEntityRoleTypeDescriptionTransfer);
+            put(userVisit, chainEntityRoleTypeDescription, chainEntityRoleTypeDescriptionTransfer);
         }
         
         return chainEntityRoleTypeDescriptionTransfer;

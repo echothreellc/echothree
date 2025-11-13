@@ -29,8 +29,8 @@ public abstract class BaseCommentDescriptionTransferCache<K extends BaseEntity, 
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of BaseCommentDescriptionTransferCache */
-    protected BaseCommentDescriptionTransferCache(UserVisit userVisit, CommentControl commentControl) {
-        super(userVisit, commentControl);
+    protected BaseCommentDescriptionTransferCache(CommentControl commentControl) {
+        super(commentControl);
     }
     
 }

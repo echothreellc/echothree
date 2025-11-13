@@ -25,11 +25,11 @@ public class WorkRequirementTypeDescriptionTransferCache
         extends BaseWorkRequirementDescriptionTransferCache<WorkRequirementTypeDescription, WorkRequirementTypeDescriptionTransfer> {
     
     /** Creates a new instance of WorkRequirementTypeDescriptionTransferCache */
-    public WorkRequirementTypeDescriptionTransferCache(UserVisit userVisit, WorkRequirementControl workRequirementControl) {
-        super(userVisit, workRequirementControl);
+    public WorkRequirementTypeDescriptionTransferCache(WorkRequirementControl workRequirementControl) {
+        super(workRequirementControl);
     }
     
-    public WorkRequirementTypeDescriptionTransfer getWorkRequirementTypeDescriptionTransfer(WorkRequirementTypeDescription workRequirementTypeDescription) {
+    public WorkRequirementTypeDescriptionTransfer getWorkRequirementTypeDescriptionTransfer(UserVisit userVisit, WorkRequirementTypeDescription workRequirementTypeDescription) {
         var workRequirementTypeDescriptionTransfer = get(workRequirementTypeDescription);
         
         if(workRequirementTypeDescriptionTransfer == null) {
@@ -39,7 +39,7 @@ public class WorkRequirementTypeDescriptionTransferCache
             
             workRequirementTypeDescriptionTransfer = new WorkRequirementTypeDescriptionTransfer(languageTransfer, workRequirementTypeTransfer,
                     description);
-            put(workRequirementTypeDescription, workRequirementTypeDescriptionTransfer);
+            put(userVisit, workRequirementTypeDescription, workRequirementTypeDescriptionTransfer);
         }
         
         return workRequirementTypeDescriptionTransfer;
