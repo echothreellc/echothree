@@ -33,7 +33,7 @@ public class SequenceDescriptionTransferCache
         var sequenceDescriptionTransfer = get(sequenceDescription);
         
         if(sequenceDescriptionTransfer == null) {
-            var sequenceTransferCache = sequenceControl.getSequenceTransferCaches(userVisit).getSequenceTransferCache();
+            var sequenceTransferCache = sequenceControl.getSequenceTransferCaches().getSequenceTransferCache();
             var sequenceTransfer = sequenceTransferCache.getSequenceTransfer(sequenceDescription.getSequence());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, sequenceDescription.getLanguage());
             

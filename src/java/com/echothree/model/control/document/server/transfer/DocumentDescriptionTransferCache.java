@@ -33,7 +33,7 @@ public class DocumentDescriptionTransferCache
         var documentDescriptionTransfer = get(documentDescription);
         
         if(documentDescriptionTransfer == null) {
-            var documentTransferCache = documentControl.getDocumentTransferCaches(userVisit).getDocumentTransferCache();
+            var documentTransferCache = documentControl.getDocumentTransferCaches().getDocumentTransferCache();
             var documentTransfer = documentTransferCache.getDocumentTransfer(documentDescription.getDocument());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, documentDescription.getLanguage());
             

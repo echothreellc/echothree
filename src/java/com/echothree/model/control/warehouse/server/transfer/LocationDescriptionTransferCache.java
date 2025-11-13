@@ -33,7 +33,7 @@ public class LocationDescriptionTransferCache
         var locationDescriptionTransfer = get(locationDescription);
         
         if(locationDescriptionTransfer == null) {
-            var locationTransferCache = warehouseControl.getWarehouseTransferCaches(userVisit).getLocationTransferCache();
+            var locationTransferCache = warehouseControl.getWarehouseTransferCaches().getLocationTransferCache();
             var locationTransfer = locationTransferCache.getLocationTransfer(locationDescription.getLocation());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, locationDescription.getLanguage());
             

@@ -34,7 +34,7 @@ public class ItemVolumeTypeDescriptionTransferCache
         var itemVolumeTypeDescriptionTransfer = get(itemVolumeTypeDescription);
         
         if(itemVolumeTypeDescriptionTransfer == null) {
-            var itemVolumeTypeTransferCache = itemControl.getItemTransferCaches(userVisit).getItemVolumeTypeTransferCache();
+            var itemVolumeTypeTransferCache = itemControl.getItemTransferCaches().getItemVolumeTypeTransferCache();
             var itemVolumeTypeTransfer = itemVolumeTypeTransferCache.getTransfer(itemVolumeTypeDescription.getItemVolumeType());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, itemVolumeTypeDescription.getLanguage());
             

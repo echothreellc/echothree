@@ -34,7 +34,7 @@ public class TaxDescriptionTransferCache
         var taxDescriptionTransfer = get(taxDescription);
         
         if(taxDescriptionTransfer == null) {
-            var taxTransferCache = taxControl.getTaxTransferCaches(userVisit).getTaxTransferCache();
+            var taxTransferCache = taxControl.getTaxTransferCaches().getTaxTransferCache();
             var taxTransfer = taxTransferCache.getTransfer(taxDescription.getTax());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, taxDescription.getLanguage());
             

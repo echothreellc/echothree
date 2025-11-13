@@ -38,7 +38,7 @@ public class EventTransferCache
         var eventTransfer = get(event);
         
         if(eventTransfer == null) {
-            var entityInstanceTransferCache = coreControl.getCoreTransferCaches(userVisit).getEntityInstanceTransferCache();
+            var entityInstanceTransferCache = coreControl.getCoreTransferCaches().getEntityInstanceTransferCache();
             var unformattedEventTime = event.getEventTime();
             var eventTime = formatTypicalDateTime(userVisit, unformattedEventTime);
             var eventTimeSequence = event.getEventTimeSequence();

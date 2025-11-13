@@ -33,7 +33,7 @@ public class CommentUsageTypeDescriptionTransferCache
         var commentUsageTypeDescriptionTransfer = get(commentUsageTypeDescription);
         
         if(commentUsageTypeDescriptionTransfer == null) {
-            var commentUsageTypeTransferCache = commentControl.getCommentTransferCaches(userVisit).getCommentUsageTypeTransferCache();
+            var commentUsageTypeTransferCache = commentControl.getCommentTransferCaches().getCommentUsageTypeTransferCache();
             var commentUsageTypeTransfer = commentUsageTypeTransferCache.getCommentUsageTypeTransfer(commentUsageTypeDescription.getCommentUsageType());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, commentUsageTypeDescription.getLanguage());
             

@@ -33,7 +33,7 @@ public class SecurityRoleDescriptionTransferCache
         var securityRoleDescriptionTransfer = get(securityRoleDescription);
         
         if(securityRoleDescriptionTransfer == null) {
-            var securityRoleTransferCache = securityControl.getSecurityTransferCaches(userVisit).getSecurityRoleTransferCache();
+            var securityRoleTransferCache = securityControl.getSecurityTransferCaches().getSecurityRoleTransferCache();
             var securityRoleTransfer = securityRoleTransferCache.getSecurityRoleTransfer(securityRoleDescription.getSecurityRole());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, securityRoleDescription.getLanguage());
             

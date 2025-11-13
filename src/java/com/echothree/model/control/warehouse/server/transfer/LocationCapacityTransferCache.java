@@ -39,9 +39,9 @@ public class LocationCapacityTransferCache
         var locationCapacityTransfer = get(locationCapacity);
         
         if(locationCapacityTransfer == null) {
-            var locationTransferCache = warehouseControl.getWarehouseTransferCaches(userVisit).getLocationTransferCache();
+            var locationTransferCache = warehouseControl.getWarehouseTransferCaches().getLocationTransferCache();
             var locationTransfer = locationTransferCache.getLocationTransfer(locationCapacity.getLocation());
-            var unitOfMeasureTypeTransferCache = uomControl.getUomTransferCaches(userVisit).getUnitOfMeasureTypeTransferCache();
+            var unitOfMeasureTypeTransferCache = uomControl.getUomTransferCaches().getUnitOfMeasureTypeTransferCache();
             var unitOfMeasureType = locationCapacity.getUnitOfMeasureType();
             var unitOfMeasureTypeTransfer = unitOfMeasureTypeTransferCache.getUnitOfMeasureTypeTransfer(unitOfMeasureType);
             var capacity = locationCapacity.getCapacity();

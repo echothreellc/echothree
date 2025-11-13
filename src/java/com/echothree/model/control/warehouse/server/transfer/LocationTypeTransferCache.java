@@ -36,7 +36,7 @@ public class LocationTypeTransferCache
         
         if(locationTypeTransfer == null) {
             var locationTypeDetail = locationType.getLastDetail();
-            var warehouseTransferCache = warehouseControl.getWarehouseTransferCaches(userVisit).getWarehouseTransferCache();
+            var warehouseTransferCache = warehouseControl.getWarehouseTransferCaches().getWarehouseTransferCache();
             var warehouse = warehouseControl.getWarehouse(locationTypeDetail.getWarehouseParty());
             var warehouseTransfer = warehouseTransferCache.getWarehouseTransfer(warehouse);
             var locationTypeName = locationTypeDetail.getLocationTypeName();

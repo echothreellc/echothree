@@ -36,7 +36,7 @@ public class SequenceTransferCache
         
         if(sequenceTransfer == null) {
             var sequenceDetail = sequence.getLastDetail();
-            var sequenceTypeTransferCache = sequenceControl.getSequenceTransferCaches(userVisit).getSequenceTypeTransferCache();
+            var sequenceTypeTransferCache = sequenceControl.getSequenceTransferCaches().getSequenceTypeTransferCache();
             var sequenceType = sequenceTypeTransferCache.getSequenceTypeTransfer(sequenceDetail.getSequenceType());
             var sequenceName = sequenceDetail.getSequenceName();
             var mask = sequenceDetail.getMask();

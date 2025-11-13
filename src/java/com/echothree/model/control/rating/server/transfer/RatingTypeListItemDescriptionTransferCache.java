@@ -33,7 +33,7 @@ public class RatingTypeListItemDescriptionTransferCache
         var ratingTypeListItemDescriptionTransfer = get(ratingTypeListItemDescription);
         
         if(ratingTypeListItemDescriptionTransfer == null) {
-            var ratingTypeListItemTransferCache = ratingControl.getRatingTransferCaches(userVisit).getRatingTypeListItemTransferCache();
+            var ratingTypeListItemTransferCache = ratingControl.getRatingTransferCaches().getRatingTypeListItemTransferCache();
             var ratingTypeListItemTransfer = ratingTypeListItemTransferCache.getRatingTypeListItemTransfer(ratingTypeListItemDescription.getRatingTypeListItem());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, ratingTypeListItemDescription.getLanguage());
             

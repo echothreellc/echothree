@@ -37,7 +37,7 @@ public class CurrencyDescriptionTransferCache
         var currencyDescriptionTransfer = get(currencyDescription);
         
         if(currencyDescriptionTransfer == null) {
-            var currencyTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getCurrencyTransferCache();
+            var currencyTransferCache = accountingControl.getAccountingTransferCaches().getCurrencyTransferCache();
             var currencyTransfer = currencyTransferCache.getTransfer(currencyDescription.getCurrency());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, currencyDescription.getLanguage());
             

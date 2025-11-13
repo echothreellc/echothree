@@ -37,7 +37,7 @@ public class GlAccountClassDescriptionTransferCache
         var glAccountClassDescriptionTransfer = get(glAccountClassDescription);
         
         if(glAccountClassDescriptionTransfer == null) {
-            var glAccountClassTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getGlAccountClassTransferCache();
+            var glAccountClassTransferCache = accountingControl.getAccountingTransferCaches().getGlAccountClassTransferCache();
             var glAccountClassTransfer = glAccountClassTransferCache.getTransfer(glAccountClassDescription.getGlAccountClass());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, glAccountClassDescription.getLanguage());
             

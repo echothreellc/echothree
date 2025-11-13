@@ -37,7 +37,7 @@ public class GlResourceTypeDescriptionTransferCache
         var glResourceTypeDescriptionTransfer = get(glResourceTypeDescription);
         
         if(glResourceTypeDescriptionTransfer == null) {
-            var glResourceTypeTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getGlResourceTypeTransferCache();
+            var glResourceTypeTransferCache = accountingControl.getAccountingTransferCaches().getGlResourceTypeTransferCache();
             var glResourceTypeTransfer = glResourceTypeTransferCache.getTransfer(glResourceTypeDescription.getGlResourceType());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, glResourceTypeDescription.getLanguage());
             

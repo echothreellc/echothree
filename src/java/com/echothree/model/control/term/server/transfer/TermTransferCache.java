@@ -39,7 +39,7 @@ public class TermTransferCache
         if(termTransfer == null) {
             var termDetail = term.getLastDetail();
             var termName = termDetail.getTermName();
-            var termTypeTransferCache = termControl.getTermTransferCaches(userVisit).getTermTypeTransferCache();
+            var termTypeTransferCache = termControl.getTermTransferCaches().getTermTypeTransferCache();
             var termType = termTypeTransferCache.getTermTypeTransfer(termDetail.getTermType());
             var isDefault = termDetail.getIsDefault();
             var sortOrder = termDetail.getSortOrder();
