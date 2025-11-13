@@ -114,7 +114,7 @@ public class FinancialControl
     
     public FinancialTransferCaches getFinancialTransferCaches() {
         if(financialTransferCaches == null) {
-            financialTransferCaches = new FinancialTransferCaches(userVisit, this);
+            financialTransferCaches = new FinancialTransferCaches(this);
         }
         
         return financialTransferCaches;

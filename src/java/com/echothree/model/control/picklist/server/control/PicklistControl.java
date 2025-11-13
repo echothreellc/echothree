@@ -95,7 +95,7 @@ public class PicklistControl
 
     public PicklistTransferCaches getPicklistTransferCaches() {
         if(picklistTransferCaches == null) {
-            picklistTransferCaches = new PicklistTransferCaches(userVisit, this);
+            picklistTransferCaches = new PicklistTransferCaches(this);
         }
 
         return picklistTransferCaches;

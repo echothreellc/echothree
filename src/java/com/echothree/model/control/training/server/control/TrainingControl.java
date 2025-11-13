@@ -152,7 +152,7 @@ public class TrainingControl
     
     public TrainingTransferCaches getTrainingTransferCaches() {
         if(trainingTransferCaches == null) {
-            trainingTransferCaches = new TrainingTransferCaches(userVisit, this);
+            trainingTransferCaches = new TrainingTransferCaches(this);
         }
         
         return trainingTransferCaches;

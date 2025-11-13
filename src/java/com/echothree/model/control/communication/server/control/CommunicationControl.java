@@ -108,7 +108,7 @@ public class CommunicationControl
     
     public CommunicationTransferCaches getCommunicationTransferCaches() {
         if(communicationTransferCaches == null) {
-            communicationTransferCaches = new CommunicationTransferCaches(userVisit, this);
+            communicationTransferCaches = new CommunicationTransferCaches(this);
         }
         
         return communicationTransferCaches;

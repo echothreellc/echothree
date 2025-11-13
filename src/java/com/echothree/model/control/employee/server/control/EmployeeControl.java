@@ -167,7 +167,7 @@ public class EmployeeControl
     
     public EmployeeTransferCaches getEmployeeTransferCaches() {
         if(employeeTransferCaches == null) {
-            employeeTransferCaches = new EmployeeTransferCaches(userVisit, this);
+            employeeTransferCaches = new EmployeeTransferCaches(this);
         }
         
         return employeeTransferCaches;

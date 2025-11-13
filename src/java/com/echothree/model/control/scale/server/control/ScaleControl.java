@@ -86,7 +86,7 @@ public class ScaleControl
     
     public ScaleTransferCaches getScaleTransferCaches() {
         if(scaleTransferCaches == null) {
-            scaleTransferCaches = new ScaleTransferCaches(userVisit, this);
+            scaleTransferCaches = new ScaleTransferCaches(this);
         }
         
         return scaleTransferCaches;

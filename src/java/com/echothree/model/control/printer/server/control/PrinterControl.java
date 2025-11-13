@@ -109,7 +109,7 @@ public class PrinterControl
     
     public PrinterTransferCaches getPrinterTransferCaches() {
         if(printerTransferCaches == null) {
-            printerTransferCaches = new PrinterTransferCaches(userVisit, this);
+            printerTransferCaches = new PrinterTransferCaches(this);
         }
         
         return printerTransferCaches;

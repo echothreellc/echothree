@@ -95,7 +95,7 @@ public class WishlistControl
     
     public WishlistTransferCaches getWishlistTransferCaches() {
         if(wishlistTransferCaches == null) {
-            wishlistTransferCaches = new WishlistTransferCaches(userVisit, this);
+            wishlistTransferCaches = new WishlistTransferCaches(this);
         }
         
         return wishlistTransferCaches;

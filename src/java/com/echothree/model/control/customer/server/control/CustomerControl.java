@@ -107,7 +107,7 @@ public class CustomerControl
     
     public CustomerTransferCaches getCustomerTransferCaches() {
         if(customerTransferCaches == null) {
-            customerTransferCaches = new CustomerTransferCaches(userVisit, this);
+            customerTransferCaches = new CustomerTransferCaches(this);
         }
         
         return customerTransferCaches;

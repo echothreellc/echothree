@@ -112,7 +112,7 @@ public class DocumentControl
     
     public DocumentTransferCaches getDocumentTransferCaches() {
         if(documentTransferCaches == null) {
-            documentTransferCaches = new DocumentTransferCaches(userVisit, this);
+            documentTransferCaches = new DocumentTransferCaches(this);
         }
         
         return documentTransferCaches;

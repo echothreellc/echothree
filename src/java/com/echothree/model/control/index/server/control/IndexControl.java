@@ -87,7 +87,7 @@ public class IndexControl
     
     public IndexTransferCaches getIndexTransferCaches() {
         if(indexTransferCaches == null) {
-            indexTransferCaches = new IndexTransferCaches(userVisit, this);
+            indexTransferCaches = new IndexTransferCaches(this);
         }
         
         return indexTransferCaches;

@@ -77,7 +77,7 @@ public class RatingControl
     
     public RatingTransferCaches getRatingTransferCaches() {
         if(ratingTransferCaches == null) {
-            ratingTransferCaches = new RatingTransferCaches(userVisit, this);
+            ratingTransferCaches = new RatingTransferCaches(this);
         }
         
         return ratingTransferCaches;

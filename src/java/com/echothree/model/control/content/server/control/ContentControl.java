@@ -194,7 +194,7 @@ public class ContentControl
     
     public ContentTransferCaches getContentTransferCaches() {
         if(contentTransferCaches == null) {
-            contentTransferCaches = new ContentTransferCaches(userVisit, this);
+            contentTransferCaches = new ContentTransferCaches(this);
         }
         
         return contentTransferCaches;

@@ -181,7 +181,7 @@ public class ForumControl
     
     public ForumTransferCaches getForumTransferCaches() {
         if(forumTransferCaches == null) {
-            forumTransferCaches = new ForumTransferCaches(userVisit, this);
+            forumTransferCaches = new ForumTransferCaches(this);
         }
         
         return forumTransferCaches;

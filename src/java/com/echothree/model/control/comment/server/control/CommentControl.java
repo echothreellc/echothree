@@ -96,7 +96,7 @@ public class CommentControl
     
     public CommentTransferCaches getCommentTransferCaches() {
         if(commentTransferCaches == null) {
-            commentTransferCaches = new CommentTransferCaches(userVisit, this);
+            commentTransferCaches = new CommentTransferCaches(this);
         }
         
         return commentTransferCaches;

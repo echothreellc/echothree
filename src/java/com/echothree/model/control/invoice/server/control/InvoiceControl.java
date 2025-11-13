@@ -145,7 +145,7 @@ public class InvoiceControl
     
     public InvoiceTransferCaches getInvoiceTransferCaches() {
         if(invoiceTransferCaches == null) {
-            invoiceTransferCaches = new InvoiceTransferCaches(userVisit, this);
+            invoiceTransferCaches = new InvoiceTransferCaches(this);
         }
         
         return invoiceTransferCaches;

@@ -157,7 +157,7 @@ public class WorkflowControl
     
     public WorkflowTransferCaches getWorkflowTransferCaches() {
         if(workflowTransferCaches == null) {
-            workflowTransferCaches = new WorkflowTransferCaches(userVisit, this);
+            workflowTransferCaches = new WorkflowTransferCaches(this);
         }
         
         return workflowTransferCaches;
