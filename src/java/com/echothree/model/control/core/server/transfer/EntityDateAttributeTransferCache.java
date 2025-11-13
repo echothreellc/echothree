@@ -36,7 +36,7 @@ public class EntityDateAttributeTransferCache
         super();
     }
     
-    public EntityDateAttributeTransfer getEntityDateAttributeTransfer(EntityDateAttribute entityDateAttribute, EntityInstance entityInstance) {
+    public EntityDateAttributeTransfer getEntityDateAttributeTransfer(final UserVisit userVisit, final EntityDateAttribute entityDateAttribute, final EntityInstance entityInstance) {
         var entityDateAttributeTransfer = get(entityDateAttribute);
         
         if(entityDateAttributeTransfer == null) {

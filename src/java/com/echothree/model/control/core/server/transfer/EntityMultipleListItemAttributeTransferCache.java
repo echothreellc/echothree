@@ -35,7 +35,7 @@ public class EntityMultipleListItemAttributeTransferCache
         super();
     }
     
-    public EntityMultipleListItemAttributeTransfer getEntityMultipleListItemAttributeTransfer(EntityMultipleListItemAttribute entityMultipleListItemAttribute, EntityInstance entityInstance) {
+    public EntityMultipleListItemAttributeTransfer getEntityMultipleListItemAttributeTransfer(final UserVisit userVisit, final EntityMultipleListItemAttribute entityMultipleListItemAttribute, final EntityInstance entityInstance) {
         var entityMultipleListItemAttributeTransfer = get(entityMultipleListItemAttribute);
         
         if(entityMultipleListItemAttributeTransfer == null) {

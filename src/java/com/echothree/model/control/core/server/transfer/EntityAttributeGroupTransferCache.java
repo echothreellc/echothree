@@ -45,7 +45,7 @@ public class EntityAttributeGroupTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public EntityAttributeGroupTransfer getEntityAttributeGroupTransfer(EntityAttributeGroup entityAttributeGroup, EntityInstance entityInstance) {
+    public EntityAttributeGroupTransfer getEntityAttributeGroupTransfer(final UserVisit userVisit, final EntityAttributeGroup entityAttributeGroup, final EntityInstance entityInstance) {
         var entityAttributeGroupTransfer = get(entityAttributeGroup);
         
         if(entityAttributeGroupTransfer == null) {

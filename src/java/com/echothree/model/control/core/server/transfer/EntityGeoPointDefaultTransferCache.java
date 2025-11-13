@@ -36,11 +36,11 @@ public class EntityGeoPointDefaultTransferCache
     GeoPointUtils geoPointUtils = GeoPointUtils.getInstance();
     
     /** Creates a new instance of EntityGeoPointDefaultTransferCache */
-    public EntityGeoPointDefaultTransferCache(final UserVisit userVisit) {
+    public EntityGeoPointDefaultTransferCache() {
         super();
     }
     
-    public EntityGeoPointDefaultTransfer getEntityGeoPointDefaultTransfer(final EntityGeoPointDefault entityGeoPointDefault) {
+    public EntityGeoPointDefaultTransfer getEntityGeoPointDefaultTransfer(final UserVisit userVisit, final EntityGeoPointDefault entityGeoPointDefault) {
         var entityGeoPointDefaultTransfer = get(entityGeoPointDefault);
         
         if(entityGeoPointDefaultTransfer == null) {

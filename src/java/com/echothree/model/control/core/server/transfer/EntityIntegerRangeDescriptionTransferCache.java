@@ -33,7 +33,7 @@ public class EntityIntegerRangeDescriptionTransferCache
         super();
     }
     
-    public EntityIntegerRangeDescriptionTransfer getEntityIntegerRangeDescriptionTransfer(EntityIntegerRangeDescription entityIntegerRangeDescription, EntityInstance entityInstance) {
+    public EntityIntegerRangeDescriptionTransfer getEntityIntegerRangeDescriptionTransfer(final UserVisit userVisit, final EntityIntegerRangeDescription entityIntegerRangeDescription, final EntityInstance entityInstance) {
         var entityIntegerRangeDescriptionTransfer = get(entityIntegerRangeDescription);
         
         if(entityIntegerRangeDescriptionTransfer == null) {

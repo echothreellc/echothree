@@ -63,7 +63,7 @@ public class EntityLongRangeTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
     
-    public EntityLongRangeTransfer getEntityLongRangeTransfer(EntityLongRange entityLongRange, EntityInstance entityInstance) {
+    public EntityLongRangeTransfer getEntityLongRangeTransfer(final UserVisit userVisit, final EntityLongRange entityLongRange, final EntityInstance entityInstance) {
         var entityLongRangeTransfer = get(entityLongRange);
         
         if(entityLongRangeTransfer == null) {

@@ -35,7 +35,7 @@ public class EntityLongAttributeTransferCache
         super();
     }
     
-    public EntityLongAttributeTransfer getEntityLongAttributeTransfer(EntityLongAttribute entityLongAttribute, EntityInstance entityInstance) {
+    public EntityLongAttributeTransfer getEntityLongAttributeTransfer(final UserVisit userVisit, final EntityLongAttribute entityLongAttribute, final EntityInstance entityInstance) {
         var entityLongAttributeTransfer = get(entityLongAttribute);
         
         if(entityLongAttributeTransfer == null) {

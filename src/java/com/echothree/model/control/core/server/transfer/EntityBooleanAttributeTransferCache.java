@@ -35,7 +35,7 @@ public class EntityBooleanAttributeTransferCache
         super();
     }
     
-    public EntityBooleanAttributeTransfer getEntityBooleanAttributeTransfer(EntityBooleanAttribute entityBooleanAttribute, EntityInstance entityInstance) {
+    public EntityBooleanAttributeTransfer getEntityBooleanAttributeTransfer(final UserVisit userVisit, final EntityBooleanAttribute entityBooleanAttribute, final EntityInstance entityInstance) {
         var entityBooleanAttributeTransfer = get(entityBooleanAttribute);
         
         if(entityBooleanAttributeTransfer == null) {

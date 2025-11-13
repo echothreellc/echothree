@@ -95,7 +95,7 @@ public class EntityAttributeTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
     
-    public EntityAttributeTransfer getEntityAttributeTransfer(EntityAttribute entityAttribute, EntityInstance entityInstance) {
+    public EntityAttributeTransfer getEntityAttributeTransfer(final UserVisit userVisit, final EntityAttribute entityAttribute, final EntityInstance entityInstance) {
         var entityAttributeTransfer = get(entityAttribute);
         
         if(entityAttributeTransfer == null) {

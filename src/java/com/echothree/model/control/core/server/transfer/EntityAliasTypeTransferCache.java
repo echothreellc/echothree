@@ -71,7 +71,7 @@ public class EntityAliasTypeTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
     
-    public EntityAliasTypeTransfer getEntityAliasTypeTransfer(EntityAliasType entityAliasType, EntityInstance entityInstance) {
+    public EntityAliasTypeTransfer getEntityAliasTypeTransfer(final UserVisit userVisit, final EntityAliasType entityAliasType, final EntityInstance entityInstance) {
         var entityAliasTypeTransfer = get(entityAliasType);
         
         if(entityAliasTypeTransfer == null) {

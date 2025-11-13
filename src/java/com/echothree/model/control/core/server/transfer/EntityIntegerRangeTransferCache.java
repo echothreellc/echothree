@@ -63,7 +63,7 @@ public class EntityIntegerRangeTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
     
-    public EntityIntegerRangeTransfer getEntityIntegerRangeTransfer(EntityIntegerRange entityIntegerRange, EntityInstance entityInstance) {
+    public EntityIntegerRangeTransfer getEntityIntegerRangeTransfer(final UserVisit userVisit, final EntityIntegerRange entityIntegerRange, final EntityInstance entityInstance) {
         var entityIntegerRangeTransfer = get(entityIntegerRange);
         
         if(entityIntegerRangeTransfer == null) {

@@ -33,7 +33,7 @@ public class EntityLongRangeDescriptionTransferCache
         super();
     }
     
-    public EntityLongRangeDescriptionTransfer getEntityLongRangeDescriptionTransfer(EntityLongRangeDescription entityLongRangeDescription, EntityInstance entityInstance) {
+    public EntityLongRangeDescriptionTransfer getEntityLongRangeDescriptionTransfer(final UserVisit userVisit, final EntityLongRangeDescription entityLongRangeDescription, final EntityInstance entityInstance) {
         var entityLongRangeDescriptionTransfer = get(entityLongRangeDescription);
         
         if(entityLongRangeDescriptionTransfer == null) {

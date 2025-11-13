@@ -44,7 +44,7 @@ public class EntityStringAttributeTransferCache
         }
     }
     
-    public EntityStringAttributeTransfer getEntityStringAttributeTransfer(EntityStringAttribute entityStringAttribute, EntityInstance entityInstance) {
+    public EntityStringAttributeTransfer getEntityStringAttributeTransfer(final UserVisit userVisit, final EntityStringAttribute entityStringAttribute, final EntityInstance entityInstance) {
         var entityStringAttributeTransfer = get(entityStringAttribute);
         
         if(entityStringAttributeTransfer == null) {

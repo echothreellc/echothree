@@ -33,7 +33,7 @@ public class EntityAttributeDescriptionTransferCache
         super();
     }
     
-    public EntityAttributeDescriptionTransfer getEntityAttributeDescriptionTransfer(EntityAttributeDescription entityAttributeDescription, EntityInstance entityInstance) {
+    public EntityAttributeDescriptionTransfer getEntityAttributeDescriptionTransfer(final UserVisit userVisit, final EntityAttributeDescription entityAttributeDescription, final EntityInstance entityInstance) {
         var entityAttributeDescriptionTransfer = get(entityAttributeDescription);
         
         if(entityAttributeDescriptionTransfer == null) {

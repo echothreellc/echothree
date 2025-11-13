@@ -33,7 +33,7 @@ public class EntityAliasTypeDescriptionTransferCache
         super();
     }
     
-    public EntityAliasTypeDescriptionTransfer getEntityAliasTypeDescriptionTransfer(EntityAliasTypeDescription entityAliasTypeDescription, EntityInstance entityInstance) {
+    public EntityAliasTypeDescriptionTransfer getEntityAliasTypeDescriptionTransfer(final UserVisit userVisit, final EntityAliasTypeDescription entityAliasTypeDescription, final EntityInstance entityInstance) {
         var entityAliasTypeDescriptionTransfer = get(entityAliasTypeDescription);
         
         if(entityAliasTypeDescriptionTransfer == null) {

@@ -35,7 +35,7 @@ public class EntityCollectionAttributeTransferCache
         super();
     }
     
-    public EntityCollectionAttributeTransfer getEntityCollectionAttributeTransfer(EntityCollectionAttribute entityCollectionAttribute, EntityInstance entityInstance) {
+    public EntityCollectionAttributeTransfer getEntityCollectionAttributeTransfer(final UserVisit userVisit, final EntityCollectionAttribute entityCollectionAttribute, final EntityInstance entityInstance) {
         var entityCollectionAttributeTransfer = get(entityCollectionAttribute);
         
         if(entityCollectionAttributeTransfer == null) {

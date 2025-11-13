@@ -35,7 +35,7 @@ public class EntityListItemAttributeTransferCache
         super();
     }
     
-    public EntityListItemAttributeTransfer getEntityListItemAttributeTransfer(EntityListItemAttribute entityListItemAttribute, EntityInstance entityInstance) {
+    public EntityListItemAttributeTransfer getEntityListItemAttributeTransfer(final UserVisit userVisit, final EntityListItemAttribute entityListItemAttribute, final EntityInstance entityInstance) {
         var entityListItemAttributeTransfer = get(entityListItemAttribute);
         
         if(entityListItemAttributeTransfer == null) {

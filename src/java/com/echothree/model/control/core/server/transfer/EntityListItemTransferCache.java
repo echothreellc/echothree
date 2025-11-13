@@ -66,7 +66,7 @@ public class EntityListItemTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
     
-    public EntityListItemTransfer getEntityListItemTransfer(EntityListItem entityListItem, EntityInstance entityInstance) {
+    public EntityListItemTransfer getEntityListItemTransfer(final UserVisit userVisit, final EntityListItem entityListItem, final EntityInstance entityInstance) {
         var entityListItemTransfer = get(entityListItem);
         
         if(entityListItemTransfer == null) {

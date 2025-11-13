@@ -33,7 +33,7 @@ public class EntityAttributeEntityAttributeGroupTransferCache
         super();
     }
     
-    public EntityAttributeEntityAttributeGroupTransfer getEntityAttributeEntityAttributeGroupTransfer(EntityAttributeEntityAttributeGroup entityAttributeEntityAttributeGroup, EntityInstance entityInstance) {
+    public EntityAttributeEntityAttributeGroupTransfer getEntityAttributeEntityAttributeGroupTransfer(final UserVisit userVisit, final EntityAttributeEntityAttributeGroup entityAttributeEntityAttributeGroup, final EntityInstance entityInstance) {
         var entityAttributeEntityAttributeGroupTransfer = get(entityAttributeEntityAttributeGroup);
         
         if(entityAttributeEntityAttributeGroupTransfer == null) {

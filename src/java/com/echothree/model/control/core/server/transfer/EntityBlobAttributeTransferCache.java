@@ -49,7 +49,7 @@ public class EntityBlobAttributeTransferCache
         }
     }
     
-    public EntityBlobAttributeTransfer getEntityBlobAttributeTransfer(EntityBlobAttribute entityBlobAttribute, EntityInstance entityInstance) {
+    public EntityBlobAttributeTransfer getEntityBlobAttributeTransfer(final UserVisit userVisit, final EntityBlobAttribute entityBlobAttribute, final EntityInstance entityInstance) {
         var entityBlobAttributeTransfer = get(entityBlobAttribute);
         
         if(entityBlobAttributeTransfer == null) {
