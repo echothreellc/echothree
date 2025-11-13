@@ -4894,7 +4894,7 @@ public class PartyControl
     }
     
     public PartyTypeAuditPolicyTransfer getPartyTypeAuditPolicyTransferByPartyType(UserVisit userVisit, PartyType partyType) {
-        return getPartyTransferCaches(userVisit).getPartyTypeAuditPolicyTransferCache().getTransfer(getPartyTypeAuditPolicy(partyType));
+        return getPartyTransferCaches().getPartyTypeAuditPolicyTransferCache().getTransfer(userVisit, getPartyTypeAuditPolicy(partyType));
     }
     
     public void updatePartyTypeAuditPolicyFromValue(PartyTypeAuditPolicyDetailValue partyTypeAuditPolicyDetailValue, BasePK updatedBy) {
@@ -5003,7 +5003,7 @@ public class PartyControl
     }
     
     public PartyTypeLockoutPolicyTransfer getPartyTypeLockoutPolicyTransferByPartyType(UserVisit userVisit, PartyType partyType) {
-        return getPartyTransferCaches(userVisit).getPartyTypeLockoutPolicyTransferCache().getTransfer(getPartyTypeLockoutPolicy(partyType));
+        return getPartyTransferCaches().getPartyTypeLockoutPolicyTransferCache().getTransfer(userVisit, getPartyTypeLockoutPolicy(partyType));
     }
     
     public void updatePartyTypeLockoutPolicyFromValue(PartyTypeLockoutPolicyDetailValue partyTypeLockoutPolicyDetailValue, BasePK updatedBy) {
@@ -5120,7 +5120,7 @@ public class PartyControl
     }
     
     public PartyTypePasswordStringPolicyTransfer getPartyTypePasswordStringPolicyTransferByPartyType(UserVisit userVisit, PartyType partyType) {
-        return getPartyTransferCaches(userVisit).getPartyTypePasswordStringPolicyTransferCache().getTransfer(getPartyTypePasswordStringPolicy(partyType));
+        return getPartyTransferCaches().getPartyTypePasswordStringPolicyTransferCache().getTransfer(userVisit, getPartyTypePasswordStringPolicy(partyType));
     }
     
     public void updatePartyTypePasswordStringPolicyFromValue(PartyTypePasswordStringPolicyDetailValue partyTypePasswordStringPolicyDetailValue, BasePK updatedBy) {

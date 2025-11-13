@@ -55,7 +55,7 @@ public class GeoCodeTransferCache
             put(userVisit, geoCode, geoCodeTransfer);
             
             if(includeAliases) {
-                setupGeoCodeAliasTransfers(geoCode, geoCodeTransfer);
+                setupGeoCodeAliasTransfers(userVisit, geoCode, geoCodeTransfer);
             }
         }
         

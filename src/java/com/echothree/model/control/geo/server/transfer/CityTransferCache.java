@@ -63,7 +63,7 @@ public class CityTransferCache
             put(userVisit, geoCode, cityTransfer);
             
             if(includeAliases) {
-                setupGeoCodeAliasTransfers(geoCode, cityTransfer);
+                setupGeoCodeAliasTransfers(userVisit, geoCode, cityTransfer);
             }
         }
         

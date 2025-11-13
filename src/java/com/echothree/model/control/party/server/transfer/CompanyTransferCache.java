@@ -81,7 +81,7 @@ public class CompanyTransferCache
     }
     
     public CompanyTransfer getTransfer(UserVisit userVisit, PartyCompany partyCompany) {
-        return getTransfer(partyCompany.getParty());
+        return getTransfer(userVisit, partyCompany.getParty());
     }
 
     @Override

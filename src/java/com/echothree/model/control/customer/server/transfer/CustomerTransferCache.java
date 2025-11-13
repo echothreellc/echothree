@@ -144,7 +144,7 @@ public class CustomerTransferCache
     }
 
     public CustomerTransfer getTransfer(UserVisit userVisit, Customer customer) {
-        return getTransfer(customer.getParty());
+        return getTransfer(userVisit, customer.getParty());
     }
 
     public CustomerTransfer getTransfer(UserVisit userVisit, Party party) {

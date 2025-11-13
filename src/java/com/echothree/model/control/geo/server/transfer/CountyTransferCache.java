@@ -63,7 +63,7 @@ public class CountyTransferCache
             put(userVisit, geoCode, countyTransfer);
             
             if(includeAliases) {
-                setupGeoCodeAliasTransfers(geoCode, countyTransfer);
+                setupGeoCodeAliasTransfers(userVisit, geoCode, countyTransfer);
             }
         }
         

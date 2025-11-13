@@ -6384,7 +6384,7 @@ public class ItemControl
     }
     
     public ListWrapper<HistoryTransfer<ItemPriceTransfer>> getItemPriceHistory(UserVisit userVisit, ItemPrice itemPrice) {
-        return getItemTransferCaches(userVisit).getItemPriceTransferCache().getHistory(itemPrice);
+        return getItemTransferCaches().getItemPriceTransferCache().getHistory(userVisit, itemPrice);
     }
     
     public List<ItemPriceTransfer> getItemPriceTransfersByItem(UserVisit userVisit, Item item) {

@@ -72,7 +72,7 @@ public class WarehouseTransferCache
     }
     
     public WarehouseTransfer getWarehouseTransfer(UserVisit userVisit, Warehouse warehouse) {
-        return getWarehouseTransfer(warehouse.getParty());
+        return getWarehouseTransfer(userVisit, warehouse.getParty());
     }
     
     public WarehouseTransfer getWarehouseTransfer(UserVisit userVisit, Party party) {

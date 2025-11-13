@@ -34,7 +34,7 @@ public class MessageTypeDescriptionTransferCache
         
         if(messageTypeDescriptionTransfer == null) {
             var messageTypeTransferCache = messageControl.getMessageTransferCaches().getMessageTypeTransferCache();
-            var messageTypeTransfer = messageTypeTransferCache.getMessageTypeTransfer(messageTypeDescription.getMessageType());
+            var messageTypeTransfer = messageTypeTransferCache.getMessageTypeTransfer(userVisit, messageTypeDescription.getMessageType());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, messageTypeDescription.getLanguage());
             
             messageTypeDescriptionTransfer = new MessageTypeDescriptionTransfer(languageTransfer, messageTypeTransfer, messageTypeDescription.getDescription());

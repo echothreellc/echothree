@@ -34,7 +34,7 @@ public class ItemPurchasingCategoryDescriptionTransferCache
         
         if(itemPurchasingCategoryDescriptionTransfer == null) {
             var itemPurchasingCategoryTransferCache = vendorControl.getVendorTransferCaches().getItemPurchasingCategoryTransferCache();
-            var itemPurchasingCategoryTransfer = itemPurchasingCategoryTransferCache.getItemPurchasingCategoryTransfer(itemPurchasingCategoryDescription.getItemPurchasingCategory());
+            var itemPurchasingCategoryTransfer = itemPurchasingCategoryTransferCache.getItemPurchasingCategoryTransfer(userVisit, itemPurchasingCategoryDescription.getItemPurchasingCategory());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, itemPurchasingCategoryDescription.getLanguage());
             
             itemPurchasingCategoryDescriptionTransfer = new ItemPurchasingCategoryDescriptionTransfer(languageTransfer, itemPurchasingCategoryTransfer, itemPurchasingCategoryDescription.getDescription());

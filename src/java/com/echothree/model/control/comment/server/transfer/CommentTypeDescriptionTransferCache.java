@@ -34,7 +34,7 @@ public class CommentTypeDescriptionTransferCache
         
         if(commentTypeDescriptionTransfer == null) {
             var commentTypeTransferCache = commentControl.getCommentTransferCaches().getCommentTypeTransferCache();
-            var commentTypeTransfer = commentTypeTransferCache.getCommentTypeTransfer(commentTypeDescription.getCommentType());
+            var commentTypeTransfer = commentTypeTransferCache.getCommentTypeTransfer(userVisit, commentTypeDescription.getCommentType());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, commentTypeDescription.getLanguage());
             
             commentTypeDescriptionTransfer = new CommentTypeDescriptionTransfer(languageTransfer, commentTypeTransfer, commentTypeDescription.getDescription());

@@ -58,7 +58,7 @@ public class InventoryLocationGroupTransferCache
             var inventoryLocationGroupDetail = inventoryLocationGroup.getLastDetail();
             var warehouseParty = inventoryLocationGroupDetail.getWarehouseParty();
             var warehouse = warehouseControl.getWarehouse(warehouseParty);
-            var warehouseTransfer = warehouseControl.getWarehouseTransferCaches(userVisit).getWarehouseTransferCache().getWarehouseTransfer(warehouse);
+            var warehouseTransfer = warehouseControl.getWarehouseTransferCaches().getWarehouseTransferCache().getWarehouseTransfer(userVisit, warehouse);
             var inventoryLocationGroupName = inventoryLocationGroupDetail.getInventoryLocationGroupName();
             var isDefault = inventoryLocationGroupDetail.getIsDefault();
             var sortOrder = inventoryLocationGroupDetail.getSortOrder();

@@ -67,7 +67,7 @@ public class CarrierTransferCache
     }
     
     public CarrierTransfer getCarrierTransfer(UserVisit userVisit, Carrier carrier) {
-        return getCarrierTransfer(carrier.getParty());
+        return getCarrierTransfer(userVisit, carrier.getParty());
     }
 
     public CarrierTransfer getCarrierTransfer(UserVisit userVisit, Party party) {

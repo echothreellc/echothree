@@ -63,10 +63,10 @@ public class SalesOrderBatchTransferCache
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(batch.getPrimaryKey());
             
             salesOrderBatchTransfer = new SalesOrderBatchTransfer(batchTypeTransfer, batchName, currencyTransfer, paymentMethodTransfer, count, amount,
-                    getBatchStatus(batch, entityInstance));
+                    getBatchStatus(userVisit, batch, entityInstance));
             put(userVisit, batch, salesOrderBatchTransfer, entityInstance);
             
-            handleOptions(batch, salesOrderBatchTransfer);
+            handleOptions(userVisit, batch, salesOrderBatchTransfer);
         }
         
         return salesOrderBatchTransfer;

@@ -229,10 +229,10 @@ public class TextControl
 
     public List<TextDecorationTransfer> getTextDecorationTransfers(UserVisit userVisit, Collection<TextDecoration> entities) {
         List<TextDecorationTransfer> transfers = new ArrayList<>(entities.size());
-        var TransferCache = getCoreTransferCaches().getTextDecorationTransferCache();
+        var transferCache = getCoreTransferCaches().getTextDecorationTransferCache();
 
         entities.forEach((entity) ->
-                Transfers.add(TransferCache.getTextDecorationTransfer(userVisit, entity))
+                transfers.add(transferCache.getTextDecorationTransfer(userVisit, entity))
         );
 
         return transfers;
@@ -681,10 +681,10 @@ public class TextControl
 
     public List<TextTransformationTransfer> getTextTransformationTransfers(UserVisit userVisit, Collection<TextTransformation> entities) {
         List<TextTransformationTransfer> transfers = new ArrayList<>(entities.size());
-        var TransferCache = getCoreTransferCaches().getTextTransformationTransferCache();
+        var transferCache = getCoreTransferCaches().getTextTransformationTransferCache();
 
         entities.forEach((entity) ->
-                Transfers.add(TransferCache.getTextTransformationTransfer(userVisit, entity))
+                transfers.add(transferCache.getTextTransformationTransfer(userVisit, entity))
         );
 
         return transfers;

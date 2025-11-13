@@ -113,7 +113,7 @@ public class EmployeeTransferCache
     }
 
     public EmployeeTransfer getTransfer(UserVisit userVisit, PartyEmployee partyEmployee) {
-        return getTransfer(partyEmployee.getParty());
+        return getTransfer(userVisit, partyEmployee.getParty());
     }
 
     public EmployeeTransfer getTransfer(UserVisit userVisit, Party party) {

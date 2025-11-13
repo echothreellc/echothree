@@ -139,7 +139,7 @@ public class VendorTransferCache
     }
 
     public VendorTransfer getTransfer(UserVisit userVisit, Vendor vendor) {
-        return getTransfer(vendor.getParty());
+        return getTransfer(userVisit, vendor.getParty());
     }
 
     public VendorTransfer getTransfer(UserVisit userVisit, Party party) {

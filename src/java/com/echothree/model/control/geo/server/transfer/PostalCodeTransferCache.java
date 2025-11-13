@@ -64,7 +64,7 @@ public class PostalCodeTransferCache
             put(userVisit, geoCode, postalCodeTransfer);
             
             if(includeAliases) {
-                setupGeoCodeAliasTransfers(geoCode, postalCodeTransfer);
+                setupGeoCodeAliasTransfers(userVisit, geoCode, postalCodeTransfer);
             }
         }
         

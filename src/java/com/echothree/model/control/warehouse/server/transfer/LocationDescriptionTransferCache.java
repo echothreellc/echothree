@@ -34,7 +34,7 @@ public class LocationDescriptionTransferCache
         
         if(locationDescriptionTransfer == null) {
             var locationTransferCache = warehouseControl.getWarehouseTransferCaches().getLocationTransferCache();
-            var locationTransfer = locationTransferCache.getLocationTransfer(locationDescription.getLocation());
+            var locationTransfer = locationTransferCache.getLocationTransfer(userVisit, locationDescription.getLocation());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, locationDescription.getLanguage());
             
             locationDescriptionTransfer = new LocationDescriptionTransfer(languageTransfer, locationTransfer, locationDescription.getDescription());

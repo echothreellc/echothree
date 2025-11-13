@@ -478,7 +478,7 @@ public class OfferItemControl
     }
 
     public ListWrapper<HistoryTransfer<OfferItemPriceTransfer>> getOfferItemPriceHistory(UserVisit userVisit, OfferItemPrice offerItemPrice) {
-        return getOfferTransferCaches(userVisit).getOfferItemPriceTransferCache().getHistory(offerItemPrice);
+        return getOfferTransferCaches().getOfferItemPriceTransferCache().getHistory(userVisit, offerItemPrice);
     }
 
     public List<OfferItemPriceTransfer> getOfferItemPriceTransfersByOfferItem(UserVisit userVisit, OfferItem offerItem) {

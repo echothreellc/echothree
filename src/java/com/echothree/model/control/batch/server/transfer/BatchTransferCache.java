@@ -46,10 +46,10 @@ public class BatchTransferCache
             var batchName = batchDetail.getBatchName();
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(batch.getPrimaryKey());
             
-            batchTransfer = new BatchTransfer(batchTypeTransfer, batchName, getBatchStatus(batch, entityInstance));
+            batchTransfer = new BatchTransfer(batchTypeTransfer, batchName, getBatchStatus(userVisit, batch, entityInstance));
             put(userVisit, batch, batchTransfer, entityInstance);
 
-            handleOptions(batch, batchTransfer);
+            handleOptions(userVisit, batch, batchTransfer);
         }
         
         return batchTransfer;

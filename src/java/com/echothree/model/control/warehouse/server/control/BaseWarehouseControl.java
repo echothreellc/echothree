@@ -39,7 +39,7 @@ public abstract class BaseWarehouseControl
         if(warehouseTransferCaches == null) {
             var warehouseControl = Session.getModelController(WarehouseControl.class);
 
-            warehouseTransferCaches = new WarehouseTransferCaches(userVisit, warehouseControl);
+            warehouseTransferCaches = new WarehouseTransferCaches(warehouseControl);
         }
         
         return warehouseTransferCaches;

@@ -47,13 +47,13 @@ public abstract class GenericBatchTransferCache<V extends GenericBatchTransfer>
         setIncludeEntityInstance(true);
     }
     
-    protected WorkflowEntityStatusTransfer getBatchStatus(Batch batch, EntityInstance entityInstance) {
+    protected WorkflowEntityStatusTransfer getBatchStatus(UserVisit userVisit, Batch batch, EntityInstance entityInstance) {
         var batchWorkflow = batch.getLastDetail().getBatchType().getLastDetail().getBatchWorkflow();
         
         return batchWorkflow == null ? null : workflowControl.getWorkflowEntityStatusTransferByEntityInstance(userVisit, batchWorkflow, entityInstance);
     }
     
-    protected void handleOptions(Batch batch, V genericBatchTransfer) {
+    protected void handleOptions(UserVisit userVisit, Batch batch, V genericBatchTransfer) {
         if(includeAliases) {
             genericBatchTransfer.setBatchAliases(new ListWrapper<>(batchControl.getBatchAliasTransfersByBatch(userVisit, batch)));
         }

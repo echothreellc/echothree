@@ -33,7 +33,8 @@ public class ContactListContactMechanismPurposeTransferCache
         super(contactListControl);
     }
     
-    public ContactListContactMechanismPurposeTransfer getContactListContactMechanismPurposeTransfer(final ContactListContactMechanismPurpose contactListContactMechanismPurpose) {
+    public ContactListContactMechanismPurposeTransfer getContactListContactMechanismPurposeTransfer(final UserVisit userVisit,
+            final ContactListContactMechanismPurpose contactListContactMechanismPurpose) {
         var contactListContactMechanismPurposeTransfer = get(contactListContactMechanismPurpose);
         
         if(contactListContactMechanismPurposeTransfer == null) {

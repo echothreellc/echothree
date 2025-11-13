@@ -218,10 +218,10 @@ public class ColorControl
 
     public List<ColorTransfer> getColorTransfers(UserVisit userVisit, Collection<Color> entities) {
         List<ColorTransfer> transfers = new ArrayList<>(entities.size());
-        var TransferCache = getCoreTransferCaches().getColorTransferCache();
+        var transferCache = getCoreTransferCaches().getColorTransferCache();
 
         entities.forEach((entity) ->
-                Transfers.add(TransferCache.getColorTransfer(userVisit, entity))
+                transfers.add(transferCache.getColorTransfer(userVisit, entity))
         );
 
         return transfers;

@@ -41,7 +41,7 @@ public class InventoryLocationGroupCapacityTransferCache
             var inventoryLocationGroupTransfer = inventoryLocationGroupTransferCache.getTransfer(userVisit, inventoryLocationGroupCapacity.getInventoryLocationGroup());
             var unitOfMeasureTypeTransferCache = partyControl.getUomTransferCaches().getUnitOfMeasureTypeTransferCache();
             var unitOfMeasureType = inventoryLocationGroupCapacity.getUnitOfMeasureType();
-            var unitOfMeasureTypeTransfer = unitOfMeasureTypeTransferCache.getUnitOfMeasureTypeTransfer(unitOfMeasureType);
+            var unitOfMeasureTypeTransfer = unitOfMeasureTypeTransferCache.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureType);
             var capacity = inventoryLocationGroupCapacity.getCapacity();
             
             inventoryLocationGroupCapacityTransfer = new InventoryLocationGroupCapacityTransfer(inventoryLocationGroupTransfer, unitOfMeasureTypeTransfer,

@@ -42,23 +42,23 @@ public class EntityLockTransferCache
     }
     
     @SuppressWarnings("Finally")
-    public EntityLockTransfer getEntityLockTransfer(UserVisit userVisit, BasePK lockTarget) {
+    public EntityLockTransfer getEntityLockTransfer(final UserVisit userVisit, BasePK lockTarget) {
         var entityLockTransfer = (EntityLockTransfer)get(lockTarget);
         
         if(entityLockTransfer == null) {
             var lockTargetEntityInstance = entityInstanceControl.getEntityInstanceByBasePK(lockTarget);
             
-            entityLockTransfer = getEntityLockTransferByEntityInstance(lockTargetEntityInstance, true);
+            entityLockTransfer = getEntityLockTransferByEntityInstance(userVisit, lockTargetEntityInstance, true);
         }
         
         return entityLockTransfer;
     }
     
-    public EntityLockTransfer getEntityLockTransferByEntityInstance(EntityInstance lockTargetEntityInstance) {
-        return getEntityLockTransferByEntityInstance(lockTargetEntityInstance, false);
+    public EntityLockTransfer getEntityLockTransferByEntityInstance(final UserVisit userVisit, EntityInstance lockTargetEntityInstance) {
+        return getEntityLockTransferByEntityInstance(userVisit, lockTargetEntityInstance, false);
     }
     
-    private EntityLockTransfer getEntityLockTransferByEntityInstance(EntityInstance lockTargetEntityInstance, boolean putInCache) {
+    private EntityLockTransfer getEntityLockTransferByEntityInstance(final UserVisit userVisit, EntityInstance lockTargetEntityInstance, boolean putInCache) {
         EntityLockTransfer entityLockTransfer = null;
         
         try (var conn = DslContextFactory.getInstance().getNTDslContext().parsingConnection()) {

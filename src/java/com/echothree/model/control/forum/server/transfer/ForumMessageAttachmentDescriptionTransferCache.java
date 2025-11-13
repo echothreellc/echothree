@@ -34,7 +34,7 @@ public class ForumMessageAttachmentDescriptionTransferCache
         
         if(forumMessageAttachmentDescriptionTransfer == null) {
             var forumMessageAttachmentTransferCache = forumControl.getForumTransferCaches().getForumMessageAttachmentTransferCache();
-            var forumMessageAttachmentTransfer = forumMessageAttachmentTransferCache.getForumMessageAttachmentTransfer(forumMessageAttachmentDescription.getForumMessageAttachment());
+            var forumMessageAttachmentTransfer = forumMessageAttachmentTransferCache.getForumMessageAttachmentTransfer(userVisit, forumMessageAttachmentDescription.getForumMessageAttachment());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, forumMessageAttachmentDescription.getLanguage());
             
             forumMessageAttachmentDescriptionTransfer = new ForumMessageAttachmentDescriptionTransfer(languageTransfer, forumMessageAttachmentTransfer, forumMessageAttachmentDescription.getDescription());

@@ -3031,7 +3031,7 @@ public class ChainControl
     }
 
     public ChainActionLetterTransfer getChainActionLetterTransfer(UserVisit userVisit, ChainAction chainAction) {
-        return getChainTransferCaches(userVisit).getChainActionLetterTransferCache().getChainActionLetterTransfer(getChainActionLetter(chainAction));
+        return getChainTransferCaches().getChainActionLetterTransferCache().getChainActionLetterTransfer(userVisit, getChainActionLetter(chainAction));
     }
 
     public void updateChainActionLetterFromValue(ChainActionLetterValue chainActionLetterValue, BasePK updatedBy) {
@@ -3119,7 +3119,7 @@ public class ChainControl
     }
 
     public ChainActionSurveyTransfer getChainActionSurveyTransfer(UserVisit userVisit, ChainAction chainAction) {
-        return getChainTransferCaches(userVisit).getChainActionSurveyTransferCache().getChainActionSurveyTransfer(getChainActionSurvey(chainAction));
+        return getChainTransferCaches().getChainActionSurveyTransferCache().getChainActionSurveyTransfer(userVisit, getChainActionSurvey(chainAction));
     }
 
     public void updateChainActionSurveyFromValue(ChainActionSurveyValue chainActionSurveyValue, BasePK updatedBy) {
@@ -3207,7 +3207,7 @@ public class ChainControl
     }
 
     public ChainActionChainActionSetTransfer getChainActionChainActionSetTransfer(UserVisit userVisit, ChainAction chainAction) {
-        return getChainTransferCaches(userVisit).getChainActionChainActionSetTransferCache().getChainActionChainActionSetTransfer(getChainActionChainActionSet(chainAction));
+        return getChainTransferCaches().getChainActionChainActionSetTransferCache().getChainActionChainActionSetTransfer(userVisit, getChainActionChainActionSet(chainAction));
     }
 
     public void updateChainActionChainActionSetFromValue(ChainActionChainActionSetValue chainActionChainActionSetValue, BasePK updatedBy) {

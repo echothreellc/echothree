@@ -63,7 +63,7 @@ public class DivisionTransferCache
     }
     
     public DivisionTransfer getTransfer(UserVisit userVisit, PartyDivision partyDivision) {
-        return getTransfer(partyDivision.getParty());
+        return getTransfer(userVisit, partyDivision.getParty());
     }
 
     @Override

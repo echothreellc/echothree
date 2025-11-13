@@ -229,10 +229,10 @@ public class FontControl
 
     public List<FontStyleTransfer> getFontStyleTransfers(UserVisit userVisit, Collection<FontStyle> entities) {
         List<FontStyleTransfer> transfers = new ArrayList<>(entities.size());
-        var TransferCache = getCoreTransferCaches().getFontStyleTransferCache();
+        var transferCache = getCoreTransferCaches().getFontStyleTransferCache();
 
         entities.forEach((entity) ->
-                Transfers.add(TransferCache.getFontStyleTransfer(userVisit, entity))
+                transfers.add(transferCache.getFontStyleTransfer(userVisit, entity))
         );
 
         return transfers;
@@ -681,10 +681,10 @@ public class FontControl
 
     public List<FontWeightTransfer> getFontWeightTransfers(UserVisit userVisit, Collection<FontWeight> entities) {
         List<FontWeightTransfer> transfers = new ArrayList<>(entities.size());
-        var TransferCache = getCoreTransferCaches().getFontWeightTransferCache();
+        var transferCache = getCoreTransferCaches().getFontWeightTransferCache();
 
         entities.forEach((entity) ->
-                Transfers.add(TransferCache.getFontWeightTransfer(userVisit, entity))
+                transfers.add(transferCache.getFontWeightTransfer(userVisit, entity))
         );
 
         return transfers;

@@ -33,9 +33,9 @@ public class ContentPageLayoutAreaTransferCache
         var contentPageLayoutAreaTransfer = get(contentPageLayoutArea);
         
         if(contentPageLayoutAreaTransfer == null) {
-            var contentTransferCaches = contentControl.getContentTransferCaches(userVisit);
-            var contentPageLayoutTransfer = contentTransferCaches.getContentPageLayoutTransferCache().getTransfer(contentPageLayoutArea.getContentPageLayout());
-            var contentPageAreaTypeTransfer = contentTransferCaches.getContentPageAreaTypeTransferCache().getTransfer(contentPageLayoutArea.getContentPageAreaType());
+            var contentTransferCaches = contentControl.getContentTransferCaches();
+            var contentPageLayoutTransfer = contentTransferCaches.getContentPageLayoutTransferCache().getTransfer(userVisit, contentPageLayoutArea.getContentPageLayout());
+            var contentPageAreaTypeTransfer = contentTransferCaches.getContentPageAreaTypeTransferCache().getTransfer(userVisit, contentPageLayoutArea.getContentPageAreaType());
             var showDescriptionField = contentPageLayoutArea.getShowDescriptionField();
             var sortOrder = contentPageLayoutArea.getSortOrder();
             var description = contentControl.getBestContentPageLayoutAreaDescription(contentPageLayoutArea, getLanguage(userVisit));

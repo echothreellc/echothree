@@ -80,7 +80,7 @@ public class CountryTransferCache
             put(userVisit, geoCode, countryTransfer);
             
             if(includeAliases) {
-                setupGeoCodeAliasTransfers(geoCode, countryTransfer);
+                setupGeoCodeAliasTransfers(userVisit, geoCode, countryTransfer);
             }
         }
         

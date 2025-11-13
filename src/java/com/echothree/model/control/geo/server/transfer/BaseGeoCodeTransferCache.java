@@ -32,7 +32,7 @@ public abstract class BaseGeoCodeTransferCache<K extends BaseEntity, V extends B
         super(geoControl);
     }
 
-    protected void setupGeoCodeAliasTransfers(GeoCode geoCode, BaseGeoCodeTransfer baseGeoCodeTransfer) {
+    protected void setupGeoCodeAliasTransfers(UserVisit userVisit, GeoCode geoCode, BaseGeoCodeTransfer baseGeoCodeTransfer) {
         var geoCodeAliasTransfers = geoControl.getGeoCodeAliasTransfersByGeoCode(userVisit, geoCode);
         var geoCodeAliases = new MapWrapper<GeoCodeAliasTransfer>(geoCodeAliasTransfers.size());
 

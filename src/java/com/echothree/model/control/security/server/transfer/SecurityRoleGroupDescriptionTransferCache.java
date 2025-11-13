@@ -34,7 +34,7 @@ public class SecurityRoleGroupDescriptionTransferCache
         
         if(securityRoleGroupDescriptionTransfer == null) {
             var securityRoleGroupTransferCache = securityControl.getSecurityTransferCaches().getSecurityRoleGroupTransferCache();
-            var securityRoleGroupTransfer = securityRoleGroupTransferCache.getSecurityRoleGroupTransfer(securityRoleGroupDescription.getSecurityRoleGroup());
+            var securityRoleGroupTransfer = securityRoleGroupTransferCache.getSecurityRoleGroupTransfer(userVisit, securityRoleGroupDescription.getSecurityRoleGroup());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, securityRoleGroupDescription.getLanguage());
             
             securityRoleGroupDescriptionTransfer = new SecurityRoleGroupDescriptionTransfer(languageTransfer, securityRoleGroupTransfer, securityRoleGroupDescription.getDescription());

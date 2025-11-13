@@ -65,7 +65,7 @@ public class InvoiceTransferCache
         shortDateFormatter = DateUtils.getInstance().getDateTimeFormatter(userVisit, DateTimeFormatType.SHORT_DATE);
     }
 
-    private InvoiceTransfer setInvoiceTimes(Invoice invoice, InvoiceTransfer invoiceTransfer) {
+    private InvoiceTransfer setInvoiceTimes(UserVisit userVisit, Invoice invoice, InvoiceTransfer invoiceTransfer) {
         var invoiceTimeTransfers = invoiceControl.getInvoiceTimeTransfersByInvoice(userVisit, invoice);
         var invoiceTimes = new MapWrapper<InvoiceTimeTransfer>(invoiceTimeTransfers.size());
 
@@ -78,7 +78,7 @@ public class InvoiceTransferCache
         return invoiceTransfer;
     }
 
-    private InvoiceTransfer setInvoiceRoles(Invoice invoice, InvoiceTransfer invoiceTransfer) {
+    private InvoiceTransfer setInvoiceRoles(UserVisit userVisit, Invoice invoice, InvoiceTransfer invoiceTransfer) {
         var invoiceRoleTransfers = invoiceControl.getInvoiceRoleTransfersByInvoice(userVisit, invoice);
         var invoiceRoles = new MapWrapper<InvoiceRoleTransfer>(invoiceRoleTransfers.size());
 
@@ -111,7 +111,7 @@ public class InvoiceTransferCache
                 invoiceStatus = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit, PurchaseInvoiceStatusConstants.Workflow_PURCHASE_INVOICE_STATUS, entityInstance);
             }
             
-            invoiceTransfer = setInvoiceTimes(invoice, new InvoiceTransfer(invoiceType, invoiceName, billingAccount, glAccount, term, reference, description, invoiceStatus));
+            invoiceTransfer = setInvoiceTimes(userVisit, invoice, new InvoiceTransfer(invoiceType, invoiceName, billingAccount, glAccount, term, reference, description, invoiceStatus));
             put(userVisit, invoice, invoiceTransfer, entityInstance);
             
 
@@ -120,7 +120,7 @@ public class InvoiceTransferCache
             }
 
             if(includeRoles) {
-                setInvoiceRoles(invoice, invoiceTransfer);
+                setInvoiceRoles(userVisit, invoice, invoiceTransfer);
             }
         }
         
