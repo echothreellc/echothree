@@ -42,14 +42,14 @@ public class EventTransferCache
             var unformattedEventTime = event.getEventTime();
             var eventTime = formatTypicalDateTime(userVisit, unformattedEventTime);
             var eventTimeSequence = event.getEventTimeSequence();
-            var entityInstanceTransfer = entityInstanceTransferCache.getEntityInstanceTransfer(event.getEntityInstance(), false, false, false, false);
+            var entityInstanceTransfer = entityInstanceTransferCache.getEntityInstanceTransfer(userVisit, event.getEntityInstance(), false, false, false, false);
             var eventTypeTransfer = eventControl.getEventTypeTransfer(userVisit, event.getEventType());
             var relatedEntityInstance = event.getRelatedEntityInstance();
-            var relatedEntityInstanceTransfer = relatedEntityInstance == null ? null : entityInstanceTransferCache.getEntityInstanceTransfer(relatedEntityInstance, false, false, false, false);
+            var relatedEntityInstanceTransfer = relatedEntityInstance == null ? null : entityInstanceTransferCache.getEntityInstanceTransfer(userVisit, relatedEntityInstance, false, false, false, false);
             var relatedEventType = event.getRelatedEventType();
             var relatedEventTypeTransfer = relatedEventType == null ? null : eventControl.getEventTypeTransfer(userVisit, relatedEventType);
             var createdBy = event.getCreatedBy();
-            var createdByTransfer = createdBy == null ? null : entityInstanceTransferCache.getEntityInstanceTransfer(createdBy, false, false, false, false);
+            var createdByTransfer = createdBy == null ? null : entityInstanceTransferCache.getEntityInstanceTransfer(userVisit, createdBy, false, false, false, false);
 
             eventTransfer = new EventTransfer(unformattedEventTime, eventTime, eventTimeSequence, entityInstanceTransfer, eventTypeTransfer,
                     relatedEntityInstanceTransfer, relatedEventTypeTransfer, createdByTransfer);
