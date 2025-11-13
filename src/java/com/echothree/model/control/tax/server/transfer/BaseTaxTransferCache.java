@@ -34,6 +34,6 @@ public abstract class BaseTaxTransferCache<K extends BaseEntity, V extends BaseT
         this.taxControl = taxControl;
     }
 
-    protected abstract V getTransfer(K key);
+    protected abstract V getTransfer(UserVisit userVisit, K key);
     
 }

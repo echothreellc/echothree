@@ -34,6 +34,6 @@ public abstract class BaseItemTransferCache<K extends BaseEntity, V extends Base
         this.itemControl = itemControl;
     }
 
-    protected abstract V getTransfer(K key);
+    protected abstract V getTransfer(UserVisit userVisit, K key);
     
 }

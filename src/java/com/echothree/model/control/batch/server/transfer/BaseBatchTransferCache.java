@@ -34,6 +34,6 @@ public abstract class BaseBatchTransferCache<K extends BaseEntity, V extends Bas
         this.batchControl = batchControl;
     }
     
-    protected abstract V getTransfer(K key);
+    protected abstract V getTransfer(UserVisit userVisit, K key);
 
 }

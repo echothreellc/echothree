@@ -29,6 +29,6 @@ public abstract class BaseShipmentTransferCache<K extends BaseEntity, V extends 
         super();
     }
 
-    protected abstract V getTransfer(K key);
+    protected abstract V getTransfer(UserVisit userVisit, K key);
 
 }
