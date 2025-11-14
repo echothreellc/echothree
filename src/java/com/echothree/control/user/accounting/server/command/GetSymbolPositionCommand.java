@@ -65,24 +65,20 @@ public class GetSymbolPositionCommand
         var parameterCount = (symbolPositionName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         switch(parameterCount) {
-            case 0:
-                symbolPosition = accountingControl.getDefaultSymbolPosition();
-                break;
-            case 1:
+            case 0 -> symbolPosition = accountingControl.getDefaultSymbolPosition();
+            case 1 -> {
                 if(symbolPositionName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.SymbolPosition.name());
-                    
+
                     if(!hasExecutionErrors()) {
                         symbolPosition = accountingControl.getSymbolPositionByEntityInstance(entityInstance);
                     }
                 } else {
                     symbolPosition = SymbolPositionLogic.getInstance().getSymbolPositionByName(this, symbolPositionName);
                 }
-                break;
-            default:
-                addExecutionError(ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default -> addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
         
         if(symbolPosition != null) {

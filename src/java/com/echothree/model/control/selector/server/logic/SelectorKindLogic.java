@@ -95,7 +95,7 @@ public class SelectorKindLogic
         var parameterCount = (selectorKindName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 0:
+            case 0 -> {
                 if(allowDefault) {
                     selectorKind = selectorControl.getDefaultSelectorKind(entityPermission);
 
@@ -105,8 +105,8 @@ public class SelectorKindLogic
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if(selectorKindName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.SelectorKind.name());
@@ -117,10 +117,9 @@ public class SelectorKindLogic
                 } else {
                     selectorKind = getSelectorKindByName(eea, selectorKindName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return selectorKind;

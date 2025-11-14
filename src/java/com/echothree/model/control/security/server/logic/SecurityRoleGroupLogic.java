@@ -103,7 +103,7 @@ public class SecurityRoleGroupLogic
         var parameterCount = (securityRoleGroupName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 0:
+            case 0 -> {
                 if(allowDefault) {
                     securityRoleGroup = securityControl.getDefaultSecurityRoleGroup(entityPermission);
 
@@ -113,8 +113,8 @@ public class SecurityRoleGroupLogic
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if(securityRoleGroupName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.SecurityRoleGroup.name());
@@ -125,10 +125,9 @@ public class SecurityRoleGroupLogic
                 } else {
                     securityRoleGroup = getSecurityRoleGroupByName(eea, securityRoleGroupName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return securityRoleGroup;

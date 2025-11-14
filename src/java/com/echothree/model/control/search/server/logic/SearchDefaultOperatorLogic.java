@@ -95,7 +95,7 @@ public class SearchDefaultOperatorLogic
         var parameterCount = (searchDefaultOperatorName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 0:
+            case 0 -> {
                 if(allowDefault) {
                     searchDefaultOperator = searchControl.getDefaultSearchDefaultOperator(entityPermission);
 
@@ -105,8 +105,8 @@ public class SearchDefaultOperatorLogic
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if(searchDefaultOperatorName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.SearchDefaultOperator.name());
@@ -117,10 +117,9 @@ public class SearchDefaultOperatorLogic
                 } else {
                     searchDefaultOperator = getSearchDefaultOperatorByName(eea, searchDefaultOperatorName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return searchDefaultOperator;

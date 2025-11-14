@@ -129,18 +129,17 @@ public abstract class BaseSpellCheckEvaluator
 
             // MUST and SHOULD are the only two Occurs that'll make it this far, MUST_NOT will never occur.
             switch(requiredOccur) {
-                case MUST:
+                case MUST -> {
                     if(!booleanClause.isRequired() || booleanClause.isProhibited()) {
                         result = false;
                     }
-                    break;
-                case SHOULD:
+                }
+                case SHOULD -> {
                     if(booleanClause.isRequired() || booleanClause.isProhibited()) {
                         result = false;
                     }
-                    break;
-                default:
-                    throw new IllegalStateException("Unexpected requiredOccur");
+                }
+                default -> throw new IllegalStateException("Unexpected requiredOccur");
             }
 
             if(result) {

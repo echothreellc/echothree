@@ -97,7 +97,7 @@ public class CancellationKindLogic
         var parameterCount = (cancellationKindName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 0:
+            case 0 -> {
                 if(allowDefault) {
                     cancellationKind = cancellationControl.getDefaultCancellationKind(entityPermission);
 
@@ -107,8 +107,8 @@ public class CancellationKindLogic
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if(cancellationKindName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.CancellationKind.name());
@@ -119,10 +119,9 @@ public class CancellationKindLogic
                 } else {
                     cancellationKind = getCancellationKindByName(eea, cancellationKindName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return cancellationKind;

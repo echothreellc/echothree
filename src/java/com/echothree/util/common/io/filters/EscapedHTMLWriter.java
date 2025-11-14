@@ -30,21 +30,11 @@ public class EscapedHTMLWriter
     @Override
     public void write (int c) throws IOException {
         switch(c) {
-            case '&':
-                out.write("&amp;");
-                break;
-            case '<':
-                out.write("&lt;");
-                break;
-            case '>':
-                out.write("&gt;");
-                break;
-            case '"':
-                out.write("&quot;");
-                break;
-            default:
-                out.write(c);
-                break;
+            case '&' -> out.write("&amp;");
+            case '<' -> out.write("&lt;");
+            case '>' -> out.write("&gt;");
+            case '"' -> out.write("&quot;");
+            default -> out.write(c);
         }
     }
 }

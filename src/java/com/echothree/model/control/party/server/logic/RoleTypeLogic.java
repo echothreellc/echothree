@@ -91,22 +91,19 @@ public class RoleTypeLogic
         var roleTypeName = universalSpec.getRoleTypeName();
         var parameterCount = (roleTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
-        switch(parameterCount) {
-            case 1:
-                if(roleTypeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHO_THREE.name(), EntityTypes.RoleType.name());
+        if(parameterCount == 1) {
+            if(roleTypeName == null) {
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.RoleType.name());
 
-                    if(!eea.hasExecutionErrors()) {
-                        roleType = partyControl.getRoleTypeByEntityInstance(entityInstance, entityPermission);
-                    }
-                } else {
-                    roleType = getRoleTypeByName(eea, roleTypeName, entityPermission);
+                if(!eea.hasExecutionErrors()) {
+                    roleType = partyControl.getRoleTypeByEntityInstance(entityInstance, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            } else {
+                roleType = getRoleTypeByName(eea, roleTypeName, entityPermission);
+            }
+        } else {
+            handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return roleType;

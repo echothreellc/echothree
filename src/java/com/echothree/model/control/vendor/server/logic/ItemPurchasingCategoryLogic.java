@@ -75,7 +75,7 @@ public class ItemPurchasingCategoryLogic
         var parameterCount = (itemPurchasingCategoryName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 0:
+            case 0 -> {
                 if(allowDefault) {
                     itemPurchasingCategory = vendorControl.getDefaultItemPurchasingCategory(entityPermission);
 
@@ -85,8 +85,8 @@ public class ItemPurchasingCategoryLogic
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if(itemPurchasingCategoryName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemPurchasingCategory.name());
@@ -97,10 +97,9 @@ public class ItemPurchasingCategoryLogic
                 } else {
                     itemPurchasingCategory = getItemPurchasingCategoryByName(eea, itemPurchasingCategoryName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return itemPurchasingCategory;

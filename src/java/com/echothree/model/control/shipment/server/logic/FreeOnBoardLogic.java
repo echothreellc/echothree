@@ -95,7 +95,7 @@ public class FreeOnBoardLogic
         var parameterCount = (freeOnBoardName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 0:
+            case 0 -> {
                 if(allowDefault) {
                     freeOnBoard = freeOnBoardControl.getDefaultFreeOnBoard(entityPermission);
 
@@ -105,8 +105,8 @@ public class FreeOnBoardLogic
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if(freeOnBoardName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.FreeOnBoard.name());
@@ -117,10 +117,9 @@ public class FreeOnBoardLogic
                 } else {
                     freeOnBoard = getFreeOnBoardByName(eea, freeOnBoardName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return freeOnBoard;

@@ -96,7 +96,7 @@ public class RelatedItemTypeLogic
         var parameterCount = (relatedItemTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 0:
+            case 0 -> {
                 if(allowDefault) {
                     relatedItemType = itemControl.getDefaultRelatedItemType(entityPermission);
 
@@ -106,8 +106,8 @@ public class RelatedItemTypeLogic
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if(relatedItemTypeName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.RelatedItemType.name());
@@ -118,10 +118,9 @@ public class RelatedItemTypeLogic
                 } else {
                     relatedItemType = getRelatedItemTypeByName(eea, relatedItemTypeName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return relatedItemType;

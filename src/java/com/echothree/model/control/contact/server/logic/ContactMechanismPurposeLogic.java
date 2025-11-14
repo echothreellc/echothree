@@ -62,7 +62,7 @@ public class ContactMechanismPurposeLogic
         var parameterCount = (contactMechanismPurposeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 1:
+            case 1 -> {
                 if(contactMechanismPurposeName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ContactMechanismPurpose.name());
@@ -73,10 +73,9 @@ public class ContactMechanismPurposeLogic
                 } else {
                     contactMechanismPurpose = getContactMechanismPurposeByName(eea, contactMechanismPurposeName);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return contactMechanismPurpose;
