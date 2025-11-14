@@ -96,17 +96,10 @@ public class SequenceGeneratorLogic
         String encodedValue;
 
         switch(sequenceEncoderType) {
-            case NONE:
-                encodedValue = NoneSequenceEncoder.getInstance().encode(value);
-                break;
-            case REVERSE:
-                encodedValue = ReverseSequenceEncoder.getInstance().encode(value);
-                break;
-            case REVERSE_SWAP:
-                encodedValue = ReverseSwapSequenceEncoder.getInstance().encode(value);
-                break;
-            default:
-                throw new UnimplementedSequenceEncoderTypeException();
+            case NONE -> encodedValue = NoneSequenceEncoder.getInstance().encode(value);
+            case REVERSE -> encodedValue = ReverseSequenceEncoder.getInstance().encode(value);
+            case REVERSE_SWAP -> encodedValue = ReverseSwapSequenceEncoder.getInstance().encode(value);
+            default -> throw new UnimplementedSequenceEncoderTypeException();
         }
 
         return encodedValue;
@@ -114,14 +107,16 @@ public class SequenceGeneratorLogic
 
     private SequenceChecksum getSequenceChecksum(SequenceChecksumTypes sequenceChecksumType) {
         switch(sequenceChecksumType) {
-            case NONE:
+            case NONE -> {
                 return NoneSequenceChecksum.getInstance();
-            case MOD_10:
+            }
+            case MOD_10 -> {
                 return Mod10SequenceChecksum.getInstance();
-            case MOD_36:
+            }
+            case MOD_36 -> {
                 return Mod36SequenceChecksum.getInstance();
-            default:
-                throw new UnimplementedSequenceChecksumTypeException();
+            }
+            default -> throw new UnimplementedSequenceChecksumTypeException();
         }
     }
 
@@ -195,7 +190,7 @@ public class SequenceGeneratorLogic
                                 var valueChar = valueChars[index];
 
                                 switch(maskChar) {
-                                    case '9': {
+                                    case '9' -> {
                                         var currentIndex = NUMERIC_VALUES.indexOf(valueChar);
                                         if(currentIndex != -1) {
                                             int newCharIndex;
@@ -210,8 +205,7 @@ public class SequenceGeneratorLogic
                                             value = null;
                                         }
                                     }
-                                    break;
-                                    case 'A': {
+                                    case 'A' -> {
                                         var currentIndex = ALPHABETIC_VALUES.indexOf(valueChar);
                                         if(currentIndex != -1) {
                                             int newCharIndex;
@@ -226,8 +220,7 @@ public class SequenceGeneratorLogic
                                             value = null;
                                         }
                                     }
-                                    break;
-                                    case 'Z': {
+                                    case 'Z' -> {
                                         var currentIndex = ALPHANUMERIC_VALUES.indexOf(valueChar);
                                         if(currentIndex != -1) {
                                             int newCharIndex;
@@ -242,7 +235,6 @@ public class SequenceGeneratorLogic
                                             value = null;
                                         }
                                     }
-                                    break;
                                 }
 
                                 // If an error occurred, or we do not need to increment any other positions in
@@ -337,15 +329,9 @@ public class SequenceGeneratorLogic
 
         for(var maskChar : maskChars) {
             switch(maskChar) {
-                case '9':
-                    pattern.append("[\\p{Digit}]");
-                    break;
-                case 'A':
-                    pattern.append("\\p{Upper}");
-                    break;
-                case 'Z':
-                    pattern.append("[\\p{Upper}\\p{Digit}]");
-                    break;
+                case '9' -> pattern.append("[\\p{Digit}]");
+                case 'A' -> pattern.append("\\p{Upper}");
+                case 'Z' -> pattern.append("[\\p{Upper}\\p{Digit}]");
             }
         }
 

@@ -96,33 +96,29 @@ public class PaymentProcessorLogic
         var paymentProcessorName = universalSpec.getPaymentProcessorName();
         var parameterCount = (paymentProcessorName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
-        switch(parameterCount) {
-            case 0:
-                if(allowDefault) {
-                    paymentProcessor = paymentProcessorControl.getDefaultPaymentProcessor(entityPermission);
+        if(parameterCount == 0) {
+            if(allowDefault) {
+                paymentProcessor = paymentProcessorControl.getDefaultPaymentProcessor(entityPermission);
 
-                    if(paymentProcessor == null) {
-                        handleExecutionError(UnknownDefaultPaymentProcessorException.class, eea, ExecutionErrors.UnknownDefaultPaymentProcessor.name());
-                    }
-                } else {
-                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                if(paymentProcessor == null) {
+                    handleExecutionError(UnknownDefaultPaymentProcessorException.class, eea, ExecutionErrors.UnknownDefaultPaymentProcessor.name());
                 }
-                break;
-            case 1:
-                if(paymentProcessorName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHO_THREE.name(), EntityTypes.PaymentProcessor.name());
-
-                    if(!eea.hasExecutionErrors()) {
-                        paymentProcessor = paymentProcessorControl.getPaymentProcessorByEntityInstance(entityInstance, entityPermission);
-                    }
-                } else {
-                    paymentProcessor = getPaymentProcessorByName(eea, paymentProcessorName, entityPermission);
-                }
-                break;
-            default:
+            } else {
                 handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+        } else if(parameterCount == 1) {
+            if(paymentProcessorName == null) {
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.PaymentProcessor.name());
+
+                if(!eea.hasExecutionErrors()) {
+                    paymentProcessor = paymentProcessorControl.getPaymentProcessorByEntityInstance(entityInstance, entityPermission);
+                }
+            } else {
+                paymentProcessor = getPaymentProcessorByName(eea, paymentProcessorName, entityPermission);
+            }
+        } else {
+            handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return paymentProcessor;

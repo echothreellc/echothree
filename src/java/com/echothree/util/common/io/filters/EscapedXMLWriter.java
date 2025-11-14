@@ -30,24 +30,12 @@ public class EscapedXMLWriter
     @Override
     public void write (int c) throws IOException {
         switch(c) {
-            case '&':
-                out.write("&amp;");
-                break;
-            case '<':
-                out.write("&lt;");
-                break;
-            case '>':
-                out.write("&gt;");
-                break;
-            case '"':
-                out.write("&quot;");
-                break;
-            case '\'':
-                out.write("&apos;");
-                break;
-            default:
-                out.write(c);
-                break;
+            case '&' -> out.write("&amp;");
+            case '<' -> out.write("&lt;");
+            case '>' -> out.write("&gt;");
+            case '"' -> out.write("&quot;");
+            case '\'' -> out.write("&apos;");
+            default -> out.write(c);
         }
     }
 }

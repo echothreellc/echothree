@@ -72,7 +72,7 @@ public class UserVisitGroupLogic
         var parameterCount = (userVisitGroupName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 1:
+            case 1 -> {
                 if(userVisitGroupName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.UserVisitGroup.name());
@@ -83,10 +83,9 @@ public class UserVisitGroupLogic
                 } else {
                     userVisitGroup = getUserVisitGroupByName(eea, userVisitGroupName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return userVisitGroup;

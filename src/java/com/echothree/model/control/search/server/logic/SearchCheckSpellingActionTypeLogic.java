@@ -81,7 +81,7 @@ public class SearchCheckSpellingActionTypeLogic
         var parameterCount = (searchCheckSpellingActionTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 1:
+            case 1 -> {
                 if(searchCheckSpellingActionTypeName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.SearchCheckSpellingActionType.name());
@@ -92,10 +92,9 @@ public class SearchCheckSpellingActionTypeLogic
                 } else {
                     searchCheckSpellingActionType = getSearchCheckSpellingActionTypeByName(eea, searchCheckSpellingActionTypeName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return searchCheckSpellingActionType;

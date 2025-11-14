@@ -96,7 +96,7 @@ public class ItemDescriptionTypeUseTypeLogic
         var parameterCount = (itemDescriptionTypeUseTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 0:
+            case 0 -> {
                 if(allowDefault) {
                     itemDescriptionTypeUseType = itemControl.getDefaultItemDescriptionTypeUseType(entityPermission);
 
@@ -106,8 +106,8 @@ public class ItemDescriptionTypeUseTypeLogic
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if(itemDescriptionTypeUseTypeName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemDescriptionTypeUseType.name());
@@ -118,10 +118,9 @@ public class ItemDescriptionTypeUseTypeLogic
                 } else {
                     itemDescriptionTypeUseType = getItemDescriptionTypeUseTypeByName(eea, itemDescriptionTypeUseTypeName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return itemDescriptionTypeUseType;
