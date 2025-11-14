@@ -95,7 +95,7 @@ public class InventoryConditionLogic
         var parameterCount = (inventoryConditionName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 0:
+            case 0 -> {
                 if(allowDefault) {
                     inventoryCondition = inventoryControl.getDefaultInventoryCondition(entityPermission);
 
@@ -105,8 +105,8 @@ public class InventoryConditionLogic
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if(inventoryConditionName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.InventoryCondition.name());
@@ -117,10 +117,9 @@ public class InventoryConditionLogic
                 } else {
                     inventoryCondition = getInventoryConditionByName(eea, inventoryConditionName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return inventoryCondition;

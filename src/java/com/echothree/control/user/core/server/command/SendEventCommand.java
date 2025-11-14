@@ -79,17 +79,12 @@ public class SendEventCommand
                 var eventTypeEnum = EventTypes.valueOf(eventTypeName);
 
                 switch(eventTypeEnum) {
-                    case READ:
-                    case MODIFY:
-                    case TOUCH: {
+                    case READ, MODIFY, TOUCH -> {
                         var coreControl = Session.getModelController(CoreControl.class);
 
                         coreControl.sendEvent(entityInstance, eventTypeEnum, (EntityInstance)null, null, getPartyPK());
                     }
-                    break;
-                    default:
-                        addExecutionError(ExecutionErrors.InvalidEventType.name(), eventTypeName);
-                        break;
+                    default -> addExecutionError(ExecutionErrors.InvalidEventType.name(), eventTypeName);
                 }
             } else {
                 addExecutionError(ExecutionErrors.InvalidComponentVendor.name(), componentVendorName);

@@ -65,24 +65,20 @@ public class GetLanguageCommand
         var parameterCount = (languageIsoName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         switch(parameterCount) {
-            case 0:
-                language = partyControl.getDefaultLanguage();
-                break;
-            case 1:
+            case 0 -> language = partyControl.getDefaultLanguage();
+            case 1 -> {
                 if(languageIsoName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.Language.name());
-                    
+
                     if(!hasExecutionErrors()) {
                         language = partyControl.getLanguageByEntityInstance(entityInstance);
                     }
                 } else {
                     language = LanguageLogic.getInstance().getLanguageByName(this, languageIsoName);
                 }
-                break;
-            default:
-                addExecutionError(ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default -> addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
         
         if(language != null) {

@@ -65,24 +65,20 @@ public class GetTimeZoneCommand
         var parameterCount = (timeZoneName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         switch(parameterCount) {
-            case 0:
-                timeZone = partyControl.getDefaultTimeZone();
-                break;
-            case 1:
+            case 0 -> timeZone = partyControl.getDefaultTimeZone();
+            case 1 -> {
                 if(timeZoneName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.TimeZone.name());
-                    
+
                     if(!hasExecutionErrors()) {
                         timeZone = partyControl.getTimeZoneByEntityInstance(entityInstance);
                     }
                 } else {
                     timeZone = TimeZoneLogic.getInstance().getTimeZoneByName(this, timeZoneName);
                 }
-                break;
-            default:
-                addExecutionError(ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default -> addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
 
         if(timeZone != null) {

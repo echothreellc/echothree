@@ -75,15 +75,13 @@ public class HtmlFilterHolder {
 
         for(var htmlTagHolder : htmlTagHolders) {
             switch(htmlTagHolder.getHtmlFilterAction()) {
-                case ACCEPT:
+                case ACCEPT -> {
                     var attributesSet = htmlTagHolder.getAttributes();
                     var attributes = attributesSet.isEmpty() ? null : attributesSet.toArray(new String[attributesSet.size()]);
-                    
+
                     elementRemover.acceptElement(htmlTagHolder.getTag(), attributes);
-                    break;
-                case REMOVE:
-                    elementRemover.removeElement(htmlTagHolder.getTag());
-                    break;
+                }
+                case REMOVE -> elementRemover.removeElement(htmlTagHolder.getTag());
             }
         }
         

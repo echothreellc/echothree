@@ -94,13 +94,8 @@ public class SequenceLogic
                             var maskChar = maskChars[index];
 
                             switch(maskChar) {
-                                case '9':
-                                case 'Z':
-                                    valueBuilder.append('0');
-                                    break;
-                                case 'A':
-                                    valueBuilder.append('A');
-                                    break;
+                                case '9', 'Z' -> valueBuilder.append('0');
+                                case 'A' -> valueBuilder.append('A');
                             }
                         }
 

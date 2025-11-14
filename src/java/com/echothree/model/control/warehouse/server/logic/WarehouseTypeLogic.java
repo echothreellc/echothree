@@ -95,7 +95,7 @@ public class WarehouseTypeLogic
         var parameterCount = (warehouseTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 0:
+            case 0 -> {
                 if(allowDefault) {
                     warehouseType = warehouseControl.getDefaultWarehouseType(entityPermission);
 
@@ -105,8 +105,8 @@ public class WarehouseTypeLogic
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if(warehouseTypeName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.WarehouseType.name());
@@ -117,10 +117,9 @@ public class WarehouseTypeLogic
                 } else {
                     warehouseType = getWarehouseTypeByName(eea, warehouseTypeName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return warehouseType;

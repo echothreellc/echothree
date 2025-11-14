@@ -92,13 +92,13 @@ public class MarkupUtils {
         
         for(int ch : StringUtils.getInstance().codePoints(intermediateContent)) {
             switch(ch) {
-                case '[':
+                case '[' -> {
                     markupBuilder = new StringBuilder();
                     endMarkup = false;
-                    break;
-                case ']':
+                }
+                case ']' -> {
                     var mt = transformations.get(markupBuilder.toString());
-                    
+
                     if(mt != null) {
                         if(endMarkup) {
                             if(mt == activeMarkup.peek()) {
@@ -107,15 +107,15 @@ public class MarkupUtils {
                             }
                         } else {
                             var pushIt = true;
-                            
+
                             if(mt.requiredIn != null) {
                                 var lastMt = activeMarkup.peek();
-                                
+
                                 pushIt = false;
-                                
+
                                 if(lastMt != null) {
                                     var endingMarkup = Splitter.on(':').trimResults().omitEmptyStrings().splitToList(mt.requiredIn).toArray(new String[0]);
-                                    
+
                                     for(var i = 0; i < endingMarkup.length; i++) {
                                         if(endingMarkup[i].equals(lastMt.markup)) {
                                             pushIt = true;
@@ -124,44 +124,37 @@ public class MarkupUtils {
                                     }
                                 }
                             }
-                            
+
                             if(pushIt) {
                                 if(mt.endHtml != null) {
                                     activeMarkup.push(mt);
                                 }
-                                
+
                                 finalContent.append(mt.startHtml);
                             }
                         }
                     }
-                    
+
                     markupBuilder = null;
-                    break;
-                default:
+                }
+                default -> {
                     if(markupBuilder == null) {
                         switch(ch) {
-                            case '\t':
-                                finalContent.append("&nbsp;&nbsp;&nbsp;&nbsp;");
-                                break;
-                            case '\r':
+                            case '\t' -> finalContent.append("&nbsp;&nbsp;&nbsp;&nbsp;");
+                            case '\r' -> {
                                 // Drop it.
-                                break;
-                            case '\n':
-                                finalContent.append("<br />");
-                                break;
-                            default:
-                                finalContent.appendCodePoint(ch);
-                                break;
+                            }
+                            case '\n' -> finalContent.append("<br />");
+                            default -> finalContent.appendCodePoint(ch);
                         }
                     } else {
-                        if(ch == '/' && markupBuilder.length() == 0) {
+                        if(ch == '/' && markupBuilder.isEmpty()) {
                             endMarkup = true;
                         } else if(Character.isLetter(ch)) {
                             markupBuilder.appendCodePoint(Character.toLowerCase(ch));
-                            break;
                         }
                     }
-                    break;
+                }
             }
         }
         
