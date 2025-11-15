@@ -20,13 +20,16 @@ import com.echothree.model.control.queue.common.transfer.QueueTypeDescriptionTra
 import com.echothree.model.control.queue.server.control.QueueControl;
 import com.echothree.model.data.queue.server.entity.QueueTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class QueueTypeDescriptionTransferCache
         extends BaseQueueDescriptionTransferCache<QueueTypeDescription, QueueTypeDescriptionTransfer> {
-    
+
+    QueueControl queueControl = Session.getModelController(QueueControl.class);
+
     /** Creates a new instance of QueueTypeDescriptionTransferCache */
-    public QueueTypeDescriptionTransferCache(QueueControl queueControl) {
-        super(queueControl);
+    public QueueTypeDescriptionTransferCache() {
+        super();
     }
     
     public QueueTypeDescriptionTransfer getQueueTypeDescriptionTransfer(UserVisit userVisit, QueueTypeDescription queueTypeDescription) {
