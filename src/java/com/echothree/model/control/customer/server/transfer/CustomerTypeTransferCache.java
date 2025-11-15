@@ -37,6 +37,7 @@ public class CustomerTypeTransferCache
 
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
     CancellationPolicyControl cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
+    CustomerControl customerControl = Session.getModelController(CustomerControl.class);
     FreeOnBoardControl freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
     InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
     OfferUseControl offerUseControl = Session.getModelController(OfferUseControl.class);
@@ -68,8 +69,8 @@ public class CustomerTypeTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of CustomerTypeTransferCache */
-    public CustomerTypeTransferCache(CustomerControl customerControl) {
-        super(customerControl);
+    public CustomerTypeTransferCache() {
+        super();
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
