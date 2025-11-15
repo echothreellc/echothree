@@ -28,11 +28,12 @@ public class RatingTypeTransferCache
         extends BaseRatingTransferCache<RatingType, RatingTypeTransfer> {
     
     EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
+    RatingControl ratingControl = Session.getModelController(RatingControl.class);
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     
     /** Creates a new instance of RatingTypeTransferCache */
-    public RatingTypeTransferCache(RatingControl ratingControl) {
-        super(ratingControl);
+    public RatingTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

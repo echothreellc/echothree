@@ -16,14 +16,10 @@
 
 package com.echothree.model.control.rating.server.transfer;
 
-import com.echothree.model.control.rating.server.control.RatingControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 
 public class RatingTransferCaches
         extends BaseTransferCaches {
-    
-    protected RatingControl ratingControl;
     
     protected RatingTransferCache ratingTransferCache;
     protected RatingTypeTransferCache ratingTypeTransferCache;
@@ -32,43 +28,41 @@ public class RatingTransferCaches
     protected RatingTypeListItemDescriptionTransferCache ratingTypeListItemDescriptionTransferCache;
     
     /** Creates a new instance of RatingTransferCaches */
-    public RatingTransferCaches(RatingControl ratingControl) {
+    public RatingTransferCaches() {
         super();
-        
-        this.ratingControl = ratingControl;
     }
     
     public RatingTransferCache getRatingTransferCache() {
         if(ratingTransferCache == null)
-            ratingTransferCache = new RatingTransferCache(ratingControl);
+            ratingTransferCache = new RatingTransferCache();
         
         return ratingTransferCache;
     }
     
     public RatingTypeTransferCache getRatingTypeTransferCache() {
         if(ratingTypeTransferCache == null)
-            ratingTypeTransferCache = new RatingTypeTransferCache(ratingControl);
+            ratingTypeTransferCache = new RatingTypeTransferCache();
         
         return ratingTypeTransferCache;
     }
     
     public RatingTypeDescriptionTransferCache getRatingTypeDescriptionTransferCache() {
         if(ratingTypeDescriptionTransferCache == null)
-            ratingTypeDescriptionTransferCache = new RatingTypeDescriptionTransferCache(ratingControl);
+            ratingTypeDescriptionTransferCache = new RatingTypeDescriptionTransferCache();
         
         return ratingTypeDescriptionTransferCache;
     }
     
     public RatingTypeListItemTransferCache getRatingTypeListItemTransferCache() {
         if(ratingTypeListItemTransferCache == null)
-            ratingTypeListItemTransferCache = new RatingTypeListItemTransferCache(ratingControl);
+            ratingTypeListItemTransferCache = new RatingTypeListItemTransferCache();
         
         return ratingTypeListItemTransferCache;
     }
     
     public RatingTypeListItemDescriptionTransferCache getRatingTypeListItemDescriptionTransferCache() {
         if(ratingTypeListItemDescriptionTransferCache == null)
-            ratingTypeListItemDescriptionTransferCache = new RatingTypeListItemDescriptionTransferCache(ratingControl);
+            ratingTypeListItemDescriptionTransferCache = new RatingTypeListItemDescriptionTransferCache();
         
         return ratingTypeListItemDescriptionTransferCache;
     }
