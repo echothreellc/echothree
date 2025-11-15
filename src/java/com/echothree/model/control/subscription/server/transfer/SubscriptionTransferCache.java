@@ -27,10 +27,11 @@ public class SubscriptionTransferCache
         extends BaseSubscriptionTransferCache<Subscription, SubscriptionTransfer> {
     
     PartyControl partyControl = Session.getModelController(PartyControl.class);
-    
+    SubscriptionControl subscriptionControl = Session.getModelController(SubscriptionControl.class);
+
     /** Creates a new instance of SubscriptionTransferCache */
-    public SubscriptionTransferCache(SubscriptionControl subscriptionControl) {
-        super(subscriptionControl);
+    public SubscriptionTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

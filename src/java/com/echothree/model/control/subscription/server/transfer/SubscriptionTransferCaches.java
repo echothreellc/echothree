@@ -16,14 +16,10 @@
 
 package com.echothree.model.control.subscription.server.transfer;
 
-import com.echothree.model.control.subscription.server.control.SubscriptionControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 
 public class SubscriptionTransferCaches
         extends BaseTransferCaches {
-    
-    protected SubscriptionControl subscriptionControl;
     
     protected SubscriptionKindTransferCache subscriptionKindTransferCache;
     protected SubscriptionKindDescriptionTransferCache subscriptionKindDescriptionTransferCache;
@@ -33,50 +29,48 @@ public class SubscriptionTransferCaches
     protected SubscriptionTypeChainTransferCache subscriptionTypeChainTransferCache;
     
     /** Creates a new instance of SubscriptionTransferCaches */
-    public SubscriptionTransferCaches(SubscriptionControl subscriptionControl) {
+    public SubscriptionTransferCaches() {
         super();
-        
-        this.subscriptionControl = subscriptionControl;
     }
     
     public SubscriptionKindTransferCache getSubscriptionKindTransferCache() {
         if(subscriptionKindTransferCache == null)
-            subscriptionKindTransferCache = new SubscriptionKindTransferCache(subscriptionControl);
+            subscriptionKindTransferCache = new SubscriptionKindTransferCache();
 
         return subscriptionKindTransferCache;
     }
 
     public SubscriptionKindDescriptionTransferCache getSubscriptionKindDescriptionTransferCache() {
         if(subscriptionKindDescriptionTransferCache == null)
-            subscriptionKindDescriptionTransferCache = new SubscriptionKindDescriptionTransferCache(subscriptionControl);
+            subscriptionKindDescriptionTransferCache = new SubscriptionKindDescriptionTransferCache();
 
         return subscriptionKindDescriptionTransferCache;
     }
 
     public SubscriptionTypeTransferCache getSubscriptionTypeTransferCache() {
         if(subscriptionTypeTransferCache == null)
-            subscriptionTypeTransferCache = new SubscriptionTypeTransferCache(subscriptionControl);
+            subscriptionTypeTransferCache = new SubscriptionTypeTransferCache();
         
         return subscriptionTypeTransferCache;
     }
     
     public SubscriptionTypeDescriptionTransferCache getSubscriptionTypeDescriptionTransferCache() {
         if(subscriptionTypeDescriptionTransferCache == null)
-            subscriptionTypeDescriptionTransferCache = new SubscriptionTypeDescriptionTransferCache(subscriptionControl);
+            subscriptionTypeDescriptionTransferCache = new SubscriptionTypeDescriptionTransferCache();
         
         return subscriptionTypeDescriptionTransferCache;
     }
     
     public SubscriptionTransferCache getSubscriptionTransferCache() {
         if(subscriptionTransferCache == null)
-            subscriptionTransferCache = new SubscriptionTransferCache(subscriptionControl);
+            subscriptionTransferCache = new SubscriptionTransferCache();
         
         return subscriptionTransferCache;
     }
     
     public SubscriptionTypeChainTransferCache getSubscriptionTypeChainTransferCache() {
         if(subscriptionTypeChainTransferCache == null)
-            subscriptionTypeChainTransferCache = new SubscriptionTypeChainTransferCache(subscriptionControl);
+            subscriptionTypeChainTransferCache = new SubscriptionTypeChainTransferCache();
         
         return subscriptionTypeChainTransferCache;
     }
