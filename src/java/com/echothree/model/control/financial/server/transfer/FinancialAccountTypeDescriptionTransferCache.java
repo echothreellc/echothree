@@ -20,13 +20,16 @@ import com.echothree.model.control.financial.common.transfer.FinancialAccountTyp
 import com.echothree.model.control.financial.server.control.FinancialControl;
 import com.echothree.model.data.financial.server.entity.FinancialAccountTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class FinancialAccountTypeDescriptionTransferCache
         extends BaseFinancialDescriptionTransferCache<FinancialAccountTypeDescription, FinancialAccountTypeDescriptionTransfer> {
-    
+
+    FinancialControl financialControl = Session.getModelController(FinancialControl.class);
+
     /** Creates a new instance of FinancialAccountTypeDescriptionTransferCache */
-    public FinancialAccountTypeDescriptionTransferCache(FinancialControl financialControl) {
-        super(financialControl);
+    public FinancialAccountTypeDescriptionTransferCache() {
+        super();
     }
     
     public FinancialAccountTypeDescriptionTransfer getFinancialAccountTypeDescriptionTransfer(UserVisit userVisit, FinancialAccountTypeDescription financialAccountTypeDescription) {
