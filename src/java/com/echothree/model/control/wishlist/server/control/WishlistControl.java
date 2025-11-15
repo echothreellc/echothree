@@ -21,13 +21,13 @@ import com.echothree.model.control.order.common.OrderRoleTypes;
 import com.echothree.model.control.order.common.OrderTypes;
 import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.order.server.control.OrderLineControl;
-import com.echothree.model.control.wishlist.common.choice.WishlistTypeChoicesBean;
 import com.echothree.model.control.wishlist.common.choice.WishlistPriorityChoicesBean;
+import com.echothree.model.control.wishlist.common.choice.WishlistTypeChoicesBean;
 import com.echothree.model.control.wishlist.common.transfer.WishlistLineTransfer;
-import com.echothree.model.control.wishlist.common.transfer.WishlistTransfer;
-import com.echothree.model.control.wishlist.common.transfer.WishlistTypeDescriptionTransfer;
 import com.echothree.model.control.wishlist.common.transfer.WishlistPriorityDescriptionTransfer;
 import com.echothree.model.control.wishlist.common.transfer.WishlistPriorityTransfer;
+import com.echothree.model.control.wishlist.common.transfer.WishlistTransfer;
+import com.echothree.model.control.wishlist.common.transfer.WishlistTypeDescriptionTransfer;
 import com.echothree.model.control.wishlist.common.transfer.WishlistTypeTransfer;
 import com.echothree.model.control.wishlist.server.transfer.WishlistTransferCaches;
 import com.echothree.model.data.accounting.server.entity.Currency;
@@ -44,27 +44,27 @@ import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.wishlist.common.pk.WishlistTypePK;
 import com.echothree.model.data.wishlist.common.pk.WishlistPriorityPK;
+import com.echothree.model.data.wishlist.common.pk.WishlistTypePK;
 import com.echothree.model.data.wishlist.server.entity.Wishlist;
 import com.echothree.model.data.wishlist.server.entity.WishlistLine;
-import com.echothree.model.data.wishlist.server.entity.WishlistType;
-import com.echothree.model.data.wishlist.server.entity.WishlistTypeDescription;
 import com.echothree.model.data.wishlist.server.entity.WishlistPriority;
 import com.echothree.model.data.wishlist.server.entity.WishlistPriorityDescription;
+import com.echothree.model.data.wishlist.server.entity.WishlistType;
+import com.echothree.model.data.wishlist.server.entity.WishlistTypeDescription;
 import com.echothree.model.data.wishlist.server.factory.WishlistFactory;
 import com.echothree.model.data.wishlist.server.factory.WishlistLineFactory;
-import com.echothree.model.data.wishlist.server.factory.WishlistTypeDescriptionFactory;
-import com.echothree.model.data.wishlist.server.factory.WishlistTypeDetailFactory;
-import com.echothree.model.data.wishlist.server.factory.WishlistTypeFactory;
 import com.echothree.model.data.wishlist.server.factory.WishlistPriorityDescriptionFactory;
 import com.echothree.model.data.wishlist.server.factory.WishlistPriorityDetailFactory;
 import com.echothree.model.data.wishlist.server.factory.WishlistPriorityFactory;
+import com.echothree.model.data.wishlist.server.factory.WishlistTypeDescriptionFactory;
+import com.echothree.model.data.wishlist.server.factory.WishlistTypeDetailFactory;
+import com.echothree.model.data.wishlist.server.factory.WishlistTypeFactory;
 import com.echothree.model.data.wishlist.server.value.WishlistLineValue;
-import com.echothree.model.data.wishlist.server.value.WishlistTypeDescriptionValue;
-import com.echothree.model.data.wishlist.server.value.WishlistTypeDetailValue;
 import com.echothree.model.data.wishlist.server.value.WishlistPriorityDescriptionValue;
 import com.echothree.model.data.wishlist.server.value.WishlistPriorityDetailValue;
+import com.echothree.model.data.wishlist.server.value.WishlistTypeDescriptionValue;
+import com.echothree.model.data.wishlist.server.value.WishlistTypeDetailValue;
 import com.echothree.model.data.wishlist.server.value.WishlistValue;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
@@ -95,7 +95,7 @@ public class WishlistControl
     
     public WishlistTransferCaches getWishlistTransferCaches() {
         if(wishlistTransferCaches == null) {
-            wishlistTransferCaches = new WishlistTransferCaches(this);
+            wishlistTransferCaches = new WishlistTransferCaches();
         }
         
         return wishlistTransferCaches;
