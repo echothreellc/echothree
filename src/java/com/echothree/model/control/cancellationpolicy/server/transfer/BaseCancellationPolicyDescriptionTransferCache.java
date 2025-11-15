@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.cancellationpolicy.server.transfer;
 
-import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.Session;
@@ -29,8 +27,8 @@ public abstract class BaseCancellationPolicyDescriptionTransferCache<K extends B
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of BaseCancellationPolicyDescriptionTransferCache */
-    protected BaseCancellationPolicyDescriptionTransferCache(CancellationPolicyControl cancellationPolicyControl) {
-        super(cancellationPolicyControl);
+    protected BaseCancellationPolicyDescriptionTransferCache() {
+        super();
     }
     
 }

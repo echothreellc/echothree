@@ -16,8 +16,6 @@
 
 package com.echothree.model.control.cancellationpolicy.server.transfer;
 
-import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.transfer.BaseTransferCache;
@@ -25,13 +23,9 @@ import com.echothree.util.server.transfer.BaseTransferCache;
 public abstract class BaseCancellationPolicyTransferCache<K extends BaseEntity, V extends BaseTransfer>
         extends BaseTransferCache<K, V> {
     
-    CancellationPolicyControl cancellationPolicyControl;
-    
     /** Creates a new instance of BaseCancellationPolicyTransferCache */
-    protected BaseCancellationPolicyTransferCache(CancellationPolicyControl cancellationPolicyControl) {
+    protected BaseCancellationPolicyTransferCache() {
         super();
-        
-        this.cancellationPolicyControl = cancellationPolicyControl;
     }
     
 }

@@ -26,11 +26,12 @@ import com.echothree.util.server.persistence.Session;
 public class CancellationPolicyTranslationTransferCache
         extends BaseCancellationPolicyDescriptionTransferCache<CancellationPolicyTranslation, CancellationPolicyTranslationTransfer> {
 
+    CancellationPolicyControl cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     
     /** Creates a new instance of CancellationPolicyTranslationTransferCache */
-    public CancellationPolicyTranslationTransferCache(CancellationPolicyControl cancellationPolicyControl) {
-        super(cancellationPolicyControl);
+    public CancellationPolicyTranslationTransferCache() {
+        super();
     }
     
     public CancellationPolicyTranslationTransfer getCancellationPolicyTranslationTransfer(UserVisit userVisit, CancellationPolicyTranslation cancellationPolicyTranslation) {
