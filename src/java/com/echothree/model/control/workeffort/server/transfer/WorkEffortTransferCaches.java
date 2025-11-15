@@ -16,14 +16,10 @@
 
 package com.echothree.model.control.workeffort.server.transfer;
 
-import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 
 public class WorkEffortTransferCaches
         extends BaseTransferCaches {
-    
-    protected WorkEffortControl workEffortControl;
     
     protected WorkEffortTransferCache workEffortTransferCache;
     protected WorkEffortTypeTransferCache workEffortTypeTransferCache;
@@ -32,43 +28,41 @@ public class WorkEffortTransferCaches
     protected WorkEffortScopeDescriptionTransferCache workEffortScopeDescriptionTransferCache;
     
     /** Creates a new instance of WorkEffortTransferCaches */
-    public WorkEffortTransferCaches(WorkEffortControl workEffortControl) {
+    public WorkEffortTransferCaches() {
         super();
-        
-        this.workEffortControl = workEffortControl;
     }
     
     public WorkEffortTransferCache getWorkEffortTransferCache() {
         if(workEffortTransferCache == null)
-            workEffortTransferCache = new WorkEffortTransferCache(workEffortControl);
+            workEffortTransferCache = new WorkEffortTransferCache();
         
         return workEffortTransferCache;
     }
     
     public WorkEffortTypeTransferCache getWorkEffortTypeTransferCache() {
         if(workEffortTypeTransferCache == null)
-            workEffortTypeTransferCache = new WorkEffortTypeTransferCache(workEffortControl);
+            workEffortTypeTransferCache = new WorkEffortTypeTransferCache();
         
         return workEffortTypeTransferCache;
     }
     
     public WorkEffortTypeDescriptionTransferCache getWorkEffortTypeDescriptionTransferCache() {
         if(workEffortTypeDescriptionTransferCache == null)
-            workEffortTypeDescriptionTransferCache = new WorkEffortTypeDescriptionTransferCache(workEffortControl);
+            workEffortTypeDescriptionTransferCache = new WorkEffortTypeDescriptionTransferCache();
         
         return workEffortTypeDescriptionTransferCache;
     }
     
     public WorkEffortScopeTransferCache getWorkEffortScopeTransferCache() {
         if(workEffortScopeTransferCache == null)
-            workEffortScopeTransferCache = new WorkEffortScopeTransferCache(workEffortControl);
+            workEffortScopeTransferCache = new WorkEffortScopeTransferCache();
         
         return workEffortScopeTransferCache;
     }
     
     public WorkEffortScopeDescriptionTransferCache getWorkEffortScopeDescriptionTransferCache() {
         if(workEffortScopeDescriptionTransferCache == null)
-            workEffortScopeDescriptionTransferCache = new WorkEffortScopeDescriptionTransferCache(workEffortControl);
+            workEffortScopeDescriptionTransferCache = new WorkEffortScopeDescriptionTransferCache();
         
         return workEffortScopeDescriptionTransferCache;
     }

@@ -34,14 +34,17 @@ public class WorkEffortScopeTransferCache
     
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
+    WorkEffortControl workEffortControl = Session.getModelController(WorkEffortControl.class);
     WorkRequirementControl workRequirementControl = Session.getModelController(WorkRequirementControl.class);
+
     UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+
     boolean includeWorkRequirementScopes;
     boolean includeWorkEfforts;
     
     /** Creates a new instance of WorkEffortScopeTransferCache */
-    public WorkEffortScopeTransferCache(WorkEffortControl workEffortControl) {
-        super(workEffortControl);
+    public WorkEffortScopeTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {

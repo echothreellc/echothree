@@ -17,8 +17,6 @@
 package com.echothree.model.control.workeffort.server.transfer;
 
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.Session;
@@ -26,13 +24,11 @@ import com.echothree.util.server.persistence.Session;
 public abstract class BaseWorkEffortDescriptionTransferCache<K extends BaseEntity, V extends BaseTransfer>
         extends BaseWorkEffortTransferCache<K, V> {
     
-    PartyControl partyControl;
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of BaseWorkEffortDescriptionTransferCache */
-    protected BaseWorkEffortDescriptionTransferCache(WorkEffortControl workEffortControl) {
-        super(workEffortControl);
-        
-        partyControl = Session.getModelController(PartyControl.class);
+    protected BaseWorkEffortDescriptionTransferCache() {
+        super();
     }
     
 }
