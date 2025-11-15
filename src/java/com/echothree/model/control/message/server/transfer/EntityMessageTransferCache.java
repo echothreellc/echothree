@@ -27,10 +27,11 @@ public class EntityMessageTransferCache
         extends BaseMessageTransferCache<EntityMessage, EntityMessageTransfer> {
 
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-    
+    MessageControl messageControl = Session.getModelController(MessageControl.class);
+
     /** Creates a new instance of EntityMessageTransferCache */
-    public EntityMessageTransferCache(MessageControl messageControl) {
-        super(messageControl);
+    public EntityMessageTransferCache() {
+        super();
     }
     
     public EntityMessageTransfer getEntityMessageTransfer(UserVisit userVisit, EntityMessage entityMessage) {

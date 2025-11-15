@@ -22,17 +22,20 @@ import com.echothree.model.control.message.server.control.MessageControl;
 import com.echothree.model.data.message.server.entity.Message;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
+import com.echothree.util.server.persistence.Session;
 
 public class MessageTransferCache
         extends BaseMessageTransferCache<Message, MessageTransfer> {
-    
+
+    MessageControl messageControl = Session.getModelController(MessageControl.class);
+
     boolean includeString;
     boolean includeBlob;
     boolean includeClob;
     
     /** Creates a new instance of MessageTransferCache */
-    public MessageTransferCache(MessageControl messageControl) {
-        super(messageControl);
+    public MessageTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
