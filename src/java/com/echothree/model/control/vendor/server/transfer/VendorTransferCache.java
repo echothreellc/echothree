@@ -74,6 +74,7 @@ public class VendorTransferCache
     SubscriptionControl subscriptionControl = Session.getModelController(SubscriptionControl.class);
     TermControl termControl = Session.getModelController(TermControl.class);
     UserControl userControl = Session.getModelController(UserControl.class);
+    VendorControl vendorControl = Session.getModelController(VendorControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     boolean includeUserLogin;
@@ -101,8 +102,8 @@ public class VendorTransferCache
     boolean hasCommunicationEventLimits;
 
     /** Creates a new instance of VendorTransferCache */
-    public VendorTransferCache(VendorControl vendorControl) {
-        super(vendorControl);
+    public VendorTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {

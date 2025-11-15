@@ -41,14 +41,16 @@ public class VendorItemTransferCache
     ItemControl itemControl = Session.getModelController(ItemControl.class);
     ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+    VendorControl vendorControl = Session.getModelController(VendorControl.class);
+
     ItemDescriptionLogic itemDescriptionLogic = ItemDescriptionLogic.getInstance();
-    
+
     boolean includeVendorItemCosts;
     boolean includePurchasingComments;
     
     /** Creates a new instance of VendorItemTransferCache */
-    public VendorItemTransferCache(VendorControl vendorControl) {
-        super(vendorControl);
+    public VendorItemTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {

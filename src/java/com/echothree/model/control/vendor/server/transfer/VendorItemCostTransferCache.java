@@ -29,17 +29,14 @@ import com.echothree.util.server.string.AmountUtils;
 public class VendorItemCostTransferCache
         extends BaseVendorTransferCache<VendorItemCost, VendorItemCostTransfer> {
     
-    InventoryControl inventoryControl;
-    PartyControl partyControl;
-    UomControl uomControl;
-    
+    InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    UomControl uomControl = Session.getModelController(UomControl.class);
+    VendorControl vendorControl = Session.getModelController(VendorControl.class);
+
     /** Creates a new instance of VendorItemCostTransferCache */
-    public VendorItemCostTransferCache(VendorControl vendorControl) {
-        super(vendorControl);
-        
-        inventoryControl = Session.getModelController(InventoryControl.class);
-        partyControl = Session.getModelController(PartyControl.class);
-        uomControl = Session.getModelController(UomControl.class);
+    public VendorItemCostTransferCache() {
+        super();
     }
     
     public VendorItemCostTransfer getVendorItemCostTransfer(UserVisit userVisit, VendorItemCost vendorItemCost) {
