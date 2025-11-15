@@ -20,13 +20,16 @@ import com.echothree.model.control.workflow.common.transfer.WorkflowStepDescript
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowStepDescription;
+import com.echothree.util.server.persistence.Session;
 
 public class WorkflowStepDescriptionTransferCache
         extends BaseWorkflowDescriptionTransferCache<WorkflowStepDescription, WorkflowStepDescriptionTransfer> {
-    
+
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+
     /** Creates a new instance of WorkflowStepDescriptionTransferCache */
-    public WorkflowStepDescriptionTransferCache(WorkflowControl workflowControl) {
-        super(workflowControl);
+    public WorkflowStepDescriptionTransferCache() {
+        super();
     }
     
     public WorkflowStepDescriptionTransfer getWorkflowStepDescriptionTransfer(UserVisit userVisit, WorkflowStepDescription workflowStepDescription) {

@@ -16,14 +16,10 @@
 
 package com.echothree.model.control.workflow.server.transfer;
 
-import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 
 public class WorkflowTransferCaches
         extends BaseTransferCaches {
-    
-    protected WorkflowControl workflowControl;
     
     protected WorkflowDescriptionTransferCache workflowDescriptionTransferCache;
     protected WorkflowDestinationDescriptionTransferCache workflowDestinationDescriptionTransferCache;
@@ -47,148 +43,146 @@ public class WorkflowTransferCaches
     protected WorkflowEntranceSecurityRoleTransferCache workflowEntranceSecurityRoleTransferCache;
     
     /** Creates a new instance of WorkflowTransferCaches */
-    public WorkflowTransferCaches(WorkflowControl workflowControl) {
+    public WorkflowTransferCaches() {
         super();
-        
-        this.workflowControl = workflowControl;
     }
     
     public WorkflowDescriptionTransferCache getWorkflowDescriptionTransferCache() {
         if(workflowDescriptionTransferCache == null)
-            workflowDescriptionTransferCache = new WorkflowDescriptionTransferCache(workflowControl);
+            workflowDescriptionTransferCache = new WorkflowDescriptionTransferCache();
         
         return workflowDescriptionTransferCache;
     }
     
     public WorkflowDestinationDescriptionTransferCache getWorkflowDestinationDescriptionTransferCache() {
         if(workflowDestinationDescriptionTransferCache == null)
-            workflowDestinationDescriptionTransferCache = new WorkflowDestinationDescriptionTransferCache(workflowControl);
+            workflowDestinationDescriptionTransferCache = new WorkflowDestinationDescriptionTransferCache();
         
         return workflowDestinationDescriptionTransferCache;
     }
     
     public WorkflowDestinationSelectorTransferCache getWorkflowDestinationSelectorTransferCache() {
         if(workflowDestinationSelectorTransferCache == null)
-            workflowDestinationSelectorTransferCache = new WorkflowDestinationSelectorTransferCache(workflowControl);
+            workflowDestinationSelectorTransferCache = new WorkflowDestinationSelectorTransferCache();
         
         return workflowDestinationSelectorTransferCache;
     }
     
     public WorkflowDestinationStepTransferCache getWorkflowDestinationStepTransferCache() {
         if(workflowDestinationStepTransferCache == null)
-            workflowDestinationStepTransferCache = new WorkflowDestinationStepTransferCache(workflowControl);
+            workflowDestinationStepTransferCache = new WorkflowDestinationStepTransferCache();
         
         return workflowDestinationStepTransferCache;
     }
     
     public WorkflowDestinationTransferCache getWorkflowDestinationTransferCache() {
         if(workflowDestinationTransferCache == null)
-            workflowDestinationTransferCache = new WorkflowDestinationTransferCache(workflowControl);
+            workflowDestinationTransferCache = new WorkflowDestinationTransferCache();
         
         return workflowDestinationTransferCache;
     }
     
     public WorkflowEntityStatusTransferCache getWorkflowEntityStatusTransferCache() {
         if(workflowEntityStatusTransferCache == null)
-            workflowEntityStatusTransferCache = new WorkflowEntityStatusTransferCache(workflowControl);
+            workflowEntityStatusTransferCache = new WorkflowEntityStatusTransferCache();
         
         return workflowEntityStatusTransferCache;
     }
     
     public WorkflowEntityTypeTransferCache getWorkflowEntityTypeTransferCache() {
         if(workflowEntityTypeTransferCache == null)
-            workflowEntityTypeTransferCache = new WorkflowEntityTypeTransferCache(workflowControl);
+            workflowEntityTypeTransferCache = new WorkflowEntityTypeTransferCache();
         
         return workflowEntityTypeTransferCache;
     }
     
     public WorkflowEntranceDescriptionTransferCache getWorkflowEntranceDescriptionTransferCache() {
         if(workflowEntranceDescriptionTransferCache == null)
-            workflowEntranceDescriptionTransferCache = new WorkflowEntranceDescriptionTransferCache(workflowControl);
+            workflowEntranceDescriptionTransferCache = new WorkflowEntranceDescriptionTransferCache();
         
         return workflowEntranceDescriptionTransferCache;
     }
     
     public WorkflowEntranceSelectorTransferCache getWorkflowEntranceSelectorTransferCache() {
         if(workflowEntranceSelectorTransferCache == null)
-            workflowEntranceSelectorTransferCache = new WorkflowEntranceSelectorTransferCache(workflowControl);
+            workflowEntranceSelectorTransferCache = new WorkflowEntranceSelectorTransferCache();
         
         return workflowEntranceSelectorTransferCache;
     }
     
     public WorkflowEntranceStepTransferCache getWorkflowEntranceStepTransferCache() {
         if(workflowEntranceStepTransferCache == null)
-            workflowEntranceStepTransferCache = new WorkflowEntranceStepTransferCache(workflowControl);
+            workflowEntranceStepTransferCache = new WorkflowEntranceStepTransferCache();
         
         return workflowEntranceStepTransferCache;
     }
     
     public WorkflowEntranceTransferCache getWorkflowEntranceTransferCache() {
         if(workflowEntranceTransferCache == null)
-            workflowEntranceTransferCache = new WorkflowEntranceTransferCache(workflowControl);
+            workflowEntranceTransferCache = new WorkflowEntranceTransferCache();
         
         return workflowEntranceTransferCache;
     }
     
     public WorkflowStepDescriptionTransferCache getWorkflowStepDescriptionTransferCache() {
         if(workflowStepDescriptionTransferCache == null)
-            workflowStepDescriptionTransferCache = new WorkflowStepDescriptionTransferCache(workflowControl);
+            workflowStepDescriptionTransferCache = new WorkflowStepDescriptionTransferCache();
         
         return workflowStepDescriptionTransferCache;
     }
     
     public WorkflowStepTransferCache getWorkflowStepTransferCache() {
         if(workflowStepTransferCache == null)
-            workflowStepTransferCache = new WorkflowStepTransferCache(workflowControl);
+            workflowStepTransferCache = new WorkflowStepTransferCache();
         
         return workflowStepTransferCache;
     }
     
     public WorkflowStepTypeTransferCache getWorkflowStepTypeTransferCache() {
         if(workflowStepTypeTransferCache == null)
-            workflowStepTypeTransferCache = new WorkflowStepTypeTransferCache(workflowControl);
+            workflowStepTypeTransferCache = new WorkflowStepTypeTransferCache();
         
         return workflowStepTypeTransferCache;
     }
     
     public WorkflowTransferCache getWorkflowTransferCache() {
         if(workflowTransferCache == null)
-            workflowTransferCache = new WorkflowTransferCache(workflowControl);
+            workflowTransferCache = new WorkflowTransferCache();
         
         return workflowTransferCache;
     }
     
     public WorkflowSelectorKindTransferCache getWorkflowSelectorKindTransferCache() {
         if(workflowSelectorKindTransferCache == null)
-            workflowSelectorKindTransferCache = new WorkflowSelectorKindTransferCache(workflowControl);
+            workflowSelectorKindTransferCache = new WorkflowSelectorKindTransferCache();
         
         return workflowSelectorKindTransferCache;
     }
     
     public WorkflowDestinationPartyTypeTransferCache getWorkflowDestinationPartyTypeTransferCache() {
         if(workflowDestinationPartyTypeTransferCache == null)
-            workflowDestinationPartyTypeTransferCache = new WorkflowDestinationPartyTypeTransferCache(workflowControl);
+            workflowDestinationPartyTypeTransferCache = new WorkflowDestinationPartyTypeTransferCache();
         
         return workflowDestinationPartyTypeTransferCache;
     }
     
     public WorkflowDestinationSecurityRoleTransferCache getWorkflowDestinationSecurityRoleTransferCache() {
         if(workflowDestinationSecurityRoleTransferCache == null)
-            workflowDestinationSecurityRoleTransferCache = new WorkflowDestinationSecurityRoleTransferCache(workflowControl);
+            workflowDestinationSecurityRoleTransferCache = new WorkflowDestinationSecurityRoleTransferCache();
         
         return workflowDestinationSecurityRoleTransferCache;
     }
     
     public WorkflowEntrancePartyTypeTransferCache getWorkflowEntrancePartyTypeTransferCache() {
         if(workflowEntrancePartyTypeTransferCache == null)
-            workflowEntrancePartyTypeTransferCache = new WorkflowEntrancePartyTypeTransferCache(workflowControl);
+            workflowEntrancePartyTypeTransferCache = new WorkflowEntrancePartyTypeTransferCache();
         
         return workflowEntrancePartyTypeTransferCache;
     }
     
     public WorkflowEntranceSecurityRoleTransferCache getWorkflowEntranceSecurityRoleTransferCache() {
         if(workflowEntranceSecurityRoleTransferCache == null)
-            workflowEntranceSecurityRoleTransferCache = new WorkflowEntranceSecurityRoleTransferCache(workflowControl);
+            workflowEntranceSecurityRoleTransferCache = new WorkflowEntranceSecurityRoleTransferCache();
         
         return workflowEntranceSecurityRoleTransferCache;
     }
