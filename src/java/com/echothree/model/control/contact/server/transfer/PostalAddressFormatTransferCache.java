@@ -22,15 +22,18 @@ import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.PostalAddressFormat;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
+import com.echothree.util.server.persistence.Session;
 
 public class PostalAddressFormatTransferCache
         extends BaseContactTransferCache<PostalAddressFormat, PostalAddressFormatTransfer> {
-    
+
+    ContactControl contactControl = Session.getModelController(ContactControl.class);
+
     boolean includeLines;
     
     /** Creates a new instance of PostalAddressFormatTransferCache */
-    public PostalAddressFormatTransferCache(ContactControl contactControl) {
-        super(contactControl);
+    public PostalAddressFormatTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {

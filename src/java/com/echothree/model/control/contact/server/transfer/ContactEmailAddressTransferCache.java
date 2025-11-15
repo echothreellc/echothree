@@ -19,7 +19,6 @@ package com.echothree.model.control.contact.server.transfer;
 import com.echothree.model.control.contact.common.transfer.ContactEmailAddressTransfer;
 import com.echothree.model.control.contact.common.workflow.EmailAddressStatusConstants;
 import com.echothree.model.control.contact.common.workflow.EmailAddressVerificationConstants;
-import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.contact.server.entity.ContactEmailAddress;
@@ -33,8 +32,8 @@ public class ContactEmailAddressTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
     /** Creates a new instance of ContactEmailAddressTransferCache */
-    public ContactEmailAddressTransferCache(ContactControl contactControl) {
-        super(contactControl);
+    public ContactEmailAddressTransferCache() {
+        super();
     }
     
     public ContactEmailAddressTransfer getContactEmailAddressTransfer(UserVisit userVisit, ContactEmailAddress contactEmailAddress) {

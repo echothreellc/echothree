@@ -18,7 +18,6 @@ package com.echothree.model.control.contact.server.transfer;
 
 import com.echothree.model.control.contact.common.transfer.ContactPostalAddressTransfer;
 import com.echothree.model.control.contact.common.workflow.PostalAddressStatusConstants;
-import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.server.control.PartyControl;
@@ -34,8 +33,8 @@ public class ContactPostalAddressTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of ContactPostalAddressTransferCache */
-    public ContactPostalAddressTransferCache(ContactControl contactControl) {
-        super(contactControl);
+    public ContactPostalAddressTransferCache() {
+        super();
     }
     
     public ContactPostalAddressTransfer getContactPostalAddressTransfer(UserVisit userVisit, ContactPostalAddress contactPostalAddress) {
