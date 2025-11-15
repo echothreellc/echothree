@@ -20,13 +20,16 @@ import com.echothree.model.control.communication.common.transfer.CommunicationEv
 import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.data.communication.server.entity.CommunicationEventType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class CommunicationEventTypeTransferCache
         extends BaseCommunicationTransferCache<CommunicationEventType, CommunicationEventTypeTransfer> {
-    
+
+    CommunicationControl communicationControl = Session.getModelController(CommunicationControl.class);
+
     /** Creates a new instance of CommunicationEventTypeTransferCache */
-    public CommunicationEventTypeTransferCache(CommunicationControl communicationControl) {
-        super(communicationControl);
+    public CommunicationEventTypeTransferCache() {
+        super();
     }
     
     public CommunicationEventTypeTransfer getCommunicationEventTypeTransfer(UserVisit userVisit, CommunicationEventType communicationEventType) {
