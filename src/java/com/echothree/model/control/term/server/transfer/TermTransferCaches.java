@@ -16,14 +16,10 @@
 
 package com.echothree.model.control.term.server.transfer;
 
-import com.echothree.model.control.term.server.control.TermControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 
 public class TermTransferCaches
         extends BaseTransferCaches {
-    
-    protected TermControl termControl;
     
     protected TermTypeTransferCache termTypeTransferCache;
     protected TermTransferCache termTransferCache;
@@ -33,50 +29,48 @@ public class TermTransferCaches
     protected PartyCreditLimitTransferCache partyCreditLimitTransferCache;
     
     /** Creates a new instance of TermTransferCaches */
-    public TermTransferCaches(TermControl termControl) {
+    public TermTransferCaches() {
         super();
-        
-        this.termControl = termControl;
     }
     
     public TermTypeTransferCache getTermTypeTransferCache() {
         if(termTypeTransferCache == null)
-            termTypeTransferCache = new TermTypeTransferCache(termControl);
+            termTypeTransferCache = new TermTypeTransferCache();
         
         return termTypeTransferCache;
     }
     
     public TermTransferCache getTermTransferCache() {
         if(termTransferCache == null)
-            termTransferCache = new TermTransferCache(termControl);
+            termTransferCache = new TermTransferCache();
         
         return termTransferCache;
     }
     
     public TermDescriptionTransferCache getTermDescriptionTransferCache() {
         if(termDescriptionTransferCache == null)
-            termDescriptionTransferCache = new TermDescriptionTransferCache(termControl);
+            termDescriptionTransferCache = new TermDescriptionTransferCache();
         
         return termDescriptionTransferCache;
     }
     
     public PartyTermTransferCache getPartyTermTransferCache() {
         if(partyTermTransferCache == null)
-            partyTermTransferCache = new PartyTermTransferCache(termControl);
+            partyTermTransferCache = new PartyTermTransferCache();
         
         return partyTermTransferCache;
     }
     
     public CustomerTypeCreditLimitTransferCache getCustomerTypeCreditLimitTransferCache() {
         if(customerTypeCreditLimitTransferCache == null)
-            customerTypeCreditLimitTransferCache = new CustomerTypeCreditLimitTransferCache(termControl);
+            customerTypeCreditLimitTransferCache = new CustomerTypeCreditLimitTransferCache();
         
         return customerTypeCreditLimitTransferCache;
     }
     
     public PartyCreditLimitTransferCache getPartyCreditLimitTransferCache() {
         if(partyCreditLimitTransferCache == null)
-            partyCreditLimitTransferCache = new PartyCreditLimitTransferCache(termControl);
+            partyCreditLimitTransferCache = new PartyCreditLimitTransferCache();
         
         return partyCreditLimitTransferCache;
     }

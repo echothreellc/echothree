@@ -21,14 +21,17 @@ import com.echothree.model.control.term.common.transfer.TermTransfer;
 import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.PercentUtils;
 
 public class TermTransferCache
         extends BaseTermTransferCache<Term, TermTransfer> {
-    
+
+    TermControl termControl = Session.getModelController(TermControl.class);
+
     /** Creates a new instance of TermTransferCache */
-    public TermTransferCache(TermControl termControl) {
-        super(termControl);
+    public TermTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

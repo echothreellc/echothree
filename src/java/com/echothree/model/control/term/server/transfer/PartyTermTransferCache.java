@@ -25,14 +25,13 @@ import com.echothree.util.server.persistence.Session;
 
 public class PartyTermTransferCache
         extends BaseTermTransferCache<PartyTerm, PartyTermTransfer> {
-    
-    PartyControl partyControl;
-    
+
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    TermControl termControl = Session.getModelController(TermControl.class);
+
     /** Creates a new instance of PartyTermTransferCache */
-    public PartyTermTransferCache(TermControl termControl) {
-        super(termControl);
-        
-        partyControl = Session.getModelController(PartyControl.class);
+    public PartyTermTransferCache() {
+        super();
     }
     
     public PartyTermTransfer getPartyTermTransfer(UserVisit userVisit, PartyTerm partyTerm) {
