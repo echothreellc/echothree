@@ -16,35 +16,29 @@
 
 package com.echothree.model.control.job.server.transfer;
 
-import com.echothree.model.control.job.server.control.JobControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 
 public class JobTransferCaches
         extends BaseTransferCaches {
     
-    protected JobControl jobControl;
-    
     protected JobDescriptionTransferCache jobDescriptionTransferCache;
     protected JobTransferCache jobTransferCache;
     
     /** Creates a new instance of JobTransferCaches */
-    public JobTransferCaches(JobControl jobControl) {
+    public JobTransferCaches() {
         super();
-        
-        this.jobControl = jobControl;
     }
     
     public JobDescriptionTransferCache getJobDescriptionTransferCache() {
         if(jobDescriptionTransferCache == null)
-            jobDescriptionTransferCache = new JobDescriptionTransferCache(jobControl);
+            jobDescriptionTransferCache = new JobDescriptionTransferCache();
         
         return jobDescriptionTransferCache;
     }
     
     public JobTransferCache getJobTransferCache() {
         if(jobTransferCache == null)
-            jobTransferCache = new JobTransferCache(jobControl);
+            jobTransferCache = new JobTransferCache();
         
         return jobTransferCache;
     }
