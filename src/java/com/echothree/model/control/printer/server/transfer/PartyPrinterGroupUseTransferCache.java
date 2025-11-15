@@ -26,12 +26,12 @@ import com.echothree.util.server.persistence.Session;
 public class PartyPrinterGroupUseTransferCache
         extends BasePrinterTransferCache<PartyPrinterGroupUse, PartyPrinterGroupUseTransfer> {
     
-    PartyControl partyControl;
-    
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    PrinterControl printerControl = Session.getModelController(PrinterControl.class);
+
     /** Creates a new instance of PartyPrinterGroupUseTransferCache */
-    public PartyPrinterGroupUseTransferCache(PrinterControl printerControl) {
-        super(printerControl);
-        partyControl = Session.getModelController(PartyControl.class);
+    public PartyPrinterGroupUseTransferCache() {
+        super();
     }
     
     public PartyPrinterGroupUseTransfer getPartyPrinterGroupUseTransfer(UserVisit userVisit, PartyPrinterGroupUse partyPrinterGroupUse) {
