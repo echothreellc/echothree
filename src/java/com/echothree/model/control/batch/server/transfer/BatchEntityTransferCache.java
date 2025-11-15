@@ -17,7 +17,6 @@
 package com.echothree.model.control.batch.server.transfer;
 
 import com.echothree.model.control.batch.common.transfer.BatchEntityTransfer;
-import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.batch.server.entity.BatchEntity;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -29,8 +28,8 @@ public class BatchEntityTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of BatchEntityTransferCache */
-    public BatchEntityTransferCache(BatchControl batchControl) {
-        super(batchControl);
+    public BatchEntityTransferCache() {
+        super();
     }
 
     @Override

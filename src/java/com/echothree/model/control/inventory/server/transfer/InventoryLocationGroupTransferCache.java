@@ -32,13 +32,14 @@ public class InventoryLocationGroupTransferCache
         extends BaseInventoryTransferCache<InventoryLocationGroup, InventoryLocationGroupTransfer> {
     
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+    InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     boolean includeCapacities;
     boolean includeVolume;
     
     /** Creates a new instance of InventoryLocationGroupTransferCache */
-    public InventoryLocationGroupTransferCache(InventoryControl inventoryControl) {
-        super(inventoryControl);
+    public InventoryLocationGroupTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {

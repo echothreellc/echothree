@@ -20,13 +20,16 @@ import com.echothree.model.control.employee.common.transfer.ResponsibilityTypeTr
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.data.employee.server.entity.ResponsibilityType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class ResponsibilityTypeTransferCache
         extends BaseEmployeeTransferCache<ResponsibilityType, ResponsibilityTypeTransfer> {
-    
+
+    EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
+
     /** Creates a new instance of ResponsibilityTypeTransferCache */
-    public ResponsibilityTypeTransferCache(EmployeeControl employeeControl) {
-        super(employeeControl);
+    public ResponsibilityTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

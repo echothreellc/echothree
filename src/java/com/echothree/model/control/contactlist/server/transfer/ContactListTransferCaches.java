@@ -16,14 +16,10 @@
 
 package com.echothree.model.control.contactlist.server.transfer;
 
-import com.echothree.model.control.contactlist.server.control.ContactListControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 
 public class ContactListTransferCaches
         extends BaseTransferCaches {
-    
-    protected ContactListControl contactListControl;
     
     protected ContactListTypeDescriptionTransferCache contactListTypeDescriptionTransferCache;
     protected ContactListTypeTransferCache contactListTypeTransferCache;
@@ -41,106 +37,104 @@ public class ContactListTransferCaches
     protected ContactListContactMechanismPurposeTransferCache contactListContactMechanismPurposeTransferCache;
     
     /** Creates a new instance of ContactListTransferCaches */
-    public ContactListTransferCaches(ContactListControl contactListControl) {
+    public ContactListTransferCaches() {
         super();
-        
-        this.contactListControl = contactListControl;
     }
     
     public ContactListTypeDescriptionTransferCache getContactListTypeDescriptionTransferCache() {
         if(contactListTypeDescriptionTransferCache == null)
-            contactListTypeDescriptionTransferCache = new ContactListTypeDescriptionTransferCache(contactListControl);
+            contactListTypeDescriptionTransferCache = new ContactListTypeDescriptionTransferCache();
         
         return contactListTypeDescriptionTransferCache;
     }
     
     public ContactListTypeTransferCache getContactListTypeTransferCache() {
         if(contactListTypeTransferCache == null)
-            contactListTypeTransferCache = new ContactListTypeTransferCache(contactListControl);
+            contactListTypeTransferCache = new ContactListTypeTransferCache();
         
         return contactListTypeTransferCache;
     }
     
     public ContactListGroupDescriptionTransferCache getContactListGroupDescriptionTransferCache() {
         if(contactListGroupDescriptionTransferCache == null)
-            contactListGroupDescriptionTransferCache = new ContactListGroupDescriptionTransferCache(contactListControl);
+            contactListGroupDescriptionTransferCache = new ContactListGroupDescriptionTransferCache();
 
         return contactListGroupDescriptionTransferCache;
     }
 
     public ContactListGroupTransferCache getContactListGroupTransferCache() {
         if(contactListGroupTransferCache == null)
-            contactListGroupTransferCache = new ContactListGroupTransferCache(contactListControl);
+            contactListGroupTransferCache = new ContactListGroupTransferCache();
 
         return contactListGroupTransferCache;
     }
 
     public ContactListFrequencyDescriptionTransferCache getContactListFrequencyDescriptionTransferCache() {
         if(contactListFrequencyDescriptionTransferCache == null)
-            contactListFrequencyDescriptionTransferCache = new ContactListFrequencyDescriptionTransferCache(contactListControl);
+            contactListFrequencyDescriptionTransferCache = new ContactListFrequencyDescriptionTransferCache();
 
         return contactListFrequencyDescriptionTransferCache;
     }
 
     public ContactListFrequencyTransferCache getContactListFrequencyTransferCache() {
         if(contactListFrequencyTransferCache == null)
-            contactListFrequencyTransferCache = new ContactListFrequencyTransferCache(contactListControl);
+            contactListFrequencyTransferCache = new ContactListFrequencyTransferCache();
 
         return contactListFrequencyTransferCache;
     }
 
     public ContactListDescriptionTransferCache getContactListDescriptionTransferCache() {
         if(contactListDescriptionTransferCache == null)
-            contactListDescriptionTransferCache = new ContactListDescriptionTransferCache(contactListControl);
+            contactListDescriptionTransferCache = new ContactListDescriptionTransferCache();
         
         return contactListDescriptionTransferCache;
     }
     
     public ContactListTransferCache getContactListTransferCache() {
         if(contactListTransferCache == null)
-            contactListTransferCache = new ContactListTransferCache(contactListControl);
+            contactListTransferCache = new ContactListTransferCache();
         
         return contactListTransferCache;
     }
     
     public PartyContactListTransferCache getPartyContactListTransferCache() {
         if(partyContactListTransferCache == null)
-            partyContactListTransferCache = new PartyContactListTransferCache(contactListControl);
+            partyContactListTransferCache = new PartyContactListTransferCache();
         
         return partyContactListTransferCache;
     }
     
     public PartyTypeContactListTransferCache getPartyTypeContactListTransferCache() {
         if(partyTypeContactListTransferCache == null)
-            partyTypeContactListTransferCache = new PartyTypeContactListTransferCache(contactListControl);
+            partyTypeContactListTransferCache = new PartyTypeContactListTransferCache();
 
         return partyTypeContactListTransferCache;
     }
 
     public PartyTypeContactListGroupTransferCache getPartyTypeContactListGroupTransferCache() {
         if(partyTypeContactListGroupTransferCache == null)
-            partyTypeContactListGroupTransferCache = new PartyTypeContactListGroupTransferCache(contactListControl);
+            partyTypeContactListGroupTransferCache = new PartyTypeContactListGroupTransferCache();
 
         return partyTypeContactListGroupTransferCache;
     }
 
     public CustomerTypeContactListTransferCache getCustomerTypeContactListTransferCache() {
         if(customerTypeContactListTransferCache == null)
-            customerTypeContactListTransferCache = new CustomerTypeContactListTransferCache(contactListControl);
+            customerTypeContactListTransferCache = new CustomerTypeContactListTransferCache();
 
         return customerTypeContactListTransferCache;
     }
 
     public CustomerTypeContactListGroupTransferCache getCustomerTypeContactListGroupTransferCache() {
         if(customerTypeContactListGroupTransferCache == null)
-            customerTypeContactListGroupTransferCache = new CustomerTypeContactListGroupTransferCache(contactListControl);
+            customerTypeContactListGroupTransferCache = new CustomerTypeContactListGroupTransferCache();
 
         return customerTypeContactListGroupTransferCache;
     }
 
     public ContactListContactMechanismPurposeTransferCache getContactListContactMechanismPurposeTransferCache() {
         if(contactListContactMechanismPurposeTransferCache == null)
-            contactListContactMechanismPurposeTransferCache = new ContactListContactMechanismPurposeTransferCache(contactListControl);
+            contactListContactMechanismPurposeTransferCache = new ContactListContactMechanismPurposeTransferCache();
         
         return contactListContactMechanismPurposeTransferCache;
     }

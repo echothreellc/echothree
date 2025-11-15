@@ -17,7 +17,6 @@
 package com.echothree.model.control.inventory.server.transfer;
 
 import com.echothree.model.control.inventory.common.transfer.InventoryAdjustmentTypeDescriptionTransfer;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.inventory.server.control.InventoryAdjustmentTypeControl;
 import com.echothree.model.data.inventory.server.entity.InventoryAdjustmentTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -29,8 +28,8 @@ public class InventoryAdjustmentTypeDescriptionTransferCache
     InventoryAdjustmentTypeControl inventoryAdjustmentTypeControl = Session.getModelController(InventoryAdjustmentTypeControl.class);
 
     /** Creates a new instance of InventoryAdjustmentTypeDescriptionTransferCache */
-    public InventoryAdjustmentTypeDescriptionTransferCache(InventoryControl inventoryControl) {
-        super(inventoryControl);
+    public InventoryAdjustmentTypeDescriptionTransferCache() {
+        super();
     }
 
     @Override

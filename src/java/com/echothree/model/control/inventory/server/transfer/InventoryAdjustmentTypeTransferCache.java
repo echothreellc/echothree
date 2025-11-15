@@ -17,10 +17,7 @@
 package com.echothree.model.control.inventory.server.transfer;
 
 import com.echothree.model.control.inventory.common.transfer.InventoryAdjustmentTypeTransfer;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.inventory.server.control.InventoryAdjustmentTypeControl;
-import com.echothree.model.control.sequence.server.control.SequenceControl;
-import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.inventory.server.entity.InventoryAdjustmentType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -29,12 +26,10 @@ public class InventoryAdjustmentTypeTransferCache
         extends BaseInventoryTransferCache<InventoryAdjustmentType, InventoryAdjustmentTypeTransfer> {
 
     InventoryAdjustmentTypeControl inventoryAdjustmentTypeControl = Session.getModelController(InventoryAdjustmentTypeControl.class);
-    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
-    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
-    
+
     /** Creates a new instance of InventoryAdjustmentTypeTransferCache */
-    public InventoryAdjustmentTypeTransferCache(InventoryControl inventoryControl) {
-        super(inventoryControl);
+    public InventoryAdjustmentTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

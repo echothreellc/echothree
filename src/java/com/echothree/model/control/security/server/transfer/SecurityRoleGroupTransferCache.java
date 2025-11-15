@@ -23,16 +23,19 @@ import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.MapWrapper;
+import com.echothree.util.server.persistence.Session;
 
 public class SecurityRoleGroupTransferCache
         extends BaseSecurityTransferCache<SecurityRoleGroup, SecurityRoleGroupTransfer> {
-    
+
+    SecurityControl securityControl = Session.getModelController(SecurityControl.class);
+
     boolean includeSecurityRolesCount;
     boolean includeSecurityRoles;
 
     /** Creates a new instance of SecurityRoleGroupTransferCache */
-    public SecurityRoleGroupTransferCache(SecurityControl securityControl) {
-        super(securityControl);
+    public SecurityRoleGroupTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {

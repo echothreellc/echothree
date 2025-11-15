@@ -20,13 +20,16 @@ import com.echothree.model.control.inventory.common.transfer.InventoryConditionD
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.data.inventory.server.entity.InventoryConditionDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class InventoryConditionDescriptionTransferCache
         extends BaseInventoryDescriptionTransferCache<InventoryConditionDescription, InventoryConditionDescriptionTransfer> {
-    
+
+    InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
+
     /** Creates a new instance of InventoryConditionDescriptionTransferCache */
-    public InventoryConditionDescriptionTransferCache(InventoryControl inventoryControl) {
-        super(inventoryControl);
+    public InventoryConditionDescriptionTransferCache() {
+        super();
     }
     
     @Override

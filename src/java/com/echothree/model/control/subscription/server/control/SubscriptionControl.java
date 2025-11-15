@@ -90,7 +90,7 @@ public class SubscriptionControl
     
     public SubscriptionTransferCaches getSubscriptionTransferCaches() {
         if(subscriptionTransferCaches == null) {
-            subscriptionTransferCaches = new SubscriptionTransferCaches(this);
+            subscriptionTransferCaches = new SubscriptionTransferCaches();
         }
         
         return subscriptionTransferCaches;

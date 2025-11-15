@@ -20,13 +20,16 @@ import com.echothree.model.control.search.common.transfer.SearchCheckSpellingAct
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.search.server.entity.SearchCheckSpellingActionTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class SearchCheckSpellingActionTypeDescriptionTransferCache
         extends BaseSearchDescriptionTransferCache<SearchCheckSpellingActionTypeDescription, SearchCheckSpellingActionTypeDescriptionTransfer> {
-    
+
+    SearchControl searchControl = Session.getModelController(SearchControl.class);
+
     /** Creates a new instance of SearchCheckSpellingActionTypeDescriptionTransferCache */
-    public SearchCheckSpellingActionTypeDescriptionTransferCache(SearchControl searchControl) {
-        super(searchControl);
+    public SearchCheckSpellingActionTypeDescriptionTransferCache() {
+        super();
     }
     
     public SearchCheckSpellingActionTypeDescriptionTransfer getSearchCheckSpellingActionTypeDescriptionTransfer(UserVisit userVisit, SearchCheckSpellingActionTypeDescription searchCheckSpellingActionTypeDescription) {

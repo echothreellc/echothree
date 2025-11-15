@@ -26,13 +26,14 @@ import com.echothree.util.server.persistence.Session;
 
 public class PicklistTypeTransferCache
         extends BasePicklistTransferCache<PicklistType, PicklistTypeTransfer> {
-    
+
+    PicklistControl picklistControl = Session.getModelController(PicklistControl.class);
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of PicklistTypeTransferCache */
-    public PicklistTypeTransferCache(PicklistControl picklistControl) {
-        super(picklistControl);
+    public PicklistTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

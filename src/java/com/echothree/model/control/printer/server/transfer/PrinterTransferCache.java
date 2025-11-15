@@ -18,8 +18,8 @@ package com.echothree.model.control.printer.server.transfer;
 
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.printer.common.transfer.PrinterTransfer;
-import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.printer.common.workflow.PrinterStatusConstants;
+import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.printer.server.entity.Printer;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -29,11 +29,12 @@ public class PrinterTransferCache
         extends BasePrinterTransferCache<Printer, PrinterTransfer> {
     
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+    PrinterControl printerControl = Session.getModelController(PrinterControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of PrinterTransferCache */
-    public PrinterTransferCache(PrinterControl printerControl) {
-        super(printerControl);
+    public PrinterTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

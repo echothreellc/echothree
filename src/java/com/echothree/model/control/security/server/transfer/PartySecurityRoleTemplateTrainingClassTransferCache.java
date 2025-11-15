@@ -25,12 +25,13 @@ import com.echothree.util.server.persistence.Session;
 
 public class PartySecurityRoleTemplateTrainingClassTransferCache
         extends BaseSecurityTransferCache<PartySecurityRoleTemplateTrainingClass, PartySecurityRoleTemplateTrainingClassTransfer> {
-    
+
+    SecurityControl securityControl = Session.getModelController(SecurityControl.class);
     TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
     
     /** Creates a new instance of PartySecurityRoleTemplateTrainingClassTransferCache */
-    public PartySecurityRoleTemplateTrainingClassTransferCache(SecurityControl securityControl) {
-        super(securityControl);
+    public PartySecurityRoleTemplateTrainingClassTransferCache() {
+        super();
     }
     
     public PartySecurityRoleTemplateTrainingClassTransfer getPartySecurityRoleTemplateTrainingClassTransfer(UserVisit userVisit, PartySecurityRoleTemplateTrainingClass partySecurityRoleTemplateTrainingClass) {

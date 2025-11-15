@@ -65,7 +65,7 @@ public class JobControl
     
     public JobTransferCaches getJobTransferCaches() {
         if(jobTransferCaches == null) {
-            jobTransferCaches = new JobTransferCaches(this);
+            jobTransferCaches = new JobTransferCaches();
         }
         
         return jobTransferCaches;

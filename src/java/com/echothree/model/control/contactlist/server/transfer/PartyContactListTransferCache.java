@@ -29,7 +29,8 @@ import com.echothree.util.server.persistence.Session;
 
 public class PartyContactListTransferCache
         extends BaseContactListTransferCache<PartyContactList, PartyContactListTransfer> {
-    
+
+    ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
@@ -38,8 +39,8 @@ public class PartyContactListTransferCache
     boolean includeComments;
     
     /** Creates a new instance of PartyContactListTransferCache */
-    public PartyContactListTransferCache(ContactListControl contactListControl) {
-        super(contactListControl);
+    public PartyContactListTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {

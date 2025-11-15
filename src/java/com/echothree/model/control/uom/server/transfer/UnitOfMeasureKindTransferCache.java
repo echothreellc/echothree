@@ -22,10 +22,13 @@ import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
+import com.echothree.util.server.persistence.Session;
 
 public class UnitOfMeasureKindTransferCache
         extends BaseUomTransferCache<UnitOfMeasureKind, UnitOfMeasureKindTransfer> {
-    
+
+    UomControl uomControl = Session.getModelController(UomControl.class);
+
     TransferProperties transferProperties;
     boolean filterUnitOfMeasureKindName;
     boolean filterIsDefault;
@@ -35,8 +38,8 @@ public class UnitOfMeasureKindTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of UnitOfMeasureKindTransferCache */
-    public UnitOfMeasureKindTransferCache(UomControl uomControl) {
-        super(uomControl);
+    public UnitOfMeasureKindTransferCache() {
+        super();
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {

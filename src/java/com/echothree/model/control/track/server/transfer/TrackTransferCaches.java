@@ -16,29 +16,23 @@
 
 package com.echothree.model.control.track.server.transfer;
 
-import com.echothree.model.control.track.server.control.TrackControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 
 public class TrackTransferCaches
         extends BaseTransferCaches {
-    
-    protected TrackControl trackControl;
     
     protected TrackTransferCache trackTransferCache;
     protected TrackDescriptionTransferCache trackDescriptionTransferCache;
     protected UserVisitTrackTransferCache userVisitTrackTransferCache;
     
     /** Creates a new instance of TrackTransferCaches */
-    public TrackTransferCaches(TrackControl trackControl) {
+    public TrackTransferCaches() {
         super();
-        
-        this.trackControl = trackControl;
     }
     
     public TrackTransferCache getTrackTransferCache() {
         if(trackTransferCache == null) {
-            trackTransferCache = new TrackTransferCache(trackControl);
+            trackTransferCache = new TrackTransferCache();
         }
 
         return trackTransferCache;
@@ -46,7 +40,7 @@ public class TrackTransferCaches
 
     public TrackDescriptionTransferCache getTrackDescriptionTransferCache() {
         if(trackDescriptionTransferCache == null) {
-            trackDescriptionTransferCache = new TrackDescriptionTransferCache(trackControl);
+            trackDescriptionTransferCache = new TrackDescriptionTransferCache();
         }
 
         return trackDescriptionTransferCache;
@@ -54,7 +48,7 @@ public class TrackTransferCaches
 
     public UserVisitTrackTransferCache getUserVisitTrackTransferCache() {
         if(userVisitTrackTransferCache == null) {
-            userVisitTrackTransferCache = new UserVisitTrackTransferCache(trackControl);
+            userVisitTrackTransferCache = new UserVisitTrackTransferCache();
         }
 
         return userVisitTrackTransferCache;

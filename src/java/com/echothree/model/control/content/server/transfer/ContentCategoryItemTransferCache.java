@@ -22,10 +22,13 @@ import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentCategoryItem;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
+import com.echothree.util.server.persistence.Session;
 
 public class ContentCategoryItemTransferCache
         extends BaseContentTransferCache<ContentCategoryItem, ContentCategoryItemTransfer> {
-    
+
+    ContentControl contentControl = Session.getModelController(ContentControl.class);
+
     TransferProperties transferProperties;
     boolean filterContentCategory;
     boolean filterContentCatalogItem;
@@ -33,8 +36,8 @@ public class ContentCategoryItemTransferCache
     boolean filterSortOrder;
 
     /** Creates a new instance of ContentCategoryItemTransferCache */
-    public ContentCategoryItemTransferCache(ContentControl contentControl) {
-        super(contentControl);
+    public ContentCategoryItemTransferCache() {
+        super();
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {

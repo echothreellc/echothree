@@ -18,7 +18,6 @@ package com.echothree.model.control.forum.server.transfer;
 
 import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.forum.common.transfer.ForumMessagePartTypeTransfer;
-import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.forum.server.entity.ForumMessagePartType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -29,8 +28,8 @@ public class ForumMessagePartTypeTransferCache
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
 
     /** Creates a new instance of ForumMessagePartTypeTransferCache */
-    public ForumMessagePartTypeTransferCache(ForumControl forumControl) {
-        super(forumControl);
+    public ForumMessagePartTypeTransferCache() {
+        super();
     }
     
     public ForumMessagePartTypeTransfer getForumMessagePartTypeTransfer(UserVisit userVisit, ForumMessagePartType forumMessagePartType) {

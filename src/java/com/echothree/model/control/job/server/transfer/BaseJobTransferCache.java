@@ -16,8 +16,6 @@
 
 package com.echothree.model.control.job.server.transfer;
 
-import com.echothree.model.control.job.server.control.JobControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.transfer.BaseTransferCache;
@@ -25,13 +23,9 @@ import com.echothree.util.server.transfer.BaseTransferCache;
 public abstract class BaseJobTransferCache<K extends BaseEntity, V extends BaseTransfer>
         extends BaseTransferCache<K, V> {
     
-    JobControl jobControl;
-    
     /** Creates a new instance of BaseJobTransferCache */
-    protected BaseJobTransferCache(JobControl jobControl) {
+    protected BaseJobTransferCache() {
         super();
-        
-        this.jobControl = jobControl;
     }
     
 }

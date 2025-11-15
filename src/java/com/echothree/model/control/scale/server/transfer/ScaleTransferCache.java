@@ -26,11 +26,12 @@ import com.echothree.util.server.persistence.Session;
 public class ScaleTransferCache
         extends BaseScaleTransferCache<Scale, ScaleTransfer> {
 
+    ScaleControl scaleControl = Session.getModelController(ScaleControl.class);
     ServerControl serverControl = Session.getModelController(ServerControl.class);
 
     /** Creates a new instance of ScaleTransferCache */
-    public ScaleTransferCache(ScaleControl scaleControl) {
-        super(scaleControl);
+    public ScaleTransferCache() {
+        super();
 
         setIncludeEntityInstance(true);
     }

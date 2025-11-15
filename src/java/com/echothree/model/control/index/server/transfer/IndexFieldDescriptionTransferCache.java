@@ -20,13 +20,16 @@ import com.echothree.model.control.index.common.transfer.IndexFieldDescriptionTr
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.data.index.server.entity.IndexFieldDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class IndexFieldDescriptionTransferCache
         extends BaseIndexDescriptionTransferCache<IndexFieldDescription, IndexFieldDescriptionTransfer> {
-    
+
+    IndexControl indexControl = Session.getModelController(IndexControl.class);
+
     /** Creates a new instance of IndexFieldDescriptionTransferCache */
-    public IndexFieldDescriptionTransferCache(IndexControl indexControl) {
-        super(indexControl);
+    public IndexFieldDescriptionTransferCache() {
+        super();
     }
     
     public IndexFieldDescriptionTransfer getIndexFieldDescriptionTransfer(UserVisit userVisit, IndexFieldDescription indexFieldDescription) {

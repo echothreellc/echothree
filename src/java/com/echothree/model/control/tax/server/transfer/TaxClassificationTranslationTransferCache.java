@@ -27,10 +27,11 @@ public class TaxClassificationTranslationTransferCache
         extends BaseTaxDescriptionTransferCache<TaxClassificationTranslation, TaxClassificationTranslationTransfer> {
 
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
-    
+    TaxControl taxControl = Session.getModelController(TaxControl.class);
+
     /** Creates a new instance of TaxClassificationTranslationTransferCache */
-    public TaxClassificationTranslationTransferCache(TaxControl taxControl) {
-        super(taxControl);
+    public TaxClassificationTranslationTransferCache() {
+        super();
     }
     
     @Override

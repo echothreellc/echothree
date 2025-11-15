@@ -20,13 +20,16 @@ import com.echothree.model.control.employee.common.transfer.LeaveReasonTransfer;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.data.employee.server.entity.LeaveReason;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class LeaveReasonTransferCache
         extends BaseEmployeeTransferCache<LeaveReason, LeaveReasonTransfer> {
-    
+
+    EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
+
     /** Creates a new instance of LeaveReasonTransferCache */
-    public LeaveReasonTransferCache(EmployeeControl employeeControl) {
-        super(employeeControl);
+    public LeaveReasonTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

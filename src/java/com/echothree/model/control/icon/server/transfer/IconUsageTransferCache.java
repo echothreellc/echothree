@@ -20,13 +20,16 @@ import com.echothree.model.control.icon.common.transfer.IconUsageTransfer;
 import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.data.icon.server.entity.IconUsage;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class IconUsageTransferCache
         extends BaseIconTransferCache<IconUsage, IconUsageTransfer> {
-    
+
+    IconControl iconControl = Session.getModelController(IconControl.class);
+
     /** Creates a new instance of IconUsageTransferCache */
-    public IconUsageTransferCache(IconControl iconControl) {
-        super(iconControl);
+    public IconUsageTransferCache() {
+        super();
     }
     
     public IconUsageTransfer getIconUsageTransfer(UserVisit userVisit, IconUsage iconUsage) {

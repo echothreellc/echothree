@@ -27,11 +27,12 @@ import com.echothree.util.server.persistence.Session;
 public class IndexTransferCache
         extends BaseIndexTransferCache<Index, IndexTransfer> {
 
+    IndexControl indexControl = Session.getModelController(IndexControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of IndexTransferCache */
-    public IndexTransferCache(IndexControl indexControl) {
-        super(indexControl);
+    public IndexTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {

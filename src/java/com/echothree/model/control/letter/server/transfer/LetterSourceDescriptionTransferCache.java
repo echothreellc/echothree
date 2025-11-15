@@ -20,13 +20,16 @@ import com.echothree.model.control.letter.common.transfer.LetterSourceDescriptio
 import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.data.letter.server.entity.LetterSourceDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class LetterSourceDescriptionTransferCache
         extends BaseLetterDescriptionTransferCache<LetterSourceDescription, LetterSourceDescriptionTransfer> {
-    
+
+    LetterControl letterControl = Session.getModelController(LetterControl.class);
+
     /** Creates a new instance of LetterSourceDescriptionTransferCache */
-    public LetterSourceDescriptionTransferCache(LetterControl letterControl) {
-        super(letterControl);
+    public LetterSourceDescriptionTransferCache() {
+        super();
     }
     
     public LetterSourceDescriptionTransfer getLetterSourceDescriptionTransfer(UserVisit userVisit, LetterSourceDescription letterSourceDescription) {

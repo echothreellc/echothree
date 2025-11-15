@@ -16,14 +16,10 @@
 
 package com.echothree.model.control.vendor.server.transfer;
 
-import com.echothree.model.control.vendor.server.control.VendorControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 
 public class VendorTransferCaches
         extends BaseTransferCaches {
-    
-    protected VendorControl vendorControl;
     
     protected VendorTypeTransferCache vendorTypeTransferCache;
     protected VendorTypeDescriptionTransferCache vendorTypeDescriptionTransferCache;
@@ -34,57 +30,55 @@ public class VendorTransferCaches
     protected ItemPurchasingCategoryTransferCache itemPurchasingCategoryTransferCache;
     
     /** Creates a new instance of VendorTransferCaches */
-    public VendorTransferCaches(VendorControl vendorControl) {
+    public VendorTransferCaches() {
         super();
-        
-        this.vendorControl = vendorControl;
     }
     
     public VendorTypeTransferCache getVendorTypeTransferCache() {
         if(vendorTypeTransferCache == null)
-            vendorTypeTransferCache = new VendorTypeTransferCache(vendorControl);
+            vendorTypeTransferCache = new VendorTypeTransferCache();
         
         return vendorTypeTransferCache;
     }
     
     public VendorTypeDescriptionTransferCache getVendorTypeDescriptionTransferCache() {
         if(vendorTypeDescriptionTransferCache == null)
-            vendorTypeDescriptionTransferCache = new VendorTypeDescriptionTransferCache(vendorControl);
+            vendorTypeDescriptionTransferCache = new VendorTypeDescriptionTransferCache();
         
         return vendorTypeDescriptionTransferCache;
     }
     
     public VendorTransferCache getVendorTransferCache() {
         if(vendorTransferCache == null)
-            vendorTransferCache = new VendorTransferCache(vendorControl);
+            vendorTransferCache = new VendorTransferCache();
         
         return vendorTransferCache;
     }
     
     public VendorItemTransferCache getVendorItemTransferCache() {
         if(vendorItemTransferCache == null)
-            vendorItemTransferCache = new VendorItemTransferCache(vendorControl);
+            vendorItemTransferCache = new VendorItemTransferCache();
         
         return vendorItemTransferCache;
     }
     
     public VendorItemCostTransferCache getVendorItemCostTransferCache() {
         if(vendorItemCostTransferCache == null)
-            vendorItemCostTransferCache = new VendorItemCostTransferCache(vendorControl);
+            vendorItemCostTransferCache = new VendorItemCostTransferCache();
         
         return vendorItemCostTransferCache;
     }
     
     public ItemPurchasingCategoryDescriptionTransferCache getItemPurchasingCategoryDescriptionTransferCache() {
         if(itemPurchasingCategoryDescriptionTransferCache == null)
-            itemPurchasingCategoryDescriptionTransferCache = new ItemPurchasingCategoryDescriptionTransferCache(vendorControl);
+            itemPurchasingCategoryDescriptionTransferCache = new ItemPurchasingCategoryDescriptionTransferCache();
         
         return itemPurchasingCategoryDescriptionTransferCache;
     }
     
     public ItemPurchasingCategoryTransferCache getItemPurchasingCategoryTransferCache() {
         if(itemPurchasingCategoryTransferCache == null)
-            itemPurchasingCategoryTransferCache = new ItemPurchasingCategoryTransferCache(vendorControl);
+            itemPurchasingCategoryTransferCache = new ItemPurchasingCategoryTransferCache();
         
         return itemPurchasingCategoryTransferCache;
     }

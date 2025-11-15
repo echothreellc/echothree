@@ -20,13 +20,16 @@ import com.echothree.model.control.item.common.transfer.ItemVolumeTypeDescriptio
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemVolumeTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class ItemVolumeTypeDescriptionTransferCache
         extends BaseItemDescriptionTransferCache<ItemVolumeTypeDescription, ItemVolumeTypeDescriptionTransfer> {
-    
+
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+
     /** Creates a new instance of ItemVolumeTypeDescriptionTransferCache */
-    public ItemVolumeTypeDescriptionTransferCache(ItemControl itemControl) {
-        super(itemControl);
+    public ItemVolumeTypeDescriptionTransferCache() {
+        super();
     }
     
     @Override

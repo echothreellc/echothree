@@ -26,13 +26,12 @@ import com.echothree.util.server.persistence.Session;
 public class WorkflowDestinationSelectorTransferCache
         extends BaseWorkflowTransferCache<WorkflowDestinationSelector, WorkflowDestinationSelectorTransfer> {
     
-    SelectorControl selectorControl;
-    
+    SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+
     /** Creates a new instance of WorkflowDestinationSelectorTransferCache */
-    public WorkflowDestinationSelectorTransferCache(WorkflowControl workflowControl) {
-        super(workflowControl);
-        
-        selectorControl = Session.getModelController(SelectorControl.class);
+    public WorkflowDestinationSelectorTransferCache() {
+        super();
     }
     
     public WorkflowDestinationSelectorTransfer getWorkflowDestinationSelectorTransfer(UserVisit userVisit, WorkflowDestinationSelector workflowDestinationSelector) {

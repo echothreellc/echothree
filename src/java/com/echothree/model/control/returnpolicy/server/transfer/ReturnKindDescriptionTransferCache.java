@@ -20,13 +20,16 @@ import com.echothree.model.control.returnpolicy.common.transfer.ReturnKindDescri
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnKindDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class ReturnKindDescriptionTransferCache
         extends BaseReturnPolicyDescriptionTransferCache<ReturnKindDescription, ReturnKindDescriptionTransfer> {
-    
+
+    ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
+
     /** Creates a new instance of ReturnKindDescriptionTransferCache */
-    public ReturnKindDescriptionTransferCache(ReturnPolicyControl returnPolicyControl) {
-        super(returnPolicyControl);
+    public ReturnKindDescriptionTransferCache() {
+        super();
     }
     
     public ReturnKindDescriptionTransfer getReturnKindDescriptionTransfer(UserVisit userVisit, ReturnKindDescription returnKindDescription) {

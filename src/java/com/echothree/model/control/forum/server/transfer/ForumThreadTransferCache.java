@@ -28,17 +28,17 @@ import com.echothree.util.server.persistence.Session;
 
 public class ForumThreadTransferCache
         extends BaseForumTransferCache<ForumThread, ForumThreadTransfer> {
-    
-    IconControl iconControl;
+
+    ForumControl forumControl = Session.getModelController(ForumControl.class);
+    IconControl iconControl = Session.getModelController(IconControl.class);
+
     boolean includeForumMessages;
     boolean includeForumForumThreads;
     boolean hasForumMessageLimits;
     
     /** Creates a new instance of ForumThreadTransferCache */
-    public ForumThreadTransferCache(ForumControl forumControl) {
-        super(forumControl);
-        
-        iconControl = Session.getModelController(IconControl.class);
+    public ForumThreadTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {

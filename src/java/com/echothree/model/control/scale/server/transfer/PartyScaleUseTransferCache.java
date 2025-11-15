@@ -25,13 +25,13 @@ import com.echothree.util.server.persistence.Session;
 
 public class PartyScaleUseTransferCache
         extends BaseScaleTransferCache<PartyScaleUse, PartyScaleUseTransfer> {
-    
-    PartyControl partyControl;
+
+    ScaleControl scaleControl = Session.getModelController(ScaleControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of PartyScaleUseTransferCache */
-    public PartyScaleUseTransferCache(ScaleControl scaleControl) {
-        super(scaleControl);
-        partyControl = Session.getModelController(PartyControl.class);
+    public PartyScaleUseTransferCache() {
+        super();
     }
     
     public PartyScaleUseTransfer getPartyScaleUseTransfer(UserVisit userVisit, PartyScaleUse partyScaleUse) {

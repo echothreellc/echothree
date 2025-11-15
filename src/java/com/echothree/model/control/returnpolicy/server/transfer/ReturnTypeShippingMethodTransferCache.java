@@ -25,14 +25,13 @@ import com.echothree.util.server.persistence.Session;
 
 public class ReturnTypeShippingMethodTransferCache
         extends BaseReturnPolicyTransferCache<ReturnTypeShippingMethod, ReturnTypeShippingMethodTransfer> {
-    
-    ShippingControl shippingControl;
+
+    ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
+    ShippingControl shippingControl = Session.getModelController(ShippingControl.class);
     
     /** Creates a new instance of ReturnTypeShippingMethodTransferCache */
-    public ReturnTypeShippingMethodTransferCache(ReturnPolicyControl returnPolicyControl) {
-        super(returnPolicyControl);
-        
-        shippingControl = Session.getModelController(ShippingControl.class);
+    public ReturnTypeShippingMethodTransferCache() {
+        super();
     }
     
     public ReturnTypeShippingMethodTransfer getReturnTypeShippingMethodTransfer(UserVisit userVisit, ReturnTypeShippingMethod returnTypeShippingMethod) {

@@ -19,20 +19,20 @@ package com.echothree.model.control.geo.server.transfer;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.geo.common.GeoOptions;
 import com.echothree.model.control.geo.common.transfer.CountryTransfer;
-import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
 public class CountryTransferCache
         extends BaseGeoCodeTransferCache<GeoCode, CountryTransfer> {
-    
+
     ContactControl contactControl = Session.getModelController(ContactControl.class);
+
     boolean includeAliases;
     
     /** Creates a new instance of CountryTransferCache */
-    public CountryTransferCache(GeoControl geoControl) {
-        super(geoControl);
+    public CountryTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {

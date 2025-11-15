@@ -28,15 +28,16 @@ import com.echothree.util.server.persistence.Session;
 
 public class CommentTypeTransferCache
         extends BaseCommentTransferCache<CommentType, CommentTypeTransfer> {
-    
+
+    CommentControl commentControl = Session.getModelController(CommentControl.class);
     EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of CommentTypeTransferCache */
-    public CommentTypeTransferCache(CommentControl commentControl) {
-        super(commentControl);
+    public CommentTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

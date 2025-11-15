@@ -26,13 +26,12 @@ import com.echothree.util.server.persistence.Session;
 public class FinancialAccountRoleTransferCache
         extends BaseFinancialTransferCache<FinancialAccountRole, FinancialAccountRoleTransfer> {
 
-    PartyControl partyControl;
+    FinancialControl financialControl = Session.getModelController(FinancialControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of FinancialAccountRoleTransferCache */
-    public FinancialAccountRoleTransferCache(FinancialControl financialControl) {
-        super(financialControl);
-
-        partyControl = Session.getModelController(PartyControl.class);
+    public FinancialAccountRoleTransferCache() {
+        super();
     }
 
     public FinancialAccountRoleTransfer getFinancialAccountRoleTransfer(UserVisit userVisit, FinancialAccountRole financialAccountRole) {

@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.printer.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.printer.common.transfer.PrinterGroupUseTypeTransfer;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.data.printer.server.entity.PrinterGroupUseType;
@@ -26,11 +25,11 @@ import com.echothree.util.server.persistence.Session;
 public class PrinterGroupUseTypeTransferCache
         extends BasePrinterTransferCache<PrinterGroupUseType, PrinterGroupUseTypeTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    PrinterControl printerControl = Session.getModelController(PrinterControl.class);
 
     /** Creates a new instance of PrinterGroupUseTypeTransferCache */
-    public PrinterGroupUseTypeTransferCache(PrinterControl printerControl) {
-        super(printerControl);
+    public PrinterGroupUseTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

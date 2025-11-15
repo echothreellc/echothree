@@ -20,13 +20,16 @@ import com.echothree.model.control.content.common.transfer.ContentPageLayoutTran
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentPageLayout;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class ContentPageLayoutTransferCache
         extends BaseContentTransferCache<ContentPageLayout, ContentPageLayoutTransfer> {
-    
+
+    ContentControl contentControl = Session.getModelController(ContentControl.class);
+
     /** Creates a new instance of ContentPageLayoutTransferCache */
-    public ContentPageLayoutTransferCache(ContentControl contentControl) {
-        super(contentControl);
+    public ContentPageLayoutTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

@@ -25,14 +25,13 @@ import com.echothree.util.server.persistence.Session;
 
 public class GeoCodeDateTimeFormatTransferCache
         extends BaseGeoTransferCache<GeoCodeDateTimeFormat, GeoCodeDateTimeFormatTransfer> {
-    
-    PartyControl partyControl;
+
+    GeoControl geoControl = Session.getModelController(GeoControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of GeoCodeDateTimeFormatTransferCache */
-    public GeoCodeDateTimeFormatTransferCache(GeoControl geoControl) {
-        super(geoControl);
-        
-        partyControl = Session.getModelController(PartyControl.class);
+    public GeoCodeDateTimeFormatTransferCache() {
+        super();
     }
     
     public GeoCodeDateTimeFormatTransfer getGeoCodeDateTimeFormatTransfer(UserVisit userVisit, GeoCodeDateTimeFormat geoCodeDateTimeFormat) {

@@ -25,14 +25,13 @@ import com.echothree.util.server.persistence.Session;
 
 public class MessageStringTransferCache
         extends BaseMessageTransferCache<MessageString, MessageStringTransfer> {
-    
-    PartyControl partyControl;
+
+    MessageControl messageControl = Session.getModelController(MessageControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of MessageStringTransferCache */
-    public MessageStringTransferCache(MessageControl messageControl) {
-        super(messageControl);
-        
-        partyControl = Session.getModelController(PartyControl.class);
+    public MessageStringTransferCache() {
+        super();
     }
     
     public MessageStringTransfer getMessageStringTransfer(UserVisit userVisit, MessageString messageString) {

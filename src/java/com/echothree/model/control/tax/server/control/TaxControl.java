@@ -86,7 +86,7 @@ public class TaxControl
     
     public TaxTransferCaches getTaxTransferCaches() {
         if(taxTransferCaches == null) {
-            taxTransferCaches = new TaxTransferCaches(this);
+            taxTransferCaches = new TaxTransferCaches();
         }
         
         return taxTransferCaches;

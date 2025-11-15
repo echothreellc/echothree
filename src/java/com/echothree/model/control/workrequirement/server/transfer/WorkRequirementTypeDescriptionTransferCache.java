@@ -20,13 +20,16 @@ import com.echothree.model.control.workrequirement.common.transfer.WorkRequireme
 import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workrequirement.server.entity.WorkRequirementTypeDescription;
+import com.echothree.util.server.persistence.Session;
 
 public class WorkRequirementTypeDescriptionTransferCache
         extends BaseWorkRequirementDescriptionTransferCache<WorkRequirementTypeDescription, WorkRequirementTypeDescriptionTransfer> {
-    
+
+    WorkRequirementControl workRequirementControl = Session.getModelController(WorkRequirementControl.class);
+
     /** Creates a new instance of WorkRequirementTypeDescriptionTransferCache */
-    public WorkRequirementTypeDescriptionTransferCache(WorkRequirementControl workRequirementControl) {
-        super(workRequirementControl);
+    public WorkRequirementTypeDescriptionTransferCache() {
+        super();
     }
     
     public WorkRequirementTypeDescriptionTransfer getWorkRequirementTypeDescriptionTransfer(UserVisit userVisit, WorkRequirementTypeDescription workRequirementTypeDescription) {

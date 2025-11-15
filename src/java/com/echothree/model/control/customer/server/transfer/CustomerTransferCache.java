@@ -62,6 +62,7 @@ public class CustomerTransferCache
     CommunicationControl communicationControl = Session.getModelController(CommunicationControl.class);
     ContactControl contactControl = Session.getModelController(ContactControl.class);
     ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
+    CustomerControl customerControl = Session.getModelController(CustomerControl.class);
     DocumentControl documentControl = Session.getModelController(DocumentControl.class);
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
@@ -104,8 +105,8 @@ public class CustomerTransferCache
     boolean hasCommunicationEventLimits;
 
     /** Creates a new instance of CustomerTransferCache */
-    public CustomerTransferCache(CustomerControl customerControl) {
-        super(customerControl);
+    public CustomerTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {

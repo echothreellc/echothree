@@ -20,13 +20,16 @@ import com.echothree.model.control.sequence.common.transfer.SequenceTypeTransfer
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class SequenceTypeTransferCache
         extends BaseSequenceTransferCache<SequenceType, SequenceTypeTransfer> {
-    
+
+    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
+
     /** Creates a new instance of SequenceTypeTransferCache */
-    public SequenceTypeTransferCache(SequenceControl sequenceControl) {
-        super(sequenceControl);
+    public SequenceTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

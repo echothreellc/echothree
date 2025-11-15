@@ -30,12 +30,13 @@ public class SubscriptionTypeChainTransferCache
         extends BaseSubscriptionTransferCache<SubscriptionTypeChain, SubscriptionTypeChainTransfer> {
     
     ChainControl chainControl = Session.getModelController(ChainControl.class);
+    SubscriptionControl subscriptionControl = Session.getModelController(SubscriptionControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
     UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
     
     /** Creates a new instance of SubscriptionTypeChainTransferCache */
-    public SubscriptionTypeChainTransferCache(SubscriptionControl subscriptionControl) {
-        super(subscriptionControl);
+    public SubscriptionTypeChainTransferCache() {
+        super();
     }
     
     public SubscriptionTypeChainTransfer getSubscriptionTypeChainTransfer(UserVisit userVisit, SubscriptionTypeChain subscriptionTypeChain) {

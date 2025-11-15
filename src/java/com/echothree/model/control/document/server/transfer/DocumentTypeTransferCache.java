@@ -22,15 +22,17 @@ import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.data.document.server.entity.DocumentType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.print.Doc;
 
 public class DocumentTypeTransferCache
         extends BaseDocumentTransferCache<DocumentType, DocumentTypeTransfer> {
 
+    DocumentControl documentControl = Session.getModelController(DocumentControl.class);
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
 
     /** Creates a new instance of DocumentTypeTransferCache */
-    public DocumentTypeTransferCache(DocumentControl documentControl) {
-        super(documentControl);
+    public DocumentTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

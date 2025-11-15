@@ -17,9 +17,7 @@
 package com.echothree.model.control.warehouse.server.control;
 
 import com.echothree.model.control.warehouse.server.transfer.WarehouseTransferCaches;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.control.BaseModelControl;
-import com.echothree.util.server.persistence.Session;
 
 public abstract class BaseWarehouseControl
         extends BaseModelControl {
@@ -37,9 +35,7 @@ public abstract class BaseWarehouseControl
     
     public WarehouseTransferCaches getWarehouseTransferCaches() {
         if(warehouseTransferCaches == null) {
-            var warehouseControl = Session.getModelController(WarehouseControl.class);
-
-            warehouseTransferCaches = new WarehouseTransferCaches(warehouseControl);
+            warehouseTransferCaches = new WarehouseTransferCaches();
         }
         
         return warehouseTransferCaches;

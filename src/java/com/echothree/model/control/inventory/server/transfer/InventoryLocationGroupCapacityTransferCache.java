@@ -25,10 +25,12 @@ import com.echothree.util.server.persistence.Session;
 
 public class InventoryLocationGroupCapacityTransferCache
         extends BaseInventoryTransferCache<InventoryLocationGroupCapacity, InventoryLocationGroupCapacityTransfer> {
-    
+
+    InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
+
     /** Creates a new instance of InventoryLocationGroupCapacityTransferCache */
-    public InventoryLocationGroupCapacityTransferCache(InventoryControl inventoryControl) {
-        super(inventoryControl);
+    public InventoryLocationGroupCapacityTransferCache() {
+        super();
     }
     
     @Override

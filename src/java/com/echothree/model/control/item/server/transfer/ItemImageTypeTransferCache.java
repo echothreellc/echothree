@@ -26,11 +26,12 @@ import com.echothree.util.server.persistence.Session;
 public class ItemImageTypeTransferCache
         extends BaseItemTransferCache<ItemImageType, ItemImageTypeTransfer> {
 
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     
     /** Creates a new instance of ItemImageTypeTransferCache */
-    public ItemImageTypeTransferCache(ItemControl itemControl) {
-        super(itemControl);
+    public ItemImageTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

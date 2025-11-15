@@ -28,17 +28,14 @@ import com.echothree.util.server.persistence.Session;
 public class InvoiceLineItemTransferCache
         extends BaseInvoiceTransferCache<InvoiceLineItem, InvoiceLineItemTransfer> {
 
-    InventoryControl inventoryControl;
-    ItemControl itemControl;
-    UomControl uomControl;
+    InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
+    InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+    UomControl uomControl = Session.getModelController(UomControl.class);
 
     /** Creates a new instance of InvoiceLineItemTransferCache */
-    public InvoiceLineItemTransferCache(InvoiceControl invoiceControl) {
-        super(invoiceControl);
-
-        inventoryControl = Session.getModelController(InventoryControl.class);
-        itemControl = Session.getModelController(ItemControl.class);
-        uomControl = Session.getModelController(UomControl.class);
+    public InvoiceLineItemTransferCache() {
+        super();
     }
 
     public InvoiceLineItemTransfer getInvoiceLineItemTransfer(UserVisit userVisit, InvoiceLineItem invoiceLineItem) {

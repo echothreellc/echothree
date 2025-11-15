@@ -24,12 +24,15 @@ import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentPage;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
+import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.transfer.MapWrapperBuilder;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class ContentPageTransferCache
         extends BaseContentTransferCache<ContentPage, ContentPageTransfer> {
+
+    ContentControl contentControl = Session.getModelController(ContentControl.class);
 
     boolean includeContentPageAreas;
 
@@ -43,8 +46,8 @@ public class ContentPageTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of ContentPageTransferCache */
-    public ContentPageTransferCache(ContentControl contentControl) {
-        super(contentControl);
+    public ContentPageTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {

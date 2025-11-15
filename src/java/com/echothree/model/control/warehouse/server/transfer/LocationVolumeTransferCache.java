@@ -27,13 +27,12 @@ import com.echothree.util.server.persistence.Session;
 public class LocationVolumeTransferCache
         extends BaseWarehouseTransferCache<LocationVolume, LocationVolumeTransfer> {
     
-    UomControl uomControl;
-    
+    UomControl uomControl = Session.getModelController(UomControl.class);
+    WarehouseControl warehouseControl = Session.getModelController(WarehouseControl.class);
+
     /** Creates a new instance of LocationVolumeTransferCache */
-    public LocationVolumeTransferCache(WarehouseControl warehouseControl) {
-        super(warehouseControl);
-        
-        uomControl = Session.getModelController(UomControl.class);
+    public LocationVolumeTransferCache() {
+        super();
     }
     
     public LocationVolumeTransfer getLocationVolumeTransfer(UserVisit userVisit, LocationVolume locationVolume) {

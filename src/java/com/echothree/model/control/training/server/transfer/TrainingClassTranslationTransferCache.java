@@ -26,11 +26,12 @@ import com.echothree.util.server.persistence.Session;
 public class TrainingClassTranslationTransferCache
         extends BaseTrainingDescriptionTransferCache<TrainingClassTranslation, TrainingClassTranslationTransfer> {
 
+    TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     
     /** Creates a new instance of TrainingClassTranslationTransferCache */
-    public TrainingClassTranslationTransferCache(TrainingControl trainingControl) {
-        super(trainingControl);
+    public TrainingClassTranslationTransferCache() {
+        super();
     }
     
     public TrainingClassTranslationTransfer getTrainingClassTranslationTransfer(UserVisit userVisit, TrainingClassTranslation trainingClassTranslation) {

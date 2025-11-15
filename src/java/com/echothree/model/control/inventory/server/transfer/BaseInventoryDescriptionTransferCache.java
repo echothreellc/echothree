@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.inventory.server.transfer;
 
-import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.Session;
@@ -29,8 +27,8 @@ public abstract class BaseInventoryDescriptionTransferCache<K extends BaseEntity
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of BaseInventoryDescriptionTransferCache */
-    protected BaseInventoryDescriptionTransferCache(InventoryControl inventoryControl) {
-        super(inventoryControl);
+    protected BaseInventoryDescriptionTransferCache() {
+        super();
     }
     
 }

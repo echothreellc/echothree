@@ -16,14 +16,10 @@
 
 package com.echothree.model.control.comment.server.transfer;
 
-import com.echothree.model.control.comment.server.control.CommentControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 
 public class CommentTransferCaches
         extends BaseTransferCaches {
-    
-    protected CommentControl commentControl;
     
     protected CommentTypeTransferCache commentTypeTransferCache;
     protected CommentTypeDescriptionTransferCache commentTypeDescriptionTransferCache;
@@ -33,50 +29,48 @@ public class CommentTransferCaches
     protected CommentUsageTransferCache commentUsageTransferCache;
     
     /** Creates a new instance of CommentTransferCaches */
-    public CommentTransferCaches(CommentControl commentControl) {
+    public CommentTransferCaches() {
         super();
-        
-        this.commentControl = commentControl;
     }
     
     public CommentTypeTransferCache getCommentTypeTransferCache() {
         if(commentTypeTransferCache == null)
-            commentTypeTransferCache = new CommentTypeTransferCache(commentControl);
+            commentTypeTransferCache = new CommentTypeTransferCache();
         
         return commentTypeTransferCache;
     }
     
     public CommentTypeDescriptionTransferCache getCommentTypeDescriptionTransferCache() {
         if(commentTypeDescriptionTransferCache == null)
-            commentTypeDescriptionTransferCache = new CommentTypeDescriptionTransferCache(commentControl);
+            commentTypeDescriptionTransferCache = new CommentTypeDescriptionTransferCache();
         
         return commentTypeDescriptionTransferCache;
     }
     
     public CommentUsageTypeTransferCache getCommentUsageTypeTransferCache() {
         if(commentUsageTypeTransferCache == null)
-            commentUsageTypeTransferCache = new CommentUsageTypeTransferCache(commentControl);
+            commentUsageTypeTransferCache = new CommentUsageTypeTransferCache();
         
         return commentUsageTypeTransferCache;
     }
     
     public CommentUsageTypeDescriptionTransferCache getCommentUsageTypeDescriptionTransferCache() {
         if(commentUsageTypeDescriptionTransferCache == null)
-            commentUsageTypeDescriptionTransferCache = new CommentUsageTypeDescriptionTransferCache(commentControl);
+            commentUsageTypeDescriptionTransferCache = new CommentUsageTypeDescriptionTransferCache();
         
         return commentUsageTypeDescriptionTransferCache;
     }
     
     public CommentTransferCache getCommentTransferCache() {
         if(commentTransferCache == null)
-            commentTransferCache = new CommentTransferCache(commentControl);
+            commentTransferCache = new CommentTransferCache();
         
         return commentTransferCache;
     }
     
     public CommentUsageTransferCache getCommentUsageTransferCache() {
         if(commentUsageTransferCache == null)
-            commentUsageTransferCache = new CommentUsageTransferCache(commentControl);
+            commentUsageTransferCache = new CommentUsageTransferCache();
         
         return commentUsageTransferCache;
     }

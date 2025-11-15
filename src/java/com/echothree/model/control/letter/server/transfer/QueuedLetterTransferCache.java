@@ -26,13 +26,12 @@ import com.echothree.util.server.persistence.Session;
 public class QueuedLetterTransferCache
         extends BaseLetterTransferCache<QueuedLetter, QueuedLetterTransfer> {
     
-    ChainControl chainControl;
-    
+    ChainControl chainControl = Session.getModelController(ChainControl.class);
+    LetterControl letterControl = Session.getModelController(LetterControl.class);
+
     /** Creates a new instance of QueuedLetterTransferCache */
-    public QueuedLetterTransferCache(LetterControl letterControl) {
-        super(letterControl);
-        
-        chainControl = Session.getModelController(ChainControl.class);
+    public QueuedLetterTransferCache() {
+        super();
     }
     
     public QueuedLetterTransfer getQueuedLetterTransfer(UserVisit userVisit, QueuedLetter queuedLetter) {

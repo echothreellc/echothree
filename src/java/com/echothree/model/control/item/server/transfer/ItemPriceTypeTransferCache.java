@@ -22,9 +22,12 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemPriceType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
+import com.echothree.util.server.persistence.Session;
 
 public class ItemPriceTypeTransferCache
         extends BaseItemTransferCache<ItemPriceType, ItemPriceTypeTransfer> {
+
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
 
     TransferProperties transferProperties;
     boolean filterItemPriceTypeName;
@@ -35,8 +38,8 @@ public class ItemPriceTypeTransferCache
     /**
      * Creates a new instance of ItemPriceTypeTransferCache
      */
-    public ItemPriceTypeTransferCache(ItemControl itemControl) {
-        super(itemControl);
+    public ItemPriceTypeTransferCache() {
+        super();
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {

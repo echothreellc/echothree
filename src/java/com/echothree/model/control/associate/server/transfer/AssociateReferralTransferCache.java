@@ -26,11 +26,12 @@ import com.echothree.util.server.persistence.Session;
 public class AssociateReferralTransferCache
         extends BaseAssociateTransferCache<AssociateReferral, AssociateReferralTransfer> {
 
+    AssociateControl associateControl = Session.getModelController(AssociateControl.class);
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     
     /** Creates a new instance of AssociateReferralTransferCache */
-    public AssociateReferralTransferCache(AssociateControl associateControl) {
-        super(associateControl);
+    public AssociateReferralTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

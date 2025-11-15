@@ -20,13 +20,16 @@ import com.echothree.model.control.message.common.transfer.MessageDescriptionTra
 import com.echothree.model.control.message.server.control.MessageControl;
 import com.echothree.model.data.message.server.entity.MessageDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class MessageDescriptionTransferCache
         extends BaseMessageDescriptionTransferCache<MessageDescription, MessageDescriptionTransfer> {
-    
+
+    MessageControl messageControl = Session.getModelController(MessageControl.class);
+
     /** Creates a new instance of MessageDescriptionTransferCache */
-    public MessageDescriptionTransferCache(MessageControl messageControl) {
-        super(messageControl);
+    public MessageDescriptionTransferCache() {
+        super();
     }
     
     public MessageDescriptionTransfer getMessageDescriptionTransfer(UserVisit userVisit, MessageDescription messageDescription) {

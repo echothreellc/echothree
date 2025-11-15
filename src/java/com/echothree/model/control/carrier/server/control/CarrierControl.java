@@ -102,7 +102,7 @@ public class CarrierControl
     
     public CarrierTransferCaches getCarrierTransferCaches() {
         if(carrierTransferCaches == null) {
-            carrierTransferCaches = new CarrierTransferCaches(this);
+            carrierTransferCaches = new CarrierTransferCaches();
         }
         
         return carrierTransferCaches;

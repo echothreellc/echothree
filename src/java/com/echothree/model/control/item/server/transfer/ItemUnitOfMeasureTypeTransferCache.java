@@ -25,14 +25,13 @@ import com.echothree.util.server.persistence.Session;
 
 public class ItemUnitOfMeasureTypeTransferCache
         extends BaseItemTransferCache<ItemUnitOfMeasureType, ItemUnitOfMeasureTypeTransfer> {
-    
-    UomControl uomControl;
+
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+    UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of ItemUnitOfMeasureTypeTransferCache */
-    public ItemUnitOfMeasureTypeTransferCache(ItemControl itemControl) {
-        super(itemControl);
-        
-        uomControl = Session.getModelController(UomControl.class);
+    public ItemUnitOfMeasureTypeTransferCache() {
+        super();
     }
     
     @Override

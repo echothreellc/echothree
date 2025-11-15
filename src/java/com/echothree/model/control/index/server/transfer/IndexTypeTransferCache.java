@@ -28,10 +28,11 @@ public class IndexTypeTransferCache
         extends BaseIndexTransferCache<IndexType, IndexTypeTransfer> {
 
     EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
+    IndexControl indexControl = Session.getModelController(IndexControl.class);
 
     /** Creates a new instance of IndexTypeTransferCache */
-    public IndexTypeTransferCache(IndexControl indexControl) {
-        super(indexControl);
+    public IndexTypeTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {

@@ -20,13 +20,16 @@ import com.echothree.model.control.item.common.transfer.HarmonizedTariffSchedule
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeUnit;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class HarmonizedTariffScheduleCodeUnitTransferCache
         extends BaseItemTransferCache<HarmonizedTariffScheduleCodeUnit, HarmonizedTariffScheduleCodeUnitTransfer> {
-    
+
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+
     /** Creates a new instance of HarmonizedTariffScheduleCodeUnitTransferCache */
-    public HarmonizedTariffScheduleCodeUnitTransferCache(ItemControl itemControl) {
-        super(itemControl);
+    public HarmonizedTariffScheduleCodeUnitTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

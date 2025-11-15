@@ -88,7 +88,7 @@ public class LetterControl
     
     public LetterTransferCaches getLetterTransferCaches() {
         if(letterTransferCaches == null) {
-            letterTransferCaches = new LetterTransferCaches(this);
+            letterTransferCaches = new LetterTransferCaches();
         }
         
         return letterTransferCaches;

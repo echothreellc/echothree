@@ -35,14 +35,15 @@ public class LocationTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
     LocationUseTypeControl locationUseTypeControl = Session.getModelController(LocationUseTypeControl.class);
+    WarehouseControl warehouseControl = Session.getModelController(WarehouseControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
     boolean includeCapacities;
     boolean includeVolume;
     
     /** Creates a new instance of LocationTransferCache */
-    public LocationTransferCache(WarehouseControl warehouseControl) {
-        super(warehouseControl);
+    public LocationTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {

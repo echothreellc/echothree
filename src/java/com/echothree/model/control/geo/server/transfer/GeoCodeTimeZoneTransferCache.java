@@ -25,14 +25,13 @@ import com.echothree.util.server.persistence.Session;
 
 public class GeoCodeTimeZoneTransferCache
         extends BaseGeoTransferCache<GeoCodeTimeZone, GeoCodeTimeZoneTransfer> {
-    
-    PartyControl partyControl;
+
+    GeoControl geoControl = Session.getModelController(GeoControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of GeoCodeTimeZoneTransferCache */
-    public GeoCodeTimeZoneTransferCache(GeoControl geoControl) {
-        super(geoControl);
-        
-        partyControl = Session.getModelController(PartyControl.class);
+    public GeoCodeTimeZoneTransferCache() {
+        super();
     }
     
     public GeoCodeTimeZoneTransfer getGeoCodeTimeZoneTransfer(UserVisit userVisit, GeoCodeTimeZone geoCodeTimeZone) {

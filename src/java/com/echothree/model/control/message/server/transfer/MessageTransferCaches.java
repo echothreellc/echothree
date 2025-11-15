@@ -16,14 +16,10 @@
 
 package com.echothree.model.control.message.server.transfer;
 
-import com.echothree.model.control.message.server.control.MessageControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 
 public class MessageTransferCaches
         extends BaseTransferCaches {
-    
-    protected MessageControl messageControl;
     
     protected MessageTypeTransferCache messageTypeTransferCache;
     protected MessageTypeDescriptionTransferCache messageTypeDescriptionTransferCache;
@@ -35,64 +31,62 @@ public class MessageTransferCaches
     protected EntityMessageTransferCache entityMessageTransferCache;
     
     /** Creates a new instance of MessageTransferCaches */
-    public MessageTransferCaches(MessageControl messageControl) {
+    public MessageTransferCaches() {
         super();
-        
-        this.messageControl = messageControl;
     }
     
     public MessageTypeTransferCache getMessageTypeTransferCache() {
         if(messageTypeTransferCache == null)
-            messageTypeTransferCache = new MessageTypeTransferCache(messageControl);
+            messageTypeTransferCache = new MessageTypeTransferCache();
         
         return messageTypeTransferCache;
     }
     
     public MessageTypeDescriptionTransferCache getMessageTypeDescriptionTransferCache() {
         if(messageTypeDescriptionTransferCache == null)
-            messageTypeDescriptionTransferCache = new MessageTypeDescriptionTransferCache(messageControl);
+            messageTypeDescriptionTransferCache = new MessageTypeDescriptionTransferCache();
         
         return messageTypeDescriptionTransferCache;
     }
     
     public MessageTransferCache getMessageTransferCache() {
         if(messageTransferCache == null)
-            messageTransferCache = new MessageTransferCache(messageControl);
+            messageTransferCache = new MessageTransferCache();
         
         return messageTransferCache;
     }
     
     public MessageStringTransferCache getMessageStringTransferCache() {
         if(messageStringTransferCache == null)
-            messageStringTransferCache = new MessageStringTransferCache(messageControl);
+            messageStringTransferCache = new MessageStringTransferCache();
         
         return messageStringTransferCache;
     }
     
     public MessageBlobTransferCache getMessageBlobTransferCache() {
         if(messageBlobTransferCache == null)
-            messageBlobTransferCache = new MessageBlobTransferCache(messageControl);
+            messageBlobTransferCache = new MessageBlobTransferCache();
         
         return messageBlobTransferCache;
     }
     
     public MessageClobTransferCache getMessageClobTransferCache() {
         if(messageClobTransferCache == null)
-            messageClobTransferCache = new MessageClobTransferCache(messageControl);
+            messageClobTransferCache = new MessageClobTransferCache();
         
         return messageClobTransferCache;
     }
     
     public MessageDescriptionTransferCache getMessageDescriptionTransferCache() {
         if(messageDescriptionTransferCache == null)
-            messageDescriptionTransferCache = new MessageDescriptionTransferCache(messageControl);
+            messageDescriptionTransferCache = new MessageDescriptionTransferCache();
         
         return messageDescriptionTransferCache;
     }
     
     public EntityMessageTransferCache getEntityMessageTransferCache() {
         if(entityMessageTransferCache == null)
-            entityMessageTransferCache = new EntityMessageTransferCache(messageControl);
+            entityMessageTransferCache = new EntityMessageTransferCache();
         
         return entityMessageTransferCache;
     }

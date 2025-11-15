@@ -35,10 +35,11 @@ public class VendorTypeTransferCache
     FreeOnBoardControl freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
     ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
     TermControl termControl = Session.getModelController(TermControl.class);
+    VendorControl vendorControl = Session.getModelController(VendorControl.class);
 
     /** Creates a new instance of VendorTypeTransferCache */
-    public VendorTypeTransferCache(VendorControl vendorControl) {
-        super(vendorControl);
+    public VendorTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

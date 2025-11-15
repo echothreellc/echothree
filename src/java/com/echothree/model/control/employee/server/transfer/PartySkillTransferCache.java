@@ -25,14 +25,13 @@ import com.echothree.util.server.persistence.Session;
 
 public class PartySkillTransferCache
         extends BaseEmployeeTransferCache<PartySkill, PartySkillTransfer> {
-    
-    PartyControl partyControl;
+
+    EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of PartySkillTransferCache */
-    public PartySkillTransferCache(EmployeeControl employeeControl) {
-        super(employeeControl);
-        
-        partyControl = Session.getModelController(PartyControl.class);
+    public PartySkillTransferCache() {
+        super();
     }
     
     public PartySkillTransfer getPartySkillTransfer(UserVisit userVisit, PartySkill partySkill) {

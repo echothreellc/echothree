@@ -20,13 +20,16 @@ import com.echothree.model.control.vendor.common.transfer.VendorTypeDescriptionT
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.server.entity.VendorTypeDescription;
+import com.echothree.util.server.persistence.Session;
 
 public class VendorTypeDescriptionTransferCache
         extends BaseVendorDescriptionTransferCache<VendorTypeDescription, VendorTypeDescriptionTransfer> {
-    
+
+    VendorControl vendorControl = Session.getModelController(VendorControl.class);
+
     /** Creates a new instance of VendorTypeDescriptionTransferCache */
-    public VendorTypeDescriptionTransferCache(VendorControl vendorControl) {
-        super(vendorControl);
+    public VendorTypeDescriptionTransferCache() {
+        super();
     }
     
     public VendorTypeDescriptionTransfer getVendorTypeDescriptionTransfer(UserVisit userVisit, VendorTypeDescription vendorTypeDescription) {

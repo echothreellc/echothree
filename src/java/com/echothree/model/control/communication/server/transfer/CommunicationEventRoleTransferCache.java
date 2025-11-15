@@ -25,14 +25,13 @@ import com.echothree.util.server.persistence.Session;
 
 public class CommunicationEventRoleTransferCache
         extends BaseCommunicationTransferCache<CommunicationEventRole, CommunicationEventRoleTransfer> {
-    
-    PartyControl partyControl;
+
+    CommunicationControl communicationControl = Session.getModelController(CommunicationControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of CommunicationEventRoleTransferCache */
-    public CommunicationEventRoleTransferCache(CommunicationControl communicationControl) {
-        super(communicationControl);
-        
-        partyControl = Session.getModelController(PartyControl.class);
+    public CommunicationEventRoleTransferCache() {
+        super();
     }
     
     public CommunicationEventRoleTransfer getCommunicationEventRoleTransfer(UserVisit userVisit, CommunicationEventRole communicationEventRole) {

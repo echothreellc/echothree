@@ -20,13 +20,16 @@ import com.echothree.model.control.employee.common.transfer.EmployeeTypeTransfer
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.data.employee.server.entity.EmployeeType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class EmployeeTypeTransferCache
         extends BaseEmployeeTransferCache<EmployeeType, EmployeeTypeTransfer> {
-    
+
+    EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
+
     /** Creates a new instance of EmployeeTypeTransferCache */
-    public EmployeeTypeTransferCache(EmployeeControl employeeControl) {
-        super(employeeControl);
+    public EmployeeTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

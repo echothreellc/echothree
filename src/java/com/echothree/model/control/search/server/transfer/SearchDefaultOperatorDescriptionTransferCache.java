@@ -20,13 +20,16 @@ import com.echothree.model.control.search.common.transfer.SearchDefaultOperatorD
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.search.server.entity.SearchDefaultOperatorDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class SearchDefaultOperatorDescriptionTransferCache
         extends BaseSearchDescriptionTransferCache<SearchDefaultOperatorDescription, SearchDefaultOperatorDescriptionTransfer> {
-    
+
+    SearchControl searchControl = Session.getModelController(SearchControl.class);
+
     /** Creates a new instance of SearchDefaultOperatorDescriptionTransferCache */
-    public SearchDefaultOperatorDescriptionTransferCache(SearchControl searchControl) {
-        super(searchControl);
+    public SearchDefaultOperatorDescriptionTransferCache() {
+        super();
     }
     
     public SearchDefaultOperatorDescriptionTransfer getSearchDefaultOperatorDescriptionTransfer(UserVisit userVisit, SearchDefaultOperatorDescription searchDefaultOperatorDescription) {

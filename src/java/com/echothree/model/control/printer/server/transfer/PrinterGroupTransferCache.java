@@ -34,13 +34,15 @@ public class PrinterGroupTransferCache
         extends BasePrinterTransferCache<PrinterGroup, PrinterGroupTransfer> {
     
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+    PrinterControl printerControl = Session.getModelController(PrinterControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+
     boolean includePrinters;
     
     /** Creates a new instance of PrinterGroupTransferCache */
-    public PrinterGroupTransferCache(PrinterControl printerControl) {
-        super(printerControl);
+    public PrinterGroupTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {

@@ -20,13 +20,16 @@ import com.echothree.model.control.vendor.common.transfer.ItemPurchasingCategory
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategory;
+import com.echothree.util.server.persistence.Session;
 
 public class ItemPurchasingCategoryTransferCache
         extends BaseVendorTransferCache<ItemPurchasingCategory, ItemPurchasingCategoryTransfer> {
-    
+
+    VendorControl vendorControl = Session.getModelController(VendorControl.class);
+
     /** Creates a new instance of ItemPurchasingCategoryTransferCache */
-    public ItemPurchasingCategoryTransferCache(VendorControl vendorControl) {
-        super(vendorControl);
+    public ItemPurchasingCategoryTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

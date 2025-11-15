@@ -29,7 +29,8 @@ public class ItemShippingTimeTransferCache
         extends BaseItemTransferCache<ItemShippingTime, ItemShippingTimeTransfer> {
     
     CustomerControl customerControl = Session.getModelController(CustomerControl.class);
-    
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+
     TransferProperties transferProperties;
     boolean filterItem;
     boolean filterCustomerType;
@@ -39,8 +40,8 @@ public class ItemShippingTimeTransferCache
     boolean filterShippingEndTime;
 
     /** Creates a new instance of ItemShippingTimeTransferCache */
-    public ItemShippingTimeTransferCache(ItemControl itemControl) {
-        super(itemControl);
+    public ItemShippingTimeTransferCache() {
+        super();
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {

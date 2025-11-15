@@ -16,14 +16,10 @@
 
 package com.echothree.model.control.selector.server.transfer;
 
-import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 
 public class SelectorTransferCaches
         extends BaseTransferCaches {
-    
-    protected SelectorControl selectorControl;
     
     protected SelectorKindTransferCache filterKindTransferCache;
     protected SelectorKindDescriptionTransferCache filterKindDescriptionTransferCache;
@@ -37,78 +33,76 @@ public class SelectorTransferCaches
     protected SelectorPartyTransferCache selectorPartyTransferCache;
     
     /** Creates a new instance of SelectorTransferCaches */
-    public SelectorTransferCaches(SelectorControl selectorControl) {
+    public SelectorTransferCaches() {
         super();
-        
-        this.selectorControl = selectorControl;
     }
     
     public SelectorKindTransferCache getSelectorKindTransferCache() {
         if(filterKindTransferCache == null)
-            filterKindTransferCache = new SelectorKindTransferCache(selectorControl);
+            filterKindTransferCache = new SelectorKindTransferCache();
 
         return filterKindTransferCache;
     }
 
     public SelectorKindDescriptionTransferCache getSelectorKindDescriptionTransferCache() {
         if(filterKindDescriptionTransferCache == null)
-            filterKindDescriptionTransferCache = new SelectorKindDescriptionTransferCache(selectorControl);
+            filterKindDescriptionTransferCache = new SelectorKindDescriptionTransferCache();
 
         return filterKindDescriptionTransferCache;
     }
 
     public SelectorTypeTransferCache getSelectorTypeTransferCache() {
         if(filterTypeTransferCache == null)
-            filterTypeTransferCache = new SelectorTypeTransferCache(selectorControl);
+            filterTypeTransferCache = new SelectorTypeTransferCache();
 
         return filterTypeTransferCache;
     }
 
     public SelectorTypeDescriptionTransferCache getSelectorTypeDescriptionTransferCache() {
         if(filterTypeDescriptionTransferCache == null)
-            filterTypeDescriptionTransferCache = new SelectorTypeDescriptionTransferCache(selectorControl);
+            filterTypeDescriptionTransferCache = new SelectorTypeDescriptionTransferCache();
 
         return filterTypeDescriptionTransferCache;
     }
 
     public SelectorTransferCache getSelectorTransferCache() {
         if(selectorTransferCache == null)
-            selectorTransferCache = new SelectorTransferCache(selectorControl);
+            selectorTransferCache = new SelectorTransferCache();
         
         return selectorTransferCache;
     }
     
     public SelectorDescriptionTransferCache getSelectorDescriptionTransferCache() {
         if(selectorDescriptionTransferCache == null)
-            selectorDescriptionTransferCache = new SelectorDescriptionTransferCache(selectorControl);
+            selectorDescriptionTransferCache = new SelectorDescriptionTransferCache();
         
         return selectorDescriptionTransferCache;
     }
     
     public SelectorNodeDescriptionTransferCache getSelectorNodeDescriptionTransferCache() {
         if(selectorNodeDescriptionTransferCache == null)
-            selectorNodeDescriptionTransferCache = new SelectorNodeDescriptionTransferCache(selectorControl);
+            selectorNodeDescriptionTransferCache = new SelectorNodeDescriptionTransferCache();
         
         return selectorNodeDescriptionTransferCache;
     }
     
     public SelectorNodeTransferCache getSelectorNodeTransferCache() {
         if(selectorNodeTransferCache == null)
-            selectorNodeTransferCache = new SelectorNodeTransferCache(selectorControl);
+            selectorNodeTransferCache = new SelectorNodeTransferCache();
         
         return selectorNodeTransferCache;
     }
     
     public SelectorNodeTypeTransferCache getSelectorNodeTypeTransferCache() {
         if(selectorNodeTypeTransferCache == null)
-            selectorNodeTypeTransferCache = new SelectorNodeTypeTransferCache(selectorControl);
+            selectorNodeTypeTransferCache = new SelectorNodeTypeTransferCache();
         
         return selectorNodeTypeTransferCache;
     }
     
     public SelectorPartyTransferCache getSelectorPartyTransferCache() {
         if(selectorPartyTransferCache == null)
-            selectorPartyTransferCache = new SelectorPartyTransferCache(selectorControl);
+            selectorPartyTransferCache = new SelectorPartyTransferCache();
         
         return selectorPartyTransferCache;
     }

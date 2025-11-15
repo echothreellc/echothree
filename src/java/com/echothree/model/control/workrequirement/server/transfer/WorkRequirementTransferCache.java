@@ -18,10 +18,10 @@ package com.echothree.model.control.workrequirement.server.transfer;
 
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
-import com.echothree.model.control.workrequirement.common.workflow.WorkRequirementStatusConstants;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workrequirement.common.WorkRequirementOptions;
 import com.echothree.model.control.workrequirement.common.transfer.WorkRequirementTransfer;
+import com.echothree.model.control.workrequirement.common.workflow.WorkRequirementStatusConstants;
 import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workrequirement.server.entity.WorkRequirement;
@@ -34,13 +34,13 @@ public class WorkRequirementTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     WorkEffortControl workEffortControl = Session.getModelController(WorkEffortControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+    WorkRequirementControl workRequirementControl = Session.getModelController(WorkRequirementControl.class);
+
     boolean includeWorkAssignments;
     boolean includeWorkTimes;
     
     /** Creates a new instance of WorkRequirementTransferCache */
-    public WorkRequirementTransferCache(WorkRequirementControl workRequirementControl) {
-        super(workRequirementControl);
-
+    public WorkRequirementTransferCache() {
         var options = session.getOptions();
         if(options != null) {
             includeWorkAssignments = options.contains(WorkRequirementOptions.WorkRequirementIncludeWorkAssignments);

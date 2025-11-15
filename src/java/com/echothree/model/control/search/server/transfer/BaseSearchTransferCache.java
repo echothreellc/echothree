@@ -25,13 +25,9 @@ import com.echothree.util.server.transfer.BaseTransferCache;
 public abstract class BaseSearchTransferCache<K extends BaseEntity, V extends BaseTransfer>
         extends BaseTransferCache<K, V> {
     
-    SearchControl searchControl;
-    
     /** Creates a new instance of BaseSearchTransferCache */
-    protected BaseSearchTransferCache(SearchControl searchControl) {
+    protected BaseSearchTransferCache() {
         super();
-        
-        this.searchControl = searchControl;
     }
     
 }
