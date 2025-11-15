@@ -41,6 +41,7 @@ public class WarehouseTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     PrinterControl printerControl = Session.getModelController(PrinterControl.class);
     ScaleControl scaleControl = Session.getModelController(ScaleControl.class);
+    WarehouseControl warehouseControl = Session.getModelController(WarehouseControl.class);
 
     boolean includeLocationsCount;
     boolean includeLocations;
@@ -51,8 +52,8 @@ public class WarehouseTransferCache
     boolean includePartyScaleUses;
     
     /** Creates a new instance of WarehouseTransferCache */
-    public WarehouseTransferCache(WarehouseControl warehouseControl) {
-        super(warehouseControl);
+    public WarehouseTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
