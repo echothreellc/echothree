@@ -20,13 +20,16 @@ import com.echothree.model.control.item.common.transfer.ItemInventoryTypeTransfe
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemInventoryType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class ItemInventoryTypeTransferCache
         extends BaseItemTransferCache<ItemInventoryType, ItemInventoryTypeTransfer> {
-    
+
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+
     /** Creates a new instance of ItemInventoryTypeTransferCache */
-    public ItemInventoryTypeTransferCache(ItemControl itemControl) {
-        super(itemControl);
+    public ItemInventoryTypeTransferCache() {
+        super();
     }
     
     @Override

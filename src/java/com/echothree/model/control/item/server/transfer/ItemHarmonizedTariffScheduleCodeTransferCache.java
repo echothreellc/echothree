@@ -28,10 +28,11 @@ public class ItemHarmonizedTariffScheduleCodeTransferCache
         extends BaseItemTransferCache<ItemHarmonizedTariffScheduleCode, ItemHarmonizedTariffScheduleCodeTransfer> {
     
     GeoControl geoControl = Session.getModelController(GeoControl.class);
-    
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+
     /** Creates a new instance of ItemHarmonizedTariffScheduleCodeTransferCache */
-    public ItemHarmonizedTariffScheduleCodeTransferCache(ItemControl itemControl) {
-        super(itemControl);
+    public ItemHarmonizedTariffScheduleCodeTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {

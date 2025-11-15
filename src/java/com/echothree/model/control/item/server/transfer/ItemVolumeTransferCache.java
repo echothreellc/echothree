@@ -26,12 +26,13 @@ import com.echothree.util.server.persistence.Session;
 
 public class ItemVolumeTransferCache
         extends BaseItemTransferCache<ItemVolume, ItemVolumeTransfer> {
-    
+
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of ItemVolumeTransferCache */
-    public ItemVolumeTransferCache(ItemControl itemControl) {
-        super(itemControl);
+    public ItemVolumeTransferCache() {
+        super();
     }
     
     @Override

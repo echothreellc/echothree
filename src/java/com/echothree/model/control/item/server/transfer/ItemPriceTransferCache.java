@@ -42,6 +42,7 @@ public class ItemPriceTransferCache
     
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
     InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
     
     TransferProperties transferProperties;
@@ -63,8 +64,8 @@ public class ItemPriceTransferCache
     boolean filterThruTime;
     
     /** Creates a new instance of ItemPriceTransferCache */
-    public ItemPriceTransferCache(ItemControl itemControl) {
-        super(itemControl);
+    public ItemPriceTransferCache() {
+        super();
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {

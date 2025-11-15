@@ -26,12 +26,13 @@ import com.echothree.util.server.persistence.Session;
 
 public class ItemWeightTransferCache
         extends BaseItemTransferCache<ItemWeight, ItemWeightTransfer> {
-    
+
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of ItemWeightTransferCache */
-    public ItemWeightTransferCache(ItemControl itemControl) {
-        super(itemControl);
+    public ItemWeightTransferCache() {
+        super();
     }
     
     @Override
