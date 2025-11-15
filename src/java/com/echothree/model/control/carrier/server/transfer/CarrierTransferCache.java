@@ -37,6 +37,7 @@ public class CarrierTransferCache
         extends BaseCarrierTransferCache<Party, CarrierTransfer> {
     
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    CarrierControl carrierControl = Session.getModelController(CarrierControl.class);
     ContactControl contactControl = Session.getModelController(ContactControl.class);
     DocumentControl documentControl = Session.getModelController(DocumentControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
@@ -49,8 +50,8 @@ public class CarrierTransferCache
     boolean includePartyScaleUses;
     
     /** Creates a new instance of CarrierTransferCache */
-    public CarrierTransferCache(CarrierControl carrierControl) {
-        super(carrierControl);
+    public CarrierTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
