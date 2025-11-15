@@ -113,7 +113,7 @@ public class SecurityControl
 
     public SecurityTransferCaches getSecurityTransferCaches() {
         if(securityTransferCaches == null) {
-            securityTransferCaches = new SecurityTransferCaches(this);
+            securityTransferCaches = new SecurityTransferCaches();
         }
 
         return securityTransferCaches;

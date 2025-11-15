@@ -20,13 +20,16 @@ import com.echothree.model.control.security.common.transfer.SecurityRoleDescript
 import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.data.security.server.entity.SecurityRoleDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class SecurityRoleDescriptionTransferCache
         extends BaseSecurityDescriptionTransferCache<SecurityRoleDescription, SecurityRoleDescriptionTransfer> {
-    
+
+    SecurityControl securityControl = Session.getModelController(SecurityControl.class);
+
     /** Creates a new instance of SecurityRoleDescriptionTransferCache */
-    public SecurityRoleDescriptionTransferCache(SecurityControl securityControl) {
-        super(securityControl);
+    public SecurityRoleDescriptionTransferCache() {
+        super();
     }
     
     public SecurityRoleDescriptionTransfer getSecurityRoleDescriptionTransfer(UserVisit userVisit, SecurityRoleDescription securityRoleDescription) {
