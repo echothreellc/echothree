@@ -26,13 +26,12 @@ import com.echothree.util.server.persistence.Session;
 public class GeoCodeCurrencyTransferCache
         extends BaseGeoTransferCache<GeoCodeCurrency, GeoCodeCurrencyTransfer> {
     
-    AccountingControl accountingControl;
-    
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    GeoControl geoControl = Session.getModelController(GeoControl.class);
+
     /** Creates a new instance of GeoCodeCurrencyTransferCache */
-    public GeoCodeCurrencyTransferCache(GeoControl geoControl) {
-        super(geoControl);
-        
-        accountingControl = Session.getModelController(AccountingControl.class);
+    public GeoCodeCurrencyTransferCache() {
+        super();
     }
     
     public GeoCodeCurrencyTransfer getGeoCodeCurrencyTransfer(UserVisit userVisit, GeoCodeCurrency geoCodeCurrency) {

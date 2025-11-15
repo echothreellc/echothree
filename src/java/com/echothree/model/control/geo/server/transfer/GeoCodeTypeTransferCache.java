@@ -20,13 +20,16 @@ import com.echothree.model.control.geo.common.transfer.GeoCodeTypeTransfer;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.data.geo.server.entity.GeoCodeType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class GeoCodeTypeTransferCache
         extends BaseGeoTransferCache<GeoCodeType, GeoCodeTypeTransfer> {
-    
+
+    GeoControl geoControl = Session.getModelController(GeoControl.class);
+
     /** Creates a new instance of GeoCodeTypeTransferCache */
-    public GeoCodeTypeTransferCache(GeoControl geoControl) {
-        super(geoControl);
+    public GeoCodeTypeTransferCache() {
+        super();
 
         setIncludeEntityInstance(true);
     }
