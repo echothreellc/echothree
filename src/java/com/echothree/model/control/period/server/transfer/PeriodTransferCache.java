@@ -31,11 +31,12 @@ public class PeriodTransferCache
         extends BasePeriodTransferCache<Period, PeriodTransfer> {
     
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+    PeriodControl periodControl = Session.getModelController(PeriodControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of PeriodTransferCache */
-    public PeriodTransferCache(PeriodControl periodControl) {
-        super(periodControl);
+    public PeriodTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

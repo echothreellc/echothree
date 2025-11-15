@@ -20,13 +20,16 @@ import com.echothree.model.control.period.common.transfer.PeriodDescriptionTrans
 import com.echothree.model.control.period.server.control.PeriodControl;
 import com.echothree.model.data.period.server.entity.PeriodDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class PeriodDescriptionTransferCache
         extends BasePeriodDescriptionTransferCache<PeriodDescription, PeriodDescriptionTransfer> {
-    
+
+    PeriodControl periodControl = Session.getModelController(PeriodControl.class);
+
     /** Creates a new instance of PeriodDescriptionTransferCache */
-    public PeriodDescriptionTransferCache(PeriodControl periodControl) {
-        super(periodControl);
+    public PeriodDescriptionTransferCache() {
+        super();
     }
     
     public PeriodDescriptionTransfer getPeriodDescriptionTransfer(UserVisit userVisit, PeriodDescription periodDescription) {
