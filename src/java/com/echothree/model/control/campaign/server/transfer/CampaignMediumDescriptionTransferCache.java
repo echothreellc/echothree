@@ -20,13 +20,16 @@ import com.echothree.model.control.campaign.common.transfer.CampaignMediumDescri
 import com.echothree.model.control.campaign.server.control.CampaignControl;
 import com.echothree.model.data.campaign.server.entity.CampaignMediumDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class CampaignMediumDescriptionTransferCache
         extends BaseCampaignDescriptionTransferCache<CampaignMediumDescription, CampaignMediumDescriptionTransfer> {
-    
+
+    CampaignControl campaignControl = Session.getModelController(CampaignControl.class);
+
     /** Creates a new instance of CampaignMediumDescriptionTransferCache */
-    public CampaignMediumDescriptionTransferCache(CampaignControl campaignControl) {
-        super(campaignControl);
+    public CampaignMediumDescriptionTransferCache() {
+        super();
     }
     
     public CampaignMediumDescriptionTransfer getCampaignMediumDescriptionTransfer(UserVisit userVisit, CampaignMediumDescription campaignMediumDescription) {

@@ -29,12 +29,13 @@ import com.echothree.util.server.persistence.Session;
 public class CampaignTransferCache
         extends BaseCampaignTransferCache<Campaign, CampaignTransfer> {
 
+    CampaignControl campaignControl = Session.getModelController(CampaignControl.class);
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of CampaignTransferCache */
-    public CampaignTransferCache(CampaignControl campaignControl) {
-        super(campaignControl);
+    public CampaignTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
