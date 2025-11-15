@@ -17,7 +17,6 @@
 package com.echothree.model.control.inventory.server.transfer;
 
 import com.echothree.model.control.inventory.common.transfer.LotTimeTransfer;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.inventory.server.control.LotTimeControl;
 import com.echothree.model.data.inventory.server.entity.LotTime;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -29,8 +28,8 @@ public class LotTimeTransferCache
     LotTimeControl lotTimeControl = Session.getModelController(LotTimeControl.class);
 
     /** Creates a new instance of LotTimeTransferCache */
-    public LotTimeTransferCache(InventoryControl inventoryControl) {
-        super(inventoryControl);
+    public LotTimeTransferCache() {
+        super();
     }
     
     @Override

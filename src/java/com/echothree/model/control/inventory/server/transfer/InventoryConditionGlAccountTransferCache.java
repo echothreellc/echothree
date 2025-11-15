@@ -19,7 +19,6 @@ package com.echothree.model.control.inventory.server.transfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.inventory.common.transfer.InventoryConditionGlAccountTransfer;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
-import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.inventory.server.entity.InventoryConditionGlAccount;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -28,11 +27,11 @@ public class InventoryConditionGlAccountTransferCache
         extends BaseInventoryTransferCache<InventoryConditionGlAccount, InventoryConditionGlAccountTransfer> {
     
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
-    ItemControl itemControl = Session.getModelController(ItemControl.class);
+    InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
     
     /** Creates a new instance of InventoryConditionGlAccountTransferCache */
-    public InventoryConditionGlAccountTransferCache(InventoryControl inventoryControl) {
-        super(inventoryControl);
+    public InventoryConditionGlAccountTransferCache() {
+        super();
     }
     
     @Override
