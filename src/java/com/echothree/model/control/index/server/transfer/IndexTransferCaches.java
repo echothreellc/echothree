@@ -16,14 +16,10 @@
 
 package com.echothree.model.control.index.server.transfer;
 
-import com.echothree.model.control.index.server.control.IndexControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 
 public class IndexTransferCaches
         extends BaseTransferCaches {
-    
-    protected IndexControl indexControl;
     
     protected IndexTypeTransferCache indexTypeTransferCache;
     protected IndexTypeDescriptionTransferCache indexTypeDescriptionTransferCache;
@@ -33,15 +29,13 @@ public class IndexTransferCaches
     protected IndexDescriptionTransferCache indexDescriptionTransferCache;
     
     /** Creates a new instance of IndexTransferCaches */
-    public IndexTransferCaches(IndexControl indexControl) {
+    public IndexTransferCaches() {
         super();
-        
-        this.indexControl = indexControl;
     }
     
     public IndexTypeTransferCache getIndexTypeTransferCache() {
         if(indexTypeTransferCache == null) {
-            indexTypeTransferCache = new IndexTypeTransferCache(indexControl);
+            indexTypeTransferCache = new IndexTypeTransferCache();
         }
 
         return indexTypeTransferCache;
@@ -49,7 +43,7 @@ public class IndexTransferCaches
 
     public IndexTypeDescriptionTransferCache getIndexTypeDescriptionTransferCache() {
         if(indexTypeDescriptionTransferCache == null) {
-            indexTypeDescriptionTransferCache = new IndexTypeDescriptionTransferCache(indexControl);
+            indexTypeDescriptionTransferCache = new IndexTypeDescriptionTransferCache();
         }
 
         return indexTypeDescriptionTransferCache;
@@ -57,7 +51,7 @@ public class IndexTransferCaches
 
     public IndexFieldTransferCache getIndexFieldTransferCache() {
         if(indexFieldTransferCache == null) {
-            indexFieldTransferCache = new IndexFieldTransferCache(indexControl);
+            indexFieldTransferCache = new IndexFieldTransferCache();
         }
 
         return indexFieldTransferCache;
@@ -65,7 +59,7 @@ public class IndexTransferCaches
 
     public IndexFieldDescriptionTransferCache getIndexFieldDescriptionTransferCache() {
         if(indexFieldDescriptionTransferCache == null) {
-            indexFieldDescriptionTransferCache = new IndexFieldDescriptionTransferCache(indexControl);
+            indexFieldDescriptionTransferCache = new IndexFieldDescriptionTransferCache();
         }
 
         return indexFieldDescriptionTransferCache;
@@ -73,7 +67,7 @@ public class IndexTransferCaches
 
     public IndexTransferCache getIndexTransferCache() {
         if(indexTransferCache == null) {
-            indexTransferCache = new IndexTransferCache(indexControl);
+            indexTransferCache = new IndexTransferCache();
         }
 
         return indexTransferCache;
@@ -81,7 +75,7 @@ public class IndexTransferCaches
 
     public IndexDescriptionTransferCache getIndexDescriptionTransferCache() {
         if(indexDescriptionTransferCache == null) {
-            indexDescriptionTransferCache = new IndexDescriptionTransferCache(indexControl);
+            indexDescriptionTransferCache = new IndexDescriptionTransferCache();
         }
 
         return indexDescriptionTransferCache;
