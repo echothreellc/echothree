@@ -20,13 +20,16 @@ import com.echothree.model.control.batch.common.transfer.BatchTypeDescriptionTra
 import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.data.batch.server.entity.BatchTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class BatchTypeDescriptionTransferCache
         extends BaseBatchDescriptionTransferCache<BatchTypeDescription, BatchTypeDescriptionTransfer> {
-    
+
+    BatchControl batchControl = Session.getModelController(BatchControl.class);
+
     /** Creates a new instance of BatchTypeDescriptionTransferCache */
-    public BatchTypeDescriptionTransferCache(BatchControl batchControl) {
-        super(batchControl);
+    public BatchTypeDescriptionTransferCache() {
+        super();
     }
     
     @Override

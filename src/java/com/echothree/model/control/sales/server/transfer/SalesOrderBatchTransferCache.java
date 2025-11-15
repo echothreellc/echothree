@@ -33,6 +33,7 @@ public class SalesOrderBatchTransferCache
         extends GenericBatchTransferCache<SalesOrderBatchTransfer> {
     
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    BatchControl batchControl = Session.getModelController(BatchControl.class);
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     PaymentMethodControl paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
     OrderBatchControl orderBatchControl = Session.getModelController(OrderBatchControl.class);
@@ -40,7 +41,7 @@ public class SalesOrderBatchTransferCache
 
     /** Creates a new instance of SalesOrderBatchTransferCache */
     public SalesOrderBatchTransferCache() {
-        super((BatchControl)Session.getModelController(BatchControl.class));
+        super();
 
         setIncludeEntityInstance(true);
     }
