@@ -20,13 +20,16 @@ import com.echothree.model.control.invoice.common.transfer.InvoiceTimeTransfer;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.data.invoice.server.entity.InvoiceTime;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class InvoiceTimeTransferCache
         extends BaseInvoiceTransferCache<InvoiceTime, InvoiceTimeTransfer> {
-    
+
+    InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
+
     /** Creates a new instance of InvoiceTimeTransferCache */
-    public InvoiceTimeTransferCache(InvoiceControl invoiceControl) {
-        super(invoiceControl);
+    public InvoiceTimeTransferCache() {
+        super();
     }
     
     public InvoiceTimeTransfer getInvoiceTimeTransfer(UserVisit userVisit, InvoiceTime invoiceTime) {

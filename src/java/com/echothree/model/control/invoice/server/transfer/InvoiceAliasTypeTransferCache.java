@@ -20,13 +20,16 @@ import com.echothree.model.control.invoice.common.transfer.InvoiceAliasTypeTrans
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.data.invoice.server.entity.InvoiceAliasType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class InvoiceAliasTypeTransferCache
         extends BaseInvoiceTransferCache<InvoiceAliasType, InvoiceAliasTypeTransfer> {
-    
+
+    InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
+
     /** Creates a new instance of InvoiceAliasTypeTransferCache */
-    public InvoiceAliasTypeTransferCache(InvoiceControl invoiceControl) {
-        super(invoiceControl);
+    public InvoiceAliasTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
