@@ -26,13 +26,11 @@ import com.echothree.util.server.persistence.Session;
 public abstract class BaseTrackDescriptionTransferCache<K extends BaseEntity, V extends BaseTransfer>
         extends BaseTrackTransferCache<K, V> {
     
-    PartyControl partyControl;
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of BaseTrackDescriptionTransferCache */
-    protected BaseTrackDescriptionTransferCache(TrackControl trackControl) {
-        super(trackControl);
-        
-        partyControl = Session.getModelController(PartyControl.class);
+    protected BaseTrackDescriptionTransferCache() {
+        super();
     }
     
 }

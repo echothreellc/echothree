@@ -30,12 +30,11 @@ public class TrackTransferCache
         extends BaseTrackTransferCache<Track, TrackTransfer> {
 
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+    TrackControl trackControl = Session.getModelController(TrackControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of TrackTransferCache */
-    public TrackTransferCache(TrackControl trackControl) {
-        super(trackControl);
-        
+    public TrackTransferCache() {
         var options = session.getOptions();
         if(options != null) {
             setIncludeUuid(options.contains(TrackOptions.TrackIncludeUuid));
