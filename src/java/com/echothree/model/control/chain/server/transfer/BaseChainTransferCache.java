@@ -16,8 +16,6 @@
 
 package com.echothree.model.control.chain.server.transfer;
 
-import com.echothree.model.control.chain.server.control.ChainControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.transfer.BaseTransferCache;
@@ -25,13 +23,9 @@ import com.echothree.util.server.transfer.BaseTransferCache;
 public abstract class BaseChainTransferCache<K extends BaseEntity, V extends BaseTransfer>
         extends BaseTransferCache<K, V> {
     
-    ChainControl chainControl;
-    
     /** Creates a new instance of BaseChainTransferCache */
-    protected BaseChainTransferCache(ChainControl chainControl) {
+    protected BaseChainTransferCache() {
         super();
-        
-        this.chainControl = chainControl;
     }
     
 }
