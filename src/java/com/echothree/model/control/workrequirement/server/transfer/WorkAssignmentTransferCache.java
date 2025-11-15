@@ -18,9 +18,9 @@ package com.echothree.model.control.workrequirement.server.transfer;
 
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.workrequirement.common.workflow.WorkAssignmentStatusConstants;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workrequirement.common.transfer.WorkAssignmentTransfer;
+import com.echothree.model.control.workrequirement.common.workflow.WorkAssignmentStatusConstants;
 import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workrequirement.server.entity.WorkAssignment;
@@ -32,10 +32,11 @@ public class WorkAssignmentTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
-    
+    WorkRequirementControl workRequirementControl = Session.getModelController(WorkRequirementControl.class);
+
     /** Creates a new instance of WorkAssignmentTransferCache */
-    public WorkAssignmentTransferCache(WorkRequirementControl workRequirementControl) {
-        super(workRequirementControl);
+    public WorkAssignmentTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

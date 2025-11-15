@@ -23,8 +23,6 @@ import com.echothree.util.server.transfer.BaseTransferCaches;
 public class WorkRequirementTransferCaches
         extends BaseTransferCaches {
     
-    protected WorkRequirementControl workRequirementControl;
-    
     protected WorkRequirementTypeDescriptionTransferCache workRequirementTypeDescriptionTransferCache;
     protected WorkRequirementTypeTransferCache workRequirementTypeTransferCache;
     protected WorkRequirementScopeTransferCache workRequirementScopeTransferCache;
@@ -33,50 +31,48 @@ public class WorkRequirementTransferCaches
     protected WorkTimeTransferCache workTimeTransferCache;
     
     /** Creates a new instance of WorkRequirementTransferCaches */
-    public WorkRequirementTransferCaches(WorkRequirementControl workRequirementControl) {
+    public WorkRequirementTransferCaches() {
         super();
-        
-        this.workRequirementControl = workRequirementControl;
     }
     
     public WorkRequirementTypeDescriptionTransferCache getWorkRequirementTypeDescriptionTransferCache() {
         if(workRequirementTypeDescriptionTransferCache == null)
-            workRequirementTypeDescriptionTransferCache = new WorkRequirementTypeDescriptionTransferCache(workRequirementControl);
+            workRequirementTypeDescriptionTransferCache = new WorkRequirementTypeDescriptionTransferCache();
         
         return workRequirementTypeDescriptionTransferCache;
     }
     
     public WorkRequirementTypeTransferCache getWorkRequirementTypeTransferCache() {
         if(workRequirementTypeTransferCache == null)
-            workRequirementTypeTransferCache = new WorkRequirementTypeTransferCache(workRequirementControl);
+            workRequirementTypeTransferCache = new WorkRequirementTypeTransferCache();
         
         return workRequirementTypeTransferCache;
     }
     
     public WorkRequirementScopeTransferCache getWorkRequirementScopeTransferCache() {
         if(workRequirementScopeTransferCache == null)
-            workRequirementScopeTransferCache = new WorkRequirementScopeTransferCache(workRequirementControl);
+            workRequirementScopeTransferCache = new WorkRequirementScopeTransferCache();
         
         return workRequirementScopeTransferCache;
     }
     
     public WorkRequirementTransferCache getWorkRequirementTransferCache() {
         if(workRequirementTransferCache == null)
-            workRequirementTransferCache = new WorkRequirementTransferCache(workRequirementControl);
+            workRequirementTransferCache = new WorkRequirementTransferCache();
         
         return workRequirementTransferCache;
     }
     
     public WorkAssignmentTransferCache getWorkAssignmentTransferCache() {
         if(workAssignmentTransferCache == null)
-            workAssignmentTransferCache = new WorkAssignmentTransferCache(workRequirementControl);
+            workAssignmentTransferCache = new WorkAssignmentTransferCache();
         
         return workAssignmentTransferCache;
     }
     
     public WorkTimeTransferCache getWorkTimeTransferCache() {
         if(workTimeTransferCache == null)
-            workTimeTransferCache = new WorkTimeTransferCache(workRequirementControl);
+            workTimeTransferCache = new WorkTimeTransferCache();
         
         return workTimeTransferCache;
     }
