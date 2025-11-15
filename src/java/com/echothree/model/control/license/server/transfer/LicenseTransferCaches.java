@@ -16,28 +16,22 @@
 
 package com.echothree.model.control.license.server.transfer;
 
-import com.echothree.model.control.license.server.control.LicenseControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 
 public class LicenseTransferCaches
         extends BaseTransferCaches {
     
-    protected LicenseControl licenseControl;
-    
     protected LicenseTypeTransferCache licenseTypeTransferCache;
     protected LicenseTypeDescriptionTransferCache licenseTypeDescriptionTransferCache;
     
     /** Creates a new instance of LicenseTransferCaches */
-    public LicenseTransferCaches(LicenseControl licenseControl) {
+    public LicenseTransferCaches() {
         super();
-        
-        this.licenseControl = licenseControl;
     }
     
     public LicenseTypeTransferCache getLicenseTypeTransferCache() {
         if(licenseTypeTransferCache == null) {
-            licenseTypeTransferCache = new LicenseTypeTransferCache(licenseControl);
+            licenseTypeTransferCache = new LicenseTypeTransferCache();
         }
 
         return licenseTypeTransferCache;
@@ -45,7 +39,7 @@ public class LicenseTransferCaches
 
     public LicenseTypeDescriptionTransferCache getLicenseTypeDescriptionTransferCache() {
         if(licenseTypeDescriptionTransferCache == null) {
-            licenseTypeDescriptionTransferCache = new LicenseTypeDescriptionTransferCache(licenseControl);
+            licenseTypeDescriptionTransferCache = new LicenseTypeDescriptionTransferCache();
         }
 
         return licenseTypeDescriptionTransferCache;

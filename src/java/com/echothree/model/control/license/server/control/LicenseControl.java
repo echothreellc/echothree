@@ -61,7 +61,7 @@ public class LicenseControl
     
     public LicenseTransferCaches getLicenseTransferCaches() {
         if(licenseTransferCaches == null) {
-            licenseTransferCaches = new LicenseTransferCaches(this);
+            licenseTransferCaches = new LicenseTransferCaches();
         }
         
         return licenseTransferCaches;
