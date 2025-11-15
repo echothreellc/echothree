@@ -16,8 +16,6 @@
 
 package com.echothree.model.control.training.server.transfer;
 
-import com.echothree.model.control.training.server.control.TrainingControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.transfer.BaseTransferCache;
@@ -25,13 +23,9 @@ import com.echothree.util.server.transfer.BaseTransferCache;
 public abstract class BaseTrainingTransferCache<K extends BaseEntity, V extends BaseTransfer>
         extends BaseTransferCache<K, V> {
     
-    TrainingControl trainingControl;
-    
     /** Creates a new instance of BaseTrainingTransferCache */
-    protected BaseTrainingTransferCache(TrainingControl trainingControl) {
+    protected BaseTrainingTransferCache() {
         super();
-        
-        this.trainingControl = trainingControl;
     }
     
 }

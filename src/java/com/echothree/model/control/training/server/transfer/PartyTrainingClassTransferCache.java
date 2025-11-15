@@ -33,12 +33,14 @@ public class PartyTrainingClassTransferCache
     
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
+    TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+
     boolean includePartyTrainingClassSessions;
     
     /** Creates a new instance of PartyTrainingClassTransferCache */
-    public PartyTrainingClassTransferCache(TrainingControl trainingControl) {
-        super(trainingControl);
+    public PartyTrainingClassTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {

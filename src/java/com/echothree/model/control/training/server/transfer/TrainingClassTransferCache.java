@@ -31,15 +31,17 @@ import com.echothree.util.server.string.UnitOfMeasureUtils;
 
 public class TrainingClassTransferCache
         extends BaseTrainingTransferCache<TrainingClass, TrainingClassTransfer> {
-    
+
+    TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
     WorkEffortControl workEffortControl = Session.getModelController(WorkEffortControl.class);
+
     boolean includeTrainingClassSections;
     boolean includePartyTrainingClasses;
     
     /** Creates a new instance of TrainingClassTransferCache */
-    public TrainingClassTransferCache(TrainingControl trainingControl) {
-        super(trainingControl);
+    public TrainingClassTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {

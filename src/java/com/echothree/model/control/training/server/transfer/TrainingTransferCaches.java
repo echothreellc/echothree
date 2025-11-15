@@ -23,8 +23,6 @@ import com.echothree.util.server.transfer.BaseTransferCaches;
 public class TrainingTransferCaches
         extends BaseTransferCaches {
     
-    protected TrainingControl trainingControl;
-    
     protected TrainingClassTransferCache trainingClassTransferCache;
     protected TrainingClassTranslationTransferCache trainingClassTranslationTransferCache;
     protected TrainingClassSectionTransferCache trainingClassSectionTransferCache;
@@ -43,15 +41,13 @@ public class TrainingTransferCaches
     protected PartyTrainingClassSessionAnswerTransferCache partyTrainingClassSessionAnswerTransferCache;
     
     /** Creates a new instance of TrainingTransferCaches */
-    public TrainingTransferCaches(TrainingControl trainingControl) {
+    public TrainingTransferCaches() {
         super();
-        
-        this.trainingControl = trainingControl;
     }
     
     public TrainingClassTransferCache getTrainingClassTransferCache() {
         if(trainingClassTransferCache == null) {
-            trainingClassTransferCache = new TrainingClassTransferCache(trainingControl);
+            trainingClassTransferCache = new TrainingClassTransferCache();
         }
         
         return trainingClassTransferCache;
@@ -59,7 +55,7 @@ public class TrainingTransferCaches
     
     public TrainingClassTranslationTransferCache getTrainingClassTranslationTransferCache() {
         if(trainingClassTranslationTransferCache == null) {
-            trainingClassTranslationTransferCache = new TrainingClassTranslationTransferCache(trainingControl);
+            trainingClassTranslationTransferCache = new TrainingClassTranslationTransferCache();
         }
         
         return trainingClassTranslationTransferCache;
@@ -67,7 +63,7 @@ public class TrainingTransferCaches
     
     public TrainingClassSectionTransferCache getTrainingClassSectionTransferCache() {
         if(trainingClassSectionTransferCache == null) {
-            trainingClassSectionTransferCache = new TrainingClassSectionTransferCache(trainingControl);
+            trainingClassSectionTransferCache = new TrainingClassSectionTransferCache();
         }
         
         return trainingClassSectionTransferCache;
@@ -75,7 +71,7 @@ public class TrainingTransferCaches
     
     public TrainingClassSectionTranslationTransferCache getTrainingClassSectionTranslationTransferCache() {
         if(trainingClassSectionTranslationTransferCache == null) {
-            trainingClassSectionTranslationTransferCache = new TrainingClassSectionTranslationTransferCache(trainingControl);
+            trainingClassSectionTranslationTransferCache = new TrainingClassSectionTranslationTransferCache();
         }
         
         return trainingClassSectionTranslationTransferCache;
@@ -83,7 +79,7 @@ public class TrainingTransferCaches
     
     public TrainingClassPageTransferCache getTrainingClassPageTransferCache() {
         if(trainingClassPageTransferCache == null) {
-            trainingClassPageTransferCache = new TrainingClassPageTransferCache(trainingControl);
+            trainingClassPageTransferCache = new TrainingClassPageTransferCache();
         }
         
         return trainingClassPageTransferCache;
@@ -91,7 +87,7 @@ public class TrainingTransferCaches
     
     public TrainingClassPageTranslationTransferCache getTrainingClassPageTranslationTransferCache() {
         if(trainingClassPageTranslationTransferCache == null) {
-            trainingClassPageTranslationTransferCache = new TrainingClassPageTranslationTransferCache(trainingControl);
+            trainingClassPageTranslationTransferCache = new TrainingClassPageTranslationTransferCache();
         }
         
         return trainingClassPageTranslationTransferCache;
@@ -99,7 +95,7 @@ public class TrainingTransferCaches
     
     public TrainingClassQuestionTransferCache getTrainingClassQuestionTransferCache() {
         if(trainingClassQuestionTransferCache == null) {
-            trainingClassQuestionTransferCache = new TrainingClassQuestionTransferCache(trainingControl);
+            trainingClassQuestionTransferCache = new TrainingClassQuestionTransferCache();
         }
         
         return trainingClassQuestionTransferCache;
@@ -107,7 +103,7 @@ public class TrainingTransferCaches
     
     public TrainingClassQuestionTranslationTransferCache getTrainingClassQuestionTranslationTransferCache() {
         if(trainingClassQuestionTranslationTransferCache == null) {
-            trainingClassQuestionTranslationTransferCache = new TrainingClassQuestionTranslationTransferCache(trainingControl);
+            trainingClassQuestionTranslationTransferCache = new TrainingClassQuestionTranslationTransferCache();
         }
         
         return trainingClassQuestionTranslationTransferCache;
@@ -115,7 +111,7 @@ public class TrainingTransferCaches
     
     public TrainingClassAnswerTransferCache getTrainingClassAnswerTransferCache() {
         if(trainingClassAnswerTransferCache == null) {
-            trainingClassAnswerTransferCache = new TrainingClassAnswerTransferCache(trainingControl);
+            trainingClassAnswerTransferCache = new TrainingClassAnswerTransferCache();
         }
         
         return trainingClassAnswerTransferCache;
@@ -123,7 +119,7 @@ public class TrainingTransferCaches
     
     public TrainingClassAnswerTranslationTransferCache getTrainingClassAnswerTranslationTransferCache() {
         if(trainingClassAnswerTranslationTransferCache == null) {
-            trainingClassAnswerTranslationTransferCache = new TrainingClassAnswerTranslationTransferCache(trainingControl);
+            trainingClassAnswerTranslationTransferCache = new TrainingClassAnswerTranslationTransferCache();
         }
         
         return trainingClassAnswerTranslationTransferCache;
@@ -131,7 +127,7 @@ public class TrainingTransferCaches
     
     public PartyTrainingClassTransferCache getPartyTrainingClassTransferCache() {
         if(partyTrainingClassTransferCache == null) {
-            partyTrainingClassTransferCache = new PartyTrainingClassTransferCache(trainingControl);
+            partyTrainingClassTransferCache = new PartyTrainingClassTransferCache();
         }
         
         return partyTrainingClassTransferCache;
@@ -139,7 +135,7 @@ public class TrainingTransferCaches
     
     public PartyTrainingClassSessionTransferCache getPartyTrainingClassSessionTransferCache() {
         if(partyTrainingClassSessionTransferCache == null) {
-            partyTrainingClassSessionTransferCache = new PartyTrainingClassSessionTransferCache(trainingControl);
+            partyTrainingClassSessionTransferCache = new PartyTrainingClassSessionTransferCache();
         }
         
         return partyTrainingClassSessionTransferCache;
@@ -147,7 +143,7 @@ public class TrainingTransferCaches
     
     public PartyTrainingClassSessionSectionTransferCache getPartyTrainingClassSessionSectionTransferCache() {
         if(partyTrainingClassSessionSectionTransferCache == null) {
-            partyTrainingClassSessionSectionTransferCache = new PartyTrainingClassSessionSectionTransferCache(trainingControl);
+            partyTrainingClassSessionSectionTransferCache = new PartyTrainingClassSessionSectionTransferCache();
         }
         
         return partyTrainingClassSessionSectionTransferCache;
@@ -155,7 +151,7 @@ public class TrainingTransferCaches
     
     public PartyTrainingClassSessionPageTransferCache getPartyTrainingClassSessionPageTransferCache() {
         if(partyTrainingClassSessionPageTransferCache == null) {
-            partyTrainingClassSessionPageTransferCache = new PartyTrainingClassSessionPageTransferCache(trainingControl);
+            partyTrainingClassSessionPageTransferCache = new PartyTrainingClassSessionPageTransferCache();
         }
         
         return partyTrainingClassSessionPageTransferCache;
@@ -163,7 +159,7 @@ public class TrainingTransferCaches
     
     public PartyTrainingClassSessionQuestionTransferCache getPartyTrainingClassSessionQuestionTransferCache() {
         if(partyTrainingClassSessionQuestionTransferCache == null) {
-            partyTrainingClassSessionQuestionTransferCache = new PartyTrainingClassSessionQuestionTransferCache(trainingControl);
+            partyTrainingClassSessionQuestionTransferCache = new PartyTrainingClassSessionQuestionTransferCache();
         }
         
         return partyTrainingClassSessionQuestionTransferCache;
@@ -171,7 +167,7 @@ public class TrainingTransferCaches
     
     public PartyTrainingClassSessionAnswerTransferCache getPartyTrainingClassSessionAnswerTransferCache() {
         if(partyTrainingClassSessionAnswerTransferCache == null) {
-            partyTrainingClassSessionAnswerTransferCache = new PartyTrainingClassSessionAnswerTransferCache(trainingControl);
+            partyTrainingClassSessionAnswerTransferCache = new PartyTrainingClassSessionAnswerTransferCache();
         }
         
         return partyTrainingClassSessionAnswerTransferCache;
