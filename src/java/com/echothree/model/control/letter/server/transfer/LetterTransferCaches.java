@@ -16,14 +16,10 @@
 
 package com.echothree.model.control.letter.server.transfer;
 
-import com.echothree.model.control.letter.server.control.LetterControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 
 public class LetterTransferCaches
         extends BaseTransferCaches {
-    
-    protected LetterControl letterControl;
     
     protected LetterTransferCache letterTransferCache;
     protected LetterDescriptionTransferCache letterDescriptionTransferCache;
@@ -33,50 +29,48 @@ public class LetterTransferCaches
     protected LetterContactMechanismPurposeTransferCache letterContactMechanismPurposeTransferCache;
     
     /** Creates a new instance of LetterTransferCaches */
-    public LetterTransferCaches(LetterControl letterControl) {
+    public LetterTransferCaches() {
         super();
-        
-        this.letterControl = letterControl;
     }
     
     public LetterTransferCache getLetterTransferCache() {
         if(letterTransferCache == null)
-            letterTransferCache = new LetterTransferCache(letterControl);
+            letterTransferCache = new LetterTransferCache();
         
         return letterTransferCache;
     }
     
     public LetterDescriptionTransferCache getLetterDescriptionTransferCache() {
         if(letterDescriptionTransferCache == null)
-            letterDescriptionTransferCache = new LetterDescriptionTransferCache(letterControl);
+            letterDescriptionTransferCache = new LetterDescriptionTransferCache();
         
         return letterDescriptionTransferCache;
     }
     
     public LetterSourceTransferCache getLetterSourceTransferCache() {
         if(letterSourceTransferCache == null)
-            letterSourceTransferCache = new LetterSourceTransferCache(letterControl);
+            letterSourceTransferCache = new LetterSourceTransferCache();
         
         return letterSourceTransferCache;
     }
     
     public LetterSourceDescriptionTransferCache getLetterSourceDescriptionTransferCache() {
         if(letterSourceDescriptionTransferCache == null)
-            letterSourceDescriptionTransferCache = new LetterSourceDescriptionTransferCache(letterControl);
+            letterSourceDescriptionTransferCache = new LetterSourceDescriptionTransferCache();
         
         return letterSourceDescriptionTransferCache;
     }
     
     public QueuedLetterTransferCache getQueuedLetterTransferCache() {
         if(queuedLetterTransferCache == null)
-            queuedLetterTransferCache = new QueuedLetterTransferCache(letterControl);
+            queuedLetterTransferCache = new QueuedLetterTransferCache();
         
         return queuedLetterTransferCache;
     }
     
     public LetterContactMechanismPurposeTransferCache getLetterContactMechanismPurposeTransferCache() {
         if(letterContactMechanismPurposeTransferCache == null)
-            letterContactMechanismPurposeTransferCache = new LetterContactMechanismPurposeTransferCache(letterControl);
+            letterContactMechanismPurposeTransferCache = new LetterContactMechanismPurposeTransferCache();
         
         return letterContactMechanismPurposeTransferCache;
     }
