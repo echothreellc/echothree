@@ -20,13 +20,16 @@ import com.echothree.model.control.content.common.transfer.ContentWebAddressDesc
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentWebAddressDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class ContentWebAddressDescriptionTransferCache
         extends BaseContentDescriptionTransferCache<ContentWebAddressDescription, ContentWebAddressDescriptionTransfer> {
-    
+
+    ContentControl contentControl = Session.getModelController(ContentControl.class);
+
     /** Creates a new instance of ContentWebAddressDescriptionTransferCache */
-    public ContentWebAddressDescriptionTransferCache(ContentControl contentControl) {
-        super(contentControl);
+    public ContentWebAddressDescriptionTransferCache() {
+        super();
     }
     
     public ContentWebAddressDescriptionTransfer getContentWebAddressDescriptionTransfer(UserVisit userVisit, ContentWebAddressDescription contentWebAddressDescription) {

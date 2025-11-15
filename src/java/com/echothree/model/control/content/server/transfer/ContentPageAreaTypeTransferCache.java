@@ -20,13 +20,16 @@ import com.echothree.model.control.content.common.transfer.ContentPageAreaTypeTr
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentPageAreaType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class ContentPageAreaTypeTransferCache
         extends BaseContentTransferCache<ContentPageAreaType, ContentPageAreaTypeTransfer> {
-    
+
+    ContentControl contentControl = Session.getModelController(ContentControl.class);
+
     /** Creates a new instance of ContentPageAreaTypeTransferCache */
-    public ContentPageAreaTypeTransferCache(ContentControl contentControl) {
-        super(contentControl);
+    public ContentPageAreaTypeTransferCache() {
+        super();
     }
     
     public ContentPageAreaTypeTransfer getTransfer(UserVisit userVisit, ContentPageAreaType contentPageAreaType) {

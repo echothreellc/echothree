@@ -31,6 +31,7 @@ import com.echothree.util.server.persistence.Session;
 public class ContentPageAreaTransferCache
         extends BaseContentTransferCache<ContentPageArea, ContentPageAreaTransfer> {
 
+    ContentControl contentControl = Session.getModelController(ContentControl.class);
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
@@ -47,8 +48,8 @@ public class ContentPageAreaTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of ContentPageAreaTransferCache */
-    public ContentPageAreaTransferCache(ContentControl contentControl) {
-        super(contentControl);
+    public ContentPageAreaTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {
