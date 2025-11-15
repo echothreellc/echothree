@@ -30,7 +30,8 @@ public class UnitOfMeasureTypeTransferCache
         extends BaseUomTransferCache<UnitOfMeasureType, UnitOfMeasureTypeTransfer> {
     
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
-    
+    UomControl uomControl = Session.getModelController(UomControl.class);
+
     boolean includeVolume;
     boolean includeWeight;
     
@@ -45,8 +46,8 @@ public class UnitOfMeasureTypeTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of UnitOfMeasureTypeTransferCache */
-    public UnitOfMeasureTypeTransferCache(UomControl uomControl) {
-        super(uomControl);
+    public UnitOfMeasureTypeTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
