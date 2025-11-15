@@ -20,13 +20,16 @@ import com.echothree.model.control.document.common.transfer.DocumentTypeUsageTyp
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.data.document.server.entity.DocumentTypeUsageTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class DocumentTypeUsageTypeDescriptionTransferCache
         extends BaseDocumentDescriptionTransferCache<DocumentTypeUsageTypeDescription, DocumentTypeUsageTypeDescriptionTransfer> {
-    
+
+    DocumentControl documentControl = Session.getModelController(DocumentControl.class);
+
     /** Creates a new instance of DocumentTypeUsageTypeDescriptionTransferCache */
-    public DocumentTypeUsageTypeDescriptionTransferCache(DocumentControl documentControl) {
-        super(documentControl);
+    public DocumentTypeUsageTypeDescriptionTransferCache() {
+        super();
     }
     
     public DocumentTypeUsageTypeDescriptionTransfer getDocumentTypeUsageTypeDescriptionTransfer(UserVisit userVisit, DocumentTypeUsageTypeDescription documentTypeUsageTypeDescription) {

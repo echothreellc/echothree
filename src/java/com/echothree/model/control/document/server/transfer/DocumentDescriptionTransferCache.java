@@ -20,13 +20,16 @@ import com.echothree.model.control.document.common.transfer.DocumentDescriptionT
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.data.document.server.entity.DocumentDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class DocumentDescriptionTransferCache
         extends BaseDocumentDescriptionTransferCache<DocumentDescription, DocumentDescriptionTransfer> {
-    
+
+    DocumentControl documentControl = Session.getModelController(DocumentControl.class);
+
     /** Creates a new instance of DocumentDescriptionTransferCache */
-    public DocumentDescriptionTransferCache(DocumentControl documentControl) {
-        super(documentControl);
+    public DocumentDescriptionTransferCache() {
+        super();
     }
     
     public DocumentDescriptionTransfer getDocumentDescriptionTransfer(UserVisit userVisit, DocumentDescription documentDescription) {
