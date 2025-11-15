@@ -27,10 +27,11 @@ public class TaxClassificationTransferCache
         extends BaseTaxTransferCache<TaxClassification, TaxClassificationTransfer> {
     
     GeoControl geoControl = Session.getModelController(GeoControl.class);
+    TaxControl taxControl = Session.getModelController(TaxControl.class);
     
     /** Creates a new instance of TaxClassificationTransferCache */
-    public TaxClassificationTransferCache(TaxControl taxControl) {
-        super(taxControl);
+    public TaxClassificationTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

@@ -30,10 +30,11 @@ public class ItemTaxClassificationTransferCache
     
     GeoControl geoControl = Session.getModelController(GeoControl.class);
     ItemControl itemControl = Session.getModelController(ItemControl.class);
-    
+    TaxControl taxControl = Session.getModelController(TaxControl.class);
+
     /** Creates a new instance of ItemTaxClassificationTransferCache */
-    public ItemTaxClassificationTransferCache(TaxControl taxControl) {
-        super(taxControl);
+    public ItemTaxClassificationTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {

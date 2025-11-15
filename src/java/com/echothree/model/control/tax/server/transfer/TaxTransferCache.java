@@ -29,10 +29,11 @@ public class TaxTransferCache
     
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
     ContactControl contactControl = Session.getModelController(ContactControl.class);
-    
+    TaxControl taxControl = Session.getModelController(TaxControl.class);
+
     /** Creates a new instance of TaxTransferCache */
-    public TaxTransferCache(TaxControl taxControl) {
-        super(taxControl);
+    public TaxTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
