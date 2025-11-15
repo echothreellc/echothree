@@ -31,10 +31,11 @@ public class WishlistTransferCache
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
     OfferUseControl offerUseControl = Session.getModelController(OfferUseControl.class);
     OrderTypeControl orderTypeControl = Session.getModelController(OrderTypeControl.class);
-    
+    WishlistControl wishlistControl = Session.getModelController(WishlistControl.class);
+
     /** Creates a new instance of WishlistTransferCache */
-    public WishlistTransferCache(WishlistControl wishlistControl) {
-        super(wishlistControl);
+    public WishlistTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

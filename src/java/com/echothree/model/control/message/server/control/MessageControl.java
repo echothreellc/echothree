@@ -88,7 +88,7 @@ public class MessageControl
     
     public MessageTransferCaches getMessageTransferCaches() {
         if(messageTransferCaches == null) {
-            messageTransferCaches = new MessageTransferCaches(this);
+            messageTransferCaches = new MessageTransferCaches();
         }
         
         return messageTransferCaches;

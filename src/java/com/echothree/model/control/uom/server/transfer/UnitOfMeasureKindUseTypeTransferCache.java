@@ -20,13 +20,16 @@ import com.echothree.model.control.uom.common.transfer.UnitOfMeasureKindUseTypeT
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUseType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class UnitOfMeasureKindUseTypeTransferCache
         extends BaseUomTransferCache<UnitOfMeasureKindUseType, UnitOfMeasureKindUseTypeTransfer> {
-    
+
+    UomControl uomControl = Session.getModelController(UomControl.class);
+
     /** Creates a new instance of UnitOfMeasureKindUseTypeTransferCache */
-    public UnitOfMeasureKindUseTypeTransferCache(UomControl uomControl) {
-        super(uomControl);
+    public UnitOfMeasureKindUseTypeTransferCache() {
+        super();
     }
     
     public UnitOfMeasureKindUseTypeTransfer getUnitOfMeasureKindUseTypeTransfer(UserVisit userVisit, UnitOfMeasureKindUseType unitOfMeasureKindUseType) {

@@ -149,7 +149,7 @@ public class UserControl
     
     public UserTransferCaches getUserTransferCaches() {
         if(userTransferCaches == null) {
-            userTransferCaches = new UserTransferCaches(this);
+            userTransferCaches = new UserTransferCaches();
         }
         
         return userTransferCaches;

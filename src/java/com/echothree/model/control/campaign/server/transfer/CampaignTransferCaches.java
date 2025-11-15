@@ -16,14 +16,10 @@
 
 package com.echothree.model.control.campaign.server.transfer;
 
-import com.echothree.model.control.campaign.server.control.CampaignControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 
 public class CampaignTransferCaches
         extends BaseTransferCaches {
-    
-    protected CampaignControl campaignControl;
     
     protected CampaignTransferCache campaignTransferCache;
     protected CampaignDescriptionTransferCache campaignDescriptionTransferCache;
@@ -38,15 +34,13 @@ public class CampaignTransferCaches
     protected UserVisitCampaignTransferCache userVisitCampaignTransferCache;
     
     /** Creates a new instance of CampaignTransferCaches */
-    public CampaignTransferCaches(CampaignControl campaignControl) {
+    public CampaignTransferCaches() {
         super();
-        
-        this.campaignControl = campaignControl;
     }
     
     public CampaignTransferCache getCampaignTransferCache() {
         if(campaignTransferCache == null) {
-            campaignTransferCache = new CampaignTransferCache(campaignControl);
+            campaignTransferCache = new CampaignTransferCache();
         }
 
         return campaignTransferCache;
@@ -54,7 +48,7 @@ public class CampaignTransferCaches
 
     public CampaignDescriptionTransferCache getCampaignDescriptionTransferCache() {
         if(campaignDescriptionTransferCache == null) {
-            campaignDescriptionTransferCache = new CampaignDescriptionTransferCache(campaignControl);
+            campaignDescriptionTransferCache = new CampaignDescriptionTransferCache();
         }
 
         return campaignDescriptionTransferCache;
@@ -62,7 +56,7 @@ public class CampaignTransferCaches
 
     public CampaignSourceTransferCache getCampaignSourceTransferCache() {
         if(campaignSourceTransferCache == null) {
-            campaignSourceTransferCache = new CampaignSourceTransferCache(campaignControl);
+            campaignSourceTransferCache = new CampaignSourceTransferCache();
         }
 
         return campaignSourceTransferCache;
@@ -70,7 +64,7 @@ public class CampaignTransferCaches
 
     public CampaignSourceDescriptionTransferCache getCampaignSourceDescriptionTransferCache() {
         if(campaignSourceDescriptionTransferCache == null) {
-            campaignSourceDescriptionTransferCache = new CampaignSourceDescriptionTransferCache(campaignControl);
+            campaignSourceDescriptionTransferCache = new CampaignSourceDescriptionTransferCache();
         }
 
         return campaignSourceDescriptionTransferCache;
@@ -78,7 +72,7 @@ public class CampaignTransferCaches
 
     public CampaignMediumTransferCache getCampaignMediumTransferCache() {
         if(campaignMediumTransferCache == null) {
-            campaignMediumTransferCache = new CampaignMediumTransferCache(campaignControl);
+            campaignMediumTransferCache = new CampaignMediumTransferCache();
         }
 
         return campaignMediumTransferCache;
@@ -86,7 +80,7 @@ public class CampaignTransferCaches
 
     public CampaignMediumDescriptionTransferCache getCampaignMediumDescriptionTransferCache() {
         if(campaignMediumDescriptionTransferCache == null) {
-            campaignMediumDescriptionTransferCache = new CampaignMediumDescriptionTransferCache(campaignControl);
+            campaignMediumDescriptionTransferCache = new CampaignMediumDescriptionTransferCache();
         }
 
         return campaignMediumDescriptionTransferCache;
@@ -94,7 +88,7 @@ public class CampaignTransferCaches
 
     public CampaignTermTransferCache getCampaignTermTransferCache() {
         if(campaignTermTransferCache == null) {
-            campaignTermTransferCache = new CampaignTermTransferCache(campaignControl);
+            campaignTermTransferCache = new CampaignTermTransferCache();
         }
 
         return campaignTermTransferCache;
@@ -102,7 +96,7 @@ public class CampaignTransferCaches
 
     public CampaignTermDescriptionTransferCache getCampaignTermDescriptionTransferCache() {
         if(campaignTermDescriptionTransferCache == null) {
-            campaignTermDescriptionTransferCache = new CampaignTermDescriptionTransferCache(campaignControl);
+            campaignTermDescriptionTransferCache = new CampaignTermDescriptionTransferCache();
         }
 
         return campaignTermDescriptionTransferCache;
@@ -110,7 +104,7 @@ public class CampaignTransferCaches
 
     public CampaignContentTransferCache getCampaignContentTransferCache() {
         if(campaignContentTransferCache == null) {
-            campaignContentTransferCache = new CampaignContentTransferCache(campaignControl);
+            campaignContentTransferCache = new CampaignContentTransferCache();
         }
 
         return campaignContentTransferCache;
@@ -118,7 +112,7 @@ public class CampaignTransferCaches
 
     public CampaignContentDescriptionTransferCache getCampaignContentDescriptionTransferCache() {
         if(campaignContentDescriptionTransferCache == null) {
-            campaignContentDescriptionTransferCache = new CampaignContentDescriptionTransferCache(campaignControl);
+            campaignContentDescriptionTransferCache = new CampaignContentDescriptionTransferCache();
         }
 
         return campaignContentDescriptionTransferCache;
@@ -126,7 +120,7 @@ public class CampaignTransferCaches
 
     public UserVisitCampaignTransferCache getUserVisitCampaignTransferCache() {
         if(userVisitCampaignTransferCache == null) {
-            userVisitCampaignTransferCache = new UserVisitCampaignTransferCache(campaignControl);
+            userVisitCampaignTransferCache = new UserVisitCampaignTransferCache();
         }
 
         return userVisitCampaignTransferCache;

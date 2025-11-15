@@ -20,13 +20,16 @@ import com.echothree.model.control.carrier.common.transfer.CarrierServiceDescrip
 import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.data.carrier.server.entity.CarrierServiceDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class CarrierServiceDescriptionTransferCache
         extends BaseCarrierDescriptionTransferCache<CarrierServiceDescription, CarrierServiceDescriptionTransfer> {
-    
+
+    CarrierControl carrierControl = Session.getModelController(CarrierControl.class);
+
     /** Creates a new instance of CarrierServiceDescriptionTransferCache */
-    public CarrierServiceDescriptionTransferCache(CarrierControl carrierControl) {
-        super(carrierControl);
+    public CarrierServiceDescriptionTransferCache() {
+        super();
     }
     
     public CarrierServiceDescriptionTransfer getCarrierServiceDescriptionTransfer(UserVisit userVisit, CarrierServiceDescription carrierServiceDescription) {

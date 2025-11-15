@@ -93,7 +93,7 @@ public class BatchControl
     
     public BatchTransferCaches getBatchTransferCaches() {
         if(batchTransferCaches == null) {
-            batchTransferCaches = new BatchTransferCaches(this);
+            batchTransferCaches = new BatchTransferCaches();
         }
         
         return batchTransferCaches;

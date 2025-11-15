@@ -16,14 +16,10 @@
 
 package com.echothree.model.control.club.server.transfer;
 
-import com.echothree.model.control.club.server.control.ClubControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 
 public class ClubTransferCaches
         extends BaseTransferCaches {
-    
-    protected ClubControl clubControl;
     
     protected ClubItemTransferCache clubItemTransferCache;
     protected ClubItemTypeTransferCache clubItemTypeTransferCache;
@@ -31,36 +27,34 @@ public class ClubTransferCaches
     protected ClubDescriptionTransferCache clubDescriptionTransferCache;
     
     /** Creates a new instance of ClubTransferCaches */
-    public ClubTransferCaches(ClubControl clubControl) {
+    public ClubTransferCaches() {
         super();
-        
-        this.clubControl = clubControl;
     }
     
     public ClubItemTransferCache getClubItemTransferCache() {
         if(clubItemTransferCache == null)
-            clubItemTransferCache = new ClubItemTransferCache(clubControl);
+            clubItemTransferCache = new ClubItemTransferCache();
         
         return clubItemTransferCache;
     }
     
     public ClubItemTypeTransferCache getClubItemTypeTransferCache() {
         if(clubItemTypeTransferCache == null)
-            clubItemTypeTransferCache = new ClubItemTypeTransferCache(clubControl);
+            clubItemTypeTransferCache = new ClubItemTypeTransferCache();
         
         return clubItemTypeTransferCache;
     }
     
     public ClubTransferCache getClubTransferCache() {
         if(clubTransferCache == null)
-            clubTransferCache = new ClubTransferCache(clubControl);
+            clubTransferCache = new ClubTransferCache();
         
         return clubTransferCache;
     }
     
     public ClubDescriptionTransferCache getClubDescriptionTransferCache() {
         if(clubDescriptionTransferCache == null)
-            clubDescriptionTransferCache = new ClubDescriptionTransferCache(clubControl);
+            clubDescriptionTransferCache = new ClubDescriptionTransferCache();
         
         return clubDescriptionTransferCache;
     }

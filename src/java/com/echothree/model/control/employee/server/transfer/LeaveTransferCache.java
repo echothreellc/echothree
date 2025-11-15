@@ -32,7 +32,8 @@ import com.echothree.util.server.string.UnitOfMeasureUtils;
 
 public class LeaveTransferCache
         extends BaseEmployeeTransferCache<Leave, LeaveTransfer> {
-    
+
+    EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
@@ -42,8 +43,8 @@ public class LeaveTransferCache
     UnitOfMeasureUtils unitOfMeasureUtils;
 
     /** Creates a new instance of LeaveTransferCache */
-    public LeaveTransferCache(EmployeeControl employeeControl) {
-        super(employeeControl);
+    public LeaveTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
         

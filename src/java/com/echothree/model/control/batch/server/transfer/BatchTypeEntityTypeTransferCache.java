@@ -25,12 +25,13 @@ import com.echothree.util.server.persistence.Session;
 
 public class BatchTypeEntityTypeTransferCache
         extends BaseBatchTransferCache<BatchTypeEntityType, BatchTypeEntityTypeTransfer> {
-    
+
+    BatchControl batchControl = Session.getModelController(BatchControl.class);
     EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
 
     /** Creates a new instance of BatchTypeEntityTypeTransferCache */
-    public BatchTypeEntityTypeTransferCache(BatchControl batchControl) {
-        super(batchControl);
+    public BatchTypeEntityTypeTransferCache() {
+        super();
     }
     
     @Override

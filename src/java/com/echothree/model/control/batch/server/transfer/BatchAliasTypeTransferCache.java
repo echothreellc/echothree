@@ -20,13 +20,16 @@ import com.echothree.model.control.batch.common.transfer.BatchAliasTypeTransfer;
 import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.data.batch.server.entity.BatchAliasType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class BatchAliasTypeTransferCache
         extends BaseBatchTransferCache<BatchAliasType, BatchAliasTypeTransfer> {
-    
+
+    BatchControl batchControl = Session.getModelController(BatchControl.class);
+
     /** Creates a new instance of BatchAliasTypeTransferCache */
-    public BatchAliasTypeTransferCache(BatchControl batchControl) {
-        super(batchControl);
+    public BatchAliasTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

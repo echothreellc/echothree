@@ -20,13 +20,16 @@ import com.echothree.model.control.wishlist.common.transfer.WishlistPriorityTran
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.wishlist.server.entity.WishlistPriority;
+import com.echothree.util.server.persistence.Session;
 
 public class WishlistPriorityTransferCache
         extends BaseWishlistTransferCache<WishlistPriority, WishlistPriorityTransfer> {
-    
+
+    WishlistControl wishlistControl = Session.getModelController(WishlistControl.class);
+
     /** Creates a new instance of WishlistPriorityTransferCache */
-    public WishlistPriorityTransferCache(WishlistControl wishlistControl) {
-        super(wishlistControl);
+    public WishlistPriorityTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

@@ -31,6 +31,7 @@ import com.echothree.util.server.persistence.Session;
 public class CommentTransferCache
         extends BaseCommentTransferCache<Comment, CommentTransfer> {
 
+    CommentControl commentControl = Session.getModelController(CommentControl.class);
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
@@ -43,8 +44,8 @@ public class CommentTransferCache
     boolean includeWorkflowStep;
     
     /** Creates a new instance of CommentTransferCache */
-    public CommentTransferCache(CommentControl commentControl) {
-        super(commentControl);
+    public CommentTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {

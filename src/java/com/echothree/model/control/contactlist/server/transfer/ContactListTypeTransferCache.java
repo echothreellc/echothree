@@ -27,10 +27,11 @@ public class ContactListTypeTransferCache
         extends BaseContactListTransferCache<ContactListType, ContactListTypeTransfer> {
     
     ChainControl chainControl = Session.getModelController(ChainControl.class);
+    ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
 
     /** Creates a new instance of ContactListTypeTransferCache */
-    public ContactListTypeTransferCache(ContactListControl contactListControl) {
-        super(contactListControl);
+    public ContactListTypeTransferCache() {
+        super();
 
         setIncludeEntityInstance(true);
     }

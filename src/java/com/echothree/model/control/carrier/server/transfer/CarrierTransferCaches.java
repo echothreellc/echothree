@@ -16,14 +16,10 @@
 
 package com.echothree.model.control.carrier.server.transfer;
 
-import com.echothree.model.control.carrier.server.control.CarrierControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 
 public class CarrierTransferCaches
         extends BaseTransferCaches {
-    
-    protected CarrierControl carrierControl;
     
     CarrierTransferCache carrierTransferCache;
     CarrierTypeTransferCache carrierTypeTransferCache;
@@ -37,78 +33,76 @@ public class CarrierTransferCaches
     CarrierServiceOptionTransferCache carrierServiceOptionTransferCache;
     
     /** Creates a new instance of CarrierTransferCaches */
-    public CarrierTransferCaches(CarrierControl carrierControl) {
+    public CarrierTransferCaches() {
         super();
-        
-        this.carrierControl = carrierControl;
     }
     
     public CarrierTransferCache getCarrierTransferCache() {
         if(carrierTransferCache == null)
-            carrierTransferCache = new CarrierTransferCache(carrierControl);
+            carrierTransferCache = new CarrierTransferCache();
         
         return carrierTransferCache;
     }
     
     public CarrierTypeTransferCache getCarrierTypeTransferCache() {
         if(carrierTypeTransferCache == null)
-            carrierTypeTransferCache = new CarrierTypeTransferCache(carrierControl);
+            carrierTypeTransferCache = new CarrierTypeTransferCache();
         
         return carrierTypeTransferCache;
     }
     
     public CarrierTypeDescriptionTransferCache getCarrierTypeDescriptionTransferCache() {
         if(carrierTypeDescriptionTransferCache == null)
-            carrierTypeDescriptionTransferCache = new CarrierTypeDescriptionTransferCache(carrierControl);
+            carrierTypeDescriptionTransferCache = new CarrierTypeDescriptionTransferCache();
 
         return carrierTypeDescriptionTransferCache;
     }
 
     public CarrierServiceDescriptionTransferCache getCarrierServiceDescriptionTransferCache() {
         if(carrierServiceDescriptionTransferCache == null)
-            carrierServiceDescriptionTransferCache = new CarrierServiceDescriptionTransferCache(carrierControl);
+            carrierServiceDescriptionTransferCache = new CarrierServiceDescriptionTransferCache();
 
         return carrierServiceDescriptionTransferCache;
     }
 
     public CarrierServiceTransferCache getCarrierServiceTransferCache() {
         if(carrierServiceTransferCache == null)
-            carrierServiceTransferCache = new CarrierServiceTransferCache(carrierControl);
+            carrierServiceTransferCache = new CarrierServiceTransferCache();
         
         return carrierServiceTransferCache;
     }
     
     public CarrierOptionDescriptionTransferCache getCarrierOptionDescriptionTransferCache() {
         if(carrierOptionDescriptionTransferCache == null)
-            carrierOptionDescriptionTransferCache = new CarrierOptionDescriptionTransferCache(carrierControl);
+            carrierOptionDescriptionTransferCache = new CarrierOptionDescriptionTransferCache();
         
         return carrierOptionDescriptionTransferCache;
     }
     
     public CarrierOptionTransferCache getCarrierOptionTransferCache() {
         if(carrierOptionTransferCache == null)
-            carrierOptionTransferCache = new CarrierOptionTransferCache(carrierControl);
+            carrierOptionTransferCache = new CarrierOptionTransferCache();
         
         return carrierOptionTransferCache;
     }
     
     public PartyCarrierTransferCache getPartyCarrierTransferCache() {
         if(partyCarrierTransferCache == null)
-            partyCarrierTransferCache = new PartyCarrierTransferCache(carrierControl);
+            partyCarrierTransferCache = new PartyCarrierTransferCache();
 
         return partyCarrierTransferCache;
     }
 
     public PartyCarrierAccountTransferCache getPartyCarrierAccountTransferCache() {
         if(partyCarrierAccountTransferCache == null)
-            partyCarrierAccountTransferCache = new PartyCarrierAccountTransferCache(carrierControl);
+            partyCarrierAccountTransferCache = new PartyCarrierAccountTransferCache();
 
         return partyCarrierAccountTransferCache;
     }
 
     public CarrierServiceOptionTransferCache getCarrierServiceOptionTransferCache() {
         if(carrierServiceOptionTransferCache == null)
-            carrierServiceOptionTransferCache = new CarrierServiceOptionTransferCache(carrierControl);
+            carrierServiceOptionTransferCache = new CarrierServiceOptionTransferCache();
         
         return carrierServiceOptionTransferCache;
     }

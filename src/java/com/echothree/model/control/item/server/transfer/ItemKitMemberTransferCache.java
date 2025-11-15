@@ -29,11 +29,12 @@ public class ItemKitMemberTransferCache
         extends BaseItemTransferCache<ItemKitMember, ItemKitMemberTransfer> {
     
     InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of ItemKitMemberTransferCache */
-    public ItemKitMemberTransferCache(ItemControl itemControl) {
-        super(itemControl);
+    public ItemKitMemberTransferCache() {
+        super();
     }
     
     @Override

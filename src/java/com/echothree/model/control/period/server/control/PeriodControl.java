@@ -86,7 +86,7 @@ public class PeriodControl
     
     public PeriodTransferCaches getPeriodTransferCaches() {
         if(periodTransferCaches == null) {
-            periodTransferCaches = new PeriodTransferCaches(this);
+            periodTransferCaches = new PeriodTransferCaches();
         }
         
         return periodTransferCaches;

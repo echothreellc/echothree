@@ -29,10 +29,11 @@ public class LetterTransferCache
     
     ChainControl chainControl = Session.getModelController(ChainControl.class);
     ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
-    
+    LetterControl letterControl = Session.getModelController(LetterControl.class);
+
     /** Creates a new instance of LetterTransferCache */
-    public LetterTransferCache(LetterControl letterControl) {
-        super(letterControl);
+    public LetterTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

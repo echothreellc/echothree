@@ -28,11 +28,12 @@ public class LetterSourceTransferCache
         extends BaseLetterTransferCache<LetterSource, LetterSourceTransfer> {
     
     ContactControl contactControl = Session.getModelController(ContactControl.class);
+    LetterControl letterControl = Session.getModelController(LetterControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of LetterSourceTransferCache */
-    public LetterSourceTransferCache(LetterControl letterControl) {
-        super(letterControl);
+    public LetterSourceTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

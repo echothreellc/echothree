@@ -28,14 +28,14 @@ import com.echothree.util.server.persistence.Session;
 public class WorkflowEntityStatusTransferCache
         extends BaseWorkflowTransferCache<WorkflowEntityStatus, WorkflowEntityStatusTransfer> {
 
-    WorkEffortControl workEffortControl;
+    WorkEffortControl workEffortControl = Session.getModelController(WorkEffortControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+
     boolean includeTriggerTime;
 
     /** Creates a new instance of WorkflowEntityStatusTransferCache */
-    public WorkflowEntityStatusTransferCache(WorkflowControl workflowControl) {
-        super(workflowControl);
-
-        workEffortControl = Session.getModelController(WorkEffortControl.class);
+    public WorkflowEntityStatusTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {

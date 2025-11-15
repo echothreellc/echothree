@@ -20,13 +20,16 @@ import com.echothree.model.control.license.common.transfer.LicenseTypeDescriptio
 import com.echothree.model.control.license.server.control.LicenseControl;
 import com.echothree.model.data.license.server.entity.LicenseTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class LicenseTypeDescriptionTransferCache
         extends BaseLicenseDescriptionTransferCache<LicenseTypeDescription, LicenseTypeDescriptionTransfer> {
-    
+
+    LicenseControl licenseControl = Session.getModelController(LicenseControl.class);
+
     /** Creates a new instance of LicenseTypeDescriptionTransferCache */
-    public LicenseTypeDescriptionTransferCache(LicenseControl licenseControl) {
-        super(licenseControl);
+    public LicenseTypeDescriptionTransferCache() {
+        super();
     }
     
     public LicenseTypeDescriptionTransfer getLicenseTypeDescriptionTransfer(UserVisit userVisit, LicenseTypeDescription licenseTypeDescription) {

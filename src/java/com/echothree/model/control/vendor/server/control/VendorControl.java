@@ -118,7 +118,7 @@ public class VendorControl
     
     public VendorTransferCaches getVendorTransferCaches() {
         if(vendorTransferCaches == null) {
-            vendorTransferCaches = new VendorTransferCaches(this);
+            vendorTransferCaches = new VendorTransferCaches();
         }
         
         return vendorTransferCaches;

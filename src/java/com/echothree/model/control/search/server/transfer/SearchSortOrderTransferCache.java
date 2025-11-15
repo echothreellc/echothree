@@ -20,13 +20,16 @@ import com.echothree.model.control.search.common.transfer.SearchSortOrderTransfe
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.search.server.entity.SearchSortOrder;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class SearchSortOrderTransferCache
         extends BaseSearchTransferCache<SearchSortOrder, SearchSortOrderTransfer> {
-    
+
+    SearchControl searchControl = Session.getModelController(SearchControl.class);
+
     /** Creates a new instance of SearchSortOrderTransferCache */
-    public SearchSortOrderTransferCache(SearchControl searchControl) {
-        super(searchControl);
+    public SearchSortOrderTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

@@ -23,15 +23,18 @@ import com.echothree.model.control.contact.common.transfer.ContactMechanismTrans
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class ContactMechanismTransferCache
         extends BaseContactTransferCache<ContactMechanism, ContactMechanismTransfer> {
-    
+
+    ContactControl contactControl = Session.getModelController(ContactControl.class);
+
     boolean includeComments;
 
     /** Creates a new instance of ContactMechanismTransferCache */
-    public ContactMechanismTransferCache(ContactControl contactControl) {
-        super(contactControl);
+    public ContactMechanismTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {

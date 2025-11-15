@@ -20,13 +20,16 @@ import com.echothree.model.control.contact.common.transfer.ContactMechanismPurpo
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class ContactMechanismPurposeTransferCache
         extends BaseContactTransferCache<ContactMechanismPurpose, ContactMechanismPurposeTransfer> {
-    
+
+    ContactControl contactControl = Session.getModelController(ContactControl.class);
+
     /** Creates a new instance of ContactMechanismPurposeTransferCache */
-    public ContactMechanismPurposeTransferCache(ContactControl contactControl) {
-        super(contactControl);
+    public ContactMechanismPurposeTransferCache() {
+        super();
     }
     
     public ContactMechanismPurposeTransfer getContactMechanismPurposeTransfer(UserVisit userVisit, ContactMechanismPurpose contactMechanismPurpose) {

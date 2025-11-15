@@ -77,7 +77,7 @@ public class WorkEffortControl
     
     public WorkEffortTransferCaches getWorkEffortTransferCaches() {
         if(workEffortTransferCaches == null) {
-            workEffortTransferCaches = new WorkEffortTransferCaches(this);
+            workEffortTransferCaches = new WorkEffortTransferCaches();
         }
         
         return workEffortTransferCaches;

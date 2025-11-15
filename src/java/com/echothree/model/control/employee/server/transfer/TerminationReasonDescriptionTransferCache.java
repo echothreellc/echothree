@@ -20,13 +20,16 @@ import com.echothree.model.control.employee.common.transfer.TerminationReasonDes
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.data.employee.server.entity.TerminationReasonDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class TerminationReasonDescriptionTransferCache
         extends BaseEmployeeDescriptionTransferCache<TerminationReasonDescription, TerminationReasonDescriptionTransfer> {
-    
+
+    EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
+
     /** Creates a new instance of TerminationReasonDescriptionTransferCache */
-    public TerminationReasonDescriptionTransferCache(EmployeeControl employeeControl) {
-        super(employeeControl);
+    public TerminationReasonDescriptionTransferCache() {
+        super();
     }
     
     public TerminationReasonDescriptionTransfer getTerminationReasonDescriptionTransfer(UserVisit userVisit, TerminationReasonDescription terminationReasonDescription) {

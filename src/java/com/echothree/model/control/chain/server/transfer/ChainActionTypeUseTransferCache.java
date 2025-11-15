@@ -21,13 +21,16 @@ import com.echothree.model.control.chain.common.transfer.ChainActionTypeUseTrans
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.data.chain.server.entity.ChainActionTypeUse;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class ChainActionTypeUseTransferCache
         extends BaseChainTransferCache<ChainActionTypeUse, ChainActionTypeUseTransfer> {
-    
+
+    ChainControl chainControl = Session.getModelController(ChainControl.class);
+
     /** Creates a new instance of ChainActionTypeUseTransferCache */
-    public ChainActionTypeUseTransferCache(ChainControl chainControl) {
-        super(chainControl);
+    public ChainActionTypeUseTransferCache() {
+        super();
     }
     
     public ChainActionTypeUseTransfer getChainActionTypeUseTransfer(UserVisit userVisit, ChainActionTypeUse chainActionTypeUse) {

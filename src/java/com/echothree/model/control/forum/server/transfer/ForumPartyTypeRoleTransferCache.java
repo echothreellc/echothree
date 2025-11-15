@@ -25,14 +25,13 @@ import com.echothree.util.server.persistence.Session;
 
 public class ForumPartyTypeRoleTransferCache
         extends BaseForumTransferCache<ForumPartyTypeRole, ForumPartyTypeRoleTransfer> {
-    
-    PartyControl partyControl;
+
+    ForumControl forumControl = Session.getModelController(ForumControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of ForumPartyTypeRoleTransferCache */
-    public ForumPartyTypeRoleTransferCache(ForumControl forumControl) {
-        super(forumControl);
-        
-        partyControl = Session.getModelController(PartyControl.class);
+    public ForumPartyTypeRoleTransferCache() {
+        super();
     }
     
     public ForumPartyTypeRoleTransfer getForumPartyTypeRoleTransfer(UserVisit userVisit, ForumPartyTypeRole forumPartyTypeRole) {

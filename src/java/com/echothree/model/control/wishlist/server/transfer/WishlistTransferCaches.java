@@ -16,14 +16,10 @@
 
 package com.echothree.model.control.wishlist.server.transfer;
 
-import com.echothree.model.control.wishlist.server.control.WishlistControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 
 public class WishlistTransferCaches
         extends BaseTransferCaches {
-    
-    protected WishlistControl wishlistControl;
     
     protected WishlistTypeTransferCache wishlistTypeTransferCache;
     protected WishlistTypeDescriptionTransferCache wishlistTypeDescriptionTransferCache;
@@ -33,50 +29,48 @@ public class WishlistTransferCaches
     protected WishlistLineTransferCache wishlistLineTransferCache;
     
     /** Creates a new instance of WishlistTransferCaches */
-    public WishlistTransferCaches(WishlistControl wishlistControl) {
+    public WishlistTransferCaches() {
         super();
-        
-        this.wishlistControl = wishlistControl;
     }
     
     public WishlistTypeTransferCache getWishlistTypeTransferCache() {
         if(wishlistTypeTransferCache == null)
-            wishlistTypeTransferCache = new WishlistTypeTransferCache(wishlistControl);
+            wishlistTypeTransferCache = new WishlistTypeTransferCache();
         
         return wishlistTypeTransferCache;
     }
     
     public WishlistTypeDescriptionTransferCache getWishlistTypeDescriptionTransferCache() {
         if(wishlistTypeDescriptionTransferCache == null)
-            wishlistTypeDescriptionTransferCache = new WishlistTypeDescriptionTransferCache(wishlistControl);
+            wishlistTypeDescriptionTransferCache = new WishlistTypeDescriptionTransferCache();
         
         return wishlistTypeDescriptionTransferCache;
     }
     
     public WishlistPriorityTransferCache getWishlistPriorityTransferCache() {
         if(wishlistPriorityTransferCache == null)
-            wishlistPriorityTransferCache = new WishlistPriorityTransferCache(wishlistControl);
+            wishlistPriorityTransferCache = new WishlistPriorityTransferCache();
         
         return wishlistPriorityTransferCache;
     }
     
     public WishlistPriorityDescriptionTransferCache getWishlistPriorityDescriptionTransferCache() {
         if(wishlistPriorityDescriptionTransferCache == null)
-            wishlistPriorityDescriptionTransferCache = new WishlistPriorityDescriptionTransferCache(wishlistControl);
+            wishlistPriorityDescriptionTransferCache = new WishlistPriorityDescriptionTransferCache();
         
         return wishlistPriorityDescriptionTransferCache;
     }
     
     public WishlistTransferCache getWishlistTransferCache() {
         if(wishlistTransferCache == null)
-            wishlistTransferCache = new WishlistTransferCache(wishlistControl);
+            wishlistTransferCache = new WishlistTransferCache();
         
         return wishlistTransferCache;
     }
     
     public WishlistLineTransferCache getWishlistLineTransferCache() {
         if(wishlistLineTransferCache == null)
-            wishlistLineTransferCache = new WishlistLineTransferCache(wishlistControl);
+            wishlistLineTransferCache = new WishlistLineTransferCache();
         
         return wishlistLineTransferCache;
     }

@@ -18,7 +18,6 @@ package com.echothree.model.control.contact.server.transfer;
 
 import com.echothree.model.control.contact.common.transfer.ContactTelephoneTransfer;
 import com.echothree.model.control.contact.common.workflow.TelephoneStatusConstants;
-import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
@@ -33,8 +32,8 @@ public class ContactTelephoneTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
     /** Creates a new instance of ContactTelephoneTransferCache */
-    public ContactTelephoneTransferCache(ContactControl contactControl) {
-        super(contactControl);
+    public ContactTelephoneTransferCache() {
+        super();
     }
     
     public ContactTelephoneTransfer getContactTelephoneTransfer(UserVisit userVisit, ContactTelephone contactTelephone) {

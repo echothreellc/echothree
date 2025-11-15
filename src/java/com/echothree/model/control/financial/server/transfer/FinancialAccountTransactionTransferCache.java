@@ -20,14 +20,17 @@ import com.echothree.model.control.financial.common.transfer.FinancialAccountTra
 import com.echothree.model.control.financial.server.control.FinancialControl;
 import com.echothree.model.data.financial.server.entity.FinancialAccountTransaction;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
 
 public class FinancialAccountTransactionTransferCache
         extends BaseFinancialTransferCache<FinancialAccountTransaction, FinancialAccountTransactionTransfer> {
-    
+
+    FinancialControl financialControl = Session.getModelController(FinancialControl.class);
+
     /** Creates a new instance of FinancialAccountTransactionTransferCache */
-    public FinancialAccountTransactionTransferCache(FinancialControl financialControl) {
-        super(financialControl);
+    public FinancialAccountTransactionTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

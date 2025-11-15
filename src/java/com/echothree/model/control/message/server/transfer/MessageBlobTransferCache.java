@@ -27,12 +27,13 @@ import com.echothree.util.server.persistence.Session;
 public class MessageBlobTransferCache
         extends BaseMessageTransferCache<MessageBlob, MessageBlobTransfer> {
 
+    MessageControl messageControl = Session.getModelController(MessageControl.class);
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of MessageBlobTransferCache */
-    public MessageBlobTransferCache(MessageControl messageControl) {
-        super(messageControl);
+    public MessageBlobTransferCache() {
+        super();
     }
     
     public MessageBlobTransfer getMessageBlobTransfer(UserVisit userVisit, MessageBlob messageBlob) {

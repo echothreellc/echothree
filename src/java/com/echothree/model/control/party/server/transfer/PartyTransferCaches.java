@@ -16,13 +16,10 @@
 
 package com.echothree.model.control.party.server.transfer;
 
-import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 
 public class PartyTransferCaches
         extends BaseTransferCaches {
-    
-    protected PartyControl partyControl;
     
     protected CompanyTransferCache companyTransferCache;
     protected DivisionTransferCache divisionTransferCache;

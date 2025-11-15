@@ -21,13 +21,16 @@ import com.echothree.model.control.warehouse.common.transfer.WarehouseTypeTransf
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.WarehouseType;
+import com.echothree.util.server.persistence.Session;
 
 public class WarehouseTypeTransferCache
         extends BaseWarehouseTransferCache<WarehouseType, WarehouseTypeTransfer> {
 
+    WarehouseControl warehouseControl = Session.getModelController(WarehouseControl.class);
+
     /** Creates a new instance of WarehouseTypeTransferCache */
-    public WarehouseTypeTransferCache(WarehouseControl warehouseControl) {
-        super(warehouseControl);
+    public WarehouseTypeTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {

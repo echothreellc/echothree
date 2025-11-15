@@ -27,12 +27,13 @@ import com.echothree.util.server.persistence.Session;
 public class AssociateTransferCache
         extends BaseAssociateTransferCache<Associate, AssociateTransfer> {
 
+    AssociateControl associateControl = Session.getModelController(AssociateControl.class);
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of AssociateTransferCache */
-    public AssociateTransferCache(AssociateControl associateControl) {
-        super(associateControl);
+    public AssociateTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

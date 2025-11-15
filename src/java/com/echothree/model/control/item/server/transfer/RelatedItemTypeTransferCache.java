@@ -20,13 +20,16 @@ import com.echothree.model.control.item.common.transfer.RelatedItemTypeTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.RelatedItemType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class RelatedItemTypeTransferCache
         extends BaseItemTransferCache<RelatedItemType, RelatedItemTypeTransfer> {
-    
+
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+
     /** Creates a new instance of RelatedItemTypeTransferCache */
-    public RelatedItemTypeTransferCache(ItemControl itemControl) {
-        super(itemControl);
+    public RelatedItemTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

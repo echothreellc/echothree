@@ -31,16 +31,18 @@ import java.util.Set;
 
 public class PartyContactMechanismTransferCache
         extends BaseContactTransferCache<PartyContactMechanism, PartyContactMechanismTransfer> {
-    
+
+    ContactControl contactControl = Session.getModelController(ContactControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
+
     boolean includePartyContactMechanismPurposes;
     boolean includePartyContactMechanismRelationships;
     boolean includePartyContactMechanismRelationshipsByFromPartyContactMechanism;
     boolean includePartyContactMechanismRelationshipsByToPartyContactMechanism;
     
     /** Creates a new instance of PartyContactMechanismTransferCache */
-    public PartyContactMechanismTransferCache(ContactControl contactControl) {
-        super(contactControl);
+    public PartyContactMechanismTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {

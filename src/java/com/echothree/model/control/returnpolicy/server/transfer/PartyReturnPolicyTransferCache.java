@@ -30,10 +30,11 @@ public class PartyReturnPolicyTransferCache
 
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
+    ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
 
     /** Creates a new instance of PartyReturnPolicyTransferCache */
-    public PartyReturnPolicyTransferCache(ReturnPolicyControl returnPolicyControl) {
-        super(returnPolicyControl);
+    public PartyReturnPolicyTransferCache() {
+        super();
     }
 
     public PartyReturnPolicyTransfer getPartyReturnPolicyTransfer(UserVisit userVisit, PartyReturnPolicy partyReturnPolicy) {

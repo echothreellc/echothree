@@ -17,7 +17,6 @@
 package com.echothree.model.control.inventory.server.transfer;
 
 import com.echothree.model.control.inventory.common.transfer.LotAliasTransfer;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.inventory.server.control.LotAliasControl;
 import com.echothree.model.control.inventory.server.control.LotControl;
 import com.echothree.model.data.inventory.server.entity.LotAlias;
@@ -31,8 +30,8 @@ public class LotAliasTransferCache
     LotAliasControl lotAliasControl = Session.getModelController(LotAliasControl.class);
 
     /** Creates a new instance of LotAliasTransferCache */
-    public LotAliasTransferCache(InventoryControl inventoryControl) {
-        super(inventoryControl);
+    public LotAliasTransferCache() {
+        super();
     }
     
     @Override
@@ -40,11 +39,11 @@ public class LotAliasTransferCache
         var lotAliasTransfer = get(lotAlias);
         
         if(lotAliasTransfer == null) {
-            //LotTransfer lot = lotControl.getLotTransfer(userVisit, lotAlias.getLot());
+            var lot = lotControl.getLotTransfer(userVisit, lotAlias.getLot());
             var lotAliasType = lotAliasControl.getLotAliasTypeTransfer(userVisit, lotAlias.getLotAliasType());
             var alias = lotAlias.getAlias();
             
-            lotAliasTransfer = new LotAliasTransfer(/*lot,*/ lotAliasType, alias);
+            lotAliasTransfer = new LotAliasTransfer(lot, lotAliasType, alias);
             put(userVisit, lotAlias, lotAliasTransfer);
         }
         

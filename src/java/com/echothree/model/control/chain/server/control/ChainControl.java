@@ -154,7 +154,7 @@ public class ChainControl
     
     public ChainTransferCaches getChainTransferCaches() {
         if(chainTransferCaches == null) {
-            chainTransferCaches = new ChainTransferCaches(this);
+            chainTransferCaches = new ChainTransferCaches();
         }
         
         return chainTransferCaches;

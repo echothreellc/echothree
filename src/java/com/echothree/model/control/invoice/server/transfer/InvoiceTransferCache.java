@@ -41,14 +41,15 @@ public class InvoiceTransferCache
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
     BillingControl billingControl = Session.getModelController(BillingControl.class);
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+    InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
     TermControl termControl = Session.getModelController(TermControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     boolean includeLines;
     boolean includeRoles;
 
     /** Creates a new instance of InvoiceTransferCache */
-    public InvoiceTransferCache(InvoiceControl invoiceControl) {
-        super(invoiceControl);
+    public InvoiceTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {

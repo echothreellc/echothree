@@ -27,15 +27,13 @@ import com.echothree.util.server.persistence.Session;
 public class InvoiceRoleTransferCache
         extends BaseInvoiceTransferCache<InvoiceRole, InvoiceRoleTransfer> {
 
-    ContactControl contactControl;
-    PartyControl partyControl;
+    ContactControl contactControl = Session.getModelController(ContactControl.class);
+    InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of InvoiceRoleTransferCache */
-    public InvoiceRoleTransferCache(InvoiceControl invoiceControl) {
-        super(invoiceControl);
-
-        contactControl = Session.getModelController(ContactControl.class);
-        partyControl = Session.getModelController(PartyControl.class);
+    public InvoiceRoleTransferCache() {
+        super();
     }
 
     public InvoiceRoleTransfer getInvoiceRoleTransfer(UserVisit userVisit, InvoiceRole invoiceRole) {

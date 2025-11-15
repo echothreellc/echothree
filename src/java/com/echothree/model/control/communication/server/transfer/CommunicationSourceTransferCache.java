@@ -23,15 +23,18 @@ import com.echothree.model.control.communication.common.transfer.CommunicationSo
 import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.data.communication.server.entity.CommunicationSource;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class CommunicationSourceTransferCache
         extends BaseCommunicationTransferCache<CommunicationSource, CommunicationSourceTransfer> {
-    
+
+    CommunicationControl communicationControl = Session.getModelController(CommunicationControl.class);
+
     boolean includeRelated;
     
     /** Creates a new instance of CommunicationSourceTransferCache */
-    public CommunicationSourceTransferCache(CommunicationControl communicationControl) {
-        super(communicationControl);
+    public CommunicationSourceTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {

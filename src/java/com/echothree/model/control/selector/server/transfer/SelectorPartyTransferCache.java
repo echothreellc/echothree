@@ -26,13 +26,12 @@ import com.echothree.util.server.persistence.Session;
 public class SelectorPartyTransferCache
         extends BaseSelectorTransferCache<SelectorParty, SelectorPartyTransfer> {
     
-    PartyControl partyControl;
-    
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
+
     /** Creates a new instance of SelectorPartyTransferCache */
-    public SelectorPartyTransferCache(SelectorControl selectorControl) {
-        super(selectorControl);
-        
-        partyControl = Session.getModelController(PartyControl.class);
+    public SelectorPartyTransferCache() {
+        super();
     }
     
     public SelectorPartyTransfer getSelectorPartyTransfer(UserVisit userVisit, SelectorParty selectorParty) {

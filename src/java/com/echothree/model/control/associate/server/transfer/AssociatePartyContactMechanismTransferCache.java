@@ -25,12 +25,13 @@ import com.echothree.util.server.persistence.Session;
 
 public class AssociatePartyContactMechanismTransferCache
         extends BaseAssociateTransferCache<AssociatePartyContactMechanism, AssociatePartyContactMechanismTransfer> {
-    
+
+    AssociateControl associateControl = Session.getModelController(AssociateControl.class);
     ContactControl contactControl = Session.getModelController(ContactControl.class);
     
     /** Creates a new instance of AssociatePartyContactMechanismTransferCache */
-    public AssociatePartyContactMechanismTransferCache(AssociateControl associateControl) {
-        super(associateControl);
+    public AssociatePartyContactMechanismTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

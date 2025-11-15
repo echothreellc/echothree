@@ -17,7 +17,6 @@
 package com.echothree.model.control.inventory.server.transfer;
 
 import com.echothree.model.control.inventory.common.transfer.InventoryTransactionTypeTransfer;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.inventory.server.control.InventoryTransactionTypeControl;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
@@ -33,8 +32,8 @@ public class InventoryTransactionTypeTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of InventoryTransactionTypeTransferCache */
-    public InventoryTransactionTypeTransferCache(InventoryControl inventoryControl) {
-        super(inventoryControl);
+    public InventoryTransactionTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

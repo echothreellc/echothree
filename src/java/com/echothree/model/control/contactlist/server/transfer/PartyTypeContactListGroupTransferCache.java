@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.contactlist.server.transfer;
 
-import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.contactlist.common.transfer.PartyTypeContactListGroupTransfer;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.party.server.control.PartyControl;
@@ -27,12 +26,12 @@ import com.echothree.util.server.persistence.Session;
 public class PartyTypeContactListGroupTransferCache
         extends BaseContactListTransferCache<PartyTypeContactListGroup, PartyTypeContactListGroupTransfer> {
     
-    ChainControl chainControl = Session.getModelController(ChainControl.class);
+    ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of PartyTypeContactListGroupTransferCache */
-    public PartyTypeContactListGroupTransferCache(ContactListControl contactListControl) {
-        super(contactListControl);
+    public PartyTypeContactListGroupTransferCache() {
+        super();
     }
     
     public PartyTypeContactListGroupTransfer getPartyTypeContactListGroupTransfer(UserVisit userVisit, PartyTypeContactListGroup partyTypeContactListGroup) {

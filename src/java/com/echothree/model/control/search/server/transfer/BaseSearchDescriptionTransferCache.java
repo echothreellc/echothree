@@ -29,8 +29,8 @@ public abstract class BaseSearchDescriptionTransferCache<K extends BaseEntity, V
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of BaseSearchDescriptionTransferCache */
-    protected BaseSearchDescriptionTransferCache(SearchControl searchControl) {
-        super(searchControl);
+    protected BaseSearchDescriptionTransferCache() {
+        super();
     }
     
 }

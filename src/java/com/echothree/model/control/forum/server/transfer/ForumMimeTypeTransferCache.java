@@ -26,11 +26,12 @@ import com.echothree.util.server.persistence.Session;
 public class ForumMimeTypeTransferCache
         extends BaseForumTransferCache<ForumMimeType, ForumMimeTypeTransfer> {
 
+    ForumControl forumControl = Session.getModelController(ForumControl.class);
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     
     /** Creates a new instance of ForumMimeTypeTransferCache */
-    public ForumMimeTypeTransferCache(ForumControl forumControl) {
-        super(forumControl);
+    public ForumMimeTypeTransferCache() {
+        super();
     }
     
     public ForumMimeTypeTransfer getForumMimeTypeTransfer(UserVisit userVisit, ForumMimeType forumMimeType) {

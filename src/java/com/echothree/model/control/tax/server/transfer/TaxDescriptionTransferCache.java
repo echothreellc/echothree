@@ -20,13 +20,16 @@ import com.echothree.model.control.tax.common.transfer.TaxDescriptionTransfer;
 import com.echothree.model.control.tax.server.control.TaxControl;
 import com.echothree.model.data.tax.server.entity.TaxDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class TaxDescriptionTransferCache
         extends BaseTaxDescriptionTransferCache<TaxDescription, TaxDescriptionTransfer> {
-    
+
+    TaxControl taxControl = Session.getModelController(TaxControl.class);
+
     /** Creates a new instance of TaxDescriptionTransferCache */
-    public TaxDescriptionTransferCache(TaxControl taxControl) {
-        super(taxControl);
+    public TaxDescriptionTransferCache() {
+        super();
     }
     
     @Override

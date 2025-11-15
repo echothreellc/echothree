@@ -20,13 +20,16 @@ import com.echothree.model.control.cancellationpolicy.common.transfer.Cancellati
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationReason;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class CancellationReasonTransferCache
         extends BaseCancellationPolicyTransferCache<CancellationReason, CancellationReasonTransfer> {
-    
+
+    CancellationPolicyControl cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
+
     /** Creates a new instance of CancellationReasonTransferCache */
-    public CancellationReasonTransferCache(CancellationPolicyControl cancellationPolicyControl) {
-        super(cancellationPolicyControl);
+    public CancellationReasonTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

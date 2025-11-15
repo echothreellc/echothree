@@ -22,9 +22,12 @@ import com.echothree.model.control.queue.server.control.QueueControl;
 import com.echothree.model.data.queue.server.entity.QueueType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
+import com.echothree.util.server.persistence.Session;
 
 public class QueueTypeTransferCache
         extends BaseQueueTransferCache<QueueType, QueueTypeTransfer> {
+
+    QueueControl queueControl = Session.getModelController(QueueControl.class);
 
     boolean includeQueuedEntityCount;
     boolean includeOldestQueuedEntityTime;
@@ -32,8 +35,8 @@ public class QueueTypeTransferCache
     boolean includeQueuedEntities;
     
     /** Creates a new instance of QueueTypeTransferCache */
-    public QueueTypeTransferCache(QueueControl queueControl) {
-        super(queueControl);
+    public QueueTypeTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {

@@ -20,13 +20,16 @@ import com.echothree.model.control.warehouse.common.transfer.LocationNameElement
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.LocationNameElement;
+import com.echothree.util.server.persistence.Session;
 
 public class LocationNameElementTransferCache
         extends BaseWarehouseTransferCache<LocationNameElement, LocationNameElementTransfer> {
-    
+
+    WarehouseControl warehouseControl = Session.getModelController(WarehouseControl.class);
+
     /** Creates a new instance of LocationNameElementTransferCache */
-    public LocationNameElementTransferCache(WarehouseControl warehouseControl) {
-        super(warehouseControl);
+    public LocationNameElementTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

@@ -53,6 +53,7 @@ public class ItemTransferCache
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
     CancellationPolicyControl cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
@@ -121,8 +122,8 @@ public class ItemTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of ItemTransferCache */
-    public ItemTransferCache(ItemControl itemControl) {
-        super(itemControl);
+    public ItemTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {

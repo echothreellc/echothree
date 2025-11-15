@@ -20,13 +20,16 @@ import com.echothree.model.control.uom.common.transfer.UnitOfMeasureEquivalentTr
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureEquivalent;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class UnitOfMeasureEquivalentTransferCache
         extends BaseUomTransferCache<UnitOfMeasureEquivalent, UnitOfMeasureEquivalentTransfer> {
-    
+
+    UomControl uomControl = Session.getModelController(UomControl.class);
+
     /** Creates a new instance of UnitOfMeasureEquivalentTransferCache */
-    public UnitOfMeasureEquivalentTransferCache(UomControl uomControl) {
-        super(uomControl);
+    public UnitOfMeasureEquivalentTransferCache() {
+        super();
     }
     
     public UnitOfMeasureEquivalentTransfer getUnitOfMeasureEquivalentTransfer(UserVisit userVisit, UnitOfMeasureEquivalent unitOfMeasureEquivalent) {

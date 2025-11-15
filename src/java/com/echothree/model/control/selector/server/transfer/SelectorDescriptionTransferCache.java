@@ -20,13 +20,16 @@ import com.echothree.model.control.selector.common.transfer.SelectorDescriptionT
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.selector.server.entity.SelectorDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class SelectorDescriptionTransferCache
         extends BaseSelectorDescriptionTransferCache<SelectorDescription, SelectorDescriptionTransfer> {
-    
+
+    SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
+
     /** Creates a new instance of SelectorDescriptionTransferCache */
-    public SelectorDescriptionTransferCache(SelectorControl selectorControl) {
-        super(selectorControl);
+    public SelectorDescriptionTransferCache() {
+        super();
     }
     
     public SelectorDescriptionTransfer getSelectorDescriptionTransfer(UserVisit userVisit, SelectorDescription selectorDescription) {

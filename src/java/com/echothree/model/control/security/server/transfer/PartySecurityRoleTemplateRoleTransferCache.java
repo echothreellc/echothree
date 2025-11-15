@@ -20,13 +20,16 @@ import com.echothree.model.control.security.common.transfer.PartySecurityRoleTem
 import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplateRole;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class PartySecurityRoleTemplateRoleTransferCache
         extends BaseSecurityTransferCache<PartySecurityRoleTemplateRole, PartySecurityRoleTemplateRoleTransfer> {
-    
+
+    SecurityControl securityControl = Session.getModelController(SecurityControl.class);
+
     /** Creates a new instance of PartySecurityRoleTemplateRoleTransferCache */
-    public PartySecurityRoleTemplateRoleTransferCache(SecurityControl securityControl) {
-        super(securityControl);
+    public PartySecurityRoleTemplateRoleTransferCache() {
+        super();
     }
     
     public PartySecurityRoleTemplateRoleTransfer getPartySecurityRoleTemplateRoleTransfer(UserVisit userVisit, PartySecurityRoleTemplateRole partySecurityRoleTemplateRole) {

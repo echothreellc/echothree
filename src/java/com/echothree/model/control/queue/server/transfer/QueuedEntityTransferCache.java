@@ -27,10 +27,11 @@ public class QueuedEntityTransferCache
         extends BaseQueueTransferCache<QueuedEntity, QueuedEntityTransfer> {
 
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-        
+    QueueControl queueControl = Session.getModelController(QueueControl.class);
+
     /** Creates a new instance of QueuedEntityTransferCache */
-    public QueuedEntityTransferCache(QueueControl queueControl) {
-        super(queueControl);
+    public QueuedEntityTransferCache() {
+        super();
     }
 
     public QueuedEntityTransfer getQueuedEntityTransfer(UserVisit userVisit, QueuedEntity queuedEntity) {

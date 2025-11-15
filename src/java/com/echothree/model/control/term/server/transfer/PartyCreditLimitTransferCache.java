@@ -19,7 +19,6 @@ package com.echothree.model.control.term.server.transfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.term.common.transfer.PartyCreditLimitTransfer;
-import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.data.term.server.entity.PartyCreditLimit;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -28,15 +27,12 @@ import com.echothree.util.server.string.AmountUtils;
 public class PartyCreditLimitTransferCache
         extends BaseTermTransferCache<PartyCreditLimit, PartyCreditLimitTransfer> {
     
-    AccountingControl accountingControl;
-    PartyControl partyControl;
-    
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+
     /** Creates a new instance of PartyCreditLimitTransferCache */
-    public PartyCreditLimitTransferCache(TermControl termControl) {
-        super(termControl);
-        
-        accountingControl = Session.getModelController(AccountingControl.class);
-        partyControl = Session.getModelController(PartyControl.class);
+    public PartyCreditLimitTransferCache() {
+        super();
     }
     
     public PartyCreditLimitTransfer getPartyCreditLimitTransfer(UserVisit userVisit, PartyCreditLimit partyCreditLimit) {

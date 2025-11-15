@@ -16,8 +16,6 @@
 
 package com.echothree.model.control.selector.server.transfer;
 
-import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.transfer.BaseTransferCache;
@@ -25,13 +23,9 @@ import com.echothree.util.server.transfer.BaseTransferCache;
 public abstract class BaseSelectorTransferCache<K extends BaseEntity, V extends BaseTransfer>
         extends BaseTransferCache<K, V> {
     
-    SelectorControl selectorControl;
-    
     /** Creates a new instance of BaseSelectorTransferCache */
-    protected BaseSelectorTransferCache(SelectorControl selectorControl) {
+    protected BaseSelectorTransferCache() {
         super();
-        
-        this.selectorControl = selectorControl;
     }
     
 }

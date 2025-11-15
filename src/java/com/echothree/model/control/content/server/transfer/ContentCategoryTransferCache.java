@@ -31,6 +31,7 @@ import com.echothree.util.server.transfer.ListWrapperBuilder;
 public class ContentCategoryTransferCache
         extends BaseContentTransferCache<ContentCategory, ContentCategoryTransfer> {
 
+    ContentControl contentControl = Session.getModelController(ContentControl.class);
     OfferUseControl offerUseControl = Session.getModelController(OfferUseControl.class);
     SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
     
@@ -48,8 +49,8 @@ public class ContentCategoryTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of ContentCategoryTransferCache */
-    public ContentCategoryTransferCache(ContentControl contentControl) {
-        super(contentControl);
+    public ContentCategoryTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {

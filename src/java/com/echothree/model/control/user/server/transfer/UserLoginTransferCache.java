@@ -30,11 +30,13 @@ public class UserLoginTransferCache
         extends BaseUserTransferCache<UserLogin, UserLoginTransfer> {
     
     PartyControl partyControl = Session.getModelController(PartyControl.class);
+    UserControl userControl = Session.getModelController(UserControl.class);
+
     boolean includeUserLoginPasswords;
 
     /** Creates a new instance of UserLoginTransferCache */
-    public UserLoginTransferCache(UserControl userControl) {
-        super(userControl);
+    public UserLoginTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {

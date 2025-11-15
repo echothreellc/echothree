@@ -28,11 +28,12 @@ public class MessageTypeTransferCache
         extends BaseMessageTransferCache<MessageType, MessageTypeTransfer> {
     
     EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
+    MessageControl messageControl = Session.getModelController(MessageControl.class);
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
 
     /** Creates a new instance of MessageTypeTransferCache */
-    public MessageTypeTransferCache(MessageControl messageControl) {
-        super(messageControl);
+    public MessageTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

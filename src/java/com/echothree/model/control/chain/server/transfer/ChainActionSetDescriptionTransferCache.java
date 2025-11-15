@@ -20,13 +20,16 @@ import com.echothree.model.control.chain.common.transfer.ChainActionSetDescripti
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.data.chain.server.entity.ChainActionSetDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class ChainActionSetDescriptionTransferCache
         extends BaseChainDescriptionTransferCache<ChainActionSetDescription, ChainActionSetDescriptionTransfer> {
-    
+
+    ChainControl chainControl = Session.getModelController(ChainControl.class);
+
     /** Creates a new instance of ChainActionSetDescriptionTransferCache */
-    public ChainActionSetDescriptionTransferCache(ChainControl chainControl) {
-        super(chainControl);
+    public ChainActionSetDescriptionTransferCache() {
+        super();
     }
     
     public ChainActionSetDescriptionTransfer getChainActionSetDescriptionTransfer(UserVisit userVisit, ChainActionSetDescription chainActionSetDescription) {

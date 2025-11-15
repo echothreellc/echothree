@@ -16,10 +16,8 @@
 
 package com.echothree.model.control.user.server.transfer;
 
-
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.common.transfer.UserKeyTransfer;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.server.entity.UserKey;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -27,13 +25,11 @@ import com.echothree.util.server.persistence.Session;
 public class UserKeyTransferCache
         extends BaseUserTransferCache<UserKey, UserKeyTransfer> {
     
-    PartyControl partyControl;
-    
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+
     /** Creates a new instance of UserKeyTransferCache */
-    public UserKeyTransferCache(UserControl userControl) {
-        super(userControl);
-        
-        partyControl = Session.getModelController(PartyControl.class);
+    public UserKeyTransferCache() {
+        super();
     }
     
     public UserKeyTransfer getUserKeyTransfer(UserVisit userVisit, UserKey userKey) {

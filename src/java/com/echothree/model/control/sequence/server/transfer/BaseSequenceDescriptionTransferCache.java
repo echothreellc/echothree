@@ -17,8 +17,6 @@
 package com.echothree.model.control.sequence.server.transfer;
 
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.sequence.server.control.SequenceControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.Session;
@@ -26,13 +24,11 @@ import com.echothree.util.server.persistence.Session;
 public abstract class BaseSequenceDescriptionTransferCache<K extends BaseEntity, V extends BaseTransfer>
         extends BaseSequenceTransferCache<K, V> {
     
-    PartyControl partyControl;
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of BaseSequenceDescriptionTransferCache */
-    protected BaseSequenceDescriptionTransferCache(SequenceControl sequenceControl) {
-        super(sequenceControl);
-        
-        partyControl = Session.getModelController(PartyControl.class);
+    protected BaseSequenceDescriptionTransferCache() {
+        super();
     }
     
 }

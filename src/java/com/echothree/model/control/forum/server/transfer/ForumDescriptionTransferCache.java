@@ -20,13 +20,16 @@ import com.echothree.model.control.forum.common.transfer.ForumDescriptionTransfe
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.forum.server.entity.ForumDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class ForumDescriptionTransferCache
         extends BaseForumDescriptionTransferCache<ForumDescription, ForumDescriptionTransfer> {
-    
+
+    ForumControl forumControl = Session.getModelController(ForumControl.class);
+
     /** Creates a new instance of ForumDescriptionTransferCache */
-    public ForumDescriptionTransferCache(ForumControl forumControl) {
-        super(forumControl);
+    public ForumDescriptionTransferCache() {
+        super();
     }
     
     public ForumDescriptionTransfer getForumDescriptionTransfer(UserVisit userVisit, ForumDescription forumDescription) {

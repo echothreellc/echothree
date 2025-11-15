@@ -28,13 +28,14 @@ import com.echothree.util.server.persistence.Session;
 public class CommunicationEmailSourceTransferCache
         extends BaseCommunicationTransferCache<CommunicationEmailSource, CommunicationEmailSourceTransfer> {
 
+    CommunicationControl communicationControl = Session.getModelController(CommunicationControl.class);
     ServerControl serverControl = Session.getModelController(ServerControl.class);
     SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
     WorkEffortControl workEffortControl = Session.getModelController(WorkEffortControl.class);
     
     /** Creates a new instance of CommunicationEmailSourceTransferCache */
-    public CommunicationEmailSourceTransferCache(CommunicationControl communicationControl) {
-        super(communicationControl);
+    public CommunicationEmailSourceTransferCache() {
+        super();
     }
     
     public CommunicationEmailSourceTransfer getCommunicationEmailSourceTransfer(UserVisit userVisit, CommunicationEmailSource communicationEmailSource) {

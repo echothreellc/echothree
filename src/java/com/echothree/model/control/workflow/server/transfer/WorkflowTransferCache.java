@@ -31,7 +31,8 @@ public class WorkflowTransferCache
     
     SecurityControl securityControl = Session.getModelController(SecurityControl.class);
     SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
-    
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+
     TransferProperties transferProperties;
     boolean filterWorkflowName;
     boolean filterSelectorType;
@@ -41,9 +42,7 @@ public class WorkflowTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of WorkflowTransferCache */
-    public WorkflowTransferCache(WorkflowControl workflowControl) {
-        super(workflowControl);
-        
+    public WorkflowTransferCache() {
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
             var properties = transferProperties.getProperties(WorkflowTransfer.class);

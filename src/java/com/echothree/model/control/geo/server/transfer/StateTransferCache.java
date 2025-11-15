@@ -19,18 +19,17 @@ package com.echothree.model.control.geo.server.transfer;
 import com.echothree.model.control.geo.common.GeoCodeTypes;
 import com.echothree.model.control.geo.common.GeoOptions;
 import com.echothree.model.control.geo.common.transfer.StateTransfer;
-import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class StateTransferCache
         extends BaseGeoCodeTransferCache<GeoCode, StateTransfer> {
-    
+
     boolean includeAliases;
     
     /** Creates a new instance of StateTransferCache */
-    public StateTransferCache(GeoControl geoControl) {
-        super(geoControl);
+    public StateTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {

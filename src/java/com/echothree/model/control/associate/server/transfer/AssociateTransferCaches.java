@@ -16,14 +16,10 @@
 
 package com.echothree.model.control.associate.server.transfer;
 
-import com.echothree.model.control.associate.server.control.AssociateControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 
 public class AssociateTransferCaches
         extends BaseTransferCaches {
-    
-    protected AssociateControl associateControl;
     
     protected AssociateProgramTransferCache associateProgramTransferCache;
     protected AssociateProgramDescriptionTransferCache associateProgramDescriptionTransferCache;
@@ -32,43 +28,41 @@ public class AssociateTransferCaches
     protected AssociateReferralTransferCache associateReferralTransferCache;
     
     /** Creates a new instance of AssociateTransferCaches */
-    public AssociateTransferCaches(AssociateControl associateControl) {
+    public AssociateTransferCaches() {
         super();
-        
-        this.associateControl = associateControl;
     }
     
     public AssociateProgramTransferCache getAssociateProgramTransferCache() {
         if(associateProgramTransferCache == null)
-            associateProgramTransferCache = new AssociateProgramTransferCache(associateControl);
+            associateProgramTransferCache = new AssociateProgramTransferCache();
         
         return associateProgramTransferCache;
     }
     
     public AssociateProgramDescriptionTransferCache getAssociateProgramDescriptionTransferCache() {
         if(associateProgramDescriptionTransferCache == null)
-            associateProgramDescriptionTransferCache = new AssociateProgramDescriptionTransferCache(associateControl);
+            associateProgramDescriptionTransferCache = new AssociateProgramDescriptionTransferCache();
         
         return associateProgramDescriptionTransferCache;
     }
     
     public AssociateTransferCache getAssociateTransferCache() {
         if(associateTransferCache == null)
-            associateTransferCache = new AssociateTransferCache(associateControl);
+            associateTransferCache = new AssociateTransferCache();
         
         return associateTransferCache;
     }
     
     public AssociatePartyContactMechanismTransferCache getAssociatePartyContactMechanismTransferCache() {
         if(associatePartyContactMechanismTransferCache == null)
-            associatePartyContactMechanismTransferCache = new AssociatePartyContactMechanismTransferCache(associateControl);
+            associatePartyContactMechanismTransferCache = new AssociatePartyContactMechanismTransferCache();
         
         return associatePartyContactMechanismTransferCache;
     }
     
     public AssociateReferralTransferCache getAssociateReferralTransferCache() {
         if(associateReferralTransferCache == null)
-            associateReferralTransferCache = new AssociateReferralTransferCache(associateControl);
+            associateReferralTransferCache = new AssociateReferralTransferCache();
         
         return associateReferralTransferCache;
     }

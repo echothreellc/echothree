@@ -26,13 +26,12 @@ import com.echothree.util.server.persistence.Session;
 public class WorkflowDestinationSecurityRoleTransferCache
         extends BaseWorkflowTransferCache<WorkflowDestinationSecurityRole, WorkflowDestinationSecurityRoleTransfer> {
     
-    SecurityControl securityControl;
-    
+    SecurityControl securityControl = Session.getModelController(SecurityControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+
     /** Creates a new instance of WorkflowDestinationSecurityRoleTransferCache */
-    public WorkflowDestinationSecurityRoleTransferCache(WorkflowControl workflowControl) {
-        super(workflowControl);
-        
-        securityControl = Session.getModelController(SecurityControl.class);
+    public WorkflowDestinationSecurityRoleTransferCache() {
+        super();
     }
     
     public WorkflowDestinationSecurityRoleTransfer getWorkflowDestinationSecurityRoleTransfer(UserVisit userVisit, WorkflowDestinationSecurityRole workflowDestinationSecurityRole) {

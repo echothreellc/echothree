@@ -25,10 +25,12 @@ import com.echothree.util.server.persistence.Session;
 
 public class CustomerTypeShippingMethodTransferCache
         extends BaseCustomerTransferCache<CustomerTypeShippingMethod, CustomerTypeShippingMethodTransfer> {
-    
+
+    CustomerControl customerControl = Session.getModelController(CustomerControl.class);
+
     /** Creates a new instance of CustomerTypeShippingMethodTransferCache */
-    public CustomerTypeShippingMethodTransferCache(CustomerControl customerControl) {
-        super(customerControl);
+    public CustomerTypeShippingMethodTransferCache() {
+        super();
     }
     
     public CustomerTypeShippingMethodTransfer getCustomerTypeShippingMethodTransfer(UserVisit userVisit, CustomerTypeShippingMethod customerTypeShippingMethod) {

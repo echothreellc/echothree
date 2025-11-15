@@ -29,13 +29,14 @@ import com.echothree.util.server.persistence.Session;
 public class ClubItemTransferCache
         extends BaseClubTransferCache<ClubItem, ClubItemTransfer> {
 
+    ClubControl clubControl = Session.getModelController(ClubControl.class);
     ItemControl itemControl = Session.getModelController(ItemControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
     UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
     
     /** Creates a new instance of ClubItemTransferCache */
-    public ClubItemTransferCache(ClubControl clubControl) {
-        super(clubControl);
+    public ClubItemTransferCache() {
+        super();
     }
     
     public ClubItemTransfer getClubItemTransfer(UserVisit userVisit, ClubItem clubItem) {

@@ -25,14 +25,13 @@ import com.echothree.util.server.persistence.Session;
 
 public class ItemAliasTransferCache
         extends BaseItemTransferCache<ItemAlias, ItemAliasTransfer> {
-    
-    UomControl uomControl;
+
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+    UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of ItemAliasTransferCache */
-    public ItemAliasTransferCache(ItemControl itemControl) {
-        super(itemControl);
-        
-        uomControl = Session.getModelController(UomControl.class);
+    public ItemAliasTransferCache() {
+        super();
     }
     
     @Override

@@ -25,12 +25,13 @@ import com.echothree.util.server.persistence.Session;
 
 public class ItemPackCheckRequirementTransferCache
         extends BaseItemTransferCache<ItemPackCheckRequirement, ItemPackCheckRequirementTransfer> {
-    
+
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of ItemPackCheckRequirementTransferCache */
-    public ItemPackCheckRequirementTransferCache(ItemControl itemControl) {
-        super(itemControl);
+    public ItemPackCheckRequirementTransferCache() {
+        super();
     }
     
     @Override

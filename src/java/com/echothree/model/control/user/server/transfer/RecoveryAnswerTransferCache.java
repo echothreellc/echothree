@@ -27,10 +27,11 @@ public class RecoveryAnswerTransferCache
         extends BaseUserTransferCache<RecoveryAnswer, RecoveryAnswerTransfer> {
     
     PartyControl partyControl = Session.getModelController(PartyControl.class);
+    UserControl userControl = Session.getModelController(UserControl.class);
     
     /** Creates a new instance of RecoveryAnswerTransferCache */
-    public RecoveryAnswerTransferCache(UserControl userControl) {
-        super(userControl);
+    public RecoveryAnswerTransferCache() {
+        super();
 
         setIncludeEntityInstance(true);
     }

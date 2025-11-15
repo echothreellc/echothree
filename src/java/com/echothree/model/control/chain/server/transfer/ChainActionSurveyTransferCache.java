@@ -26,12 +26,13 @@ import com.echothree.util.server.persistence.Session;
 
 public class ChainActionSurveyTransferCache
         extends BaseChainTransferCache<ChainActionSurvey, ChainActionSurveyTransfer> {
-    
+
+    ChainControl chainControl = Session.getModelController(ChainControl.class);
     SurveyControl surveyControl = Session.getModelController(SurveyControl.class);
     
     /** Creates a new instance of ChainActionSurveyTransferCache */
-    public ChainActionSurveyTransferCache(ChainControl chainControl) {
-        super(chainControl);
+    public ChainActionSurveyTransferCache() {
+        super();
     }
     
     public ChainActionSurveyTransfer getChainActionSurveyTransfer(UserVisit userVisit, ChainActionSurvey chainActionSurvey) {

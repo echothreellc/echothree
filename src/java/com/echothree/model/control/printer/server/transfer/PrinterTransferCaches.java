@@ -16,14 +16,10 @@
 
 package com.echothree.model.control.printer.server.transfer;
 
-import com.echothree.model.control.printer.server.control.PrinterControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 
 public class PrinterTransferCaches
         extends BaseTransferCaches {
-    
-    protected PrinterControl printerControl;
     
     protected PrinterGroupTransferCache printerGroupTransferCache;
     protected PrinterGroupDescriptionTransferCache printerGroupDescriptionTransferCache;
@@ -35,64 +31,62 @@ public class PrinterTransferCaches
     protected PrinterGroupJobTransferCache printerGroupJobTransferCache;
     
     /** Creates a new instance of PrinterTransferCaches */
-    public PrinterTransferCaches(PrinterControl printerControl) {
+    public PrinterTransferCaches() {
         super();
-        
-        this.printerControl = printerControl;
     }
     
     public PrinterGroupTransferCache getPrinterGroupTransferCache() {
         if(printerGroupTransferCache == null)
-            printerGroupTransferCache = new PrinterGroupTransferCache(printerControl);
+            printerGroupTransferCache = new PrinterGroupTransferCache();
         
         return printerGroupTransferCache;
     }
     
     public PrinterGroupDescriptionTransferCache getPrinterGroupDescriptionTransferCache() {
         if(printerGroupDescriptionTransferCache == null)
-            printerGroupDescriptionTransferCache = new PrinterGroupDescriptionTransferCache(printerControl);
+            printerGroupDescriptionTransferCache = new PrinterGroupDescriptionTransferCache();
         
         return printerGroupDescriptionTransferCache;
     }
     
     public PrinterGroupUseTypeTransferCache getPrinterGroupUseTypeTransferCache() {
         if(printerGroupUseTypeTransferCache == null)
-            printerGroupUseTypeTransferCache = new PrinterGroupUseTypeTransferCache(printerControl);
+            printerGroupUseTypeTransferCache = new PrinterGroupUseTypeTransferCache();
 
         return printerGroupUseTypeTransferCache;
     }
 
     public PrinterGroupUseTypeDescriptionTransferCache getPrinterGroupUseTypeDescriptionTransferCache() {
         if(printerGroupUseTypeDescriptionTransferCache == null)
-            printerGroupUseTypeDescriptionTransferCache = new PrinterGroupUseTypeDescriptionTransferCache(printerControl);
+            printerGroupUseTypeDescriptionTransferCache = new PrinterGroupUseTypeDescriptionTransferCache();
 
         return printerGroupUseTypeDescriptionTransferCache;
     }
 
     public PartyPrinterGroupUseTransferCache getPartyPrinterGroupUseTransferCache() {
         if(partyPrinterGroupUseTransferCache == null)
-            partyPrinterGroupUseTransferCache = new PartyPrinterGroupUseTransferCache(printerControl);
+            partyPrinterGroupUseTransferCache = new PartyPrinterGroupUseTransferCache();
         
         return partyPrinterGroupUseTransferCache;
     }
     
     public PrinterTransferCache getPrinterTransferCache() {
         if(printerTransferCache == null)
-            printerTransferCache = new PrinterTransferCache(printerControl);
+            printerTransferCache = new PrinterTransferCache();
         
         return printerTransferCache;
     }
     
     public PrinterDescriptionTransferCache getPrinterDescriptionTransferCache() {
         if(printerDescriptionTransferCache == null)
-            printerDescriptionTransferCache = new PrinterDescriptionTransferCache(printerControl);
+            printerDescriptionTransferCache = new PrinterDescriptionTransferCache();
         
         return printerDescriptionTransferCache;
     }
     
     public PrinterGroupJobTransferCache getPrinterGroupJobTransferCache() {
         if(printerGroupJobTransferCache == null)
-            printerGroupJobTransferCache = new PrinterGroupJobTransferCache(printerControl);
+            printerGroupJobTransferCache = new PrinterGroupJobTransferCache();
         
         return printerGroupJobTransferCache;
     }

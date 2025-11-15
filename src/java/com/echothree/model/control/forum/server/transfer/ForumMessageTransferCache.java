@@ -30,14 +30,16 @@ import com.echothree.util.server.persistence.Session;
 public class ForumMessageTransferCache
         extends BaseForumTransferCache<ForumMessage, ForumMessageTransfer> {
 
+    ForumControl forumControl = Session.getModelController(ForumControl.class);
     IconControl iconControl = Session.getModelController(IconControl.class);
+
     boolean includeForumMessageRoles;
     boolean includeForumMessageParts;
     boolean includeForumMessageAttachments;
 
     /** Creates a new instance of ForumMessageTransferCache */
-    public ForumMessageTransferCache(ForumControl forumControl) {
-        super(forumControl);
+    public ForumMessageTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {

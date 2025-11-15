@@ -25,12 +25,13 @@ import com.echothree.util.server.persistence.Session;
 
 public class ContactListTransferCache
         extends BaseContactListTransferCache<ContactList, ContactListTransfer> {
-    
+
+    ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of ContactListTransferCache */
-    public ContactListTransferCache(ContactListControl contactListControl) {
-        super(contactListControl);
+    public ContactListTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

@@ -20,13 +20,16 @@ import com.echothree.model.control.comment.common.transfer.CommentUsageTypeDescr
 import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.data.comment.server.entity.CommentUsageTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class CommentUsageTypeDescriptionTransferCache
         extends BaseCommentDescriptionTransferCache<CommentUsageTypeDescription, CommentUsageTypeDescriptionTransfer> {
-    
+
+    CommentControl commentControl = Session.getModelController(CommentControl.class);
+
     /** Creates a new instance of CommentUsageTypeDescriptionTransferCache */
-    public CommentUsageTypeDescriptionTransferCache(CommentControl commentControl) {
-        super(commentControl);
+    public CommentUsageTypeDescriptionTransferCache() {
+        super();
     }
     
     public CommentUsageTypeDescriptionTransfer getCommentUsageTypeDescriptionTransfer(UserVisit userVisit, CommentUsageTypeDescription commentUsageTypeDescription) {

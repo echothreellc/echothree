@@ -34,13 +34,16 @@ public class WorkEffortTransferCache
     
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
+    WorkEffortControl workEffortControl = Session.getModelController(WorkEffortControl.class);
     WorkRequirementControl workRequirementControl = Session.getModelController(WorkRequirementControl.class);
+
     UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+
     boolean includeWorkRequirements;
     
     /** Creates a new instance of WorkEffortTransferCache */
-    public WorkEffortTransferCache(WorkEffortControl workEffortControl) {
-        super(workEffortControl);
+    public WorkEffortTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {

@@ -30,6 +30,7 @@ import com.echothree.util.server.persistence.Session;
 public class ItemDescriptionTypeTransferCache
         extends BaseItemTransferCache<ItemDescriptionType, ItemDescriptionTypeTransfer> {
 
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     
     TransferProperties transferProperties;
@@ -55,8 +56,8 @@ public class ItemDescriptionTypeTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of ItemDescriptionTypeTransferCache */
-    public ItemDescriptionTypeTransferCache(ItemControl itemControl) {
-        super(itemControl);
+    public ItemDescriptionTypeTransferCache() {
+        super();
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {

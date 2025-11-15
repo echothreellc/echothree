@@ -16,8 +16,6 @@
 
 package com.echothree.model.control.security.server.transfer;
 
-import com.echothree.model.control.security.server.control.SecurityControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.transfer.BaseTransferCache;
@@ -25,13 +23,9 @@ import com.echothree.util.server.transfer.BaseTransferCache;
 public abstract class BaseSecurityTransferCache<K extends BaseEntity, V extends BaseTransfer>
         extends BaseTransferCache<K, V> {
     
-    SecurityControl securityControl;
-    
     /** Creates a new instance of BaseSecurityTransferCache */
-    protected BaseSecurityTransferCache(SecurityControl securityControl) {
+    protected BaseSecurityTransferCache() {
         super();
-        
-        this.securityControl = securityControl;
     }
     
 }

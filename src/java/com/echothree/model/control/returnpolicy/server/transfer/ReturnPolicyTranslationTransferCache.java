@@ -27,10 +27,11 @@ public class ReturnPolicyTranslationTransferCache
         extends BaseReturnPolicyDescriptionTransferCache<ReturnPolicyTranslation, ReturnPolicyTranslationTransfer> {
 
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
-    
+    ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
+
     /** Creates a new instance of ReturnPolicyTranslationTransferCache */
-    public ReturnPolicyTranslationTransferCache(ReturnPolicyControl returnPolicyControl) {
-        super(returnPolicyControl);
+    public ReturnPolicyTranslationTransferCache() {
+        super();
     }
     
     public ReturnPolicyTranslationTransfer getReturnPolicyTranslationTransfer(UserVisit userVisit, ReturnPolicyTranslation returnPolicyTranslation) {

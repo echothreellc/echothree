@@ -17,7 +17,6 @@
 package com.echothree.model.control.contact.server.transfer;
 
 import com.echothree.model.control.contact.common.transfer.ContactInet4AddressTransfer;
-import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.ContactInet4Address;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
@@ -25,8 +24,8 @@ public class ContactInet4AddressTransferCache
         extends BaseContactTransferCache<ContactInet4Address, ContactInet4AddressTransfer> {
     
     /** Creates a new instance of ContactInet4AddressTransferCache */
-    public ContactInet4AddressTransferCache(ContactControl contactControl) {
-        super(contactControl);
+    public ContactInet4AddressTransferCache() {
+        super();
     }
     
     public ContactInet4AddressTransfer getContactInet4AddressTransfer(UserVisit userVisit, ContactInet4Address contactInet4Address) {

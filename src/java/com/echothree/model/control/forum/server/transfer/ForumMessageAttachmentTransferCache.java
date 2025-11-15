@@ -28,14 +28,16 @@ import com.echothree.util.server.persistence.Session;
 public class ForumMessageAttachmentTransferCache
         extends BaseForumTransferCache<ForumMessageAttachment, ForumMessageAttachmentTransfer> {
 
+    ForumControl forumControl = Session.getModelController(ForumControl.class);
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
+
     boolean includeBlob;
     boolean includeClob;
     boolean includeETag;
     
     /** Creates a new instance of ForumMessageAttachmentTransferCache */
-    public ForumMessageAttachmentTransferCache(ForumControl forumControl) {
-        super(forumControl);
+    public ForumMessageAttachmentTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {

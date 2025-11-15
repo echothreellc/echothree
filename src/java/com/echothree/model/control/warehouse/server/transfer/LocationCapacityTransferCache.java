@@ -25,14 +25,13 @@ import com.echothree.util.server.persistence.Session;
 
 public class LocationCapacityTransferCache
         extends BaseWarehouseTransferCache<LocationCapacity, LocationCapacityTransfer> {
-    
-    UomControl uomControl;
-    
+
+    UomControl uomControl = Session.getModelController(UomControl.class);
+    WarehouseControl warehouseControl = Session.getModelController(WarehouseControl.class);
+
     /** Creates a new instance of LocationCapacityTransferCache */
-    public LocationCapacityTransferCache(WarehouseControl warehouseControl) {
-        super(warehouseControl);
-        
-        uomControl = Session.getModelController(UomControl.class);
+    public LocationCapacityTransferCache() {
+        super();
     }
     
     public LocationCapacityTransfer getLocationCapacityTransfer(UserVisit userVisit, LocationCapacity locationCapacity) {

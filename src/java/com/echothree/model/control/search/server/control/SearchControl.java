@@ -175,7 +175,7 @@ public class SearchControl
 
     public SearchTransferCaches getSearchTransferCaches() {
         if(searchTransferCaches == null) {
-            searchTransferCaches = new SearchTransferCaches(this);
+            searchTransferCaches = new SearchTransferCaches();
         }
 
         return searchTransferCaches;

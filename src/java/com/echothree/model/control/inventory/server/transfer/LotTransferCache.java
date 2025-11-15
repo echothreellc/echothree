@@ -20,7 +20,6 @@ import com.echothree.model.control.inventory.common.InventoryOptions;
 import com.echothree.model.control.inventory.common.transfer.LotAliasTransfer;
 import com.echothree.model.control.inventory.common.transfer.LotTimeTransfer;
 import com.echothree.model.control.inventory.common.transfer.LotTransfer;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.inventory.server.control.LotAliasControl;
 import com.echothree.model.control.inventory.server.control.LotTimeControl;
 import com.echothree.model.control.item.server.control.ItemControl;
@@ -40,8 +39,8 @@ public class LotTransferCache
     boolean includeLotTimes;
 
     /** Creates a new instance of LotTransferCache */
-    public LotTransferCache(InventoryControl inventoryControl) {
-        super(inventoryControl);
+    public LotTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {

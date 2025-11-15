@@ -20,13 +20,16 @@ import com.echothree.model.control.item.common.transfer.ItemCategoryDescriptionT
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemCategoryDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class ItemCategoryDescriptionTransferCache
         extends BaseItemDescriptionTransferCache<ItemCategoryDescription, ItemCategoryDescriptionTransfer> {
-    
+
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+
     /** Creates a new instance of ItemCategoryDescriptionTransferCache */
-    public ItemCategoryDescriptionTransferCache(ItemControl itemControl) {
-        super(itemControl);
+    public ItemCategoryDescriptionTransferCache() {
+        super();
     }
     
     @Override

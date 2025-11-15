@@ -25,12 +25,13 @@ import com.echothree.util.server.persistence.Session;
 
 public class EmploymentTransferCache
         extends BaseEmployeeTransferCache<Employment, EmploymentTransfer> {
-    
+
+    EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of EmploymentTransferCache */
-    public EmploymentTransferCache(EmployeeControl employeeControl) {
-        super(employeeControl);
+    public EmploymentTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

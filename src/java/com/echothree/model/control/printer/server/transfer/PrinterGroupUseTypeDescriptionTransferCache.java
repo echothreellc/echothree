@@ -20,13 +20,16 @@ import com.echothree.model.control.printer.common.transfer.PrinterGroupUseTypeDe
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.data.printer.server.entity.PrinterGroupUseTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class PrinterGroupUseTypeDescriptionTransferCache
         extends BasePrinterDescriptionTransferCache<PrinterGroupUseTypeDescription, PrinterGroupUseTypeDescriptionTransfer> {
-    
+
+    PrinterControl printerControl = Session.getModelController(PrinterControl.class);
+
     /** Creates a new instance of PrinterGroupUseTypeDescriptionTransferCache */
-    public PrinterGroupUseTypeDescriptionTransferCache(PrinterControl printerControl) {
-        super(printerControl);
+    public PrinterGroupUseTypeDescriptionTransferCache() {
+        super();
     }
     
     public PrinterGroupUseTypeDescriptionTransfer getPrinterGroupUseTypeDescriptionTransfer(UserVisit userVisit, PrinterGroupUseTypeDescription printerGroupUseTypeDescription) {

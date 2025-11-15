@@ -16,14 +16,10 @@
 
 package com.echothree.model.control.document.server.transfer;
 
-import com.echothree.model.control.document.server.control.DocumentControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 
 public class DocumentTransferCaches
         extends BaseTransferCaches {
-    
-    protected DocumentControl documentControl;
     
     protected DocumentTypeTransferCache documentTypeTransferCache;
     protected DocumentTypeDescriptionTransferCache documentTypeDescriptionTransferCache;
@@ -36,71 +32,69 @@ public class DocumentTransferCaches
     protected PartyDocumentTransferCache partyDocumentTransferCache;
     
     /** Creates a new instance of DocumentTransferCaches */
-    public DocumentTransferCaches(DocumentControl documentControl) {
+    public DocumentTransferCaches() {
         super();
-        
-        this.documentControl = documentControl;
     }
     
     public DocumentTypeTransferCache getDocumentTypeTransferCache() {
         if(documentTypeTransferCache == null)
-            documentTypeTransferCache = new DocumentTypeTransferCache(documentControl);
+            documentTypeTransferCache = new DocumentTypeTransferCache();
 
         return documentTypeTransferCache;
     }
 
     public DocumentTypeDescriptionTransferCache getDocumentTypeDescriptionTransferCache() {
         if(documentTypeDescriptionTransferCache == null)
-            documentTypeDescriptionTransferCache = new DocumentTypeDescriptionTransferCache(documentControl);
+            documentTypeDescriptionTransferCache = new DocumentTypeDescriptionTransferCache();
 
         return documentTypeDescriptionTransferCache;
     }
 
     public DocumentTypeUsageTypeTransferCache getDocumentTypeUsageTypeTransferCache() {
         if(documentTypeUsageTypeTransferCache == null)
-            documentTypeUsageTypeTransferCache = new DocumentTypeUsageTypeTransferCache(documentControl);
+            documentTypeUsageTypeTransferCache = new DocumentTypeUsageTypeTransferCache();
 
         return documentTypeUsageTypeTransferCache;
     }
 
     public DocumentTypeUsageTypeDescriptionTransferCache getDocumentTypeUsageTypeDescriptionTransferCache() {
         if(documentTypeUsageTypeDescriptionTransferCache == null)
-            documentTypeUsageTypeDescriptionTransferCache = new DocumentTypeUsageTypeDescriptionTransferCache(documentControl);
+            documentTypeUsageTypeDescriptionTransferCache = new DocumentTypeUsageTypeDescriptionTransferCache();
 
         return documentTypeUsageTypeDescriptionTransferCache;
     }
 
     public DocumentTypeUsageTransferCache getDocumentTypeUsageTransferCache() {
         if(documentTypeUsageTransferCache == null)
-            documentTypeUsageTransferCache = new DocumentTypeUsageTransferCache(documentControl);
+            documentTypeUsageTransferCache = new DocumentTypeUsageTransferCache();
 
         return documentTypeUsageTransferCache;
     }
 
     public DocumentTransferCache getDocumentTransferCache() {
         if(documentTransferCache == null)
-            documentTransferCache = new DocumentTransferCache(documentControl);
+            documentTransferCache = new DocumentTransferCache();
         
         return documentTransferCache;
     }
     
     public DocumentDescriptionTransferCache getDocumentDescriptionTransferCache() {
         if(documentDescriptionTransferCache == null)
-            documentDescriptionTransferCache = new DocumentDescriptionTransferCache(documentControl);
+            documentDescriptionTransferCache = new DocumentDescriptionTransferCache();
 
         return documentDescriptionTransferCache;
     }
 
     public PartyTypeDocumentTypeUsageTypeTransferCache getPartyTypeDocumentTypeUsageTypeTransferCache() {
         if(partyTypeDocumentTypeUsageTypeTransferCache == null)
-            partyTypeDocumentTypeUsageTypeTransferCache = new PartyTypeDocumentTypeUsageTypeTransferCache(documentControl);
+            partyTypeDocumentTypeUsageTypeTransferCache = new PartyTypeDocumentTypeUsageTypeTransferCache();
 
         return partyTypeDocumentTypeUsageTypeTransferCache;
     }
 
     public PartyDocumentTransferCache getPartyDocumentTransferCache() {
         if(partyDocumentTransferCache == null)
-            partyDocumentTransferCache = new PartyDocumentTransferCache(documentControl);
+            partyDocumentTransferCache = new PartyDocumentTransferCache();
 
         return partyDocumentTransferCache;
     }

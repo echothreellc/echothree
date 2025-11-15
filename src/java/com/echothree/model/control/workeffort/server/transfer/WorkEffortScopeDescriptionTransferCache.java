@@ -20,13 +20,16 @@ import com.echothree.model.control.workeffort.common.transfer.WorkEffortScopeDes
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortScopeDescription;
+import com.echothree.util.server.persistence.Session;
 
 public class WorkEffortScopeDescriptionTransferCache
         extends BaseWorkEffortDescriptionTransferCache<WorkEffortScopeDescription, WorkEffortScopeDescriptionTransfer> {
-    
+
+    WorkEffortControl workEffortControl = Session.getModelController(WorkEffortControl.class);
+
     /** Creates a new instance of WorkEffortScopeDescriptionTransferCache */
-    public WorkEffortScopeDescriptionTransferCache(WorkEffortControl workEffortControl) {
-        super(workEffortControl);
+    public WorkEffortScopeDescriptionTransferCache() {
+        super();
     }
     
     public WorkEffortScopeDescriptionTransfer getWorkEffortScopeDescriptionTransfer(UserVisit userVisit, WorkEffortScopeDescription workEffortScopeDescription) {

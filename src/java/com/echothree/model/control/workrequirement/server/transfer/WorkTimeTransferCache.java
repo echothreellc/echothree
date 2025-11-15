@@ -32,10 +32,11 @@ public class WorkTimeTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
-    
+    WorkRequirementControl workRequirementControl = Session.getModelController(WorkRequirementControl.class);
+
     /** Creates a new instance of WorkTimeTransferCache */
-    public WorkTimeTransferCache(WorkRequirementControl workRequirementControl) {
-        super(workRequirementControl);
+    public WorkTimeTransferCache() {
+        super();
 
         setIncludeEntityInstance(true);
     }

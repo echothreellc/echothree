@@ -20,13 +20,16 @@ import com.echothree.model.control.picklist.common.transfer.PicklistTimeTransfer
 import com.echothree.model.control.picklist.server.control.PicklistControl;
 import com.echothree.model.data.picklist.server.entity.PicklistTime;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class PicklistTimeTransferCache
         extends BasePicklistTransferCache<PicklistTime, PicklistTimeTransfer> {
-    
+
+    PicklistControl picklistControl = Session.getModelController(PicklistControl.class);
+
     /** Creates a new instance of PicklistTimeTransferCache */
-    public PicklistTimeTransferCache(PicklistControl picklistControl) {
-        super(picklistControl);
+    public PicklistTimeTransferCache() {
+        super();
     }
     
     public PicklistTimeTransfer getPicklistTimeTransfer(UserVisit userVisit, PicklistTime picklistTime) {

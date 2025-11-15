@@ -22,15 +22,18 @@ import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionQuestion;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
+import com.echothree.util.server.persistence.Session;
 
 public class PartyTrainingClassSessionQuestionTransferCache
         extends BaseTrainingTransferCache<PartyTrainingClassSessionQuestion, PartyTrainingClassSessionQuestionTransfer> {
-    
+
+    TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
+
     boolean includePartyTrainingClassSessionAnswers;
     
     /** Creates a new instance of PartyTrainingClassSessionQuestionTransferCache */
-    public PartyTrainingClassSessionQuestionTransferCache(TrainingControl trainingControl) {
-        super(trainingControl);
+    public PartyTrainingClassSessionQuestionTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {

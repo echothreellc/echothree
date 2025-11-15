@@ -29,14 +29,15 @@ import com.echothree.util.server.persistence.Session;
 
 public abstract class GenericBatchTransferCache<V extends GenericBatchTransfer>
         extends BaseBatchTransferCache<Batch, V> {
-    
+
+    BatchControl batchControl = Session.getModelController(BatchControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     boolean includeAliases;
     boolean includeEntities;
     
     /** Creates a new instance of GenericBatchTransferCache */
-    public GenericBatchTransferCache(BatchControl batchControl) {
-        super(batchControl);
+    public GenericBatchTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {

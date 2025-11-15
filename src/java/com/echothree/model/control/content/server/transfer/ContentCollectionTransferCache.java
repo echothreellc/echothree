@@ -28,14 +28,16 @@ import com.echothree.util.server.persistence.Session;
 public class ContentCollectionTransferCache
         extends BaseContentTransferCache<ContentCollection, ContentCollectionTransfer> {
 
+    ContentControl contentControl = Session.getModelController(ContentControl.class);
     OfferUseControl offerUseControl = Session.getModelController(OfferUseControl.class);
+
     boolean includeContentCatalogs;
     boolean includeContentForums;
     boolean includeContentSections;
 
     /** Creates a new instance of ContentCollectionTransferCache */
-    public ContentCollectionTransferCache(ContentControl contentControl) {
-        super(contentControl);
+    public ContentCollectionTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {

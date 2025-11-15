@@ -16,8 +16,6 @@
 
 package com.echothree.model.control.workrequirement.server.transfer;
 
-import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.transfer.BaseTransferCache;
@@ -25,13 +23,9 @@ import com.echothree.util.server.transfer.BaseTransferCache;
 public abstract class BaseWorkRequirementTransferCache<K extends BaseEntity, V extends BaseTransfer>
         extends BaseTransferCache<K, V> {
     
-    WorkRequirementControl workRequirementControl;
-    
     /** Creates a new instance of BaseWorkRequirementTransferCache */
-    protected BaseWorkRequirementTransferCache(WorkRequirementControl workRequirementControl) {
+    protected BaseWorkRequirementTransferCache() {
         super();
-        
-        this.workRequirementControl = workRequirementControl;
     }
     
 }

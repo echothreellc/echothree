@@ -26,13 +26,12 @@ import com.echothree.util.server.persistence.Session;
 public class InvoiceLineGlAccountTransferCache
         extends BaseInvoiceTransferCache<InvoiceLineGlAccount, InvoiceLineGlAccountTransfer> {
 
-    AccountingControl accountingControl;
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
 
     /** Creates a new instance of InvoiceLineGlAccountTransferCache */
-    public InvoiceLineGlAccountTransferCache(InvoiceControl invoiceControl) {
-        super(invoiceControl);
-
-        accountingControl = Session.getModelController(AccountingControl.class);
+    public InvoiceLineGlAccountTransferCache() {
+        super();
     }
 
     public InvoiceLineGlAccountTransfer getInvoiceLineGlAccountTransfer(UserVisit userVisit, InvoiceLineGlAccount invoiceLineGlAccount) {

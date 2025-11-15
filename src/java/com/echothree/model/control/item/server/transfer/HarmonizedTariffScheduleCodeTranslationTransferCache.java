@@ -26,11 +26,12 @@ import com.echothree.util.server.persistence.Session;
 public class HarmonizedTariffScheduleCodeTranslationTransferCache
         extends BaseItemDescriptionTransferCache<HarmonizedTariffScheduleCodeTranslation, HarmonizedTariffScheduleCodeTranslationTransfer> {
 
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     
     /** Creates a new instance of HarmonizedTariffScheduleCodeTranslationTransferCache */
-    public HarmonizedTariffScheduleCodeTranslationTransferCache(ItemControl itemControl) {
-        super(itemControl);
+    public HarmonizedTariffScheduleCodeTranslationTransferCache() {
+        super();
     }
     
     @Override

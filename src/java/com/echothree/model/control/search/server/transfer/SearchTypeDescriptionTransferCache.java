@@ -20,13 +20,16 @@ import com.echothree.model.control.search.common.transfer.SearchTypeDescriptionT
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.search.server.entity.SearchTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class SearchTypeDescriptionTransferCache
         extends BaseSearchDescriptionTransferCache<SearchTypeDescription, SearchTypeDescriptionTransfer> {
-    
+
+    SearchControl searchControl = Session.getModelController(SearchControl.class);
+
     /** Creates a new instance of SearchTypeDescriptionTransferCache */
-    public SearchTypeDescriptionTransferCache(SearchControl searchControl) {
-        super(searchControl);
+    public SearchTypeDescriptionTransferCache() {
+        super();
     }
     
     public SearchTypeDescriptionTransfer getSearchTypeDescriptionTransfer(UserVisit userVisit, SearchTypeDescription searchTypeDescription) {

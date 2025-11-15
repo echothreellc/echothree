@@ -16,14 +16,10 @@
 
 package com.echothree.model.control.communication.server.transfer;
 
-import com.echothree.model.control.communication.server.control.CommunicationControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 
 public class CommunicationTransferCaches
         extends BaseTransferCaches {
-    
-    protected CommunicationControl communicationControl;
     
     protected CommunicationEventRoleTypeTransferCache communicationEventRoleTypeTransferCache;
     protected CommunicationEventTypeTransferCache communicationEventTypeTransferCache;
@@ -37,78 +33,76 @@ public class CommunicationTransferCaches
     protected CommunicationEmailSourceTransferCache communicationEmailSourceTransferCache;
     
     /** Creates a new instance of CommunicationTransferCaches */
-    public CommunicationTransferCaches(CommunicationControl communicationControl) {
+    public CommunicationTransferCaches() {
         super();
-        
-        this.communicationControl = communicationControl;
     }
     
     public CommunicationEventRoleTypeTransferCache getCommunicationEventRoleTypeTransferCache() {
         if(communicationEventRoleTypeTransferCache == null)
-            communicationEventRoleTypeTransferCache = new CommunicationEventRoleTypeTransferCache(communicationControl);
+            communicationEventRoleTypeTransferCache = new CommunicationEventRoleTypeTransferCache();
         
         return communicationEventRoleTypeTransferCache;
     }
     
     public CommunicationEventTypeTransferCache getCommunicationEventTypeTransferCache() {
         if(communicationEventTypeTransferCache == null)
-            communicationEventTypeTransferCache = new CommunicationEventTypeTransferCache(communicationControl);
+            communicationEventTypeTransferCache = new CommunicationEventTypeTransferCache();
         
         return communicationEventTypeTransferCache;
     }
     
     public CommunicationEventPurposeTransferCache getCommunicationEventPurposeTransferCache() {
         if(communicationEventPurposeTransferCache == null)
-            communicationEventPurposeTransferCache = new CommunicationEventPurposeTransferCache(communicationControl);
+            communicationEventPurposeTransferCache = new CommunicationEventPurposeTransferCache();
         
         return communicationEventPurposeTransferCache;
     }
     
     public CommunicationEventPurposeDescriptionTransferCache getCommunicationEventPurposeDescriptionTransferCache() {
         if(communicationEventPurposeDescriptionTransferCache == null)
-            communicationEventPurposeDescriptionTransferCache = new CommunicationEventPurposeDescriptionTransferCache(communicationControl);
+            communicationEventPurposeDescriptionTransferCache = new CommunicationEventPurposeDescriptionTransferCache();
         
         return communicationEventPurposeDescriptionTransferCache;
     }
     
     public CommunicationEventTransferCache getCommunicationEventTransferCache() {
         if(communicationEventTransferCache == null)
-            communicationEventTransferCache = new CommunicationEventTransferCache(communicationControl);
+            communicationEventTransferCache = new CommunicationEventTransferCache();
         
         return communicationEventTransferCache;
     }
     
     public CommunicationEventRoleTransferCache getCommunicationEventRoleTransferCache() {
         if(communicationEventRoleTransferCache == null)
-            communicationEventRoleTransferCache = new CommunicationEventRoleTransferCache(communicationControl);
+            communicationEventRoleTransferCache = new CommunicationEventRoleTransferCache();
         
         return communicationEventRoleTransferCache;
     }
     
     public CommunicationSourceTypeTransferCache getCommunicationSourceTypeTransferCache() {
         if(communicationSourceTypeTransferCache == null)
-            communicationSourceTypeTransferCache = new CommunicationSourceTypeTransferCache(communicationControl);
+            communicationSourceTypeTransferCache = new CommunicationSourceTypeTransferCache();
         
         return communicationSourceTypeTransferCache;
     }
     
     public CommunicationSourceTransferCache getCommunicationSourceTransferCache() {
         if(communicationSourceTransferCache == null)
-            communicationSourceTransferCache = new CommunicationSourceTransferCache(communicationControl);
+            communicationSourceTransferCache = new CommunicationSourceTransferCache();
         
         return communicationSourceTransferCache;
     }
     
     public CommunicationSourceDescriptionTransferCache getCommunicationSourceDescriptionTransferCache() {
         if(communicationSourceDescriptionTransferCache == null)
-            communicationSourceDescriptionTransferCache = new CommunicationSourceDescriptionTransferCache(communicationControl);
+            communicationSourceDescriptionTransferCache = new CommunicationSourceDescriptionTransferCache();
         
         return communicationSourceDescriptionTransferCache;
     }
     
     public CommunicationEmailSourceTransferCache getCommunicationEmailSourceTransferCache() {
         if(communicationEmailSourceTransferCache == null)
-            communicationEmailSourceTransferCache = new CommunicationEmailSourceTransferCache(communicationControl);
+            communicationEmailSourceTransferCache = new CommunicationEmailSourceTransferCache();
         
         return communicationEmailSourceTransferCache;
     }

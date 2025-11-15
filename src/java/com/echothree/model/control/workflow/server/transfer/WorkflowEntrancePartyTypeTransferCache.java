@@ -26,13 +26,12 @@ import com.echothree.util.server.persistence.Session;
 public class WorkflowEntrancePartyTypeTransferCache
         extends BaseWorkflowTransferCache<WorkflowEntrancePartyType, WorkflowEntrancePartyTypeTransfer> {
     
-    PartyControl partyControl;
-    
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+
     /** Creates a new instance of WorkflowEntrancePartyTypeTransferCache */
-    public WorkflowEntrancePartyTypeTransferCache(WorkflowControl workflowControl) {
-        super(workflowControl);
-        
-        partyControl = Session.getModelController(PartyControl.class);
+    public WorkflowEntrancePartyTypeTransferCache() {
+        super();
     }
     
     public WorkflowEntrancePartyTypeTransfer getWorkflowEntrancePartyTypeTransfer(UserVisit userVisit, WorkflowEntrancePartyType workflowEntrancePartyType) {

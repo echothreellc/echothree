@@ -27,10 +27,11 @@ public class FinancialAccountTransactionTypeTransferCache
         extends BaseFinancialTransferCache<FinancialAccountTransactionType, FinancialAccountTransactionTypeTransfer> {
     
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
-    
+    FinancialControl financialControl = Session.getModelController(FinancialControl.class);
+
     /** Creates a new instance of FinancialAccountTransactionTypeTransferCache */
-    public FinancialAccountTransactionTypeTransferCache(FinancialControl financialControl) {
-        super(financialControl);
+    public FinancialAccountTransactionTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

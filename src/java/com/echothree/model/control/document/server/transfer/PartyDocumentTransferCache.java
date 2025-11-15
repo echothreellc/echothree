@@ -26,11 +26,12 @@ import com.echothree.util.server.persistence.Session;
 public class PartyDocumentTransferCache
         extends BaseDocumentTransferCache<PartyDocument, PartyDocumentTransfer> {
 
+    DocumentControl documentControl = Session.getModelController(DocumentControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of PartyDocumentTransferCache */
-    public PartyDocumentTransferCache(DocumentControl documentControl) {
-        super(documentControl);
+    public PartyDocumentTransferCache() {
+        super();
     }
     
     public PartyDocumentTransfer getPartyDocumentTransfer(UserVisit userVisit, PartyDocument partyDocument) {

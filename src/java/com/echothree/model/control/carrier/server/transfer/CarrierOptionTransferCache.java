@@ -26,11 +26,12 @@ import com.echothree.util.server.persistence.Session;
 public class CarrierOptionTransferCache
         extends BaseCarrierTransferCache<CarrierOption, CarrierOptionTransfer> {
 
+    CarrierControl carrierControl = Session.getModelController(CarrierControl.class);
     SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
 
     /** Creates a new instance of CarrierOptionTransferCache */
-    public CarrierOptionTransferCache(CarrierControl carrierControl) {
-        super(carrierControl);
+    public CarrierOptionTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

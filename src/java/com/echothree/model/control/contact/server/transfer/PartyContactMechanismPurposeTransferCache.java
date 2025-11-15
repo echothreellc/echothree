@@ -20,13 +20,16 @@ import com.echothree.model.control.contact.common.transfer.PartyContactMechanism
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanismPurpose;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class PartyContactMechanismPurposeTransferCache
         extends BaseContactTransferCache<PartyContactMechanismPurpose, PartyContactMechanismPurposeTransfer> {
-    
+
+    ContactControl contactControl = Session.getModelController(ContactControl.class);
+
     /** Creates a new instance of PartyContactMechanismPurposeTransferCache */
-    public PartyContactMechanismPurposeTransferCache(ContactControl contactControl) {
-        super(contactControl);
+    public PartyContactMechanismPurposeTransferCache() {
+        super();
     }
     
     public PartyContactMechanismPurposeTransfer getPartyContactMechanismPurposeTransfer(UserVisit userVisit, PartyContactMechanismPurpose partyContactMechanismPurpose) {

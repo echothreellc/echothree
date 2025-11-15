@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.tax.server.transfer;
 
-import com.echothree.model.control.tax.server.control.TaxControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;
@@ -25,13 +24,9 @@ import com.echothree.util.server.transfer.BaseTransferCache;
 public abstract class BaseTaxTransferCache<K extends BaseEntity, V extends BaseTransfer>
         extends BaseTransferCache<K, V> {
     
-    TaxControl taxControl;
-    
     /** Creates a new instance of BaseTaxTransferCache */
-    protected BaseTaxTransferCache(TaxControl taxControl) {
+    protected BaseTaxTransferCache() {
         super();
-        
-        this.taxControl = taxControl;
     }
 
     protected abstract V getTransfer(UserVisit userVisit, K key);

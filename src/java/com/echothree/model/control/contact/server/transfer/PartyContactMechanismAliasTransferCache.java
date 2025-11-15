@@ -25,14 +25,13 @@ import com.echothree.util.server.persistence.Session;
 
 public class PartyContactMechanismAliasTransferCache
         extends BaseContactTransferCache<PartyContactMechanismAlias, PartyContactMechanismAliasTransfer> {
-    
-    PartyControl partyControl;
+
+    ContactControl contactControl = Session.getModelController(ContactControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of PartyContactMechanismAliasTransferCache */
-    public PartyContactMechanismAliasTransferCache(ContactControl contactControl) {
-        super(contactControl);
-        
-        partyControl = Session.getModelController(PartyControl.class);
+    public PartyContactMechanismAliasTransferCache() {
+        super();
     }
     
     public PartyContactMechanismAliasTransfer getPartyContactMechanismAliasTransfer(UserVisit userVisit, PartyContactMechanismAlias partyContactMechanismAlias) {

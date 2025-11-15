@@ -21,24 +21,24 @@ import com.echothree.util.common.transfer.BaseTransfer;
 public class LotAliasTransfer
         extends BaseTransfer {
     
-//    private LotTransfer lot;
+    private LotTransfer lot;
     private LotAliasTypeTransfer lotAliasType;
     private String alias;
     
     /** Creates a new instance of LotAliasTransfer */
-    public LotAliasTransfer(/*LotTransfer lot,*/ LotAliasTypeTransfer lotAliasType, String alias) {
-//        this.lot = lot;
+    public LotAliasTransfer(LotTransfer lot, LotAliasTypeTransfer lotAliasType, String alias) {
+        this.lot = lot;
         this.lotAliasType = lotAliasType;
         this.alias = alias;
     }
 
-//    public LotTransfer getLot() {
-//        return lot;
-//    }
-//
-//    public void setLot(LotTransfer lot) {
-//        this.lot = lot;
-//    }
+    public LotTransfer getLot() {
+        return lot;
+    }
+
+    public void setLot(LotTransfer lot) {
+        this.lot = lot;
+    }
 
     public LotAliasTypeTransfer getLotAliasType() {
         return lotAliasType;

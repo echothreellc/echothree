@@ -20,13 +20,16 @@ import com.echothree.model.control.rating.common.transfer.RatingTypeListItemDesc
 import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.data.rating.server.entity.RatingTypeListItemDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class RatingTypeListItemDescriptionTransferCache
         extends BaseRatingDescriptionTransferCache<RatingTypeListItemDescription, RatingTypeListItemDescriptionTransfer> {
-    
+
+    RatingControl ratingControl = Session.getModelController(RatingControl.class);
+
     /** Creates a new instance of RatingTypeListItemDescriptionTransferCache */
-    public RatingTypeListItemDescriptionTransferCache(RatingControl ratingControl) {
-        super(ratingControl);
+    public RatingTypeListItemDescriptionTransferCache() {
+        super();
     }
     
     public RatingTypeListItemDescriptionTransfer getRatingTypeListItemDescriptionTransfer(UserVisit userVisit, RatingTypeListItemDescription ratingTypeListItemDescription) {

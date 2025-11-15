@@ -30,13 +30,12 @@ public class JobTransferCache
         extends BaseJobTransferCache<Job, JobTransfer> {
     
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+    JobControl jobControl = Session.getModelController(JobControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of JobTransferCache */
-    public JobTransferCache(JobControl jobControl) {
-        super(jobControl);
-        
+    public JobTransferCache() {
         setIncludeEntityInstance(true);
     }
     

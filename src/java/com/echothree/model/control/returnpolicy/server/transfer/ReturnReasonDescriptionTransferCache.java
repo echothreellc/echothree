@@ -20,13 +20,16 @@ import com.echothree.model.control.returnpolicy.common.transfer.ReturnReasonDesc
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnReasonDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class ReturnReasonDescriptionTransferCache
         extends BaseReturnPolicyDescriptionTransferCache<ReturnReasonDescription, ReturnReasonDescriptionTransfer> {
-    
+
+    ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
+
     /** Creates a new instance of ReturnReasonDescriptionTransferCache */
-    public ReturnReasonDescriptionTransferCache(ReturnPolicyControl returnPolicyControl) {
-        super(returnPolicyControl);
+    public ReturnReasonDescriptionTransferCache() {
+        super();
     }
     
     public ReturnReasonDescriptionTransfer getReturnReasonDescriptionTransfer(UserVisit userVisit, ReturnReasonDescription returnReasonDescription) {

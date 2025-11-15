@@ -20,13 +20,16 @@ import com.echothree.model.control.item.common.transfer.ItemWeightTypeTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemWeightType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class ItemWeightTypeTransferCache
         extends BaseItemTransferCache<ItemWeightType, ItemWeightTypeTransfer> {
-    
+
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+
     /** Creates a new instance of ItemWeightTypeTransferCache */
-    public ItemWeightTypeTransferCache(ItemControl itemControl) {
-        super(itemControl);
+    public ItemWeightTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

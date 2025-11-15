@@ -29,12 +29,13 @@ public class ClubTransferCache
         extends BaseClubTransferCache<Club, ClubTransfer> {
     
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    ClubControl clubControl = Session.getModelController(ClubControl.class);
     FilterControl filterControl = Session.getModelController(FilterControl.class);
     SubscriptionControl subscriptionControl = Session.getModelController(SubscriptionControl.class);
     
     /** Creates a new instance of ClubTransferCache */
-    public ClubTransferCache(ClubControl clubControl) {
-        super(clubControl);
+    public ClubTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

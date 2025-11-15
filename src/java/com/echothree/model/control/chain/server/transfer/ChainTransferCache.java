@@ -25,12 +25,13 @@ import com.echothree.util.server.persistence.Session;
 
 public class ChainTransferCache
         extends BaseChainTransferCache<Chain, ChainTransfer> {
-    
+
+    ChainControl chainControl = Session.getModelController(ChainControl.class);
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     
     /** Creates a new instance of ChainTransferCache */
-    public ChainTransferCache(ChainControl chainControl) {
-        super(chainControl);
+    public ChainTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

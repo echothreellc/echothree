@@ -100,7 +100,7 @@ public class UomControl
     
     public UomTransferCaches getUomTransferCaches() {
         if(uomTransferCaches == null) {
-            uomTransferCaches = new UomTransferCaches(this);
+            uomTransferCaches = new UomTransferCaches();
         }
         
         return uomTransferCaches;

@@ -16,14 +16,10 @@
 
 package com.echothree.model.control.tax.server.transfer;
 
-import com.echothree.model.control.tax.server.control.TaxControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 
 public class TaxTransferCaches
         extends BaseTransferCaches {
-    
-    protected TaxControl taxControl;
     
     protected TaxClassificationTransferCache taxClassificationTransferCache;
     protected TaxClassificationTranslationTransferCache taxClassificationTranslationTransferCache;
@@ -33,15 +29,13 @@ public class TaxTransferCaches
     protected GeoCodeTaxTransferCache geoCodeTaxTransferCache;
     
     /** Creates a new instance of TaxTransferCaches */
-    public TaxTransferCaches(TaxControl taxControl) {
+    public TaxTransferCaches() {
         super();
-        
-        this.taxControl = taxControl;
     }
     
     public TaxClassificationTransferCache getTaxClassificationTransferCache() {
         if(taxClassificationTransferCache == null) {
-            taxClassificationTransferCache = new TaxClassificationTransferCache(taxControl);
+            taxClassificationTransferCache = new TaxClassificationTransferCache();
         }
 
         return taxClassificationTransferCache;
@@ -49,7 +43,7 @@ public class TaxTransferCaches
                                                                 
     public TaxClassificationTranslationTransferCache getTaxClassificationTranslationTransferCache() {
         if(taxClassificationTranslationTransferCache == null) {
-            taxClassificationTranslationTransferCache = new TaxClassificationTranslationTransferCache(taxControl);
+            taxClassificationTranslationTransferCache = new TaxClassificationTranslationTransferCache();
         }
 
         return taxClassificationTranslationTransferCache;
@@ -57,7 +51,7 @@ public class TaxTransferCaches
     
     public ItemTaxClassificationTransferCache getItemTaxClassificationTransferCache() {
         if(itemTaxClassificationTransferCache == null) {
-            itemTaxClassificationTransferCache = new ItemTaxClassificationTransferCache(taxControl);
+            itemTaxClassificationTransferCache = new ItemTaxClassificationTransferCache();
         }
 
         return itemTaxClassificationTransferCache;
@@ -65,21 +59,21 @@ public class TaxTransferCaches
 
     public TaxTransferCache getTaxTransferCache() {
         if(taxTransferCache == null)
-            taxTransferCache = new TaxTransferCache(taxControl);
+            taxTransferCache = new TaxTransferCache();
         
         return taxTransferCache;
     }
     
     public TaxDescriptionTransferCache getTaxDescriptionTransferCache() {
         if(taxDescriptionTransferCache == null)
-            taxDescriptionTransferCache = new TaxDescriptionTransferCache(taxControl);
+            taxDescriptionTransferCache = new TaxDescriptionTransferCache();
         
         return taxDescriptionTransferCache;
     }
     
     public GeoCodeTaxTransferCache getGeoCodeTaxTransferCache() {
         if(geoCodeTaxTransferCache == null)
-            geoCodeTaxTransferCache = new GeoCodeTaxTransferCache(taxControl);
+            geoCodeTaxTransferCache = new GeoCodeTaxTransferCache();
         
         return geoCodeTaxTransferCache;
     }

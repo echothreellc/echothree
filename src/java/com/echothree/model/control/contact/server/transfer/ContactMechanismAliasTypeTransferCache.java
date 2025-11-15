@@ -20,13 +20,16 @@ import com.echothree.model.control.contact.common.transfer.ContactMechanismAlias
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanismAliasType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class ContactMechanismAliasTypeTransferCache
         extends BaseContactTransferCache<ContactMechanismAliasType, ContactMechanismAliasTypeTransfer> {
-    
+
+    ContactControl contactControl = Session.getModelController(ContactControl.class);
+
     /** Creates a new instance of ContactMechanismAliasTypeTransferCache */
-    public ContactMechanismAliasTypeTransferCache(ContactControl contactControl) {
-        super(contactControl);
+    public ContactMechanismAliasTypeTransferCache() {
+        super();
     }
     
     public ContactMechanismAliasTypeTransfer getContactMechanismAliasTypeTransfer(UserVisit userVisit, ContactMechanismAliasType contactMechanismAliasType) {

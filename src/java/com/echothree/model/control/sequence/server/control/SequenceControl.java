@@ -88,7 +88,7 @@ public class SequenceControl
     
     public SequenceTransferCaches getSequenceTransferCaches() {
         if(sequenceTransferCaches == null) {
-            sequenceTransferCaches = new SequenceTransferCaches(this);
+            sequenceTransferCaches = new SequenceTransferCaches();
         }
         
         return sequenceTransferCaches;

@@ -16,14 +16,10 @@
 
 package com.echothree.model.control.cancellationpolicy.server.transfer;
 
-import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 
 public class CancellationPolicyTransferCaches
         extends BaseTransferCaches {
-    
-    protected CancellationPolicyControl cancellationPolicyControl;
     
     protected CancellationPolicyTransferCache cancellationPolicyTransferCache;
     protected CancellationPolicyTranslationTransferCache cancellationPolicyTranslationTransferCache;
@@ -38,85 +34,83 @@ public class CancellationPolicyTransferCaches
     protected CancellationReasonTypeTransferCache cancellationReasonTypeTransferCache;
     
     /** Creates a new instance of CancellationPolicyTransferCaches */
-    public CancellationPolicyTransferCaches(CancellationPolicyControl cancellationPolicyControl) {
+    public CancellationPolicyTransferCaches() {
         super();
-        
-        this.cancellationPolicyControl = cancellationPolicyControl;
     }
     
     public CancellationPolicyTransferCache getCancellationPolicyTransferCache() {
         if(cancellationPolicyTransferCache == null)
-            cancellationPolicyTransferCache = new CancellationPolicyTransferCache(cancellationPolicyControl);
+            cancellationPolicyTransferCache = new CancellationPolicyTransferCache();
         
         return cancellationPolicyTransferCache;
     }
     
     public CancellationPolicyTranslationTransferCache getCancellationPolicyTranslationTransferCache() {
         if(cancellationPolicyTranslationTransferCache == null)
-            cancellationPolicyTranslationTransferCache = new CancellationPolicyTranslationTransferCache(cancellationPolicyControl);
+            cancellationPolicyTranslationTransferCache = new CancellationPolicyTranslationTransferCache();
         
         return cancellationPolicyTranslationTransferCache;
     }
     
     public PartyCancellationPolicyTransferCache getPartyCancellationPolicyTransferCache() {
         if(partyCancellationPolicyTransferCache == null)
-            partyCancellationPolicyTransferCache = new PartyCancellationPolicyTransferCache(cancellationPolicyControl);
+            partyCancellationPolicyTransferCache = new PartyCancellationPolicyTransferCache();
         
         return partyCancellationPolicyTransferCache;
     }
     
     public CancellationKindDescriptionTransferCache getCancellationKindDescriptionTransferCache() {
         if(cancellationKindDescriptionTransferCache == null)
-            cancellationKindDescriptionTransferCache = new CancellationKindDescriptionTransferCache(cancellationPolicyControl);
+            cancellationKindDescriptionTransferCache = new CancellationKindDescriptionTransferCache();
         
         return cancellationKindDescriptionTransferCache;
     }
     
     public CancellationReasonDescriptionTransferCache getCancellationReasonDescriptionTransferCache() {
         if(cancellationReasonDescriptionTransferCache == null)
-            cancellationReasonDescriptionTransferCache = new CancellationReasonDescriptionTransferCache(cancellationPolicyControl);
+            cancellationReasonDescriptionTransferCache = new CancellationReasonDescriptionTransferCache();
         
         return cancellationReasonDescriptionTransferCache;
     }
     
     public CancellationTypeDescriptionTransferCache getCancellationTypeDescriptionTransferCache() {
         if(cancellationTypeDescriptionTransferCache == null)
-            cancellationTypeDescriptionTransferCache = new CancellationTypeDescriptionTransferCache(cancellationPolicyControl);
+            cancellationTypeDescriptionTransferCache = new CancellationTypeDescriptionTransferCache();
         
         return cancellationTypeDescriptionTransferCache;
     }
     
     public CancellationKindTransferCache getCancellationKindTransferCache() {
         if(cancellationKindTransferCache == null)
-            cancellationKindTransferCache = new CancellationKindTransferCache(cancellationPolicyControl);
+            cancellationKindTransferCache = new CancellationKindTransferCache();
         
         return cancellationKindTransferCache;
     }
     
     public CancellationReasonTransferCache getCancellationReasonTransferCache() {
         if(cancellationReasonTransferCache == null)
-            cancellationReasonTransferCache = new CancellationReasonTransferCache(cancellationPolicyControl);
+            cancellationReasonTransferCache = new CancellationReasonTransferCache();
         
         return cancellationReasonTransferCache;
     }
     
     public CancellationTypeTransferCache getCancellationTypeTransferCache() {
         if(cancellationTypeTransferCache == null)
-            cancellationTypeTransferCache = new CancellationTypeTransferCache(cancellationPolicyControl);
+            cancellationTypeTransferCache = new CancellationTypeTransferCache();
         
         return cancellationTypeTransferCache;
     }
     
     public CancellationPolicyReasonTransferCache getCancellationPolicyReasonTransferCache() {
         if(cancellationPolicyReasonTransferCache == null)
-            cancellationPolicyReasonTransferCache = new CancellationPolicyReasonTransferCache(cancellationPolicyControl);
+            cancellationPolicyReasonTransferCache = new CancellationPolicyReasonTransferCache();
         
         return cancellationPolicyReasonTransferCache;
     }
     
     public CancellationReasonTypeTransferCache getCancellationReasonTypeTransferCache() {
         if(cancellationReasonTypeTransferCache == null)
-            cancellationReasonTypeTransferCache = new CancellationReasonTypeTransferCache(cancellationPolicyControl);
+            cancellationReasonTypeTransferCache = new CancellationReasonTypeTransferCache();
         
         return cancellationReasonTypeTransferCache;
     }

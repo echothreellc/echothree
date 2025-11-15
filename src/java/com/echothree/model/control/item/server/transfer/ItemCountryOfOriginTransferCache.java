@@ -28,10 +28,11 @@ public class ItemCountryOfOriginTransferCache
         extends BaseItemTransferCache<ItemCountryOfOrigin, ItemCountryOfOriginTransfer> {
     
     GeoControl geoControl = Session.getModelController(GeoControl.class);
-    
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+
     /** Creates a new instance of ItemCountryOfOriginTransferCache */
-    public ItemCountryOfOriginTransferCache(ItemControl itemControl) {
-        super(itemControl);
+    public ItemCountryOfOriginTransferCache() {
+        super();
     }
     
     @Override

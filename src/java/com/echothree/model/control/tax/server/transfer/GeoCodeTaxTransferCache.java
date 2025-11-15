@@ -25,10 +25,12 @@ import com.echothree.util.server.persistence.Session;
 
 public class GeoCodeTaxTransferCache
         extends BaseTaxTransferCache<GeoCodeTax, GeoCodeTaxTransfer> {
-    
+
+    TaxControl taxControl = Session.getModelController(TaxControl.class);
+
     /** Creates a new instance of GeoCodeTaxTransferCache */
-    public GeoCodeTaxTransferCache(TaxControl taxControl) {
-        super(taxControl);
+    public GeoCodeTaxTransferCache() {
+        super();
     }
     
     @Override

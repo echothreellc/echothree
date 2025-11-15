@@ -20,13 +20,16 @@ import com.echothree.model.control.content.common.transfer.ContentCollectionDesc
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentCollectionDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class ContentCollectionDescriptionTransferCache
         extends BaseContentDescriptionTransferCache<ContentCollectionDescription, ContentCollectionDescriptionTransfer> {
-    
+
+    ContentControl contentControl = Session.getModelController(ContentControl.class);
+
     /** Creates a new instance of ContentCollectionDescriptionTransferCache */
-    public ContentCollectionDescriptionTransferCache(ContentControl contentControl) {
-        super(contentControl);
+    public ContentCollectionDescriptionTransferCache() {
+        super();
     }
     
     public ContentCollectionDescriptionTransfer getContentCollectionDescriptionTransfer(UserVisit userVisit, ContentCollectionDescription contentCollectionDescription) {

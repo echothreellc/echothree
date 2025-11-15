@@ -16,14 +16,10 @@
 
 package com.echothree.model.control.financial.server.transfer;
 
-import com.echothree.model.control.financial.server.control.FinancialControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 
 public class FinancialTransferCaches
         extends BaseTransferCaches {
-    
-    protected FinancialControl financialControl;
     
     protected FinancialAccountRoleTypeTransferCache financialAccountRoleTypeTransferCache;
     protected FinancialAccountTypeTransferCache financialAccountTypeTransferCache;
@@ -38,85 +34,83 @@ public class FinancialTransferCaches
     protected FinancialAccountTransactionTransferCache financialAccountTransactionTransferCache;
     
     /** Creates a new instance of FinancialTransferCaches */
-    public FinancialTransferCaches(FinancialControl financialControl) {
+    public FinancialTransferCaches() {
         super();
-        
-        this.financialControl = financialControl;
     }
     
     public FinancialAccountRoleTypeTransferCache getFinancialAccountRoleTypeTransferCache() {
         if(financialAccountRoleTypeTransferCache == null)
-            financialAccountRoleTypeTransferCache = new FinancialAccountRoleTypeTransferCache(financialControl);
+            financialAccountRoleTypeTransferCache = new FinancialAccountRoleTypeTransferCache();
         
         return financialAccountRoleTypeTransferCache;
     }
     
     public FinancialAccountTypeTransferCache getFinancialAccountTypeTransferCache() {
         if(financialAccountTypeTransferCache == null)
-            financialAccountTypeTransferCache = new FinancialAccountTypeTransferCache(financialControl);
+            financialAccountTypeTransferCache = new FinancialAccountTypeTransferCache();
         
         return financialAccountTypeTransferCache;
     }
     
     public FinancialAccountTypeDescriptionTransferCache getFinancialAccountTypeDescriptionTransferCache() {
         if(financialAccountTypeDescriptionTransferCache == null)
-            financialAccountTypeDescriptionTransferCache = new FinancialAccountTypeDescriptionTransferCache(financialControl);
+            financialAccountTypeDescriptionTransferCache = new FinancialAccountTypeDescriptionTransferCache();
         
         return financialAccountTypeDescriptionTransferCache;
     }
     
     public FinancialAccountTransactionTypeTransferCache getFinancialAccountTransactionTypeTransferCache() {
         if(financialAccountTransactionTypeTransferCache == null)
-            financialAccountTransactionTypeTransferCache = new FinancialAccountTransactionTypeTransferCache(financialControl);
+            financialAccountTransactionTypeTransferCache = new FinancialAccountTransactionTypeTransferCache();
         
         return financialAccountTransactionTypeTransferCache;
     }
     
     public FinancialAccountTransactionTypeDescriptionTransferCache getFinancialAccountTransactionTypeDescriptionTransferCache() {
         if(financialAccountTransactionTypeDescriptionTransferCache == null)
-            financialAccountTransactionTypeDescriptionTransferCache = new FinancialAccountTransactionTypeDescriptionTransferCache(financialControl);
+            financialAccountTransactionTypeDescriptionTransferCache = new FinancialAccountTransactionTypeDescriptionTransferCache();
         
         return financialAccountTransactionTypeDescriptionTransferCache;
     }
     
     public FinancialAccountAliasTypeTransferCache getFinancialAccountAliasTypeTransferCache() {
         if(financialAccountAliasTypeTransferCache == null)
-            financialAccountAliasTypeTransferCache = new FinancialAccountAliasTypeTransferCache(financialControl);
+            financialAccountAliasTypeTransferCache = new FinancialAccountAliasTypeTransferCache();
         
         return financialAccountAliasTypeTransferCache;
     }
     
     public FinancialAccountAliasTypeDescriptionTransferCache getFinancialAccountAliasTypeDescriptionTransferCache() {
         if(financialAccountAliasTypeDescriptionTransferCache == null)
-            financialAccountAliasTypeDescriptionTransferCache = new FinancialAccountAliasTypeDescriptionTransferCache(financialControl);
+            financialAccountAliasTypeDescriptionTransferCache = new FinancialAccountAliasTypeDescriptionTransferCache();
         
         return financialAccountAliasTypeDescriptionTransferCache;
     }
     
     public FinancialAccountRoleTransferCache getFinancialAccountRoleTransferCache() {
         if(financialAccountRoleTransferCache == null)
-            financialAccountRoleTransferCache = new FinancialAccountRoleTransferCache(financialControl);
+            financialAccountRoleTransferCache = new FinancialAccountRoleTransferCache();
         
         return financialAccountRoleTransferCache;
     }
     
     public FinancialAccountTransferCache getFinancialAccountTransferCache() {
         if(financialAccountTransferCache == null)
-            financialAccountTransferCache = new FinancialAccountTransferCache(financialControl);
+            financialAccountTransferCache = new FinancialAccountTransferCache();
         
         return financialAccountTransferCache;
     }
     
     public FinancialAccountAliasTransferCache getFinancialAccountAliasTransferCache() {
         if(financialAccountAliasTransferCache == null)
-            financialAccountAliasTransferCache = new FinancialAccountAliasTransferCache(financialControl);
+            financialAccountAliasTransferCache = new FinancialAccountAliasTransferCache();
         
         return financialAccountAliasTransferCache;
     }
     
     public FinancialAccountTransactionTransferCache getFinancialAccountTransactionTransferCache() {
         if(financialAccountTransactionTransferCache == null)
-            financialAccountTransactionTransferCache = new FinancialAccountTransactionTransferCache(financialControl);
+            financialAccountTransactionTransferCache = new FinancialAccountTransactionTransferCache();
         
         return financialAccountTransactionTransferCache;
     }

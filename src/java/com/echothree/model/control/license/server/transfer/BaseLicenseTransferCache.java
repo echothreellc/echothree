@@ -16,8 +16,6 @@
 
 package com.echothree.model.control.license.server.transfer;
 
-import com.echothree.model.control.license.server.control.LicenseControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.transfer.BaseTransferCache;
@@ -25,13 +23,9 @@ import com.echothree.util.server.transfer.BaseTransferCache;
 public abstract class BaseLicenseTransferCache<K extends BaseEntity, V extends BaseTransfer>
         extends BaseTransferCache<K, V> {
     
-    LicenseControl licenseControl;
-    
     /** Creates a new instance of BaseLicenseTransferCache */
-    protected BaseLicenseTransferCache(LicenseControl licenseControl) {
+    protected BaseLicenseTransferCache() {
         super();
-        
-        this.licenseControl = licenseControl;
     }
     
 }

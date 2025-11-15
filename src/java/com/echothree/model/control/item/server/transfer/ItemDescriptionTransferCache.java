@@ -36,6 +36,7 @@ public class ItemDescriptionTransferCache
 
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     EventControl eventControl = Session.getModelController(EventControl.class);
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
@@ -57,8 +58,8 @@ public class ItemDescriptionTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of ItemDescriptionTransferCache */
-    public ItemDescriptionTransferCache(ItemControl itemControl) {
-        super(itemControl);
+    public ItemDescriptionTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {

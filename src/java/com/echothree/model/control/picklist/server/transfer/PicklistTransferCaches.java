@@ -16,14 +16,10 @@
 
 package com.echothree.model.control.picklist.server.transfer;
 
-import com.echothree.model.control.picklist.server.control.PicklistControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 
 public class PicklistTransferCaches
         extends BaseTransferCaches {
-    
-    protected PicklistControl picklistControl;
     
     protected PicklistTypeTransferCache picklistTypeTransferCache;
     protected PicklistTypeDescriptionTransferCache picklistTypeDescriptionTransferCache;
@@ -35,64 +31,62 @@ public class PicklistTransferCaches
     protected PicklistTimeTransferCache picklistTimeTransferCache;
     
     /** Creates a new instance of PicklistTransferCaches */
-    public PicklistTransferCaches(PicklistControl picklistControl) {
+    public PicklistTransferCaches() {
         super();
-        
-        this.picklistControl = picklistControl;
     }
     
     public PicklistTypeTransferCache getPicklistTypeTransferCache() {
         if(picklistTypeTransferCache == null)
-            picklistTypeTransferCache = new PicklistTypeTransferCache(picklistControl);
+            picklistTypeTransferCache = new PicklistTypeTransferCache();
         
         return picklistTypeTransferCache;
     }
     
     public PicklistTypeDescriptionTransferCache getPicklistTypeDescriptionTransferCache() {
         if(picklistTypeDescriptionTransferCache == null)
-            picklistTypeDescriptionTransferCache = new PicklistTypeDescriptionTransferCache(picklistControl);
+            picklistTypeDescriptionTransferCache = new PicklistTypeDescriptionTransferCache();
         
         return picklistTypeDescriptionTransferCache;
     }
     
     public PicklistAliasTypeTransferCache getPicklistAliasTypeTransferCache() {
         if(picklistAliasTypeTransferCache == null)
-            picklistAliasTypeTransferCache = new PicklistAliasTypeTransferCache(picklistControl);
+            picklistAliasTypeTransferCache = new PicklistAliasTypeTransferCache();
         
         return picklistAliasTypeTransferCache;
     }
     
     public PicklistAliasTypeDescriptionTransferCache getPicklistAliasTypeDescriptionTransferCache() {
         if(picklistAliasTypeDescriptionTransferCache == null)
-            picklistAliasTypeDescriptionTransferCache = new PicklistAliasTypeDescriptionTransferCache(picklistControl);
+            picklistAliasTypeDescriptionTransferCache = new PicklistAliasTypeDescriptionTransferCache();
         
         return picklistAliasTypeDescriptionTransferCache;
     }
     
     public PicklistAliasTransferCache getPicklistAliasTransferCache() {
         if(picklistAliasTransferCache == null)
-            picklistAliasTransferCache = new PicklistAliasTransferCache(picklistControl);
+            picklistAliasTransferCache = new PicklistAliasTransferCache();
         
         return picklistAliasTransferCache;
     }
     
     public PicklistTimeTypeTransferCache getPicklistTimeTypeTransferCache() {
         if(picklistTimeTypeTransferCache == null)
-            picklistTimeTypeTransferCache = new PicklistTimeTypeTransferCache(picklistControl);
+            picklistTimeTypeTransferCache = new PicklistTimeTypeTransferCache();
 
         return picklistTimeTypeTransferCache;
     }
 
     public PicklistTimeTransferCache getPicklistTimeTransferCache() {
         if(picklistTimeTransferCache == null)
-            picklistTimeTransferCache = new PicklistTimeTransferCache(picklistControl);
+            picklistTimeTransferCache = new PicklistTimeTransferCache();
 
         return picklistTimeTransferCache;
     }
 
     public PicklistTimeTypeDescriptionTransferCache getPicklistTimeTypeDescriptionTransferCache() {
         if(picklistTimeTypeDescriptionTransferCache == null)
-            picklistTimeTypeDescriptionTransferCache = new PicklistTimeTypeDescriptionTransferCache(picklistControl);
+            picklistTimeTypeDescriptionTransferCache = new PicklistTimeTypeDescriptionTransferCache();
 
         return picklistTimeTypeDescriptionTransferCache;
     }

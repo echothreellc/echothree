@@ -25,14 +25,13 @@ import com.echothree.util.server.persistence.Session;
 
 public class GeoCodeLanguageTransferCache
         extends BaseGeoTransferCache<GeoCodeLanguage, GeoCodeLanguageTransfer> {
-    
-    PartyControl partyControl;
+
+    GeoControl geoControl = Session.getModelController(GeoControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of GeoCodeLanguageTransferCache */
-    public GeoCodeLanguageTransferCache(GeoControl geoControl) {
-        super(geoControl);
-        
-        partyControl = Session.getModelController(PartyControl.class);
+    public GeoCodeLanguageTransferCache() {
+        super();
     }
     
     public GeoCodeLanguageTransfer getGeoCodeLanguageTransfer(UserVisit userVisit, GeoCodeLanguage geoCodeLanguage) {

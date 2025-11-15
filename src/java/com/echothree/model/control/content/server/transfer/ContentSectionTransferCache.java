@@ -23,11 +23,14 @@ import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentSection;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
+import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.transfer.ListWrapperBuilder;
 
 public class ContentSectionTransferCache
         extends BaseContentTransferCache<ContentSection, ContentSectionTransfer> {
-    
+
+    ContentControl contentControl = Session.getModelController(ContentControl.class);
+
     boolean includeContentPages;
     
     TransferProperties transferProperties;
@@ -40,8 +43,8 @@ public class ContentSectionTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of ContentSectionTransferCache */
-    public ContentSectionTransferCache(ContentControl contentControl) {
-        super(contentControl);
+    public ContentSectionTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {

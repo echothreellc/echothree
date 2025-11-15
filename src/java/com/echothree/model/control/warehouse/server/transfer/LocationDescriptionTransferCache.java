@@ -20,13 +20,16 @@ import com.echothree.model.control.warehouse.common.transfer.LocationDescription
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.LocationDescription;
+import com.echothree.util.server.persistence.Session;
 
 public class LocationDescriptionTransferCache
         extends BaseWarehouseDescriptionTransferCache<LocationDescription, LocationDescriptionTransfer> {
-    
+
+    WarehouseControl warehouseControl = Session.getModelController(WarehouseControl.class);
+
     /** Creates a new instance of LocationDescriptionTransferCache */
-    public LocationDescriptionTransferCache(WarehouseControl warehouseControl) {
-        super(warehouseControl);
+    public LocationDescriptionTransferCache() {
+        super();
     }
     
     public LocationDescriptionTransfer getLocationDescriptionTransfer(UserVisit userVisit, LocationDescription locationDescription) {

@@ -31,11 +31,12 @@ public class ItemUnitPriceLimitTransferCache
     
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
     InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of ItemUnitPriceLimitTransferCache */
-    public ItemUnitPriceLimitTransferCache(ItemControl itemControl) {
-        super(itemControl);
+    public ItemUnitPriceLimitTransferCache() {
+        super();
     }
     
     @Override

@@ -20,13 +20,16 @@ import com.echothree.model.control.user.common.transfer.RecoveryQuestionTransfer
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.server.entity.RecoveryQuestion;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class RecoveryQuestionTransferCache
         extends BaseUserTransferCache<RecoveryQuestion, RecoveryQuestionTransfer> {
-    
+
+    UserControl userControl = Session.getModelController(UserControl.class);
+
     /** Creates a new instance of RecoveryQuestionTransferCache */
-    public RecoveryQuestionTransferCache(UserControl userControl) {
-        super(userControl);
+    public RecoveryQuestionTransferCache() {
+        super();
 
         setIncludeEntityInstance(true);
     }

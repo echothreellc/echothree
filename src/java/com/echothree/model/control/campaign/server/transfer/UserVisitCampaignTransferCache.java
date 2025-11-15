@@ -26,11 +26,12 @@ import com.echothree.util.server.persistence.Session;
 public class UserVisitCampaignTransferCache
         extends BaseCampaignTransferCache<UserVisitCampaign, UserVisitCampaignTransfer> {
 
+    CampaignControl campaignControl = Session.getModelController(CampaignControl.class);
     UserControl userControl = Session.getModelController(UserControl.class);
     
     /** Creates a new instance of UserVisitCampaignTransferCache */
-    public UserVisitCampaignTransferCache(CampaignControl campaignControl) {
-        super(campaignControl);
+    public UserVisitCampaignTransferCache() {
+        super();
     }
 
     public UserVisitCampaignTransfer getUserVisitCampaignTransfer(UserVisit userVisit, UserVisitCampaign userVisitCampaign) {

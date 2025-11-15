@@ -27,10 +27,11 @@ public class TrainingClassPageTranslationTransferCache
         extends BaseTrainingDescriptionTransferCache<TrainingClassPageTranslation, TrainingClassPageTranslationTransfer> {
 
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
-    
+    TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
+
     /** Creates a new instance of TrainingClassPageTranslationTransferCache */
-    public TrainingClassPageTranslationTransferCache(TrainingControl trainingControl) {
-        super(trainingControl);
+    public TrainingClassPageTranslationTransferCache() {
+        super();
     }
     
     public TrainingClassPageTranslationTransfer getTrainingClassPageTranslationTransfer(UserVisit userVisit, TrainingClassPageTranslation trainingClassPageTranslation) {

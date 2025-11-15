@@ -22,10 +22,13 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowStep;
 import com.echothree.util.common.form.TransferProperties;
+import com.echothree.util.server.persistence.Session;
 
 public class WorkflowStepTransferCache
         extends BaseWorkflowTransferCache<WorkflowStep, WorkflowStepTransfer> {
-    
+
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+
     TransferProperties transferProperties;
     boolean filterWorkflow;
     boolean filterWorkflowStepName;
@@ -37,9 +40,7 @@ public class WorkflowStepTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of WorkflowStepTransferCache */
-    public WorkflowStepTransferCache(WorkflowControl workflowControl) {
-        super(workflowControl);
-        
+    public WorkflowStepTransferCache() {
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
             var properties = transferProperties.getProperties(WorkflowStepTransfer.class);

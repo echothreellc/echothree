@@ -20,13 +20,16 @@ import com.echothree.model.control.term.common.transfer.TermDescriptionTransfer;
 import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.data.term.server.entity.TermDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class TermDescriptionTransferCache
         extends BaseTermDescriptionTransferCache<TermDescription, TermDescriptionTransfer> {
-    
+
+    TermControl termControl = Session.getModelController(TermControl.class);
+
     /** Creates a new instance of TermDescriptionTransferCache */
-    public TermDescriptionTransferCache(TermControl termControl) {
-        super(termControl);
+    public TermDescriptionTransferCache() {
+        super();
     }
     
     public TermDescriptionTransfer getTermDescriptionTransfer(UserVisit userVisit, TermDescription termDescription) {

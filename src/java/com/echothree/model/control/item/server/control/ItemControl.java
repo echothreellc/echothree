@@ -362,7 +362,7 @@ public class ItemControl
     
     public ItemTransferCaches getItemTransferCaches() {
         if(itemTransferCaches == null) {
-            itemTransferCaches = new ItemTransferCaches(this);
+            itemTransferCaches = new ItemTransferCaches();
         }
         
         return itemTransferCaches;

@@ -25,12 +25,13 @@ import com.echothree.util.server.persistence.Session;
 
 public class CustomerTypeContactListTransferCache
         extends BaseContactListTransferCache<CustomerTypeContactList, CustomerTypeContactListTransfer> {
-    
+
+    ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
     CustomerControl customerControl = Session.getModelController(CustomerControl.class);
     
     /** Creates a new instance of CustomerTypeContactListTransferCache */
-    public CustomerTypeContactListTransferCache(ContactListControl contactListControl) {
-        super(contactListControl);
+    public CustomerTypeContactListTransferCache() {
+        super();
     }
     
     public CustomerTypeContactListTransfer getCustomerTypeContactListTransfer(UserVisit userVisit, CustomerTypeContactList customerTypeContactList) {

@@ -130,7 +130,7 @@ public class CampaignControl
     
     public CampaignTransferCaches getCampaignTransferCaches() {
         if(campaignTransferCaches == null) {
-            campaignTransferCaches = new CampaignTransferCaches(this);
+            campaignTransferCaches = new CampaignTransferCaches();
         }
         
         return campaignTransferCaches;

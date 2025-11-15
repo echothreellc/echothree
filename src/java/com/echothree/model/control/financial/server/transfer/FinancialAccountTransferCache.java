@@ -31,15 +31,15 @@ import com.echothree.util.server.string.AmountUtils;
 public class FinancialAccountTransferCache
         extends BaseFinancialTransferCache<FinancialAccount, FinancialAccountTransfer> {
     
-    AccountingControl accountingControl;
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    FinancialControl financialControl = Session.getModelController(FinancialControl.class);
+
     boolean includeRoles;
     boolean includeTransactions;
     
     /** Creates a new instance of FinancialAccountTransferCache */
-    public FinancialAccountTransferCache(FinancialControl financialControl) {
-        super(financialControl);
-        
-        accountingControl = Session.getModelController(AccountingControl.class);
+    public FinancialAccountTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {

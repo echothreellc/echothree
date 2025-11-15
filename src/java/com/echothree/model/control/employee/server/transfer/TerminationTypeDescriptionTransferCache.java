@@ -20,13 +20,16 @@ import com.echothree.model.control.employee.common.transfer.TerminationTypeDescr
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.data.employee.server.entity.TerminationTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class TerminationTypeDescriptionTransferCache
         extends BaseEmployeeDescriptionTransferCache<TerminationTypeDescription, TerminationTypeDescriptionTransfer> {
-    
+
+    EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
+
     /** Creates a new instance of TerminationTypeDescriptionTransferCache */
-    public TerminationTypeDescriptionTransferCache(EmployeeControl employeeControl) {
-        super(employeeControl);
+    public TerminationTypeDescriptionTransferCache() {
+        super();
     }
     
     public TerminationTypeDescriptionTransfer getTerminationTypeDescriptionTransfer(UserVisit userVisit, TerminationTypeDescription terminationTypeDescription) {

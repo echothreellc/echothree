@@ -26,13 +26,12 @@ import com.echothree.util.server.persistence.Session;
 public class LetterContactMechanismPurposeTransferCache
         extends BaseLetterTransferCache<LetterContactMechanismPurpose, LetterContactMechanismPurposeTransfer> {
     
-    ContactControl contactControl;
+    ContactControl contactControl = Session.getModelController(ContactControl.class);
+    LetterControl letterControl = Session.getModelController(LetterControl.class);
     
     /** Creates a new instance of LetterContactMechanismPurposeTransferCache */
-    public LetterContactMechanismPurposeTransferCache(LetterControl letterControl) {
-        super(letterControl);
-        
-        contactControl = Session.getModelController(ContactControl.class);
+    public LetterContactMechanismPurposeTransferCache() {
+        super();
     }
     
     public LetterContactMechanismPurposeTransfer getLetterContactMechanismPurposeTransfer(UserVisit userVisit, LetterContactMechanismPurpose letterContactMechanismPurpose) {

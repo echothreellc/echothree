@@ -20,13 +20,16 @@ import com.echothree.model.control.wishlist.common.transfer.WishlistTypeDescript
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.wishlist.server.entity.WishlistTypeDescription;
+import com.echothree.util.server.persistence.Session;
 
 public class WishlistTypeDescriptionTransferCache
         extends BaseWishlistDescriptionTransferCache<WishlistTypeDescription, WishlistTypeDescriptionTransfer> {
-    
+
+    WishlistControl wishlistControl = Session.getModelController(WishlistControl.class);
+
     /** Creates a new instance of WishlistTypeDescriptionTransferCache */
-    public WishlistTypeDescriptionTransferCache(WishlistControl wishlistControl) {
-        super(wishlistControl);
+    public WishlistTypeDescriptionTransferCache() {
+        super();
     }
     
     public WishlistTypeDescriptionTransfer getWishlistTypeDescriptionTransfer(UserVisit userVisit, WishlistTypeDescription wishlistTypeDescription) {

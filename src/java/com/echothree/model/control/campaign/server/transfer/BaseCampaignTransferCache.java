@@ -16,8 +16,6 @@
 
 package com.echothree.model.control.campaign.server.transfer;
 
-import com.echothree.model.control.campaign.server.control.CampaignControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.transfer.BaseTransferCache;
@@ -25,13 +23,9 @@ import com.echothree.util.server.transfer.BaseTransferCache;
 public abstract class BaseCampaignTransferCache<K extends BaseEntity, V extends BaseTransfer>
         extends BaseTransferCache<K, V> {
     
-    CampaignControl campaignControl;
-    
     /** Creates a new instance of BaseCampaignTransferCache */
-    protected BaseCampaignTransferCache(CampaignControl campaignControl) {
+    protected BaseCampaignTransferCache() {
         super();
-        
-        this.campaignControl = campaignControl;
     }
     
 }

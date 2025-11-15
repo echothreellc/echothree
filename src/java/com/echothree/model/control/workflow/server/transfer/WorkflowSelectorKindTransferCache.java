@@ -26,13 +26,12 @@ import com.echothree.util.server.persistence.Session;
 public class WorkflowSelectorKindTransferCache
         extends BaseWorkflowTransferCache<WorkflowSelectorKind, WorkflowSelectorKindTransfer> {
     
-    SelectorControl selectorControl;
-    
+    SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+
     /** Creates a new instance of WorkflowSelectorKindTransferCache */
-    public WorkflowSelectorKindTransferCache(WorkflowControl workflowControl) {
-        super(workflowControl);
-        
-        selectorControl = Session.getModelController(SelectorControl.class);
+    public WorkflowSelectorKindTransferCache() {
+        super();
     }
     
     public WorkflowSelectorKindTransfer getWorkflowSelectorKindTransfer(UserVisit userVisit, WorkflowSelectorKind workflowSelectorKind) {

@@ -28,14 +28,16 @@ import com.echothree.util.server.persistence.Session;
 public class DocumentTransferCache
         extends BaseDocumentTransferCache<Document, DocumentTransfer> {
 
+    DocumentControl documentControl = Session.getModelController(DocumentControl.class);
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
+
     boolean includeBlob;
     boolean includeClob;
     boolean includeETag;
     
     /** Creates a new instance of DocumentTransferCache */
-    public DocumentTransferCache(DocumentControl documentControl) {
-        super(documentControl);
+    public DocumentTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {

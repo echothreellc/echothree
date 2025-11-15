@@ -16,29 +16,23 @@
 
 package com.echothree.model.control.queue.server.transfer;
 
-import com.echothree.model.control.queue.server.control.QueueControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 
 public class QueueTransferCaches
         extends BaseTransferCaches {
-    
-    protected QueueControl queueControl;
     
     protected QueueTypeTransferCache queueTypeTransferCache;
     protected QueueTypeDescriptionTransferCache queueTypeDescriptionTransferCache;
     protected QueuedEntityTransferCache queuedEntityTransferCache;
     
     /** Creates a new instance of QueueTransferCaches */
-    public QueueTransferCaches(QueueControl queueControl) {
+    public QueueTransferCaches() {
         super();
-        
-        this.queueControl = queueControl;
     }
     
     public QueueTypeTransferCache getQueueTypeTransferCache() {
         if(queueTypeTransferCache == null) {
-            queueTypeTransferCache = new QueueTypeTransferCache(queueControl);
+            queueTypeTransferCache = new QueueTypeTransferCache();
         }
 
         return queueTypeTransferCache;
@@ -46,7 +40,7 @@ public class QueueTransferCaches
 
     public QueueTypeDescriptionTransferCache getQueueTypeDescriptionTransferCache() {
         if(queueTypeDescriptionTransferCache == null) {
-            queueTypeDescriptionTransferCache = new QueueTypeDescriptionTransferCache(queueControl);
+            queueTypeDescriptionTransferCache = new QueueTypeDescriptionTransferCache();
         }
 
         return queueTypeDescriptionTransferCache;
@@ -54,7 +48,7 @@ public class QueueTransferCaches
 
     public QueuedEntityTransferCache getQueuedEntityTransferCache() {
         if(queuedEntityTransferCache == null) {
-            queuedEntityTransferCache = new QueuedEntityTransferCache(queueControl);
+            queuedEntityTransferCache = new QueuedEntityTransferCache();
         }
 
         return queuedEntityTransferCache;

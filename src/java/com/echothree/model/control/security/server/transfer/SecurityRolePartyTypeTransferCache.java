@@ -28,11 +28,12 @@ public class SecurityRolePartyTypeTransferCache
         extends BaseSecurityTransferCache<SecurityRolePartyType, SecurityRolePartyTypeTransfer> {
     
     PartyControl partyControl = Session.getModelController(PartyControl.class);
+    SecurityControl securityControl = Session.getModelController(SecurityControl.class);
     SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
         
     /** Creates a new instance of SecurityRolePartyTypeTransferCache */
-    public SecurityRolePartyTypeTransferCache(SecurityControl securityControl) {
-        super(securityControl);
+    public SecurityRolePartyTypeTransferCache() {
+        super();
     }
     
     public SecurityRolePartyTypeTransfer getSecurityRolePartyTypeTransfer(UserVisit userVisit, SecurityRolePartyType securityRolePartyType) {

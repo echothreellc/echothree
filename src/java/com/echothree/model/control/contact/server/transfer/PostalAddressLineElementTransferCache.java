@@ -20,13 +20,16 @@ import com.echothree.model.control.contact.common.transfer.PostalAddressLineElem
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.PostalAddressLineElement;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class PostalAddressLineElementTransferCache
         extends BaseContactTransferCache<PostalAddressLineElement, PostalAddressLineElementTransfer> {
-    
+
+    ContactControl contactControl = Session.getModelController(ContactControl.class);
+
     /** Creates a new instance of PostalAddressLineElementTransferCache */
-    public PostalAddressLineElementTransferCache(ContactControl contactControl) {
-        super(contactControl);
+    public PostalAddressLineElementTransferCache() {
+        super();
     }
     
     public PostalAddressLineElementTransfer getPostalAddressLineElementTransfer(UserVisit userVisit, PostalAddressLineElement postalAddressLineElement) {

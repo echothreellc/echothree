@@ -27,10 +27,11 @@ public class WorkflowEntityTypeTransferCache
         extends BaseWorkflowTransferCache<WorkflowEntityType, WorkflowEntityTypeTransfer> {
 
     EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
     /** Creates a new instance of WorkflowEntityTypeTransferCache */
-    public WorkflowEntityTypeTransferCache(WorkflowControl workflowControl) {
-        super(workflowControl);
+    public WorkflowEntityTypeTransferCache() {
+        super();
     }
     
     public WorkflowEntityTypeTransfer getWorkflowEntityTypeTransfer(UserVisit userVisit, WorkflowEntityType workflowEntityType) {

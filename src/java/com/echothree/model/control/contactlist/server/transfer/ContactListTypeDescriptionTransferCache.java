@@ -20,13 +20,16 @@ import com.echothree.model.control.contactlist.common.transfer.ContactListTypeDe
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.data.contactlist.server.entity.ContactListTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class ContactListTypeDescriptionTransferCache
         extends BaseContactListDescriptionTransferCache<ContactListTypeDescription, ContactListTypeDescriptionTransfer> {
-    
+
+    ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
+
     /** Creates a new instance of ContactListTypeDescriptionTransferCache */
-    public ContactListTypeDescriptionTransferCache(ContactListControl contactListControl) {
-        super(contactListControl);
+    public ContactListTypeDescriptionTransferCache() {
+        super();
     }
     
     public ContactListTypeDescriptionTransfer getContactListTypeDescriptionTransfer(UserVisit userVisit, ContactListTypeDescription contactListTypeDescription) {

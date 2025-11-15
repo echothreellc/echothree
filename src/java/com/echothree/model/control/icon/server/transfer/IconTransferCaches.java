@@ -16,14 +16,10 @@
 
 package com.echothree.model.control.icon.server.transfer;
 
-import com.echothree.model.control.icon.server.control.IconControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 
 public class IconTransferCaches
         extends BaseTransferCaches {
-    
-    protected IconControl iconControl;
     
     protected IconTransferCache iconTransferCache;
     protected IconUsageTypeTransferCache iconUsageTypeTransferCache;
@@ -31,36 +27,34 @@ public class IconTransferCaches
     protected IconUsageTransferCache iconUsageTransferCache;
     
     /** Creates a new instance of IconTransferCaches */
-    public IconTransferCaches(IconControl iconControl) {
+    public IconTransferCaches() {
         super();
-        
-        this.iconControl = iconControl;
     }
     
     public IconTransferCache getIconTransferCache() {
         if(iconTransferCache == null)
-            iconTransferCache = new IconTransferCache(iconControl);
+            iconTransferCache = new IconTransferCache();
         
         return iconTransferCache;
     }
     
     public IconUsageTypeTransferCache getIconUsageTypeTransferCache() {
         if(iconUsageTypeTransferCache == null)
-            iconUsageTypeTransferCache = new IconUsageTypeTransferCache(iconControl);
+            iconUsageTypeTransferCache = new IconUsageTypeTransferCache();
         
         return iconUsageTypeTransferCache;
     }
     
     public IconUsageTypeDescriptionTransferCache getIconUsageTypeDescriptionTransferCache() {
         if(iconUsageTypeDescriptionTransferCache == null)
-            iconUsageTypeDescriptionTransferCache = new IconUsageTypeDescriptionTransferCache(iconControl);
+            iconUsageTypeDescriptionTransferCache = new IconUsageTypeDescriptionTransferCache();
         
         return iconUsageTypeDescriptionTransferCache;
     }
     
     public IconUsageTransferCache getIconUsageTransferCache() {
         if(iconUsageTransferCache == null)
-            iconUsageTransferCache = new IconUsageTransferCache(iconControl);
+            iconUsageTransferCache = new IconUsageTransferCache();
         
         return iconUsageTransferCache;
     }

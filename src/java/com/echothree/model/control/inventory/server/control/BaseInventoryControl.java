@@ -17,9 +17,7 @@
 package com.echothree.model.control.inventory.server.control;
 
 import com.echothree.model.control.inventory.server.transfer.InventoryTransferCaches;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.control.BaseModelControl;
-import com.echothree.util.server.persistence.Session;
 
 public abstract class BaseInventoryControl
         extends BaseModelControl {
@@ -37,9 +35,7 @@ public abstract class BaseInventoryControl
     
     public InventoryTransferCaches getInventoryTransferCaches() {
         if(inventoryTransferCaches == null) {
-            var inventoryControl = Session.getModelController(InventoryControl.class);
-
-            inventoryTransferCaches = new InventoryTransferCaches(inventoryControl);
+            inventoryTransferCaches = new InventoryTransferCaches();
         }
         
         return inventoryTransferCaches;

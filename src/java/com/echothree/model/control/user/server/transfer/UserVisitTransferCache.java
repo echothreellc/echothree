@@ -36,12 +36,13 @@ public class UserVisitTransferCache
     CampaignControl campaignControl = Session.getModelController(CampaignControl.class);
     OfferUseControl offerUseControl = Session.getModelController(OfferUseControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
-    
+    UserControl userControl = Session.getModelController(UserControl.class);
+
     boolean includeUserVisitCampaigns;
     
     /** Creates a new instance of UserVisitTransferCache */
-    public UserVisitTransferCache(UserControl userControl) {
-        super(userControl);
+    public UserVisitTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {

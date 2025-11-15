@@ -20,13 +20,16 @@ import com.echothree.model.control.sequence.common.transfer.SequenceChecksumType
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.sequence.server.entity.SequenceChecksumType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class SequenceChecksumTypeTransferCache
         extends BaseSequenceTransferCache<SequenceChecksumType, SequenceChecksumTypeTransfer> {
-    
+
+    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
+
     /** Creates a new instance of SequenceChecksumTypeTransferCache */
-    public SequenceChecksumTypeTransferCache(SequenceControl sequenceControl) {
-        super(sequenceControl);
+    public SequenceChecksumTypeTransferCache() {
+        super();
     }
     
     public SequenceChecksumTypeTransfer getSequenceChecksumTypeTransfer(UserVisit userVisit, SequenceChecksumType sequenceChecksumType) {

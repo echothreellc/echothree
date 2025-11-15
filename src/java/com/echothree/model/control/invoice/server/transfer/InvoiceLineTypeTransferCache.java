@@ -20,13 +20,16 @@ import com.echothree.model.control.invoice.common.transfer.InvoiceLineTypeTransf
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.data.invoice.server.entity.InvoiceLineType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class InvoiceLineTypeTransferCache
         extends BaseInvoiceTransferCache<InvoiceLineType, InvoiceLineTypeTransfer> {
-    
+
+    InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
+
     /** Creates a new instance of InvoiceLineTypeTransferCache */
-    public InvoiceLineTypeTransferCache(InvoiceControl invoiceControl) {
-        super(invoiceControl);
+    public InvoiceLineTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

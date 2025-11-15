@@ -29,8 +29,8 @@ public class BatchTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     
     /** Creates a new instance of BatchTransferCache */
-    public BatchTransferCache(BatchControl batchControl) {
-        super(batchControl);
+    public BatchTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

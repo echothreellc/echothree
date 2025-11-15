@@ -48,11 +48,12 @@ public class EmployeeTransferCache
         extends BaseEmployeeTransferCache<Party, EmployeeTransfer> {
 
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
-    PartyApplicationEditorUseControl partyApplicationEditorUseControl = Session.getModelController(PartyApplicationEditorUseControl.class);
     ContactControl contactControl = Session.getModelController(ContactControl.class);
     ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
     DocumentControl documentControl = Session.getModelController(DocumentControl.class);
+    EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+    PartyApplicationEditorUseControl partyApplicationEditorUseControl = Session.getModelController(PartyApplicationEditorUseControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     PartyEntityTypeControl partyEntityTypeControl = Session.getModelController(PartyEntityTypeControl.class);
     PrinterControl printerControl = Session.getModelController(PrinterControl.class);
@@ -81,8 +82,8 @@ public class EmployeeTransferCache
     boolean includePartySkills;
 
     /** Creates a new instance of EmployeeTransferCache */
-    public EmployeeTransferCache(EmployeeControl employeeControl) {
-        super(employeeControl);
+    public EmployeeTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {

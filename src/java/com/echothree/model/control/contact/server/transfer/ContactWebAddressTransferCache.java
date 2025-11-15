@@ -18,7 +18,6 @@ package com.echothree.model.control.contact.server.transfer;
 
 import com.echothree.model.control.contact.common.transfer.ContactWebAddressTransfer;
 import com.echothree.model.control.contact.common.workflow.WebAddressStatusConstants;
-import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.contact.server.entity.ContactWebAddress;
@@ -32,8 +31,8 @@ public class ContactWebAddressTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
     /** Creates a new instance of ContactWebAddressTransferCache */
-    public ContactWebAddressTransferCache(ContactControl contactControl) {
-        super(contactControl);
+    public ContactWebAddressTransferCache() {
+        super();
     }
     
     public ContactWebAddressTransfer getContactWebAddressTransfer(UserVisit userVisit, ContactWebAddress contactWebAddress) {

@@ -20,13 +20,16 @@ import com.echothree.model.control.training.common.transfer.PartyTrainingClassSe
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionPage;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class PartyTrainingClassSessionPageTransferCache
         extends BaseTrainingTransferCache<PartyTrainingClassSessionPage, PartyTrainingClassSessionPageTransfer> {
-    
+
+    TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
+
     /** Creates a new instance of PartyTrainingClassSessionPageTransferCache */
-    public PartyTrainingClassSessionPageTransferCache(TrainingControl trainingControl) {
-        super(trainingControl);
+    public PartyTrainingClassSessionPageTransferCache() {
+        super();
     }
     
     public PartyTrainingClassSessionPageTransfer getPartyTrainingClassSessionPageTransfer(UserVisit userVisit, PartyTrainingClassSessionPage partyTrainingClassSessionPage) {

@@ -29,11 +29,12 @@ public class ItemUnitLimitTransferCache
         extends BaseItemTransferCache<ItemUnitLimit, ItemUnitLimitTransfer> {
     
     InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of ItemUnitLimitTransferCache */
-    public ItemUnitLimitTransferCache(ItemControl itemControl) {
-        super(itemControl);
+    public ItemUnitLimitTransferCache() {
+        super();
     }
     
     @Override

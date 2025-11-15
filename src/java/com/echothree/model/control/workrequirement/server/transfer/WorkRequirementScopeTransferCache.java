@@ -36,12 +36,12 @@ public class WorkRequirementScopeTransferCache
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
     WorkEffortControl workEffortControl = Session.getModelController(WorkEffortControl.class);
+    WorkRequirementControl workRequirementControl = Session.getModelController(WorkRequirementControl.class);
+
     boolean includeWorkRequirements;
     
     /** Creates a new instance of WorkRequirementScopeTransferCache */
-    public WorkRequirementScopeTransferCache(WorkRequirementControl workRequirementControl) {
-        super(workRequirementControl);
-
+    public WorkRequirementScopeTransferCache() {
         var options = session.getOptions();
         if(options != null) {
             includeWorkRequirements = options.contains(WorkRequirementOptions.WorkRequirementScopeIncludeWorkRequirements);

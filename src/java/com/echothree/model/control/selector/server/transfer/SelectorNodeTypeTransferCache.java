@@ -20,13 +20,16 @@ import com.echothree.model.control.selector.common.transfer.SelectorNodeTypeTran
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.selector.server.entity.SelectorNodeType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class SelectorNodeTypeTransferCache
         extends BaseSelectorTransferCache<SelectorNodeType, SelectorNodeTypeTransfer> {
-    
+
+    SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
+
     /** Creates a new instance of SelectorNodeTypeTransferCache */
-    public SelectorNodeTypeTransferCache(SelectorControl selectorControl) {
-        super(selectorControl);
+    public SelectorNodeTypeTransferCache() {
+        super();
     }
     
     public SelectorNodeTypeTransfer getSelectorNodeTypeTransfer(UserVisit userVisit, SelectorNodeType selectorNodeType) {

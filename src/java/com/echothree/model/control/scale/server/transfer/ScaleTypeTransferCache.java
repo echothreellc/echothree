@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.scale.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.scale.common.transfer.ScaleTypeTransfer;
 import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.data.scale.server.entity.ScaleType;
@@ -26,11 +25,11 @@ import com.echothree.util.server.persistence.Session;
 public class ScaleTypeTransferCache
         extends BaseScaleTransferCache<ScaleType, ScaleTypeTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    ScaleControl scaleControl = Session.getModelController(ScaleControl.class);
 
     /** Creates a new instance of ScaleTypeTransferCache */
-    public ScaleTypeTransferCache(ScaleControl scaleControl) {
-        super(scaleControl);
+    public ScaleTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

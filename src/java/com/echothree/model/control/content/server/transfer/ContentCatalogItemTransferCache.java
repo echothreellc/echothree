@@ -35,6 +35,7 @@ public class ContentCatalogItemTransferCache
         extends BaseContentTransferCache<ContentCatalogItem, ContentCatalogItemTransfer> {
 
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    ContentControl contentControl = Session.getModelController(ContentControl.class);
     InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
     ItemControl itemControl = Session.getModelController(ItemControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
@@ -57,8 +58,8 @@ public class ContentCatalogItemTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of ContentCatalogItemTransferCache */
-    public ContentCatalogItemTransferCache(ContentControl contentControl) {
-        super(contentControl);
+    public ContentCatalogItemTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {

@@ -27,10 +27,11 @@ public class SubscriptionTypeTransferCache
         extends BaseSubscriptionTransferCache<SubscriptionType, SubscriptionTypeTransfer> {
     
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
-    
+    SubscriptionControl subscriptionControl = Session.getModelController(SubscriptionControl.class);
+
     /** Creates a new instance of SubscriptionTypeTransferCache */
-    public SubscriptionTypeTransferCache(SubscriptionControl subscriptionControl) {
-        super(subscriptionControl);
+    public SubscriptionTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }

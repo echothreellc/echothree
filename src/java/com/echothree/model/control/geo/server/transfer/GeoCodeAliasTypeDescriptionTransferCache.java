@@ -20,13 +20,16 @@ import com.echothree.model.control.geo.common.transfer.GeoCodeAliasTypeDescripti
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.data.geo.server.entity.GeoCodeAliasTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class GeoCodeAliasTypeDescriptionTransferCache
         extends BaseGeoDescriptionTransferCache<GeoCodeAliasTypeDescription, GeoCodeAliasTypeDescriptionTransfer> {
-    
+
+    GeoControl geoControl = Session.getModelController(GeoControl.class);
+
     /** Creates a new instance of GeoCodeAliasTypeDescriptionTransferCache */
-    public GeoCodeAliasTypeDescriptionTransferCache(GeoControl geoControl) {
-        super(geoControl);
+    public GeoCodeAliasTypeDescriptionTransferCache() {
+        super();
     }
     
     public GeoCodeAliasTypeDescriptionTransfer getGeoCodeAliasTypeDescriptionTransfer(UserVisit userVisit, GeoCodeAliasTypeDescription geoCodeAliasTypeDescription) {
