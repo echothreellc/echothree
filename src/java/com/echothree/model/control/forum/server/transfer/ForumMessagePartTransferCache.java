@@ -31,15 +31,17 @@ import com.echothree.util.server.persistence.Session;
 public class ForumMessagePartTransferCache
         extends BaseForumTransferCache<ForumMessagePart, ForumMessagePartTransfer> {
 
+    ForumControl forumControl = Session.getModelController(ForumControl.class);
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
+
     boolean includeBlob;
     boolean includeClob;
     boolean includeString;
     
     /** Creates a new instance of ForumMessagePartTransferCache */
-    public ForumMessagePartTransferCache(ForumControl forumControl) {
-        super(forumControl);
+    public ForumMessagePartTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {

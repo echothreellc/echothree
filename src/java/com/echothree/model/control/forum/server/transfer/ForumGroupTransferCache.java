@@ -30,13 +30,15 @@ import java.util.List;
 
 public class ForumGroupTransferCache
         extends BaseForumTransferCache<ForumGroup, ForumGroupTransfer> {
-    
+
+    ForumControl forumControl = Session.getModelController(ForumControl.class);
     IconControl iconControl = Session.getModelController(IconControl.class);
+
     boolean includeForums;
     
     /** Creates a new instance of ForumGroupTransferCache */
-    public ForumGroupTransferCache(ForumControl forumControl) {
-        super(forumControl);
+    public ForumGroupTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
