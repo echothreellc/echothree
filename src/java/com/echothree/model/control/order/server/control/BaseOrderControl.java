@@ -25,7 +25,7 @@ public class BaseOrderControl
         extends BaseModelControl {
 
     /** Creates a new instance of OrderControl */
-    public BaseOrderControl() {
+    protected BaseOrderControl() {
         super();
     }
     

@@ -24,7 +24,7 @@ public class BasePartyControl
         extends BaseModelControl {
 
     /** Creates a new instance of BasePartyControl */
-    public BasePartyControl() {
+    protected BasePartyControl() {
         super();
     }
     

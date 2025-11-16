@@ -25,7 +25,7 @@ public class BaseOfferControl
         extends BaseModelControl {
 
     /** Creates a new instance of BaseOfferControl */
-    public BaseOfferControl() {
+    protected BaseOfferControl() {
         super();
     }
     

@@ -25,7 +25,7 @@ public class BaseAccountingControl
         extends BaseModelControl {
 
     /** Creates a new instance of AccountingControl */
-    public BaseAccountingControl() {
+    protected BaseAccountingControl() {
         super();
     }
     
