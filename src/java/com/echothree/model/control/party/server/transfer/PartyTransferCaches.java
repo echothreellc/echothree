@@ -18,7 +18,9 @@ package com.echothree.model.control.party.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyTransferCaches
         extends BaseTransferCaches {
     
@@ -55,7 +57,7 @@ public class PartyTransferCaches
     protected PartyApplicationEditorUseTransferCache partyApplicationEditorUseTransferCache;
 
     /** Creates a new instance of PartyTransferCaches */
-    public PartyTransferCaches() {
+    protected PartyTransferCaches() {
         super();
     }
     

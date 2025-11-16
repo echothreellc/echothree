@@ -19,6 +19,7 @@ package com.echothree.model.control.offer.server.control;
 import com.echothree.model.control.offer.server.transfer.OfferTransferCaches;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
 
 public class BaseOfferControl
         extends BaseModelControl {
@@ -36,7 +37,7 @@ public class BaseOfferControl
     
     public OfferTransferCaches getOfferTransferCaches() {
         if(offerTransferCaches == null) {
-            offerTransferCaches = new OfferTransferCaches();
+            offerTransferCaches = CDI.current().select(OfferTransferCaches.class).get();
         }
         
         return offerTransferCaches;

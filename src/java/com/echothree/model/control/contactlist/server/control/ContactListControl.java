@@ -102,6 +102,7 @@ import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -131,7 +132,7 @@ public class ContactListControl
     
     public ContactListTransferCaches getContactListTransferCaches() {
         if(contactListTransferCaches == null) {
-            contactListTransferCaches = new ContactListTransferCaches();
+            contactListTransferCaches = CDI.current().select(ContactListTransferCaches.class).get();
         }
         
         return contactListTransferCaches;

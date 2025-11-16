@@ -77,6 +77,7 @@ import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -107,7 +108,7 @@ public class CustomerControl
     
     public CustomerTransferCaches getCustomerTransferCaches() {
         if(customerTransferCaches == null) {
-            customerTransferCaches = new CustomerTransferCaches();
+            customerTransferCaches = CDI.current().select(CustomerTransferCaches.class).get();
         }
         
         return customerTransferCaches;

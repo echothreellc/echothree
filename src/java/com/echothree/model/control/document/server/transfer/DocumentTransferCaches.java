@@ -18,7 +18,9 @@ package com.echothree.model.control.document.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class DocumentTransferCaches
         extends BaseTransferCaches {
     
@@ -33,7 +35,7 @@ public class DocumentTransferCaches
     protected PartyDocumentTransferCache partyDocumentTransferCache;
     
     /** Creates a new instance of DocumentTransferCaches */
-    public DocumentTransferCaches() {
+    protected DocumentTransferCaches() {
         super();
     }
     

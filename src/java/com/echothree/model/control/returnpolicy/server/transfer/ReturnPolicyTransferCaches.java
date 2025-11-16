@@ -18,7 +18,9 @@ package com.echothree.model.control.returnpolicy.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ReturnPolicyTransferCaches
         extends BaseTransferCaches {
     
@@ -36,7 +38,7 @@ public class ReturnPolicyTransferCaches
     protected ReturnTypeShippingMethodTransferCache returnTypeShippingMethodTransferCache;
     
     /** Creates a new instance of ReturnPolicyTransferCaches */
-    public ReturnPolicyTransferCaches() {
+    protected ReturnPolicyTransferCaches() {
         super();
     }
     

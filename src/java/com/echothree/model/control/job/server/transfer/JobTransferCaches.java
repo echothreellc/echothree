@@ -18,7 +18,9 @@ package com.echothree.model.control.job.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class JobTransferCaches
         extends BaseTransferCaches {
     
@@ -26,7 +28,7 @@ public class JobTransferCaches
     protected JobTransferCache jobTransferCache;
     
     /** Creates a new instance of JobTransferCaches */
-    public JobTransferCaches() {
+    protected JobTransferCaches() {
         super();
     }
     

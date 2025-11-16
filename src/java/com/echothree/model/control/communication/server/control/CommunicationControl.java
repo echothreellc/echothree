@@ -80,6 +80,7 @@ import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.persistence.EncryptionUtils;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -108,7 +109,7 @@ public class CommunicationControl
     
     public CommunicationTransferCaches getCommunicationTransferCaches() {
         if(communicationTransferCaches == null) {
-            communicationTransferCaches = new CommunicationTransferCaches();
+            communicationTransferCaches = CDI.current().select(CommunicationTransferCaches.class).get();
         }
         
         return communicationTransferCaches;

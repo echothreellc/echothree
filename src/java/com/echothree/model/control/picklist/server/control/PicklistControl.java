@@ -65,6 +65,7 @@ import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
@@ -95,7 +96,7 @@ public class PicklistControl
 
     public PicklistTransferCaches getPicklistTransferCaches() {
         if(picklistTransferCaches == null) {
-            picklistTransferCaches = new PicklistTransferCaches();
+            picklistTransferCaches = CDI.current().select(PicklistTransferCaches.class).get();
         }
 
         return picklistTransferCaches;

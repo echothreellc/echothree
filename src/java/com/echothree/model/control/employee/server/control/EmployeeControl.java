@@ -136,6 +136,7 @@ import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -167,7 +168,7 @@ public class EmployeeControl
     
     public EmployeeTransferCaches getEmployeeTransferCaches() {
         if(employeeTransferCaches == null) {
-            employeeTransferCaches = new EmployeeTransferCaches();
+            employeeTransferCaches = CDI.current().select(EmployeeTransferCaches.class).get();
         }
         
         return employeeTransferCaches;

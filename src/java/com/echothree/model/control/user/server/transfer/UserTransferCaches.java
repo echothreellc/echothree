@@ -18,7 +18,9 @@ package com.echothree.model.control.user.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class UserTransferCaches
         extends BaseTransferCaches {
     
@@ -35,7 +37,7 @@ public class UserTransferCaches
     protected UserLoginPasswordEncoderTypeTransferCache userLoginPasswordEncoderTypeTransferCache;
     
     /** Creates a new instance of UserTransferCaches */
-    public UserTransferCaches() {
+    protected UserTransferCaches() {
         super();
     }
     

@@ -18,7 +18,9 @@ package com.echothree.model.control.campaign.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CampaignTransferCaches
         extends BaseTransferCaches {
     
@@ -35,7 +37,7 @@ public class CampaignTransferCaches
     protected UserVisitCampaignTransferCache userVisitCampaignTransferCache;
     
     /** Creates a new instance of CampaignTransferCaches */
-    public CampaignTransferCaches() {
+    protected CampaignTransferCaches() {
         super();
     }
     

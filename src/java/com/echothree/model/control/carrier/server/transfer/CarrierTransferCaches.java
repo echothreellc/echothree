@@ -18,7 +18,9 @@ package com.echothree.model.control.carrier.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CarrierTransferCaches
         extends BaseTransferCaches {
     
@@ -34,7 +36,7 @@ public class CarrierTransferCaches
     CarrierServiceOptionTransferCache carrierServiceOptionTransferCache;
     
     /** Creates a new instance of CarrierTransferCaches */
-    public CarrierTransferCaches() {
+    protected CarrierTransferCaches() {
         super();
     }
     

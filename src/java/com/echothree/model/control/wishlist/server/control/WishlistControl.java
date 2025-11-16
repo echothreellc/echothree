@@ -69,6 +69,7 @@ import com.echothree.model.data.wishlist.server.value.WishlistValue;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
@@ -95,7 +96,7 @@ public class WishlistControl
     
     public WishlistTransferCaches getWishlistTransferCaches() {
         if(wishlistTransferCaches == null) {
-            wishlistTransferCaches = new WishlistTransferCaches();
+            wishlistTransferCaches = CDI.current().select(WishlistTransferCaches.class).get();
         }
         
         return wishlistTransferCaches;

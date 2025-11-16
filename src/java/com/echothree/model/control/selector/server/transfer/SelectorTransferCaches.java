@@ -18,7 +18,9 @@ package com.echothree.model.control.selector.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SelectorTransferCaches
         extends BaseTransferCaches {
     
@@ -34,7 +36,7 @@ public class SelectorTransferCaches
     protected SelectorPartyTransferCache selectorPartyTransferCache;
     
     /** Creates a new instance of SelectorTransferCaches */
-    public SelectorTransferCaches() {
+    protected SelectorTransferCaches() {
         super();
     }
     

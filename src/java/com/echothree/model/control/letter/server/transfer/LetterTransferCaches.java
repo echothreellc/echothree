@@ -18,7 +18,9 @@ package com.echothree.model.control.letter.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LetterTransferCaches
         extends BaseTransferCaches {
     
@@ -30,7 +32,7 @@ public class LetterTransferCaches
     protected LetterContactMechanismPurposeTransferCache letterContactMechanismPurposeTransferCache;
     
     /** Creates a new instance of LetterTransferCaches */
-    public LetterTransferCaches() {
+    protected LetterTransferCaches() {
         super();
     }
     

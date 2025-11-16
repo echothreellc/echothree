@@ -18,7 +18,9 @@ package com.echothree.model.control.scale.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ScaleTransferCaches
         extends BaseTransferCaches {
     
@@ -31,7 +33,7 @@ public class ScaleTransferCaches
     protected PartyScaleUseTransferCache partyScaleUseTransferCache;
     
     /** Creates a new instance of ScaleTransferCaches */
-    public ScaleTransferCaches() {
+    protected ScaleTransferCaches() {
         super();
     }
     

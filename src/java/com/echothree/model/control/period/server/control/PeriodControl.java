@@ -58,6 +58,7 @@ import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -86,7 +87,7 @@ public class PeriodControl
     
     public PeriodTransferCaches getPeriodTransferCaches() {
         if(periodTransferCaches == null) {
-            periodTransferCaches = new PeriodTransferCaches();
+            periodTransferCaches = CDI.current().select(PeriodTransferCaches.class).get();
         }
         
         return periodTransferCaches;

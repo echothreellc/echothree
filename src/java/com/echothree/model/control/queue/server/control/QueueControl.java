@@ -40,6 +40,7 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
@@ -69,7 +70,7 @@ public class QueueControl
     
     public QueueTransferCaches getQueueTransferCaches() {
         if(queueTransferCaches == null) {
-            queueTransferCaches = new QueueTransferCaches();
+            queueTransferCaches = CDI.current().select(QueueTransferCaches.class).get();
         }
         
         return queueTransferCaches;

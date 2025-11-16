@@ -18,7 +18,9 @@ package com.echothree.model.control.picklist.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PicklistTransferCaches
         extends BaseTransferCaches {
     
@@ -32,7 +34,7 @@ public class PicklistTransferCaches
     protected PicklistTimeTransferCache picklistTimeTransferCache;
     
     /** Creates a new instance of PicklistTransferCaches */
-    public PicklistTransferCaches() {
+    protected PicklistTransferCaches() {
         super();
     }
     

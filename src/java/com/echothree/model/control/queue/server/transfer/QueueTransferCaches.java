@@ -18,7 +18,9 @@ package com.echothree.model.control.queue.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class QueueTransferCaches
         extends BaseTransferCaches {
     
@@ -27,7 +29,7 @@ public class QueueTransferCaches
     protected QueuedEntityTransferCache queuedEntityTransferCache;
     
     /** Creates a new instance of QueueTransferCaches */
-    public QueueTransferCaches() {
+    protected QueueTransferCaches() {
         super();
     }
     

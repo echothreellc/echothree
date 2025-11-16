@@ -18,7 +18,9 @@ package com.echothree.model.control.club.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ClubTransferCaches
         extends BaseTransferCaches {
     
@@ -28,7 +30,7 @@ public class ClubTransferCaches
     protected ClubDescriptionTransferCache clubDescriptionTransferCache;
     
     /** Creates a new instance of ClubTransferCaches */
-    public ClubTransferCaches() {
+    protected ClubTransferCaches() {
         super();
     }
     

@@ -18,7 +18,9 @@ package com.echothree.model.control.rating.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class RatingTransferCaches
         extends BaseTransferCaches {
     
@@ -29,7 +31,7 @@ public class RatingTransferCaches
     protected RatingTypeListItemDescriptionTransferCache ratingTypeListItemDescriptionTransferCache;
     
     /** Creates a new instance of RatingTransferCaches */
-    public RatingTransferCaches() {
+    protected RatingTransferCaches() {
         super();
     }
     

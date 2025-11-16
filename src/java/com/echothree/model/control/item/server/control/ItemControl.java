@@ -329,6 +329,7 @@ import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.common.transfer.HistoryTransfer;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -362,7 +363,7 @@ public class ItemControl
     
     public ItemTransferCaches getItemTransferCaches() {
         if(itemTransferCaches == null) {
-            itemTransferCaches = new ItemTransferCaches();
+            itemTransferCaches = CDI.current().select(ItemTransferCaches.class).get();
         }
         
         return itemTransferCaches;

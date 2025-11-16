@@ -16,10 +16,11 @@
 
 package com.echothree.model.control.shipment.server.transfer;
 
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ShipmentTransferCaches
         extends BaseTransferCaches {
     
@@ -37,7 +38,7 @@ public class ShipmentTransferCaches
     protected PartyFreeOnBoardTransferCache partyFreeOnBoardTransferCache;
 
     /** Creates a new instance of ShipmentTransferCaches */
-    public ShipmentTransferCaches() {
+    protected ShipmentTransferCaches() {
         super();
     }
     

@@ -34,6 +34,7 @@ import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
@@ -61,7 +62,7 @@ public class LicenseControl
     
     public LicenseTransferCaches getLicenseTransferCaches() {
         if(licenseTransferCaches == null) {
-            licenseTransferCaches = new LicenseTransferCaches();
+            licenseTransferCaches = CDI.current().select(LicenseTransferCaches.class).get();
         }
         
         return licenseTransferCaches;

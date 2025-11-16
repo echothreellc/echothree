@@ -114,6 +114,7 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
@@ -145,7 +146,7 @@ public class InvoiceControl
     
     public InvoiceTransferCaches getInvoiceTransferCaches() {
         if(invoiceTransferCaches == null) {
-            invoiceTransferCaches = new InvoiceTransferCaches();
+            invoiceTransferCaches = CDI.current().select(InvoiceTransferCaches.class).get();
         }
         
         return invoiceTransferCaches;

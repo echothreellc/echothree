@@ -18,7 +18,9 @@ package com.echothree.model.control.contactlist.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContactListTransferCaches
         extends BaseTransferCaches {
     
@@ -38,7 +40,7 @@ public class ContactListTransferCaches
     protected ContactListContactMechanismPurposeTransferCache contactListContactMechanismPurposeTransferCache;
     
     /** Creates a new instance of ContactListTransferCaches */
-    public ContactListTransferCaches() {
+    protected ContactListTransferCaches() {
         super();
     }
     

@@ -125,6 +125,7 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
@@ -154,7 +155,7 @@ public class ChainControl
     
     public ChainTransferCaches getChainTransferCaches() {
         if(chainTransferCaches == null) {
-            chainTransferCaches = new ChainTransferCaches();
+            chainTransferCaches = CDI.current().select(ChainTransferCaches.class).get();
         }
         
         return chainTransferCaches;

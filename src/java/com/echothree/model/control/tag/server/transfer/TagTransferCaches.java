@@ -16,10 +16,11 @@
 
 package com.echothree.model.control.tag.server.transfer;
 
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TagTransferCaches
         extends BaseTransferCaches {
     
@@ -30,7 +31,7 @@ public class TagTransferCaches
     protected EntityTagTransferCache entityTagTransferCache;
     
     /** Creates a new instance of TagTransferCaches */
-    public TagTransferCaches() {
+    protected TagTransferCaches() {
         super();
     }
     

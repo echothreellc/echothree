@@ -18,7 +18,9 @@ package com.echothree.model.control.workflow.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WorkflowTransferCaches
         extends BaseTransferCaches {
     
@@ -44,7 +46,7 @@ public class WorkflowTransferCaches
     protected WorkflowEntranceSecurityRoleTransferCache workflowEntranceSecurityRoleTransferCache;
     
     /** Creates a new instance of WorkflowTransferCaches */
-    public WorkflowTransferCaches() {
+    protected WorkflowTransferCaches() {
         super();
     }
     

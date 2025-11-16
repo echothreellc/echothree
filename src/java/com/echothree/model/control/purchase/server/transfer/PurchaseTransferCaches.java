@@ -16,15 +16,16 @@
 
 package com.echothree.model.control.purchase.server.transfer;
 
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PurchaseTransferCaches
         extends BaseTransferCaches {
 
     /** Creates a new instance of PurchaseTransferCaches */
-    public PurchaseTransferCaches() {
+    protected PurchaseTransferCaches() {
         super();
     }
 

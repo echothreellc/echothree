@@ -84,6 +84,7 @@ import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
@@ -114,7 +115,7 @@ public class FinancialControl
     
     public FinancialTransferCaches getFinancialTransferCaches() {
         if(financialTransferCaches == null) {
-            financialTransferCaches = new FinancialTransferCaches();
+            financialTransferCaches = CDI.current().select(FinancialTransferCaches.class).get();
         }
         
         return financialTransferCaches;

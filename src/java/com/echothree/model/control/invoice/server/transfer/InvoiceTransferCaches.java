@@ -18,7 +18,9 @@ package com.echothree.model.control.invoice.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class InvoiceTransferCaches
         extends BaseTransferCaches {
     
@@ -41,7 +43,7 @@ public class InvoiceTransferCaches
     protected InvoiceTimeTransferCache invoiceTimeTransferCache;
     
     /** Creates a new instance of InvoiceTransferCaches */
-    public InvoiceTransferCaches() {
+    protected InvoiceTransferCaches() {
         super();
     }
     

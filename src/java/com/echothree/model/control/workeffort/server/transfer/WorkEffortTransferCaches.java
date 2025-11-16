@@ -18,7 +18,9 @@ package com.echothree.model.control.workeffort.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WorkEffortTransferCaches
         extends BaseTransferCaches {
     
@@ -29,7 +31,7 @@ public class WorkEffortTransferCaches
     protected WorkEffortScopeDescriptionTransferCache workEffortScopeDescriptionTransferCache;
     
     /** Creates a new instance of WorkEffortTransferCaches */
-    public WorkEffortTransferCaches() {
+    protected WorkEffortTransferCaches() {
         super();
     }
     

@@ -70,6 +70,7 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -96,7 +97,7 @@ public class CommentControl
     
     public CommentTransferCaches getCommentTransferCaches() {
         if(commentTransferCaches == null) {
-            commentTransferCaches = new CommentTransferCaches();
+            commentTransferCaches = CDI.current().select(CommentTransferCaches.class).get();
         }
         
         return commentTransferCaches;

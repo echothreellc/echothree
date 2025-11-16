@@ -19,6 +19,7 @@ package com.echothree.model.control.payment.server.control;
 import com.echothree.model.control.payment.server.transfer.PaymentTransferCaches;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
 
 public abstract class BasePaymentControl
         extends BaseModelControl {
@@ -36,7 +37,7 @@ public abstract class BasePaymentControl
     
     public PaymentTransferCaches getPaymentTransferCaches() {
         if(paymentTransferCaches == null) {
-            paymentTransferCaches = new PaymentTransferCaches();
+            paymentTransferCaches = CDI.current().select(PaymentTransferCaches.class).get();
         }
         
         return paymentTransferCaches;

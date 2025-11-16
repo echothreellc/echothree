@@ -16,10 +16,11 @@
 
 package com.echothree.model.control.payment.server.transfer;
 
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PaymentTransferCaches
         extends BaseTransferCaches {
     
@@ -51,7 +52,7 @@ public class PaymentTransferCaches
     protected PaymentProcessorTransactionCodeTransferCache paymentProcessorTransactionCodeTransferCache;
     
     /** Creates a new instance of PaymentTransferCaches */
-    public PaymentTransferCaches() {
+    protected PaymentTransferCaches() {
         super();
     }
 

@@ -18,7 +18,9 @@ package com.echothree.model.control.wishlist.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WishlistTransferCaches
         extends BaseTransferCaches {
     
@@ -30,7 +32,7 @@ public class WishlistTransferCaches
     protected WishlistLineTransferCache wishlistLineTransferCache;
     
     /** Creates a new instance of WishlistTransferCaches */
-    public WishlistTransferCaches() {
+    protected WishlistTransferCaches() {
         super();
     }
     

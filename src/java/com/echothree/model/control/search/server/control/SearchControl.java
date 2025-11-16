@@ -144,6 +144,7 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import static java.lang.Math.toIntExact;
@@ -175,7 +176,7 @@ public class SearchControl
 
     public SearchTransferCaches getSearchTransferCaches() {
         if(searchTransferCaches == null) {
-            searchTransferCaches = new SearchTransferCaches();
+            searchTransferCaches = CDI.current().select(SearchTransferCaches.class).get();
         }
 
         return searchTransferCaches;

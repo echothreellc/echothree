@@ -18,7 +18,9 @@ package com.echothree.model.control.tax.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TaxTransferCaches
         extends BaseTransferCaches {
     
@@ -30,7 +32,7 @@ public class TaxTransferCaches
     protected GeoCodeTaxTransferCache geoCodeTaxTransferCache;
     
     /** Creates a new instance of TaxTransferCaches */
-    public TaxTransferCaches() {
+    protected TaxTransferCaches() {
         super();
     }
     

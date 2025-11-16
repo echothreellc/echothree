@@ -18,7 +18,9 @@ package com.echothree.model.control.uom.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class UomTransferCaches
         extends BaseTransferCaches {
     
@@ -33,7 +35,7 @@ public class UomTransferCaches
     protected UnitOfMeasureTypeWeightTransferCache uomTypeWeightTransferCache;
     
     /** Creates a new instance of UomTransferCaches */
-    public UomTransferCaches() {
+    protected UomTransferCaches() {
         super();
     }
     

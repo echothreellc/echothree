@@ -18,7 +18,9 @@ package com.echothree.model.control.financial.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class FinancialTransferCaches
         extends BaseTransferCaches {
     
@@ -35,7 +37,7 @@ public class FinancialTransferCaches
     protected FinancialAccountTransactionTransferCache financialAccountTransactionTransferCache;
     
     /** Creates a new instance of FinancialTransferCaches */
-    public FinancialTransferCaches() {
+    protected FinancialTransferCaches() {
         super();
     }
     

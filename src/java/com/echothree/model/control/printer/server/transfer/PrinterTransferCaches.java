@@ -18,7 +18,9 @@ package com.echothree.model.control.printer.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PrinterTransferCaches
         extends BaseTransferCaches {
     
@@ -32,7 +34,7 @@ public class PrinterTransferCaches
     protected PrinterGroupJobTransferCache printerGroupJobTransferCache;
     
     /** Creates a new instance of PrinterTransferCaches */
-    public PrinterTransferCaches() {
+    protected PrinterTransferCaches() {
         super();
     }
     

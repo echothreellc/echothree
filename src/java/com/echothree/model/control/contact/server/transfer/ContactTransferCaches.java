@@ -18,7 +18,9 @@ package com.echothree.model.control.contact.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContactTransferCaches
         extends BaseTransferCaches {
     
@@ -44,7 +46,7 @@ public class ContactTransferCaches
     protected ContactInet4AddressTransferCache contactInet4AddressTransferCache;
     
     /** Creates a new instance of ContactTransferCaches */
-    public ContactTransferCaches() {
+    protected ContactTransferCaches() {
         super();
     }
     

@@ -18,7 +18,9 @@ package com.echothree.model.control.license.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LicenseTransferCaches
         extends BaseTransferCaches {
     
@@ -26,7 +28,7 @@ public class LicenseTransferCaches
     protected LicenseTypeDescriptionTransferCache licenseTypeDescriptionTransferCache;
     
     /** Creates a new instance of LicenseTransferCaches */
-    public LicenseTransferCaches() {
+    protected LicenseTransferCaches() {
         super();
     }
     

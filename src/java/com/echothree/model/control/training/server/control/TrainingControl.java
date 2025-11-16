@@ -120,6 +120,7 @@ import com.echothree.model.data.workflow.server.entity.WorkflowStep;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -152,7 +153,7 @@ public class TrainingControl
     
     public TrainingTransferCaches getTrainingTransferCaches() {
         if(trainingTransferCaches == null) {
-            trainingTransferCaches = new TrainingTransferCaches();
+            trainingTransferCaches = CDI.current().select(TrainingTransferCaches.class).get();
         }
         
         return trainingTransferCaches;

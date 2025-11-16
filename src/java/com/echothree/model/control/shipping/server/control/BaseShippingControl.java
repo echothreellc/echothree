@@ -19,6 +19,7 @@ package com.echothree.model.control.shipping.server.control;
 import com.echothree.model.control.shipping.server.transfer.ShippingTransferCaches;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
 
 public abstract class BaseShippingControl
         extends BaseModelControl {
@@ -36,7 +37,7 @@ public abstract class BaseShippingControl
     
     public ShippingTransferCaches getShippingTransferCaches() {
         if(shippingTransferCaches == null) {
-            shippingTransferCaches = new ShippingTransferCaches();
+            shippingTransferCaches = CDI.current().select(ShippingTransferCaches.class).get();
         }
         
         return shippingTransferCaches;

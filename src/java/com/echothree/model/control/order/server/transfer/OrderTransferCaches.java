@@ -16,10 +16,11 @@
 
 package com.echothree.model.control.order.server.transfer;
 
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OrderTransferCaches
         extends BaseTransferCaches {
     
@@ -44,7 +45,7 @@ public class OrderTransferCaches
     protected OrderPriorityDescriptionTransferCache orderPriorityDescriptionTransferCache;
     
     /** Creates a new instance of OrderTransferCaches */
-    public OrderTransferCaches() {
+    protected OrderTransferCaches() {
         super();
     }
     

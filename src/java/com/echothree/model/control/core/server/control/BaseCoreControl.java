@@ -19,6 +19,7 @@ package com.echothree.model.control.core.server.control;
 import com.echothree.model.control.core.server.transfer.CoreTransferCaches;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
 
 public abstract class BaseCoreControl
         extends BaseModelControl {
@@ -36,7 +37,7 @@ public abstract class BaseCoreControl
     
     public CoreTransferCaches getCoreTransferCaches() {
         if(coreTransferCaches == null) {
-            coreTransferCaches = new CoreTransferCaches();
+            coreTransferCaches = CDI.current().select(CoreTransferCaches.class).get();
         }
         
         return coreTransferCaches;

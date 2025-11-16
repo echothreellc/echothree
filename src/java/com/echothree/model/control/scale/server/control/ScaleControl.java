@@ -58,6 +58,7 @@ import com.echothree.model.data.scale.server.value.ScaleUseTypeDetailValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
@@ -86,7 +87,7 @@ public class ScaleControl
     
     public ScaleTransferCaches getScaleTransferCaches() {
         if(scaleTransferCaches == null) {
-            scaleTransferCaches = new ScaleTransferCaches();
+            scaleTransferCaches = CDI.current().select(ScaleTransferCaches.class).get();
         }
         
         return scaleTransferCaches;

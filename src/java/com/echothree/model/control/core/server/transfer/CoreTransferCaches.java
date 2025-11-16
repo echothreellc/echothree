@@ -18,7 +18,9 @@ package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CoreTransferCaches
         extends BaseTransferCaches {
     
@@ -116,7 +118,7 @@ public class CoreTransferCaches
     protected EntityAppearanceTransferCache entityAppearanceTransferCache;
     
     /** Creates a new instance of CoreTransferCaches */
-    public CoreTransferCaches() {
+    protected CoreTransferCaches() {
         super();
     }
     

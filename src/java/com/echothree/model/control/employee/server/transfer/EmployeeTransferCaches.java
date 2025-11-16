@@ -18,7 +18,9 @@ package com.echothree.model.control.employee.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EmployeeTransferCaches
         extends BaseTransferCaches {
     
@@ -43,7 +45,7 @@ public class EmployeeTransferCaches
     protected PartySkillTransferCache partySkillTransferCache;
     
     /** Creates a new instance of EmployeeTransferCaches */
-    public EmployeeTransferCaches() {
+    protected EmployeeTransferCaches() {
         super();
     }
     

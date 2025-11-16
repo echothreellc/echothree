@@ -18,7 +18,9 @@ package com.echothree.model.control.content.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContentTransferCaches
         extends BaseTransferCaches {
     
@@ -44,7 +46,7 @@ public class ContentTransferCaches
     protected ContentCatalogItemTransferCache contentCatalogItemTransferCache;
     
     /** Creates a new instance of ContentTransferCaches */
-    public ContentTransferCaches() {
+    protected ContentTransferCaches() {
         super();
     }
     

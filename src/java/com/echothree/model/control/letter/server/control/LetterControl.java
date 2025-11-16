@@ -58,6 +58,7 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
@@ -88,7 +89,7 @@ public class LetterControl
     
     public LetterTransferCaches getLetterTransferCaches() {
         if(letterTransferCaches == null) {
-            letterTransferCaches = new LetterTransferCaches();
+            letterTransferCaches = CDI.current().select(LetterTransferCaches.class).get();
         }
         
         return letterTransferCaches;

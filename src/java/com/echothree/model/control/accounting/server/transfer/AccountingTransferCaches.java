@@ -16,10 +16,11 @@
 
 package com.echothree.model.control.accounting.server.transfer;
 
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.spi.CDI;
 
+@RequestScoped
 public class AccountingTransferCaches
         extends BaseTransferCaches {
     
@@ -54,7 +55,7 @@ public class AccountingTransferCaches
     protected TransactionTimeTransferCache transactionTimeTransferCache;
     
     /** Creates a new instance of AccountingTransferCaches */
-    public AccountingTransferCaches() {
+    protected AccountingTransferCaches() {
         super();
     }
     

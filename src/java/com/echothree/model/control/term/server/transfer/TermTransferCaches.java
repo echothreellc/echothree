@@ -18,7 +18,9 @@ package com.echothree.model.control.term.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TermTransferCaches
         extends BaseTransferCaches {
     
@@ -30,7 +32,7 @@ public class TermTransferCaches
     protected PartyCreditLimitTransferCache partyCreditLimitTransferCache;
     
     /** Creates a new instance of TermTransferCaches */
-    public TermTransferCaches() {
+    protected TermTransferCaches() {
         super();
     }
     

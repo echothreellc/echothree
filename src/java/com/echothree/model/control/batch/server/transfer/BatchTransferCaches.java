@@ -18,7 +18,9 @@ package com.echothree.model.control.batch.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class BatchTransferCaches
         extends BaseTransferCaches {
     
@@ -32,7 +34,7 @@ public class BatchTransferCaches
     protected BatchEntityTransferCache batchEntityTransferCache;
     
     /** Creates a new instance of BatchTransferCaches */
-    public BatchTransferCaches() {
+    protected BatchTransferCaches() {
         super();
     }
     

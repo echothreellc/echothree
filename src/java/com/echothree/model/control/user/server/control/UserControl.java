@@ -107,6 +107,7 @@ import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EncryptionUtils;
 import com.echothree.util.server.persistence.EntityPermission;
@@ -149,7 +150,7 @@ public class UserControl
     
     public UserTransferCaches getUserTransferCaches() {
         if(userTransferCaches == null) {
-            userTransferCaches = new UserTransferCaches();
+            userTransferCaches = CDI.current().select(UserTransferCaches.class).get();
         }
         
         return userTransferCaches;

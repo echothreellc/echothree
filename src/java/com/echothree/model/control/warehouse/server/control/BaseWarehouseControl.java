@@ -18,6 +18,7 @@ package com.echothree.model.control.warehouse.server.control;
 
 import com.echothree.model.control.warehouse.server.transfer.WarehouseTransferCaches;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
 
 public abstract class BaseWarehouseControl
         extends BaseModelControl {
@@ -35,7 +36,7 @@ public abstract class BaseWarehouseControl
     
     public WarehouseTransferCaches getWarehouseTransferCaches() {
         if(warehouseTransferCaches == null) {
-            warehouseTransferCaches = new WarehouseTransferCaches();
+            warehouseTransferCaches = CDI.current().select(WarehouseTransferCaches.class).get();
         }
         
         return warehouseTransferCaches;

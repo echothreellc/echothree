@@ -18,7 +18,9 @@ package com.echothree.model.control.customer.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CustomerTransferCaches
         extends BaseTransferCaches {
     
@@ -29,7 +31,7 @@ public class CustomerTransferCaches
     protected CustomerTypeShippingMethodTransferCache customerTypeShippingMethodTransferCache;
     
     /** Creates a new instance of CustomerTransferCaches */
-    public CustomerTransferCaches() {
+    protected CustomerTransferCaches() {
         super();
     }
     

@@ -18,7 +18,9 @@ package com.echothree.model.control.search.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SearchTransferCaches
         extends BaseTransferCaches {
     
@@ -40,7 +42,7 @@ public class SearchTransferCaches
     protected SearchCheckSpellingActionTypeDescriptionTransferCache searchCheckSpellingActionTypeDescriptionTransferCache;
     
     /** Creates a new instance of SearchTransferCaches */
-    public SearchTransferCaches() {
+    protected SearchTransferCaches() {
         super();
     }
     

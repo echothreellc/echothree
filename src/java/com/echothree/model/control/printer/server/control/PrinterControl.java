@@ -80,6 +80,7 @@ import com.echothree.model.data.workflow.server.entity.WorkflowStep;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -109,7 +110,7 @@ public class PrinterControl
     
     public PrinterTransferCaches getPrinterTransferCaches() {
         if(printerTransferCaches == null) {
-            printerTransferCaches = new PrinterTransferCaches();
+            printerTransferCaches = CDI.current().select(PrinterTransferCaches.class).get();
         }
         
         return printerTransferCaches;

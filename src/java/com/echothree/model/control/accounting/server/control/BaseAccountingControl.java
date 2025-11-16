@@ -19,6 +19,7 @@ package com.echothree.model.control.accounting.server.control;
 import com.echothree.model.control.accounting.server.transfer.AccountingTransferCaches;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
 
 public class BaseAccountingControl
         extends BaseModelControl {
@@ -36,7 +37,7 @@ public class BaseAccountingControl
     
     public AccountingTransferCaches getAccountingTransferCaches() {
         if(accountingTransferCaches == null) {
-            accountingTransferCaches = new AccountingTransferCaches();
+            accountingTransferCaches = CDI.current().select(AccountingTransferCaches.class).get();
         }
         
         return accountingTransferCaches;

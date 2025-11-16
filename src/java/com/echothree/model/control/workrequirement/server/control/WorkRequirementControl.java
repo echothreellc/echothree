@@ -76,6 +76,7 @@ import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -105,7 +106,7 @@ public class WorkRequirementControl
     
     public WorkRequirementTransferCaches getWorkRequirementTransferCaches() {
         if(workRequirementTransferCaches == null) {
-            workRequirementTransferCaches = new WorkRequirementTransferCaches();
+            workRequirementTransferCaches = CDI.current().select(WorkRequirementTransferCaches.class).get();
         }
         
         return workRequirementTransferCaches;

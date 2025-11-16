@@ -51,6 +51,7 @@ import com.echothree.model.data.workeffort.server.value.WorkEffortTypeDetailValu
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
@@ -77,7 +78,7 @@ public class WorkEffortControl
     
     public WorkEffortTransferCaches getWorkEffortTransferCaches() {
         if(workEffortTransferCaches == null) {
-            workEffortTransferCaches = new WorkEffortTransferCaches();
+            workEffortTransferCaches = CDI.current().select(WorkEffortTransferCaches.class).get();
         }
         
         return workEffortTransferCaches;

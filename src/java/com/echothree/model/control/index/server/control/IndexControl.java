@@ -59,6 +59,7 @@ import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
@@ -87,7 +88,7 @@ public class IndexControl
     
     public IndexTransferCaches getIndexTransferCaches() {
         if(indexTransferCaches == null) {
-            indexTransferCaches = new IndexTransferCaches();
+            indexTransferCaches = CDI.current().select(IndexTransferCaches.class).get();
         }
         
         return indexTransferCaches;

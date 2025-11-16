@@ -126,6 +126,7 @@ import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -157,7 +158,7 @@ public class WorkflowControl
     
     public WorkflowTransferCaches getWorkflowTransferCaches() {
         if(workflowTransferCaches == null) {
-            workflowTransferCaches = new WorkflowTransferCaches();
+            workflowTransferCaches = CDI.current().select(WorkflowTransferCaches.class).get();
         }
         
         return workflowTransferCaches;

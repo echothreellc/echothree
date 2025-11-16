@@ -155,6 +155,7 @@ import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -185,7 +186,7 @@ public class ContactControl
     
     public ContactTransferCaches getContactTransferCaches() {
         if(contactTransferCaches == null) {
-            contactTransferCaches = new ContactTransferCaches();
+            contactTransferCaches = CDI.current().select(ContactTransferCaches.class).get();
         }
         
         return contactTransferCaches;

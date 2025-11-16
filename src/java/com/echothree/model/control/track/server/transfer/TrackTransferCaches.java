@@ -18,7 +18,9 @@ package com.echothree.model.control.track.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TrackTransferCaches
         extends BaseTransferCaches {
     
@@ -27,7 +29,7 @@ public class TrackTransferCaches
     protected UserVisitTrackTransferCache userVisitTrackTransferCache;
     
     /** Creates a new instance of TrackTransferCaches */
-    public TrackTransferCaches() {
+    protected TrackTransferCaches() {
         super();
     }
     

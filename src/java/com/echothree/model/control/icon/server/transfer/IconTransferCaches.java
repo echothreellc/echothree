@@ -18,7 +18,9 @@ package com.echothree.model.control.icon.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class IconTransferCaches
         extends BaseTransferCaches {
     
@@ -28,7 +30,7 @@ public class IconTransferCaches
     protected IconUsageTransferCache iconUsageTransferCache;
     
     /** Creates a new instance of IconTransferCaches */
-    public IconTransferCaches() {
+    protected IconTransferCaches() {
         super();
     }
     

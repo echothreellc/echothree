@@ -18,7 +18,9 @@ package com.echothree.model.control.inventory.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class InventoryTransferCaches
         extends BaseTransferCaches {
     
@@ -47,7 +49,7 @@ public class InventoryTransferCaches
     protected InventoryAdjustmentTypeDescriptionTransferCache inventoryAdjustmentTypeDescriptionTransferCache;
 
     /** Creates a new instance of InventoryTransferCaches */
-    public InventoryTransferCaches() {
+    protected InventoryTransferCaches() {
         super();
     }
     

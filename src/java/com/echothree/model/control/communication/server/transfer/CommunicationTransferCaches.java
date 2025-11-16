@@ -18,7 +18,9 @@ package com.echothree.model.control.communication.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CommunicationTransferCaches
         extends BaseTransferCaches {
     
@@ -34,7 +36,7 @@ public class CommunicationTransferCaches
     protected CommunicationEmailSourceTransferCache communicationEmailSourceTransferCache;
     
     /** Creates a new instance of CommunicationTransferCaches */
-    public CommunicationTransferCaches() {
+    protected CommunicationTransferCaches() {
         super();
     }
     

@@ -18,7 +18,9 @@ package com.echothree.model.control.comment.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CommentTransferCaches
         extends BaseTransferCaches {
     
@@ -30,7 +32,7 @@ public class CommentTransferCaches
     protected CommentUsageTransferCache commentUsageTransferCache;
     
     /** Creates a new instance of CommentTransferCaches */
-    public CommentTransferCaches() {
+    protected CommentTransferCaches() {
         super();
     }
     

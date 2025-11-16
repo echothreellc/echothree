@@ -47,6 +47,7 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -78,7 +79,7 @@ public class TrackControl
     
     public TrackTransferCaches getTrackTransferCaches() {
         if(trackTransferCaches == null) {
-            trackTransferCaches = new TrackTransferCaches();
+            trackTransferCaches = CDI.current().select(TrackTransferCaches.class).get();
         }
         
         return trackTransferCaches;

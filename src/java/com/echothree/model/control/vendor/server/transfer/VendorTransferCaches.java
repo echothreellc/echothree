@@ -18,7 +18,9 @@ package com.echothree.model.control.vendor.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class VendorTransferCaches
         extends BaseTransferCaches {
     
@@ -31,7 +33,7 @@ public class VendorTransferCaches
     protected ItemPurchasingCategoryTransferCache itemPurchasingCategoryTransferCache;
     
     /** Creates a new instance of VendorTransferCaches */
-    public VendorTransferCaches() {
+    protected VendorTransferCaches() {
         super();
     }
     

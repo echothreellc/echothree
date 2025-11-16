@@ -81,6 +81,7 @@ import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
@@ -112,7 +113,7 @@ public class DocumentControl
     
     public DocumentTransferCaches getDocumentTransferCaches() {
         if(documentTransferCaches == null) {
-            documentTransferCaches = new DocumentTransferCaches();
+            documentTransferCaches = CDI.current().select(DocumentTransferCaches.class).get();
         }
         
         return documentTransferCaches;

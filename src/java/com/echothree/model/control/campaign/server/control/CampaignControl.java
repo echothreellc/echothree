@@ -99,6 +99,7 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -130,7 +131,7 @@ public class CampaignControl
     
     public CampaignTransferCaches getCampaignTransferCaches() {
         if(campaignTransferCaches == null) {
-            campaignTransferCaches = new CampaignTransferCaches();
+            campaignTransferCaches = CDI.current().select(CampaignTransferCaches.class).get();
         }
         
         return campaignTransferCaches;

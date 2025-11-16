@@ -18,7 +18,9 @@ package com.echothree.model.control.index.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class IndexTransferCaches
         extends BaseTransferCaches {
     
@@ -30,7 +32,7 @@ public class IndexTransferCaches
     protected IndexDescriptionTransferCache indexDescriptionTransferCache;
     
     /** Creates a new instance of IndexTransferCaches */
-    public IndexTransferCaches() {
+    protected IndexTransferCaches() {
         super();
     }
     

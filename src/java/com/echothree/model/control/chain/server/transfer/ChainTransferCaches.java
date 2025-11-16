@@ -18,7 +18,9 @@ package com.echothree.model.control.chain.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ChainTransferCaches
         extends BaseTransferCaches {
     
@@ -45,7 +47,7 @@ public class ChainTransferCaches
     protected ChainActionChainActionSetTransferCache chainActionChainActionSetTransferCache;
     
     /** Creates a new instance of ChainTransferCaches */
-    public ChainTransferCaches() {
+    protected ChainTransferCaches() {
         super();
     }
     

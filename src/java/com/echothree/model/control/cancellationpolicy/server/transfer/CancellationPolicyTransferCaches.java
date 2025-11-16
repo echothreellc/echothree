@@ -18,7 +18,9 @@ package com.echothree.model.control.cancellationpolicy.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CancellationPolicyTransferCaches
         extends BaseTransferCaches {
     
@@ -35,7 +37,7 @@ public class CancellationPolicyTransferCaches
     protected CancellationReasonTypeTransferCache cancellationReasonTypeTransferCache;
     
     /** Creates a new instance of CancellationPolicyTransferCaches */
-    public CancellationPolicyTransferCaches() {
+    protected CancellationPolicyTransferCaches() {
         super();
     }
     

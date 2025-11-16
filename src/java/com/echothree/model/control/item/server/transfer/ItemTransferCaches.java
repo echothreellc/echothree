@@ -18,7 +18,9 @@ package com.echothree.model.control.item.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemTransferCaches
         extends BaseTransferCaches {
     
@@ -70,7 +72,7 @@ public class ItemTransferCaches
     protected ItemHarmonizedTariffScheduleCodeTransferCache itemHarmonizedTariffScheduleCodeTransferCache;
     
     /** Creates a new instance of ItemTransferCaches */
-    public ItemTransferCaches() {
+    protected ItemTransferCaches() {
         super();
     }
     

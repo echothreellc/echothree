@@ -19,6 +19,7 @@ package com.echothree.model.control.tag.server.control;
 import com.echothree.model.control.tag.server.transfer.TagTransferCaches;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
 
 public abstract class BaseTagControl
         extends BaseModelControl {
@@ -36,7 +37,7 @@ public abstract class BaseTagControl
 
     public TagTransferCaches getTagTransferCaches() {
         if(tagTransferCaches == null) {
-            tagTransferCaches = new TagTransferCaches();
+            tagTransferCaches = CDI.current().select(TagTransferCaches.class).get();
         }
 
         return tagTransferCaches;

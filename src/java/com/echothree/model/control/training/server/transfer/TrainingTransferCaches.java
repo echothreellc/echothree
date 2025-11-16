@@ -18,7 +18,9 @@ package com.echothree.model.control.training.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TrainingTransferCaches
         extends BaseTransferCaches {
     
@@ -40,7 +42,7 @@ public class TrainingTransferCaches
     protected PartyTrainingClassSessionAnswerTransferCache partyTrainingClassSessionAnswerTransferCache;
     
     /** Creates a new instance of TrainingTransferCaches */
-    public TrainingTransferCaches() {
+    protected TrainingTransferCaches() {
         super();
     }
     
