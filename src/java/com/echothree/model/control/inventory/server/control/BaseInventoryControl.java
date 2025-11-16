@@ -18,7 +18,7 @@ package com.echothree.model.control.inventory.server.control;
 
 import com.echothree.model.control.inventory.server.transfer.InventoryTransferCaches;
 import com.echothree.util.server.control.BaseModelControl;
-import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 public abstract class BaseInventoryControl
         extends BaseModelControl {
@@ -32,14 +32,7 @@ public abstract class BaseInventoryControl
     //   Inventory Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private InventoryTransferCaches inventoryTransferCaches;
-    
-    public InventoryTransferCaches getInventoryTransferCaches() {
-        if(inventoryTransferCaches == null) {
-            inventoryTransferCaches = CDI.current().select(InventoryTransferCaches.class).get();
-        }
-        
-        return inventoryTransferCaches;
-    }
+    @Inject
+    InventoryTransferCaches inventoryTransferCaches;
 
 }

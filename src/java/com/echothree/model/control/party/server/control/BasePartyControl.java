@@ -19,6 +19,7 @@ package com.echothree.model.control.party.server.control;
 import com.echothree.model.control.party.server.transfer.PartyTransferCaches;
 import com.echothree.util.server.control.BaseModelControl;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 public class BasePartyControl
         extends BaseModelControl {
@@ -32,14 +33,7 @@ public class BasePartyControl
     //   Party Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private PartyTransferCaches partyTransferCaches;
-    
-    public PartyTransferCaches getPartyTransferCaches() {
-        if(partyTransferCaches == null) {
-            partyTransferCaches = CDI.current().select(PartyTransferCaches.class).get();
-        }
-        
-        return partyTransferCaches;
-    }
+    @Inject
+    PartyTransferCaches partyTransferCaches;
 
 }

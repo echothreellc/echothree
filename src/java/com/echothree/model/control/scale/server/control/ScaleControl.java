@@ -58,7 +58,6 @@ import com.echothree.model.data.scale.server.value.ScaleUseTypeDetailValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
-import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
@@ -69,6 +68,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class ScaleControl
@@ -83,16 +83,9 @@ public class ScaleControl
     //   Scale Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private ScaleTransferCaches scaleTransferCaches;
-    
-    public ScaleTransferCaches getScaleTransferCaches() {
-        if(scaleTransferCaches == null) {
-            scaleTransferCaches = CDI.current().select(ScaleTransferCaches.class).get();
-        }
-        
-        return scaleTransferCaches;
-    }
-    
+    @Inject
+    ScaleTransferCaches scaleTransferCaches;
+
     // --------------------------------------------------------------------------------
     //   Scale Group Types
     // --------------------------------------------------------------------------------
@@ -232,12 +225,12 @@ public class ScaleControl
     }
 
     public ScaleTypeTransfer getScaleTypeTransfer(UserVisit userVisit, ScaleType scaleType) {
-        return getScaleTransferCaches().getScaleTypeTransferCache().getScaleTypeTransfer(userVisit, scaleType);
+        return scaleTransferCaches.getScaleTypeTransferCache().getScaleTypeTransfer(userVisit, scaleType);
     }
 
     public List<ScaleTypeTransfer> getScaleTypeTransfers(UserVisit userVisit, Collection<ScaleType> scaleTypes) {
         List<ScaleTypeTransfer> scaleTypeTransfers = new ArrayList<>(scaleTypes.size());
-        var scaleTypeTransferCache = getScaleTransferCaches().getScaleTypeTransferCache();
+        var scaleTypeTransferCache = scaleTransferCaches.getScaleTypeTransferCache();
 
         scaleTypes.forEach((scaleType) ->
                 scaleTypeTransfers.add(scaleTypeTransferCache.getScaleTypeTransfer(userVisit, scaleType))
@@ -462,13 +455,13 @@ public class ScaleControl
     }
 
     public ScaleTypeDescriptionTransfer getScaleTypeDescriptionTransfer(UserVisit userVisit, ScaleTypeDescription scaleTypeDescription) {
-        return getScaleTransferCaches().getScaleTypeDescriptionTransferCache().getScaleTypeDescriptionTransfer(userVisit, scaleTypeDescription);
+        return scaleTransferCaches.getScaleTypeDescriptionTransferCache().getScaleTypeDescriptionTransfer(userVisit, scaleTypeDescription);
     }
 
     public List<ScaleTypeDescriptionTransfer> getScaleTypeDescriptionTransfersByScaleType(UserVisit userVisit, ScaleType scaleType) {
         var scaleTypeDescriptions = getScaleTypeDescriptionsByScaleType(scaleType);
         List<ScaleTypeDescriptionTransfer> scaleTypeDescriptionTransfers = new ArrayList<>(scaleTypeDescriptions.size());
-        var scaleTypeDescriptionTransferCache = getScaleTransferCaches().getScaleTypeDescriptionTransferCache();
+        var scaleTypeDescriptionTransferCache = scaleTransferCaches.getScaleTypeDescriptionTransferCache();
 
         scaleTypeDescriptions.forEach((scaleTypeDescription) ->
                 scaleTypeDescriptionTransfers.add(scaleTypeDescriptionTransferCache.getScaleTypeDescriptionTransfer(userVisit, scaleTypeDescription))
@@ -718,12 +711,12 @@ public class ScaleControl
     }
 
     public ScaleTransfer getScaleTransfer(UserVisit userVisit, Scale scale) {
-        return getScaleTransferCaches().getScaleTransferCache().getScaleTransfer(userVisit, scale);
+        return scaleTransferCaches.getScaleTransferCache().getScaleTransfer(userVisit, scale);
     }
 
     public List<ScaleTransfer> getScaleTransfers(UserVisit userVisit, Collection<Scale> scales) {
         List<ScaleTransfer> scaleTransfers = new ArrayList<>(scales.size());
-        var scaleTransferCache = getScaleTransferCaches().getScaleTransferCache();
+        var scaleTransferCache = scaleTransferCaches.getScaleTransferCache();
 
         scales.forEach((scale) ->
                 scaleTransfers.add(scaleTransferCache.getScaleTransfer(userVisit, scale))
@@ -974,13 +967,13 @@ public class ScaleControl
     }
 
     public ScaleDescriptionTransfer getScaleDescriptionTransfer(UserVisit userVisit, ScaleDescription scaleDescription) {
-        return getScaleTransferCaches().getScaleDescriptionTransferCache().getScaleDescriptionTransfer(userVisit, scaleDescription);
+        return scaleTransferCaches.getScaleDescriptionTransferCache().getScaleDescriptionTransfer(userVisit, scaleDescription);
     }
 
     public List<ScaleDescriptionTransfer> getScaleDescriptionTransfersByScale(UserVisit userVisit, Scale scale) {
         var scaleDescriptions = getScaleDescriptionsByScale(scale);
         List<ScaleDescriptionTransfer> scaleDescriptionTransfers = new ArrayList<>(scaleDescriptions.size());
-        var scaleDescriptionTransferCache = getScaleTransferCaches().getScaleDescriptionTransferCache();
+        var scaleDescriptionTransferCache = scaleTransferCaches.getScaleDescriptionTransferCache();
 
         scaleDescriptions.forEach((scaleDescription) ->
                 scaleDescriptionTransfers.add(scaleDescriptionTransferCache.getScaleDescriptionTransfer(userVisit, scaleDescription))
@@ -1162,12 +1155,12 @@ public class ScaleControl
     }
 
     public ScaleUseTypeTransfer getScaleUseTypeTransfer(UserVisit userVisit, ScaleUseType scaleUseType) {
-        return getScaleTransferCaches().getScaleUseTypeTransferCache().getScaleUseTypeTransfer(userVisit, scaleUseType);
+        return scaleTransferCaches.getScaleUseTypeTransferCache().getScaleUseTypeTransfer(userVisit, scaleUseType);
     }
 
     public List<ScaleUseTypeTransfer> getScaleUseTypeTransfers(UserVisit userVisit, Collection<ScaleUseType> scaleUseTypes) {
         List<ScaleUseTypeTransfer> scaleUseTypeTransfers = new ArrayList<>(scaleUseTypes.size());
-        var scaleUseTypeTransferCache = getScaleTransferCaches().getScaleUseTypeTransferCache();
+        var scaleUseTypeTransferCache = scaleTransferCaches.getScaleUseTypeTransferCache();
 
         scaleUseTypes.forEach((scaleUseType) ->
                 scaleUseTypeTransfers.add(scaleUseTypeTransferCache.getScaleUseTypeTransfer(userVisit, scaleUseType))
@@ -1392,13 +1385,13 @@ public class ScaleControl
     }
 
     public ScaleUseTypeDescriptionTransfer getScaleUseTypeDescriptionTransfer(UserVisit userVisit, ScaleUseTypeDescription scaleUseTypeDescription) {
-        return getScaleTransferCaches().getScaleUseTypeDescriptionTransferCache().getScaleUseTypeDescriptionTransfer(userVisit, scaleUseTypeDescription);
+        return scaleTransferCaches.getScaleUseTypeDescriptionTransferCache().getScaleUseTypeDescriptionTransfer(userVisit, scaleUseTypeDescription);
     }
 
     public List<ScaleUseTypeDescriptionTransfer> getScaleUseTypeDescriptionTransfersByScaleUseType(UserVisit userVisit, ScaleUseType scaleUseType) {
         var scaleUseTypeDescriptions = getScaleUseTypeDescriptionsByScaleUseType(scaleUseType);
         List<ScaleUseTypeDescriptionTransfer> scaleUseTypeDescriptionTransfers = new ArrayList<>(scaleUseTypeDescriptions.size());
-        var scaleUseTypeDescriptionTransferCache = getScaleTransferCaches().getScaleUseTypeDescriptionTransferCache();
+        var scaleUseTypeDescriptionTransferCache = scaleTransferCaches.getScaleUseTypeDescriptionTransferCache();
 
         scaleUseTypeDescriptions.forEach((scaleUseTypeDescription) ->
                 scaleUseTypeDescriptionTransfers.add(scaleUseTypeDescriptionTransferCache.getScaleUseTypeDescriptionTransfer(userVisit, scaleUseTypeDescription))
@@ -1606,12 +1599,12 @@ public class ScaleControl
     }
     
     public PartyScaleUseTransfer getPartyScaleUseTransfer(UserVisit userVisit, PartyScaleUse partyScaleUse) {
-        return getScaleTransferCaches().getPartyScaleUseTransferCache().getPartyScaleUseTransfer(userVisit, partyScaleUse);
+        return scaleTransferCaches.getPartyScaleUseTransferCache().getPartyScaleUseTransfer(userVisit, partyScaleUse);
     }
 
     public List<PartyScaleUseTransfer> getPartyScaleUseTransfers(UserVisit userVisit, Collection<PartyScaleUse> partyScaleUses) {
         List<PartyScaleUseTransfer> partyScaleUseTransfers = new ArrayList<>(partyScaleUses.size());
-        var partyScaleUseTransferCache = getScaleTransferCaches().getPartyScaleUseTransferCache();
+        var partyScaleUseTransferCache = scaleTransferCaches.getPartyScaleUseTransferCache();
 
         partyScaleUses.forEach((partyScaleUse) ->
                 partyScaleUseTransfers.add(partyScaleUseTransferCache.getPartyScaleUseTransfer(userVisit, partyScaleUse))

@@ -39,12 +39,10 @@ public class SelectorNodeTransferCache
         
         if(selectorNodeTransfer == null) {
             var selectorNodeDetail = selectorNode.getLastDetail();
-            var selectorTransferCache = selectorControl.getSelectorTransferCaches().getSelectorTransferCache();
-            var selector = selectorTransferCache.getSelectorTransfer(userVisit, selectorNodeDetail.getSelector());
+            var selector = selectorControl.getSelectorTransfer(userVisit, selectorNodeDetail.getSelector());
             var selectorNodeName = selectorNodeDetail.getSelectorNodeName();
             var isRootSelectorNode = selectorNodeDetail.getIsRootSelectorNode();
-            var selectorNodeTypeTransferCache = selectorControl.getSelectorTransferCaches().getSelectorNodeTypeTransferCache();
-            var selectorNodeType = selectorNodeTypeTransferCache.getSelectorNodeTypeTransfer(userVisit, selectorNodeDetail.getSelectorNodeType());
+            var selectorNodeType = selectorControl.getSelectorNodeTypeTransfer(userVisit, selectorNodeDetail.getSelectorNodeType());
             var negate = selectorNodeDetail.getNegate();
             var description = selectorControl.getBestSelectorNodeDescription(selectorNode, getLanguage(userVisit));
             

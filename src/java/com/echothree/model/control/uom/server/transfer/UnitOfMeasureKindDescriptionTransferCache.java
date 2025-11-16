@@ -38,8 +38,7 @@ public class UnitOfMeasureKindDescriptionTransferCache
         var unitOfMeasureKindDescriptionTransfer = get(unitOfMeasureKindDescription);
         
         if(unitOfMeasureKindDescriptionTransfer == null) {
-            var unitOfMeasureKindTransferCache = uomControl.getUomTransferCaches().getUnitOfMeasureKindTransferCache();
-            var unitOfMeasureKindTransfer = unitOfMeasureKindTransferCache.getUnitOfMeasureKindTransfer(userVisit, unitOfMeasureKindDescription.getUnitOfMeasureKind());
+            var unitOfMeasureKindTransfer = uomControl.getUnitOfMeasureKindTransfer(userVisit, unitOfMeasureKindDescription.getUnitOfMeasureKind());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, unitOfMeasureKindDescription.getLanguage());
             
             unitOfMeasureKindDescriptionTransfer = new UnitOfMeasureKindDescriptionTransfer(languageTransfer, unitOfMeasureKindTransfer, unitOfMeasureKindDescription.getDescription());

@@ -38,8 +38,7 @@ public class ContentWebAddressDescriptionTransferCache
         var contentWebAddressDescriptionTransfer = get(contentWebAddressDescription);
         
         if(contentWebAddressDescriptionTransfer == null) {
-            var contentWebAddressTransferCache = contentControl.getContentTransferCaches().getContentWebAddressTransferCache();
-            var contentWebAddressTransfer = contentWebAddressTransferCache.getContentWebAddressTransfer(userVisit, contentWebAddressDescription.getContentWebAddress());
+            var contentWebAddressTransfer = contentControl.getContentWebAddressTransfer(userVisit, contentWebAddressDescription.getContentWebAddress());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, contentWebAddressDescription.getLanguage());
             
             contentWebAddressDescriptionTransfer = new ContentWebAddressDescriptionTransfer(languageTransfer, contentWebAddressTransfer, contentWebAddressDescription.getDescription());

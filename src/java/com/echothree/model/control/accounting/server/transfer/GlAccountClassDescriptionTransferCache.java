@@ -39,8 +39,7 @@ public class GlAccountClassDescriptionTransferCache
         var glAccountClassDescriptionTransfer = get(glAccountClassDescription);
         
         if(glAccountClassDescriptionTransfer == null) {
-            var glAccountClassTransferCache = accountingControl.getAccountingTransferCaches().getGlAccountClassTransferCache();
-            var glAccountClassTransfer = glAccountClassTransferCache.getTransfer(userVisit, glAccountClassDescription.getGlAccountClass());
+            var glAccountClassTransfer = accountingControl.getGlAccountClassTransfer(userVisit, glAccountClassDescription.getGlAccountClass());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, glAccountClassDescription.getLanguage());
             
             glAccountClassDescriptionTransfer = new GlAccountClassDescriptionTransfer(languageTransfer, glAccountClassTransfer, glAccountClassDescription.getDescription());

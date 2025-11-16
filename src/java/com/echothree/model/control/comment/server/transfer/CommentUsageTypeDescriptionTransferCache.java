@@ -38,8 +38,7 @@ public class CommentUsageTypeDescriptionTransferCache
         var commentUsageTypeDescriptionTransfer = get(commentUsageTypeDescription);
         
         if(commentUsageTypeDescriptionTransfer == null) {
-            var commentUsageTypeTransferCache = commentControl.getCommentTransferCaches().getCommentUsageTypeTransferCache();
-            var commentUsageTypeTransfer = commentUsageTypeTransferCache.getCommentUsageTypeTransfer(userVisit, commentUsageTypeDescription.getCommentUsageType());
+            var commentUsageTypeTransfer = commentControl.getCommentUsageTypeTransfer(userVisit, commentUsageTypeDescription.getCommentUsageType());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, commentUsageTypeDescription.getLanguage());
             
             commentUsageTypeDescriptionTransfer = new CommentUsageTypeDescriptionTransfer(languageTransfer, commentUsageTypeTransfer, commentUsageTypeDescription.getDescription());

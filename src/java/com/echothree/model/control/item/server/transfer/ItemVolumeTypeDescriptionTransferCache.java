@@ -39,8 +39,7 @@ public class ItemVolumeTypeDescriptionTransferCache
         var itemVolumeTypeDescriptionTransfer = get(itemVolumeTypeDescription);
         
         if(itemVolumeTypeDescriptionTransfer == null) {
-            var itemVolumeTypeTransferCache = itemControl.getItemTransferCaches().getItemVolumeTypeTransferCache();
-            var itemVolumeTypeTransfer = itemVolumeTypeTransferCache.getTransfer(userVisit, itemVolumeTypeDescription.getItemVolumeType());
+            var itemVolumeTypeTransfer = itemControl.getItemVolumeTypeTransfer(userVisit, itemVolumeTypeDescription.getItemVolumeType());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, itemVolumeTypeDescription.getLanguage());
             
             itemVolumeTypeDescriptionTransfer = new ItemVolumeTypeDescriptionTransfer(languageTransfer, itemVolumeTypeTransfer, itemVolumeTypeDescription.getDescription());

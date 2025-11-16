@@ -44,8 +44,7 @@ public class TermTransferCache
         if(termTransfer == null) {
             var termDetail = term.getLastDetail();
             var termName = termDetail.getTermName();
-            var termTypeTransferCache = termControl.getTermTransferCaches().getTermTypeTransferCache();
-            var termType = termTypeTransferCache.getTermTypeTransfer(userVisit, termDetail.getTermType());
+            var termType = termControl.getTermTypeTransfer(userVisit, termDetail.getTermType());
             var isDefault = termDetail.getIsDefault();
             var sortOrder = termDetail.getSortOrder();
             var description = termControl.getBestTermDescription(term, getLanguage(userVisit));

@@ -38,8 +38,7 @@ public class SelectorNodeDescriptionTransferCache
         var selectorNodeDescriptionTransfer = get(selectorNodeDescription);
         
         if(selectorNodeDescriptionTransfer == null) {
-            var selectorNodeTransferCache = selectorControl.getSelectorTransferCaches().getSelectorNodeTransferCache();
-            var selectorNodeTransfer = selectorNodeTransferCache.getSelectorNodeTransfer(userVisit, selectorNodeDescription.getSelectorNode());
+            var selectorNodeTransfer = selectorControl.getSelectorNodeTransfer(userVisit, selectorNodeDescription.getSelectorNode());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, selectorNodeDescription.getLanguage());
             
             selectorNodeDescriptionTransfer = new SelectorNodeDescriptionTransfer(languageTransfer, selectorNodeTransfer, selectorNodeDescription.getDescription());

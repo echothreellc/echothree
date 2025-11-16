@@ -38,8 +38,7 @@ public class PartySecurityRoleTemplateDescriptionTransferCache
         var partySecurityRoleTemplateDescriptionTransfer = get(partySecurityRoleTemplateDescription);
         
         if(partySecurityRoleTemplateDescriptionTransfer == null) {
-            var partySecurityRoleTemplateTransferCache = securityControl.getSecurityTransferCaches().getPartySecurityRoleTemplateTransferCache();
-            var partySecurityRoleTemplateTransfer = partySecurityRoleTemplateTransferCache.getPartySecurityRoleTemplateTransfer(userVisit, partySecurityRoleTemplateDescription.getPartySecurityRoleTemplate());
+            var partySecurityRoleTemplateTransfer = securityControl.getPartySecurityRoleTemplateTransfer(userVisit, partySecurityRoleTemplateDescription.getPartySecurityRoleTemplate());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, partySecurityRoleTemplateDescription.getLanguage());
             
             partySecurityRoleTemplateDescriptionTransfer = new PartySecurityRoleTemplateDescriptionTransfer(languageTransfer, partySecurityRoleTemplateTransfer, partySecurityRoleTemplateDescription.getDescription());

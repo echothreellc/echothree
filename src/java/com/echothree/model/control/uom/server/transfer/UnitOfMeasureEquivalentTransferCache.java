@@ -38,9 +38,8 @@ public class UnitOfMeasureEquivalentTransferCache
         var unitOfMeasureEquivalentTransfer = get(unitOfMeasureEquivalent);
         
         if(unitOfMeasureEquivalentTransfer == null) {
-            var unitOfMeasureTypeTransferCache = uomControl.getUomTransferCaches().getUnitOfMeasureTypeTransferCache();
-            var fromUnitOfMeasureType = unitOfMeasureTypeTransferCache.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureEquivalent.getFromUnitOfMeasureType());
-            var toUnitOfMeasureType = unitOfMeasureTypeTransferCache.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureEquivalent.getToUnitOfMeasureType());
+            var fromUnitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureEquivalent.getFromUnitOfMeasureType());
+            var toUnitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureEquivalent.getToUnitOfMeasureType());
             var toQuantity = unitOfMeasureEquivalent.getToQuantity();
             
             unitOfMeasureEquivalentTransfer = new UnitOfMeasureEquivalentTransfer(fromUnitOfMeasureType, toUnitOfMeasureType, toQuantity);

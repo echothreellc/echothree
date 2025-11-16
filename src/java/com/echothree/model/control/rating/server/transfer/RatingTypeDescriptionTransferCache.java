@@ -38,8 +38,7 @@ public class RatingTypeDescriptionTransferCache
         var ratingTypeDescriptionTransfer = get(ratingTypeDescription);
         
         if(ratingTypeDescriptionTransfer == null) {
-            var ratingTypeTransferCache = ratingControl.getRatingTransferCaches().getRatingTypeTransferCache();
-            var ratingTypeTransfer = ratingTypeTransferCache.getRatingTypeTransfer(userVisit, ratingTypeDescription.getRatingType());
+            var ratingTypeTransfer = ratingControl.getRatingTypeTransfer(userVisit, ratingTypeDescription.getRatingType());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, ratingTypeDescription.getLanguage());
             
             ratingTypeDescriptionTransfer = new RatingTypeDescriptionTransfer(languageTransfer, ratingTypeTransfer, ratingTypeDescription.getDescription());

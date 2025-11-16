@@ -214,13 +214,13 @@ public class ApplicationControl
     }
 
     public ApplicationTransfer getApplicationTransfer(UserVisit userVisit, Application application) {
-        return getCoreTransferCaches().getApplicationTransferCache().getApplicationTransfer(userVisit, application);
+        return coreTransferCaches.getApplicationTransferCache().getApplicationTransfer(userVisit, application);
     }
 
     public List<ApplicationTransfer> getApplicationTransfers(UserVisit userVisit) {
         var applications = getApplications();
         List<ApplicationTransfer> applicationTransfers = new ArrayList<>(applications.size());
-        var applicationTransferCache = getCoreTransferCaches().getApplicationTransferCache();
+        var applicationTransferCache = coreTransferCaches.getApplicationTransferCache();
 
         applications.forEach((application) ->
                 applicationTransfers.add(applicationTransferCache.getApplicationTransfer(userVisit, application))
@@ -453,13 +453,13 @@ public class ApplicationControl
     }
 
     public ApplicationDescriptionTransfer getApplicationDescriptionTransfer(UserVisit userVisit, ApplicationDescription applicationDescription) {
-        return getCoreTransferCaches().getApplicationDescriptionTransferCache().getApplicationDescriptionTransfer(userVisit, applicationDescription);
+        return coreTransferCaches.getApplicationDescriptionTransferCache().getApplicationDescriptionTransfer(userVisit, applicationDescription);
     }
 
     public List<ApplicationDescriptionTransfer> getApplicationDescriptionTransfersByApplication(UserVisit userVisit, Application application) {
         var applicationDescriptions = getApplicationDescriptionsByApplication(application);
         List<ApplicationDescriptionTransfer> applicationDescriptionTransfers = new ArrayList<>(applicationDescriptions.size());
-        var applicationDescriptionTransferCache = getCoreTransferCaches().getApplicationDescriptionTransferCache();
+        var applicationDescriptionTransferCache = coreTransferCaches.getApplicationDescriptionTransferCache();
 
         applicationDescriptions.forEach((applicationDescription) ->
                 applicationDescriptionTransfers.add(applicationDescriptionTransferCache.getApplicationDescriptionTransfer(userVisit, applicationDescription))
@@ -677,12 +677,12 @@ public class ApplicationControl
     }
 
     public ApplicationEditorTransfer getApplicationEditorTransfer(UserVisit userVisit, ApplicationEditor applicationEditor) {
-        return getCoreTransferCaches().getApplicationEditorTransferCache().getApplicationEditorTransfer(userVisit, applicationEditor);
+        return coreTransferCaches.getApplicationEditorTransferCache().getApplicationEditorTransfer(userVisit, applicationEditor);
     }
 
     public List<ApplicationEditorTransfer> getApplicationEditorTransfers(List<ApplicationEditor> applicationEditors, UserVisit userVisit) {
         List<ApplicationEditorTransfer> applicationEditorTransfers = new ArrayList<>(applicationEditors.size());
-        var applicationEditorTransferCache = getCoreTransferCaches().getApplicationEditorTransferCache();
+        var applicationEditorTransferCache = coreTransferCaches.getApplicationEditorTransferCache();
 
         applicationEditors.forEach((applicationEditor) ->
                 applicationEditorTransfers.add(applicationEditorTransferCache.getApplicationEditorTransfer(userVisit, applicationEditor))
@@ -1014,12 +1014,12 @@ public class ApplicationControl
     }
 
     public ApplicationEditorUseTransfer getApplicationEditorUseTransfer(UserVisit userVisit, ApplicationEditorUse applicationEditorUse) {
-        return getCoreTransferCaches().getApplicationEditorUseTransferCache().getApplicationEditorUseTransfer(userVisit, applicationEditorUse);
+        return coreTransferCaches.getApplicationEditorUseTransferCache().getApplicationEditorUseTransfer(userVisit, applicationEditorUse);
     }
 
     public List<ApplicationEditorUseTransfer> getApplicationEditorUseTransfers(List<ApplicationEditorUse> applicationEditorUses, UserVisit userVisit) {
         List<ApplicationEditorUseTransfer> applicationEditorUseTransfers = new ArrayList<>(applicationEditorUses.size());
-        var applicationEditorUseTransferCache = getCoreTransferCaches().getApplicationEditorUseTransferCache();
+        var applicationEditorUseTransferCache = coreTransferCaches.getApplicationEditorUseTransferCache();
 
         applicationEditorUses.forEach((applicationEditorUse) ->
                 applicationEditorUseTransfers.add(applicationEditorUseTransferCache.getApplicationEditorUseTransfer(userVisit, applicationEditorUse))
@@ -1276,13 +1276,13 @@ public class ApplicationControl
     }
 
     public ApplicationEditorUseDescriptionTransfer getApplicationEditorUseDescriptionTransfer(UserVisit userVisit, ApplicationEditorUseDescription applicationEditorUseDescription) {
-        return getCoreTransferCaches().getApplicationEditorUseDescriptionTransferCache().getApplicationEditorUseDescriptionTransfer(userVisit, applicationEditorUseDescription);
+        return coreTransferCaches.getApplicationEditorUseDescriptionTransferCache().getApplicationEditorUseDescriptionTransfer(userVisit, applicationEditorUseDescription);
     }
 
     public List<ApplicationEditorUseDescriptionTransfer> getApplicationEditorUseDescriptionTransfersByApplicationEditorUse(UserVisit userVisit, ApplicationEditorUse applicationEditorUse) {
         var applicationEditorUseDescriptions = getApplicationEditorUseDescriptionsByApplicationEditorUse(applicationEditorUse);
         List<ApplicationEditorUseDescriptionTransfer> applicationEditorUseDescriptionTransfers = new ArrayList<>(applicationEditorUseDescriptions.size());
-        var applicationEditorUseDescriptionTransferCache = getCoreTransferCaches().getApplicationEditorUseDescriptionTransferCache();
+        var applicationEditorUseDescriptionTransferCache = coreTransferCaches.getApplicationEditorUseDescriptionTransferCache();
 
         applicationEditorUseDescriptions.forEach((applicationEditorUseDescription) ->
                 applicationEditorUseDescriptionTransfers.add(applicationEditorUseDescriptionTransferCache.getApplicationEditorUseDescriptionTransfer(userVisit, applicationEditorUseDescription))

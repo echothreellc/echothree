@@ -315,7 +315,7 @@ public class EventControl
     }
 
     public EntityTimeTransfer getEntityTimeTransfer(UserVisit userVisit, EntityTime entityTime) {
-        return getCoreTransferCaches().getEntityTimeTransferCache().getEntityTimeTransfer(userVisit, entityTime);
+        return coreTransferCaches.getEntityTimeTransferCache().getEntityTimeTransfer(userVisit, entityTime);
     }
 
     // --------------------------------------------------------------------------------
@@ -490,12 +490,12 @@ public class EventControl
     }
 
     public EventGroupTransfer getEventGroupTransfer(UserVisit userVisit, EventGroup eventGroup) {
-        return getCoreTransferCaches().getEventGroupTransferCache().getEventGroupTransfer(userVisit, eventGroup);
+        return coreTransferCaches.getEventGroupTransferCache().getEventGroupTransfer(userVisit, eventGroup);
     }
 
     public List<EventGroupTransfer> getEventGroupTransfers(UserVisit userVisit, Collection<EventGroup> eventGroups) {
         List<EventGroupTransfer> eventGroupTransfers = new ArrayList<>(eventGroups.size());
-        var eventGroupTransferCache = getCoreTransferCaches().getEventGroupTransferCache();
+        var eventGroupTransferCache = coreTransferCaches.getEventGroupTransferCache();
 
         eventGroups.forEach((eventGroup) ->
                 eventGroupTransfers.add(eventGroupTransferCache.getEventGroupTransfer(userVisit, eventGroup))
@@ -599,7 +599,7 @@ public class EventControl
     }
 
     public EventTypeTransfer getEventTypeTransfer(UserVisit userVisit, EventType eventType) {
-        return getCoreTransferCaches().getEventTypeTransferCache().getEventTypeTransfer(userVisit, eventType);
+        return coreTransferCaches.getEventTypeTransferCache().getEventTypeTransfer(userVisit, eventType);
     }
 
     // --------------------------------------------------------------------------------
@@ -796,7 +796,7 @@ public class EventControl
 
     public List<EventTransfer> getEventTransfers(UserVisit userVisit, Collection<Event> events) {
         List<EventTransfer> eventTransfers = new ArrayList<>(events.size());
-        var eventTransferCache = getCoreTransferCaches().getEventTransferCache();
+        var eventTransferCache = coreTransferCaches.getEventTransferCache();
 
         events.forEach((event) ->
                 eventTransfers.add(eventTransferCache.getEventTransfer(userVisit, event))
@@ -891,7 +891,7 @@ public class EventControl
     }
 
     public EntityVisitTransfer getEntityVisitTransfer(UserVisit userVisit, EntityVisit entityVisit) {
-        return getCoreTransferCaches().getEntityVisitTransferCache().getEntityVisitTransfer(userVisit, entityVisit);
+        return coreTransferCaches.getEntityVisitTransferCache().getEntityVisitTransfer(userVisit, entityVisit);
     }
 
     // --------------------------------------------------------------------------------
@@ -1009,7 +1009,7 @@ public class EventControl
     }
 
 //    public EventSubscriberTransfer getEventSubscriberTransfer(UserVisit userVisit, EventSubscriber eventSubscriber) {
-//        return getPaymentTransferCaches().getEventSubscriberTransferCache().getEventSubscriberTransfer(userVisit, eventSubscriber);
+//        return paymentTransferCaches.getEventSubscriberTransferCache().getEventSubscriberTransfer(userVisit, eventSubscriber);
 //    }
 //
 //    public List<EventSubscriberTransfer> getEventSubscriberTransfersByEntityInstance(UserVisit userVisit, EntityInstance entityInstance) {

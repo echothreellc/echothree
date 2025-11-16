@@ -17,9 +17,8 @@
 package com.echothree.model.control.order.server.control;
 
 import com.echothree.model.control.order.server.transfer.OrderTransferCaches;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.control.BaseModelControl;
-import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 public class BaseOrderControl
         extends BaseModelControl {
@@ -33,14 +32,7 @@ public class BaseOrderControl
     //   Order Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private OrderTransferCaches orderTransferCaches;
-    
-    public OrderTransferCaches getOrderTransferCaches() {
-        if(orderTransferCaches == null) {
-            orderTransferCaches = CDI.current().select(OrderTransferCaches.class).get();
-        }
-        
-        return orderTransferCaches;
-    }
+    @Inject
+    OrderTransferCaches orderTransferCaches;
     
 }

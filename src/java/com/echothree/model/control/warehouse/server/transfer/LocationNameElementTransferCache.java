@@ -42,8 +42,7 @@ public class LocationNameElementTransferCache
         if(locationNameElementTransfer == null) {
             var locationNameElementDetail = locationNameElement.getLastDetail();
             var locationNameElementName = locationNameElementDetail.getLocationNameElementName();
-            var locationTypeTransferCache = warehouseControl.getWarehouseTransferCaches().getLocationTypeTransferCache();
-            var locationType = locationTypeTransferCache.getLocationTypeTransfer(userVisit, locationNameElementDetail.getLocationType());
+            var locationType = warehouseControl.getLocationTypeTransfer(userVisit, locationNameElementDetail.getLocationType());
             var offset = locationNameElementDetail.getOffset();
             var length = locationNameElementDetail.getLength();
             var validationPattern = locationNameElementDetail.getValidationPattern();

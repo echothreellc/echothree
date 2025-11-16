@@ -39,8 +39,7 @@ public class InventoryConditionDescriptionTransferCache
         var inventoryConditionDescriptionTransfer = get(inventoryConditionDescription);
         
         if(inventoryConditionDescriptionTransfer == null) {
-            var inventoryConditionTransferCache = inventoryControl.getInventoryTransferCaches().getInventoryConditionTransferCache();
-            var inventoryConditionTransfer = inventoryConditionTransferCache.getTransfer(userVisit, inventoryConditionDescription.getInventoryCondition());
+            var inventoryConditionTransfer = inventoryControl.getInventoryConditionTransfer(userVisit, inventoryConditionDescription.getInventoryCondition());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, inventoryConditionDescription.getLanguage());
             
             inventoryConditionDescriptionTransfer = new InventoryConditionDescriptionTransfer(languageTransfer, inventoryConditionTransfer, inventoryConditionDescription.getDescription());

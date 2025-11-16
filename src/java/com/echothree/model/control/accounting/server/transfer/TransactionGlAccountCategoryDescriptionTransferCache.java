@@ -39,8 +39,7 @@ public class TransactionGlAccountCategoryDescriptionTransferCache
         var transactionGlAccountCategoryDescriptionTransfer = get(transactionGlAccountCategoryDescription);
         
         if(transactionGlAccountCategoryDescriptionTransfer == null) {
-            var transactionGlAccountCategoryTransferCache = accountingControl.getAccountingTransferCaches().getTransactionGlAccountCategoryTransferCache();
-            var transactionGlAccountCategoryTransfer = transactionGlAccountCategoryTransferCache.getTransfer(userVisit, transactionGlAccountCategoryDescription.getTransactionGlAccountCategory());
+            var transactionGlAccountCategoryTransfer = accountingControl.getTransactionGlAccountCategoryTransfer(userVisit, transactionGlAccountCategoryDescription.getTransactionGlAccountCategory());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, transactionGlAccountCategoryDescription.getLanguage());
             
             transactionGlAccountCategoryDescriptionTransfer = new TransactionGlAccountCategoryDescriptionTransfer(languageTransfer, transactionGlAccountCategoryTransfer, transactionGlAccountCategoryDescription.getDescription());

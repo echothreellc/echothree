@@ -58,7 +58,6 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
-import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
@@ -71,6 +70,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class LetterControl
@@ -85,16 +85,9 @@ public class LetterControl
     //   Letter Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private LetterTransferCaches letterTransferCaches;
-    
-    public LetterTransferCaches getLetterTransferCaches() {
-        if(letterTransferCaches == null) {
-            letterTransferCaches = CDI.current().select(LetterTransferCaches.class).get();
-        }
-        
-        return letterTransferCaches;
-    }
-    
+    @Inject
+    LetterTransferCaches letterTransferCaches;
+
     // --------------------------------------------------------------------------------
     //   Letter Sources
     // --------------------------------------------------------------------------------
@@ -352,13 +345,13 @@ public class LetterControl
     }
     
     public LetterSourceTransfer getLetterSourceTransfer(UserVisit userVisit, LetterSource letterSource) {
-        return getLetterTransferCaches().getLetterSourceTransferCache().getLetterSourceTransfer(userVisit, letterSource);
+        return letterTransferCaches.getLetterSourceTransferCache().getLetterSourceTransfer(userVisit, letterSource);
     }
     
     public List<LetterSourceTransfer> getLetterSourceTransfers(UserVisit userVisit) {
         var letterSources = getLetterSources();
         List<LetterSourceTransfer> letterSourceTransfers = new ArrayList<>(letterSources.size());
-        var letterSourceTransferCache = getLetterTransferCaches().getLetterSourceTransferCache();
+        var letterSourceTransferCache = letterTransferCaches.getLetterSourceTransferCache();
         
         letterSources.forEach((letterSource) ->
                 letterSourceTransfers.add(letterSourceTransferCache.getLetterSourceTransfer(userVisit, letterSource))
@@ -621,7 +614,7 @@ public class LetterControl
     }
     
     public LetterSourceDescriptionTransfer getLetterSourceDescriptionTransfer(UserVisit userVisit, LetterSourceDescription letterSourceDescription) {
-        return getLetterTransferCaches().getLetterSourceDescriptionTransferCache().getLetterSourceDescriptionTransfer(userVisit, letterSourceDescription);
+        return letterTransferCaches.getLetterSourceDescriptionTransferCache().getLetterSourceDescriptionTransfer(userVisit, letterSourceDescription);
     }
     
     public List<LetterSourceDescriptionTransfer> getLetterSourceDescriptionTransfersByLetterSource(UserVisit userVisit, LetterSource letterSource) {
@@ -629,7 +622,7 @@ public class LetterControl
         List<LetterSourceDescriptionTransfer> letterSourceDescriptionTransfers = null;
         
         if(letterSourceDescriptions != null) {
-            var letterSourceDescriptionTransferCache = getLetterTransferCaches().getLetterSourceDescriptionTransferCache();
+            var letterSourceDescriptionTransferCache = letterTransferCaches.getLetterSourceDescriptionTransferCache();
             
             letterSourceDescriptionTransfers = new ArrayList<>(letterSourceDescriptions.size());
             
@@ -909,12 +902,12 @@ public class LetterControl
     }
     
     public LetterTransfer getLetterTransfer(UserVisit userVisit, Letter letter) {
-        return getLetterTransferCaches().getLetterTransferCache().getLetterTransfer(userVisit, letter);
+        return letterTransferCaches.getLetterTransferCache().getLetterTransfer(userVisit, letter);
     }
     
     public List<LetterTransfer> getLetterTransfers(UserVisit userVisit, Collection<Letter> letters) {
         List<LetterTransfer> letterTransfers = new ArrayList<>(letters.size());
-        var letterTransferCache = getLetterTransferCaches().getLetterTransferCache();
+        var letterTransferCache = letterTransferCaches.getLetterTransferCache();
         
         letters.forEach((letter) ->
                 letterTransfers.add(letterTransferCache.getLetterTransfer(userVisit, letter))
@@ -1175,7 +1168,7 @@ public class LetterControl
     }
     
     public LetterDescriptionTransfer getLetterDescriptionTransfer(UserVisit userVisit, LetterDescription letterDescription) {
-        return getLetterTransferCaches().getLetterDescriptionTransferCache().getLetterDescriptionTransfer(userVisit, letterDescription);
+        return letterTransferCaches.getLetterDescriptionTransferCache().getLetterDescriptionTransfer(userVisit, letterDescription);
     }
     
     public List<LetterDescriptionTransfer> getLetterDescriptionTransfersByLetter(UserVisit userVisit, Letter letter) {
@@ -1183,7 +1176,7 @@ public class LetterControl
         List<LetterDescriptionTransfer> letterDescriptionTransfers = null;
         
         if(letterDescriptions != null) {
-            var letterDescriptionTransferCache = getLetterTransferCaches().getLetterDescriptionTransferCache();
+            var letterDescriptionTransferCache = letterTransferCaches.getLetterDescriptionTransferCache();
             
             letterDescriptionTransfers = new ArrayList<>(letterDescriptions.size());
             
@@ -1342,13 +1335,13 @@ public class LetterControl
     }
     
     public LetterContactMechanismPurposeTransfer getLetterContactMechanismPurposeTransfer(UserVisit userVisit, LetterContactMechanismPurpose letterContactMechanismPurpose) {
-        return getLetterTransferCaches().getLetterContactMechanismPurposeTransferCache().getLetterContactMechanismPurposeTransfer(userVisit, letterContactMechanismPurpose);
+        return letterTransferCaches.getLetterContactMechanismPurposeTransferCache().getLetterContactMechanismPurposeTransfer(userVisit, letterContactMechanismPurpose);
     }
     
     public List<LetterContactMechanismPurposeTransfer> getLetterContactMechanismPurposeTransfersByLetter(UserVisit userVisit, Letter letter) {
         var letterContactMechanismPurposes = getLetterContactMechanismPurposesByLetter(letter);
         List<LetterContactMechanismPurposeTransfer> letterContactMechanismPurposeTransfers = new ArrayList<>(letterContactMechanismPurposes.size());
-        var letterContactMechanismPurposeTransferCache = getLetterTransferCaches().getLetterContactMechanismPurposeTransferCache();
+        var letterContactMechanismPurposeTransferCache = letterTransferCaches.getLetterContactMechanismPurposeTransferCache();
         
         letterContactMechanismPurposes.forEach((letterContactMechanismPurpose) ->
                 letterContactMechanismPurposeTransfers.add(letterContactMechanismPurposeTransferCache.getLetterContactMechanismPurposeTransfer(userVisit, letterContactMechanismPurpose))
@@ -1565,12 +1558,12 @@ public class LetterControl
     }
     
     public QueuedLetterTransfer getQueuedLetterTransfer(UserVisit userVisit, QueuedLetter queuedLetter) {
-        return getLetterTransferCaches().getQueuedLetterTransferCache().getQueuedLetterTransfer(userVisit, queuedLetter);
+        return letterTransferCaches.getQueuedLetterTransferCache().getQueuedLetterTransfer(userVisit, queuedLetter);
     }
     
     public List<QueuedLetterTransfer> getQueuedLetterTransfers(UserVisit userVisit, Collection<QueuedLetter> queuedLetters) {
         List<QueuedLetterTransfer> queuedLetterTransfers = new ArrayList<>(queuedLetters.size());
-        var queuedLetterTransferCache = getLetterTransferCaches().getQueuedLetterTransferCache();
+        var queuedLetterTransferCache = letterTransferCaches.getQueuedLetterTransferCache();
 
         queuedLetters.forEach((queuedLetter) ->
                 queuedLetterTransfers.add(queuedLetterTransferCache.getQueuedLetterTransfer(userVisit, queuedLetter))

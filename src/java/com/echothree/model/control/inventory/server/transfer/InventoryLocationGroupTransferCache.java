@@ -36,6 +36,7 @@ public class InventoryLocationGroupTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+
     boolean includeCapacities;
     boolean includeVolume;
     
@@ -61,7 +62,7 @@ public class InventoryLocationGroupTransferCache
             var inventoryLocationGroupDetail = inventoryLocationGroup.getLastDetail();
             var warehouseParty = inventoryLocationGroupDetail.getWarehouseParty();
             var warehouse = warehouseControl.getWarehouse(warehouseParty);
-            var warehouseTransfer = warehouseControl.getWarehouseTransferCaches().getWarehouseTransferCache().getWarehouseTransfer(userVisit, warehouse);
+            var warehouseTransfer = warehouseControl.getWarehouseTransfer(userVisit, warehouse);
             var inventoryLocationGroupName = inventoryLocationGroupDetail.getInventoryLocationGroupName();
             var isDefault = inventoryLocationGroupDetail.getIsDefault();
             var sortOrder = inventoryLocationGroupDetail.getSortOrder();

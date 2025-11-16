@@ -39,8 +39,7 @@ public class TransactionTypeDescriptionTransferCache
         var transactionTypeDescriptionTransfer = get(transactionTypeDescription);
         
         if(transactionTypeDescriptionTransfer == null) {
-            var transactionTypeTransferCache = accountingControl.getAccountingTransferCaches().getTransactionTypeTransferCache();
-            var transactionTypeTransfer = transactionTypeTransferCache.getTransfer(userVisit, transactionTypeDescription.getTransactionType());
+            var transactionTypeTransfer = accountingControl.getTransactionTypeTransfer(userVisit, transactionTypeDescription.getTransactionType());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, transactionTypeDescription.getLanguage());
             
             transactionTypeDescriptionTransfer = new TransactionTypeDescriptionTransfer(languageTransfer, transactionTypeTransfer, transactionTypeDescription.getDescription());

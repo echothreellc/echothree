@@ -106,7 +106,6 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
-import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
@@ -121,6 +120,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class GeoControl
@@ -135,27 +135,20 @@ public class GeoControl
     //   Geo Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private GeoTransferCaches geoTransferCaches;
-    
-    public GeoTransferCaches getGeoTransferCaches() {
-        if(geoTransferCaches == null) {
-            geoTransferCaches = CDI.current().select(GeoTransferCaches.class).get();
-        }
-        
-        return geoTransferCaches;
-    }
-    
+    @Inject
+    GeoTransferCaches geoTransferCaches;
+
     // --------------------------------------------------------------------------------
     //   Transfer Object Utilities
     // --------------------------------------------------------------------------------
     
     public CountryTransfer getCountryTransfer(UserVisit userVisit, GeoCode geoCode) {
-        return getGeoTransferCaches().getCountryTransferCache().getCountryTransfer(userVisit, geoCode);
+        return geoTransferCaches.getCountryTransferCache().getCountryTransfer(userVisit, geoCode);
     }
     
     public List<CountryTransfer> getCountryTransfers(UserVisit userVisit, Collection<GeoCode> geoCodes) {
         var countryTransfers = new ArrayList<CountryTransfer>(geoCodes.size());
-        var countryTransferCache = getGeoTransferCaches().getCountryTransferCache();
+        var countryTransferCache = geoTransferCaches.getCountryTransferCache();
         
         geoCodes.forEach((geoCode) ->
                 countryTransfers.add(countryTransferCache.getCountryTransfer(userVisit, geoCode))
@@ -171,12 +164,12 @@ public class GeoControl
     }
 
     public StateTransfer getStateTransfer(UserVisit userVisit, GeoCode geoCode) {
-        return getGeoTransferCaches().getStateTransferCache().getStateTransfer(userVisit, geoCode);
+        return geoTransferCaches.getStateTransferCache().getStateTransfer(userVisit, geoCode);
     }
     
     public List<StateTransfer> getStateTransfers(UserVisit userVisit, Collection<GeoCode> geoCodes) {
         var stateTransfers = new ArrayList<StateTransfer>(geoCodes.size());
-        var stateTransferCache = getGeoTransferCaches().getStateTransferCache();
+        var stateTransferCache = geoTransferCaches.getStateTransferCache();
         
         geoCodes.forEach((geoCode) ->
                 stateTransfers.add(stateTransferCache.getStateTransfer(userVisit, geoCode))
@@ -203,12 +196,12 @@ public class GeoControl
     }
 
     public CountyTransfer getCountyTransfer(UserVisit userVisit, GeoCode geoCode) {
-        return getGeoTransferCaches().getCountyTransferCache().getCountyTransfer(userVisit, geoCode);
+        return geoTransferCaches.getCountyTransferCache().getCountyTransfer(userVisit, geoCode);
     }
     
     public List<CountyTransfer> getCountyTransfers(UserVisit userVisit, Collection<GeoCode> geoCodes) {
         var countyTransfers = new ArrayList<CountyTransfer>(geoCodes.size());
-        var countyTransferCache = getGeoTransferCaches().getCountyTransferCache();
+        var countyTransferCache = geoTransferCaches.getCountyTransferCache();
         
         geoCodes.forEach((geoCode) ->
                 countyTransfers.add(countyTransferCache.getCountyTransfer(userVisit, geoCode))
@@ -252,12 +245,12 @@ public class GeoControl
     }
     
     public CityTransfer getCityTransfer(UserVisit userVisit, GeoCode geoCode) {
-        return getGeoTransferCaches().getCityTransferCache().getCityTransfer(userVisit, geoCode);
+        return geoTransferCaches.getCityTransferCache().getCityTransfer(userVisit, geoCode);
     }
     
     public List<CityTransfer> getCityTransfers(UserVisit userVisit, Collection<GeoCode> geoCodes) {
         var cityTransfers = new ArrayList<CityTransfer>(geoCodes.size());
-        var cityTransferCache = getGeoTransferCaches().getCityTransferCache();
+        var cityTransferCache = geoTransferCaches.getCityTransferCache();
         
         geoCodes.forEach((geoCode) ->
                 cityTransfers.add(cityTransferCache.getCityTransfer(userVisit, geoCode))
@@ -301,12 +294,12 @@ public class GeoControl
     }
     
     public PostalCodeTransfer getPostalCodeTransfer(UserVisit userVisit, GeoCode geoCode) {
-        return getGeoTransferCaches().getPostalCodeTransferCache().getPostalCodeTransfer(userVisit, geoCode);
+        return geoTransferCaches.getPostalCodeTransferCache().getPostalCodeTransfer(userVisit, geoCode);
     }
     
     public List<PostalCodeTransfer> getPostalCodeTransfers(UserVisit userVisit, Collection<GeoCode> geoCodes) {
         var postalCodeTransfers = new ArrayList<PostalCodeTransfer>(geoCodes.size());
-        var postalCodeTransferCache = getGeoTransferCaches().getPostalCodeTransferCache();
+        var postalCodeTransferCache = geoTransferCaches.getPostalCodeTransferCache();
         
         geoCodes.forEach((geoCode) ->
                 postalCodeTransfers.add(postalCodeTransferCache.getPostalCodeTransfer(userVisit, geoCode))
@@ -572,12 +565,12 @@ public class GeoControl
     }
 
     public GeoCodeTypeTransfer getGeoCodeTypeTransfer(UserVisit userVisit, GeoCodeType geoCodeType) {
-        return getGeoTransferCaches().getGeoCodeTypeTransferCache().getGeoCodeTypeTransfer(userVisit, geoCodeType);
+        return geoTransferCaches.getGeoCodeTypeTransferCache().getGeoCodeTypeTransfer(userVisit, geoCodeType);
     }
 
     public List<GeoCodeTypeTransfer> getGeoCodeTypeTransfers(UserVisit userVisit, Collection<GeoCodeType> geoCodeTypes) {
         List<GeoCodeTypeTransfer> geoCodeTypeTransfers = new ArrayList<>(geoCodeTypes.size());
-        var geoCodeTypeTransferCache = getGeoTransferCaches().getGeoCodeTypeTransferCache();
+        var geoCodeTypeTransferCache = geoTransferCaches.getGeoCodeTypeTransferCache();
 
         geoCodeTypes.forEach((geoCodeType) ->
                 geoCodeTypeTransfers.add(geoCodeTypeTransferCache.getGeoCodeTypeTransfer(userVisit, geoCodeType))
@@ -861,7 +854,7 @@ public class GeoControl
     }
     
     public GeoCodeTypeDescriptionTransfer getGeoCodeTypeDescriptionTransfer(UserVisit userVisit, GeoCodeTypeDescription geoCodeTypeDescription) {
-        return getGeoTransferCaches().getGeoCodeTypeDescriptionTransferCache().getGeoCodeTypeDescriptionTransfer(userVisit, geoCodeTypeDescription);
+        return geoTransferCaches.getGeoCodeTypeDescriptionTransferCache().getGeoCodeTypeDescriptionTransfer(userVisit, geoCodeTypeDescription);
     }
     
     public List<GeoCodeTypeDescriptionTransfer> getGeoCodeTypeDescriptionTransfers(UserVisit userVisit, GeoCodeType geoCodeType) {
@@ -869,7 +862,7 @@ public class GeoControl
         List<GeoCodeTypeDescriptionTransfer> geoCodeTypeDescriptionTransfers = new ArrayList<>(geoCodeTypeDescriptions.size());
 
         geoCodeTypeDescriptions.forEach((geoCodeTypeDescription) -> {
-            geoCodeTypeDescriptionTransfers.add(getGeoTransferCaches().getGeoCodeTypeDescriptionTransferCache().getGeoCodeTypeDescriptionTransfer(userVisit, geoCodeTypeDescription));
+            geoCodeTypeDescriptionTransfers.add(geoTransferCaches.getGeoCodeTypeDescriptionTransferCache().getGeoCodeTypeDescriptionTransfer(userVisit, geoCodeTypeDescription));
         });
 
         return geoCodeTypeDescriptionTransfers;
@@ -1065,12 +1058,12 @@ public class GeoControl
     }
     
     public GeoCodeScopeTransfer getGeoCodeScopeTransfer(UserVisit userVisit, GeoCodeScope geoCodeScope) {
-        return getGeoTransferCaches().getGeoCodeScopeTransferCache().getGeoCodeScopeTransfer(userVisit, geoCodeScope);
+        return geoTransferCaches.getGeoCodeScopeTransferCache().getGeoCodeScopeTransfer(userVisit, geoCodeScope);
     }
 
     public List<GeoCodeScopeTransfer> getGeoCodeScopeTransfers(UserVisit userVisit, Collection<GeoCodeScope> geoCodeScopes) {
         List<GeoCodeScopeTransfer> geoCodeScopeTransfers = new ArrayList<>(geoCodeScopes.size());
-        var geoCodeScopeTransferCache = getGeoTransferCaches().getGeoCodeScopeTransferCache();
+        var geoCodeScopeTransferCache = geoTransferCaches.getGeoCodeScopeTransferCache();
 
         geoCodeScopes.forEach((geoCodeScope) ->
                 geoCodeScopeTransfers.add(geoCodeScopeTransferCache.getGeoCodeScopeTransfer(userVisit, geoCodeScope))
@@ -1311,7 +1304,7 @@ public class GeoControl
     }
     
     public GeoCodeScopeDescriptionTransfer getGeoCodeScopeDescriptionTransfer(UserVisit userVisit, GeoCodeScopeDescription geoCodeScopeDescription) {
-        return getGeoTransferCaches().getGeoCodeScopeDescriptionTransferCache().getGeoCodeScopeDescriptionTransfer(userVisit, geoCodeScopeDescription);
+        return geoTransferCaches.getGeoCodeScopeDescriptionTransferCache().getGeoCodeScopeDescriptionTransfer(userVisit, geoCodeScopeDescription);
     }
     
     public List<GeoCodeScopeDescriptionTransfer> getGeoCodeScopeDescriptionTransfers(UserVisit userVisit, GeoCodeScope geoCodeScope) {
@@ -1319,7 +1312,7 @@ public class GeoControl
         List<GeoCodeScopeDescriptionTransfer> geoCodeScopeDescriptionTransfers = new ArrayList<>(geoCodeScopeDescriptions.size());
 
         geoCodeScopeDescriptions.forEach((geoCodeScopeDescription) -> {
-            geoCodeScopeDescriptionTransfers.add(getGeoTransferCaches().getGeoCodeScopeDescriptionTransferCache().getGeoCodeScopeDescriptionTransfer(userVisit, geoCodeScopeDescription));
+            geoCodeScopeDescriptionTransfers.add(geoTransferCaches.getGeoCodeScopeDescriptionTransferCache().getGeoCodeScopeDescriptionTransfer(userVisit, geoCodeScopeDescription));
         });
 
         return geoCodeScopeDescriptionTransfers;
@@ -1562,13 +1555,13 @@ public class GeoControl
     }
     
     public GeoCodeAliasTypeTransfer getGeoCodeAliasTypeTransfer(UserVisit userVisit, GeoCodeAliasType geoCodeAliasType) {
-        return getGeoTransferCaches().getGeoCodeAliasTypeTransferCache().getGeoCodeAliasTypeTransfer(userVisit, geoCodeAliasType);
+        return geoTransferCaches.getGeoCodeAliasTypeTransferCache().getGeoCodeAliasTypeTransfer(userVisit, geoCodeAliasType);
     }
     
     public List<GeoCodeAliasTypeTransfer> getGeoCodeAliasTypeTransfers(UserVisit userVisit, GeoCodeType geoCodeType) {
         var geoCodeAliasTypes = getGeoCodeAliasTypes(geoCodeType);
         List<GeoCodeAliasTypeTransfer> geoCodeAliasTypeTransfers = new ArrayList<>(geoCodeAliasTypes.size());
-        var geoCodeAliasTypeTransferCache = getGeoTransferCaches().getGeoCodeAliasTypeTransferCache();
+        var geoCodeAliasTypeTransferCache = geoTransferCaches.getGeoCodeAliasTypeTransferCache();
         
         geoCodeAliasTypes.forEach((geoCodeAliasType) ->
                 geoCodeAliasTypeTransfers.add(geoCodeAliasTypeTransferCache.getGeoCodeAliasTypeTransfer(userVisit, geoCodeAliasType))
@@ -1808,7 +1801,7 @@ public class GeoControl
     }
     
     public GeoCodeAliasTypeDescriptionTransfer getGeoCodeAliasTypeDescriptionTransfer(UserVisit userVisit, GeoCodeAliasTypeDescription geoCodeAliasTypeDescription) {
-        return getGeoTransferCaches().getGeoCodeAliasTypeDescriptionTransferCache().getGeoCodeAliasTypeDescriptionTransfer(userVisit, geoCodeAliasTypeDescription);
+        return geoTransferCaches.getGeoCodeAliasTypeDescriptionTransferCache().getGeoCodeAliasTypeDescriptionTransfer(userVisit, geoCodeAliasTypeDescription);
     }
     
     public List<GeoCodeAliasTypeDescriptionTransfer> getGeoCodeAliasTypeDescriptionTransfers(UserVisit userVisit, GeoCodeAliasType geoCodeAliasType) {
@@ -1816,7 +1809,7 @@ public class GeoControl
         List<GeoCodeAliasTypeDescriptionTransfer> geoCodeAliasTypeDescriptionTransfers = new ArrayList<>(geoCodeAliasTypeDescriptions.size());
 
         geoCodeAliasTypeDescriptions.forEach((geoCodeAliasTypeDescription) -> {
-            geoCodeAliasTypeDescriptionTransfers.add(getGeoTransferCaches().getGeoCodeAliasTypeDescriptionTransferCache().getGeoCodeAliasTypeDescriptionTransfer(userVisit, geoCodeAliasTypeDescription));
+            geoCodeAliasTypeDescriptionTransfers.add(geoTransferCaches.getGeoCodeAliasTypeDescriptionTransferCache().getGeoCodeAliasTypeDescriptionTransfer(userVisit, geoCodeAliasTypeDescription));
         });
         
         return geoCodeAliasTypeDescriptionTransfers;
@@ -2049,12 +2042,12 @@ public class GeoControl
     }
     
     public GeoCodeTransfer getGeoCodeTransfer(UserVisit userVisit, GeoCode geoCode) {
-        return getGeoTransferCaches().getGeoCodeTransferCache().getGeoCodeTransfer(userVisit, geoCode);
+        return geoTransferCaches.getGeoCodeTransferCache().getGeoCodeTransfer(userVisit, geoCode);
     }
     
     public List<GeoCodeTransfer> getGeoCodeTransfers(UserVisit userVisit, Collection<GeoCode> geoCodes) {
         List<GeoCodeTransfer> geoCodeTransfers = new ArrayList<>(geoCodes.size());
-        var geoCodeTransferCache = getGeoTransferCaches().getGeoCodeTransferCache();
+        var geoCodeTransferCache = geoTransferCaches.getGeoCodeTransferCache();
         
         geoCodes.forEach((geoCode) ->
                 geoCodeTransfers.add(geoCodeTransferCache.getGeoCodeTransfer(userVisit, geoCode))
@@ -2277,7 +2270,7 @@ public class GeoControl
     }
     
     public GeoCodeDescriptionTransfer getGeoCodeDescriptionTransfer(UserVisit userVisit, GeoCodeDescription geoCodeDescription) {
-        return getGeoTransferCaches().getGeoCodeDescriptionTransferCache().getGeoCodeDescriptionTransfer(userVisit, geoCodeDescription);
+        return geoTransferCaches.getGeoCodeDescriptionTransferCache().getGeoCodeDescriptionTransfer(userVisit, geoCodeDescription);
     }
     
     public List<GeoCodeDescriptionTransfer> getGeoCodeDescriptionTransfers(UserVisit userVisit, GeoCode geoCode) {
@@ -2285,7 +2278,7 @@ public class GeoControl
         List<GeoCodeDescriptionTransfer> geoCodeDescriptionTransfers = new ArrayList<>(geoCodeDescriptions.size());
 
         geoCodeDescriptions.forEach((geoCodeDescription) -> {
-            geoCodeDescriptionTransfers.add(getGeoTransferCaches().getGeoCodeDescriptionTransferCache().getGeoCodeDescriptionTransfer(userVisit, geoCodeDescription));
+            geoCodeDescriptionTransfers.add(geoTransferCaches.getGeoCodeDescriptionTransferCache().getGeoCodeDescriptionTransfer(userVisit, geoCodeDescription));
         });
 
         return geoCodeDescriptionTransfers;
@@ -2501,12 +2494,12 @@ public class GeoControl
     }
 
     public GeoCodeAliasTransfer getGeoCodeAliasTransfer(UserVisit userVisit, GeoCodeAlias geoCodeAlias) {
-        return getGeoTransferCaches().getGeoCodeAliasTransferCache().getGeoCodeAliasTransfer(userVisit, geoCodeAlias);
+        return geoTransferCaches.getGeoCodeAliasTransferCache().getGeoCodeAliasTransfer(userVisit, geoCodeAlias);
     }
     
     public List<GeoCodeAliasTransfer> getGeoCodeAliasTransfers(UserVisit userVisit, Collection<GeoCodeAlias> geoCodeAliases) {
         List<GeoCodeAliasTransfer> geoCodeAliasTransfers = new ArrayList<>(geoCodeAliases.size());
-        var geoCodeAliasTransferCache = getGeoTransferCaches().getGeoCodeAliasTransferCache();
+        var geoCodeAliasTransferCache = geoTransferCaches.getGeoCodeAliasTransferCache();
         
         geoCodeAliases.forEach((geoCodeAlias) ->
                 geoCodeAliasTransfers.add(geoCodeAliasTransferCache.getGeoCodeAliasTransfer(userVisit, geoCodeAlias))
@@ -2697,7 +2690,7 @@ public class GeoControl
     }
 
     public GeoCodeRelationshipTransfer getGeoCodeRelationshipTransfer(UserVisit userVisit, GeoCodeRelationship geoCodeRelationship) {
-        return getGeoTransferCaches().getGeoCodeRelationshipTransferCache().getGeoCodeRelationshipTransfer(userVisit, geoCodeRelationship);
+        return geoTransferCaches.getGeoCodeRelationshipTransferCache().getGeoCodeRelationshipTransfer(userVisit, geoCodeRelationship);
     }
 
     public void deleteGeoCodeRelationship(GeoCodeRelationship geoCodeRelationship, BasePK deletedBy) {
@@ -2923,7 +2916,7 @@ public class GeoControl
     
     public List<GeoCodeLanguageTransfer> getGeoCodeLanguageTransfers(UserVisit userVisit, Collection<GeoCodeLanguage> geoCodeLanguages) {
         List<GeoCodeLanguageTransfer> geoCodeLanguageTransfers = new ArrayList<>(geoCodeLanguages.size());
-        var geoCodeLanguageTransferCache = getGeoTransferCaches().getGeoCodeLanguageTransferCache();
+        var geoCodeLanguageTransferCache = geoTransferCaches.getGeoCodeLanguageTransferCache();
         
         geoCodeLanguages.forEach((geoCodeLanguage) ->
                 geoCodeLanguageTransfers.add(geoCodeLanguageTransferCache.getGeoCodeLanguageTransfer(userVisit, geoCodeLanguage))
@@ -2941,7 +2934,7 @@ public class GeoControl
     }
     
     public GeoCodeLanguageTransfer getGeoCodeLanguageTransfer(UserVisit userVisit, GeoCodeLanguage geoCodeLanguage) {
-        return getGeoTransferCaches().getGeoCodeLanguageTransferCache().getGeoCodeLanguageTransfer(userVisit, geoCodeLanguage);
+        return geoTransferCaches.getGeoCodeLanguageTransferCache().getGeoCodeLanguageTransfer(userVisit, geoCodeLanguage);
     }
     
     private void updateGeoCodeLanguageFromValue(GeoCodeLanguageValue geoCodeLanguageValue, boolean checkDefault, BasePK updatedBy) {
@@ -3223,7 +3216,7 @@ public class GeoControl
     
     public List<GeoCodeCurrencyTransfer> getGeoCodeCurrencyTransfers(UserVisit userVisit, Collection<GeoCodeCurrency> geoCodeCurrencies) {
         List<GeoCodeCurrencyTransfer> geoCodeCurrencyTransfers = new ArrayList<>(geoCodeCurrencies.size());
-        var geoCodeCurrencyTransferCache = getGeoTransferCaches().getGeoCodeCurrencyTransferCache();
+        var geoCodeCurrencyTransferCache = geoTransferCaches.getGeoCodeCurrencyTransferCache();
         
         geoCodeCurrencies.forEach((geoCodeCurrency) ->
                 geoCodeCurrencyTransfers.add(geoCodeCurrencyTransferCache.getGeoCodeCurrencyTransfer(userVisit, geoCodeCurrency))
@@ -3241,7 +3234,7 @@ public class GeoControl
     }
     
     public GeoCodeCurrencyTransfer getGeoCodeCurrencyTransfer(UserVisit userVisit, GeoCodeCurrency geoCodeCurrency) {
-        return getGeoTransferCaches().getGeoCodeCurrencyTransferCache().getGeoCodeCurrencyTransfer(userVisit, geoCodeCurrency);
+        return geoTransferCaches.getGeoCodeCurrencyTransferCache().getGeoCodeCurrencyTransfer(userVisit, geoCodeCurrency);
     }
     
     private void updateGeoCodeCurrencyFromValue(GeoCodeCurrencyValue geoCodeCurrencyValue, boolean checkDefault, BasePK updatedBy) {
@@ -3523,7 +3516,7 @@ public class GeoControl
     
     public List<GeoCodeTimeZoneTransfer> getGeoCodeTimeZoneTransfers(UserVisit userVisit, Collection<GeoCodeTimeZone> geoCodeTimeZones) {
         List<GeoCodeTimeZoneTransfer> geoCodeTimeZoneTransfers = new ArrayList<>(geoCodeTimeZones.size());
-        var geoCodeTimeZoneTransferCache = getGeoTransferCaches().getGeoCodeTimeZoneTransferCache();
+        var geoCodeTimeZoneTransferCache = geoTransferCaches.getGeoCodeTimeZoneTransferCache();
         
         geoCodeTimeZones.forEach((geoCodeTimeZone) ->
                 geoCodeTimeZoneTransfers.add(geoCodeTimeZoneTransferCache.getGeoCodeTimeZoneTransfer(userVisit, geoCodeTimeZone))
@@ -3541,7 +3534,7 @@ public class GeoControl
     }
     
     public GeoCodeTimeZoneTransfer getGeoCodeTimeZoneTransfer(UserVisit userVisit, GeoCodeTimeZone geoCodeTimeZone) {
-        return getGeoTransferCaches().getGeoCodeTimeZoneTransferCache().getGeoCodeTimeZoneTransfer(userVisit, geoCodeTimeZone);
+        return geoTransferCaches.getGeoCodeTimeZoneTransferCache().getGeoCodeTimeZoneTransfer(userVisit, geoCodeTimeZone);
     }
     
     private void updateGeoCodeTimeZoneFromValue(GeoCodeTimeZoneValue geoCodeTimeZoneValue, boolean checkDefault, BasePK updatedBy) {
@@ -3823,7 +3816,7 @@ public class GeoControl
     
     public List<GeoCodeDateTimeFormatTransfer> getGeoCodeDateTimeFormatTransfers(UserVisit userVisit, Collection<GeoCodeDateTimeFormat> geoCodeDateTimeFormats) {
         List<GeoCodeDateTimeFormatTransfer> geoCodeDateTimeFormatTransfers = new ArrayList<>(geoCodeDateTimeFormats.size());
-        var geoCodeDateTimeFormatTransferCache = getGeoTransferCaches().getGeoCodeDateTimeFormatTransferCache();
+        var geoCodeDateTimeFormatTransferCache = geoTransferCaches.getGeoCodeDateTimeFormatTransferCache();
         
         geoCodeDateTimeFormats.forEach((geoCodeDateTimeFormat) ->
                 geoCodeDateTimeFormatTransfers.add(geoCodeDateTimeFormatTransferCache.getGeoCodeDateTimeFormatTransfer(userVisit, geoCodeDateTimeFormat))
@@ -3843,7 +3836,7 @@ public class GeoControl
     
     public GeoCodeDateTimeFormatTransfer getGeoCodeDateTimeFormatTransfer(UserVisit userVisit,
             GeoCodeDateTimeFormat geoCodeDateTimeFormat) {
-        return getGeoTransferCaches().getGeoCodeDateTimeFormatTransferCache().getGeoCodeDateTimeFormatTransfer(userVisit, geoCodeDateTimeFormat);
+        return geoTransferCaches.getGeoCodeDateTimeFormatTransferCache().getGeoCodeDateTimeFormatTransfer(userVisit, geoCodeDateTimeFormat);
     }
     
     private void updateGeoCodeDateTimeFormatFromValue(GeoCodeDateTimeFormatValue geoCodeDateTimeFormatValue, boolean checkDefault,

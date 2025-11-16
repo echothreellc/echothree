@@ -38,8 +38,7 @@ public class ContentPageLayoutDescriptionTransferCache
         var contentPageLayoutDescriptionTransfer = get(contentPageLayoutDescription);
         
         if(contentPageLayoutDescriptionTransfer == null) {
-            var contentPageLayoutTransferCache = contentControl.getContentTransferCaches().getContentPageLayoutTransferCache();
-            var contentPageLayoutTransfer = contentPageLayoutTransferCache.getTransfer(userVisit, contentPageLayoutDescription.getContentPageLayout());
+            var contentPageLayoutTransfer = contentControl.getContentPageLayoutTransfer(userVisit, contentPageLayoutDescription.getContentPageLayout());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, contentPageLayoutDescription.getLanguage());
             
             contentPageLayoutDescriptionTransfer = new ContentPageLayoutDescriptionTransfer(languageTransfer, contentPageLayoutTransfer, contentPageLayoutDescription.getDescription());

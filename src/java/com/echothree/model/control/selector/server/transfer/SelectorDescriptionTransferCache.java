@@ -38,8 +38,7 @@ public class SelectorDescriptionTransferCache
         var selectorDescriptionTransfer = get(selectorDescription);
         
         if(selectorDescriptionTransfer == null) {
-            var selectorTransferCache = selectorControl.getSelectorTransferCaches().getSelectorTransferCache();
-            var selectorTransfer = selectorTransferCache.getSelectorTransfer(userVisit, selectorDescription.getSelector());
+            var selectorTransfer = selectorControl.getSelectorTransfer(userVisit, selectorDescription.getSelector());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, selectorDescription.getLanguage());
             
             selectorDescriptionTransfer = new SelectorDescriptionTransfer(languageTransfer, selectorTransfer, selectorDescription.getDescription());

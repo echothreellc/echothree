@@ -17,9 +17,8 @@
 package com.echothree.model.control.shipment.server.control;
 
 import com.echothree.model.control.shipment.server.transfer.ShipmentTransferCaches;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.control.BaseModelControl;
-import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 public abstract class BaseShipmentControl
         extends BaseModelControl {
@@ -33,14 +32,7 @@ public abstract class BaseShipmentControl
     //   Shipment Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private ShipmentTransferCaches shipmentTransferCaches;
-    
-    public ShipmentTransferCaches getShipmentTransferCaches() {
-        if(shipmentTransferCaches == null) {
-            shipmentTransferCaches = CDI.current().select(ShipmentTransferCaches.class).get();
-        }
-        
-        return shipmentTransferCaches;
-    }
+    @Inject
+    ShipmentTransferCaches shipmentTransferCaches;
     
 }

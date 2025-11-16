@@ -38,8 +38,7 @@ public class TermDescriptionTransferCache
         var termDescriptionTransfer = get(termDescription);
         
         if(termDescriptionTransfer == null) {
-            var termTransferCache = termControl.getTermTransferCaches().getTermTransferCache();
-            var termTransfer = termTransferCache.getTermTransfer(userVisit, termDescription.getTerm());
+            var termTransfer = termControl.getTermTransfer(userVisit, termDescription.getTerm());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, termDescription.getLanguage());
             
             termDescriptionTransfer = new TermDescriptionTransfer(languageTransfer, termTransfer, termDescription.getDescription());

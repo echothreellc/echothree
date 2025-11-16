@@ -46,7 +46,6 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
-import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
@@ -55,6 +54,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class ClubControl
@@ -69,16 +69,9 @@ public class ClubControl
     //   Club Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private ClubTransferCaches clubTransferCaches;
-    
-    public ClubTransferCaches getClubTransferCaches() {
-        if(clubTransferCaches == null) {
-            clubTransferCaches = CDI.current().select(ClubTransferCaches.class).get();
-        }
-        
-        return clubTransferCaches;
-    }
-    
+    @Inject
+    ClubTransferCaches clubTransferCaches;
+
     // --------------------------------------------------------------------------------
     //   Clubs
     // --------------------------------------------------------------------------------
@@ -278,13 +271,13 @@ public class ClubControl
     }
     
     public ClubTransfer getClubTransfer(UserVisit userVisit, Club club) {
-        return getClubTransferCaches().getClubTransferCache().getClubTransfer(userVisit, club);
+        return clubTransferCaches.getClubTransferCache().getClubTransfer(userVisit, club);
     }
     
     public List<ClubTransfer> getClubTransfers(UserVisit userVisit) {
         var clubs = getClubs();
         List<ClubTransfer> clubTransfers = new ArrayList<>(clubs.size());
-        var clubTransferCache = getClubTransferCaches().getClubTransferCache();
+        var clubTransferCache = clubTransferCaches.getClubTransferCache();
         
         clubs.forEach((club) ->
                 clubTransfers.add(clubTransferCache.getClubTransfer(userVisit, club))
@@ -498,14 +491,14 @@ public class ClubControl
     
     public ClubDescriptionTransfer getClubDescriptionTransfer(UserVisit userVisit,
             ClubDescription clubDescription) {
-        return getClubTransferCaches().getClubDescriptionTransferCache().getClubDescriptionTransfer(userVisit, clubDescription);
+        return clubTransferCaches.getClubDescriptionTransferCache().getClubDescriptionTransfer(userVisit, clubDescription);
     }
     
     public List<ClubDescriptionTransfer> getClubDescriptionTransfersByClub(UserVisit userVisit,
             Club club) {
         var clubDescriptions = getClubDescriptionsByClub(club);
         List<ClubDescriptionTransfer> clubDescriptionTransfers = new ArrayList<>(clubDescriptions.size());
-        var clubDescriptionTransferCache = getClubTransferCaches().getClubDescriptionTransferCache();
+        var clubDescriptionTransferCache = clubTransferCaches.getClubDescriptionTransferCache();
         
         clubDescriptions.forEach((clubDescription) ->
                 clubDescriptionTransfers.add(clubDescriptionTransferCache.getClubDescriptionTransfer(userVisit, clubDescription))
@@ -613,13 +606,13 @@ public class ClubControl
     }
     
     public ClubItemTypeTransfer getClubItemTypeTransfer(UserVisit userVisit, ClubItemType clubItemType) {
-        return getClubTransferCaches().getClubItemTypeTransferCache().getClubItemTypeTransfer(userVisit, clubItemType);
+        return clubTransferCaches.getClubItemTypeTransferCache().getClubItemTypeTransfer(userVisit, clubItemType);
     }
     
     public List<ClubItemTypeTransfer> getClubItemTypeTransfers(UserVisit userVisit) {
         var clubItemTypes = getClubItemTypes();
         List<ClubItemTypeTransfer> clubItemTypeTransfers = new ArrayList<>(clubItemTypes.size());
-        var clubItemTypeTransferCache = getClubTransferCaches().getClubItemTypeTransferCache();
+        var clubItemTypeTransferCache = clubTransferCaches.getClubItemTypeTransferCache();
         
         clubItemTypes.forEach((clubItemType) ->
                 clubItemTypeTransfers.add(clubItemTypeTransferCache.getClubItemTypeTransfer(userVisit, clubItemType))
@@ -811,12 +804,12 @@ public class ClubControl
     }
     
     public ClubItemTransfer getClubItemTransfer(UserVisit userVisit, ClubItem clubItem) {
-        return getClubTransferCaches().getClubItemTransferCache().getClubItemTransfer(userVisit, clubItem);
+        return clubTransferCaches.getClubItemTransferCache().getClubItemTransfer(userVisit, clubItem);
     }
     
     private List<ClubItemTransfer> getClubItemTransfers(UserVisit userVisit, Collection<ClubItem> clubItems) {
         List<ClubItemTransfer> clubItemTransfers = new ArrayList<>(clubItems.size());
-        var clubItemTransferCache = getClubTransferCaches().getClubItemTransferCache();
+        var clubItemTransferCache = clubTransferCaches.getClubItemTransferCache();
         
         clubItems.forEach((clubItem) ->
                 clubItemTransfers.add(clubItemTransferCache.getClubItemTransfer(userVisit, clubItem))

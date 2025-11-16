@@ -120,7 +120,6 @@ import com.echothree.model.data.workflow.server.entity.WorkflowStep;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
-import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -135,6 +134,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class TrainingControl
@@ -149,16 +149,9 @@ public class TrainingControl
     //   Training Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private TrainingTransferCaches trainingTransferCaches;
-    
-    public TrainingTransferCaches getTrainingTransferCaches() {
-        if(trainingTransferCaches == null) {
-            trainingTransferCaches = CDI.current().select(TrainingTransferCaches.class).get();
-        }
-        
-        return trainingTransferCaches;
-    }
-    
+    @Inject
+    TrainingTransferCaches trainingTransferCaches;
+
     // --------------------------------------------------------------------------------
     //   Training Classes
     // --------------------------------------------------------------------------------
@@ -306,13 +299,13 @@ public class TrainingControl
     }
     
     public TrainingClassTransfer getTrainingClassTransfer(UserVisit userVisit, TrainingClass trainingClass) {
-        return getTrainingTransferCaches().getTrainingClassTransferCache().getTrainingClassTransfer(userVisit, trainingClass);
+        return trainingTransferCaches.getTrainingClassTransferCache().getTrainingClassTransfer(userVisit, trainingClass);
     }
     
     public List<TrainingClassTransfer> getTrainingClassTransfers(UserVisit userVisit) {
         var trainingClasses = getTrainingClasses();
         List<TrainingClassTransfer> trainingClassTransfers = new ArrayList<>(trainingClasses.size());
-        var trainingClassTransferCache = getTrainingTransferCaches().getTrainingClassTransferCache();
+        var trainingClassTransferCache = trainingTransferCaches.getTrainingClassTransferCache();
         
         trainingClasses.forEach((trainingClass) ->
                 trainingClassTransfers.add(trainingClassTransferCache.getTrainingClassTransfer(userVisit, trainingClass))
@@ -538,13 +531,13 @@ public class TrainingControl
     }
     
     public TrainingClassTranslationTransfer getTrainingClassTranslationTransfer(UserVisit userVisit, TrainingClassTranslation trainingClassTranslation) {
-        return getTrainingTransferCaches().getTrainingClassTranslationTransferCache().getTrainingClassTranslationTransfer(userVisit, trainingClassTranslation);
+        return trainingTransferCaches.getTrainingClassTranslationTransferCache().getTrainingClassTranslationTransfer(userVisit, trainingClassTranslation);
     }
     
     public List<TrainingClassTranslationTransfer> getTrainingClassTranslationTransfers(UserVisit userVisit, TrainingClass trainingClass) {
         var trainingClassTranslations = getTrainingClassTranslationsByTrainingClass(trainingClass);
         List<TrainingClassTranslationTransfer> trainingClassTranslationTransfers = new ArrayList<>(trainingClassTranslations.size());
-        var trainingClassTranslationTransferCache = getTrainingTransferCaches().getTrainingClassTranslationTransferCache();
+        var trainingClassTranslationTransferCache = trainingTransferCaches.getTrainingClassTranslationTransferCache();
         
         trainingClassTranslations.forEach((trainingClassTranslation) ->
                 trainingClassTranslationTransfers.add(trainingClassTranslationTransferCache.getTrainingClassTranslationTransfer(userVisit, trainingClassTranslation))
@@ -686,12 +679,12 @@ public class TrainingControl
     }
     
     public TrainingClassSectionTransfer getTrainingClassSectionTransfer(UserVisit userVisit, TrainingClassSection trainingClassSection) {
-        return getTrainingTransferCaches().getTrainingClassSectionTransferCache().getTrainingClassSectionTransfer(userVisit, trainingClassSection);
+        return trainingTransferCaches.getTrainingClassSectionTransferCache().getTrainingClassSectionTransfer(userVisit, trainingClassSection);
     }
     
     public List<TrainingClassSectionTransfer> getTrainingClassSectionTransfers(UserVisit userVisit, Collection<TrainingClassSection> trainingClassSections) {
         List<TrainingClassSectionTransfer> trainingClassSectionTransfers = new ArrayList<>(trainingClassSections.size());
-        var trainingClassSectionTransferCache = getTrainingTransferCaches().getTrainingClassSectionTransferCache();
+        var trainingClassSectionTransferCache = trainingTransferCaches.getTrainingClassSectionTransferCache();
         
         trainingClassSections.forEach((trainingClassSection) ->
                 trainingClassSectionTransfers.add(trainingClassSectionTransferCache.getTrainingClassSectionTransfer(userVisit, trainingClassSection))
@@ -849,13 +842,13 @@ public class TrainingControl
     }
     
     public TrainingClassSectionTranslationTransfer getTrainingClassSectionTranslationTransfer(UserVisit userVisit, TrainingClassSectionTranslation trainingClassSectionTranslation) {
-        return getTrainingTransferCaches().getTrainingClassSectionTranslationTransferCache().getTrainingClassSectionTranslationTransfer(userVisit, trainingClassSectionTranslation);
+        return trainingTransferCaches.getTrainingClassSectionTranslationTransferCache().getTrainingClassSectionTranslationTransfer(userVisit, trainingClassSectionTranslation);
     }
     
     public List<TrainingClassSectionTranslationTransfer> getTrainingClassSectionTranslationTransfers(UserVisit userVisit, TrainingClassSection trainingClassSection) {
         var trainingClassSectionTranslations = getTrainingClassSectionTranslationsByTrainingClassSection(trainingClassSection);
         List<TrainingClassSectionTranslationTransfer> trainingClassSectionTranslationTransfers = new ArrayList<>(trainingClassSectionTranslations.size());
-        var trainingClassSectionTranslationTransferCache = getTrainingTransferCaches().getTrainingClassSectionTranslationTransferCache();
+        var trainingClassSectionTranslationTransferCache = trainingTransferCaches.getTrainingClassSectionTranslationTransferCache();
         
         trainingClassSectionTranslations.forEach((trainingClassSectionTranslation) ->
                 trainingClassSectionTranslationTransfers.add(trainingClassSectionTranslationTransferCache.getTrainingClassSectionTranslationTransfer(userVisit, trainingClassSectionTranslation))
@@ -1019,12 +1012,12 @@ public class TrainingControl
     }
     
     public TrainingClassPageTransfer getTrainingClassPageTransfer(UserVisit userVisit, TrainingClassPage trainingClassPage) {
-        return getTrainingTransferCaches().getTrainingClassPageTransferCache().getTrainingClassPageTransfer(userVisit, trainingClassPage);
+        return trainingTransferCaches.getTrainingClassPageTransferCache().getTrainingClassPageTransfer(userVisit, trainingClassPage);
     }
     
     public List<TrainingClassPageTransfer> getTrainingClassPageTransfers(UserVisit userVisit, Collection<TrainingClassPage> trainingClassPages) {
         List<TrainingClassPageTransfer> trainingClassPageTransfers = new ArrayList<>(trainingClassPages.size());
-        var trainingClassPageTransferCache = getTrainingTransferCaches().getTrainingClassPageTransferCache();
+        var trainingClassPageTransferCache = trainingTransferCaches.getTrainingClassPageTransferCache();
         
         trainingClassPages.forEach((trainingClassPage) ->
                 trainingClassPageTransfers.add(trainingClassPageTransferCache.getTrainingClassPageTransfer(userVisit, trainingClassPage))
@@ -1180,13 +1173,13 @@ public class TrainingControl
     }
     
     public TrainingClassPageTranslationTransfer getTrainingClassPageTranslationTransfer(UserVisit userVisit, TrainingClassPageTranslation trainingClassPageTranslation) {
-        return getTrainingTransferCaches().getTrainingClassPageTranslationTransferCache().getTrainingClassPageTranslationTransfer(userVisit, trainingClassPageTranslation);
+        return trainingTransferCaches.getTrainingClassPageTranslationTransferCache().getTrainingClassPageTranslationTransfer(userVisit, trainingClassPageTranslation);
     }
     
     public List<TrainingClassPageTranslationTransfer> getTrainingClassPageTranslationTransfers(UserVisit userVisit, TrainingClassPage trainingClassPage) {
         var trainingClassPageTranslations = getTrainingClassPageTranslationsByTrainingClassPage(trainingClassPage);
         List<TrainingClassPageTranslationTransfer> trainingClassPageTranslationTransfers = new ArrayList<>(trainingClassPageTranslations.size());
-        var trainingClassPageTranslationTransferCache = getTrainingTransferCaches().getTrainingClassPageTranslationTransferCache();
+        var trainingClassPageTranslationTransferCache = trainingTransferCaches.getTrainingClassPageTranslationTransferCache();
         
         trainingClassPageTranslations.forEach((trainingClassPageTranslation) ->
                 trainingClassPageTranslationTransfers.add(trainingClassPageTranslationTransferCache.getTrainingClassPageTranslationTransfer(userVisit, trainingClassPageTranslation))
@@ -1349,12 +1342,12 @@ public class TrainingControl
     }
     
     public TrainingClassQuestionTransfer getTrainingClassQuestionTransfer(UserVisit userVisit, TrainingClassQuestion trainingClassQuestion) {
-        return getTrainingTransferCaches().getTrainingClassQuestionTransferCache().getTrainingClassQuestionTransfer(userVisit, trainingClassQuestion);
+        return trainingTransferCaches.getTrainingClassQuestionTransferCache().getTrainingClassQuestionTransfer(userVisit, trainingClassQuestion);
     }
     
     public List<TrainingClassQuestionTransfer> getTrainingClassQuestionTransfers(UserVisit userVisit, Collection<TrainingClassQuestion> trainingClassQuestions) {
         List<TrainingClassQuestionTransfer> trainingClassQuestionTransfers = new ArrayList<>(trainingClassQuestions.size());
-        var trainingClassQuestionTransferCache = getTrainingTransferCaches().getTrainingClassQuestionTransferCache();
+        var trainingClassQuestionTransferCache = trainingTransferCaches.getTrainingClassQuestionTransferCache();
         
         trainingClassQuestions.forEach((trainingClassQuestion) ->
                 trainingClassQuestionTransfers.add(trainingClassQuestionTransferCache.getTrainingClassQuestionTransfer(userVisit, trainingClassQuestion))
@@ -1514,13 +1507,13 @@ public class TrainingControl
     
     
     public TrainingClassQuestionTranslationTransfer getTrainingClassQuestionTranslationTransfer(UserVisit userVisit, TrainingClassQuestionTranslation trainingClassQuestionTranslation) {
-        return getTrainingTransferCaches().getTrainingClassQuestionTranslationTransferCache().getTrainingClassQuestionTranslationTransfer(userVisit, trainingClassQuestionTranslation);
+        return trainingTransferCaches.getTrainingClassQuestionTranslationTransferCache().getTrainingClassQuestionTranslationTransfer(userVisit, trainingClassQuestionTranslation);
     }
     
     public List<TrainingClassQuestionTranslationTransfer> getTrainingClassQuestionTranslationTransfers(UserVisit userVisit, TrainingClassQuestion trainingClassQuestion) {
         var trainingClassQuestionTranslations = getTrainingClassQuestionTranslationsByTrainingClassQuestion(trainingClassQuestion);
         List<TrainingClassQuestionTranslationTransfer> trainingClassQuestionTranslationTransfers = new ArrayList<>(trainingClassQuestionTranslations.size());
-        var trainingClassQuestionTranslationTransferCache = getTrainingTransferCaches().getTrainingClassQuestionTranslationTransferCache();
+        var trainingClassQuestionTranslationTransferCache = trainingTransferCaches.getTrainingClassQuestionTranslationTransferCache();
         
         trainingClassQuestionTranslations.forEach((trainingClassQuestionTranslation) ->
                 trainingClassQuestionTranslationTransfers.add(trainingClassQuestionTranslationTransferCache.getTrainingClassQuestionTranslationTransfer(userVisit, trainingClassQuestionTranslation))
@@ -1657,12 +1650,12 @@ public class TrainingControl
     }
     
     public TrainingClassAnswerTransfer getTrainingClassAnswerTransfer(UserVisit userVisit, TrainingClassAnswer trainingClassAnswer) {
-        return getTrainingTransferCaches().getTrainingClassAnswerTransferCache().getTrainingClassAnswerTransfer(userVisit, trainingClassAnswer);
+        return trainingTransferCaches.getTrainingClassAnswerTransferCache().getTrainingClassAnswerTransfer(userVisit, trainingClassAnswer);
     }
     
     public List<TrainingClassAnswerTransfer> getTrainingClassAnswerTransfers(UserVisit userVisit, Collection<TrainingClassAnswer> trainingClassAnswers) {
         List<TrainingClassAnswerTransfer> trainingClassAnswerTransfers = new ArrayList<>(trainingClassAnswers.size());
-        var trainingClassAnswerTransferCache = getTrainingTransferCaches().getTrainingClassAnswerTransferCache();
+        var trainingClassAnswerTransferCache = trainingTransferCaches.getTrainingClassAnswerTransferCache();
         
         trainingClassAnswers.forEach((trainingClassAnswer) ->
                 trainingClassAnswerTransfers.add(trainingClassAnswerTransferCache.getTrainingClassAnswerTransfer(userVisit, trainingClassAnswer))
@@ -1818,13 +1811,13 @@ public class TrainingControl
     }
     
     public TrainingClassAnswerTranslationTransfer getTrainingClassAnswerTranslationTransfer(UserVisit userVisit, TrainingClassAnswerTranslation trainingClassAnswerTranslation) {
-        return getTrainingTransferCaches().getTrainingClassAnswerTranslationTransferCache().getTrainingClassAnswerTranslationTransfer(userVisit, trainingClassAnswerTranslation);
+        return trainingTransferCaches.getTrainingClassAnswerTranslationTransferCache().getTrainingClassAnswerTranslationTransfer(userVisit, trainingClassAnswerTranslation);
     }
     
     public List<TrainingClassAnswerTranslationTransfer> getTrainingClassAnswerTranslationTransfers(UserVisit userVisit, TrainingClassAnswer trainingClassAnswer) {
         var trainingClassAnswerTranslations = getTrainingClassAnswerTranslationsByTrainingClassAnswer(trainingClassAnswer);
         List<TrainingClassAnswerTranslationTransfer> trainingClassAnswerTranslationTransfers = new ArrayList<>(trainingClassAnswerTranslations.size());
-        var trainingClassAnswerTranslationTransferCache = getTrainingTransferCaches().getTrainingClassAnswerTranslationTransferCache();
+        var trainingClassAnswerTranslationTransferCache = trainingTransferCaches.getTrainingClassAnswerTranslationTransferCache();
         
         trainingClassAnswerTranslations.forEach((trainingClassAnswerTranslation) ->
                 trainingClassAnswerTranslationTransfers.add(trainingClassAnswerTranslationTransferCache.getTrainingClassAnswerTranslationTransfer(userVisit, trainingClassAnswerTranslation))
@@ -2156,12 +2149,12 @@ public class TrainingControl
     }
     
     public PartyTrainingClassTransfer getPartyTrainingClassTransfer(UserVisit userVisit, PartyTrainingClass partyTrainingClass) {
-        return getTrainingTransferCaches().getPartyTrainingClassTransferCache().getPartyTrainingClassTransfer(userVisit, partyTrainingClass);
+        return trainingTransferCaches.getPartyTrainingClassTransferCache().getPartyTrainingClassTransfer(userVisit, partyTrainingClass);
     }
     
     public List<PartyTrainingClassTransfer> getPartyTrainingClassTransfers(UserVisit userVisit, Collection<PartyTrainingClass> partyTrainingClasses) {
         List<PartyTrainingClassTransfer> partyTrainingClassTransfers = new ArrayList<>(partyTrainingClasses.size());
-        var partyTrainingClassTransferCache = getTrainingTransferCaches().getPartyTrainingClassTransferCache();
+        var partyTrainingClassTransferCache = trainingTransferCaches.getPartyTrainingClassTransferCache();
         
         partyTrainingClasses.forEach((partyTrainingClass) ->
                 partyTrainingClassTransfers.add(partyTrainingClassTransferCache.getPartyTrainingClassTransfer(userVisit, partyTrainingClass))
@@ -2397,12 +2390,12 @@ public class TrainingControl
     }
     
     public PartyTrainingClassSessionTransfer getPartyTrainingClassSessionTransfer(UserVisit userVisit, PartyTrainingClassSession partyTrainingClassSession) {
-        return getTrainingTransferCaches().getPartyTrainingClassSessionTransferCache().getPartyTrainingClassSessionTransfer(userVisit, partyTrainingClassSession);
+        return trainingTransferCaches.getPartyTrainingClassSessionTransferCache().getPartyTrainingClassSessionTransfer(userVisit, partyTrainingClassSession);
     }
     
     public List<PartyTrainingClassSessionTransfer> getPartyTrainingClassSessionTransfers(UserVisit userVisit, Collection<PartyTrainingClassSession> partyTrainingClassSessions) {
         List<PartyTrainingClassSessionTransfer> partyTrainingClassSessionTransfers = new ArrayList<>(partyTrainingClassSessions.size());
-        var partyTrainingClassSessionTransferCache = getTrainingTransferCaches().getPartyTrainingClassSessionTransferCache();
+        var partyTrainingClassSessionTransferCache = trainingTransferCaches.getPartyTrainingClassSessionTransferCache();
         
         partyTrainingClassSessions.forEach((partyTrainingClassSession) ->
                 partyTrainingClassSessionTransfers.add(partyTrainingClassSessionTransferCache.getPartyTrainingClassSessionTransfer(userVisit, partyTrainingClassSession))
@@ -2731,12 +2724,12 @@ public class TrainingControl
     }
     
     public PartyTrainingClassSessionSectionTransfer getPartyTrainingClassSessionSectionTransfer(UserVisit userVisit, PartyTrainingClassSessionSection partyTrainingClassSessionSection) {
-        return getTrainingTransferCaches().getPartyTrainingClassSessionSectionTransferCache().getPartyTrainingClassSessionSectionTransfer(userVisit, partyTrainingClassSessionSection);
+        return trainingTransferCaches.getPartyTrainingClassSessionSectionTransferCache().getPartyTrainingClassSessionSectionTransfer(userVisit, partyTrainingClassSessionSection);
     }
     
     public List<PartyTrainingClassSessionSectionTransfer> getPartyTrainingClassSessionSectionTransfers(UserVisit userVisit, Collection<PartyTrainingClassSessionSection> partyTrainingClassSessionSections) {
         List<PartyTrainingClassSessionSectionTransfer> partyTrainingClassSessionSectionTransfers = new ArrayList<>(partyTrainingClassSessionSections.size());
-        var partyTrainingClassSessionSectionTransferCache = getTrainingTransferCaches().getPartyTrainingClassSessionSectionTransferCache();
+        var partyTrainingClassSessionSectionTransferCache = trainingTransferCaches.getPartyTrainingClassSessionSectionTransferCache();
         
         partyTrainingClassSessionSections.forEach((partyTrainingClassSessionSection) ->
                 partyTrainingClassSessionSectionTransfers.add(partyTrainingClassSessionSectionTransferCache.getPartyTrainingClassSessionSectionTransfer(userVisit, partyTrainingClassSessionSection))
@@ -2930,12 +2923,12 @@ public class TrainingControl
     }
     
     public PartyTrainingClassSessionPageTransfer getPartyTrainingClassSessionPageTransfer(UserVisit userVisit, PartyTrainingClassSessionPage partyTrainingClassSessionPage) {
-        return getTrainingTransferCaches().getPartyTrainingClassSessionPageTransferCache().getPartyTrainingClassSessionPageTransfer(userVisit, partyTrainingClassSessionPage);
+        return trainingTransferCaches.getPartyTrainingClassSessionPageTransferCache().getPartyTrainingClassSessionPageTransfer(userVisit, partyTrainingClassSessionPage);
     }
     
     public List<PartyTrainingClassSessionPageTransfer> getPartyTrainingClassSessionPageTransfers(UserVisit userVisit, Collection<PartyTrainingClassSessionPage> partyTrainingClassSessionPages) {
         List<PartyTrainingClassSessionPageTransfer> partyTrainingClassSessionPageTransfers = new ArrayList<>(partyTrainingClassSessionPages.size());
-        var partyTrainingClassSessionPageTransferCache = getTrainingTransferCaches().getPartyTrainingClassSessionPageTransferCache();
+        var partyTrainingClassSessionPageTransferCache = trainingTransferCaches.getPartyTrainingClassSessionPageTransferCache();
         
         partyTrainingClassSessionPages.forEach((partyTrainingClassSessionPage) ->
                 partyTrainingClassSessionPageTransfers.add(partyTrainingClassSessionPageTransferCache.getPartyTrainingClassSessionPageTransfer(userVisit, partyTrainingClassSessionPage))
@@ -3134,12 +3127,12 @@ public class TrainingControl
     }
     
     public PartyTrainingClassSessionQuestionTransfer getPartyTrainingClassSessionQuestionTransfer(UserVisit userVisit, PartyTrainingClassSessionQuestion partyTrainingClassSessionQuestion) {
-        return getTrainingTransferCaches().getPartyTrainingClassSessionQuestionTransferCache().getPartyTrainingClassSessionQuestionTransfer(userVisit, partyTrainingClassSessionQuestion);
+        return trainingTransferCaches.getPartyTrainingClassSessionQuestionTransferCache().getPartyTrainingClassSessionQuestionTransfer(userVisit, partyTrainingClassSessionQuestion);
     }
     
     public List<PartyTrainingClassSessionQuestionTransfer> getPartyTrainingClassSessionQuestionTransfers(UserVisit userVisit, Collection<PartyTrainingClassSessionQuestion> partyTrainingClassSessionQuestions) {
         List<PartyTrainingClassSessionQuestionTransfer> partyTrainingClassSessionQuestionTransfers = new ArrayList<>(partyTrainingClassSessionQuestions.size());
-        var partyTrainingClassSessionQuestionTransferCache = getTrainingTransferCaches().getPartyTrainingClassSessionQuestionTransferCache();
+        var partyTrainingClassSessionQuestionTransferCache = trainingTransferCaches.getPartyTrainingClassSessionQuestionTransferCache();
         
         partyTrainingClassSessionQuestions.forEach((partyTrainingClassSessionQuestion) ->
                 partyTrainingClassSessionQuestionTransfers.add(partyTrainingClassSessionQuestionTransferCache.getPartyTrainingClassSessionQuestionTransfer(userVisit, partyTrainingClassSessionQuestion))
@@ -3391,12 +3384,12 @@ public class TrainingControl
     }
     
     public PartyTrainingClassSessionAnswerTransfer getPartyTrainingClassSessionAnswerTransfer(UserVisit userVisit, PartyTrainingClassSessionAnswer partyTrainingClassSessionAnswer) {
-        return getTrainingTransferCaches().getPartyTrainingClassSessionAnswerTransferCache().getPartyTrainingClassSessionAnswerTransfer(userVisit, partyTrainingClassSessionAnswer);
+        return trainingTransferCaches.getPartyTrainingClassSessionAnswerTransferCache().getPartyTrainingClassSessionAnswerTransfer(userVisit, partyTrainingClassSessionAnswer);
     }
     
     public List<PartyTrainingClassSessionAnswerTransfer> getPartyTrainingClassSessionAnswerTransfers(UserVisit userVisit, Collection<PartyTrainingClassSessionAnswer> partyTrainingClassSessionAnswers) {
         List<PartyTrainingClassSessionAnswerTransfer> partyTrainingClassSessionAnswerTransfers = new ArrayList<>(partyTrainingClassSessionAnswers.size());
-        var partyTrainingClassSessionAnswerTransferCache = getTrainingTransferCaches().getPartyTrainingClassSessionAnswerTransferCache();
+        var partyTrainingClassSessionAnswerTransferCache = trainingTransferCaches.getPartyTrainingClassSessionAnswerTransferCache();
         
         partyTrainingClassSessionAnswers.forEach((partyTrainingClassSessionAnswer) ->
                 partyTrainingClassSessionAnswerTransfers.add(partyTrainingClassSessionAnswerTransferCache.getPartyTrainingClassSessionAnswerTransfer(userVisit, partyTrainingClassSessionAnswer))

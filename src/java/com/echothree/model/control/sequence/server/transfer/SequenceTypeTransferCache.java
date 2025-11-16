@@ -44,10 +44,8 @@ public class SequenceTypeTransferCache
             var sequenceTypeName = sequenceTypeDetail.getSequenceTypeName();
             var prefix = sequenceTypeDetail.getPrefix();
             var suffix = sequenceTypeDetail.getSuffix();
-            var sequenceEncoderTypeTransferCache = sequenceControl.getSequenceTransferCaches().getSequenceEncoderTypeTransferCache();
-            var sequenceEncoderType = sequenceEncoderTypeTransferCache.getSequenceEncoderTypeTransfer(userVisit, sequenceTypeDetail.getSequenceEncoderType());
-            var sequenceChecksumTypeTransferCache = sequenceControl.getSequenceTransferCaches().getSequenceChecksumTypeTransferCache();
-            var sequenceChecksumType = sequenceChecksumTypeTransferCache.getSequenceChecksumTypeTransfer(userVisit, sequenceTypeDetail.getSequenceChecksumType());
+            var sequenceEncoderType = sequenceControl.getSequenceEncoderTypeTransfer(userVisit, sequenceTypeDetail.getSequenceEncoderType());
+            var sequenceChecksumType = sequenceControl.getSequenceChecksumTypeTransfer(userVisit, sequenceTypeDetail.getSequenceChecksumType());
             var chunkSize = sequenceTypeDetail.getChunkSize();
             var isDefault = sequenceTypeDetail.getIsDefault();
             var sortOrder = sequenceTypeDetail.getSortOrder();

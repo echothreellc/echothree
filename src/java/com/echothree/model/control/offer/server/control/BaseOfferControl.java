@@ -17,9 +17,8 @@
 package com.echothree.model.control.offer.server.control;
 
 import com.echothree.model.control.offer.server.transfer.OfferTransferCaches;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.control.BaseModelControl;
-import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 public class BaseOfferControl
         extends BaseModelControl {
@@ -33,14 +32,7 @@ public class BaseOfferControl
     //   Offer Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private OfferTransferCaches offerTransferCaches;
-    
-    public OfferTransferCaches getOfferTransferCaches() {
-        if(offerTransferCaches == null) {
-            offerTransferCaches = CDI.current().select(OfferTransferCaches.class).get();
-        }
-        
-        return offerTransferCaches;
-    }
-    
+    @Inject
+    OfferTransferCaches offerTransferCaches;
+
 }

@@ -17,9 +17,8 @@
 package com.echothree.model.control.sales.server.control;
 
 import com.echothree.model.control.sales.server.transfer.SalesTransferCaches;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.control.BaseModelControl;
-import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 public abstract class BaseSalesControl
         extends BaseModelControl {
@@ -33,14 +32,7 @@ public abstract class BaseSalesControl
     //   Sales Transfer Caches
     // --------------------------------------------------------------------------------
 
-    private SalesTransferCaches saleTransferCaches;
-
-    public SalesTransferCaches getSaleTransferCaches() {
-        if(saleTransferCaches == null) {
-            saleTransferCaches = CDI.current().select(SalesTransferCaches.class).get();
-        }
-
-        return saleTransferCaches;
-    }
+    @Inject
+    SalesTransferCaches saleTransferCaches;
 
 }

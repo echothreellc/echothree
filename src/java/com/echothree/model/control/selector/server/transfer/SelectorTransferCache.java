@@ -41,8 +41,7 @@ public class SelectorTransferCache
         
         if(selectorTransfer == null) {
             var selectorDetail = selector.getLastDetail();
-            var selectorTypeTransferCache = selectorControl.getSelectorTransferCaches().getSelectorTypeTransferCache();
-            var selectorType = selectorTypeTransferCache.getSelectorTypeTransfer(userVisit, selectorDetail.getSelectorType());
+            var selectorType = selectorControl.getSelectorTypeTransfer(userVisit, selectorDetail.getSelectorType());
             var selectorName = selectorDetail.getSelectorName();
             var isDefault = selectorDetail.getIsDefault();
             var sortOrder = selectorDetail.getSortOrder();

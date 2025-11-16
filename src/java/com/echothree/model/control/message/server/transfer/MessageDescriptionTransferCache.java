@@ -38,8 +38,7 @@ public class MessageDescriptionTransferCache
         var messageDescriptionTransfer = get(messageDescription);
         
         if(messageDescriptionTransfer == null) {
-            var messageTransferCache = messageControl.getMessageTransferCaches().getMessageTransferCache();
-            var messageTransfer = messageTransferCache.getMessageTransfer(userVisit, messageDescription.getMessage());
+            var messageTransfer = messageControl.getMessageTransfer(userVisit, messageDescription.getMessage());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, messageDescription.getLanguage());
             
             messageDescriptionTransfer = new MessageDescriptionTransfer(languageTransfer, messageTransfer, messageDescription.getDescription());

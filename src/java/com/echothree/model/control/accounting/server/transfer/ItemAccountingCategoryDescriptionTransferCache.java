@@ -39,8 +39,7 @@ public class ItemAccountingCategoryDescriptionTransferCache
         var itemAccountingCategoryDescriptionTransfer = get(itemAccountingCategoryDescription);
         
         if(itemAccountingCategoryDescriptionTransfer == null) {
-            var itemAccountingCategoryTransferCache = accountingControl.getAccountingTransferCaches().getItemAccountingCategoryTransferCache();
-            var itemAccountingCategoryTransfer = itemAccountingCategoryTransferCache.getTransfer(userVisit, itemAccountingCategoryDescription.getItemAccountingCategory());
+            var itemAccountingCategoryTransfer = accountingControl.getItemAccountingCategoryTransfer(userVisit, itemAccountingCategoryDescription.getItemAccountingCategory());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, itemAccountingCategoryDescription.getLanguage());
             
             itemAccountingCategoryDescriptionTransfer = new ItemAccountingCategoryDescriptionTransfer(languageTransfer, itemAccountingCategoryTransfer, itemAccountingCategoryDescription.getDescription());

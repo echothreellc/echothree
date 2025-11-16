@@ -40,7 +40,6 @@ import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
-import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -48,6 +47,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class JobControl
@@ -62,16 +62,9 @@ public class JobControl
     //   Contact List Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private JobTransferCaches jobTransferCaches;
-    
-    public JobTransferCaches getJobTransferCaches() {
-        if(jobTransferCaches == null) {
-            jobTransferCaches = CDI.current().select(JobTransferCaches.class).get();
-        }
-        
-        return jobTransferCaches;
-    }
-    
+    @Inject
+    JobTransferCaches jobTransferCaches;
+
     // --------------------------------------------------------------------------------
     //   Jobs
     // --------------------------------------------------------------------------------
@@ -168,13 +161,13 @@ public class JobControl
     }
     
     public JobTransfer getJobTransfer(UserVisit userVisit, Job job) {
-        return getJobTransferCaches().getJobTransferCache().getJobTransfer(userVisit, job);
+        return jobTransferCaches.getJobTransferCache().getJobTransfer(userVisit, job);
     }
     
     public List<JobTransfer> getJobTransfers(UserVisit userVisit) {
         var jobs = getJobs();
         List<JobTransfer> jobTransfers = new ArrayList<>(jobs.size());
-        var jobTransferCache = getJobTransferCaches().getJobTransferCache();
+        var jobTransferCache = jobTransferCaches.getJobTransferCache();
         
         jobs.forEach((job) ->
                 jobTransfers.add(jobTransferCache.getJobTransfer(userVisit, job))
@@ -370,7 +363,7 @@ public class JobControl
     }
     
     public JobDescriptionTransfer getJobDescriptionTransfer(UserVisit userVisit, JobDescription jobDescription) {
-        return getJobTransferCaches().getJobDescriptionTransferCache().getJobDescriptionTransfer(userVisit, jobDescription);
+        return jobTransferCaches.getJobDescriptionTransferCache().getJobDescriptionTransfer(userVisit, jobDescription);
     }
     
     public List<JobDescriptionTransfer> getJobDescriptionTransfersByJob(UserVisit userVisit, Job job) {
@@ -378,7 +371,7 @@ public class JobControl
         List<JobDescriptionTransfer> jobDescriptionTransfers = new ArrayList<>(jobDescriptions.size());
         
         jobDescriptions.forEach((jobDescription) -> {
-            jobDescriptionTransfers.add(getJobTransferCaches().getJobDescriptionTransferCache().getJobDescriptionTransfer(userVisit, jobDescription));
+            jobDescriptionTransfers.add(jobTransferCaches.getJobDescriptionTransferCache().getJobDescriptionTransfer(userVisit, jobDescription));
         });
         
         return jobDescriptionTransfers;

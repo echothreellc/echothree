@@ -223,12 +223,12 @@ public class OrderTypeControl
     }
 
     public OrderTypeTransfer getOrderTypeTransfer(UserVisit userVisit, OrderType orderType) {
-        return getOrderTransferCaches().getOrderTypeTransferCache().getOrderTypeTransfer(userVisit, orderType);
+        return orderTransferCaches.getOrderTypeTransferCache().getOrderTypeTransfer(userVisit, orderType);
     }
 
     public List<OrderTypeTransfer> getOrderTypeTransfers(UserVisit userVisit, Collection<OrderType> orderTypes) {
         List<OrderTypeTransfer> orderTypeTransfers = new ArrayList<>(orderTypes.size());
-        var orderTypeTransferCache = getOrderTransferCaches().getOrderTypeTransferCache();
+        var orderTypeTransferCache = orderTransferCaches.getOrderTypeTransferCache();
 
         orderTypes.forEach((orderType) ->
                 orderTypeTransfers.add(orderTypeTransferCache.getOrderTypeTransfer(userVisit, orderType))
@@ -470,13 +470,13 @@ public class OrderTypeControl
     }
 
     public OrderTypeDescriptionTransfer getOrderTypeDescriptionTransfer(UserVisit userVisit, OrderTypeDescription orderTypeDescription) {
-        return getOrderTransferCaches().getOrderTypeDescriptionTransferCache().getOrderTypeDescriptionTransfer(userVisit, orderTypeDescription);
+        return orderTransferCaches.getOrderTypeDescriptionTransferCache().getOrderTypeDescriptionTransfer(userVisit, orderTypeDescription);
     }
 
     public List<OrderTypeDescriptionTransfer> getOrderTypeDescriptionTransfersByOrderType(UserVisit userVisit, OrderType orderType) {
         var orderTypeDescriptions = getOrderTypeDescriptionsByOrderType(orderType);
         List<OrderTypeDescriptionTransfer> orderTypeDescriptionTransfers = new ArrayList<>(orderTypeDescriptions.size());
-        var orderTypeDescriptionTransferCache = getOrderTransferCaches().getOrderTypeDescriptionTransferCache();
+        var orderTypeDescriptionTransferCache = orderTransferCaches.getOrderTypeDescriptionTransferCache();
 
         orderTypeDescriptions.forEach((orderTypeDescription) ->
                 orderTypeDescriptionTransfers.add(orderTypeDescriptionTransferCache.getOrderTypeDescriptionTransfer(userVisit, orderTypeDescription))

@@ -38,10 +38,8 @@ public class PartySecurityRoleTemplateRoleTransferCache
         var partySecurityRoleTemplateRoleTransfer = get(partySecurityRoleTemplateRole);
         
         if(partySecurityRoleTemplateRoleTransfer == null) {
-            var partySecurityRoleTemplateTransferCache = securityControl.getSecurityTransferCaches().getPartySecurityRoleTemplateTransferCache();
-            var partySecurityRoleTemplateTransfer = partySecurityRoleTemplateTransferCache.getPartySecurityRoleTemplateTransfer(userVisit, partySecurityRoleTemplateRole.getPartySecurityRoleTemplate());
-            var securityRoleTransferCache = securityControl.getSecurityTransferCaches().getSecurityRoleTransferCache();
-            var securityRoleTransfer = securityRoleTransferCache.getSecurityRoleTransfer(userVisit, partySecurityRoleTemplateRole.getSecurityRole());
+            var partySecurityRoleTemplateTransfer = securityControl.getPartySecurityRoleTemplateTransfer(userVisit, partySecurityRoleTemplateRole.getPartySecurityRoleTemplate());
+            var securityRoleTransfer = securityControl.getSecurityRoleTransfer(userVisit, partySecurityRoleTemplateRole.getSecurityRole());
             
             partySecurityRoleTemplateRoleTransfer = new PartySecurityRoleTemplateRoleTransfer(partySecurityRoleTemplateTransfer, securityRoleTransfer);
             put(userVisit, partySecurityRoleTemplateRole, partySecurityRoleTemplateRoleTransfer);

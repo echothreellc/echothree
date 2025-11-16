@@ -147,7 +147,6 @@ import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
-import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -160,6 +159,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class SelectorControl
@@ -174,16 +174,9 @@ public class SelectorControl
     //   Selector Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private SelectorTransferCaches selectorTransferCaches;
-    
-    public SelectorTransferCaches getSelectorTransferCaches() {
-        if(selectorTransferCaches == null) {
-            selectorTransferCaches = CDI.current().select(SelectorTransferCaches.class).get();
-        }
-        
-        return selectorTransferCaches;
-    }
-    
+    @Inject
+    SelectorTransferCaches selectorTransferCaches;
+
     // --------------------------------------------------------------------------------
     //   Selector Kinds
     // --------------------------------------------------------------------------------
@@ -376,12 +369,12 @@ public class SelectorControl
     }
 
     public SelectorKindTransfer getSelectorKindTransfer(UserVisit userVisit, SelectorKind selectorKind) {
-        return getSelectorTransferCaches().getSelectorKindTransferCache().getSelectorKindTransfer(userVisit, selectorKind);
+        return selectorTransferCaches.getSelectorKindTransferCache().getSelectorKindTransfer(userVisit, selectorKind);
     }
 
     public List<SelectorKindTransfer> getSelectorKindTransfers(UserVisit userVisit, Collection<SelectorKind> selectorKinds) {
         List<SelectorKindTransfer> selectorKindTransfers = new ArrayList<>(selectorKinds.size());
-        var selectorKindTransferCache = getSelectorTransferCaches().getSelectorKindTransferCache();
+        var selectorKindTransferCache = selectorTransferCaches.getSelectorKindTransferCache();
 
         selectorKinds.forEach((selectorKind) ->
                 selectorKindTransfers.add(selectorKindTransferCache.getSelectorKindTransfer(userVisit, selectorKind))
@@ -566,7 +559,7 @@ public class SelectorControl
     }
 
     public SelectorKindDescriptionTransfer getSelectorKindDescriptionTransfer(UserVisit userVisit, SelectorKindDescription selectorKindDescription) {
-        return getSelectorTransferCaches().getSelectorKindDescriptionTransferCache().getSelectorKindDescriptionTransfer(userVisit, selectorKindDescription);
+        return selectorTransferCaches.getSelectorKindDescriptionTransferCache().getSelectorKindDescriptionTransfer(userVisit, selectorKindDescription);
     }
 
     public List<SelectorKindDescriptionTransfer> getSelectorKindDescriptionTransfersBySelectorKind(UserVisit userVisit, SelectorKind selectorKind) {
@@ -574,7 +567,7 @@ public class SelectorControl
         List<SelectorKindDescriptionTransfer> selectorKindDescriptionTransfers = new ArrayList<>(selectorKindDescriptions.size());
 
         selectorKindDescriptions.forEach((selectorKindDescription) -> {
-            selectorKindDescriptionTransfers.add(getSelectorTransferCaches().getSelectorKindDescriptionTransferCache().getSelectorKindDescriptionTransfer(userVisit, selectorKindDescription));
+            selectorKindDescriptionTransfers.add(selectorTransferCaches.getSelectorKindDescriptionTransferCache().getSelectorKindDescriptionTransfer(userVisit, selectorKindDescription));
         });
 
         return selectorKindDescriptionTransfers;
@@ -813,12 +806,12 @@ public class SelectorControl
     }
 
     public SelectorTypeTransfer getSelectorTypeTransfer(UserVisit userVisit, SelectorType selectorType) {
-        return getSelectorTransferCaches().getSelectorTypeTransferCache().getSelectorTypeTransfer(userVisit, selectorType);
+        return selectorTransferCaches.getSelectorTypeTransferCache().getSelectorTypeTransfer(userVisit, selectorType);
     }
 
     public List<SelectorTypeTransfer> getSelectorTypeTransfers(UserVisit userVisit, Collection<SelectorType> selectorTypes) {
         List<SelectorTypeTransfer> selectorTypeTransfers = new ArrayList<>(selectorTypes.size());
-        var selectorTypeTransferCache = getSelectorTransferCaches().getSelectorTypeTransferCache();
+        var selectorTypeTransferCache = selectorTransferCaches.getSelectorTypeTransferCache();
 
         selectorTypes.forEach((selectorType) ->
                 selectorTypeTransfers.add(selectorTypeTransferCache.getSelectorTypeTransfer(userVisit, selectorType))
@@ -1017,7 +1010,7 @@ public class SelectorControl
     }
 
     public SelectorTypeDescriptionTransfer getSelectorTypeDescriptionTransfer(UserVisit userVisit, SelectorTypeDescription selectorTypeDescription) {
-        return getSelectorTransferCaches().getSelectorTypeDescriptionTransferCache().getSelectorTypeDescriptionTransfer(userVisit, selectorTypeDescription);
+        return selectorTransferCaches.getSelectorTypeDescriptionTransferCache().getSelectorTypeDescriptionTransfer(userVisit, selectorTypeDescription);
     }
 
     public List<SelectorTypeDescriptionTransfer> getSelectorTypeDescriptionTransfersBySelectorType(UserVisit userVisit, SelectorType selectorType) {
@@ -1025,7 +1018,7 @@ public class SelectorControl
         List<SelectorTypeDescriptionTransfer> selectorTypeDescriptionTransfers = new ArrayList<>(selectorTypeDescriptions.size());
 
         selectorTypeDescriptions.forEach((selectorTypeDescription) -> {
-            selectorTypeDescriptionTransfers.add(getSelectorTransferCaches().getSelectorTypeDescriptionTransferCache().getSelectorTypeDescriptionTransfer(userVisit, selectorTypeDescription));
+            selectorTypeDescriptionTransfers.add(selectorTransferCaches.getSelectorTypeDescriptionTransferCache().getSelectorTypeDescriptionTransfer(userVisit, selectorTypeDescription));
         });
 
         return selectorTypeDescriptionTransfers;
@@ -1382,12 +1375,12 @@ public class SelectorControl
     }
     
     public SelectorNodeTypeTransfer getSelectorNodeTypeTransfer(UserVisit userVisit, SelectorNodeType selectorNodeType) {
-        return getSelectorTransferCaches().getSelectorNodeTypeTransferCache().getSelectorNodeTypeTransfer(userVisit, selectorNodeType);
+        return selectorTransferCaches.getSelectorNodeTypeTransferCache().getSelectorNodeTypeTransfer(userVisit, selectorNodeType);
     }
     
     public List<SelectorNodeTypeTransfer> getSelectorNodeTypeTransfers(UserVisit userVisit, Collection<SelectorNodeType> selectorNodeTypes) {
         List<SelectorNodeTypeTransfer> selectorNodeTypeTransfers = new ArrayList<>(selectorNodeTypes.size());
-        var selectorNodeTypeTransferCache = getSelectorTransferCaches().getSelectorNodeTypeTransferCache();
+        var selectorNodeTypeTransferCache = selectorTransferCaches.getSelectorNodeTypeTransferCache();
         
         selectorNodeTypes.forEach((selectorNodeType) ->
                 selectorNodeTypeTransfers.add(selectorNodeTypeTransferCache.getSelectorNodeTypeTransfer(userVisit, selectorNodeType))
@@ -1864,12 +1857,12 @@ public class SelectorControl
     }
     
     public SelectorTransfer getSelectorTransfer(UserVisit userVisit, Selector selector) {
-        return getSelectorTransferCaches().getSelectorTransferCache().getSelectorTransfer(userVisit, selector);
+        return selectorTransferCaches.getSelectorTransferCache().getSelectorTransfer(userVisit, selector);
     }
     
     public List<SelectorTransfer> getSelectorTransfers(UserVisit userVisit, Collection<Selector> selectors) {
         List<SelectorTransfer> selectorTransfers = new ArrayList<>(selectors.size());
-        var selectorTransferCache = getSelectorTransferCaches().getSelectorTransferCache();
+        var selectorTransferCache = selectorTransferCaches.getSelectorTransferCache();
         
         selectors.forEach((selector) ->
                 selectorTransfers.add(selectorTransferCache.getSelectorTransfer(userVisit, selector))
@@ -2089,7 +2082,7 @@ public class SelectorControl
     }
     
     public SelectorDescriptionTransfer getSelectorDescriptionTransfer(UserVisit userVisit, SelectorDescription selectorDescription) {
-        return getSelectorTransferCaches().getSelectorDescriptionTransferCache().getSelectorDescriptionTransfer(userVisit, selectorDescription);
+        return selectorTransferCaches.getSelectorDescriptionTransferCache().getSelectorDescriptionTransfer(userVisit, selectorDescription);
     }
     
     public List<SelectorDescriptionTransfer> getSelectorDescriptionTransfers(UserVisit userVisit, Selector selector) {
@@ -2097,7 +2090,7 @@ public class SelectorControl
         List<SelectorDescriptionTransfer> selectorDescriptionTransfers = new ArrayList<>(selectorDescriptions.size());
         
         selectorDescriptions.forEach((selectorDescription) -> {
-            selectorDescriptionTransfers.add(getSelectorTransferCaches().getSelectorDescriptionTransferCache().getSelectorDescriptionTransfer(userVisit, selectorDescription));
+            selectorDescriptionTransfers.add(selectorTransferCaches.getSelectorDescriptionTransferCache().getSelectorDescriptionTransfer(userVisit, selectorDescription));
         });
         
         return selectorDescriptionTransfers;
@@ -2371,7 +2364,7 @@ public class SelectorControl
     }
     
     public SelectorNodeTransfer getSelectorNodeTransfer(UserVisit userVisit, SelectorNode selectorNode) {
-        return getSelectorTransferCaches().getSelectorNodeTransferCache().getSelectorNodeTransfer(userVisit, selectorNode);
+        return selectorTransferCaches.getSelectorNodeTransferCache().getSelectorNodeTransfer(userVisit, selectorNode);
     }
     
     public List<SelectorNodeTransfer> getSelectorNodeTransfersBySelector(UserVisit userVisit, Selector selector) {
@@ -2379,7 +2372,7 @@ public class SelectorControl
         List<SelectorNodeTransfer> selectorNodeTransfers = new ArrayList<>(selectorNodes.size());
         
         selectorNodes.forEach((selectorNode) -> {
-            selectorNodeTransfers.add(getSelectorTransferCaches().getSelectorNodeTransferCache().getSelectorNodeTransfer(userVisit, selectorNode));
+            selectorNodeTransfers.add(selectorTransferCaches.getSelectorNodeTransferCache().getSelectorNodeTransfer(userVisit, selectorNode));
         });
         
         return selectorNodeTransfers;
@@ -2622,7 +2615,7 @@ public class SelectorControl
     }
     
     public SelectorNodeDescriptionTransfer getSelectorNodeDescriptionTransfer(UserVisit userVisit, SelectorNodeDescription selectorNodeDescription) {
-        return getSelectorTransferCaches().getSelectorNodeDescriptionTransferCache().getSelectorNodeDescriptionTransfer(userVisit, selectorNodeDescription);
+        return selectorTransferCaches.getSelectorNodeDescriptionTransferCache().getSelectorNodeDescriptionTransfer(userVisit, selectorNodeDescription);
     }
     
     public List<SelectorNodeDescriptionTransfer> getSelectorNodeDescriptionTransfers(UserVisit userVisit, SelectorNode selectorNode) {
@@ -2633,7 +2626,7 @@ public class SelectorControl
             selectorNodeDescriptionTransfers = new ArrayList<>(selectorNodeDescriptions.size());
             
             for(var selectorNodeDescription : selectorNodeDescriptions) {
-                selectorNodeDescriptionTransfers.add(getSelectorTransferCaches().getSelectorNodeDescriptionTransferCache().getSelectorNodeDescriptionTransfer(userVisit, selectorNodeDescription));
+                selectorNodeDescriptionTransfers.add(selectorTransferCaches.getSelectorNodeDescriptionTransferCache().getSelectorNodeDescriptionTransfer(userVisit, selectorNodeDescription));
             }
         }
         
@@ -4333,13 +4326,13 @@ public class SelectorControl
     }
     
     public SelectorPartyTransfer getSelectorPartyTransfer(UserVisit userVisit, SelectorParty selectorParty) {
-        return getSelectorTransferCaches().getSelectorPartyTransferCache().getSelectorPartyTransfer(userVisit, selectorParty);
+        return selectorTransferCaches.getSelectorPartyTransferCache().getSelectorPartyTransfer(userVisit, selectorParty);
     }
     
     public List<SelectorPartyTransfer> getSelectorPartyTransfers(UserVisit userVisit, Selector selector) {
         var selectorParties = getSelectorPartiesBySelector(selector);
         List<SelectorPartyTransfer> selectorPartyTransfers = new ArrayList<>(selectorParties.size());
-        var selectorPartyTransferCache = getSelectorTransferCaches().getSelectorPartyTransferCache();
+        var selectorPartyTransferCache = selectorTransferCaches.getSelectorPartyTransferCache();
         
         selectorParties.forEach((selectorParty) ->
                 selectorPartyTransfers.add(selectorPartyTransferCache.getSelectorPartyTransfer(userVisit, selectorParty))

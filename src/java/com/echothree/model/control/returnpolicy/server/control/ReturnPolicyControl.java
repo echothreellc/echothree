@@ -86,14 +86,9 @@ import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.workflow.common.pk.WorkflowStepPK;
-import com.echothree.model.data.workflow.server.entity.Workflow;
-import com.echothree.model.data.workflow.server.entity.WorkflowStep;
-import com.echothree.model.data.workflow.server.factory.WorkflowStepFactory;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
-import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
@@ -105,6 +100,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class ReturnPolicyControl
@@ -119,16 +115,9 @@ public class ReturnPolicyControl
     //   Return Policy Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private ReturnPolicyTransferCaches returnPolicyTransferCaches;
-    
-    public ReturnPolicyTransferCaches getReturnPolicyTransferCaches() {
-        if(returnPolicyTransferCaches == null) {
-            returnPolicyTransferCaches = CDI.current().select(ReturnPolicyTransferCaches.class).get();
-        }
-        
-        return returnPolicyTransferCaches;
-    }
-    
+    @Inject
+    ReturnPolicyTransferCaches returnPolicyTransferCaches;
+
     // --------------------------------------------------------------------------------
     //   Party Return Policies
     // --------------------------------------------------------------------------------
@@ -266,12 +255,12 @@ public class ReturnPolicyControl
     }
 
     public PartyReturnPolicyTransfer getPartyReturnPolicyTransfer(UserVisit userVisit, PartyReturnPolicy partyReturnPolicy) {
-        return getReturnPolicyTransferCaches().getPartyReturnPolicyTransferCache().getPartyReturnPolicyTransfer(userVisit, partyReturnPolicy);
+        return returnPolicyTransferCaches.getPartyReturnPolicyTransferCache().getPartyReturnPolicyTransfer(userVisit, partyReturnPolicy);
     }
 
     public List<PartyReturnPolicyTransfer> getPartyReturnPolicyTransfers(UserVisit userVisit, Collection<PartyReturnPolicy> returnPolicies) {
         List<PartyReturnPolicyTransfer> returnPolicyTransfers = new ArrayList<>(returnPolicies.size());
-        var returnPolicyTransferCache = getReturnPolicyTransferCaches().getPartyReturnPolicyTransferCache();
+        var returnPolicyTransferCache = returnPolicyTransferCaches.getPartyReturnPolicyTransferCache();
 
         returnPolicies.forEach((returnPolicy) ->
                 returnPolicyTransfers.add(returnPolicyTransferCache.getPartyReturnPolicyTransfer(userVisit, returnPolicy))
@@ -506,12 +495,12 @@ public class ReturnPolicyControl
     }
     
     public ReturnKindTransfer getReturnKindTransfer(UserVisit userVisit, ReturnKind returnKind) {
-        return getReturnPolicyTransferCaches().getReturnKindTransferCache().getReturnKindTransfer(userVisit, returnKind);
+        return returnPolicyTransferCaches.getReturnKindTransferCache().getReturnKindTransfer(userVisit, returnKind);
     }
 
     public List<ReturnKindTransfer> getReturnKindTransfers(UserVisit userVisit, Collection<ReturnKind> returnKinds) {
         var returnKindTransfers = new ArrayList<ReturnKindTransfer>(returnKinds.size());
-        var returnKindTransferCache = getReturnPolicyTransferCaches().getReturnKindTransferCache();
+        var returnKindTransferCache = returnPolicyTransferCaches.getReturnKindTransferCache();
 
         returnKinds.forEach((returnKind) ->
                 returnKindTransfers.add(returnKindTransferCache.getReturnKindTransfer(userVisit, returnKind))
@@ -698,7 +687,7 @@ public class ReturnPolicyControl
     }
     
     public ReturnKindDescriptionTransfer getReturnKindDescriptionTransfer(UserVisit userVisit, ReturnKindDescription returnKindDescription) {
-        return getReturnPolicyTransferCaches().getReturnKindDescriptionTransferCache().getReturnKindDescriptionTransfer(userVisit, returnKindDescription);
+        return returnPolicyTransferCaches.getReturnKindDescriptionTransferCache().getReturnKindDescriptionTransfer(userVisit, returnKindDescription);
     }
     
     public List<ReturnKindDescriptionTransfer> getReturnKindDescriptionTransfersByReturnKind(UserVisit userVisit, ReturnKind returnKind) {
@@ -706,7 +695,7 @@ public class ReturnPolicyControl
         List<ReturnKindDescriptionTransfer> returnKindDescriptionTransfers = new ArrayList<>(returnKindDescriptions.size());
         
         returnKindDescriptions.forEach((returnKindDescription) -> {
-            returnKindDescriptionTransfers.add(getReturnPolicyTransferCaches().getReturnKindDescriptionTransferCache().getReturnKindDescriptionTransfer(userVisit, returnKindDescription));
+            returnKindDescriptionTransfers.add(returnPolicyTransferCaches.getReturnKindDescriptionTransferCache().getReturnKindDescriptionTransfer(userVisit, returnKindDescription));
         });
         
         return returnKindDescriptionTransfers;
@@ -972,12 +961,12 @@ public class ReturnPolicyControl
     }
     
     public ReturnPolicyTransfer getReturnPolicyTransfer(UserVisit userVisit, ReturnPolicy returnPolicy) {
-        return getReturnPolicyTransferCaches().getReturnPolicyTransferCache().getReturnPolicyTransfer(userVisit, returnPolicy);
+        return returnPolicyTransferCaches.getReturnPolicyTransferCache().getReturnPolicyTransfer(userVisit, returnPolicy);
     }
 
     public List<ReturnPolicyTransfer> getReturnPolicyTransfers(UserVisit userVisit, Collection<ReturnPolicy> returnPolicies ) {
         List<ReturnPolicyTransfer> returnPolicyTransfers = new ArrayList<>(returnPolicies.size());
-        var returnPolicyTransferCache = getReturnPolicyTransferCaches().getReturnPolicyTransferCache();
+        var returnPolicyTransferCache = returnPolicyTransferCaches.getReturnPolicyTransferCache();
 
         returnPolicies.forEach((returnPolicy) ->
                 returnPolicyTransfers.add(returnPolicyTransferCache.getReturnPolicyTransfer(userVisit, returnPolicy))
@@ -1171,13 +1160,13 @@ public class ReturnPolicyControl
     }
 
     public ReturnPolicyTranslationTransfer getReturnPolicyTranslationTransfer(UserVisit userVisit, ReturnPolicyTranslation returnPolicyTranslation) {
-        return getReturnPolicyTransferCaches().getReturnPolicyTranslationTransferCache().getReturnPolicyTranslationTransfer(userVisit, returnPolicyTranslation);
+        return returnPolicyTransferCaches.getReturnPolicyTranslationTransferCache().getReturnPolicyTranslationTransfer(userVisit, returnPolicyTranslation);
     }
 
     public List<ReturnPolicyTranslationTransfer> getReturnPolicyTranslationTransfers(UserVisit userVisit, ReturnPolicy returnPolicy) {
         var returnPolicyTranslations = getReturnPolicyTranslationsByReturnPolicy(returnPolicy);
         List<ReturnPolicyTranslationTransfer> returnPolicyTranslationTransfers = new ArrayList<>(returnPolicyTranslations.size());
-        var returnPolicyTranslationTransferCache = getReturnPolicyTransferCaches().getReturnPolicyTranslationTransferCache();
+        var returnPolicyTranslationTransferCache = returnPolicyTransferCaches.getReturnPolicyTranslationTransferCache();
 
         returnPolicyTranslations.forEach((returnPolicyTranslation) ->
                 returnPolicyTranslationTransfers.add(returnPolicyTranslationTransferCache.getReturnPolicyTranslationTransfer(userVisit, returnPolicyTranslation))
@@ -1421,7 +1410,7 @@ public class ReturnPolicyControl
     
     public List<ReturnPolicyReasonTransfer> getReturnPolicyReasonTransfers(UserVisit userVisit, Collection<ReturnPolicyReason> returnPolicyReasons) {
         List<ReturnPolicyReasonTransfer> returnPolicyReasonTransfers = new ArrayList<>(returnPolicyReasons.size());
-        var returnPolicyReasonTransferCache = getReturnPolicyTransferCaches().getReturnPolicyReasonTransferCache();
+        var returnPolicyReasonTransferCache = returnPolicyTransferCaches.getReturnPolicyReasonTransferCache();
         
         returnPolicyReasons.forEach((returnPolicyReason) ->
                 returnPolicyReasonTransfers.add(returnPolicyReasonTransferCache.getReturnPolicyReasonTransfer(userVisit, returnPolicyReason))
@@ -1439,7 +1428,7 @@ public class ReturnPolicyControl
     }
     
     public ReturnPolicyReasonTransfer getReturnPolicyReasonTransfer(UserVisit userVisit, ReturnPolicyReason returnPolicyReason) {
-        return getReturnPolicyTransferCaches().getReturnPolicyReasonTransferCache().getReturnPolicyReasonTransfer(userVisit, returnPolicyReason);
+        return returnPolicyTransferCaches.getReturnPolicyReasonTransferCache().getReturnPolicyReasonTransfer(userVisit, returnPolicyReason);
     }
     
     private void updateReturnPolicyReasonFromValue(ReturnPolicyReasonValue returnPolicyReasonValue, boolean checkDefault, BasePK updatedBy) {
@@ -1722,13 +1711,13 @@ public class ReturnPolicyControl
     }
     
     public ReturnReasonTransfer getReturnReasonTransfer(UserVisit userVisit, ReturnReason returnReason) {
-        return getReturnPolicyTransferCaches().getReturnReasonTransferCache().getReturnReasonTransfer(userVisit, returnReason);
+        return returnPolicyTransferCaches.getReturnReasonTransferCache().getReturnReasonTransfer(userVisit, returnReason);
     }
     
     public List<ReturnReasonTransfer> getReturnReasonTransfersByReturnKind(UserVisit userVisit, ReturnKind returnKind) {
         var returnReasons = getReturnReasons(returnKind);
         List<ReturnReasonTransfer> returnReasonTransfers = new ArrayList<>(returnReasons.size());
-        var returnReasonTransferCache = getReturnPolicyTransferCaches().getReturnReasonTransferCache();
+        var returnReasonTransferCache = returnPolicyTransferCaches.getReturnReasonTransferCache();
         
         returnReasons.forEach((returnReason) ->
                 returnReasonTransfers.add(returnReasonTransferCache.getReturnReasonTransfer(userVisit, returnReason))
@@ -1942,7 +1931,7 @@ public class ReturnPolicyControl
     }
     
     public ReturnReasonDescriptionTransfer getReturnReasonDescriptionTransfer(UserVisit userVisit, ReturnReasonDescription returnReasonDescription) {
-        return getReturnPolicyTransferCaches().getReturnReasonDescriptionTransferCache().getReturnReasonDescriptionTransfer(userVisit, returnReasonDescription);
+        return returnPolicyTransferCaches.getReturnReasonDescriptionTransferCache().getReturnReasonDescriptionTransfer(userVisit, returnReasonDescription);
     }
     
     public List<ReturnReasonDescriptionTransfer> getReturnReasonDescriptionTransfersByReturnReason(UserVisit userVisit, ReturnReason returnReason) {
@@ -1950,7 +1939,7 @@ public class ReturnPolicyControl
         List<ReturnReasonDescriptionTransfer> returnReasonDescriptionTransfers = new ArrayList<>(returnReasonDescriptions.size());
         
         returnReasonDescriptions.forEach((returnReasonDescription) -> {
-            returnReasonDescriptionTransfers.add(getReturnPolicyTransferCaches().getReturnReasonDescriptionTransferCache().getReturnReasonDescriptionTransfer(userVisit, returnReasonDescription));
+            returnReasonDescriptionTransfers.add(returnPolicyTransferCaches.getReturnReasonDescriptionTransferCache().getReturnReasonDescriptionTransfer(userVisit, returnReasonDescription));
         });
         
         return returnReasonDescriptionTransfers;
@@ -2190,7 +2179,7 @@ public class ReturnPolicyControl
     
     public List<ReturnReasonTypeTransfer> getReturnReasonTypeTransfers(UserVisit userVisit, Collection<ReturnReasonType> returnReasonTypes) {
         List<ReturnReasonTypeTransfer> returnReasonTypeTransfers = new ArrayList<>(returnReasonTypes.size());
-        var returnReasonTypeTransferCache = getReturnPolicyTransferCaches().getReturnReasonTypeTransferCache();
+        var returnReasonTypeTransferCache = returnPolicyTransferCaches.getReturnReasonTypeTransferCache();
         
         returnReasonTypes.forEach((returnReasonType) ->
                 returnReasonTypeTransfers.add(returnReasonTypeTransferCache.getReturnReasonTypeTransfer(userVisit, returnReasonType))
@@ -2208,7 +2197,7 @@ public class ReturnPolicyControl
     }
     
     public ReturnReasonTypeTransfer getReturnReasonTypeTransfer(UserVisit userVisit, ReturnReasonType returnReasonType) {
-        return getReturnPolicyTransferCaches().getReturnReasonTypeTransferCache().getReturnReasonTypeTransfer(userVisit, returnReasonType);
+        return returnPolicyTransferCaches.getReturnReasonTypeTransferCache().getReturnReasonTypeTransfer(userVisit, returnReasonType);
     }
     
     private void updateReturnReasonTypeFromValue(ReturnReasonTypeValue returnReasonTypeValue, boolean checkDefault, BasePK updatedBy) {
@@ -2493,13 +2482,13 @@ public class ReturnPolicyControl
     }
     
     public ReturnTypeTransfer getReturnTypeTransfer(UserVisit userVisit, ReturnType returnType) {
-        return getReturnPolicyTransferCaches().getReturnTypeTransferCache().getReturnTypeTransfer(userVisit, returnType);
+        return returnPolicyTransferCaches.getReturnTypeTransferCache().getReturnTypeTransfer(userVisit, returnType);
     }
     
     public List<ReturnTypeTransfer> getReturnTypeTransfersByReturnKind(UserVisit userVisit, ReturnKind returnKind) {
         var returnTypes = getReturnTypes(returnKind);
         List<ReturnTypeTransfer> returnTypeTransfers = new ArrayList<>(returnTypes.size());
-        var returnTypeTransferCache = getReturnPolicyTransferCaches().getReturnTypeTransferCache();
+        var returnTypeTransferCache = returnPolicyTransferCaches.getReturnTypeTransferCache();
         
         returnTypes.forEach((returnType) ->
                 returnTypeTransfers.add(returnTypeTransferCache.getReturnTypeTransfer(userVisit, returnType))
@@ -2697,7 +2686,7 @@ public class ReturnPolicyControl
     }
     
     public ReturnTypeDescriptionTransfer getReturnTypeDescriptionTransfer(UserVisit userVisit, ReturnTypeDescription returnTypeDescription) {
-        return getReturnPolicyTransferCaches().getReturnTypeDescriptionTransferCache().getReturnTypeDescriptionTransfer(userVisit, returnTypeDescription);
+        return returnPolicyTransferCaches.getReturnTypeDescriptionTransferCache().getReturnTypeDescriptionTransfer(userVisit, returnTypeDescription);
     }
     
     public List<ReturnTypeDescriptionTransfer> getReturnTypeDescriptionTransfersByReturnType(UserVisit userVisit, ReturnType returnType) {
@@ -2705,7 +2694,7 @@ public class ReturnPolicyControl
         List<ReturnTypeDescriptionTransfer> returnTypeDescriptionTransfers = new ArrayList<>(returnTypeDescriptions.size());
         
         returnTypeDescriptions.forEach((returnTypeDescription) -> {
-            returnTypeDescriptionTransfers.add(getReturnPolicyTransferCaches().getReturnTypeDescriptionTransferCache().getReturnTypeDescriptionTransfer(userVisit, returnTypeDescription));
+            returnTypeDescriptionTransfers.add(returnPolicyTransferCaches.getReturnTypeDescriptionTransferCache().getReturnTypeDescriptionTransfer(userVisit, returnTypeDescription));
         });
         
         return returnTypeDescriptionTransfers;
@@ -2945,7 +2934,7 @@ public class ReturnPolicyControl
     
     public List<ReturnTypeShippingMethodTransfer> getReturnTypeShippingMethodTransfers(UserVisit userVisit, Collection<ReturnTypeShippingMethod> returnTypeShippingMethods) {
         List<ReturnTypeShippingMethodTransfer> returnTypeShippingMethodTransfers = new ArrayList<>(returnTypeShippingMethods.size());
-        var returnTypeShippingMethodTransferCache = getReturnPolicyTransferCaches().getReturnTypeShippingMethodTransferCache();
+        var returnTypeShippingMethodTransferCache = returnPolicyTransferCaches.getReturnTypeShippingMethodTransferCache();
         
         returnTypeShippingMethods.forEach((returnTypeShippingMethod) ->
                 returnTypeShippingMethodTransfers.add(returnTypeShippingMethodTransferCache.getReturnTypeShippingMethodTransfer(userVisit, returnTypeShippingMethod))
@@ -2963,7 +2952,7 @@ public class ReturnPolicyControl
     }
     
     public ReturnTypeShippingMethodTransfer getReturnTypeShippingMethodTransfer(UserVisit userVisit, ReturnTypeShippingMethod returnTypeShippingMethod) {
-        return getReturnPolicyTransferCaches().getReturnTypeShippingMethodTransferCache().getReturnTypeShippingMethodTransfer(userVisit, returnTypeShippingMethod);
+        return returnPolicyTransferCaches.getReturnTypeShippingMethodTransferCache().getReturnTypeShippingMethodTransfer(userVisit, returnTypeShippingMethod);
     }
     
     private void updateReturnTypeShippingMethodFromValue(ReturnTypeShippingMethodValue returnTypeShippingMethodValue, boolean checkDefault, BasePK updatedBy) {
