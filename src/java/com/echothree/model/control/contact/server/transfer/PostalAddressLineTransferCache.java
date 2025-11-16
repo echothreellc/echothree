@@ -23,7 +23,9 @@ import com.echothree.model.data.contact.server.entity.PostalAddressLine;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PostalAddressLineTransferCache
         extends BaseContactTransferCache<PostalAddressLine, PostalAddressLineTransfer> {
 
@@ -32,7 +34,7 @@ public class PostalAddressLineTransferCache
     boolean includeElements;
     
     /** Creates a new instance of PostalAddressLineTransferCache */
-    public PostalAddressLineTransferCache() {
+    protected PostalAddressLineTransferCache() {
         super();
         
         var options = session.getOptions();

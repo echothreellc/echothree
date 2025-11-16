@@ -17,14 +17,15 @@
 package com.echothree.model.control.party.server.control;
 
 import com.echothree.model.control.party.server.transfer.PartyTransferCaches;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 public class BasePartyControl
         extends BaseModelControl {
 
     /** Creates a new instance of BasePartyControl */
-    public BasePartyControl() {
+    protected BasePartyControl() {
         super();
     }
     
@@ -32,14 +33,7 @@ public class BasePartyControl
     //   Party Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private PartyTransferCaches partyTransferCaches;
-    
-    public PartyTransferCaches getPartyTransferCaches() {
-        if(partyTransferCaches == null) {
-            partyTransferCaches = new PartyTransferCaches();
-        }
-        
-        return partyTransferCaches;
-    }
+    @Inject
+    PartyTransferCaches partyTransferCaches;
 
 }

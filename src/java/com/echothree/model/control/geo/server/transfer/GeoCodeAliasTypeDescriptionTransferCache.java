@@ -21,14 +21,16 @@ import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.data.geo.server.entity.GeoCodeAliasTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GeoCodeAliasTypeDescriptionTransferCache
         extends BaseGeoDescriptionTransferCache<GeoCodeAliasTypeDescription, GeoCodeAliasTypeDescriptionTransfer> {
 
     GeoControl geoControl = Session.getModelController(GeoControl.class);
 
     /** Creates a new instance of GeoCodeAliasTypeDescriptionTransferCache */
-    public GeoCodeAliasTypeDescriptionTransferCache() {
+    protected GeoCodeAliasTypeDescriptionTransferCache() {
         super();
     }
     

@@ -17,8 +17,8 @@
 package com.echothree.model.control.purchase.server.control;
 
 import com.echothree.model.control.purchase.server.transfer.PurchaseTransferCaches;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.inject.Inject;
 
 public abstract class BasePurchaseControl
         extends BaseModelControl {
@@ -32,14 +32,7 @@ public abstract class BasePurchaseControl
     //   Purchase Transfer Caches
     // --------------------------------------------------------------------------------
 
-    private PurchaseTransferCaches saleTransferCaches;
-
-    public PurchaseTransferCaches getSaleTransferCaches() {
-        if(saleTransferCaches == null) {
-            saleTransferCaches = new PurchaseTransferCaches();
-        }
-
-        return saleTransferCaches;
-    }
+    @Inject
+    PurchaseTransferCaches purchaseTransferCaches;
 
 }

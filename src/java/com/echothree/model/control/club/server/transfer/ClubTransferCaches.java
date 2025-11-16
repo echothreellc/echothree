@@ -17,45 +17,43 @@
 package com.echothree.model.control.club.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class ClubTransferCaches
         extends BaseTransferCaches {
     
-    protected ClubItemTransferCache clubItemTransferCache;
-    protected ClubItemTypeTransferCache clubItemTypeTransferCache;
-    protected ClubTransferCache clubTransferCache;
-    protected ClubDescriptionTransferCache clubDescriptionTransferCache;
+    @Inject
+    ClubItemTransferCache clubItemTransferCache;
     
+    @Inject
+    ClubItemTypeTransferCache clubItemTypeTransferCache;
+    
+    @Inject
+    ClubTransferCache clubTransferCache;
+    
+    @Inject
+    ClubDescriptionTransferCache clubDescriptionTransferCache;
+
     /** Creates a new instance of ClubTransferCaches */
-    public ClubTransferCaches() {
+    protected ClubTransferCaches() {
         super();
     }
     
     public ClubItemTransferCache getClubItemTransferCache() {
-        if(clubItemTransferCache == null)
-            clubItemTransferCache = new ClubItemTransferCache();
-        
         return clubItemTransferCache;
     }
     
     public ClubItemTypeTransferCache getClubItemTypeTransferCache() {
-        if(clubItemTypeTransferCache == null)
-            clubItemTypeTransferCache = new ClubItemTypeTransferCache();
-        
         return clubItemTypeTransferCache;
     }
     
     public ClubTransferCache getClubTransferCache() {
-        if(clubTransferCache == null)
-            clubTransferCache = new ClubTransferCache();
-        
         return clubTransferCache;
     }
     
     public ClubDescriptionTransferCache getClubDescriptionTransferCache() {
-        if(clubDescriptionTransferCache == null)
-            clubDescriptionTransferCache = new ClubDescriptionTransferCache();
-        
         return clubDescriptionTransferCache;
     }
     

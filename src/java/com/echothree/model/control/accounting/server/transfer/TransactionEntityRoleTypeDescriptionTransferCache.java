@@ -21,14 +21,16 @@ import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.data.accounting.server.entity.TransactionEntityRoleTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TransactionEntityRoleTypeDescriptionTransferCache
         extends BaseAccountingDescriptionTransferCache<TransactionEntityRoleTypeDescription, TransactionEntityRoleTypeDescriptionTransfer> {
 
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of TransactionEntityRoleTypeDescriptionTransferCache */
-    public TransactionEntityRoleTypeDescriptionTransferCache() {
+    protected TransactionEntityRoleTypeDescriptionTransferCache() {
         super();
     }
     
@@ -37,8 +39,7 @@ public class TransactionEntityRoleTypeDescriptionTransferCache
         var transactionEntityRoleTypeDescriptionTransfer = get(transactionEntityRoleTypeDescription);
         
         if(transactionEntityRoleTypeDescriptionTransfer == null) {
-            var transactionEntityRoleTypeTransferCache = accountingControl.getAccountingTransferCaches().getTransactionEntityRoleTypeTransferCache();
-            var transactionEntityRoleTypeTransfer = transactionEntityRoleTypeTransferCache.getTransfer(userVisit, transactionEntityRoleTypeDescription.getTransactionEntityRoleType());
+            var transactionEntityRoleTypeTransfer = accountingControl.getTransactionEntityRoleTypeTransfer(userVisit, transactionEntityRoleTypeDescription.getTransactionEntityRoleType());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, transactionEntityRoleTypeDescription.getLanguage());
             
             transactionEntityRoleTypeDescriptionTransfer = new TransactionEntityRoleTypeDescriptionTransfer(languageTransfer, transactionEntityRoleTypeTransfer, transactionEntityRoleTypeDescription.getDescription());

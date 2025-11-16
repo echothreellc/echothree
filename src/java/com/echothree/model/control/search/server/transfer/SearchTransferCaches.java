@@ -17,157 +17,127 @@
 package com.echothree.model.control.search.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class SearchTransferCaches
         extends BaseTransferCaches {
     
-    protected SearchKindTransferCache searchKindTransferCache;
-    protected SearchKindDescriptionTransferCache searchKindDescriptionTransferCache;
-    protected SearchTypeTransferCache searchTypeTransferCache;
-    protected SearchTypeDescriptionTransferCache searchTypeDescriptionTransferCache;
-    protected SearchSortOrderTransferCache searchSortOrderTransferCache;
-    protected SearchSortOrderDescriptionTransferCache searchSortOrderDescriptionTransferCache;
-    protected SearchSortDirectionTransferCache searchSortDirectionTransferCache;
-    protected SearchSortDirectionDescriptionTransferCache searchSortDirectionDescriptionTransferCache;
-    protected SearchDefaultOperatorTransferCache searchDefaultOperatorTransferCache;
-    protected SearchDefaultOperatorDescriptionTransferCache searchDefaultOperatorDescriptionTransferCache;
-    protected SearchUseTypeTransferCache searchUseTypeTransferCache;
-    protected SearchUseTypeDescriptionTransferCache searchUseTypeDescriptionTransferCache;
-    protected SearchResultActionTypeTransferCache searchResultActionTypeTransferCache;
-    protected SearchResultActionTypeDescriptionTransferCache searchResultActionTypeDescriptionTransferCache;
-    protected SearchCheckSpellingActionTypeTransferCache searchCheckSpellingActionTypeTransferCache;
-    protected SearchCheckSpellingActionTypeDescriptionTransferCache searchCheckSpellingActionTypeDescriptionTransferCache;
+    @Inject
+    SearchKindTransferCache searchKindTransferCache;
     
+    @Inject
+    SearchKindDescriptionTransferCache searchKindDescriptionTransferCache;
+    
+    @Inject
+    SearchTypeTransferCache searchTypeTransferCache;
+    
+    @Inject
+    SearchTypeDescriptionTransferCache searchTypeDescriptionTransferCache;
+    
+    @Inject
+    SearchSortOrderTransferCache searchSortOrderTransferCache;
+    
+    @Inject
+    SearchSortOrderDescriptionTransferCache searchSortOrderDescriptionTransferCache;
+    
+    @Inject
+    SearchSortDirectionTransferCache searchSortDirectionTransferCache;
+    
+    @Inject
+    SearchSortDirectionDescriptionTransferCache searchSortDirectionDescriptionTransferCache;
+    
+    @Inject
+    SearchDefaultOperatorTransferCache searchDefaultOperatorTransferCache;
+    
+    @Inject
+    SearchDefaultOperatorDescriptionTransferCache searchDefaultOperatorDescriptionTransferCache;
+    
+    @Inject
+    SearchUseTypeTransferCache searchUseTypeTransferCache;
+    
+    @Inject
+    SearchUseTypeDescriptionTransferCache searchUseTypeDescriptionTransferCache;
+    
+    @Inject
+    SearchResultActionTypeTransferCache searchResultActionTypeTransferCache;
+    
+    @Inject
+    SearchResultActionTypeDescriptionTransferCache searchResultActionTypeDescriptionTransferCache;
+    
+    @Inject
+    SearchCheckSpellingActionTypeTransferCache searchCheckSpellingActionTypeTransferCache;
+    
+    @Inject
+    SearchCheckSpellingActionTypeDescriptionTransferCache searchCheckSpellingActionTypeDescriptionTransferCache;
+
     /** Creates a new instance of SearchTransferCaches */
-    public SearchTransferCaches() {
+    protected SearchTransferCaches() {
         super();
     }
     
     public SearchKindTransferCache getSearchKindTransferCache() {
-        if(searchKindTransferCache == null) {
-            searchKindTransferCache = new SearchKindTransferCache();
-        }
-
         return searchKindTransferCache;
     }
 
     public SearchKindDescriptionTransferCache getSearchKindDescriptionTransferCache() {
-        if(searchKindDescriptionTransferCache == null) {
-            searchKindDescriptionTransferCache = new SearchKindDescriptionTransferCache();
-        }
-
         return searchKindDescriptionTransferCache;
     }
 
     public SearchTypeTransferCache getSearchTypeTransferCache() {
-        if(searchTypeTransferCache == null) {
-            searchTypeTransferCache = new SearchTypeTransferCache();
-        }
-
         return searchTypeTransferCache;
     }
 
     public SearchTypeDescriptionTransferCache getSearchTypeDescriptionTransferCache() {
-        if(searchTypeDescriptionTransferCache == null) {
-            searchTypeDescriptionTransferCache = new SearchTypeDescriptionTransferCache();
-        }
-
         return searchTypeDescriptionTransferCache;
     }
 
     public SearchSortOrderTransferCache getSearchSortOrderTransferCache() {
-        if(searchSortOrderTransferCache == null) {
-            searchSortOrderTransferCache = new SearchSortOrderTransferCache();
-        }
-
         return searchSortOrderTransferCache;
     }
 
     public SearchSortOrderDescriptionTransferCache getSearchSortOrderDescriptionTransferCache() {
-        if(searchSortOrderDescriptionTransferCache == null) {
-            searchSortOrderDescriptionTransferCache = new SearchSortOrderDescriptionTransferCache();
-        }
-
         return searchSortOrderDescriptionTransferCache;
     }
 
     public SearchSortDirectionTransferCache getSearchSortDirectionTransferCache() {
-        if(searchSortDirectionTransferCache == null) {
-            searchSortDirectionTransferCache = new SearchSortDirectionTransferCache();
-        }
-
         return searchSortDirectionTransferCache;
     }
 
     public SearchSortDirectionDescriptionTransferCache getSearchSortDirectionDescriptionTransferCache() {
-        if(searchSortDirectionDescriptionTransferCache == null) {
-            searchSortDirectionDescriptionTransferCache = new SearchSortDirectionDescriptionTransferCache();
-        }
-
         return searchSortDirectionDescriptionTransferCache;
     }
 
     public SearchDefaultOperatorTransferCache getSearchDefaultOperatorTransferCache() {
-        if(searchDefaultOperatorTransferCache == null) {
-            searchDefaultOperatorTransferCache = new SearchDefaultOperatorTransferCache();
-        }
-
         return searchDefaultOperatorTransferCache;
     }
 
     public SearchDefaultOperatorDescriptionTransferCache getSearchDefaultOperatorDescriptionTransferCache() {
-        if(searchDefaultOperatorDescriptionTransferCache == null) {
-            searchDefaultOperatorDescriptionTransferCache = new SearchDefaultOperatorDescriptionTransferCache();
-        }
-
         return searchDefaultOperatorDescriptionTransferCache;
     }
 
     public SearchUseTypeTransferCache getSearchUseTypeTransferCache() {
-        if(searchUseTypeTransferCache == null) {
-            searchUseTypeTransferCache = new SearchUseTypeTransferCache();
-        }
-
         return searchUseTypeTransferCache;
     }
 
     public SearchUseTypeDescriptionTransferCache getSearchUseTypeDescriptionTransferCache() {
-        if(searchUseTypeDescriptionTransferCache == null) {
-            searchUseTypeDescriptionTransferCache = new SearchUseTypeDescriptionTransferCache();
-        }
-
         return searchUseTypeDescriptionTransferCache;
     }
 
     public SearchResultActionTypeTransferCache getSearchResultActionTypeTransferCache() {
-        if(searchResultActionTypeTransferCache == null) {
-            searchResultActionTypeTransferCache = new SearchResultActionTypeTransferCache();
-        }
-
         return searchResultActionTypeTransferCache;
     }
 
     public SearchResultActionTypeDescriptionTransferCache getSearchResultActionTypeDescriptionTransferCache() {
-        if(searchResultActionTypeDescriptionTransferCache == null) {
-            searchResultActionTypeDescriptionTransferCache = new SearchResultActionTypeDescriptionTransferCache();
-        }
-
         return searchResultActionTypeDescriptionTransferCache;
     }
 
     public SearchCheckSpellingActionTypeTransferCache getSearchCheckSpellingActionTypeTransferCache() {
-        if(searchCheckSpellingActionTypeTransferCache == null) {
-            searchCheckSpellingActionTypeTransferCache = new SearchCheckSpellingActionTypeTransferCache();
-        }
-
         return searchCheckSpellingActionTypeTransferCache;
     }
 
     public SearchCheckSpellingActionTypeDescriptionTransferCache getSearchCheckSpellingActionTypeDescriptionTransferCache() {
-        if(searchCheckSpellingActionTypeDescriptionTransferCache == null) {
-            searchCheckSpellingActionTypeDescriptionTransferCache = new SearchCheckSpellingActionTypeDescriptionTransferCache();
-        }
-
         return searchCheckSpellingActionTypeDescriptionTransferCache;
     }
 

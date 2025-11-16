@@ -91,6 +91,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class PrinterControl
@@ -105,16 +106,9 @@ public class PrinterControl
     //   Printer Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private PrinterTransferCaches printerTransferCaches;
-    
-    public PrinterTransferCaches getPrinterTransferCaches() {
-        if(printerTransferCaches == null) {
-            printerTransferCaches = new PrinterTransferCaches();
-        }
-        
-        return printerTransferCaches;
-    }
-    
+    @Inject
+    PrinterTransferCaches printerTransferCaches;
+
     // --------------------------------------------------------------------------------
     //   Printer Groups
     // --------------------------------------------------------------------------------
@@ -254,12 +248,12 @@ public class PrinterControl
     }
 
     public PrinterGroupTransfer getPrinterGroupTransfer(UserVisit userVisit, PrinterGroup printerGroup) {
-        return getPrinterTransferCaches().getPrinterGroupTransferCache().getPrinterGroupTransfer(userVisit, printerGroup);
+        return printerTransferCaches.getPrinterGroupTransferCache().getPrinterGroupTransfer(userVisit, printerGroup);
     }
 
     public List<PrinterGroupTransfer> getPrinterGroupTransfers(UserVisit userVisit, Collection<PrinterGroup> printerGroups) {
         List<PrinterGroupTransfer> printerGroupTransfers = new ArrayList<>(printerGroups.size());
-        var printerGroupTransferCache = getPrinterTransferCaches().getPrinterGroupTransferCache();
+        var printerGroupTransferCache = printerTransferCaches.getPrinterGroupTransferCache();
 
         printerGroups.forEach((printerGroup) ->
                 printerGroupTransfers.add(printerGroupTransferCache.getPrinterGroupTransfer(userVisit, printerGroup))
@@ -514,13 +508,13 @@ public class PrinterControl
     }
 
     public PrinterGroupDescriptionTransfer getPrinterGroupDescriptionTransfer(UserVisit userVisit, PrinterGroupDescription printerGroupDescription) {
-        return getPrinterTransferCaches().getPrinterGroupDescriptionTransferCache().getPrinterGroupDescriptionTransfer(userVisit, printerGroupDescription);
+        return printerTransferCaches.getPrinterGroupDescriptionTransferCache().getPrinterGroupDescriptionTransfer(userVisit, printerGroupDescription);
     }
 
     public List<PrinterGroupDescriptionTransfer> getPrinterGroupDescriptionTransfersByPrinterGroup(UserVisit userVisit, PrinterGroup printerGroup) {
         var printerGroupDescriptions = getPrinterGroupDescriptionsByPrinterGroup(printerGroup);
         List<PrinterGroupDescriptionTransfer> printerGroupDescriptionTransfers = new ArrayList<>(printerGroupDescriptions.size());
-        var printerGroupDescriptionTransferCache = getPrinterTransferCaches().getPrinterGroupDescriptionTransferCache();
+        var printerGroupDescriptionTransferCache = printerTransferCaches.getPrinterGroupDescriptionTransferCache();
 
         printerGroupDescriptions.forEach((printerGroupDescription) ->
                 printerGroupDescriptionTransfers.add(printerGroupDescriptionTransferCache.getPrinterGroupDescriptionTransfer(userVisit, printerGroupDescription))
@@ -732,12 +726,12 @@ public class PrinterControl
     }
 
     public PrinterTransfer getPrinterTransfer(UserVisit userVisit, Printer printer) {
-        return getPrinterTransferCaches().getPrinterTransferCache().getPrinterTransfer(userVisit, printer);
+        return printerTransferCaches.getPrinterTransferCache().getPrinterTransfer(userVisit, printer);
     }
 
     public List<PrinterTransfer> getPrinterTransfers(UserVisit userVisit, Collection<Printer> printers) {
         List<PrinterTransfer> printerTransfers = new ArrayList<>(printers.size());
-        var printerTransferCache = getPrinterTransferCaches().getPrinterTransferCache();
+        var printerTransferCache = printerTransferCaches.getPrinterTransferCache();
 
         printers.forEach((printer) ->
                 printerTransfers.add(printerTransferCache.getPrinterTransfer(userVisit, printer))
@@ -927,13 +921,13 @@ public class PrinterControl
     }
 
     public PrinterDescriptionTransfer getPrinterDescriptionTransfer(UserVisit userVisit, PrinterDescription printerDescription) {
-        return getPrinterTransferCaches().getPrinterDescriptionTransferCache().getPrinterDescriptionTransfer(userVisit, printerDescription);
+        return printerTransferCaches.getPrinterDescriptionTransferCache().getPrinterDescriptionTransfer(userVisit, printerDescription);
     }
 
     public List<PrinterDescriptionTransfer> getPrinterDescriptionTransfersByPrinter(UserVisit userVisit, Printer printer) {
         var printerDescriptions = getPrinterDescriptionsByPrinter(printer);
         List<PrinterDescriptionTransfer> printerDescriptionTransfers = new ArrayList<>(printerDescriptions.size());
-        var printerDescriptionTransferCache = getPrinterTransferCaches().getPrinterDescriptionTransferCache();
+        var printerDescriptionTransferCache = printerTransferCaches.getPrinterDescriptionTransferCache();
 
         printerDescriptions.forEach((printerDescription) ->
                 printerDescriptionTransfers.add(printerDescriptionTransferCache.getPrinterDescriptionTransfer(userVisit, printerDescription))
@@ -1224,12 +1218,12 @@ public class PrinterControl
     }
 
     public PrinterGroupJobTransfer getPrinterGroupJobTransfer(UserVisit userVisit, PrinterGroupJob printerGroupJob) {
-        return getPrinterTransferCaches().getPrinterGroupJobTransferCache().getPrinterGroupJobTransfer(userVisit, printerGroupJob);
+        return printerTransferCaches.getPrinterGroupJobTransferCache().getPrinterGroupJobTransfer(userVisit, printerGroupJob);
     }
 
     public List<PrinterGroupJobTransfer> getPrinterGroupJobTransfers(UserVisit userVisit, Collection<PrinterGroupJob> printerGroupJobs) {
         List<PrinterGroupJobTransfer> printerGroupJobTransfers = new ArrayList<>(printerGroupJobs.size());
-        var printerGroupJobTransferCache = getPrinterTransferCaches().getPrinterGroupJobTransferCache();
+        var printerGroupJobTransferCache = printerTransferCaches.getPrinterGroupJobTransferCache();
 
         printerGroupJobs.forEach((printerGroupJob) ->
                 printerGroupJobTransfers.add(printerGroupJobTransferCache.getPrinterGroupJobTransfer(userVisit, printerGroupJob))
@@ -1500,12 +1494,12 @@ public class PrinterControl
     }
 
     public PrinterGroupUseTypeTransfer getPrinterGroupUseTypeTransfer(UserVisit userVisit, PrinterGroupUseType printerGroupUseType) {
-        return getPrinterTransferCaches().getPrinterGroupUseTypeTransferCache().getPrinterGroupUseTypeTransfer(userVisit, printerGroupUseType);
+        return printerTransferCaches.getPrinterGroupUseTypeTransferCache().getPrinterGroupUseTypeTransfer(userVisit, printerGroupUseType);
     }
 
     public List<PrinterGroupUseTypeTransfer> getPrinterGroupUseTypeTransfers(UserVisit userVisit, Collection<PrinterGroupUseType> printerGroupUseTypes) {
         List<PrinterGroupUseTypeTransfer> printerGroupUseTypeTransfers = new ArrayList<>(printerGroupUseTypes.size());
-        var printerGroupUseTypeTransferCache = getPrinterTransferCaches().getPrinterGroupUseTypeTransferCache();
+        var printerGroupUseTypeTransferCache = printerTransferCaches.getPrinterGroupUseTypeTransferCache();
 
         printerGroupUseTypes.forEach((printerGroupUseType) ->
                 printerGroupUseTypeTransfers.add(printerGroupUseTypeTransferCache.getPrinterGroupUseTypeTransfer(userVisit, printerGroupUseType))
@@ -1730,13 +1724,13 @@ public class PrinterControl
     }
 
     public PrinterGroupUseTypeDescriptionTransfer getPrinterGroupUseTypeDescriptionTransfer(UserVisit userVisit, PrinterGroupUseTypeDescription printerGroupUseTypeDescription) {
-        return getPrinterTransferCaches().getPrinterGroupUseTypeDescriptionTransferCache().getPrinterGroupUseTypeDescriptionTransfer(userVisit, printerGroupUseTypeDescription);
+        return printerTransferCaches.getPrinterGroupUseTypeDescriptionTransferCache().getPrinterGroupUseTypeDescriptionTransfer(userVisit, printerGroupUseTypeDescription);
     }
 
     public List<PrinterGroupUseTypeDescriptionTransfer> getPrinterGroupUseTypeDescriptionTransfersByPrinterGroupUseType(UserVisit userVisit, PrinterGroupUseType printerGroupUseType) {
         var printerGroupUseTypeDescriptions = getPrinterGroupUseTypeDescriptionsByPrinterGroupUseType(printerGroupUseType);
         List<PrinterGroupUseTypeDescriptionTransfer> printerGroupUseTypeDescriptionTransfers = new ArrayList<>(printerGroupUseTypeDescriptions.size());
-        var printerGroupUseTypeDescriptionTransferCache = getPrinterTransferCaches().getPrinterGroupUseTypeDescriptionTransferCache();
+        var printerGroupUseTypeDescriptionTransferCache = printerTransferCaches.getPrinterGroupUseTypeDescriptionTransferCache();
 
         printerGroupUseTypeDescriptions.forEach((printerGroupUseTypeDescription) ->
                 printerGroupUseTypeDescriptionTransfers.add(printerGroupUseTypeDescriptionTransferCache.getPrinterGroupUseTypeDescriptionTransfer(userVisit, printerGroupUseTypeDescription))
@@ -1944,12 +1938,12 @@ public class PrinterControl
     }
     
     public PartyPrinterGroupUseTransfer getPartyPrinterGroupUseTransfer(UserVisit userVisit, PartyPrinterGroupUse partyPrinterGroupUse) {
-        return getPrinterTransferCaches().getPartyPrinterGroupUseTransferCache().getPartyPrinterGroupUseTransfer(userVisit, partyPrinterGroupUse);
+        return printerTransferCaches.getPartyPrinterGroupUseTransferCache().getPartyPrinterGroupUseTransfer(userVisit, partyPrinterGroupUse);
     }
 
     public List<PartyPrinterGroupUseTransfer> getPartyPrinterGroupUseTransfers(UserVisit userVisit, Collection<PartyPrinterGroupUse> partyPrinterGroupUses) {
         List<PartyPrinterGroupUseTransfer> partyPrinterGroupUseTransfers = new ArrayList<>(partyPrinterGroupUses.size());
-        var partyPrinterGroupUseTransferCache = getPrinterTransferCaches().getPartyPrinterGroupUseTransferCache();
+        var partyPrinterGroupUseTransferCache = printerTransferCaches.getPartyPrinterGroupUseTransferCache();
 
         partyPrinterGroupUses.forEach((partyPrinterGroupUse) ->
                 partyPrinterGroupUseTransfers.add(partyPrinterGroupUseTransferCache.getPartyPrinterGroupUseTransfer(userVisit, partyPrinterGroupUse))

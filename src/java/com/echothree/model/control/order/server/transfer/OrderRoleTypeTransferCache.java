@@ -21,14 +21,16 @@ import com.echothree.model.control.order.server.control.OrderRoleControl;
 import com.echothree.model.data.order.server.entity.OrderRoleType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OrderRoleTypeTransferCache
         extends BaseOrderTransferCache<OrderRoleType, OrderRoleTypeTransfer> {
 
     OrderRoleControl orderRoleControl = Session.getModelController(OrderRoleControl.class);
 
     /** Creates a new instance of OrderRoleTypeTransferCache */
-    public OrderRoleTypeTransferCache() {
+    protected OrderRoleTypeTransferCache() {
         super();
     }
     

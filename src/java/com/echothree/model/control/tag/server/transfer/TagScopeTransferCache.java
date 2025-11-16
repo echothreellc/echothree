@@ -23,7 +23,9 @@ import com.echothree.model.data.tag.server.entity.TagScope;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TagScopeTransferCache
         extends BaseTagTransferCache<TagScope, TagScopeTransfer> {
 
@@ -32,7 +34,7 @@ public class TagScopeTransferCache
     boolean includeTags;
     
     /** Creates a new instance of TagScopeTransferCache */
-    public TagScopeTransferCache() {
+    protected TagScopeTransferCache() {
         super();
         
         var options = session.getOptions();

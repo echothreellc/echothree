@@ -17,101 +17,92 @@
 package com.echothree.model.control.user.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class UserTransferCaches
         extends BaseTransferCaches {
     
-    protected RecoveryAnswerTransferCache recoveryAnswerTransferCache;
-    protected RecoveryQuestionTransferCache recoveryQuestionTransferCache;
-    protected RecoveryQuestionDescriptionTransferCache recoveryQuestionDescriptionTransferCache;
-    protected UserKeyTransferCache userKeyTransferCache;
-    protected UserSessionTransferCache userSessionTransferCache;
-    protected UserVisitTransferCache userVisitTransferCache;
-    protected UserVisitGroupTransferCache userVisitGroupTransferCache;
-    protected UserLoginTransferCache userLoginTransferCache;
-    protected UserLoginPasswordTransferCache userLoginPasswordTransferCache;
-    protected UserLoginPasswordTypeTransferCache userLoginPasswordTypeTransferCache;
-    protected UserLoginPasswordEncoderTypeTransferCache userLoginPasswordEncoderTypeTransferCache;
+    @Inject
+    RecoveryAnswerTransferCache recoveryAnswerTransferCache;
     
+    @Inject
+    RecoveryQuestionTransferCache recoveryQuestionTransferCache;
+    
+    @Inject
+    RecoveryQuestionDescriptionTransferCache recoveryQuestionDescriptionTransferCache;
+    
+    @Inject
+    UserKeyTransferCache userKeyTransferCache;
+    
+    @Inject
+    UserSessionTransferCache userSessionTransferCache;
+    
+    @Inject
+    UserVisitTransferCache userVisitTransferCache;
+    
+    @Inject
+    UserVisitGroupTransferCache userVisitGroupTransferCache;
+    
+    @Inject
+    UserLoginTransferCache userLoginTransferCache;
+    
+    @Inject
+    UserLoginPasswordTransferCache userLoginPasswordTransferCache;
+    
+    @Inject
+    UserLoginPasswordTypeTransferCache userLoginPasswordTypeTransferCache;
+    
+    @Inject
+    UserLoginPasswordEncoderTypeTransferCache userLoginPasswordEncoderTypeTransferCache;
+
     /** Creates a new instance of UserTransferCaches */
-    public UserTransferCaches() {
+    protected UserTransferCaches() {
         super();
     }
     
     public RecoveryAnswerTransferCache getRecoveryAnswerTransferCache() {
-        if(recoveryAnswerTransferCache == null)
-            recoveryAnswerTransferCache = new RecoveryAnswerTransferCache();
-        
         return recoveryAnswerTransferCache;
     }
     
     public RecoveryQuestionTransferCache getRecoveryQuestionTransferCache() {
-        if(recoveryQuestionTransferCache == null)
-            recoveryQuestionTransferCache = new RecoveryQuestionTransferCache();
-        
         return recoveryQuestionTransferCache;
     }
     
     public RecoveryQuestionDescriptionTransferCache getRecoveryQuestionDescriptionTransferCache() {
-        if(recoveryQuestionDescriptionTransferCache == null)
-            recoveryQuestionDescriptionTransferCache = new RecoveryQuestionDescriptionTransferCache();
-        
         return recoveryQuestionDescriptionTransferCache;
     }
     
     public UserKeyTransferCache getUserKeyTransferCache() {
-        if(userKeyTransferCache == null)
-            userKeyTransferCache = new UserKeyTransferCache();
-        
         return userKeyTransferCache;
     }
     
     public UserSessionTransferCache getUserSessionTransferCache() {
-        if(userSessionTransferCache == null)
-            userSessionTransferCache = new UserSessionTransferCache();
-        
         return userSessionTransferCache;
     }
     
     public UserVisitTransferCache getUserVisitTransferCache() {
-        if(userVisitTransferCache == null)
-            userVisitTransferCache = new UserVisitTransferCache();
-        
         return userVisitTransferCache;
     }
     
     public UserVisitGroupTransferCache getUserVisitGroupTransferCache() {
-        if(userVisitGroupTransferCache == null)
-            userVisitGroupTransferCache = new UserVisitGroupTransferCache();
-        
         return userVisitGroupTransferCache;
     }
     
     public UserLoginTransferCache getUserLoginTransferCache() {
-        if(userLoginTransferCache == null)
-            userLoginTransferCache = new UserLoginTransferCache();
-
         return userLoginTransferCache;
     }
 
     public UserLoginPasswordTransferCache getUserLoginPasswordTransferCache() {
-        if(userLoginPasswordTransferCache == null)
-            userLoginPasswordTransferCache = new UserLoginPasswordTransferCache();
-
         return userLoginPasswordTransferCache;
     }
 
     public UserLoginPasswordTypeTransferCache getUserLoginPasswordTypeTransferCache() {
-        if(userLoginPasswordTypeTransferCache == null)
-            userLoginPasswordTypeTransferCache = new UserLoginPasswordTypeTransferCache();
-
         return userLoginPasswordTypeTransferCache;
     }
 
     public UserLoginPasswordEncoderTypeTransferCache getUserLoginPasswordEncoderTypeTransferCache() {
-        if(userLoginPasswordEncoderTypeTransferCache == null)
-            userLoginPasswordEncoderTypeTransferCache = new UserLoginPasswordEncoderTypeTransferCache();
-
         return userLoginPasswordEncoderTypeTransferCache;
     }
 

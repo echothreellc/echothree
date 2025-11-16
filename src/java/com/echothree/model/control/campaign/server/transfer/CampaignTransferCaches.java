@@ -17,112 +17,92 @@
 package com.echothree.model.control.campaign.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class CampaignTransferCaches
         extends BaseTransferCaches {
     
-    protected CampaignTransferCache campaignTransferCache;
-    protected CampaignDescriptionTransferCache campaignDescriptionTransferCache;
-    protected CampaignSourceTransferCache campaignSourceTransferCache;
-    protected CampaignSourceDescriptionTransferCache campaignSourceDescriptionTransferCache;
-    protected CampaignMediumTransferCache campaignMediumTransferCache;
-    protected CampaignMediumDescriptionTransferCache campaignMediumDescriptionTransferCache;
-    protected CampaignTermTransferCache campaignTermTransferCache;
-    protected CampaignTermDescriptionTransferCache campaignTermDescriptionTransferCache;
-    protected CampaignContentTransferCache campaignContentTransferCache;
-    protected CampaignContentDescriptionTransferCache campaignContentDescriptionTransferCache;
-    protected UserVisitCampaignTransferCache userVisitCampaignTransferCache;
+    @Inject
+    CampaignTransferCache campaignTransferCache;
     
+    @Inject
+    CampaignDescriptionTransferCache campaignDescriptionTransferCache;
+    
+    @Inject
+    CampaignSourceTransferCache campaignSourceTransferCache;
+    
+    @Inject
+    CampaignSourceDescriptionTransferCache campaignSourceDescriptionTransferCache;
+    
+    @Inject
+    CampaignMediumTransferCache campaignMediumTransferCache;
+    
+    @Inject
+    CampaignMediumDescriptionTransferCache campaignMediumDescriptionTransferCache;
+    
+    @Inject
+    CampaignTermTransferCache campaignTermTransferCache;
+    
+    @Inject
+    CampaignTermDescriptionTransferCache campaignTermDescriptionTransferCache;
+    
+    @Inject
+    CampaignContentTransferCache campaignContentTransferCache;
+    
+    @Inject
+    CampaignContentDescriptionTransferCache campaignContentDescriptionTransferCache;
+    
+    @Inject
+    UserVisitCampaignTransferCache userVisitCampaignTransferCache;
+
     /** Creates a new instance of CampaignTransferCaches */
-    public CampaignTransferCaches() {
+    protected CampaignTransferCaches() {
         super();
     }
     
     public CampaignTransferCache getCampaignTransferCache() {
-        if(campaignTransferCache == null) {
-            campaignTransferCache = new CampaignTransferCache();
-        }
-
         return campaignTransferCache;
     }
 
     public CampaignDescriptionTransferCache getCampaignDescriptionTransferCache() {
-        if(campaignDescriptionTransferCache == null) {
-            campaignDescriptionTransferCache = new CampaignDescriptionTransferCache();
-        }
-
         return campaignDescriptionTransferCache;
     }
 
     public CampaignSourceTransferCache getCampaignSourceTransferCache() {
-        if(campaignSourceTransferCache == null) {
-            campaignSourceTransferCache = new CampaignSourceTransferCache();
-        }
-
         return campaignSourceTransferCache;
     }
 
     public CampaignSourceDescriptionTransferCache getCampaignSourceDescriptionTransferCache() {
-        if(campaignSourceDescriptionTransferCache == null) {
-            campaignSourceDescriptionTransferCache = new CampaignSourceDescriptionTransferCache();
-        }
-
         return campaignSourceDescriptionTransferCache;
     }
 
     public CampaignMediumTransferCache getCampaignMediumTransferCache() {
-        if(campaignMediumTransferCache == null) {
-            campaignMediumTransferCache = new CampaignMediumTransferCache();
-        }
-
         return campaignMediumTransferCache;
     }
 
     public CampaignMediumDescriptionTransferCache getCampaignMediumDescriptionTransferCache() {
-        if(campaignMediumDescriptionTransferCache == null) {
-            campaignMediumDescriptionTransferCache = new CampaignMediumDescriptionTransferCache();
-        }
-
         return campaignMediumDescriptionTransferCache;
     }
 
     public CampaignTermTransferCache getCampaignTermTransferCache() {
-        if(campaignTermTransferCache == null) {
-            campaignTermTransferCache = new CampaignTermTransferCache();
-        }
-
         return campaignTermTransferCache;
     }
 
     public CampaignTermDescriptionTransferCache getCampaignTermDescriptionTransferCache() {
-        if(campaignTermDescriptionTransferCache == null) {
-            campaignTermDescriptionTransferCache = new CampaignTermDescriptionTransferCache();
-        }
-
         return campaignTermDescriptionTransferCache;
     }
 
     public CampaignContentTransferCache getCampaignContentTransferCache() {
-        if(campaignContentTransferCache == null) {
-            campaignContentTransferCache = new CampaignContentTransferCache();
-        }
-
         return campaignContentTransferCache;
     }
 
     public CampaignContentDescriptionTransferCache getCampaignContentDescriptionTransferCache() {
-        if(campaignContentDescriptionTransferCache == null) {
-            campaignContentDescriptionTransferCache = new CampaignContentDescriptionTransferCache();
-        }
-
         return campaignContentDescriptionTransferCache;
     }
 
     public UserVisitCampaignTransferCache getUserVisitCampaignTransferCache() {
-        if(userVisitCampaignTransferCache == null) {
-            userVisitCampaignTransferCache = new UserVisitCampaignTransferCache();
-        }
-
         return userVisitCampaignTransferCache;
     }
 

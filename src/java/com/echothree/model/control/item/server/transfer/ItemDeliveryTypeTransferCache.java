@@ -21,14 +21,16 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemDeliveryType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemDeliveryTypeTransferCache
         extends BaseItemTransferCache<ItemDeliveryType, ItemDeliveryTypeTransfer> {
 
     ItemControl itemControl = Session.getModelController(ItemControl.class);
 
     /** Creates a new instance of ItemDeliveryTypeTransferCache */
-    public ItemDeliveryTypeTransferCache() {
+    protected ItemDeliveryTypeTransferCache() {
         super();
     }
     

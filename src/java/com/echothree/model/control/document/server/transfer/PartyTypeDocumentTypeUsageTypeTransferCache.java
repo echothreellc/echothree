@@ -22,7 +22,9 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.document.server.entity.PartyTypeDocumentTypeUsageType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyTypeDocumentTypeUsageTypeTransferCache
         extends BaseDocumentTransferCache<PartyTypeDocumentTypeUsageType, PartyTypeDocumentTypeUsageTypeTransfer> {
 
@@ -30,7 +32,7 @@ public class PartyTypeDocumentTypeUsageTypeTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of PartyTypeDocumentTypeUsageTypeTransferCache */
-    public PartyTypeDocumentTypeUsageTypeTransferCache() {
+    protected PartyTypeDocumentTypeUsageTypeTransferCache() {
         super();
     }
     

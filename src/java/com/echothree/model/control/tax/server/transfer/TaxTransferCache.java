@@ -23,7 +23,9 @@ import com.echothree.model.control.tax.server.control.TaxControl;
 import com.echothree.model.data.tax.server.entity.Tax;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TaxTransferCache
         extends BaseTaxTransferCache<Tax, TaxTransfer> {
     
@@ -32,7 +34,7 @@ public class TaxTransferCache
     TaxControl taxControl = Session.getModelController(TaxControl.class);
 
     /** Creates a new instance of TaxTransferCache */
-    public TaxTransferCache() {
+    protected TaxTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

@@ -24,7 +24,9 @@ import com.echothree.model.data.filter.server.entity.FilterAdjustmentPercent;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.PercentUtils;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class FilterAdjustmentPercentTransferCache
         extends BaseFilterTransferCache<FilterAdjustmentPercent, FilterAdjustmentPercentTransfer> {
 
@@ -33,7 +35,7 @@ public class FilterAdjustmentPercentTransferCache
     UomControl uomControl = Session.getModelController(UomControl.class);
 
     /** Creates a new instance of FilterAdjustmentPercentTransferCache */
-    public FilterAdjustmentPercentTransferCache() {
+    protected FilterAdjustmentPercentTransferCache() {
         super();
     }
 

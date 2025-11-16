@@ -23,7 +23,9 @@ import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CurrencyTransferCache
         extends BaseAccountingTransferCache<Currency, CurrencyTransfer> {
 
@@ -51,7 +53,7 @@ public class CurrencyTransferCache
     boolean filterDescription;
     
     /** Creates a new instance of CurrencyTransferCache */
-    public CurrencyTransferCache() {
+    protected CurrencyTransferCache() {
         super();
 
         transferProperties = session.getTransferProperties();

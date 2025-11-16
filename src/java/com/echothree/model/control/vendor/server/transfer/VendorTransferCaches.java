@@ -17,69 +17,64 @@
 package com.echothree.model.control.vendor.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class VendorTransferCaches
         extends BaseTransferCaches {
     
-    protected VendorTypeTransferCache vendorTypeTransferCache;
-    protected VendorTypeDescriptionTransferCache vendorTypeDescriptionTransferCache;
-    protected VendorTransferCache vendorTransferCache;
-    protected VendorItemTransferCache vendorItemTransferCache;
-    protected VendorItemCostTransferCache vendorItemCostTransferCache;
-    protected ItemPurchasingCategoryDescriptionTransferCache itemPurchasingCategoryDescriptionTransferCache;
-    protected ItemPurchasingCategoryTransferCache itemPurchasingCategoryTransferCache;
+    @Inject
+    VendorTypeTransferCache vendorTypeTransferCache;
     
+    @Inject
+    VendorTypeDescriptionTransferCache vendorTypeDescriptionTransferCache;
+    
+    @Inject
+    VendorTransferCache vendorTransferCache;
+    
+    @Inject
+    VendorItemTransferCache vendorItemTransferCache;
+    
+    @Inject
+    VendorItemCostTransferCache vendorItemCostTransferCache;
+    
+    @Inject
+    ItemPurchasingCategoryDescriptionTransferCache itemPurchasingCategoryDescriptionTransferCache;
+    
+    @Inject
+    ItemPurchasingCategoryTransferCache itemPurchasingCategoryTransferCache;
+
     /** Creates a new instance of VendorTransferCaches */
-    public VendorTransferCaches() {
+    protected VendorTransferCaches() {
         super();
     }
     
     public VendorTypeTransferCache getVendorTypeTransferCache() {
-        if(vendorTypeTransferCache == null)
-            vendorTypeTransferCache = new VendorTypeTransferCache();
-        
         return vendorTypeTransferCache;
     }
     
     public VendorTypeDescriptionTransferCache getVendorTypeDescriptionTransferCache() {
-        if(vendorTypeDescriptionTransferCache == null)
-            vendorTypeDescriptionTransferCache = new VendorTypeDescriptionTransferCache();
-        
         return vendorTypeDescriptionTransferCache;
     }
     
     public VendorTransferCache getVendorTransferCache() {
-        if(vendorTransferCache == null)
-            vendorTransferCache = new VendorTransferCache();
-        
         return vendorTransferCache;
     }
     
     public VendorItemTransferCache getVendorItemTransferCache() {
-        if(vendorItemTransferCache == null)
-            vendorItemTransferCache = new VendorItemTransferCache();
-        
         return vendorItemTransferCache;
     }
     
     public VendorItemCostTransferCache getVendorItemCostTransferCache() {
-        if(vendorItemCostTransferCache == null)
-            vendorItemCostTransferCache = new VendorItemCostTransferCache();
-        
         return vendorItemCostTransferCache;
     }
     
     public ItemPurchasingCategoryDescriptionTransferCache getItemPurchasingCategoryDescriptionTransferCache() {
-        if(itemPurchasingCategoryDescriptionTransferCache == null)
-            itemPurchasingCategoryDescriptionTransferCache = new ItemPurchasingCategoryDescriptionTransferCache();
-        
         return itemPurchasingCategoryDescriptionTransferCache;
     }
     
     public ItemPurchasingCategoryTransferCache getItemPurchasingCategoryTransferCache() {
-        if(itemPurchasingCategoryTransferCache == null)
-            itemPurchasingCategoryTransferCache = new ItemPurchasingCategoryTransferCache();
-        
         return itemPurchasingCategoryTransferCache;
     }
     

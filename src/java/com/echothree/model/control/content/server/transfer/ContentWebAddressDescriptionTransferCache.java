@@ -21,14 +21,16 @@ import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentWebAddressDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContentWebAddressDescriptionTransferCache
         extends BaseContentDescriptionTransferCache<ContentWebAddressDescription, ContentWebAddressDescriptionTransfer> {
 
     ContentControl contentControl = Session.getModelController(ContentControl.class);
 
     /** Creates a new instance of ContentWebAddressDescriptionTransferCache */
-    public ContentWebAddressDescriptionTransferCache() {
+    protected ContentWebAddressDescriptionTransferCache() {
         super();
     }
     
@@ -36,8 +38,7 @@ public class ContentWebAddressDescriptionTransferCache
         var contentWebAddressDescriptionTransfer = get(contentWebAddressDescription);
         
         if(contentWebAddressDescriptionTransfer == null) {
-            var contentWebAddressTransferCache = contentControl.getContentTransferCaches().getContentWebAddressTransferCache();
-            var contentWebAddressTransfer = contentWebAddressTransferCache.getContentWebAddressTransfer(userVisit, contentWebAddressDescription.getContentWebAddress());
+            var contentWebAddressTransfer = contentControl.getContentWebAddressTransfer(userVisit, contentWebAddressDescription.getContentWebAddress());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, contentWebAddressDescription.getLanguage());
             
             contentWebAddressDescriptionTransfer = new ContentWebAddressDescriptionTransfer(languageTransfer, contentWebAddressTransfer, contentWebAddressDescription.getDescription());

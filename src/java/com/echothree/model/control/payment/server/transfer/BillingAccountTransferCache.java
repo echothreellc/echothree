@@ -25,7 +25,9 @@ import com.echothree.model.data.payment.server.entity.BillingAccount;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class BillingAccountTransferCache
         extends BasePaymentTransferCache<BillingAccount, BillingAccountTransfer> {
 
@@ -34,7 +36,7 @@ public class BillingAccountTransferCache
     boolean includeRoles;
 
     /** Creates a new instance of BillingAccountTransferCache */
-    public BillingAccountTransferCache() {
+    protected BillingAccountTransferCache() {
         super();
 
         var options = session.getOptions();

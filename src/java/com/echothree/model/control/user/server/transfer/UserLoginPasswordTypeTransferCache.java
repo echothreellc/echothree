@@ -21,14 +21,16 @@ import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.server.entity.UserLoginPasswordType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class UserLoginPasswordTypeTransferCache
         extends BaseUserTransferCache<UserLoginPasswordType, UserLoginPasswordTypeTransfer> {
 
     UserControl userControl = Session.getModelController(UserControl.class);
 
     /** Creates a new instance of UserLoginPasswordTypeTransferCache */
-    public UserLoginPasswordTypeTransferCache() {
+    protected UserLoginPasswordTypeTransferCache() {
         super();
     }
     

@@ -24,7 +24,9 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.carrier.server.entity.PartyCarrier;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyCarrierTransferCache
         extends BaseCarrierTransferCache<PartyCarrier, PartyCarrierTransfer> {
 
@@ -32,7 +34,7 @@ public class PartyCarrierTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of PartyCarrierTransferCache */
-    public PartyCarrierTransferCache() {
+    protected PartyCarrierTransferCache() {
         super();
     }
     

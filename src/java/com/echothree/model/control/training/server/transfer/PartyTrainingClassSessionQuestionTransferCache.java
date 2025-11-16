@@ -23,7 +23,9 @@ import com.echothree.model.data.training.server.entity.PartyTrainingClassSession
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyTrainingClassSessionQuestionTransferCache
         extends BaseTrainingTransferCache<PartyTrainingClassSessionQuestion, PartyTrainingClassSessionQuestionTransfer> {
 
@@ -32,7 +34,7 @@ public class PartyTrainingClassSessionQuestionTransferCache
     boolean includePartyTrainingClassSessionAnswers;
     
     /** Creates a new instance of PartyTrainingClassSessionQuestionTransferCache */
-    public PartyTrainingClassSessionQuestionTransferCache() {
+    protected PartyTrainingClassSessionQuestionTransferCache() {
         super();
         
         var options = session.getOptions();

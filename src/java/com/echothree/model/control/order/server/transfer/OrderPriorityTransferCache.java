@@ -21,14 +21,16 @@ import com.echothree.model.control.order.server.control.OrderPriorityControl;
 import com.echothree.model.data.order.server.entity.OrderPriority;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OrderPriorityTransferCache
         extends BaseOrderTransferCache<OrderPriority, OrderPriorityTransfer> {
 
     OrderPriorityControl orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
 
     /** Creates a new instance of OrderPriorityTransferCache */
-    public OrderPriorityTransferCache() {
+    protected OrderPriorityTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

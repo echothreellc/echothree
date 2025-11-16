@@ -17,101 +17,92 @@
 package com.echothree.model.control.financial.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class FinancialTransferCaches
         extends BaseTransferCaches {
     
-    protected FinancialAccountRoleTypeTransferCache financialAccountRoleTypeTransferCache;
-    protected FinancialAccountTypeTransferCache financialAccountTypeTransferCache;
-    protected FinancialAccountTypeDescriptionTransferCache financialAccountTypeDescriptionTransferCache;
-    protected FinancialAccountTransactionTypeTransferCache financialAccountTransactionTypeTransferCache;
-    protected FinancialAccountTransactionTypeDescriptionTransferCache financialAccountTransactionTypeDescriptionTransferCache;
-    protected FinancialAccountAliasTypeTransferCache financialAccountAliasTypeTransferCache;
-    protected FinancialAccountAliasTypeDescriptionTransferCache financialAccountAliasTypeDescriptionTransferCache;
-    protected FinancialAccountRoleTransferCache financialAccountRoleTransferCache;
-    protected FinancialAccountTransferCache financialAccountTransferCache;
-    protected FinancialAccountAliasTransferCache financialAccountAliasTransferCache;
-    protected FinancialAccountTransactionTransferCache financialAccountTransactionTransferCache;
+    @Inject
+    FinancialAccountRoleTypeTransferCache financialAccountRoleTypeTransferCache;
     
+    @Inject
+    FinancialAccountTypeTransferCache financialAccountTypeTransferCache;
+    
+    @Inject
+    FinancialAccountTypeDescriptionTransferCache financialAccountTypeDescriptionTransferCache;
+    
+    @Inject
+    FinancialAccountTransactionTypeTransferCache financialAccountTransactionTypeTransferCache;
+    
+    @Inject
+    FinancialAccountTransactionTypeDescriptionTransferCache financialAccountTransactionTypeDescriptionTransferCache;
+    
+    @Inject
+    FinancialAccountAliasTypeTransferCache financialAccountAliasTypeTransferCache;
+    
+    @Inject
+    FinancialAccountAliasTypeDescriptionTransferCache financialAccountAliasTypeDescriptionTransferCache;
+    
+    @Inject
+    FinancialAccountRoleTransferCache financialAccountRoleTransferCache;
+    
+    @Inject
+    FinancialAccountTransferCache financialAccountTransferCache;
+    
+    @Inject
+    FinancialAccountAliasTransferCache financialAccountAliasTransferCache;
+    
+    @Inject
+    FinancialAccountTransactionTransferCache financialAccountTransactionTransferCache;
+
     /** Creates a new instance of FinancialTransferCaches */
-    public FinancialTransferCaches() {
+    protected FinancialTransferCaches() {
         super();
     }
     
     public FinancialAccountRoleTypeTransferCache getFinancialAccountRoleTypeTransferCache() {
-        if(financialAccountRoleTypeTransferCache == null)
-            financialAccountRoleTypeTransferCache = new FinancialAccountRoleTypeTransferCache();
-        
         return financialAccountRoleTypeTransferCache;
     }
     
     public FinancialAccountTypeTransferCache getFinancialAccountTypeTransferCache() {
-        if(financialAccountTypeTransferCache == null)
-            financialAccountTypeTransferCache = new FinancialAccountTypeTransferCache();
-        
         return financialAccountTypeTransferCache;
     }
     
     public FinancialAccountTypeDescriptionTransferCache getFinancialAccountTypeDescriptionTransferCache() {
-        if(financialAccountTypeDescriptionTransferCache == null)
-            financialAccountTypeDescriptionTransferCache = new FinancialAccountTypeDescriptionTransferCache();
-        
         return financialAccountTypeDescriptionTransferCache;
     }
     
     public FinancialAccountTransactionTypeTransferCache getFinancialAccountTransactionTypeTransferCache() {
-        if(financialAccountTransactionTypeTransferCache == null)
-            financialAccountTransactionTypeTransferCache = new FinancialAccountTransactionTypeTransferCache();
-        
         return financialAccountTransactionTypeTransferCache;
     }
     
     public FinancialAccountTransactionTypeDescriptionTransferCache getFinancialAccountTransactionTypeDescriptionTransferCache() {
-        if(financialAccountTransactionTypeDescriptionTransferCache == null)
-            financialAccountTransactionTypeDescriptionTransferCache = new FinancialAccountTransactionTypeDescriptionTransferCache();
-        
         return financialAccountTransactionTypeDescriptionTransferCache;
     }
     
     public FinancialAccountAliasTypeTransferCache getFinancialAccountAliasTypeTransferCache() {
-        if(financialAccountAliasTypeTransferCache == null)
-            financialAccountAliasTypeTransferCache = new FinancialAccountAliasTypeTransferCache();
-        
         return financialAccountAliasTypeTransferCache;
     }
     
     public FinancialAccountAliasTypeDescriptionTransferCache getFinancialAccountAliasTypeDescriptionTransferCache() {
-        if(financialAccountAliasTypeDescriptionTransferCache == null)
-            financialAccountAliasTypeDescriptionTransferCache = new FinancialAccountAliasTypeDescriptionTransferCache();
-        
         return financialAccountAliasTypeDescriptionTransferCache;
     }
     
     public FinancialAccountRoleTransferCache getFinancialAccountRoleTransferCache() {
-        if(financialAccountRoleTransferCache == null)
-            financialAccountRoleTransferCache = new FinancialAccountRoleTransferCache();
-        
         return financialAccountRoleTransferCache;
     }
     
     public FinancialAccountTransferCache getFinancialAccountTransferCache() {
-        if(financialAccountTransferCache == null)
-            financialAccountTransferCache = new FinancialAccountTransferCache();
-        
         return financialAccountTransferCache;
     }
     
     public FinancialAccountAliasTransferCache getFinancialAccountAliasTransferCache() {
-        if(financialAccountAliasTransferCache == null)
-            financialAccountAliasTransferCache = new FinancialAccountAliasTransferCache();
-        
         return financialAccountAliasTransferCache;
     }
     
     public FinancialAccountTransactionTransferCache getFinancialAccountTransactionTransferCache() {
-        if(financialAccountTransactionTransferCache == null)
-            financialAccountTransactionTransferCache = new FinancialAccountTransactionTransferCache();
-        
         return financialAccountTransactionTransferCache;
     }
     

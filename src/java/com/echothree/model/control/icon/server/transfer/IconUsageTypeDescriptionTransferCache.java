@@ -21,14 +21,16 @@ import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.data.icon.server.entity.IconUsageTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class IconUsageTypeDescriptionTransferCache
         extends BaseIconDescriptionTransferCache<IconUsageTypeDescription, IconUsageTypeDescriptionTransfer> {
 
     IconControl iconControl = Session.getModelController(IconControl.class);
 
     /** Creates a new instance of IconUsageTypeDescriptionTransferCache */
-    public IconUsageTypeDescriptionTransferCache() {
+    protected IconUsageTypeDescriptionTransferCache() {
         super();
     }
     

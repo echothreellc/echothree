@@ -59,6 +59,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class RatingControl
@@ -73,16 +74,9 @@ public class RatingControl
     //   Rating Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private RatingTransferCaches ratingTransferCaches;
-    
-    public RatingTransferCaches getRatingTransferCaches() {
-        if(ratingTransferCaches == null) {
-            ratingTransferCaches = new RatingTransferCaches();
-        }
-        
-        return ratingTransferCaches;
-    }
-    
+    @Inject
+    RatingTransferCaches ratingTransferCaches;
+
     // --------------------------------------------------------------------------------
     //   Rating Types
     // --------------------------------------------------------------------------------
@@ -192,13 +186,13 @@ public class RatingControl
     }
     
     public RatingTypeTransfer getRatingTypeTransfer(UserVisit userVisit, RatingType ratingType) {
-        return getRatingTransferCaches().getRatingTypeTransferCache().getRatingTypeTransfer(userVisit, ratingType);
+        return ratingTransferCaches.getRatingTypeTransferCache().getRatingTypeTransfer(userVisit, ratingType);
     }
     
     public List<RatingTypeTransfer> getRatingTypeTransfers(UserVisit userVisit, EntityType entityType) {
         var ratingTypes = getRatingTypes(entityType);
         List<RatingTypeTransfer> ratingTypeTransfers = new ArrayList<>(ratingTypes.size());
-        var ratingTypeTransferCache = getRatingTransferCaches().getRatingTypeTransferCache();
+        var ratingTypeTransferCache = ratingTransferCaches.getRatingTypeTransferCache();
         
         ratingTypes.forEach((ratingType) ->
                 ratingTypeTransfers.add(ratingTypeTransferCache.getRatingTypeTransfer(userVisit, ratingType))
@@ -372,13 +366,13 @@ public class RatingControl
     }
     
     public RatingTypeDescriptionTransfer getRatingTypeDescriptionTransfer(UserVisit userVisit, RatingTypeDescription ratingTypeDescription) {
-        return getRatingTransferCaches().getRatingTypeDescriptionTransferCache().getRatingTypeDescriptionTransfer(userVisit, ratingTypeDescription);
+        return ratingTransferCaches.getRatingTypeDescriptionTransferCache().getRatingTypeDescriptionTransfer(userVisit, ratingTypeDescription);
     }
     
     public List<RatingTypeDescriptionTransfer> getRatingTypeDescriptionTransfers(UserVisit userVisit, RatingType ratingType) {
         var ratingTypeDescriptions = getRatingTypeDescriptionsByRatingType(ratingType);
         List<RatingTypeDescriptionTransfer> ratingTypeDescriptionTransfers = new ArrayList<>(ratingTypeDescriptions.size());
-        var ratingTypeDescriptionTransferCache = getRatingTransferCaches().getRatingTypeDescriptionTransferCache();
+        var ratingTypeDescriptionTransferCache = ratingTransferCaches.getRatingTypeDescriptionTransferCache();
         
         ratingTypeDescriptions.forEach((ratingTypeDescription) ->
                 ratingTypeDescriptionTransfers.add(ratingTypeDescriptionTransferCache.getRatingTypeDescriptionTransfer(userVisit, ratingTypeDescription))
@@ -587,13 +581,13 @@ public class RatingControl
     }
     
     public RatingTypeListItemTransfer getRatingTypeListItemTransfer(UserVisit userVisit, RatingTypeListItem ratingTypeListItem) {
-        return getRatingTransferCaches().getRatingTypeListItemTransferCache().getRatingTypeListItemTransfer(userVisit, ratingTypeListItem);
+        return ratingTransferCaches.getRatingTypeListItemTransferCache().getRatingTypeListItemTransfer(userVisit, ratingTypeListItem);
     }
     
     public List<RatingTypeListItemTransfer> getRatingTypeListItemTransfers(UserVisit userVisit, RatingType ratingType) {
         var ratingTypeListItems = getRatingTypeListItems(ratingType);
         List<RatingTypeListItemTransfer> ratingTypeListItemTransfers = new ArrayList<>(ratingTypeListItems.size());
-        var ratingTypeListItemTransferCache = getRatingTransferCaches().getRatingTypeListItemTransferCache();
+        var ratingTypeListItemTransferCache = ratingTransferCaches.getRatingTypeListItemTransferCache();
         
         ratingTypeListItems.forEach((ratingTypeListItem) ->
                 ratingTypeListItemTransfers.add(ratingTypeListItemTransferCache.getRatingTypeListItemTransfer(userVisit, ratingTypeListItem))
@@ -845,13 +839,13 @@ public class RatingControl
     }
     
     public RatingTypeListItemDescriptionTransfer getRatingTypeListItemDescriptionTransfer(UserVisit userVisit, RatingTypeListItemDescription ratingTypeListItemDescription) {
-        return getRatingTransferCaches().getRatingTypeListItemDescriptionTransferCache().getRatingTypeListItemDescriptionTransfer(userVisit, ratingTypeListItemDescription);
+        return ratingTransferCaches.getRatingTypeListItemDescriptionTransferCache().getRatingTypeListItemDescriptionTransfer(userVisit, ratingTypeListItemDescription);
     }
     
     public List<RatingTypeListItemDescriptionTransfer> getRatingTypeListItemDescriptionTransfers(UserVisit userVisit, RatingTypeListItem ratingTypeListItem) {
         var ratingTypeListItemDescriptions = getRatingTypeListItemDescriptionsByRatingTypeListItem(ratingTypeListItem);
         List<RatingTypeListItemDescriptionTransfer> ratingTypeListItemDescriptionTransfers = new ArrayList<>(ratingTypeListItemDescriptions.size());
-        var ratingTypeListItemDescriptionTransferCache = getRatingTransferCaches().getRatingTypeListItemDescriptionTransferCache();
+        var ratingTypeListItemDescriptionTransferCache = ratingTransferCaches.getRatingTypeListItemDescriptionTransferCache();
         
         ratingTypeListItemDescriptions.forEach((ratingTypeListItemDescription) ->
                 ratingTypeListItemDescriptionTransfers.add(ratingTypeListItemDescriptionTransferCache.getRatingTypeListItemDescriptionTransfer(userVisit, ratingTypeListItemDescription))
@@ -1164,12 +1158,12 @@ public class RatingControl
     }
     
     public RatingTransfer getRatingTransfer(UserVisit userVisit, Rating rating) {
-        return getRatingTransferCaches().getRatingTransferCache().getRatingTransfer(userVisit, rating);
+        return ratingTransferCaches.getRatingTransferCache().getRatingTransfer(userVisit, rating);
     }
     
     public List<RatingTransfer> getRatingTransfers(UserVisit userVisit, Collection<Rating> ratings) {
         List<RatingTransfer> ratingTransfers = new ArrayList<>(ratings.size());
-        var ratingTransferCache = getRatingTransferCaches().getRatingTransferCache();
+        var ratingTransferCache = ratingTransferCaches.getRatingTransferCache();
         
         ratings.forEach((rating) ->
                 ratingTransfers.add(ratingTransferCache.getRatingTransfer(userVisit, rating))

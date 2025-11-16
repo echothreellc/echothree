@@ -25,7 +25,9 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.server.entity.VendorItemCost;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class VendorItemCostTransferCache
         extends BaseVendorTransferCache<VendorItemCost, VendorItemCostTransfer> {
     
@@ -35,7 +37,7 @@ public class VendorItemCostTransferCache
     VendorControl vendorControl = Session.getModelController(VendorControl.class);
 
     /** Creates a new instance of VendorItemCostTransferCache */
-    public VendorItemCostTransferCache() {
+    protected VendorItemCostTransferCache() {
         super();
     }
     

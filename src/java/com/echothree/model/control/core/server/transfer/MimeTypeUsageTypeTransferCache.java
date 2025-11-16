@@ -23,7 +23,9 @@ import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class MimeTypeUsageTypeTransferCache
         extends BaseCoreTransferCache<MimeTypeUsageType, MimeTypeUsageTypeTransfer> {
 
@@ -36,7 +38,7 @@ public class MimeTypeUsageTypeTransferCache
     boolean filterDescription;
     
     /** Creates a new instance of MimeTypeUsageTypeTransferCache */
-    public MimeTypeUsageTypeTransferCache() {
+    protected MimeTypeUsageTypeTransferCache() {
         super();
         
         transferProperties = session.getTransferProperties();

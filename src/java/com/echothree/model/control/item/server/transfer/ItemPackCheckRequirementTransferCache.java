@@ -22,7 +22,9 @@ import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.item.server.entity.ItemPackCheckRequirement;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemPackCheckRequirementTransferCache
         extends BaseItemTransferCache<ItemPackCheckRequirement, ItemPackCheckRequirementTransfer> {
 
@@ -30,7 +32,7 @@ public class ItemPackCheckRequirementTransferCache
     UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of ItemPackCheckRequirementTransferCache */
-    public ItemPackCheckRequirementTransferCache() {
+    protected ItemPackCheckRequirementTransferCache() {
         super();
     }
     

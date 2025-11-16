@@ -21,14 +21,16 @@ import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.search.server.entity.SearchTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SearchTypeDescriptionTransferCache
         extends BaseSearchDescriptionTransferCache<SearchTypeDescription, SearchTypeDescriptionTransfer> {
 
     SearchControl searchControl = Session.getModelController(SearchControl.class);
 
     /** Creates a new instance of SearchTypeDescriptionTransferCache */
-    public SearchTypeDescriptionTransferCache() {
+    protected SearchTypeDescriptionTransferCache() {
         super();
     }
     

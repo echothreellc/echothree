@@ -17,8 +17,8 @@
 package com.echothree.model.control.core.server.control;
 
 import com.echothree.model.control.core.server.transfer.CoreTransferCaches;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.inject.Inject;
 
 public abstract class BaseCoreControl
         extends BaseModelControl {
@@ -32,14 +32,7 @@ public abstract class BaseCoreControl
     //   Core Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private CoreTransferCaches coreTransferCaches;
-    
-    public CoreTransferCaches getCoreTransferCaches() {
-        if(coreTransferCaches == null) {
-            coreTransferCaches = new CoreTransferCaches();
-        }
-        
-        return coreTransferCaches;
-    }
-    
+    @Inject
+    CoreTransferCaches coreTransferCaches;
+
  }

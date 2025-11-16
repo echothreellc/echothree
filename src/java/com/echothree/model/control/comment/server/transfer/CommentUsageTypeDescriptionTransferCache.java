@@ -21,14 +21,16 @@ import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.data.comment.server.entity.CommentUsageTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CommentUsageTypeDescriptionTransferCache
         extends BaseCommentDescriptionTransferCache<CommentUsageTypeDescription, CommentUsageTypeDescriptionTransfer> {
 
     CommentControl commentControl = Session.getModelController(CommentControl.class);
 
     /** Creates a new instance of CommentUsageTypeDescriptionTransferCache */
-    public CommentUsageTypeDescriptionTransferCache() {
+    protected CommentUsageTypeDescriptionTransferCache() {
         super();
     }
     
@@ -36,8 +38,7 @@ public class CommentUsageTypeDescriptionTransferCache
         var commentUsageTypeDescriptionTransfer = get(commentUsageTypeDescription);
         
         if(commentUsageTypeDescriptionTransfer == null) {
-            var commentUsageTypeTransferCache = commentControl.getCommentTransferCaches().getCommentUsageTypeTransferCache();
-            var commentUsageTypeTransfer = commentUsageTypeTransferCache.getCommentUsageTypeTransfer(userVisit, commentUsageTypeDescription.getCommentUsageType());
+            var commentUsageTypeTransfer = commentControl.getCommentUsageTypeTransfer(userVisit, commentUsageTypeDescription.getCommentUsageType());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, commentUsageTypeDescription.getLanguage());
             
             commentUsageTypeDescriptionTransfer = new CommentUsageTypeDescriptionTransfer(languageTransfer, commentUsageTypeTransfer, commentUsageTypeDescription.getDescription());

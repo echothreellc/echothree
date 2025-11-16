@@ -22,14 +22,16 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityLongRangeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityLongRangeDescriptionTransferCache
         extends BaseCoreDescriptionTransferCache<EntityLongRangeDescription, EntityLongRangeDescriptionTransfer> {
 
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of EntityLongRangeDescriptionTransferCache */
-    public EntityLongRangeDescriptionTransferCache() {
+    protected EntityLongRangeDescriptionTransferCache() {
         super();
     }
     

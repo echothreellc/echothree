@@ -22,7 +22,9 @@ import com.echothree.model.control.core.server.control.TextControl;
 import com.echothree.model.data.core.server.entity.AppearanceTextDecoration;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class AppearanceTextDecorationTransferCache
         extends BaseCoreTransferCache<AppearanceTextDecoration, AppearanceTextDecorationTransfer> {
 
@@ -30,7 +32,7 @@ public class AppearanceTextDecorationTransferCache
     TextControl textControl = Session.getModelController(TextControl.class);
 
     /** Creates a new instance of AppearanceTextDecorationTransferCache */
-    public AppearanceTextDecorationTransferCache() {
+    protected AppearanceTextDecorationTransferCache() {
         super();
     }
 

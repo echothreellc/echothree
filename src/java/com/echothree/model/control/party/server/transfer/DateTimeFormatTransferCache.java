@@ -23,7 +23,9 @@ import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class DateTimeFormatTransferCache
         extends BasePartyTransferCache<DateTimeFormat, DateTimeFormatTransfer> {
 
@@ -53,7 +55,7 @@ public class DateTimeFormatTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of DateTimeFormatTransferCache */
-    public DateTimeFormatTransferCache() {
+    protected DateTimeFormatTransferCache() {
         super();
 
         transferProperties = session.getTransferProperties();

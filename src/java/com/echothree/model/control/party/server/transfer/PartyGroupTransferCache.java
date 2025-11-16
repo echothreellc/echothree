@@ -19,12 +19,14 @@ package com.echothree.model.control.party.server.transfer;
 import com.echothree.model.control.party.common.transfer.PartyGroupTransfer;
 import com.echothree.model.data.party.server.entity.PartyGroup;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyGroupTransferCache
         extends BasePartyTransferCache<PartyGroup, PartyGroupTransfer> {
     
     /** Creates a new instance of PartyGroupTransferCache */
-    public PartyGroupTransferCache() {
+    protected PartyGroupTransferCache() {
         super();
     }
 

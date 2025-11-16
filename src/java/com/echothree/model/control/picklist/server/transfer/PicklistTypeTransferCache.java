@@ -23,7 +23,9 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.picklist.server.entity.PicklistType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PicklistTypeTransferCache
         extends BasePicklistTransferCache<PicklistType, PicklistTypeTransfer> {
 
@@ -32,7 +34,7 @@ public class PicklistTypeTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of PicklistTypeTransferCache */
-    public PicklistTypeTransferCache() {
+    protected PicklistTypeTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

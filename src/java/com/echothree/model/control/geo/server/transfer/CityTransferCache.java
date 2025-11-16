@@ -21,14 +21,16 @@ import com.echothree.model.control.geo.common.GeoOptions;
 import com.echothree.model.control.geo.common.transfer.CityTransfer;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CityTransferCache
         extends BaseGeoCodeTransferCache<GeoCode, CityTransfer> {
 
     boolean includeAliases;
     
     /** Creates a new instance of CityTransferCache */
-    public CityTransferCache() {
+    protected CityTransferCache() {
         super();
         
         var options = session.getOptions();

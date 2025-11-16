@@ -17,69 +17,64 @@
 package com.echothree.model.control.scale.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class ScaleTransferCaches
         extends BaseTransferCaches {
     
-    protected ScaleTypeTransferCache scaleTypeTransferCache;
-    protected ScaleTypeDescriptionTransferCache scaleTypeDescriptionTransferCache;
-    protected ScaleTransferCache scaleTransferCache;
-    protected ScaleDescriptionTransferCache scaleDescriptionTransferCache;
-    protected ScaleUseTypeTransferCache scaleUseTypeTransferCache;
-    protected ScaleUseTypeDescriptionTransferCache scaleUseTypeDescriptionTransferCache;
-    protected PartyScaleUseTransferCache partyScaleUseTransferCache;
+    @Inject
+    ScaleTypeTransferCache scaleTypeTransferCache;
     
+    @Inject
+    ScaleTypeDescriptionTransferCache scaleTypeDescriptionTransferCache;
+    
+    @Inject
+    ScaleTransferCache scaleTransferCache;
+    
+    @Inject
+    ScaleDescriptionTransferCache scaleDescriptionTransferCache;
+    
+    @Inject
+    ScaleUseTypeTransferCache scaleUseTypeTransferCache;
+    
+    @Inject
+    ScaleUseTypeDescriptionTransferCache scaleUseTypeDescriptionTransferCache;
+    
+    @Inject
+    PartyScaleUseTransferCache partyScaleUseTransferCache;
+
     /** Creates a new instance of ScaleTransferCaches */
-    public ScaleTransferCaches() {
+    protected ScaleTransferCaches() {
         super();
     }
     
     public ScaleTypeTransferCache getScaleTypeTransferCache() {
-        if(scaleTypeTransferCache == null)
-            scaleTypeTransferCache = new ScaleTypeTransferCache();
-
         return scaleTypeTransferCache;
     }
 
     public ScaleTypeDescriptionTransferCache getScaleTypeDescriptionTransferCache() {
-        if(scaleTypeDescriptionTransferCache == null)
-            scaleTypeDescriptionTransferCache = new ScaleTypeDescriptionTransferCache();
-
         return scaleTypeDescriptionTransferCache;
     }
 
     public ScaleTransferCache getScaleTransferCache() {
-        if(scaleTransferCache == null)
-            scaleTransferCache = new ScaleTransferCache();
-        
         return scaleTransferCache;
     }
     
     public ScaleDescriptionTransferCache getScaleDescriptionTransferCache() {
-        if(scaleDescriptionTransferCache == null)
-            scaleDescriptionTransferCache = new ScaleDescriptionTransferCache();
-        
         return scaleDescriptionTransferCache;
     }
     
     public ScaleUseTypeTransferCache getScaleUseTypeTransferCache() {
-        if(scaleUseTypeTransferCache == null)
-            scaleUseTypeTransferCache = new ScaleUseTypeTransferCache();
-
         return scaleUseTypeTransferCache;
     }
 
     public ScaleUseTypeDescriptionTransferCache getScaleUseTypeDescriptionTransferCache() {
-        if(scaleUseTypeDescriptionTransferCache == null)
-            scaleUseTypeDescriptionTransferCache = new ScaleUseTypeDescriptionTransferCache();
-
         return scaleUseTypeDescriptionTransferCache;
     }
 
     public PartyScaleUseTransferCache getPartyScaleUseTransferCache() {
-        if(partyScaleUseTransferCache == null)
-            partyScaleUseTransferCache = new PartyScaleUseTransferCache();
-        
         return partyScaleUseTransferCache;
     }
     

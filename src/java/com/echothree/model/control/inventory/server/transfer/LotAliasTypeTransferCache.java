@@ -21,14 +21,16 @@ import com.echothree.model.control.inventory.server.control.LotAliasControl;
 import com.echothree.model.data.inventory.server.entity.LotAliasType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LotAliasTypeTransferCache
         extends BaseInventoryTransferCache<LotAliasType, LotAliasTypeTransfer> {
 
     LotAliasControl lotAliasControl = Session.getModelController(LotAliasControl.class);
 
     /** Creates a new instance of LotAliasTypeTransferCache */
-    public LotAliasTypeTransferCache() {
+    protected LotAliasTypeTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

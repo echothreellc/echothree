@@ -25,7 +25,9 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.track.server.entity.Track;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TrackTransferCache
         extends BaseTrackTransferCache<Track, TrackTransfer> {
 
@@ -34,7 +36,7 @@ public class TrackTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of TrackTransferCache */
-    public TrackTransferCache() {
+    protected TrackTransferCache() {
         var options = session.getOptions();
         if(options != null) {
             setIncludeUuid(options.contains(TrackOptions.TrackIncludeUuid));

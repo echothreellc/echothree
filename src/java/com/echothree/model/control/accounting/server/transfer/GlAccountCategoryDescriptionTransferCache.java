@@ -21,14 +21,16 @@ import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.data.accounting.server.entity.GlAccountCategoryDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GlAccountCategoryDescriptionTransferCache
         extends BaseAccountingDescriptionTransferCache<GlAccountCategoryDescription, GlAccountCategoryDescriptionTransfer> {
 
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of GlAccountCategoryDescriptionTransferCache */
-    public GlAccountCategoryDescriptionTransferCache() {
+    protected GlAccountCategoryDescriptionTransferCache() {
         super();
     }
     
@@ -37,8 +39,7 @@ public class GlAccountCategoryDescriptionTransferCache
         var glAccountCategoryDescriptionTransfer = get(glAccountCategoryDescription);
         
         if(glAccountCategoryDescriptionTransfer == null) {
-            var glAccountCategoryTransferCache = accountingControl.getAccountingTransferCaches().getGlAccountCategoryTransferCache();
-            var glAccountCategoryTransfer = glAccountCategoryTransferCache.getTransfer(userVisit, glAccountCategoryDescription.getGlAccountCategory());
+            var glAccountCategoryTransfer = accountingControl.getGlAccountCategoryTransfer(userVisit, glAccountCategoryDescription.getGlAccountCategory());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, glAccountCategoryDescription.getLanguage());
             
             glAccountCategoryDescriptionTransfer = new GlAccountCategoryDescriptionTransfer(languageTransfer, glAccountCategoryTransfer, glAccountCategoryDescription.getDescription());

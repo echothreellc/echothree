@@ -23,7 +23,9 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class InventoryTransactionTypeTransferCache
         extends BaseInventoryTransferCache<InventoryTransactionType, InventoryTransactionTypeTransfer> {
 
@@ -32,7 +34,7 @@ public class InventoryTransactionTypeTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of InventoryTransactionTypeTransferCache */
-    public InventoryTransactionTypeTransferCache() {
+    protected InventoryTransactionTypeTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

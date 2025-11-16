@@ -27,7 +27,9 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.common.string.StringUtils;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ForumMessagePartTransferCache
         extends BaseForumTransferCache<ForumMessagePart, ForumMessagePartTransfer> {
 
@@ -40,7 +42,7 @@ public class ForumMessagePartTransferCache
     boolean includeString;
     
     /** Creates a new instance of ForumMessagePartTransferCache */
-    public ForumMessagePartTransferCache() {
+    protected ForumMessagePartTransferCache() {
         super();
         
         var options = session.getOptions();

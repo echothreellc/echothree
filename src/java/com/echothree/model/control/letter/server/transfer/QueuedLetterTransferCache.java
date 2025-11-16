@@ -22,7 +22,9 @@ import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.data.letter.server.entity.QueuedLetter;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class QueuedLetterTransferCache
         extends BaseLetterTransferCache<QueuedLetter, QueuedLetterTransfer> {
     
@@ -30,7 +32,7 @@ public class QueuedLetterTransferCache
     LetterControl letterControl = Session.getModelController(LetterControl.class);
 
     /** Creates a new instance of QueuedLetterTransferCache */
-    public QueuedLetterTransferCache() {
+    protected QueuedLetterTransferCache() {
         super();
     }
     

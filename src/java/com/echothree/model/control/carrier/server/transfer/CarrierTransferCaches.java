@@ -17,7 +17,9 @@
 package com.echothree.model.control.carrier.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CarrierTransferCaches
         extends BaseTransferCaches {
     
@@ -33,77 +35,47 @@ public class CarrierTransferCaches
     CarrierServiceOptionTransferCache carrierServiceOptionTransferCache;
     
     /** Creates a new instance of CarrierTransferCaches */
-    public CarrierTransferCaches() {
+    protected CarrierTransferCaches() {
         super();
     }
     
     public CarrierTransferCache getCarrierTransferCache() {
-        if(carrierTransferCache == null)
-            carrierTransferCache = new CarrierTransferCache();
-        
         return carrierTransferCache;
     }
     
     public CarrierTypeTransferCache getCarrierTypeTransferCache() {
-        if(carrierTypeTransferCache == null)
-            carrierTypeTransferCache = new CarrierTypeTransferCache();
-        
         return carrierTypeTransferCache;
     }
     
     public CarrierTypeDescriptionTransferCache getCarrierTypeDescriptionTransferCache() {
-        if(carrierTypeDescriptionTransferCache == null)
-            carrierTypeDescriptionTransferCache = new CarrierTypeDescriptionTransferCache();
-
         return carrierTypeDescriptionTransferCache;
     }
 
     public CarrierServiceDescriptionTransferCache getCarrierServiceDescriptionTransferCache() {
-        if(carrierServiceDescriptionTransferCache == null)
-            carrierServiceDescriptionTransferCache = new CarrierServiceDescriptionTransferCache();
-
         return carrierServiceDescriptionTransferCache;
     }
 
     public CarrierServiceTransferCache getCarrierServiceTransferCache() {
-        if(carrierServiceTransferCache == null)
-            carrierServiceTransferCache = new CarrierServiceTransferCache();
-        
         return carrierServiceTransferCache;
     }
     
     public CarrierOptionDescriptionTransferCache getCarrierOptionDescriptionTransferCache() {
-        if(carrierOptionDescriptionTransferCache == null)
-            carrierOptionDescriptionTransferCache = new CarrierOptionDescriptionTransferCache();
-        
         return carrierOptionDescriptionTransferCache;
     }
     
     public CarrierOptionTransferCache getCarrierOptionTransferCache() {
-        if(carrierOptionTransferCache == null)
-            carrierOptionTransferCache = new CarrierOptionTransferCache();
-        
         return carrierOptionTransferCache;
     }
     
     public PartyCarrierTransferCache getPartyCarrierTransferCache() {
-        if(partyCarrierTransferCache == null)
-            partyCarrierTransferCache = new PartyCarrierTransferCache();
-
         return partyCarrierTransferCache;
     }
 
     public PartyCarrierAccountTransferCache getPartyCarrierAccountTransferCache() {
-        if(partyCarrierAccountTransferCache == null)
-            partyCarrierAccountTransferCache = new PartyCarrierAccountTransferCache();
-
         return partyCarrierAccountTransferCache;
     }
 
     public CarrierServiceOptionTransferCache getCarrierServiceOptionTransferCache() {
-        if(carrierServiceOptionTransferCache == null)
-            carrierServiceOptionTransferCache = new CarrierServiceOptionTransferCache();
-        
         return carrierServiceOptionTransferCache;
     }
     

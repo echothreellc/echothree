@@ -17,61 +17,57 @@
 package com.echothree.model.control.period.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class PeriodTransferCaches
         extends BaseTransferCaches {
     
-    protected PeriodKindTransferCache periodKindTransferCache;
-    protected PeriodKindDescriptionTransferCache periodKindDescriptionTransferCache;
-    protected PeriodTypeTransferCache periodTypeTransferCache;
-    protected PeriodTypeDescriptionTransferCache periodTypeDescriptionTransferCache;
-    protected PeriodTransferCache periodTransferCache;
-    protected PeriodDescriptionTransferCache periodDescriptionTransferCache;
+    @Inject
+    PeriodKindTransferCache periodKindTransferCache;
     
+    @Inject
+    PeriodKindDescriptionTransferCache periodKindDescriptionTransferCache;
+    
+    @Inject
+    PeriodTypeTransferCache periodTypeTransferCache;
+    
+    @Inject
+    PeriodTypeDescriptionTransferCache periodTypeDescriptionTransferCache;
+    
+    @Inject
+    PeriodTransferCache periodTransferCache;
+    
+    @Inject
+    PeriodDescriptionTransferCache periodDescriptionTransferCache;
+
     /** Creates a new instance of PeriodTransferCaches */
-    public PeriodTransferCaches() {
+    protected PeriodTransferCaches() {
         super();
     }
     
     public PeriodKindTransferCache getPeriodKindTransferCache() {
-        if(periodKindTransferCache == null)
-            periodKindTransferCache = new PeriodKindTransferCache();
-        
         return periodKindTransferCache;
     }
 
     public PeriodKindDescriptionTransferCache getPeriodKindDescriptionTransferCache() {
-        if(periodKindDescriptionTransferCache == null)
-            periodKindDescriptionTransferCache = new PeriodKindDescriptionTransferCache();
-        
         return periodKindDescriptionTransferCache;
     }
     
     public PeriodTypeTransferCache getPeriodTypeTransferCache() {
-        if(periodTypeTransferCache == null)
-            periodTypeTransferCache = new PeriodTypeTransferCache();
-        
         return periodTypeTransferCache;
     }
     
     public PeriodTypeDescriptionTransferCache getPeriodTypeDescriptionTransferCache() {
-        if(periodTypeDescriptionTransferCache == null)
-            periodTypeDescriptionTransferCache = new PeriodTypeDescriptionTransferCache();
-        
         return periodTypeDescriptionTransferCache;
     }
     
     public PeriodTransferCache getPeriodTransferCache() {
-        if(periodTransferCache == null)
-            periodTransferCache = new PeriodTransferCache();
-        
         return periodTransferCache;
     }
     
     public PeriodDescriptionTransferCache getPeriodDescriptionTransferCache() {
-        if(periodDescriptionTransferCache == null)
-            periodDescriptionTransferCache = new PeriodDescriptionTransferCache();
-        
         return periodDescriptionTransferCache;
     }
     

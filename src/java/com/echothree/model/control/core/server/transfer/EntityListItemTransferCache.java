@@ -25,7 +25,9 @@ import com.echothree.model.data.core.server.entity.EntityListItem;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityListItemTransferCache
         extends BaseCoreTransferCache<EntityListItem, EntityListItemTransfer> {
 
@@ -40,7 +42,7 @@ public class EntityListItemTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of EntityListItemTransferCache */
-    public EntityListItemTransferCache() {
+    protected EntityListItemTransferCache() {
         super();
 
         var options = session.getOptions();

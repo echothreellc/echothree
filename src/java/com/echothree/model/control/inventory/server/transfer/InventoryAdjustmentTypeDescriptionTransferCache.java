@@ -21,14 +21,16 @@ import com.echothree.model.control.inventory.server.control.InventoryAdjustmentT
 import com.echothree.model.data.inventory.server.entity.InventoryAdjustmentTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class InventoryAdjustmentTypeDescriptionTransferCache
         extends BaseInventoryDescriptionTransferCache<InventoryAdjustmentTypeDescription, InventoryAdjustmentTypeDescriptionTransfer> {
 
     InventoryAdjustmentTypeControl inventoryAdjustmentTypeControl = Session.getModelController(InventoryAdjustmentTypeControl.class);
 
     /** Creates a new instance of InventoryAdjustmentTypeDescriptionTransferCache */
-    public InventoryAdjustmentTypeDescriptionTransferCache() {
+    protected InventoryAdjustmentTypeDescriptionTransferCache() {
         super();
     }
 

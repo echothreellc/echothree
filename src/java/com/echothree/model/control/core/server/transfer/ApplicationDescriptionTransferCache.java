@@ -21,14 +21,16 @@ import com.echothree.model.control.core.server.control.ApplicationControl;
 import com.echothree.model.data.core.server.entity.ApplicationDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ApplicationDescriptionTransferCache
         extends BaseCoreDescriptionTransferCache<ApplicationDescription, ApplicationDescriptionTransfer> {
 
     ApplicationControl applicationControl = Session.getModelController(ApplicationControl.class);
 
     /** Creates a new instance of ApplicationDescriptionTransferCache */
-    public ApplicationDescriptionTransferCache() {
+    protected ApplicationDescriptionTransferCache() {
         super();
     }
     

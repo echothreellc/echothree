@@ -137,12 +137,12 @@ public class MimeTypeControl
     }
 
     public MimeTypeUsageTypeTransfer getMimeTypeUsageTypeTransfer(UserVisit userVisit, MimeTypeUsageType mimeTypeUsageType) {
-        return getCoreTransferCaches().getMimeTypeUsageTypeTransferCache().getMimeTypeUsageTypeTransfer(userVisit, mimeTypeUsageType);
+        return coreTransferCaches.getMimeTypeUsageTypeTransferCache().getMimeTypeUsageTypeTransfer(userVisit, mimeTypeUsageType);
     }
 
     public List<MimeTypeUsageTypeTransfer> getMimeTypeUsageTypeTransfers(UserVisit userVisit, Collection<MimeTypeUsageType> mimeTypeUsageTypes) {
         List<MimeTypeUsageTypeTransfer> mimeTypeUsageTypeTransfers = new ArrayList<>(mimeTypeUsageTypes.size());
-        var mimeTypeUsageTypeTransferCache = getCoreTransferCaches().getMimeTypeUsageTypeTransferCache();
+        var mimeTypeUsageTypeTransferCache = coreTransferCaches.getMimeTypeUsageTypeTransferCache();
 
         mimeTypeUsageTypes.forEach((mimeTypeUsageType) ->
                 mimeTypeUsageTypeTransfers.add(mimeTypeUsageTypeTransferCache.getMimeTypeUsageTypeTransfer(userVisit, mimeTypeUsageType))
@@ -440,12 +440,12 @@ public class MimeTypeControl
     }
 
     public MimeTypeTransfer getMimeTypeTransfer(UserVisit userVisit, MimeType mimeType) {
-        return getCoreTransferCaches().getMimeTypeTransferCache().getMimeTypeTransfer(userVisit, mimeType);
+        return coreTransferCaches.getMimeTypeTransferCache().getMimeTypeTransfer(userVisit, mimeType);
     }
 
     public List<MimeTypeTransfer> getMimeTypeTransfers(UserVisit userVisit, Collection<MimeType> mimeTypes) {
         List<MimeTypeTransfer> mimeTypeTransfers = new ArrayList<>(mimeTypes.size());
-        var mimeTypeTransferCache = getCoreTransferCaches().getMimeTypeTransferCache();
+        var mimeTypeTransferCache = coreTransferCaches.getMimeTypeTransferCache();
 
         mimeTypes.forEach((mimeType) ->
                 mimeTypeTransfers.add(mimeTypeTransferCache.getMimeTypeTransfer(userVisit, mimeType))
@@ -715,13 +715,13 @@ public class MimeTypeControl
     }
 
     public MimeTypeDescriptionTransfer getMimeTypeDescriptionTransfer(UserVisit userVisit, MimeTypeDescription mimeTypeDescription) {
-        return getCoreTransferCaches().getMimeTypeDescriptionTransferCache().getMimeTypeDescriptionTransfer(userVisit, mimeTypeDescription);
+        return coreTransferCaches.getMimeTypeDescriptionTransferCache().getMimeTypeDescriptionTransfer(userVisit, mimeTypeDescription);
     }
 
     public List<MimeTypeDescriptionTransfer> getMimeTypeDescriptionTransfersByMimeType(UserVisit userVisit, MimeType mimeType) {
         var mimeTypeDescriptions = getMimeTypeDescriptionsByMimeType(mimeType);
         List<MimeTypeDescriptionTransfer> mimeTypeDescriptionTransfers = new ArrayList<>(mimeTypeDescriptions.size());
-        var mimeTypeDescriptionTransferCache = getCoreTransferCaches().getMimeTypeDescriptionTransferCache();
+        var mimeTypeDescriptionTransferCache = coreTransferCaches.getMimeTypeDescriptionTransferCache();
 
         mimeTypeDescriptions.forEach((mimeTypeDescription) ->
                 mimeTypeDescriptionTransfers.add(mimeTypeDescriptionTransferCache.getMimeTypeDescriptionTransfer(userVisit, mimeTypeDescription))
@@ -814,12 +814,12 @@ public class MimeTypeControl
     }
 
     public MimeTypeUsageTransfer getMimeTypeUsageTransfer(UserVisit userVisit, MimeTypeUsage mimeTypeUsage) {
-        return getCoreTransferCaches().getMimeTypeUsageTransferCache().getMimeTypeUsageTransfer(userVisit, mimeTypeUsage);
+        return coreTransferCaches.getMimeTypeUsageTransferCache().getMimeTypeUsageTransfer(userVisit, mimeTypeUsage);
     }
 
     public List<MimeTypeUsageTransfer> getMimeTypeUsageTransfersByMimeType(UserVisit userVisit, Collection<MimeTypeUsage> mimeTypeUsages) {
         List<MimeTypeUsageTransfer> mimeTypeUsageTransfers = new ArrayList<>(mimeTypeUsages.size());
-        var mimeTypeUsageTransferCache = getCoreTransferCaches().getMimeTypeUsageTransferCache();
+        var mimeTypeUsageTransferCache = coreTransferCaches.getMimeTypeUsageTransferCache();
 
         mimeTypeUsages.forEach((mimeTypeUsage) ->
                 mimeTypeUsageTransfers.add(mimeTypeUsageTransferCache.getMimeTypeUsageTransfer(userVisit, mimeTypeUsage))
@@ -899,12 +899,12 @@ public class MimeTypeControl
     }
 
     public MimeTypeFileExtensionTransfer getMimeTypeFileExtensionTransfer(UserVisit userVisit, MimeTypeFileExtension mimeTypeFileExtension) {
-        return getCoreTransferCaches().getMimeTypeFileExtensionTransferCache().getMimeTypeFileExtensionTransfer(userVisit, mimeTypeFileExtension);
+        return coreTransferCaches.getMimeTypeFileExtensionTransferCache().getMimeTypeFileExtensionTransfer(userVisit, mimeTypeFileExtension);
     }
 
     public List<MimeTypeFileExtensionTransfer> getMimeTypeFileExtensionTransfers(UserVisit userVisit, Collection<MimeTypeFileExtension> mimeTypeFileExtensions) {
         List<MimeTypeFileExtensionTransfer> mimeTypeFileExtensionTransfers = new ArrayList<>(mimeTypeFileExtensions.size());
-        var mimeTypeFileExtensionTransferCache = getCoreTransferCaches().getMimeTypeFileExtensionTransferCache();
+        var mimeTypeFileExtensionTransferCache = coreTransferCaches.getMimeTypeFileExtensionTransferCache();
 
         mimeTypeFileExtensions.forEach((mimeTypeFileExtension) ->
                 mimeTypeFileExtensionTransfers.add(mimeTypeFileExtensionTransferCache.getMimeTypeFileExtensionTransfer(userVisit, mimeTypeFileExtension))

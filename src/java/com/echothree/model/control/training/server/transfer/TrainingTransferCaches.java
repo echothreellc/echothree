@@ -17,157 +17,127 @@
 package com.echothree.model.control.training.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class TrainingTransferCaches
         extends BaseTransferCaches {
     
-    protected TrainingClassTransferCache trainingClassTransferCache;
-    protected TrainingClassTranslationTransferCache trainingClassTranslationTransferCache;
-    protected TrainingClassSectionTransferCache trainingClassSectionTransferCache;
-    protected TrainingClassSectionTranslationTransferCache trainingClassSectionTranslationTransferCache;
-    protected TrainingClassPageTransferCache trainingClassPageTransferCache;
-    protected TrainingClassPageTranslationTransferCache trainingClassPageTranslationTransferCache;
-    protected TrainingClassQuestionTransferCache trainingClassQuestionTransferCache;
-    protected TrainingClassQuestionTranslationTransferCache trainingClassQuestionTranslationTransferCache;
-    protected TrainingClassAnswerTransferCache trainingClassAnswerTransferCache;
-    protected TrainingClassAnswerTranslationTransferCache trainingClassAnswerTranslationTransferCache;
-    protected PartyTrainingClassTransferCache partyTrainingClassTransferCache;
-    protected PartyTrainingClassSessionTransferCache partyTrainingClassSessionTransferCache;
-    protected PartyTrainingClassSessionSectionTransferCache partyTrainingClassSessionSectionTransferCache;
-    protected PartyTrainingClassSessionPageTransferCache partyTrainingClassSessionPageTransferCache;
-    protected PartyTrainingClassSessionQuestionTransferCache partyTrainingClassSessionQuestionTransferCache;
-    protected PartyTrainingClassSessionAnswerTransferCache partyTrainingClassSessionAnswerTransferCache;
+    @Inject
+    TrainingClassTransferCache trainingClassTransferCache;
     
+    @Inject
+    TrainingClassTranslationTransferCache trainingClassTranslationTransferCache;
+    
+    @Inject
+    TrainingClassSectionTransferCache trainingClassSectionTransferCache;
+    
+    @Inject
+    TrainingClassSectionTranslationTransferCache trainingClassSectionTranslationTransferCache;
+    
+    @Inject
+    TrainingClassPageTransferCache trainingClassPageTransferCache;
+    
+    @Inject
+    TrainingClassPageTranslationTransferCache trainingClassPageTranslationTransferCache;
+    
+    @Inject
+    TrainingClassQuestionTransferCache trainingClassQuestionTransferCache;
+    
+    @Inject
+    TrainingClassQuestionTranslationTransferCache trainingClassQuestionTranslationTransferCache;
+    
+    @Inject
+    TrainingClassAnswerTransferCache trainingClassAnswerTransferCache;
+    
+    @Inject
+    TrainingClassAnswerTranslationTransferCache trainingClassAnswerTranslationTransferCache;
+    
+    @Inject
+    PartyTrainingClassTransferCache partyTrainingClassTransferCache;
+    
+    @Inject
+    PartyTrainingClassSessionTransferCache partyTrainingClassSessionTransferCache;
+    
+    @Inject
+    PartyTrainingClassSessionSectionTransferCache partyTrainingClassSessionSectionTransferCache;
+    
+    @Inject
+    PartyTrainingClassSessionPageTransferCache partyTrainingClassSessionPageTransferCache;
+    
+    @Inject
+    PartyTrainingClassSessionQuestionTransferCache partyTrainingClassSessionQuestionTransferCache;
+    
+    @Inject
+    PartyTrainingClassSessionAnswerTransferCache partyTrainingClassSessionAnswerTransferCache;
+
     /** Creates a new instance of TrainingTransferCaches */
-    public TrainingTransferCaches() {
+    protected TrainingTransferCaches() {
         super();
     }
     
     public TrainingClassTransferCache getTrainingClassTransferCache() {
-        if(trainingClassTransferCache == null) {
-            trainingClassTransferCache = new TrainingClassTransferCache();
-        }
-        
         return trainingClassTransferCache;
     }
     
     public TrainingClassTranslationTransferCache getTrainingClassTranslationTransferCache() {
-        if(trainingClassTranslationTransferCache == null) {
-            trainingClassTranslationTransferCache = new TrainingClassTranslationTransferCache();
-        }
-        
         return trainingClassTranslationTransferCache;
     }
     
     public TrainingClassSectionTransferCache getTrainingClassSectionTransferCache() {
-        if(trainingClassSectionTransferCache == null) {
-            trainingClassSectionTransferCache = new TrainingClassSectionTransferCache();
-        }
-        
         return trainingClassSectionTransferCache;
     }
     
     public TrainingClassSectionTranslationTransferCache getTrainingClassSectionTranslationTransferCache() {
-        if(trainingClassSectionTranslationTransferCache == null) {
-            trainingClassSectionTranslationTransferCache = new TrainingClassSectionTranslationTransferCache();
-        }
-        
         return trainingClassSectionTranslationTransferCache;
     }
     
     public TrainingClassPageTransferCache getTrainingClassPageTransferCache() {
-        if(trainingClassPageTransferCache == null) {
-            trainingClassPageTransferCache = new TrainingClassPageTransferCache();
-        }
-        
         return trainingClassPageTransferCache;
     }
     
     public TrainingClassPageTranslationTransferCache getTrainingClassPageTranslationTransferCache() {
-        if(trainingClassPageTranslationTransferCache == null) {
-            trainingClassPageTranslationTransferCache = new TrainingClassPageTranslationTransferCache();
-        }
-        
         return trainingClassPageTranslationTransferCache;
     }
     
     public TrainingClassQuestionTransferCache getTrainingClassQuestionTransferCache() {
-        if(trainingClassQuestionTransferCache == null) {
-            trainingClassQuestionTransferCache = new TrainingClassQuestionTransferCache();
-        }
-        
         return trainingClassQuestionTransferCache;
     }
     
     public TrainingClassQuestionTranslationTransferCache getTrainingClassQuestionTranslationTransferCache() {
-        if(trainingClassQuestionTranslationTransferCache == null) {
-            trainingClassQuestionTranslationTransferCache = new TrainingClassQuestionTranslationTransferCache();
-        }
-        
         return trainingClassQuestionTranslationTransferCache;
     }
     
     public TrainingClassAnswerTransferCache getTrainingClassAnswerTransferCache() {
-        if(trainingClassAnswerTransferCache == null) {
-            trainingClassAnswerTransferCache = new TrainingClassAnswerTransferCache();
-        }
-        
         return trainingClassAnswerTransferCache;
     }
     
     public TrainingClassAnswerTranslationTransferCache getTrainingClassAnswerTranslationTransferCache() {
-        if(trainingClassAnswerTranslationTransferCache == null) {
-            trainingClassAnswerTranslationTransferCache = new TrainingClassAnswerTranslationTransferCache();
-        }
-        
         return trainingClassAnswerTranslationTransferCache;
     }
     
     public PartyTrainingClassTransferCache getPartyTrainingClassTransferCache() {
-        if(partyTrainingClassTransferCache == null) {
-            partyTrainingClassTransferCache = new PartyTrainingClassTransferCache();
-        }
-        
         return partyTrainingClassTransferCache;
     }
     
     public PartyTrainingClassSessionTransferCache getPartyTrainingClassSessionTransferCache() {
-        if(partyTrainingClassSessionTransferCache == null) {
-            partyTrainingClassSessionTransferCache = new PartyTrainingClassSessionTransferCache();
-        }
-        
         return partyTrainingClassSessionTransferCache;
     }
     
     public PartyTrainingClassSessionSectionTransferCache getPartyTrainingClassSessionSectionTransferCache() {
-        if(partyTrainingClassSessionSectionTransferCache == null) {
-            partyTrainingClassSessionSectionTransferCache = new PartyTrainingClassSessionSectionTransferCache();
-        }
-        
         return partyTrainingClassSessionSectionTransferCache;
     }
     
     public PartyTrainingClassSessionPageTransferCache getPartyTrainingClassSessionPageTransferCache() {
-        if(partyTrainingClassSessionPageTransferCache == null) {
-            partyTrainingClassSessionPageTransferCache = new PartyTrainingClassSessionPageTransferCache();
-        }
-        
         return partyTrainingClassSessionPageTransferCache;
     }
     
     public PartyTrainingClassSessionQuestionTransferCache getPartyTrainingClassSessionQuestionTransferCache() {
-        if(partyTrainingClassSessionQuestionTransferCache == null) {
-            partyTrainingClassSessionQuestionTransferCache = new PartyTrainingClassSessionQuestionTransferCache();
-        }
-        
         return partyTrainingClassSessionQuestionTransferCache;
     }
     
     public PartyTrainingClassSessionAnswerTransferCache getPartyTrainingClassSessionAnswerTransferCache() {
-        if(partyTrainingClassSessionAnswerTransferCache == null) {
-            partyTrainingClassSessionAnswerTransferCache = new PartyTrainingClassSessionAnswerTransferCache();
-        }
-        
         return partyTrainingClassSessionAnswerTransferCache;
     }
     

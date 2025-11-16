@@ -25,7 +25,9 @@ import com.echothree.model.data.filter.server.entity.FilterAdjustmentFixedAmount
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class FilterAdjustmentFixedAmountTransferCache
         extends BaseFilterTransferCache<FilterAdjustmentFixedAmount, FilterAdjustmentFixedAmountTransfer> {
 
@@ -34,7 +36,7 @@ public class FilterAdjustmentFixedAmountTransferCache
     UomControl uomControl = Session.getModelController(UomControl.class);
 
     /** Creates a new instance of FilterAdjustmentFixedAmountTransferCache */
-    public FilterAdjustmentFixedAmountTransferCache() {
+    protected FilterAdjustmentFixedAmountTransferCache() {
         super();
     }
 

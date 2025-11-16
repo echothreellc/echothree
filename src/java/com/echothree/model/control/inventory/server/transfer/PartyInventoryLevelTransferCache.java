@@ -23,7 +23,9 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.inventory.server.entity.PartyInventoryLevel;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyInventoryLevelTransferCache
         extends BaseInventoryTransferCache<PartyInventoryLevel, PartyInventoryLevelTransfer> {
 
@@ -32,7 +34,7 @@ public class PartyInventoryLevelTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of PartyInventoryLevelTransferCache */
-    public PartyInventoryLevelTransferCache() {
+    protected PartyInventoryLevelTransferCache() {
         super();
     }
     

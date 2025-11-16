@@ -16,23 +16,23 @@
 
 package com.echothree.model.control.sales.server.transfer;
 
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class SalesTransferCaches
         extends BaseTransferCaches {
     
-    protected SalesOrderBatchTransferCache salesOrderBatchTransferCache;
-    
+    @Inject
+    SalesOrderBatchTransferCache salesOrderBatchTransferCache;
+
     /** Creates a new instance of SalesTransferCaches */
-    public SalesTransferCaches() {
+    protected SalesTransferCaches() {
         super();
     }
     
     public SalesOrderBatchTransferCache getSalesOrderBatchTransferCache() {
-        if(salesOrderBatchTransferCache == null)
-            salesOrderBatchTransferCache = new SalesOrderBatchTransferCache();
-        
         return salesOrderBatchTransferCache;
     }
     

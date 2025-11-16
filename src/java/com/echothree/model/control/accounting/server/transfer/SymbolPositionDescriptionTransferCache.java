@@ -21,14 +21,16 @@ import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.data.accounting.server.entity.SymbolPositionDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SymbolPositionDescriptionTransferCache
         extends BaseAccountingDescriptionTransferCache<SymbolPositionDescription, SymbolPositionDescriptionTransfer> {
 
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of SymbolPositionDescriptionTransferCache */
-    public SymbolPositionDescriptionTransferCache() {
+    protected SymbolPositionDescriptionTransferCache() {
         super();
     }
     
@@ -37,8 +39,7 @@ public class SymbolPositionDescriptionTransferCache
         var symbolPositionDescriptionTransfer = get(symbolPositionDescription);
         
         if(symbolPositionDescriptionTransfer == null) {
-            var symbolPositionTransferCache = accountingControl.getAccountingTransferCaches().getSymbolPositionTransferCache();
-            var symbolPositionTransfer = symbolPositionTransferCache.getTransfer(userVisit, symbolPositionDescription.getSymbolPosition());
+            var symbolPositionTransfer = accountingControl.getSymbolPositionTransfer(userVisit, symbolPositionDescription.getSymbolPosition());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, symbolPositionDescription.getLanguage());
             
             symbolPositionDescriptionTransfer = new SymbolPositionDescriptionTransfer(languageTransfer, symbolPositionTransfer, symbolPositionDescription.getDescription());

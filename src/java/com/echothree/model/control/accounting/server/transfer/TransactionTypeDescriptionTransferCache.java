@@ -21,14 +21,16 @@ import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.data.accounting.server.entity.TransactionTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TransactionTypeDescriptionTransferCache
         extends BaseAccountingDescriptionTransferCache<TransactionTypeDescription, TransactionTypeDescriptionTransfer> {
 
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of TransactionTypeDescriptionTransferCache */
-    public TransactionTypeDescriptionTransferCache() {
+    protected TransactionTypeDescriptionTransferCache() {
         super();
     }
     
@@ -37,8 +39,7 @@ public class TransactionTypeDescriptionTransferCache
         var transactionTypeDescriptionTransfer = get(transactionTypeDescription);
         
         if(transactionTypeDescriptionTransfer == null) {
-            var transactionTypeTransferCache = accountingControl.getAccountingTransferCaches().getTransactionTypeTransferCache();
-            var transactionTypeTransfer = transactionTypeTransferCache.getTransfer(userVisit, transactionTypeDescription.getTransactionType());
+            var transactionTypeTransfer = accountingControl.getTransactionTypeTransfer(userVisit, transactionTypeDescription.getTransactionType());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, transactionTypeDescription.getLanguage());
             
             transactionTypeDescriptionTransfer = new TransactionTypeDescriptionTransfer(languageTransfer, transactionTypeTransfer, transactionTypeDescription.getDescription());

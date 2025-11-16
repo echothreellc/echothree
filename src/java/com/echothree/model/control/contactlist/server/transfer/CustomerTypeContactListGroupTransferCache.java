@@ -22,7 +22,9 @@ import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.data.contactlist.server.entity.CustomerTypeContactListGroup;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CustomerTypeContactListGroupTransferCache
         extends BaseContactListTransferCache<CustomerTypeContactListGroup, CustomerTypeContactListGroupTransfer> {
 
@@ -30,7 +32,7 @@ public class CustomerTypeContactListGroupTransferCache
     CustomerControl customerControl = Session.getModelController(CustomerControl.class);
     
     /** Creates a new instance of CustomerTypeContactListGroupTransferCache */
-    public CustomerTypeContactListGroupTransferCache() {
+    protected CustomerTypeContactListGroupTransferCache() {
         super();
     }
     

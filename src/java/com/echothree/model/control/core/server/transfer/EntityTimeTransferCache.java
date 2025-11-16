@@ -21,7 +21,9 @@ import com.echothree.model.control.core.common.transfer.EntityTimeTransfer;
 import com.echothree.model.data.core.server.entity.EntityTime;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityTimeTransferCache
         extends BaseCoreTransferCache<EntityTime, EntityTimeTransfer> {
     
@@ -34,7 +36,7 @@ public class EntityTimeTransferCache
     boolean filterDeletedTime;
     
     /** Creates a new instance of EntityTimeTransferCache */
-    public EntityTimeTransferCache() {
+    protected EntityTimeTransferCache() {
         super();
         
         transferProperties = session.getTransferProperties();

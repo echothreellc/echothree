@@ -127,6 +127,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class InvoiceControl
@@ -141,16 +142,9 @@ public class InvoiceControl
     //   Invoice Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private InvoiceTransferCaches invoiceTransferCaches;
-    
-    public InvoiceTransferCaches getInvoiceTransferCaches() {
-        if(invoiceTransferCaches == null) {
-            invoiceTransferCaches = new InvoiceTransferCaches();
-        }
-        
-        return invoiceTransferCaches;
-    }
-    
+    @Inject
+    InvoiceTransferCaches invoiceTransferCaches;
+
     // --------------------------------------------------------------------------------
     //   Invoice Line Use Types
     // --------------------------------------------------------------------------------
@@ -190,12 +184,12 @@ public class InvoiceControl
     
     public InvoiceLineUseTypeTransfer getInvoiceLineUseTypeTransfer(UserVisit userVisit,
             InvoiceLineUseType invoiceLineUseType) {
-        return getInvoiceTransferCaches().getInvoiceLineUseTypeTransferCache().getInvoiceLineUseTypeTransfer(userVisit, invoiceLineUseType);
+        return invoiceTransferCaches.getInvoiceLineUseTypeTransferCache().getInvoiceLineUseTypeTransfer(userVisit, invoiceLineUseType);
     }
     
     private List<InvoiceLineUseTypeTransfer> getInvoiceLineUseTypeTransfers(final UserVisit userVisit, final List<InvoiceLineUseType> invoiceLineUseTypes) {
         List<InvoiceLineUseTypeTransfer> invoiceLineUseTypeTransfers = new ArrayList<>(invoiceLineUseTypes.size());
-        var invoiceLineUseTypeTransferCache = getInvoiceTransferCaches().getInvoiceLineUseTypeTransferCache();
+        var invoiceLineUseTypeTransferCache = invoiceTransferCaches.getInvoiceLineUseTypeTransferCache();
         
         invoiceLineUseTypes.forEach((invoiceLineUseType) ->
                 invoiceLineUseTypeTransfers.add(invoiceLineUseTypeTransferCache.getInvoiceLineUseTypeTransfer(userVisit, invoiceLineUseType))
@@ -292,12 +286,12 @@ public class InvoiceControl
     
     public InvoiceRoleTypeTransfer getInvoiceRoleTypeTransfer(UserVisit userVisit,
             InvoiceRoleType invoiceRoleType) {
-        return getInvoiceTransferCaches().getInvoiceRoleTypeTransferCache().getInvoiceRoleTypeTransfer(userVisit, invoiceRoleType);
+        return invoiceTransferCaches.getInvoiceRoleTypeTransferCache().getInvoiceRoleTypeTransfer(userVisit, invoiceRoleType);
     }
     
     private List<InvoiceRoleTypeTransfer> getInvoiceRoleTypeTransfers(final UserVisit userVisit, final List<InvoiceRoleType> invoiceRoleTypes) {
         List<InvoiceRoleTypeTransfer> invoiceRoleTypeTransfers = new ArrayList<>(invoiceRoleTypes.size());
-        var invoiceRoleTypeTransferCache = getInvoiceTransferCaches().getInvoiceRoleTypeTransferCache();
+        var invoiceRoleTypeTransferCache = invoiceTransferCaches.getInvoiceRoleTypeTransferCache();
         
         invoiceRoleTypes.forEach((invoiceRoleType) ->
                 invoiceRoleTypeTransfers.add(invoiceRoleTypeTransferCache.getInvoiceRoleTypeTransfer(userVisit, invoiceRoleType))
@@ -528,13 +522,13 @@ public class InvoiceControl
     }
 
     public InvoiceTypeTransfer getInvoiceTypeTransfer(UserVisit userVisit, InvoiceType invoiceType) {
-        return getInvoiceTransferCaches().getInvoiceTypeTransferCache().getInvoiceTypeTransfer(userVisit, invoiceType);
+        return invoiceTransferCaches.getInvoiceTypeTransferCache().getInvoiceTypeTransfer(userVisit, invoiceType);
     }
     
     public List<InvoiceTypeTransfer> getInvoiceTypeTransfers(UserVisit userVisit) {
         var invoiceTypes = getInvoiceTypes();
         List<InvoiceTypeTransfer> invoiceTypeTransfers = new ArrayList<>(invoiceTypes.size());
-        var invoiceTypeTransferCache = getInvoiceTransferCaches().getInvoiceTypeTransferCache();
+        var invoiceTypeTransferCache = invoiceTransferCaches.getInvoiceTypeTransferCache();
         
         invoiceTypes.forEach((invoiceType) ->
                 invoiceTypeTransfers.add(invoiceTypeTransferCache.getInvoiceTypeTransfer(userVisit, invoiceType))
@@ -814,13 +808,13 @@ public class InvoiceControl
     }
     
     public InvoiceTypeDescriptionTransfer getInvoiceTypeDescriptionTransfer(UserVisit userVisit, InvoiceTypeDescription invoiceTypeDescription) {
-        return getInvoiceTransferCaches().getInvoiceTypeDescriptionTransferCache().getInvoiceTypeDescriptionTransfer(userVisit, invoiceTypeDescription);
+        return invoiceTransferCaches.getInvoiceTypeDescriptionTransferCache().getInvoiceTypeDescriptionTransfer(userVisit, invoiceTypeDescription);
     }
     
     public List<InvoiceTypeDescriptionTransfer> getInvoiceTypeDescriptionTransfersByInvoiceType(UserVisit userVisit, InvoiceType invoiceType) {
         var invoiceTypeDescriptions = getInvoiceTypeDescriptionsByInvoiceType(invoiceType);
         List<InvoiceTypeDescriptionTransfer> invoiceTypeDescriptionTransfers = new ArrayList<>(invoiceTypeDescriptions.size());
-        var invoiceTypeDescriptionTransferCache = getInvoiceTransferCaches().getInvoiceTypeDescriptionTransferCache();
+        var invoiceTypeDescriptionTransferCache = invoiceTransferCaches.getInvoiceTypeDescriptionTransferCache();
         
         invoiceTypeDescriptions.forEach((invoiceTypeDescription) ->
                 invoiceTypeDescriptionTransfers.add(invoiceTypeDescriptionTransferCache.getInvoiceTypeDescriptionTransfer(userVisit, invoiceTypeDescription))
@@ -1002,13 +996,13 @@ public class InvoiceControl
     }
     
     public InvoiceAliasTypeTransfer getInvoiceAliasTypeTransfer(UserVisit userVisit, InvoiceAliasType invoiceAliasType) {
-        return getInvoiceTransferCaches().getInvoiceAliasTypeTransferCache().getInvoiceAliasTypeTransfer(userVisit, invoiceAliasType);
+        return invoiceTransferCaches.getInvoiceAliasTypeTransferCache().getInvoiceAliasTypeTransfer(userVisit, invoiceAliasType);
     }
     
     public List<InvoiceAliasTypeTransfer> getInvoiceAliasTypeTransfers(UserVisit userVisit, InvoiceType invoiceType) {
         var invoiceAliasTypes = getInvoiceAliasTypes(invoiceType);
         List<InvoiceAliasTypeTransfer> invoiceAliasTypeTransfers = new ArrayList<>(invoiceAliasTypes.size());
-        var invoiceAliasTypeTransferCache = getInvoiceTransferCaches().getInvoiceAliasTypeTransferCache();
+        var invoiceAliasTypeTransferCache = invoiceTransferCaches.getInvoiceAliasTypeTransferCache();
         
         invoiceAliasTypes.forEach((invoiceAliasType) ->
                 invoiceAliasTypeTransfers.add(invoiceAliasTypeTransferCache.getInvoiceAliasTypeTransfer(userVisit, invoiceAliasType))
@@ -1283,13 +1277,13 @@ public class InvoiceControl
     }
 
     public InvoiceTimeTypeTransfer getInvoiceTimeTypeTransfer(UserVisit userVisit, InvoiceTimeType invoiceTimeType) {
-        return getInvoiceTransferCaches().getInvoiceTimeTypeTransferCache().getInvoiceTimeTypeTransfer(userVisit, invoiceTimeType);
+        return invoiceTransferCaches.getInvoiceTimeTypeTransferCache().getInvoiceTimeTypeTransfer(userVisit, invoiceTimeType);
     }
 
     public List<InvoiceTimeTypeTransfer> getInvoiceTimeTypeTransfers(UserVisit userVisit, InvoiceType invoiceType) {
         var invoiceTimeTypes = getInvoiceTimeTypes(invoiceType);
         List<InvoiceTimeTypeTransfer> invoiceTimeTypeTransfers = new ArrayList<>(invoiceTimeTypes.size());
-        var invoiceTimeTypeTransferCache = getInvoiceTransferCaches().getInvoiceTimeTypeTransferCache();
+        var invoiceTimeTypeTransferCache = invoiceTransferCaches.getInvoiceTimeTypeTransferCache();
 
         invoiceTimeTypes.forEach((invoiceTimeType) ->
                 invoiceTimeTypeTransfers.add(invoiceTimeTypeTransferCache.getInvoiceTimeTypeTransfer(userVisit, invoiceTimeType))
@@ -1510,13 +1504,13 @@ public class InvoiceControl
     }
 
     public InvoiceTimeTypeDescriptionTransfer getInvoiceTimeTypeDescriptionTransfer(UserVisit userVisit, InvoiceTimeTypeDescription invoiceTimeTypeDescription) {
-        return getInvoiceTransferCaches().getInvoiceTimeTypeDescriptionTransferCache().getInvoiceTimeTypeDescriptionTransfer(userVisit, invoiceTimeTypeDescription);
+        return invoiceTransferCaches.getInvoiceTimeTypeDescriptionTransferCache().getInvoiceTimeTypeDescriptionTransfer(userVisit, invoiceTimeTypeDescription);
     }
 
     public List<InvoiceTimeTypeDescriptionTransfer> getInvoiceTimeTypeDescriptionTransfersByInvoiceTimeType(UserVisit userVisit, InvoiceTimeType invoiceTimeType) {
         var invoiceTimeTypeDescriptions = getInvoiceTimeTypeDescriptionsByInvoiceTimeType(invoiceTimeType);
         List<InvoiceTimeTypeDescriptionTransfer> invoiceTimeTypeDescriptionTransfers = new ArrayList<>(invoiceTimeTypeDescriptions.size());
-        var invoiceTimeTypeDescriptionTransferCache = getInvoiceTransferCaches().getInvoiceTimeTypeDescriptionTransferCache();
+        var invoiceTimeTypeDescriptionTransferCache = invoiceTransferCaches.getInvoiceTimeTypeDescriptionTransferCache();
 
         invoiceTimeTypeDescriptions.forEach((invoiceTimeTypeDescription) ->
                 invoiceTimeTypeDescriptionTransfers.add(invoiceTimeTypeDescriptionTransferCache.getInvoiceTimeTypeDescriptionTransfer(userVisit, invoiceTimeTypeDescription))
@@ -1659,13 +1653,13 @@ public class InvoiceControl
     }
     
     public InvoiceAliasTypeDescriptionTransfer getInvoiceAliasTypeDescriptionTransfer(UserVisit userVisit, InvoiceAliasTypeDescription invoiceAliasTypeDescription) {
-        return getInvoiceTransferCaches().getInvoiceAliasTypeDescriptionTransferCache().getInvoiceAliasTypeDescriptionTransfer(userVisit, invoiceAliasTypeDescription);
+        return invoiceTransferCaches.getInvoiceAliasTypeDescriptionTransferCache().getInvoiceAliasTypeDescriptionTransfer(userVisit, invoiceAliasTypeDescription);
     }
     
     public List<InvoiceAliasTypeDescriptionTransfer> getInvoiceAliasTypeDescriptionTransfersByInvoiceAliasType(UserVisit userVisit, InvoiceAliasType invoiceAliasType) {
         var invoiceAliasTypeDescriptions = getInvoiceAliasTypeDescriptionsByInvoiceAliasType(invoiceAliasType);
         List<InvoiceAliasTypeDescriptionTransfer> invoiceAliasTypeDescriptionTransfers = new ArrayList<>(invoiceAliasTypeDescriptions.size());
-        var invoiceAliasTypeDescriptionTransferCache = getInvoiceTransferCaches().getInvoiceAliasTypeDescriptionTransferCache();
+        var invoiceAliasTypeDescriptionTransferCache = invoiceTransferCaches.getInvoiceAliasTypeDescriptionTransferCache();
         
         invoiceAliasTypeDescriptions.forEach((invoiceAliasTypeDescription) ->
                 invoiceAliasTypeDescriptionTransfers.add(invoiceAliasTypeDescriptionTransferCache.getInvoiceAliasTypeDescriptionTransfer(userVisit, invoiceAliasTypeDescription))
@@ -1910,12 +1904,12 @@ public class InvoiceControl
     }
 
     public InvoiceLineTypeTransfer getInvoiceLineTypeTransfer(UserVisit userVisit, InvoiceLineType invoiceLineType) {
-        return getInvoiceTransferCaches().getInvoiceLineTypeTransferCache().getInvoiceLineTypeTransfer(userVisit, invoiceLineType);
+        return invoiceTransferCaches.getInvoiceLineTypeTransferCache().getInvoiceLineTypeTransfer(userVisit, invoiceLineType);
     }
     
     public List<InvoiceLineTypeTransfer> getInvoiceLineTypeTransfers(UserVisit userVisit, Collection<InvoiceLineType> invoiceLineTypes) {
         List<InvoiceLineTypeTransfer> invoiceLineTypeTransfers = new ArrayList<>(invoiceLineTypes.size());
-        var invoiceLineTypeTransferCache = getInvoiceTransferCaches().getInvoiceLineTypeTransferCache();
+        var invoiceLineTypeTransferCache = invoiceTransferCaches.getInvoiceLineTypeTransferCache();
         
         invoiceLineTypes.forEach((invoiceLineType) ->
                 invoiceLineTypeTransfers.add(invoiceLineTypeTransferCache.getInvoiceLineTypeTransfer(userVisit, invoiceLineType))
@@ -2208,13 +2202,13 @@ public class InvoiceControl
     }
     
     public InvoiceLineTypeDescriptionTransfer getInvoiceLineTypeDescriptionTransfer(UserVisit userVisit, InvoiceLineTypeDescription invoiceLineTypeDescription) {
-        return getInvoiceTransferCaches().getInvoiceLineTypeDescriptionTransferCache().getInvoiceLineTypeDescriptionTransfer(userVisit, invoiceLineTypeDescription);
+        return invoiceTransferCaches.getInvoiceLineTypeDescriptionTransferCache().getInvoiceLineTypeDescriptionTransfer(userVisit, invoiceLineTypeDescription);
     }
     
     public List<InvoiceLineTypeDescriptionTransfer> getInvoiceLineTypeDescriptionTransfersByInvoiceLineType(UserVisit userVisit, InvoiceLineType invoiceLineType) {
         var invoiceLineTypeDescriptions = getInvoiceLineTypeDescriptionsByInvoiceLineType(invoiceLineType);
         List<InvoiceLineTypeDescriptionTransfer> invoiceLineTypeDescriptionTransfers = new ArrayList<>(invoiceLineTypeDescriptions.size());
-        var invoiceLineTypeDescriptionTransferCache = getInvoiceTransferCaches().getInvoiceLineTypeDescriptionTransferCache();
+        var invoiceLineTypeDescriptionTransferCache = invoiceTransferCaches.getInvoiceLineTypeDescriptionTransferCache();
         
         invoiceLineTypeDescriptions.forEach((invoiceLineTypeDescription) ->
                 invoiceLineTypeDescriptionTransfers.add(invoiceLineTypeDescriptionTransferCache.getInvoiceLineTypeDescriptionTransfer(userVisit, invoiceLineTypeDescription))
@@ -2414,7 +2408,7 @@ public class InvoiceControl
     
     public List<InvoiceTransfer> getInvoiceTransfers(UserVisit userVisit, Collection<Invoice> invoices) {
         List<InvoiceTransfer> invoiceTransfers = new ArrayList<>(invoices.size());
-        var invoiceTransferCache = getInvoiceTransferCaches().getInvoiceTransferCache();
+        var invoiceTransferCache = invoiceTransferCaches.getInvoiceTransferCache();
         
         invoices.forEach((invoice) ->
                 invoiceTransfers.add(invoiceTransferCache.getInvoiceTransfer(userVisit, invoice))
@@ -2635,12 +2629,12 @@ public class InvoiceControl
     }
     
     public InvoiceTransfer getInvoiceTransfer(UserVisit userVisit, Invoice invoice) {
-        return getInvoiceTransferCaches().getInvoiceTransferCache().getInvoiceTransfer(userVisit, invoice);
+        return invoiceTransferCaches.getInvoiceTransferCache().getInvoiceTransfer(userVisit, invoice);
     }
     
     public List<InvoiceRoleTransfer> getInvoiceRoleTransfers(UserVisit userVisit, Collection<InvoiceRole> invoiceRoles) {
         List<InvoiceRoleTransfer> invoiceRoleTransfers = new ArrayList<>(invoiceRoles.size());
-        var invoiceRoleTransferCache = getInvoiceTransferCaches().getInvoiceRoleTransferCache();
+        var invoiceRoleTransferCache = invoiceTransferCaches.getInvoiceRoleTransferCache();
         
         invoiceRoles.forEach((invoiceRole) ->
                 invoiceRoleTransfers.add(invoiceRoleTransferCache.getInvoiceRoleTransfer(userVisit, invoiceRole))
@@ -2838,12 +2832,12 @@ public class InvoiceControl
     }
 
     public InvoiceTimeTransfer getInvoiceTimeTransfer(UserVisit userVisit, InvoiceTime invoiceTime) {
-        return getInvoiceTransferCaches().getInvoiceTimeTransferCache().getInvoiceTimeTransfer(userVisit, invoiceTime);
+        return invoiceTransferCaches.getInvoiceTimeTransferCache().getInvoiceTimeTransfer(userVisit, invoiceTime);
     }
 
     public List<InvoiceTimeTransfer> getInvoiceTimeTransfers(UserVisit userVisit, Collection<InvoiceTime> invoiceTimes) {
         List<InvoiceTimeTransfer> invoiceTimeTransfers = new ArrayList<>(invoiceTimes.size());
-        var invoiceTimeTransferCache = getInvoiceTransferCaches().getInvoiceTimeTransferCache();
+        var invoiceTimeTransferCache = invoiceTransferCaches.getInvoiceTimeTransferCache();
 
         invoiceTimes.forEach((invoiceTime) ->
                 invoiceTimeTransfers.add(invoiceTimeTransferCache.getInvoiceTimeTransfer(userVisit, invoiceTime))
@@ -3014,13 +3008,13 @@ public class InvoiceControl
     }
     
     public InvoiceAliasTransfer getInvoiceAliasTransfer(UserVisit userVisit, InvoiceAlias invoiceAlias) {
-        return getInvoiceTransferCaches().getInvoiceAliasTransferCache().getInvoiceAliasTransfer(userVisit, invoiceAlias);
+        return invoiceTransferCaches.getInvoiceAliasTransferCache().getInvoiceAliasTransfer(userVisit, invoiceAlias);
     }
     
     public List<InvoiceAliasTransfer> getInvoiceAliasTransfersByInvoice(UserVisit userVisit, Invoice invoice) {
         var invoicealiases = getInvoiceAliasesByInvoice(invoice);
         List<InvoiceAliasTransfer> invoiceAliasTransfers = new ArrayList<>(invoicealiases.size());
-        var invoiceAliasTransferCache = getInvoiceTransferCaches().getInvoiceAliasTransferCache();
+        var invoiceAliasTransferCache = invoiceTransferCaches.getInvoiceAliasTransferCache();
         
         invoicealiases.forEach((invoiceAlias) ->
                 invoiceAliasTransfers.add(invoiceAliasTransferCache.getInvoiceAliasTransfer(userVisit, invoiceAlias))
@@ -3169,12 +3163,12 @@ public class InvoiceControl
     }
     
     public InvoiceLineTransfer getInvoiceLineTransfer(UserVisit userVisit, InvoiceLine invoiceLine) {
-        return getInvoiceTransferCaches().getInvoiceLineTransferCache().getInvoiceLineTransfer(userVisit, invoiceLine);
+        return invoiceTransferCaches.getInvoiceLineTransferCache().getInvoiceLineTransfer(userVisit, invoiceLine);
     }
     
     public List<InvoiceLineTransfer> getInvoiceLineTransfers(final UserVisit userVisit, final List<InvoiceLine> invoiceLines) {
         List<InvoiceLineTransfer> invoiceLineTransfers = new ArrayList<>(invoiceLines.size());
-        var invoiceLineTransferCache = getInvoiceTransferCaches().getInvoiceLineTransferCache();
+        var invoiceLineTransferCache = invoiceTransferCaches.getInvoiceLineTransferCache();
         
         invoiceLines.forEach((invoiceLine) ->
                 invoiceLineTransfers.add(invoiceLineTransferCache.getInvoiceLineTransfer(userVisit, invoiceLine))
@@ -3239,7 +3233,7 @@ public class InvoiceControl
     }
     
     public InvoiceLineItemTransfer getInvoiceLineItemTransfer(UserVisit userVisit, InvoiceLineItem invoiceLineItem) {
-        return getInvoiceTransferCaches().getInvoiceLineItemTransferCache().getInvoiceLineItemTransfer(userVisit, invoiceLineItem);
+        return invoiceTransferCaches.getInvoiceLineItemTransferCache().getInvoiceLineItemTransfer(userVisit, invoiceLineItem);
     }
     
     public void updateInvoiceLineItemFromValue(InvoiceLineItemValue invoiceLineItemValue, BasePK updatedBy) {
@@ -3327,7 +3321,7 @@ public class InvoiceControl
     }
     
     public InvoiceLineGlAccountTransfer getInvoiceLineGlAccountTransfer(UserVisit userVisit, InvoiceLineGlAccount invoiceLineGlAccount) {
-        return getInvoiceTransferCaches().getInvoiceLineGlAccountTransferCache().getInvoiceLineGlAccountTransfer(userVisit, invoiceLineGlAccount);
+        return invoiceTransferCaches.getInvoiceLineGlAccountTransferCache().getInvoiceLineGlAccountTransfer(userVisit, invoiceLineGlAccount);
     }
     
     public void updateInvoiceLineGlAccountFromValue(InvoiceLineGlAccountValue invoiceLineGlAccountValue, BasePK updatedBy) {

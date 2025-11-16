@@ -19,12 +19,14 @@ package com.echothree.model.control.party.server.transfer;
 import com.echothree.model.control.party.common.transfer.TimeZoneDescriptionTransfer;
 import com.echothree.model.data.party.server.entity.TimeZoneDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TimeZoneDescriptionTransferCache
         extends BasePartyDescriptionTransferCache<TimeZoneDescription, TimeZoneDescriptionTransfer> {
 
     /** Creates a new instance of TimeZoneDescriptionTransferCache */
-    public TimeZoneDescriptionTransferCache() {
+    protected TimeZoneDescriptionTransferCache() {
         super();
     }
 

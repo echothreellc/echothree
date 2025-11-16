@@ -237,12 +237,12 @@ public class PaymentProcessorControl
     }
     
     public PaymentProcessorTransfer getPaymentProcessorTransfer(UserVisit userVisit, PaymentProcessor paymentProcessor) {
-        return getPaymentTransferCaches().getPaymentProcessorTransferCache().getTransfer(userVisit, paymentProcessor);
+        return paymentTransferCaches.getPaymentProcessorTransferCache().getTransfer(userVisit, paymentProcessor);
     }
 
     public List<PaymentProcessorTransfer> getPaymentProcessorTransfers(UserVisit userVisit, Collection<PaymentProcessor> paymentProcessors) {
         List<PaymentProcessorTransfer> paymentProcessorTransfers = new ArrayList<>(paymentProcessors.size());
-        var paymentProcessorTransferCache = getPaymentTransferCaches().getPaymentProcessorTransferCache();
+        var paymentProcessorTransferCache = paymentTransferCaches.getPaymentProcessorTransferCache();
 
         paymentProcessors.forEach((paymentProcessor) ->
                 paymentProcessorTransfers.add(paymentProcessorTransferCache.getTransfer(userVisit, paymentProcessor))
@@ -457,13 +457,13 @@ public class PaymentProcessorControl
     }
     
     public PaymentProcessorDescriptionTransfer getPaymentProcessorDescriptionTransfer(UserVisit userVisit, PaymentProcessorDescription paymentProcessorDescription) {
-        return getPaymentTransferCaches().getPaymentProcessorDescriptionTransferCache().getTransfer(userVisit, paymentProcessorDescription);
+        return paymentTransferCaches.getPaymentProcessorDescriptionTransferCache().getTransfer(userVisit, paymentProcessorDescription);
     }
     
     public List<PaymentProcessorDescriptionTransfer> getPaymentProcessorDescriptionTransfers(UserVisit userVisit, PaymentProcessor paymentProcessor) {
         var paymentProcessorDescriptions = getPaymentProcessorDescriptions(paymentProcessor);
         List<PaymentProcessorDescriptionTransfer> paymentProcessorDescriptionTransfers = new ArrayList<>(paymentProcessorDescriptions.size());
-        var paymentProcessorDescriptionTransferCache = getPaymentTransferCaches().getPaymentProcessorDescriptionTransferCache();
+        var paymentProcessorDescriptionTransferCache = paymentTransferCaches.getPaymentProcessorDescriptionTransferCache();
         
         paymentProcessorDescriptions.forEach((paymentProcessorDescription) ->
                 paymentProcessorDescriptionTransfers.add(paymentProcessorDescriptionTransferCache.getTransfer(userVisit, paymentProcessorDescription))

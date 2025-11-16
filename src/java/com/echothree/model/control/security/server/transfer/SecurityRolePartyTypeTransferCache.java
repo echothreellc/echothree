@@ -23,7 +23,9 @@ import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.security.server.entity.SecurityRolePartyType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SecurityRolePartyTypeTransferCache
         extends BaseSecurityTransferCache<SecurityRolePartyType, SecurityRolePartyTypeTransfer> {
     
@@ -32,7 +34,7 @@ public class SecurityRolePartyTypeTransferCache
     SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
         
     /** Creates a new instance of SecurityRolePartyTypeTransferCache */
-    public SecurityRolePartyTypeTransferCache() {
+    protected SecurityRolePartyTypeTransferCache() {
         super();
     }
     

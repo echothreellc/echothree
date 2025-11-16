@@ -22,14 +22,16 @@ import com.echothree.model.data.core.server.entity.EntityDateDefault;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.DateUtils;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityDateDefaultTransferCache
         extends BaseCoreTransferCache<EntityDateDefault, EntityDateDefaultTransfer> {
 
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of EntityDateDefaultTransferCache */
-    public EntityDateDefaultTransferCache() {
+    protected EntityDateDefaultTransferCache() {
         super();
     }
     

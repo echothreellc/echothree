@@ -46,7 +46,9 @@ import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.transfer.ListWrapperBuilder;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemTransferCache
         extends BaseItemTransferCache<Item, ItemTransfer> {
     
@@ -122,7 +124,7 @@ public class ItemTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of ItemTransferCache */
-    public ItemTransferCache() {
+    protected ItemTransferCache() {
         super();
         
         var options = session.getOptions();

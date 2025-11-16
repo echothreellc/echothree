@@ -25,7 +25,9 @@ import com.echothree.model.control.workrequirement.server.control.WorkRequiremen
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workrequirement.server.entity.WorkAssignment;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WorkAssignmentTransferCache
         extends BaseWorkRequirementTransferCache<WorkAssignment, WorkAssignmentTransfer> {
 
@@ -35,7 +37,7 @@ public class WorkAssignmentTransferCache
     WorkRequirementControl workRequirementControl = Session.getModelController(WorkRequirementControl.class);
 
     /** Creates a new instance of WorkAssignmentTransferCache */
-    public WorkAssignmentTransferCache() {
+    protected WorkAssignmentTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

@@ -24,7 +24,9 @@ import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class FilterTransferCache
         extends BaseFilterTransferCache<Filter, FilterTransfer> {
 
@@ -35,7 +37,7 @@ public class FilterTransferCache
     boolean includeFilterSteps;
     
     /** Creates a new instance of FilterTransferCache */
-    public FilterTransferCache() {
+    protected FilterTransferCache() {
         super();
 
         var options = session.getOptions();

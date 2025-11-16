@@ -23,7 +23,9 @@ import com.echothree.model.data.item.server.entity.ItemCountryOfOrigin;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.PercentUtils;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemCountryOfOriginTransferCache
         extends BaseItemTransferCache<ItemCountryOfOrigin, ItemCountryOfOriginTransfer> {
     
@@ -31,7 +33,7 @@ public class ItemCountryOfOriginTransferCache
     ItemControl itemControl = Session.getModelController(ItemControl.class);
 
     /** Creates a new instance of ItemCountryOfOriginTransferCache */
-    public ItemCountryOfOriginTransferCache() {
+    protected ItemCountryOfOriginTransferCache() {
         super();
     }
     

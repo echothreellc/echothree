@@ -19,12 +19,14 @@ package com.echothree.model.control.party.server.transfer;
 import com.echothree.model.control.party.common.transfer.BirthdayFormatDescriptionTransfer;
 import com.echothree.model.data.party.server.entity.BirthdayFormatDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class BirthdayFormatDescriptionTransferCache
         extends BasePartyDescriptionTransferCache<BirthdayFormatDescription, BirthdayFormatDescriptionTransfer> {
     
     /** Creates a new instance of BirthdayFormatDescriptionTransferCache */
-    public BirthdayFormatDescriptionTransferCache() {
+    protected BirthdayFormatDescriptionTransferCache() {
         super();
     }
 

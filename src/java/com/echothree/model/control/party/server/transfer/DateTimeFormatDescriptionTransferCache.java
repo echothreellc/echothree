@@ -19,12 +19,14 @@ package com.echothree.model.control.party.server.transfer;
 import com.echothree.model.control.party.common.transfer.DateTimeFormatDescriptionTransfer;
 import com.echothree.model.data.party.server.entity.DateTimeFormatDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class DateTimeFormatDescriptionTransferCache
         extends BasePartyDescriptionTransferCache<DateTimeFormatDescription, DateTimeFormatDescriptionTransfer> {
     
     /** Creates a new instance of DateTimeFormatDescriptionTransferCache */
-    public DateTimeFormatDescriptionTransferCache() {
+    protected DateTimeFormatDescriptionTransferCache() {
         super();
     }
 

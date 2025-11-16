@@ -27,18 +27,21 @@ import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class InventoryLocationGroupTransferCache
         extends BaseInventoryTransferCache<InventoryLocationGroup, InventoryLocationGroupTransfer> {
     
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+
     boolean includeCapacities;
     boolean includeVolume;
     
     /** Creates a new instance of InventoryLocationGroupTransferCache */
-    public InventoryLocationGroupTransferCache() {
+    protected InventoryLocationGroupTransferCache() {
         super();
         
         var options = session.getOptions();
@@ -59,7 +62,7 @@ public class InventoryLocationGroupTransferCache
             var inventoryLocationGroupDetail = inventoryLocationGroup.getLastDetail();
             var warehouseParty = inventoryLocationGroupDetail.getWarehouseParty();
             var warehouse = warehouseControl.getWarehouse(warehouseParty);
-            var warehouseTransfer = warehouseControl.getWarehouseTransferCaches().getWarehouseTransferCache().getWarehouseTransfer(userVisit, warehouse);
+            var warehouseTransfer = warehouseControl.getWarehouseTransfer(userVisit, warehouse);
             var inventoryLocationGroupName = inventoryLocationGroupDetail.getInventoryLocationGroupName();
             var isDefault = inventoryLocationGroupDetail.getIsDefault();
             var sortOrder = inventoryLocationGroupDetail.getSortOrder();

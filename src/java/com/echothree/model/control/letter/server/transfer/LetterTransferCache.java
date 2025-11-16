@@ -23,7 +23,9 @@ import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.data.letter.server.entity.Letter;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LetterTransferCache
         extends BaseLetterTransferCache<Letter, LetterTransfer> {
     
@@ -32,7 +34,7 @@ public class LetterTransferCache
     LetterControl letterControl = Session.getModelController(LetterControl.class);
 
     /** Creates a new instance of LetterTransferCache */
-    public LetterTransferCache() {
+    protected LetterTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

@@ -21,14 +21,16 @@ import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SelectorTransferCache
         extends BaseSelectorTransferCache<Selector, SelectorTransfer> {
 
     SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
 
     /** Creates a new instance of SelectorTransferCache */
-    public SelectorTransferCache() {
+    protected SelectorTransferCache() {
         super();
         
         setIncludeEntityInstance(true);
@@ -39,8 +41,7 @@ public class SelectorTransferCache
         
         if(selectorTransfer == null) {
             var selectorDetail = selector.getLastDetail();
-            var selectorTypeTransferCache = selectorControl.getSelectorTransferCaches().getSelectorTypeTransferCache();
-            var selectorType = selectorTypeTransferCache.getSelectorTypeTransfer(userVisit, selectorDetail.getSelectorType());
+            var selectorType = selectorControl.getSelectorTypeTransfer(userVisit, selectorDetail.getSelectorType());
             var selectorName = selectorDetail.getSelectorName();
             var isDefault = selectorDetail.getIsDefault();
             var sortOrder = selectorDetail.getSortOrder();

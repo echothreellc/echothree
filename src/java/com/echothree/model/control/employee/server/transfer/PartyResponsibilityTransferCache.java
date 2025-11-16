@@ -22,7 +22,9 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.employee.server.entity.PartyResponsibility;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyResponsibilityTransferCache
         extends BaseEmployeeTransferCache<PartyResponsibility, PartyResponsibilityTransfer> {
 
@@ -30,7 +32,7 @@ public class PartyResponsibilityTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of PartyResponsibilityTransferCache */
-    public PartyResponsibilityTransferCache() {
+    protected PartyResponsibilityTransferCache() {
         super();
     }
     

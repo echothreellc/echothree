@@ -17,18 +17,20 @@
 package com.echothree.model.control.shipment.server.transfer;
 
 import com.echothree.model.control.shipment.common.transfer.ShipmentTimeTypeTransfer;
-import com.echothree.model.control.shipment.server.ShipmentControl;
+import com.echothree.model.control.shipment.server.control.ShipmentControl;
 import com.echothree.model.data.shipment.server.entity.ShipmentTimeType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ShipmentTimeTypeTransferCache
         extends BaseShipmentTransferCache<ShipmentTimeType, ShipmentTimeTypeTransfer> {
 
     ShipmentControl shipmentControl = Session.getModelController(ShipmentControl.class);
 
     /** Creates a new instance of ShipmentTimeTypeTransferCache */
-    public ShipmentTimeTypeTransferCache() {
+    protected ShipmentTimeTypeTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

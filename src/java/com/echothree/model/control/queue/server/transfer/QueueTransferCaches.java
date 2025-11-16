@@ -17,40 +17,36 @@
 package com.echothree.model.control.queue.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class QueueTransferCaches
         extends BaseTransferCaches {
     
-    protected QueueTypeTransferCache queueTypeTransferCache;
-    protected QueueTypeDescriptionTransferCache queueTypeDescriptionTransferCache;
-    protected QueuedEntityTransferCache queuedEntityTransferCache;
+    @Inject
+    QueueTypeTransferCache queueTypeTransferCache;
+    
+    @Inject
+    QueueTypeDescriptionTransferCache queueTypeDescriptionTransferCache;
+    
+    @Inject
+    QueuedEntityTransferCache queuedEntityTransferCache;
     
     /** Creates a new instance of QueueTransferCaches */
-    public QueueTransferCaches() {
+    protected QueueTransferCaches() {
         super();
     }
     
     public QueueTypeTransferCache getQueueTypeTransferCache() {
-        if(queueTypeTransferCache == null) {
-            queueTypeTransferCache = new QueueTypeTransferCache();
-        }
-
         return queueTypeTransferCache;
     }
 
     public QueueTypeDescriptionTransferCache getQueueTypeDescriptionTransferCache() {
-        if(queueTypeDescriptionTransferCache == null) {
-            queueTypeDescriptionTransferCache = new QueueTypeDescriptionTransferCache();
-        }
-
         return queueTypeDescriptionTransferCache;
     }
 
     public QueuedEntityTransferCache getQueuedEntityTransferCache() {
-        if(queuedEntityTransferCache == null) {
-            queuedEntityTransferCache = new QueuedEntityTransferCache();
-        }
-
         return queuedEntityTransferCache;
     }
 

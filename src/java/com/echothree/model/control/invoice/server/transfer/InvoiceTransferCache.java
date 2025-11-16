@@ -34,7 +34,9 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class InvoiceTransferCache
         extends BaseInvoiceTransferCache<Invoice, InvoiceTransfer> {
     
@@ -48,7 +50,7 @@ public class InvoiceTransferCache
     boolean includeRoles;
 
     /** Creates a new instance of InvoiceTransferCache */
-    public InvoiceTransferCache() {
+    protected InvoiceTransferCache() {
         super();
 
         var options = session.getOptions();

@@ -24,7 +24,9 @@ import com.echothree.model.control.subscription.server.control.SubscriptionContr
 import com.echothree.model.data.club.server.entity.Club;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ClubTransferCache
         extends BaseClubTransferCache<Club, ClubTransfer> {
     
@@ -34,7 +36,7 @@ public class ClubTransferCache
     SubscriptionControl subscriptionControl = Session.getModelController(SubscriptionControl.class);
     
     /** Creates a new instance of ClubTransferCache */
-    public ClubTransferCache() {
+    protected ClubTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

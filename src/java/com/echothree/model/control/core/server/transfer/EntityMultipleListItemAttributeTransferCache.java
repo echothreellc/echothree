@@ -23,7 +23,9 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityMultipleListItemAttribute;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityMultipleListItemAttributeTransferCache
         extends BaseCoreTransferCache<EntityMultipleListItemAttribute, EntityMultipleListItemAttributeTransfer> {
 
@@ -31,7 +33,7 @@ public class EntityMultipleListItemAttributeTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of EntityMultipleListItemAttributeTransferCache */
-    public EntityMultipleListItemAttributeTransferCache() {
+    protected EntityMultipleListItemAttributeTransferCache() {
         super();
     }
     

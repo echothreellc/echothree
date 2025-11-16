@@ -23,7 +23,9 @@ import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.item.server.entity.ItemVolume;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemVolumeTransferCache
         extends BaseItemTransferCache<ItemVolume, ItemVolumeTransfer> {
 
@@ -31,7 +33,7 @@ public class ItemVolumeTransferCache
     UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of ItemVolumeTransferCache */
-    public ItemVolumeTransferCache() {
+    protected ItemVolumeTransferCache() {
         super();
     }
     

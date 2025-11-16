@@ -17,85 +17,78 @@
 package com.echothree.model.control.uom.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class UomTransferCaches
         extends BaseTransferCaches {
     
-    protected UnitOfMeasureKindTransferCache uomKindTransferCache;
-    protected UnitOfMeasureTypeTransferCache uomTypeTransferCache;
-    protected UnitOfMeasureKindDescriptionTransferCache uomKindDescriptionTransferCache;
-    protected UnitOfMeasureTypeDescriptionTransferCache uomTypeDescriptionTransferCache;
-    protected UnitOfMeasureKindUseTransferCache uomKindUseTransferCache;
-    protected UnitOfMeasureKindUseTypeTransferCache uomKindUseTypeTransferCache;
-    protected UnitOfMeasureEquivalentTransferCache uomEquivalentTransferCache;
-    protected UnitOfMeasureTypeVolumeTransferCache uomTypeVolumeTransferCache;
-    protected UnitOfMeasureTypeWeightTransferCache uomTypeWeightTransferCache;
+    @Inject
+    UnitOfMeasureKindTransferCache uomKindTransferCache;
     
+    @Inject
+    UnitOfMeasureTypeTransferCache uomTypeTransferCache;
+    
+    @Inject
+    UnitOfMeasureKindDescriptionTransferCache uomKindDescriptionTransferCache;
+    
+    @Inject
+    UnitOfMeasureTypeDescriptionTransferCache uomTypeDescriptionTransferCache;
+    
+    @Inject
+    UnitOfMeasureKindUseTransferCache uomKindUseTransferCache;
+    
+    @Inject
+    UnitOfMeasureKindUseTypeTransferCache uomKindUseTypeTransferCache;
+    
+    @Inject
+    UnitOfMeasureEquivalentTransferCache uomEquivalentTransferCache;
+    
+    @Inject
+    UnitOfMeasureTypeVolumeTransferCache uomTypeVolumeTransferCache;
+    
+    @Inject
+    UnitOfMeasureTypeWeightTransferCache uomTypeWeightTransferCache;
+
     /** Creates a new instance of UomTransferCaches */
-    public UomTransferCaches() {
+    protected UomTransferCaches() {
         super();
     }
     
     public UnitOfMeasureKindTransferCache getUnitOfMeasureKindTransferCache() {
-        if(uomKindTransferCache == null)
-            uomKindTransferCache = new UnitOfMeasureKindTransferCache();
-        
         return uomKindTransferCache;
     }
     
     public UnitOfMeasureTypeTransferCache getUnitOfMeasureTypeTransferCache() {
-        if(uomTypeTransferCache == null)
-            uomTypeTransferCache = new UnitOfMeasureTypeTransferCache();
-        
         return uomTypeTransferCache;
     }
     
     public UnitOfMeasureKindDescriptionTransferCache getUnitOfMeasureKindDescriptionTransferCache() {
-        if(uomKindDescriptionTransferCache == null)
-            uomKindDescriptionTransferCache = new UnitOfMeasureKindDescriptionTransferCache();
-        
         return uomKindDescriptionTransferCache;
     }
     
     public UnitOfMeasureTypeDescriptionTransferCache getUnitOfMeasureTypeDescriptionTransferCache() {
-        if(uomTypeDescriptionTransferCache == null)
-            uomTypeDescriptionTransferCache = new UnitOfMeasureTypeDescriptionTransferCache();
-        
         return uomTypeDescriptionTransferCache;
     }
     
     public UnitOfMeasureKindUseTransferCache getUnitOfMeasureKindUseTransferCache() {
-        if(uomKindUseTransferCache == null)
-            uomKindUseTransferCache = new UnitOfMeasureKindUseTransferCache();
-        
         return uomKindUseTransferCache;
     }
     
     public UnitOfMeasureKindUseTypeTransferCache getUnitOfMeasureKindUseTypeTransferCache() {
-        if(uomKindUseTypeTransferCache == null)
-            uomKindUseTypeTransferCache = new UnitOfMeasureKindUseTypeTransferCache();
-        
         return uomKindUseTypeTransferCache;
     }
     
     public UnitOfMeasureEquivalentTransferCache getUnitOfMeasureEquivalentTransferCache() {
-        if(uomEquivalentTransferCache == null)
-            uomEquivalentTransferCache = new UnitOfMeasureEquivalentTransferCache();
-        
         return uomEquivalentTransferCache;
     }
     
     public UnitOfMeasureTypeVolumeTransferCache getUnitOfMeasureTypeVolumeTransferCache() {
-        if(uomTypeVolumeTransferCache == null)
-            uomTypeVolumeTransferCache = new UnitOfMeasureTypeVolumeTransferCache();
-        
         return uomTypeVolumeTransferCache;
     }
     
     public UnitOfMeasureTypeWeightTransferCache getUnitOfMeasureTypeWeightTransferCache() {
-        if(uomTypeWeightTransferCache == null)
-            uomTypeWeightTransferCache = new UnitOfMeasureTypeWeightTransferCache();
-        
         return uomTypeWeightTransferCache;
     }
     

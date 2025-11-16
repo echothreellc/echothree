@@ -21,14 +21,16 @@ import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.sequence.server.entity.SequenceDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SequenceDescriptionTransferCache
         extends BaseSequenceDescriptionTransferCache<SequenceDescription, SequenceDescriptionTransfer> {
 
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
 
     /** Creates a new instance of SequenceDescriptionTransferCache */
-    public SequenceDescriptionTransferCache() {
+    protected SequenceDescriptionTransferCache() {
         super();
     }
     
@@ -36,8 +38,7 @@ public class SequenceDescriptionTransferCache
         var sequenceDescriptionTransfer = get(sequenceDescription);
         
         if(sequenceDescriptionTransfer == null) {
-            var sequenceTransferCache = sequenceControl.getSequenceTransferCaches().getSequenceTransferCache();
-            var sequenceTransfer = sequenceTransferCache.getSequenceTransfer(userVisit, sequenceDescription.getSequence());
+            var sequenceTransfer = sequenceControl.getSequenceTransfer(userVisit, sequenceDescription.getSequence());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, sequenceDescription.getLanguage());
             
             sequenceDescriptionTransfer = new SequenceDescriptionTransfer(languageTransfer, sequenceTransfer, sequenceDescription.getDescription());

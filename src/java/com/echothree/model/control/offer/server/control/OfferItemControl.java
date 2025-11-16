@@ -203,12 +203,12 @@ public class OfferItemControl
     }
 
     public OfferItemTransfer getOfferItemTransfer(UserVisit userVisit, OfferItem offerItem) {
-        return getOfferTransferCaches().getOfferItemTransferCache().getOfferItemTransfer(userVisit, offerItem);
+        return offerTransferCaches.getOfferItemTransferCache().getOfferItemTransfer(userVisit, offerItem);
     }
 
     public List<OfferItemTransfer> getOfferItemTransfers(UserVisit userVisit, Collection<OfferItem> offerItems) {
         List<OfferItemTransfer> offerItemTransfers = new ArrayList<>(offerItems.size());
-        var offerItemTransferCache = getOfferTransferCaches().getOfferItemTransferCache();
+        var offerItemTransferCache = offerTransferCaches.getOfferItemTransferCache();
 
         offerItems.forEach((offerItem) ->
                 offerItemTransfers.add(offerItemTransferCache.getOfferItemTransfer(userVisit, offerItem))
@@ -463,12 +463,12 @@ public class OfferItemControl
     }
 
     public OfferItemPriceTransfer getOfferItemPriceTransfer(UserVisit userVisit, OfferItemPrice offerItemPrice) {
-        return getOfferTransferCaches().getOfferItemPriceTransferCache().getTransfer(userVisit, offerItemPrice);
+        return offerTransferCaches.getOfferItemPriceTransferCache().getTransfer(userVisit, offerItemPrice);
     }
 
     public List<OfferItemPriceTransfer> getOfferItemPriceTransfers(UserVisit userVisit, Collection<OfferItemPrice> offerItemPrices) {
         List<OfferItemPriceTransfer> offerItemPriceTransfers = new ArrayList<>(offerItemPrices.size());
-        var offerItemPriceTransferCache = getOfferTransferCaches().getOfferItemPriceTransferCache();
+        var offerItemPriceTransferCache = offerTransferCaches.getOfferItemPriceTransferCache();
 
         offerItemPrices.forEach((offerItemPrice) ->
                 offerItemPriceTransfers.add(offerItemPriceTransferCache.getTransfer(userVisit, offerItemPrice))
@@ -478,7 +478,7 @@ public class OfferItemControl
     }
 
     public ListWrapper<HistoryTransfer<OfferItemPriceTransfer>> getOfferItemPriceHistory(UserVisit userVisit, OfferItemPrice offerItemPrice) {
-        return getOfferTransferCaches().getOfferItemPriceTransferCache().getHistory(userVisit, offerItemPrice);
+        return offerTransferCaches.getOfferItemPriceTransferCache().getHistory(userVisit, offerItemPrice);
     }
 
     public List<OfferItemPriceTransfer> getOfferItemPriceTransfersByOfferItem(UserVisit userVisit, OfferItem offerItem) {

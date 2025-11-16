@@ -17,261 +17,232 @@
 package com.echothree.model.control.party.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class PartyTransferCaches
         extends BaseTransferCaches {
     
-    protected CompanyTransferCache companyTransferCache;
-    protected DivisionTransferCache divisionTransferCache;
-    protected DepartmentTransferCache departmentTransferCache;
-    protected LanguageTransferCache languageTransferCache;
-    protected DateTimeFormatTransferCache dateTimeFormatTransferCache;
-    protected PartyTypeTransferCache partyTypeTransferCache;
-    protected TimeZoneTransferCache timeZoneTransferCache;
-    protected NameSuffixTransferCache nameSuffixTransferCache;
-    protected PartyGroupTransferCache partyGroupTransferCache;
-    protected ProfileTransferCache profileTransferCache;
-    protected PersonTransferCache personTransferCache;
-    protected PersonalTitleTransferCache personalTitleTransferCache;
-    protected PartyTransferCache partyTransferCache;
-    protected DateTimeFormatDescriptionTransferCache dateTimeFormatDescriptionTransferCache;
-    protected TimeZoneDescriptionTransferCache timeZoneDescriptionTransferCache;
-    protected PartyRelationshipTransferCache partyRelationshipTransferCache;
-    protected RoleTypeTransferCache roleTypeTransferCache;
-    protected PartyTypeAuditPolicyTransferCache partyTypeAuditPolicyTransferCache;
-    protected PartyTypeLockoutPolicyTransferCache partyTypeLockoutPolicyTransferCache;
-    protected PartyTypePasswordStringPolicyTransferCache partyTypePasswordStringPolicyTransferCache;
-    protected GenderTransferCache genderTransferCache;
-    protected GenderDescriptionTransferCache genderDescriptionTransferCache;
-    protected MoodTransferCache moodTransferCache;
-    protected MoodDescriptionTransferCache moodDescriptionTransferCache;
-    protected BirthdayFormatTransferCache birthdayFormatTransferCache;
-    protected BirthdayFormatDescriptionTransferCache birthdayFormatDescriptionTransferCache;
-    protected PartyAliasTypeTransferCache partyAliasTypeTransferCache;
-    protected PartyAliasTypeDescriptionTransferCache partyAliasTypeDescriptionTransferCache;
-    protected PartyAliasTransferCache partyAliasTransferCache;
-    protected PartyEntityTypeTransferCache partyEntityTypeTransferCache;
-    protected PartyApplicationEditorUseTransferCache partyApplicationEditorUseTransferCache;
-
+    @Inject
+    CompanyTransferCache companyTransferCache;
+    
+    @Inject
+    DivisionTransferCache divisionTransferCache;
+    
+    @Inject
+    DepartmentTransferCache departmentTransferCache;
+    
+    @Inject
+    LanguageTransferCache languageTransferCache;
+    
+    @Inject
+    DateTimeFormatTransferCache dateTimeFormatTransferCache;
+    
+    @Inject
+    PartyTypeTransferCache partyTypeTransferCache;
+    
+    @Inject
+    TimeZoneTransferCache timeZoneTransferCache;
+    
+    @Inject
+    NameSuffixTransferCache nameSuffixTransferCache;
+    
+    @Inject
+    PartyGroupTransferCache partyGroupTransferCache;
+    
+    @Inject
+    ProfileTransferCache profileTransferCache;
+    
+    @Inject
+    PersonTransferCache personTransferCache;
+    
+    @Inject
+    PersonalTitleTransferCache personalTitleTransferCache;
+    
+    @Inject
+    PartyTransferCache partyTransferCache;
+    
+    @Inject
+    DateTimeFormatDescriptionTransferCache dateTimeFormatDescriptionTransferCache;
+    
+    @Inject
+    TimeZoneDescriptionTransferCache timeZoneDescriptionTransferCache;
+    
+    @Inject
+    PartyRelationshipTransferCache partyRelationshipTransferCache;
+    
+    @Inject
+    RoleTypeTransferCache roleTypeTransferCache;
+    
+    @Inject
+    PartyTypeAuditPolicyTransferCache partyTypeAuditPolicyTransferCache;
+    
+    @Inject
+    PartyTypeLockoutPolicyTransferCache partyTypeLockoutPolicyTransferCache;
+    
+    @Inject
+    PartyTypePasswordStringPolicyTransferCache partyTypePasswordStringPolicyTransferCache;
+    
+    @Inject
+    GenderTransferCache genderTransferCache;
+    
+    @Inject
+    GenderDescriptionTransferCache genderDescriptionTransferCache;
+    
+    @Inject
+    MoodTransferCache moodTransferCache;
+    
+    @Inject
+    MoodDescriptionTransferCache moodDescriptionTransferCache;
+    
+    @Inject
+    BirthdayFormatTransferCache birthdayFormatTransferCache;
+    
+    @Inject
+    BirthdayFormatDescriptionTransferCache birthdayFormatDescriptionTransferCache;
+    
+    @Inject
+    PartyAliasTypeTransferCache partyAliasTypeTransferCache;
+    
+    @Inject
+    PartyAliasTypeDescriptionTransferCache partyAliasTypeDescriptionTransferCache;
+    
+    @Inject
+    PartyAliasTransferCache partyAliasTransferCache;
+    
+    @Inject
+    PartyEntityTypeTransferCache partyEntityTypeTransferCache;
+    
+    @Inject
+    PartyApplicationEditorUseTransferCache partyApplicationEditorUseTransferCache;
+    
     /** Creates a new instance of PartyTransferCaches */
-    public PartyTransferCaches() {
+    protected PartyTransferCaches() {
         super();
     }
     
     public CompanyTransferCache getCompanyTransferCache() {
-        if(companyTransferCache == null)
-            companyTransferCache = new CompanyTransferCache();
-        
         return companyTransferCache;
     }
     
     public DivisionTransferCache getDivisionTransferCache() {
-        if(divisionTransferCache == null)
-            divisionTransferCache = new DivisionTransferCache();
-        
         return divisionTransferCache;
     }
     
     public DepartmentTransferCache getDepartmentTransferCache() {
-        if(departmentTransferCache == null)
-            departmentTransferCache = new DepartmentTransferCache();
-        
         return departmentTransferCache;
     }
     
     public LanguageTransferCache getLanguageTransferCache() {
-        if(languageTransferCache == null)
-            languageTransferCache = new LanguageTransferCache();
-        
         return languageTransferCache;
     }
     
     public DateTimeFormatTransferCache getDateTimeFormatTransferCache() {
-        if(dateTimeFormatTransferCache == null)
-            dateTimeFormatTransferCache = new DateTimeFormatTransferCache();
-        
         return dateTimeFormatTransferCache;
     }
     
     public PartyTypeTransferCache getPartyTypeTransferCache() {
-        if(partyTypeTransferCache == null)
-            partyTypeTransferCache = new PartyTypeTransferCache();
-        
         return partyTypeTransferCache;
     }
     
     public TimeZoneTransferCache getTimeZoneTransferCache() {
-        if(timeZoneTransferCache == null)
-            timeZoneTransferCache = new TimeZoneTransferCache();
-        
         return timeZoneTransferCache;
     }
     
     public NameSuffixTransferCache getNameSuffixTransferCache() {
-        if(nameSuffixTransferCache == null)
-            nameSuffixTransferCache = new NameSuffixTransferCache();
-        
         return nameSuffixTransferCache;
     }
     
     public PartyGroupTransferCache getPartyGroupTransferCache() {
-        if(partyGroupTransferCache == null)
-            partyGroupTransferCache = new PartyGroupTransferCache();
-        
         return partyGroupTransferCache;
     }
     
     public ProfileTransferCache getProfileTransferCache() {
-        if(profileTransferCache == null)
-            profileTransferCache = new ProfileTransferCache();
-        
         return profileTransferCache;
     }
     
     public PersonTransferCache getPersonTransferCache() {
-        if(personTransferCache == null)
-            personTransferCache = new PersonTransferCache();
-        
         return personTransferCache;
     }
     
     public PersonalTitleTransferCache getPersonalTitleTransferCache() {
-        if(personalTitleTransferCache == null)
-            personalTitleTransferCache = new PersonalTitleTransferCache();
-        
         return personalTitleTransferCache;
     }
     
     public PartyTransferCache getPartyTransferCache() {
-        if(partyTransferCache == null)
-            partyTransferCache = new PartyTransferCache();
-        
         return partyTransferCache;
     }
     
     public DateTimeFormatDescriptionTransferCache getDateTimeFormatDescriptionTransferCache() {
-        if(dateTimeFormatDescriptionTransferCache == null)
-            dateTimeFormatDescriptionTransferCache = new DateTimeFormatDescriptionTransferCache();
-        
         return dateTimeFormatDescriptionTransferCache;
     }
     
     public TimeZoneDescriptionTransferCache getTimeZoneDescriptionTransferCache() {
-        if(timeZoneDescriptionTransferCache == null)
-            timeZoneDescriptionTransferCache = new TimeZoneDescriptionTransferCache();
-        
         return timeZoneDescriptionTransferCache;
     }
     
     public PartyRelationshipTransferCache getPartyRelationshipTransferCache() {
-        if(partyRelationshipTransferCache == null)
-            partyRelationshipTransferCache = new PartyRelationshipTransferCache();
-        
         return partyRelationshipTransferCache;
     }
     
     public RoleTypeTransferCache getRoleTypeTransferCache() {
-        if(roleTypeTransferCache == null)
-            roleTypeTransferCache = new RoleTypeTransferCache();
-        
         return roleTypeTransferCache;
     }
     
     public PartyTypeAuditPolicyTransferCache getPartyTypeAuditPolicyTransferCache() {
-        if(partyTypeAuditPolicyTransferCache == null)
-            partyTypeAuditPolicyTransferCache = new PartyTypeAuditPolicyTransferCache();
-        
         return partyTypeAuditPolicyTransferCache;
     }
     
     public PartyTypeLockoutPolicyTransferCache getPartyTypeLockoutPolicyTransferCache() {
-        if(partyTypeLockoutPolicyTransferCache == null)
-            partyTypeLockoutPolicyTransferCache = new PartyTypeLockoutPolicyTransferCache();
-        
         return partyTypeLockoutPolicyTransferCache;
     }
     
     public PartyTypePasswordStringPolicyTransferCache getPartyTypePasswordStringPolicyTransferCache() {
-        if(partyTypePasswordStringPolicyTransferCache == null)
-            partyTypePasswordStringPolicyTransferCache = new PartyTypePasswordStringPolicyTransferCache();
-        
         return partyTypePasswordStringPolicyTransferCache;
     }
     
     public GenderTransferCache getGenderTransferCache() {
-        if(genderTransferCache == null)
-            genderTransferCache = new GenderTransferCache();
-        
         return genderTransferCache;
     }
     
     public GenderDescriptionTransferCache getGenderDescriptionTransferCache() {
-        if(genderDescriptionTransferCache == null)
-            genderDescriptionTransferCache = new GenderDescriptionTransferCache();
-        
         return genderDescriptionTransferCache;
     }
     
     public MoodTransferCache getMoodTransferCache() {
-        if(moodTransferCache == null)
-            moodTransferCache = new MoodTransferCache();
-
         return moodTransferCache;
     }
 
     public MoodDescriptionTransferCache getMoodDescriptionTransferCache() {
-        if(moodDescriptionTransferCache == null)
-            moodDescriptionTransferCache = new MoodDescriptionTransferCache();
-
         return moodDescriptionTransferCache;
     }
 
     public BirthdayFormatTransferCache getBirthdayFormatTransferCache() {
-        if(birthdayFormatTransferCache == null)
-            birthdayFormatTransferCache = new BirthdayFormatTransferCache();
-
         return birthdayFormatTransferCache;
     }
 
     public BirthdayFormatDescriptionTransferCache getBirthdayFormatDescriptionTransferCache() {
-        if(birthdayFormatDescriptionTransferCache == null)
-            birthdayFormatDescriptionTransferCache = new BirthdayFormatDescriptionTransferCache();
-
         return birthdayFormatDescriptionTransferCache;
     }
 
     public PartyAliasTypeTransferCache getPartyAliasTypeTransferCache() {
-        if(partyAliasTypeTransferCache == null)
-            partyAliasTypeTransferCache = new PartyAliasTypeTransferCache();
-
         return partyAliasTypeTransferCache;
     }
 
     public PartyAliasTypeDescriptionTransferCache getPartyAliasTypeDescriptionTransferCache() {
-        if(partyAliasTypeDescriptionTransferCache == null)
-            partyAliasTypeDescriptionTransferCache = new PartyAliasTypeDescriptionTransferCache();
-
         return partyAliasTypeDescriptionTransferCache;
     }
 
     public PartyAliasTransferCache getPartyAliasTransferCache() {
-        if(partyAliasTransferCache == null)
-            partyAliasTransferCache = new PartyAliasTransferCache();
-
         return partyAliasTransferCache;
     }
 
     public PartyEntityTypeTransferCache getPartyEntityTypeTransferCache() {
-        if(partyEntityTypeTransferCache == null)
-            partyEntityTypeTransferCache = new PartyEntityTypeTransferCache();
-
         return partyEntityTypeTransferCache;
     }
 
     public PartyApplicationEditorUseTransferCache getPartyApplicationEditorUseTransferCache() {
-        if(partyApplicationEditorUseTransferCache == null)
-            partyApplicationEditorUseTransferCache = new PartyApplicationEditorUseTransferCache();
-
         return partyApplicationEditorUseTransferCache;
     }
 

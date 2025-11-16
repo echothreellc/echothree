@@ -17,31 +17,29 @@
 package com.echothree.model.control.license.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class LicenseTransferCaches
         extends BaseTransferCaches {
     
-    protected LicenseTypeTransferCache licenseTypeTransferCache;
-    protected LicenseTypeDescriptionTransferCache licenseTypeDescriptionTransferCache;
+    @Inject
+    LicenseTypeTransferCache licenseTypeTransferCache;
+    
+    @Inject
+    LicenseTypeDescriptionTransferCache licenseTypeDescriptionTransferCache;
     
     /** Creates a new instance of LicenseTransferCaches */
-    public LicenseTransferCaches() {
+    protected LicenseTransferCaches() {
         super();
     }
     
     public LicenseTypeTransferCache getLicenseTypeTransferCache() {
-        if(licenseTypeTransferCache == null) {
-            licenseTypeTransferCache = new LicenseTypeTransferCache();
-        }
-
         return licenseTypeTransferCache;
     }
 
     public LicenseTypeDescriptionTransferCache getLicenseTypeDescriptionTransferCache() {
-        if(licenseTypeDescriptionTransferCache == null) {
-            licenseTypeDescriptionTransferCache = new LicenseTypeDescriptionTransferCache();
-        }
-
         return licenseTypeDescriptionTransferCache;
     }
 

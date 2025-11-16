@@ -17,61 +17,57 @@
 package com.echothree.model.control.term.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class TermTransferCaches
         extends BaseTransferCaches {
     
-    protected TermTypeTransferCache termTypeTransferCache;
-    protected TermTransferCache termTransferCache;
-    protected TermDescriptionTransferCache termDescriptionTransferCache;
-    protected PartyTermTransferCache partyTermTransferCache;
-    protected CustomerTypeCreditLimitTransferCache customerTypeCreditLimitTransferCache;
-    protected PartyCreditLimitTransferCache partyCreditLimitTransferCache;
+    @Inject
+    TermTypeTransferCache termTypeTransferCache;
+    
+    @Inject
+    TermTransferCache termTransferCache;
+    
+    @Inject
+    TermDescriptionTransferCache termDescriptionTransferCache;
+    
+    @Inject
+    PartyTermTransferCache partyTermTransferCache;
+    
+    @Inject
+    CustomerTypeCreditLimitTransferCache customerTypeCreditLimitTransferCache;
+    
+    @Inject
+    PartyCreditLimitTransferCache partyCreditLimitTransferCache;
     
     /** Creates a new instance of TermTransferCaches */
-    public TermTransferCaches() {
+    protected TermTransferCaches() {
         super();
     }
     
     public TermTypeTransferCache getTermTypeTransferCache() {
-        if(termTypeTransferCache == null)
-            termTypeTransferCache = new TermTypeTransferCache();
-        
         return termTypeTransferCache;
     }
     
     public TermTransferCache getTermTransferCache() {
-        if(termTransferCache == null)
-            termTransferCache = new TermTransferCache();
-        
         return termTransferCache;
     }
     
     public TermDescriptionTransferCache getTermDescriptionTransferCache() {
-        if(termDescriptionTransferCache == null)
-            termDescriptionTransferCache = new TermDescriptionTransferCache();
-        
         return termDescriptionTransferCache;
     }
     
     public PartyTermTransferCache getPartyTermTransferCache() {
-        if(partyTermTransferCache == null)
-            partyTermTransferCache = new PartyTermTransferCache();
-        
         return partyTermTransferCache;
     }
     
     public CustomerTypeCreditLimitTransferCache getCustomerTypeCreditLimitTransferCache() {
-        if(customerTypeCreditLimitTransferCache == null)
-            customerTypeCreditLimitTransferCache = new CustomerTypeCreditLimitTransferCache();
-        
         return customerTypeCreditLimitTransferCache;
     }
     
     public PartyCreditLimitTransferCache getPartyCreditLimitTransferCache() {
-        if(partyCreditLimitTransferCache == null)
-            partyCreditLimitTransferCache = new PartyCreditLimitTransferCache();
-        
         return partyCreditLimitTransferCache;
     }
     

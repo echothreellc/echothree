@@ -21,14 +21,16 @@ import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.data.inventory.server.entity.AllocationPriority;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class AllocationPriorityTransferCache
         extends BaseInventoryTransferCache<AllocationPriority, AllocationPriorityTransfer> {
 
     InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
 
     /** Creates a new instance of AllocationPriorityTransferCache */
-    public AllocationPriorityTransferCache() {
+    protected AllocationPriorityTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

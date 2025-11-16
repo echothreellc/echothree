@@ -23,7 +23,9 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OrderTypeTransferCache
         extends BaseOrderTransferCache<OrderType, OrderTypeTransfer> {
 
@@ -32,7 +34,7 @@ public class OrderTypeTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of OrderTypeTransferCache */
-    public OrderTypeTransferCache() {
+    protected OrderTypeTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

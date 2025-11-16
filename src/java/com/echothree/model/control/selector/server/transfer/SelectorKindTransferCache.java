@@ -21,14 +21,16 @@ import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SelectorKindTransferCache
         extends BaseSelectorTransferCache<SelectorKind, SelectorKindTransfer> {
 
     SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
 
     /** Creates a new instance of SelectorKindTransferCache */
-    public SelectorKindTransferCache() {
+    protected SelectorKindTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

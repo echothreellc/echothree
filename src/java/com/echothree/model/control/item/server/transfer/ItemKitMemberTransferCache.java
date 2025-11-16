@@ -24,7 +24,9 @@ import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.item.server.entity.ItemKitMember;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemKitMemberTransferCache
         extends BaseItemTransferCache<ItemKitMember, ItemKitMemberTransfer> {
     
@@ -33,7 +35,7 @@ public class ItemKitMemberTransferCache
     UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of ItemKitMemberTransferCache */
-    public ItemKitMemberTransferCache() {
+    protected ItemKitMemberTransferCache() {
         super();
     }
     

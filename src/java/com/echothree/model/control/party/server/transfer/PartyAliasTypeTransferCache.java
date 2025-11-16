@@ -22,14 +22,16 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.PartyAliasType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyAliasTypeTransferCache
         extends BasePartyTransferCache<PartyAliasType, PartyAliasTypeTransfer> {
 
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of PartyAliasTypeTransferCache */
-    public PartyAliasTypeTransferCache() {
+    protected PartyAliasTypeTransferCache() {
         super();
 
         var options = session.getOptions();

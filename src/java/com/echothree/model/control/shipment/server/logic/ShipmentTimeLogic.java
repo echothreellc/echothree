@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.shipment.server.logic;
 
-import com.echothree.model.control.shipment.server.ShipmentControl;
+import com.echothree.model.control.shipment.server.control.ShipmentControl;
 import com.echothree.model.data.shipment.server.entity.Shipment;
 import com.echothree.model.data.shipment.server.entity.ShipmentType;
 import com.echothree.util.common.message.ExecutionErrors;

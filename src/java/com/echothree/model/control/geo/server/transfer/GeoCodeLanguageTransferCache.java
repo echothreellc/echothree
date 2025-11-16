@@ -22,7 +22,9 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.geo.server.entity.GeoCodeLanguage;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GeoCodeLanguageTransferCache
         extends BaseGeoTransferCache<GeoCodeLanguage, GeoCodeLanguageTransfer> {
 
@@ -30,7 +32,7 @@ public class GeoCodeLanguageTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of GeoCodeLanguageTransferCache */
-    public GeoCodeLanguageTransferCache() {
+    protected GeoCodeLanguageTransferCache() {
         super();
     }
     

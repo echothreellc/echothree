@@ -26,7 +26,9 @@ import com.echothree.model.data.accounting.server.entity.TransactionGroup;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TransactionGroupTransferCache
         extends BaseAccountingTransferCache<TransactionGroup, TransactionGroupTransfer> {
 
@@ -36,7 +38,7 @@ public class TransactionGroupTransferCache
     boolean includeTransactions;
     
     /** Creates a new instance of TransactionGroupTransferCache */
-    public TransactionGroupTransferCache() {
+    protected TransactionGroupTransferCache() {
         super();
         
         var options = session.getOptions();

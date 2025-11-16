@@ -22,7 +22,9 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.contactlist.server.entity.PartyTypeContactList;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyTypeContactListTransferCache
         extends BaseContactListTransferCache<PartyTypeContactList, PartyTypeContactListTransfer> {
 
@@ -30,7 +32,7 @@ public class PartyTypeContactListTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of PartyTypeContactListTransferCache */
-    public PartyTypeContactListTransferCache() {
+    protected PartyTypeContactListTransferCache() {
         super();
     }
     

@@ -21,14 +21,16 @@ import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.data.chain.server.entity.ChainActionSet;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ChainActionSetTransferCache
         extends BaseChainTransferCache<ChainActionSet, ChainActionSetTransfer> {
 
     ChainControl chainControl = Session.getModelController(ChainControl.class);
 
     /** Creates a new instance of ChainActionSetTransferCache */
-    public ChainActionSetTransferCache() {
+    protected ChainActionSetTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

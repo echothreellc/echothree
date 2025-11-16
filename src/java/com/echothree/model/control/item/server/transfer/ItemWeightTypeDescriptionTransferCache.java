@@ -21,14 +21,16 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemWeightTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemWeightTypeDescriptionTransferCache
         extends BaseItemDescriptionTransferCache<ItemWeightTypeDescription, ItemWeightTypeDescriptionTransfer> {
 
     ItemControl itemControl = Session.getModelController(ItemControl.class);
 
     /** Creates a new instance of ItemWeightTypeDescriptionTransferCache */
-    public ItemWeightTypeDescriptionTransferCache() {
+    protected ItemWeightTypeDescriptionTransferCache() {
         super();
     }
     
@@ -37,8 +39,7 @@ public class ItemWeightTypeDescriptionTransferCache
         var itemWeightTypeDescriptionTransfer = get(itemWeightTypeDescription);
         
         if(itemWeightTypeDescriptionTransfer == null) {
-            var itemWeightTypeTransferCache = itemControl.getItemTransferCaches().getItemWeightTypeTransferCache();
-            var itemWeightTypeTransfer = itemWeightTypeTransferCache.getTransfer(userVisit, itemWeightTypeDescription.getItemWeightType());
+            var itemWeightTypeTransfer = itemControl.getItemWeightTypeTransfer(userVisit, itemWeightTypeDescription.getItemWeightType());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, itemWeightTypeDescription.getLanguage());
             
             itemWeightTypeDescriptionTransfer = new ItemWeightTypeDescriptionTransfer(languageTransfer, itemWeightTypeTransfer, itemWeightTypeDescription.getDescription());

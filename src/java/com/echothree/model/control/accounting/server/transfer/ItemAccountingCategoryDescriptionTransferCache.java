@@ -21,14 +21,16 @@ import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategoryDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemAccountingCategoryDescriptionTransferCache
         extends BaseAccountingDescriptionTransferCache<ItemAccountingCategoryDescription, ItemAccountingCategoryDescriptionTransfer> {
 
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of ItemAccountingCategoryDescriptionTransferCache */
-    public ItemAccountingCategoryDescriptionTransferCache() {
+    protected ItemAccountingCategoryDescriptionTransferCache() {
         super();
     }
     
@@ -37,8 +39,7 @@ public class ItemAccountingCategoryDescriptionTransferCache
         var itemAccountingCategoryDescriptionTransfer = get(itemAccountingCategoryDescription);
         
         if(itemAccountingCategoryDescriptionTransfer == null) {
-            var itemAccountingCategoryTransferCache = accountingControl.getAccountingTransferCaches().getItemAccountingCategoryTransferCache();
-            var itemAccountingCategoryTransfer = itemAccountingCategoryTransferCache.getTransfer(userVisit, itemAccountingCategoryDescription.getItemAccountingCategory());
+            var itemAccountingCategoryTransfer = accountingControl.getItemAccountingCategoryTransfer(userVisit, itemAccountingCategoryDescription.getItemAccountingCategory());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, itemAccountingCategoryDescription.getLanguage());
             
             itemAccountingCategoryDescriptionTransfer = new ItemAccountingCategoryDescriptionTransfer(languageTransfer, itemAccountingCategoryTransfer, itemAccountingCategoryDescription.getDescription());

@@ -22,7 +22,9 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestinationSelector;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WorkflowDestinationSelectorTransferCache
         extends BaseWorkflowTransferCache<WorkflowDestinationSelector, WorkflowDestinationSelectorTransfer> {
     
@@ -30,7 +32,7 @@ public class WorkflowDestinationSelectorTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
     /** Creates a new instance of WorkflowDestinationSelectorTransferCache */
-    public WorkflowDestinationSelectorTransferCache() {
+    protected WorkflowDestinationSelectorTransferCache() {
         super();
     }
     

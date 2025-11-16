@@ -25,7 +25,9 @@ import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCode;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class HarmonizedTariffScheduleCodeTransferCache
         extends BaseItemTransferCache<HarmonizedTariffScheduleCode, HarmonizedTariffScheduleCodeTransfer> {
     
@@ -35,7 +37,7 @@ public class HarmonizedTariffScheduleCodeTransferCache
     boolean includeHarmonizedTariffScheduleCodeUses;
     
     /** Creates a new instance of HarmonizedTariffScheduleCodeTransferCache */
-    public HarmonizedTariffScheduleCodeTransferCache() {
+    protected HarmonizedTariffScheduleCodeTransferCache() {
         super();
         
         var options = session.getOptions();

@@ -27,7 +27,9 @@ import com.echothree.model.data.comment.server.entity.Comment;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CommentTransferCache
         extends BaseCommentTransferCache<Comment, CommentTransfer> {
 
@@ -44,7 +46,7 @@ public class CommentTransferCache
     boolean includeWorkflowStep;
     
     /** Creates a new instance of CommentTransferCache */
-    public CommentTransferCache() {
+    protected CommentTransferCache() {
         super();
 
         var options = session.getOptions();

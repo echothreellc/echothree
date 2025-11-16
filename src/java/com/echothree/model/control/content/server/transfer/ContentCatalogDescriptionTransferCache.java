@@ -21,14 +21,16 @@ import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentCatalogDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContentCatalogDescriptionTransferCache
         extends BaseContentDescriptionTransferCache<ContentCatalogDescription, ContentCatalogDescriptionTransfer> {
 
     ContentControl contentControl = Session.getModelController(ContentControl.class);
 
     /** Creates a new instance of ContentCatalogDescriptionTransferCache */
-    public ContentCatalogDescriptionTransferCache() {
+    protected ContentCatalogDescriptionTransferCache() {
         super();
     }
     

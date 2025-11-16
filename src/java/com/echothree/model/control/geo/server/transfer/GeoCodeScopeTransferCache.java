@@ -21,14 +21,16 @@ import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.data.geo.server.entity.GeoCodeScope;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GeoCodeScopeTransferCache
         extends BaseGeoTransferCache<GeoCodeScope, GeoCodeScopeTransfer> {
 
     GeoControl geoControl = Session.getModelController(GeoControl.class);
 
     /** Creates a new instance of GeoCodeScopeTransferCache */
-    public GeoCodeScopeTransferCache() {
+    protected GeoCodeScopeTransferCache() {
         super();
 
         setIncludeEntityInstance(true);

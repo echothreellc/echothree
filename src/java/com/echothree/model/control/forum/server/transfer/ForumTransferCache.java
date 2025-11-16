@@ -28,7 +28,9 @@ import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ForumTransferCache
         extends BaseForumTransferCache<Forum, ForumTransfer> {
 
@@ -41,7 +43,7 @@ public class ForumTransferCache
     boolean includeFutureForumThreads;
     
     /** Creates a new instance of ForumTransferCache */
-    public ForumTransferCache() {
+    protected ForumTransferCache() {
         super();
         
         var options = session.getOptions();

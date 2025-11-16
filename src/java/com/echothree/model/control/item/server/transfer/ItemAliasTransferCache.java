@@ -22,7 +22,9 @@ import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.item.server.entity.ItemAlias;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemAliasTransferCache
         extends BaseItemTransferCache<ItemAlias, ItemAliasTransfer> {
 
@@ -30,7 +32,7 @@ public class ItemAliasTransferCache
     UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of ItemAliasTransferCache */
-    public ItemAliasTransferCache() {
+    protected ItemAliasTransferCache() {
         super();
     }
     

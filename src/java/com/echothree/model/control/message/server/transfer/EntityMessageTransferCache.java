@@ -22,7 +22,9 @@ import com.echothree.model.control.message.server.control.MessageControl;
 import com.echothree.model.data.message.server.entity.EntityMessage;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityMessageTransferCache
         extends BaseMessageTransferCache<EntityMessage, EntityMessageTransfer> {
 
@@ -30,7 +32,7 @@ public class EntityMessageTransferCache
     MessageControl messageControl = Session.getModelController(MessageControl.class);
 
     /** Creates a new instance of EntityMessageTransferCache */
-    public EntityMessageTransferCache() {
+    protected EntityMessageTransferCache() {
         super();
     }
     

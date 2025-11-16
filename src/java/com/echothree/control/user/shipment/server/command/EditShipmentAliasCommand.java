@@ -24,7 +24,7 @@ import com.echothree.control.user.shipment.common.spec.ShipmentAliasSpec;
 import com.echothree.control.user.shipment.server.command.util.ShipmentAliasUtil;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.shipment.server.ShipmentControl;
+import com.echothree.model.control.shipment.server.control.ShipmentControl;
 import com.echothree.model.data.shipment.server.entity.ShipmentAlias;
 import com.echothree.model.data.shipment.server.entity.ShipmentAliasType;
 import com.echothree.util.common.command.EditMode;

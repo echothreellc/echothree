@@ -25,7 +25,9 @@ import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class AppearanceTransferCache
         extends BaseCoreTransferCache<Appearance, AppearanceTransfer> {
 
@@ -37,7 +39,7 @@ public class AppearanceTransferCache
     boolean includeTextTransformations;
     
     /** Creates a new instance of AppearanceTransferCache */
-    public AppearanceTransferCache() {
+    protected AppearanceTransferCache() {
         super();
         
         var options = session.getOptions();

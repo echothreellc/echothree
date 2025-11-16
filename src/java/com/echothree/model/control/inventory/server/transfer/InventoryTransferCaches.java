@@ -17,197 +17,176 @@
 package com.echothree.model.control.inventory.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class InventoryTransferCaches
         extends BaseTransferCaches {
     
-    protected InventoryLocationGroupTransferCache inventoryLocationGroupTransferCache;
-    protected InventoryLocationGroupDescriptionTransferCache inventoryLocationGroupDescriptionTransferCache;
-    protected InventoryConditionTransferCache inventoryConditionTransferCache;
-    protected InventoryConditionDescriptionTransferCache inventoryConditionDescriptionTransferCache;
-    protected InventoryLocationGroupCapacityTransferCache inventoryLocationGroupCapacityTransferCache;
-    protected InventoryLocationGroupVolumeTransferCache inventoryLocationGroupVolumeTransferCache;
-    protected PartyInventoryLevelTransferCache partyInventoryLevelTransferCache;
-    protected InventoryConditionUseTransferCache inventoryKindUseTransferCache;
-    protected InventoryConditionUseTypeTransferCache inventoryConditionUseTypeTransferCache;
-    protected InventoryConditionGlAccountTransferCache inventoryConditionGlAccountTransferCache;
-    protected LotAliasTypeTransferCache lotAliasTypeTransferCache;
-    protected LotAliasTypeDescriptionTransferCache lotAliasTypeDescriptionTransferCache;
-    protected LotAliasTransferCache lotAliasTransferCache;
-    protected LotTimeTypeTransferCache lotTimeTypeTransferCache;
-    protected LotTimeTypeDescriptionTransferCache lotTimeTypeDescriptionTransferCache;
-    protected LotTimeTransferCache lotTimeTransferCache;
-    protected AllocationPriorityTransferCache allocationPriorityTransferCache;
-    protected AllocationPriorityDescriptionTransferCache allocationPriorityDescriptionTransferCache;
-    protected LotTransferCache lotTransferCache;
-    protected InventoryTransactionTypeTransferCache inventoryTransactionTypeTransferCache;
-    protected InventoryTransactionTypeDescriptionTransferCache inventoryTransactionTypeDescriptionTransferCache;
-    protected InventoryAdjustmentTypeTransferCache inventoryAdjustmentTypeTransferCache;
-    protected InventoryAdjustmentTypeDescriptionTransferCache inventoryAdjustmentTypeDescriptionTransferCache;
-
+    @Inject
+    InventoryLocationGroupTransferCache inventoryLocationGroupTransferCache;
+    
+    @Inject
+    InventoryLocationGroupDescriptionTransferCache inventoryLocationGroupDescriptionTransferCache;
+    
+    @Inject
+    InventoryConditionTransferCache inventoryConditionTransferCache;
+    
+    @Inject
+    InventoryConditionDescriptionTransferCache inventoryConditionDescriptionTransferCache;
+    
+    @Inject
+    InventoryLocationGroupCapacityTransferCache inventoryLocationGroupCapacityTransferCache;
+    
+    @Inject
+    InventoryLocationGroupVolumeTransferCache inventoryLocationGroupVolumeTransferCache;
+    
+    @Inject
+    PartyInventoryLevelTransferCache partyInventoryLevelTransferCache;
+    
+    @Inject
+    InventoryConditionUseTransferCache inventoryKindUseTransferCache;
+    
+    @Inject
+    InventoryConditionUseTypeTransferCache inventoryConditionUseTypeTransferCache;
+    
+    @Inject
+    InventoryConditionGlAccountTransferCache inventoryConditionGlAccountTransferCache;
+    
+    @Inject
+    LotAliasTypeTransferCache lotAliasTypeTransferCache;
+    
+    @Inject
+    LotAliasTypeDescriptionTransferCache lotAliasTypeDescriptionTransferCache;
+    
+    @Inject
+    LotAliasTransferCache lotAliasTransferCache;
+    
+    @Inject
+    LotTimeTypeTransferCache lotTimeTypeTransferCache;
+    
+    @Inject
+    LotTimeTypeDescriptionTransferCache lotTimeTypeDescriptionTransferCache;
+    
+    @Inject
+    LotTimeTransferCache lotTimeTransferCache;
+    
+    @Inject
+    AllocationPriorityTransferCache allocationPriorityTransferCache;
+    
+    @Inject
+    AllocationPriorityDescriptionTransferCache allocationPriorityDescriptionTransferCache;
+    
+    @Inject
+    LotTransferCache lotTransferCache;
+    
+    @Inject
+    InventoryTransactionTypeTransferCache inventoryTransactionTypeTransferCache;
+    
+    @Inject
+    InventoryTransactionTypeDescriptionTransferCache inventoryTransactionTypeDescriptionTransferCache;
+    
+    @Inject
+    InventoryAdjustmentTypeTransferCache inventoryAdjustmentTypeTransferCache;
+    
+    @Inject
+    InventoryAdjustmentTypeDescriptionTransferCache inventoryAdjustmentTypeDescriptionTransferCache;
+    
     /** Creates a new instance of InventoryTransferCaches */
-    public InventoryTransferCaches() {
+    protected InventoryTransferCaches() {
         super();
     }
     
     public InventoryLocationGroupTransferCache getInventoryLocationGroupTransferCache() {
-        if(inventoryLocationGroupTransferCache == null)
-            inventoryLocationGroupTransferCache = new InventoryLocationGroupTransferCache();
-        
         return inventoryLocationGroupTransferCache;
     }
     
     public InventoryLocationGroupDescriptionTransferCache getInventoryLocationGroupDescriptionTransferCache() {
-        if(inventoryLocationGroupDescriptionTransferCache == null)
-            inventoryLocationGroupDescriptionTransferCache = new InventoryLocationGroupDescriptionTransferCache();
-        
         return inventoryLocationGroupDescriptionTransferCache;
     }
     
     public InventoryConditionTransferCache getInventoryConditionTransferCache() {
-        if(inventoryConditionTransferCache == null)
-            inventoryConditionTransferCache = new InventoryConditionTransferCache();
-        
         return inventoryConditionTransferCache;
     }
     
     public InventoryConditionDescriptionTransferCache getInventoryConditionDescriptionTransferCache() {
-        if(inventoryConditionDescriptionTransferCache == null)
-            inventoryConditionDescriptionTransferCache = new InventoryConditionDescriptionTransferCache();
-        
         return inventoryConditionDescriptionTransferCache;
     }
     
     public InventoryLocationGroupCapacityTransferCache getInventoryLocationGroupCapacityTransferCache() {
-        if(inventoryLocationGroupCapacityTransferCache == null)
-            inventoryLocationGroupCapacityTransferCache = new InventoryLocationGroupCapacityTransferCache();
-        
         return inventoryLocationGroupCapacityTransferCache;
     }
     
     public InventoryLocationGroupVolumeTransferCache getInventoryLocationGroupVolumeTransferCache() {
-        if(inventoryLocationGroupVolumeTransferCache == null)
-            inventoryLocationGroupVolumeTransferCache = new InventoryLocationGroupVolumeTransferCache();
-        
         return inventoryLocationGroupVolumeTransferCache;
     }
     
     public PartyInventoryLevelTransferCache getPartyInventoryLevelTransferCache() {
-        if(partyInventoryLevelTransferCache == null)
-            partyInventoryLevelTransferCache = new PartyInventoryLevelTransferCache();
-        
         return partyInventoryLevelTransferCache;
     }
     
     public InventoryConditionUseTransferCache getInventoryConditionUseTransferCache() {
-        if(inventoryKindUseTransferCache == null)
-            inventoryKindUseTransferCache = new InventoryConditionUseTransferCache();
-        
         return inventoryKindUseTransferCache;
     }
     
     public InventoryConditionUseTypeTransferCache getInventoryConditionUseTypeTransferCache() {
-        if(inventoryConditionUseTypeTransferCache == null)
-            inventoryConditionUseTypeTransferCache = new InventoryConditionUseTypeTransferCache();
-        
         return inventoryConditionUseTypeTransferCache;
     }
     
     public InventoryConditionGlAccountTransferCache getInventoryConditionGlAccountTransferCache() {
-        if(inventoryConditionGlAccountTransferCache == null)
-            inventoryConditionGlAccountTransferCache = new InventoryConditionGlAccountTransferCache();
-        
         return inventoryConditionGlAccountTransferCache;
     }
     
     public LotAliasTypeTransferCache getLotAliasTypeTransferCache() {
-        if(lotAliasTypeTransferCache == null)
-            lotAliasTypeTransferCache = new LotAliasTypeTransferCache();
-
         return lotAliasTypeTransferCache;
     }
 
     public LotAliasTypeDescriptionTransferCache getLotAliasTypeDescriptionTransferCache() {
-        if(lotAliasTypeDescriptionTransferCache == null)
-            lotAliasTypeDescriptionTransferCache = new LotAliasTypeDescriptionTransferCache();
-
         return lotAliasTypeDescriptionTransferCache;
     }
 
     public LotAliasTransferCache getLotAliasTransferCache() {
-        if(lotAliasTransferCache == null)
-            lotAliasTransferCache = new LotAliasTransferCache();
-
         return lotAliasTransferCache;
     }
 
     public LotTimeTypeTransferCache getLotTimeTypeTransferCache() {
-        if(lotTimeTypeTransferCache == null)
-            lotTimeTypeTransferCache = new LotTimeTypeTransferCache();
-
         return lotTimeTypeTransferCache;
     }
 
     public LotTimeTransferCache getLotTimeTransferCache() {
-        if(lotTimeTransferCache == null)
-            lotTimeTransferCache = new LotTimeTransferCache();
-
         return lotTimeTransferCache;
     }
 
     public LotTimeTypeDescriptionTransferCache getLotTimeTypeDescriptionTransferCache() {
-        if(lotTimeTypeDescriptionTransferCache == null)
-            lotTimeTypeDescriptionTransferCache = new LotTimeTypeDescriptionTransferCache();
-
         return lotTimeTypeDescriptionTransferCache;
     }
 
     public AllocationPriorityTransferCache getAllocationPriorityTransferCache() {
-        if(allocationPriorityTransferCache == null)
-            allocationPriorityTransferCache = new AllocationPriorityTransferCache();
-
         return allocationPriorityTransferCache;
     }
 
     public AllocationPriorityDescriptionTransferCache getAllocationPriorityDescriptionTransferCache() {
-        if(allocationPriorityDescriptionTransferCache == null)
-            allocationPriorityDescriptionTransferCache = new AllocationPriorityDescriptionTransferCache();
-
         return allocationPriorityDescriptionTransferCache;
     }
 
     public LotTransferCache getLotTransferCache() {
-        if(lotTransferCache == null)
-            lotTransferCache = new LotTransferCache();
-
         return lotTransferCache;
     }
 
     public InventoryTransactionTypeTransferCache getInventoryTransactionTypeTransferCache() {
-        if(inventoryTransactionTypeTransferCache == null)
-            inventoryTransactionTypeTransferCache = new InventoryTransactionTypeTransferCache();
-
         return inventoryTransactionTypeTransferCache;
     }
 
     public InventoryTransactionTypeDescriptionTransferCache getInventoryTransactionTypeDescriptionTransferCache() {
-        if(inventoryTransactionTypeDescriptionTransferCache == null)
-            inventoryTransactionTypeDescriptionTransferCache = new InventoryTransactionTypeDescriptionTransferCache();
-
         return inventoryTransactionTypeDescriptionTransferCache;
     }
 
     public InventoryAdjustmentTypeTransferCache getInventoryAdjustmentTypeTransferCache() {
-        if(inventoryAdjustmentTypeTransferCache == null)
-            inventoryAdjustmentTypeTransferCache = new InventoryAdjustmentTypeTransferCache();
-
         return inventoryAdjustmentTypeTransferCache;
     }
 
     public InventoryAdjustmentTypeDescriptionTransferCache getInventoryAdjustmentTypeDescriptionTransferCache() {
-        if(inventoryAdjustmentTypeDescriptionTransferCache == null)
-            inventoryAdjustmentTypeDescriptionTransferCache = new InventoryAdjustmentTypeDescriptionTransferCache();
-
         return inventoryAdjustmentTypeDescriptionTransferCache;
     }
 

@@ -223,12 +223,12 @@ public class InventoryTransactionTypeControl
     }
 
     public InventoryTransactionTypeTransfer getInventoryTransactionTypeTransfer(UserVisit userVisit, InventoryTransactionType inventoryTransactionType) {
-        return getInventoryTransferCaches().getInventoryTransactionTypeTransferCache().getTransfer(userVisit, inventoryTransactionType);
+        return inventoryTransferCaches.getInventoryTransactionTypeTransferCache().getTransfer(userVisit, inventoryTransactionType);
     }
 
     public List<InventoryTransactionTypeTransfer> getInventoryTransactionTypeTransfers(UserVisit userVisit, Collection<InventoryTransactionType> inventoryTransactionTypes) {
         List<InventoryTransactionTypeTransfer> inventoryTransactionTypeTransfers = new ArrayList<>(inventoryTransactionTypes.size());
-        var inventoryTransactionTypeTransferCache = getInventoryTransferCaches().getInventoryTransactionTypeTransferCache();
+        var inventoryTransactionTypeTransferCache = inventoryTransferCaches.getInventoryTransactionTypeTransferCache();
 
         inventoryTransactionTypes.forEach((inventoryTransactionType) ->
                 inventoryTransactionTypeTransfers.add(inventoryTransactionTypeTransferCache.getTransfer(userVisit, inventoryTransactionType))
@@ -468,13 +468,13 @@ public class InventoryTransactionTypeControl
     }
 
     public InventoryTransactionTypeDescriptionTransfer getInventoryTransactionTypeDescriptionTransfer(UserVisit userVisit, InventoryTransactionTypeDescription inventoryTransactionTypeDescription) {
-        return getInventoryTransferCaches().getInventoryTransactionTypeDescriptionTransferCache().getTransfer(userVisit, inventoryTransactionTypeDescription);
+        return inventoryTransferCaches.getInventoryTransactionTypeDescriptionTransferCache().getTransfer(userVisit, inventoryTransactionTypeDescription);
     }
 
     public List<InventoryTransactionTypeDescriptionTransfer> getInventoryTransactionTypeDescriptionTransfersByInventoryTransactionType(UserVisit userVisit, InventoryTransactionType inventoryTransactionType) {
         var inventoryTransactionTypeDescriptions = getInventoryTransactionTypeDescriptionsByInventoryTransactionType(inventoryTransactionType);
         List<InventoryTransactionTypeDescriptionTransfer> inventoryTransactionTypeDescriptionTransfers = new ArrayList<>(inventoryTransactionTypeDescriptions.size());
-        var inventoryTransactionTypeDescriptionTransferCache = getInventoryTransferCaches().getInventoryTransactionTypeDescriptionTransferCache();
+        var inventoryTransactionTypeDescriptionTransferCache = inventoryTransferCaches.getInventoryTransactionTypeDescriptionTransferCache();
 
         inventoryTransactionTypeDescriptions.forEach((inventoryTransactionTypeDescription) ->
                 inventoryTransactionTypeDescriptionTransfers.add(inventoryTransactionTypeDescriptionTransferCache.getTransfer(userVisit, inventoryTransactionTypeDescription))

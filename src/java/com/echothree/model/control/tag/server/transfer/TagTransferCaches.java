@@ -16,55 +16,51 @@
 
 package com.echothree.model.control.tag.server.transfer;
 
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class TagTransferCaches
         extends BaseTransferCaches {
     
-    protected TagScopeTransferCache tagScopeTransferCache;
-    protected TagScopeDescriptionTransferCache tagScopeDescriptionTransferCache;
-    protected TagScopeEntityTypeTransferCache tagScopeEntityTypeTransferCache;
-    protected TagTransferCache tagTransferCache;
-    protected EntityTagTransferCache entityTagTransferCache;
+    @Inject
+    TagScopeTransferCache tagScopeTransferCache;
     
+    @Inject
+    TagScopeDescriptionTransferCache tagScopeDescriptionTransferCache;
+    
+    @Inject
+    TagScopeEntityTypeTransferCache tagScopeEntityTypeTransferCache;
+    
+    @Inject
+    TagTransferCache tagTransferCache;
+    
+    @Inject
+    EntityTagTransferCache entityTagTransferCache;
+
     /** Creates a new instance of TagTransferCaches */
-    public TagTransferCaches() {
+    protected TagTransferCaches() {
         super();
     }
     
     public TagScopeTransferCache getTagScopeTransferCache() {
-        if(tagScopeTransferCache == null)
-            tagScopeTransferCache = new TagScopeTransferCache();
-        
         return tagScopeTransferCache;
     }
     
     public TagScopeDescriptionTransferCache getTagScopeDescriptionTransferCache() {
-        if(tagScopeDescriptionTransferCache == null)
-            tagScopeDescriptionTransferCache = new TagScopeDescriptionTransferCache();
-        
         return tagScopeDescriptionTransferCache;
     }
     
     public TagScopeEntityTypeTransferCache getTagScopeEntityTypeTransferCache() {
-        if(tagScopeEntityTypeTransferCache == null)
-            tagScopeEntityTypeTransferCache = new TagScopeEntityTypeTransferCache();
-        
         return tagScopeEntityTypeTransferCache;
     }
     
     public TagTransferCache getTagTransferCache() {
-        if(tagTransferCache == null)
-            tagTransferCache = new TagTransferCache();
-        
         return tagTransferCache;
     }
     
     public EntityTagTransferCache getEntityTagTransferCache() {
-        if(entityTagTransferCache == null)
-            entityTagTransferCache = new EntityTagTransferCache();
-        
         return entityTagTransferCache;
     }
     

@@ -24,7 +24,9 @@ import com.echothree.model.data.party.server.entity.PartyTypeLockoutPolicy;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyTypeLockoutPolicyTransferCache
         extends BasePartyTransferCache<PartyTypeLockoutPolicy, PartyTypeLockoutPolicyTransfer> {
 
@@ -34,7 +36,7 @@ public class PartyTypeLockoutPolicyTransferCache
     UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
 
     /** Creates a new instance of PartyTypeLockoutPolicyTransferCache */
-    public PartyTypeLockoutPolicyTransferCache() {
+    protected PartyTypeLockoutPolicyTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

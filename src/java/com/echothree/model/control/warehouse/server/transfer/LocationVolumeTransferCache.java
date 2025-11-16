@@ -23,7 +23,9 @@ import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.LocationVolume;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LocationVolumeTransferCache
         extends BaseWarehouseTransferCache<LocationVolume, LocationVolumeTransfer> {
     
@@ -31,7 +33,7 @@ public class LocationVolumeTransferCache
     WarehouseControl warehouseControl = Session.getModelController(WarehouseControl.class);
 
     /** Creates a new instance of LocationVolumeTransferCache */
-    public LocationVolumeTransferCache() {
+    protected LocationVolumeTransferCache() {
         super();
     }
     

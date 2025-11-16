@@ -16,9 +16,10 @@
 
 package com.echothree.model.control.shipping.server.transfer;
 
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ShippingTransferCaches
         extends BaseTransferCaches {
     
@@ -27,28 +28,19 @@ public class ShippingTransferCaches
     ShippingMethodCarrierServiceTransferCache shippingMethodCarrierServiceTransferCache;
     
     /** Creates a new instance of ShippingTransferCaches */
-    public ShippingTransferCaches() {
+    protected ShippingTransferCaches() {
         super();
     }
     
     public ShippingMethodDescriptionTransferCache getShippingMethodDescriptionTransferCache() {
-        if(shippingMethodDescriptionTransferCache == null)
-            shippingMethodDescriptionTransferCache = new ShippingMethodDescriptionTransferCache();
-        
         return shippingMethodDescriptionTransferCache;
     }
     
     public ShippingMethodTransferCache getShippingMethodTransferCache() {
-        if(shippingMethodTransferCache == null)
-            shippingMethodTransferCache = new ShippingMethodTransferCache();
-        
         return shippingMethodTransferCache;
     }
     
     public ShippingMethodCarrierServiceTransferCache getShippingMethodCarrierServiceTransferCache() {
-        if(shippingMethodCarrierServiceTransferCache == null)
-            shippingMethodCarrierServiceTransferCache = new ShippingMethodCarrierServiceTransferCache();
-        
         return shippingMethodCarrierServiceTransferCache;
     }
     

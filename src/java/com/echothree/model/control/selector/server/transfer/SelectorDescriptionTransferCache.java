@@ -21,14 +21,16 @@ import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.selector.server.entity.SelectorDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SelectorDescriptionTransferCache
         extends BaseSelectorDescriptionTransferCache<SelectorDescription, SelectorDescriptionTransfer> {
 
     SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
 
     /** Creates a new instance of SelectorDescriptionTransferCache */
-    public SelectorDescriptionTransferCache() {
+    protected SelectorDescriptionTransferCache() {
         super();
     }
     
@@ -36,8 +38,7 @@ public class SelectorDescriptionTransferCache
         var selectorDescriptionTransfer = get(selectorDescription);
         
         if(selectorDescriptionTransfer == null) {
-            var selectorTransferCache = selectorControl.getSelectorTransferCaches().getSelectorTransferCache();
-            var selectorTransfer = selectorTransferCache.getSelectorTransfer(userVisit, selectorDescription.getSelector());
+            var selectorTransfer = selectorControl.getSelectorTransfer(userVisit, selectorDescription.getSelector());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, selectorDescription.getLanguage());
             
             selectorDescriptionTransfer = new SelectorDescriptionTransfer(languageTransfer, selectorTransfer, selectorDescription.getDescription());
